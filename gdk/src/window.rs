@@ -9,12 +9,8 @@ use glib::object::IsA;
 use glib::translate::*;
 use libc::{c_char, c_int};
 use std::ptr;
-use Cursor;
-use EventMask;
-use Visual;
-use Window;
 
-use {WindowType, WindowTypeHint, WindowWindowClass};
+use crate::{Cursor, EventMask, Visual, Window, WindowType, WindowTypeHint, WindowWindowClass};
 
 pub struct WindowAttr {
     pub title: Option<String>,

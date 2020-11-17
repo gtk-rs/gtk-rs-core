@@ -7,12 +7,7 @@ use gdk_sys;
 use glib::object::IsA;
 use glib::translate::*;
 use std::ptr;
-use Device;
-use DragAction;
-use DragContext;
-use DragProtocol;
-use Screen;
-use Window;
+use crate::{Device, DragAction, DragContext, DragProtocol, Screen, Window};
 
 impl DragContext {
     pub fn drag_get_selection(&self) -> Atom {

@@ -4,7 +4,7 @@
 
 use gdk_sys;
 use glib::translate::*;
-use FrameClock;
+use crate::FrameClock;
 
 impl FrameClock {
     pub fn get_refresh_info(&self, base_time: i64) -> (i64, i64) {

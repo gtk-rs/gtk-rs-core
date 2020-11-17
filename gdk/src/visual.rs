@@ -5,7 +5,7 @@
 use gdk_sys;
 use std::ptr;
 use std::slice;
-use Visual;
+use crate::Visual;
 
 impl Visual {
     pub fn query_depths() -> Vec<i32> {

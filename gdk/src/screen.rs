@@ -6,7 +6,7 @@ use cairo;
 use gdk_sys;
 use glib;
 use glib::translate::*;
-use Screen;
+use crate::Screen;
 
 impl Screen {
     pub fn get_font_options(&self) -> Option<cairo::FontOptions> {

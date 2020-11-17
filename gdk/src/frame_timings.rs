@@ -5,7 +5,7 @@
 use gdk_sys;
 use glib::translate::*;
 use std::num::NonZeroU64;
-use FrameTimings;
+use crate::FrameTimings;
 
 impl FrameTimings {
     pub fn get_predicted_presentation_time(&self) -> Option<NonZeroU64> {

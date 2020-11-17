@@ -8,7 +8,7 @@ use glib::translate::*;
 use Rectangle;
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct EventExpose(::Event);
+pub struct EventExpose(crate::Event);
 
 event_wrapper!(EventExpose, GdkEventExpose);
 event_subtype!(EventExpose, gdk_sys::GDK_EXPOSE | gdk_sys::GDK_DAMAGE);

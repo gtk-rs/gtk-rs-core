@@ -8,7 +8,7 @@ use gdk_pixbuf::Pixbuf;
 use gdk_sys;
 use glib::object::IsA;
 use glib::translate::*;
-use {Rectangle, Window, RGBA};
+use crate::{Rectangle, Window, RGBA};
 
 pub trait GdkSurfaceExt {
     fn create_region(&self) -> Option<Region>;

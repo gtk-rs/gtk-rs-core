@@ -5,7 +5,7 @@
 use gdk_sys;
 use glib::translate::*;
 use glib_sys;
-use Gravity;
+use crate::Gravity;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]

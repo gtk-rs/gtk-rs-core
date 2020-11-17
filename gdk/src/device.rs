@@ -5,10 +5,7 @@
 use gdk_sys;
 use glib::object::IsA;
 use glib::translate::*;
-use AxisUse;
-use Device;
-use TimeCoord;
-use Window;
+use crate::{AxisUse, Device, TimeCoord, Window};
 
 use std::mem;
 use std::ptr;

@@ -6,9 +6,7 @@ use gdk_sys;
 use glib::translate::*;
 use glib_sys;
 use libc::c_void;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use std::{fmt, mem, ptr};
 
 use AxisUse;
 use Device;
@@ -383,41 +381,41 @@ pub trait FromEvent: Sized {
 
 macro_rules! event_wrapper {
     ($name:ident, $ffi_name:ident) => {
-        impl<'a> ToGlibPtr<'a, *const ::gdk_sys::$ffi_name> for $name {
+        impl<'a> ToGlibPtr<'a, *const crate::gdk_sys::$ffi_name> for $name {
             type Storage = &'a Self;
 
             #[inline]
-            fn to_glib_none(&'a self) -> Stash<'a, *const ::gdk_sys::$ffi_name, Self> {
-                let ptr = ToGlibPtr::<*const ::gdk_sys::GdkEvent>::to_glib_none(&self.0).0;
-                Stash(ptr as *const ::gdk_sys::$ffi_name, self)
+            fn to_glib_none(&'a self) -> Stash<'a, *const crate::gdk_sys::$ffi_name, Self> {
+                let ptr = ToGlibPtr::<*const crate::gdk_sys::GdkEvent>::to_glib_none(&self.0).0;
+                Stash(ptr as *const crate::gdk_sys::$ffi_name, self)
             }
         }
 
-        impl<'a> ToGlibPtrMut<'a, *mut ::gdk_sys::$ffi_name> for $name {
+        impl<'a> ToGlibPtrMut<'a, *mut crate::gdk_sys::$ffi_name> for $name {
             type Storage = &'a mut Self;
 
             #[inline]
-            fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ::gdk_sys::$ffi_name, Self> {
-                let ptr = ToGlibPtrMut::<*mut ::gdk_sys::GdkEvent>::to_glib_none_mut(&mut self.0).0;
-                StashMut(ptr as *mut ::gdk_sys::$ffi_name, self)
+            fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut crate::gdk_sys::$ffi_name, Self> {
+                let ptr = ToGlibPtrMut::<*mut crate::gdk_sys::GdkEvent>::to_glib_none_mut(&mut self.0).0;
+                StashMut(ptr as *mut crate::gdk_sys::$ffi_name, self)
             }
         }
 
-        impl FromGlibPtrNone<*mut ::gdk_sys::$ffi_name> for $name {
+        impl FromGlibPtrNone<*mut crate::gdk_sys::$ffi_name> for $name {
             #[inline]
-            unsafe fn from_glib_none(ptr: *mut ::gdk_sys::$ffi_name) -> Self {
-                $name(from_glib_none(ptr as *mut ::gdk_sys::GdkEvent))
+            unsafe fn from_glib_none(ptr: *mut crate::gdk_sys::$ffi_name) -> Self {
+                $name(from_glib_none(ptr as *mut crate::gdk_sys::GdkEvent))
             }
         }
 
-        impl FromGlibPtrBorrow<*mut ::gdk_sys::$ffi_name> for $name {
+        impl FromGlibPtrBorrow<*mut crate::gdk_sys::$ffi_name> for $name {
             #[inline]
             unsafe fn from_glib_borrow(
-                ptr: *mut ::gdk_sys::$ffi_name,
+                ptr: *mut crate::gdk_sys::$ffi_name,
             ) -> glib::translate::Borrowed<Self> {
                 glib::translate::Borrowed::new(
-                    <$name as ::event::FromEvent>::from(
-                        ::Event::from_glib_borrow(ptr as *mut ::gdk_sys::GdkEvent).into_inner(),
+                    <$name as crate::event::FromEvent>::from(
+                        crate::Event::from_glib_borrow(ptr as *mut crate::gdk_sys::GdkEvent).into_inner(),
                     )
                     .map_err(std::mem::forget)
                     .unwrap(),
@@ -425,28 +423,28 @@ macro_rules! event_wrapper {
             }
         }
 
-        impl FromGlibPtrFull<*mut ::gdk_sys::$ffi_name> for $name {
+        impl FromGlibPtrFull<*mut crate::gdk_sys::$ffi_name> for $name {
             #[inline]
-            unsafe fn from_glib_full(ptr: *mut ::gdk_sys::$ffi_name) -> Self {
-                $name(from_glib_full(ptr as *mut ::gdk_sys::GdkEvent))
+            unsafe fn from_glib_full(ptr: *mut crate::gdk_sys::$ffi_name) -> Self {
+                $name(from_glib_full(ptr as *mut crate::gdk_sys::GdkEvent))
             }
         }
 
-        impl AsRef<::gdk_sys::$ffi_name> for $name {
+        impl AsRef<crate::gdk_sys::$ffi_name> for $name {
             #[inline]
-            fn as_ref(&self) -> &::gdk_sys::$ffi_name {
+            fn as_ref(&self) -> &crate::gdk_sys::$ffi_name {
                 unsafe {
-                    let ptr: *const ::gdk_sys::$ffi_name = self.to_glib_none().0;
+                    let ptr: *const crate::gdk_sys::$ffi_name = self.to_glib_none().0;
                     &*ptr
                 }
             }
         }
 
-        impl AsMut<::gdk_sys::$ffi_name> for $name {
+        impl AsMut<crate::gdk_sys::$ffi_name> for $name {
             #[inline]
-            fn as_mut(&mut self) -> &mut ::gdk_sys::$ffi_name {
+            fn as_mut(&mut self) -> &mut crate::gdk_sys::$ffi_name {
                 unsafe {
-                    let ptr: *mut ::gdk_sys::$ffi_name = self.to_glib_none_mut().0;
+                    let ptr: *mut crate::gdk_sys::$ffi_name = self.to_glib_none_mut().0;
                     &mut *ptr
                 }
             }
@@ -458,9 +456,11 @@ event_wrapper!(Event, GdkEventAny);
 
 macro_rules! event_subtype {
     ($name:ident, $($ty:path)|+) => {
-        impl ::event::FromEvent for $name {
+        use std::ops;
+
+        impl crate::event::FromEvent for $name {
             #[inline]
-            fn is(ev: &::event::Event) -> bool {
+            fn is(ev: &crate::event::Event) -> bool {
                 skip_assert_initialized!();
                 match ev.as_ref().type_ {
                     $($ty)|+ => true,
@@ -469,7 +469,7 @@ macro_rules! event_subtype {
             }
 
             #[inline]
-            fn from(ev: ::event::Event) -> Result<Self, ::event::Event> {
+            fn from(ev: crate::event::Event) -> Result<Self, crate::event::Event> {
                 skip_assert_initialized!();
                 if Self::is(&ev) {
                     Ok($name(ev))
@@ -480,16 +480,16 @@ macro_rules! event_subtype {
             }
         }
 
-        impl ::std::ops::Deref for $name {
-            type Target = ::event::Event;
+        impl ops::Deref for $name {
+            type Target = crate::event::Event;
 
-            fn deref(&self) -> &::event::Event {
+            fn deref(&self) -> &crate::event::Event {
                 &self.0
             }
         }
 
-        impl ::std::ops::DerefMut for $name {
-            fn deref_mut(&mut self) -> &mut ::event::Event {
+        impl ops::DerefMut for $name {
+            fn deref_mut(&mut self) -> &mut crate::event::Event {
                 &mut self.0
             }
         }
