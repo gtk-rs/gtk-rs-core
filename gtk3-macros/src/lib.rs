@@ -1,3 +1,5 @@
+// Take a look at the license at the top of the repository in the LICENSE file.
+
 mod composite_template_derive;
 mod util;
 
