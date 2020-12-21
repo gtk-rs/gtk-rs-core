@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/wrapper.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>wrapper.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../glib/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../glib/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -505,21 +505,17 @@
 <span id="502">502</span>
 <span id="503">503</span>
 <span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright 2015-2016, The Gtk-rs Project Developers.</span>
-<span class="comment">// See the COPYRIGHT file at the top-level directory of this distribution.</span>
-<span class="comment">// Licensed under the MIT license, see the LICENSE file or &lt;https://opensource.org/licenses/MIT&gt;</span>
+<span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
-<span class="doccomment">//! `IMPL` The `glib_wrapper!` macro and miscellaneous wrapper traits.</span>
+<span class="doccomment">//! `IMPL` The `wrapper!` macro and miscellaneous wrapper traits.</span>
 
 <span class="doccomment">/// Defines a wrapper type and implements the appropriate traits.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The basic syntax is</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Your documentation goes here</span>
 <span class="doccomment">///     pub struct $name($kind&lt;$foreign&gt;);</span>
 <span class="doccomment">///</span>
@@ -554,7 +550,7 @@
 <span class="doccomment">/// With no registered `glib_ffi::GType`:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Text buffer iterator</span>
 <span class="doccomment">///     pub struct TextIter(Boxed&lt;ffi::GtkTextIter&gt;);</span>
 <span class="doccomment">///</span>
@@ -572,7 +568,7 @@
 <span class="doccomment">/// With a registered `glib_ffi::GType`:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Text buffer iterator</span>
 <span class="doccomment">///     pub struct TextIter(Boxed&lt;ffi::GtkTextIter&gt;);</span>
 <span class="doccomment">///</span>
@@ -594,7 +590,7 @@
 <span class="doccomment">/// With no registered `glib_ffi::GType`:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Object holding timing information for a single frame.</span>
 <span class="doccomment">///     pub struct FrameTimings(Shared&lt;ffi::GdkFrameTimings&gt;);</span>
 <span class="doccomment">///</span>
@@ -612,7 +608,7 @@
 <span class="doccomment">/// With a registered `glib_ffi::GType`:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Object holding timing information for a single frame.</span>
 <span class="doccomment">///     pub struct FrameTimings(Shared&lt;ffi::GdkFrameTimings&gt;);</span>
 <span class="doccomment">///</span>
@@ -635,7 +631,7 @@
 <span class="doccomment">/// The basic syntax is this:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     /// Your documentation goes here</span>
 <span class="doccomment">///     pub struct InstanceName(Object&lt;ffi::InstanceStruct, ffi::ClassStruct, ClassName&gt;)</span>
 <span class="doccomment">///         @extends ParentClass, GrandparentClass, ...,</span>
@@ -660,7 +656,7 @@
 <span class="doccomment">/// `GObject`, so it can be simply wrapped as follows:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct WindowGroup(Object&lt;ffi::GtkWindowGroup, ffi::GtkWindowGroupClass, WindowGroupClass&gt;);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     match fn {</span>
@@ -672,7 +668,7 @@
 <span class="doccomment">/// In contrast, `ffi::GtkButton` has a parent, grandparent, etc. classes, which must be specified:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct Button(Object&lt;ffi::GtkButton, ButtonClass&gt;) @extends Bin, Container, Widget;</span>
 <span class="doccomment">///         // see note on interfaces in the example below</span>
 <span class="doccomment">///</span>
@@ -689,7 +685,7 @@
 <span class="doccomment">/// behind the `@implements` keyword:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct Button(Object&lt;ffi::GtkButton, ButtonClass&gt;)</span>
 <span class="doccomment">///         @extends Bin, Container, Widget, // parent classes</span>
 <span class="doccomment">///         @implements Buildable, Actionable;  // interfaces</span>
@@ -709,7 +705,7 @@
 <span class="doccomment">/// specify a FFI class name at all in the `Object&lt;&gt;` part:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct Clipboard(Object&lt;ffi::GtkClipboard, ClipboardClass&gt;);</span>
 <span class="doccomment">///     ...</span>
 <span class="doccomment">/// }</span>
@@ -721,7 +717,7 @@
 <span class="doccomment">/// `Object`, `Interface` has to be specified:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct TreeModel(Interface&lt;ffi::GtkTreeModel, ffi::GtkTreeModelIface, TreeModelIface&gt;);</span>
 <span class="doccomment">///     ...</span>
 <span class="doccomment">/// }</span>
@@ -733,7 +729,7 @@
 <span class="doccomment">/// interface have to inherit or interfaces that have to be implemented:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// glib_wrapper! {</span>
+<span class="doccomment">/// wrapper! {</span>
 <span class="doccomment">///     pub struct TreeSortable(Interface&lt;ffi::GtkTreeSortable, ffi::GtkTreeSortable, TreeSortableIface&gt;) @requires TreeModel;</span>
 <span class="doccomment">///     ...</span>
 <span class="doccomment">/// }</span>
@@ -745,7 +741,7 @@
 <span class="doccomment">/// [#non-derivable-classes]: #non-derivable-classes</span>
 
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">glib_wrapper</span> {
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">wrapper</span> {
     <span class="comment">// Boxed</span>
 
     (

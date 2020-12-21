@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/object.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>object.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../glib/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../glib/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -2574,10 +2574,15 @@
 <span id="2571">2571</span>
 <span id="2572">2572</span>
 <span id="2573">2573</span>
+<span id="2574">2574</span>
+<span id="2575">2575</span>
+<span id="2576">2576</span>
+<span id="2577">2577</span>
+<span id="2578">2578</span>
+<span id="2579">2579</span>
+<span id="2580">2580</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="comment">// Copyright 2015-2016, The Gtk-rs Project Developers.</span>
-<span class="comment">// See the COPYRIGHT file at the top-level directory of this distribution.</span>
-<span class="comment">// Licensed under the MIT license, see the LICENSE file or &lt;https://opensource.org/licenses/MIT&gt;</span>
+<span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
 <span class="doccomment">//! `IMPL` Object wrapper implementation and `Object` binding.</span>
 
@@ -3206,7 +3211,7 @@
     };
 }
 
-<span class="doccomment">/// ObjectType implementations for Object types. See `glib_wrapper!`.</span>
+<span class="doccomment">/// ObjectType implementations for Object types. See `wrapper!`.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">glib_object_wrapper</span> {
     (@<span class="ident">generic_impl</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>)<span class="kw-2">*</span>] <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_class_name</span>:<span class="ident">ty</span>, @<span class="ident">get_type</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -3648,11 +3653,21 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ObjectClass</span> <span class="op">=</span> <span class="ident">Class</span><span class="op">&lt;</span><span class="ident">Object</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">Object</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">type_</span>: <span class="ident">Type</span>, <span class="ident">properties</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">ToValue</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Object</span>, <span class="ident">BoolError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_ret_no_self</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Object</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">properties</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">ToValue</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">BoolError</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">Object</span>::<span class="ident">with_type</span>(<span class="ident">T</span>::<span class="ident">static_type</span>(), <span class="ident">properties</span>)<span class="question-mark">?</span>
+            .<span class="ident">downcast</span>()
+            .<span class="ident">unwrap</span>())
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_type</span>(
+        <span class="ident">type_</span>: <span class="ident">Type</span>,
+        <span class="ident">properties</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">ToValue</span>)],
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Object</span>, <span class="ident">BoolError</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CString</span>;
 
         <span class="kw">let</span> <span class="ident">klass</span> <span class="op">=</span> <span class="ident">ObjectClass</span>::<span class="ident">from_type</span>(<span class="ident">type_</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t retrieve class for type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t retrieve class for type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">pspecs</span> <span class="op">=</span> <span class="ident">klass</span>.<span class="ident">list_properties</span>();
 
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">properties</span>
@@ -3662,7 +3677,7 @@
                     .<span class="ident">iter</span>()
                     .<span class="ident">find</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">get_name</span>() <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span>)
                     .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>, <span class="ident">name</span>, <span class="ident">type_</span>)
+                        <span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>, <span class="ident">name</span>, <span class="ident">type_</span>)
                     })<span class="question-mark">?</span>;
 
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">to_value</span>();
@@ -3678,7 +3693,7 @@
         <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CString</span>;
 
         <span class="kw">let</span> <span class="ident">klass</span> <span class="op">=</span> <span class="ident">ObjectClass</span>::<span class="ident">from_type</span>(<span class="ident">type_</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t retrieve class for type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t retrieve class for type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">pspecs</span> <span class="op">=</span> <span class="ident">klass</span>.<span class="ident">list_properties</span>();
 
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">properties</span>
@@ -3688,7 +3703,7 @@
                     .<span class="ident">iter</span>()
                     .<span class="ident">find</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">get_name</span>() <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span>)
                     .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>, <span class="ident">name</span>, <span class="ident">type_</span>)
+                        <span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>, <span class="ident">name</span>, <span class="ident">type_</span>)
                     })<span class="question-mark">?</span>;
 
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">clone</span>();
@@ -3705,7 +3720,7 @@
         <span class="ident">params</span>: <span class="kw-2">&amp;</span>[(<span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CString</span>, <span class="ident">Value</span>)],
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Object</span>, <span class="ident">BoolError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">type_</span>.<span class="ident">is_a</span>(<span class="kw-2">&amp;</span><span class="ident">Object</span>::<span class="ident">static_type</span>()) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;Can&#39;t instantiate non-GObject type &#39;{}&#39;&quot;</span>,
                 <span class="ident">type_</span>
             ));
@@ -3714,16 +3729,13 @@
         <span class="kw">if</span> <span class="ident">gobject_ffi</span>::<span class="ident">g_type_test_flags</span>(<span class="ident">type_</span>.<span class="ident">to_glib</span>(), <span class="ident">gobject_ffi</span>::<span class="ident">G_TYPE_FLAG_INSTANTIATABLE</span>)
             <span class="op">=</span><span class="op">=</span> <span class="ident">ffi</span>::<span class="ident">GFALSE</span>
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t instantiate type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t instantiate type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>));
         }
 
         <span class="kw">if</span> <span class="ident">gobject_ffi</span>::<span class="ident">g_type_test_flags</span>(<span class="ident">type_</span>.<span class="ident">to_glib</span>(), <span class="ident">gobject_ffi</span>::<span class="ident">G_TYPE_FLAG_ABSTRACT</span>)
             <span class="op">!</span><span class="op">=</span> <span class="ident">ffi</span>::<span class="ident">GFALSE</span>
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
-                <span class="string">&quot;Can&#39;t instantiate abstract type &#39;{}&#39;&quot;</span>,
-                <span class="ident">type_</span>
-            ));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t instantiate abstract type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>));
         }
 
         <span class="kw">let</span> <span class="ident">params_c</span> <span class="op">=</span> <span class="ident">params</span>
@@ -3740,10 +3752,7 @@
             <span class="ident">mut_override</span>(<span class="ident">params_c</span>.<span class="ident">as_ptr</span>()),
         );
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
-                <span class="string">&quot;Can&#39;t instantiate object for type &#39;{}&#39;&quot;</span>,
-                <span class="ident">type_</span>
-            ))
+            <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(<span class="string">&quot;Can&#39;t instantiate object for type &#39;{}&#39;&quot;</span>, <span class="ident">type_</span>))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">type_</span>.<span class="ident">is_a</span>(<span class="kw-2">&amp;</span><span class="ident">InitiallyUnowned</span>::<span class="ident">static_type</span>()) {
             <span class="comment">// Attention: This takes ownership of the floating reference</span>
             <span class="prelude-val">Ok</span>(<span class="ident">from_glib_none</span>(<span class="ident">ptr</span>))
@@ -3910,7 +3919,7 @@
                     .<span class="ident">iter</span>()
                     .<span class="ident">find</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">get_name</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">name</span>)
                     .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                        <span class="macro">bool_error</span><span class="macro">!</span>(
                             <span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>,
                             <span class="ident">name</span>,
                             <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -3948,7 +3957,7 @@
                     .<span class="ident">iter</span>()
                     .<span class="ident">find</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">get_name</span>() <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span>)
                     .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                        <span class="macro">bool_error</span><span class="macro">!</span>(
                             <span class="string">&quot;Can&#39;t find property &#39;{}&#39; for type &#39;{}&#39;&quot;</span>,
                             <span class="ident">name</span>,
                             <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -3984,7 +3993,7 @@
         <span class="kw">let</span> <span class="ident">pspec</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">find_property</span>(<span class="ident">property_name</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">pspec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pspec</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                     <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
                     <span class="ident">property_name</span>,
                     <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -4015,7 +4024,7 @@
         <span class="kw">let</span> <span class="ident">pspec</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">find_property</span>(<span class="ident">property_name</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">pspec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pspec</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                     <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
                     <span class="ident">property_name</span>,
                     <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -4042,7 +4051,7 @@
         <span class="kw">let</span> <span class="ident">pspec</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">find_property</span>(<span class="ident">property_name</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">pspec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pspec</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                     <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
                     <span class="ident">property_name</span>,
                     <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -4051,7 +4060,7 @@
         };
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">pspec</span>.<span class="ident">get_flags</span>().<span class="ident">contains</span>(<span class="kw">crate</span>::<span class="ident">ParamFlags</span>::<span class="ident">READABLE</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; is not readable&quot;</span>,
                 <span class="ident">property_name</span>,
                 <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -4068,7 +4077,7 @@
 
             <span class="comment">// This can&#39;t really happen unless something goes wrong inside GObject</span>
             <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">type_</span>() <span class="op">=</span><span class="op">=</span> <span class="kw">crate</span>::<span class="ident">Type</span>::<span class="ident">Invalid</span> {
-                <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                     <span class="string">&quot;Failed to get property value for property &#39;{}&#39; of type &#39;{}&#39;&quot;</span>,
                     <span class="ident">property_name</span>,
                     <span class="self">self</span>.<span class="ident">get_type</span>()
@@ -4316,7 +4325,7 @@
         ));
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">found</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;Signal &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
                 <span class="ident">signal_name</span>,
                 <span class="ident">type_</span>
@@ -4327,7 +4336,7 @@
         <span class="ident">gobject_ffi</span>::<span class="ident">g_signal_query</span>(<span class="ident">signal_id</span>, <span class="ident">details</span>.<span class="ident">as_mut_ptr</span>());
         <span class="kw">let</span> <span class="ident">details</span> <span class="op">=</span> <span class="ident">details</span>.<span class="ident">assume_init</span>();
         <span class="kw">if</span> <span class="ident">details</span>.<span class="ident">signal_id</span> <span class="op">!</span><span class="op">=</span> <span class="ident">signal_id</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;Signal &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
                 <span class="ident">signal_name</span>,
                 <span class="ident">type_</span>
@@ -4415,7 +4424,7 @@
         );
 
         <span class="kw">if</span> <span class="ident">handler</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;Failed to connect to signal &#39;{}&#39; of type &#39;{}&#39;&quot;</span>,
                 <span class="ident">signal_name</span>,
                 <span class="ident">type_</span>
@@ -4563,7 +4572,7 @@
                 .<span class="ident">get_flags</span>()
                 .<span class="ident">contains</span>(<span class="kw">crate</span>::<span class="ident">ParamFlags</span>::<span class="ident">CONSTRUCT_ONLY</span>))
     {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
             <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; is not writable&quot;</span>,
             <span class="ident">pspec</span>.<span class="ident">get_name</span>(),
             <span class="ident">type_</span>
@@ -4591,7 +4600,7 @@
                         <span class="ident">property_value</span>.<span class="number">0</span>.<span class="ident">g_type</span> <span class="op">=</span> <span class="ident">pspec</span>.<span class="ident">get_value_type</span>().<span class="ident">to_glib</span>();
                     } <span class="kw">else</span> {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(
-                            <span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                            <span class="macro">bool_error</span><span class="macro">!</span>(
                                 <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; can&#39;t be set from the given object type (expected: &#39;{}&#39;, got: &#39;{}&#39;)&quot;</span>,
                                 <span class="ident">pspec</span>.<span class="ident">get_name</span>(),
                                 <span class="ident">type_</span>,
@@ -4608,7 +4617,7 @@
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;property_value type conformity already checked&quot;</span>),
             }
         } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">valid_type</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(<span class="macro">format</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(<span class="macro">format</span><span class="macro">!</span>(
                 <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; can&#39;t be set from the given type (expected: &#39;{}&#39;, got: &#39;{}&#39;)&quot;</span>,
                 <span class="ident">pspec</span>.<span class="ident">get_name</span>(),
                 <span class="ident">type_</span>,
@@ -4625,7 +4634,7 @@
             .<span class="ident">get_flags</span>()
             .<span class="ident">contains</span>(<span class="kw">crate</span>::<span class="ident">ParamFlags</span>::<span class="ident">LAX_VALIDATION</span>);
         <span class="kw">if</span> <span class="ident">changed</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">change_allowed</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
                 <span class="string">&quot;property &#39;{}&#39; of type &#39;{}&#39; can&#39;t be set from given value, it is invalid or out of range&quot;</span>,
                 <span class="ident">pspec</span>.<span class="ident">get_name</span>(),
                 <span class="ident">type_</span>,
@@ -4655,7 +4664,7 @@
     };
 
     <span class="kw">if</span> <span class="op">!</span><span class="ident">found</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
             <span class="string">&quot;Signal &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
             <span class="ident">signal_name</span>,
             <span class="ident">type_</span>
@@ -4669,7 +4678,7 @@
     };
 
     <span class="kw">if</span> <span class="ident">details</span>.<span class="ident">signal_id</span> <span class="op">!</span><span class="op">=</span> <span class="ident">signal_id</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
             <span class="string">&quot;Signal &#39;{}&#39; of type &#39;{}&#39; not found&quot;</span>,
             <span class="ident">signal_name</span>,
             <span class="ident">type_</span>
@@ -4677,7 +4686,7 @@
     }
 
     <span class="kw">if</span> <span class="ident">details</span>.<span class="ident">n_params</span> <span class="op">!</span><span class="op">=</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">glib_bool_error</span><span class="macro">!</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">bool_error</span><span class="macro">!</span>(
             <span class="string">&quot;Incompatible number of arguments for signal &#39;{}&#39; of type &#39;{}&#39; (expected {}, got {})&quot;</span>,
             <span class="ident">signal_name</span>,
             <span class="ident">type_</span>,
@@ -4689,8 +4698,11 @@
     <span class="kw">let</span> <span class="ident">param_types</span> <span class="op">=</span>
         <span class="kw">unsafe</span> { <span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">details</span>.<span class="ident">param_types</span>, <span class="ident">details</span>.<span class="ident">n_params</span> <span class="kw">as</span> <span class="ident">usize</span>) };
 
-    <span class="kw">for</span> (<span class="ident">i</span>, (<span class="ident">arg</span>, <span class="ident">param_type</span>)) <span class="kw">in</span>
-        <span class="ident">Iterator</span>::<span class="ident">zip</span>(<span class="ident">args</span>.<span class="ident">iter_mut</span>(), <span class="ident">param_types</span>.<span class="ident">iter</span>().<span class="ident">copied</span>().<span class="ident">map</span>(<span class="ident">from_glib</span>)).<span class="ident">enumerate</span>()
+    <span class="kw">for</span> (<span class="ident">i</span>, (<span class="ident">arg</span>, <span class="ident">param_type</span>)) <span class="kw">in</span> <span class="ident">Iterator</span>::<span class="ident">zip</span>(
+        <span class="ident">args</span>.<span class="ident">iter_mut</span>(),
+        <span class="ident">param_types</span>.<span class="ident">iter</span>().<span class="ident">copied</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">x</span>) }),
+    )
+    .<span class="ident">enumerate</span>()
     {
         <span class="kw">if</span> <span class="ident">arg</span>.<span class="ident">type_</span>().<span class="ident">is_a</span>(<span class="kw-2">&amp;</span><span class="ident">Object</span>::<span class="ident">static_type</span>()) {
             <span class="kw">match</span> <span class="ident">arg</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Object</span><span class="op">&gt;</span>() {
@@ -4699,7 +4711,7 @@
                         <span class="ident">arg</span>.<span class="number">0</span>.<span class="ident">g_type</span> <span class="op">=</span> <span class="ident">param_type</span>.<span class="ident">to_glib</span>();
                     } <span class="kw">else</span> {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(
-                            <span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                            <span class="macro">bool_error</span><span class="macro">!</span>(
                                 <span class="string">&quot;Incompatible argument type in argument {} for signal &#39;{}&#39; of type &#39;{}&#39; (expected {}, got {})&quot;</span>,
                                 <span class="ident">i</span>,
                                 <span class="ident">signal_name</span>,
@@ -4718,7 +4730,7 @@
             }
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">param_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">arg</span>.<span class="ident">type_</span>() {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(
-                <span class="macro">glib_bool_error</span><span class="macro">!</span>(
+                <span class="macro">bool_error</span><span class="macro">!</span>(
                     <span class="string">&quot;Incompatible argument type in argument {} for signal &#39;{}&#39; of type &#39;{}&#39; (expected {}, got {})&quot;</span>,
                     <span class="ident">i</span>,
                     <span class="ident">signal_name</span>,
@@ -4730,7 +4742,9 @@
         }
     }
 
-    <span class="prelude-val">Ok</span>((<span class="ident">signal_id</span>, <span class="ident">signal_detail</span>, <span class="ident">from_glib</span>(<span class="ident">details</span>.<span class="ident">return_type</span>)))
+    <span class="prelude-val">Ok</span>((<span class="ident">signal_id</span>, <span class="ident">signal_detail</span>, <span class="kw">unsafe</span> {
+        <span class="ident">from_glib</span>(<span class="ident">details</span>.<span class="ident">return_type</span>)
+    }))
 }
 
 <span class="kw">impl</span> <span class="ident">ObjectClass</span> {
@@ -4782,7 +4796,7 @@
     }
 }
 
-<span class="macro">glib_wrapper</span><span class="macro">!</span> {
+<span class="macro">wrapper</span><span class="macro">!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InitiallyUnowned</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">gobject_ffi</span>::<span class="ident">GInitiallyUnowned</span>, <span class="ident">gobject_ffi</span>::<span class="ident">GInitiallyUnownedClass</span><span class="op">&gt;</span>);
 
     <span class="kw">match</span> <span class="kw">fn</span> {
@@ -5124,7 +5138,7 @@
 }
 
 <span class="doccomment">/// Automatically implemented by `ObjectSubclass` variants of</span>
-<span class="doccomment">/// [`glib_wrapper!`][crate::glib_wrapper]</span>
+<span class="doccomment">/// [`wrapper!`][crate::wrapper!]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">ObjectSubclassIs</span>: <span class="ident">ObjectType</span> {
     <span class="kw">type</span> <span class="ident">Subclass</span>: <span class="ident">ObjectSubclass</span>;
 }
