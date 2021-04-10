@@ -1640,7 +1640,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe {
             gobject_ffi::g_signal_handler_block(
                 self.as_object_ref().to_glib_none().0,
-                handler_id.to_glib(),
+                handler_id.as_raw(),
             );
         }
     }
@@ -1649,7 +1649,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe {
             gobject_ffi::g_signal_handler_unblock(
                 self.as_object_ref().to_glib_none().0,
-                handler_id.to_glib(),
+                handler_id.as_raw(),
             );
         }
     }
@@ -1667,7 +1667,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe {
             gobject_ffi::g_signal_handler_disconnect(
                 self.as_object_ref().to_glib_none().0,
-                handler_id.to_glib(),
+                handler_id.as_raw(),
             );
         }
     }
