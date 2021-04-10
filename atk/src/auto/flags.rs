@@ -27,7 +27,7 @@ impl fmt::Display for HyperlinkStateFlags {
 impl ToGlib for HyperlinkStateFlags {
     type GlibType = ffi::AtkHyperlinkStateFlags;
 
-    fn to_glib(&self) -> ffi::AtkHyperlinkStateFlags {
+    fn to_glib(self) -> ffi::AtkHyperlinkStateFlags {
         self.bits()
     }
 }

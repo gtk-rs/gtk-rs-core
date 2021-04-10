@@ -30,7 +30,7 @@ impl fmt::Display for AppInfoCreateFlags {
 impl ToGlib for AppInfoCreateFlags {
     type GlibType = ffi::GAppInfoCreateFlags;
 
-    fn to_glib(&self) -> ffi::GAppInfoCreateFlags {
+    fn to_glib(self) -> ffi::GAppInfoCreateFlags {
         self.bits()
     }
 }
@@ -91,7 +91,7 @@ impl fmt::Display for ApplicationFlags {
 impl ToGlib for ApplicationFlags {
     type GlibType = ffi::GApplicationFlags;
 
-    fn to_glib(&self) -> ffi::GApplicationFlags {
+    fn to_glib(self) -> ffi::GApplicationFlags {
         self.bits()
     }
 }
@@ -148,7 +148,7 @@ impl fmt::Display for AskPasswordFlags {
 impl ToGlib for AskPasswordFlags {
     type GlibType = ffi::GAskPasswordFlags;
 
-    fn to_glib(&self) -> ffi::GAskPasswordFlags {
+    fn to_glib(self) -> ffi::GAskPasswordFlags {
         self.bits()
     }
 }
@@ -203,7 +203,7 @@ impl fmt::Display for BusNameOwnerFlags {
 impl ToGlib for BusNameOwnerFlags {
     type GlibType = ffi::GBusNameOwnerFlags;
 
-    fn to_glib(&self) -> ffi::GBusNameOwnerFlags {
+    fn to_glib(self) -> ffi::GBusNameOwnerFlags {
         self.bits()
     }
 }
@@ -256,7 +256,7 @@ impl fmt::Display for BusNameWatcherFlags {
 impl ToGlib for BusNameWatcherFlags {
     type GlibType = ffi::GBusNameWatcherFlags;
 
-    fn to_glib(&self) -> ffi::GBusNameWatcherFlags {
+    fn to_glib(self) -> ffi::GBusNameWatcherFlags {
         self.bits()
     }
 }
@@ -310,7 +310,7 @@ impl fmt::Display for ConverterFlags {
 impl ToGlib for ConverterFlags {
     type GlibType = ffi::GConverterFlags;
 
-    fn to_glib(&self) -> ffi::GConverterFlags {
+    fn to_glib(self) -> ffi::GConverterFlags {
         self.bits()
     }
 }
@@ -364,7 +364,7 @@ impl fmt::Display for DBusCallFlags {
 impl ToGlib for DBusCallFlags {
     type GlibType = ffi::GDBusCallFlags;
 
-    fn to_glib(&self) -> ffi::GDBusCallFlags {
+    fn to_glib(self) -> ffi::GDBusCallFlags {
         self.bits()
     }
 }
@@ -417,7 +417,7 @@ impl fmt::Display for DBusCapabilityFlags {
 impl ToGlib for DBusCapabilityFlags {
     type GlibType = ffi::GDBusCapabilityFlags;
 
-    fn to_glib(&self) -> ffi::GDBusCapabilityFlags {
+    fn to_glib(self) -> ffi::GDBusCapabilityFlags {
         self.bits()
     }
 }
@@ -474,7 +474,7 @@ impl fmt::Display for DBusConnectionFlags {
 impl ToGlib for DBusConnectionFlags {
     type GlibType = ffi::GDBusConnectionFlags;
 
-    fn to_glib(&self) -> ffi::GDBusConnectionFlags {
+    fn to_glib(self) -> ffi::GDBusConnectionFlags {
         self.bits()
     }
 }
@@ -527,7 +527,7 @@ impl fmt::Display for DBusInterfaceSkeletonFlags {
 impl ToGlib for DBusInterfaceSkeletonFlags {
     type GlibType = ffi::GDBusInterfaceSkeletonFlags;
 
-    fn to_glib(&self) -> ffi::GDBusInterfaceSkeletonFlags {
+    fn to_glib(self) -> ffi::GDBusInterfaceSkeletonFlags {
         self.bits()
     }
 }
@@ -582,7 +582,7 @@ impl fmt::Display for DBusMessageFlags {
 impl ToGlib for DBusMessageFlags {
     type GlibType = ffi::GDBusMessageFlags;
 
-    fn to_glib(&self) -> ffi::GDBusMessageFlags {
+    fn to_glib(self) -> ffi::GDBusMessageFlags {
         self.bits()
     }
 }
@@ -639,7 +639,7 @@ impl fmt::Display for DBusProxyFlags {
 impl ToGlib for DBusProxyFlags {
     type GlibType = ffi::GDBusProxyFlags;
 
-    fn to_glib(&self) -> ffi::GDBusProxyFlags {
+    fn to_glib(self) -> ffi::GDBusProxyFlags {
         self.bits()
     }
 }
@@ -692,7 +692,7 @@ impl fmt::Display for DBusSendMessageFlags {
 impl ToGlib for DBusSendMessageFlags {
     type GlibType = ffi::GDBusSendMessageFlags;
 
-    fn to_glib(&self) -> ffi::GDBusSendMessageFlags {
+    fn to_glib(self) -> ffi::GDBusSendMessageFlags {
         self.bits()
     }
 }
@@ -746,7 +746,7 @@ impl fmt::Display for DBusServerFlags {
 impl ToGlib for DBusServerFlags {
     type GlibType = ffi::GDBusServerFlags;
 
-    fn to_glib(&self) -> ffi::GDBusServerFlags {
+    fn to_glib(self) -> ffi::GDBusServerFlags {
         self.bits()
     }
 }
@@ -801,7 +801,7 @@ impl fmt::Display for DBusSignalFlags {
 impl ToGlib for DBusSignalFlags {
     type GlibType = ffi::GDBusSignalFlags;
 
-    fn to_glib(&self) -> ffi::GDBusSignalFlags {
+    fn to_glib(self) -> ffi::GDBusSignalFlags {
         self.bits()
     }
 }
@@ -853,7 +853,7 @@ impl fmt::Display for DriveStartFlags {
 impl ToGlib for DriveStartFlags {
     type GlibType = ffi::GDriveStartFlags;
 
-    fn to_glib(&self) -> ffi::GDriveStartFlags {
+    fn to_glib(self) -> ffi::GDriveStartFlags {
         self.bits()
     }
 }
@@ -911,7 +911,7 @@ impl fmt::Display for FileCopyFlags {
 impl ToGlib for FileCopyFlags {
     type GlibType = ffi::GFileCopyFlags;
 
-    fn to_glib(&self) -> ffi::GFileCopyFlags {
+    fn to_glib(self) -> ffi::GFileCopyFlags {
         self.bits()
     }
 }
@@ -965,7 +965,7 @@ impl fmt::Display for FileCreateFlags {
 impl ToGlib for FileCreateFlags {
     type GlibType = ffi::GFileCreateFlags;
 
-    fn to_glib(&self) -> ffi::GFileCreateFlags {
+    fn to_glib(self) -> ffi::GFileCreateFlags {
         self.bits()
     }
 }
@@ -1020,7 +1020,7 @@ impl fmt::Display for FileMeasureFlags {
 impl ToGlib for FileMeasureFlags {
     type GlibType = ffi::GFileMeasureFlags;
 
-    fn to_glib(&self) -> ffi::GFileMeasureFlags {
+    fn to_glib(self) -> ffi::GFileMeasureFlags {
         self.bits()
     }
 }
@@ -1076,7 +1076,7 @@ impl fmt::Display for FileMonitorFlags {
 impl ToGlib for FileMonitorFlags {
     type GlibType = ffi::GFileMonitorFlags;
 
-    fn to_glib(&self) -> ffi::GFileMonitorFlags {
+    fn to_glib(self) -> ffi::GFileMonitorFlags {
         self.bits()
     }
 }
@@ -1129,7 +1129,7 @@ impl fmt::Display for FileQueryInfoFlags {
 impl ToGlib for FileQueryInfoFlags {
     type GlibType = ffi::GFileQueryInfoFlags;
 
-    fn to_glib(&self) -> ffi::GFileQueryInfoFlags {
+    fn to_glib(self) -> ffi::GFileQueryInfoFlags {
         self.bits()
     }
 }
@@ -1184,7 +1184,7 @@ impl fmt::Display for IOStreamSpliceFlags {
 impl ToGlib for IOStreamSpliceFlags {
     type GlibType = ffi::GIOStreamSpliceFlags;
 
-    fn to_glib(&self) -> ffi::GIOStreamSpliceFlags {
+    fn to_glib(self) -> ffi::GIOStreamSpliceFlags {
         self.bits()
     }
 }
@@ -1236,7 +1236,7 @@ impl fmt::Display for MountMountFlags {
 impl ToGlib for MountMountFlags {
     type GlibType = ffi::GMountMountFlags;
 
-    fn to_glib(&self) -> ffi::GMountMountFlags {
+    fn to_glib(self) -> ffi::GMountMountFlags {
         self.bits()
     }
 }
@@ -1289,7 +1289,7 @@ impl fmt::Display for MountUnmountFlags {
 impl ToGlib for MountUnmountFlags {
     type GlibType = ffi::GMountUnmountFlags;
 
-    fn to_glib(&self) -> ffi::GMountUnmountFlags {
+    fn to_glib(self) -> ffi::GMountUnmountFlags {
         self.bits()
     }
 }
@@ -1343,7 +1343,7 @@ impl fmt::Display for OutputStreamSpliceFlags {
 impl ToGlib for OutputStreamSpliceFlags {
     type GlibType = ffi::GOutputStreamSpliceFlags;
 
-    fn to_glib(&self) -> ffi::GOutputStreamSpliceFlags {
+    fn to_glib(self) -> ffi::GOutputStreamSpliceFlags {
         self.bits()
     }
 }
@@ -1403,7 +1403,7 @@ impl fmt::Display for ResolverNameLookupFlags {
 impl ToGlib for ResolverNameLookupFlags {
     type GlibType = ffi::GResolverNameLookupFlags;
 
-    fn to_glib(&self) -> ffi::GResolverNameLookupFlags {
+    fn to_glib(self) -> ffi::GResolverNameLookupFlags {
         self.bits()
     }
 }
@@ -1465,7 +1465,7 @@ impl fmt::Display for ResourceLookupFlags {
 impl ToGlib for ResourceLookupFlags {
     type GlibType = ffi::GResourceLookupFlags;
 
-    fn to_glib(&self) -> ffi::GResourceLookupFlags {
+    fn to_glib(self) -> ffi::GResourceLookupFlags {
         self.bits()
     }
 }
@@ -1522,7 +1522,7 @@ impl fmt::Display for SettingsBindFlags {
 impl ToGlib for SettingsBindFlags {
     type GlibType = ffi::GSettingsBindFlags;
 
-    fn to_glib(&self) -> ffi::GSettingsBindFlags {
+    fn to_glib(self) -> ffi::GSettingsBindFlags {
         self.bits()
     }
 }
@@ -1582,7 +1582,7 @@ impl fmt::Display for SubprocessFlags {
 impl ToGlib for SubprocessFlags {
     type GlibType = ffi::GSubprocessFlags;
 
-    fn to_glib(&self) -> ffi::GSubprocessFlags {
+    fn to_glib(self) -> ffi::GSubprocessFlags {
         self.bits()
     }
 }
@@ -1641,7 +1641,7 @@ impl fmt::Display for TlsCertificateFlags {
 impl ToGlib for TlsCertificateFlags {
     type GlibType = ffi::GTlsCertificateFlags;
 
-    fn to_glib(&self) -> ffi::GTlsCertificateFlags {
+    fn to_glib(self) -> ffi::GTlsCertificateFlags {
         self.bits()
     }
 }
@@ -1693,7 +1693,7 @@ impl fmt::Display for TlsDatabaseVerifyFlags {
 impl ToGlib for TlsDatabaseVerifyFlags {
     type GlibType = ffi::GTlsDatabaseVerifyFlags;
 
-    fn to_glib(&self) -> ffi::GTlsDatabaseVerifyFlags {
+    fn to_glib(self) -> ffi::GTlsDatabaseVerifyFlags {
         self.bits()
     }
 }
@@ -1748,7 +1748,7 @@ impl fmt::Display for TlsPasswordFlags {
 impl ToGlib for TlsPasswordFlags {
     type GlibType = ffi::GTlsPasswordFlags;
 
-    fn to_glib(&self) -> ffi::GTlsPasswordFlags {
+    fn to_glib(self) -> ffi::GTlsPasswordFlags {
         self.bits()
     }
 }

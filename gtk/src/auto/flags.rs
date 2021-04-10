@@ -29,7 +29,7 @@ impl fmt::Display for AccelFlags {
 impl ToGlib for AccelFlags {
     type GlibType = ffi::GtkAccelFlags;
 
-    fn to_glib(&self) -> ffi::GtkAccelFlags {
+    fn to_glib(self) -> ffi::GtkAccelFlags {
         self.bits()
     }
 }
@@ -85,7 +85,7 @@ impl fmt::Display for ApplicationInhibitFlags {
 impl ToGlib for ApplicationInhibitFlags {
     type GlibType = ffi::GtkApplicationInhibitFlags;
 
-    fn to_glib(&self) -> ffi::GtkApplicationInhibitFlags {
+    fn to_glib(self) -> ffi::GtkApplicationInhibitFlags {
         self.bits()
     }
 }
@@ -142,7 +142,7 @@ impl fmt::Display for CalendarDisplayOptions {
 impl ToGlib for CalendarDisplayOptions {
     type GlibType = ffi::GtkCalendarDisplayOptions;
 
-    fn to_glib(&self) -> ffi::GtkCalendarDisplayOptions {
+    fn to_glib(self) -> ffi::GtkCalendarDisplayOptions {
         self.bits()
     }
 }
@@ -201,7 +201,7 @@ impl fmt::Display for CellRendererState {
 impl ToGlib for CellRendererState {
     type GlibType = ffi::GtkCellRendererState;
 
-    fn to_glib(&self) -> ffi::GtkCellRendererState {
+    fn to_glib(self) -> ffi::GtkCellRendererState {
         self.bits()
     }
 }
@@ -257,7 +257,7 @@ impl fmt::Display for DestDefaults {
 impl ToGlib for DestDefaults {
     type GlibType = ffi::GtkDestDefaults;
 
-    fn to_glib(&self) -> ffi::GtkDestDefaults {
+    fn to_glib(self) -> ffi::GtkDestDefaults {
         self.bits()
     }
 }
@@ -312,7 +312,7 @@ impl fmt::Display for DialogFlags {
 impl ToGlib for DialogFlags {
     type GlibType = ffi::GtkDialogFlags;
 
-    fn to_glib(&self) -> ffi::GtkDialogFlags {
+    fn to_glib(self) -> ffi::GtkDialogFlags {
         self.bits()
     }
 }
@@ -376,7 +376,7 @@ impl fmt::Display for EventControllerScrollFlags {
 impl ToGlib for EventControllerScrollFlags {
     type GlibType = ffi::GtkEventControllerScrollFlags;
 
-    fn to_glib(&self) -> ffi::GtkEventControllerScrollFlags {
+    fn to_glib(self) -> ffi::GtkEventControllerScrollFlags {
         self.bits()
     }
 }
@@ -442,7 +442,7 @@ impl fmt::Display for FileFilterFlags {
 impl ToGlib for FileFilterFlags {
     type GlibType = ffi::GtkFileFilterFlags;
 
-    fn to_glib(&self) -> ffi::GtkFileFilterFlags {
+    fn to_glib(self) -> ffi::GtkFileFilterFlags {
         self.bits()
     }
 }
@@ -505,7 +505,7 @@ impl fmt::Display for FontChooserLevel {
 impl ToGlib for FontChooserLevel {
     type GlibType = ffi::GtkFontChooserLevel;
 
-    fn to_glib(&self) -> ffi::GtkFontChooserLevel {
+    fn to_glib(self) -> ffi::GtkFontChooserLevel {
         self.bits()
     }
 }
@@ -576,7 +576,7 @@ impl fmt::Display for IconLookupFlags {
 impl ToGlib for IconLookupFlags {
     type GlibType = ffi::GtkIconLookupFlags;
 
-    fn to_glib(&self) -> ffi::GtkIconLookupFlags {
+    fn to_glib(self) -> ffi::GtkIconLookupFlags {
         self.bits()
     }
 }
@@ -644,7 +644,7 @@ impl fmt::Display for InputHints {
 impl ToGlib for InputHints {
     type GlibType = ffi::GtkInputHints;
 
-    fn to_glib(&self) -> ffi::GtkInputHints {
+    fn to_glib(self) -> ffi::GtkInputHints {
         self.bits()
     }
 }
@@ -705,7 +705,7 @@ impl fmt::Display for JunctionSides {
 impl ToGlib for JunctionSides {
     type GlibType = ffi::GtkJunctionSides;
 
-    fn to_glib(&self) -> ffi::GtkJunctionSides {
+    fn to_glib(self) -> ffi::GtkJunctionSides {
         self.bits()
     }
 }
@@ -760,7 +760,7 @@ impl fmt::Display for PlacesOpenFlags {
 impl ToGlib for PlacesOpenFlags {
     type GlibType = ffi::GtkPlacesOpenFlags;
 
-    fn to_glib(&self) -> ffi::GtkPlacesOpenFlags {
+    fn to_glib(self) -> ffi::GtkPlacesOpenFlags {
         self.bits()
     }
 }
@@ -818,7 +818,7 @@ impl fmt::Display for RecentFilterFlags {
 impl ToGlib for RecentFilterFlags {
     type GlibType = ffi::GtkRecentFilterFlags;
 
-    fn to_glib(&self) -> ffi::GtkRecentFilterFlags {
+    fn to_glib(self) -> ffi::GtkRecentFilterFlags {
         self.bits()
     }
 }
@@ -876,7 +876,7 @@ impl fmt::Display for RegionFlags {
 impl ToGlib for RegionFlags {
     type GlibType = ffi::GtkRegionFlags;
 
-    fn to_glib(&self) -> ffi::GtkRegionFlags {
+    fn to_glib(self) -> ffi::GtkRegionFlags {
         self.bits()
     }
 }
@@ -942,7 +942,7 @@ impl fmt::Display for StateFlags {
 impl ToGlib for StateFlags {
     type GlibType = ffi::GtkStateFlags;
 
-    fn to_glib(&self) -> ffi::GtkStateFlags {
+    fn to_glib(self) -> ffi::GtkStateFlags {
         self.bits()
     }
 }
@@ -1003,7 +1003,7 @@ impl fmt::Display for StyleContextPrintFlags {
 impl ToGlib for StyleContextPrintFlags {
     type GlibType = ffi::GtkStyleContextPrintFlags;
 
-    fn to_glib(&self) -> ffi::GtkStyleContextPrintFlags {
+    fn to_glib(self) -> ffi::GtkStyleContextPrintFlags {
         self.bits()
     }
 }
@@ -1069,7 +1069,7 @@ impl fmt::Display for TargetFlags {
 impl ToGlib for TargetFlags {
     type GlibType = ffi::GtkTargetFlags;
 
-    fn to_glib(&self) -> ffi::GtkTargetFlags {
+    fn to_glib(self) -> ffi::GtkTargetFlags {
         self.bits()
     }
 }
@@ -1124,7 +1124,7 @@ impl fmt::Display for TextSearchFlags {
 impl ToGlib for TextSearchFlags {
     type GlibType = ffi::GtkTextSearchFlags;
 
-    fn to_glib(&self) -> ffi::GtkTextSearchFlags {
+    fn to_glib(self) -> ffi::GtkTextSearchFlags {
         self.bits()
     }
 }
@@ -1178,7 +1178,7 @@ impl fmt::Display for ToolPaletteDragTargets {
 impl ToGlib for ToolPaletteDragTargets {
     type GlibType = ffi::GtkToolPaletteDragTargets;
 
-    fn to_glib(&self) -> ffi::GtkToolPaletteDragTargets {
+    fn to_glib(self) -> ffi::GtkToolPaletteDragTargets {
         self.bits()
     }
 }
@@ -1232,7 +1232,7 @@ impl fmt::Display for TreeModelFlags {
 impl ToGlib for TreeModelFlags {
     type GlibType = ffi::GtkTreeModelFlags;
 
-    fn to_glib(&self) -> ffi::GtkTreeModelFlags {
+    fn to_glib(self) -> ffi::GtkTreeModelFlags {
         self.bits()
     }
 }

@@ -36,7 +36,7 @@ impl fmt::Display for FileSetContentsFlags {
 impl ToGlib for FileSetContentsFlags {
     type GlibType = ffi::GFileSetContentsFlags;
 
-    fn to_glib(&self) -> ffi::GFileSetContentsFlags {
+    fn to_glib(self) -> ffi::GFileSetContentsFlags {
         self.bits()
     }
 }
@@ -70,7 +70,7 @@ impl fmt::Display for FileTest {
 impl ToGlib for FileTest {
     type GlibType = ffi::GFileTest;
 
-    fn to_glib(&self) -> ffi::GFileTest {
+    fn to_glib(self) -> ffi::GFileTest {
         self.bits()
     }
 }
@@ -101,7 +101,7 @@ impl fmt::Display for FormatSizeFlags {
 impl ToGlib for FormatSizeFlags {
     type GlibType = ffi::GFormatSizeFlags;
 
-    fn to_glib(&self) -> ffi::GFormatSizeFlags {
+    fn to_glib(self) -> ffi::GFormatSizeFlags {
         self.bits()
     }
 }
@@ -134,7 +134,7 @@ impl fmt::Display for IOCondition {
 impl ToGlib for IOCondition {
     type GlibType = ffi::GIOCondition;
 
-    fn to_glib(&self) -> ffi::GIOCondition {
+    fn to_glib(self) -> ffi::GIOCondition {
         self.bits()
     }
 }
@@ -190,7 +190,7 @@ impl fmt::Display for KeyFileFlags {
 impl ToGlib for KeyFileFlags {
     type GlibType = ffi::GKeyFileFlags;
 
-    fn to_glib(&self) -> ffi::GKeyFileFlags {
+    fn to_glib(self) -> ffi::GKeyFileFlags {
         self.bits()
     }
 }
@@ -226,7 +226,7 @@ impl fmt::Display for LogLevelFlags {
 impl ToGlib for LogLevelFlags {
     type GlibType = ffi::GLogLevelFlags;
 
-    fn to_glib(&self) -> ffi::GLogLevelFlags {
+    fn to_glib(self) -> ffi::GLogLevelFlags {
         self.bits()
     }
 }
@@ -261,7 +261,7 @@ impl fmt::Display for OptionFlags {
 impl ToGlib for OptionFlags {
     type GlibType = ffi::GOptionFlags;
 
-    fn to_glib(&self) -> ffi::GOptionFlags {
+    fn to_glib(self) -> ffi::GOptionFlags {
         self.bits()
     }
 }
@@ -298,7 +298,7 @@ impl fmt::Display for SpawnFlags {
 impl ToGlib for SpawnFlags {
     type GlibType = ffi::GSpawnFlags;
 
-    fn to_glib(&self) -> ffi::GSpawnFlags {
+    fn to_glib(self) -> ffi::GSpawnFlags {
         self.bits()
     }
 }
@@ -340,7 +340,7 @@ impl fmt::Display for UriFlags {
 impl ToGlib for UriFlags {
     type GlibType = ffi::GUriFlags;
 
-    fn to_glib(&self) -> ffi::GUriFlags {
+    fn to_glib(self) -> ffi::GUriFlags {
         self.bits()
     }
 }
@@ -381,7 +381,7 @@ impl fmt::Display for UriHideFlags {
 impl ToGlib for UriHideFlags {
     type GlibType = ffi::GUriHideFlags;
 
-    fn to_glib(&self) -> ffi::GUriHideFlags {
+    fn to_glib(self) -> ffi::GUriHideFlags {
         self.bits()
     }
 }
@@ -420,7 +420,7 @@ impl fmt::Display for UriParamsFlags {
 impl ToGlib for UriParamsFlags {
     type GlibType = ffi::GUriParamsFlags;
 
-    fn to_glib(&self) -> ffi::GUriParamsFlags {
+    fn to_glib(self) -> ffi::GUriParamsFlags {
         self.bits()
     }
 }

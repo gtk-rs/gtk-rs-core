@@ -30,7 +30,7 @@ impl fmt::Display for BindingFlags {
 impl ToGlib for BindingFlags {
     type GlibType = gobject_ffi::GBindingFlags;
 
-    fn to_glib(&self) -> gobject_ffi::GBindingFlags {
+    fn to_glib(self) -> gobject_ffi::GBindingFlags {
         self.bits()
     }
 }
@@ -92,7 +92,7 @@ impl fmt::Display for SignalFlags {
 impl ToGlib for SignalFlags {
     type GlibType = gobject_ffi::GSignalFlags;
 
-    fn to_glib(&self) -> gobject_ffi::GSignalFlags {
+    fn to_glib(self) -> gobject_ffi::GSignalFlags {
         self.bits()
     }
 }

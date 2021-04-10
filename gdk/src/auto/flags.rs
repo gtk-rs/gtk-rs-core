@@ -41,7 +41,7 @@ impl fmt::Display for AnchorHints {
 impl ToGlib for AnchorHints {
     type GlibType = ffi::GdkAnchorHints;
 
-    fn to_glib(&self) -> ffi::GdkAnchorHints {
+    fn to_glib(self) -> ffi::GdkAnchorHints {
         self.bits()
     }
 }
@@ -118,7 +118,7 @@ impl fmt::Display for AxisFlags {
 impl ToGlib for AxisFlags {
     type GlibType = ffi::GdkAxisFlags;
 
-    fn to_glib(&self) -> ffi::GdkAxisFlags {
+    fn to_glib(self) -> ffi::GdkAxisFlags {
         self.bits()
     }
 }
@@ -186,7 +186,7 @@ impl fmt::Display for DragAction {
 impl ToGlib for DragAction {
     type GlibType = ffi::GdkDragAction;
 
-    fn to_glib(&self) -> ffi::GdkDragAction {
+    fn to_glib(self) -> ffi::GdkDragAction {
         self.bits()
     }
 }
@@ -264,7 +264,7 @@ impl fmt::Display for EventMask {
 impl ToGlib for EventMask {
     type GlibType = ffi::GdkEventMask;
 
-    fn to_glib(&self) -> ffi::GdkEventMask {
+    fn to_glib(self) -> ffi::GdkEventMask {
         self.bits()
     }
 }
@@ -324,7 +324,7 @@ impl fmt::Display for FrameClockPhase {
 impl ToGlib for FrameClockPhase {
     type GlibType = ffi::GdkFrameClockPhase;
 
-    fn to_glib(&self) -> ffi::GdkFrameClockPhase {
+    fn to_glib(self) -> ffi::GdkFrameClockPhase {
         self.bits()
     }
 }
@@ -408,7 +408,7 @@ impl fmt::Display for ModifierType {
 impl ToGlib for ModifierType {
     type GlibType = ffi::GdkModifierType;
 
-    fn to_glib(&self) -> ffi::GdkModifierType {
+    fn to_glib(self) -> ffi::GdkModifierType {
         self.bits()
     }
 }
@@ -473,7 +473,7 @@ impl fmt::Display for SeatCapabilities {
 impl ToGlib for SeatCapabilities {
     type GlibType = ffi::GdkSeatCapabilities;
 
-    fn to_glib(&self) -> ffi::GdkSeatCapabilities {
+    fn to_glib(self) -> ffi::GdkSeatCapabilities {
         self.bits()
     }
 }
@@ -542,7 +542,7 @@ impl fmt::Display for WMDecoration {
 impl ToGlib for WMDecoration {
     type GlibType = ffi::GdkWMDecoration;
 
-    fn to_glib(&self) -> ffi::GdkWMDecoration {
+    fn to_glib(self) -> ffi::GdkWMDecoration {
         self.bits()
     }
 }
@@ -600,7 +600,7 @@ impl fmt::Display for WMFunction {
 impl ToGlib for WMFunction {
     type GlibType = ffi::GdkWMFunction;
 
-    fn to_glib(&self) -> ffi::GdkWMFunction {
+    fn to_glib(self) -> ffi::GdkWMFunction {
         self.bits()
     }
 }
@@ -661,7 +661,7 @@ impl fmt::Display for WindowHints {
 impl ToGlib for WindowHints {
     type GlibType = ffi::GdkWindowHints;
 
-    fn to_glib(&self) -> ffi::GdkWindowHints {
+    fn to_glib(self) -> ffi::GdkWindowHints {
         self.bits()
     }
 }
@@ -730,7 +730,7 @@ impl fmt::Display for WindowState {
 impl ToGlib for WindowState {
     type GlibType = ffi::GdkWindowState;
 
-    fn to_glib(&self) -> ffi::GdkWindowState {
+    fn to_glib(self) -> ffi::GdkWindowState {
         self.bits()
     }
 }

@@ -34,7 +34,7 @@ impl fmt::Display for FontMask {
 impl ToGlib for FontMask {
     type GlibType = ffi::PangoFontMask;
 
-    fn to_glib(&self) -> ffi::PangoFontMask {
+    fn to_glib(self) -> ffi::PangoFontMask {
         self.bits()
     }
 }
@@ -93,7 +93,7 @@ impl fmt::Display for ShapeFlags {
 impl ToGlib for ShapeFlags {
     type GlibType = ffi::PangoShapeFlags;
 
-    fn to_glib(&self) -> ffi::PangoShapeFlags {
+    fn to_glib(self) -> ffi::PangoShapeFlags {
         self.bits()
     }
 }
@@ -164,7 +164,7 @@ impl fmt::Display for ShowFlags {
 impl ToGlib for ShowFlags {
     type GlibType = ffi::PangoShowFlags;
 
-    fn to_glib(&self) -> ffi::PangoShowFlags {
+    fn to_glib(self) -> ffi::PangoShowFlags {
         self.bits()
     }
 }

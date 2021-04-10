@@ -39,8 +39,8 @@ impl fmt::Display for Colorspace {
 impl ToGlib for Colorspace {
     type GlibType = ffi::GdkColorspace;
 
-    fn to_glib(&self) -> ffi::GdkColorspace {
-        match *self {
+    fn to_glib(self) -> ffi::GdkColorspace {
+        match self {
             Colorspace::Rgb => ffi::GDK_COLORSPACE_RGB,
             Colorspace::__Unknown(value) => value,
         }
@@ -117,8 +117,8 @@ impl fmt::Display for InterpType {
 impl ToGlib for InterpType {
     type GlibType = ffi::GdkInterpType;
 
-    fn to_glib(&self) -> ffi::GdkInterpType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkInterpType {
+        match self {
             InterpType::Nearest => ffi::GDK_INTERP_NEAREST,
             InterpType::Tiles => ffi::GDK_INTERP_TILES,
             InterpType::Bilinear => ffi::GDK_INTERP_BILINEAR,
@@ -195,8 +195,8 @@ impl fmt::Display for PixbufAlphaMode {
 impl ToGlib for PixbufAlphaMode {
     type GlibType = ffi::GdkPixbufAlphaMode;
 
-    fn to_glib(&self) -> ffi::GdkPixbufAlphaMode {
-        match *self {
+    fn to_glib(self) -> ffi::GdkPixbufAlphaMode {
+        match self {
             PixbufAlphaMode::Bilevel => ffi::GDK_PIXBUF_ALPHA_BILEVEL,
             PixbufAlphaMode::Full => ffi::GDK_PIXBUF_ALPHA_FULL,
             PixbufAlphaMode::__Unknown(value) => value,
@@ -284,8 +284,8 @@ impl fmt::Display for PixbufError {
 impl ToGlib for PixbufError {
     type GlibType = ffi::GdkPixbufError;
 
-    fn to_glib(&self) -> ffi::GdkPixbufError {
-        match *self {
+    fn to_glib(self) -> ffi::GdkPixbufError {
+        match self {
             PixbufError::CorruptImage => ffi::GDK_PIXBUF_ERROR_CORRUPT_IMAGE,
             PixbufError::InsufficientMemory => ffi::GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY,
             PixbufError::BadOption => ffi::GDK_PIXBUF_ERROR_BAD_OPTION,
@@ -397,8 +397,8 @@ impl fmt::Display for PixbufRotation {
 impl ToGlib for PixbufRotation {
     type GlibType = ffi::GdkPixbufRotation;
 
-    fn to_glib(&self) -> ffi::GdkPixbufRotation {
-        match *self {
+    fn to_glib(self) -> ffi::GdkPixbufRotation {
+        match self {
             PixbufRotation::None => ffi::GDK_PIXBUF_ROTATE_NONE,
             PixbufRotation::Counterclockwise => ffi::GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE,
             PixbufRotation::Upsidedown => ffi::GDK_PIXBUF_ROTATE_UPSIDEDOWN,

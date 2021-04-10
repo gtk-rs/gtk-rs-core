@@ -43,8 +43,8 @@ impl fmt::Display for CoordType {
 impl ToGlib for CoordType {
     type GlibType = ffi::AtkCoordType;
 
-    fn to_glib(&self) -> ffi::AtkCoordType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkCoordType {
+        match self {
             CoordType::Screen => ffi::ATK_XY_SCREEN,
             CoordType::Window => ffi::ATK_XY_WINDOW,
             CoordType::Parent => ffi::ATK_XY_PARENT,
@@ -138,8 +138,8 @@ impl fmt::Display for Layer {
 impl ToGlib for Layer {
     type GlibType = ffi::AtkLayer;
 
-    fn to_glib(&self) -> ffi::AtkLayer {
-        match *self {
+    fn to_glib(self) -> ffi::AtkLayer {
+        match self {
             Layer::Invalid => ffi::ATK_LAYER_INVALID,
             Layer::Background => ffi::ATK_LAYER_BACKGROUND,
             Layer::Canvas => ffi::ATK_LAYER_CANVAS,
@@ -299,8 +299,8 @@ impl fmt::Display for RelationType {
 impl ToGlib for RelationType {
     type GlibType = ffi::AtkRelationType;
 
-    fn to_glib(&self) -> ffi::AtkRelationType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkRelationType {
+        match self {
             RelationType::Null => ffi::ATK_RELATION_NULL,
             RelationType::ControlledBy => ffi::ATK_RELATION_CONTROLLED_BY,
             RelationType::ControllerFor => ffi::ATK_RELATION_CONTROLLER_FOR,
@@ -812,8 +812,8 @@ impl fmt::Display for Role {
 impl ToGlib for Role {
     type GlibType = ffi::AtkRole;
 
-    fn to_glib(&self) -> ffi::AtkRole {
-        match *self {
+    fn to_glib(self) -> ffi::AtkRole {
+        match self {
             Role::Invalid => ffi::ATK_ROLE_INVALID,
             Role::AcceleratorLabel => ffi::ATK_ROLE_ACCEL_LABEL,
             Role::Alert => ffi::ATK_ROLE_ALERT,
@@ -1160,8 +1160,8 @@ impl fmt::Display for ScrollType {
 impl ToGlib for ScrollType {
     type GlibType = ffi::AtkScrollType;
 
-    fn to_glib(&self) -> ffi::AtkScrollType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkScrollType {
+        match self {
             ScrollType::TopLeft => ffi::ATK_SCROLL_TOP_LEFT,
             ScrollType::BottomRight => ffi::ATK_SCROLL_BOTTOM_RIGHT,
             ScrollType::TopEdge => ffi::ATK_SCROLL_TOP_EDGE,
@@ -1395,8 +1395,8 @@ impl fmt::Display for StateType {
 impl ToGlib for StateType {
     type GlibType = ffi::AtkStateType;
 
-    fn to_glib(&self) -> ffi::AtkStateType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkStateType {
+        match self {
             StateType::Invalid => ffi::ATK_STATE_INVALID,
             StateType::Active => ffi::ATK_STATE_ACTIVE,
             StateType::Armed => ffi::ATK_STATE_ARMED,
@@ -1658,8 +1658,8 @@ impl fmt::Display for TextAttribute {
 impl ToGlib for TextAttribute {
     type GlibType = ffi::AtkTextAttribute;
 
-    fn to_glib(&self) -> ffi::AtkTextAttribute {
-        match *self {
+    fn to_glib(self) -> ffi::AtkTextAttribute {
+        match self {
             TextAttribute::Invalid => ffi::ATK_TEXT_ATTR_INVALID,
             TextAttribute::LeftMargin => ffi::ATK_TEXT_ATTR_LEFT_MARGIN,
             TextAttribute::RightMargin => ffi::ATK_TEXT_ATTR_RIGHT_MARGIN,
@@ -1804,8 +1804,8 @@ impl fmt::Display for TextBoundary {
 impl ToGlib for TextBoundary {
     type GlibType = ffi::AtkTextBoundary;
 
-    fn to_glib(&self) -> ffi::AtkTextBoundary {
-        match *self {
+    fn to_glib(self) -> ffi::AtkTextBoundary {
+        match self {
             TextBoundary::Char => ffi::ATK_TEXT_BOUNDARY_CHAR,
             TextBoundary::WordStart => ffi::ATK_TEXT_BOUNDARY_WORD_START,
             TextBoundary::WordEnd => ffi::ATK_TEXT_BOUNDARY_WORD_END,
@@ -1895,8 +1895,8 @@ impl fmt::Display for TextClipType {
 impl ToGlib for TextClipType {
     type GlibType = ffi::AtkTextClipType;
 
-    fn to_glib(&self) -> ffi::AtkTextClipType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkTextClipType {
+        match self {
             TextClipType::None => ffi::ATK_TEXT_CLIP_NONE,
             TextClipType::Min => ffi::ATK_TEXT_CLIP_MIN,
             TextClipType::Max => ffi::ATK_TEXT_CLIP_MAX,
@@ -1983,8 +1983,8 @@ impl fmt::Display for TextGranularity {
 impl ToGlib for TextGranularity {
     type GlibType = ffi::AtkTextGranularity;
 
-    fn to_glib(&self) -> ffi::AtkTextGranularity {
-        match *self {
+    fn to_glib(self) -> ffi::AtkTextGranularity {
+        match self {
             TextGranularity::Char => ffi::ATK_TEXT_GRANULARITY_CHAR,
             TextGranularity::Word => ffi::ATK_TEXT_GRANULARITY_WORD,
             TextGranularity::Sentence => ffi::ATK_TEXT_GRANULARITY_SENTENCE,
@@ -2120,8 +2120,8 @@ impl fmt::Display for ValueType {
 impl ToGlib for ValueType {
     type GlibType = ffi::AtkValueType;
 
-    fn to_glib(&self) -> ffi::AtkValueType {
-        match *self {
+    fn to_glib(self) -> ffi::AtkValueType {
+        match self {
             ValueType::VeryWeak => ffi::ATK_VALUE_VERY_WEAK,
             ValueType::Weak => ffi::ATK_VALUE_WEAK,
             ValueType::Acceptable => ffi::ATK_VALUE_ACCEPTABLE,

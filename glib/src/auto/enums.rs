@@ -49,8 +49,8 @@ impl fmt::Display for ChecksumType {
 impl ToGlib for ChecksumType {
     type GlibType = ffi::GChecksumType;
 
-    fn to_glib(&self) -> ffi::GChecksumType {
-        match *self {
+    fn to_glib(self) -> ffi::GChecksumType {
+        match self {
             ChecksumType::Md5 => ffi::G_CHECKSUM_MD5,
             ChecksumType::Sha1 => ffi::G_CHECKSUM_SHA1,
             ChecksumType::Sha256 => ffi::G_CHECKSUM_SHA256,
@@ -140,8 +140,8 @@ impl fmt::Display for DateMonth {
 impl ToGlib for DateMonth {
     type GlibType = ffi::GDateMonth;
 
-    fn to_glib(&self) -> ffi::GDateMonth {
-        match *self {
+    fn to_glib(self) -> ffi::GDateMonth {
+        match self {
             DateMonth::BadMonth => ffi::G_DATE_BAD_MONTH,
             DateMonth::January => ffi::G_DATE_JANUARY,
             DateMonth::February => ffi::G_DATE_FEBRUARY,
@@ -230,8 +230,8 @@ impl fmt::Display for DateWeekday {
 impl ToGlib for DateWeekday {
     type GlibType = ffi::GDateWeekday;
 
-    fn to_glib(&self) -> ffi::GDateWeekday {
-        match *self {
+    fn to_glib(self) -> ffi::GDateWeekday {
+        match self {
             DateWeekday::BadWeekday => ffi::G_DATE_BAD_WEEKDAY,
             DateWeekday::Monday => ffi::G_DATE_MONDAY,
             DateWeekday::Tuesday => ffi::G_DATE_TUESDAY,
@@ -304,8 +304,8 @@ impl fmt::Display for KeyFileError {
 impl ToGlib for KeyFileError {
     type GlibType = ffi::GKeyFileError;
 
-    fn to_glib(&self) -> ffi::GKeyFileError {
-        match *self {
+    fn to_glib(self) -> ffi::GKeyFileError {
+        match self {
             KeyFileError::UnknownEncoding => ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
             KeyFileError::Parse => ffi::G_KEY_FILE_ERROR_PARSE,
             KeyFileError::NotFound => ffi::G_KEY_FILE_ERROR_NOT_FOUND,
@@ -405,8 +405,8 @@ impl fmt::Display for OptionArg {
 impl ToGlib for OptionArg {
     type GlibType = ffi::GOptionArg;
 
-    fn to_glib(&self) -> ffi::GOptionArg {
-        match *self {
+    fn to_glib(self) -> ffi::GOptionArg {
+        match self {
             OptionArg::None => ffi::G_OPTION_ARG_NONE,
             OptionArg::String => ffi::G_OPTION_ARG_STRING,
             OptionArg::Int => ffi::G_OPTION_ARG_INT,
@@ -472,8 +472,8 @@ impl fmt::Display for SeekType {
 impl ToGlib for SeekType {
     type GlibType = ffi::GSeekType;
 
-    fn to_glib(&self) -> ffi::GSeekType {
-        match *self {
+    fn to_glib(self) -> ffi::GSeekType {
+        match self {
             SeekType::Cur => ffi::G_SEEK_CUR,
             SeekType::Set => ffi::G_SEEK_SET,
             SeekType::End => ffi::G_SEEK_END,
@@ -527,8 +527,8 @@ impl fmt::Display for TimeType {
 impl ToGlib for TimeType {
     type GlibType = ffi::GTimeType;
 
-    fn to_glib(&self) -> ffi::GTimeType {
-        match *self {
+    fn to_glib(self) -> ffi::GTimeType {
+        match self {
             TimeType::Standard => ffi::G_TIME_TYPE_STANDARD,
             TimeType::Daylight => ffi::G_TIME_TYPE_DAYLIGHT,
             TimeType::Universal => ffi::G_TIME_TYPE_UNIVERSAL,
@@ -609,8 +609,8 @@ impl fmt::Display for UriError {
 impl ToGlib for UriError {
     type GlibType = ffi::GUriError;
 
-    fn to_glib(&self) -> ffi::GUriError {
-        match *self {
+    fn to_glib(self) -> ffi::GUriError {
+        match self {
             UriError::Failed => ffi::G_URI_ERROR_FAILED,
             UriError::BadScheme => ffi::G_URI_ERROR_BAD_SCHEME,
             UriError::BadUser => ffi::G_URI_ERROR_BAD_USER,

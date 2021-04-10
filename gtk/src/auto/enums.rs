@@ -52,8 +52,8 @@ impl fmt::Display for Align {
 impl ToGlib for Align {
     type GlibType = ffi::GtkAlign;
 
-    fn to_glib(&self) -> ffi::GtkAlign {
-        match *self {
+    fn to_glib(self) -> ffi::GtkAlign {
+        match self {
             Align::Fill => ffi::GTK_ALIGN_FILL,
             Align::Start => ffi::GTK_ALIGN_START,
             Align::End => ffi::GTK_ALIGN_END,
@@ -142,8 +142,8 @@ impl fmt::Display for ArrowType {
 impl ToGlib for ArrowType {
     type GlibType = ffi::GtkArrowType;
 
-    fn to_glib(&self) -> ffi::GtkArrowType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkArrowType {
+        match self {
             ArrowType::Up => ffi::GTK_ARROW_UP,
             ArrowType::Down => ffi::GTK_ARROW_DOWN,
             ArrowType::Left => ffi::GTK_ARROW_LEFT,
@@ -235,8 +235,8 @@ impl fmt::Display for AssistantPageType {
 impl ToGlib for AssistantPageType {
     type GlibType = ffi::GtkAssistantPageType;
 
-    fn to_glib(&self) -> ffi::GtkAssistantPageType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkAssistantPageType {
+        match self {
             AssistantPageType::Content => ffi::GTK_ASSISTANT_PAGE_CONTENT,
             AssistantPageType::Intro => ffi::GTK_ASSISTANT_PAGE_INTRO,
             AssistantPageType::Confirm => ffi::GTK_ASSISTANT_PAGE_CONFIRM,
@@ -321,8 +321,8 @@ impl fmt::Display for BaselinePosition {
 impl ToGlib for BaselinePosition {
     type GlibType = ffi::GtkBaselinePosition;
 
-    fn to_glib(&self) -> ffi::GtkBaselinePosition {
-        match *self {
+    fn to_glib(self) -> ffi::GtkBaselinePosition {
+        match self {
             BaselinePosition::Top => ffi::GTK_BASELINE_POSITION_TOP,
             BaselinePosition::Center => ffi::GTK_BASELINE_POSITION_CENTER,
             BaselinePosition::Bottom => ffi::GTK_BASELINE_POSITION_BOTTOM,
@@ -422,8 +422,8 @@ impl fmt::Display for BorderStyle {
 impl ToGlib for BorderStyle {
     type GlibType = ffi::GtkBorderStyle;
 
-    fn to_glib(&self) -> ffi::GtkBorderStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkBorderStyle {
+        match self {
             BorderStyle::None => ffi::GTK_BORDER_STYLE_NONE,
             BorderStyle::Solid => ffi::GTK_BORDER_STYLE_SOLID,
             BorderStyle::Inset => ffi::GTK_BORDER_STYLE_INSET,
@@ -549,8 +549,8 @@ impl fmt::Display for BuilderError {
 impl ToGlib for BuilderError {
     type GlibType = ffi::GtkBuilderError;
 
-    fn to_glib(&self) -> ffi::GtkBuilderError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkBuilderError {
+        match self {
             BuilderError::InvalidTypeFunction => ffi::GTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION,
             BuilderError::UnhandledTag => ffi::GTK_BUILDER_ERROR_UNHANDLED_TAG,
             BuilderError::MissingAttribute => ffi::GTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
@@ -693,8 +693,8 @@ impl fmt::Display for ButtonBoxStyle {
 impl ToGlib for ButtonBoxStyle {
     type GlibType = ffi::GtkButtonBoxStyle;
 
-    fn to_glib(&self) -> ffi::GtkButtonBoxStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkButtonBoxStyle {
+        match self {
             ButtonBoxStyle::Spread => ffi::GTK_BUTTONBOX_SPREAD,
             ButtonBoxStyle::Edge => ffi::GTK_BUTTONBOX_EDGE,
             ButtonBoxStyle::Start => ffi::GTK_BUTTONBOX_START,
@@ -785,8 +785,8 @@ impl fmt::Display for ButtonRole {
 impl ToGlib for ButtonRole {
     type GlibType = ffi::GtkButtonRole;
 
-    fn to_glib(&self) -> ffi::GtkButtonRole {
-        match *self {
+    fn to_glib(self) -> ffi::GtkButtonRole {
+        match self {
             ButtonRole::Normal => ffi::GTK_BUTTON_ROLE_NORMAL,
             ButtonRole::Check => ffi::GTK_BUTTON_ROLE_CHECK,
             ButtonRole::Radio => ffi::GTK_BUTTON_ROLE_RADIO,
@@ -884,8 +884,8 @@ impl fmt::Display for ButtonsType {
 impl ToGlib for ButtonsType {
     type GlibType = ffi::GtkButtonsType;
 
-    fn to_glib(&self) -> ffi::GtkButtonsType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkButtonsType {
+        match self {
             ButtonsType::None => ffi::GTK_BUTTONS_NONE,
             ButtonsType::Ok => ffi::GTK_BUTTONS_OK,
             ButtonsType::Close => ffi::GTK_BUTTONS_CLOSE,
@@ -970,8 +970,8 @@ impl fmt::Display for CellRendererAccelMode {
 impl ToGlib for CellRendererAccelMode {
     type GlibType = ffi::GtkCellRendererAccelMode;
 
-    fn to_glib(&self) -> ffi::GtkCellRendererAccelMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkCellRendererAccelMode {
+        match self {
             CellRendererAccelMode::Gtk => ffi::GTK_CELL_RENDERER_ACCEL_MODE_GTK,
             CellRendererAccelMode::Other => ffi::GTK_CELL_RENDERER_ACCEL_MODE_OTHER,
             CellRendererAccelMode::ModifierTap => ffi::GTK_CELL_RENDERER_ACCEL_MODE_MODIFIER_TAP,
@@ -1050,8 +1050,8 @@ impl fmt::Display for CellRendererMode {
 impl ToGlib for CellRendererMode {
     type GlibType = ffi::GtkCellRendererMode;
 
-    fn to_glib(&self) -> ffi::GtkCellRendererMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkCellRendererMode {
+        match self {
             CellRendererMode::Inert => ffi::GTK_CELL_RENDERER_MODE_INERT,
             CellRendererMode::Activatable => ffi::GTK_CELL_RENDERER_MODE_ACTIVATABLE,
             CellRendererMode::Editable => ffi::GTK_CELL_RENDERER_MODE_EDITABLE,
@@ -1133,8 +1133,8 @@ impl fmt::Display for CornerType {
 impl ToGlib for CornerType {
     type GlibType = ffi::GtkCornerType;
 
-    fn to_glib(&self) -> ffi::GtkCornerType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkCornerType {
+        match self {
             CornerType::TopLeft => ffi::GTK_CORNER_TOP_LEFT,
             CornerType::BottomLeft => ffi::GTK_CORNER_BOTTOM_LEFT,
             CornerType::TopRight => ffi::GTK_CORNER_TOP_RIGHT,
@@ -1224,8 +1224,8 @@ impl fmt::Display for CssProviderError {
 impl ToGlib for CssProviderError {
     type GlibType = ffi::GtkCssProviderError;
 
-    fn to_glib(&self) -> ffi::GtkCssProviderError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkCssProviderError {
+        match self {
             CssProviderError::Failed => ffi::GTK_CSS_PROVIDER_ERROR_FAILED,
             CssProviderError::Syntax => ffi::GTK_CSS_PROVIDER_ERROR_SYNTAX,
             CssProviderError::Import => ffi::GTK_CSS_PROVIDER_ERROR_IMPORT,
@@ -1353,8 +1353,8 @@ impl fmt::Display for CssSectionType {
 impl ToGlib for CssSectionType {
     type GlibType = ffi::GtkCssSectionType;
 
-    fn to_glib(&self) -> ffi::GtkCssSectionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkCssSectionType {
+        match self {
             CssSectionType::Document => ffi::GTK_CSS_SECTION_DOCUMENT,
             CssSectionType::Import => ffi::GTK_CSS_SECTION_IMPORT,
             CssSectionType::ColorDefinition => ffi::GTK_CSS_SECTION_COLOR_DEFINITION,
@@ -1460,8 +1460,8 @@ impl fmt::Display for DeleteType {
 impl ToGlib for DeleteType {
     type GlibType = ffi::GtkDeleteType;
 
-    fn to_glib(&self) -> ffi::GtkDeleteType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkDeleteType {
+        match self {
             DeleteType::Chars => ffi::GTK_DELETE_CHARS,
             DeleteType::WordEnds => ffi::GTK_DELETE_WORD_ENDS,
             DeleteType::Words => ffi::GTK_DELETE_WORDS,
@@ -1559,8 +1559,8 @@ impl fmt::Display for DirectionType {
 impl ToGlib for DirectionType {
     type GlibType = ffi::GtkDirectionType;
 
-    fn to_glib(&self) -> ffi::GtkDirectionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkDirectionType {
+        match self {
             DirectionType::TabForward => ffi::GTK_DIR_TAB_FORWARD,
             DirectionType::TabBackward => ffi::GTK_DIR_TAB_BACKWARD,
             DirectionType::Up => ffi::GTK_DIR_UP,
@@ -1654,8 +1654,8 @@ impl fmt::Display for DragResult {
 impl ToGlib for DragResult {
     type GlibType = ffi::GtkDragResult;
 
-    fn to_glib(&self) -> ffi::GtkDragResult {
-        match *self {
+    fn to_glib(self) -> ffi::GtkDragResult {
+        match self {
             DragResult::Success => ffi::GTK_DRAG_RESULT_SUCCESS,
             DragResult::NoTarget => ffi::GTK_DRAG_RESULT_NO_TARGET,
             DragResult::UserCancelled => ffi::GTK_DRAG_RESULT_USER_CANCELLED,
@@ -1737,8 +1737,8 @@ impl fmt::Display for EntryIconPosition {
 impl ToGlib for EntryIconPosition {
     type GlibType = ffi::GtkEntryIconPosition;
 
-    fn to_glib(&self) -> ffi::GtkEntryIconPosition {
-        match *self {
+    fn to_glib(self) -> ffi::GtkEntryIconPosition {
+        match self {
             EntryIconPosition::Primary => ffi::GTK_ENTRY_ICON_PRIMARY,
             EntryIconPosition::Secondary => ffi::GTK_ENTRY_ICON_SECONDARY,
             EntryIconPosition::__Unknown(value) => value,
@@ -1815,8 +1815,8 @@ impl fmt::Display for EventSequenceState {
 impl ToGlib for EventSequenceState {
     type GlibType = ffi::GtkEventSequenceState;
 
-    fn to_glib(&self) -> ffi::GtkEventSequenceState {
-        match *self {
+    fn to_glib(self) -> ffi::GtkEventSequenceState {
+        match self {
             EventSequenceState::None => ffi::GTK_EVENT_SEQUENCE_NONE,
             EventSequenceState::Claimed => ffi::GTK_EVENT_SEQUENCE_CLAIMED,
             EventSequenceState::Denied => ffi::GTK_EVENT_SEQUENCE_DENIED,
@@ -1898,8 +1898,8 @@ impl fmt::Display for FileChooserAction {
 impl ToGlib for FileChooserAction {
     type GlibType = ffi::GtkFileChooserAction;
 
-    fn to_glib(&self) -> ffi::GtkFileChooserAction {
-        match *self {
+    fn to_glib(self) -> ffi::GtkFileChooserAction {
+        match self {
             FileChooserAction::Open => ffi::GTK_FILE_CHOOSER_ACTION_OPEN,
             FileChooserAction::Save => ffi::GTK_FILE_CHOOSER_ACTION_SAVE,
             FileChooserAction::SelectFolder => ffi::GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
@@ -1980,8 +1980,8 @@ impl fmt::Display for FileChooserConfirmation {
 impl ToGlib for FileChooserConfirmation {
     type GlibType = ffi::GtkFileChooserConfirmation;
 
-    fn to_glib(&self) -> ffi::GtkFileChooserConfirmation {
-        match *self {
+    fn to_glib(self) -> ffi::GtkFileChooserConfirmation {
+        match self {
             FileChooserConfirmation::Confirm => ffi::GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM,
             FileChooserConfirmation::AcceptFilename => {
                 ffi::GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME
@@ -2065,8 +2065,8 @@ impl fmt::Display for FileChooserError {
 impl ToGlib for FileChooserError {
     type GlibType = ffi::GtkFileChooserError;
 
-    fn to_glib(&self) -> ffi::GtkFileChooserError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkFileChooserError {
+        match self {
             FileChooserError::Nonexistent => ffi::GTK_FILE_CHOOSER_ERROR_NONEXISTENT,
             FileChooserError::BadFilename => ffi::GTK_FILE_CHOOSER_ERROR_BAD_FILENAME,
             FileChooserError::AlreadyExists => ffi::GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS,
@@ -2171,8 +2171,8 @@ impl fmt::Display for IMPreeditStyle {
 impl ToGlib for IMPreeditStyle {
     type GlibType = ffi::GtkIMPreeditStyle;
 
-    fn to_glib(&self) -> ffi::GtkIMPreeditStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkIMPreeditStyle {
+        match self {
             IMPreeditStyle::Nothing => ffi::GTK_IM_PREEDIT_NOTHING,
             IMPreeditStyle::Callback => ffi::GTK_IM_PREEDIT_CALLBACK,
             IMPreeditStyle::None => ffi::GTK_IM_PREEDIT_NONE,
@@ -2252,8 +2252,8 @@ impl fmt::Display for IMStatusStyle {
 impl ToGlib for IMStatusStyle {
     type GlibType = ffi::GtkIMStatusStyle;
 
-    fn to_glib(&self) -> ffi::GtkIMStatusStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkIMStatusStyle {
+        match self {
             IMStatusStyle::Nothing => ffi::GTK_IM_STATUS_NOTHING,
             IMStatusStyle::Callback => ffi::GTK_IM_STATUS_CALLBACK,
             IMStatusStyle::None => ffi::GTK_IM_STATUS_NONE,
@@ -2367,8 +2367,8 @@ impl fmt::Display for IconSize {
 impl ToGlib for IconSize {
     type GlibType = ffi::GtkIconSize;
 
-    fn to_glib(&self) -> ffi::GtkIconSize {
-        match *self {
+    fn to_glib(self) -> ffi::GtkIconSize {
+        match self {
             IconSize::Invalid => ffi::GTK_ICON_SIZE_INVALID,
             IconSize::Menu => ffi::GTK_ICON_SIZE_MENU,
             IconSize::SmallToolbar => ffi::GTK_ICON_SIZE_SMALL_TOOLBAR,
@@ -2452,8 +2452,8 @@ impl fmt::Display for IconThemeError {
 impl ToGlib for IconThemeError {
     type GlibType = ffi::GtkIconThemeError;
 
-    fn to_glib(&self) -> ffi::GtkIconThemeError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkIconThemeError {
+        match self {
             IconThemeError::NotFound => ffi::GTK_ICON_THEME_NOT_FOUND,
             IconThemeError::Failed => ffi::GTK_ICON_THEME_FAILED,
             IconThemeError::__Unknown(value) => value,
@@ -2560,8 +2560,8 @@ impl fmt::Display for IconViewDropPosition {
 impl ToGlib for IconViewDropPosition {
     type GlibType = ffi::GtkIconViewDropPosition;
 
-    fn to_glib(&self) -> ffi::GtkIconViewDropPosition {
-        match *self {
+    fn to_glib(self) -> ffi::GtkIconViewDropPosition {
+        match self {
             IconViewDropPosition::NoDrop => ffi::GTK_ICON_VIEW_NO_DROP,
             IconViewDropPosition::DropInto => ffi::GTK_ICON_VIEW_DROP_INTO,
             IconViewDropPosition::DropLeft => ffi::GTK_ICON_VIEW_DROP_LEFT,
@@ -2661,8 +2661,8 @@ impl fmt::Display for ImageType {
 impl ToGlib for ImageType {
     type GlibType = ffi::GtkImageType;
 
-    fn to_glib(&self) -> ffi::GtkImageType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkImageType {
+        match self {
             ImageType::Empty => ffi::GTK_IMAGE_EMPTY,
             ImageType::Pixbuf => ffi::GTK_IMAGE_PIXBUF,
             ImageType::Stock => ffi::GTK_IMAGE_STOCK,
@@ -2775,8 +2775,8 @@ impl fmt::Display for InputPurpose {
 impl ToGlib for InputPurpose {
     type GlibType = ffi::GtkInputPurpose;
 
-    fn to_glib(&self) -> ffi::GtkInputPurpose {
-        match *self {
+    fn to_glib(self) -> ffi::GtkInputPurpose {
+        match self {
             InputPurpose::FreeForm => ffi::GTK_INPUT_PURPOSE_FREE_FORM,
             InputPurpose::Alpha => ffi::GTK_INPUT_PURPOSE_ALPHA,
             InputPurpose::Digits => ffi::GTK_INPUT_PURPOSE_DIGITS,
@@ -2874,8 +2874,8 @@ impl fmt::Display for Justification {
 impl ToGlib for Justification {
     type GlibType = ffi::GtkJustification;
 
-    fn to_glib(&self) -> ffi::GtkJustification {
-        match *self {
+    fn to_glib(self) -> ffi::GtkJustification {
+        match self {
             Justification::Left => ffi::GTK_JUSTIFY_LEFT,
             Justification::Right => ffi::GTK_JUSTIFY_RIGHT,
             Justification::Center => ffi::GTK_JUSTIFY_CENTER,
@@ -2953,8 +2953,8 @@ impl fmt::Display for LevelBarMode {
 impl ToGlib for LevelBarMode {
     type GlibType = ffi::GtkLevelBarMode;
 
-    fn to_glib(&self) -> ffi::GtkLevelBarMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkLevelBarMode {
+        match self {
             LevelBarMode::Continuous => ffi::GTK_LEVEL_BAR_MODE_CONTINUOUS,
             LevelBarMode::Discrete => ffi::GTK_LEVEL_BAR_MODE_DISCRETE,
             LevelBarMode::__Unknown(value) => value,
@@ -3076,8 +3076,8 @@ impl fmt::Display for License {
 impl ToGlib for License {
     type GlibType = ffi::GtkLicense;
 
-    fn to_glib(&self) -> ffi::GtkLicense {
-        match *self {
+    fn to_glib(self) -> ffi::GtkLicense {
+        match self {
             License::Unknown => ffi::GTK_LICENSE_UNKNOWN,
             License::Custom => ffi::GTK_LICENSE_CUSTOM,
             License::Gpl20 => ffi::GTK_LICENSE_GPL_2_0,
@@ -3189,8 +3189,8 @@ impl fmt::Display for MenuDirectionType {
 impl ToGlib for MenuDirectionType {
     type GlibType = ffi::GtkMenuDirectionType;
 
-    fn to_glib(&self) -> ffi::GtkMenuDirectionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkMenuDirectionType {
+        match self {
             MenuDirectionType::Parent => ffi::GTK_MENU_DIR_PARENT,
             MenuDirectionType::Child => ffi::GTK_MENU_DIR_CHILD,
             MenuDirectionType::Next => ffi::GTK_MENU_DIR_NEXT,
@@ -3277,8 +3277,8 @@ impl fmt::Display for MessageType {
 impl ToGlib for MessageType {
     type GlibType = ffi::GtkMessageType;
 
-    fn to_glib(&self) -> ffi::GtkMessageType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkMessageType {
+        match self {
             MessageType::Info => ffi::GTK_MESSAGE_INFO,
             MessageType::Warning => ffi::GTK_MESSAGE_WARNING,
             MessageType::Question => ffi::GTK_MESSAGE_QUESTION,
@@ -3382,8 +3382,8 @@ impl fmt::Display for MovementStep {
 impl ToGlib for MovementStep {
     type GlibType = ffi::GtkMovementStep;
 
-    fn to_glib(&self) -> ffi::GtkMovementStep {
-        match *self {
+    fn to_glib(self) -> ffi::GtkMovementStep {
+        match self {
             MovementStep::LogicalPositions => ffi::GTK_MOVEMENT_LOGICAL_POSITIONS,
             MovementStep::VisualPositions => ffi::GTK_MOVEMENT_VISUAL_POSITIONS,
             MovementStep::Words => ffi::GTK_MOVEMENT_WORDS,
@@ -3473,8 +3473,8 @@ impl fmt::Display for NotebookTab {
 impl ToGlib for NotebookTab {
     type GlibType = ffi::GtkNotebookTab;
 
-    fn to_glib(&self) -> ffi::GtkNotebookTab {
-        match *self {
+    fn to_glib(self) -> ffi::GtkNotebookTab {
+        match self {
             NotebookTab::First => ffi::GTK_NOTEBOOK_TAB_FIRST,
             NotebookTab::Last => ffi::GTK_NOTEBOOK_TAB_LAST,
             NotebookTab::__Unknown(value) => value,
@@ -3566,8 +3566,8 @@ impl fmt::Display for NumberUpLayout {
 impl ToGlib for NumberUpLayout {
     type GlibType = ffi::GtkNumberUpLayout;
 
-    fn to_glib(&self) -> ffi::GtkNumberUpLayout {
-        match *self {
+    fn to_glib(self) -> ffi::GtkNumberUpLayout {
+        match self {
             NumberUpLayout::Lrtb => ffi::GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM,
             NumberUpLayout::Lrbt => ffi::GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP,
             NumberUpLayout::Rltb => ffi::GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_TOP_TO_BOTTOM,
@@ -3653,8 +3653,8 @@ impl fmt::Display for Orientation {
 impl ToGlib for Orientation {
     type GlibType = ffi::GtkOrientation;
 
-    fn to_glib(&self) -> ffi::GtkOrientation {
-        match *self {
+    fn to_glib(self) -> ffi::GtkOrientation {
+        match self {
             Orientation::Horizontal => ffi::GTK_ORIENTATION_HORIZONTAL,
             Orientation::Vertical => ffi::GTK_ORIENTATION_VERTICAL,
             Orientation::__Unknown(value) => value,
@@ -3734,8 +3734,8 @@ impl fmt::Display for PackDirection {
 impl ToGlib for PackDirection {
     type GlibType = ffi::GtkPackDirection;
 
-    fn to_glib(&self) -> ffi::GtkPackDirection {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPackDirection {
+        match self {
             PackDirection::Ltr => ffi::GTK_PACK_DIRECTION_LTR,
             PackDirection::Rtl => ffi::GTK_PACK_DIRECTION_RTL,
             PackDirection::Ttb => ffi::GTK_PACK_DIRECTION_TTB,
@@ -3813,8 +3813,8 @@ impl fmt::Display for PackType {
 impl ToGlib for PackType {
     type GlibType = ffi::GtkPackType;
 
-    fn to_glib(&self) -> ffi::GtkPackType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPackType {
+        match self {
             PackType::Start => ffi::GTK_PACK_START,
             PackType::End => ffi::GTK_PACK_END,
             PackType::__Unknown(value) => value,
@@ -3897,8 +3897,8 @@ impl fmt::Display for PadActionType {
 impl ToGlib for PadActionType {
     type GlibType = ffi::GtkPadActionType;
 
-    fn to_glib(&self) -> ffi::GtkPadActionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPadActionType {
+        match self {
             PadActionType::Button => ffi::GTK_PAD_ACTION_BUTTON,
             PadActionType::Ring => ffi::GTK_PAD_ACTION_RING,
             PadActionType::Strip => ffi::GTK_PAD_ACTION_STRIP,
@@ -3990,8 +3990,8 @@ impl fmt::Display for PageOrientation {
 impl ToGlib for PageOrientation {
     type GlibType = ffi::GtkPageOrientation;
 
-    fn to_glib(&self) -> ffi::GtkPageOrientation {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPageOrientation {
+        match self {
             PageOrientation::Portrait => ffi::GTK_PAGE_ORIENTATION_PORTRAIT,
             PageOrientation::Landscape => ffi::GTK_PAGE_ORIENTATION_LANDSCAPE,
             PageOrientation::ReversePortrait => ffi::GTK_PAGE_ORIENTATION_REVERSE_PORTRAIT,
@@ -4072,8 +4072,8 @@ impl fmt::Display for PageSet {
 impl ToGlib for PageSet {
     type GlibType = ffi::GtkPageSet;
 
-    fn to_glib(&self) -> ffi::GtkPageSet {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPageSet {
+        match self {
             PageSet::All => ffi::GTK_PAGE_SET_ALL,
             PageSet::Even => ffi::GTK_PAGE_SET_EVEN,
             PageSet::Odd => ffi::GTK_PAGE_SET_ODD,
@@ -4155,8 +4155,8 @@ impl fmt::Display for PanDirection {
 impl ToGlib for PanDirection {
     type GlibType = ffi::GtkPanDirection;
 
-    fn to_glib(&self) -> ffi::GtkPanDirection {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPanDirection {
+        match self {
             PanDirection::Left => ffi::GTK_PAN_DIRECTION_LEFT,
             PanDirection::Right => ffi::GTK_PAN_DIRECTION_RIGHT,
             PanDirection::Up => ffi::GTK_PAN_DIRECTION_UP,
@@ -4240,8 +4240,8 @@ impl fmt::Display for PolicyType {
 impl ToGlib for PolicyType {
     type GlibType = ffi::GtkPolicyType;
 
-    fn to_glib(&self) -> ffi::GtkPolicyType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPolicyType {
+        match self {
             PolicyType::Always => ffi::GTK_POLICY_ALWAYS,
             PolicyType::Automatic => ffi::GTK_POLICY_AUTOMATIC,
             PolicyType::Never => ffi::GTK_POLICY_NEVER,
@@ -4325,8 +4325,8 @@ impl fmt::Display for PopoverConstraint {
 impl ToGlib for PopoverConstraint {
     type GlibType = ffi::GtkPopoverConstraint;
 
-    fn to_glib(&self) -> ffi::GtkPopoverConstraint {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPopoverConstraint {
+        match self {
             PopoverConstraint::None => ffi::GTK_POPOVER_CONSTRAINT_NONE,
             PopoverConstraint::Window => ffi::GTK_POPOVER_CONSTRAINT_WINDOW,
             PopoverConstraint::__Unknown(value) => value,
@@ -4416,8 +4416,8 @@ impl fmt::Display for PositionType {
 impl ToGlib for PositionType {
     type GlibType = ffi::GtkPositionType;
 
-    fn to_glib(&self) -> ffi::GtkPositionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPositionType {
+        match self {
             PositionType::Left => ffi::GTK_POS_LEFT,
             PositionType::Right => ffi::GTK_POS_RIGHT,
             PositionType::Top => ffi::GTK_POS_TOP,
@@ -4498,8 +4498,8 @@ impl fmt::Display for PrintDuplex {
 impl ToGlib for PrintDuplex {
     type GlibType = ffi::GtkPrintDuplex;
 
-    fn to_glib(&self) -> ffi::GtkPrintDuplex {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintDuplex {
+        match self {
             PrintDuplex::Simplex => ffi::GTK_PRINT_DUPLEX_SIMPLEX,
             PrintDuplex::Horizontal => ffi::GTK_PRINT_DUPLEX_HORIZONTAL,
             PrintDuplex::Vertical => ffi::GTK_PRINT_DUPLEX_VERTICAL,
@@ -4581,8 +4581,8 @@ impl fmt::Display for PrintError {
 impl ToGlib for PrintError {
     type GlibType = ffi::GtkPrintError;
 
-    fn to_glib(&self) -> ffi::GtkPrintError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintError {
+        match self {
             PrintError::General => ffi::GTK_PRINT_ERROR_GENERAL,
             PrintError::InternalError => ffi::GTK_PRINT_ERROR_INTERNAL_ERROR,
             PrintError::Nomem => ffi::GTK_PRINT_ERROR_NOMEM,
@@ -4689,8 +4689,8 @@ impl fmt::Display for PrintOperationAction {
 impl ToGlib for PrintOperationAction {
     type GlibType = ffi::GtkPrintOperationAction;
 
-    fn to_glib(&self) -> ffi::GtkPrintOperationAction {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintOperationAction {
+        match self {
             PrintOperationAction::PrintDialog => ffi::GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
             PrintOperationAction::Print => ffi::GTK_PRINT_OPERATION_ACTION_PRINT,
             PrintOperationAction::Preview => ffi::GTK_PRINT_OPERATION_ACTION_PREVIEW,
@@ -4774,8 +4774,8 @@ impl fmt::Display for PrintOperationResult {
 impl ToGlib for PrintOperationResult {
     type GlibType = ffi::GtkPrintOperationResult;
 
-    fn to_glib(&self) -> ffi::GtkPrintOperationResult {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintOperationResult {
+        match self {
             PrintOperationResult::Error => ffi::GTK_PRINT_OPERATION_RESULT_ERROR,
             PrintOperationResult::Apply => ffi::GTK_PRINT_OPERATION_RESULT_APPLY,
             PrintOperationResult::Cancel => ffi::GTK_PRINT_OPERATION_RESULT_CANCEL,
@@ -4859,8 +4859,8 @@ impl fmt::Display for PrintPages {
 impl ToGlib for PrintPages {
     type GlibType = ffi::GtkPrintPages;
 
-    fn to_glib(&self) -> ffi::GtkPrintPages {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintPages {
+        match self {
             PrintPages::All => ffi::GTK_PRINT_PAGES_ALL,
             PrintPages::Current => ffi::GTK_PRINT_PAGES_CURRENT,
             PrintPages::Ranges => ffi::GTK_PRINT_PAGES_RANGES,
@@ -4944,8 +4944,8 @@ impl fmt::Display for PrintQuality {
 impl ToGlib for PrintQuality {
     type GlibType = ffi::GtkPrintQuality;
 
-    fn to_glib(&self) -> ffi::GtkPrintQuality {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintQuality {
+        match self {
             PrintQuality::Low => ffi::GTK_PRINT_QUALITY_LOW,
             PrintQuality::Normal => ffi::GTK_PRINT_QUALITY_NORMAL,
             PrintQuality::High => ffi::GTK_PRINT_QUALITY_HIGH,
@@ -5044,8 +5044,8 @@ impl fmt::Display for PrintStatus {
 impl ToGlib for PrintStatus {
     type GlibType = ffi::GtkPrintStatus;
 
-    fn to_glib(&self) -> ffi::GtkPrintStatus {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPrintStatus {
+        match self {
             PrintStatus::Initial => ffi::GTK_PRINT_STATUS_INITIAL,
             PrintStatus::Preparing => ffi::GTK_PRINT_STATUS_PREPARING,
             PrintStatus::GeneratingData => ffi::GTK_PRINT_STATUS_GENERATING_DATA,
@@ -5139,8 +5139,8 @@ impl fmt::Display for PropagationPhase {
 impl ToGlib for PropagationPhase {
     type GlibType = ffi::GtkPropagationPhase;
 
-    fn to_glib(&self) -> ffi::GtkPropagationPhase {
-        match *self {
+    fn to_glib(self) -> ffi::GtkPropagationPhase {
+        match self {
             PropagationPhase::None => ffi::GTK_PHASE_NONE,
             PropagationPhase::Capture => ffi::GTK_PHASE_CAPTURE,
             PropagationPhase::Bubble => ffi::GTK_PHASE_BUBBLE,
@@ -5218,8 +5218,8 @@ impl fmt::Display for RecentChooserError {
 impl ToGlib for RecentChooserError {
     type GlibType = ffi::GtkRecentChooserError;
 
-    fn to_glib(&self) -> ffi::GtkRecentChooserError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkRecentChooserError {
+        match self {
             RecentChooserError::NotFound => ffi::GTK_RECENT_CHOOSER_ERROR_NOT_FOUND,
             RecentChooserError::InvalidUri => ffi::GTK_RECENT_CHOOSER_ERROR_INVALID_URI,
             RecentChooserError::__Unknown(value) => value,
@@ -5329,8 +5329,8 @@ impl fmt::Display for RecentManagerError {
 impl ToGlib for RecentManagerError {
     type GlibType = ffi::GtkRecentManagerError;
 
-    fn to_glib(&self) -> ffi::GtkRecentManagerError {
-        match *self {
+    fn to_glib(self) -> ffi::GtkRecentManagerError {
+        match self {
             RecentManagerError::NotFound => ffi::GTK_RECENT_MANAGER_ERROR_NOT_FOUND,
             RecentManagerError::InvalidUri => ffi::GTK_RECENT_MANAGER_ERROR_INVALID_URI,
             RecentManagerError::InvalidEncoding => ffi::GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING,
@@ -5446,8 +5446,8 @@ impl fmt::Display for RecentSortType {
 impl ToGlib for RecentSortType {
     type GlibType = ffi::GtkRecentSortType;
 
-    fn to_glib(&self) -> ffi::GtkRecentSortType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkRecentSortType {
+        match self {
             RecentSortType::None => ffi::GTK_RECENT_SORT_NONE,
             RecentSortType::Mru => ffi::GTK_RECENT_SORT_MRU,
             RecentSortType::Lru => ffi::GTK_RECENT_SORT_LRU,
@@ -5528,8 +5528,8 @@ impl fmt::Display for ReliefStyle {
 impl ToGlib for ReliefStyle {
     type GlibType = ffi::GtkReliefStyle;
 
-    fn to_glib(&self) -> ffi::GtkReliefStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkReliefStyle {
+        match self {
             ReliefStyle::Normal => ffi::GTK_RELIEF_NORMAL,
             ReliefStyle::Half => ffi::GTK_RELIEF_HALF,
             ReliefStyle::None => ffi::GTK_RELIEF_NONE,
@@ -5608,8 +5608,8 @@ impl fmt::Display for ResizeMode {
 impl ToGlib for ResizeMode {
     type GlibType = ffi::GtkResizeMode;
 
-    fn to_glib(&self) -> ffi::GtkResizeMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkResizeMode {
+        match self {
             ResizeMode::Parent => ffi::GTK_RESIZE_PARENT,
             ResizeMode::Queue => ffi::GTK_RESIZE_QUEUE,
             ResizeMode::Immediate => ffi::GTK_RESIZE_IMMEDIATE,
@@ -5697,8 +5697,8 @@ impl fmt::Display for RevealerTransitionType {
 impl ToGlib for RevealerTransitionType {
     type GlibType = ffi::GtkRevealerTransitionType;
 
-    fn to_glib(&self) -> ffi::GtkRevealerTransitionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkRevealerTransitionType {
+        match self {
             RevealerTransitionType::None => ffi::GTK_REVEALER_TRANSITION_TYPE_NONE,
             RevealerTransitionType::Crossfade => ffi::GTK_REVEALER_TRANSITION_TYPE_CROSSFADE,
             RevealerTransitionType::SlideRight => ffi::GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT,
@@ -5792,8 +5792,8 @@ impl fmt::Display for ScrollStep {
 impl ToGlib for ScrollStep {
     type GlibType = ffi::GtkScrollStep;
 
-    fn to_glib(&self) -> ffi::GtkScrollStep {
-        match *self {
+    fn to_glib(self) -> ffi::GtkScrollStep {
+        match self {
             ScrollStep::Steps => ffi::GTK_SCROLL_STEPS,
             ScrollStep::Pages => ffi::GTK_SCROLL_PAGES,
             ScrollStep::Ends => ffi::GTK_SCROLL_ENDS,
@@ -5917,8 +5917,8 @@ impl fmt::Display for ScrollType {
 impl ToGlib for ScrollType {
     type GlibType = ffi::GtkScrollType;
 
-    fn to_glib(&self) -> ffi::GtkScrollType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkScrollType {
+        match self {
             ScrollType::None => ffi::GTK_SCROLL_NONE,
             ScrollType::Jump => ffi::GTK_SCROLL_JUMP,
             ScrollType::StepBackward => ffi::GTK_SCROLL_STEP_BACKWARD,
@@ -6020,8 +6020,8 @@ impl fmt::Display for ScrollablePolicy {
 impl ToGlib for ScrollablePolicy {
     type GlibType = ffi::GtkScrollablePolicy;
 
-    fn to_glib(&self) -> ffi::GtkScrollablePolicy {
-        match *self {
+    fn to_glib(self) -> ffi::GtkScrollablePolicy {
+        match self {
             ScrollablePolicy::Minimum => ffi::GTK_SCROLL_MINIMUM,
             ScrollablePolicy::Natural => ffi::GTK_SCROLL_NATURAL,
             ScrollablePolicy::__Unknown(value) => value,
@@ -6101,8 +6101,8 @@ impl fmt::Display for SelectionMode {
 impl ToGlib for SelectionMode {
     type GlibType = ffi::GtkSelectionMode;
 
-    fn to_glib(&self) -> ffi::GtkSelectionMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSelectionMode {
+        match self {
             SelectionMode::None => ffi::GTK_SELECTION_NONE,
             SelectionMode::Single => ffi::GTK_SELECTION_SINGLE,
             SelectionMode::Browse => ffi::GTK_SELECTION_BROWSE,
@@ -6183,8 +6183,8 @@ impl fmt::Display for SensitivityType {
 impl ToGlib for SensitivityType {
     type GlibType = ffi::GtkSensitivityType;
 
-    fn to_glib(&self) -> ffi::GtkSensitivityType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSensitivityType {
+        match self {
             SensitivityType::Auto => ffi::GTK_SENSITIVITY_AUTO,
             SensitivityType::On => ffi::GTK_SENSITIVITY_ON,
             SensitivityType::Off => ffi::GTK_SENSITIVITY_OFF,
@@ -6269,8 +6269,8 @@ impl fmt::Display for ShadowType {
 impl ToGlib for ShadowType {
     type GlibType = ffi::GtkShadowType;
 
-    fn to_glib(&self) -> ffi::GtkShadowType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkShadowType {
+        match self {
             ShadowType::None => ffi::GTK_SHADOW_NONE,
             ShadowType::In => ffi::GTK_SHADOW_IN,
             ShadowType::Out => ffi::GTK_SHADOW_OUT,
@@ -6374,8 +6374,8 @@ impl fmt::Display for ShortcutType {
 impl ToGlib for ShortcutType {
     type GlibType = ffi::GtkShortcutType;
 
-    fn to_glib(&self) -> ffi::GtkShortcutType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkShortcutType {
+        match self {
             ShortcutType::Accelerator => ffi::GTK_SHORTCUT_ACCELERATOR,
             ShortcutType::GesturePinch => ffi::GTK_SHORTCUT_GESTURE_PINCH,
             ShortcutType::GestureStretch => ffi::GTK_SHORTCUT_GESTURE_STRETCH,
@@ -6483,8 +6483,8 @@ impl fmt::Display for SizeGroupMode {
 impl ToGlib for SizeGroupMode {
     type GlibType = ffi::GtkSizeGroupMode;
 
-    fn to_glib(&self) -> ffi::GtkSizeGroupMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSizeGroupMode {
+        match self {
             SizeGroupMode::None => ffi::GTK_SIZE_GROUP_NONE,
             SizeGroupMode::Horizontal => ffi::GTK_SIZE_GROUP_HORIZONTAL,
             SizeGroupMode::Vertical => ffi::GTK_SIZE_GROUP_VERTICAL,
@@ -6565,8 +6565,8 @@ impl fmt::Display for SizeRequestMode {
 impl ToGlib for SizeRequestMode {
     type GlibType = ffi::GtkSizeRequestMode;
 
-    fn to_glib(&self) -> ffi::GtkSizeRequestMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSizeRequestMode {
+        match self {
             SizeRequestMode::HeightForWidth => ffi::GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH,
             SizeRequestMode::WidthForHeight => ffi::GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT,
             SizeRequestMode::ConstantSize => ffi::GTK_SIZE_REQUEST_CONSTANT_SIZE,
@@ -6642,8 +6642,8 @@ impl fmt::Display for SortType {
 impl ToGlib for SortType {
     type GlibType = ffi::GtkSortType;
 
-    fn to_glib(&self) -> ffi::GtkSortType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSortType {
+        match self {
             SortType::Ascending => ffi::GTK_SORT_ASCENDING,
             SortType::Descending => ffi::GTK_SORT_DESCENDING,
             SortType::__Unknown(value) => value,
@@ -6717,8 +6717,8 @@ impl fmt::Display for SpinButtonUpdatePolicy {
 impl ToGlib for SpinButtonUpdatePolicy {
     type GlibType = ffi::GtkSpinButtonUpdatePolicy;
 
-    fn to_glib(&self) -> ffi::GtkSpinButtonUpdatePolicy {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSpinButtonUpdatePolicy {
+        match self {
             SpinButtonUpdatePolicy::Always => ffi::GTK_UPDATE_ALWAYS,
             SpinButtonUpdatePolicy::IfValid => ffi::GTK_UPDATE_IF_VALID,
             SpinButtonUpdatePolicy::__Unknown(value) => value,
@@ -6807,8 +6807,8 @@ impl fmt::Display for SpinType {
 impl ToGlib for SpinType {
     type GlibType = ffi::GtkSpinType;
 
-    fn to_glib(&self) -> ffi::GtkSpinType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkSpinType {
+        match self {
             SpinType::StepForward => ffi::GTK_SPIN_STEP_FORWARD,
             SpinType::StepBackward => ffi::GTK_SPIN_STEP_BACKWARD,
             SpinType::PageForward => ffi::GTK_SPIN_PAGE_FORWARD,
@@ -6946,8 +6946,8 @@ impl fmt::Display for StackTransitionType {
 impl ToGlib for StackTransitionType {
     type GlibType = ffi::GtkStackTransitionType;
 
-    fn to_glib(&self) -> ffi::GtkStackTransitionType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkStackTransitionType {
+        match self {
             StackTransitionType::None => ffi::GTK_STACK_TRANSITION_TYPE_NONE,
             StackTransitionType::Crossfade => ffi::GTK_STACK_TRANSITION_TYPE_CROSSFADE,
             StackTransitionType::SlideRight => ffi::GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT,
@@ -7073,8 +7073,8 @@ impl fmt::Display for StateType {
 impl ToGlib for StateType {
     type GlibType = ffi::GtkStateType;
 
-    fn to_glib(&self) -> ffi::GtkStateType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkStateType {
+        match self {
             StateType::Normal => ffi::GTK_STATE_NORMAL,
             StateType::Active => ffi::GTK_STATE_ACTIVE,
             StateType::Prelight => ffi::GTK_STATE_PRELIGHT,
@@ -7161,8 +7161,8 @@ impl fmt::Display for TextDirection {
 impl ToGlib for TextDirection {
     type GlibType = ffi::GtkTextDirection;
 
-    fn to_glib(&self) -> ffi::GtkTextDirection {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTextDirection {
+        match self {
             TextDirection::None => ffi::GTK_TEXT_DIR_NONE,
             TextDirection::Ltr => ffi::GTK_TEXT_DIR_LTR,
             TextDirection::Rtl => ffi::GTK_TEXT_DIR_RTL,
@@ -7244,8 +7244,8 @@ impl fmt::Display for TextExtendSelection {
 impl ToGlib for TextExtendSelection {
     type GlibType = ffi::GtkTextExtendSelection;
 
-    fn to_glib(&self) -> ffi::GtkTextExtendSelection {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTextExtendSelection {
+        match self {
             TextExtendSelection::Word => ffi::GTK_TEXT_EXTEND_SELECTION_WORD,
             TextExtendSelection::Line => ffi::GTK_TEXT_EXTEND_SELECTION_LINE,
             TextExtendSelection::__Unknown(value) => value,
@@ -7335,8 +7335,8 @@ impl fmt::Display for TextViewLayer {
 impl ToGlib for TextViewLayer {
     type GlibType = ffi::GtkTextViewLayer;
 
-    fn to_glib(&self) -> ffi::GtkTextViewLayer {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTextViewLayer {
+        match self {
             TextViewLayer::Below => ffi::GTK_TEXT_VIEW_LAYER_BELOW,
             TextViewLayer::Above => ffi::GTK_TEXT_VIEW_LAYER_ABOVE,
             TextViewLayer::BelowText => ffi::GTK_TEXT_VIEW_LAYER_BELOW_TEXT,
@@ -7429,8 +7429,8 @@ impl fmt::Display for TextWindowType {
 impl ToGlib for TextWindowType {
     type GlibType = ffi::GtkTextWindowType;
 
-    fn to_glib(&self) -> ffi::GtkTextWindowType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTextWindowType {
+        match self {
             TextWindowType::Private => ffi::GTK_TEXT_WINDOW_PRIVATE,
             TextWindowType::Widget => ffi::GTK_TEXT_WINDOW_WIDGET,
             TextWindowType::Text => ffi::GTK_TEXT_WINDOW_TEXT,
@@ -7520,8 +7520,8 @@ impl fmt::Display for ToolbarStyle {
 impl ToGlib for ToolbarStyle {
     type GlibType = ffi::GtkToolbarStyle;
 
-    fn to_glib(&self) -> ffi::GtkToolbarStyle {
-        match *self {
+    fn to_glib(self) -> ffi::GtkToolbarStyle {
+        match self {
             ToolbarStyle::Icons => ffi::GTK_TOOLBAR_ICONS,
             ToolbarStyle::Text => ffi::GTK_TOOLBAR_TEXT,
             ToolbarStyle::Both => ffi::GTK_TOOLBAR_BOTH,
@@ -7602,8 +7602,8 @@ impl fmt::Display for TreeViewColumnSizing {
 impl ToGlib for TreeViewColumnSizing {
     type GlibType = ffi::GtkTreeViewColumnSizing;
 
-    fn to_glib(&self) -> ffi::GtkTreeViewColumnSizing {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTreeViewColumnSizing {
+        match self {
             TreeViewColumnSizing::GrowOnly => ffi::GTK_TREE_VIEW_COLUMN_GROW_ONLY,
             TreeViewColumnSizing::Autosize => ffi::GTK_TREE_VIEW_COLUMN_AUTOSIZE,
             TreeViewColumnSizing::Fixed => ffi::GTK_TREE_VIEW_COLUMN_FIXED,
@@ -7685,8 +7685,8 @@ impl fmt::Display for TreeViewDropPosition {
 impl ToGlib for TreeViewDropPosition {
     type GlibType = ffi::GtkTreeViewDropPosition;
 
-    fn to_glib(&self) -> ffi::GtkTreeViewDropPosition {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTreeViewDropPosition {
+        match self {
             TreeViewDropPosition::Before => ffi::GTK_TREE_VIEW_DROP_BEFORE,
             TreeViewDropPosition::After => ffi::GTK_TREE_VIEW_DROP_AFTER,
             TreeViewDropPosition::IntoOrBefore => ffi::GTK_TREE_VIEW_DROP_INTO_OR_BEFORE,
@@ -7770,8 +7770,8 @@ impl fmt::Display for TreeViewGridLines {
 impl ToGlib for TreeViewGridLines {
     type GlibType = ffi::GtkTreeViewGridLines;
 
-    fn to_glib(&self) -> ffi::GtkTreeViewGridLines {
-        match *self {
+    fn to_glib(self) -> ffi::GtkTreeViewGridLines {
+        match self {
             TreeViewGridLines::None => ffi::GTK_TREE_VIEW_GRID_LINES_NONE,
             TreeViewGridLines::Horizontal => ffi::GTK_TREE_VIEW_GRID_LINES_HORIZONTAL,
             TreeViewGridLines::Vertical => ffi::GTK_TREE_VIEW_GRID_LINES_VERTICAL,
@@ -7855,8 +7855,8 @@ impl fmt::Display for Unit {
 impl ToGlib for Unit {
     type GlibType = ffi::GtkUnit;
 
-    fn to_glib(&self) -> ffi::GtkUnit {
-        match *self {
+    fn to_glib(self) -> ffi::GtkUnit {
+        match self {
             Unit::None => ffi::GTK_UNIT_NONE,
             Unit::Points => ffi::GTK_UNIT_POINTS,
             Unit::Inch => ffi::GTK_UNIT_INCH,
@@ -7934,8 +7934,8 @@ impl fmt::Display for WidgetHelpType {
 impl ToGlib for WidgetHelpType {
     type GlibType = ffi::GtkWidgetHelpType;
 
-    fn to_glib(&self) -> ffi::GtkWidgetHelpType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkWidgetHelpType {
+        match self {
             WidgetHelpType::Tooltip => ffi::GTK_WIDGET_HELP_TOOLTIP,
             WidgetHelpType::WhatsThis => ffi::GTK_WIDGET_HELP_WHATS_THIS,
             WidgetHelpType::__Unknown(value) => value,
@@ -8018,8 +8018,8 @@ impl fmt::Display for WindowPosition {
 impl ToGlib for WindowPosition {
     type GlibType = ffi::GtkWindowPosition;
 
-    fn to_glib(&self) -> ffi::GtkWindowPosition {
-        match *self {
+    fn to_glib(self) -> ffi::GtkWindowPosition {
+        match self {
             WindowPosition::None => ffi::GTK_WIN_POS_NONE,
             WindowPosition::Center => ffi::GTK_WIN_POS_CENTER,
             WindowPosition::Mouse => ffi::GTK_WIN_POS_MOUSE,
@@ -8099,8 +8099,8 @@ impl fmt::Display for WindowType {
 impl ToGlib for WindowType {
     type GlibType = ffi::GtkWindowType;
 
-    fn to_glib(&self) -> ffi::GtkWindowType {
-        match *self {
+    fn to_glib(self) -> ffi::GtkWindowType {
+        match self {
             WindowType::Toplevel => ffi::GTK_WINDOW_TOPLEVEL,
             WindowType::Popup => ffi::GTK_WINDOW_POPUP,
             WindowType::__Unknown(value) => value,
@@ -8180,8 +8180,8 @@ impl fmt::Display for WrapMode {
 impl ToGlib for WrapMode {
     type GlibType = ffi::GtkWrapMode;
 
-    fn to_glib(&self) -> ffi::GtkWrapMode {
-        match *self {
+    fn to_glib(self) -> ffi::GtkWrapMode {
+        match self {
             WrapMode::None => ffi::GTK_WRAP_NONE,
             WrapMode::Char => ffi::GTK_WRAP_CHAR,
             WrapMode::Word => ffi::GTK_WRAP_WORD,

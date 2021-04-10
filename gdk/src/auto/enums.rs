@@ -73,8 +73,8 @@ impl fmt::Display for AxisUse {
 impl ToGlib for AxisUse {
     type GlibType = ffi::GdkAxisUse;
 
-    fn to_glib(&self) -> ffi::GdkAxisUse {
-        match *self {
+    fn to_glib(self) -> ffi::GdkAxisUse {
+        match self {
             AxisUse::Ignore => ffi::GDK_AXIS_IGNORE,
             AxisUse::X => ffi::GDK_AXIS_X,
             AxisUse::Y => ffi::GDK_AXIS_Y,
@@ -166,8 +166,8 @@ impl fmt::Display for ByteOrder {
 impl ToGlib for ByteOrder {
     type GlibType = ffi::GdkByteOrder;
 
-    fn to_glib(&self) -> ffi::GdkByteOrder {
-        match *self {
+    fn to_glib(self) -> ffi::GdkByteOrder {
+        match self {
             ByteOrder::LsbFirst => ffi::GDK_LSB_FIRST,
             ByteOrder::MsbFirst => ffi::GDK_MSB_FIRST,
             ByteOrder::__Unknown(value) => value,
@@ -262,8 +262,8 @@ impl fmt::Display for CrossingMode {
 impl ToGlib for CrossingMode {
     type GlibType = ffi::GdkCrossingMode;
 
-    fn to_glib(&self) -> ffi::GdkCrossingMode {
-        match *self {
+    fn to_glib(self) -> ffi::GdkCrossingMode {
+        match self {
             CrossingMode::Normal => ffi::GDK_CROSSING_NORMAL,
             CrossingMode::Grab => ffi::GDK_CROSSING_GRAB,
             CrossingMode::Ungrab => ffi::GDK_CROSSING_UNGRAB,
@@ -585,8 +585,8 @@ impl fmt::Display for CursorType {
 impl ToGlib for CursorType {
     type GlibType = ffi::GdkCursorType;
 
-    fn to_glib(&self) -> ffi::GdkCursorType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkCursorType {
+        match self {
             CursorType::XCursor => ffi::GDK_X_CURSOR,
             CursorType::Arrow => ffi::GDK_ARROW,
             CursorType::BasedArrowDown => ffi::GDK_BASED_ARROW_DOWN,
@@ -825,8 +825,8 @@ impl fmt::Display for DevicePadFeature {
 impl ToGlib for DevicePadFeature {
     type GlibType = ffi::GdkDevicePadFeature;
 
-    fn to_glib(&self) -> ffi::GdkDevicePadFeature {
-        match *self {
+    fn to_glib(self) -> ffi::GdkDevicePadFeature {
+        match self {
             DevicePadFeature::Button => ffi::GDK_DEVICE_PAD_FEATURE_BUTTON,
             DevicePadFeature::Ring => ffi::GDK_DEVICE_PAD_FEATURE_RING,
             DevicePadFeature::Strip => ffi::GDK_DEVICE_PAD_FEATURE_STRIP,
@@ -936,8 +936,8 @@ impl fmt::Display for DeviceToolType {
 impl ToGlib for DeviceToolType {
     type GlibType = ffi::GdkDeviceToolType;
 
-    fn to_glib(&self) -> ffi::GdkDeviceToolType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkDeviceToolType {
+        match self {
             DeviceToolType::Unknown => ffi::GDK_DEVICE_TOOL_TYPE_UNKNOWN,
             DeviceToolType::Pen => ffi::GDK_DEVICE_TOOL_TYPE_PEN,
             DeviceToolType::Eraser => ffi::GDK_DEVICE_TOOL_TYPE_ERASER,
@@ -1036,8 +1036,8 @@ impl fmt::Display for DeviceType {
 impl ToGlib for DeviceType {
     type GlibType = ffi::GdkDeviceType;
 
-    fn to_glib(&self) -> ffi::GdkDeviceType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkDeviceType {
+        match self {
             DeviceType::Master => ffi::GDK_DEVICE_TYPE_MASTER,
             DeviceType::Slave => ffi::GDK_DEVICE_TYPE_SLAVE,
             DeviceType::Floating => ffi::GDK_DEVICE_TYPE_FLOATING,
@@ -1122,8 +1122,8 @@ impl fmt::Display for DragCancelReason {
 impl ToGlib for DragCancelReason {
     type GlibType = ffi::GdkDragCancelReason;
 
-    fn to_glib(&self) -> ffi::GdkDragCancelReason {
-        match *self {
+    fn to_glib(self) -> ffi::GdkDragCancelReason {
+        match self {
             DragCancelReason::NoTarget => ffi::GDK_DRAG_CANCEL_NO_TARGET,
             DragCancelReason::UserCancelled => ffi::GDK_DRAG_CANCEL_USER_CANCELLED,
             DragCancelReason::Error => ffi::GDK_DRAG_CANCEL_ERROR,
@@ -1227,8 +1227,8 @@ impl fmt::Display for DragProtocol {
 impl ToGlib for DragProtocol {
     type GlibType = ffi::GdkDragProtocol;
 
-    fn to_glib(&self) -> ffi::GdkDragProtocol {
-        match *self {
+    fn to_glib(self) -> ffi::GdkDragProtocol {
+        match self {
             DragProtocol::None => ffi::GDK_DRAG_PROTO_NONE,
             DragProtocol::Motif => ffi::GDK_DRAG_PROTO_MOTIF,
             DragProtocol::Xdnd => ffi::GDK_DRAG_PROTO_XDND,
@@ -1458,8 +1458,8 @@ impl fmt::Display for EventType {
 impl ToGlib for EventType {
     type GlibType = ffi::GdkEventType;
 
-    fn to_glib(&self) -> ffi::GdkEventType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkEventType {
+        match self {
             EventType::Nothing => ffi::GDK_NOTHING,
             EventType::Delete => ffi::GDK_DELETE,
             EventType::Destroy => ffi::GDK_DESTROY,
@@ -1629,8 +1629,8 @@ impl fmt::Display for FullscreenMode {
 impl ToGlib for FullscreenMode {
     type GlibType = ffi::GdkFullscreenMode;
 
-    fn to_glib(&self) -> ffi::GdkFullscreenMode {
-        match *self {
+    fn to_glib(self) -> ffi::GdkFullscreenMode {
+        match self {
             FullscreenMode::CurrentMonitor => ffi::GDK_FULLSCREEN_ON_CURRENT_MONITOR,
             FullscreenMode::AllMonitors => ffi::GDK_FULLSCREEN_ON_ALL_MONITORS,
             FullscreenMode::__Unknown(value) => value,
@@ -1713,8 +1713,8 @@ impl fmt::Display for GLError {
 impl ToGlib for GLError {
     type GlibType = ffi::GdkGLError;
 
-    fn to_glib(&self) -> ffi::GdkGLError {
-        match *self {
+    fn to_glib(self) -> ffi::GdkGLError {
+        match self {
             GLError::NotAvailable => ffi::GDK_GL_ERROR_NOT_AVAILABLE,
             GLError::UnsupportedFormat => ffi::GDK_GL_ERROR_UNSUPPORTED_FORMAT,
             GLError::UnsupportedProfile => ffi::GDK_GL_ERROR_UNSUPPORTED_PROFILE,
@@ -1827,8 +1827,8 @@ impl fmt::Display for GrabOwnership {
 impl ToGlib for GrabOwnership {
     type GlibType = ffi::GdkGrabOwnership;
 
-    fn to_glib(&self) -> ffi::GdkGrabOwnership {
-        match *self {
+    fn to_glib(self) -> ffi::GdkGrabOwnership {
+        match self {
             GrabOwnership::None => ffi::GDK_OWNERSHIP_NONE,
             GrabOwnership::Window => ffi::GDK_OWNERSHIP_WINDOW,
             GrabOwnership::Application => ffi::GDK_OWNERSHIP_APPLICATION,
@@ -1916,8 +1916,8 @@ impl fmt::Display for GrabStatus {
 impl ToGlib for GrabStatus {
     type GlibType = ffi::GdkGrabStatus;
 
-    fn to_glib(&self) -> ffi::GdkGrabStatus {
-        match *self {
+    fn to_glib(self) -> ffi::GdkGrabStatus {
+        match self {
             GrabStatus::Success => ffi::GDK_GRAB_SUCCESS,
             GrabStatus::AlreadyGrabbed => ffi::GDK_GRAB_ALREADY_GRABBED,
             GrabStatus::InvalidTime => ffi::GDK_GRAB_INVALID_TIME,
@@ -2023,8 +2023,8 @@ impl fmt::Display for Gravity {
 impl ToGlib for Gravity {
     type GlibType = ffi::GdkGravity;
 
-    fn to_glib(&self) -> ffi::GdkGravity {
-        match *self {
+    fn to_glib(self) -> ffi::GdkGravity {
+        match self {
             Gravity::NorthWest => ffi::GDK_GRAVITY_NORTH_WEST,
             Gravity::North => ffi::GDK_GRAVITY_NORTH,
             Gravity::NorthEast => ffi::GDK_GRAVITY_NORTH_EAST,
@@ -2117,8 +2117,8 @@ impl fmt::Display for InputMode {
 impl ToGlib for InputMode {
     type GlibType = ffi::GdkInputMode;
 
-    fn to_glib(&self) -> ffi::GdkInputMode {
-        match *self {
+    fn to_glib(self) -> ffi::GdkInputMode {
+        match self {
             InputMode::Disabled => ffi::GDK_MODE_DISABLED,
             InputMode::Screen => ffi::GDK_MODE_SCREEN,
             InputMode::Window => ffi::GDK_MODE_WINDOW,
@@ -2215,8 +2215,8 @@ impl fmt::Display for InputSource {
 impl ToGlib for InputSource {
     type GlibType = ffi::GdkInputSource;
 
-    fn to_glib(&self) -> ffi::GdkInputSource {
-        match *self {
+    fn to_glib(self) -> ffi::GdkInputSource {
+        match self {
             InputSource::Mouse => ffi::GDK_SOURCE_MOUSE,
             InputSource::Pen => ffi::GDK_SOURCE_PEN,
             InputSource::Eraser => ffi::GDK_SOURCE_ERASER,
@@ -2319,8 +2319,8 @@ impl fmt::Display for ModifierIntent {
 impl ToGlib for ModifierIntent {
     type GlibType = ffi::GdkModifierIntent;
 
-    fn to_glib(&self) -> ffi::GdkModifierIntent {
-        match *self {
+    fn to_glib(self) -> ffi::GdkModifierIntent {
+        match self {
             ModifierIntent::PrimaryAccelerator => ffi::GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR,
             ModifierIntent::ContextMenu => ffi::GDK_MODIFIER_INTENT_CONTEXT_MENU,
             ModifierIntent::ExtendSelection => ffi::GDK_MODIFIER_INTENT_EXTEND_SELECTION,
@@ -2416,8 +2416,8 @@ impl fmt::Display for NotifyType {
 impl ToGlib for NotifyType {
     type GlibType = ffi::GdkNotifyType;
 
-    fn to_glib(&self) -> ffi::GdkNotifyType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkNotifyType {
+        match self {
             NotifyType::Ancestor => ffi::GDK_NOTIFY_ANCESTOR,
             NotifyType::Virtual => ffi::GDK_NOTIFY_VIRTUAL,
             NotifyType::Inferior => ffi::GDK_NOTIFY_INFERIOR,
@@ -2502,8 +2502,8 @@ impl fmt::Display for OwnerChange {
 impl ToGlib for OwnerChange {
     type GlibType = ffi::GdkOwnerChange;
 
-    fn to_glib(&self) -> ffi::GdkOwnerChange {
-        match *self {
+    fn to_glib(self) -> ffi::GdkOwnerChange {
+        match self {
             OwnerChange::NewOwner => ffi::GDK_OWNER_CHANGE_NEW_OWNER,
             OwnerChange::Destroy => ffi::GDK_OWNER_CHANGE_DESTROY,
             OwnerChange::Close => ffi::GDK_OWNER_CHANGE_CLOSE,
@@ -2582,8 +2582,8 @@ impl fmt::Display for PropMode {
 impl ToGlib for PropMode {
     type GlibType = ffi::GdkPropMode;
 
-    fn to_glib(&self) -> ffi::GdkPropMode {
-        match *self {
+    fn to_glib(self) -> ffi::GdkPropMode {
+        match self {
             PropMode::Replace => ffi::GDK_PROP_MODE_REPLACE,
             PropMode::Prepend => ffi::GDK_PROP_MODE_PREPEND,
             PropMode::Append => ffi::GDK_PROP_MODE_APPEND,
@@ -2659,8 +2659,8 @@ impl fmt::Display for PropertyState {
 impl ToGlib for PropertyState {
     type GlibType = ffi::GdkPropertyState;
 
-    fn to_glib(&self) -> ffi::GdkPropertyState {
-        match *self {
+    fn to_glib(self) -> ffi::GdkPropertyState {
+        match self {
             PropertyState::NewValue => ffi::GDK_PROPERTY_NEW_VALUE,
             PropertyState::Delete => ffi::GDK_PROPERTY_DELETE,
             PropertyState::__Unknown(value) => value,
@@ -2743,8 +2743,8 @@ impl fmt::Display for ScrollDirection {
 impl ToGlib for ScrollDirection {
     type GlibType = ffi::GdkScrollDirection;
 
-    fn to_glib(&self) -> ffi::GdkScrollDirection {
-        match *self {
+    fn to_glib(self) -> ffi::GdkScrollDirection {
+        match self {
             ScrollDirection::Up => ffi::GDK_SCROLL_UP,
             ScrollDirection::Down => ffi::GDK_SCROLL_DOWN,
             ScrollDirection::Left => ffi::GDK_SCROLL_LEFT,
@@ -2827,8 +2827,8 @@ impl fmt::Display for SettingAction {
 impl ToGlib for SettingAction {
     type GlibType = ffi::GdkSettingAction;
 
-    fn to_glib(&self) -> ffi::GdkSettingAction {
-        match *self {
+    fn to_glib(self) -> ffi::GdkSettingAction {
+        match self {
             SettingAction::New => ffi::GDK_SETTING_ACTION_NEW,
             SettingAction::Changed => ffi::GDK_SETTING_ACTION_CHANGED,
             SettingAction::Deleted => ffi::GDK_SETTING_ACTION_DELETED,
@@ -2922,8 +2922,8 @@ impl fmt::Display for SubpixelLayout {
 impl ToGlib for SubpixelLayout {
     type GlibType = ffi::GdkSubpixelLayout;
 
-    fn to_glib(&self) -> ffi::GdkSubpixelLayout {
-        match *self {
+    fn to_glib(self) -> ffi::GdkSubpixelLayout {
+        match self {
             SubpixelLayout::Unknown => ffi::GDK_SUBPIXEL_LAYOUT_UNKNOWN,
             SubpixelLayout::None => ffi::GDK_SUBPIXEL_LAYOUT_NONE,
             SubpixelLayout::HorizontalRgb => ffi::GDK_SUBPIXEL_LAYOUT_HORIZONTAL_RGB,
@@ -3018,8 +3018,8 @@ impl fmt::Display for VisibilityState {
 impl ToGlib for VisibilityState {
     type GlibType = ffi::GdkVisibilityState;
 
-    fn to_glib(&self) -> ffi::GdkVisibilityState {
-        match *self {
+    fn to_glib(self) -> ffi::GdkVisibilityState {
+        match self {
             VisibilityState::Unobscured => ffi::GDK_VISIBILITY_UNOBSCURED,
             VisibilityState::Partial => ffi::GDK_VISIBILITY_PARTIAL,
             VisibilityState::FullyObscured => ffi::GDK_VISIBILITY_FULLY_OBSCURED,
@@ -3107,8 +3107,8 @@ impl fmt::Display for VisualType {
 impl ToGlib for VisualType {
     type GlibType = ffi::GdkVisualType;
 
-    fn to_glib(&self) -> ffi::GdkVisualType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkVisualType {
+        match self {
             VisualType::StaticGray => ffi::GDK_VISUAL_STATIC_GRAY,
             VisualType::Grayscale => ffi::GDK_VISUAL_GRAYSCALE,
             VisualType::StaticColor => ffi::GDK_VISUAL_STATIC_COLOR,
@@ -3208,8 +3208,8 @@ impl fmt::Display for WindowEdge {
 impl ToGlib for WindowEdge {
     type GlibType = ffi::GdkWindowEdge;
 
-    fn to_glib(&self) -> ffi::GdkWindowEdge {
-        match *self {
+    fn to_glib(self) -> ffi::GdkWindowEdge {
+        match self {
             WindowEdge::NorthWest => ffi::GDK_WINDOW_EDGE_NORTH_WEST,
             WindowEdge::North => ffi::GDK_WINDOW_EDGE_NORTH,
             WindowEdge::NorthEast => ffi::GDK_WINDOW_EDGE_NORTH_EAST,
@@ -3310,8 +3310,8 @@ impl fmt::Display for WindowType {
 impl ToGlib for WindowType {
     type GlibType = ffi::GdkWindowType;
 
-    fn to_glib(&self) -> ffi::GdkWindowType {
-        match *self {
+    fn to_glib(self) -> ffi::GdkWindowType {
+        match self {
             WindowType::Root => ffi::GDK_WINDOW_ROOT,
             WindowType::Toplevel => ffi::GDK_WINDOW_TOPLEVEL,
             WindowType::Child => ffi::GDK_WINDOW_CHILD,
@@ -3431,8 +3431,8 @@ impl fmt::Display for WindowTypeHint {
 impl ToGlib for WindowTypeHint {
     type GlibType = ffi::GdkWindowTypeHint;
 
-    fn to_glib(&self) -> ffi::GdkWindowTypeHint {
-        match *self {
+    fn to_glib(self) -> ffi::GdkWindowTypeHint {
+        match self {
             WindowTypeHint::Normal => ffi::GDK_WINDOW_TYPE_HINT_NORMAL,
             WindowTypeHint::Dialog => ffi::GDK_WINDOW_TYPE_HINT_DIALOG,
             WindowTypeHint::Menu => ffi::GDK_WINDOW_TYPE_HINT_MENU,
@@ -3530,8 +3530,8 @@ impl fmt::Display for WindowWindowClass {
 impl ToGlib for WindowWindowClass {
     type GlibType = ffi::GdkWindowWindowClass;
 
-    fn to_glib(&self) -> ffi::GdkWindowWindowClass {
-        match *self {
+    fn to_glib(self) -> ffi::GdkWindowWindowClass {
+        match self {
             WindowWindowClass::InputOutput => ffi::GDK_INPUT_OUTPUT,
             WindowWindowClass::InputOnly => ffi::GDK_INPUT_ONLY,
             WindowWindowClass::__Unknown(value) => value,

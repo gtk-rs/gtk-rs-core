@@ -45,8 +45,8 @@ impl fmt::Display for Alignment {
 impl ToGlib for Alignment {
     type GlibType = ffi::PangoAlignment;
 
-    fn to_glib(&self) -> ffi::PangoAlignment {
-        match *self {
+    fn to_glib(self) -> ffi::PangoAlignment {
+        match self {
             Alignment::Left => ffi::PANGO_ALIGN_LEFT,
             Alignment::Center => ffi::PANGO_ALIGN_CENTER,
             Alignment::Right => ffi::PANGO_ALIGN_RIGHT,
@@ -215,8 +215,8 @@ impl fmt::Display for AttrType {
 impl ToGlib for AttrType {
     type GlibType = ffi::PangoAttrType;
 
-    fn to_glib(&self) -> ffi::PangoAttrType {
-        match *self {
+    fn to_glib(self) -> ffi::PangoAttrType {
+        match self {
             AttrType::Invalid => ffi::PANGO_ATTR_INVALID,
             AttrType::Language => ffi::PANGO_ATTR_LANGUAGE,
             AttrType::Family => ffi::PANGO_ATTR_FAMILY,
@@ -406,8 +406,8 @@ impl fmt::Display for BidiType {
 impl ToGlib for BidiType {
     type GlibType = ffi::PangoBidiType;
 
-    fn to_glib(&self) -> ffi::PangoBidiType {
-        match *self {
+    fn to_glib(self) -> ffi::PangoBidiType {
+        match self {
             BidiType::L => ffi::PANGO_BIDI_TYPE_L,
             BidiType::Lre => ffi::PANGO_BIDI_TYPE_LRE,
             BidiType::Lro => ffi::PANGO_BIDI_TYPE_LRO,
@@ -520,8 +520,8 @@ impl fmt::Display for CoverageLevel {
 impl ToGlib for CoverageLevel {
     type GlibType = ffi::PangoCoverageLevel;
 
-    fn to_glib(&self) -> ffi::PangoCoverageLevel {
-        match *self {
+    fn to_glib(self) -> ffi::PangoCoverageLevel {
+        match self {
             CoverageLevel::None => ffi::PANGO_COVERAGE_NONE,
             CoverageLevel::Fallback => ffi::PANGO_COVERAGE_FALLBACK,
             CoverageLevel::Approximate => ffi::PANGO_COVERAGE_APPROXIMATE,
@@ -613,8 +613,8 @@ impl fmt::Display for Direction {
 impl ToGlib for Direction {
     type GlibType = ffi::PangoDirection;
 
-    fn to_glib(&self) -> ffi::PangoDirection {
-        match *self {
+    fn to_glib(self) -> ffi::PangoDirection {
+        match self {
             Direction::Ltr => ffi::PANGO_DIRECTION_LTR,
             Direction::Rtl => ffi::PANGO_DIRECTION_RTL,
             Direction::TtbLtr => ffi::PANGO_DIRECTION_TTB_LTR,
@@ -703,8 +703,8 @@ impl fmt::Display for EllipsizeMode {
 impl ToGlib for EllipsizeMode {
     type GlibType = ffi::PangoEllipsizeMode;
 
-    fn to_glib(&self) -> ffi::PangoEllipsizeMode {
-        match *self {
+    fn to_glib(self) -> ffi::PangoEllipsizeMode {
+        match self {
             EllipsizeMode::None => ffi::PANGO_ELLIPSIZE_NONE,
             EllipsizeMode::Start => ffi::PANGO_ELLIPSIZE_START,
             EllipsizeMode::Middle => ffi::PANGO_ELLIPSIZE_MIDDLE,
@@ -830,8 +830,8 @@ impl fmt::Display for Gravity {
 impl ToGlib for Gravity {
     type GlibType = ffi::PangoGravity;
 
-    fn to_glib(&self) -> ffi::PangoGravity {
-        match *self {
+    fn to_glib(self) -> ffi::PangoGravity {
+        match self {
             Gravity::South => ffi::PANGO_GRAVITY_SOUTH,
             Gravity::East => ffi::PANGO_GRAVITY_EAST,
             Gravity::North => ffi::PANGO_GRAVITY_NORTH,
@@ -913,8 +913,8 @@ impl fmt::Display for GravityHint {
 impl ToGlib for GravityHint {
     type GlibType = ffi::PangoGravityHint;
 
-    fn to_glib(&self) -> ffi::PangoGravityHint {
-        match *self {
+    fn to_glib(self) -> ffi::PangoGravityHint {
+        match self {
             GravityHint::Natural => ffi::PANGO_GRAVITY_HINT_NATURAL,
             GravityHint::Strong => ffi::PANGO_GRAVITY_HINT_STRONG,
             GravityHint::Line => ffi::PANGO_GRAVITY_HINT_LINE,
@@ -995,8 +995,8 @@ impl fmt::Display for Overline {
 impl ToGlib for Overline {
     type GlibType = ffi::PangoOverline;
 
-    fn to_glib(&self) -> ffi::PangoOverline {
-        match *self {
+    fn to_glib(self) -> ffi::PangoOverline {
+        match self {
             Overline::None => ffi::PANGO_OVERLINE_NONE,
             Overline::Single => ffi::PANGO_OVERLINE_SINGLE,
             Overline::__Unknown(value) => value,
@@ -1088,8 +1088,8 @@ impl fmt::Display for RenderPart {
 impl ToGlib for RenderPart {
     type GlibType = ffi::PangoRenderPart;
 
-    fn to_glib(&self) -> ffi::PangoRenderPart {
-        match *self {
+    fn to_glib(self) -> ffi::PangoRenderPart {
+        match self {
             RenderPart::Foreground => ffi::PANGO_RENDER_PART_FOREGROUND,
             RenderPart::Background => ffi::PANGO_RENDER_PART_BACKGROUND,
             RenderPart::Underline => ffi::PANGO_RENDER_PART_UNDERLINE,
@@ -1529,8 +1529,8 @@ impl fmt::Display for Script {
 impl ToGlib for Script {
     type GlibType = ffi::PangoScript;
 
-    fn to_glib(&self) -> ffi::PangoScript {
-        match *self {
+    fn to_glib(self) -> ffi::PangoScript {
+        match self {
             Script::InvalidCode => ffi::PANGO_SCRIPT_INVALID_CODE,
             Script::Common => ffi::PANGO_SCRIPT_COMMON,
             Script::Inherited => ffi::PANGO_SCRIPT_INHERITED,
@@ -1856,8 +1856,8 @@ impl fmt::Display for Stretch {
 impl ToGlib for Stretch {
     type GlibType = ffi::PangoStretch;
 
-    fn to_glib(&self) -> ffi::PangoStretch {
-        match *self {
+    fn to_glib(self) -> ffi::PangoStretch {
+        match self {
             Stretch::UltraCondensed => ffi::PANGO_STRETCH_ULTRA_CONDENSED,
             Stretch::ExtraCondensed => ffi::PANGO_STRETCH_EXTRA_CONDENSED,
             Stretch::Condensed => ffi::PANGO_STRETCH_CONDENSED,
@@ -1947,8 +1947,8 @@ impl fmt::Display for Style {
 impl ToGlib for Style {
     type GlibType = ffi::PangoStyle;
 
-    fn to_glib(&self) -> ffi::PangoStyle {
-        match *self {
+    fn to_glib(self) -> ffi::PangoStyle {
+        match self {
             Style::Normal => ffi::PANGO_STYLE_NORMAL,
             Style::Oblique => ffi::PANGO_STYLE_OBLIQUE,
             Style::Italic => ffi::PANGO_STYLE_ITALIC,
@@ -2020,8 +2020,8 @@ impl fmt::Display for TabAlign {
 impl ToGlib for TabAlign {
     type GlibType = ffi::PangoTabAlign;
 
-    fn to_glib(&self) -> ffi::PangoTabAlign {
-        match *self {
+    fn to_glib(self) -> ffi::PangoTabAlign {
+        match self {
             TabAlign::Left => ffi::PANGO_TAB_LEFT,
             TabAlign::__Unknown(value) => value,
         }
@@ -2110,8 +2110,8 @@ impl fmt::Display for Underline {
 impl ToGlib for Underline {
     type GlibType = ffi::PangoUnderline;
 
-    fn to_glib(&self) -> ffi::PangoUnderline {
-        match *self {
+    fn to_glib(self) -> ffi::PangoUnderline {
+        match self {
             Underline::None => ffi::PANGO_UNDERLINE_NONE,
             Underline::Single => ffi::PANGO_UNDERLINE_SINGLE,
             Underline::Double => ffi::PANGO_UNDERLINE_DOUBLE,
@@ -2196,8 +2196,8 @@ impl fmt::Display for Variant {
 impl ToGlib for Variant {
     type GlibType = ffi::PangoVariant;
 
-    fn to_glib(&self) -> ffi::PangoVariant {
-        match *self {
+    fn to_glib(self) -> ffi::PangoVariant {
+        match self {
             Variant::Normal => ffi::PANGO_VARIANT_NORMAL,
             Variant::SmallCaps => ffi::PANGO_VARIANT_SMALL_CAPS,
             Variant::__Unknown(value) => value,
@@ -2300,8 +2300,8 @@ impl fmt::Display for Weight {
 impl ToGlib for Weight {
     type GlibType = ffi::PangoWeight;
 
-    fn to_glib(&self) -> ffi::PangoWeight {
-        match *self {
+    fn to_glib(self) -> ffi::PangoWeight {
+        match self {
             Weight::Thin => ffi::PANGO_WEIGHT_THIN,
             Weight::Ultralight => ffi::PANGO_WEIGHT_ULTRALIGHT,
             Weight::Light => ffi::PANGO_WEIGHT_LIGHT,
@@ -2397,8 +2397,8 @@ impl fmt::Display for WrapMode {
 impl ToGlib for WrapMode {
     type GlibType = ffi::PangoWrapMode;
 
-    fn to_glib(&self) -> ffi::PangoWrapMode {
-        match *self {
+    fn to_glib(self) -> ffi::PangoWrapMode {
+        match self {
             WrapMode::Word => ffi::PANGO_WRAP_WORD,
             WrapMode::Char => ffi::PANGO_WRAP_CHAR,
             WrapMode::WordChar => ffi::PANGO_WRAP_WORD_CHAR,

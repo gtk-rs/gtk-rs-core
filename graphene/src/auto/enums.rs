@@ -122,8 +122,8 @@ impl fmt::Display for EulerOrder {
 impl ToGlib for EulerOrder {
     type GlibType = ffi::graphene_euler_order_t;
 
-    fn to_glib(&self) -> ffi::graphene_euler_order_t {
-        match *self {
+    fn to_glib(self) -> ffi::graphene_euler_order_t {
+        match self {
             EulerOrder::Default => ffi::GRAPHENE_EULER_ORDER_DEFAULT,
             EulerOrder::Xyz => ffi::GRAPHENE_EULER_ORDER_XYZ,
             EulerOrder::Yzx => ffi::GRAPHENE_EULER_ORDER_YZX,
@@ -240,8 +240,8 @@ impl fmt::Display for RayIntersectionKind {
 impl ToGlib for RayIntersectionKind {
     type GlibType = ffi::graphene_ray_intersection_kind_t;
 
-    fn to_glib(&self) -> ffi::graphene_ray_intersection_kind_t {
-        match *self {
+    fn to_glib(self) -> ffi::graphene_ray_intersection_kind_t {
+        match self {
             RayIntersectionKind::None => ffi::GRAPHENE_RAY_INTERSECTION_KIND_NONE,
             RayIntersectionKind::Enter => ffi::GRAPHENE_RAY_INTERSECTION_KIND_ENTER,
             RayIntersectionKind::Leave => ffi::GRAPHENE_RAY_INTERSECTION_KIND_LEAVE,
