@@ -183,8 +183,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                default_value.to_glib(),
-                flags.to_glib(),
+                default_value.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -207,8 +207,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                boxed_type.to_glib(),
-                flags.to_glib(),
+                boxed_type.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -236,7 +236,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -264,7 +264,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -288,9 +288,9 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                enum_type.to_glib(),
+                enum_type.into_glib(),
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -314,9 +314,9 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                flags_type.to_glib(),
+                flags_type.into_glib(),
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -344,7 +344,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -367,8 +367,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                is_a_type.to_glib(),
-                flags.to_glib(),
+                is_a_type.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -396,7 +396,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -424,7 +424,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -452,7 +452,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -475,8 +475,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                object_type.to_glib(),
-                flags.to_glib(),
+                object_type.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -514,8 +514,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                param_type.to_glib(),
-                flags.to_glib(),
+                param_type.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -532,7 +532,7 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -557,7 +557,7 @@ impl ParamSpec {
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
                 default_value.0,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -585,7 +585,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -613,7 +613,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -641,7 +641,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -669,7 +669,7 @@ impl ParamSpec {
                 minimum,
                 maximum,
                 default_value,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -692,8 +692,8 @@ impl ParamSpec {
                 name.to_glib_none().0,
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
-                default_value.to_glib(),
-                flags.to_glib(),
+                default_value.into_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -717,7 +717,7 @@ impl ParamSpec {
                 nick.to_glib_none().0,
                 blurb.to_glib_none().0,
                 element_spec.to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }
@@ -743,7 +743,7 @@ impl ParamSpec {
                 blurb.to_glib_none().0,
                 type_.to_glib_none().0,
                 default_value.to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
         }
     }

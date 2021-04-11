@@ -92,7 +92,7 @@ where
     let imp = instance.get_impl();
     let wrap = from_glib_borrow::<_, ListModel>(list_model);
 
-    let type_ = imp.get_item_type(wrap.unsafe_cast_ref()).to_glib();
+    let type_ = imp.get_item_type(wrap.unsafe_cast_ref()).into_glib();
 
     // Store the type so we can enforce that it doesn't change.
     match wrap.get_qdata(*LIST_ITEM_TYPE_QUARK) {

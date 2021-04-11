@@ -21,7 +21,7 @@ impl PadController {
             .iter()
             .zip(entry_strings.iter())
             .map(|(e, (label, action_name))| ffi::GtkPadActionEntry {
-                type_: e.get_type().to_glib(),
+                type_: e.get_type().into_glib(),
                 index: e.get_index(),
                 mode: e.get_mode(),
                 label: label.0,

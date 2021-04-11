@@ -137,11 +137,11 @@ impl Value {
     pub fn from_type(type_: Type) -> Self {
         unsafe {
             assert_eq!(
-                gobject_ffi::g_type_check_is_value_type(type_.to_glib()),
+                gobject_ffi::g_type_check_is_value_type(type_.into_glib()),
                 ffi::GTRUE
             );
             let mut value = Value::uninitialized();
-            gobject_ffi::g_value_init(value.to_glib_none_mut().0, type_.to_glib());
+            gobject_ffi::g_value_init(value.to_glib_none_mut().0, type_.into_glib());
             value
         }
     }
@@ -154,7 +154,7 @@ impl Value {
         unsafe {
             let ok = from_glib(gobject_ffi::g_type_check_value_holds(
                 mut_override(self.to_glib_none().0),
-                T::static_type().to_glib(),
+                T::static_type().into_glib(),
             ));
             if ok {
                 Ok(TypedValue(self, PhantomData))
@@ -172,7 +172,7 @@ impl Value {
         unsafe {
             let ok = from_glib(gobject_ffi::g_type_check_value_holds(
                 mut_override(self.to_glib_none().0),
-                T::static_type().to_glib(),
+                T::static_type().into_glib(),
             ));
             if ok {
                 // This cast is safe because Value and TypedValue have the same
@@ -191,7 +191,7 @@ impl Value {
         unsafe {
             let ok = from_glib(gobject_ffi::g_type_check_value_holds(
                 mut_override(self.to_glib_none().0),
-                T::static_type().to_glib(),
+                T::static_type().into_glib(),
             ));
             if ok {
                 Ok(T::from_value_optional(self))
@@ -211,7 +211,7 @@ impl Value {
         unsafe {
             let ok = from_glib(gobject_ffi::g_type_check_value_holds(
                 mut_override(self.to_glib_none().0),
-                T::static_type().to_glib(),
+                T::static_type().into_glib(),
             ));
             if ok {
                 Ok(T::from_value(self))
@@ -237,8 +237,8 @@ impl Value {
     pub fn type_transformable(src: Type, dst: Type) -> bool {
         unsafe {
             from_glib(gobject_ffi::g_value_type_transformable(
-                src.to_glib(),
-                dst.to_glib(),
+                src.into_glib(),
+                dst.into_glib(),
             ))
         }
     }
@@ -402,7 +402,7 @@ impl<'a> ToGlibContainerFromSlice<'a, *mut gobject_ffi::GValue> for &'a Value {
             let res = ffi::g_malloc0(mem::size_of::<gobject_ffi::GValue>() * t.len())
                 as *mut gobject_ffi::GValue;
             for (i, v) in t.iter().enumerate() {
-                gobject_ffi::g_value_init(res.add(i), v.type_().to_glib());
+                gobject_ffi::g_value_init(res.add(i), v.type_().into_glib());
                 gobject_ffi::g_value_copy(v.to_glib_none().0, res.add(i));
             }
             res
@@ -783,7 +783,7 @@ impl SendValue {
         unsafe {
             let ok = from_glib(gobject_ffi::g_type_check_value_holds(
                 mut_override(self.to_glib_none().0),
-                T::static_type().to_glib(),
+                T::static_type().into_glib(),
             ));
             if ok {
                 // This cast is safe because SendValue and TypedValue have the same
@@ -1078,7 +1078,7 @@ impl<'a> FromValue<'a> for bool {
 
 impl SetValue for bool {
     unsafe fn set_value(value: &mut Value, this: &Self) {
-        gobject_ffi::g_value_set_boolean(value.to_glib_none_mut().0, this.to_glib())
+        gobject_ffi::g_value_set_boolean(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 

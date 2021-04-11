@@ -40,7 +40,7 @@ impl Application {
         let app: Application = unsafe {
             Option::from_glib_full(ffi::gtk_application_new(
                 application_id.to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
             ))
             .ok_or_else(|| glib::bool_error!("Failed to create application"))?
         };

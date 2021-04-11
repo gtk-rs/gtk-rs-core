@@ -304,7 +304,7 @@ impl<T: CellRendererImpl> CellRendererImplExt for T {
             f(
                 renderer.unsafe_cast_ref::<CellRenderer>().to_glib_none().0,
                 widget.as_ref().to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
                 cell_area.to_glib_none().0,
                 aligned_area.to_glib_none_mut().0,
             );
@@ -331,7 +331,7 @@ impl<T: CellRendererImpl> CellRendererImplExt for T {
                     widget.as_ref().to_glib_none().0,
                     background_area.to_glib_none().0,
                     cell_area.to_glib_none().0,
-                    flags.to_glib(),
+                    flags.into_glib(),
                 )
             }
         }
@@ -358,7 +358,7 @@ impl<T: CellRendererImpl> CellRendererImplExt for T {
                     path.to_glib_none().0,
                     background_area.to_glib_none().0,
                     cell_area.to_glib_none().0,
-                    flags.to_glib(),
+                    flags.into_glib(),
                 ))
             } else {
                 false
@@ -387,7 +387,7 @@ impl<T: CellRendererImpl> CellRendererImplExt for T {
                     path.to_glib_none().0,
                     background_area.to_glib_none().0,
                     cell_area.to_glib_none().0,
-                    flags.to_glib(),
+                    flags.into_glib(),
                 ))
             } else {
                 None
@@ -452,7 +452,7 @@ unsafe extern "C" fn cell_renderer_get_request_mode<T: CellRendererImpl>(
     let imp = instance.get_impl();
     let wrap: Borrowed<CellRenderer> = from_glib_borrow(ptr);
 
-    imp.get_request_mode(wrap.unsafe_cast_ref()).to_glib()
+    imp.get_request_mode(wrap.unsafe_cast_ref()).into_glib()
 }
 
 unsafe extern "C" fn cell_renderer_get_preferred_width<T: CellRendererImpl>(
@@ -608,7 +608,7 @@ unsafe extern "C" fn cell_renderer_activate<T: CellRendererImpl>(
         &from_glib_borrow(cellptr),
         from_glib(flags),
     )
-    .to_glib()
+    .into_glib()
 }
 
 unsafe extern "C" fn cell_renderer_start_editing<T: CellRendererImpl>(
