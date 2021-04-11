@@ -264,7 +264,7 @@ impl<O: IsA<Gesture>> GestureExt for O {
             from_glib(ffi::gtk_gesture_set_sequence_state(
                 self.as_ref().to_glib_none().0,
                 mut_override(sequence.to_glib_none().0),
-                state.to_glib(),
+                state.into_glib(),
             ))
         }
     }
@@ -273,7 +273,7 @@ impl<O: IsA<Gesture>> GestureExt for O {
         unsafe {
             from_glib(ffi::gtk_gesture_set_state(
                 self.as_ref().to_glib_none().0,
-                state.to_glib(),
+                state.into_glib(),
             ))
         }
     }

@@ -41,9 +41,9 @@ impl Socket {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_socket_new(
-                family.to_glib(),
-                type_.to_glib(),
-                protocol.to_glib(),
+                family.into_glib(),
+                type_.into_glib(),
+                protocol.into_glib(),
                 &mut error,
             );
             if error.is_null() {
@@ -311,7 +311,7 @@ impl<O: IsA<Socket>> SocketExt for O {
             let _ = ffi::g_socket_bind(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
-                allow_reuse.to_glib(),
+                allow_reuse.into_glib(),
                 &mut error,
             );
             if error.is_null() {
@@ -350,7 +350,7 @@ impl<O: IsA<Socket>> SocketExt for O {
         unsafe {
             from_glib(ffi::g_socket_condition_check(
                 self.as_ref().to_glib_none().0,
-                condition.to_glib(),
+                condition.into_glib(),
             ))
         }
     }
@@ -365,7 +365,7 @@ impl<O: IsA<Socket>> SocketExt for O {
             let mut error = ptr::null_mut();
             let _ = ffi::g_socket_condition_timed_wait(
                 self.as_ref().to_glib_none().0,
-                condition.to_glib(),
+                condition.into_glib(),
                 timeout_us,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
@@ -387,7 +387,7 @@ impl<O: IsA<Socket>> SocketExt for O {
             let mut error = ptr::null_mut();
             let _ = ffi::g_socket_condition_wait(
                 self.as_ref().to_glib_none().0,
-                condition.to_glib(),
+                condition.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
@@ -559,7 +559,7 @@ impl<O: IsA<Socket>> SocketExt for O {
             let _ = ffi::g_socket_join_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
-                source_specific.to_glib(),
+                source_specific.into_glib(),
                 iface.to_glib_none().0,
                 &mut error,
             );
@@ -607,7 +607,7 @@ impl<O: IsA<Socket>> SocketExt for O {
             let _ = ffi::g_socket_leave_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
-                source_specific.to_glib(),
+                source_specific.into_glib(),
                 iface.to_glib_none().0,
                 &mut error,
             );
@@ -658,19 +658,19 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     fn set_blocking(&self, blocking: bool) {
         unsafe {
-            ffi::g_socket_set_blocking(self.as_ref().to_glib_none().0, blocking.to_glib());
+            ffi::g_socket_set_blocking(self.as_ref().to_glib_none().0, blocking.into_glib());
         }
     }
 
     fn set_broadcast(&self, broadcast: bool) {
         unsafe {
-            ffi::g_socket_set_broadcast(self.as_ref().to_glib_none().0, broadcast.to_glib());
+            ffi::g_socket_set_broadcast(self.as_ref().to_glib_none().0, broadcast.into_glib());
         }
     }
 
     fn set_keepalive(&self, keepalive: bool) {
         unsafe {
-            ffi::g_socket_set_keepalive(self.as_ref().to_glib_none().0, keepalive.to_glib());
+            ffi::g_socket_set_keepalive(self.as_ref().to_glib_none().0, keepalive.into_glib());
         }
     }
 
@@ -684,7 +684,7 @@ impl<O: IsA<Socket>> SocketExt for O {
         unsafe {
             ffi::g_socket_set_multicast_loopback(
                 self.as_ref().to_glib_none().0,
-                loopback.to_glib(),
+                loopback.into_glib(),
             );
         }
     }
@@ -730,8 +730,8 @@ impl<O: IsA<Socket>> SocketExt for O {
             let mut error = ptr::null_mut();
             let _ = ffi::g_socket_shutdown(
                 self.as_ref().to_glib_none().0,
-                shutdown_read.to_glib(),
-                shutdown_write.to_glib(),
+                shutdown_read.into_glib(),
+                shutdown_write.into_glib(),
                 &mut error,
             );
             if error.is_null() {

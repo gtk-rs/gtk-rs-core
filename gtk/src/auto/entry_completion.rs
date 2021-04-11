@@ -398,7 +398,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
         unsafe {
             ffi::gtk_entry_completion_set_inline_completion(
                 self.as_ref().to_glib_none().0,
-                inline_completion.to_glib(),
+                inline_completion.into_glib(),
             );
         }
     }
@@ -407,7 +407,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
         unsafe {
             ffi::gtk_entry_completion_set_inline_selection(
                 self.as_ref().to_glib_none().0,
-                inline_selection.to_glib(),
+                inline_selection.into_glib(),
             );
         }
     }
@@ -427,7 +427,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
             let iter = from_glib_borrow(iter);
             let callback: &P = &*(user_data as *mut _);
             let res = (*callback)(&completion, key.as_str(), &iter);
-            res.to_glib()
+            res.into_glib()
         }
         let func = Some(func_func::<P> as _);
         unsafe extern "C" fn func_notify_func<
@@ -471,7 +471,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
         unsafe {
             ffi::gtk_entry_completion_set_popup_completion(
                 self.as_ref().to_glib_none().0,
-                popup_completion.to_glib(),
+                popup_completion.into_glib(),
             );
         }
     }
@@ -480,7 +480,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
         unsafe {
             ffi::gtk_entry_completion_set_popup_set_width(
                 self.as_ref().to_glib_none().0,
-                popup_set_width.to_glib(),
+                popup_set_width.into_glib(),
             );
         }
     }
@@ -489,7 +489,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
         unsafe {
             ffi::gtk_entry_completion_set_popup_single_match(
                 self.as_ref().to_glib_none().0,
-                popup_single_match.to_glib(),
+                popup_single_match.into_glib(),
             );
         }
     }
@@ -565,7 +565,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
                 &from_glib_borrow(model),
                 &from_glib_borrow(iter),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -600,7 +600,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
                 &EntryCompletion::from_glib_borrow(this).unsafe_cast_ref(),
                 &glib::GString::from_glib_borrow(prefix),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -639,7 +639,7 @@ impl<O: IsA<EntryCompletion>> EntryCompletionExt for O {
                 &from_glib_borrow(model),
                 &from_glib_borrow(iter),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

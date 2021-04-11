@@ -27,10 +27,10 @@ impl fmt::Display for AppInfoCreateFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for AppInfoCreateFlags {
+impl IntoGlib for AppInfoCreateFlags {
     type GlibType = ffi::GAppInfoCreateFlags;
 
-    fn to_glib(self) -> ffi::GAppInfoCreateFlags {
+    fn into_glib(self) -> ffi::GAppInfoCreateFlags {
         self.bits()
     }
 }
@@ -62,7 +62,7 @@ impl<'a> FromValue<'a> for AppInfoCreateFlags {
 
 impl SetValue for AppInfoCreateFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -88,10 +88,10 @@ impl fmt::Display for ApplicationFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for ApplicationFlags {
+impl IntoGlib for ApplicationFlags {
     type GlibType = ffi::GApplicationFlags;
 
-    fn to_glib(self) -> ffi::GApplicationFlags {
+    fn into_glib(self) -> ffi::GApplicationFlags {
         self.bits()
     }
 }
@@ -123,7 +123,7 @@ impl<'a> FromValue<'a> for ApplicationFlags {
 
 impl SetValue for ApplicationFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -145,10 +145,10 @@ impl fmt::Display for AskPasswordFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for AskPasswordFlags {
+impl IntoGlib for AskPasswordFlags {
     type GlibType = ffi::GAskPasswordFlags;
 
-    fn to_glib(self) -> ffi::GAskPasswordFlags {
+    fn into_glib(self) -> ffi::GAskPasswordFlags {
         self.bits()
     }
 }
@@ -180,7 +180,7 @@ impl<'a> FromValue<'a> for AskPasswordFlags {
 
 impl SetValue for AskPasswordFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -200,10 +200,10 @@ impl fmt::Display for BusNameOwnerFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for BusNameOwnerFlags {
+impl IntoGlib for BusNameOwnerFlags {
     type GlibType = ffi::GBusNameOwnerFlags;
 
-    fn to_glib(self) -> ffi::GBusNameOwnerFlags {
+    fn into_glib(self) -> ffi::GBusNameOwnerFlags {
         self.bits()
     }
 }
@@ -235,7 +235,7 @@ impl<'a> FromValue<'a> for BusNameOwnerFlags {
 
 impl SetValue for BusNameOwnerFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -253,10 +253,10 @@ impl fmt::Display for BusNameWatcherFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for BusNameWatcherFlags {
+impl IntoGlib for BusNameWatcherFlags {
     type GlibType = ffi::GBusNameWatcherFlags;
 
-    fn to_glib(self) -> ffi::GBusNameWatcherFlags {
+    fn into_glib(self) -> ffi::GBusNameWatcherFlags {
         self.bits()
     }
 }
@@ -288,7 +288,7 @@ impl<'a> FromValue<'a> for BusNameWatcherFlags {
 
 impl SetValue for BusNameWatcherFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -307,10 +307,10 @@ impl fmt::Display for ConverterFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for ConverterFlags {
+impl IntoGlib for ConverterFlags {
     type GlibType = ffi::GConverterFlags;
 
-    fn to_glib(self) -> ffi::GConverterFlags {
+    fn into_glib(self) -> ffi::GConverterFlags {
         self.bits()
     }
 }
@@ -342,7 +342,7 @@ impl<'a> FromValue<'a> for ConverterFlags {
 
 impl SetValue for ConverterFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -361,10 +361,10 @@ impl fmt::Display for DBusCallFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusCallFlags {
+impl IntoGlib for DBusCallFlags {
     type GlibType = ffi::GDBusCallFlags;
 
-    fn to_glib(self) -> ffi::GDBusCallFlags {
+    fn into_glib(self) -> ffi::GDBusCallFlags {
         self.bits()
     }
 }
@@ -396,7 +396,7 @@ impl<'a> FromValue<'a> for DBusCallFlags {
 
 impl SetValue for DBusCallFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -414,10 +414,10 @@ impl fmt::Display for DBusCapabilityFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusCapabilityFlags {
+impl IntoGlib for DBusCapabilityFlags {
     type GlibType = ffi::GDBusCapabilityFlags;
 
-    fn to_glib(self) -> ffi::GDBusCapabilityFlags {
+    fn into_glib(self) -> ffi::GDBusCapabilityFlags {
         self.bits()
     }
 }
@@ -449,7 +449,7 @@ impl<'a> FromValue<'a> for DBusCapabilityFlags {
 
 impl SetValue for DBusCapabilityFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -471,10 +471,10 @@ impl fmt::Display for DBusConnectionFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusConnectionFlags {
+impl IntoGlib for DBusConnectionFlags {
     type GlibType = ffi::GDBusConnectionFlags;
 
-    fn to_glib(self) -> ffi::GDBusConnectionFlags {
+    fn into_glib(self) -> ffi::GDBusConnectionFlags {
         self.bits()
     }
 }
@@ -506,7 +506,7 @@ impl<'a> FromValue<'a> for DBusConnectionFlags {
 
 impl SetValue for DBusConnectionFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -524,10 +524,10 @@ impl fmt::Display for DBusInterfaceSkeletonFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusInterfaceSkeletonFlags {
+impl IntoGlib for DBusInterfaceSkeletonFlags {
     type GlibType = ffi::GDBusInterfaceSkeletonFlags;
 
-    fn to_glib(self) -> ffi::GDBusInterfaceSkeletonFlags {
+    fn into_glib(self) -> ffi::GDBusInterfaceSkeletonFlags {
         self.bits()
     }
 }
@@ -559,7 +559,7 @@ impl<'a> FromValue<'a> for DBusInterfaceSkeletonFlags {
 
 impl SetValue for DBusInterfaceSkeletonFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -579,10 +579,10 @@ impl fmt::Display for DBusMessageFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusMessageFlags {
+impl IntoGlib for DBusMessageFlags {
     type GlibType = ffi::GDBusMessageFlags;
 
-    fn to_glib(self) -> ffi::GDBusMessageFlags {
+    fn into_glib(self) -> ffi::GDBusMessageFlags {
         self.bits()
     }
 }
@@ -614,7 +614,7 @@ impl<'a> FromValue<'a> for DBusMessageFlags {
 
 impl SetValue for DBusMessageFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -636,10 +636,10 @@ impl fmt::Display for DBusProxyFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusProxyFlags {
+impl IntoGlib for DBusProxyFlags {
     type GlibType = ffi::GDBusProxyFlags;
 
-    fn to_glib(self) -> ffi::GDBusProxyFlags {
+    fn into_glib(self) -> ffi::GDBusProxyFlags {
         self.bits()
     }
 }
@@ -671,7 +671,7 @@ impl<'a> FromValue<'a> for DBusProxyFlags {
 
 impl SetValue for DBusProxyFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -689,10 +689,10 @@ impl fmt::Display for DBusSendMessageFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusSendMessageFlags {
+impl IntoGlib for DBusSendMessageFlags {
     type GlibType = ffi::GDBusSendMessageFlags;
 
-    fn to_glib(self) -> ffi::GDBusSendMessageFlags {
+    fn into_glib(self) -> ffi::GDBusSendMessageFlags {
         self.bits()
     }
 }
@@ -724,7 +724,7 @@ impl<'a> FromValue<'a> for DBusSendMessageFlags {
 
 impl SetValue for DBusSendMessageFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -743,10 +743,10 @@ impl fmt::Display for DBusServerFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusServerFlags {
+impl IntoGlib for DBusServerFlags {
     type GlibType = ffi::GDBusServerFlags;
 
-    fn to_glib(self) -> ffi::GDBusServerFlags {
+    fn into_glib(self) -> ffi::GDBusServerFlags {
         self.bits()
     }
 }
@@ -778,7 +778,7 @@ impl<'a> FromValue<'a> for DBusServerFlags {
 
 impl SetValue for DBusServerFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -798,10 +798,10 @@ impl fmt::Display for DBusSignalFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DBusSignalFlags {
+impl IntoGlib for DBusSignalFlags {
     type GlibType = ffi::GDBusSignalFlags;
 
-    fn to_glib(self) -> ffi::GDBusSignalFlags {
+    fn into_glib(self) -> ffi::GDBusSignalFlags {
         self.bits()
     }
 }
@@ -833,7 +833,7 @@ impl<'a> FromValue<'a> for DBusSignalFlags {
 
 impl SetValue for DBusSignalFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -850,10 +850,10 @@ impl fmt::Display for DriveStartFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for DriveStartFlags {
+impl IntoGlib for DriveStartFlags {
     type GlibType = ffi::GDriveStartFlags;
 
-    fn to_glib(self) -> ffi::GDriveStartFlags {
+    fn into_glib(self) -> ffi::GDriveStartFlags {
         self.bits()
     }
 }
@@ -885,7 +885,7 @@ impl<'a> FromValue<'a> for DriveStartFlags {
 
 impl SetValue for DriveStartFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -908,10 +908,10 @@ impl fmt::Display for FileCopyFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for FileCopyFlags {
+impl IntoGlib for FileCopyFlags {
     type GlibType = ffi::GFileCopyFlags;
 
-    fn to_glib(self) -> ffi::GFileCopyFlags {
+    fn into_glib(self) -> ffi::GFileCopyFlags {
         self.bits()
     }
 }
@@ -943,7 +943,7 @@ impl<'a> FromValue<'a> for FileCopyFlags {
 
 impl SetValue for FileCopyFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -962,10 +962,10 @@ impl fmt::Display for FileCreateFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for FileCreateFlags {
+impl IntoGlib for FileCreateFlags {
     type GlibType = ffi::GFileCreateFlags;
 
-    fn to_glib(self) -> ffi::GFileCreateFlags {
+    fn into_glib(self) -> ffi::GFileCreateFlags {
         self.bits()
     }
 }
@@ -997,7 +997,7 @@ impl<'a> FromValue<'a> for FileCreateFlags {
 
 impl SetValue for FileCreateFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1017,10 +1017,10 @@ impl fmt::Display for FileMeasureFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for FileMeasureFlags {
+impl IntoGlib for FileMeasureFlags {
     type GlibType = ffi::GFileMeasureFlags;
 
-    fn to_glib(self) -> ffi::GFileMeasureFlags {
+    fn into_glib(self) -> ffi::GFileMeasureFlags {
         self.bits()
     }
 }
@@ -1052,7 +1052,7 @@ impl<'a> FromValue<'a> for FileMeasureFlags {
 
 impl SetValue for FileMeasureFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1073,10 +1073,10 @@ impl fmt::Display for FileMonitorFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for FileMonitorFlags {
+impl IntoGlib for FileMonitorFlags {
     type GlibType = ffi::GFileMonitorFlags;
 
-    fn to_glib(self) -> ffi::GFileMonitorFlags {
+    fn into_glib(self) -> ffi::GFileMonitorFlags {
         self.bits()
     }
 }
@@ -1108,7 +1108,7 @@ impl<'a> FromValue<'a> for FileMonitorFlags {
 
 impl SetValue for FileMonitorFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1126,10 +1126,10 @@ impl fmt::Display for FileQueryInfoFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for FileQueryInfoFlags {
+impl IntoGlib for FileQueryInfoFlags {
     type GlibType = ffi::GFileQueryInfoFlags;
 
-    fn to_glib(self) -> ffi::GFileQueryInfoFlags {
+    fn into_glib(self) -> ffi::GFileQueryInfoFlags {
         self.bits()
     }
 }
@@ -1161,7 +1161,7 @@ impl<'a> FromValue<'a> for FileQueryInfoFlags {
 
 impl SetValue for FileQueryInfoFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1181,10 +1181,10 @@ impl fmt::Display for IOStreamSpliceFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for IOStreamSpliceFlags {
+impl IntoGlib for IOStreamSpliceFlags {
     type GlibType = ffi::GIOStreamSpliceFlags;
 
-    fn to_glib(self) -> ffi::GIOStreamSpliceFlags {
+    fn into_glib(self) -> ffi::GIOStreamSpliceFlags {
         self.bits()
     }
 }
@@ -1216,7 +1216,7 @@ impl<'a> FromValue<'a> for IOStreamSpliceFlags {
 
 impl SetValue for IOStreamSpliceFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1233,10 +1233,10 @@ impl fmt::Display for MountMountFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for MountMountFlags {
+impl IntoGlib for MountMountFlags {
     type GlibType = ffi::GMountMountFlags;
 
-    fn to_glib(self) -> ffi::GMountMountFlags {
+    fn into_glib(self) -> ffi::GMountMountFlags {
         self.bits()
     }
 }
@@ -1268,7 +1268,7 @@ impl<'a> FromValue<'a> for MountMountFlags {
 
 impl SetValue for MountMountFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1286,10 +1286,10 @@ impl fmt::Display for MountUnmountFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for MountUnmountFlags {
+impl IntoGlib for MountUnmountFlags {
     type GlibType = ffi::GMountUnmountFlags;
 
-    fn to_glib(self) -> ffi::GMountUnmountFlags {
+    fn into_glib(self) -> ffi::GMountUnmountFlags {
         self.bits()
     }
 }
@@ -1321,7 +1321,7 @@ impl<'a> FromValue<'a> for MountUnmountFlags {
 
 impl SetValue for MountUnmountFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1340,10 +1340,10 @@ impl fmt::Display for OutputStreamSpliceFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for OutputStreamSpliceFlags {
+impl IntoGlib for OutputStreamSpliceFlags {
     type GlibType = ffi::GOutputStreamSpliceFlags;
 
-    fn to_glib(self) -> ffi::GOutputStreamSpliceFlags {
+    fn into_glib(self) -> ffi::GOutputStreamSpliceFlags {
         self.bits()
     }
 }
@@ -1375,7 +1375,7 @@ impl<'a> FromValue<'a> for OutputStreamSpliceFlags {
 
 impl SetValue for OutputStreamSpliceFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1400,10 +1400,10 @@ impl fmt::Display for ResolverNameLookupFlags {
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 #[doc(hidden)]
-impl ToGlib for ResolverNameLookupFlags {
+impl IntoGlib for ResolverNameLookupFlags {
     type GlibType = ffi::GResolverNameLookupFlags;
 
-    fn to_glib(self) -> ffi::GResolverNameLookupFlags {
+    fn into_glib(self) -> ffi::GResolverNameLookupFlags {
         self.bits()
     }
 }
@@ -1445,7 +1445,7 @@ impl<'a> FromValue<'a> for ResolverNameLookupFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 impl SetValue for ResolverNameLookupFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1462,10 +1462,10 @@ impl fmt::Display for ResourceLookupFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for ResourceLookupFlags {
+impl IntoGlib for ResourceLookupFlags {
     type GlibType = ffi::GResourceLookupFlags;
 
-    fn to_glib(self) -> ffi::GResourceLookupFlags {
+    fn into_glib(self) -> ffi::GResourceLookupFlags {
         self.bits()
     }
 }
@@ -1497,7 +1497,7 @@ impl<'a> FromValue<'a> for ResourceLookupFlags {
 
 impl SetValue for ResourceLookupFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1519,10 +1519,10 @@ impl fmt::Display for SettingsBindFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for SettingsBindFlags {
+impl IntoGlib for SettingsBindFlags {
     type GlibType = ffi::GSettingsBindFlags;
 
-    fn to_glib(self) -> ffi::GSettingsBindFlags {
+    fn into_glib(self) -> ffi::GSettingsBindFlags {
         self.bits()
     }
 }
@@ -1554,7 +1554,7 @@ impl<'a> FromValue<'a> for SettingsBindFlags {
 
 impl SetValue for SettingsBindFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1579,10 +1579,10 @@ impl fmt::Display for SubprocessFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for SubprocessFlags {
+impl IntoGlib for SubprocessFlags {
     type GlibType = ffi::GSubprocessFlags;
 
-    fn to_glib(self) -> ffi::GSubprocessFlags {
+    fn into_glib(self) -> ffi::GSubprocessFlags {
         self.bits()
     }
 }
@@ -1614,7 +1614,7 @@ impl<'a> FromValue<'a> for SubprocessFlags {
 
 impl SetValue for SubprocessFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1638,10 +1638,10 @@ impl fmt::Display for TlsCertificateFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for TlsCertificateFlags {
+impl IntoGlib for TlsCertificateFlags {
     type GlibType = ffi::GTlsCertificateFlags;
 
-    fn to_glib(self) -> ffi::GTlsCertificateFlags {
+    fn into_glib(self) -> ffi::GTlsCertificateFlags {
         self.bits()
     }
 }
@@ -1673,7 +1673,7 @@ impl<'a> FromValue<'a> for TlsCertificateFlags {
 
 impl SetValue for TlsCertificateFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1690,10 +1690,10 @@ impl fmt::Display for TlsDatabaseVerifyFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for TlsDatabaseVerifyFlags {
+impl IntoGlib for TlsDatabaseVerifyFlags {
     type GlibType = ffi::GTlsDatabaseVerifyFlags;
 
-    fn to_glib(self) -> ffi::GTlsDatabaseVerifyFlags {
+    fn into_glib(self) -> ffi::GTlsDatabaseVerifyFlags {
         self.bits()
     }
 }
@@ -1725,7 +1725,7 @@ impl<'a> FromValue<'a> for TlsDatabaseVerifyFlags {
 
 impl SetValue for TlsDatabaseVerifyFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1745,10 +1745,10 @@ impl fmt::Display for TlsPasswordFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for TlsPasswordFlags {
+impl IntoGlib for TlsPasswordFlags {
     type GlibType = ffi::GTlsPasswordFlags;
 
-    fn to_glib(self) -> ffi::GTlsPasswordFlags {
+    fn into_glib(self) -> ffi::GTlsPasswordFlags {
         self.bits()
     }
 }
@@ -1780,6 +1780,6 @@ impl<'a> FromValue<'a> for TlsPasswordFlags {
 
 impl SetValue for TlsPasswordFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }

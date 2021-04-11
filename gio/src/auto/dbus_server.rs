@@ -38,7 +38,7 @@ impl DBusServer {
             let mut error = ptr::null_mut();
             let ret = ffi::g_dbus_server_new_sync(
                 address.to_glib_none().0,
-                flags.to_glib(),
+                flags.into_glib(),
                 guid.to_glib_none().0,
                 observer.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -141,7 +141,7 @@ impl DBusServer {
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
-            f(&from_glib_borrow(this), &from_glib_borrow(connection)).to_glib()
+            f(&from_glib_borrow(this), &from_glib_borrow(connection)).into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

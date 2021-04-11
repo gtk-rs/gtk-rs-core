@@ -59,7 +59,7 @@ impl Widget {
     pub fn set_default_direction(dir: TextDirection) {
         assert_initialized_main_thread!();
         unsafe {
-            ffi::gtk_widget_set_default_direction(dir.to_glib());
+            ffi::gtk_widget_set_default_direction(dir.into_glib());
         }
     }
 }
@@ -1255,8 +1255,8 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 accel_signal.to_glib_none().0,
                 accel_group.as_ref().to_glib_none().0,
                 accel_key,
-                accel_mods.to_glib(),
-                accel_flags.to_glib(),
+                accel_mods.into_glib(),
+                accel_flags.into_glib(),
             );
         }
     }
@@ -1266,7 +1266,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
             ffi::gtk_widget_add_device_events(
                 self.as_ref().to_glib_none().0,
                 device.to_glib_none().0,
-                events.to_glib(),
+                events.into_glib(),
             );
         }
     }
@@ -1293,7 +1293,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib(ffi::gtk_widget_child_focus(
                 self.as_ref().to_glib_none().0,
-                direction.to_glib(),
+                direction.into_glib(),
             ))
         }
     }
@@ -1311,7 +1311,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib(ffi::gtk_widget_compute_expand(
                 self.as_ref().to_glib_none().0,
-                orientation.to_glib(),
+                orientation.into_glib(),
             ))
         }
     }
@@ -1359,7 +1359,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
             from_glib_none(ffi::gtk_drag_begin_with_coordinates(
                 self.as_ref().to_glib_none().0,
                 targets.to_glib_none().0,
-                actions.to_glib(),
+                actions.into_glib(),
                 button,
                 mut_override(event.to_glib_none().0),
                 x,
@@ -1444,8 +1444,8 @@ impl<O: IsA<Widget>> WidgetExt for O {
             ffi::gtk_drag_dest_set_proxy(
                 self.as_ref().to_glib_none().0,
                 proxy_window.to_glib_none().0,
-                protocol.to_glib(),
-                use_coordinates.to_glib(),
+                protocol.into_glib(),
+                use_coordinates.into_glib(),
             );
         }
     }
@@ -1463,7 +1463,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_drag_dest_set_track_motion(
                 self.as_ref().to_glib_none().0,
-                track_motion.to_glib(),
+                track_motion.into_glib(),
             );
         }
     }
@@ -1657,7 +1657,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib_none(ffi::gtk_widget_get_ancestor(
                 self.as_ref().to_glib_none().0,
-                widget_type.to_glib(),
+                widget_type.into_glib(),
             ))
         }
     }
@@ -1839,7 +1839,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib(ffi::gtk_widget_get_modifier_mask(
                 self.as_ref().to_glib_none().0,
-                intent.to_glib(),
+                intent.into_glib(),
             ))
         }
     }
@@ -2073,7 +2073,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib_none(ffi::gtk_widget_get_template_child(
                 self.as_ref().to_glib_none().0,
-                widget_type.to_glib(),
+                widget_type.into_glib(),
                 name.to_glib_none().0,
             ))
         }
@@ -2271,7 +2271,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib(ffi::gtk_widget_keynav_failed(
                 self.as_ref().to_glib_none().0,
-                direction.to_glib(),
+                direction.into_glib(),
             ))
         }
     }
@@ -2312,7 +2312,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             from_glib(ffi::gtk_widget_mnemonic_activate(
                 self.as_ref().to_glib_none().0,
-                group_cycling.to_glib(),
+                group_cycling.into_glib(),
             ))
         }
     }
@@ -2321,7 +2321,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_override_background_color(
                 self.as_ref().to_glib_none().0,
-                state.to_glib(),
+                state.into_glib(),
                 color.to_glib_none().0,
             );
         }
@@ -2331,7 +2331,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_override_color(
                 self.as_ref().to_glib_none().0,
-                state.to_glib(),
+                state.into_glib(),
                 color.to_glib_none().0,
             );
         }
@@ -2439,7 +2439,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 self.as_ref().to_glib_none().0,
                 accel_group.as_ref().to_glib_none().0,
                 accel_key,
-                accel_mods.to_glib(),
+                accel_mods.into_glib(),
             ))
         }
     }
@@ -2504,26 +2504,32 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_app_paintable(
                 self.as_ref().to_glib_none().0,
-                app_paintable.to_glib(),
+                app_paintable.into_glib(),
             );
         }
     }
 
     fn set_can_default(&self, can_default: bool) {
         unsafe {
-            ffi::gtk_widget_set_can_default(self.as_ref().to_glib_none().0, can_default.to_glib());
+            ffi::gtk_widget_set_can_default(
+                self.as_ref().to_glib_none().0,
+                can_default.into_glib(),
+            );
         }
     }
 
     fn set_can_focus(&self, can_focus: bool) {
         unsafe {
-            ffi::gtk_widget_set_can_focus(self.as_ref().to_glib_none().0, can_focus.to_glib());
+            ffi::gtk_widget_set_can_focus(self.as_ref().to_glib_none().0, can_focus.into_glib());
         }
     }
 
     fn set_child_visible(&self, is_visible: bool) {
         unsafe {
-            ffi::gtk_widget_set_child_visible(self.as_ref().to_glib_none().0, is_visible.to_glib());
+            ffi::gtk_widget_set_child_visible(
+                self.as_ref().to_glib_none().0,
+                is_visible.into_glib(),
+            );
         }
     }
 
@@ -2538,7 +2544,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
             ffi::gtk_widget_set_device_enabled(
                 self.as_ref().to_glib_none().0,
                 device.to_glib_none().0,
-                enabled.to_glib(),
+                enabled.into_glib(),
             );
         }
     }
@@ -2548,14 +2554,14 @@ impl<O: IsA<Widget>> WidgetExt for O {
             ffi::gtk_widget_set_device_events(
                 self.as_ref().to_glib_none().0,
                 device.to_glib_none().0,
-                events.to_glib(),
+                events.into_glib(),
             );
         }
     }
 
     fn set_direction(&self, dir: TextDirection) {
         unsafe {
-            ffi::gtk_widget_set_direction(self.as_ref().to_glib_none().0, dir.to_glib());
+            ffi::gtk_widget_set_direction(self.as_ref().to_glib_none().0, dir.into_glib());
         }
     }
 
@@ -2565,7 +2571,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_focus_on_click(
                 self.as_ref().to_glib_none().0,
-                focus_on_click.to_glib(),
+                focus_on_click.into_glib(),
             );
         }
     }
@@ -2594,37 +2600,40 @@ impl<O: IsA<Widget>> WidgetExt for O {
 
     fn set_halign(&self, align: Align) {
         unsafe {
-            ffi::gtk_widget_set_halign(self.as_ref().to_glib_none().0, align.to_glib());
+            ffi::gtk_widget_set_halign(self.as_ref().to_glib_none().0, align.into_glib());
         }
     }
 
     fn set_has_tooltip(&self, has_tooltip: bool) {
         unsafe {
-            ffi::gtk_widget_set_has_tooltip(self.as_ref().to_glib_none().0, has_tooltip.to_glib());
+            ffi::gtk_widget_set_has_tooltip(
+                self.as_ref().to_glib_none().0,
+                has_tooltip.into_glib(),
+            );
         }
     }
 
     fn set_has_window(&self, has_window: bool) {
         unsafe {
-            ffi::gtk_widget_set_has_window(self.as_ref().to_glib_none().0, has_window.to_glib());
+            ffi::gtk_widget_set_has_window(self.as_ref().to_glib_none().0, has_window.into_glib());
         }
     }
 
     fn set_hexpand(&self, expand: bool) {
         unsafe {
-            ffi::gtk_widget_set_hexpand(self.as_ref().to_glib_none().0, expand.to_glib());
+            ffi::gtk_widget_set_hexpand(self.as_ref().to_glib_none().0, expand.into_glib());
         }
     }
 
     fn set_hexpand_set(&self, set: bool) {
         unsafe {
-            ffi::gtk_widget_set_hexpand_set(self.as_ref().to_glib_none().0, set.to_glib());
+            ffi::gtk_widget_set_hexpand_set(self.as_ref().to_glib_none().0, set.into_glib());
         }
     }
 
     fn set_mapped(&self, mapped: bool) {
         unsafe {
-            ffi::gtk_widget_set_mapped(self.as_ref().to_glib_none().0, mapped.to_glib());
+            ffi::gtk_widget_set_mapped(self.as_ref().to_glib_none().0, mapped.into_glib());
         }
     }
 
@@ -2660,7 +2669,10 @@ impl<O: IsA<Widget>> WidgetExt for O {
 
     fn set_no_show_all(&self, no_show_all: bool) {
         unsafe {
-            ffi::gtk_widget_set_no_show_all(self.as_ref().to_glib_none().0, no_show_all.to_glib());
+            ffi::gtk_widget_set_no_show_all(
+                self.as_ref().to_glib_none().0,
+                no_show_all.into_glib(),
+            );
         }
     }
 
@@ -2690,7 +2702,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
 
     fn set_realized(&self, realized: bool) {
         unsafe {
-            ffi::gtk_widget_set_realized(self.as_ref().to_glib_none().0, realized.to_glib());
+            ffi::gtk_widget_set_realized(self.as_ref().to_glib_none().0, realized.into_glib());
         }
     }
 
@@ -2698,7 +2710,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_receives_default(
                 self.as_ref().to_glib_none().0,
-                receives_default.to_glib(),
+                receives_default.into_glib(),
             );
         }
     }
@@ -2707,14 +2719,14 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_redraw_on_allocate(
                 self.as_ref().to_glib_none().0,
-                redraw_on_allocate.to_glib(),
+                redraw_on_allocate.into_glib(),
             );
         }
     }
 
     fn set_sensitive(&self, sensitive: bool) {
         unsafe {
-            ffi::gtk_widget_set_sensitive(self.as_ref().to_glib_none().0, sensitive.to_glib());
+            ffi::gtk_widget_set_sensitive(self.as_ref().to_glib_none().0, sensitive.into_glib());
         }
     }
 
@@ -2728,8 +2740,8 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_state_flags(
                 self.as_ref().to_glib_none().0,
-                flags.to_glib(),
-                clear.to_glib(),
+                flags.into_glib(),
+                clear.into_glib(),
             );
         }
     }
@@ -2738,7 +2750,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
         unsafe {
             ffi::gtk_widget_set_support_multidevice(
                 self.as_ref().to_glib_none().0,
-                support_multidevice.to_glib(),
+                support_multidevice.into_glib(),
             );
         }
     }
@@ -2769,25 +2781,25 @@ impl<O: IsA<Widget>> WidgetExt for O {
 
     fn set_valign(&self, align: Align) {
         unsafe {
-            ffi::gtk_widget_set_valign(self.as_ref().to_glib_none().0, align.to_glib());
+            ffi::gtk_widget_set_valign(self.as_ref().to_glib_none().0, align.into_glib());
         }
     }
 
     fn set_vexpand(&self, expand: bool) {
         unsafe {
-            ffi::gtk_widget_set_vexpand(self.as_ref().to_glib_none().0, expand.to_glib());
+            ffi::gtk_widget_set_vexpand(self.as_ref().to_glib_none().0, expand.into_glib());
         }
     }
 
     fn set_vexpand_set(&self, set: bool) {
         unsafe {
-            ffi::gtk_widget_set_vexpand_set(self.as_ref().to_glib_none().0, set.to_glib());
+            ffi::gtk_widget_set_vexpand_set(self.as_ref().to_glib_none().0, set.into_glib());
         }
     }
 
     fn set_visible(&self, visible: bool) {
         unsafe {
-            ffi::gtk_widget_set_visible(self.as_ref().to_glib_none().0, visible.to_glib());
+            ffi::gtk_widget_set_visible(self.as_ref().to_glib_none().0, visible.into_glib());
         }
     }
 
@@ -2937,7 +2949,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
 
     fn unset_state_flags(&self, flags: StateFlags) {
         unsafe {
-            ffi::gtk_widget_unset_state_flags(self.as_ref().to_glib_none().0, flags.to_glib());
+            ffi::gtk_widget_unset_state_flags(self.as_ref().to_glib_none().0, flags.into_glib());
         }
     }
 
@@ -3176,7 +3188,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3213,7 +3225,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3241,7 +3253,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
             P: IsA<Widget>,
         {
             let f: &F = &*(f as *const F);
-            f(&Widget::from_glib_borrow(this).unsafe_cast_ref(), signal_id).to_glib()
+            f(&Widget::from_glib_borrow(this).unsafe_cast_ref(), signal_id).into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3342,7 +3354,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3377,7 +3389,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3412,7 +3424,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_none(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3470,7 +3482,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_none(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3690,7 +3702,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 y,
                 time,
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3756,7 +3768,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &from_glib_borrow(context),
                 from_glib(result),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3829,7 +3841,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 y,
                 time,
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3864,7 +3876,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(cr),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3901,7 +3913,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3936,7 +3948,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_none(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -3998,7 +4010,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 from_glib(direction),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4033,7 +4045,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4070,7 +4082,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4107,7 +4119,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4255,7 +4267,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4292,7 +4304,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4327,7 +4339,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 from_glib(direction),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4364,7 +4376,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4422,7 +4434,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 from_glib(group_cycling),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4459,7 +4471,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4547,7 +4559,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
             P: IsA<Widget>,
         {
             let f: &F = &*(f as *const F);
-            f(&Widget::from_glib_borrow(this).unsafe_cast_ref()).to_glib()
+            f(&Widget::from_glib_borrow(this).unsafe_cast_ref()).into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4596,7 +4608,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4633,7 +4645,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4670,7 +4682,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4711,7 +4723,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 from_glib(keyboard_mode),
                 &from_glib_borrow(tooltip),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4804,7 +4816,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4841,7 +4853,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4915,7 +4927,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -4987,7 +4999,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -5042,7 +5054,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 from_glib(help_type),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -5169,7 +5181,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_none(object),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -5252,7 +5264,7 @@ impl<O: IsA<Widget>> WidgetExt for O {
                 &Widget::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(event),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

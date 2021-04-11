@@ -36,10 +36,10 @@ impl fmt::Display for Colorspace {
 }
 
 #[doc(hidden)]
-impl ToGlib for Colorspace {
+impl IntoGlib for Colorspace {
     type GlibType = ffi::GdkColorspace;
 
-    fn to_glib(self) -> ffi::GdkColorspace {
+    fn into_glib(self) -> ffi::GdkColorspace {
         match self {
             Colorspace::Rgb => ffi::GDK_COLORSPACE_RGB,
             Colorspace::__Unknown(value) => value,
@@ -77,7 +77,7 @@ impl<'a> FromValue<'a> for Colorspace {
 
 impl SetValue for Colorspace {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -114,10 +114,10 @@ impl fmt::Display for InterpType {
 }
 
 #[doc(hidden)]
-impl ToGlib for InterpType {
+impl IntoGlib for InterpType {
     type GlibType = ffi::GdkInterpType;
 
-    fn to_glib(self) -> ffi::GdkInterpType {
+    fn into_glib(self) -> ffi::GdkInterpType {
         match self {
             InterpType::Nearest => ffi::GDK_INTERP_NEAREST,
             InterpType::Tiles => ffi::GDK_INTERP_TILES,
@@ -161,7 +161,7 @@ impl<'a> FromValue<'a> for InterpType {
 
 impl SetValue for InterpType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -192,10 +192,10 @@ impl fmt::Display for PixbufAlphaMode {
 }
 
 #[doc(hidden)]
-impl ToGlib for PixbufAlphaMode {
+impl IntoGlib for PixbufAlphaMode {
     type GlibType = ffi::GdkPixbufAlphaMode;
 
-    fn to_glib(self) -> ffi::GdkPixbufAlphaMode {
+    fn into_glib(self) -> ffi::GdkPixbufAlphaMode {
         match self {
             PixbufAlphaMode::Bilevel => ffi::GDK_PIXBUF_ALPHA_BILEVEL,
             PixbufAlphaMode::Full => ffi::GDK_PIXBUF_ALPHA_FULL,
@@ -235,7 +235,7 @@ impl<'a> FromValue<'a> for PixbufAlphaMode {
 
 impl SetValue for PixbufAlphaMode {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -281,10 +281,10 @@ impl fmt::Display for PixbufError {
 }
 
 #[doc(hidden)]
-impl ToGlib for PixbufError {
+impl IntoGlib for PixbufError {
     type GlibType = ffi::GdkPixbufError;
 
-    fn to_glib(self) -> ffi::GdkPixbufError {
+    fn into_glib(self) -> ffi::GdkPixbufError {
         match self {
             PixbufError::CorruptImage => ffi::GDK_PIXBUF_ERROR_CORRUPT_IMAGE,
             PixbufError::InsufficientMemory => ffi::GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY,
@@ -320,7 +320,7 @@ impl ErrorDomain for PixbufError {
     }
 
     fn code(self) -> i32 {
-        self.to_glib()
+        self.into_glib()
     }
 
     fn from(code: i32) -> Option<Self> {
@@ -357,7 +357,7 @@ impl<'a> FromValue<'a> for PixbufError {
 
 impl SetValue for PixbufError {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -394,10 +394,10 @@ impl fmt::Display for PixbufRotation {
 }
 
 #[doc(hidden)]
-impl ToGlib for PixbufRotation {
+impl IntoGlib for PixbufRotation {
     type GlibType = ffi::GdkPixbufRotation;
 
-    fn to_glib(self) -> ffi::GdkPixbufRotation {
+    fn into_glib(self) -> ffi::GdkPixbufRotation {
         match self {
             PixbufRotation::None => ffi::GDK_PIXBUF_ROTATE_NONE,
             PixbufRotation::Counterclockwise => ffi::GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE,
@@ -441,6 +441,6 @@ impl<'a> FromValue<'a> for PixbufRotation {
 
 impl SetValue for PixbufRotation {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }

@@ -72,7 +72,7 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
                 self.as_ref().to_glib_none().0,
                 child.as_ref().to_glib_none().0,
                 other_file.as_ref().to_glib_none().0,
-                event_type.to_glib(),
+                event_type.into_glib(),
             );
         }
     }

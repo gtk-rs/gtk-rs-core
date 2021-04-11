@@ -40,10 +40,10 @@ impl fmt::Display for CoordType {
 }
 
 #[doc(hidden)]
-impl ToGlib for CoordType {
+impl IntoGlib for CoordType {
     type GlibType = ffi::AtkCoordType;
 
-    fn to_glib(self) -> ffi::AtkCoordType {
+    fn into_glib(self) -> ffi::AtkCoordType {
         match self {
             CoordType::Screen => ffi::ATK_XY_SCREEN,
             CoordType::Window => ffi::ATK_XY_WINDOW,
@@ -86,7 +86,7 @@ impl<'a> FromValue<'a> for CoordType {
 
 impl SetValue for CoordType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -135,10 +135,10 @@ impl fmt::Display for Layer {
 }
 
 #[doc(hidden)]
-impl ToGlib for Layer {
+impl IntoGlib for Layer {
     type GlibType = ffi::AtkLayer;
 
-    fn to_glib(self) -> ffi::AtkLayer {
+    fn into_glib(self) -> ffi::AtkLayer {
         match self {
             Layer::Invalid => ffi::ATK_LAYER_INVALID,
             Layer::Background => ffi::ATK_LAYER_BACKGROUND,
@@ -191,7 +191,7 @@ impl<'a> FromValue<'a> for Layer {
 
 impl SetValue for Layer {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -257,7 +257,7 @@ impl RelationType {
     #[doc(alias = "atk_relation_type_get_name")]
     pub fn get_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_relation_type_get_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_relation_type_get_name(self.into_glib())) }
     }
 }
 
@@ -296,10 +296,10 @@ impl fmt::Display for RelationType {
 }
 
 #[doc(hidden)]
-impl ToGlib for RelationType {
+impl IntoGlib for RelationType {
     type GlibType = ffi::AtkRelationType;
 
-    fn to_glib(self) -> ffi::AtkRelationType {
+    fn into_glib(self) -> ffi::AtkRelationType {
         match self {
             RelationType::Null => ffi::ATK_RELATION_NULL,
             RelationType::ControlledBy => ffi::ATK_RELATION_CONTROLLED_BY,
@@ -380,7 +380,7 @@ impl<'a> FromValue<'a> for RelationType {
 
 impl SetValue for RelationType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -658,13 +658,13 @@ impl Role {
     #[doc(alias = "atk_role_get_localized_name")]
     pub fn get_localized_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_role_get_localized_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_role_get_localized_name(self.into_glib())) }
     }
 
     #[doc(alias = "atk_role_get_name")]
     pub fn get_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_role_get_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_role_get_name(self.into_glib())) }
     }
 }
 
@@ -809,10 +809,10 @@ impl fmt::Display for Role {
 }
 
 #[doc(hidden)]
-impl ToGlib for Role {
+impl IntoGlib for Role {
     type GlibType = ffi::AtkRole;
 
-    fn to_glib(self) -> ffi::AtkRole {
+    fn into_glib(self) -> ffi::AtkRole {
         match self {
             Role::Invalid => ffi::ATK_ROLE_INVALID,
             Role::AcceleratorLabel => ffi::ATK_ROLE_ACCEL_LABEL,
@@ -1105,7 +1105,7 @@ impl<'a> FromValue<'a> for Role {
 
 impl SetValue for Role {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1157,10 +1157,10 @@ impl fmt::Display for ScrollType {
 #[cfg(any(feature = "v2_30", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_30")))]
 #[doc(hidden)]
-impl ToGlib for ScrollType {
+impl IntoGlib for ScrollType {
     type GlibType = ffi::AtkScrollType;
 
-    fn to_glib(self) -> ffi::AtkScrollType {
+    fn into_glib(self) -> ffi::AtkScrollType {
         match self {
             ScrollType::TopLeft => ffi::ATK_SCROLL_TOP_LEFT,
             ScrollType::BottomRight => ffi::ATK_SCROLL_BOTTOM_RIGHT,
@@ -1221,7 +1221,7 @@ impl<'a> FromValue<'a> for ScrollType {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_30")))]
 impl SetValue for ScrollType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1331,7 +1331,7 @@ impl StateType {
     #[doc(alias = "atk_state_type_get_name")]
     pub fn get_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_state_type_get_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_state_type_get_name(self.into_glib())) }
     }
 }
 
@@ -1392,10 +1392,10 @@ impl fmt::Display for StateType {
 }
 
 #[doc(hidden)]
-impl ToGlib for StateType {
+impl IntoGlib for StateType {
     type GlibType = ffi::AtkStateType;
 
-    fn to_glib(self) -> ffi::AtkStateType {
+    fn into_glib(self) -> ffi::AtkStateType {
         match self {
             StateType::Invalid => ffi::ATK_STATE_INVALID,
             StateType::Active => ffi::ATK_STATE_ACTIVE,
@@ -1520,7 +1520,7 @@ impl<'a> FromValue<'a> for StateType {
 
 impl SetValue for StateType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1602,13 +1602,13 @@ impl TextAttribute {
     #[doc(alias = "atk_text_attribute_get_name")]
     pub fn get_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_text_attribute_get_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_text_attribute_get_name(self.into_glib())) }
     }
 
     #[doc(alias = "atk_text_attribute_get_value")]
     pub fn get_value(self, index_: i32) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_text_attribute_get_value(self.to_glib(), index_)) }
+        unsafe { from_glib_none(ffi::atk_text_attribute_get_value(self.into_glib(), index_)) }
     }
 }
 
@@ -1655,10 +1655,10 @@ impl fmt::Display for TextAttribute {
 }
 
 #[doc(hidden)]
-impl ToGlib for TextAttribute {
+impl IntoGlib for TextAttribute {
     type GlibType = ffi::AtkTextAttribute;
 
-    fn to_glib(self) -> ffi::AtkTextAttribute {
+    fn into_glib(self) -> ffi::AtkTextAttribute {
         match self {
             TextAttribute::Invalid => ffi::ATK_TEXT_ATTR_INVALID,
             TextAttribute::LeftMargin => ffi::ATK_TEXT_ATTR_LEFT_MARGIN,
@@ -1755,7 +1755,7 @@ impl<'a> FromValue<'a> for TextAttribute {
 
 impl SetValue for TextAttribute {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1801,10 +1801,10 @@ impl fmt::Display for TextBoundary {
 }
 
 #[doc(hidden)]
-impl ToGlib for TextBoundary {
+impl IntoGlib for TextBoundary {
     type GlibType = ffi::AtkTextBoundary;
 
-    fn to_glib(self) -> ffi::AtkTextBoundary {
+    fn into_glib(self) -> ffi::AtkTextBoundary {
         match self {
             TextBoundary::Char => ffi::ATK_TEXT_BOUNDARY_CHAR,
             TextBoundary::WordStart => ffi::ATK_TEXT_BOUNDARY_WORD_START,
@@ -1855,7 +1855,7 @@ impl<'a> FromValue<'a> for TextBoundary {
 
 impl SetValue for TextBoundary {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1892,10 +1892,10 @@ impl fmt::Display for TextClipType {
 }
 
 #[doc(hidden)]
-impl ToGlib for TextClipType {
+impl IntoGlib for TextClipType {
     type GlibType = ffi::AtkTextClipType;
 
-    fn to_glib(self) -> ffi::AtkTextClipType {
+    fn into_glib(self) -> ffi::AtkTextClipType {
         match self {
             TextClipType::None => ffi::ATK_TEXT_CLIP_NONE,
             TextClipType::Min => ffi::ATK_TEXT_CLIP_MIN,
@@ -1940,7 +1940,7 @@ impl<'a> FromValue<'a> for TextClipType {
 
 impl SetValue for TextClipType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1980,10 +1980,10 @@ impl fmt::Display for TextGranularity {
 }
 
 #[doc(hidden)]
-impl ToGlib for TextGranularity {
+impl IntoGlib for TextGranularity {
     type GlibType = ffi::AtkTextGranularity;
 
-    fn to_glib(self) -> ffi::AtkTextGranularity {
+    fn into_glib(self) -> ffi::AtkTextGranularity {
         match self {
             TextGranularity::Char => ffi::ATK_TEXT_GRANULARITY_CHAR,
             TextGranularity::Word => ffi::ATK_TEXT_GRANULARITY_WORD,
@@ -2030,7 +2030,7 @@ impl<'a> FromValue<'a> for TextGranularity {
 
 impl SetValue for TextGranularity {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2078,13 +2078,13 @@ impl ValueType {
     #[doc(alias = "atk_value_type_get_localized_name")]
     pub fn get_localized_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_value_type_get_localized_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_value_type_get_localized_name(self.into_glib())) }
     }
 
     #[doc(alias = "atk_value_type_get_name")]
     pub fn get_name(self) -> Option<glib::GString> {
         assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::atk_value_type_get_name(self.to_glib())) }
+        unsafe { from_glib_none(ffi::atk_value_type_get_name(self.into_glib())) }
     }
 }
 
@@ -2117,10 +2117,10 @@ impl fmt::Display for ValueType {
 }
 
 #[doc(hidden)]
-impl ToGlib for ValueType {
+impl IntoGlib for ValueType {
     type GlibType = ffi::AtkValueType;
 
-    fn to_glib(self) -> ffi::AtkValueType {
+    fn into_glib(self) -> ffi::AtkValueType {
         match self {
             ValueType::VeryWeak => ffi::ATK_VALUE_VERY_WEAK,
             ValueType::Weak => ffi::ATK_VALUE_WEAK,
@@ -2189,6 +2189,6 @@ impl<'a> FromValue<'a> for ValueType {
 
 impl SetValue for ValueType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }

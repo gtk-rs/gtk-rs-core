@@ -1082,7 +1082,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
             ffi::gtk_text_view_add_child_in_window(
                 self.as_ref().to_glib_none().0,
                 child.as_ref().to_glib_none().0,
-                which_window.to_glib(),
+                which_window.into_glib(),
                 xpos,
                 ypos,
             );
@@ -1118,7 +1118,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
             let mut window_y = mem::MaybeUninit::uninit();
             ffi::gtk_text_view_buffer_to_window_coords(
                 self.as_ref().to_glib_none().0,
-                win.to_glib(),
+                win.into_glib(),
                 buffer_x,
                 buffer_y,
                 window_x.as_mut_ptr(),
@@ -1160,7 +1160,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             ffi::gtk_text_view_get_border_window_size(
                 self.as_ref().to_glib_none().0,
-                type_.to_glib(),
+                type_.into_glib(),
             )
         }
     }
@@ -1388,7 +1388,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             from_glib_none(ffi::gtk_text_view_get_window(
                 self.as_ref().to_glib_none().0,
-                win.to_glib(),
+                win.into_glib(),
             ))
         }
     }
@@ -1493,7 +1493,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
                 self.as_ref().to_glib_none().0,
                 iter.to_glib_none_mut().0,
                 within_margin,
-                use_align.to_glib(),
+                use_align.into_glib(),
                 xalign,
                 yalign,
             ))
@@ -1513,7 +1513,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
                 self.as_ref().to_glib_none().0,
                 mark.as_ref().to_glib_none().0,
                 within_margin,
-                use_align.to_glib(),
+                use_align.into_glib(),
                 xalign,
                 yalign,
             );
@@ -1524,7 +1524,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             ffi::gtk_text_view_set_accepts_tab(
                 self.as_ref().to_glib_none().0,
-                accepts_tab.to_glib(),
+                accepts_tab.into_glib(),
             );
         }
     }
@@ -1533,7 +1533,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             ffi::gtk_text_view_set_border_window_size(
                 self.as_ref().to_glib_none().0,
-                type_.to_glib(),
+                type_.into_glib(),
                 size,
             );
         }
@@ -1560,14 +1560,14 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             ffi::gtk_text_view_set_cursor_visible(
                 self.as_ref().to_glib_none().0,
-                setting.to_glib(),
+                setting.into_glib(),
             );
         }
     }
 
     fn set_editable(&self, setting: bool) {
         unsafe {
-            ffi::gtk_text_view_set_editable(self.as_ref().to_glib_none().0, setting.to_glib());
+            ffi::gtk_text_view_set_editable(self.as_ref().to_glib_none().0, setting.into_glib());
         }
     }
 
@@ -1579,13 +1579,16 @@ impl<O: IsA<TextView>> TextViewExt for O {
 
     fn set_input_hints(&self, hints: InputHints) {
         unsafe {
-            ffi::gtk_text_view_set_input_hints(self.as_ref().to_glib_none().0, hints.to_glib());
+            ffi::gtk_text_view_set_input_hints(self.as_ref().to_glib_none().0, hints.into_glib());
         }
     }
 
     fn set_input_purpose(&self, purpose: InputPurpose) {
         unsafe {
-            ffi::gtk_text_view_set_input_purpose(self.as_ref().to_glib_none().0, purpose.to_glib());
+            ffi::gtk_text_view_set_input_purpose(
+                self.as_ref().to_glib_none().0,
+                purpose.into_glib(),
+            );
         }
     }
 
@@ -1593,7 +1596,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
         unsafe {
             ffi::gtk_text_view_set_justification(
                 self.as_ref().to_glib_none().0,
-                justification.to_glib(),
+                justification.into_glib(),
             );
         }
     }
@@ -1608,13 +1611,13 @@ impl<O: IsA<TextView>> TextViewExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_16")))]
     fn set_monospace(&self, monospace: bool) {
         unsafe {
-            ffi::gtk_text_view_set_monospace(self.as_ref().to_glib_none().0, monospace.to_glib());
+            ffi::gtk_text_view_set_monospace(self.as_ref().to_glib_none().0, monospace.into_glib());
         }
     }
 
     fn set_overwrite(&self, overwrite: bool) {
         unsafe {
-            ffi::gtk_text_view_set_overwrite(self.as_ref().to_glib_none().0, overwrite.to_glib());
+            ffi::gtk_text_view_set_overwrite(self.as_ref().to_glib_none().0, overwrite.into_glib());
         }
     }
 
@@ -1670,7 +1673,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
 
     fn set_wrap_mode(&self, wrap_mode: WrapMode) {
         unsafe {
-            ffi::gtk_text_view_set_wrap_mode(self.as_ref().to_glib_none().0, wrap_mode.to_glib());
+            ffi::gtk_text_view_set_wrap_mode(self.as_ref().to_glib_none().0, wrap_mode.into_glib());
         }
     }
 
@@ -1694,7 +1697,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
             let mut buffer_y = mem::MaybeUninit::uninit();
             ffi::gtk_text_view_window_to_buffer_coords(
                 self.as_ref().to_glib_none().0,
-                win.to_glib(),
+                win.into_glib(),
                 window_x,
                 window_y,
                 buffer_x.as_mut_ptr(),
@@ -1954,7 +1957,7 @@ impl<O: IsA<TextView>> TextViewExt for O {
                 &from_glib_borrow(start),
                 &from_glib_borrow(end),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

@@ -45,7 +45,7 @@ impl AspectFrame {
                 xalign,
                 yalign,
                 ratio,
-                obey_child.to_glib(),
+                obey_child.into_glib(),
             ))
             .unsafe_cast()
         }
@@ -508,7 +508,7 @@ impl<O: IsA<AspectFrame>> AspectFrameExt for O {
                 xalign,
                 yalign,
                 ratio,
-                obey_child.to_glib(),
+                obey_child.into_glib(),
             );
         }
     }

@@ -24,10 +24,10 @@ impl fmt::Display for HyperlinkStateFlags {
 }
 
 #[doc(hidden)]
-impl ToGlib for HyperlinkStateFlags {
+impl IntoGlib for HyperlinkStateFlags {
     type GlibType = ffi::AtkHyperlinkStateFlags;
 
-    fn to_glib(self) -> ffi::AtkHyperlinkStateFlags {
+    fn into_glib(self) -> ffi::AtkHyperlinkStateFlags {
         self.bits()
     }
 }
@@ -60,6 +60,6 @@ impl<'a> FromValue<'a> for HyperlinkStateFlags {
 
 impl SetValue for HyperlinkStateFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }

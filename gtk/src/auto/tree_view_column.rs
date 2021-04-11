@@ -484,8 +484,8 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
                 self.as_ref().to_glib_none().0,
                 tree_model.as_ref().to_glib_none().0,
                 mut_override(iter.to_glib_none().0),
-                is_expander.to_glib(),
-                is_expanded.to_glib(),
+                is_expander.into_glib(),
+                is_expanded.into_glib(),
             );
         }
     }
@@ -704,14 +704,17 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_clickable(
                 self.as_ref().to_glib_none().0,
-                clickable.to_glib(),
+                clickable.into_glib(),
             );
         }
     }
 
     fn set_expand(&self, expand: bool) {
         unsafe {
-            ffi::gtk_tree_view_column_set_expand(self.as_ref().to_glib_none().0, expand.to_glib());
+            ffi::gtk_tree_view_column_set_expand(
+                self.as_ref().to_glib_none().0,
+                expand.into_glib(),
+            );
         }
     }
 
@@ -737,7 +740,7 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_reorderable(
                 self.as_ref().to_glib_none().0,
-                reorderable.to_glib(),
+                reorderable.into_glib(),
             );
         }
     }
@@ -746,14 +749,14 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_resizable(
                 self.as_ref().to_glib_none().0,
-                resizable.to_glib(),
+                resizable.into_glib(),
             );
         }
     }
 
     fn set_sizing(&self, type_: TreeViewColumnSizing) {
         unsafe {
-            ffi::gtk_tree_view_column_set_sizing(self.as_ref().to_glib_none().0, type_.to_glib());
+            ffi::gtk_tree_view_column_set_sizing(self.as_ref().to_glib_none().0, type_.into_glib());
         }
     }
 
@@ -770,7 +773,7 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_sort_indicator(
                 self.as_ref().to_glib_none().0,
-                setting.to_glib(),
+                setting.into_glib(),
             );
         }
     }
@@ -779,7 +782,7 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_sort_order(
                 self.as_ref().to_glib_none().0,
-                order.to_glib(),
+                order.into_glib(),
             );
         }
     }
@@ -803,7 +806,7 @@ impl<O: IsA<TreeViewColumn>> TreeViewColumnExt for O {
         unsafe {
             ffi::gtk_tree_view_column_set_visible(
                 self.as_ref().to_glib_none().0,
-                visible.to_glib(),
+                visible.into_glib(),
             );
         }
     }

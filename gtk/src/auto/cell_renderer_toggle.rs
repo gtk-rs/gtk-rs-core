@@ -300,7 +300,7 @@ impl<O: IsA<CellRendererToggle>> CellRendererToggleExt for O {
         unsafe {
             ffi::gtk_cell_renderer_toggle_set_activatable(
                 self.as_ref().to_glib_none().0,
-                setting.to_glib(),
+                setting.into_glib(),
             );
         }
     }
@@ -309,7 +309,7 @@ impl<O: IsA<CellRendererToggle>> CellRendererToggleExt for O {
         unsafe {
             ffi::gtk_cell_renderer_toggle_set_active(
                 self.as_ref().to_glib_none().0,
-                setting.to_glib(),
+                setting.into_glib(),
             );
         }
     }
@@ -318,7 +318,7 @@ impl<O: IsA<CellRendererToggle>> CellRendererToggleExt for O {
         unsafe {
             ffi::gtk_cell_renderer_toggle_set_radio(
                 self.as_ref().to_glib_none().0,
-                radio.to_glib(),
+                radio.into_glib(),
             );
         }
     }

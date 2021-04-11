@@ -31,10 +31,10 @@ impl fmt::Display for FontMask {
 }
 
 #[doc(hidden)]
-impl ToGlib for FontMask {
+impl IntoGlib for FontMask {
     type GlibType = ffi::PangoFontMask;
 
-    fn to_glib(self) -> ffi::PangoFontMask {
+    fn into_glib(self) -> ffi::PangoFontMask {
         self.bits()
     }
 }
@@ -66,7 +66,7 @@ impl<'a> FromValue<'a> for FontMask {
 
 impl SetValue for FontMask {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -90,10 +90,10 @@ impl fmt::Display for ShapeFlags {
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
-impl ToGlib for ShapeFlags {
+impl IntoGlib for ShapeFlags {
     type GlibType = ffi::PangoShapeFlags;
 
-    fn to_glib(self) -> ffi::PangoShapeFlags {
+    fn into_glib(self) -> ffi::PangoShapeFlags {
         self.bits()
     }
 }
@@ -135,7 +135,7 @@ impl<'a> FromValue<'a> for ShapeFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 impl SetValue for ShapeFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -161,10 +161,10 @@ impl fmt::Display for ShowFlags {
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 #[doc(hidden)]
-impl ToGlib for ShowFlags {
+impl IntoGlib for ShowFlags {
     type GlibType = ffi::PangoShowFlags;
 
-    fn to_glib(self) -> ffi::PangoShowFlags {
+    fn into_glib(self) -> ffi::PangoShowFlags {
         self.bits()
     }
 }
@@ -206,6 +206,6 @@ impl<'a> FromValue<'a> for ShowFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 impl SetValue for ShowFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }

@@ -70,10 +70,10 @@ impl fmt::Display for AxisUse {
 }
 
 #[doc(hidden)]
-impl ToGlib for AxisUse {
+impl IntoGlib for AxisUse {
     type GlibType = ffi::GdkAxisUse;
 
-    fn to_glib(self) -> ffi::GdkAxisUse {
+    fn into_glib(self) -> ffi::GdkAxisUse {
         match self {
             AxisUse::Ignore => ffi::GDK_AXIS_IGNORE,
             AxisUse::X => ffi::GDK_AXIS_X,
@@ -132,7 +132,7 @@ impl<'a> FromValue<'a> for AxisUse {
 
 impl SetValue for AxisUse {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -163,10 +163,10 @@ impl fmt::Display for ByteOrder {
 }
 
 #[doc(hidden)]
-impl ToGlib for ByteOrder {
+impl IntoGlib for ByteOrder {
     type GlibType = ffi::GdkByteOrder;
 
-    fn to_glib(self) -> ffi::GdkByteOrder {
+    fn into_glib(self) -> ffi::GdkByteOrder {
         match self {
             ByteOrder::LsbFirst => ffi::GDK_LSB_FIRST,
             ByteOrder::MsbFirst => ffi::GDK_MSB_FIRST,
@@ -207,7 +207,7 @@ impl<'a> FromValue<'a> for ByteOrder {
 
 impl SetValue for ByteOrder {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -259,10 +259,10 @@ impl fmt::Display for CrossingMode {
 }
 
 #[doc(hidden)]
-impl ToGlib for CrossingMode {
+impl IntoGlib for CrossingMode {
     type GlibType = ffi::GdkCrossingMode;
 
-    fn to_glib(self) -> ffi::GdkCrossingMode {
+    fn into_glib(self) -> ffi::GdkCrossingMode {
         match self {
             CrossingMode::Normal => ffi::GDK_CROSSING_NORMAL,
             CrossingMode::Grab => ffi::GDK_CROSSING_GRAB,
@@ -317,7 +317,7 @@ impl<'a> FromValue<'a> for CrossingMode {
 
 impl SetValue for CrossingMode {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -582,10 +582,10 @@ impl fmt::Display for CursorType {
 }
 
 #[doc(hidden)]
-impl ToGlib for CursorType {
+impl IntoGlib for CursorType {
     type GlibType = ffi::GdkCursorType;
 
-    fn to_glib(self) -> ffi::GdkCursorType {
+    fn into_glib(self) -> ffi::GdkCursorType {
         match self {
             CursorType::XCursor => ffi::GDK_X_CURSOR,
             CursorType::Arrow => ffi::GDK_ARROW,
@@ -782,7 +782,7 @@ impl<'a> FromValue<'a> for CursorType {
 
 impl SetValue for CursorType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -822,10 +822,10 @@ impl fmt::Display for DevicePadFeature {
 #[cfg(any(feature = "v3_22", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 #[doc(hidden)]
-impl ToGlib for DevicePadFeature {
+impl IntoGlib for DevicePadFeature {
     type GlibType = ffi::GdkDevicePadFeature;
 
-    fn to_glib(self) -> ffi::GdkDevicePadFeature {
+    fn into_glib(self) -> ffi::GdkDevicePadFeature {
         match self {
             DevicePadFeature::Button => ffi::GDK_DEVICE_PAD_FEATURE_BUTTON,
             DevicePadFeature::Ring => ffi::GDK_DEVICE_PAD_FEATURE_RING,
@@ -878,7 +878,7 @@ impl<'a> FromValue<'a> for DevicePadFeature {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 impl SetValue for DevicePadFeature {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -933,10 +933,10 @@ impl fmt::Display for DeviceToolType {
 #[cfg(any(feature = "v3_22", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 #[doc(hidden)]
-impl ToGlib for DeviceToolType {
+impl IntoGlib for DeviceToolType {
     type GlibType = ffi::GdkDeviceToolType;
 
-    fn to_glib(self) -> ffi::GdkDeviceToolType {
+    fn into_glib(self) -> ffi::GdkDeviceToolType {
         match self {
             DeviceToolType::Unknown => ffi::GDK_DEVICE_TOOL_TYPE_UNKNOWN,
             DeviceToolType::Pen => ffi::GDK_DEVICE_TOOL_TYPE_PEN,
@@ -999,7 +999,7 @@ impl<'a> FromValue<'a> for DeviceToolType {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 impl SetValue for DeviceToolType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1033,10 +1033,10 @@ impl fmt::Display for DeviceType {
 }
 
 #[doc(hidden)]
-impl ToGlib for DeviceType {
+impl IntoGlib for DeviceType {
     type GlibType = ffi::GdkDeviceType;
 
-    fn to_glib(self) -> ffi::GdkDeviceType {
+    fn into_glib(self) -> ffi::GdkDeviceType {
         match self {
             DeviceType::Master => ffi::GDK_DEVICE_TYPE_MASTER,
             DeviceType::Slave => ffi::GDK_DEVICE_TYPE_SLAVE,
@@ -1079,7 +1079,7 @@ impl<'a> FromValue<'a> for DeviceType {
 
 impl SetValue for DeviceType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1119,10 +1119,10 @@ impl fmt::Display for DragCancelReason {
 #[cfg(any(feature = "v3_20", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_20")))]
 #[doc(hidden)]
-impl ToGlib for DragCancelReason {
+impl IntoGlib for DragCancelReason {
     type GlibType = ffi::GdkDragCancelReason;
 
-    fn to_glib(self) -> ffi::GdkDragCancelReason {
+    fn into_glib(self) -> ffi::GdkDragCancelReason {
         match self {
             DragCancelReason::NoTarget => ffi::GDK_DRAG_CANCEL_NO_TARGET,
             DragCancelReason::UserCancelled => ffi::GDK_DRAG_CANCEL_USER_CANCELLED,
@@ -1175,7 +1175,7 @@ impl<'a> FromValue<'a> for DragCancelReason {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_20")))]
 impl SetValue for DragCancelReason {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1224,10 +1224,10 @@ impl fmt::Display for DragProtocol {
 }
 
 #[doc(hidden)]
-impl ToGlib for DragProtocol {
+impl IntoGlib for DragProtocol {
     type GlibType = ffi::GdkDragProtocol;
 
-    fn to_glib(self) -> ffi::GdkDragProtocol {
+    fn into_glib(self) -> ffi::GdkDragProtocol {
         match self {
             DragProtocol::None => ffi::GDK_DRAG_PROTO_NONE,
             DragProtocol::Motif => ffi::GDK_DRAG_PROTO_MOTIF,
@@ -1280,7 +1280,7 @@ impl<'a> FromValue<'a> for DragProtocol {
 
 impl SetValue for DragProtocol {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1455,10 +1455,10 @@ impl fmt::Display for EventType {
 }
 
 #[doc(hidden)]
-impl ToGlib for EventType {
+impl IntoGlib for EventType {
     type GlibType = ffi::GdkEventType;
 
-    fn to_glib(self) -> ffi::GdkEventType {
+    fn into_glib(self) -> ffi::GdkEventType {
         match self {
             EventType::Nothing => ffi::GDK_NOTHING,
             EventType::Delete => ffi::GDK_DELETE,
@@ -1595,7 +1595,7 @@ impl<'a> FromValue<'a> for EventType {
 
 impl SetValue for EventType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1626,10 +1626,10 @@ impl fmt::Display for FullscreenMode {
 }
 
 #[doc(hidden)]
-impl ToGlib for FullscreenMode {
+impl IntoGlib for FullscreenMode {
     type GlibType = ffi::GdkFullscreenMode;
 
-    fn to_glib(self) -> ffi::GdkFullscreenMode {
+    fn into_glib(self) -> ffi::GdkFullscreenMode {
         match self {
             FullscreenMode::CurrentMonitor => ffi::GDK_FULLSCREEN_ON_CURRENT_MONITOR,
             FullscreenMode::AllMonitors => ffi::GDK_FULLSCREEN_ON_ALL_MONITORS,
@@ -1670,7 +1670,7 @@ impl<'a> FromValue<'a> for FullscreenMode {
 
 impl SetValue for FullscreenMode {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1710,10 +1710,10 @@ impl fmt::Display for GLError {
 #[cfg(any(feature = "v3_16", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_16")))]
 #[doc(hidden)]
-impl ToGlib for GLError {
+impl IntoGlib for GLError {
     type GlibType = ffi::GdkGLError;
 
-    fn to_glib(self) -> ffi::GdkGLError {
+    fn into_glib(self) -> ffi::GdkGLError {
         match self {
             GLError::NotAvailable => ffi::GDK_GL_ERROR_NOT_AVAILABLE,
             GLError::UnsupportedFormat => ffi::GDK_GL_ERROR_UNSUPPORTED_FORMAT,
@@ -1748,7 +1748,7 @@ impl ErrorDomain for GLError {
     }
 
     fn code(self) -> i32 {
-        self.to_glib()
+        self.into_glib()
     }
 
     fn from(code: i32) -> Option<Self> {
@@ -1790,7 +1790,7 @@ impl<'a> FromValue<'a> for GLError {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_16")))]
 impl SetValue for GLError {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1824,10 +1824,10 @@ impl fmt::Display for GrabOwnership {
 }
 
 #[doc(hidden)]
-impl ToGlib for GrabOwnership {
+impl IntoGlib for GrabOwnership {
     type GlibType = ffi::GdkGrabOwnership;
 
-    fn to_glib(self) -> ffi::GdkGrabOwnership {
+    fn into_glib(self) -> ffi::GdkGrabOwnership {
         match self {
             GrabOwnership::None => ffi::GDK_OWNERSHIP_NONE,
             GrabOwnership::Window => ffi::GDK_OWNERSHIP_WINDOW,
@@ -1870,7 +1870,7 @@ impl<'a> FromValue<'a> for GrabOwnership {
 
 impl SetValue for GrabOwnership {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -1913,10 +1913,10 @@ impl fmt::Display for GrabStatus {
 }
 
 #[doc(hidden)]
-impl ToGlib for GrabStatus {
+impl IntoGlib for GrabStatus {
     type GlibType = ffi::GdkGrabStatus;
 
-    fn to_glib(self) -> ffi::GdkGrabStatus {
+    fn into_glib(self) -> ffi::GdkGrabStatus {
         match self {
             GrabStatus::Success => ffi::GDK_GRAB_SUCCESS,
             GrabStatus::AlreadyGrabbed => ffi::GDK_GRAB_ALREADY_GRABBED,
@@ -1965,7 +1965,7 @@ impl<'a> FromValue<'a> for GrabStatus {
 
 impl SetValue for GrabStatus {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2020,10 +2020,10 @@ impl fmt::Display for Gravity {
 }
 
 #[doc(hidden)]
-impl ToGlib for Gravity {
+impl IntoGlib for Gravity {
     type GlibType = ffi::GdkGravity;
 
-    fn to_glib(self) -> ffi::GdkGravity {
+    fn into_glib(self) -> ffi::GdkGravity {
         match self {
             Gravity::NorthWest => ffi::GDK_GRAVITY_NORTH_WEST,
             Gravity::North => ffi::GDK_GRAVITY_NORTH,
@@ -2080,7 +2080,7 @@ impl<'a> FromValue<'a> for Gravity {
 
 impl SetValue for Gravity {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2114,10 +2114,10 @@ impl fmt::Display for InputMode {
 }
 
 #[doc(hidden)]
-impl ToGlib for InputMode {
+impl IntoGlib for InputMode {
     type GlibType = ffi::GdkInputMode;
 
-    fn to_glib(self) -> ffi::GdkInputMode {
+    fn into_glib(self) -> ffi::GdkInputMode {
         match self {
             InputMode::Disabled => ffi::GDK_MODE_DISABLED,
             InputMode::Screen => ffi::GDK_MODE_SCREEN,
@@ -2160,7 +2160,7 @@ impl<'a> FromValue<'a> for InputMode {
 
 impl SetValue for InputMode {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2212,10 +2212,10 @@ impl fmt::Display for InputSource {
 }
 
 #[doc(hidden)]
-impl ToGlib for InputSource {
+impl IntoGlib for InputSource {
     type GlibType = ffi::GdkInputSource;
 
-    fn to_glib(self) -> ffi::GdkInputSource {
+    fn into_glib(self) -> ffi::GdkInputSource {
         match self {
             InputSource::Mouse => ffi::GDK_SOURCE_MOUSE,
             InputSource::Pen => ffi::GDK_SOURCE_PEN,
@@ -2270,7 +2270,7 @@ impl<'a> FromValue<'a> for InputSource {
 
 impl SetValue for InputSource {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2316,10 +2316,10 @@ impl fmt::Display for ModifierIntent {
 }
 
 #[doc(hidden)]
-impl ToGlib for ModifierIntent {
+impl IntoGlib for ModifierIntent {
     type GlibType = ffi::GdkModifierIntent;
 
-    fn to_glib(self) -> ffi::GdkModifierIntent {
+    fn into_glib(self) -> ffi::GdkModifierIntent {
         match self {
             ModifierIntent::PrimaryAccelerator => ffi::GDK_MODIFIER_INTENT_PRIMARY_ACCELERATOR,
             ModifierIntent::ContextMenu => ffi::GDK_MODIFIER_INTENT_CONTEXT_MENU,
@@ -2370,7 +2370,7 @@ impl<'a> FromValue<'a> for ModifierIntent {
 
 impl SetValue for ModifierIntent {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2413,10 +2413,10 @@ impl fmt::Display for NotifyType {
 }
 
 #[doc(hidden)]
-impl ToGlib for NotifyType {
+impl IntoGlib for NotifyType {
     type GlibType = ffi::GdkNotifyType;
 
-    fn to_glib(self) -> ffi::GdkNotifyType {
+    fn into_glib(self) -> ffi::GdkNotifyType {
         match self {
             NotifyType::Ancestor => ffi::GDK_NOTIFY_ANCESTOR,
             NotifyType::Virtual => ffi::GDK_NOTIFY_VIRTUAL,
@@ -2465,7 +2465,7 @@ impl<'a> FromValue<'a> for NotifyType {
 
 impl SetValue for NotifyType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2499,10 +2499,10 @@ impl fmt::Display for OwnerChange {
 }
 
 #[doc(hidden)]
-impl ToGlib for OwnerChange {
+impl IntoGlib for OwnerChange {
     type GlibType = ffi::GdkOwnerChange;
 
-    fn to_glib(self) -> ffi::GdkOwnerChange {
+    fn into_glib(self) -> ffi::GdkOwnerChange {
         match self {
             OwnerChange::NewOwner => ffi::GDK_OWNER_CHANGE_NEW_OWNER,
             OwnerChange::Destroy => ffi::GDK_OWNER_CHANGE_DESTROY,
@@ -2545,7 +2545,7 @@ impl<'a> FromValue<'a> for OwnerChange {
 
 impl SetValue for OwnerChange {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2579,10 +2579,10 @@ impl fmt::Display for PropMode {
 }
 
 #[doc(hidden)]
-impl ToGlib for PropMode {
+impl IntoGlib for PropMode {
     type GlibType = ffi::GdkPropMode;
 
-    fn to_glib(self) -> ffi::GdkPropMode {
+    fn into_glib(self) -> ffi::GdkPropMode {
         match self {
             PropMode::Replace => ffi::GDK_PROP_MODE_REPLACE,
             PropMode::Prepend => ffi::GDK_PROP_MODE_PREPEND,
@@ -2625,7 +2625,7 @@ impl<'a> FromValue<'a> for PropMode {
 
 impl SetValue for PropMode {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2656,10 +2656,10 @@ impl fmt::Display for PropertyState {
 }
 
 #[doc(hidden)]
-impl ToGlib for PropertyState {
+impl IntoGlib for PropertyState {
     type GlibType = ffi::GdkPropertyState;
 
-    fn to_glib(self) -> ffi::GdkPropertyState {
+    fn into_glib(self) -> ffi::GdkPropertyState {
         match self {
             PropertyState::NewValue => ffi::GDK_PROPERTY_NEW_VALUE,
             PropertyState::Delete => ffi::GDK_PROPERTY_DELETE,
@@ -2700,7 +2700,7 @@ impl<'a> FromValue<'a> for PropertyState {
 
 impl SetValue for PropertyState {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2740,10 +2740,10 @@ impl fmt::Display for ScrollDirection {
 }
 
 #[doc(hidden)]
-impl ToGlib for ScrollDirection {
+impl IntoGlib for ScrollDirection {
     type GlibType = ffi::GdkScrollDirection;
 
-    fn to_glib(self) -> ffi::GdkScrollDirection {
+    fn into_glib(self) -> ffi::GdkScrollDirection {
         match self {
             ScrollDirection::Up => ffi::GDK_SCROLL_UP,
             ScrollDirection::Down => ffi::GDK_SCROLL_DOWN,
@@ -2790,7 +2790,7 @@ impl<'a> FromValue<'a> for ScrollDirection {
 
 impl SetValue for ScrollDirection {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2824,10 +2824,10 @@ impl fmt::Display for SettingAction {
 }
 
 #[doc(hidden)]
-impl ToGlib for SettingAction {
+impl IntoGlib for SettingAction {
     type GlibType = ffi::GdkSettingAction;
 
-    fn to_glib(self) -> ffi::GdkSettingAction {
+    fn into_glib(self) -> ffi::GdkSettingAction {
         match self {
             SettingAction::New => ffi::GDK_SETTING_ACTION_NEW,
             SettingAction::Changed => ffi::GDK_SETTING_ACTION_CHANGED,
@@ -2870,7 +2870,7 @@ impl<'a> FromValue<'a> for SettingAction {
 
 impl SetValue for SettingAction {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -2919,10 +2919,10 @@ impl fmt::Display for SubpixelLayout {
 #[cfg(any(feature = "v3_22", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 #[doc(hidden)]
-impl ToGlib for SubpixelLayout {
+impl IntoGlib for SubpixelLayout {
     type GlibType = ffi::GdkSubpixelLayout;
 
-    fn to_glib(self) -> ffi::GdkSubpixelLayout {
+    fn into_glib(self) -> ffi::GdkSubpixelLayout {
         match self {
             SubpixelLayout::Unknown => ffi::GDK_SUBPIXEL_LAYOUT_UNKNOWN,
             SubpixelLayout::None => ffi::GDK_SUBPIXEL_LAYOUT_NONE,
@@ -2981,7 +2981,7 @@ impl<'a> FromValue<'a> for SubpixelLayout {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 impl SetValue for SubpixelLayout {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3015,10 +3015,10 @@ impl fmt::Display for VisibilityState {
 }
 
 #[doc(hidden)]
-impl ToGlib for VisibilityState {
+impl IntoGlib for VisibilityState {
     type GlibType = ffi::GdkVisibilityState;
 
-    fn to_glib(self) -> ffi::GdkVisibilityState {
+    fn into_glib(self) -> ffi::GdkVisibilityState {
         match self {
             VisibilityState::Unobscured => ffi::GDK_VISIBILITY_UNOBSCURED,
             VisibilityState::Partial => ffi::GDK_VISIBILITY_PARTIAL,
@@ -3061,7 +3061,7 @@ impl<'a> FromValue<'a> for VisibilityState {
 
 impl SetValue for VisibilityState {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3104,10 +3104,10 @@ impl fmt::Display for VisualType {
 }
 
 #[doc(hidden)]
-impl ToGlib for VisualType {
+impl IntoGlib for VisualType {
     type GlibType = ffi::GdkVisualType;
 
-    fn to_glib(self) -> ffi::GdkVisualType {
+    fn into_glib(self) -> ffi::GdkVisualType {
         match self {
             VisualType::StaticGray => ffi::GDK_VISUAL_STATIC_GRAY,
             VisualType::Grayscale => ffi::GDK_VISUAL_GRAYSCALE,
@@ -3156,7 +3156,7 @@ impl<'a> FromValue<'a> for VisualType {
 
 impl SetValue for VisualType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3205,10 +3205,10 @@ impl fmt::Display for WindowEdge {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowEdge {
+impl IntoGlib for WindowEdge {
     type GlibType = ffi::GdkWindowEdge;
 
-    fn to_glib(self) -> ffi::GdkWindowEdge {
+    fn into_glib(self) -> ffi::GdkWindowEdge {
         match self {
             WindowEdge::NorthWest => ffi::GDK_WINDOW_EDGE_NORTH_WEST,
             WindowEdge::North => ffi::GDK_WINDOW_EDGE_NORTH,
@@ -3261,7 +3261,7 @@ impl<'a> FromValue<'a> for WindowEdge {
 
 impl SetValue for WindowEdge {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3307,10 +3307,10 @@ impl fmt::Display for WindowType {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowType {
+impl IntoGlib for WindowType {
     type GlibType = ffi::GdkWindowType;
 
-    fn to_glib(self) -> ffi::GdkWindowType {
+    fn into_glib(self) -> ffi::GdkWindowType {
         match self {
             WindowType::Root => ffi::GDK_WINDOW_ROOT,
             WindowType::Toplevel => ffi::GDK_WINDOW_TOPLEVEL,
@@ -3361,7 +3361,7 @@ impl<'a> FromValue<'a> for WindowType {
 
 impl SetValue for WindowType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3428,10 +3428,10 @@ impl fmt::Display for WindowTypeHint {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowTypeHint {
+impl IntoGlib for WindowTypeHint {
     type GlibType = ffi::GdkWindowTypeHint;
 
-    fn to_glib(self) -> ffi::GdkWindowTypeHint {
+    fn into_glib(self) -> ffi::GdkWindowTypeHint {
         match self {
             WindowTypeHint::Normal => ffi::GDK_WINDOW_TYPE_HINT_NORMAL,
             WindowTypeHint::Dialog => ffi::GDK_WINDOW_TYPE_HINT_DIALOG,
@@ -3496,7 +3496,7 @@ impl<'a> FromValue<'a> for WindowTypeHint {
 
 impl SetValue for WindowTypeHint {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -3527,10 +3527,10 @@ impl fmt::Display for WindowWindowClass {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowWindowClass {
+impl IntoGlib for WindowWindowClass {
     type GlibType = ffi::GdkWindowWindowClass;
 
-    fn to_glib(self) -> ffi::GdkWindowWindowClass {
+    fn into_glib(self) -> ffi::GdkWindowWindowClass {
         match self {
             WindowWindowClass::InputOutput => ffi::GDK_INPUT_OUTPUT,
             WindowWindowClass::InputOnly => ffi::GDK_INPUT_ONLY,
@@ -3571,6 +3571,6 @@ impl<'a> FromValue<'a> for WindowWindowClass {
 
 impl SetValue for WindowWindowClass {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, this.into_glib())
     }
 }

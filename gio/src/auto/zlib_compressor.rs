@@ -25,7 +25,7 @@ glib::wrapper! {
 impl ZlibCompressor {
     #[doc(alias = "g_zlib_compressor_new")]
     pub fn new(format: ZlibCompressorFormat, level: i32) -> ZlibCompressor {
-        unsafe { from_glib_full(ffi::g_zlib_compressor_new(format.to_glib(), level)) }
+        unsafe { from_glib_full(ffi::g_zlib_compressor_new(format.into_glib(), level)) }
     }
 
     #[doc(alias = "g_zlib_compressor_get_file_info")]

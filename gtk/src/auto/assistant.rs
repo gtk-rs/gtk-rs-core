@@ -923,7 +923,7 @@ impl<O: IsA<Assistant>> AssistantExt for O {
             ffi::gtk_assistant_set_page_complete(
                 self.as_ref().to_glib_none().0,
                 page.as_ref().to_glib_none().0,
-                complete.to_glib(),
+                complete.into_glib(),
             );
         }
     }
@@ -935,7 +935,7 @@ impl<O: IsA<Assistant>> AssistantExt for O {
             ffi::gtk_assistant_set_page_has_padding(
                 self.as_ref().to_glib_none().0,
                 page.as_ref().to_glib_none().0,
-                has_padding.to_glib(),
+                has_padding.into_glib(),
             );
         }
     }
@@ -955,7 +955,7 @@ impl<O: IsA<Assistant>> AssistantExt for O {
             ffi::gtk_assistant_set_page_type(
                 self.as_ref().to_glib_none().0,
                 page.as_ref().to_glib_none().0,
-                type_.to_glib(),
+                type_.into_glib(),
             );
         }
     }

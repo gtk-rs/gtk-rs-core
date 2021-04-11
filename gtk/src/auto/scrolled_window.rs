@@ -898,7 +898,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_capture_button_press(
                 self.as_ref().to_glib_none().0,
-                capture_button_press.to_glib(),
+                capture_button_press.into_glib(),
             );
         }
     }
@@ -916,7 +916,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_kinetic_scrolling(
                 self.as_ref().to_glib_none().0,
-                kinetic_scrolling.to_glib(),
+                kinetic_scrolling.into_glib(),
             );
         }
     }
@@ -955,7 +955,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_overlay_scrolling(
                 self.as_ref().to_glib_none().0,
-                overlay_scrolling.to_glib(),
+                overlay_scrolling.into_glib(),
             );
         }
     }
@@ -964,7 +964,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_placement(
                 self.as_ref().to_glib_none().0,
-                window_placement.to_glib(),
+                window_placement.into_glib(),
             );
         }
     }
@@ -973,8 +973,8 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_policy(
                 self.as_ref().to_glib_none().0,
-                hscrollbar_policy.to_glib(),
-                vscrollbar_policy.to_glib(),
+                hscrollbar_policy.into_glib(),
+                vscrollbar_policy.into_glib(),
             );
         }
     }
@@ -985,7 +985,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_propagate_natural_height(
                 self.as_ref().to_glib_none().0,
-                propagate.to_glib(),
+                propagate.into_glib(),
             );
         }
     }
@@ -996,7 +996,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_propagate_natural_width(
                 self.as_ref().to_glib_none().0,
-                propagate.to_glib(),
+                propagate.into_glib(),
             );
         }
     }
@@ -1005,7 +1005,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
         unsafe {
             ffi::gtk_scrolled_window_set_shadow_type(
                 self.as_ref().to_glib_none().0,
-                type_.to_glib(),
+                type_.into_glib(),
             );
         }
     }
@@ -1218,7 +1218,7 @@ impl<O: IsA<ScrolledWindow>> ScrolledWindowExt for O {
                 from_glib(scroll),
                 from_glib(horizontal),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

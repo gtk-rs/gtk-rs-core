@@ -163,9 +163,9 @@ impl<O: IsA<Text>> TextExt for O {
             FromGlibPtrContainer::from_glib_full(ffi::atk_text_get_bounded_ranges(
                 self.as_ref().to_glib_none().0,
                 rect.to_glib_none_mut().0,
-                coord_type.to_glib(),
-                x_clip_type.to_glib(),
-                y_clip_type.to_glib(),
+                coord_type.into_glib(),
+                x_clip_type.into_glib(),
+                y_clip_type.into_glib(),
             ))
         }
     }
@@ -201,7 +201,7 @@ impl<O: IsA<Text>> TextExt for O {
                 y.as_mut_ptr(),
                 width.as_mut_ptr(),
                 height.as_mut_ptr(),
-                coords.to_glib(),
+                coords.into_glib(),
             );
             let x = x.assume_init();
             let y = y.assume_init();
@@ -225,7 +225,7 @@ impl<O: IsA<Text>> TextExt for O {
                 self.as_ref().to_glib_none().0,
                 x,
                 y,
-                coords.to_glib(),
+                coords.into_glib(),
             )
         }
     }
@@ -242,7 +242,7 @@ impl<O: IsA<Text>> TextExt for O {
                 self.as_ref().to_glib_none().0,
                 start_offset,
                 end_offset,
-                coord_type.to_glib(),
+                coord_type.into_glib(),
                 rect.to_glib_none_mut().0,
             );
             rect
@@ -280,7 +280,7 @@ impl<O: IsA<Text>> TextExt for O {
             let ret = from_glib_full(ffi::atk_text_get_string_at_offset(
                 self.as_ref().to_glib_none().0,
                 offset,
-                granularity.to_glib(),
+                granularity.into_glib(),
                 start_offset.as_mut_ptr(),
                 end_offset.as_mut_ptr(),
             ));
@@ -311,7 +311,7 @@ impl<O: IsA<Text>> TextExt for O {
             let ret = from_glib_full(ffi::atk_text_get_text_at_offset(
                 self.as_ref().to_glib_none().0,
                 offset,
-                boundary_type.to_glib(),
+                boundary_type.into_glib(),
                 start_offset.as_mut_ptr(),
                 end_offset.as_mut_ptr(),
             ));
@@ -338,7 +338,7 @@ impl<O: IsA<Text>> TextExt for O {
                 self.as_ref().to_glib_none().0,
                 start_offset,
                 end_offset,
-                type_.to_glib(),
+                type_.into_glib(),
             ))
         }
     }
@@ -358,7 +358,7 @@ impl<O: IsA<Text>> TextExt for O {
                 self.as_ref().to_glib_none().0,
                 start_offset,
                 end_offset,
-                coords.to_glib(),
+                coords.into_glib(),
                 x,
                 y,
             ))

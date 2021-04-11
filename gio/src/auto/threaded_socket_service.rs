@@ -74,7 +74,7 @@ impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
                     .as_ref()
                     .as_ref(),
             )
-            .to_glib()
+            .into_glib()
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

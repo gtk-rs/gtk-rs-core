@@ -38,10 +38,10 @@ impl fmt::Display for AnchorHints {
 #[cfg(any(feature = "v3_22", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 #[doc(hidden)]
-impl ToGlib for AnchorHints {
+impl IntoGlib for AnchorHints {
     type GlibType = ffi::GdkAnchorHints;
 
-    fn to_glib(self) -> ffi::GdkAnchorHints {
+    fn into_glib(self) -> ffi::GdkAnchorHints {
         self.bits()
     }
 }
@@ -84,7 +84,7 @@ impl<'a> FromValue<'a> for AnchorHints {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 impl SetValue for AnchorHints {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -115,10 +115,10 @@ impl fmt::Display for AxisFlags {
 #[cfg(any(feature = "v3_22", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 #[doc(hidden)]
-impl ToGlib for AxisFlags {
+impl IntoGlib for AxisFlags {
     type GlibType = ffi::GdkAxisFlags;
 
-    fn to_glib(self) -> ffi::GdkAxisFlags {
+    fn into_glib(self) -> ffi::GdkAxisFlags {
         self.bits()
     }
 }
@@ -161,7 +161,7 @@ impl<'a> FromValue<'a> for AxisFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_22")))]
 impl SetValue for AxisFlags {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -183,10 +183,10 @@ impl fmt::Display for DragAction {
 }
 
 #[doc(hidden)]
-impl ToGlib for DragAction {
+impl IntoGlib for DragAction {
     type GlibType = ffi::GdkDragAction;
 
-    fn to_glib(self) -> ffi::GdkDragAction {
+    fn into_glib(self) -> ffi::GdkDragAction {
         self.bits()
     }
 }
@@ -219,7 +219,7 @@ impl<'a> FromValue<'a> for DragAction {
 
 impl SetValue for DragAction {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -261,10 +261,10 @@ impl fmt::Display for EventMask {
 }
 
 #[doc(hidden)]
-impl ToGlib for EventMask {
+impl IntoGlib for EventMask {
     type GlibType = ffi::GdkEventMask;
 
-    fn to_glib(self) -> ffi::GdkEventMask {
+    fn into_glib(self) -> ffi::GdkEventMask {
         self.bits()
     }
 }
@@ -297,7 +297,7 @@ impl<'a> FromValue<'a> for EventMask {
 
 impl SetValue for EventMask {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -321,10 +321,10 @@ impl fmt::Display for FrameClockPhase {
 }
 
 #[doc(hidden)]
-impl ToGlib for FrameClockPhase {
+impl IntoGlib for FrameClockPhase {
     type GlibType = ffi::GdkFrameClockPhase;
 
-    fn to_glib(self) -> ffi::GdkFrameClockPhase {
+    fn into_glib(self) -> ffi::GdkFrameClockPhase {
         self.bits()
     }
 }
@@ -357,7 +357,7 @@ impl<'a> FromValue<'a> for FrameClockPhase {
 
 impl SetValue for FrameClockPhase {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -405,10 +405,10 @@ impl fmt::Display for ModifierType {
 }
 
 #[doc(hidden)]
-impl ToGlib for ModifierType {
+impl IntoGlib for ModifierType {
     type GlibType = ffi::GdkModifierType;
 
-    fn to_glib(self) -> ffi::GdkModifierType {
+    fn into_glib(self) -> ffi::GdkModifierType {
         self.bits()
     }
 }
@@ -441,7 +441,7 @@ impl<'a> FromValue<'a> for ModifierType {
 
 impl SetValue for ModifierType {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -470,10 +470,10 @@ impl fmt::Display for SeatCapabilities {
 #[cfg(any(feature = "v3_20", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_20")))]
 #[doc(hidden)]
-impl ToGlib for SeatCapabilities {
+impl IntoGlib for SeatCapabilities {
     type GlibType = ffi::GdkSeatCapabilities;
 
-    fn to_glib(self) -> ffi::GdkSeatCapabilities {
+    fn into_glib(self) -> ffi::GdkSeatCapabilities {
         self.bits()
     }
 }
@@ -516,7 +516,7 @@ impl<'a> FromValue<'a> for SeatCapabilities {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_20")))]
 impl SetValue for SeatCapabilities {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -539,10 +539,10 @@ impl fmt::Display for WMDecoration {
 }
 
 #[doc(hidden)]
-impl ToGlib for WMDecoration {
+impl IntoGlib for WMDecoration {
     type GlibType = ffi::GdkWMDecoration;
 
-    fn to_glib(self) -> ffi::GdkWMDecoration {
+    fn into_glib(self) -> ffi::GdkWMDecoration {
         self.bits()
     }
 }
@@ -575,7 +575,7 @@ impl<'a> FromValue<'a> for WMDecoration {
 
 impl SetValue for WMDecoration {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -597,10 +597,10 @@ impl fmt::Display for WMFunction {
 }
 
 #[doc(hidden)]
-impl ToGlib for WMFunction {
+impl IntoGlib for WMFunction {
     type GlibType = ffi::GdkWMFunction;
 
-    fn to_glib(self) -> ffi::GdkWMFunction {
+    fn into_glib(self) -> ffi::GdkWMFunction {
         self.bits()
     }
 }
@@ -633,7 +633,7 @@ impl<'a> FromValue<'a> for WMFunction {
 
 impl SetValue for WMFunction {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -658,10 +658,10 @@ impl fmt::Display for WindowHints {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowHints {
+impl IntoGlib for WindowHints {
     type GlibType = ffi::GdkWindowHints;
 
-    fn to_glib(self) -> ffi::GdkWindowHints {
+    fn into_glib(self) -> ffi::GdkWindowHints {
         self.bits()
     }
 }
@@ -694,7 +694,7 @@ impl<'a> FromValue<'a> for WindowHints {
 
 impl SetValue for WindowHints {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
 
@@ -727,10 +727,10 @@ impl fmt::Display for WindowState {
 }
 
 #[doc(hidden)]
-impl ToGlib for WindowState {
+impl IntoGlib for WindowState {
     type GlibType = ffi::GdkWindowState;
 
-    fn to_glib(self) -> ffi::GdkWindowState {
+    fn into_glib(self) -> ffi::GdkWindowState {
         self.bits()
     }
 }
@@ -763,6 +763,6 @@ impl<'a> FromValue<'a> for WindowState {
 
 impl SetValue for WindowState {
     unsafe fn set_value(value: &mut glib::Value, this: &Self) {
-        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.to_glib())
+        glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, this.into_glib())
     }
 }
