@@ -1,5 +1,6 @@
-use gtk::prelude::*;
-use gtk::{gio, glib};
+use gio;
+use gio::prelude::*;
+use glib;
 
 use std::str;
 

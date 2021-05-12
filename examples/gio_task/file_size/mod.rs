@@ -1,9 +1,10 @@
 pub mod ffi;
 mod imp;
 
-use gtk::glib::subclass::prelude::*;
-use gtk::prelude::*;
-use gtk::{gio, glib};
+use gio;
+use gio::prelude::*;
+use glib;
+use glib::subclass::prelude::*;
 
 glib::wrapper! {
     pub struct FileSize(ObjectSubclass<imp::FileSize>);

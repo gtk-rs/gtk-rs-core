@@ -1,9 +1,9 @@
 mod file_size;
 
 use futures_channel::oneshot;
-use glib::clone;
-use gtk::glib::translate::*;
-use gtk::{gio, glib};
+use glib::{self, clone};
+use glib::translate::*;
+use gio;
 
 use file_size::FileSize;
 

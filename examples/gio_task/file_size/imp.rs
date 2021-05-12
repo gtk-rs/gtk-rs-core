@@ -1,5 +1,5 @@
 use glib::subclass::prelude::*;
-use gtk::glib;
+use glib;
 
 // FileSize is a simple object that will just contain the read file size.
 // Initially the optional size field will be initialized to None.

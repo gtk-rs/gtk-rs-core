@@ -1,7 +1,8 @@
-use gtk::glib::subclass::prelude::*;
-use gtk::glib::translate::*;
-use gtk::prelude::*;
-use gtk::{gio, glib};
+use gio;
+use gio::prelude::*;
+use glib;
+use glib::translate::*;
+use glib::subclass::prelude::*;
 
 pub type FileSize = <super::imp::FileSize as ObjectSubclass>::Instance;
 

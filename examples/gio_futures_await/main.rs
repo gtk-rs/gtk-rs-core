@@ -1,6 +1,6 @@
-use glib::clone;
-use gtk::prelude::*;
-use gtk::{gio, glib};
+use glib::{self, clone};
+use gio;
+use gio::prelude::*;
 
 use futures::prelude::*;
 
