@@ -1,6 +1,6 @@
-use glib::{self, clone};
 use gio;
 use gio::prelude::*;
+use glib::{self, clone};
 
 use futures::prelude::*;
 
