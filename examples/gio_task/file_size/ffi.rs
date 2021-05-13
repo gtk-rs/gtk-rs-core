@@ -1,8 +1,8 @@
 use gio;
 use gio::prelude::*;
 use glib;
-use glib::translate::*;
 use glib::subclass::prelude::*;
+use glib::translate::*;
 
 pub type FileSize = <super::imp::FileSize as ObjectSubclass>::Instance;
 

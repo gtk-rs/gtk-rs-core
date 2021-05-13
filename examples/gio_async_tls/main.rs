@@ -1,7 +1,7 @@
 use futures::prelude::*;
 use futures::task::{Context, Poll};
-use glib::prelude::*;
 use gio;
+use gio::prelude::*;
 use glib;
 
 use std::io;
