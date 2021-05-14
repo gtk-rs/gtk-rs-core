@@ -2584,6 +2584,14 @@
 <span id="2581">2581</span>
 <span id="2582">2582</span>
 <span id="2583">2583</span>
+<span id="2584">2584</span>
+<span id="2585">2585</span>
+<span id="2586">2586</span>
+<span id="2587">2587</span>
+<span id="2588">2588</span>
+<span id="2589">2589</span>
+<span id="2590">2590</span>
+<span id="2591">2591</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -3779,6 +3787,14 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TryFromGlib</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">Copy</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
     <span class="kw">type</span> <span class="ident">Error</span>;
     <span class="kw">fn</span> <span class="ident">try_from_glib</span>(<span class="ident">val</span>: <span class="ident">G</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span>;
+}
+
+<span class="doccomment">/// Translate from a Glib type which can result in an undefined and/or invalid value.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_glib</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">Copy</span>, <span class="ident">T</span>: <span class="ident">TryFromGlib</span><span class="op">&lt;</span><span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="ident">val</span>: <span class="ident">G</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">TryFromGlib</span><span class="op">&lt;</span><span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span> {
+    <span class="ident">TryFromGlib::try_from_glib</span>(<span class="ident">val</span>)
 }
 
 <span class="doccomment">/// Error type for [`TryFromGlib`] when the Glib value is None.</span>
