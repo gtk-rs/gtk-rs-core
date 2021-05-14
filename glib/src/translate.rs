@@ -1194,6 +1194,14 @@ pub trait TryFromGlib<G: Copy>: Sized {
     fn try_from_glib(val: G) -> Result<Self, Self::Error>;
 }
 
+/// Translate from a Glib type which can result in an undefined and/or invalid value.
+#[inline]
+pub fn try_from_glib<G: Copy, T: TryFromGlib<G>>(
+    val: G,
+) -> Result<T, <T as TryFromGlib<G>>::Error> {
+    TryFromGlib::try_from_glib(val)
+}
+
 /// Error type for [`TryFromGlib`] when the Glib value is None.
 #[derive(Debug, PartialEq, Eq)]
 pub struct GlibNoneError;
