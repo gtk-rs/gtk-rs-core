@@ -455,11 +455,11 @@ impl<'a> FromGlibContainer<*const c_char, *mut i8> for GString {
     }
 
     unsafe fn from_glib_container_num(ptr: *mut i8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
     }
 
     unsafe fn from_glib_full_num(ptr: *mut i8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
     }
 }
 
@@ -470,11 +470,11 @@ impl<'a> FromGlibContainer<*const c_char, *const u8> for GString {
     }
 
     unsafe fn from_glib_container_num(ptr: *const u8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
     }
 
     unsafe fn from_glib_full_num(ptr: *const u8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
     }
 }
 
@@ -485,11 +485,11 @@ impl<'a> FromGlibContainer<*const c_char, *mut u8> for GString {
     }
 
     unsafe fn from_glib_container_num(ptr: *mut u8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
     }
 
     unsafe fn from_glib_full_num(ptr: *mut u8, num: usize) -> Self {
-        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
     }
 }
 
