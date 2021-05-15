@@ -67,7 +67,7 @@ impl VariantDict {
     /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
     pub fn lookup_value(&self, key: &str, expected_type: Option<&VariantTy>) -> Option<Variant> {
         unsafe {
-            from_glib_none(ffi::g_variant_dict_lookup_value(
+            from_glib_full(ffi::g_variant_dict_lookup_value(
                 self.to_glib_none().0,
                 key.to_glib_none().0,
                 expected_type.to_glib_none().0,
