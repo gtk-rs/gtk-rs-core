@@ -198,7 +198,7 @@ impl Variant {
     #[inline]
     #[doc(alias = "get_variant")]
     pub fn as_variant(&self) -> Option<Variant> {
-        unsafe { from_glib_none(ffi::g_variant_get_variant(self.to_glib_none().0)) }
+        unsafe { from_glib_full(ffi::g_variant_get_variant(self.to_glib_none().0)) }
     }
 
     /// Reads a child item out of a container `Variant` instance.
@@ -212,7 +212,7 @@ impl Variant {
         assert!(index < self.n_children());
         assert!(self.is_container());
 
-        unsafe { from_glib_none(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) }
+        unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) }
     }
 
     /// Tries to extract a `&str`.
