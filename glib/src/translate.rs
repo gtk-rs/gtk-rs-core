@@ -1073,6 +1073,35 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
     }
 }
 
+#[allow(clippy::implicit_hasher)]
+impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<&str, crate::Object> {
+    type Storage = HashTable;
+
+    #[inline]
+    fn to_glib_none(&self) -> Stash<'a, *mut ffi::GHashTable, Self> {
+        let ptr = self.to_glib_full();
+        Stash(ptr, HashTable(ptr))
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut ffi::GHashTable {
+        unsafe {
+            let ptr = ffi::g_hash_table_new_full(
+                Some(ffi::g_str_hash),
+                Some(ffi::g_str_equal),
+                Some(ffi::g_free),
+                Some(ffi::g_free),
+            );
+            for (k, v) in self {
+                let k: *mut c_char = k.to_glib_full();
+                let v: *mut gobject_ffi::GObject = v.to_glib_full();
+                ffi::g_hash_table_insert(ptr, k as *mut _, v as *mut _);
+            }
+            ptr
+        }
+    }
+}
+
 pub struct HashTable(*mut ffi::GHashTable);
 
 impl Drop for HashTable {
@@ -2328,7 +2357,7 @@ mod tests {
 
     #[test]
     fn string_hash_map() {
-        let mut map = HashMap::new();
+        let mut map: HashMap<String, String> = HashMap::new();
         map.insert("A".into(), "1".into());
         map.insert("B".into(), "2".into());
         map.insert("C".into(), "3".into());
