@@ -1,4 +1,4 @@
-# gtk-rs ![CI](https://github.com/gtk-rs/gtk-rs-core/workflows/CI/badge.svg)
+# gtk-rs-core ![CI](https://github.com/gtk-rs/gtk-rs-core/workflows/CI/badge.svg)
 
 The `gtk-rs` organization aims to provide safe Rust binding over `GObject`-based libraries.
 You can find more about it on <https://gtk-rs.org>.
