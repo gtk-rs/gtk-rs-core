@@ -1,51 +1,13 @@
 # Examples
 
-Consists of various examples to get familiar with writing applications using the `gtk-rs` bindings.
-Please be sure to have installed all the required libraries before building the examples (the list is available on the [gtk-rs](https://github.com/gtk-rs/gtk/) repository).
+Consists of various examples of how to use the `gtk-rs-core` libraries. Note that there are other examples in [gtk3-rs](https://github.com/gtk-rs/gtk3-rs/tree/master/examples) & [gtk4-rs](https://github.com/gtk-rs/gtk4-rs/tree/master/examples) if you want GTK specific ones.
 
-- [Accessibility](./accessibility/)
-- [Basic Subclass](./basic_subclass/)
-- [Basics](./basics/)
-- [Builder Pattern](./builder_pattern/)
-- [Cairo PNG](./cairo_png/)
-- [Cairo Test](./cairo_test/)
-- [Child Properties](./child_properties/)
-- [Clipboard Simple](./clipboard/)
-- [Clock](./clock/)
-- [Clone Macro](./clone_macro/)
-- [Communication Thread](./communication_thread/)
-- [Composite Template](./composite_template/)
-- [CSS](./css/)
-- [Dialog](./dialog/)
-- [Drag and Drop](./drag_drop/)
-- [Drag and Drop TextView](./drag_drop_text_view/)
-- [Entry Completion](./entry_completion/)
+
 - [GIO Async TLS](./gio_async_tls/)
 - [GIO Futures](./gio_futures/)
 - [GIO Futures Await](./gio_futures_await/)
 - [GIO Task](./gio_task/)
-- [Grid](./grid/)
-- [GTK Builder Basics](./gtk_builder_basics/)
-- [GTK Builder Signal](./gtk_builder_signal/)
-- [GTK Test](./gtk_test/)
-- [Icon View](./icon_view/)
-- [List Box Model](./list_box_model/)
-- [List Store](./list_store/)
-- [Menu Bar](./menu_bar/)
-- [Menu Bar System](./menu_bar_system/)
-- [Multi Threading Context](./multi_threading_context/)
-- [Multi Window](./multi_window/)
-- [Notebook](./notebook/)
-- [Overlay](./overlay/)
-- [Pango Attributes](./pango_attributes/)
-- [Printing](./printing/)
-- [Progress Tracker](./progress_tracker/)
-- [Sync Widget](./sync_widget/)
-- [Text Viewer](./text_viewer/)
-- [Transparent Main Window](./transparent_main_window/)
-- [Tree View](./tree_view/)
-- [Tree View Model Sort](./tree_view_model_sort/)
-- [Tree View Simple](./tree_view_simple/)
+- [GIO Resources](./resources)
 
 ## LICENSE
-The gtk-rs examples are licensed under the MIT license, please refer to the LICENSE and COPYRIGHT files for more information.
+The examples are licensed under the MIT license, please refer to the LICENSE and COPYRIGHT files for more information.
