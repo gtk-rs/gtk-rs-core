@@ -12,8 +12,8 @@ Currently, the minimum supported Rust version is `1.51.0`.
 
 ## Documentation
 
-You can see the all the released crates' documentation in
-[one place](https://gtk-rs.org/docs-src/).
+- [Examples](examples)
+- The Rust API [Stable] / [Development](https://gtk-rs.org/gtk-rs-core/git/docs/)
 
 ## Ecosystem
 
