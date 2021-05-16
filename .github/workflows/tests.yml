@@ -1,0 +1,30 @@
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+name: Tests
+
+jobs:
+  build:
+    name: ${{matrix.lib}}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/gtk-rs/gtk-rs/gtk:latest
+    strategy:
+      matrix:
+        lib:
+          - gio/sys
+          - glib/sys
+          - glib/gobject-sys
+          - graphene/sys
+          - pango/sys
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Test ${{ matrix.lib }}
+        run: cargo test
+        working-directory: ${{ matrix.lib }}
