@@ -184,7 +184,7 @@ pub fn home_dir() -> std::path::PathBuf {
 
 #[doc(alias = "g_get_tmp_dir")]
 #[doc(alias = "get_tmp_dir")]
-pub fn tmp_dir() -> Option<std::path::PathBuf> {
+pub fn tmp_dir() -> std::path::PathBuf {
     #[cfg(not(all(windows, target_arch = "x86")))]
     use ffi::g_get_tmp_dir;
     #[cfg(all(windows, target_arch = "x86"))]
