@@ -21,11 +21,6 @@ impl MainContext {
         unsafe { from_glib_full(ffi::g_main_context_new()) }
     }
 
-    #[doc(alias = "g_main_context_acquire")]
-    pub fn acquire(&self) -> bool {
-        unsafe { from_glib(ffi::g_main_context_acquire(self.to_glib_none().0)) }
-    }
-
     //#[doc(alias = "g_main_context_add_poll")]
     //pub fn add_poll(&self, fd: /*Ignored*/&mut PollFD, priority: i32) {
     //    unsafe { TODO: call ffi:g_main_context_add_poll() }
@@ -97,13 +92,6 @@ impl MainContext {
     //pub fn query(&self, max_priority: i32, fds: /*Ignored*/Vec<PollFD>) -> (i32, i32) {
     //    unsafe { TODO: call ffi:g_main_context_query() }
     //}
-
-    #[doc(alias = "g_main_context_release")]
-    pub fn release(&self) {
-        unsafe {
-            ffi::g_main_context_release(self.to_glib_none().0);
-        }
-    }
 
     //#[doc(alias = "g_main_context_remove_poll")]
     //pub fn remove_poll(&self, fd: /*Ignored*/&mut PollFD) {
