@@ -269,6 +269,45 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -452,6 +491,45 @@
     {
         <span class="kw">let</span> <span class="ident">_thread_default</span> <span class="op">=</span> <span class="ident">ThreadDefaultContext::new</span>(<span class="self">self</span>);
         <span class="ident">func</span>()
+    }
+
+    <span class="doccomment">/// Tries to become the owner of the specified context.</span>
+    <span class="doccomment">/// If some other thread is the owner of the context,</span>
+    <span class="doccomment">/// returns [`false`] immediately. Ownership is properly</span>
+    <span class="doccomment">/// recursive: the owner can require ownership again</span>
+    <span class="doccomment">/// and will release ownership when [`Self::release()`]</span>
+    <span class="doccomment">/// is called as many times as [`Self::acquire()`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// You must be the owner of a context before you</span>
+    <span class="doccomment">/// can call [`Self::prepare()`], [`Self::query()`],</span>
+    <span class="doccomment">/// [`Self::check()`], [`Self::dispatch()`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Returns</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`true`] if the operation succeeded, and</span>
+    <span class="doccomment">///  this thread is now the owner of `self`.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_main_context_acquire&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">acquire</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MainContextAcquireGuard</span>, <span class="kw">crate</span><span class="ident">::BoolError</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">ffi::g_main_context_acquire</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>));
+            <span class="kw">if</span> <span class="ident">ret</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">MainContextAcquireGuard</span>(<span class="self">self</span>))
+            } <span class="kw">else</span> {
+                <span class="prelude-val">Err</span>(<span class="macro">bool_error!</span>(<span class="string">&quot;Failed to acquire main context&quot;</span>))
+            }
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;if unused the main context will be released immediately&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MainContextAcquireGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">MainContext</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MainContextAcquireGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_main_context_release&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="ident">ffi::g_main_context_release</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+        }
     }
 }
 
