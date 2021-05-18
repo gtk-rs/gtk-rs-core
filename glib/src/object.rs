@@ -1181,6 +1181,16 @@ impl Object {
     }
 }
 
+#[must_use = "if unused the property notifications will immediately be thawed"]
+pub struct PropertyNotificationFreezeGuard(ObjectRef);
+
+impl Drop for PropertyNotificationFreezeGuard {
+    #[doc(alias = "g_object_thaw_notify")]
+    fn drop(&mut self) {
+        unsafe { gobject_ffi::g_object_thaw_notify(self.0.to_glib_none().0) }
+    }
+}
+
 pub trait ObjectExt: ObjectType {
     /// Returns `true` if the object is an instance of (can be cast to) `T`.
     fn is<T: StaticType>(&self) -> bool;
@@ -1218,6 +1228,9 @@ pub trait ObjectExt: ObjectType {
     fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type>;
     fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec>;
     fn list_properties(&self) -> Vec<crate::ParamSpec>;
+
+    #[doc(alias = "g_object_freeze_notify")]
+    fn freeze_notify(&self) -> PropertyNotificationFreezeGuard;
 
     /// # Safety
     ///
@@ -1774,6 +1787,11 @@ impl<T: ObjectType> ObjectExt for T {
 
     fn list_properties(&self) -> Vec<crate::ParamSpec> {
         self.object_class().list_properties()
+    }
+
+    fn freeze_notify(&self) -> PropertyNotificationFreezeGuard {
+        unsafe { gobject_ffi::g_object_freeze_notify(self.as_object_ref().to_glib_none().0) };
+        PropertyNotificationFreezeGuard(self.as_object_ref().clone())
     }
 
     fn connect<'a, N, F>(
