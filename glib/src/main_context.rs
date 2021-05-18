@@ -124,6 +124,30 @@ impl MainContext {
         let _thread_default = ThreadDefaultContext::new(self);
         func()
     }
+
+    #[doc(alias = "g_main_context_acquire")]
+    pub fn acquire(&self) -> Result<MainContextAcquireGuard, crate::BoolError> {
+        unsafe {
+            let ret: bool = from_glib(ffi::g_main_context_acquire(self.to_glib_none().0));
+            if ret {
+                Ok(MainContextAcquireGuard(self))
+            } else {
+                Err(bool_error!("Failed to acquire main context"))
+            }
+        }
+    }
+}
+
+#[must_use = "if unused the main context will be released immediately"]
+pub struct MainContextAcquireGuard<'a>(&'a MainContext);
+
+impl<'a> Drop for MainContextAcquireGuard<'a> {
+    #[doc(alias = "g_main_context_release")]
+    fn drop(&mut self) {
+        unsafe {
+            ffi::g_main_context_release(self.0.to_glib_none().0);
+        }
+    }
 }
 
 struct ThreadDefaultContext<'a>(&'a MainContext);

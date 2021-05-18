@@ -571,7 +571,7 @@ mod tests {
         let c = MainContext::new();
         let l = MainLoop::new(Some(&c), false);
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::channel(Priority::default());
 
@@ -602,7 +602,7 @@ mod tests {
         let c = MainContext::new();
         let l = MainLoop::new(Some(&c), false);
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::channel::<i32>(Priority::default());
 
@@ -637,7 +637,7 @@ mod tests {
     fn test_remove_receiver() {
         let c = MainContext::new();
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::channel::<i32>(Priority::default());
 
@@ -653,7 +653,7 @@ mod tests {
     fn test_remove_receiver_and_drop_source() {
         let c = MainContext::new();
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::channel::<i32>(Priority::default());
 
@@ -686,7 +686,7 @@ mod tests {
         let c = MainContext::new();
         let l = MainLoop::new(Some(&c), false);
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::sync_channel(Priority::default(), 2);
 
@@ -735,7 +735,7 @@ mod tests {
         let c = MainContext::new();
         let l = MainLoop::new(Some(&c), false);
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::sync_channel(Priority::default(), 3);
 
@@ -786,7 +786,7 @@ mod tests {
     fn test_sync_channel_drop_receiver_wakeup() {
         let c = MainContext::new();
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::sync_channel(Priority::default(), 2);
 
@@ -816,7 +816,7 @@ mod tests {
         let c = MainContext::new();
         let l = MainLoop::new(Some(&c), false);
 
-        c.acquire();
+        let _guard = c.acquire().unwrap();
 
         let (sender, receiver) = MainContext::sync_channel(Priority::default(), 0);
 
