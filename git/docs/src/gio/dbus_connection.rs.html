@@ -577,6 +577,16 @@
 <span id="574">574</span>
 <span id="575">575</span>
 <span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -659,6 +669,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// 0 if `error` is set, otherwise a registration id (never 0)</span>
     <span class="doccomment">///  that can be used with [`Self::unregister_object()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_register_object_with_closures&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_object</span><span class="op">&lt;</span><span class="ident">MethodCall</span>, <span class="ident">SetProperty</span>, <span class="ident">GetProperty</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
@@ -756,6 +767,7 @@
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`true`] if the object was unregistered, [`false`] otherwise</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unregister_object&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister_object</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">registration_id</span>: <span class="ident">RegistrationId</span>,
@@ -800,6 +812,7 @@
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// the ID of the export (never zero), or 0 in case of failure</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_export_action_group&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">export_action_group</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
@@ -829,6 +842,7 @@
     <span class="doccomment">/// same ID more than once.</span>
     <span class="doccomment">/// ## `export_id`</span>
     <span class="doccomment">/// the ID from [`Self::export_action_group()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unexport_action_group&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unexport_action_group</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">export_id</span>: <span class="ident">ActionGroupExportId</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">ffi::g_dbus_connection_unexport_action_group</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">export_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
@@ -855,6 +869,7 @@
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// the ID of the export (never zero), or 0 in case of failure</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_export_menu_model&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">export_menu_model</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
@@ -884,6 +899,7 @@
     <span class="doccomment">/// same ID more than once.</span>
     <span class="doccomment">/// ## `export_id`</span>
     <span class="doccomment">/// the ID from [`Self::export_menu_model()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unexport_menu_model&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unexport_menu_model</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">export_id</span>: <span class="ident">MenuModelExportId</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">ffi::g_dbus_connection_unexport_menu_model</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">export_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
@@ -929,6 +945,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// a filter identifier that can be used with</span>
     <span class="doccomment">///  [`Self::remove_filter()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_add_filter&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_filter</span><span class="op">&lt;</span>
         <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">DBusMessage</span>, <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DBusMessage</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="op">&gt;</span>(
@@ -982,6 +999,7 @@
     <span class="doccomment">/// called when it is guaranteed that the data is no longer needed.</span>
     <span class="doccomment">/// ## `filter_id`</span>
     <span class="doccomment">/// an identifier obtained from [`Self::add_filter()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_remove_filter&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">filter_id</span>: <span class="ident">FilterId</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">ffi::g_dbus_connection_remove_filter</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">filter_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
@@ -1066,6 +1084,7 @@
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// a subscription identifier that can be used with [`Self::signal_unsubscribe()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_signal_subscribe&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signal_subscribe</span><span class="op">&lt;</span>
         <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="op">&gt;</span>(
@@ -1145,6 +1164,7 @@
     <span class="doccomment">/// ## `subscription_id`</span>
     <span class="doccomment">/// a subscription id obtained from</span>
     <span class="doccomment">///  [`Self::signal_subscribe()`]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_signal_unsubscribe&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signal_unsubscribe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">subscription_id</span>: <span class="ident">SignalSubscriptionId</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">ffi::g_dbus_connection_signal_unsubscribe</span>(

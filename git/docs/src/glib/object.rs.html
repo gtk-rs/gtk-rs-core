@@ -3015,6 +3015,18 @@
 <span id="3012">3012</span>
 <span id="3013">3013</span>
 <span id="3014">3014</span>
+<span id="3015">3015</span>
+<span id="3016">3016</span>
+<span id="3017">3017</span>
+<span id="3018">3018</span>
+<span id="3019">3019</span>
+<span id="3020">3020</span>
+<span id="3021">3021</span>
+<span id="3022">3022</span>
+<span id="3023">3023</span>
+<span id="3024">3024</span>
+<span id="3025">3025</span>
+<span id="3026">3026</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -4226,6 +4238,7 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_interface&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">interface</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IsInterface</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InterfaceRef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_set_property&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">set_property</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">ToValue</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">property_name</span>: <span class="ident">N</span>,
@@ -4240,6 +4253,7 @@
     <span class="kw">fn</span> <span class="ident">set_properties_from_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">property_values</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">Value</span>)])
         <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">BoolError</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_property&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_get_property&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">property</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">property_name</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">BoolError</span><span class="op">&gt;</span>;
     <span class="kw">fn</span> <span class="ident">has_property</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">property_name</span>: <span class="ident">N</span>, <span class="ident">type_</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_property_type&quot;</span>)]</span>
@@ -4352,6 +4366,7 @@
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span>[<span class="ident">Value</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Emit signal by signal id.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_signal_emitv&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">emit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">signal_id</span>: <span class="ident">SignalId</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">ToValue</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>, <span class="ident">BoolError</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Same as `emit` but takes `Value` for the arguments.</span>
     <span class="kw">fn</span> <span class="ident">emit_with_values</span>(
@@ -4385,6 +4400,7 @@
         <span class="ident">details</span>: <span class="ident">Quark</span>,
         <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>],
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>, <span class="ident">BoolError</span><span class="op">&gt;</span>;
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_signal_handler_disconnect&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">handler_id</span>: <span class="ident">SignalHandlerId</span>);
 
     <span class="kw">fn</span> <span class="ident">connect_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::ParamSpec</span>) <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
@@ -4402,7 +4418,9 @@
         <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_notify&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">notify</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">property_name</span>: <span class="ident">N</span>);
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_notify_by_pspec&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">notify_by_pspec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pspec</span>: <span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::ParamSpec</span>);
 
     <span class="kw">fn</span> <span class="ident">downgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WeakRef</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
@@ -5403,6 +5421,7 @@
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">pspec</span><span class="op">|</span> <span class="ident">pspec</span>.<span class="ident">value_type</span>())
     }
 
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_class_find_property&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_property</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">property_name</span>: <span class="ident">N</span>,
@@ -5418,6 +5437,7 @@
         }
     }
 
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_object_class_list_properties&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list_properties</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::ParamSpec</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">klass</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">gobject_ffi::GObjectClass</span>;
@@ -5454,6 +5474,7 @@
         }
     }
 
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_weak_ref_set&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">obj</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">gobject_ffi::g_weak_ref_set</span>(
@@ -5769,6 +5790,7 @@
     }
 
     <span class="doccomment">/// Gets the parent class struct, if any.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_type_class_peek_parent&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ClassRef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">gobject_ffi::g_type_class_peek_parent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
@@ -5915,6 +5937,7 @@
     }
 
     <span class="doccomment">/// Gets the default interface struct for `Self`.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_type_default_interface_ref&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InterfaceRef</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">gobject_ffi::g_type_default_interface_ref</span>(<span class="ident">T::static_type</span>().<span class="ident">into_glib</span>());
@@ -5931,6 +5954,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This returns the parent interface if a parent type of the instance type also implements the</span>
     <span class="doccomment">/// interface.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_type_interface_peek_parent&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InterfaceRef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">gobject_ffi::g_type_interface_peek_parent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
