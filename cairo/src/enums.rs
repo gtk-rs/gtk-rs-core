@@ -1411,6 +1411,7 @@ impl fmt::Display for Format {
 gvalue_impl!(Format, ffi::gobject::cairo_gobject_format_get_type);
 
 impl Format {
+    #[doc(alias = "cairo_format_stride_for_width")]
     pub fn stride_for_width(self, width: u32) -> Result<i32, Error> {
         assert!(width <= i32::MAX as u32);
         let width = width as i32;

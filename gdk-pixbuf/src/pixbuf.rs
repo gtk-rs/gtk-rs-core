@@ -447,6 +447,7 @@ impl Pixbuf {
 
     #[cfg(any(feature = "v2_36", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
+    #[doc(alias = "gdk_pixbuf_save_to_streamv")]
     pub fn save_to_streamv<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(
         &self,
         stream: &P,

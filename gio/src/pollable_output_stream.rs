@@ -18,6 +18,7 @@ use std::pin::Pin;
 use futures_core::stream::Stream;
 
 pub trait PollableOutputStreamExtManual {
+    #[doc(alias = "g_pollable_output_stream_create_source")]
     fn create_source<F, C>(
         &self,
         cancellable: Option<&C>,

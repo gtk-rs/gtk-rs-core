@@ -27,6 +27,7 @@ impl Array {
         unsafe { (*self.to_glib_none().0).data as _ }
     }
 
+    #[doc(alias = "g_array_get_element_size")]
     pub fn element_size(&self) -> usize {
         unsafe { ffi::g_array_get_element_size(self.to_glib_none().0) as usize }
     }

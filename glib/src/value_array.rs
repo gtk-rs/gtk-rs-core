@@ -18,10 +18,12 @@ wrapper! {
 }
 
 impl ValueArray {
+    #[doc(alias = "g_value_array_new")]
     pub fn new(n_prealloced: u32) -> ValueArray {
         unsafe { from_glib_full(gobject_ffi::g_value_array_new(n_prealloced)) }
     }
 
+    #[doc(alias = "g_value_array_append")]
     pub fn append(&mut self, value: &Value) {
         let value = value.to_glib_none();
         unsafe {
@@ -39,6 +41,7 @@ impl ValueArray {
     }
 
     #[doc(alias = "get_nth")]
+    #[doc(alias = "g_value_array_get_nth")]
     pub fn nth(&self, index_: u32) -> Option<Value> {
         unsafe {
             from_glib_none(gobject_ffi::g_value_array_get_nth(
@@ -48,6 +51,7 @@ impl ValueArray {
         }
     }
 
+    #[doc(alias = "g_value_array_insert")]
     pub fn insert(&mut self, index_: u32, value: &Value) {
         let value = value.to_glib_none();
         unsafe {
@@ -55,6 +59,7 @@ impl ValueArray {
         }
     }
 
+    #[doc(alias = "g_value_array_prepend")]
     pub fn prepend(&mut self, value: &Value) {
         let value = value.to_glib_none();
         unsafe {
@@ -62,12 +67,14 @@ impl ValueArray {
         }
     }
 
+    #[doc(alias = "g_value_array_remove")]
     pub fn remove(&mut self, index_: u32) {
         unsafe {
             gobject_ffi::g_value_array_remove(self.to_glib_none_mut().0, index_);
         }
     }
 
+    #[doc(alias = "g_value_array_sort_with_data")]
     pub fn sort_with_data<F: FnMut(&Value, &Value) -> Ordering>(&mut self, compare_func: F) {
         unsafe extern "C" fn compare_func_trampoline(
             a: ffi::gconstpointer,

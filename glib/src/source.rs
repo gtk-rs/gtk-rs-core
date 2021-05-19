@@ -696,6 +696,7 @@ where
 /// For historical reasons, the native function always returns true, so we
 /// ignore it here.
 #[allow(clippy::needless_pass_by_value)]
+#[doc(alias = "g_source_remove")]
 pub fn source_remove(source_id: SourceId) {
     unsafe {
         ffi::g_source_remove(source_id.as_raw());

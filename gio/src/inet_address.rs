@@ -44,6 +44,7 @@ impl InetAddress {
 }
 
 pub trait InetAddressExtManual {
+    #[doc(alias = "g_inet_address_to_bytes")]
     fn to_bytes(&self) -> Option<InetAddressBytes<'_>>;
 }
 

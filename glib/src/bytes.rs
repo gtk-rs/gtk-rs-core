@@ -114,6 +114,7 @@ impl Deref for Bytes {
 }
 
 impl PartialEq for Bytes {
+    #[doc(alias = "g_bytes_equal")]
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_bytes_equal(

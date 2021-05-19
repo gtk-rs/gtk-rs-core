@@ -62,16 +62,19 @@ impl AsRawSocket for Socket {
 }
 
 pub trait SocketExtManual: Sized {
+    #[doc(alias = "g_socket_receive")]
     fn receive<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
+    #[doc(alias = "g_socket_receive_from")]
     fn receive_from<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<(usize, SocketAddress), glib::Error>;
+    #[doc(alias = "g_socket_receive_with_blocking")]
     fn receive_with_blocking<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
@@ -79,17 +82,20 @@ pub trait SocketExtManual: Sized {
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
 
+    #[doc(alias = "g_socket_send")]
     fn send<B: AsRef<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
+    #[doc(alias = "g_socket_send_to")]
     fn send_to<B: AsRef<[u8]>, P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
         address: Option<&P>,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
+    #[doc(alias = "g_socket_send_with_blocking")]
     fn send_with_blocking<B: AsRef<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
@@ -100,13 +106,16 @@ pub trait SocketExtManual: Sized {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "get_fd")]
+    #[doc(alias = "g_socket_get_fd")]
     fn fd<T: FromRawFd>(&self) -> T;
 
     #[cfg(any(windows, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(windows)))]
     #[doc(alias = "get_socket")]
+    #[doc(alias = "g_socket_get_fd")]
     fn socket<T: FromRawSocket>(&self) -> T;
 
+    #[doc(alias = "g_socket_create_source")]
     fn create_source<F, C>(
         &self,
         condition: glib::IOCondition,

@@ -58,20 +58,24 @@ impl FromGlibPtrFull<*const ffi::PangoLanguage> for Language {
 }
 
 impl Default for Language {
+    #[doc(alias = "pango_language_get_default")]
     fn default() -> Self {
         unsafe { from_glib_full(ffi::pango_language_get_default()) }
     }
 }
 
 impl Language {
+    #[doc(alias = "pango_language_from_string")]
     pub fn from_string(language: &str) -> Self {
         unsafe { from_glib_full(ffi::pango_language_from_string(language.to_glib_none().0)) }
     }
 
+    #[doc(alias = "pango_language_to_string")]
     pub fn to_string(&self) -> GString {
         unsafe { from_glib_none(ffi::pango_language_to_string(self.to_glib_none().0)) }
     }
 
+    #[doc(alias = "pango_language_matches")]
     pub fn matches(&self, range_list: &str) -> bool {
         unsafe {
             from_glib(ffi::pango_language_matches(
@@ -81,6 +85,7 @@ impl Language {
         }
     }
 
+    #[doc(alias = "pango_language_includes_script")]
     pub fn includes_script(&self, script: Script) -> bool {
         unsafe {
             from_glib(ffi::pango_language_includes_script(
@@ -91,6 +96,7 @@ impl Language {
     }
 
     #[doc(alias = "get_scripts")]
+    #[doc(alias = "pango_language_get_scripts")]
     pub fn scripts(&self) -> Vec<Script> {
         let mut num_scripts = 0;
         let mut ret = Vec::new();
@@ -110,6 +116,7 @@ impl Language {
     }
 
     #[doc(alias = "get_sample_string")]
+    #[doc(alias = "pango_language_get_sample_string")]
     pub fn sample_string(&self) -> GString {
         unsafe { from_glib_none(ffi::pango_language_get_sample_string(self.to_glib_none().0)) }
     }

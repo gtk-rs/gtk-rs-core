@@ -161,6 +161,7 @@ impl Device {
         Ok(DeviceAcquireGuard { 0: self })
     }
 
+    #[doc(alias = "cairo_device_release")]
     fn release(&self) {
         unsafe { ffi::cairo_device_release(self.to_raw_none()) }
     }
@@ -197,6 +198,7 @@ impl Device {
 
     #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
     #[doc(alias = "cairo_xlib_device_debug_cap_xrender_version")]
+    #[doc(alias = "cairo_xcb_device_debug_cap_xrender_version")]
     pub fn debug_cap_xrender_version(&self, major_version: i32, minor_version: i32) {
         unsafe {
             match self.type_() {
@@ -235,6 +237,7 @@ impl Device {
 
     #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
     #[doc(alias = "cairo_xlib_device_debug_get_precision")]
+    #[doc(alias = "cairo_xcb_device_debug_get_precision")]
     pub fn debug_get_precision(&self) -> i32 {
         unsafe {
             match self.type_() {
@@ -265,6 +268,7 @@ impl Device {
 
     #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
     #[doc(alias = "cairo_xlib_device_debug_set_precision")]
+    #[doc(alias = "cairo_xcb_device_debug_set_precision")]
     pub fn debug_set_precision(&self, precision: i32) {
         unsafe {
             match self.type_() {

@@ -127,6 +127,7 @@ pub struct GenericValueTypeChecker<T>(std::marker::PhantomData<T>);
 unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeChecker<T> {
     type Error = ValueTypeMismatchError;
 
+    #[doc(alias = "g_type_check_value_holds")]
     fn check(value: &Value) -> Result<(), Self::Error> {
         unsafe {
             if gobject_ffi::g_type_check_value_holds(&value.0, T::static_type().into_glib())
@@ -356,6 +357,7 @@ impl Value {
     }
 
     /// Returns whether `Value`s of type `src` can be transformed to type `dst`.
+    #[doc(alias = "g_value_type_transformable")]
     pub fn type_transformable(src: Type, dst: Type) -> bool {
         unsafe {
             from_glib(gobject_ffi::g_value_type_transformable(
@@ -366,6 +368,7 @@ impl Value {
     }
 
     /// Tries to transform the value into a value of the target type
+    #[doc(alias = "g_value_transform")]
     pub fn transform<T: ValueType>(&self) -> Result<Value, crate::BoolError> {
         unsafe {
             let mut dest = Value::for_value_type::<T>();

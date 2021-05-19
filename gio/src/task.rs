@@ -10,6 +10,7 @@ use std::boxed::Box as Box_;
 use std::ptr;
 
 impl Task {
+    #[doc(alias = "g_task_new")]
     pub fn new<P: IsA<Cancellable>, Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static>(
         source_object: Option<&glib::Object>,
         cancellable: Option<&P>,
@@ -39,6 +40,7 @@ impl Task {
         }
     }
 
+    #[doc(alias = "g_task_return_error")]
     pub fn return_error(&self, error: glib::Error) {
         unsafe {
             ffi::g_task_return_error(self.to_glib_none().0, error.to_glib_full() as *mut _);
@@ -46,10 +48,12 @@ impl Task {
     }
 
     #[doc(alias = "get_priority")]
+    #[doc(alias = "g_task_get_priority")]
     pub fn priority(&self) -> glib::source::Priority {
         unsafe { FromGlib::from_glib(ffi::g_task_get_priority(self.to_glib_none().0)) }
     }
 
+    #[doc(alias = "g_task_set_priority")]
     pub fn set_priority(&self, priority: glib::source::Priority) {
         unsafe {
             ffi::g_task_set_priority(self.to_glib_none().0, priority.into_glib());

@@ -16,6 +16,7 @@ use futures_core::stream::Stream;
 use std::pin::Pin;
 
 pub trait PollableInputStreamExtManual: Sized {
+    #[doc(alias = "g_pollable_input_stream_create_source")]
     fn create_source<F, C>(
         &self,
         cancellable: Option<&C>,
@@ -39,6 +40,7 @@ pub trait PollableInputStreamExtManual: Sized {
         priority: glib::Priority,
     ) -> Pin<Box<dyn Stream<Item = ()> + 'static>>;
 
+    #[doc(alias = "g_pollable_input_stream_read_nonblocking")]
     fn read_nonblocking<C: IsA<Cancellable>>(
         &self,
         buffer: &mut [u8],

@@ -26,6 +26,7 @@ pub struct FilterId(NonZeroU32);
 pub struct SignalSubscriptionId(NonZeroU32);
 
 impl DBusConnection {
+    #[doc(alias = "g_dbus_connection_register_object_with_closures")]
     pub fn register_object<MethodCall, SetProperty, GetProperty>(
         &self,
         object_path: &str,
@@ -115,6 +116,7 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_unregister_object")]
     pub fn unregister_object(
         &self,
         registration_id: RegistrationId,
@@ -130,6 +132,7 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_export_action_group")]
     pub fn export_action_group<P: IsA<ActionGroup>>(
         &self,
         object_path: &str,
@@ -151,12 +154,14 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_unexport_action_group")]
     pub fn unexport_action_group(&self, export_id: ActionGroupExportId) {
         unsafe {
             ffi::g_dbus_connection_unexport_action_group(self.to_glib_none().0, export_id.0.into());
         }
     }
 
+    #[doc(alias = "g_dbus_connection_export_menu_model")]
     pub fn export_menu_model<P: IsA<MenuModel>>(
         &self,
         object_path: &str,
@@ -178,12 +183,14 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_unexport_menu_model")]
     pub fn unexport_menu_model(&self, export_id: MenuModelExportId) {
         unsafe {
             ffi::g_dbus_connection_unexport_menu_model(self.to_glib_none().0, export_id.0.into());
         }
     }
 
+    #[doc(alias = "g_dbus_connection_add_filter")]
     pub fn add_filter<
         P: Fn(&DBusConnection, &DBusMessage, bool) -> Option<DBusMessage> + 'static,
     >(
@@ -227,12 +234,14 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_remove_filter")]
     pub fn remove_filter(&self, filter_id: FilterId) {
         unsafe {
             ffi::g_dbus_connection_remove_filter(self.to_glib_none().0, filter_id.0.into());
         }
     }
 
+    #[doc(alias = "g_dbus_connection_signal_subscribe")]
     pub fn signal_subscribe<
         P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
     >(
@@ -300,6 +309,7 @@ impl DBusConnection {
         }
     }
 
+    #[doc(alias = "g_dbus_connection_signal_unsubscribe")]
     pub fn signal_unsubscribe(&self, subscription_id: SignalSubscriptionId) {
         unsafe {
             ffi::g_dbus_connection_signal_unsubscribe(

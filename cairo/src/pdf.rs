@@ -95,6 +95,7 @@ impl PdfSurface {
     }
 
     #[cfg(any(all(feature = "pdf", feature = "v1_16"), feature = "dox"))]
+    #[doc(alias = "cairo_pdf_surface_set_thumbnail_size")]
     pub fn set_thumbnail_size(&self, width: i32, height: i32) -> Result<(), Error> {
         unsafe {
             ffi::cairo_pdf_surface_set_thumbnail_size(

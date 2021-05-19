@@ -1208,6 +1208,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_interface")]
     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
 
+    #[doc(alias = "g_object_set_property")]
     fn set_property<'a, N: Into<&'a str>, V: ToValue>(
         &self,
         property_name: N,
@@ -1222,6 +1223,7 @@ pub trait ObjectExt: ObjectType {
     fn set_properties_from_value(&self, property_values: &[(&str, Value)])
         -> Result<(), BoolError>;
     #[doc(alias = "get_property")]
+    #[doc(alias = "g_object_get_property")]
     fn property<'a, N: Into<&'a str>>(&self, property_name: N) -> Result<Value, BoolError>;
     fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool;
     #[doc(alias = "get_property_type")]
@@ -1334,6 +1336,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value>;
     /// Emit signal by signal id.
+    #[doc(alias = "g_signal_emitv")]
     fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Result<Option<Value>, BoolError>;
     /// Same as `emit` but takes `Value` for the arguments.
     fn emit_with_values(
@@ -1367,6 +1370,7 @@ pub trait ObjectExt: ObjectType {
         details: Quark,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
+    #[doc(alias = "g_signal_handler_disconnect")]
     fn disconnect(&self, handler_id: SignalHandlerId);
 
     fn connect_notify<F: Fn(&Self, &crate::ParamSpec) + Send + Sync + 'static>(
@@ -1384,7 +1388,9 @@ pub trait ObjectExt: ObjectType {
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId;
+    #[doc(alias = "g_object_notify")]
     fn notify<'a, N: Into<&'a str>>(&self, property_name: N);
+    #[doc(alias = "g_object_notify_by_pspec")]
     fn notify_by_pspec(&self, pspec: &crate::ParamSpec);
 
     fn downgrade(&self) -> WeakRef<Self>;
@@ -2385,6 +2391,7 @@ impl ObjectClass {
             .map(|pspec| pspec.value_type())
     }
 
+    #[doc(alias = "g_object_class_find_property")]
     pub fn find_property<'a, N: Into<&'a str>>(
         &self,
         property_name: N,
@@ -2400,6 +2407,7 @@ impl ObjectClass {
         }
     }
 
+    #[doc(alias = "g_object_class_list_properties")]
     pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
@@ -2436,6 +2444,7 @@ impl<T: ObjectType> WeakRef<T> {
         }
     }
 
+    #[doc(alias = "g_weak_ref_set")]
     pub fn set(&self, obj: Option<&T>) {
         unsafe {
             gobject_ffi::g_weak_ref_set(
@@ -2751,6 +2760,7 @@ impl<T: IsClass> Class<T> {
     }
 
     /// Gets the parent class struct, if any.
+    #[doc(alias = "g_type_class_peek_parent")]
     pub fn parent(&self) -> Option<ClassRef<T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_class_peek_parent(&self.0 as *const _ as *mut _);
@@ -2897,6 +2907,7 @@ impl<T: IsInterface> Interface<T> {
     }
 
     /// Gets the default interface struct for `Self`.
+    #[doc(alias = "g_type_default_interface_ref")]
     pub fn default() -> InterfaceRef<'static, T> {
         unsafe {
             let ptr = gobject_ffi::g_type_default_interface_ref(T::static_type().into_glib());
@@ -2913,6 +2924,7 @@ impl<T: IsInterface> Interface<T> {
     ///
     /// This returns the parent interface if a parent type of the instance type also implements the
     /// interface.
+    #[doc(alias = "g_type_interface_peek_parent")]
     pub fn parent(&self) -> Option<InterfaceRef<T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_interface_peek_parent(&self.0 as *const _ as *mut _);

@@ -127,6 +127,7 @@ impl fmt::Display for String {
 }
 
 impl PartialEq for String {
+    #[doc(alias = "g_string_equal")]
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_string_equal(

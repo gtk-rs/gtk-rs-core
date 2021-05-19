@@ -11,11 +11,13 @@ use std::pin::Pin;
 use std::ptr;
 
 pub trait DataInputStreamExtManual: 'static {
+    #[doc(alias = "g_data_input_stream_read_line")]
     fn read_line<P: IsA<Cancellable>>(
         &self,
         cancellable: Option<&P>,
     ) -> Result<Vec<u8>, glib::Error>;
 
+    #[doc(alias = "g_data_input_stream_read_line_async")]
     fn read_line_async<
         P: IsA<Cancellable>,
         Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
@@ -31,6 +33,7 @@ pub trait DataInputStreamExtManual: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>>;
 
+    #[doc(alias = "g_data_input_stream_read_line_utf8")]
     fn read_line_utf8<P: IsA<Cancellable>>(
         &self,
         cancellable: Option<&P>,
@@ -52,6 +55,7 @@ pub trait DataInputStreamExtManual: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Option<GString>, glib::Error>> + 'static>>;
 
     #[cfg_attr(feature = "v2_56", deprecated)]
+    #[doc(alias = "g_data_input_stream_read_until")]
     fn read_until<P: IsA<Cancellable>>(
         &self,
         stop_chars: &[u8],
@@ -59,6 +63,7 @@ pub trait DataInputStreamExtManual: 'static {
     ) -> Result<Vec<u8>, glib::Error>;
 
     #[cfg_attr(feature = "v2_56", deprecated)]
+    #[doc(alias = "g_data_input_stream_read_until_async")]
     fn read_until_async<
         P: IsA<Cancellable>,
         Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
@@ -77,12 +82,14 @@ pub trait DataInputStreamExtManual: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>>;
 
+    #[doc(alias = "g_data_input_stream_read_upto")]
     fn read_upto<P: IsA<Cancellable>>(
         &self,
         stop_chars: &[u8],
         cancellable: Option<&P>,
     ) -> Result<Vec<u8>, glib::Error>;
 
+    #[doc(alias = "g_data_input_stream_read_upto_async")]
     fn read_upto_async<
         P: IsA<Cancellable>,
         Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
