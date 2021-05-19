@@ -49,6 +49,7 @@ where
     })
 }
 
+#[doc(alias = "g_bus_own_name_on_connection_with_closures")]
 pub fn bus_own_name_on_connection<NameAcquired, NameLost>(
     connection: &DBusConnection,
     name: &str,
@@ -72,6 +73,7 @@ where
     }
 }
 
+#[doc(alias = "g_bus_own_name_with_closures")]
 pub fn bus_own_name<BusAcquired, NameAcquired, NameLost>(
     bus_type: BusType,
     name: &str,
@@ -105,12 +107,14 @@ where
     }
 }
 
+#[doc(alias = "g_bus_unown_name")]
 pub fn bus_unown_name(owner_id: OwnerId) {
     unsafe {
         ffi::g_bus_unown_name(owner_id.0.into());
     }
 }
 
+#[doc(alias = "g_bus_watch_name_on_connection_with_closures")]
 pub fn bus_watch_name_on_connection<NameAppeared, NameVanished>(
     connection: &DBusConnection,
     name: &str,
@@ -134,6 +138,7 @@ where
     }
 }
 
+#[doc(alias = "g_bus_watch_name_with_closures")]
 pub fn bus_watch_name<NameAppeared, NameVanished>(
     bus_type: BusType,
     name: &str,
@@ -157,6 +162,7 @@ where
     }
 }
 
+#[doc(alias = "g_bus_unwatch_name")]
 pub fn bus_unwatch_name(watcher_id: WatcherId) {
     unsafe {
         ffi::g_bus_unwatch_name(watcher_id.0.into());

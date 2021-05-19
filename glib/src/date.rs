@@ -26,7 +26,7 @@ unsafe impl Send for Date {}
 unsafe impl Sync for Date {}
 
 impl Date {
-    #[doc(alias = "g_date_valid_dmy")]
+    #[doc(alias = "g_date_new_dmy")]
     pub fn new_dmy(day: DateDay, month: DateMonth, year: DateYear) -> Result<Date, BoolError> {
         let month = month.into_glib();
         unsafe {

@@ -14,6 +14,7 @@ use std::pin::Pin;
 use std::ptr;
 
 pub trait OutputStreamExtManual: Sized + OutputStreamExt {
+    #[doc(alias = "g_output_stream_write_async")]
     fn write_async<
         B: AsRef<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + Send + 'static,
@@ -26,12 +27,14 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: Q,
     );
 
+    #[doc(alias = "g_output_stream_write_all")]
     fn write_all<C: IsA<Cancellable>>(
         &self,
         buffer: &[u8],
         cancellable: Option<&C>,
     ) -> Result<(usize, Option<glib::Error>), glib::Error>;
 
+    #[doc(alias = "g_output_stream_write_all_async")]
     fn write_all_async<
         B: AsRef<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + Send + 'static,

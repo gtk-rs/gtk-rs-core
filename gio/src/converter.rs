@@ -9,6 +9,7 @@ use std::mem;
 use std::ptr;
 
 pub trait ConverterExtManual {
+    #[doc(alias = "g_converter_convert")]
     fn convert<IN: AsRef<[u8]>, OUT: AsMut<[u8]>>(
         &self,
         inbuf: IN,

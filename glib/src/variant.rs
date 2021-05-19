@@ -208,6 +208,7 @@ impl Variant {
     /// * if `self` is not a container type.
     /// * if given `index` is larger than number of children.
     #[doc(alias = "get_child_value")]
+    #[doc(alias = "g_variant_get_child_value")]
     pub fn child_value(&self, index: usize) -> Variant {
         assert!(index < self.n_children());
         assert!(self.is_container());
@@ -220,6 +221,7 @@ impl Variant {
     /// Returns `Some` if the variant has a string type (`s`, `o` or `g` type
     /// strings).
     #[doc(alias = "get_str")]
+    #[doc(alias = "g_variant_get_string")]
     pub fn str(&self) -> Option<&str> {
         unsafe {
             match self.type_().to_str() {
@@ -285,6 +287,7 @@ impl Variant {
     }
 
     /// Constructs a new serialised-mode GVariant instance.
+    #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
         unsafe {
             from_glib_none(ffi::g_variant_new_from_bytes(
@@ -317,11 +320,13 @@ impl Variant {
 
     /// Returns the serialised form of a GVariant instance.
     #[doc(alias = "get_data_as_bytes")]
+    #[doc(alias = "g_variant_get_data_as_bytes")]
     pub fn data_as_bytes(&self) -> Bytes {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
     }
 
     /// Determines the number of children in a container GVariant instance.
+    #[doc(alias = "g_variant_n_children")]
     pub fn n_children(&self) -> usize {
         assert!(self.is_container());
 
@@ -336,6 +341,7 @@ impl Variant {
     }
 
     /// Variant has a container type.
+    #[doc(alias = "g_variant_is_container")]
     pub fn is_container(&self) -> bool {
         unsafe { ffi::g_variant_is_container(self.to_glib_none().0) != ffi::GFALSE }
     }
@@ -367,6 +373,7 @@ impl fmt::Display for Variant {
 }
 
 impl PartialEq for Variant {
+    #[doc(alias = "g_variant_equal")]
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_variant_equal(
@@ -403,6 +410,7 @@ impl PartialOrd for Variant {
 }
 
 impl Hash for Variant {
+    #[doc(alias = "g_variant_hash")]
     fn hash<H: Hasher>(&self, state: &mut H) {
         unsafe { state.write_u32(ffi::g_variant_hash(self.to_glib_none().0 as *const _)) }
     }

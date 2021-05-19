@@ -17,18 +17,21 @@ use std::pin::Pin;
 use std::ptr;
 
 pub trait InputStreamExtManual: Sized {
+    #[doc(alias = "g_input_stream_read")]
     fn read<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
 
+    #[doc(alias = "g_input_stream_read_all")]
     fn read_all<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
         cancellable: Option<&C>,
     ) -> Result<(usize, Option<glib::Error>), glib::Error>;
 
+    #[doc(alias = "g_input_stream_read_all_async")]
     fn read_all_async<
         B: AsMut<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + Send + 'static,
@@ -41,6 +44,7 @@ pub trait InputStreamExtManual: Sized {
         callback: Q,
     );
 
+    #[doc(alias = "g_input_stream_read_async")]
     fn read_async<
         B: AsMut<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + Send + 'static,

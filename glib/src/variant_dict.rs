@@ -36,6 +36,7 @@ impl VariantDict {
     /// # Panics
     ///
     /// This function will panic if the given `Variant` is not of the correct type.
+    #[doc(alias = "g_variant_dict_new")]
     pub fn new(from_asv: Option<&Variant>) -> Self {
         if let Some(var) = from_asv {
             assert_eq!(var.type_(), VariantDict::static_variant_type());
@@ -47,6 +48,7 @@ impl VariantDict {
     ///
     /// Look up whether or not the given key is present, returning `true` if it
     /// is present in `self`.
+    #[doc(alias = "g_variant_dict_contains")]
     pub fn contains(&self, key: &str) -> bool {
         unsafe {
             from_glib(ffi::g_variant_dict_contains(
@@ -65,6 +67,7 @@ impl VariantDict {
     /// or if it is present but the type of the value does not match a given
     /// `expected_type`.  Otherwise `Some(value)` will be returned where
     /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
+    #[doc(alias = "g_variant_dict_lookup_value")]
     pub fn lookup_value(&self, key: &str, expected_type: Option<&VariantTy>) -> Option<Variant> {
         unsafe {
             from_glib_full(ffi::g_variant_dict_lookup_value(
@@ -82,6 +85,7 @@ impl VariantDict {
     ///
     /// For convenience, you may use the [`insert()`](#method.insert) if
     /// you have a value which implements [`ToVariant`](variant/trait.ToVariant.html).
+    #[doc(alias = "g_variant_dict_insert_value")]
     pub fn insert_value(&self, key: &str, value: &Variant) {
         unsafe {
             ffi::g_variant_dict_insert_value(
@@ -104,6 +108,7 @@ impl VariantDict {
     /// If, on the other hand, you have a [`Variant`](variant/struct.Variant.html)
     /// instance already, you should use the [`insert_value()`](#method.insert_value)
     /// method instead.
+    #[doc(alias = "g_variant_dict_insert_value")]
     pub fn insert<T: ToVariant>(&self, key: &str, value: &T) {
         unsafe {
             ffi::g_variant_dict_insert_value(
@@ -121,6 +126,7 @@ impl VariantDict {
     ///
     /// If a `key`/`value` pair was removed from the dictionary, `true` is
     /// returned.  If `key` was not present then `false` is returned instead.
+    #[doc(alias = "g_variant_dict_remove")]
     pub fn remove(&self, key: &str) -> bool {
         unsafe {
             from_glib(ffi::g_variant_dict_remove(

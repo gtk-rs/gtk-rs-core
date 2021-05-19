@@ -5,6 +5,7 @@ use glib::error::ErrorDomain;
 use glib::translate::*;
 
 impl DBusMethodInvocation {
+    #[doc(alias = "g_dbus_method_invocation_return_error_literal")]
     pub fn return_error<T: ErrorDomain>(&self, error: T, message: &str) {
         unsafe {
             ffi::g_dbus_method_invocation_return_error_literal(
@@ -16,6 +17,7 @@ impl DBusMethodInvocation {
         }
     }
 
+    #[doc(alias = "g_dbus_method_invocation_return_gerror")]
     pub fn return_gerror(&self, error: glib::Error) {
         unsafe {
             ffi::g_dbus_method_invocation_return_gerror(
