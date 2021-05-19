@@ -454,7 +454,7 @@ impl Uninitialized for Value {
     }
 }
 
-impl StaticType for Value {
+impl StaticType for BoxedValue {
     fn static_type() -> Type {
         unsafe { from_glib(gobject_ffi::g_value_get_type()) }
     }
@@ -1010,27 +1010,38 @@ numeric!(
     gobject_ffi::g_value_set_double
 );
 
-impl ValueType for Value {
-    type Type = Value;
+/// A [`Value`] containing another [`Value`].
+pub struct BoxedValue(pub Value);
+
+impl Deref for BoxedValue {
+    type Target = Value;
+
+    fn deref(&self) -> &Value {
+        &self.0
+    }
 }
 
-unsafe impl<'a> FromValue<'a> for Value {
+impl ValueType for BoxedValue {
+    type Type = BoxedValue;
+}
+
+unsafe impl<'a> FromValue<'a> for BoxedValue {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().0);
-        from_glib_none(ptr as *const gobject_ffi::GValue)
+        BoxedValue(from_glib_none(ptr as *const gobject_ffi::GValue))
     }
 }
 
-impl ToValue for Value {
+impl ToValue for BoxedValue {
     fn to_value(&self) -> Value {
         unsafe {
-            let mut value = Value::from_type(<Value>::static_type());
+            let mut value = Value::from_type(<BoxedValue>::static_type());
 
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
-                self.to_glib_none().0 as ffi::gconstpointer,
+                self.0.to_glib_none().0 as ffi::gconstpointer,
             );
 
             value
@@ -1038,17 +1049,17 @@ impl ToValue for Value {
     }
 
     fn value_type(&self) -> Type {
-        Value::static_type()
+        BoxedValue::static_type()
     }
 }
 
-impl ToValueOptional for Value {
+impl ToValueOptional for BoxedValue {
     fn to_value_optional(s: Option<&Self>) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
-                s.to_glib_none().0 as ffi::gconstpointer,
+                s.map(|s| &s.0).to_glib_none().0 as ffi::gconstpointer,
             );
         }
 
