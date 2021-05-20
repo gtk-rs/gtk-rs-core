@@ -55,6 +55,12 @@ jobs:
       - run: cargo run --release -- --no-manual-traits ../glib-macros
         working-directory: checker
         if: matrix.rust == 'nightly' && matrix.conf.name == 'glib'
+      - name: Check doc aliases
+        run: |
+          python3 doc_aliases.py ../${{matrix.conf.name}}
+          cd .. && git diff -R --exit-code
+        working-directory: checker
+        if: matrix.rust == 'nightly'
       # tests run
       - name: build nightly
         run: cargo build --manifest-path ${{ matrix.conf.name }}/Cargo.toml ${{ matrix.conf.nightly }}
