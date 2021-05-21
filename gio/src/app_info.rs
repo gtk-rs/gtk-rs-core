@@ -25,9 +25,10 @@ pub trait AppInfoExtManual: 'static {
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
         R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        S: AsRef<str>,
     >(
         &self,
-        uris: &[&str],
+        uris: &[S],
         context: Option<&P>,
         cancellable: Option<&Q>,
         callback: R,
@@ -35,9 +36,9 @@ pub trait AppInfoExtManual: 'static {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
+    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static, S: AsRef<str>>(
         &self,
-        uris: &[&str],
+        uris: &[S],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 }
@@ -49,9 +50,10 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
         R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        S: AsRef<str>,
     >(
         &self,
-        uris: &[&str],
+        uris: &[S],
         context: Option<&P>,
         cancellable: Option<&Q>,
         callback: R,
@@ -91,9 +93,9 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
+    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static, S: AsRef<str>>(
         &self,
-        uris: &[&str],
+        uris: &[S],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let uris = uris.iter().copied().map(String::from).collect::<Vec<_>>();

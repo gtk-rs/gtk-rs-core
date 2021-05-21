@@ -18,9 +18,9 @@ use std::os::unix::io::AsRawFd;
 
 impl DesktopAppInfo {
     #[doc(alias = "g_desktop_app_info_search")]
-    pub fn search(search_string: &str) -> Vec<Vec<GString>> {
+    pub fn search<S: AsRef<str>>(search_string: &S) -> Vec<Vec<GString>> {
         unsafe {
-            let out = ffi::g_desktop_app_info_search(search_string.to_glib_none().0);
+            let out = ffi::g_desktop_app_info_search(search_string.as_ref().to_glib_none().0);
 
             if out.is_null() {
                 return Vec::new();
@@ -54,9 +54,10 @@ pub trait DesktopAppInfoExtManual {
         T: AsRawFd,
         U: AsRawFd,
         V: AsRawFd,
+        S: AsRef<str>,
     >(
         &self,
-        uris: &[&str],
+        uris: &[S],
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
@@ -75,9 +76,10 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
         T: AsRawFd,
         U: AsRawFd,
         V: AsRawFd,
+        S: AsRef<str>,
     >(
         &self,
-        uris: &[&str],
+        uris: &[S],
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
