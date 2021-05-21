@@ -58,7 +58,7 @@ jobs:
       - name: Check doc aliases
         run: |
           python3 doc_aliases.py ../${{matrix.conf.name}}
-          cd .. && git diff -R --exit-code
+          cd .. && git diff --exit-code
         working-directory: checker
         if: matrix.rust == 'nightly'
       # tests run
@@ -132,4 +132,4 @@ jobs:
         with:
           submodules: recursive
       - run: python3 generator.py
-      - run: git diff -R --exit-code
+      - run: git diff --exit-code
