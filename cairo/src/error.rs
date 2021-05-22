@@ -8,88 +8,130 @@ use thiserror::Error;
 #[non_exhaustive]
 pub enum Error {
     #[error("No Memory")]
+    #[doc(alias = "STATUS_NO_MEMORY")]
     NoMemory,
     #[error("Invalid Restore")]
+    #[doc(alias = "STATUS_INVALID_RESTORE")]
     InvalidRestore,
     #[error("Invalid Pop Group")]
+    #[doc(alias = "STATUS_INVALID_POP_GROUP")]
     InvalidPopGroup,
     #[error("No Current Point")]
+    #[doc(alias = "STATUS_NO_CURRENT_POINT")]
     NoCurrentPoint,
     #[error("Invalid Matrix")]
+    #[doc(alias = "STATUS_INVALID_MATRIX")]
     InvalidMatrix,
     #[error("Invalid Status")]
+    #[doc(alias = "STATUS_INVALID_STATUS")]
     InvalidStatus,
     #[error("Null Pointer")]
+    #[doc(alias = "STATUS_NULL_POINTER")]
     NullPointer,
     #[error("Invalid String")]
+    #[doc(alias = "STATUS_INVALID_STRING")]
     InvalidString,
     #[error("Invalid Path Data")]
+    #[doc(alias = "STATUS_INVALID_PATH_DATA")]
     InvalidPathData,
     #[error("Cairo : Read Error")]
+    #[doc(alias = "STATUS_READ_ERROR")]
     ReadError,
     #[error("Write Error")]
+    #[doc(alias = "STATUS_WRITE_ERROR")]
     WriteError,
     #[error("Surface Finishied")]
+    #[doc(alias = "STATUS_SURFACE_FINISHED")]
     SurfaceFinished,
     #[error("Surface Type Mismatch")]
+    #[doc(alias = "STATUS_SURFACE_TYPE_MISMATCH")]
     SurfaceTypeMismatch,
     #[error("Pattern Type Mismatch")]
+    #[doc(alias = "STATUS_PATTERN_TYPE_MISMATCH")]
     PatternTypeMismatch,
     #[error("Invalid Content")]
+    #[doc(alias = "STATUS_INVALID_CONTENT")]
     InvalidContent,
     #[error("Invalid Format")]
+    #[doc(alias = "STATUS_INVALID_FORMAT")]
     InvalidFormat,
     #[error("Invalid Visual")]
+    #[doc(alias = "STATUS_INVALID_VISUAL")]
     InvalidVisual,
     #[error("File Not Found")]
+    #[doc(alias = "STATUS_FILE_NOT_FOUND")]
     FileNotFound,
     #[error("Invalid Dash")]
+    #[doc(alias = "STATUS_INVALID_DASH")]
     InvalidDash,
     #[error("Invalid Dash Comment")]
+    #[doc(alias = "STATUS_INVALID_DSC_COMMENT")]
     InvalidDscComment,
     #[error("Invalid Index")]
+    #[doc(alias = "STATUS_INVALID_INDEX")]
     InvalidIndex,
     #[error("Clip Not Representable")]
+    #[doc(alias = "STATUS_CLIP_NOT_REPRESENTABLE")]
     ClipNotRepresentable,
     #[error("Temp File Error")]
+    #[doc(alias = "STATUS_TEMP_FILE_ERROR")]
     TempFileError,
     #[error("Invalid Stride")]
+    #[doc(alias = "STATUS_INVALID_STRIDE")]
     InvalidStride,
     #[error("Font Type Mismatch")]
+    #[doc(alias = "STATUS_FONT_TYPE_MISMATCH")]
     FontTypeMismatch,
     #[error("User Font Immutable")]
+    #[doc(alias = "STATUS_USER_FONT_IMMUTABLE")]
     UserFontImmutable,
     #[error("User Font Error")]
+    #[doc(alias = "STATUS_USER_FONT_ERROR")]
     UserFontError,
     #[error("Negative Count")]
+    #[doc(alias = "STATUS_NEGATIVE_COUNT")]
     NegativeCount,
     #[error("Invalid Clusters")]
+    #[doc(alias = "STATUS_INVALID_CLUSTERS")]
     InvalidClusters,
     #[error("Invalid Slant")]
+    #[doc(alias = "STATUS_INVALID_SLANT")]
     InvalidSlant,
     #[error("Invalid Weight")]
+    #[doc(alias = "STATUS_INVALID_WEIGHT")]
     InvalidWeight,
     #[error("Ivalid Size")]
+    #[doc(alias = "STATUS_INVALID_SIZE")]
     InvalidSize,
     #[error("User Font Not Implemented")]
+    #[doc(alias = "STATUS_USER_FONT_NOT_IMPLEMENTED")]
     UserFontNotImplemented,
     #[error("Device Type Mismatch")]
+    #[doc(alias = "STATUS_DEVICE_TYPE_MISMATCH")]
     DeviceTypeMismatch,
     #[error("Device Error")]
+    #[doc(alias = "STATUS_DEVICE_ERROR")]
     DeviceError,
     #[error("Invalid Mesh Construction")]
+    #[doc(alias = "STATUS_INVALID_MESH_CONSTRUCTION")]
     InvalidMeshConstruction,
     #[error("Device Finished")]
+    #[doc(alias = "STATUS_DEVICE_FINISHED")]
     DeviceFinished,
     #[error("JBig2Global Missing")]
+    #[doc(alias = "STATUS_J_BIG2_GLOBAL_MISSING")]
     JBig2GlobalMissing,
     #[error("PNG Error")]
+    #[doc(alias = "STATUS_PNG_ERROR")]
     PngError,
     #[error("Freetype Error")]
+    #[doc(alias = "STATUS_FREETYPE_ERROR")]
     FreetypeError,
     #[error("Win32Gdi Error")]
+    #[doc(alias = "STATUS_WIN32_GDI_ERROR")]
     Win32GdiError,
     #[error("LastStatus")]
+    #[doc(alias = "STATUS_LAST_STATUS")]
     LastStatus,
     #[error("Unknown {0}")]
     #[doc(hidden)]

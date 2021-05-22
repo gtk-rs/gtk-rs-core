@@ -50,16 +50,23 @@ macro_rules! gvalue_impl {
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum Antialias {
+    #[doc(alias = "ANTIALIAS_DEFAULT")]
     Default,
 
     /* method */
+    #[doc(alias = "ANTIALIAS_NONE")]
     None,
+    #[doc(alias = "ANTIALIAS_GRAY")]
     Gray,
+    #[doc(alias = "ANTIALIAS_SUBPIXEL")]
     Subpixel,
 
     /* hints */
+    #[doc(alias = "ANTIALIAS_FAST")]
     Fast,
+    #[doc(alias = "ANTIALIAS_GOOD")]
     Good,
+    #[doc(alias = "ANTIALIAS_BEST")]
     Best,
     #[doc(hidden)]
     __Unknown(i32),
@@ -122,7 +129,9 @@ gvalue_impl!(Antialias, ffi::gobject::cairo_gobject_antialias_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum FillRule {
+    #[doc(alias = "FILL_RULE_WINDING")]
     Winding,
+    #[doc(alias = "FILL_RULE_EVEN_ODD")]
     EvenOdd,
     #[doc(hidden)]
     __Unknown(i32),
@@ -170,8 +179,11 @@ gvalue_impl!(FillRule, ffi::gobject::cairo_gobject_fill_rule_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum LineCap {
+    #[doc(alias = "LINE_CAP_BUTT")]
     Butt,
+    #[doc(alias = "LINE_CAP_ROUND")]
     Round,
+    #[doc(alias = "LINE_CAP_SQUARE")]
     Square,
     #[doc(hidden)]
     __Unknown(i32),
@@ -222,8 +234,11 @@ gvalue_impl!(LineCap, ffi::gobject::cairo_gobject_line_cap_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum LineJoin {
+    #[doc(alias = "LINE_JOIN_MITER")]
     Miter,
+    #[doc(alias = "LINE_JOIN_ROUND")]
     Round,
+    #[doc(alias = "LINE_JOIN_BEVEL")]
     Bevel,
     #[doc(hidden)]
     __Unknown(i32),
@@ -274,38 +289,67 @@ gvalue_impl!(LineJoin, ffi::gobject::cairo_gobject_line_join_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum Operator {
+    #[doc(alias = "OPERATOR_CLEAR")]
     Clear,
 
+    #[doc(alias = "OPERATOR_SOURCE")]
     Source,
+    #[doc(alias = "OPERATOR_OVER")]
     Over,
+    #[doc(alias = "OPERATOR_IN")]
     In,
+    #[doc(alias = "OPERATOR_OUT")]
     Out,
+    #[doc(alias = "OPERATOR_ATOP")]
     Atop,
 
+    #[doc(alias = "OPERATOR_DEST")]
     Dest,
+    #[doc(alias = "OPERATOR_DEST_OVER")]
     DestOver,
+    #[doc(alias = "OPERATOR_DEST_IN")]
     DestIn,
+    #[doc(alias = "OPERATOR_DEST_OUT")]
     DestOut,
+    #[doc(alias = "OPERATOR_DEST_ATOP")]
     DestAtop,
 
+    #[doc(alias = "OPERATOR_XOR")]
     Xor,
+    #[doc(alias = "OPERATOR_ADD")]
     Add,
+    #[doc(alias = "OPERATOR_SATURATE")]
     Saturate,
 
+    #[doc(alias = "OPERATOR_MULTIPLY")]
     Multiply,
+    #[doc(alias = "OPERATOR_SCREEN")]
     Screen,
+    #[doc(alias = "OPERATOR_OVERLAY")]
     Overlay,
+    #[doc(alias = "OPERATOR_DARKEN")]
     Darken,
+    #[doc(alias = "OPERATOR_LIGHTEN")]
     Lighten,
+    #[doc(alias = "OPERATOR_COLOR_DODGE")]
     ColorDodge,
+    #[doc(alias = "OPERATOR_COLOR_BURN")]
     ColorBurn,
+    #[doc(alias = "OPERATOR_HARD_LIGHT")]
     HardLight,
+    #[doc(alias = "OPERATOR_SOFT_LIGHT")]
     SoftLight,
+    #[doc(alias = "OPERATOR_DIFFERENCE")]
     Difference,
+    #[doc(alias = "OPERATOR_EXCLUSION")]
     Exclusion,
+    #[doc(alias = "OPERATOR_HSL_HUE")]
     HslHue,
+    #[doc(alias = "OPERATOR_HSL_SATURATION")]
     HslSaturation,
+    #[doc(alias = "OPERATOR_HSL_COLOR")]
     HslColor,
+    #[doc(alias = "OPERATOR_HSL_LUMINOSITY")]
     HslLuminosity,
     #[doc(hidden)]
     __Unknown(i32),
@@ -434,9 +478,13 @@ gvalue_impl!(Operator, ffi::gobject::cairo_gobject_operator_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum PathDataType {
+    #[doc(alias = "PATH_DATA_TYPE_MOVE_TO")]
     MoveTo,
+    #[doc(alias = "PATH_DATA_TYPE_LINE_TO")]
     LineTo,
+    #[doc(alias = "PATH_DATA_TYPE_CURVE_TO")]
     CurveTo,
+    #[doc(alias = "PATH_DATA_TYPE_CLOSE_PATH")]
     ClosePath,
     #[doc(hidden)]
     __Unknown(i32),
@@ -493,8 +541,11 @@ gvalue_impl!(
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum Content {
+    #[doc(alias = "CONTENT_COLOR")]
     Color,
+    #[doc(alias = "CONTENT_ALPHA")]
     Alpha,
+    #[doc(alias = "CONTENT_COLOR_ALPHA")]
     ColorAlpha,
     #[doc(hidden)]
     __Unknown(i32),
@@ -545,9 +596,13 @@ gvalue_impl!(Content, ffi::gobject::cairo_gobject_content_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum Extend {
+    #[doc(alias = "EXTEND_NONE")]
     None,
+    #[doc(alias = "EXTEND_REPEAT")]
     Repeat,
+    #[doc(alias = "EXTEND_REFLECT")]
     Reflect,
+    #[doc(alias = "EXTEND_PAD")]
     Pad,
     #[doc(hidden)]
     __Unknown(i32),
@@ -601,11 +656,17 @@ gvalue_impl!(Extend, ffi::gobject::cairo_gobject_extend_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum Filter {
+    #[doc(alias = "FILTER_FAST")]
     Fast,
+    #[doc(alias = "FILTER_GOOD")]
     Good,
+    #[doc(alias = "FILTER_BEST")]
     Best,
+    #[doc(alias = "FILTER_NEAREST")]
     Nearest,
+    #[doc(alias = "FILTER_BILINEAR")]
     Bilinear,
+    #[doc(alias = "FILTER_GAUSSIAN")]
     Gaussian,
     #[doc(hidden)]
     __Unknown(i32),
@@ -665,11 +726,17 @@ gvalue_impl!(Filter, ffi::gobject::cairo_gobject_filter_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum PatternType {
+    #[doc(alias = "PATTERN_TYPE_SOLID")]
     Solid,
+    #[doc(alias = "PATTERN_TYPE_SURFACE")]
     Surface,
+    #[doc(alias = "PATTERN_TYPE_LINEAR_GRADIENT")]
     LinearGradient,
+    #[doc(alias = "PATTERN_TYPE_RADIAL_GRADIENT")]
     RadialGradient,
+    #[doc(alias = "PATTERN_TYPE_MESH")]
     Mesh,
+    #[doc(alias = "PATTERN_TYPE_RASTER_SOURCE")]
     RasterSource,
     #[doc(hidden)]
     __Unknown(i32),
@@ -732,8 +799,11 @@ gvalue_impl!(
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum FontSlant {
+    #[doc(alias = "FONT_SLANT_NORMAL")]
     Normal,
+    #[doc(alias = "FONT_SLANT_ITALIC")]
     Italic,
+    #[doc(alias = "FONT_SLANT_OBLIQUE")]
     Oblique,
     #[doc(hidden)]
     __Unknown(i32),
@@ -784,7 +854,9 @@ gvalue_impl!(FontSlant, ffi::gobject::cairo_gobject_font_slant_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum FontWeight {
+    #[doc(alias = "FONT_WEIGHT_NORMAL")]
     Normal,
+    #[doc(alias = "FONT_WEIGHT_BOLD")]
     Bold,
     #[doc(hidden)]
     __Unknown(i32),
@@ -832,7 +904,9 @@ gvalue_impl!(FontWeight, ffi::gobject::cairo_gobject_font_weight_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum TextClusterFlags {
+    #[doc(alias = "TEXT_CLUSTER_FLAGS_NONE")]
     None,
+    #[doc(alias = "TEXT_CLUSTER_FLAGS_BACKWARD")]
     Backward,
     #[doc(hidden)]
     __Unknown(i32),
@@ -883,10 +957,15 @@ gvalue_impl!(
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum FontType {
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_TOY")]
     FontTypeToy,
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_FT")]
     FontTypeFt,
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_WIN32")]
     FontTypeWin32,
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_QUARTZ")]
     FontTypeQuartz,
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_USER")]
     FontTypeUser,
     #[doc(hidden)]
     __Unknown(i32),
@@ -943,10 +1022,15 @@ gvalue_impl!(FontType, ffi::gobject::cairo_gobject_font_type_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum SubpixelOrder {
+    #[doc(alias = "SUBPIXEL_ORDER_DEFAULT")]
     Default,
+    #[doc(alias = "SUBPIXEL_ORDER_RGB")]
     Rgb,
+    #[doc(alias = "SUBPIXEL_ORDER_BGR")]
     Bgr,
+    #[doc(alias = "SUBPIXEL_ORDER_VRGB")]
     Vrgb,
+    #[doc(alias = "SUBPIXEL_ORDER_VBGR")]
     Vbgr,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1006,10 +1090,15 @@ gvalue_impl!(
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum HintStyle {
+    #[doc(alias = "HINT_STYLE_DEFAULT")]
     Default,
+    #[doc(alias = "HINT_STYLE_NONE")]
     None,
+    #[doc(alias = "HINT_STYLE_SLIGHT")]
     Slight,
+    #[doc(alias = "HINT_STYLE_MEDIUM")]
     Medium,
+    #[doc(alias = "HINT_STYLE_FULL")]
     Full,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1066,8 +1155,11 @@ gvalue_impl!(HintStyle, ffi::gobject::cairo_gobject_hint_style_get_type);
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum HintMetrics {
+    #[doc(alias = "HINT_METRICS_DEFAULT")]
     Default,
+    #[doc(alias = "HINT_METRICS_OFF")]
     Off,
+    #[doc(alias = "HINT_METRICS_ON")]
     On,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1121,30 +1213,55 @@ gvalue_impl!(
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum SurfaceType {
+    #[doc(alias = "SURFACE_TYPE_IMAGE")]
     Image,
+    #[doc(alias = "SURFACE_TYPE_PDF")]
     Pdf,
+    #[doc(alias = "SURFACE_TYPE_PS")]
     Ps,
+    #[doc(alias = "SURFACE_TYPE_XLIB")]
     Xlib,
+    #[doc(alias = "SURFACE_TYPE_XCB")]
     Xcb,
+    #[doc(alias = "SURFACE_TYPE_GLITZ")]
     Glitz,
+    #[doc(alias = "SURFACE_TYPE_QUARTZ")]
     Quartz,
+    #[doc(alias = "SURFACE_TYPE_WIN32")]
     Win32,
+    #[doc(alias = "SURFACE_TYPE_BE_OS")]
     BeOs,
+    #[doc(alias = "SURFACE_TYPE_DIRECT_FB")]
     DirectFb,
+    #[doc(alias = "SURFACE_TYPE_SVG")]
     Svg,
+    #[doc(alias = "SURFACE_TYPE_OS2")]
     Os2,
+    #[doc(alias = "SURFACE_TYPE_WIN32_PRINTING")]
     Win32Printing,
+    #[doc(alias = "SURFACE_TYPE_QUARTZ_IMAGE")]
     QuartzImage,
+    #[doc(alias = "SURFACE_TYPE_SCRIPT")]
     Script,
+    #[doc(alias = "SURFACE_TYPE_QT")]
     Qt,
+    #[doc(alias = "SURFACE_TYPE_RECORDING")]
     Recording,
+    #[doc(alias = "SURFACE_TYPE_VG")]
     Vg,
+    #[doc(alias = "SURFACE_TYPE_GL")]
     Gl,
+    #[doc(alias = "SURFACE_TYPE_DRM")]
     Drm,
+    #[doc(alias = "SURFACE_TYPE_TEE")]
     Tee,
+    #[doc(alias = "SURFACE_TYPE_XML")]
     Xml,
+    #[doc(alias = "SURFACE_TYPE_SKIA")]
     Skia,
+    #[doc(alias = "SURFACE_TYPE_SUBSURFACE")]
     Subsurface,
+    #[doc(alias = "SURFACE_TYPE_COGL")]
     Cogl,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1265,15 +1382,25 @@ gvalue_impl!(
 #[cfg(any(all(feature = "svg", feature = "v1_16"), feature = "dox"))]
 #[non_exhaustive]
 pub enum SvgUnit {
+    #[doc(alias = "SVG_UNIT_USER")]
     User,
+    #[doc(alias = "SVG_UNIT_EM")]
     Em,
+    #[doc(alias = "SVG_UNIT_EX")]
     Ex,
+    #[doc(alias = "SVG_UNIT_PX")]
     Px,
+    #[doc(alias = "SVG_UNIT_IN")]
     In,
+    #[doc(alias = "SVG_UNIT_CM")]
     Cm,
+    #[doc(alias = "SVG_UNIT_MM")]
     Mm,
+    #[doc(alias = "SVG_UNIT_PT")]
     Pt,
+    #[doc(alias = "SVG_UNIT_PC")]
     Pc,
+    #[doc(alias = "SVG_UNIT_PERCENT")]
     Percent,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1345,12 +1472,19 @@ impl fmt::Display for SvgUnit {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum Format {
+    #[doc(alias = "FORMAT_INVALID")]
     Invalid,
+    #[doc(alias = "FORMAT_A_RGB32")]
     ARgb32,
+    #[doc(alias = "FORMAT_RGB24")]
     Rgb24,
+    #[doc(alias = "FORMAT_A8")]
     A8,
+    #[doc(alias = "FORMAT_A1")]
     A1,
+    #[doc(alias = "FORMAT_RGB16_565")]
     Rgb16_565,
+    #[doc(alias = "FORMAT_RGB30")]
     Rgb30,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1428,8 +1562,11 @@ impl Format {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum RegionOverlap {
+    #[doc(alias = "REGION_OVERLAP_IN")]
     In,
+    #[doc(alias = "REGION_OVERLAP_OUT")]
     Out,
+    #[doc(alias = "REGION_OVERLAP_PART")]
     Part,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1492,12 +1629,19 @@ bitflags::bitflags! {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PdfMetadata {
+    #[doc(alias = "PDF_METADATA_TITLE")]
     Title,
+    #[doc(alias = "PDF_METADATA_AUTHOR")]
     Author,
+    #[doc(alias = "PDF_METADATA_SUBJECT")]
     Subject,
+    #[doc(alias = "PDF_METADATA_KEYWORDS")]
     Keywords,
+    #[doc(alias = "PDF_METADATA_CREATOR")]
     Creator,
+    #[doc(alias = "PDF_METADATA_CREATE_DATE")]
     CreateDate,
+    #[doc(alias = "PDF_METADATA_MOD_DATE")]
     ModDate,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1561,7 +1705,9 @@ impl fmt::Display for PdfMetadata {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PdfVersion {
+    #[doc(alias = "PDF_VERSION__1_4")]
     _1_4,
+    #[doc(alias = "PDF_VERSION__1_5")]
     _1_5,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1610,7 +1756,9 @@ impl fmt::Display for PdfVersion {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum SvgVersion {
+    #[doc(alias = "SVG_VERSION__1_1")]
     _1_1,
+    #[doc(alias = "SVG_VERSION__1_2")]
     _1_2,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1659,7 +1807,9 @@ impl fmt::Display for SvgVersion {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PsLevel {
+    #[doc(alias = "PS_LEVEL__2")]
     _2,
+    #[doc(alias = "PS_LEVEL__3")]
     _3,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1707,9 +1857,13 @@ impl fmt::Display for PsLevel {
 #[derive(Clone, PartialEq, PartialOrd, Copy, Debug)]
 #[non_exhaustive]
 pub enum MeshCorner {
+    #[doc(alias = "MESH_CORNER_MESH_CORNER0")]
     MeshCorner0,
+    #[doc(alias = "MESH_CORNER_MESH_CORNER1")]
     MeshCorner1,
+    #[doc(alias = "MESH_CORNER_MESH_CORNER2")]
     MeshCorner2,
+    #[doc(alias = "MESH_CORNER_MESH_CORNER3")]
     MeshCorner3,
     #[doc(hidden)]
     __Unknown(u32),
@@ -1761,7 +1915,9 @@ impl fmt::Display for MeshCorner {
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum FtSynthesize {
+    #[doc(alias = "CAIRO_FT_SYNTHESIZE_BOLD")]
     Bold,
+    #[doc(alias = "CAIRO_FT_SYNTHESIZE_OBLIQUE")]
     Oblique,
     #[doc(hidden)]
     __Unknown(u32),
@@ -1810,7 +1966,9 @@ impl fmt::Display for FtSynthesize {
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum ScriptMode {
+    #[doc(alias = "CAIRO_SCRIPT_MODE_ASCII")]
     Ascii,
+    #[doc(alias = "CAIRO_SCRIPT_MODE_BINARY")]
     Binary,
     #[doc(hidden)]
     __Unknown(i32),
@@ -1858,14 +2016,23 @@ impl fmt::Display for ScriptMode {
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
 pub enum DeviceType {
+    #[doc(alias = "CAIRO_DEVICE_TYPE_DRM")]
     Ascii,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_GL")]
     Binary,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_SCRIPT")]
     Script,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_XCB")]
     Xcb,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_XLIB")]
     Xlib,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_XML")]
     Xml,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_COGL")]
     Cogl,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_WIN32")]
     Win32,
+    #[doc(alias = "CAIRO_DEVICE_TYPE_INVALID")]
     Invalid,
     #[doc(hidden)]
     __Unknown(i32),
