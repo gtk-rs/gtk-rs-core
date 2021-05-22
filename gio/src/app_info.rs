@@ -59,7 +59,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         callback: R,
     ) {
         let user_data: Box_<(R, *mut *mut libc::c_char)> =
-            Box_::new((callback, uris.to_glib_full()));
+            Box_::new((callback, uris.as_ref().to_glib_full()));
         unsafe extern "C" fn launch_uris_async_trampoline<
             R: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
@@ -82,7 +82,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         unsafe {
             ffi::g_app_info_launch_uris_async(
                 self.as_ref().to_glib_none().0,
-                uris.to_glib_none().0,
+                uris.as_ref().to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 Some(callback),
@@ -98,7 +98,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         uris: &[S],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        let uris = uris.iter().copied().map(String::from).collect::<Vec<_>>();
+        let uris = uris.as_ref().iter().copied().map(String::from).collect::<Vec<_>>();
         let context = context.map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(self, move |obj, send| {
             let cancellable = Cancellable::new();
