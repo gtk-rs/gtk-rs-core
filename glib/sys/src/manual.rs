@@ -43,3 +43,18 @@ pub struct GPollFD {
     pub events: c_ushort,
     pub revents: c_ushort,
 }
+
+#[cfg(target_family = "windows")]
+pub use self::win32::*;
+
+#[cfg(target_family = "windows")]
+mod win32 {
+    use crate::gpointer;
+    use libc::c_char;
+
+    extern "C" {
+        pub fn g_win32_get_package_installation_directory_of_module(
+            hmodule: gpointer,
+        ) -> *mut c_char;
+    }
+}
