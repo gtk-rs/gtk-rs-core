@@ -27,7 +27,14 @@ use std::ptr;
 #[cfg_attr(feature = "dox", doc(cfg(all(feature = "v2_58", not(windows)))))]
 #[allow(clippy::too_many_arguments)]
 #[doc(alias = "g_spawn_async_with_fds")]
-pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V: AsRawFd, A: AsRef<str>, E: AsRef<str>>(
+pub fn spawn_async_with_fds<
+    P: AsRef<std::path::Path>,
+    T: AsRawFd,
+    U: AsRawFd,
+    V: AsRawFd,
+    A: AsRef<str>,
+    E: AsRef<str>,
+>(
     working_directory: P,
     argv: &[A],
     envp: &[E],

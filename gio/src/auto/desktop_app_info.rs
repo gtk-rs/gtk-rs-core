@@ -207,16 +207,16 @@ impl DesktopAppInfo {
     }
 
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager")]
-    pub fn launch_uris_as_manager<P: IsA<AppLaunchContext>>(
+    pub fn launch_uris_as_manager<P: AsRef<str>, Q: IsA<AppLaunchContext>>(
         &self,
-        uris: &[&str],
-        launch_context: Option<&P>,
+        uris: &[P],
+        launch_context: Option<&Q>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
         pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
-        unsafe extern "C" fn user_setup_func<P: IsA<AppLaunchContext>>(
+        unsafe extern "C" fn user_setup_func<P: AsRef<str>, Q: IsA<AppLaunchContext>>(
             user_data: glib::ffi::gpointer,
         ) {
             let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
@@ -225,12 +225,12 @@ impl DesktopAppInfo {
             callback()
         }
         let user_setup = if user_setup_data.is_some() {
-            Some(user_setup_func::<P> as _)
+            Some(user_setup_func::<P, Q> as _)
         } else {
             None
         };
         let pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> = pid_callback;
-        unsafe extern "C" fn pid_callback_func<P: IsA<AppLaunchContext>>(
+        unsafe extern "C" fn pid_callback_func<P: AsRef<str>, Q: IsA<AppLaunchContext>>(
             appinfo: *mut ffi::GDesktopAppInfo,
             pid: glib::ffi::GPid,
             user_data: glib::ffi::gpointer,
@@ -247,7 +247,7 @@ impl DesktopAppInfo {
             };
         }
         let pid_callback = if pid_callback_data.is_some() {
-            Some(pid_callback_func::<P> as _)
+            Some(pid_callback_func::<P, Q> as _)
         } else {
             None
         };
@@ -258,7 +258,7 @@ impl DesktopAppInfo {
             let mut error = ptr::null_mut();
             let _ = ffi::g_desktop_app_info_launch_uris_as_manager(
                 self.to_glib_none().0,
-                uris.to_glib_none().0,
+                uris.as_ref().to_glib_none().0,
                 launch_context.map(|p| p.as_ref()).to_glib_none().0,
                 spawn_flags.into_glib(),
                 user_setup,
