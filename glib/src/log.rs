@@ -27,11 +27,17 @@ impl IntoGlib for LogHandlerId {
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum LogLevel {
+    #[doc(alias = "G_LOG_LEVEL_ERROR")]
     Error,
+    #[doc(alias = "G_LOG_LEVEL_CRITICAL")]
     Critical,
+    #[doc(alias = "G_LOG_LEVEL_WARNING")]
     Warning,
+    #[doc(alias = "G_LOG_LEVEL_MESSAGE")]
     Message,
+    #[doc(alias = "G_LOG_LEVEL_INFO")]
     Info,
+    #[doc(alias = "G_LOG_LEVEL_DEBUG")]
     Debug,
 }
 

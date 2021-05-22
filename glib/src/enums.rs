@@ -8,15 +8,24 @@ use std::cmp;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum UserDirectory {
+    #[doc(alias = "G_USER_DIRECTORY_DESKTOP")]
     Desktop,
+    #[doc(alias = "G_USER_DIRECTORY_DOCUMENTS")]
     Documents,
+    #[doc(alias = "G_USER_DIRECTORY_DOWNLOAD")]
     Downloads,
+    #[doc(alias = "G_USER_DIRECTORY_MUSIC")]
     Music,
+    #[doc(alias = "G_USER_DIRECTORY_PICTURES")]
     Pictures,
+    #[doc(alias = "G_USER_DIRECTORY_PUBLIC_SHARE")]
     PublicShare,
+    #[doc(alias = "G_USER_DIRECTORY_TEMPLATES")]
     Templates,
+    #[doc(alias = "G_USER_DIRECTORY_VIDEOS")]
     Videos,
     #[doc(hidden)]
+    #[doc(alias = "G_USER_N_DIRECTORIES")]
     NDirectories,
 }
 
