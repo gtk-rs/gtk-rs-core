@@ -22,17 +22,14 @@ use std::pin::Pin;
 use std::ptr;
 
 #[doc(alias = "g_bus_get")]
-pub fn bus_get<
-    P: IsA<Cancellable>,
-    Q: FnOnce(Result<DBusConnection, glib::Error>) + Send + 'static,
->(
+pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + Send + 'static>(
     bus_type: BusType,
-    cancellable: Option<&P>,
-    callback: Q,
+    cancellable: Option<&impl IsA<Cancellable>>,
+    callback: P,
 ) {
-    let user_data: Box_<Q> = Box_::new(callback);
+    let user_data: Box_<P> = Box_::new(callback);
     unsafe extern "C" fn bus_get_trampoline<
-        Q: FnOnce(Result<DBusConnection, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<DBusConnection, glib::Error>) + Send + 'static,
     >(
         _source_object: *mut glib::gobject_ffi::GObject,
         res: *mut crate::ffi::GAsyncResult,
@@ -45,10 +42,10 @@ pub fn bus_get<
         } else {
             Err(from_glib_full(error))
         };
-        let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+        let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
         callback(result);
     }
-    let callback = bus_get_trampoline::<Q>;
+    let callback = bus_get_trampoline::<P>;
     unsafe {
         ffi::g_bus_get(
             bus_type.into_glib(),
@@ -73,9 +70,9 @@ pub fn bus_get_future(
 }
 
 #[doc(alias = "g_bus_get_sync")]
-pub fn bus_get_sync<P: IsA<Cancellable>>(
+pub fn bus_get_sync(
     bus_type: BusType,
-    cancellable: Option<&P>,
+    cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<DBusConnection, glib::Error> {
     unsafe {
         let mut error = ptr::null_mut();
@@ -197,7 +194,7 @@ pub fn content_type_guess(filename: Option<&str>, data: &[u8]) -> (glib::GString
 }
 
 #[doc(alias = "g_content_type_guess_for_tree")]
-pub fn content_type_guess_for_tree<P: IsA<File>>(root: &P) -> Vec<glib::GString> {
+pub fn content_type_guess_for_tree(root: &impl IsA<File>) -> Vec<glib::GString> {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::g_content_type_guess_for_tree(
             root.as_ref().to_glib_none().0,
@@ -252,9 +249,9 @@ pub fn dbus_address_escape_value(string: &str) -> glib::GString {
 }
 
 #[doc(alias = "g_dbus_address_get_for_bus_sync")]
-pub fn dbus_address_get_for_bus_sync<P: IsA<Cancellable>>(
+pub fn dbus_address_get_for_bus_sync(
     bus_type: BusType,
-    cancellable: Option<&P>,
+    cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<glib::GString, glib::Error> {
     unsafe {
         let mut error = ptr::null_mut();
@@ -273,16 +270,15 @@ pub fn dbus_address_get_for_bus_sync<P: IsA<Cancellable>>(
 
 #[doc(alias = "g_dbus_address_get_stream")]
 pub fn dbus_address_get_stream<
-    P: IsA<Cancellable>,
-    Q: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + Send + 'static,
+    P: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + Send + 'static,
 >(
     address: &str,
-    cancellable: Option<&P>,
-    callback: Q,
+    cancellable: Option<&impl IsA<Cancellable>>,
+    callback: P,
 ) {
-    let user_data: Box_<Q> = Box_::new(callback);
+    let user_data: Box_<P> = Box_::new(callback);
     unsafe extern "C" fn dbus_address_get_stream_trampoline<
-        Q: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(IOStream, Option<glib::GString>), glib::Error>) + Send + 'static,
     >(
         _source_object: *mut glib::gobject_ffi::GObject,
         res: *mut crate::ffi::GAsyncResult,
@@ -296,10 +292,10 @@ pub fn dbus_address_get_stream<
         } else {
             Err(from_glib_full(error))
         };
-        let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+        let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
         callback(result);
     }
-    let callback = dbus_address_get_stream_trampoline::<Q>;
+    let callback = dbus_address_get_stream_trampoline::<P>;
     unsafe {
         ffi::g_dbus_address_get_stream(
             address.to_glib_none().0,
@@ -330,9 +326,9 @@ pub fn dbus_address_get_stream_future(
 }
 
 #[doc(alias = "g_dbus_address_get_stream_sync")]
-pub fn dbus_address_get_stream_sync<P: IsA<Cancellable>>(
+pub fn dbus_address_get_stream_sync(
     address: &str,
-    cancellable: Option<&P>,
+    cancellable: Option<&impl IsA<Cancellable>>,
 ) -> Result<(IOStream, Option<glib::GString>), glib::Error> {
     unsafe {
         let mut out_guid = ptr::null_mut();
@@ -424,24 +420,24 @@ pub fn io_error_from_errno(err_no: i32) -> IOErrorEnum {
 }
 
 //#[doc(alias = "g_io_modules_load_all_in_directory")]
-//pub fn io_modules_load_all_in_directory<P: AsRef<std::path::Path>>(dirname: P) -> /*Ignored*/Vec<IOModule> {
+//pub fn io_modules_load_all_in_directory(dirname: impl AsRef<std::path::Path>) -> /*Ignored*/Vec<IOModule> {
 //    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory() }
 //}
 
 //#[doc(alias = "g_io_modules_load_all_in_directory_with_scope")]
-//pub fn io_modules_load_all_in_directory_with_scope<P: AsRef<std::path::Path>>(dirname: P, scope: /*Ignored*/&mut IOModuleScope) -> /*Ignored*/Vec<IOModule> {
+//pub fn io_modules_load_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) -> /*Ignored*/Vec<IOModule> {
 //    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory_with_scope() }
 //}
 
 #[doc(alias = "g_io_modules_scan_all_in_directory")]
-pub fn io_modules_scan_all_in_directory<P: AsRef<std::path::Path>>(dirname: P) {
+pub fn io_modules_scan_all_in_directory(dirname: impl AsRef<std::path::Path>) {
     unsafe {
         ffi::g_io_modules_scan_all_in_directory(dirname.as_ref().to_glib_none().0);
     }
 }
 
 //#[doc(alias = "g_io_modules_scan_all_in_directory_with_scope")]
-//pub fn io_modules_scan_all_in_directory_with_scope<P: AsRef<std::path::Path>>(dirname: P, scope: /*Ignored*/&mut IOModuleScope) {
+//pub fn io_modules_scan_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) {
 //    unsafe { TODO: call ffi:g_io_modules_scan_all_in_directory_with_scope() }
 //}
 
@@ -453,7 +449,7 @@ pub fn io_scheduler_cancel_all_jobs() {
 }
 
 //#[doc(alias = "g_io_scheduler_push_job")]
-//pub fn io_scheduler_push_job<P: IsA<Cancellable>>(job_func: /*Unimplemented*/Fn(/*Ignored*/IOSchedulerJob, Option<&Cancellable>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>, io_priority: i32, cancellable: Option<&P>) {
+//pub fn io_scheduler_push_job(job_func: /*Unimplemented*/Fn(/*Ignored*/IOSchedulerJob, Option<&Cancellable>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>, io_priority: i32, cancellable: Option<&impl IsA<Cancellable>>) {
 //    unsafe { TODO: call ffi:g_io_scheduler_push_job() }
 //}
 
@@ -592,7 +588,7 @@ pub fn resources_unregister(resource: &Resource) {
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_mount_path_system_internal")]
-pub fn unix_is_mount_path_system_internal<P: AsRef<std::path::Path>>(mount_path: P) -> bool {
+pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path>) -> bool {
     unsafe {
         from_glib(ffi::g_unix_is_mount_path_system_internal(
             mount_path.as_ref().to_glib_none().0,
@@ -605,7 +601,7 @@ pub fn unix_is_mount_path_system_internal<P: AsRef<std::path::Path>>(mount_path:
 #[cfg(any(feature = "v2_56", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
 #[doc(alias = "g_unix_is_system_device_path")]
-pub fn unix_is_system_device_path<P: AsRef<std::path::Path>>(device_path: P) -> bool {
+pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> bool {
     unsafe {
         from_glib(ffi::g_unix_is_system_device_path(
             device_path.as_ref().to_glib_none().0,

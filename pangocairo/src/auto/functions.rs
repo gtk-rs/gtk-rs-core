@@ -69,9 +69,9 @@ pub fn error_underline_path(cr: &cairo::Context, x: f64, y: f64, width: f64, hei
 }
 
 #[doc(alias = "pango_cairo_glyph_string_path")]
-pub fn glyph_string_path<P: IsA<pango::Font>>(
+pub fn glyph_string_path(
     cr: &cairo::Context,
-    font: &P,
+    font: &impl IsA<pango::Font>,
     glyphs: &mut pango::GlyphString,
 ) {
     unsafe {
@@ -122,9 +122,9 @@ pub fn show_glyph_item(cr: &cairo::Context, text: &str, glyph_item: &mut pango::
 }
 
 #[doc(alias = "pango_cairo_show_glyph_string")]
-pub fn show_glyph_string<P: IsA<pango::Font>>(
+pub fn show_glyph_string(
     cr: &cairo::Context,
-    font: &P,
+    font: &impl IsA<pango::Font>,
     glyphs: &mut pango::GlyphString,
 ) {
     unsafe {

@@ -26,7 +26,7 @@ glib::wrapper! {
 
 impl TlsFileDatabase {
     #[doc(alias = "g_tls_file_database_new")]
-    pub fn new<P: AsRef<std::path::Path>>(anchors: P) -> Result<TlsFileDatabase, glib::Error> {
+    pub fn new(anchors: impl AsRef<std::path::Path>) -> Result<TlsFileDatabase, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_tls_file_database_new(anchors.as_ref().to_glib_none().0, &mut error);

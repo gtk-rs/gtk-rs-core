@@ -20,8 +20,8 @@ glib::wrapper! {
 impl SettingsSchemaSource {
     #[doc(alias = "g_settings_schema_source_new_from_directory")]
     #[doc(alias = "new_from_directory")]
-    pub fn from_directory<P: AsRef<std::path::Path>>(
-        directory: P,
+    pub fn from_directory(
+        directory: impl AsRef<std::path::Path>,
         parent: Option<&SettingsSchemaSource>,
         trusted: bool,
     ) -> Result<SettingsSchemaSource, glib::Error> {

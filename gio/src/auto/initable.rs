@@ -21,11 +21,11 @@ pub const NONE_INITABLE: Option<&Initable> = None;
 
 pub trait InitableExt: 'static {
     #[doc(alias = "g_initable_init")]
-    unsafe fn init<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 }
 
 impl<O: IsA<Initable>> InitableExt for O {
-    unsafe fn init<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         let mut error = ptr::null_mut();
         let _ = ffi::g_initable_init(
             self.as_ref().to_glib_none().0,

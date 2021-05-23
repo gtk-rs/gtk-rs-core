@@ -28,13 +28,13 @@ pub const NONE_PERMISSION: Option<&Permission> = None;
 
 pub trait PermissionExt: 'static {
     #[doc(alias = "g_permission_acquire")]
-    fn acquire<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn acquire(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_permission_acquire_async")]
-    fn acquire_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn acquire_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn acquire_async_future(
@@ -57,13 +57,13 @@ pub trait PermissionExt: 'static {
     fn impl_update(&self, allowed: bool, can_acquire: bool, can_release: bool);
 
     #[doc(alias = "g_permission_release")]
-    fn release<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn release(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_permission_release_async")]
-    fn release_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn release_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn release_async_future(
@@ -81,7 +81,7 @@ pub trait PermissionExt: 'static {
 }
 
 impl<O: IsA<Permission>> PermissionExt for O {
-    fn acquire<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn acquire(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_permission_acquire(
@@ -97,14 +97,14 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    fn acquire_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn acquire_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn acquire_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -117,10 +117,10 @@ impl<O: IsA<Permission>> PermissionExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = acquire_async_trampoline::<Q>;
+        let callback = acquire_async_trampoline::<P>;
         unsafe {
             ffi::g_permission_acquire_async(
                 self.as_ref().to_glib_none().0,
@@ -179,7 +179,7 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    fn release<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn release(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_permission_release(
@@ -195,14 +195,14 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    fn release_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn release_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn release_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -215,10 +215,10 @@ impl<O: IsA<Permission>> PermissionExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = release_async_trampoline::<Q>;
+        let callback = release_async_trampoline::<P>;
         unsafe {
             ffi::g_permission_release_async(
                 self.as_ref().to_glib_none().0,

@@ -30,7 +30,7 @@ glib::wrapper! {
 
 impl DataOutputStream {
     #[doc(alias = "g_data_output_stream_new")]
-    pub fn new<P: IsA<OutputStream>>(base_stream: &P) -> DataOutputStream {
+    pub fn new(base_stream: &impl IsA<OutputStream>) -> DataOutputStream {
         unsafe {
             from_glib_full(ffi::g_data_output_stream_new(
                 base_stream.as_ref().to_glib_none().0,
@@ -94,7 +94,7 @@ impl DataOutputStreamBuilder {
         self
     }
 
-    pub fn base_stream<P: IsA<OutputStream>>(mut self, base_stream: &P) -> Self {
+    pub fn base_stream(mut self, base_stream: &impl IsA<OutputStream>) -> Self {
         self.base_stream = Some(base_stream.clone().upcast());
         self
     }
@@ -113,59 +113,59 @@ pub trait DataOutputStreamExt: 'static {
     fn byte_order(&self) -> DataStreamByteOrder;
 
     #[doc(alias = "g_data_output_stream_put_byte")]
-    fn put_byte<P: IsA<Cancellable>>(
+    fn put_byte(
         &self,
         data: u8,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_int16")]
-    fn put_int16<P: IsA<Cancellable>>(
+    fn put_int16(
         &self,
         data: i16,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_int32")]
-    fn put_int32<P: IsA<Cancellable>>(
+    fn put_int32(
         &self,
         data: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_int64")]
-    fn put_int64<P: IsA<Cancellable>>(
+    fn put_int64(
         &self,
         data: i64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_string")]
-    fn put_string<P: IsA<Cancellable>>(
+    fn put_string(
         &self,
         str: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_uint16")]
-    fn put_uint16<P: IsA<Cancellable>>(
+    fn put_uint16(
         &self,
         data: u16,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_uint32")]
-    fn put_uint32<P: IsA<Cancellable>>(
+    fn put_uint32(
         &self,
         data: u32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_put_uint64")]
-    fn put_uint64<P: IsA<Cancellable>>(
+    fn put_uint64(
         &self,
         data: u64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_data_output_stream_set_byte_order")]
@@ -184,10 +184,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_byte<P: IsA<Cancellable>>(
+    fn put_byte(
         &self,
         data: u8,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -205,10 +205,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_int16<P: IsA<Cancellable>>(
+    fn put_int16(
         &self,
         data: i16,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -226,10 +226,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_int32<P: IsA<Cancellable>>(
+    fn put_int32(
         &self,
         data: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -247,10 +247,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_int64<P: IsA<Cancellable>>(
+    fn put_int64(
         &self,
         data: i64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -268,10 +268,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_string<P: IsA<Cancellable>>(
+    fn put_string(
         &self,
         str: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -289,10 +289,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_uint16<P: IsA<Cancellable>>(
+    fn put_uint16(
         &self,
         data: u16,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -310,10 +310,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_uint32<P: IsA<Cancellable>>(
+    fn put_uint32(
         &self,
         data: u32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -331,10 +331,10 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    fn put_uint64<P: IsA<Cancellable>>(
+    fn put_uint64(
         &self,
         data: u64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();

@@ -35,21 +35,18 @@ pub trait ProxyResolverExt: 'static {
     fn is_supported(&self) -> bool;
 
     #[doc(alias = "g_proxy_resolver_lookup")]
-    fn lookup<P: IsA<Cancellable>>(
+    fn lookup(
         &self,
         uri: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::GString>, glib::Error>;
 
     #[doc(alias = "g_proxy_resolver_lookup_async")]
-    fn lookup_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_async<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static>(
         &self,
         uri: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn lookup_async_future(
@@ -69,10 +66,10 @@ impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {
         }
     }
 
-    fn lookup<P: IsA<Cancellable>>(
+    fn lookup(
         &self,
         uri: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::GString>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -90,18 +87,15 @@ impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {
         }
     }
 
-    fn lookup_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_async<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static>(
         &self,
         uri: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_async_trampoline<
-            Q: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -115,10 +109,10 @@ impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_async_trampoline::<Q>;
+        let callback = lookup_async_trampoline::<P>;
         unsafe {
             ffi::g_proxy_resolver_lookup_async(
                 self.as_ref().to_glib_none().0,

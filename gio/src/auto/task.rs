@@ -124,9 +124,9 @@ impl Task {
     //}
 
     #[doc(alias = "g_task_is_valid")]
-    pub fn is_valid<P: IsA<AsyncResult>, Q: IsA<glib::Object>>(
-        result: &P,
-        source_object: Option<&Q>,
+    pub fn is_valid(
+        result: &impl IsA<AsyncResult>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> bool {
         unsafe {
             from_glib(ffi::g_task_is_valid(

@@ -20,7 +20,7 @@ use std::mem;
 use std::ptr;
 
 #[doc(alias = "g_access")]
-pub fn access<P: AsRef<std::path::Path>>(filename: P, mode: i32) -> i32 {
+pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_access(filename.as_ref().to_glib_none().0, mode) }
 }
 
@@ -140,14 +140,14 @@ pub fn bit_storage(number: libc::c_ulong) -> u32 {
 }
 
 //#[doc(alias = "g_build_filename")]
-//pub fn build_filename<P: AsRef<std::path::Path>>(first_element: P, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> std::path::PathBuf {
+//pub fn build_filename(first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> std::path::PathBuf {
 //    unsafe { TODO: call ffi:g_build_filename() }
 //}
 
 //#[cfg(any(feature = "v2_56", feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
 //#[doc(alias = "g_build_filename_valist")]
-//pub fn build_filename_valist<P: AsRef<std::path::Path>>(first_element: P, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> std::path::PathBuf {
+//pub fn build_filename_valist(first_element: impl AsRef<std::path::Path>, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> std::path::PathBuf {
 //    unsafe { TODO: call ffi:g_build_filename_valist() }
 //}
 
@@ -157,7 +157,7 @@ pub fn build_filenamev(args: &[&std::path::Path]) -> std::path::PathBuf {
 }
 
 //#[doc(alias = "g_build_path")]
-//pub fn build_path<P: AsRef<std::path::Path>, Q: AsRef<std::path::Path>>(separator: P, first_element: Q, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> std::path::PathBuf {
+//pub fn build_path(separator: impl AsRef<std::path::Path>, first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> std::path::PathBuf {
 //    unsafe { TODO: call ffi:g_build_path() }
 //}
 
@@ -174,9 +174,9 @@ pub fn build_pathv(separator: &str, args: &[&std::path::Path]) -> std::path::Pat
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
 #[doc(alias = "g_canonicalize_filename")]
-pub fn canonicalize_filename<P: AsRef<std::path::Path>, Q: AsRef<std::path::Path>>(
-    filename: P,
-    relative_to: Q,
+pub fn canonicalize_filename(
+    filename: impl AsRef<std::path::Path>,
+    relative_to: impl AsRef<std::path::Path>,
 ) -> std::path::PathBuf {
     unsafe {
         from_glib_full(ffi::g_canonicalize_filename(
@@ -187,7 +187,7 @@ pub fn canonicalize_filename<P: AsRef<std::path::Path>, Q: AsRef<std::path::Path
 }
 
 #[doc(alias = "g_chdir")]
-pub fn chdir<P: AsRef<std::path::Path>>(path: P) -> i32 {
+pub fn chdir(path: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_chdir(path.as_ref().to_glib_none().0) }
 }
 
@@ -511,7 +511,7 @@ pub fn dpgettext2(domain: Option<&str>, context: &str, msgid: &str) -> crate::GS
 //}
 
 #[doc(alias = "g_file_get_contents")]
-pub fn file_get_contents<P: AsRef<std::path::Path>>(filename: P) -> Result<Vec<u8>, crate::Error> {
+pub fn file_get_contents(filename: impl AsRef<std::path::Path>) -> Result<Vec<u8>, crate::Error> {
     unsafe {
         let mut contents = ptr::null_mut();
         let mut length = mem::MaybeUninit::uninit();
@@ -534,8 +534,8 @@ pub fn file_get_contents<P: AsRef<std::path::Path>>(filename: P) -> Result<Vec<u
 }
 
 #[doc(alias = "g_file_open_tmp")]
-pub fn file_open_tmp<P: AsRef<std::path::Path>>(
-    tmpl: P,
+pub fn file_open_tmp(
+    tmpl: impl AsRef<std::path::Path>,
 ) -> Result<(i32, std::path::PathBuf), crate::Error> {
     unsafe {
         let mut name_used = ptr::null_mut();
@@ -550,8 +550,8 @@ pub fn file_open_tmp<P: AsRef<std::path::Path>>(
 }
 
 #[doc(alias = "g_file_read_link")]
-pub fn file_read_link<P: AsRef<std::path::Path>>(
-    filename: P,
+pub fn file_read_link(
+    filename: impl AsRef<std::path::Path>,
 ) -> Result<std::path::PathBuf, crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
@@ -565,8 +565,8 @@ pub fn file_read_link<P: AsRef<std::path::Path>>(
 }
 
 #[doc(alias = "g_file_set_contents")]
-pub fn file_set_contents<P: AsRef<std::path::Path>>(
-    filename: P,
+pub fn file_set_contents(
+    filename: impl AsRef<std::path::Path>,
     contents: &[u8],
 ) -> Result<(), crate::Error> {
     let length = contents.len() as isize;
@@ -589,8 +589,8 @@ pub fn file_set_contents<P: AsRef<std::path::Path>>(
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(alias = "g_file_set_contents_full")]
-pub fn file_set_contents_full<P: AsRef<std::path::Path>>(
-    filename: P,
+pub fn file_set_contents_full(
+    filename: impl AsRef<std::path::Path>,
     contents: &[u8],
     flags: FileSetContentsFlags,
     mode: i32,
@@ -615,7 +615,7 @@ pub fn file_set_contents_full<P: AsRef<std::path::Path>>(
 }
 
 #[doc(alias = "g_file_test")]
-pub fn file_test<P: AsRef<std::path::Path>>(filename: P, test: FileTest) -> bool {
+pub fn file_test(filename: impl AsRef<std::path::Path>, test: FileTest) -> bool {
     unsafe {
         from_glib(ffi::g_file_test(
             filename.as_ref().to_glib_none().0,
@@ -625,7 +625,7 @@ pub fn file_test<P: AsRef<std::path::Path>>(filename: P, test: FileTest) -> bool
 }
 
 #[doc(alias = "g_filename_display_basename")]
-pub fn filename_display_basename<P: AsRef<std::path::Path>>(filename: P) -> crate::GString {
+pub fn filename_display_basename(filename: impl AsRef<std::path::Path>) -> crate::GString {
     unsafe {
         from_glib_full(ffi::g_filename_display_basename(
             filename.as_ref().to_glib_none().0,
@@ -634,7 +634,7 @@ pub fn filename_display_basename<P: AsRef<std::path::Path>>(filename: P) -> crat
 }
 
 #[doc(alias = "g_filename_display_name")]
-pub fn filename_display_name<P: AsRef<std::path::Path>>(filename: P) -> crate::GString {
+pub fn filename_display_name(filename: impl AsRef<std::path::Path>) -> crate::GString {
     unsafe {
         from_glib_full(ffi::g_filename_display_name(
             filename.as_ref().to_glib_none().0,
@@ -981,22 +981,22 @@ pub fn markup_escape_text(text: &str) -> crate::GString {
 //}
 
 #[doc(alias = "g_mkdir_with_parents")]
-pub fn mkdir_with_parents<P: AsRef<std::path::Path>>(pathname: P, mode: i32) -> i32 {
+pub fn mkdir_with_parents(pathname: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_mkdir_with_parents(pathname.as_ref().to_glib_none().0, mode) }
 }
 
 #[doc(alias = "g_mkdtemp")]
-pub fn mkdtemp<P: AsRef<std::path::Path>>(tmpl: P) -> Option<std::path::PathBuf> {
+pub fn mkdtemp(tmpl: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
     unsafe { from_glib_full(ffi::g_mkdtemp(tmpl.as_ref().to_glib_none().0)) }
 }
 
 #[doc(alias = "g_mkdtemp_full")]
-pub fn mkdtemp_full<P: AsRef<std::path::Path>>(tmpl: P, mode: i32) -> Option<std::path::PathBuf> {
+pub fn mkdtemp_full(tmpl: impl AsRef<std::path::Path>, mode: i32) -> Option<std::path::PathBuf> {
     unsafe { from_glib_full(ffi::g_mkdtemp_full(tmpl.as_ref().to_glib_none().0, mode)) }
 }
 
 #[doc(alias = "g_mkstemp_full")]
-pub fn mkstemp_full<P: AsRef<std::path::Path>>(tmpl: P, flags: i32, mode: i32) -> i32 {
+pub fn mkstemp_full(tmpl: impl AsRef<std::path::Path>, flags: i32, mode: i32) -> i32 {
     unsafe { ffi::g_mkstemp_full(tmpl.as_ref().to_glib_none().0, flags, mode) }
 }
 
@@ -1025,7 +1025,7 @@ pub fn on_error_stack_trace(prg_name: &str) {
 //}
 
 #[doc(alias = "g_path_get_basename")]
-pub fn path_get_basename<P: AsRef<std::path::Path>>(file_name: P) -> std::path::PathBuf {
+pub fn path_get_basename(file_name: impl AsRef<std::path::Path>) -> std::path::PathBuf {
     unsafe {
         from_glib_full(ffi::g_path_get_basename(
             file_name.as_ref().to_glib_none().0,
@@ -1034,17 +1034,17 @@ pub fn path_get_basename<P: AsRef<std::path::Path>>(file_name: P) -> std::path::
 }
 
 #[doc(alias = "g_path_get_dirname")]
-pub fn path_get_dirname<P: AsRef<std::path::Path>>(file_name: P) -> std::path::PathBuf {
+pub fn path_get_dirname(file_name: impl AsRef<std::path::Path>) -> std::path::PathBuf {
     unsafe { from_glib_full(ffi::g_path_get_dirname(file_name.as_ref().to_glib_none().0)) }
 }
 
 #[doc(alias = "g_path_is_absolute")]
-pub fn path_is_absolute<P: AsRef<std::path::Path>>(file_name: P) -> bool {
+pub fn path_is_absolute(file_name: impl AsRef<std::path::Path>) -> bool {
     unsafe { from_glib(ffi::g_path_is_absolute(file_name.as_ref().to_glib_none().0)) }
 }
 
 #[doc(alias = "g_path_skip_root")]
-pub fn path_skip_root<P: AsRef<std::path::Path>>(file_name: P) -> Option<std::path::PathBuf> {
+pub fn path_skip_root(file_name: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
     unsafe { from_glib_none(ffi::g_path_skip_root(file_name.as_ref().to_glib_none().0)) }
 }
 
@@ -1183,7 +1183,7 @@ pub fn return_if_fail_warning(
 }
 
 #[doc(alias = "g_rmdir")]
-pub fn rmdir<P: AsRef<std::path::Path>>(filename: P) -> i32 {
+pub fn rmdir(filename: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_rmdir(filename.as_ref().to_glib_none().0) }
 }
 
@@ -1210,8 +1210,8 @@ pub fn set_application_name(application_name: &str) {
 //}
 
 #[doc(alias = "g_shell_parse_argv")]
-pub fn shell_parse_argv<P: AsRef<std::ffi::OsStr>>(
-    command_line: P,
+pub fn shell_parse_argv(
+    command_line: impl AsRef<std::ffi::OsStr>,
 ) -> Result<Vec<std::ffi::OsString>, crate::Error> {
     unsafe {
         let mut argcp = mem::MaybeUninit::uninit();
@@ -1235,7 +1235,7 @@ pub fn shell_parse_argv<P: AsRef<std::ffi::OsStr>>(
 }
 
 #[doc(alias = "g_shell_quote")]
-pub fn shell_quote<P: AsRef<std::ffi::OsStr>>(unquoted_string: P) -> std::ffi::OsString {
+pub fn shell_quote(unquoted_string: impl AsRef<std::ffi::OsStr>) -> std::ffi::OsString {
     unsafe {
         from_glib_full(ffi::g_shell_quote(
             unquoted_string.as_ref().to_glib_none().0,
@@ -1244,8 +1244,8 @@ pub fn shell_quote<P: AsRef<std::ffi::OsStr>>(unquoted_string: P) -> std::ffi::O
 }
 
 #[doc(alias = "g_shell_unquote")]
-pub fn shell_unquote<P: AsRef<std::ffi::OsStr>>(
-    quoted_string: P,
+pub fn shell_unquote(
+    quoted_string: impl AsRef<std::ffi::OsStr>,
 ) -> Result<std::ffi::OsString, crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
@@ -1309,22 +1309,22 @@ pub fn spaced_primes_closest(num: u32) -> u32 {
 }
 
 #[doc(alias = "g_spawn_async")]
-pub fn spawn_async<P: AsRef<std::path::Path>>(
-    working_directory: P,
+pub fn spawn_async(
+    working_directory: impl AsRef<std::path::Path>,
     argv: &[&std::path::Path],
     envp: &[&std::path::Path],
     flags: SpawnFlags,
     child_setup: Option<Box_<dyn FnOnce() + 'static>>,
 ) -> Result<Pid, crate::Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
-    unsafe extern "C" fn child_setup_func<P: AsRef<std::path::Path>>(user_data: ffi::gpointer) {
+    unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
         let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
             Box_::from_raw(user_data as *mut _);
         let callback = (*callback).expect("cannot get closure...");
         callback()
     }
     let child_setup = if child_setup_data.is_some() {
-        Some(child_setup_func::<P> as _)
+        Some(child_setup_func as _)
     } else {
         None
     };
@@ -1367,8 +1367,8 @@ pub fn spawn_check_exit_status(exit_status: i32) -> Result<(), crate::Error> {
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 #[doc(alias = "g_spawn_command_line_async")]
-pub fn spawn_command_line_async<P: AsRef<std::ffi::OsStr>>(
-    command_line: P,
+pub fn spawn_command_line_async(
+    command_line: impl AsRef<std::ffi::OsStr>,
 ) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
@@ -1382,12 +1382,12 @@ pub fn spawn_command_line_async<P: AsRef<std::ffi::OsStr>>(
 }
 
 //#[doc(alias = "g_spawn_command_line_sync")]
-//pub fn spawn_command_line_sync<P: AsRef<std::path::Path>>(command_line: P, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_command_line_sync(command_line: impl AsRef<std::path::Path>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_command_line_sync() }
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync<P: AsRef<std::path::Path>>(working_directory: P, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync(working_directory: impl AsRef<std::path::Path>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
@@ -1451,7 +1451,7 @@ pub fn stpcpy(dest: &str, src: &str) -> crate::GString {
 //}
 
 #[doc(alias = "g_unlink")]
-pub fn unlink<P: AsRef<std::path::Path>>(filename: P) -> i32 {
+pub fn unlink(filename: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_unlink(filename.as_ref().to_glib_none().0) }
 }
 

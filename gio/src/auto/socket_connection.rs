@@ -63,27 +63,23 @@ pub const NONE_SOCKET_CONNECTION: Option<&SocketConnection> = None;
 
 pub trait SocketConnectionExt: 'static {
     #[doc(alias = "g_socket_connection_connect")]
-    fn connect<P: IsA<SocketAddress>, Q: IsA<Cancellable>>(
+    fn connect(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_connection_connect_async")]
-    fn connect_async<
-        P: IsA<SocketAddress>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn connect_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn connect_async_future<P: IsA<SocketAddress> + Clone + 'static>(
+    fn connect_async_future(
         &self,
-        address: &P,
+        address: &(impl IsA<SocketAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_socket_connection_get_local_address")]
@@ -103,10 +99,10 @@ pub trait SocketConnectionExt: 'static {
 }
 
 impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
-    fn connect<P: IsA<SocketAddress>, Q: IsA<Cancellable>>(
+    fn connect(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -124,19 +120,15 @@ impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
         }
     }
 
-    fn connect_async<
-        P: IsA<SocketAddress>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn connect_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn connect_async_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -150,10 +142,10 @@ impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = connect_async_trampoline::<R>;
+        let callback = connect_async_trampoline::<P>;
         unsafe {
             ffi::g_socket_connection_connect_async(
                 self.as_ref().to_glib_none().0,
@@ -165,9 +157,9 @@ impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
         }
     }
 
-    fn connect_async_future<P: IsA<SocketAddress> + Clone + 'static>(
+    fn connect_async_future(
         &self,
-        address: &P,
+        address: &(impl IsA<SocketAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let address = address.clone();
         Box_::pin(crate::GioFuture::new(

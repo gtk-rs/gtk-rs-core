@@ -27,7 +27,7 @@ impl GlyphString {
     }
 
     #[doc(alias = "pango_glyph_string_extents")]
-    pub fn extents<P: IsA<Font>>(&mut self, font: &P) -> (Rectangle, Rectangle) {
+    pub fn extents(&mut self, font: &impl IsA<Font>) -> (Rectangle, Rectangle) {
         unsafe {
             let mut ink_rect = Rectangle::uninitialized();
             let mut logical_rect = Rectangle::uninitialized();
@@ -42,11 +42,11 @@ impl GlyphString {
     }
 
     #[doc(alias = "pango_glyph_string_extents_range")]
-    pub fn extents_range<P: IsA<Font>>(
+    pub fn extents_range(
         &mut self,
         start: i32,
         end: i32,
-        font: &P,
+        font: &impl IsA<Font>,
     ) -> (Rectangle, Rectangle) {
         unsafe {
             let mut ink_rect = Rectangle::uninitialized();

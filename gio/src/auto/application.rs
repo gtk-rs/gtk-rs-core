@@ -116,7 +116,7 @@ impl ApplicationBuilder {
             .expect("Failed to create an instance of Application")
     }
 
-    pub fn action_group<P: IsA<ActionGroup>>(mut self, action_group: &P) -> Self {
+    pub fn action_group(mut self, action_group: &impl IsA<ActionGroup>) -> Self {
         self.action_group = Some(action_group.clone().upcast());
         self
     }
@@ -166,7 +166,7 @@ pub trait ApplicationExt: 'static {
     //fn add_option_group(&self, group: /*Ignored*/&glib::OptionGroup);
 
     #[doc(alias = "g_application_bind_busy_property")]
-    fn bind_busy_property<P: IsA<glib::Object>>(&self, object: &P, property: &str);
+    fn bind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str);
 
     #[doc(alias = "g_application_get_application_id")]
     #[doc(alias = "get_application_id")]
@@ -217,7 +217,7 @@ pub trait ApplicationExt: 'static {
     fn quit(&self);
 
     #[doc(alias = "g_application_register")]
-    fn register<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn register(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_application_release")]
     fn release(&self);
@@ -256,7 +256,7 @@ pub trait ApplicationExt: 'static {
     fn set_resource_base_path(&self, resource_path: Option<&str>);
 
     #[doc(alias = "g_application_unbind_busy_property")]
-    fn unbind_busy_property<P: IsA<glib::Object>>(&self, object: &P, property: &str);
+    fn unbind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str);
 
     #[doc(alias = "g_application_unmark_busy")]
     fn unmark_busy(&self);
@@ -355,7 +355,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
     //    unsafe { TODO: call ffi:g_application_add_option_group() }
     //}
 
-    fn bind_busy_property<P: IsA<glib::Object>>(&self, object: &P, property: &str) {
+    fn bind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str) {
         unsafe {
             ffi::g_application_bind_busy_property(
                 self.as_ref().to_glib_none().0,
@@ -459,7 +459,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    fn register<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn register(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_application_register(
@@ -563,7 +563,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    fn unbind_busy_property<P: IsA<glib::Object>>(&self, object: &P, property: &str) {
+    fn unbind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str) {
         unsafe {
             ffi::g_application_unbind_busy_property(
                 self.as_ref().to_glib_none().0,

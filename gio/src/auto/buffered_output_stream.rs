@@ -27,7 +27,7 @@ glib::wrapper! {
 
 impl BufferedOutputStream {
     #[doc(alias = "g_buffered_output_stream_new")]
-    pub fn new<P: IsA<OutputStream>>(base_stream: &P) -> BufferedOutputStream {
+    pub fn new(base_stream: &impl IsA<OutputStream>) -> BufferedOutputStream {
         unsafe {
             OutputStream::from_glib_full(ffi::g_buffered_output_stream_new(
                 base_stream.as_ref().to_glib_none().0,
@@ -37,7 +37,7 @@ impl BufferedOutputStream {
     }
 
     #[doc(alias = "g_buffered_output_stream_new_sized")]
-    pub fn new_sized<P: IsA<OutputStream>>(base_stream: &P, size: usize) -> BufferedOutputStream {
+    pub fn new_sized(base_stream: &impl IsA<OutputStream>, size: usize) -> BufferedOutputStream {
         unsafe {
             OutputStream::from_glib_full(ffi::g_buffered_output_stream_new_sized(
                 base_stream.as_ref().to_glib_none().0,
@@ -112,7 +112,7 @@ impl BufferedOutputStreamBuilder {
         self
     }
 
-    pub fn base_stream<P: IsA<OutputStream>>(mut self, base_stream: &P) -> Self {
+    pub fn base_stream(mut self, base_stream: &impl IsA<OutputStream>) -> Self {
         self.base_stream = Some(base_stream.clone().upcast());
         self
     }

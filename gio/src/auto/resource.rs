@@ -116,7 +116,7 @@ impl Resource {
     }
 
     #[doc(alias = "g_resource_load")]
-    pub fn load<P: AsRef<std::path::Path>>(filename: P) -> Result<Resource, glib::Error> {
+    pub fn load(filename: impl AsRef<std::path::Path>) -> Result<Resource, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_resource_load(filename.as_ref().to_glib_none().0, &mut error);

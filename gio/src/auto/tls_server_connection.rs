@@ -29,9 +29,9 @@ glib::wrapper! {
 
 impl TlsServerConnection {
     #[doc(alias = "g_tls_server_connection_new")]
-    pub fn new<P: IsA<IOStream>, Q: IsA<TlsCertificate>>(
-        base_io_stream: &P,
-        certificate: Option<&Q>,
+    pub fn new(
+        base_io_stream: &impl IsA<IOStream>,
+        certificate: Option<&impl IsA<TlsCertificate>>,
     ) -> Result<TlsServerConnection, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();

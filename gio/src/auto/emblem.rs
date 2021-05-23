@@ -19,13 +19,13 @@ glib::wrapper! {
 
 impl Emblem {
     #[doc(alias = "g_emblem_new")]
-    pub fn new<P: IsA<Icon>>(icon: &P) -> Emblem {
+    pub fn new(icon: &impl IsA<Icon>) -> Emblem {
         unsafe { from_glib_full(ffi::g_emblem_new(icon.as_ref().to_glib_none().0)) }
     }
 
     #[doc(alias = "g_emblem_new_with_origin")]
     #[doc(alias = "new_with_origin")]
-    pub fn with_origin<P: IsA<Icon>>(icon: &P, origin: EmblemOrigin) -> Emblem {
+    pub fn with_origin(icon: &impl IsA<Icon>, origin: EmblemOrigin) -> Emblem {
         unsafe {
             from_glib_full(ffi::g_emblem_new_with_origin(
                 icon.as_ref().to_glib_none().0,

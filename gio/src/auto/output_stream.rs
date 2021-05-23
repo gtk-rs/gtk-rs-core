@@ -30,14 +30,14 @@ pub trait OutputStreamExt: 'static {
     fn clear_pending(&self);
 
     #[doc(alias = "g_output_stream_close")]
-    fn close<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_output_stream_close_async")]
-    fn close_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn close_async_future(
@@ -46,14 +46,14 @@ pub trait OutputStreamExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_output_stream_flush")]
-    fn flush<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_output_stream_flush_async")]
-    fn flush_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn flush_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn flush_async_future(
@@ -71,67 +71,60 @@ pub trait OutputStreamExt: 'static {
     fn is_closing(&self) -> bool;
 
     //#[doc(alias = "g_output_stream_printf")]
-    //fn printf<P: IsA<Cancellable>>(&self, cancellable: Option<&P>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize>;
+    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize>;
 
     #[doc(alias = "g_output_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_output_stream_splice")]
-    fn splice<P: IsA<InputStream>, Q: IsA<Cancellable>>(
+    fn splice(
         &self,
-        source: &P,
+        source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
-        cancellable: Option<&Q>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_output_stream_splice_async")]
-    fn splice_async<
-        P: IsA<InputStream>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<isize, glib::Error>) + Send + 'static,
-    >(
+    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
-        source: &P,
+        source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
         io_priority: glib::Priority,
-        cancellable: Option<&Q>,
-        callback: R,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn splice_async_future<P: IsA<InputStream> + Clone + 'static>(
+    fn splice_async_future(
         &self,
-        source: &P,
+        source: &(impl IsA<InputStream> + Clone + 'static),
         flags: OutputStreamSpliceFlags,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>>;
 
     //#[doc(alias = "g_output_stream_vprintf")]
-    //fn vprintf<P: IsA<Cancellable>>(&self, cancellable: Option<&P>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize>;
+    //fn vprintf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize>;
 
     #[doc(alias = "g_output_stream_write")]
-    fn write<P: IsA<Cancellable>>(
+    fn write(
         &self,
         buffer: &[u8],
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_output_stream_write_bytes")]
-    fn write_bytes<P: IsA<Cancellable>>(
+    fn write_bytes(
         &self,
         bytes: &glib::Bytes,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_output_stream_write_bytes_async")]
-    fn write_bytes_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<isize, glib::Error>) + Send + 'static,
-    >(
+    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn write_bytes_async_future(
@@ -143,17 +136,17 @@ pub trait OutputStreamExt: 'static {
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev")]
-    //fn writev<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<usize, glib::Error>;
+    //fn writev(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error>;
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev_all")]
-    //fn writev_all<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<usize, glib::Error>;
+    //fn writev_all(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error>;
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev_all_async")]
-    //fn writev_all_async<P: IsA<Cancellable>, Q: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&P>, callback: Q);
+    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
 
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -163,7 +156,7 @@ pub trait OutputStreamExt: 'static {
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev_async")]
-    //fn writev_async<P: IsA<Cancellable>, Q: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&P>, callback: Q);
+    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
 
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -178,7 +171,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn close<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_output_stream_close(
@@ -194,15 +187,15 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn close_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn close_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -215,10 +208,10 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = close_async_trampoline::<Q>;
+        let callback = close_async_trampoline::<P>;
         unsafe {
             ffi::g_output_stream_close_async(
                 self.as_ref().to_glib_none().0,
@@ -244,7 +237,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 
-    fn flush<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_output_stream_flush(
@@ -260,15 +253,15 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn flush_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn flush_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn flush_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -281,10 +274,10 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = flush_async_trampoline::<Q>;
+        let callback = flush_async_trampoline::<P>;
         unsafe {
             ffi::g_output_stream_flush_async(
                 self.as_ref().to_glib_none().0,
@@ -334,7 +327,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    //fn printf<P: IsA<Cancellable>>(&self, cancellable: Option<&P>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize> {
+    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_printf() }
     //}
 
@@ -350,11 +343,11 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn splice<P: IsA<InputStream>, Q: IsA<Cancellable>>(
+    fn splice(
         &self,
-        source: &P,
+        source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
-        cancellable: Option<&Q>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -373,21 +366,17 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn splice_async<
-        P: IsA<InputStream>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<isize, glib::Error>) + Send + 'static,
-    >(
+    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
-        source: &P,
+        source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
         io_priority: glib::Priority,
-        cancellable: Option<&Q>,
-        callback: R,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn splice_async_trampoline<
-            R: FnOnce(Result<isize, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<isize, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -400,10 +389,10 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = splice_async_trampoline::<R>;
+        let callback = splice_async_trampoline::<P>;
         unsafe {
             ffi::g_output_stream_splice_async(
                 self.as_ref().to_glib_none().0,
@@ -417,9 +406,9 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn splice_async_future<P: IsA<InputStream> + Clone + 'static>(
+    fn splice_async_future(
         &self,
-        source: &P,
+        source: &(impl IsA<InputStream> + Clone + 'static),
         flags: OutputStreamSpliceFlags,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>> {
@@ -434,14 +423,14 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         ))
     }
 
-    //fn vprintf<P: IsA<Cancellable>>(&self, cancellable: Option<&P>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize> {
+    //fn vprintf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_vprintf() }
     //}
 
-    fn write<P: IsA<Cancellable>>(
+    fn write(
         &self,
         buffer: &[u8],
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         let count = buffer.len() as usize;
         unsafe {
@@ -461,10 +450,10 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn write_bytes<P: IsA<Cancellable>>(
+    fn write_bytes(
         &self,
         bytes: &glib::Bytes,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -482,19 +471,16 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn write_bytes_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<isize, glib::Error>) + Send + 'static,
-    >(
+    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn write_bytes_async_trampoline<
-            Q: FnOnce(Result<isize, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<isize, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -508,10 +494,10 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = write_bytes_async_trampoline::<Q>;
+        let callback = write_bytes_async_trampoline::<P>;
         unsafe {
             ffi::g_output_stream_write_bytes_async(
                 self.as_ref().to_glib_none().0,
@@ -542,19 +528,19 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<usize, glib::Error> {
+    //fn writev(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error> {
     //    unsafe { TODO: call ffi:g_output_stream_writev() }
     //}
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<usize, glib::Error> {
+    //fn writev_all(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error> {
     //    unsafe { TODO: call ffi:g_output_stream_writev_all() }
     //}
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_async<P: IsA<Cancellable>, Q: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&P>, callback: Q) {
+    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
     //    unsafe { TODO: call ffi:g_output_stream_writev_all_async() }
     //}
 
@@ -578,7 +564,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_async<P: IsA<Cancellable>, Q: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&P>, callback: Q) {
+    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
     //    unsafe { TODO: call ffi:g_output_stream_writev_async() }
     //}
 

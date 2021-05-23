@@ -38,34 +38,26 @@ pub const NONE_PROXY: Option<&Proxy> = None;
 
 pub trait ProxyExt: 'static {
     #[doc(alias = "g_proxy_connect")]
-    fn connect<P: IsA<IOStream>, Q: IsA<ProxyAddress>, R: IsA<Cancellable>>(
+    fn connect(
         &self,
-        connection: &P,
-        proxy_address: &Q,
-        cancellable: Option<&R>,
+        connection: &impl IsA<IOStream>,
+        proxy_address: &impl IsA<ProxyAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<IOStream, glib::Error>;
 
     #[doc(alias = "g_proxy_connect_async")]
-    fn connect_async<
-        P: IsA<IOStream>,
-        Q: IsA<ProxyAddress>,
-        R: IsA<Cancellable>,
-        S: FnOnce(Result<IOStream, glib::Error>) + Send + 'static,
-    >(
+    fn connect_async<P: FnOnce(Result<IOStream, glib::Error>) + Send + 'static>(
         &self,
-        connection: &P,
-        proxy_address: &Q,
-        cancellable: Option<&R>,
-        callback: S,
+        connection: &impl IsA<IOStream>,
+        proxy_address: &impl IsA<ProxyAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn connect_async_future<
-        P: IsA<IOStream> + Clone + 'static,
-        Q: IsA<ProxyAddress> + Clone + 'static,
-    >(
+    fn connect_async_future(
         &self,
-        connection: &P,
-        proxy_address: &Q,
+        connection: &(impl IsA<IOStream> + Clone + 'static),
+        proxy_address: &(impl IsA<ProxyAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<IOStream, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_proxy_supports_hostname")]
@@ -73,11 +65,11 @@ pub trait ProxyExt: 'static {
 }
 
 impl<O: IsA<Proxy>> ProxyExt for O {
-    fn connect<P: IsA<IOStream>, Q: IsA<ProxyAddress>, R: IsA<Cancellable>>(
+    fn connect(
         &self,
-        connection: &P,
-        proxy_address: &Q,
-        cancellable: Option<&R>,
+        connection: &impl IsA<IOStream>,
+        proxy_address: &impl IsA<ProxyAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<IOStream, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -96,21 +88,16 @@ impl<O: IsA<Proxy>> ProxyExt for O {
         }
     }
 
-    fn connect_async<
-        P: IsA<IOStream>,
-        Q: IsA<ProxyAddress>,
-        R: IsA<Cancellable>,
-        S: FnOnce(Result<IOStream, glib::Error>) + Send + 'static,
-    >(
+    fn connect_async<P: FnOnce(Result<IOStream, glib::Error>) + Send + 'static>(
         &self,
-        connection: &P,
-        proxy_address: &Q,
-        cancellable: Option<&R>,
-        callback: S,
+        connection: &impl IsA<IOStream>,
+        proxy_address: &impl IsA<ProxyAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<S> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn connect_async_trampoline<
-            S: FnOnce(Result<IOStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<IOStream, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -123,10 +110,10 @@ impl<O: IsA<Proxy>> ProxyExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<S> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = connect_async_trampoline::<S>;
+        let callback = connect_async_trampoline::<P>;
         unsafe {
             ffi::g_proxy_connect_async(
                 self.as_ref().to_glib_none().0,
@@ -139,13 +126,10 @@ impl<O: IsA<Proxy>> ProxyExt for O {
         }
     }
 
-    fn connect_async_future<
-        P: IsA<IOStream> + Clone + 'static,
-        Q: IsA<ProxyAddress> + Clone + 'static,
-    >(
+    fn connect_async_future(
         &self,
-        connection: &P,
-        proxy_address: &Q,
+        connection: &(impl IsA<IOStream> + Clone + 'static),
+        proxy_address: &(impl IsA<ProxyAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<IOStream, glib::Error>> + 'static>> {
         let connection = connection.clone();
         let proxy_address = proxy_address.clone();

@@ -30,7 +30,7 @@ impl MenuItem {
 
     #[doc(alias = "g_menu_item_new_from_model")]
     #[doc(alias = "new_from_model")]
-    pub fn from_model<P: IsA<MenuModel>>(model: &P, item_index: i32) -> MenuItem {
+    pub fn from_model(model: &impl IsA<MenuModel>, item_index: i32) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new_from_model(
                 model.as_ref().to_glib_none().0,
@@ -40,7 +40,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_new_section")]
-    pub fn new_section<P: IsA<MenuModel>>(label: Option<&str>, section: &P) -> MenuItem {
+    pub fn new_section(label: Option<&str>, section: &impl IsA<MenuModel>) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new_section(
                 label.to_glib_none().0,
@@ -50,7 +50,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_new_submenu")]
-    pub fn new_submenu<P: IsA<MenuModel>>(label: Option<&str>, submenu: &P) -> MenuItem {
+    pub fn new_submenu(label: Option<&str>, submenu: &impl IsA<MenuModel>) -> MenuItem {
         unsafe {
             from_glib_full(ffi::g_menu_item_new_submenu(
                 label.to_glib_none().0,
@@ -139,7 +139,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_set_icon")]
-    pub fn set_icon<P: IsA<Icon>>(&self, icon: &P) {
+    pub fn set_icon(&self, icon: &impl IsA<Icon>) {
         unsafe {
             ffi::g_menu_item_set_icon(self.to_glib_none().0, icon.as_ref().to_glib_none().0);
         }
@@ -153,7 +153,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_set_link")]
-    pub fn set_link<P: IsA<MenuModel>>(&self, link: &str, model: Option<&P>) {
+    pub fn set_link(&self, link: &str, model: Option<&impl IsA<MenuModel>>) {
         unsafe {
             ffi::g_menu_item_set_link(
                 self.to_glib_none().0,
@@ -164,7 +164,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_set_section")]
-    pub fn set_section<P: IsA<MenuModel>>(&self, section: Option<&P>) {
+    pub fn set_section(&self, section: Option<&impl IsA<MenuModel>>) {
         unsafe {
             ffi::g_menu_item_set_section(
                 self.to_glib_none().0,
@@ -174,7 +174,7 @@ impl MenuItem {
     }
 
     #[doc(alias = "g_menu_item_set_submenu")]
-    pub fn set_submenu<P: IsA<MenuModel>>(&self, submenu: Option<&P>) {
+    pub fn set_submenu(&self, submenu: Option<&impl IsA<MenuModel>>) {
         unsafe {
             ffi::g_menu_item_set_submenu(
                 self.to_glib_none().0,

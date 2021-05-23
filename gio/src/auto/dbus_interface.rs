@@ -29,7 +29,7 @@ pub trait DBusInterfaceExt: 'static {
     fn info(&self) -> DBusInterfaceInfo;
 
     #[doc(alias = "g_dbus_interface_set_object")]
-    fn set_object<P: IsA<DBusObject>>(&self, object: Option<&P>);
+    fn set_object(&self, object: Option<&impl IsA<DBusObject>>);
 }
 
 impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
@@ -49,7 +49,7 @@ impl<O: IsA<DBusInterface>> DBusInterfaceExt for O {
         }
     }
 
-    fn set_object<P: IsA<DBusObject>>(&self, object: Option<&P>) {
+    fn set_object(&self, object: Option<&impl IsA<DBusObject>>) {
         unsafe {
             ffi::g_dbus_interface_set_object(
                 self.as_ref().to_glib_none().0,

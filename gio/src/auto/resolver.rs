@@ -52,45 +52,38 @@ pub const NONE_RESOLVER: Option<&Resolver> = None;
 
 pub trait ResolverExt: 'static {
     #[doc(alias = "g_resolver_lookup_by_address")]
-    fn lookup_by_address<P: IsA<InetAddress>, Q: IsA<Cancellable>>(
+    fn lookup_by_address(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<InetAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::GString, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_by_address_async")]
-    fn lookup_by_address_async<
-        P: IsA<InetAddress>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static>(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        address: &impl IsA<InetAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn lookup_by_address_async_future<P: IsA<InetAddress> + Clone + 'static>(
+    fn lookup_by_address_async_future(
         &self,
-        address: &P,
+        address: &(impl IsA<InetAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_resolver_lookup_by_name")]
-    fn lookup_by_name<P: IsA<Cancellable>>(
+    fn lookup_by_name(
         &self,
         hostname: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_by_name_async")]
-    fn lookup_by_name_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static>(
         &self,
         hostname: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn lookup_by_name_async_future(
@@ -101,25 +94,24 @@ pub trait ResolverExt: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags")]
-    fn lookup_by_name_with_flags<P: IsA<Cancellable>>(
+    fn lookup_by_name_with_flags(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error>;
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
     fn lookup_by_name_with_flags_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
     >(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -131,23 +123,20 @@ pub trait ResolverExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_resolver_lookup_records")]
-    fn lookup_records<P: IsA<Cancellable>>(
+    fn lookup_records(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::Variant>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_records_async")]
-    fn lookup_records_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static>(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn lookup_records_async_future(
@@ -159,25 +148,22 @@ pub trait ResolverExt: 'static {
     >;
 
     #[doc(alias = "g_resolver_lookup_service")]
-    fn lookup_service<P: IsA<Cancellable>>(
+    fn lookup_service(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<SrvTarget>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_service_async")]
-    fn lookup_service_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static>(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn lookup_service_async_future(
@@ -195,10 +181,10 @@ pub trait ResolverExt: 'static {
 }
 
 impl<O: IsA<Resolver>> ResolverExt for O {
-    fn lookup_by_address<P: IsA<InetAddress>, Q: IsA<Cancellable>>(
+    fn lookup_by_address(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<InetAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::GString, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -216,19 +202,15 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_address_async<
-        P: IsA<InetAddress>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static>(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        address: &impl IsA<InetAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_by_address_async_trampoline<
-            R: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -242,10 +224,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_by_address_async_trampoline::<R>;
+        let callback = lookup_by_address_async_trampoline::<P>;
         unsafe {
             ffi::g_resolver_lookup_by_address_async(
                 self.as_ref().to_glib_none().0,
@@ -257,9 +239,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_address_async_future<P: IsA<InetAddress> + Clone + 'static>(
+    fn lookup_by_address_async_future(
         &self,
-        address: &P,
+        address: &(impl IsA<InetAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>
     {
         let address = address.clone();
@@ -273,10 +255,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
-    fn lookup_by_name<P: IsA<Cancellable>>(
+    fn lookup_by_name(
         &self,
         hostname: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -294,18 +276,15 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_name_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static>(
         &self,
         hostname: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_by_name_async_trampoline<
-            Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -319,10 +298,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_by_name_async_trampoline::<Q>;
+        let callback = lookup_by_name_async_trampoline::<P>;
         unsafe {
             ffi::g_resolver_lookup_by_name_async(
                 self.as_ref().to_glib_none().0,
@@ -352,11 +331,11 @@ impl<O: IsA<Resolver>> ResolverExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn lookup_by_name_with_flags<P: IsA<Cancellable>>(
+    fn lookup_by_name_with_flags(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -378,18 +357,17 @@ impl<O: IsA<Resolver>> ResolverExt for O {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
     >(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_by_name_with_flags_async_trampoline<
-            Q: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -406,10 +384,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_by_name_with_flags_async_trampoline::<Q>;
+        let callback = lookup_by_name_with_flags_async_trampoline::<P>;
         unsafe {
             ffi::g_resolver_lookup_by_name_with_flags_async(
                 self.as_ref().to_glib_none().0,
@@ -446,11 +424,11 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
-    fn lookup_records<P: IsA<Cancellable>>(
+    fn lookup_records(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<glib::Variant>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -469,19 +447,16 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_records_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static>(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_records_async_trampoline<
-            Q: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -495,10 +470,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_records_async_trampoline::<Q>;
+        let callback = lookup_records_async_trampoline::<P>;
         unsafe {
             ffi::g_resolver_lookup_records_async(
                 self.as_ref().to_glib_none().0,
@@ -529,12 +504,12 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
-    fn lookup_service<P: IsA<Cancellable>>(
+    fn lookup_service(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<SrvTarget>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -554,20 +529,17 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_service_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static>(
         &self,
         service: &str,
         protocol: &str,
         domain: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn lookup_service_async_trampoline<
-            Q: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -581,10 +553,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = lookup_service_async_trampoline::<Q>;
+        let callback = lookup_service_async_trampoline::<P>;
         unsafe {
             ffi::g_resolver_lookup_service_async(
                 self.as_ref().to_glib_none().0,

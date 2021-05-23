@@ -113,9 +113,9 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_from_stream")]
     #[doc(alias = "new_from_stream")]
-    pub fn from_stream<P: IsA<gio::InputStream>, Q: IsA<gio::Cancellable>>(
-        stream: &P,
-        cancellable: Option<&Q>,
+    pub fn from_stream(
+        stream: &impl IsA<gio::InputStream>,
+        cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -134,12 +134,12 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_from_stream_at_scale")]
     #[doc(alias = "new_from_stream_at_scale")]
-    pub fn from_stream_at_scale<P: IsA<gio::InputStream>, Q: IsA<gio::Cancellable>>(
-        stream: &P,
+    pub fn from_stream_at_scale(
+        stream: &impl IsA<gio::InputStream>,
         width: i32,
         height: i32,
         preserve_aspect_ratio: bool,
-        cancellable: Option<&Q>,
+        cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<Pixbuf, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -465,7 +465,7 @@ impl Pixbuf {
     }
 
     //#[doc(alias = "gdk_pixbuf_save")]
-    //pub fn save<P: AsRef<std::path::Path>>(&self, filename: P, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //pub fn save(&self, filename: impl AsRef<std::path::Path>, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save() }
     //}
 
@@ -485,17 +485,17 @@ impl Pixbuf {
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_stream")]
-    //pub fn save_to_stream<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, type_: &str, cancellable: Option<&Q>, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //pub fn save_to_stream(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_stream() }
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_stream_async")]
-    //pub fn save_to_stream_async<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>, R: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, stream: &P, type_: &str, cancellable: Option<&Q>, callback: R, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn save_to_stream_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, callback: P, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_stream_async() }
     //}
 
     //
-    //pub fn save_to_stream_async_future<P: IsA<gio::OutputStream> + Clone + 'static>(&self, stream: &P, type_: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
+    //pub fn save_to_stream_async_future(&self, stream: &(impl IsA<gio::OutputStream> + Clone + 'static), type_: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
 
     //let stream = stream.clone();
     //let type_ = String::from(type_);

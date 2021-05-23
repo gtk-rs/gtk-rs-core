@@ -155,10 +155,10 @@ impl DBusMethodInvocation {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_dbus_method_invocation_return_value_with_unix_fd_list")]
-    pub fn return_value_with_unix_fd_list<P: IsA<UnixFDList>>(
+    pub fn return_value_with_unix_fd_list(
         &self,
         parameters: Option<&glib::Variant>,
-        fd_list: Option<&P>,
+        fd_list: Option<&impl IsA<UnixFDList>>,
     ) {
         unsafe {
             ffi::g_dbus_method_invocation_return_value_with_unix_fd_list(

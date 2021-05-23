@@ -42,7 +42,7 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_append_section")]
-    pub fn append_section<P: IsA<MenuModel>>(&self, label: Option<&str>, section: &P) {
+    pub fn append_section(&self, label: Option<&str>, section: &impl IsA<MenuModel>) {
         unsafe {
             ffi::g_menu_append_section(
                 self.to_glib_none().0,
@@ -53,7 +53,7 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_append_submenu")]
-    pub fn append_submenu<P: IsA<MenuModel>>(&self, label: Option<&str>, submenu: &P) {
+    pub fn append_submenu(&self, label: Option<&str>, submenu: &impl IsA<MenuModel>) {
         unsafe {
             ffi::g_menu_append_submenu(
                 self.to_glib_none().0,
@@ -90,11 +90,11 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_insert_section")]
-    pub fn insert_section<P: IsA<MenuModel>>(
+    pub fn insert_section(
         &self,
         position: i32,
         label: Option<&str>,
-        section: &P,
+        section: &impl IsA<MenuModel>,
     ) {
         unsafe {
             ffi::g_menu_insert_section(
@@ -107,11 +107,11 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_insert_submenu")]
-    pub fn insert_submenu<P: IsA<MenuModel>>(
+    pub fn insert_submenu(
         &self,
         position: i32,
         label: Option<&str>,
-        submenu: &P,
+        submenu: &impl IsA<MenuModel>,
     ) {
         unsafe {
             ffi::g_menu_insert_submenu(
@@ -142,7 +142,7 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_prepend_section")]
-    pub fn prepend_section<P: IsA<MenuModel>>(&self, label: Option<&str>, section: &P) {
+    pub fn prepend_section(&self, label: Option<&str>, section: &impl IsA<MenuModel>) {
         unsafe {
             ffi::g_menu_prepend_section(
                 self.to_glib_none().0,
@@ -153,7 +153,7 @@ impl Menu {
     }
 
     #[doc(alias = "g_menu_prepend_submenu")]
-    pub fn prepend_submenu<P: IsA<MenuModel>>(&self, label: Option<&str>, submenu: &P) {
+    pub fn prepend_submenu(&self, label: Option<&str>, submenu: &impl IsA<MenuModel>) {
         unsafe {
             ffi::g_menu_prepend_submenu(
                 self.to_glib_none().0,

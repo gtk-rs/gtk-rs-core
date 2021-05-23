@@ -37,13 +37,13 @@ pub trait RendererExt: 'static {
     fn draw_error_underline(&self, x: i32, y: i32, width: i32, height: i32);
 
     #[doc(alias = "pango_renderer_draw_glyph")]
-    fn draw_glyph<P: IsA<Font>>(&self, font: &P, glyph: Glyph, x: f64, y: f64);
+    fn draw_glyph(&self, font: &impl IsA<Font>, glyph: Glyph, x: f64, y: f64);
 
     #[doc(alias = "pango_renderer_draw_glyph_item")]
     fn draw_glyph_item(&self, text: Option<&str>, glyph_item: &mut GlyphItem, x: i32, y: i32);
 
     #[doc(alias = "pango_renderer_draw_glyphs")]
-    fn draw_glyphs<P: IsA<Font>>(&self, font: &P, glyphs: &mut GlyphString, x: i32, y: i32);
+    fn draw_glyphs(&self, font: &impl IsA<Font>, glyphs: &mut GlyphString, x: i32, y: i32);
 
     #[doc(alias = "pango_renderer_draw_layout")]
     fn draw_layout(&self, layout: &Layout, x: i32, y: i32);
@@ -124,7 +124,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
-    fn draw_glyph<P: IsA<Font>>(&self, font: &P, glyph: Glyph, x: f64, y: f64) {
+    fn draw_glyph(&self, font: &impl IsA<Font>, glyph: Glyph, x: f64, y: f64) {
         unsafe {
             ffi::pango_renderer_draw_glyph(
                 self.as_ref().to_glib_none().0,
@@ -148,7 +148,7 @@ impl<O: IsA<Renderer>> RendererExt for O {
         }
     }
 
-    fn draw_glyphs<P: IsA<Font>>(&self, font: &P, glyphs: &mut GlyphString, x: i32, y: i32) {
+    fn draw_glyphs(&self, font: &impl IsA<Font>, glyphs: &mut GlyphString, x: i32, y: i32) {
         unsafe {
             ffi::pango_renderer_draw_glyphs(
                 self.as_ref().to_glib_none().0,

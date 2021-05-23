@@ -20,7 +20,7 @@ glib::wrapper! {
 
 impl FileIcon {
     #[doc(alias = "g_file_icon_new")]
-    pub fn new<P: IsA<File>>(file: &P) -> FileIcon {
+    pub fn new(file: &impl IsA<File>) -> FileIcon {
         unsafe { from_glib_full(ffi::g_file_icon_new(file.as_ref().to_glib_none().0)) }
     }
 

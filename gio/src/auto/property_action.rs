@@ -24,11 +24,7 @@ glib::wrapper! {
 
 impl PropertyAction {
     #[doc(alias = "g_property_action_new")]
-    pub fn new<P: IsA<glib::Object>>(
-        name: &str,
-        object: &P,
-        property_name: &str,
-    ) -> PropertyAction {
+    pub fn new(name: &str, object: &impl IsA<glib::Object>, property_name: &str) -> PropertyAction {
         unsafe {
             from_glib_full(ffi::g_property_action_new(
                 name.to_glib_none().0,

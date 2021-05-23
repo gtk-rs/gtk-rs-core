@@ -39,27 +39,23 @@ pub const NONE_NETWORK_MONITOR: Option<&NetworkMonitor> = None;
 
 pub trait NetworkMonitorExt: 'static {
     #[doc(alias = "g_network_monitor_can_reach")]
-    fn can_reach<P: IsA<SocketConnectable>, Q: IsA<Cancellable>>(
+    fn can_reach(
         &self,
-        connectable: &P,
-        cancellable: Option<&Q>,
+        connectable: &impl IsA<SocketConnectable>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_network_monitor_can_reach_async")]
-    fn can_reach_async<
-        P: IsA<SocketConnectable>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        connectable: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        connectable: &impl IsA<SocketConnectable>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn can_reach_async_future<P: IsA<SocketConnectable> + Clone + 'static>(
+    fn can_reach_async_future(
         &self,
-        connectable: &P,
+        connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_network_monitor_get_connectivity")]
@@ -88,10 +84,10 @@ pub trait NetworkMonitorExt: 'static {
 }
 
 impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
-    fn can_reach<P: IsA<SocketConnectable>, Q: IsA<Cancellable>>(
+    fn can_reach(
         &self,
-        connectable: &P,
-        cancellable: Option<&Q>,
+        connectable: &impl IsA<SocketConnectable>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -109,19 +105,15 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    fn can_reach_async<
-        P: IsA<SocketConnectable>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
-        connectable: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+        connectable: &impl IsA<SocketConnectable>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn can_reach_async_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -135,10 +127,10 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = can_reach_async_trampoline::<R>;
+        let callback = can_reach_async_trampoline::<P>;
         unsafe {
             ffi::g_network_monitor_can_reach_async(
                 self.as_ref().to_glib_none().0,
@@ -150,9 +142,9 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    fn can_reach_async_future<P: IsA<SocketConnectable> + Clone + 'static>(
+    fn can_reach_async_future(
         &self,
-        connectable: &P,
+        connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let connectable = connectable.clone();
         Box_::pin(crate::GioFuture::new(

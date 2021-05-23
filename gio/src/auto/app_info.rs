@@ -34,8 +34,8 @@ glib::wrapper! {
 
 impl AppInfo {
     #[doc(alias = "g_app_info_create_from_commandline")]
-    pub fn create_from_commandline<P: AsRef<std::ffi::OsStr>>(
-        commandline: P,
+    pub fn create_from_commandline(
+        commandline: impl AsRef<std::ffi::OsStr>,
         application_name: Option<&str>,
         flags: AppInfoCreateFlags,
     ) -> Result<AppInfo, glib::Error> {
@@ -113,9 +113,9 @@ impl AppInfo {
     }
 
     #[doc(alias = "g_app_info_launch_default_for_uri")]
-    pub fn launch_default_for_uri<P: IsA<AppLaunchContext>>(
+    pub fn launch_default_for_uri(
         uri: &str,
-        context: Option<&P>,
+        context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -135,19 +135,15 @@ impl AppInfo {
     #[cfg(any(feature = "v2_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_app_info_launch_default_for_uri_async")]
-    pub fn launch_default_for_uri_async<
-        P: IsA<AppLaunchContext>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    pub fn launch_default_for_uri_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         uri: &str,
-        context: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        context: Option<&impl IsA<AppLaunchContext>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn launch_default_for_uri_async_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -160,10 +156,10 @@ impl AppInfo {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = launch_default_for_uri_async_trampoline::<R>;
+        let callback = launch_default_for_uri_async_trampoline::<P>;
         unsafe {
             ffi::g_app_info_launch_default_for_uri_async(
                 uri.to_glib_none().0,
@@ -177,9 +173,9 @@ impl AppInfo {
 
     #[cfg(any(feature = "v2_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
-    pub fn launch_default_for_uri_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
+    pub fn launch_default_for_uri_async_future(
         uri: &str,
-        context: Option<&P>,
+        context: Option<&(impl IsA<AppLaunchContext> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let uri = String::from(uri);
         let context = context.map(ToOwned::to_owned);
@@ -225,7 +221,7 @@ pub trait AppInfoExt: 'static {
     fn dup(&self) -> AppInfo;
 
     #[doc(alias = "g_app_info_equal")]
-    fn equal<P: IsA<AppInfo>>(&self, appinfo2: &P) -> bool;
+    fn equal(&self, appinfo2: &impl IsA<AppInfo>) -> bool;
 
     #[doc(alias = "g_app_info_get_commandline")]
     #[doc(alias = "get_commandline")]
@@ -260,26 +256,26 @@ pub trait AppInfoExt: 'static {
     fn supported_types(&self) -> Vec<glib::GString>;
 
     #[doc(alias = "g_app_info_launch")]
-    fn launch<P: IsA<AppLaunchContext>>(
+    fn launch(
         &self,
         files: &[File],
-        context: Option<&P>,
+        context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_launch_uris")]
-    fn launch_uris<P: IsA<AppLaunchContext>>(
+    fn launch_uris(
         &self,
         uris: &[&str],
-        context: Option<&P>,
+        context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_remove_supports_type")]
     fn remove_supports_type(&self, content_type: &str) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_set_as_default_for_extension")]
-    fn set_as_default_for_extension<P: AsRef<std::path::Path>>(
+    fn set_as_default_for_extension(
         &self,
-        extension: P,
+        extension: impl AsRef<std::path::Path>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_set_as_default_for_type")]
@@ -335,7 +331,7 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
         unsafe { from_glib_full(ffi::g_app_info_dup(self.as_ref().to_glib_none().0)) }
     }
 
-    fn equal<P: IsA<AppInfo>>(&self, appinfo2: &P) -> bool {
+    fn equal(&self, appinfo2: &impl IsA<AppInfo>) -> bool {
         unsafe {
             from_glib(ffi::g_app_info_equal(
                 self.as_ref().to_glib_none().0,
@@ -396,10 +392,10 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
         }
     }
 
-    fn launch<P: IsA<AppLaunchContext>>(
+    fn launch(
         &self,
         files: &[File],
-        context: Option<&P>,
+        context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -417,10 +413,10 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
         }
     }
 
-    fn launch_uris<P: IsA<AppLaunchContext>>(
+    fn launch_uris(
         &self,
         uris: &[&str],
-        context: Option<&P>,
+        context: Option<&impl IsA<AppLaunchContext>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -454,9 +450,9 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
         }
     }
 
-    fn set_as_default_for_extension<P: AsRef<std::path::Path>>(
+    fn set_as_default_for_extension(
         &self,
-        extension: P,
+        extension: impl AsRef<std::path::Path>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();

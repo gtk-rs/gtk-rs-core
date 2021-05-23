@@ -20,7 +20,7 @@ pub const NONE_ACTION_MAP: Option<&ActionMap> = None;
 
 pub trait ActionMapExt: 'static {
     #[doc(alias = "g_action_map_add_action")]
-    fn add_action<P: IsA<Action>>(&self, action: &P);
+    fn add_action(&self, action: &impl IsA<Action>);
 
     //#[doc(alias = "g_action_map_add_action_entries")]
     //fn add_action_entries(&self, entries: /*Ignored*/&[&ActionEntry], user_data: /*Unimplemented*/Option<Fundamental: Pointer>);
@@ -33,7 +33,7 @@ pub trait ActionMapExt: 'static {
 }
 
 impl<O: IsA<ActionMap>> ActionMapExt for O {
-    fn add_action<P: IsA<Action>>(&self, action: &P) {
+    fn add_action(&self, action: &impl IsA<Action>) {
         unsafe {
             ffi::g_action_map_add_action(
                 self.as_ref().to_glib_none().0,

@@ -67,14 +67,11 @@ pub const NONE_SOCKET: Option<&Socket> = None;
 
 pub trait SocketExt: 'static {
     #[doc(alias = "g_socket_accept")]
-    fn accept<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<Socket, glib::Error>;
+    fn accept(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<Socket, glib::Error>;
 
     #[doc(alias = "g_socket_bind")]
-    fn bind<P: IsA<SocketAddress>>(
-        &self,
-        address: &P,
-        allow_reuse: bool,
-    ) -> Result<(), glib::Error>;
+    fn bind(&self, address: &impl IsA<SocketAddress>, allow_reuse: bool)
+        -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_check_connect_result")]
     fn check_connect_result(&self) -> Result<(), glib::Error>;
@@ -86,25 +83,25 @@ pub trait SocketExt: 'static {
     fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition;
 
     #[doc(alias = "g_socket_condition_timed_wait")]
-    fn condition_timed_wait<P: IsA<Cancellable>>(
+    fn condition_timed_wait(
         &self,
         condition: glib::IOCondition,
         timeout_us: i64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_condition_wait")]
-    fn condition_wait<P: IsA<Cancellable>>(
+    fn condition_wait(
         &self,
         condition: glib::IOCondition,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_connect")]
-    fn connect<P: IsA<SocketAddress>, Q: IsA<Cancellable>>(
+    fn connect(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_connection_factory_create_connection")]
@@ -181,9 +178,9 @@ pub trait SocketExt: 'static {
     fn is_connected(&self) -> bool;
 
     #[doc(alias = "g_socket_join_multicast_group")]
-    fn join_multicast_group<P: IsA<InetAddress>>(
+    fn join_multicast_group(
         &self,
-        group: &P,
+        group: &impl IsA<InetAddress>,
         source_specific: bool,
         iface: Option<&str>,
     ) -> Result<(), glib::Error>;
@@ -191,17 +188,17 @@ pub trait SocketExt: 'static {
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_socket_join_multicast_group_ssm")]
-    fn join_multicast_group_ssm<P: IsA<InetAddress>, Q: IsA<InetAddress>>(
+    fn join_multicast_group_ssm(
         &self,
-        group: &P,
-        source_specific: Option<&Q>,
+        group: &impl IsA<InetAddress>,
+        source_specific: Option<&impl IsA<InetAddress>>,
         iface: Option<&str>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_leave_multicast_group")]
-    fn leave_multicast_group<P: IsA<InetAddress>>(
+    fn leave_multicast_group(
         &self,
-        group: &P,
+        group: &impl IsA<InetAddress>,
         source_specific: bool,
         iface: Option<&str>,
     ) -> Result<(), glib::Error>;
@@ -209,10 +206,10 @@ pub trait SocketExt: 'static {
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_socket_leave_multicast_group_ssm")]
-    fn leave_multicast_group_ssm<P: IsA<InetAddress>, Q: IsA<InetAddress>>(
+    fn leave_multicast_group_ssm(
         &self,
-        group: &P,
-        source_specific: Option<&Q>,
+        group: &impl IsA<InetAddress>,
+        source_specific: Option<&impl IsA<InetAddress>>,
         iface: Option<&str>,
     ) -> Result<(), glib::Error>;
 
@@ -292,7 +289,7 @@ pub trait SocketExt: 'static {
 }
 
 impl<O: IsA<Socket>> SocketExt for O {
-    fn accept<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<Socket, glib::Error> {
+    fn accept(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<Socket, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_socket_accept(
@@ -308,9 +305,9 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    fn bind<P: IsA<SocketAddress>>(
+    fn bind(
         &self,
-        address: &P,
+        address: &impl IsA<SocketAddress>,
         allow_reuse: bool,
     ) -> Result<(), glib::Error> {
         unsafe {
@@ -362,11 +359,11 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    fn condition_timed_wait<P: IsA<Cancellable>>(
+    fn condition_timed_wait(
         &self,
         condition: glib::IOCondition,
         timeout_us: i64,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -385,10 +382,10 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    fn condition_wait<P: IsA<Cancellable>>(
+    fn condition_wait(
         &self,
         condition: glib::IOCondition,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -406,10 +403,10 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    fn connect<P: IsA<SocketAddress>, Q: IsA<Cancellable>>(
+    fn connect(
         &self,
-        address: &P,
-        cancellable: Option<&Q>,
+        address: &impl IsA<SocketAddress>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -555,9 +552,9 @@ impl<O: IsA<Socket>> SocketExt for O {
         unsafe { from_glib(ffi::g_socket_is_connected(self.as_ref().to_glib_none().0)) }
     }
 
-    fn join_multicast_group<P: IsA<InetAddress>>(
+    fn join_multicast_group(
         &self,
-        group: &P,
+        group: &impl IsA<InetAddress>,
         source_specific: bool,
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
@@ -580,10 +577,10 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
-    fn join_multicast_group_ssm<P: IsA<InetAddress>, Q: IsA<InetAddress>>(
+    fn join_multicast_group_ssm(
         &self,
-        group: &P,
-        source_specific: Option<&Q>,
+        group: &impl IsA<InetAddress>,
+        source_specific: Option<&impl IsA<InetAddress>>,
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {
@@ -603,9 +600,9 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    fn leave_multicast_group<P: IsA<InetAddress>>(
+    fn leave_multicast_group(
         &self,
-        group: &P,
+        group: &impl IsA<InetAddress>,
         source_specific: bool,
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
@@ -628,10 +625,10 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
-    fn leave_multicast_group_ssm<P: IsA<InetAddress>, Q: IsA<InetAddress>>(
+    fn leave_multicast_group_ssm(
         &self,
-        group: &P,
-        source_specific: Option<&Q>,
+        group: &impl IsA<InetAddress>,
+        source_specific: Option<&impl IsA<InetAddress>>,
         iface: Option<&str>,
     ) -> Result<(), glib::Error> {
         unsafe {

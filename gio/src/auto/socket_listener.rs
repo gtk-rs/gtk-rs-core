@@ -49,19 +49,18 @@ pub const NONE_SOCKET_LISTENER: Option<&SocketListener> = None;
 
 pub trait SocketListenerExt: 'static {
     #[doc(alias = "g_socket_listener_accept")]
-    fn accept<P: IsA<Cancellable>>(
+    fn accept(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(SocketConnection, Option<glib::Object>), glib::Error>;
 
     #[doc(alias = "g_socket_listener_accept_async")]
     fn accept_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
     >(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn accept_async_future(
@@ -75,19 +74,18 @@ pub trait SocketListenerExt: 'static {
     >;
 
     #[doc(alias = "g_socket_listener_accept_socket")]
-    fn accept_socket<P: IsA<Cancellable>>(
+    fn accept_socket(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(Socket, Option<glib::Object>), glib::Error>;
 
     #[doc(alias = "g_socket_listener_accept_socket_async")]
     fn accept_socket_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
     >(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn accept_socket_async_future(
@@ -100,32 +98,32 @@ pub trait SocketListenerExt: 'static {
     >;
 
     #[doc(alias = "g_socket_listener_add_address")]
-    fn add_address<P: IsA<SocketAddress>, Q: IsA<glib::Object>>(
+    fn add_address(
         &self,
-        address: &P,
+        address: &impl IsA<SocketAddress>,
         type_: SocketType,
         protocol: SocketProtocol,
-        source_object: Option<&Q>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<SocketAddress, glib::Error>;
 
     #[doc(alias = "g_socket_listener_add_any_inet_port")]
-    fn add_any_inet_port<P: IsA<glib::Object>>(
+    fn add_any_inet_port(
         &self,
-        source_object: Option<&P>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<u16, glib::Error>;
 
     #[doc(alias = "g_socket_listener_add_inet_port")]
-    fn add_inet_port<P: IsA<glib::Object>>(
+    fn add_inet_port(
         &self,
         port: u16,
-        source_object: Option<&P>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_listener_add_socket")]
-    fn add_socket<P: IsA<Socket>, Q: IsA<glib::Object>>(
+    fn add_socket(
         &self,
-        socket: &P,
-        source_object: Option<&Q>,
+        socket: &impl IsA<Socket>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_socket_listener_close")]
@@ -151,9 +149,9 @@ pub trait SocketListenerExt: 'static {
 }
 
 impl<O: IsA<SocketListener>> SocketListenerExt for O {
-    fn accept<P: IsA<Cancellable>>(
+    fn accept(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(SocketConnection, Option<glib::Object>), glib::Error> {
         unsafe {
             let mut source_object = ptr::null_mut();
@@ -173,16 +171,15 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     }
 
     fn accept_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
     >(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn accept_async_trampoline<
-            Q: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(SocketConnection, Option<glib::Object>), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -201,10 +198,10 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = accept_async_trampoline::<Q>;
+        let callback = accept_async_trampoline::<P>;
         unsafe {
             ffi::g_socket_listener_accept_async(
                 self.as_ref().to_glib_none().0,
@@ -234,9 +231,9 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         ))
     }
 
-    fn accept_socket<P: IsA<Cancellable>>(
+    fn accept_socket(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(Socket, Option<glib::Object>), glib::Error> {
         unsafe {
             let mut source_object = ptr::null_mut();
@@ -256,16 +253,15 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     }
 
     fn accept_socket_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
     >(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn accept_socket_async_trampoline<
-            Q: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(Socket, Option<glib::Object>), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -284,10 +280,10 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = accept_socket_async_trampoline::<Q>;
+        let callback = accept_socket_async_trampoline::<P>;
         unsafe {
             ffi::g_socket_listener_accept_socket_async(
                 self.as_ref().to_glib_none().0,
@@ -316,12 +312,12 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         ))
     }
 
-    fn add_address<P: IsA<SocketAddress>, Q: IsA<glib::Object>>(
+    fn add_address(
         &self,
-        address: &P,
+        address: &impl IsA<SocketAddress>,
         type_: SocketType,
         protocol: SocketProtocol,
-        source_object: Option<&Q>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<SocketAddress, glib::Error> {
         unsafe {
             let mut effective_address = ptr::null_mut();
@@ -343,9 +339,9 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    fn add_any_inet_port<P: IsA<glib::Object>>(
+    fn add_any_inet_port(
         &self,
-        source_object: Option<&P>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<u16, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -362,10 +358,10 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    fn add_inet_port<P: IsA<glib::Object>>(
+    fn add_inet_port(
         &self,
         port: u16,
-        source_object: Option<&P>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -383,10 +379,10 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    fn add_socket<P: IsA<Socket>, Q: IsA<glib::Object>>(
+    fn add_socket(
         &self,
-        socket: &P,
-        source_object: Option<&Q>,
+        socket: &impl IsA<Socket>,
+        source_object: Option<&impl IsA<glib::Object>>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();

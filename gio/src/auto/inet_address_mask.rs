@@ -27,7 +27,7 @@ glib::wrapper! {
 
 impl InetAddressMask {
     #[doc(alias = "g_inet_address_mask_new")]
-    pub fn new<P: IsA<InetAddress>>(addr: &P, length: u32) -> Result<InetAddressMask, glib::Error> {
+    pub fn new(addr: &impl IsA<InetAddress>, length: u32) -> Result<InetAddressMask, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret =
@@ -70,7 +70,7 @@ pub const NONE_INET_ADDRESS_MASK: Option<&InetAddressMask> = None;
 
 pub trait InetAddressMaskExt: 'static {
     #[doc(alias = "g_inet_address_mask_equal")]
-    fn equal<P: IsA<InetAddressMask>>(&self, mask2: &P) -> bool;
+    fn equal(&self, mask2: &impl IsA<InetAddressMask>) -> bool;
 
     #[doc(alias = "g_inet_address_mask_get_address")]
     #[doc(alias = "get_address")]
@@ -85,7 +85,7 @@ pub trait InetAddressMaskExt: 'static {
     fn length(&self) -> u32;
 
     #[doc(alias = "g_inet_address_mask_matches")]
-    fn matches<P: IsA<InetAddress>>(&self, address: &P) -> bool;
+    fn matches(&self, address: &impl IsA<InetAddress>) -> bool;
 
     #[doc(alias = "g_inet_address_mask_to_string")]
     #[doc(alias = "to_string")]
@@ -107,7 +107,7 @@ pub trait InetAddressMaskExt: 'static {
 }
 
 impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
-    fn equal<P: IsA<InetAddressMask>>(&self, mask2: &P) -> bool {
+    fn equal(&self, mask2: &impl IsA<InetAddressMask>) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_mask_equal(
                 self.as_ref().to_glib_none().0,
@@ -136,7 +136,7 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
         unsafe { ffi::g_inet_address_mask_get_length(self.as_ref().to_glib_none().0) }
     }
 
-    fn matches<P: IsA<InetAddress>>(&self, address: &P) -> bool {
+    fn matches(&self, address: &impl IsA<InetAddress>) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_mask_matches(
                 self.as_ref().to_glib_none().0,

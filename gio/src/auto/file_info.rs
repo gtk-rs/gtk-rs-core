@@ -367,7 +367,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_attribute_object")]
-    pub fn set_attribute_object<P: IsA<glib::Object>>(&self, attribute: &str, attr_value: &P) {
+    pub fn set_attribute_object(&self, attribute: &str, attr_value: &impl IsA<glib::Object>) {
         unsafe {
             ffi::g_file_info_set_attribute_object(
                 self.to_glib_none().0,
@@ -461,7 +461,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_icon")]
-    pub fn set_icon<P: IsA<Icon>>(&self, icon: &P) {
+    pub fn set_icon(&self, icon: &impl IsA<Icon>) {
         unsafe {
             ffi::g_file_info_set_icon(self.to_glib_none().0, icon.as_ref().to_glib_none().0);
         }
@@ -494,7 +494,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_name")]
-    pub fn set_name<P: AsRef<std::path::Path>>(&self, name: P) {
+    pub fn set_name(&self, name: impl AsRef<std::path::Path>) {
         unsafe {
             ffi::g_file_info_set_name(self.to_glib_none().0, name.as_ref().to_glib_none().0);
         }
@@ -515,7 +515,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_symbolic_icon")]
-    pub fn set_symbolic_icon<P: IsA<Icon>>(&self, icon: &P) {
+    pub fn set_symbolic_icon(&self, icon: &impl IsA<Icon>) {
         unsafe {
             ffi::g_file_info_set_symbolic_icon(
                 self.to_glib_none().0,

@@ -24,9 +24,9 @@ glib::wrapper! {
 
 impl ConverterInputStream {
     #[doc(alias = "g_converter_input_stream_new")]
-    pub fn new<P: IsA<InputStream>, Q: IsA<Converter>>(
-        base_stream: &P,
-        converter: &Q,
+    pub fn new(
+        base_stream: &impl IsA<InputStream>,
+        converter: &impl IsA<Converter>,
     ) -> ConverterInputStream {
         unsafe {
             InputStream::from_glib_full(ffi::g_converter_input_stream_new(
@@ -88,12 +88,12 @@ impl ConverterInputStreamBuilder {
             .expect("Failed to create an instance of ConverterInputStream")
     }
 
-    pub fn converter<P: IsA<Converter>>(mut self, converter: &P) -> Self {
+    pub fn converter(mut self, converter: &impl IsA<Converter>) -> Self {
         self.converter = Some(converter.clone().upcast());
         self
     }
 
-    pub fn base_stream<P: IsA<InputStream>>(mut self, base_stream: &P) -> Self {
+    pub fn base_stream(mut self, base_stream: &impl IsA<InputStream>) -> Self {
         self.base_stream = Some(base_stream.clone().upcast());
         self
     }

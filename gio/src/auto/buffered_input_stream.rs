@@ -32,7 +32,7 @@ glib::wrapper! {
 
 impl BufferedInputStream {
     #[doc(alias = "g_buffered_input_stream_new")]
-    pub fn new<P: IsA<InputStream>>(base_stream: &P) -> BufferedInputStream {
+    pub fn new(base_stream: &impl IsA<InputStream>) -> BufferedInputStream {
         unsafe {
             InputStream::from_glib_full(ffi::g_buffered_input_stream_new(
                 base_stream.as_ref().to_glib_none().0,
@@ -42,7 +42,7 @@ impl BufferedInputStream {
     }
 
     #[doc(alias = "g_buffered_input_stream_new_sized")]
-    pub fn new_sized<P: IsA<InputStream>>(base_stream: &P, size: usize) -> BufferedInputStream {
+    pub fn new_sized(base_stream: &impl IsA<InputStream>, size: usize) -> BufferedInputStream {
         unsafe {
             InputStream::from_glib_full(ffi::g_buffered_input_stream_new_sized(
                 base_stream.as_ref().to_glib_none().0,
@@ -108,7 +108,7 @@ impl BufferedInputStreamBuilder {
         self
     }
 
-    pub fn base_stream<P: IsA<InputStream>>(mut self, base_stream: &P) -> Self {
+    pub fn base_stream(mut self, base_stream: &impl IsA<InputStream>) -> Self {
         self.base_stream = Some(base_stream.clone().upcast());
         self
     }
@@ -123,19 +123,19 @@ pub const NONE_BUFFERED_INPUT_STREAM: Option<&BufferedInputStream> = None;
 
 pub trait BufferedInputStreamExt: 'static {
     #[doc(alias = "g_buffered_input_stream_fill")]
-    fn fill<P: IsA<Cancellable>>(
+    fn fill(
         &self,
         count: isize,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_buffered_input_stream_fill_async")]
-    fn fill_async<P: IsA<Cancellable>, Q: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn fill_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
         count: isize,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn fill_async_future(
@@ -156,7 +156,7 @@ pub trait BufferedInputStreamExt: 'static {
     fn peek_buffer(&self) -> Vec<u8>;
 
     #[doc(alias = "g_buffered_input_stream_read_byte")]
-    fn read_byte<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i32, glib::Error>;
+    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error>;
 
     #[doc(alias = "g_buffered_input_stream_set_buffer_size")]
     fn set_buffer_size(&self, size: usize);
@@ -166,10 +166,10 @@ pub trait BufferedInputStreamExt: 'static {
 }
 
 impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
-    fn fill<P: IsA<Cancellable>>(
+    fn fill(
         &self,
         count: isize,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -187,16 +187,16 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
-    fn fill_async<P: IsA<Cancellable>, Q: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn fill_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
         &self,
         count: isize,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn fill_async_trampoline<
-            Q: FnOnce(Result<isize, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<isize, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -210,10 +210,10 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = fill_async_trampoline::<Q>;
+        let callback = fill_async_trampoline::<P>;
         unsafe {
             ffi::g_buffered_input_stream_fill_async(
                 self.as_ref().to_glib_none().0,
@@ -263,7 +263,7 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
-    fn read_byte<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i32, glib::Error> {
+    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_buffered_input_stream_read_byte(

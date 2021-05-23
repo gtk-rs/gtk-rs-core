@@ -306,9 +306,9 @@ impl KeyFile {
     }
 
     #[doc(alias = "g_key_file_load_from_file")]
-    pub fn load_from_file<P: AsRef<std::path::Path>>(
+    pub fn load_from_file(
         &self,
-        file: P,
+        file: impl AsRef<std::path::Path>,
         flags: KeyFileFlags,
     ) -> Result<(), crate::Error> {
         unsafe {

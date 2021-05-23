@@ -20,7 +20,7 @@ glib::wrapper! {
 
 impl EmblemedIcon {
     #[doc(alias = "g_emblemed_icon_new")]
-    pub fn new<P: IsA<Icon>>(icon: &P, emblem: Option<&Emblem>) -> EmblemedIcon {
+    pub fn new(icon: &impl IsA<Icon>, emblem: Option<&Emblem>) -> EmblemedIcon {
         unsafe {
             from_glib_full(ffi::g_emblemed_icon_new(
                 icon.as_ref().to_glib_none().0,
