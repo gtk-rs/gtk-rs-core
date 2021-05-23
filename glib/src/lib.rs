@@ -263,3 +263,9 @@ impl<T> Drop for ThreadGuard<T> {
 }
 
 unsafe impl<T> Send for ThreadGuard<T> {}
+
+#[cfg(target_family = "windows")]
+mod win32;
+
+#[cfg(target_family = "windows")]
+pub use self::win32::*;
