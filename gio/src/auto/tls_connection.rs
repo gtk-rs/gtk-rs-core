@@ -94,7 +94,7 @@ pub trait TlsConnectionExt: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_connection_set_advertised_protocols")]
-    fn set_advertised_protocols(&self, protocols: &[&str]);
+    fn set_advertised_protocols<P: AsRef<str>>(&self, protocols: &[P]);
 
     #[doc(alias = "g_tls_connection_set_certificate")]
     fn set_certificate<P: IsA<TlsCertificate>>(&self, certificate: &P);
@@ -314,11 +314,11 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn set_advertised_protocols(&self, protocols: &[&str]) {
+    fn set_advertised_protocols<P: AsRef<str>>(&self, protocols: &[P]) {
         unsafe {
             ffi::g_tls_connection_set_advertised_protocols(
                 self.as_ref().to_glib_none().0,
-                protocols.to_glib_none().0,
+                protocols.as_ref().to_glib_none().0,
             );
         }
     }

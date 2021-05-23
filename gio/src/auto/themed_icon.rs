@@ -28,11 +28,11 @@ impl ThemedIcon {
 
     #[doc(alias = "g_themed_icon_new_from_names")]
     #[doc(alias = "new_from_names")]
-    pub fn from_names(iconnames: &[&str]) -> ThemedIcon {
+    pub fn from_names<P: AsRef<str>>(iconnames: &[P]) -> ThemedIcon {
         let len = iconnames.len() as i32;
         unsafe {
             from_glib_full(ffi::g_themed_icon_new_from_names(
-                iconnames.to_glib_none().0,
+                iconnames.as_ref().to_glib_none().0,
                 len,
             ))
         }

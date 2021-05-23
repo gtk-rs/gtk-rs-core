@@ -399,12 +399,12 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_set_attribute_stringv")]
-    pub fn set_attribute_stringv(&self, attribute: &str, attr_value: &[&str]) {
+    pub fn set_attribute_stringv<P: AsRef<str>>(&self, attribute: &str, attr_value: &[P]) {
         unsafe {
             ffi::g_file_info_set_attribute_stringv(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
-                attr_value.to_glib_none().0,
+                attr_value.as_ref().to_glib_none().0,
             );
         }
     }

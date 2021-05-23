@@ -235,9 +235,9 @@ pub fn content_type_is_unknown(type_: &str) -> bool {
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 #[doc(alias = "g_content_type_set_mime_dirs")]
-pub fn content_type_set_mime_dirs(dirs: &[&str]) {
+pub fn content_type_set_mime_dirs<P: AsRef<str>>(dirs: &[P]) {
     unsafe {
-        ffi::g_content_type_set_mime_dirs(dirs.to_glib_none().0);
+        ffi::g_content_type_set_mime_dirs(dirs.as_ref().to_glib_none().0);
     }
 }
 

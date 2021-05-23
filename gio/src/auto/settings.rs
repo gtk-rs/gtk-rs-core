@@ -228,7 +228,8 @@ pub trait SettingsExt: 'static {
     fn set_string(&self, key: &str, value: &str) -> Result<(), glib::error::BoolError>;
 
     #[doc(alias = "g_settings_set_strv")]
-    fn set_strv(&self, key: &str, value: &[&str]) -> Result<(), glib::error::BoolError>;
+    fn set_strv<P: AsRef<str>>(&self, key: &str, value: &[P])
+        -> Result<(), glib::error::BoolError>;
 
     #[doc(alias = "g_settings_set_uint")]
     fn set_uint(&self, key: &str, value: u32) -> Result<(), glib::error::BoolError>;
@@ -561,13 +562,17 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    fn set_strv(&self, key: &str, value: &[&str]) -> Result<(), glib::error::BoolError> {
+    fn set_strv<P: AsRef<str>>(
+        &self,
+        key: &str,
+        value: &[P],
+    ) -> Result<(), glib::error::BoolError> {
         unsafe {
             glib::result_from_gboolean!(
                 ffi::g_settings_set_strv(
                     self.as_ref().to_glib_none().0,
                     key.to_glib_none().0,
-                    value.to_glib_none().0
+                    value.as_ref().to_glib_none().0
                 ),
                 "Can't set readonly key"
             )

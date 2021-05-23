@@ -37,7 +37,7 @@ pub trait SettingsBackendExt: 'static {
     //fn changed_tree(&self, tree: /*Ignored*/&glib::Tree, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
 
     //#[doc(alias = "g_settings_backend_keys_changed")]
-    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn keys_changed<P: AsRef<str>>(&self, path: &str, items: &[P], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
 
     //#[doc(alias = "g_settings_backend_path_changed")]
     //fn path_changed(&self, path: &str, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
@@ -58,7 +58,7 @@ impl<O: IsA<SettingsBackend>> SettingsBackendExt for O {
     //    unsafe { TODO: call ffi:g_settings_backend_changed_tree() }
     //}
 
-    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn keys_changed<P: AsRef<str>>(&self, path: &str, items: &[P], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_keys_changed() }
     //}
 
