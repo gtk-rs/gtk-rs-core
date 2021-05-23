@@ -848,7 +848,6 @@
 <span id="845">845</span>
 <span id="846">846</span>
 <span id="847">847</span>
-<span id="848">848</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -890,17 +889,16 @@
     <span class="doccomment">/// partial result will be returned, without an error.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On error -1 is returned and `error` is set accordingly.</span>
-    <span class="doccomment">/// ## `buffer`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
-    <span class="doccomment">/// ## `count`</span>
-    <span class="doccomment">/// the number of bytes that will be read from the stream</span>
     <span class="doccomment">/// ## `cancellable`</span>
     <span class="doccomment">/// optional [`crate::Cancellable`] object, [`None`] to ignore.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Number of bytes read, or -1 on error, or 0 on end of file.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## `buffer`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_input_stream_read&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">read</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">C</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -927,19 +925,19 @@
     <span class="doccomment">/// read before the error was encountered. This functionality is only</span>
     <span class="doccomment">/// available from C. If you need it from another language then you must</span>
     <span class="doccomment">/// write your own loop around [`crate::InputStream::read()`].</span>
-    <span class="doccomment">/// ## `buffer`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
-    <span class="doccomment">/// ## `count`</span>
-    <span class="doccomment">/// the number of bytes that will be read from the stream</span>
-    <span class="doccomment">/// ## `bytes_read`</span>
-    <span class="doccomment">/// location to store the number of bytes that was read from the stream</span>
     <span class="doccomment">/// ## `cancellable`</span>
     <span class="doccomment">/// optional [`crate::Cancellable`] object, [`None`] to ignore.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`true`] on success, [`false`] if there was an error</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## `buffer`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## `bytes_read`</span>
+    <span class="doccomment">/// location to store the number of bytes that was read from the stream</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_input_stream_read_all&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">read_all</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">C</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -957,19 +955,19 @@
     <span class="doccomment">/// Any outstanding I/O request with higher priority (lower numerical</span>
     <span class="doccomment">/// value) will be executed before an outstanding request with lower</span>
     <span class="doccomment">/// priority. Default priority is `G_PRIORITY_DEFAULT`.</span>
-    <span class="doccomment">/// ## `buffer`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long)</span>
-    <span class="doccomment">/// ## `count`</span>
-    <span class="doccomment">/// the number of bytes that will be read from the stream</span>
     <span class="doccomment">/// ## `io_priority`</span>
     <span class="doccomment">/// the [I/O priority][io-priority] of the request</span>
     <span class="doccomment">/// ## `cancellable`</span>
     <span class="doccomment">/// optional [`crate::Cancellable`] object, [`None`] to ignore</span>
     <span class="doccomment">/// ## `callback`</span>
     <span class="doccomment">/// callback to call when the request is satisfied</span>
-    <span class="doccomment">/// ## `user_data`</span>
-    <span class="doccomment">/// the data to pass to callback function</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Returns</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## `buffer`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long)</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_input_stream_read_all_async&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">read_all_async</span><span class="op">&lt;</span>
         <span class="ident">B</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -1006,11 +1004,6 @@
     <span class="doccomment">/// The asynchronous methods have a default fallback that uses threads to implement</span>
     <span class="doccomment">/// asynchronicity, so they are optional for inheriting classes. However, if you</span>
     <span class="doccomment">/// override one you must override all.</span>
-    <span class="doccomment">/// ## `buffer`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
-    <span class="doccomment">/// ## `count`</span>
-    <span class="doccomment">/// the number of bytes that will be read from the stream</span>
     <span class="doccomment">/// ## `io_priority`</span>
     <span class="doccomment">/// the [I/O priority][io-priority]</span>
     <span class="doccomment">/// of the request.</span>
@@ -1018,8 +1011,13 @@
     <span class="doccomment">/// optional [`crate::Cancellable`] object, [`None`] to ignore.</span>
     <span class="doccomment">/// ## `callback`</span>
     <span class="doccomment">/// callback to call when the request is satisfied</span>
-    <span class="doccomment">/// ## `user_data`</span>
-    <span class="doccomment">/// the data to pass to callback function</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Returns</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## `buffer`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///  a buffer to read data into (which should be at least count bytes long).</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_input_stream_read_async&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">read_async</span><span class="op">&lt;</span>
         <span class="ident">B</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
