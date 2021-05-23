@@ -8,7 +8,7 @@ use std::net::SocketAddr;
 
 impl From<SocketAddr> for InetSocketAddress {
     fn from(addr: SocketAddr) -> Self {
-        Self::new::<InetAddress>(&addr.ip().into(), addr.port())
+        Self::new(&InetAddress::from(addr.ip()), addr.port())
     }
 }
 
