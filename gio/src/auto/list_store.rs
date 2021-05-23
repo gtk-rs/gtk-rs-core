@@ -27,6 +27,13 @@ impl ListStore {
         unsafe { from_glib_full(ffi::g_list_store_new(item_type.into_glib())) }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`ListStore`]
+    /// This method returns an instance of [`ListStoreBuilder`] which can be used to create a [`ListStore`].
+    pub fn builder() -> ListStoreBuilder {
+        ListStoreBuilder::default()
+    }
+
     #[doc(alias = "g_list_store_append")]
     pub fn append<P: IsA<glib::Object>>(&self, item: &P) {
         unsafe {
@@ -102,15 +109,21 @@ impl ListStore {
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`ListStore`].
 pub struct ListStoreBuilder {
     item_type: Option<glib::types::Type>,
 }
 
 impl ListStoreBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`ListStoreBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`ListStore`].
     pub fn build(self) -> ListStore {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref item_type) = self.item_type {

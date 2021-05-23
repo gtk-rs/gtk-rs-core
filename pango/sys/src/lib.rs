@@ -368,7 +368,7 @@ pub struct PangoAnalysis {
 
 impl ::std::fmt::Debug for PangoAnalysis {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAnalysis @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAnalysis @ {:p}", self))
             .field("shape_engine", &self.shape_engine)
             .field("lang_engine", &self.lang_engine)
             .field("font", &self.font)
@@ -394,7 +394,7 @@ pub struct PangoAttrClass {
 
 impl ::std::fmt::Debug for PangoAttrClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrClass @ {:p}", self))
             .field("type_", &self.type_)
             .field("copy", &self.copy)
             .field("destroy", &self.destroy)
@@ -412,7 +412,7 @@ pub struct PangoAttrColor {
 
 impl ::std::fmt::Debug for PangoAttrColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrColor @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrColor @ {:p}", self))
             .field("attr", &self.attr)
             .field("color", &self.color)
             .finish()
@@ -428,7 +428,7 @@ pub struct PangoAttrFloat {
 
 impl ::std::fmt::Debug for PangoAttrFloat {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrFloat @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrFloat @ {:p}", self))
             .field("attr", &self.attr)
             .field("value", &self.value)
             .finish()
@@ -444,7 +444,7 @@ pub struct PangoAttrFontDesc {
 
 impl ::std::fmt::Debug for PangoAttrFontDesc {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrFontDesc @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrFontDesc @ {:p}", self))
             .field("attr", &self.attr)
             .field("desc", &self.desc)
             .finish()
@@ -460,7 +460,7 @@ pub struct PangoAttrFontFeatures {
 
 impl ::std::fmt::Debug for PangoAttrFontFeatures {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrFontFeatures @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrFontFeatures @ {:p}", self))
             .field("attr", &self.attr)
             .field("features", &self.features)
             .finish()
@@ -476,7 +476,7 @@ pub struct PangoAttrInt {
 
 impl ::std::fmt::Debug for PangoAttrInt {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrInt @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrInt @ {:p}", self))
             .field("attr", &self.attr)
             .field("value", &self.value)
             .finish()
@@ -488,7 +488,7 @@ pub struct PangoAttrIterator(c_void);
 
 impl ::std::fmt::Debug for PangoAttrIterator {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrIterator @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrIterator @ {:p}", self))
             .finish()
     }
 }
@@ -502,7 +502,7 @@ pub struct PangoAttrLanguage {
 
 impl ::std::fmt::Debug for PangoAttrLanguage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrLanguage @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrLanguage @ {:p}", self))
             .field("attr", &self.attr)
             .field("value", &self.value)
             .finish()
@@ -514,7 +514,7 @@ pub struct PangoAttrList(c_void);
 
 impl ::std::fmt::Debug for PangoAttrList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrList @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrList @ {:p}", self))
             .finish()
     }
 }
@@ -532,7 +532,7 @@ pub struct PangoAttrShape {
 
 impl ::std::fmt::Debug for PangoAttrShape {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrShape @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrShape @ {:p}", self))
             .field("attr", &self.attr)
             .field("ink_rect", &self.ink_rect)
             .field("logical_rect", &self.logical_rect)
@@ -553,7 +553,7 @@ pub struct PangoAttrSize {
 
 impl ::std::fmt::Debug for PangoAttrSize {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrSize @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrSize @ {:p}", self))
             .field("attr", &self.attr)
             .field("size", &self.size)
             .field("absolute", &self.absolute)
@@ -570,7 +570,7 @@ pub struct PangoAttrString {
 
 impl ::std::fmt::Debug for PangoAttrString {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttrString @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttrString @ {:p}", self))
             .field("attr", &self.attr)
             .field("value", &self.value)
             .finish()
@@ -587,7 +587,7 @@ pub struct PangoAttribute {
 
 impl ::std::fmt::Debug for PangoAttribute {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoAttribute @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoAttribute @ {:p}", self))
             .field("klass", &self.klass)
             .field("start_index", &self.start_index)
             .field("end_index", &self.end_index)
@@ -605,7 +605,7 @@ pub struct PangoColor {
 
 impl ::std::fmt::Debug for PangoColor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoColor @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoColor @ {:p}", self))
             .field("red", &self.red)
             .field("green", &self.green)
             .field("blue", &self.blue)
@@ -626,7 +626,7 @@ pub struct PangoEngineClass {
 
 impl ::std::fmt::Debug for PangoEngineClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineClass @ {:p}", self))
             .finish()
     }
 }
@@ -643,7 +643,7 @@ pub struct PangoEngineInfo {
 
 impl ::std::fmt::Debug for PangoEngineInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineInfo @ {:p}", self))
             .field("id", &self.id)
             .field("engine_type", &self.engine_type)
             .field("render_type", &self.render_type)
@@ -671,7 +671,7 @@ pub struct PangoEngineLangClass {
 
 impl ::std::fmt::Debug for PangoEngineLangClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineLangClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineLangClass @ {:p}", self))
             .field("script_break", &self.script_break)
             .finish()
     }
@@ -686,7 +686,7 @@ pub struct PangoEngineScriptInfo {
 
 impl ::std::fmt::Debug for PangoEngineScriptInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineScriptInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineScriptInfo @ {:p}", self))
             .field("script", &self.script)
             .field("langs", &self.langs)
             .finish()
@@ -721,7 +721,7 @@ pub struct PangoEngineShapeClass {
 
 impl ::std::fmt::Debug for PangoEngineShapeClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineShapeClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineShapeClass @ {:p}", self))
             .field("script_shape", &self.script_shape)
             .field("covers", &self.covers)
             .finish()
@@ -750,7 +750,7 @@ pub struct PangoFontClass {
 
 impl ::std::fmt::Debug for PangoFontClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("describe", &self.describe)
             .field("get_coverage", &self.get_coverage)
@@ -769,7 +769,7 @@ pub struct PangoFontDescription(c_void);
 
 impl ::std::fmt::Debug for PangoFontDescription {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontDescription @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontDescription @ {:p}", self))
             .finish()
     }
 }
@@ -789,7 +789,7 @@ pub struct PangoFontFaceClass {
 
 impl ::std::fmt::Debug for PangoFontFaceClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontFaceClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontFaceClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_face_name", &self.get_face_name)
             .field("describe", &self.describe)
@@ -819,7 +819,7 @@ pub struct PangoFontFamilyClass {
 
 impl ::std::fmt::Debug for PangoFontFamilyClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontFamilyClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontFamilyClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("list_faces", &self.list_faces)
             .field("get_name", &self.get_name)
@@ -863,7 +863,7 @@ pub struct PangoFontMapClass {
 
 impl ::std::fmt::Debug for PangoFontMapClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontMapClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontMapClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("load_font", &self.load_font)
             .field("list_families", &self.list_families)
@@ -894,7 +894,7 @@ pub struct PangoFontMetrics {
 
 impl ::std::fmt::Debug for PangoFontMetrics {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontMetrics @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontMetrics @ {:p}", self))
             .finish()
     }
 }
@@ -915,7 +915,7 @@ pub struct PangoFontsetClass {
 
 impl ::std::fmt::Debug for PangoFontsetClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontsetClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontsetClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_font", &self.get_font)
             .field("get_metrics", &self.get_metrics)
@@ -944,7 +944,7 @@ pub struct PangoGlyphGeometry {
 
 impl ::std::fmt::Debug for PangoGlyphGeometry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphGeometry @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphGeometry @ {:p}", self))
             .field("width", &self.width)
             .field("x_offset", &self.x_offset)
             .field("y_offset", &self.y_offset)
@@ -962,7 +962,7 @@ pub struct PangoGlyphInfo {
 
 impl ::std::fmt::Debug for PangoGlyphInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphInfo @ {:p}", self))
             .field("glyph", &self.glyph)
             .field("geometry", &self.geometry)
             .field("attr", &self.attr)
@@ -979,7 +979,7 @@ pub struct PangoGlyphItem {
 
 impl ::std::fmt::Debug for PangoGlyphItem {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphItem @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphItem @ {:p}", self))
             .field("item", &self.item)
             .field("glyphs", &self.glyphs)
             .finish()
@@ -1001,7 +1001,7 @@ pub struct PangoGlyphItemIter {
 
 impl ::std::fmt::Debug for PangoGlyphItemIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphItemIter @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphItemIter @ {:p}", self))
             .field("glyph_item", &self.glyph_item)
             .field("text", &self.text)
             .field("start_glyph", &self.start_glyph)
@@ -1025,7 +1025,7 @@ pub struct PangoGlyphString {
 
 impl ::std::fmt::Debug for PangoGlyphString {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphString @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphString @ {:p}", self))
             .field("num_glyphs", &self.num_glyphs)
             .field("glyphs", &self.glyphs)
             .field("log_clusters", &self.log_clusters)
@@ -1041,7 +1041,7 @@ pub struct PangoGlyphVisAttr {
 
 impl ::std::fmt::Debug for PangoGlyphVisAttr {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphVisAttr @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoGlyphVisAttr @ {:p}", self))
             .field("is_cluster_start", &self.is_cluster_start)
             .finish()
     }
@@ -1058,7 +1058,7 @@ pub struct PangoIncludedModule {
 
 impl ::std::fmt::Debug for PangoIncludedModule {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoIncludedModule @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoIncludedModule @ {:p}", self))
             .field("list", &self.list)
             .field("init", &self.init)
             .field("exit", &self.exit)
@@ -1078,7 +1078,7 @@ pub struct PangoItem {
 
 impl ::std::fmt::Debug for PangoItem {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoItem @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoItem @ {:p}", self))
             .field("offset", &self.offset)
             .field("length", &self.length)
             .field("num_chars", &self.num_chars)
@@ -1092,7 +1092,7 @@ pub struct PangoLanguage(c_void);
 
 impl ::std::fmt::Debug for PangoLanguage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoLanguage @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoLanguage @ {:p}", self))
             .finish()
     }
 }
@@ -1107,7 +1107,7 @@ pub struct PangoLayoutIter(c_void);
 
 impl ::std::fmt::Debug for PangoLayoutIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoLayoutIter @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoLayoutIter @ {:p}", self))
             .finish()
     }
 }
@@ -1125,7 +1125,7 @@ pub struct PangoLayoutLine {
 
 impl ::std::fmt::Debug for PangoLayoutLine {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoLayoutLine @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoLayoutLine @ {:p}", self))
             .field("layout", &self.layout)
             .field("start_index", &self.start_index)
             .field("length", &self.length)
@@ -1144,7 +1144,7 @@ pub struct PangoLogAttr {
 
 impl ::std::fmt::Debug for PangoLogAttr {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoLogAttr @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoLogAttr @ {:p}", self))
             .field("is_line_break", &self.is_line_break)
             .finish()
     }
@@ -1173,7 +1173,7 @@ pub struct PangoMatrix {
 
 impl ::std::fmt::Debug for PangoMatrix {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoMatrix @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoMatrix @ {:p}", self))
             .field("xx", &self.xx)
             .field("xy", &self.xy)
             .field("yx", &self.yx)
@@ -1195,7 +1195,7 @@ pub struct PangoRectangle {
 
 impl ::std::fmt::Debug for PangoRectangle {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoRectangle @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoRectangle @ {:p}", self))
             .field("x", &self.x)
             .field("y", &self.y)
             .field("width", &self.width)
@@ -1253,7 +1253,7 @@ pub struct PangoRendererClass {
 
 impl ::std::fmt::Debug for PangoRendererClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoRendererClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoRendererClass @ {:p}", self))
             .field("draw_glyphs", &self.draw_glyphs)
             .field("draw_rectangle", &self.draw_rectangle)
             .field("draw_error_underline", &self.draw_error_underline)
@@ -1282,7 +1282,7 @@ pub struct PangoScriptIter(c_void);
 
 impl ::std::fmt::Debug for PangoScriptIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoScriptIter @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoScriptIter @ {:p}", self))
             .finish()
     }
 }
@@ -1292,7 +1292,7 @@ pub struct PangoTabArray(c_void);
 
 impl ::std::fmt::Debug for PangoTabArray {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoTabArray @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoTabArray @ {:p}", self))
             .finish()
     }
 }
@@ -1303,7 +1303,7 @@ pub struct PangoContext(c_void);
 
 impl ::std::fmt::Debug for PangoContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoContext @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoContext @ {:p}", self))
             .finish()
     }
 }
@@ -1313,7 +1313,7 @@ pub struct PangoCoverage(c_void);
 
 impl ::std::fmt::Debug for PangoCoverage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoCoverage @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoCoverage @ {:p}", self))
             .finish()
     }
 }
@@ -1326,7 +1326,7 @@ pub struct PangoEngine {
 
 impl ::std::fmt::Debug for PangoEngine {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngine @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngine @ {:p}", self))
             .finish()
     }
 }
@@ -1339,7 +1339,7 @@ pub struct PangoEngineLang {
 
 impl ::std::fmt::Debug for PangoEngineLang {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineLang @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineLang @ {:p}", self))
             .finish()
     }
 }
@@ -1352,7 +1352,7 @@ pub struct PangoEngineShape {
 
 impl ::std::fmt::Debug for PangoEngineShape {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineShape @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoEngineShape @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1366,7 +1366,7 @@ pub struct PangoFont {
 
 impl ::std::fmt::Debug for PangoFont {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFont @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFont @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1380,7 +1380,7 @@ pub struct PangoFontFace {
 
 impl ::std::fmt::Debug for PangoFontFace {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontFace @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontFace @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1394,7 +1394,7 @@ pub struct PangoFontFamily {
 
 impl ::std::fmt::Debug for PangoFontFamily {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontFamily @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontFamily @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1408,7 +1408,7 @@ pub struct PangoFontMap {
 
 impl ::std::fmt::Debug for PangoFontMap {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontMap @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontMap @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1422,7 +1422,7 @@ pub struct PangoFontset {
 
 impl ::std::fmt::Debug for PangoFontset {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontset @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontset @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -1433,7 +1433,7 @@ pub struct PangoFontsetSimple(c_void);
 
 impl ::std::fmt::Debug for PangoFontsetSimple {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoFontsetSimple @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoFontsetSimple @ {:p}", self))
             .finish()
     }
 }
@@ -1443,7 +1443,7 @@ pub struct PangoLayout(c_void);
 
 impl ::std::fmt::Debug for PangoLayout {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoLayout @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoLayout @ {:p}", self))
             .finish()
     }
 }
@@ -1461,7 +1461,7 @@ pub struct PangoRenderer {
 
 impl ::std::fmt::Debug for PangoRenderer {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoRenderer @ {:?}", self as *const _))
+        f.debug_struct(&format!("PangoRenderer @ {:p}", self))
             .field("matrix", &self.matrix)
             .finish()
     }

@@ -41,6 +41,13 @@ impl Application {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`Application`]
+    /// This method returns an instance of [`ApplicationBuilder`] which can be used to create a [`Application`].
+    pub fn builder() -> ApplicationBuilder {
+        ApplicationBuilder::default()
+    }
+
     #[doc(alias = "g_application_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> Option<Application> {
@@ -58,6 +65,8 @@ impl Application {
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`Application`].
 pub struct ApplicationBuilder {
     action_group: Option<ActionGroup>,
     application_id: Option<String>,
@@ -67,10 +76,14 @@ pub struct ApplicationBuilder {
 }
 
 impl ApplicationBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`ApplicationBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`Application`].
     pub fn build(self) -> Application {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref action_group) = self.action_group {

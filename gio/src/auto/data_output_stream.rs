@@ -36,9 +36,18 @@ impl DataOutputStream {
             ))
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`DataOutputStream`]
+    /// This method returns an instance of [`DataOutputStreamBuilder`] which can be used to create a [`DataOutputStream`].
+    pub fn builder() -> DataOutputStreamBuilder {
+        DataOutputStreamBuilder::default()
+    }
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`DataOutputStream`].
 pub struct DataOutputStreamBuilder {
     byte_order: Option<DataStreamByteOrder>,
     base_stream: Option<OutputStream>,
@@ -46,10 +55,14 @@ pub struct DataOutputStreamBuilder {
 }
 
 impl DataOutputStreamBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`DataOutputStreamBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`DataOutputStream`].
     pub fn build(self) -> DataOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref byte_order) = self.byte_order {

@@ -35,7 +35,7 @@ pub struct PangoCairoFont(c_void);
 
 impl ::std::fmt::Debug for PangoCairoFont {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "PangoCairoFont @ {:?}", self as *const _)
+        write!(f, "PangoCairoFont @ {:p}", self)
     }
 }
 
@@ -44,7 +44,7 @@ pub struct PangoCairoFontMap(c_void);
 
 impl ::std::fmt::Debug for PangoCairoFontMap {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "PangoCairoFontMap @ {:?}", self as *const _)
+        write!(f, "PangoCairoFontMap @ {:p}", self)
     }
 }
 

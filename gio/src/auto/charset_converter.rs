@@ -41,6 +41,13 @@ impl CharsetConverter {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`CharsetConverter`]
+    /// This method returns an instance of [`CharsetConverterBuilder`] which can be used to create a [`CharsetConverter`].
+    pub fn builder() -> CharsetConverterBuilder {
+        CharsetConverterBuilder::default()
+    }
+
     #[doc(alias = "g_charset_converter_get_num_fallbacks")]
     #[doc(alias = "get_num_fallbacks")]
     pub fn num_fallbacks(&self) -> u32 {
@@ -125,6 +132,8 @@ impl CharsetConverter {
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`CharsetConverter`].
 pub struct CharsetConverterBuilder {
     from_charset: Option<String>,
     to_charset: Option<String>,
@@ -132,10 +141,14 @@ pub struct CharsetConverterBuilder {
 }
 
 impl CharsetConverterBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`CharsetConverterBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`CharsetConverter`].
     pub fn build(self) -> CharsetConverter {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref from_charset) = self.from_charset {

@@ -40,9 +40,18 @@ impl DataInputStream {
             ))
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`DataInputStream`]
+    /// This method returns an instance of [`DataInputStreamBuilder`] which can be used to create a [`DataInputStream`].
+    pub fn builder() -> DataInputStreamBuilder {
+        DataInputStreamBuilder::default()
+    }
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`DataInputStream`].
 pub struct DataInputStreamBuilder {
     byte_order: Option<DataStreamByteOrder>,
     newline_type: Option<DataStreamNewlineType>,
@@ -52,10 +61,14 @@ pub struct DataInputStreamBuilder {
 }
 
 impl DataInputStreamBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`DataInputStreamBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`DataInputStream`].
     pub fn build(self) -> DataInputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref byte_order) = self.byte_order {

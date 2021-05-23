@@ -66,12 +66,12 @@ impl IntoGlib for ChecksumType {
 impl FromGlib<ffi::GChecksumType> for ChecksumType {
     unsafe fn from_glib(value: ffi::GChecksumType) -> Self {
         match value {
-            0 => Self::Md5,
-            1 => Self::Sha1,
-            2 => Self::Sha256,
-            3 => Self::Sha512,
+            ffi::G_CHECKSUM_MD5 => Self::Md5,
+            ffi::G_CHECKSUM_SHA1 => Self::Sha1,
+            ffi::G_CHECKSUM_SHA256 => Self::Sha256,
+            ffi::G_CHECKSUM_SHA512 => Self::Sha512,
             #[cfg(any(feature = "v2_52", feature = "dox"))]
-            4 => Self::Sha384,
+            ffi::G_CHECKSUM_SHA384 => Self::Sha384,
             value => Self::__Unknown(value),
         }
     }
@@ -164,19 +164,19 @@ impl IntoGlib for DateMonth {
 impl FromGlib<ffi::GDateMonth> for DateMonth {
     unsafe fn from_glib(value: ffi::GDateMonth) -> Self {
         match value {
-            0 => Self::BadMonth,
-            1 => Self::January,
-            2 => Self::February,
-            3 => Self::March,
-            4 => Self::April,
-            5 => Self::May,
-            6 => Self::June,
-            7 => Self::July,
-            8 => Self::August,
-            9 => Self::September,
-            10 => Self::October,
-            11 => Self::November,
-            12 => Self::December,
+            ffi::G_DATE_BAD_MONTH => Self::BadMonth,
+            ffi::G_DATE_JANUARY => Self::January,
+            ffi::G_DATE_FEBRUARY => Self::February,
+            ffi::G_DATE_MARCH => Self::March,
+            ffi::G_DATE_APRIL => Self::April,
+            ffi::G_DATE_MAY => Self::May,
+            ffi::G_DATE_JUNE => Self::June,
+            ffi::G_DATE_JULY => Self::July,
+            ffi::G_DATE_AUGUST => Self::August,
+            ffi::G_DATE_SEPTEMBER => Self::September,
+            ffi::G_DATE_OCTOBER => Self::October,
+            ffi::G_DATE_NOVEMBER => Self::November,
+            ffi::G_DATE_DECEMBER => Self::December,
             value => Self::__Unknown(value),
         }
     }
@@ -249,14 +249,14 @@ impl IntoGlib for DateWeekday {
 impl FromGlib<ffi::GDateWeekday> for DateWeekday {
     unsafe fn from_glib(value: ffi::GDateWeekday) -> Self {
         match value {
-            0 => Self::BadWeekday,
-            1 => Self::Monday,
-            2 => Self::Tuesday,
-            3 => Self::Wednesday,
-            4 => Self::Thursday,
-            5 => Self::Friday,
-            6 => Self::Saturday,
-            7 => Self::Sunday,
+            ffi::G_DATE_BAD_WEEKDAY => Self::BadWeekday,
+            ffi::G_DATE_MONDAY => Self::Monday,
+            ffi::G_DATE_TUESDAY => Self::Tuesday,
+            ffi::G_DATE_WEDNESDAY => Self::Wednesday,
+            ffi::G_DATE_THURSDAY => Self::Thursday,
+            ffi::G_DATE_FRIDAY => Self::Friday,
+            ffi::G_DATE_SATURDAY => Self::Saturday,
+            ffi::G_DATE_SUNDAY => Self::Sunday,
             value => Self::__Unknown(value),
         }
     }
@@ -321,12 +321,12 @@ impl IntoGlib for KeyFileError {
 impl FromGlib<ffi::GKeyFileError> for KeyFileError {
     unsafe fn from_glib(value: ffi::GKeyFileError) -> Self {
         match value {
-            0 => Self::UnknownEncoding,
-            1 => Self::Parse,
-            2 => Self::NotFound,
-            3 => Self::KeyNotFound,
-            4 => Self::GroupNotFound,
-            5 => Self::InvalidValue,
+            ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING => Self::UnknownEncoding,
+            ffi::G_KEY_FILE_ERROR_PARSE => Self::Parse,
+            ffi::G_KEY_FILE_ERROR_NOT_FOUND => Self::NotFound,
+            ffi::G_KEY_FILE_ERROR_KEY_NOT_FOUND => Self::KeyNotFound,
+            ffi::G_KEY_FILE_ERROR_GROUP_NOT_FOUND => Self::GroupNotFound,
+            ffi::G_KEY_FILE_ERROR_INVALID_VALUE => Self::InvalidValue,
             value => Self::__Unknown(value),
         }
     }
@@ -343,12 +343,12 @@ impl ErrorDomain for KeyFileError {
 
     fn from(code: i32) -> Option<Self> {
         match code {
-            0 => Some(Self::UnknownEncoding),
-            1 => Some(Self::Parse),
-            2 => Some(Self::NotFound),
-            3 => Some(Self::KeyNotFound),
-            4 => Some(Self::GroupNotFound),
-            5 => Some(Self::InvalidValue),
+            ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING => Some(Self::UnknownEncoding),
+            ffi::G_KEY_FILE_ERROR_PARSE => Some(Self::Parse),
+            ffi::G_KEY_FILE_ERROR_NOT_FOUND => Some(Self::NotFound),
+            ffi::G_KEY_FILE_ERROR_KEY_NOT_FOUND => Some(Self::KeyNotFound),
+            ffi::G_KEY_FILE_ERROR_GROUP_NOT_FOUND => Some(Self::GroupNotFound),
+            ffi::G_KEY_FILE_ERROR_INVALID_VALUE => Some(Self::InvalidValue),
             value => Some(Self::__Unknown(value)),
         }
     }
@@ -425,15 +425,15 @@ impl IntoGlib for OptionArg {
 impl FromGlib<ffi::GOptionArg> for OptionArg {
     unsafe fn from_glib(value: ffi::GOptionArg) -> Self {
         match value {
-            0 => Self::None,
-            1 => Self::String,
-            2 => Self::Int,
-            3 => Self::Callback,
-            4 => Self::Filename,
-            5 => Self::StringArray,
-            6 => Self::FilenameArray,
-            7 => Self::Double,
-            8 => Self::Int64,
+            ffi::G_OPTION_ARG_NONE => Self::None,
+            ffi::G_OPTION_ARG_STRING => Self::String,
+            ffi::G_OPTION_ARG_INT => Self::Int,
+            ffi::G_OPTION_ARG_CALLBACK => Self::Callback,
+            ffi::G_OPTION_ARG_FILENAME => Self::Filename,
+            ffi::G_OPTION_ARG_STRING_ARRAY => Self::StringArray,
+            ffi::G_OPTION_ARG_FILENAME_ARRAY => Self::FilenameArray,
+            ffi::G_OPTION_ARG_DOUBLE => Self::Double,
+            ffi::G_OPTION_ARG_INT64 => Self::Int64,
             value => Self::__Unknown(value),
         }
     }
@@ -486,9 +486,9 @@ impl IntoGlib for SeekType {
 impl FromGlib<ffi::GSeekType> for SeekType {
     unsafe fn from_glib(value: ffi::GSeekType) -> Self {
         match value {
-            0 => Self::Cur,
-            1 => Self::Set,
-            2 => Self::End,
+            ffi::G_SEEK_CUR => Self::Cur,
+            ffi::G_SEEK_SET => Self::Set,
+            ffi::G_SEEK_END => Self::End,
             value => Self::__Unknown(value),
         }
     }
@@ -541,9 +541,9 @@ impl IntoGlib for TimeType {
 impl FromGlib<ffi::GTimeType> for TimeType {
     unsafe fn from_glib(value: ffi::GTimeType) -> Self {
         match value {
-            0 => Self::Standard,
-            1 => Self::Daylight,
-            2 => Self::Universal,
+            ffi::G_TIME_TYPE_STANDARD => Self::Standard,
+            ffi::G_TIME_TYPE_DAYLIGHT => Self::Daylight,
+            ffi::G_TIME_TYPE_UNIVERSAL => Self::Universal,
             value => Self::__Unknown(value),
         }
     }
@@ -632,16 +632,16 @@ impl IntoGlib for UriError {
 impl FromGlib<ffi::GUriError> for UriError {
     unsafe fn from_glib(value: ffi::GUriError) -> Self {
         match value {
-            0 => Self::Failed,
-            1 => Self::BadScheme,
-            2 => Self::BadUser,
-            3 => Self::BadPassword,
-            4 => Self::BadAuthParams,
-            5 => Self::BadHost,
-            6 => Self::BadPort,
-            7 => Self::BadPath,
-            8 => Self::BadQuery,
-            9 => Self::BadFragment,
+            ffi::G_URI_ERROR_FAILED => Self::Failed,
+            ffi::G_URI_ERROR_BAD_SCHEME => Self::BadScheme,
+            ffi::G_URI_ERROR_BAD_USER => Self::BadUser,
+            ffi::G_URI_ERROR_BAD_PASSWORD => Self::BadPassword,
+            ffi::G_URI_ERROR_BAD_AUTH_PARAMS => Self::BadAuthParams,
+            ffi::G_URI_ERROR_BAD_HOST => Self::BadHost,
+            ffi::G_URI_ERROR_BAD_PORT => Self::BadPort,
+            ffi::G_URI_ERROR_BAD_PATH => Self::BadPath,
+            ffi::G_URI_ERROR_BAD_QUERY => Self::BadQuery,
+            ffi::G_URI_ERROR_BAD_FRAGMENT => Self::BadFragment,
             value => Self::__Unknown(value),
         }
     }
@@ -660,16 +660,16 @@ impl ErrorDomain for UriError {
 
     fn from(code: i32) -> Option<Self> {
         match code {
-            0 => Some(Self::Failed),
-            1 => Some(Self::BadScheme),
-            2 => Some(Self::BadUser),
-            3 => Some(Self::BadPassword),
-            4 => Some(Self::BadAuthParams),
-            5 => Some(Self::BadHost),
-            6 => Some(Self::BadPort),
-            7 => Some(Self::BadPath),
-            8 => Some(Self::BadQuery),
-            9 => Some(Self::BadFragment),
+            ffi::G_URI_ERROR_FAILED => Some(Self::Failed),
+            ffi::G_URI_ERROR_BAD_SCHEME => Some(Self::BadScheme),
+            ffi::G_URI_ERROR_BAD_USER => Some(Self::BadUser),
+            ffi::G_URI_ERROR_BAD_PASSWORD => Some(Self::BadPassword),
+            ffi::G_URI_ERROR_BAD_AUTH_PARAMS => Some(Self::BadAuthParams),
+            ffi::G_URI_ERROR_BAD_HOST => Some(Self::BadHost),
+            ffi::G_URI_ERROR_BAD_PORT => Some(Self::BadPort),
+            ffi::G_URI_ERROR_BAD_PATH => Some(Self::BadPath),
+            ffi::G_URI_ERROR_BAD_QUERY => Some(Self::BadQuery),
+            ffi::G_URI_ERROR_BAD_FRAGMENT => Some(Self::BadFragment),
             _ => Some(Self::Failed),
         }
     }
