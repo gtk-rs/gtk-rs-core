@@ -35,9 +35,18 @@ impl ConverterOutputStream {
             .unsafe_cast()
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`ConverterOutputStream`]
+    /// This method returns an instance of [`ConverterOutputStreamBuilder`] which can be used to create a [`ConverterOutputStream`].
+    pub fn builder() -> ConverterOutputStreamBuilder {
+        ConverterOutputStreamBuilder::default()
+    }
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`ConverterOutputStream`].
 pub struct ConverterOutputStreamBuilder {
     converter: Option<Converter>,
     base_stream: Option<OutputStream>,
@@ -45,10 +54,14 @@ pub struct ConverterOutputStreamBuilder {
 }
 
 impl ConverterOutputStreamBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`ConverterOutputStreamBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`ConverterOutputStream`].
     pub fn build(self) -> ConverterOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref converter) = self.converter {

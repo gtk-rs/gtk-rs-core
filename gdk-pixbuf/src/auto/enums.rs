@@ -50,7 +50,7 @@ impl IntoGlib for Colorspace {
 impl FromGlib<ffi::GdkColorspace> for Colorspace {
     unsafe fn from_glib(value: ffi::GdkColorspace) -> Self {
         match value {
-            0 => Self::Rgb,
+            ffi::GDK_COLORSPACE_RGB => Self::Rgb,
             value => Self::__Unknown(value),
         }
     }
@@ -139,10 +139,10 @@ impl IntoGlib for InterpType {
 impl FromGlib<ffi::GdkInterpType> for InterpType {
     unsafe fn from_glib(value: ffi::GdkInterpType) -> Self {
         match value {
-            0 => Self::Nearest,
-            1 => Self::Tiles,
-            2 => Self::Bilinear,
-            3 => Self::Hyper,
+            ffi::GDK_INTERP_NEAREST => Self::Nearest,
+            ffi::GDK_INTERP_TILES => Self::Tiles,
+            ffi::GDK_INTERP_BILINEAR => Self::Bilinear,
+            ffi::GDK_INTERP_HYPER => Self::Hyper,
             value => Self::__Unknown(value),
         }
     }
@@ -223,8 +223,8 @@ impl IntoGlib for PixbufAlphaMode {
 impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
     unsafe fn from_glib(value: ffi::GdkPixbufAlphaMode) -> Self {
         match value {
-            0 => Self::Bilevel,
-            1 => Self::Full,
+            ffi::GDK_PIXBUF_ALPHA_BILEVEL => Self::Bilevel,
+            ffi::GDK_PIXBUF_ALPHA_FULL => Self::Full,
             value => Self::__Unknown(value),
         }
     }
@@ -325,13 +325,13 @@ impl IntoGlib for PixbufError {
 impl FromGlib<ffi::GdkPixbufError> for PixbufError {
     unsafe fn from_glib(value: ffi::GdkPixbufError) -> Self {
         match value {
-            0 => Self::CorruptImage,
-            1 => Self::InsufficientMemory,
-            2 => Self::BadOption,
-            3 => Self::UnknownType,
-            4 => Self::UnsupportedOperation,
-            5 => Self::Failed,
-            6 => Self::IncompleteAnimation,
+            ffi::GDK_PIXBUF_ERROR_CORRUPT_IMAGE => Self::CorruptImage,
+            ffi::GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY => Self::InsufficientMemory,
+            ffi::GDK_PIXBUF_ERROR_BAD_OPTION => Self::BadOption,
+            ffi::GDK_PIXBUF_ERROR_UNKNOWN_TYPE => Self::UnknownType,
+            ffi::GDK_PIXBUF_ERROR_UNSUPPORTED_OPERATION => Self::UnsupportedOperation,
+            ffi::GDK_PIXBUF_ERROR_FAILED => Self::Failed,
+            ffi::GDK_PIXBUF_ERROR_INCOMPLETE_ANIMATION => Self::IncompleteAnimation,
             value => Self::__Unknown(value),
         }
     }
@@ -348,13 +348,13 @@ impl ErrorDomain for PixbufError {
 
     fn from(code: i32) -> Option<Self> {
         match code {
-            0 => Some(Self::CorruptImage),
-            1 => Some(Self::InsufficientMemory),
-            2 => Some(Self::BadOption),
-            3 => Some(Self::UnknownType),
-            4 => Some(Self::UnsupportedOperation),
-            5 => Some(Self::Failed),
-            6 => Some(Self::IncompleteAnimation),
+            ffi::GDK_PIXBUF_ERROR_CORRUPT_IMAGE => Some(Self::CorruptImage),
+            ffi::GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY => Some(Self::InsufficientMemory),
+            ffi::GDK_PIXBUF_ERROR_BAD_OPTION => Some(Self::BadOption),
+            ffi::GDK_PIXBUF_ERROR_UNKNOWN_TYPE => Some(Self::UnknownType),
+            ffi::GDK_PIXBUF_ERROR_UNSUPPORTED_OPERATION => Some(Self::UnsupportedOperation),
+            ffi::GDK_PIXBUF_ERROR_FAILED => Some(Self::Failed),
+            ffi::GDK_PIXBUF_ERROR_INCOMPLETE_ANIMATION => Some(Self::IncompleteAnimation),
             _ => Some(Self::Failed),
         }
     }
@@ -443,10 +443,10 @@ impl IntoGlib for PixbufRotation {
 impl FromGlib<ffi::GdkPixbufRotation> for PixbufRotation {
     unsafe fn from_glib(value: ffi::GdkPixbufRotation) -> Self {
         match value {
-            0 => Self::None,
-            90 => Self::Counterclockwise,
-            180 => Self::Upsidedown,
-            270 => Self::Clockwise,
+            ffi::GDK_PIXBUF_ROTATE_NONE => Self::None,
+            ffi::GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE => Self::Counterclockwise,
+            ffi::GDK_PIXBUF_ROTATE_UPSIDEDOWN => Self::Upsidedown,
+            ffi::GDK_PIXBUF_ROTATE_CLOCKWISE => Self::Clockwise,
             value => Self::__Unknown(value),
         }
     }

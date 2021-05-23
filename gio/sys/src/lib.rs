@@ -949,7 +949,7 @@ pub struct GActionEntry {
 
 impl ::std::fmt::Debug for GActionEntry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GActionEntry @ {:?}", self as *const _))
+        f.debug_struct(&format!("GActionEntry @ {:p}", self))
             .field("name", &self.name)
             .field("activate", &self.activate)
             .field("parameter_type", &self.parameter_type)
@@ -1000,7 +1000,7 @@ pub struct GActionGroupInterface {
 
 impl ::std::fmt::Debug for GActionGroupInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GActionGroupInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GActionGroupInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("has_action", &self.has_action)
             .field("list_actions", &self.list_actions)
@@ -1036,7 +1036,7 @@ pub struct GActionInterface {
 
 impl ::std::fmt::Debug for GActionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GActionInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GActionInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("get_name", &self.get_name)
             .field("get_parameter_type", &self.get_parameter_type)
@@ -1061,7 +1061,7 @@ pub struct GActionMapInterface {
 
 impl ::std::fmt::Debug for GActionMapInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GActionMapInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GActionMapInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("lookup_action", &self.lookup_action)
             .field("add_action", &self.add_action)
@@ -1138,7 +1138,7 @@ pub struct GAppInfoIface {
 
 impl ::std::fmt::Debug for GAppInfoIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAppInfoIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAppInfoIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("dup", &self.dup)
             .field("equal", &self.equal)
@@ -1201,7 +1201,7 @@ pub struct GAppLaunchContextClass {
 
 impl ::std::fmt::Debug for GAppLaunchContextClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAppLaunchContextClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAppLaunchContextClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_display", &self.get_display)
             .field("get_startup_notify_id", &self.get_startup_notify_id)
@@ -1258,7 +1258,7 @@ pub struct GApplicationClass {
 
 impl ::std::fmt::Debug for GApplicationClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GApplicationClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GApplicationClass @ {:p}", self))
             .field("startup", &self.startup)
             .field("activate", &self.activate)
             .field("open", &self.open)
@@ -1290,14 +1290,11 @@ pub struct GApplicationCommandLineClass {
 
 impl ::std::fmt::Debug for GApplicationCommandLineClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GApplicationCommandLineClass @ {:?}",
-            self as *const _
-        ))
-        .field("print_literal", &self.print_literal)
-        .field("printerr_literal", &self.printerr_literal)
-        .field("get_stdin", &self.get_stdin)
-        .finish()
+        f.debug_struct(&format!("GApplicationCommandLineClass @ {:p}", self))
+            .field("print_literal", &self.print_literal)
+            .field("printerr_literal", &self.printerr_literal)
+            .field("get_stdin", &self.get_stdin)
+            .finish()
     }
 }
 
@@ -1335,7 +1332,7 @@ pub struct GAsyncInitableIface {
 
 impl ::std::fmt::Debug for GAsyncInitableIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAsyncInitableIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAsyncInitableIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("init_async", &self.init_async)
             .field("init_finish", &self.init_finish)
@@ -1354,7 +1351,7 @@ pub struct GAsyncResultIface {
 
 impl ::std::fmt::Debug for GAsyncResultIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAsyncResultIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAsyncResultIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("get_user_data", &self.get_user_data)
             .field("get_source_object", &self.get_source_object)
@@ -1401,20 +1398,17 @@ pub struct GBufferedInputStreamClass {
 
 impl ::std::fmt::Debug for GBufferedInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GBufferedInputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("fill", &self.fill)
-        .field("fill_async", &self.fill_async)
-        .field("fill_finish", &self.fill_finish)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GBufferedInputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("fill", &self.fill)
+            .field("fill_async", &self.fill_async)
+            .field("fill_finish", &self.fill_finish)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -1433,14 +1427,11 @@ pub struct GBufferedOutputStreamClass {
 
 impl ::std::fmt::Debug for GBufferedOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GBufferedOutputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .finish()
+        f.debug_struct(&format!("GBufferedOutputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .finish()
     }
 }
 
@@ -1463,7 +1454,7 @@ pub struct GCancellableClass {
 
 impl ::std::fmt::Debug for GCancellableClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCancellableClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GCancellableClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("cancelled", &self.cancelled)
             .field("_g_reserved1", &self._g_reserved1)
@@ -1488,7 +1479,7 @@ pub struct GCharsetConverterClass {
 
 impl ::std::fmt::Debug for GCharsetConverterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCharsetConverterClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GCharsetConverterClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -1516,7 +1507,7 @@ pub struct GConverterIface {
 
 impl ::std::fmt::Debug for GConverterIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GConverterIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GConverterIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("convert", &self.convert)
             .field("reset", &self.reset)
@@ -1537,17 +1528,14 @@ pub struct GConverterInputStreamClass {
 
 impl ::std::fmt::Debug for GConverterInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GConverterInputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GConverterInputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -1569,17 +1557,14 @@ pub struct GConverterOutputStreamClass {
 
 impl ::std::fmt::Debug for GConverterOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GConverterOutputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GConverterOutputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -1604,7 +1589,7 @@ pub struct GDBusAnnotationInfo {
 
 impl ::std::fmt::Debug for GDBusAnnotationInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusAnnotationInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusAnnotationInfo @ {:p}", self))
             .field("key", &self.key)
             .field("value", &self.value)
             .field("annotations", &self.annotations)
@@ -1623,7 +1608,7 @@ pub struct GDBusArgInfo {
 
 impl ::std::fmt::Debug for GDBusArgInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusArgInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusArgInfo @ {:p}", self))
             .field("name", &self.name)
             .field("signature", &self.signature)
             .field("annotations", &self.annotations)
@@ -1640,7 +1625,7 @@ pub struct GDBusErrorEntry {
 
 impl ::std::fmt::Debug for GDBusErrorEntry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusErrorEntry @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusErrorEntry @ {:p}", self))
             .field("error_code", &self.error_code)
             .field("dbus_error_name", &self.dbus_error_name)
             .finish()
@@ -1659,7 +1644,7 @@ pub struct GDBusInterfaceIface {
 
 impl ::std::fmt::Debug for GDBusInterfaceIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusInterfaceIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusInterfaceIface @ {:p}", self))
             .field("parent_iface", &self.parent_iface)
             .field("get_info", &self.get_info)
             .field("get_object", &self.get_object)
@@ -1682,7 +1667,7 @@ pub struct GDBusInterfaceInfo {
 
 impl ::std::fmt::Debug for GDBusInterfaceInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusInterfaceInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusInterfaceInfo @ {:p}", self))
             .field("name", &self.name)
             .field("methods", &self.methods)
             .field("signals", &self.signals)
@@ -1712,17 +1697,14 @@ pub struct GDBusInterfaceSkeletonClass {
 
 impl ::std::fmt::Debug for GDBusInterfaceSkeletonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusInterfaceSkeletonClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("get_info", &self.get_info)
-        .field("get_vtable", &self.get_vtable)
-        .field("get_properties", &self.get_properties)
-        .field("flush", &self.flush)
-        .field("g_authorize_method", &self.g_authorize_method)
-        .finish()
+        f.debug_struct(&format!("GDBusInterfaceSkeletonClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("get_info", &self.get_info)
+            .field("get_vtable", &self.get_vtable)
+            .field("get_properties", &self.get_properties)
+            .field("flush", &self.flush)
+            .field("g_authorize_method", &self.g_authorize_method)
+            .finish()
     }
 }
 
@@ -1742,7 +1724,7 @@ pub struct GDBusInterfaceVTable {
 
 impl ::std::fmt::Debug for GDBusInterfaceVTable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusInterfaceVTable @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusInterfaceVTable @ {:p}", self))
             .field("method_call", &self.method_call)
             .field("get_property", &self.get_property)
             .field("set_property", &self.set_property)
@@ -1762,7 +1744,7 @@ pub struct GDBusMethodInfo {
 
 impl ::std::fmt::Debug for GDBusMethodInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusMethodInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusMethodInfo @ {:p}", self))
             .field("name", &self.name)
             .field("in_args", &self.in_args)
             .field("out_args", &self.out_args)
@@ -1783,7 +1765,7 @@ pub struct GDBusNodeInfo {
 
 impl ::std::fmt::Debug for GDBusNodeInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusNodeInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusNodeInfo @ {:p}", self))
             .field("path", &self.path)
             .field("interfaces", &self.interfaces)
             .field("nodes", &self.nodes)
@@ -1806,7 +1788,7 @@ pub struct GDBusObjectIface {
 
 impl ::std::fmt::Debug for GDBusObjectIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusObjectIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusObjectIface @ {:p}", self))
             .field("parent_iface", &self.parent_iface)
             .field("get_object_path", &self.get_object_path)
             .field("get_interfaces", &self.get_interfaces)
@@ -1845,17 +1827,14 @@ pub struct GDBusObjectManagerClientClass {
 
 impl ::std::fmt::Debug for GDBusObjectManagerClientClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusObjectManagerClientClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("interface_proxy_signal", &self.interface_proxy_signal)
-        .field(
-            "interface_proxy_properties_changed",
-            &self.interface_proxy_properties_changed,
-        )
-        .finish()
+        f.debug_struct(&format!("GDBusObjectManagerClientClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("interface_proxy_signal", &self.interface_proxy_signal)
+            .field(
+                "interface_proxy_properties_changed",
+                &self.interface_proxy_properties_changed,
+            )
+            .finish()
     }
 }
 
@@ -1891,7 +1870,7 @@ pub struct GDBusObjectManagerIface {
 
 impl ::std::fmt::Debug for GDBusObjectManagerIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusObjectManagerIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusObjectManagerIface @ {:p}", self))
             .field("parent_iface", &self.parent_iface)
             .field("get_object_path", &self.get_object_path)
             .field("get_objects", &self.get_objects)
@@ -1914,12 +1893,9 @@ pub struct GDBusObjectManagerServerClass {
 
 impl ::std::fmt::Debug for GDBusObjectManagerServerClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusObjectManagerServerClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .finish()
+        f.debug_struct(&format!("GDBusObjectManagerServerClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .finish()
     }
 }
 
@@ -1937,7 +1913,7 @@ pub struct GDBusObjectProxyClass {
 
 impl ::std::fmt::Debug for GDBusObjectProxyClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusObjectProxyClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusObjectProxyClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -1964,13 +1940,10 @@ pub struct GDBusObjectSkeletonClass {
 
 impl ::std::fmt::Debug for GDBusObjectSkeletonClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusObjectSkeletonClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("authorize_method", &self.authorize_method)
-        .finish()
+        f.debug_struct(&format!("GDBusObjectSkeletonClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("authorize_method", &self.authorize_method)
+            .finish()
     }
 }
 
@@ -1991,7 +1964,7 @@ pub struct GDBusPropertyInfo {
 
 impl ::std::fmt::Debug for GDBusPropertyInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusPropertyInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusPropertyInfo @ {:p}", self))
             .field("name", &self.name)
             .field("signature", &self.signature)
             .field("flags", &self.flags)
@@ -2014,7 +1987,7 @@ pub struct GDBusProxyClass {
 
 impl ::std::fmt::Debug for GDBusProxyClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusProxyClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusProxyClass @ {:p}", self))
             .field("g_properties_changed", &self.g_properties_changed)
             .field("g_signal", &self.g_signal)
             .finish()
@@ -2037,7 +2010,7 @@ pub struct GDBusSignalInfo {
 
 impl ::std::fmt::Debug for GDBusSignalInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusSignalInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusSignalInfo @ {:p}", self))
             .field("name", &self.name)
             .field("args", &self.args)
             .field("annotations", &self.annotations)
@@ -2056,7 +2029,7 @@ pub struct GDBusSubtreeVTable {
 
 impl ::std::fmt::Debug for GDBusSubtreeVTable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusSubtreeVTable @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusSubtreeVTable @ {:p}", self))
             .field("enumerate", &self.enumerate)
             .field("introspect", &self.introspect)
             .field("dispatch", &self.dispatch)
@@ -2077,7 +2050,7 @@ pub struct GDataInputStreamClass {
 
 impl ::std::fmt::Debug for GDataInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDataInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDataInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -2106,7 +2079,7 @@ pub struct GDataOutputStreamClass {
 
 impl ::std::fmt::Debug for GDataOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDataOutputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDataOutputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -2170,7 +2143,7 @@ pub struct GDatagramBasedInterface {
 
 impl ::std::fmt::Debug for GDatagramBasedInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDatagramBasedInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDatagramBasedInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("receive_messages", &self.receive_messages)
             .field("send_messages", &self.send_messages)
@@ -2189,7 +2162,7 @@ pub struct GDesktopAppInfoClass {
 
 impl ::std::fmt::Debug for GDesktopAppInfoClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDesktopAppInfoClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDesktopAppInfoClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -2205,16 +2178,13 @@ pub struct GDesktopAppInfoLookupIface {
 
 impl ::std::fmt::Debug for GDesktopAppInfoLookupIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDesktopAppInfoLookupIface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field(
-            "get_default_for_uri_scheme",
-            &self.get_default_for_uri_scheme,
-        )
-        .finish()
+        f.debug_struct(&format!("GDesktopAppInfoLookupIface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field(
+                "get_default_for_uri_scheme",
+                &self.get_default_for_uri_scheme,
+            )
+            .finish()
     }
 }
 
@@ -2304,7 +2274,7 @@ pub struct GDriveIface {
 
 impl ::std::fmt::Debug for GDriveIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDriveIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDriveIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("changed", &self.changed)
             .field("disconnected", &self.disconnected)
@@ -2353,12 +2323,9 @@ pub struct GDtlsClientConnectionInterface {
 
 impl ::std::fmt::Debug for GDtlsClientConnectionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDtlsClientConnectionInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .finish()
+        f.debug_struct(&format!("GDtlsClientConnectionInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .finish()
     }
 }
 
@@ -2439,22 +2406,19 @@ pub struct GDtlsConnectionInterface {
 
 impl ::std::fmt::Debug for GDtlsConnectionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDtlsConnectionInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("accept_certificate", &self.accept_certificate)
-        .field("handshake", &self.handshake)
-        .field("handshake_async", &self.handshake_async)
-        .field("handshake_finish", &self.handshake_finish)
-        .field("shutdown", &self.shutdown)
-        .field("shutdown_async", &self.shutdown_async)
-        .field("shutdown_finish", &self.shutdown_finish)
-        .field("set_advertised_protocols", &self.set_advertised_protocols)
-        .field("get_negotiated_protocol", &self.get_negotiated_protocol)
-        .field("get_binding_data", &self.get_binding_data)
-        .finish()
+        f.debug_struct(&format!("GDtlsConnectionInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("accept_certificate", &self.accept_certificate)
+            .field("handshake", &self.handshake)
+            .field("handshake_async", &self.handshake_async)
+            .field("handshake_finish", &self.handshake_finish)
+            .field("shutdown", &self.shutdown)
+            .field("shutdown_async", &self.shutdown_async)
+            .field("shutdown_finish", &self.shutdown_finish)
+            .field("set_advertised_protocols", &self.set_advertised_protocols)
+            .field("get_negotiated_protocol", &self.get_negotiated_protocol)
+            .field("get_binding_data", &self.get_binding_data)
+            .finish()
     }
 }
 
@@ -2466,12 +2430,9 @@ pub struct GDtlsServerConnectionInterface {
 
 impl ::std::fmt::Debug for GDtlsServerConnectionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDtlsServerConnectionInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .finish()
+        f.debug_struct(&format!("GDtlsServerConnectionInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .finish()
     }
 }
 
@@ -2488,7 +2449,7 @@ pub struct GEmblemedIconClass {
 
 impl ::std::fmt::Debug for GEmblemedIconClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GEmblemedIconClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GEmblemedIconClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -2509,7 +2470,7 @@ pub struct GFileAttributeInfo {
 
 impl ::std::fmt::Debug for GFileAttributeInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileAttributeInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileAttributeInfo @ {:p}", self))
             .field("name", &self.name)
             .field("type_", &self.type_)
             .field("flags", &self.flags)
@@ -2526,7 +2487,7 @@ pub struct GFileAttributeInfoList {
 
 impl ::std::fmt::Debug for GFileAttributeInfoList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileAttributeInfoList @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileAttributeInfoList @ {:p}", self))
             .field("infos", &self.infos)
             .field("n_infos", &self.n_infos)
             .finish()
@@ -2538,7 +2499,7 @@ pub struct GFileAttributeMatcher(c_void);
 
 impl ::std::fmt::Debug for GFileAttributeMatcher {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileAttributeMatcher @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileAttributeMatcher @ {:p}", self))
             .finish()
     }
 }
@@ -2552,13 +2513,10 @@ pub struct GFileDescriptorBasedIface {
 
 impl ::std::fmt::Debug for GFileDescriptorBasedIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GFileDescriptorBasedIface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("get_fd", &self.get_fd)
-        .finish()
+        f.debug_struct(&format!("GFileDescriptorBasedIface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("get_fd", &self.get_fd)
+            .finish()
     }
 }
 
@@ -2624,7 +2582,7 @@ pub struct GFileEnumeratorClass {
 
 impl ::std::fmt::Debug for GFileEnumeratorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileEnumeratorClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileEnumeratorClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("next_file", &self.next_file)
             .field("close_fn", &self.close_fn)
@@ -2707,7 +2665,7 @@ pub struct GFileIOStreamClass {
 
 impl ::std::fmt::Debug for GFileIOStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileIOStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileIOStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("tell", &self.tell)
             .field("can_seek", &self.can_seek)
@@ -3332,7 +3290,7 @@ pub struct GFileIface {
 
 impl ::std::fmt::Debug for GFileIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("dup", &self.dup)
             .field("hash", &self.hash)
@@ -3540,7 +3498,7 @@ pub struct GFileInputStreamClass {
 
 impl ::std::fmt::Debug for GFileInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("tell", &self.tell)
             .field("can_seek", &self.can_seek)
@@ -3578,7 +3536,7 @@ pub struct GFileMonitorClass {
 
 impl ::std::fmt::Debug for GFileMonitorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileMonitorClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileMonitorClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("changed", &self.changed)
             .field("cancel", &self.cancel)
@@ -3655,7 +3613,7 @@ pub struct GFileOutputStreamClass {
 
 impl ::std::fmt::Debug for GFileOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileOutputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileOutputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("tell", &self.tell)
             .field("can_seek", &self.can_seek)
@@ -3692,7 +3650,7 @@ pub struct GFilenameCompleterClass {
 
 impl ::std::fmt::Debug for GFilenameCompleterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFilenameCompleterClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFilenameCompleterClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("got_completion_data", &self.got_completion_data)
             .field("_g_reserved1", &self._g_reserved1)
@@ -3713,7 +3671,7 @@ pub struct GFilterInputStreamClass {
 
 impl ::std::fmt::Debug for GFilterInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFilterInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFilterInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -3733,15 +3691,12 @@ pub struct GFilterOutputStreamClass {
 
 impl ::std::fmt::Debug for GFilterOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GFilterOutputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .finish()
+        f.debug_struct(&format!("GFilterOutputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .finish()
     }
 }
 
@@ -3810,7 +3765,7 @@ pub struct GIOStreamClass {
 
 impl ::std::fmt::Debug for GIOStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIOStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GIOStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_input_stream", &self.get_input_stream)
             .field("get_output_stream", &self.get_output_stream)
@@ -3852,7 +3807,7 @@ pub struct GIconIface {
 
 impl ::std::fmt::Debug for GIconIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIconIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GIconIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("hash", &self.hash)
             .field("equal", &self.equal)
@@ -3873,7 +3828,7 @@ pub struct GInetAddressClass {
 
 impl ::std::fmt::Debug for GInetAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("to_string", &self.to_string)
             .field("to_bytes", &self.to_bytes)
@@ -3889,7 +3844,7 @@ pub struct GInetAddressMaskClass {
 
 impl ::std::fmt::Debug for GInetAddressMaskClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetAddressMaskClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetAddressMaskClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -3913,7 +3868,7 @@ pub struct GInetSocketAddressClass {
 
 impl ::std::fmt::Debug for GInetSocketAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetSocketAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetSocketAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -3935,7 +3890,7 @@ pub struct GInitableIface {
 
 impl ::std::fmt::Debug for GInitableIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInitableIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInitableIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("init", &self.init)
             .finish()
@@ -3956,7 +3911,7 @@ pub struct GInputMessage {
 
 impl ::std::fmt::Debug for GInputMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInputMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInputMessage @ {:p}", self))
             .field("address", &self.address)
             .field("vectors", &self.vectors)
             .field("num_vectors", &self.num_vectors)
@@ -4056,7 +4011,7 @@ pub struct GInputStreamClass {
 
 impl ::std::fmt::Debug for GInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("read_fn", &self.read_fn)
             .field("skip", &self.skip)
@@ -4090,7 +4045,7 @@ pub struct GInputVector {
 
 impl ::std::fmt::Debug for GInputVector {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInputVector @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInputVector @ {:p}", self))
             .field("buffer", &self.buffer)
             .field("size", &self.size)
             .finish()
@@ -4108,7 +4063,7 @@ pub struct GListModelInterface {
 
 impl ::std::fmt::Debug for GListModelInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GListModelInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GListModelInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("get_item_type", &self.get_item_type)
             .field("get_n_items", &self.get_n_items)
@@ -4125,7 +4080,7 @@ pub struct GListStoreClass {
 
 impl ::std::fmt::Debug for GListStoreClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GListStoreClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GListStoreClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -4165,7 +4120,7 @@ pub struct GLoadableIconIface {
 
 impl ::std::fmt::Debug for GLoadableIconIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GLoadableIconIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GLoadableIconIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("load", &self.load)
             .field("load_async", &self.load_async)
@@ -4187,7 +4142,7 @@ pub struct GMemoryInputStreamClass {
 
 impl ::std::fmt::Debug for GMemoryInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMemoryInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMemoryInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -4213,7 +4168,7 @@ pub struct GMemoryMonitorInterface {
 
 impl ::std::fmt::Debug for GMemoryMonitorInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMemoryMonitorInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMemoryMonitorInterface @ {:p}", self))
             .field("low_memory_warning", &self.low_memory_warning)
             .finish()
     }
@@ -4232,17 +4187,14 @@ pub struct GMemoryOutputStreamClass {
 
 impl ::std::fmt::Debug for GMemoryOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GMemoryOutputStreamClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GMemoryOutputStreamClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -4266,7 +4218,7 @@ pub struct GMenuAttributeIterClass {
 
 impl ::std::fmt::Debug for GMenuAttributeIterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuAttributeIterClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuAttributeIterClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_next", &self.get_next)
             .finish()
@@ -4293,7 +4245,7 @@ pub struct GMenuLinkIterClass {
 
 impl ::std::fmt::Debug for GMenuLinkIterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuLinkIterClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuLinkIterClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_next", &self.get_next)
             .finish()
@@ -4333,7 +4285,7 @@ pub struct GMenuModelClass {
 
 impl ::std::fmt::Debug for GMenuModelClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuModelClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuModelClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("is_mutable", &self.is_mutable)
             .field("get_n_items", &self.get_n_items)
@@ -4461,7 +4413,7 @@ pub struct GMountIface {
 
 impl ::std::fmt::Debug for GMountIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMountIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMountIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("changed", &self.changed)
             .field("unmounted", &self.unmounted)
@@ -4540,7 +4492,7 @@ pub struct GMountOperationClass {
 
 impl ::std::fmt::Debug for GMountOperationClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMountOperationClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMountOperationClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("ask_password", &self.ask_password)
             .field("ask_question", &self.ask_question)
@@ -4574,12 +4526,9 @@ pub struct GNativeSocketAddressClass {
 
 impl ::std::fmt::Debug for GNativeSocketAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GNativeSocketAddressClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .finish()
+        f.debug_struct(&format!("GNativeSocketAddressClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .finish()
     }
 }
 
@@ -4598,13 +4547,10 @@ pub struct GNativeVolumeMonitorClass {
 
 impl ::std::fmt::Debug for GNativeVolumeMonitorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GNativeVolumeMonitorClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("get_mount_for_mount_path", &self.get_mount_for_mount_path)
-        .finish()
+        f.debug_struct(&format!("GNativeVolumeMonitorClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("get_mount_for_mount_path", &self.get_mount_for_mount_path)
+            .finish()
     }
 }
 
@@ -4616,7 +4562,7 @@ pub struct GNetworkAddressClass {
 
 impl ::std::fmt::Debug for GNetworkAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNetworkAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNetworkAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -4660,16 +4606,13 @@ pub struct GNetworkMonitorInterface {
 
 impl ::std::fmt::Debug for GNetworkMonitorInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GNetworkMonitorInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("network_changed", &self.network_changed)
-        .field("can_reach", &self.can_reach)
-        .field("can_reach_async", &self.can_reach_async)
-        .field("can_reach_finish", &self.can_reach_finish)
-        .finish()
+        f.debug_struct(&format!("GNetworkMonitorInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("network_changed", &self.network_changed)
+            .field("can_reach", &self.can_reach)
+            .field("can_reach_async", &self.can_reach_async)
+            .field("can_reach_finish", &self.can_reach_finish)
+            .finish()
     }
 }
 
@@ -4681,7 +4624,7 @@ pub struct GNetworkServiceClass {
 
 impl ::std::fmt::Debug for GNetworkServiceClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNetworkServiceClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNetworkServiceClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -4705,7 +4648,7 @@ pub struct GOutputMessage {
 
 impl ::std::fmt::Debug for GOutputMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOutputMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GOutputMessage @ {:p}", self))
             .field("address", &self.address)
             .field("vectors", &self.vectors)
             .field("num_vectors", &self.num_vectors)
@@ -4858,7 +4801,7 @@ pub struct GOutputStreamClass {
 
 impl ::std::fmt::Debug for GOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOutputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GOutputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("write_fn", &self.write_fn)
             .field("splice", &self.splice)
@@ -4898,7 +4841,7 @@ pub struct GOutputVector {
 
 impl ::std::fmt::Debug for GOutputVector {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOutputVector @ {:?}", self as *const _))
+        f.debug_struct(&format!("GOutputVector @ {:p}", self))
             .field("buffer", &self.buffer)
             .field("size", &self.size)
             .finish()
@@ -4948,7 +4891,7 @@ pub struct GPermissionClass {
 
 impl ::std::fmt::Debug for GPermissionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPermissionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GPermissionClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("acquire", &self.acquire)
             .field("acquire_async", &self.acquire_async)
@@ -4987,16 +4930,13 @@ pub struct GPollableInputStreamInterface {
 
 impl ::std::fmt::Debug for GPollableInputStreamInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GPollableInputStreamInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("can_poll", &self.can_poll)
-        .field("is_readable", &self.is_readable)
-        .field("create_source", &self.create_source)
-        .field("read_nonblocking", &self.read_nonblocking)
-        .finish()
+        f.debug_struct(&format!("GPollableInputStreamInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("can_poll", &self.can_poll)
+            .field("is_readable", &self.is_readable)
+            .field("create_source", &self.create_source)
+            .field("read_nonblocking", &self.read_nonblocking)
+            .finish()
     }
 }
 
@@ -5030,17 +4970,14 @@ pub struct GPollableOutputStreamInterface {
 
 impl ::std::fmt::Debug for GPollableOutputStreamInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GPollableOutputStreamInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("can_poll", &self.can_poll)
-        .field("is_writable", &self.is_writable)
-        .field("create_source", &self.create_source)
-        .field("write_nonblocking", &self.write_nonblocking)
-        .field("writev_nonblocking", &self.writev_nonblocking)
-        .finish()
+        f.debug_struct(&format!("GPollableOutputStreamInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("can_poll", &self.can_poll)
+            .field("is_writable", &self.is_writable)
+            .field("create_source", &self.create_source)
+            .field("write_nonblocking", &self.write_nonblocking)
+            .field("writev_nonblocking", &self.writev_nonblocking)
+            .finish()
     }
 }
 
@@ -5052,7 +4989,7 @@ pub struct GProxyAddressClass {
 
 impl ::std::fmt::Debug for GProxyAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GProxyAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GProxyAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -5073,18 +5010,15 @@ pub struct GProxyAddressEnumeratorClass {
 
 impl ::std::fmt::Debug for GProxyAddressEnumeratorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GProxyAddressEnumeratorClass @ {:?}",
-            self as *const _
-        ))
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .field("_g_reserved6", &self._g_reserved6)
-        .field("_g_reserved7", &self._g_reserved7)
-        .finish()
+        f.debug_struct(&format!("GProxyAddressEnumeratorClass @ {:p}", self))
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .field("_g_reserved6", &self._g_reserved6)
+            .field("_g_reserved7", &self._g_reserved7)
+            .finish()
     }
 }
 
@@ -5133,7 +5067,7 @@ pub struct GProxyInterface {
 
 impl ::std::fmt::Debug for GProxyInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GProxyInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GProxyInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("connect", &self.connect)
             .field("connect_async", &self.connect_async)
@@ -5176,7 +5110,7 @@ pub struct GProxyResolverInterface {
 
 impl ::std::fmt::Debug for GProxyResolverInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GProxyResolverInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GProxyResolverInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("is_supported", &self.is_supported)
             .field("lookup", &self.lookup)
@@ -5210,14 +5144,11 @@ pub struct GRemoteActionGroupInterface {
 
 impl ::std::fmt::Debug for GRemoteActionGroupInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GRemoteActionGroupInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("activate_action_full", &self.activate_action_full)
-        .field("change_action_state_full", &self.change_action_state_full)
-        .finish()
+        f.debug_struct(&format!("GRemoteActionGroupInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("activate_action_full", &self.activate_action_full)
+            .field("change_action_state_full", &self.change_action_state_full)
+            .finish()
     }
 }
 
@@ -5354,7 +5285,7 @@ pub struct GResolverClass {
 
 impl ::std::fmt::Debug for GResolverClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GResolverClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GResolverClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("reload", &self.reload)
             .field("lookup_by_name", &self.lookup_by_name)
@@ -5392,8 +5323,7 @@ pub struct GResource(c_void);
 
 impl ::std::fmt::Debug for GResource {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GResource @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GResource @ {:p}", self)).finish()
     }
 }
 
@@ -5425,7 +5355,7 @@ pub struct GSeekableIface {
 
 impl ::std::fmt::Debug for GSeekableIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSeekableIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSeekableIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("tell", &self.tell)
             .field("can_seek", &self.can_seek)
@@ -5478,7 +5408,7 @@ pub struct GSettingsBackendClass {
 
 impl ::std::fmt::Debug for GSettingsBackendClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsBackendClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsBackendClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("read", &self.read)
             .field("get_writable", &self.get_writable)
@@ -5514,7 +5444,7 @@ pub struct GSettingsClass {
 
 impl ::std::fmt::Debug for GSettingsClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("writable_changed", &self.writable_changed)
             .field("changed", &self.changed)
@@ -5535,7 +5465,7 @@ pub struct GSettingsSchema(c_void);
 
 impl ::std::fmt::Debug for GSettingsSchema {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsSchema @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsSchema @ {:p}", self))
             .finish()
     }
 }
@@ -5545,7 +5475,7 @@ pub struct GSettingsSchemaKey(c_void);
 
 impl ::std::fmt::Debug for GSettingsSchemaKey {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsSchemaKey @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsSchemaKey @ {:p}", self))
             .finish()
     }
 }
@@ -5555,7 +5485,7 @@ pub struct GSettingsSchemaSource(c_void);
 
 impl ::std::fmt::Debug for GSettingsSchemaSource {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsSchemaSource @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsSchemaSource @ {:p}", self))
             .finish()
     }
 }
@@ -5569,7 +5499,7 @@ pub struct GSimpleActionGroupClass {
 
 impl ::std::fmt::Debug for GSimpleActionGroupClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleActionGroupClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleActionGroupClass @ {:p}", self))
             .finish()
     }
 }
@@ -5597,17 +5527,14 @@ pub struct GSimpleProxyResolverClass {
 
 impl ::std::fmt::Debug for GSimpleProxyResolverClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GSimpleProxyResolverClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GSimpleProxyResolverClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -5634,7 +5561,7 @@ pub struct GSocketAddressClass {
 
 impl ::std::fmt::Debug for GSocketAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_family", &self.get_family)
             .field("get_native_size", &self.get_native_size)
@@ -5673,14 +5600,11 @@ pub struct GSocketAddressEnumeratorClass {
 
 impl ::std::fmt::Debug for GSocketAddressEnumeratorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GSocketAddressEnumeratorClass @ {:?}",
-            self as *const _
-        ))
-        .field("next", &self.next)
-        .field("next_async", &self.next_async)
-        .field("next_finish", &self.next_finish)
-        .finish()
+        f.debug_struct(&format!("GSocketAddressEnumeratorClass @ {:p}", self))
+            .field("next", &self.next)
+            .field("next_async", &self.next_async)
+            .field("next_finish", &self.next_finish)
+            .finish()
     }
 }
 
@@ -5702,7 +5626,7 @@ pub struct GSocketClass {
 
 impl ::std::fmt::Debug for GSocketClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -5738,7 +5662,7 @@ pub struct GSocketClientClass {
 
 impl ::std::fmt::Debug for GSocketClientClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketClientClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketClientClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("event", &self.event)
             .field("_g_reserved1", &self._g_reserved1)
@@ -5767,7 +5691,7 @@ pub struct GSocketConnectableIface {
 
 impl ::std::fmt::Debug for GSocketConnectableIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketConnectableIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketConnectableIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("enumerate", &self.enumerate)
             .field("proxy_enumerate", &self.proxy_enumerate)
@@ -5790,7 +5714,7 @@ pub struct GSocketConnectionClass {
 
 impl ::std::fmt::Debug for GSocketConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketConnectionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketConnectionClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -5826,22 +5750,19 @@ pub struct GSocketControlMessageClass {
 
 impl ::std::fmt::Debug for GSocketControlMessageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GSocketControlMessageClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("get_size", &self.get_size)
-        .field("get_level", &self.get_level)
-        .field("get_type", &self.get_type)
-        .field("serialize", &self.serialize)
-        .field("deserialize", &self.deserialize)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GSocketControlMessageClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("get_size", &self.get_size)
+            .field("get_level", &self.get_level)
+            .field("get_type", &self.get_type)
+            .field("serialize", &self.serialize)
+            .field("deserialize", &self.deserialize)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -5866,7 +5787,7 @@ pub struct GSocketListenerClass {
 
 impl ::std::fmt::Debug for GSocketListenerClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketListenerClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketListenerClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("changed", &self.changed)
             .field("event", &self.event)
@@ -5910,7 +5831,7 @@ pub struct GSocketServiceClass {
 
 impl ::std::fmt::Debug for GSocketServiceClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketServiceClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketServiceClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("incoming", &self.incoming)
             .field("_g_reserved1", &self._g_reserved1)
@@ -5933,8 +5854,7 @@ pub struct GSrvTarget(c_void);
 
 impl ::std::fmt::Debug for GSrvTarget {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSrvTarget @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GSrvTarget @ {:p}", self)).finish()
     }
 }
 
@@ -5950,7 +5870,7 @@ pub struct GStaticResource {
 
 impl ::std::fmt::Debug for GStaticResource {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GStaticResource @ {:?}", self as *const _))
+        f.debug_struct(&format!("GStaticResource @ {:p}", self))
             .finish()
     }
 }
@@ -5968,7 +5888,7 @@ pub struct GTcpConnectionClass {
 
 impl ::std::fmt::Debug for GTcpConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTcpConnectionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTcpConnectionClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -5987,12 +5907,9 @@ pub struct GTcpWrapperConnectionClass {
 
 impl ::std::fmt::Debug for GTcpWrapperConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GTcpWrapperConnectionClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .finish()
+        f.debug_struct(&format!("GTcpWrapperConnectionClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .finish()
     }
 }
 
@@ -6026,18 +5943,15 @@ pub struct GThreadedSocketServiceClass {
 
 impl ::std::fmt::Debug for GThreadedSocketServiceClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GThreadedSocketServiceClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("run", &self.run)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .field("_g_reserved3", &self._g_reserved3)
-        .field("_g_reserved4", &self._g_reserved4)
-        .field("_g_reserved5", &self._g_reserved5)
-        .finish()
+        f.debug_struct(&format!("GThreadedSocketServiceClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("run", &self.run)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .field("_g_reserved3", &self._g_reserved3)
+            .field("_g_reserved4", &self._g_reserved4)
+            .field("_g_reserved5", &self._g_reserved5)
+            .finish()
     }
 }
 
@@ -6063,7 +5977,7 @@ pub struct GTlsBackendInterface {
 
 impl ::std::fmt::Debug for GTlsBackendInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsBackendInterface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsBackendInterface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("supports_tls", &self.supports_tls)
             .field("get_certificate_type", &self.get_certificate_type)
@@ -6106,7 +6020,7 @@ pub struct GTlsCertificateClass {
 
 impl ::std::fmt::Debug for GTlsCertificateClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsCertificateClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsCertificateClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("verify", &self.verify)
             .finish()
@@ -6128,13 +6042,10 @@ pub struct GTlsClientConnectionInterface {
 
 impl ::std::fmt::Debug for GTlsClientConnectionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GTlsClientConnectionInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .field("copy_session_state", &self.copy_session_state)
-        .finish()
+        f.debug_struct(&format!("GTlsClientConnectionInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .field("copy_session_state", &self.copy_session_state)
+            .finish()
     }
 }
 
@@ -6185,7 +6096,7 @@ pub struct GTlsConnectionClass {
 
 impl ::std::fmt::Debug for GTlsConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsConnectionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsConnectionClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("accept_certificate", &self.accept_certificate)
             .field("handshake", &self.handshake)
@@ -6328,7 +6239,7 @@ pub struct GTlsDatabaseClass {
 
 impl ::std::fmt::Debug for GTlsDatabaseClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsDatabaseClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsDatabaseClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("verify_chain", &self.verify_chain)
             .field("verify_chain_async", &self.verify_chain_async)
@@ -6385,12 +6296,9 @@ pub struct GTlsFileDatabaseInterface {
 
 impl ::std::fmt::Debug for GTlsFileDatabaseInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GTlsFileDatabaseInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .finish()
+        f.debug_struct(&format!("GTlsFileDatabaseInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .finish()
     }
 }
 
@@ -6453,7 +6361,7 @@ pub struct GTlsInteractionClass {
 
 impl ::std::fmt::Debug for GTlsInteractionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsInteractionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsInteractionClass @ {:p}", self))
             .field("ask_password", &self.ask_password)
             .field("ask_password_async", &self.ask_password_async)
             .field("ask_password_finish", &self.ask_password_finish)
@@ -6485,7 +6393,7 @@ pub struct GTlsPasswordClass {
 
 impl ::std::fmt::Debug for GTlsPasswordClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsPasswordClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsPasswordClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("get_value", &self.get_value)
             .field("set_value", &self.set_value)
@@ -6507,12 +6415,9 @@ pub struct GTlsServerConnectionInterface {
 
 impl ::std::fmt::Debug for GTlsServerConnectionInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GTlsServerConnectionInterface @ {:?}",
-            self as *const _
-        ))
-        .field("g_iface", &self.g_iface)
-        .finish()
+        f.debug_struct(&format!("GTlsServerConnectionInterface @ {:p}", self))
+            .field("g_iface", &self.g_iface)
+            .finish()
     }
 }
 
@@ -6524,7 +6429,7 @@ pub struct GUnixConnectionClass {
 
 impl ::std::fmt::Debug for GUnixConnectionClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixConnectionClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixConnectionClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -6545,14 +6450,11 @@ pub struct GUnixCredentialsMessageClass {
 
 impl ::std::fmt::Debug for GUnixCredentialsMessageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GUnixCredentialsMessageClass @ {:?}",
-            self as *const _
-        ))
-        .field("parent_class", &self.parent_class)
-        .field("_g_reserved1", &self._g_reserved1)
-        .field("_g_reserved2", &self._g_reserved2)
-        .finish()
+        f.debug_struct(&format!("GUnixCredentialsMessageClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("_g_reserved1", &self._g_reserved1)
+            .field("_g_reserved2", &self._g_reserved2)
+            .finish()
     }
 }
 
@@ -6574,7 +6476,7 @@ pub struct GUnixFDListClass {
 
 impl ::std::fmt::Debug for GUnixFDListClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixFDListClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixFDListClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -6600,7 +6502,7 @@ pub struct GUnixFDMessageClass {
 
 impl ::std::fmt::Debug for GUnixFDMessageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixFDMessageClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixFDMessageClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -6626,7 +6528,7 @@ pub struct GUnixInputStreamClass {
 
 impl ::std::fmt::Debug for GUnixInputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixInputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixInputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -6647,7 +6549,7 @@ pub struct GUnixMountEntry(c_void);
 
 impl ::std::fmt::Debug for GUnixMountEntry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixMountEntry @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixMountEntry @ {:p}", self))
             .finish()
     }
 }
@@ -6662,7 +6564,7 @@ pub struct GUnixMountPoint(c_void);
 
 impl ::std::fmt::Debug for GUnixMountPoint {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixMountPoint @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixMountPoint @ {:p}", self))
             .finish()
     }
 }
@@ -6680,7 +6582,7 @@ pub struct GUnixOutputStreamClass {
 
 impl ::std::fmt::Debug for GUnixOutputStreamClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixOutputStreamClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixOutputStreamClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
@@ -6704,7 +6606,7 @@ pub struct GUnixSocketAddressClass {
 
 impl ::std::fmt::Debug for GUnixSocketAddressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixSocketAddressClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixSocketAddressClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -6762,7 +6664,7 @@ pub struct GVfsClass {
 
 impl ::std::fmt::Debug for GVfsClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVfsClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GVfsClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("is_active", &self.is_active)
             .field("get_file_for_path", &self.get_file_for_path)
@@ -6846,7 +6748,7 @@ pub struct GVolumeIface {
 
 impl ::std::fmt::Debug for GVolumeIface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVolumeIface @ {:?}", self as *const _))
+        f.debug_struct(&format!("GVolumeIface @ {:p}", self))
             .field("g_iface", &self.g_iface)
             .field("changed", &self.changed)
             .field("removed", &self.removed)
@@ -6912,7 +6814,7 @@ pub struct GVolumeMonitorClass {
 
 impl ::std::fmt::Debug for GVolumeMonitorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVolumeMonitorClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GVolumeMonitorClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .field("volume_added", &self.volume_added)
             .field("volume_removed", &self.volume_removed)
@@ -6951,7 +6853,7 @@ pub struct GZlibCompressorClass {
 
 impl ::std::fmt::Debug for GZlibCompressorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GZlibCompressorClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GZlibCompressorClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -6965,7 +6867,7 @@ pub struct GZlibDecompressorClass {
 
 impl ::std::fmt::Debug for GZlibDecompressorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GZlibDecompressorClass @ {:?}", self as *const _))
+        f.debug_struct(&format!("GZlibDecompressorClass @ {:p}", self))
             .field("parent_class", &self.parent_class)
             .finish()
     }
@@ -6977,7 +6879,7 @@ pub struct GAppInfoMonitor(c_void);
 
 impl ::std::fmt::Debug for GAppInfoMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAppInfoMonitor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAppInfoMonitor @ {:p}", self))
             .finish()
     }
 }
@@ -6991,7 +6893,7 @@ pub struct GAppLaunchContext {
 
 impl ::std::fmt::Debug for GAppLaunchContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GAppLaunchContext @ {:?}", self as *const _))
+        f.debug_struct(&format!("GAppLaunchContext @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7006,7 +6908,7 @@ pub struct GApplication {
 
 impl ::std::fmt::Debug for GApplication {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GApplication @ {:?}", self as *const _))
+        f.debug_struct(&format!("GApplication @ {:p}", self))
             .finish()
     }
 }
@@ -7020,7 +6922,7 @@ pub struct GApplicationCommandLine {
 
 impl ::std::fmt::Debug for GApplicationCommandLine {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GApplicationCommandLine @ {:?}", self as *const _))
+        f.debug_struct(&format!("GApplicationCommandLine @ {:p}", self))
             .finish()
     }
 }
@@ -7034,7 +6936,7 @@ pub struct GBufferedInputStream {
 
 impl ::std::fmt::Debug for GBufferedInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GBufferedInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GBufferedInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7049,7 +6951,7 @@ pub struct GBufferedOutputStream {
 
 impl ::std::fmt::Debug for GBufferedOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GBufferedOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GBufferedOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7061,8 +6963,7 @@ pub struct GBytesIcon(c_void);
 
 impl ::std::fmt::Debug for GBytesIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GBytesIcon @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GBytesIcon @ {:p}", self)).finish()
     }
 }
 
@@ -7075,7 +6976,7 @@ pub struct GCancellable {
 
 impl ::std::fmt::Debug for GCancellable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCancellable @ {:?}", self as *const _))
+        f.debug_struct(&format!("GCancellable @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7086,7 +6987,7 @@ pub struct GCharsetConverter(c_void);
 
 impl ::std::fmt::Debug for GCharsetConverter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCharsetConverter @ {:?}", self as *const _))
+        f.debug_struct(&format!("GCharsetConverter @ {:p}", self))
             .finish()
     }
 }
@@ -7100,7 +7001,7 @@ pub struct GConverterInputStream {
 
 impl ::std::fmt::Debug for GConverterInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GConverterInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GConverterInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7115,7 +7016,7 @@ pub struct GConverterOutputStream {
 
 impl ::std::fmt::Debug for GConverterOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GConverterOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GConverterOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7126,7 +7027,7 @@ pub struct GCredentials(c_void);
 
 impl ::std::fmt::Debug for GCredentials {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCredentials @ {:?}", self as *const _))
+        f.debug_struct(&format!("GCredentials @ {:p}", self))
             .finish()
     }
 }
@@ -7136,7 +7037,7 @@ pub struct GDBusActionGroup(c_void);
 
 impl ::std::fmt::Debug for GDBusActionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusActionGroup @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusActionGroup @ {:p}", self))
             .finish()
     }
 }
@@ -7146,7 +7047,7 @@ pub struct GDBusAuthObserver(c_void);
 
 impl ::std::fmt::Debug for GDBusAuthObserver {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusAuthObserver @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusAuthObserver @ {:p}", self))
             .finish()
     }
 }
@@ -7156,7 +7057,7 @@ pub struct GDBusConnection(c_void);
 
 impl ::std::fmt::Debug for GDBusConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusConnection @ {:p}", self))
             .finish()
     }
 }
@@ -7170,7 +7071,7 @@ pub struct GDBusInterfaceSkeleton {
 
 impl ::std::fmt::Debug for GDBusInterfaceSkeleton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusInterfaceSkeleton @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusInterfaceSkeleton @ {:p}", self))
             .finish()
     }
 }
@@ -7180,7 +7081,7 @@ pub struct GDBusMenuModel(c_void);
 
 impl ::std::fmt::Debug for GDBusMenuModel {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusMenuModel @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusMenuModel @ {:p}", self))
             .finish()
     }
 }
@@ -7190,7 +7091,7 @@ pub struct GDBusMessage(c_void);
 
 impl ::std::fmt::Debug for GDBusMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusMessage @ {:p}", self))
             .finish()
     }
 }
@@ -7200,7 +7101,7 @@ pub struct GDBusMethodInvocation(c_void);
 
 impl ::std::fmt::Debug for GDBusMethodInvocation {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusMethodInvocation @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusMethodInvocation @ {:p}", self))
             .finish()
     }
 }
@@ -7214,11 +7115,8 @@ pub struct GDBusObjectManagerClient {
 
 impl ::std::fmt::Debug for GDBusObjectManagerClient {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusObjectManagerClient @ {:?}",
-            self as *const _
-        ))
-        .finish()
+        f.debug_struct(&format!("GDBusObjectManagerClient @ {:p}", self))
+            .finish()
     }
 }
 
@@ -7231,11 +7129,8 @@ pub struct GDBusObjectManagerServer {
 
 impl ::std::fmt::Debug for GDBusObjectManagerServer {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GDBusObjectManagerServer @ {:?}",
-            self as *const _
-        ))
-        .finish()
+        f.debug_struct(&format!("GDBusObjectManagerServer @ {:p}", self))
+            .finish()
     }
 }
 
@@ -7248,7 +7143,7 @@ pub struct GDBusObjectProxy {
 
 impl ::std::fmt::Debug for GDBusObjectProxy {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusObjectProxy @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusObjectProxy @ {:p}", self))
             .finish()
     }
 }
@@ -7262,7 +7157,7 @@ pub struct GDBusObjectSkeleton {
 
 impl ::std::fmt::Debug for GDBusObjectSkeleton {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusObjectSkeleton @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusObjectSkeleton @ {:p}", self))
             .finish()
     }
 }
@@ -7276,8 +7171,7 @@ pub struct GDBusProxy {
 
 impl ::std::fmt::Debug for GDBusProxy {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusProxy @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GDBusProxy @ {:p}", self)).finish()
     }
 }
 
@@ -7286,7 +7180,7 @@ pub struct GDBusServer(c_void);
 
 impl ::std::fmt::Debug for GDBusServer {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDBusServer @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDBusServer @ {:p}", self))
             .finish()
     }
 }
@@ -7300,7 +7194,7 @@ pub struct GDataInputStream {
 
 impl ::std::fmt::Debug for GDataInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDataInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDataInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7315,7 +7209,7 @@ pub struct GDataOutputStream {
 
 impl ::std::fmt::Debug for GDataOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDataOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDataOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7326,7 +7220,7 @@ pub struct GDesktopAppInfo(c_void);
 
 impl ::std::fmt::Debug for GDesktopAppInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDesktopAppInfo @ {:?}", self as *const _))
+        f.debug_struct(&format!("GDesktopAppInfo @ {:p}", self))
             .finish()
     }
 }
@@ -7336,8 +7230,7 @@ pub struct GEmblem(c_void);
 
 impl ::std::fmt::Debug for GEmblem {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GEmblem @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GEmblem @ {:p}", self)).finish()
     }
 }
 
@@ -7350,7 +7243,7 @@ pub struct GEmblemedIcon {
 
 impl ::std::fmt::Debug for GEmblemedIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GEmblemedIcon @ {:?}", self as *const _))
+        f.debug_struct(&format!("GEmblemedIcon @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7365,7 +7258,7 @@ pub struct GFileEnumerator {
 
 impl ::std::fmt::Debug for GFileEnumerator {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileEnumerator @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileEnumerator @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7380,7 +7273,7 @@ pub struct GFileIOStream {
 
 impl ::std::fmt::Debug for GFileIOStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileIOStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileIOStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7391,8 +7284,7 @@ pub struct GFileIcon(c_void);
 
 impl ::std::fmt::Debug for GFileIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileIcon @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GFileIcon @ {:p}", self)).finish()
     }
 }
 
@@ -7401,8 +7293,7 @@ pub struct GFileInfo(c_void);
 
 impl ::std::fmt::Debug for GFileInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileInfo @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GFileInfo @ {:p}", self)).finish()
     }
 }
 
@@ -7415,7 +7306,7 @@ pub struct GFileInputStream {
 
 impl ::std::fmt::Debug for GFileInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7430,7 +7321,7 @@ pub struct GFileMonitor {
 
 impl ::std::fmt::Debug for GFileMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileMonitor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileMonitor @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7445,7 +7336,7 @@ pub struct GFileOutputStream {
 
 impl ::std::fmt::Debug for GFileOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFileOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFileOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7456,7 +7347,7 @@ pub struct GFilenameCompleter(c_void);
 
 impl ::std::fmt::Debug for GFilenameCompleter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFilenameCompleter @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFilenameCompleter @ {:p}", self))
             .finish()
     }
 }
@@ -7470,7 +7361,7 @@ pub struct GFilterInputStream {
 
 impl ::std::fmt::Debug for GFilterInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFilterInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFilterInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("base_stream", &self.base_stream)
             .finish()
@@ -7486,7 +7377,7 @@ pub struct GFilterOutputStream {
 
 impl ::std::fmt::Debug for GFilterOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFilterOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GFilterOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("base_stream", &self.base_stream)
             .finish()
@@ -7498,8 +7389,7 @@ pub struct GIOModule(c_void);
 
 impl ::std::fmt::Debug for GIOModule {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIOModule @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GIOModule @ {:p}", self)).finish()
     }
 }
 
@@ -7512,7 +7402,7 @@ pub struct GIOStream {
 
 impl ::std::fmt::Debug for GIOStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIOStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GIOStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7527,7 +7417,7 @@ pub struct GInetAddress {
 
 impl ::std::fmt::Debug for GInetAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7542,7 +7432,7 @@ pub struct GInetAddressMask {
 
 impl ::std::fmt::Debug for GInetAddressMask {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetAddressMask @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetAddressMask @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7557,7 +7447,7 @@ pub struct GInetSocketAddress {
 
 impl ::std::fmt::Debug for GInetSocketAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInetSocketAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInetSocketAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7572,7 +7462,7 @@ pub struct GInputStream {
 
 impl ::std::fmt::Debug for GInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7583,8 +7473,7 @@ pub struct GListStore(c_void);
 
 impl ::std::fmt::Debug for GListStore {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GListStore @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GListStore @ {:p}", self)).finish()
     }
 }
 
@@ -7597,7 +7486,7 @@ pub struct GMemoryInputStream {
 
 impl ::std::fmt::Debug for GMemoryInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMemoryInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMemoryInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7612,7 +7501,7 @@ pub struct GMemoryOutputStream {
 
 impl ::std::fmt::Debug for GMemoryOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMemoryOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMemoryOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7623,8 +7512,7 @@ pub struct GMenu(c_void);
 
 impl ::std::fmt::Debug for GMenu {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenu @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GMenu @ {:p}", self)).finish()
     }
 }
 
@@ -7637,7 +7525,7 @@ pub struct GMenuAttributeIter {
 
 impl ::std::fmt::Debug for GMenuAttributeIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuAttributeIter @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuAttributeIter @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7649,8 +7537,7 @@ pub struct GMenuItem(c_void);
 
 impl ::std::fmt::Debug for GMenuItem {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuItem @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GMenuItem @ {:p}", self)).finish()
     }
 }
 
@@ -7663,7 +7550,7 @@ pub struct GMenuLinkIter {
 
 impl ::std::fmt::Debug for GMenuLinkIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuLinkIter @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuLinkIter @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7679,7 +7566,7 @@ pub struct GMenuModel {
 
 impl ::std::fmt::Debug for GMenuModel {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMenuModel @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMenuModel @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7695,7 +7582,7 @@ pub struct GMountOperation {
 
 impl ::std::fmt::Debug for GMountOperation {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMountOperation @ {:?}", self as *const _))
+        f.debug_struct(&format!("GMountOperation @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7711,7 +7598,7 @@ pub struct GNativeSocketAddress {
 
 impl ::std::fmt::Debug for GNativeSocketAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNativeSocketAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNativeSocketAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7725,7 +7612,7 @@ pub struct GNativeVolumeMonitor {
 
 impl ::std::fmt::Debug for GNativeVolumeMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNativeVolumeMonitor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNativeVolumeMonitor @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7740,7 +7627,7 @@ pub struct GNetworkAddress {
 
 impl ::std::fmt::Debug for GNetworkAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNetworkAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNetworkAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7755,7 +7642,7 @@ pub struct GNetworkService {
 
 impl ::std::fmt::Debug for GNetworkService {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNetworkService @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNetworkService @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7766,7 +7653,7 @@ pub struct GNotification(c_void);
 
 impl ::std::fmt::Debug for GNotification {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNotification @ {:?}", self as *const _))
+        f.debug_struct(&format!("GNotification @ {:p}", self))
             .finish()
     }
 }
@@ -7780,7 +7667,7 @@ pub struct GOutputStream {
 
 impl ::std::fmt::Debug for GOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7795,7 +7682,7 @@ pub struct GPermission {
 
 impl ::std::fmt::Debug for GPermission {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPermission @ {:?}", self as *const _))
+        f.debug_struct(&format!("GPermission @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7806,7 +7693,7 @@ pub struct GPropertyAction(c_void);
 
 impl ::std::fmt::Debug for GPropertyAction {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPropertyAction @ {:?}", self as *const _))
+        f.debug_struct(&format!("GPropertyAction @ {:p}", self))
             .finish()
     }
 }
@@ -7820,7 +7707,7 @@ pub struct GProxyAddress {
 
 impl ::std::fmt::Debug for GProxyAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GProxyAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GProxyAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7835,7 +7722,7 @@ pub struct GProxyAddressEnumerator {
 
 impl ::std::fmt::Debug for GProxyAddressEnumerator {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GProxyAddressEnumerator @ {:?}", self as *const _))
+        f.debug_struct(&format!("GProxyAddressEnumerator @ {:p}", self))
             .finish()
     }
 }
@@ -7849,7 +7736,7 @@ pub struct GResolver {
 
 impl ::std::fmt::Debug for GResolver {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GResolver @ {:?}", self as *const _))
+        f.debug_struct(&format!("GResolver @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7865,7 +7752,7 @@ pub struct GSettings {
 
 impl ::std::fmt::Debug for GSettings {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettings @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettings @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7881,7 +7768,7 @@ pub struct GSettingsBackend {
 
 impl ::std::fmt::Debug for GSettingsBackend {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSettingsBackend @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSettingsBackend @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7892,7 +7779,7 @@ pub struct GSimpleAction(c_void);
 
 impl ::std::fmt::Debug for GSimpleAction {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleAction @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleAction @ {:p}", self))
             .finish()
     }
 }
@@ -7906,7 +7793,7 @@ pub struct GSimpleActionGroup {
 
 impl ::std::fmt::Debug for GSimpleActionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleActionGroup @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleActionGroup @ {:p}", self))
             .finish()
     }
 }
@@ -7916,7 +7803,7 @@ pub struct GSimpleAsyncResult(c_void);
 
 impl ::std::fmt::Debug for GSimpleAsyncResult {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleAsyncResult @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleAsyncResult @ {:p}", self))
             .finish()
     }
 }
@@ -7926,7 +7813,7 @@ pub struct GSimpleIOStream(c_void);
 
 impl ::std::fmt::Debug for GSimpleIOStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleIOStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleIOStream @ {:p}", self))
             .finish()
     }
 }
@@ -7936,7 +7823,7 @@ pub struct GSimplePermission(c_void);
 
 impl ::std::fmt::Debug for GSimplePermission {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimplePermission @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimplePermission @ {:p}", self))
             .finish()
     }
 }
@@ -7950,7 +7837,7 @@ pub struct GSimpleProxyResolver {
 
 impl ::std::fmt::Debug for GSimpleProxyResolver {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSimpleProxyResolver @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSimpleProxyResolver @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7965,7 +7852,7 @@ pub struct GSocket {
 
 impl ::std::fmt::Debug for GSocket {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocket @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocket @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -7980,7 +7867,7 @@ pub struct GSocketAddress {
 
 impl ::std::fmt::Debug for GSocketAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -7994,11 +7881,8 @@ pub struct GSocketAddressEnumerator {
 
 impl ::std::fmt::Debug for GSocketAddressEnumerator {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!(
-            "GSocketAddressEnumerator @ {:?}",
-            self as *const _
-        ))
-        .finish()
+        f.debug_struct(&format!("GSocketAddressEnumerator @ {:p}", self))
+            .finish()
     }
 }
 
@@ -8011,7 +7895,7 @@ pub struct GSocketClient {
 
 impl ::std::fmt::Debug for GSocketClient {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketClient @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketClient @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8027,7 +7911,7 @@ pub struct GSocketConnection {
 
 impl ::std::fmt::Debug for GSocketConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketConnection @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8043,7 +7927,7 @@ pub struct GSocketControlMessage {
 
 impl ::std::fmt::Debug for GSocketControlMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketControlMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketControlMessage @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8059,7 +7943,7 @@ pub struct GSocketListener {
 
 impl ::std::fmt::Debug for GSocketListener {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketListener @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketListener @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8075,7 +7959,7 @@ pub struct GSocketService {
 
 impl ::std::fmt::Debug for GSocketService {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSocketService @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSocketService @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8087,7 +7971,7 @@ pub struct GSubprocess(c_void);
 
 impl ::std::fmt::Debug for GSubprocess {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSubprocess @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSubprocess @ {:p}", self))
             .finish()
     }
 }
@@ -8097,7 +7981,7 @@ pub struct GSubprocessLauncher(c_void);
 
 impl ::std::fmt::Debug for GSubprocessLauncher {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSubprocessLauncher @ {:?}", self as *const _))
+        f.debug_struct(&format!("GSubprocessLauncher @ {:p}", self))
             .finish()
     }
 }
@@ -8107,8 +7991,7 @@ pub struct GTask(c_void);
 
 impl ::std::fmt::Debug for GTask {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTask @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GTask @ {:p}", self)).finish()
     }
 }
 
@@ -8121,7 +8004,7 @@ pub struct GTcpConnection {
 
 impl ::std::fmt::Debug for GTcpConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTcpConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTcpConnection @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8137,7 +8020,7 @@ pub struct GTcpWrapperConnection {
 
 impl ::std::fmt::Debug for GTcpWrapperConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTcpWrapperConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTcpWrapperConnection @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8149,8 +8032,7 @@ pub struct GTestDBus(c_void);
 
 impl ::std::fmt::Debug for GTestDBus {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTestDBus @ {:?}", self as *const _))
-            .finish()
+        f.debug_struct(&format!("GTestDBus @ {:p}", self)).finish()
     }
 }
 
@@ -8159,7 +8041,7 @@ pub struct GThemedIcon(c_void);
 
 impl ::std::fmt::Debug for GThemedIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GThemedIcon @ {:?}", self as *const _))
+        f.debug_struct(&format!("GThemedIcon @ {:p}", self))
             .finish()
     }
 }
@@ -8173,7 +8055,7 @@ pub struct GThreadedSocketService {
 
 impl ::std::fmt::Debug for GThreadedSocketService {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GThreadedSocketService @ {:?}", self as *const _))
+        f.debug_struct(&format!("GThreadedSocketService @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8189,7 +8071,7 @@ pub struct GTlsCertificate {
 
 impl ::std::fmt::Debug for GTlsCertificate {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsCertificate @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsCertificate @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8205,7 +8087,7 @@ pub struct GTlsConnection {
 
 impl ::std::fmt::Debug for GTlsConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsConnection @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8221,7 +8103,7 @@ pub struct GTlsDatabase {
 
 impl ::std::fmt::Debug for GTlsDatabase {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsDatabase @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsDatabase @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8237,7 +8119,7 @@ pub struct GTlsInteraction {
 
 impl ::std::fmt::Debug for GTlsInteraction {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsInteraction @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsInteraction @ {:p}", self))
             .finish()
     }
 }
@@ -8251,7 +8133,7 @@ pub struct GTlsPassword {
 
 impl ::std::fmt::Debug for GTlsPassword {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTlsPassword @ {:?}", self as *const _))
+        f.debug_struct(&format!("GTlsPassword @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8267,7 +8149,7 @@ pub struct GUnixConnection {
 
 impl ::std::fmt::Debug for GUnixConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixConnection @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixConnection @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8283,7 +8165,7 @@ pub struct GUnixCredentialsMessage {
 
 impl ::std::fmt::Debug for GUnixCredentialsMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixCredentialsMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixCredentialsMessage @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8299,7 +8181,7 @@ pub struct GUnixFDList {
 
 impl ::std::fmt::Debug for GUnixFDList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixFDList @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixFDList @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8315,7 +8197,7 @@ pub struct GUnixFDMessage {
 
 impl ::std::fmt::Debug for GUnixFDMessage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixFDMessage @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixFDMessage @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .field("priv_", &self.priv_)
             .finish()
@@ -8331,7 +8213,7 @@ pub struct GUnixInputStream {
 
 impl ::std::fmt::Debug for GUnixInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixInputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixInputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -8342,7 +8224,7 @@ pub struct GUnixMountMonitor(c_void);
 
 impl ::std::fmt::Debug for GUnixMountMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixMountMonitor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixMountMonitor @ {:p}", self))
             .finish()
     }
 }
@@ -8356,7 +8238,7 @@ pub struct GUnixOutputStream {
 
 impl ::std::fmt::Debug for GUnixOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixOutputStream @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixOutputStream @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -8371,7 +8253,7 @@ pub struct GUnixSocketAddress {
 
 impl ::std::fmt::Debug for GUnixSocketAddress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixSocketAddress @ {:?}", self as *const _))
+        f.debug_struct(&format!("GUnixSocketAddress @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -8385,7 +8267,7 @@ pub struct GVfs {
 
 impl ::std::fmt::Debug for GVfs {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVfs @ {:?}", self as *const _))
+        f.debug_struct(&format!("GVfs @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -8400,7 +8282,7 @@ pub struct GVolumeMonitor {
 
 impl ::std::fmt::Debug for GVolumeMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVolumeMonitor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GVolumeMonitor @ {:p}", self))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -8411,7 +8293,7 @@ pub struct GZlibCompressor(c_void);
 
 impl ::std::fmt::Debug for GZlibCompressor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GZlibCompressor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GZlibCompressor @ {:p}", self))
             .finish()
     }
 }
@@ -8421,7 +8303,7 @@ pub struct GZlibDecompressor(c_void);
 
 impl ::std::fmt::Debug for GZlibDecompressor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GZlibDecompressor @ {:?}", self as *const _))
+        f.debug_struct(&format!("GZlibDecompressor @ {:p}", self))
             .finish()
     }
 }
@@ -8432,7 +8314,7 @@ pub struct GAction(c_void);
 
 impl ::std::fmt::Debug for GAction {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GAction @ {:?}", self as *const _)
+        write!(f, "GAction @ {:p}", self)
     }
 }
 
@@ -8441,7 +8323,7 @@ pub struct GActionGroup(c_void);
 
 impl ::std::fmt::Debug for GActionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GActionGroup @ {:?}", self as *const _)
+        write!(f, "GActionGroup @ {:p}", self)
     }
 }
 
@@ -8450,7 +8332,7 @@ pub struct GActionMap(c_void);
 
 impl ::std::fmt::Debug for GActionMap {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GActionMap @ {:?}", self as *const _)
+        write!(f, "GActionMap @ {:p}", self)
     }
 }
 
@@ -8459,7 +8341,7 @@ pub struct GAppInfo(c_void);
 
 impl ::std::fmt::Debug for GAppInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GAppInfo @ {:?}", self as *const _)
+        write!(f, "GAppInfo @ {:p}", self)
     }
 }
 
@@ -8468,7 +8350,7 @@ pub struct GAsyncInitable(c_void);
 
 impl ::std::fmt::Debug for GAsyncInitable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GAsyncInitable @ {:?}", self as *const _)
+        write!(f, "GAsyncInitable @ {:p}", self)
     }
 }
 
@@ -8477,7 +8359,7 @@ pub struct GAsyncResult(c_void);
 
 impl ::std::fmt::Debug for GAsyncResult {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GAsyncResult @ {:?}", self as *const _)
+        write!(f, "GAsyncResult @ {:p}", self)
     }
 }
 
@@ -8486,7 +8368,7 @@ pub struct GConverter(c_void);
 
 impl ::std::fmt::Debug for GConverter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GConverter @ {:?}", self as *const _)
+        write!(f, "GConverter @ {:p}", self)
     }
 }
 
@@ -8495,7 +8377,7 @@ pub struct GDBusInterface(c_void);
 
 impl ::std::fmt::Debug for GDBusInterface {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDBusInterface @ {:?}", self as *const _)
+        write!(f, "GDBusInterface @ {:p}", self)
     }
 }
 
@@ -8504,7 +8386,7 @@ pub struct GDBusObject(c_void);
 
 impl ::std::fmt::Debug for GDBusObject {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDBusObject @ {:?}", self as *const _)
+        write!(f, "GDBusObject @ {:p}", self)
     }
 }
 
@@ -8513,7 +8395,7 @@ pub struct GDBusObjectManager(c_void);
 
 impl ::std::fmt::Debug for GDBusObjectManager {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDBusObjectManager @ {:?}", self as *const _)
+        write!(f, "GDBusObjectManager @ {:p}", self)
     }
 }
 
@@ -8522,7 +8404,7 @@ pub struct GDatagramBased(c_void);
 
 impl ::std::fmt::Debug for GDatagramBased {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDatagramBased @ {:?}", self as *const _)
+        write!(f, "GDatagramBased @ {:p}", self)
     }
 }
 
@@ -8531,7 +8413,7 @@ pub struct GDesktopAppInfoLookup(c_void);
 
 impl ::std::fmt::Debug for GDesktopAppInfoLookup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDesktopAppInfoLookup @ {:?}", self as *const _)
+        write!(f, "GDesktopAppInfoLookup @ {:p}", self)
     }
 }
 
@@ -8540,7 +8422,7 @@ pub struct GDrive(c_void);
 
 impl ::std::fmt::Debug for GDrive {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDrive @ {:?}", self as *const _)
+        write!(f, "GDrive @ {:p}", self)
     }
 }
 
@@ -8549,7 +8431,7 @@ pub struct GDtlsClientConnection(c_void);
 
 impl ::std::fmt::Debug for GDtlsClientConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDtlsClientConnection @ {:?}", self as *const _)
+        write!(f, "GDtlsClientConnection @ {:p}", self)
     }
 }
 
@@ -8558,7 +8440,7 @@ pub struct GDtlsConnection(c_void);
 
 impl ::std::fmt::Debug for GDtlsConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDtlsConnection @ {:?}", self as *const _)
+        write!(f, "GDtlsConnection @ {:p}", self)
     }
 }
 
@@ -8567,7 +8449,7 @@ pub struct GDtlsServerConnection(c_void);
 
 impl ::std::fmt::Debug for GDtlsServerConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GDtlsServerConnection @ {:?}", self as *const _)
+        write!(f, "GDtlsServerConnection @ {:p}", self)
     }
 }
 
@@ -8576,7 +8458,7 @@ pub struct GFile(c_void);
 
 impl ::std::fmt::Debug for GFile {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GFile @ {:?}", self as *const _)
+        write!(f, "GFile @ {:p}", self)
     }
 }
 
@@ -8585,7 +8467,7 @@ pub struct GFileDescriptorBased(c_void);
 
 impl ::std::fmt::Debug for GFileDescriptorBased {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GFileDescriptorBased @ {:?}", self as *const _)
+        write!(f, "GFileDescriptorBased @ {:p}", self)
     }
 }
 
@@ -8594,7 +8476,7 @@ pub struct GIcon(c_void);
 
 impl ::std::fmt::Debug for GIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GIcon @ {:?}", self as *const _)
+        write!(f, "GIcon @ {:p}", self)
     }
 }
 
@@ -8603,7 +8485,7 @@ pub struct GInitable(c_void);
 
 impl ::std::fmt::Debug for GInitable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GInitable @ {:?}", self as *const _)
+        write!(f, "GInitable @ {:p}", self)
     }
 }
 
@@ -8612,7 +8494,7 @@ pub struct GListModel(c_void);
 
 impl ::std::fmt::Debug for GListModel {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GListModel @ {:?}", self as *const _)
+        write!(f, "GListModel @ {:p}", self)
     }
 }
 
@@ -8621,7 +8503,7 @@ pub struct GLoadableIcon(c_void);
 
 impl ::std::fmt::Debug for GLoadableIcon {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GLoadableIcon @ {:?}", self as *const _)
+        write!(f, "GLoadableIcon @ {:p}", self)
     }
 }
 
@@ -8630,7 +8512,7 @@ pub struct GMemoryMonitor(c_void);
 
 impl ::std::fmt::Debug for GMemoryMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GMemoryMonitor @ {:?}", self as *const _)
+        write!(f, "GMemoryMonitor @ {:p}", self)
     }
 }
 
@@ -8639,7 +8521,7 @@ pub struct GMount(c_void);
 
 impl ::std::fmt::Debug for GMount {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GMount @ {:?}", self as *const _)
+        write!(f, "GMount @ {:p}", self)
     }
 }
 
@@ -8648,7 +8530,7 @@ pub struct GNetworkMonitor(c_void);
 
 impl ::std::fmt::Debug for GNetworkMonitor {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GNetworkMonitor @ {:?}", self as *const _)
+        write!(f, "GNetworkMonitor @ {:p}", self)
     }
 }
 
@@ -8657,7 +8539,7 @@ pub struct GPollableInputStream(c_void);
 
 impl ::std::fmt::Debug for GPollableInputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GPollableInputStream @ {:?}", self as *const _)
+        write!(f, "GPollableInputStream @ {:p}", self)
     }
 }
 
@@ -8666,7 +8548,7 @@ pub struct GPollableOutputStream(c_void);
 
 impl ::std::fmt::Debug for GPollableOutputStream {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GPollableOutputStream @ {:?}", self as *const _)
+        write!(f, "GPollableOutputStream @ {:p}", self)
     }
 }
 
@@ -8675,7 +8557,7 @@ pub struct GProxy(c_void);
 
 impl ::std::fmt::Debug for GProxy {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GProxy @ {:?}", self as *const _)
+        write!(f, "GProxy @ {:p}", self)
     }
 }
 
@@ -8684,7 +8566,7 @@ pub struct GProxyResolver(c_void);
 
 impl ::std::fmt::Debug for GProxyResolver {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GProxyResolver @ {:?}", self as *const _)
+        write!(f, "GProxyResolver @ {:p}", self)
     }
 }
 
@@ -8693,7 +8575,7 @@ pub struct GRemoteActionGroup(c_void);
 
 impl ::std::fmt::Debug for GRemoteActionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GRemoteActionGroup @ {:?}", self as *const _)
+        write!(f, "GRemoteActionGroup @ {:p}", self)
     }
 }
 
@@ -8702,7 +8584,7 @@ pub struct GSeekable(c_void);
 
 impl ::std::fmt::Debug for GSeekable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GSeekable @ {:?}", self as *const _)
+        write!(f, "GSeekable @ {:p}", self)
     }
 }
 
@@ -8711,7 +8593,7 @@ pub struct GSocketConnectable(c_void);
 
 impl ::std::fmt::Debug for GSocketConnectable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GSocketConnectable @ {:?}", self as *const _)
+        write!(f, "GSocketConnectable @ {:p}", self)
     }
 }
 
@@ -8720,7 +8602,7 @@ pub struct GTlsBackend(c_void);
 
 impl ::std::fmt::Debug for GTlsBackend {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GTlsBackend @ {:?}", self as *const _)
+        write!(f, "GTlsBackend @ {:p}", self)
     }
 }
 
@@ -8729,7 +8611,7 @@ pub struct GTlsClientConnection(c_void);
 
 impl ::std::fmt::Debug for GTlsClientConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GTlsClientConnection @ {:?}", self as *const _)
+        write!(f, "GTlsClientConnection @ {:p}", self)
     }
 }
 
@@ -8738,7 +8620,7 @@ pub struct GTlsFileDatabase(c_void);
 
 impl ::std::fmt::Debug for GTlsFileDatabase {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GTlsFileDatabase @ {:?}", self as *const _)
+        write!(f, "GTlsFileDatabase @ {:p}", self)
     }
 }
 
@@ -8747,7 +8629,7 @@ pub struct GTlsServerConnection(c_void);
 
 impl ::std::fmt::Debug for GTlsServerConnection {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GTlsServerConnection @ {:?}", self as *const _)
+        write!(f, "GTlsServerConnection @ {:p}", self)
     }
 }
 
@@ -8756,7 +8638,7 @@ pub struct GVolume(c_void);
 
 impl ::std::fmt::Debug for GVolume {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GVolume @ {:?}", self as *const _)
+        write!(f, "GVolume @ {:p}", self)
     }
 }
 

@@ -62,10 +62,10 @@ impl IntoGlib for BusType {
 impl FromGlib<ffi::GBusType> for BusType {
     unsafe fn from_glib(value: ffi::GBusType) -> Self {
         match value {
-            -1 => Self::Starter,
-            0 => Self::None,
-            1 => Self::System,
-            2 => Self::Session,
+            ffi::G_BUS_TYPE_STARTER => Self::Starter,
+            ffi::G_BUS_TYPE_NONE => Self::None,
+            ffi::G_BUS_TYPE_SYSTEM => Self::System,
+            ffi::G_BUS_TYPE_SESSION => Self::Session,
             value => Self::__Unknown(value),
         }
     }
@@ -154,10 +154,10 @@ impl IntoGlib for ConverterResult {
 impl FromGlib<ffi::GConverterResult> for ConverterResult {
     unsafe fn from_glib(value: ffi::GConverterResult) -> Self {
         match value {
-            0 => Self::Error,
-            1 => Self::Converted,
-            2 => Self::Finished,
-            3 => Self::Flushed,
+            ffi::G_CONVERTER_ERROR => Self::Error,
+            ffi::G_CONVERTER_CONVERTED => Self::Converted,
+            ffi::G_CONVERTER_FINISHED => Self::Finished,
+            ffi::G_CONVERTER_FLUSHED => Self::Flushed,
             value => Self::__Unknown(value),
         }
     }
@@ -258,13 +258,13 @@ impl IntoGlib for CredentialsType {
 impl FromGlib<ffi::GCredentialsType> for CredentialsType {
     unsafe fn from_glib(value: ffi::GCredentialsType) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::LinuxUcred,
-            2 => Self::FreebsdCmsgcred,
-            3 => Self::OpenbsdSockpeercred,
-            4 => Self::SolarisUcred,
-            5 => Self::NetbsdUnpcbid,
-            6 => Self::AppleXucred,
+            ffi::G_CREDENTIALS_TYPE_INVALID => Self::Invalid,
+            ffi::G_CREDENTIALS_TYPE_LINUX_UCRED => Self::LinuxUcred,
+            ffi::G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED => Self::FreebsdCmsgcred,
+            ffi::G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED => Self::OpenbsdSockpeercred,
+            ffi::G_CREDENTIALS_TYPE_SOLARIS_UCRED => Self::SolarisUcred,
+            ffi::G_CREDENTIALS_TYPE_NETBSD_UNPCBID => Self::NetbsdUnpcbid,
+            ffi::G_CREDENTIALS_TYPE_APPLE_XUCRED => Self::AppleXucred,
             value => Self::__Unknown(value),
         }
     }
@@ -345,8 +345,8 @@ impl IntoGlib for DBusMessageByteOrder {
 impl FromGlib<ffi::GDBusMessageByteOrder> for DBusMessageByteOrder {
     unsafe fn from_glib(value: ffi::GDBusMessageByteOrder) -> Self {
         match value {
-            66 => Self::BigEndian,
-            108 => Self::LittleEndian,
+            ffi::G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN => Self::BigEndian,
+            ffi::G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN => Self::LittleEndian,
             value => Self::__Unknown(value),
         }
     }
@@ -459,16 +459,16 @@ impl IntoGlib for DBusMessageHeaderField {
 impl FromGlib<ffi::GDBusMessageHeaderField> for DBusMessageHeaderField {
     unsafe fn from_glib(value: ffi::GDBusMessageHeaderField) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::Path,
-            2 => Self::Interface,
-            3 => Self::Member,
-            4 => Self::ErrorName,
-            5 => Self::ReplySerial,
-            6 => Self::Destination,
-            7 => Self::Sender,
-            8 => Self::Signature,
-            9 => Self::NumUnixFds,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_INVALID => Self::Invalid,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_PATH => Self::Path,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE => Self::Interface,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_MEMBER => Self::Member,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME => Self::ErrorName,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL => Self::ReplySerial,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION => Self::Destination,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_SENDER => Self::Sender,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE => Self::Signature,
+            ffi::G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS => Self::NumUnixFds,
             value => Self::__Unknown(value),
         }
     }
@@ -561,11 +561,11 @@ impl IntoGlib for DBusMessageType {
 impl FromGlib<ffi::GDBusMessageType> for DBusMessageType {
     unsafe fn from_glib(value: ffi::GDBusMessageType) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::MethodCall,
-            2 => Self::MethodReturn,
-            3 => Self::Error,
-            4 => Self::Signal,
+            ffi::G_DBUS_MESSAGE_TYPE_INVALID => Self::Invalid,
+            ffi::G_DBUS_MESSAGE_TYPE_METHOD_CALL => Self::MethodCall,
+            ffi::G_DBUS_MESSAGE_TYPE_METHOD_RETURN => Self::MethodReturn,
+            ffi::G_DBUS_MESSAGE_TYPE_ERROR => Self::Error,
+            ffi::G_DBUS_MESSAGE_TYPE_SIGNAL => Self::Signal,
             value => Self::__Unknown(value),
         }
     }
@@ -650,9 +650,9 @@ impl IntoGlib for DataStreamByteOrder {
 impl FromGlib<ffi::GDataStreamByteOrder> for DataStreamByteOrder {
     unsafe fn from_glib(value: ffi::GDataStreamByteOrder) -> Self {
         match value {
-            0 => Self::BigEndian,
-            1 => Self::LittleEndian,
-            2 => Self::HostEndian,
+            ffi::G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN => Self::BigEndian,
+            ffi::G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN => Self::LittleEndian,
+            ffi::G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN => Self::HostEndian,
             value => Self::__Unknown(value),
         }
     }
@@ -741,10 +741,10 @@ impl IntoGlib for DataStreamNewlineType {
 impl FromGlib<ffi::GDataStreamNewlineType> for DataStreamNewlineType {
     unsafe fn from_glib(value: ffi::GDataStreamNewlineType) -> Self {
         match value {
-            0 => Self::Lf,
-            1 => Self::Cr,
-            2 => Self::CrLf,
-            3 => Self::Any,
+            ffi::G_DATA_STREAM_NEWLINE_TYPE_LF => Self::Lf,
+            ffi::G_DATA_STREAM_NEWLINE_TYPE_CR => Self::Cr,
+            ffi::G_DATA_STREAM_NEWLINE_TYPE_CR_LF => Self::CrLf,
+            ffi::G_DATA_STREAM_NEWLINE_TYPE_ANY => Self::Any,
             value => Self::__Unknown(value),
         }
     }
@@ -837,11 +837,11 @@ impl IntoGlib for DriveStartStopType {
 impl FromGlib<ffi::GDriveStartStopType> for DriveStartStopType {
     unsafe fn from_glib(value: ffi::GDriveStartStopType) -> Self {
         match value {
-            0 => Self::Unknown,
-            1 => Self::Shutdown,
-            2 => Self::Network,
-            3 => Self::Multidisk,
-            4 => Self::Password,
+            ffi::G_DRIVE_START_STOP_TYPE_UNKNOWN => Self::Unknown,
+            ffi::G_DRIVE_START_STOP_TYPE_SHUTDOWN => Self::Shutdown,
+            ffi::G_DRIVE_START_STOP_TYPE_NETWORK => Self::Network,
+            ffi::G_DRIVE_START_STOP_TYPE_MULTIDISK => Self::Multidisk,
+            ffi::G_DRIVE_START_STOP_TYPE_PASSWORD => Self::Password,
             value => Self::__Unknown(value),
         }
     }
@@ -930,10 +930,10 @@ impl IntoGlib for EmblemOrigin {
 impl FromGlib<ffi::GEmblemOrigin> for EmblemOrigin {
     unsafe fn from_glib(value: ffi::GEmblemOrigin) -> Self {
         match value {
-            0 => Self::Unknown,
-            1 => Self::Device,
-            2 => Self::Livemetadata,
-            3 => Self::Tag,
+            ffi::G_EMBLEM_ORIGIN_UNKNOWN => Self::Unknown,
+            ffi::G_EMBLEM_ORIGIN_DEVICE => Self::Device,
+            ffi::G_EMBLEM_ORIGIN_LIVEMETADATA => Self::Livemetadata,
+            ffi::G_EMBLEM_ORIGIN_TAG => Self::Tag,
             value => Self::__Unknown(value),
         }
     }
@@ -1018,9 +1018,9 @@ impl IntoGlib for FileAttributeStatus {
 impl FromGlib<ffi::GFileAttributeStatus> for FileAttributeStatus {
     unsafe fn from_glib(value: ffi::GFileAttributeStatus) -> Self {
         match value {
-            0 => Self::Unset,
-            1 => Self::Set,
-            2 => Self::ErrorSetting,
+            ffi::G_FILE_ATTRIBUTE_STATUS_UNSET => Self::Unset,
+            ffi::G_FILE_ATTRIBUTE_STATUS_SET => Self::Set,
+            ffi::G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING => Self::ErrorSetting,
             value => Self::__Unknown(value),
         }
     }
@@ -1133,16 +1133,16 @@ impl IntoGlib for FileAttributeType {
 impl FromGlib<ffi::GFileAttributeType> for FileAttributeType {
     unsafe fn from_glib(value: ffi::GFileAttributeType) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::String,
-            2 => Self::ByteString,
-            3 => Self::Boolean,
-            4 => Self::Uint32,
-            5 => Self::Int32,
-            6 => Self::Uint64,
-            7 => Self::Int64,
-            8 => Self::Object,
-            9 => Self::Stringv,
+            ffi::G_FILE_ATTRIBUTE_TYPE_INVALID => Self::Invalid,
+            ffi::G_FILE_ATTRIBUTE_TYPE_STRING => Self::String,
+            ffi::G_FILE_ATTRIBUTE_TYPE_BYTE_STRING => Self::ByteString,
+            ffi::G_FILE_ATTRIBUTE_TYPE_BOOLEAN => Self::Boolean,
+            ffi::G_FILE_ATTRIBUTE_TYPE_UINT32 => Self::Uint32,
+            ffi::G_FILE_ATTRIBUTE_TYPE_INT32 => Self::Int32,
+            ffi::G_FILE_ATTRIBUTE_TYPE_UINT64 => Self::Uint64,
+            ffi::G_FILE_ATTRIBUTE_TYPE_INT64 => Self::Int64,
+            ffi::G_FILE_ATTRIBUTE_TYPE_OBJECT => Self::Object,
+            ffi::G_FILE_ATTRIBUTE_TYPE_STRINGV => Self::Stringv,
             value => Self::__Unknown(value),
         }
     }
@@ -1259,17 +1259,17 @@ impl IntoGlib for FileMonitorEvent {
 impl FromGlib<ffi::GFileMonitorEvent> for FileMonitorEvent {
     unsafe fn from_glib(value: ffi::GFileMonitorEvent) -> Self {
         match value {
-            0 => Self::Changed,
-            1 => Self::ChangesDoneHint,
-            2 => Self::Deleted,
-            3 => Self::Created,
-            4 => Self::AttributeChanged,
-            5 => Self::PreUnmount,
-            6 => Self::Unmounted,
-            7 => Self::Moved,
-            8 => Self::Renamed,
-            9 => Self::MovedIn,
-            10 => Self::MovedOut,
+            ffi::G_FILE_MONITOR_EVENT_CHANGED => Self::Changed,
+            ffi::G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT => Self::ChangesDoneHint,
+            ffi::G_FILE_MONITOR_EVENT_DELETED => Self::Deleted,
+            ffi::G_FILE_MONITOR_EVENT_CREATED => Self::Created,
+            ffi::G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED => Self::AttributeChanged,
+            ffi::G_FILE_MONITOR_EVENT_PRE_UNMOUNT => Self::PreUnmount,
+            ffi::G_FILE_MONITOR_EVENT_UNMOUNTED => Self::Unmounted,
+            ffi::G_FILE_MONITOR_EVENT_MOVED => Self::Moved,
+            ffi::G_FILE_MONITOR_EVENT_RENAMED => Self::Renamed,
+            ffi::G_FILE_MONITOR_EVENT_MOVED_IN => Self::MovedIn,
+            ffi::G_FILE_MONITOR_EVENT_MOVED_OUT => Self::MovedOut,
             value => Self::__Unknown(value),
         }
     }
@@ -1370,13 +1370,13 @@ impl IntoGlib for FileType {
 impl FromGlib<ffi::GFileType> for FileType {
     unsafe fn from_glib(value: ffi::GFileType) -> Self {
         match value {
-            0 => Self::Unknown,
-            1 => Self::Regular,
-            2 => Self::Directory,
-            3 => Self::SymbolicLink,
-            4 => Self::Special,
-            5 => Self::Shortcut,
-            6 => Self::Mountable,
+            ffi::G_FILE_TYPE_UNKNOWN => Self::Unknown,
+            ffi::G_FILE_TYPE_REGULAR => Self::Regular,
+            ffi::G_FILE_TYPE_DIRECTORY => Self::Directory,
+            ffi::G_FILE_TYPE_SYMBOLIC_LINK => Self::SymbolicLink,
+            ffi::G_FILE_TYPE_SPECIAL => Self::Special,
+            ffi::G_FILE_TYPE_SHORTCUT => Self::Shortcut,
+            ffi::G_FILE_TYPE_MOUNTABLE => Self::Mountable,
             value => Self::__Unknown(value),
         }
     }
@@ -1637,53 +1637,53 @@ impl IntoGlib for IOErrorEnum {
 impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
     unsafe fn from_glib(value: ffi::GIOErrorEnum) -> Self {
         match value {
-            0 => Self::Failed,
-            1 => Self::NotFound,
-            2 => Self::Exists,
-            3 => Self::IsDirectory,
-            4 => Self::NotDirectory,
-            5 => Self::NotEmpty,
-            6 => Self::NotRegularFile,
-            7 => Self::NotSymbolicLink,
-            8 => Self::NotMountableFile,
-            9 => Self::FilenameTooLong,
-            10 => Self::InvalidFilename,
-            11 => Self::TooManyLinks,
-            12 => Self::NoSpace,
-            13 => Self::InvalidArgument,
-            14 => Self::PermissionDenied,
-            15 => Self::NotSupported,
-            16 => Self::NotMounted,
-            17 => Self::AlreadyMounted,
-            18 => Self::Closed,
-            19 => Self::Cancelled,
-            20 => Self::Pending,
-            21 => Self::ReadOnly,
-            22 => Self::CantCreateBackup,
-            23 => Self::WrongEtag,
-            24 => Self::TimedOut,
-            25 => Self::WouldRecurse,
-            26 => Self::Busy,
-            27 => Self::WouldBlock,
-            28 => Self::HostNotFound,
-            29 => Self::WouldMerge,
-            30 => Self::FailedHandled,
-            31 => Self::TooManyOpenFiles,
-            32 => Self::NotInitialized,
-            33 => Self::AddressInUse,
-            34 => Self::PartialInput,
-            35 => Self::InvalidData,
-            36 => Self::DbusError,
-            37 => Self::HostUnreachable,
-            38 => Self::NetworkUnreachable,
-            39 => Self::ConnectionRefused,
-            40 => Self::ProxyFailed,
-            41 => Self::ProxyAuthFailed,
-            42 => Self::ProxyNeedAuth,
-            43 => Self::ProxyNotAllowed,
-            44 => Self::BrokenPipe,
-            45 => Self::NotConnected,
-            46 => Self::MessageTooLarge,
+            ffi::G_IO_ERROR_FAILED => Self::Failed,
+            ffi::G_IO_ERROR_NOT_FOUND => Self::NotFound,
+            ffi::G_IO_ERROR_EXISTS => Self::Exists,
+            ffi::G_IO_ERROR_IS_DIRECTORY => Self::IsDirectory,
+            ffi::G_IO_ERROR_NOT_DIRECTORY => Self::NotDirectory,
+            ffi::G_IO_ERROR_NOT_EMPTY => Self::NotEmpty,
+            ffi::G_IO_ERROR_NOT_REGULAR_FILE => Self::NotRegularFile,
+            ffi::G_IO_ERROR_NOT_SYMBOLIC_LINK => Self::NotSymbolicLink,
+            ffi::G_IO_ERROR_NOT_MOUNTABLE_FILE => Self::NotMountableFile,
+            ffi::G_IO_ERROR_FILENAME_TOO_LONG => Self::FilenameTooLong,
+            ffi::G_IO_ERROR_INVALID_FILENAME => Self::InvalidFilename,
+            ffi::G_IO_ERROR_TOO_MANY_LINKS => Self::TooManyLinks,
+            ffi::G_IO_ERROR_NO_SPACE => Self::NoSpace,
+            ffi::G_IO_ERROR_INVALID_ARGUMENT => Self::InvalidArgument,
+            ffi::G_IO_ERROR_PERMISSION_DENIED => Self::PermissionDenied,
+            ffi::G_IO_ERROR_NOT_SUPPORTED => Self::NotSupported,
+            ffi::G_IO_ERROR_NOT_MOUNTED => Self::NotMounted,
+            ffi::G_IO_ERROR_ALREADY_MOUNTED => Self::AlreadyMounted,
+            ffi::G_IO_ERROR_CLOSED => Self::Closed,
+            ffi::G_IO_ERROR_CANCELLED => Self::Cancelled,
+            ffi::G_IO_ERROR_PENDING => Self::Pending,
+            ffi::G_IO_ERROR_READ_ONLY => Self::ReadOnly,
+            ffi::G_IO_ERROR_CANT_CREATE_BACKUP => Self::CantCreateBackup,
+            ffi::G_IO_ERROR_WRONG_ETAG => Self::WrongEtag,
+            ffi::G_IO_ERROR_TIMED_OUT => Self::TimedOut,
+            ffi::G_IO_ERROR_WOULD_RECURSE => Self::WouldRecurse,
+            ffi::G_IO_ERROR_BUSY => Self::Busy,
+            ffi::G_IO_ERROR_WOULD_BLOCK => Self::WouldBlock,
+            ffi::G_IO_ERROR_HOST_NOT_FOUND => Self::HostNotFound,
+            ffi::G_IO_ERROR_WOULD_MERGE => Self::WouldMerge,
+            ffi::G_IO_ERROR_FAILED_HANDLED => Self::FailedHandled,
+            ffi::G_IO_ERROR_TOO_MANY_OPEN_FILES => Self::TooManyOpenFiles,
+            ffi::G_IO_ERROR_NOT_INITIALIZED => Self::NotInitialized,
+            ffi::G_IO_ERROR_ADDRESS_IN_USE => Self::AddressInUse,
+            ffi::G_IO_ERROR_PARTIAL_INPUT => Self::PartialInput,
+            ffi::G_IO_ERROR_INVALID_DATA => Self::InvalidData,
+            ffi::G_IO_ERROR_DBUS_ERROR => Self::DbusError,
+            ffi::G_IO_ERROR_HOST_UNREACHABLE => Self::HostUnreachable,
+            ffi::G_IO_ERROR_NETWORK_UNREACHABLE => Self::NetworkUnreachable,
+            ffi::G_IO_ERROR_CONNECTION_REFUSED => Self::ConnectionRefused,
+            ffi::G_IO_ERROR_PROXY_FAILED => Self::ProxyFailed,
+            ffi::G_IO_ERROR_PROXY_AUTH_FAILED => Self::ProxyAuthFailed,
+            ffi::G_IO_ERROR_PROXY_NEED_AUTH => Self::ProxyNeedAuth,
+            ffi::G_IO_ERROR_PROXY_NOT_ALLOWED => Self::ProxyNotAllowed,
+            ffi::G_IO_ERROR_BROKEN_PIPE => Self::BrokenPipe,
+            ffi::G_IO_ERROR_NOT_CONNECTED => Self::NotConnected,
+            ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Self::MessageTooLarge,
             value => Self::__Unknown(value),
         }
     }
@@ -1700,53 +1700,53 @@ impl ErrorDomain for IOErrorEnum {
 
     fn from(code: i32) -> Option<Self> {
         match code {
-            0 => Some(Self::Failed),
-            1 => Some(Self::NotFound),
-            2 => Some(Self::Exists),
-            3 => Some(Self::IsDirectory),
-            4 => Some(Self::NotDirectory),
-            5 => Some(Self::NotEmpty),
-            6 => Some(Self::NotRegularFile),
-            7 => Some(Self::NotSymbolicLink),
-            8 => Some(Self::NotMountableFile),
-            9 => Some(Self::FilenameTooLong),
-            10 => Some(Self::InvalidFilename),
-            11 => Some(Self::TooManyLinks),
-            12 => Some(Self::NoSpace),
-            13 => Some(Self::InvalidArgument),
-            14 => Some(Self::PermissionDenied),
-            15 => Some(Self::NotSupported),
-            16 => Some(Self::NotMounted),
-            17 => Some(Self::AlreadyMounted),
-            18 => Some(Self::Closed),
-            19 => Some(Self::Cancelled),
-            20 => Some(Self::Pending),
-            21 => Some(Self::ReadOnly),
-            22 => Some(Self::CantCreateBackup),
-            23 => Some(Self::WrongEtag),
-            24 => Some(Self::TimedOut),
-            25 => Some(Self::WouldRecurse),
-            26 => Some(Self::Busy),
-            27 => Some(Self::WouldBlock),
-            28 => Some(Self::HostNotFound),
-            29 => Some(Self::WouldMerge),
-            30 => Some(Self::FailedHandled),
-            31 => Some(Self::TooManyOpenFiles),
-            32 => Some(Self::NotInitialized),
-            33 => Some(Self::AddressInUse),
-            34 => Some(Self::PartialInput),
-            35 => Some(Self::InvalidData),
-            36 => Some(Self::DbusError),
-            37 => Some(Self::HostUnreachable),
-            38 => Some(Self::NetworkUnreachable),
-            39 => Some(Self::ConnectionRefused),
-            40 => Some(Self::ProxyFailed),
-            41 => Some(Self::ProxyAuthFailed),
-            42 => Some(Self::ProxyNeedAuth),
-            43 => Some(Self::ProxyNotAllowed),
-            44 => Some(Self::BrokenPipe),
-            45 => Some(Self::NotConnected),
-            46 => Some(Self::MessageTooLarge),
+            ffi::G_IO_ERROR_FAILED => Some(Self::Failed),
+            ffi::G_IO_ERROR_NOT_FOUND => Some(Self::NotFound),
+            ffi::G_IO_ERROR_EXISTS => Some(Self::Exists),
+            ffi::G_IO_ERROR_IS_DIRECTORY => Some(Self::IsDirectory),
+            ffi::G_IO_ERROR_NOT_DIRECTORY => Some(Self::NotDirectory),
+            ffi::G_IO_ERROR_NOT_EMPTY => Some(Self::NotEmpty),
+            ffi::G_IO_ERROR_NOT_REGULAR_FILE => Some(Self::NotRegularFile),
+            ffi::G_IO_ERROR_NOT_SYMBOLIC_LINK => Some(Self::NotSymbolicLink),
+            ffi::G_IO_ERROR_NOT_MOUNTABLE_FILE => Some(Self::NotMountableFile),
+            ffi::G_IO_ERROR_FILENAME_TOO_LONG => Some(Self::FilenameTooLong),
+            ffi::G_IO_ERROR_INVALID_FILENAME => Some(Self::InvalidFilename),
+            ffi::G_IO_ERROR_TOO_MANY_LINKS => Some(Self::TooManyLinks),
+            ffi::G_IO_ERROR_NO_SPACE => Some(Self::NoSpace),
+            ffi::G_IO_ERROR_INVALID_ARGUMENT => Some(Self::InvalidArgument),
+            ffi::G_IO_ERROR_PERMISSION_DENIED => Some(Self::PermissionDenied),
+            ffi::G_IO_ERROR_NOT_SUPPORTED => Some(Self::NotSupported),
+            ffi::G_IO_ERROR_NOT_MOUNTED => Some(Self::NotMounted),
+            ffi::G_IO_ERROR_ALREADY_MOUNTED => Some(Self::AlreadyMounted),
+            ffi::G_IO_ERROR_CLOSED => Some(Self::Closed),
+            ffi::G_IO_ERROR_CANCELLED => Some(Self::Cancelled),
+            ffi::G_IO_ERROR_PENDING => Some(Self::Pending),
+            ffi::G_IO_ERROR_READ_ONLY => Some(Self::ReadOnly),
+            ffi::G_IO_ERROR_CANT_CREATE_BACKUP => Some(Self::CantCreateBackup),
+            ffi::G_IO_ERROR_WRONG_ETAG => Some(Self::WrongEtag),
+            ffi::G_IO_ERROR_TIMED_OUT => Some(Self::TimedOut),
+            ffi::G_IO_ERROR_WOULD_RECURSE => Some(Self::WouldRecurse),
+            ffi::G_IO_ERROR_BUSY => Some(Self::Busy),
+            ffi::G_IO_ERROR_WOULD_BLOCK => Some(Self::WouldBlock),
+            ffi::G_IO_ERROR_HOST_NOT_FOUND => Some(Self::HostNotFound),
+            ffi::G_IO_ERROR_WOULD_MERGE => Some(Self::WouldMerge),
+            ffi::G_IO_ERROR_FAILED_HANDLED => Some(Self::FailedHandled),
+            ffi::G_IO_ERROR_TOO_MANY_OPEN_FILES => Some(Self::TooManyOpenFiles),
+            ffi::G_IO_ERROR_NOT_INITIALIZED => Some(Self::NotInitialized),
+            ffi::G_IO_ERROR_ADDRESS_IN_USE => Some(Self::AddressInUse),
+            ffi::G_IO_ERROR_PARTIAL_INPUT => Some(Self::PartialInput),
+            ffi::G_IO_ERROR_INVALID_DATA => Some(Self::InvalidData),
+            ffi::G_IO_ERROR_DBUS_ERROR => Some(Self::DbusError),
+            ffi::G_IO_ERROR_HOST_UNREACHABLE => Some(Self::HostUnreachable),
+            ffi::G_IO_ERROR_NETWORK_UNREACHABLE => Some(Self::NetworkUnreachable),
+            ffi::G_IO_ERROR_CONNECTION_REFUSED => Some(Self::ConnectionRefused),
+            ffi::G_IO_ERROR_PROXY_FAILED => Some(Self::ProxyFailed),
+            ffi::G_IO_ERROR_PROXY_AUTH_FAILED => Some(Self::ProxyAuthFailed),
+            ffi::G_IO_ERROR_PROXY_NEED_AUTH => Some(Self::ProxyNeedAuth),
+            ffi::G_IO_ERROR_PROXY_NOT_ALLOWED => Some(Self::ProxyNotAllowed),
+            ffi::G_IO_ERROR_BROKEN_PIPE => Some(Self::BrokenPipe),
+            ffi::G_IO_ERROR_NOT_CONNECTED => Some(Self::NotConnected),
+            ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Some(Self::MessageTooLarge),
             _ => Some(Self::Failed),
         }
     }
@@ -1839,9 +1839,9 @@ impl IntoGlib for MemoryMonitorWarningLevel {
 impl FromGlib<ffi::GMemoryMonitorWarningLevel> for MemoryMonitorWarningLevel {
     unsafe fn from_glib(value: ffi::GMemoryMonitorWarningLevel) -> Self {
         match value {
-            50 => Self::Low,
-            100 => Self::Medium,
-            255 => Self::Critical,
+            ffi::G_MEMORY_MONITOR_WARNING_LEVEL_LOW => Self::Low,
+            ffi::G_MEMORY_MONITOR_WARNING_LEVEL_MEDIUM => Self::Medium,
+            ffi::G_MEMORY_MONITOR_WARNING_LEVEL_CRITICAL => Self::Critical,
             value => Self::__Unknown(value),
         }
     }
@@ -1934,9 +1934,9 @@ impl IntoGlib for MountOperationResult {
 impl FromGlib<ffi::GMountOperationResult> for MountOperationResult {
     unsafe fn from_glib(value: ffi::GMountOperationResult) -> Self {
         match value {
-            0 => Self::Handled,
-            1 => Self::Aborted,
-            2 => Self::Unhandled,
+            ffi::G_MOUNT_OPERATION_HANDLED => Self::Handled,
+            ffi::G_MOUNT_OPERATION_ABORTED => Self::Aborted,
+            ffi::G_MOUNT_OPERATION_UNHANDLED => Self::Unhandled,
             value => Self::__Unknown(value),
         }
     }
@@ -2025,10 +2025,10 @@ impl IntoGlib for NetworkConnectivity {
 impl FromGlib<ffi::GNetworkConnectivity> for NetworkConnectivity {
     unsafe fn from_glib(value: ffi::GNetworkConnectivity) -> Self {
         match value {
-            1 => Self::Local,
-            2 => Self::Limited,
-            3 => Self::Portal,
-            4 => Self::Full,
+            ffi::G_NETWORK_CONNECTIVITY_LOCAL => Self::Local,
+            ffi::G_NETWORK_CONNECTIVITY_LIMITED => Self::Limited,
+            ffi::G_NETWORK_CONNECTIVITY_PORTAL => Self::Portal,
+            ffi::G_NETWORK_CONNECTIVITY_FULL => Self::Full,
             value => Self::__Unknown(value),
         }
     }
@@ -2117,10 +2117,10 @@ impl IntoGlib for NotificationPriority {
 impl FromGlib<ffi::GNotificationPriority> for NotificationPriority {
     unsafe fn from_glib(value: ffi::GNotificationPriority) -> Self {
         match value {
-            0 => Self::Normal,
-            1 => Self::Low,
-            2 => Self::High,
-            3 => Self::Urgent,
+            ffi::G_NOTIFICATION_PRIORITY_NORMAL => Self::Normal,
+            ffi::G_NOTIFICATION_PRIORITY_LOW => Self::Low,
+            ffi::G_NOTIFICATION_PRIORITY_HIGH => Self::High,
+            ffi::G_NOTIFICATION_PRIORITY_URGENT => Self::Urgent,
             value => Self::__Unknown(value),
         }
     }
@@ -2205,9 +2205,9 @@ impl IntoGlib for PasswordSave {
 impl FromGlib<ffi::GPasswordSave> for PasswordSave {
     unsafe fn from_glib(value: ffi::GPasswordSave) -> Self {
         match value {
-            0 => Self::Never,
-            1 => Self::ForSession,
-            2 => Self::Permanently,
+            ffi::G_PASSWORD_SAVE_NEVER => Self::Never,
+            ffi::G_PASSWORD_SAVE_FOR_SESSION => Self::ForSession,
+            ffi::G_PASSWORD_SAVE_PERMANENTLY => Self::Permanently,
             value => Self::__Unknown(value),
         }
     }
@@ -2300,11 +2300,11 @@ impl IntoGlib for ResolverRecordType {
 impl FromGlib<ffi::GResolverRecordType> for ResolverRecordType {
     unsafe fn from_glib(value: ffi::GResolverRecordType) -> Self {
         match value {
-            1 => Self::Srv,
-            2 => Self::Mx,
-            3 => Self::Txt,
-            4 => Self::Soa,
-            5 => Self::Ns,
+            ffi::G_RESOLVER_RECORD_SRV => Self::Srv,
+            ffi::G_RESOLVER_RECORD_MX => Self::Mx,
+            ffi::G_RESOLVER_RECORD_TXT => Self::Txt,
+            ffi::G_RESOLVER_RECORD_SOA => Self::Soa,
+            ffi::G_RESOLVER_RECORD_NS => Self::Ns,
             value => Self::__Unknown(value),
         }
     }
@@ -2385,8 +2385,8 @@ impl IntoGlib for ResourceError {
 impl FromGlib<ffi::GResourceError> for ResourceError {
     unsafe fn from_glib(value: ffi::GResourceError) -> Self {
         match value {
-            0 => Self::NotFound,
-            1 => Self::Internal,
+            ffi::G_RESOURCE_ERROR_NOT_FOUND => Self::NotFound,
+            ffi::G_RESOURCE_ERROR_INTERNAL => Self::Internal,
             value => Self::__Unknown(value),
         }
     }
@@ -2403,8 +2403,8 @@ impl ErrorDomain for ResourceError {
 
     fn from(code: i32) -> Option<Self> {
         match code {
-            0 => Some(Self::NotFound),
-            1 => Some(Self::Internal),
+            ffi::G_RESOURCE_ERROR_NOT_FOUND => Some(Self::NotFound),
+            ffi::G_RESOURCE_ERROR_INTERNAL => Some(Self::Internal),
             value => Some(Self::__Unknown(value)),
         }
     }
@@ -2513,15 +2513,15 @@ impl IntoGlib for SocketClientEvent {
 impl FromGlib<ffi::GSocketClientEvent> for SocketClientEvent {
     unsafe fn from_glib(value: ffi::GSocketClientEvent) -> Self {
         match value {
-            0 => Self::Resolving,
-            1 => Self::Resolved,
-            2 => Self::Connecting,
-            3 => Self::Connected,
-            4 => Self::ProxyNegotiating,
-            5 => Self::ProxyNegotiated,
-            6 => Self::TlsHandshaking,
-            7 => Self::TlsHandshaked,
-            8 => Self::Complete,
+            ffi::G_SOCKET_CLIENT_RESOLVING => Self::Resolving,
+            ffi::G_SOCKET_CLIENT_RESOLVED => Self::Resolved,
+            ffi::G_SOCKET_CLIENT_CONNECTING => Self::Connecting,
+            ffi::G_SOCKET_CLIENT_CONNECTED => Self::Connected,
+            ffi::G_SOCKET_CLIENT_PROXY_NEGOTIATING => Self::ProxyNegotiating,
+            ffi::G_SOCKET_CLIENT_PROXY_NEGOTIATED => Self::ProxyNegotiated,
+            ffi::G_SOCKET_CLIENT_TLS_HANDSHAKING => Self::TlsHandshaking,
+            ffi::G_SOCKET_CLIENT_TLS_HANDSHAKED => Self::TlsHandshaked,
+            ffi::G_SOCKET_CLIENT_COMPLETE => Self::Complete,
             value => Self::__Unknown(value),
         }
     }
@@ -2610,10 +2610,10 @@ impl IntoGlib for SocketFamily {
 impl FromGlib<ffi::GSocketFamily> for SocketFamily {
     unsafe fn from_glib(value: ffi::GSocketFamily) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::Unix,
-            2 => Self::Ipv4,
-            10 => Self::Ipv6,
+            ffi::G_SOCKET_FAMILY_INVALID => Self::Invalid,
+            ffi::G_SOCKET_FAMILY_UNIX => Self::Unix,
+            ffi::G_SOCKET_FAMILY_IPV4 => Self::Ipv4,
+            ffi::G_SOCKET_FAMILY_IPV6 => Self::Ipv6,
             value => Self::__Unknown(value),
         }
     }
@@ -2702,10 +2702,10 @@ impl IntoGlib for SocketListenerEvent {
 impl FromGlib<ffi::GSocketListenerEvent> for SocketListenerEvent {
     unsafe fn from_glib(value: ffi::GSocketListenerEvent) -> Self {
         match value {
-            0 => Self::Binding,
-            1 => Self::Bound,
-            2 => Self::Listening,
-            3 => Self::Listened,
+            ffi::G_SOCKET_LISTENER_BINDING => Self::Binding,
+            ffi::G_SOCKET_LISTENER_BOUND => Self::Bound,
+            ffi::G_SOCKET_LISTENER_LISTENING => Self::Listening,
+            ffi::G_SOCKET_LISTENER_LISTENED => Self::Listened,
             value => Self::__Unknown(value),
         }
     }
@@ -2798,11 +2798,11 @@ impl IntoGlib for SocketProtocol {
 impl FromGlib<ffi::GSocketProtocol> for SocketProtocol {
     unsafe fn from_glib(value: ffi::GSocketProtocol) -> Self {
         match value {
-            -1 => Self::Unknown,
-            0 => Self::Default,
-            6 => Self::Tcp,
-            17 => Self::Udp,
-            132 => Self::Sctp,
+            ffi::G_SOCKET_PROTOCOL_UNKNOWN => Self::Unknown,
+            ffi::G_SOCKET_PROTOCOL_DEFAULT => Self::Default,
+            ffi::G_SOCKET_PROTOCOL_TCP => Self::Tcp,
+            ffi::G_SOCKET_PROTOCOL_UDP => Self::Udp,
+            ffi::G_SOCKET_PROTOCOL_SCTP => Self::Sctp,
             value => Self::__Unknown(value),
         }
     }
@@ -2891,10 +2891,10 @@ impl IntoGlib for SocketType {
 impl FromGlib<ffi::GSocketType> for SocketType {
     unsafe fn from_glib(value: ffi::GSocketType) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::Stream,
-            2 => Self::Datagram,
-            3 => Self::Seqpacket,
+            ffi::G_SOCKET_TYPE_INVALID => Self::Invalid,
+            ffi::G_SOCKET_TYPE_STREAM => Self::Stream,
+            ffi::G_SOCKET_TYPE_DATAGRAM => Self::Datagram,
+            ffi::G_SOCKET_TYPE_SEQPACKET => Self::Seqpacket,
             value => Self::__Unknown(value),
         }
     }
@@ -2979,9 +2979,9 @@ impl IntoGlib for TlsAuthenticationMode {
 impl FromGlib<ffi::GTlsAuthenticationMode> for TlsAuthenticationMode {
     unsafe fn from_glib(value: ffi::GTlsAuthenticationMode) -> Self {
         match value {
-            0 => Self::None,
-            1 => Self::Requested,
-            2 => Self::Required,
+            ffi::G_TLS_AUTHENTICATION_NONE => Self::None,
+            ffi::G_TLS_AUTHENTICATION_REQUESTED => Self::Requested,
+            ffi::G_TLS_AUTHENTICATION_REQUIRED => Self::Required,
             value => Self::__Unknown(value),
         }
     }
@@ -3058,7 +3058,7 @@ impl IntoGlib for TlsCertificateRequestFlags {
 impl FromGlib<ffi::GTlsCertificateRequestFlags> for TlsCertificateRequestFlags {
     unsafe fn from_glib(value: ffi::GTlsCertificateRequestFlags) -> Self {
         match value {
-            0 => Self::None,
+            ffi::G_TLS_CERTIFICATE_REQUEST_NONE => Self::None,
             value => Self::__Unknown(value),
         }
     }
@@ -3147,8 +3147,8 @@ impl IntoGlib for TlsChannelBindingType {
 impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
     unsafe fn from_glib(value: ffi::GTlsChannelBindingType) -> Self {
         match value {
-            0 => Self::Unique,
-            1 => Self::ServerEndPoint,
+            ffi::G_TLS_CHANNEL_BINDING_TLS_UNIQUE => Self::Unique,
+            ffi::G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT => Self::ServerEndPoint,
             value => Self::__Unknown(value),
         }
     }
@@ -3237,8 +3237,8 @@ impl IntoGlib for TlsDatabaseLookupFlags {
 impl FromGlib<ffi::GTlsDatabaseLookupFlags> for TlsDatabaseLookupFlags {
     unsafe fn from_glib(value: ffi::GTlsDatabaseLookupFlags) -> Self {
         match value {
-            0 => Self::None,
-            1 => Self::Keypair,
+            ffi::G_TLS_DATABASE_LOOKUP_NONE => Self::None,
+            ffi::G_TLS_DATABASE_LOOKUP_KEYPAIR => Self::Keypair,
             value => Self::__Unknown(value),
         }
     }
@@ -3323,9 +3323,9 @@ impl IntoGlib for TlsInteractionResult {
 impl FromGlib<ffi::GTlsInteractionResult> for TlsInteractionResult {
     unsafe fn from_glib(value: ffi::GTlsInteractionResult) -> Self {
         match value {
-            0 => Self::Unhandled,
-            1 => Self::Handled,
-            2 => Self::Failed,
+            ffi::G_TLS_INTERACTION_UNHANDLED => Self::Unhandled,
+            ffi::G_TLS_INTERACTION_HANDLED => Self::Handled,
+            ffi::G_TLS_INTERACTION_FAILED => Self::Failed,
             value => Self::__Unknown(value),
         }
     }
@@ -3411,9 +3411,9 @@ impl IntoGlib for TlsRehandshakeMode {
 impl FromGlib<ffi::GTlsRehandshakeMode> for TlsRehandshakeMode {
     unsafe fn from_glib(value: ffi::GTlsRehandshakeMode) -> Self {
         match value {
-            0 => Self::Never,
-            1 => Self::Safely,
-            2 => Self::Unsafely,
+            ffi::G_TLS_REHANDSHAKE_NEVER => Self::Never,
+            ffi::G_TLS_REHANDSHAKE_SAFELY => Self::Safely,
+            ffi::G_TLS_REHANDSHAKE_UNSAFELY => Self::Unsafely,
             value => Self::__Unknown(value),
         }
     }
@@ -3506,11 +3506,11 @@ impl IntoGlib for UnixSocketAddressType {
 impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
     unsafe fn from_glib(value: ffi::GUnixSocketAddressType) -> Self {
         match value {
-            0 => Self::Invalid,
-            1 => Self::Anonymous,
-            2 => Self::Path,
-            3 => Self::Abstract,
-            4 => Self::AbstractPadded,
+            ffi::G_UNIX_SOCKET_ADDRESS_INVALID => Self::Invalid,
+            ffi::G_UNIX_SOCKET_ADDRESS_ANONYMOUS => Self::Anonymous,
+            ffi::G_UNIX_SOCKET_ADDRESS_PATH => Self::Path,
+            ffi::G_UNIX_SOCKET_ADDRESS_ABSTRACT => Self::Abstract,
+            ffi::G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED => Self::AbstractPadded,
             value => Self::__Unknown(value),
         }
     }
@@ -3595,9 +3595,9 @@ impl IntoGlib for ZlibCompressorFormat {
 impl FromGlib<ffi::GZlibCompressorFormat> for ZlibCompressorFormat {
     unsafe fn from_glib(value: ffi::GZlibCompressorFormat) -> Self {
         match value {
-            0 => Self::Zlib,
-            1 => Self::Gzip,
-            2 => Self::Raw,
+            ffi::G_ZLIB_COMPRESSOR_FORMAT_ZLIB => Self::Zlib,
+            ffi::G_ZLIB_COMPRESSOR_FORMAT_GZIP => Self::Gzip,
+            ffi::G_ZLIB_COMPRESSOR_FORMAT_RAW => Self::Raw,
             value => Self::__Unknown(value),
         }
     }

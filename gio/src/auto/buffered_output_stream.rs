@@ -45,9 +45,18 @@ impl BufferedOutputStream {
             .unsafe_cast()
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`BufferedOutputStream`]
+    /// This method returns an instance of [`BufferedOutputStreamBuilder`] which can be used to create a [`BufferedOutputStream`].
+    pub fn builder() -> BufferedOutputStreamBuilder {
+        BufferedOutputStreamBuilder::default()
+    }
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`BufferedOutputStream`].
 pub struct BufferedOutputStreamBuilder {
     auto_grow: Option<bool>,
     buffer_size: Option<u32>,
@@ -56,10 +65,14 @@ pub struct BufferedOutputStreamBuilder {
 }
 
 impl BufferedOutputStreamBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`BufferedOutputStreamBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`BufferedOutputStream`].
     pub fn build(self) -> BufferedOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref auto_grow) = self.auto_grow {

@@ -50,9 +50,18 @@ impl BufferedInputStream {
             .unsafe_cast()
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new builder-style object to construct a [`BufferedInputStream`]
+    /// This method returns an instance of [`BufferedInputStreamBuilder`] which can be used to create a [`BufferedInputStream`].
+    pub fn builder() -> BufferedInputStreamBuilder {
+        BufferedInputStreamBuilder::default()
+    }
 }
 
 #[derive(Clone, Default)]
+// rustdoc-stripper-ignore-next
+/// A builder for generating a [`BufferedInputStream`].
 pub struct BufferedInputStreamBuilder {
     buffer_size: Option<u32>,
     base_stream: Option<InputStream>,
@@ -60,10 +69,14 @@ pub struct BufferedInputStreamBuilder {
 }
 
 impl BufferedInputStreamBuilder {
+    // rustdoc-stripper-ignore-next
+    /// Create a new [`BufferedInputStreamBuilder`].
     pub fn new() -> Self {
         Self::default()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Build the [`BufferedInputStream`].
     pub fn build(self) -> BufferedInputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref buffer_size) = self.buffer_size {
