@@ -96,22 +96,11 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         uris: &[impl AsRef<str>],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        let uris = uris
-            .as_ref()
-            .iter()
-            .map(|v| v.as_ref())
-            .copied()
-            .map(String::from)
-            .collect::<Vec<_>>();
         let context = context.map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(self, move |obj, send| {
             let cancellable = Cancellable::new();
-            let uris = uris
-                .iter()
-                .map(::std::borrow::Borrow::borrow)
-                .collect::<Vec<_>>();
             obj.launch_uris_async(
-                uris.as_ref(),
+                uris,
                 context.as_ref().map(::std::borrow::Borrow::borrow),
                 Some(&cancellable),
                 move |res| {
