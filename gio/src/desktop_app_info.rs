@@ -54,10 +54,9 @@ pub trait DesktopAppInfoExtManual {
         T: AsRawFd,
         U: AsRawFd,
         V: AsRawFd,
-        S: AsRef<str>,
     >(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
@@ -76,10 +75,9 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
         T: AsRawFd,
         U: AsRawFd,
         V: AsRawFd,
-        S: AsRef<str>,
     >(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,

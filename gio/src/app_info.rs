@@ -25,10 +25,9 @@ pub trait AppInfoExtManual: 'static {
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
         R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-        S: AsRef<str>,
     >(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         context: Option<&P>,
         cancellable: Option<&Q>,
         callback: R,
@@ -36,9 +35,9 @@ pub trait AppInfoExtManual: 'static {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static, S: AsRef<str>>(
+    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 }
@@ -50,16 +49,15 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
         R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-        S: AsRef<str>,
     >(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         context: Option<&P>,
         cancellable: Option<&Q>,
         callback: R,
     ) {
         let user_data: Box_<(R, *mut *mut libc::c_char)> =
-            Box_::new((callback, uris.as_ref().to_glib_full()));
+            Box_::new((callback, uris.to_glib_full()));
         unsafe extern "C" fn launch_uris_async_trampoline<
             R: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
@@ -93,9 +91,9 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static, S: AsRef<str>>(
+    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
-        uris: &[S],
+        uris: &[impl AsRef<str>],
         context: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let uris = uris
