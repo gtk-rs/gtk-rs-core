@@ -101,6 +101,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         let uris = uris
             .as_ref()
             .iter()
+            .map(|v| v.as_ref())
             .copied()
             .map(String::from)
             .collect::<Vec<_>>();

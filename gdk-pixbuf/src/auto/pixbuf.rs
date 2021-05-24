@@ -160,12 +160,8 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_from_xpm_data")]
     #[doc(alias = "new_from_xpm_data")]
-    pub fn from_xpm_data<P: AsRef<str>>(data: &[P]) -> Pixbuf {
-        unsafe {
-            from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(
-                data.as_ref().to_glib_none().0,
-            ))
-        }
+    pub fn from_xpm_data(data: &[impl AsRef<str>]) -> Pixbuf {
+        unsafe { from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(data.to_glib_none().0)) }
     }
 
     #[doc(alias = "gdk_pixbuf_add_alpha")]
@@ -483,7 +479,7 @@ impl Pixbuf {
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_callbackv")]
-    //pub fn save_to_callbackv<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool, Q: AsRef<str>, R: AsRef<str>>(&self, save_func: P, type_: &str, option_keys: &[Q], option_values: &[R]) -> Result<(), glib::Error> {
+    //pub fn save_to_callbackv<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool>(&self, save_func: P, type_: &str, option_keys: &[impl AsRef<str>], option_values: &[impl AsRef<str>]) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_callbackv() }
     //}
 

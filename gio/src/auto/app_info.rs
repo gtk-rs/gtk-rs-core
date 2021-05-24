@@ -266,10 +266,10 @@ pub trait AppInfoExt: 'static {
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_launch_uris")]
-    fn launch_uris<P: AsRef<str>, Q: IsA<AppLaunchContext>>(
+    fn launch_uris<P: IsA<AppLaunchContext>>(
         &self,
-        uris: &[P],
-        context: Option<&Q>,
+        uris: &[impl AsRef<str>],
+        context: Option<&P>,
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_app_info_remove_supports_type")]
@@ -416,16 +416,16 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
         }
     }
 
-    fn launch_uris<P: AsRef<str>, Q: IsA<AppLaunchContext>>(
+    fn launch_uris<P: IsA<AppLaunchContext>>(
         &self,
-        uris: &[P],
-        context: Option<&Q>,
+        uris: &[impl AsRef<str>],
+        context: Option<&P>,
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_app_info_launch_uris(
                 self.as_ref().to_glib_none().0,
-                uris.as_ref().to_glib_none().0,
+                uris.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
