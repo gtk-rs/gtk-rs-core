@@ -594,6 +594,16 @@ impl<T: StaticVariantType> StaticVariantType for [T] {
     }
 }
 
+impl<T: StaticVariantType + ToVariant> ToVariant for [T] {
+    fn to_variant(&self) -> Variant {
+        let mut vec = Vec::with_capacity(self.len());
+        for child in self {
+            vec.push(child.to_variant());
+        }
+        Variant::from_array::<T>(&vec)
+    }
+}
+
 impl<T: FromVariant> FromVariant for Vec<T> {
     fn from_variant(variant: &Variant) -> Option<Self> {
         let mut vec = Vec::with_capacity(variant.n_children());
