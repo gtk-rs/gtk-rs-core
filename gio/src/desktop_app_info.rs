@@ -129,7 +129,7 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
             let mut error = ptr::null_mut();
             let _ = ffi::g_desktop_app_info_launch_uris_as_manager_with_fds(
                 self.as_ref().to_glib_none().0,
-                uris.as_ref().to_glib_none().0,
+                uris.to_glib_none().0,
                 launch_context.map(|p| p.as_ref()).to_glib_none().0,
                 spawn_flags.into_glib(),
                 user_setup,

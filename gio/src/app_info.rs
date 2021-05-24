@@ -80,7 +80,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         unsafe {
             ffi::g_app_info_launch_uris_async(
                 self.as_ref().to_glib_none().0,
-                uris.as_ref().to_glib_none().0,
+                uris.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 Some(callback),
