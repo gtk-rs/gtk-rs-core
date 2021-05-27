@@ -7,6 +7,7 @@ use crate::GravityHint;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
 use crate::Overline;
+use crate::Rectangle;
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 use crate::ShowFlags;
@@ -165,6 +166,16 @@ impl Attribute {
     #[doc(alias = "pango_attr_weight_new")]
     pub fn new_weight(weight: Weight) -> Attribute {
         unsafe { from_glib_full(ffi::pango_attr_weight_new(weight.into_glib())) }
+    }
+
+    #[doc(alias = "pango_attr_shape_new")]
+    pub fn new_shape(ink_rect: &Rectangle, logical_rect: &Rectangle) -> Attribute {
+        unsafe {
+            from_glib_full(ffi::pango_attr_shape_new(
+                ink_rect.to_glib_none().0,
+                logical_rect.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "get_attr_class")]
