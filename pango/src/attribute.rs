@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::AttrClass;
+use crate::AttrType;
 use crate::Attribute;
 use crate::Gravity;
 use crate::GravityHint;
@@ -181,6 +182,10 @@ impl Attribute {
     #[doc(alias = "get_attr_class")]
     pub fn attr_class(&self) -> AttrClass {
         unsafe { from_glib_full((*self.to_glib_none().0).klass) }
+    }
+
+    pub fn type_(&self) -> AttrType {
+        unsafe { from_glib((*(*self.to_glib_none().0).klass).type_) }
     }
 
     #[doc(alias = "get_start_index")]
