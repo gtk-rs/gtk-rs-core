@@ -6,6 +6,7 @@ use std::fmt;
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
+#[doc(alias = "GQuark")]
 pub struct Quark(ffi::GQuark);
 
 impl Quark {

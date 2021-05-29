@@ -8,6 +8,7 @@ use crate::Script;
 use glib::translate::*;
 
 #[repr(C)]
+#[doc(alias = "PangoAnalysis")]
 pub struct Analysis(ffi::PangoAnalysis);
 
 impl Analysis {
