@@ -11,10 +11,15 @@ use glib::Type;
 use std::fmt;
 
 bitflags! {
+    #[doc(alias = "GAppInfoCreateFlags")]
     pub struct AppInfoCreateFlags: u32 {
+        #[doc(alias = "G_APP_INFO_CREATE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_APP_INFO_CREATE_NEEDS_TERMINAL")]
         const NEEDS_TERMINAL = 1;
+        #[doc(alias = "G_APP_INFO_CREATE_SUPPORTS_URIS")]
         const SUPPORTS_URIS = 2;
+        #[doc(alias = "G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION")]
         const SUPPORTS_STARTUP_NOTIFICATION = 4;
     }
 }
@@ -74,16 +79,27 @@ impl ToValue for AppInfoCreateFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
+        #[doc(alias = "G_APPLICATION_FLAGS_NONE")]
         const FLAGS_NONE = 0;
+        #[doc(alias = "G_APPLICATION_IS_SERVICE")]
         const IS_SERVICE = 1;
+        #[doc(alias = "G_APPLICATION_IS_LAUNCHER")]
         const IS_LAUNCHER = 2;
+        #[doc(alias = "G_APPLICATION_HANDLES_OPEN")]
         const HANDLES_OPEN = 4;
+        #[doc(alias = "G_APPLICATION_HANDLES_COMMAND_LINE")]
         const HANDLES_COMMAND_LINE = 8;
+        #[doc(alias = "G_APPLICATION_SEND_ENVIRONMENT")]
         const SEND_ENVIRONMENT = 16;
+        #[doc(alias = "G_APPLICATION_NON_UNIQUE")]
         const NON_UNIQUE = 32;
+        #[doc(alias = "G_APPLICATION_CAN_OVERRIDE_APP_ID")]
         const CAN_OVERRIDE_APP_ID = 64;
+        #[doc(alias = "G_APPLICATION_ALLOW_REPLACEMENT")]
         const ALLOW_REPLACEMENT = 128;
+        #[doc(alias = "G_APPLICATION_REPLACE")]
         const REPLACE = 256;
     }
 }
@@ -143,12 +159,19 @@ impl ToValue for ApplicationFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GAskPasswordFlags")]
     pub struct AskPasswordFlags: u32 {
+        #[doc(alias = "G_ASK_PASSWORD_NEED_PASSWORD")]
         const NEED_PASSWORD = 1;
+        #[doc(alias = "G_ASK_PASSWORD_NEED_USERNAME")]
         const NEED_USERNAME = 2;
+        #[doc(alias = "G_ASK_PASSWORD_NEED_DOMAIN")]
         const NEED_DOMAIN = 4;
+        #[doc(alias = "G_ASK_PASSWORD_SAVING_SUPPORTED")]
         const SAVING_SUPPORTED = 8;
+        #[doc(alias = "G_ASK_PASSWORD_ANONYMOUS_SUPPORTED")]
         const ANONYMOUS_SUPPORTED = 16;
+        #[doc(alias = "G_ASK_PASSWORD_TCRYPT")]
         const TCRYPT = 32;
     }
 }
@@ -208,10 +231,15 @@ impl ToValue for AskPasswordFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GBusNameOwnerFlags")]
     pub struct BusNameOwnerFlags: u32 {
+        #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT")]
         const ALLOW_REPLACEMENT = 1;
+        #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_REPLACE")]
         const REPLACE = 2;
+        #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE")]
         const DO_NOT_QUEUE = 4;
     }
 }
@@ -271,8 +299,11 @@ impl ToValue for BusNameOwnerFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GBusNameWatcherFlags")]
     pub struct BusNameWatcherFlags: u32 {
+        #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_AUTO_START")]
         const AUTO_START = 1;
     }
 }
@@ -332,9 +363,13 @@ impl ToValue for BusNameWatcherFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GConverterFlags")]
     pub struct ConverterFlags: u32 {
+        #[doc(alias = "G_CONVERTER_NO_FLAGS")]
         const NONE = 0;
+        #[doc(alias = "G_CONVERTER_INPUT_AT_END")]
         const INPUT_AT_END = 1;
+        #[doc(alias = "G_CONVERTER_FLUSH")]
         const FLUSH = 2;
     }
 }
@@ -394,9 +429,13 @@ impl ToValue for ConverterFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusCallFlags")]
     pub struct DBusCallFlags: u32 {
+        #[doc(alias = "G_DBUS_CALL_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_CALL_FLAGS_NO_AUTO_START")]
         const NO_AUTO_START = 1;
+        #[doc(alias = "G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION")]
         const ALLOW_INTERACTIVE_AUTHORIZATION = 2;
     }
 }
@@ -456,8 +495,11 @@ impl ToValue for DBusCallFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusCapabilityFlags")]
     pub struct DBusCapabilityFlags: u32 {
+        #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING")]
         const UNIX_FD_PASSING = 1;
     }
 }
@@ -517,12 +559,19 @@ impl ToValue for DBusCapabilityFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusConnectionFlags")]
     pub struct DBusConnectionFlags: u32 {
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT")]
         const AUTHENTICATION_CLIENT = 1;
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER")]
         const AUTHENTICATION_SERVER = 2;
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS")]
         const AUTHENTICATION_ALLOW_ANONYMOUS = 4;
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION")]
         const MESSAGE_BUS_CONNECTION = 8;
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING")]
         const DELAY_MESSAGE_PROCESSING = 16;
     }
 }
@@ -582,8 +631,11 @@ impl ToValue for DBusConnectionFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusInterfaceSkeletonFlags")]
     pub struct DBusInterfaceSkeletonFlags: u32 {
+        #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD")]
         const HANDLE_METHOD_INVOCATIONS_IN_THREAD = 1;
     }
 }
@@ -643,10 +695,15 @@ impl ToValue for DBusInterfaceSkeletonFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusMessageFlags")]
     pub struct DBusMessageFlags: u32 {
+        #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED")]
         const NO_REPLY_EXPECTED = 1;
+        #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NO_AUTO_START")]
         const NO_AUTO_START = 2;
+        #[doc(alias = "G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION")]
         const ALLOW_INTERACTIVE_AUTHORIZATION = 4;
     }
 }
@@ -706,12 +763,19 @@ impl ToValue for DBusMessageFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES")]
         const DO_NOT_LOAD_PROPERTIES = 1;
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS")]
         const DO_NOT_CONNECT_SIGNALS = 2;
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START")]
         const DO_NOT_AUTO_START = 4;
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES")]
         const GET_INVALIDATED_PROPERTIES = 8;
+        #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION")]
         const DO_NOT_AUTO_START_AT_CONSTRUCTION = 16;
     }
 }
@@ -771,8 +835,11 @@ impl ToValue for DBusProxyFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusSendMessageFlags")]
     pub struct DBusSendMessageFlags: u32 {
+        #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL")]
         const PRESERVE_SERIAL = 1;
     }
 }
@@ -832,9 +899,13 @@ impl ToValue for DBusSendMessageFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusServerFlags")]
     pub struct DBusServerFlags: u32 {
+        #[doc(alias = "G_DBUS_SERVER_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_SERVER_FLAGS_RUN_IN_THREAD")]
         const RUN_IN_THREAD = 1;
+        #[doc(alias = "G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS")]
         const AUTHENTICATION_ALLOW_ANONYMOUS = 2;
     }
 }
@@ -894,10 +965,15 @@ impl ToValue for DBusServerFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDBusSignalFlags")]
     pub struct DBusSignalFlags: u32 {
+        #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE")]
         const NO_MATCH_RULE = 1;
+        #[doc(alias = "G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE")]
         const MATCH_ARG0_NAMESPACE = 2;
+        #[doc(alias = "G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH")]
         const MATCH_ARG0_PATH = 4;
     }
 }
@@ -957,7 +1033,9 @@ impl ToValue for DBusSignalFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GDriveStartFlags")]
     pub struct DriveStartFlags: u32 {
+        #[doc(alias = "G_DRIVE_START_NONE")]
         const NONE = 0;
     }
 }
@@ -1017,13 +1095,21 @@ impl ToValue for DriveStartFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileCopyFlags")]
     pub struct FileCopyFlags: u32 {
+        #[doc(alias = "G_FILE_COPY_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_COPY_OVERWRITE")]
         const OVERWRITE = 1;
+        #[doc(alias = "G_FILE_COPY_BACKUP")]
         const BACKUP = 2;
+        #[doc(alias = "G_FILE_COPY_NOFOLLOW_SYMLINKS")]
         const NOFOLLOW_SYMLINKS = 4;
+        #[doc(alias = "G_FILE_COPY_ALL_METADATA")]
         const ALL_METADATA = 8;
+        #[doc(alias = "G_FILE_COPY_NO_FALLBACK_FOR_MOVE")]
         const NO_FALLBACK_FOR_MOVE = 16;
+        #[doc(alias = "G_FILE_COPY_TARGET_DEFAULT_PERMS")]
         const TARGET_DEFAULT_PERMS = 32;
     }
 }
@@ -1083,9 +1169,13 @@ impl ToValue for FileCopyFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileCreateFlags")]
     pub struct FileCreateFlags: u32 {
+        #[doc(alias = "G_FILE_CREATE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_CREATE_PRIVATE")]
         const PRIVATE = 1;
+        #[doc(alias = "G_FILE_CREATE_REPLACE_DESTINATION")]
         const REPLACE_DESTINATION = 2;
     }
 }
@@ -1145,10 +1235,15 @@ impl ToValue for FileCreateFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileMeasureFlags")]
     pub struct FileMeasureFlags: u32 {
+        #[doc(alias = "G_FILE_MEASURE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_MEASURE_REPORT_ANY_ERROR")]
         const REPORT_ANY_ERROR = 2;
+        #[doc(alias = "G_FILE_MEASURE_APPARENT_SIZE")]
         const APPARENT_SIZE = 4;
+        #[doc(alias = "G_FILE_MEASURE_NO_XDEV")]
         const NO_XDEV = 8;
     }
 }
@@ -1208,11 +1303,17 @@ impl ToValue for FileMeasureFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileMonitorFlags")]
     pub struct FileMonitorFlags: u32 {
+        #[doc(alias = "G_FILE_MONITOR_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_MONITOR_WATCH_MOUNTS")]
         const WATCH_MOUNTS = 1;
+        #[doc(alias = "G_FILE_MONITOR_SEND_MOVED")]
         const SEND_MOVED = 2;
+        #[doc(alias = "G_FILE_MONITOR_WATCH_HARD_LINKS")]
         const WATCH_HARD_LINKS = 4;
+        #[doc(alias = "G_FILE_MONITOR_WATCH_MOVES")]
         const WATCH_MOVES = 8;
     }
 }
@@ -1272,8 +1373,11 @@ impl ToValue for FileMonitorFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileQueryInfoFlags")]
     pub struct FileQueryInfoFlags: u32 {
+        #[doc(alias = "G_FILE_QUERY_INFO_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS")]
         const NOFOLLOW_SYMLINKS = 1;
     }
 }
@@ -1333,10 +1437,15 @@ impl ToValue for FileQueryInfoFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GIOStreamSpliceFlags")]
     pub struct IOStreamSpliceFlags: u32 {
+        #[doc(alias = "G_IO_STREAM_SPLICE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_IO_STREAM_SPLICE_CLOSE_STREAM1")]
         const CLOSE_STREAM1 = 1;
+        #[doc(alias = "G_IO_STREAM_SPLICE_CLOSE_STREAM2")]
         const CLOSE_STREAM2 = 2;
+        #[doc(alias = "G_IO_STREAM_SPLICE_WAIT_FOR_BOTH")]
         const WAIT_FOR_BOTH = 4;
     }
 }
@@ -1396,7 +1505,9 @@ impl ToValue for IOStreamSpliceFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GMountMountFlags")]
     pub struct MountMountFlags: u32 {
+        #[doc(alias = "G_MOUNT_MOUNT_NONE")]
         const NONE = 0;
     }
 }
@@ -1456,8 +1567,11 @@ impl ToValue for MountMountFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GMountUnmountFlags")]
     pub struct MountUnmountFlags: u32 {
+        #[doc(alias = "G_MOUNT_UNMOUNT_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_MOUNT_UNMOUNT_FORCE")]
         const FORCE = 1;
     }
 }
@@ -1517,9 +1631,13 @@ impl ToValue for MountUnmountFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GOutputStreamSpliceFlags")]
     pub struct OutputStreamSpliceFlags: u32 {
+        #[doc(alias = "G_OUTPUT_STREAM_SPLICE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE")]
         const CLOSE_SOURCE = 1;
+        #[doc(alias = "G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET")]
         const CLOSE_TARGET = 2;
     }
 }
@@ -1581,9 +1699,13 @@ impl ToValue for OutputStreamSpliceFlags {
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 bitflags! {
+    #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
+        #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]
         const DEFAULT = 0;
+        #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY")]
         const IPV4_ONLY = 1;
+        #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY")]
         const IPV6_ONLY = 2;
     }
 }
@@ -1657,7 +1779,9 @@ impl ToValue for ResolverNameLookupFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
+        #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
         const NONE = 0;
     }
 }
@@ -1717,12 +1841,19 @@ impl ToValue for ResourceLookupFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GSettingsBindFlags")]
     pub struct SettingsBindFlags: u32 {
+        #[doc(alias = "G_SETTINGS_BIND_DEFAULT")]
         const DEFAULT = 0;
+        #[doc(alias = "G_SETTINGS_BIND_GET")]
         const GET = 1;
+        #[doc(alias = "G_SETTINGS_BIND_SET")]
         const SET = 2;
+        #[doc(alias = "G_SETTINGS_BIND_NO_SENSITIVITY")]
         const NO_SENSITIVITY = 4;
+        #[doc(alias = "G_SETTINGS_BIND_GET_NO_CHANGES")]
         const GET_NO_CHANGES = 8;
+        #[doc(alias = "G_SETTINGS_BIND_INVERT_BOOLEAN")]
         const INVERT_BOOLEAN = 16;
     }
 }
@@ -1782,15 +1913,25 @@ impl ToValue for SettingsBindFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GSubprocessFlags")]
     pub struct SubprocessFlags: u32 {
+        #[doc(alias = "G_SUBPROCESS_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDIN_PIPE")]
         const STDIN_PIPE = 1;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDIN_INHERIT")]
         const STDIN_INHERIT = 2;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDOUT_PIPE")]
         const STDOUT_PIPE = 4;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDOUT_SILENCE")]
         const STDOUT_SILENCE = 8;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_PIPE")]
         const STDERR_PIPE = 16;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_SILENCE")]
         const STDERR_SILENCE = 32;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_MERGE")]
         const STDERR_MERGE = 64;
+        #[doc(alias = "G_SUBPROCESS_FLAGS_INHERIT_FDS")]
         const INHERIT_FDS = 128;
     }
 }
@@ -1850,14 +1991,23 @@ impl ToValue for SubprocessFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GTlsCertificateFlags")]
     pub struct TlsCertificateFlags: u32 {
+        #[doc(alias = "G_TLS_CERTIFICATE_UNKNOWN_CA")]
         const UNKNOWN_CA = 1;
+        #[doc(alias = "G_TLS_CERTIFICATE_BAD_IDENTITY")]
         const BAD_IDENTITY = 2;
+        #[doc(alias = "G_TLS_CERTIFICATE_NOT_ACTIVATED")]
         const NOT_ACTIVATED = 4;
+        #[doc(alias = "G_TLS_CERTIFICATE_EXPIRED")]
         const EXPIRED = 8;
+        #[doc(alias = "G_TLS_CERTIFICATE_REVOKED")]
         const REVOKED = 16;
+        #[doc(alias = "G_TLS_CERTIFICATE_INSECURE")]
         const INSECURE = 32;
+        #[doc(alias = "G_TLS_CERTIFICATE_GENERIC_ERROR")]
         const GENERIC_ERROR = 64;
+        #[doc(alias = "G_TLS_CERTIFICATE_VALIDATE_ALL")]
         const VALIDATE_ALL = 127;
     }
 }
@@ -1917,7 +2067,9 @@ impl ToValue for TlsCertificateFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GTlsDatabaseVerifyFlags")]
     pub struct TlsDatabaseVerifyFlags: u32 {
+        #[doc(alias = "G_TLS_DATABASE_VERIFY_NONE")]
         const NONE = 0;
     }
 }
@@ -1977,10 +2129,15 @@ impl ToValue for TlsDatabaseVerifyFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GTlsPasswordFlags")]
     pub struct TlsPasswordFlags: u32 {
+        #[doc(alias = "G_TLS_PASSWORD_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_TLS_PASSWORD_RETRY")]
         const RETRY = 2;
+        #[doc(alias = "G_TLS_PASSWORD_MANY_TRIES")]
         const MANY_TRIES = 4;
+        #[doc(alias = "G_TLS_PASSWORD_FINAL_TRY")]
         const FINAL_TRY = 8;
     }
 }

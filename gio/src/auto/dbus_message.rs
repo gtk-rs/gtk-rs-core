@@ -428,7 +428,7 @@ impl DBusMessage {
     }
 
     #[doc(alias = "locked")]
-    pub fn connect_locked_notify<F: Fn(&DBusMessage) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_locked_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_locked_trampoline<F: Fn(&DBusMessage) + 'static>(
             this: *mut ffi::GDBusMessage,
             _param_spec: glib::ffi::gpointer,

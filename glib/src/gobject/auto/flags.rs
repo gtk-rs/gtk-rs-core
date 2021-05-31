@@ -11,10 +11,15 @@ use bitflags::bitflags;
 use std::fmt;
 
 bitflags! {
+    #[doc(alias = "GBindingFlags")]
     pub struct BindingFlags: u32 {
+        #[doc(alias = "G_BINDING_DEFAULT")]
         const DEFAULT = 0;
+        #[doc(alias = "G_BINDING_BIDIRECTIONAL")]
         const BIDIRECTIONAL = 1;
+        #[doc(alias = "G_BINDING_SYNC_CREATE")]
         const SYNC_CREATE = 2;
+        #[doc(alias = "G_BINDING_INVERT_BOOLEAN")]
         const INVERT_BOOLEAN = 4;
     }
 }
@@ -76,15 +81,25 @@ impl ToValue for BindingFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
+        #[doc(alias = "G_SIGNAL_RUN_FIRST")]
         const RUN_FIRST = 1;
+        #[doc(alias = "G_SIGNAL_RUN_LAST")]
         const RUN_LAST = 2;
+        #[doc(alias = "G_SIGNAL_RUN_CLEANUP")]
         const RUN_CLEANUP = 4;
+        #[doc(alias = "G_SIGNAL_NO_RECURSE")]
         const NO_RECURSE = 8;
+        #[doc(alias = "G_SIGNAL_DETAILED")]
         const DETAILED = 16;
+        #[doc(alias = "G_SIGNAL_ACTION")]
         const ACTION = 32;
+        #[doc(alias = "G_SIGNAL_NO_HOOKS")]
         const NO_HOOKS = 64;
+        #[doc(alias = "G_SIGNAL_MUST_COLLECT")]
         const MUST_COLLECT = 128;
+        #[doc(alias = "G_SIGNAL_DEPRECATED")]
         const DEPRECATED = 256;
     }
 }

@@ -276,13 +276,14 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
 
     #[doc(alias = "buffer-size")]
     fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_buffer_size_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_buffer_size_trampoline<
+            P: IsA<BufferedInputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GBufferedInputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<BufferedInputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&BufferedInputStream::from_glib_borrow(this).unsafe_cast_ref())
         }

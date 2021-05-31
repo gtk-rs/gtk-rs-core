@@ -119,7 +119,7 @@ impl DBusServer {
     }
 
     #[doc(alias = "new-connection")]
-    pub fn connect_new_connection<F: Fn(&DBusServer, &DBusConnection) -> bool + 'static>(
+    pub fn connect_new_connection<F: Fn(&Self, &DBusConnection) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -147,7 +147,7 @@ impl DBusServer {
     }
 
     #[doc(alias = "active")]
-    pub fn connect_active_notify<F: Fn(&DBusServer) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_active_trampoline<F: Fn(&DBusServer) + 'static>(
             this: *mut ffi::GDBusServer,
             _param_spec: glib::ffi::gpointer,
@@ -170,10 +170,7 @@ impl DBusServer {
     }
 
     #[doc(alias = "client-address")]
-    pub fn connect_client_address_notify<F: Fn(&DBusServer) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_client_address_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_client_address_trampoline<F: Fn(&DBusServer) + 'static>(
             this: *mut ffi::GDBusServer,
             _param_spec: glib::ffi::gpointer,

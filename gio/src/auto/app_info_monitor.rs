@@ -25,7 +25,7 @@ impl AppInfoMonitor {
     }
 
     #[doc(alias = "changed")]
-    pub fn connect_changed<F: Fn(&AppInfoMonitor) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn changed_trampoline<F: Fn(&AppInfoMonitor) + 'static>(
             this: *mut ffi::GAppInfoMonitor,
             f: glib::ffi::gpointer,

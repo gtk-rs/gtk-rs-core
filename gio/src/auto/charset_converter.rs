@@ -105,10 +105,7 @@ impl CharsetConverter {
     }
 
     #[doc(alias = "use-fallback")]
-    pub fn connect_use_fallback_notify<F: Fn(&CharsetConverter) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_use_fallback_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_use_fallback_trampoline<F: Fn(&CharsetConverter) + 'static>(
             this: *mut ffi::GCharsetConverter,
             _param_spec: glib::ffi::gpointer,

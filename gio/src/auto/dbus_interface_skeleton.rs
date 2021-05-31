@@ -219,16 +219,13 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn g_authorize_method_trampoline<
-            P,
+            P: IsA<DBusInterfaceSkeleton>,
             F: Fn(&P, &DBusMethodInvocation) -> bool + 'static,
         >(
             this: *mut ffi::GDBusInterfaceSkeleton,
             invocation: *mut ffi::GDBusMethodInvocation,
             f: glib::ffi::gpointer,
-        ) -> glib::ffi::gboolean
-        where
-            P: IsA<DBusInterfaceSkeleton>,
-        {
+        ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
                 &DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref(),
@@ -251,13 +248,14 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
 
     #[doc(alias = "g-flags")]
     fn connect_g_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_g_flags_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_g_flags_trampoline<
+            P: IsA<DBusInterfaceSkeleton>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GDBusInterfaceSkeleton,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusInterfaceSkeleton>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref())
         }

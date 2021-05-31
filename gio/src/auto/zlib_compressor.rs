@@ -71,10 +71,7 @@ impl ZlibCompressor {
     }
 
     #[doc(alias = "file-info")]
-    pub fn connect_file_info_notify<F: Fn(&ZlibCompressor) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_file_info_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_file_info_trampoline<F: Fn(&ZlibCompressor) + 'static>(
             this: *mut ffi::GZlibCompressor,
             _param_spec: glib::ffi::gpointer,

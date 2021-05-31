@@ -54,10 +54,7 @@ impl FilenameCompleter {
     }
 
     #[doc(alias = "got-completion-data")]
-    pub fn connect_got_completion_data<F: Fn(&FilenameCompleter) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_got_completion_data<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn got_completion_data_trampoline<F: Fn(&FilenameCompleter) + 'static>(
             this: *mut ffi::GFilenameCompleter,
             f: glib::ffi::gpointer,

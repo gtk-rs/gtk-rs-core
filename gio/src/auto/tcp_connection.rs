@@ -55,13 +55,14 @@ impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
 
     #[doc(alias = "graceful-disconnect")]
     fn connect_graceful_disconnect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_graceful_disconnect_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_graceful_disconnect_trampoline<
+            P: IsA<TcpConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTcpConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TcpConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TcpConnection::from_glib_borrow(this).unsafe_cast_ref())
         }

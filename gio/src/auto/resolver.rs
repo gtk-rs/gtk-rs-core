@@ -626,12 +626,10 @@ impl<O: IsA<Resolver>> ResolverExt for O {
 
     #[doc(alias = "reload")]
     fn connect_reload<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn reload_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn reload_trampoline<P: IsA<Resolver>, F: Fn(&P) + 'static>(
             this: *mut ffi::GResolver,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Resolver>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Resolver::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -54,10 +54,7 @@ impl ZlibDecompressor {
     }
 
     #[doc(alias = "file-info")]
-    pub fn connect_file_info_notify<F: Fn(&ZlibDecompressor) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_file_info_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_file_info_trampoline<F: Fn(&ZlibDecompressor) + 'static>(
             this: *mut ffi::GZlibDecompressor,
             _param_spec: glib::ffi::gpointer,

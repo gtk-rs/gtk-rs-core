@@ -914,9 +914,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "closed")]
-    pub fn connect_closed<
-        F: Fn(&DBusConnection, bool, Option<&glib::Error>) + Send + Sync + 'static,
-    >(
+    pub fn connect_closed<F: Fn(&Self, bool, Option<&glib::Error>) + Send + Sync + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -951,7 +949,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "capabilities")]
-    pub fn connect_capabilities_notify<F: Fn(&DBusConnection) + Send + Sync + 'static>(
+    pub fn connect_capabilities_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -979,7 +977,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "closed")]
-    pub fn connect_closed_notify<F: Fn(&DBusConnection) + Send + Sync + 'static>(
+    pub fn connect_closed_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -1007,7 +1005,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "exit-on-close")]
-    pub fn connect_exit_on_close_notify<F: Fn(&DBusConnection) + Send + Sync + 'static>(
+    pub fn connect_exit_on_close_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -1035,7 +1033,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "unique-name")]
-    pub fn connect_unique_name_notify<F: Fn(&DBusConnection) + Send + Sync + 'static>(
+    pub fn connect_unique_name_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {

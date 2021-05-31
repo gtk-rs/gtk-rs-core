@@ -180,13 +180,14 @@ impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {
 
     #[doc(alias = "is-remote")]
     fn connect_is_remote_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_remote_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_remote_trampoline<
+            P: IsA<ApplicationCommandLine>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplicationCommandLine,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ApplicationCommandLine>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&ApplicationCommandLine::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -80,15 +80,16 @@ impl<O: IsA<ListModel>> ListModelExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn items_changed_trampoline<P, F: Fn(&P, u32, u32, u32) + 'static>(
+        unsafe extern "C" fn items_changed_trampoline<
+            P: IsA<ListModel>,
+            F: Fn(&P, u32, u32, u32) + 'static,
+        >(
             this: *mut ffi::GListModel,
             position: libc::c_uint,
             removed: libc::c_uint,
             added: libc::c_uint,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ListModel>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &ListModel::from_glib_borrow(this).unsafe_cast_ref(),

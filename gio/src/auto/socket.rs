@@ -767,13 +767,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "blocking")]
     fn connect_blocking_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_blocking_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_blocking_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -792,13 +793,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "broadcast")]
     fn connect_broadcast_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_broadcast_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_broadcast_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -817,13 +819,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "keepalive")]
     fn connect_keepalive_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_keepalive_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_keepalive_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -845,13 +848,14 @@ impl<O: IsA<Socket>> SocketExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_listen_backlog_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_listen_backlog_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -870,13 +874,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "local-address")]
     fn connect_local_address_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_local_address_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_local_address_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -898,13 +903,14 @@ impl<O: IsA<Socket>> SocketExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_multicast_loopback_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_multicast_loopback_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -923,13 +929,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "multicast-ttl")]
     fn connect_multicast_ttl_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_multicast_ttl_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_multicast_ttl_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -951,13 +958,14 @@ impl<O: IsA<Socket>> SocketExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_remote_address_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_remote_address_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -976,13 +984,14 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "timeout")]
     fn connect_timeout_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_timeout_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_timeout_trampoline<
+            P: IsA<Socket>,
+            F: Fn(&P) + Send + 'static,
+        >(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -1001,13 +1010,11 @@ impl<O: IsA<Socket>> SocketExt for O {
 
     #[doc(alias = "ttl")]
     fn connect_ttl_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_ttl_trampoline<P, F: Fn(&P) + Send + 'static>(
+        unsafe extern "C" fn notify_ttl_trampoline<P: IsA<Socket>, F: Fn(&P) + Send + 'static>(
             this: *mut ffi::GSocket,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Socket>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Socket::from_glib_borrow(this).unsafe_cast_ref())
         }

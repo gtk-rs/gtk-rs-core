@@ -518,12 +518,10 @@ impl<O: IsA<Mount>> MountExt for O {
 
     #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn changed_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Mount>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Mount::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -542,12 +540,10 @@ impl<O: IsA<Mount>> MountExt for O {
 
     #[doc(alias = "pre-unmount")]
     fn connect_pre_unmount<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn pre_unmount_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn pre_unmount_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Mount>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Mount::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -566,12 +562,10 @@ impl<O: IsA<Mount>> MountExt for O {
 
     #[doc(alias = "unmounted")]
     fn connect_unmounted<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn unmounted_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn unmounted_trampoline<P: IsA<Mount>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMount,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Mount>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Mount::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -162,7 +162,7 @@ impl Task {
     //}
 
     #[doc(alias = "completed")]
-    pub fn connect_completed_notify<F: Fn(&Task) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_completed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_completed_trampoline<F: Fn(&Task) + 'static>(
             this: *mut ffi::GTask,
             _param_spec: glib::ffi::gpointer,

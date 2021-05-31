@@ -89,13 +89,14 @@ impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
 
     #[doc(alias = "authentication-mode")]
     fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_authentication_mode_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_authentication_mode_trampoline<
+            P: IsA<TlsServerConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsServerConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsServerConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsServerConnection::from_glib_borrow(this).unsafe_cast_ref())
         }

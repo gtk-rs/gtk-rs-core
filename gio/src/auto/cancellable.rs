@@ -148,12 +148,13 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
 
     #[doc(alias = "cancelled")]
     fn connect_cancelled<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn cancelled_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn cancelled_trampoline<
+            P: IsA<Cancellable>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GCancellable,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Cancellable>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Cancellable::from_glib_borrow(this).unsafe_cast_ref())
         }

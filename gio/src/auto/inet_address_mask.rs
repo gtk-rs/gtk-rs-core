@@ -176,13 +176,14 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_address_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn notify_address_trampoline<
+            P: IsA<InetAddressMask>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GInetAddressMask,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<InetAddressMask>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&InetAddressMask::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -201,13 +202,14 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
 
     #[doc(alias = "family")]
     fn connect_family_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_family_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn notify_family_trampoline<
+            P: IsA<InetAddressMask>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GInetAddressMask,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<InetAddressMask>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&InetAddressMask::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -226,13 +228,14 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
 
     #[doc(alias = "length")]
     fn connect_length_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_length_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn notify_length_trampoline<
+            P: IsA<InetAddressMask>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GInetAddressMask,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<InetAddressMask>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&InetAddressMask::from_glib_borrow(this).unsafe_cast_ref())
         }

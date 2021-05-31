@@ -189,13 +189,14 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
 
     #[doc(alias = "network-changed")]
     fn connect_network_changed<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn network_changed_trampoline<P, F: Fn(&P, bool) + 'static>(
+        unsafe extern "C" fn network_changed_trampoline<
+            P: IsA<NetworkMonitor>,
+            F: Fn(&P, bool) + 'static,
+        >(
             this: *mut ffi::GNetworkMonitor,
             network_available: glib::ffi::gboolean,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<NetworkMonitor>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref(),
@@ -217,13 +218,14 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
 
     #[doc(alias = "connectivity")]
     fn connect_connectivity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_connectivity_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_connectivity_trampoline<
+            P: IsA<NetworkMonitor>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GNetworkMonitor,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<NetworkMonitor>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -242,13 +244,14 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
 
     #[doc(alias = "network-available")]
     fn connect_network_available_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_network_available_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_network_available_trampoline<
+            P: IsA<NetworkMonitor>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GNetworkMonitor,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<NetworkMonitor>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -267,13 +270,14 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
 
     #[doc(alias = "network-metered")]
     fn connect_network_metered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_network_metered_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_network_metered_trampoline<
+            P: IsA<NetworkMonitor>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GNetworkMonitor,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<NetworkMonitor>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }

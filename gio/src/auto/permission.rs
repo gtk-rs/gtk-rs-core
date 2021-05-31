@@ -243,13 +243,11 @@ impl<O: IsA<Permission>> PermissionExt for O {
 
     #[doc(alias = "allowed")]
     fn connect_allowed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_allowed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_allowed_trampoline<P: IsA<Permission>, F: Fn(&P) + 'static>(
             this: *mut ffi::GPermission,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Permission>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Permission::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -268,13 +266,14 @@ impl<O: IsA<Permission>> PermissionExt for O {
 
     #[doc(alias = "can-acquire")]
     fn connect_can_acquire_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_can_acquire_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_can_acquire_trampoline<
+            P: IsA<Permission>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GPermission,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Permission>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Permission::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -293,13 +292,14 @@ impl<O: IsA<Permission>> PermissionExt for O {
 
     #[doc(alias = "can-release")]
     fn connect_can_release_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_can_release_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_can_release_trampoline<
+            P: IsA<Permission>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GPermission,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Permission>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Permission::from_glib_borrow(this).unsafe_cast_ref())
         }

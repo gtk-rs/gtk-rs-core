@@ -79,13 +79,14 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn interface_added_trampoline<P, F: Fn(&P, &DBusInterface) + 'static>(
+        unsafe extern "C" fn interface_added_trampoline<
+            P: IsA<DBusObject>,
+            F: Fn(&P, &DBusInterface) + 'static,
+        >(
             this: *mut ffi::GDBusObject,
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusObject>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
@@ -110,13 +111,14 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn interface_removed_trampoline<P, F: Fn(&P, &DBusInterface) + 'static>(
+        unsafe extern "C" fn interface_removed_trampoline<
+            P: IsA<DBusObject>,
+            F: Fn(&P, &DBusInterface) + 'static,
+        >(
             this: *mut ffi::GDBusObject,
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusObject>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &DBusObject::from_glib_borrow(this).unsafe_cast_ref(),

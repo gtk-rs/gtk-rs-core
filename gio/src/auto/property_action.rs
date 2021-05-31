@@ -53,10 +53,7 @@ impl PropertyAction {
     }
 
     #[doc(alias = "enabled")]
-    pub fn connect_enabled_notify<F: Fn(&PropertyAction) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_enabled_trampoline<F: Fn(&PropertyAction) + 'static>(
             this: *mut ffi::GPropertyAction,
             _param_spec: glib::ffi::gpointer,
@@ -79,10 +76,7 @@ impl PropertyAction {
     }
 
     #[doc(alias = "parameter-type")]
-    pub fn connect_parameter_type_notify<F: Fn(&PropertyAction) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_parameter_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_parameter_type_trampoline<F: Fn(&PropertyAction) + 'static>(
             this: *mut ffi::GPropertyAction,
             _param_spec: glib::ffi::gpointer,
@@ -105,7 +99,7 @@ impl PropertyAction {
     }
 
     #[doc(alias = "state")]
-    pub fn connect_state_notify<F: Fn(&PropertyAction) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_state_trampoline<F: Fn(&PropertyAction) + 'static>(
             this: *mut ffi::GPropertyAction,
             _param_spec: glib::ffi::gpointer,
@@ -128,10 +122,7 @@ impl PropertyAction {
     }
 
     #[doc(alias = "state-type")]
-    pub fn connect_state_type_notify<F: Fn(&PropertyAction) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_state_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_state_type_trampoline<F: Fn(&PropertyAction) + 'static>(
             this: *mut ffi::GPropertyAction,
             _param_spec: glib::ffi::gpointer,

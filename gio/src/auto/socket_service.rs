@@ -98,17 +98,14 @@ impl<O: IsA<SocketService>> SocketServiceExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn incoming_trampoline<
-            P,
+            P: IsA<SocketService>,
             F: Fn(&P, &SocketConnection, Option<&glib::Object>) -> bool + 'static,
         >(
             this: *mut ffi::GSocketService,
             connection: *mut ffi::GSocketConnection,
             source_object: *mut glib::gobject_ffi::GObject,
             f: glib::ffi::gpointer,
-        ) -> glib::ffi::gboolean
-        where
-            P: IsA<SocketService>,
-        {
+        ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
                 &SocketService::from_glib_borrow(this).unsafe_cast_ref(),
@@ -134,13 +131,14 @@ impl<O: IsA<SocketService>> SocketServiceExt for O {
 
     #[doc(alias = "active")]
     fn connect_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_active_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_active_trampoline<
+            P: IsA<SocketService>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GSocketService,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<SocketService>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&SocketService::from_glib_borrow(this).unsafe_cast_ref())
         }

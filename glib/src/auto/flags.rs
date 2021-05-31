@@ -13,10 +13,15 @@ use std::fmt;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[doc(alias = "GFileSetContentsFlags")]
     pub struct FileSetContentsFlags: u32 {
+        #[doc(alias = "G_FILE_SET_CONTENTS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_FILE_SET_CONTENTS_CONSISTENT")]
         const CONSISTENT = 1;
+        #[doc(alias = "G_FILE_SET_CONTENTS_DURABLE")]
         const DURABLE = 2;
+        #[doc(alias = "G_FILE_SET_CONTENTS_ONLY_EXISTING")]
         const ONLY_EXISTING = 4;
     }
 }
@@ -50,11 +55,17 @@ impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileTest")]
     pub struct FileTest: u32 {
+        #[doc(alias = "G_FILE_TEST_IS_REGULAR")]
         const IS_REGULAR = 1;
+        #[doc(alias = "G_FILE_TEST_IS_SYMLINK")]
         const IS_SYMLINK = 2;
+        #[doc(alias = "G_FILE_TEST_IS_DIR")]
         const IS_DIR = 4;
+        #[doc(alias = "G_FILE_TEST_IS_EXECUTABLE")]
         const IS_EXECUTABLE = 8;
+        #[doc(alias = "G_FILE_TEST_EXISTS")]
         const EXISTS = 16;
     }
 }
@@ -82,10 +93,15 @@ impl FromGlib<ffi::GFileTest> for FileTest {
 }
 
 bitflags! {
+    #[doc(alias = "GFormatSizeFlags")]
     pub struct FormatSizeFlags: u32 {
+        #[doc(alias = "G_FORMAT_SIZE_DEFAULT")]
         const DEFAULT = 0;
+        #[doc(alias = "G_FORMAT_SIZE_LONG_FORMAT")]
         const LONG_FORMAT = 1;
+        #[doc(alias = "G_FORMAT_SIZE_IEC_UNITS")]
         const IEC_UNITS = 2;
+        #[doc(alias = "G_FORMAT_SIZE_BITS")]
         const BITS = 4;
     }
 }
@@ -113,12 +129,19 @@ impl FromGlib<ffi::GFormatSizeFlags> for FormatSizeFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GIOCondition")]
     pub struct IOCondition: u32 {
+        #[doc(alias = "G_IO_IN")]
         const IN = 1;
+        #[doc(alias = "G_IO_OUT")]
         const OUT = 4;
+        #[doc(alias = "G_IO_PRI")]
         const PRI = 2;
+        #[doc(alias = "G_IO_ERR")]
         const ERR = 8;
+        #[doc(alias = "G_IO_HUP")]
         const HUP = 16;
+        #[doc(alias = "G_IO_NVAL")]
         const NVAL = 32;
     }
 }
@@ -180,9 +203,13 @@ impl ToValue for IOCondition {
 }
 
 bitflags! {
+    #[doc(alias = "GKeyFileFlags")]
     pub struct KeyFileFlags: u32 {
+        #[doc(alias = "G_KEY_FILE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_KEY_FILE_KEEP_COMMENTS")]
         const KEEP_COMMENTS = 1;
+        #[doc(alias = "G_KEY_FILE_KEEP_TRANSLATIONS")]
         const KEEP_TRANSLATIONS = 2;
     }
 }
@@ -210,15 +237,25 @@ impl FromGlib<ffi::GKeyFileFlags> for KeyFileFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GLogLevelFlags")]
     pub struct LogLevelFlags: u32 {
+        #[doc(alias = "G_LOG_FLAG_RECURSION")]
         const FLAG_RECURSION = 1;
+        #[doc(alias = "G_LOG_FLAG_FATAL")]
         const FLAG_FATAL = 2;
+        #[doc(alias = "G_LOG_LEVEL_ERROR")]
         const LEVEL_ERROR = 4;
+        #[doc(alias = "G_LOG_LEVEL_CRITICAL")]
         const LEVEL_CRITICAL = 8;
+        #[doc(alias = "G_LOG_LEVEL_WARNING")]
         const LEVEL_WARNING = 16;
+        #[doc(alias = "G_LOG_LEVEL_MESSAGE")]
         const LEVEL_MESSAGE = 32;
+        #[doc(alias = "G_LOG_LEVEL_INFO")]
         const LEVEL_INFO = 64;
+        #[doc(alias = "G_LOG_LEVEL_DEBUG")]
         const LEVEL_DEBUG = 128;
+        #[doc(alias = "G_LOG_LEVEL_MASK")]
         const LEVEL_MASK = 4294967292;
     }
 }
@@ -246,14 +283,23 @@ impl FromGlib<ffi::GLogLevelFlags> for LogLevelFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GOptionFlags")]
     pub struct OptionFlags: u32 {
+        #[doc(alias = "G_OPTION_FLAG_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_OPTION_FLAG_HIDDEN")]
         const HIDDEN = 1;
+        #[doc(alias = "G_OPTION_FLAG_IN_MAIN")]
         const IN_MAIN = 2;
+        #[doc(alias = "G_OPTION_FLAG_REVERSE")]
         const REVERSE = 4;
+        #[doc(alias = "G_OPTION_FLAG_NO_ARG")]
         const NO_ARG = 8;
+        #[doc(alias = "G_OPTION_FLAG_FILENAME")]
         const FILENAME = 16;
+        #[doc(alias = "G_OPTION_FLAG_OPTIONAL_ARG")]
         const OPTIONAL_ARG = 32;
+        #[doc(alias = "G_OPTION_FLAG_NOALIAS")]
         const NOALIAS = 64;
     }
 }
@@ -281,16 +327,27 @@ impl FromGlib<ffi::GOptionFlags> for OptionFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GSpawnFlags")]
     pub struct SpawnFlags: u32 {
+        #[doc(alias = "G_SPAWN_DEFAULT")]
         const DEFAULT = 0;
+        #[doc(alias = "G_SPAWN_LEAVE_DESCRIPTORS_OPEN")]
         const LEAVE_DESCRIPTORS_OPEN = 1;
+        #[doc(alias = "G_SPAWN_DO_NOT_REAP_CHILD")]
         const DO_NOT_REAP_CHILD = 2;
+        #[doc(alias = "G_SPAWN_SEARCH_PATH")]
         const SEARCH_PATH = 4;
+        #[doc(alias = "G_SPAWN_STDOUT_TO_DEV_NULL")]
         const STDOUT_TO_DEV_NULL = 8;
+        #[doc(alias = "G_SPAWN_STDERR_TO_DEV_NULL")]
         const STDERR_TO_DEV_NULL = 16;
+        #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDIN")]
         const CHILD_INHERITS_STDIN = 32;
+        #[doc(alias = "G_SPAWN_FILE_AND_ARGV_ZERO")]
         const FILE_AND_ARGV_ZERO = 64;
+        #[doc(alias = "G_SPAWN_SEARCH_PATH_FROM_ENVP")]
         const SEARCH_PATH_FROM_ENVP = 128;
+        #[doc(alias = "G_SPAWN_CLOEXEC_PIPES")]
         const CLOEXEC_PIPES = 256;
     }
 }
@@ -320,15 +377,25 @@ impl FromGlib<ffi::GSpawnFlags> for SpawnFlags {
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[doc(alias = "GUriFlags")]
     pub struct UriFlags: u32 {
+        #[doc(alias = "G_URI_FLAGS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_URI_FLAGS_PARSE_RELAXED")]
         const PARSE_RELAXED = 1;
+        #[doc(alias = "G_URI_FLAGS_HAS_PASSWORD")]
         const HAS_PASSWORD = 2;
+        #[doc(alias = "G_URI_FLAGS_HAS_AUTH_PARAMS")]
         const HAS_AUTH_PARAMS = 4;
+        #[doc(alias = "G_URI_FLAGS_ENCODED")]
         const ENCODED = 8;
+        #[doc(alias = "G_URI_FLAGS_NON_DNS")]
         const NON_DNS = 16;
+        #[doc(alias = "G_URI_FLAGS_ENCODED_QUERY")]
         const ENCODED_QUERY = 32;
+        #[doc(alias = "G_URI_FLAGS_ENCODED_PATH")]
         const ENCODED_PATH = 64;
+        #[doc(alias = "G_URI_FLAGS_ENCODED_FRAGMENT")]
         const ENCODED_FRAGMENT = 128;
     }
 }
@@ -364,12 +431,19 @@ impl FromGlib<ffi::GUriFlags> for UriFlags {
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[doc(alias = "GUriHideFlags")]
     pub struct UriHideFlags: u32 {
+        #[doc(alias = "G_URI_HIDE_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_URI_HIDE_USERINFO")]
         const USERINFO = 1;
+        #[doc(alias = "G_URI_HIDE_PASSWORD")]
         const PASSWORD = 2;
+        #[doc(alias = "G_URI_HIDE_AUTH_PARAMS")]
         const AUTH_PARAMS = 4;
+        #[doc(alias = "G_URI_HIDE_QUERY")]
         const QUERY = 8;
+        #[doc(alias = "G_URI_HIDE_FRAGMENT")]
         const FRAGMENT = 16;
     }
 }
@@ -405,10 +479,15 @@ impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[doc(alias = "GUriParamsFlags")]
     pub struct UriParamsFlags: u32 {
+        #[doc(alias = "G_URI_PARAMS_NONE")]
         const NONE = 0;
+        #[doc(alias = "G_URI_PARAMS_CASE_INSENSITIVE")]
         const CASE_INSENSITIVE = 1;
+        #[doc(alias = "G_URI_PARAMS_WWW_FORM")]
         const WWW_FORM = 2;
+        #[doc(alias = "G_URI_PARAMS_PARSE_RELAXED")]
         const PARSE_RELAXED = 4;
     }
 }

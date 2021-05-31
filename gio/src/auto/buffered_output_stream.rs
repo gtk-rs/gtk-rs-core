@@ -166,13 +166,14 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
 
     #[doc(alias = "auto-grow")]
     fn connect_auto_grow_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_auto_grow_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_auto_grow_trampoline<
+            P: IsA<BufferedOutputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GBufferedOutputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<BufferedOutputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&BufferedOutputStream::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -191,13 +192,14 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
 
     #[doc(alias = "buffer-size")]
     fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_buffer_size_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_buffer_size_trampoline<
+            P: IsA<BufferedOutputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GBufferedOutputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<BufferedOutputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&BufferedOutputStream::from_glib_borrow(this).unsafe_cast_ref())
         }
