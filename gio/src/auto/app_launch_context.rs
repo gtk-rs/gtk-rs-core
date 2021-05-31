@@ -132,13 +132,14 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
 
     #[doc(alias = "launch-failed")]
     fn connect_launch_failed<F: Fn(&Self, &str) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn launch_failed_trampoline<P, F: Fn(&P, &str) + 'static>(
+        unsafe extern "C" fn launch_failed_trampoline<
+            P: IsA<AppLaunchContext>,
+            F: Fn(&P, &str) + 'static,
+        >(
             this: *mut ffi::GAppLaunchContext,
             startup_notify_id: *mut libc::c_char,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<AppLaunchContext>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
@@ -163,14 +164,15 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn launched_trampoline<P, F: Fn(&P, &AppInfo, &glib::Variant) + 'static>(
+        unsafe extern "C" fn launched_trampoline<
+            P: IsA<AppLaunchContext>,
+            F: Fn(&P, &AppInfo, &glib::Variant) + 'static,
+        >(
             this: *mut ffi::GAppLaunchContext,
             info: *mut ffi::GAppInfo,
             platform_data: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<AppLaunchContext>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),

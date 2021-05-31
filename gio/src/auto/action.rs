@@ -154,13 +154,11 @@ impl<O: IsA<Action>> ActionExt for O {
 
     #[doc(alias = "enabled")]
     fn connect_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_enabled_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_enabled_trampoline<P: IsA<Action>, F: Fn(&P) + 'static>(
             this: *mut ffi::GAction,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Action>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -179,13 +177,11 @@ impl<O: IsA<Action>> ActionExt for O {
 
     #[doc(alias = "name")]
     fn connect_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_name_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_name_trampoline<P: IsA<Action>, F: Fn(&P) + 'static>(
             this: *mut ffi::GAction,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Action>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -204,13 +200,14 @@ impl<O: IsA<Action>> ActionExt for O {
 
     #[doc(alias = "parameter-type")]
     fn connect_parameter_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_parameter_type_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_parameter_type_trampoline<
+            P: IsA<Action>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GAction,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Action>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -229,13 +226,11 @@ impl<O: IsA<Action>> ActionExt for O {
 
     #[doc(alias = "state")]
     fn connect_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_state_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_state_trampoline<P: IsA<Action>, F: Fn(&P) + 'static>(
             this: *mut ffi::GAction,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Action>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -254,13 +249,11 @@ impl<O: IsA<Action>> ActionExt for O {
 
     #[doc(alias = "state-type")]
     fn connect_state_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_state_type_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_state_type_trampoline<P: IsA<Action>, F: Fn(&P) + 'static>(
             this: *mut ffi::GAction,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Action>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         }

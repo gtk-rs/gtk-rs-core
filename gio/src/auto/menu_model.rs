@@ -135,15 +135,16 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn items_changed_trampoline<P, F: Fn(&P, i32, i32, i32) + 'static>(
+        unsafe extern "C" fn items_changed_trampoline<
+            P: IsA<MenuModel>,
+            F: Fn(&P, i32, i32, i32) + 'static,
+        >(
             this: *mut ffi::GMenuModel,
             position: libc::c_int,
             removed: libc::c_int,
             added: libc::c_int,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MenuModel>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &MenuModel::from_glib_borrow(this).unsafe_cast_ref(),

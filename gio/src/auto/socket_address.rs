@@ -69,13 +69,14 @@ impl<O: IsA<SocketAddress>> SocketAddressExt for O {
 
     #[doc(alias = "family")]
     fn connect_family_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_family_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn notify_family_trampoline<
+            P: IsA<SocketAddress>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GSocketAddress,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<SocketAddress>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&SocketAddress::from_glib_borrow(this).unsafe_cast_ref())
         }

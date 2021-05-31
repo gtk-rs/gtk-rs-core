@@ -696,13 +696,11 @@ impl<O: IsA<Settings>> SettingsExt for O {
         detail: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn changed_trampoline<P, F: Fn(&P, &str) + 'static>(
+        unsafe extern "C" fn changed_trampoline<P: IsA<Settings>, F: Fn(&P, &str) + 'static>(
             this: *mut ffi::GSettings,
             key: *mut libc::c_char,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Settings>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &Settings::from_glib_borrow(this).unsafe_cast_ref(),
@@ -732,16 +730,13 @@ impl<O: IsA<Settings>> SettingsExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn writable_change_event_trampoline<
-            P,
+            P: IsA<Settings>,
             F: Fn(&P, u32) -> glib::signal::Inhibit + 'static,
         >(
             this: *mut ffi::GSettings,
             key: libc::c_uint,
             f: glib::ffi::gpointer,
-        ) -> glib::ffi::gboolean
-        where
-            P: IsA<Settings>,
-        {
+        ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(&Settings::from_glib_borrow(this).unsafe_cast_ref(), key).into_glib()
         }
@@ -764,13 +759,14 @@ impl<O: IsA<Settings>> SettingsExt for O {
         detail: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn writable_changed_trampoline<P, F: Fn(&P, &str) + 'static>(
+        unsafe extern "C" fn writable_changed_trampoline<
+            P: IsA<Settings>,
+            F: Fn(&P, &str) + 'static,
+        >(
             this: *mut ffi::GSettings,
             key: *mut libc::c_char,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Settings>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &Settings::from_glib_borrow(this).unsafe_cast_ref(),
@@ -796,13 +792,14 @@ impl<O: IsA<Settings>> SettingsExt for O {
 
     #[doc(alias = "delay-apply")]
     fn connect_delay_apply_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_delay_apply_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_delay_apply_trampoline<
+            P: IsA<Settings>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GSettings,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Settings>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -821,13 +818,14 @@ impl<O: IsA<Settings>> SettingsExt for O {
 
     #[doc(alias = "has-unapplied")]
     fn connect_has_unapplied_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_has_unapplied_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_has_unapplied_trampoline<
+            P: IsA<Settings>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GSettings,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Settings>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
         }

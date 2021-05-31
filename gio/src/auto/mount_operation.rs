@@ -340,12 +340,10 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "aborted")]
     fn connect_aborted<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn aborted_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn aborted_trampoline<P: IsA<MountOperation>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMountOperation,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -368,7 +366,7 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn ask_password_trampoline<
-            P,
+            P: IsA<MountOperation>,
             F: Fn(&P, &str, &str, &str, AskPasswordFlags) + 'static,
         >(
             this: *mut ffi::GMountOperation,
@@ -377,9 +375,7 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
             default_domain: *mut libc::c_char,
             flags: ffi::GAskPasswordFlags,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
@@ -409,13 +405,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "reply")]
     fn connect_reply<F: Fn(&Self, MountOperationResult) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn reply_trampoline<P, F: Fn(&P, MountOperationResult) + 'static>(
+        unsafe extern "C" fn reply_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P, MountOperationResult) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             result: ffi::GMountOperationResult,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
@@ -447,7 +444,7 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn show_unmount_progress_trampoline<
-            P,
+            P: IsA<MountOperation>,
             F: Fn(&P, &str, i64, i64) + 'static,
         >(
             this: *mut ffi::GMountOperation,
@@ -455,9 +452,7 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
             time_left: i64,
             bytes_left: i64,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
@@ -481,13 +476,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "anonymous")]
     fn connect_anonymous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_anonymous_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_anonymous_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -506,13 +502,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "choice")]
     fn connect_choice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_choice_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_choice_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -531,13 +528,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "domain")]
     fn connect_domain_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_domain_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_domain_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -561,13 +559,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_tcrypt_hidden_volume_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_tcrypt_hidden_volume_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -591,13 +590,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_tcrypt_system_volume_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_tcrypt_system_volume_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -616,13 +616,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "password")]
     fn connect_password_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_password_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_password_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -641,13 +642,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "password-save")]
     fn connect_password_save_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_password_save_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_password_save_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -668,13 +670,11 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
     #[doc(alias = "pim")]
     fn connect_pim_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_pim_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_pim_trampoline<P: IsA<MountOperation>, F: Fn(&P) + 'static>(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -693,13 +693,14 @@ impl<O: IsA<MountOperation>> MountOperationExt for O {
 
     #[doc(alias = "username")]
     fn connect_username_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_username_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_username_trampoline<
+            P: IsA<MountOperation>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMountOperation,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MountOperation>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MountOperation::from_glib_borrow(this).unsafe_cast_ref())
         }

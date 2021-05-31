@@ -88,7 +88,7 @@ impl ThemedIcon {
     }
 
     #[doc(alias = "names")]
-    pub fn connect_names_notify<F: Fn(&ThemedIcon) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_names_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_names_trampoline<F: Fn(&ThemedIcon) + 'static>(
             this: *mut ffi::GThemedIcon,
             _param_spec: glib::ffi::gpointer,

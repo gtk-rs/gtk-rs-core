@@ -124,13 +124,14 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
 
     #[doc(alias = "description")]
     fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_description_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_description_trampoline<
+            P: IsA<TlsPassword>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsPassword,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsPassword>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsPassword::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -149,13 +150,11 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
 
     #[doc(alias = "flags")]
     fn connect_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_flags_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_flags_trampoline<P: IsA<TlsPassword>, F: Fn(&P) + 'static>(
             this: *mut ffi::GTlsPassword,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsPassword>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsPassword::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -174,13 +173,11 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
 
     #[doc(alias = "warning")]
     fn connect_warning_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_warning_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_warning_trampoline<P: IsA<TlsPassword>, F: Fn(&P) + 'static>(
             this: *mut ffi::GTlsPassword,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsPassword>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsPassword::from_glib_borrow(this).unsafe_cast_ref())
         }

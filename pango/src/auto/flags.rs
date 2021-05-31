@@ -11,14 +11,23 @@ use glib::Type;
 use std::fmt;
 
 bitflags! {
+    #[doc(alias = "PangoFontMask")]
     pub struct FontMask: u32 {
+        #[doc(alias = "PANGO_FONT_MASK_FAMILY")]
         const FAMILY = 1;
+        #[doc(alias = "PANGO_FONT_MASK_STYLE")]
         const STYLE = 2;
+        #[doc(alias = "PANGO_FONT_MASK_VARIANT")]
         const VARIANT = 4;
+        #[doc(alias = "PANGO_FONT_MASK_WEIGHT")]
         const WEIGHT = 8;
+        #[doc(alias = "PANGO_FONT_MASK_STRETCH")]
         const STRETCH = 16;
+        #[doc(alias = "PANGO_FONT_MASK_SIZE")]
         const SIZE = 32;
+        #[doc(alias = "PANGO_FONT_MASK_GRAVITY")]
         const GRAVITY = 64;
+        #[doc(alias = "PANGO_FONT_MASK_VARIATIONS")]
         const VARIATIONS = 128;
     }
 }
@@ -80,8 +89,11 @@ impl ToValue for FontMask {
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 bitflags! {
+    #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
+        #[doc(alias = "PANGO_SHAPE_NONE")]
         const NONE = 0;
+        #[doc(alias = "PANGO_SHAPE_ROUND_POSITIONS")]
         const ROUND_POSITIONS = 1;
     }
 }
@@ -157,10 +169,15 @@ impl ToValue for ShapeFlags {
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 bitflags! {
+    #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
+        #[doc(alias = "PANGO_SHOW_NONE")]
         const NONE = 0;
+        #[doc(alias = "PANGO_SHOW_SPACES")]
         const SPACES = 1;
+        #[doc(alias = "PANGO_SHOW_LINE_BREAKS")]
         const LINE_BREAKS = 2;
+        #[doc(alias = "PANGO_SHOW_IGNORABLES")]
         const IGNORABLES = 4;
     }
 }

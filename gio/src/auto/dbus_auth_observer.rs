@@ -53,7 +53,7 @@ impl DBusAuthObserver {
     }
 
     #[doc(alias = "allow-mechanism")]
-    pub fn connect_allow_mechanism<F: Fn(&DBusAuthObserver, &str) -> bool + 'static>(
+    pub fn connect_allow_mechanism<F: Fn(&Self, &str) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -86,7 +86,7 @@ impl DBusAuthObserver {
 
     #[doc(alias = "authorize-authenticated-peer")]
     pub fn connect_authorize_authenticated_peer<
-        F: Fn(&DBusAuthObserver, &IOStream, Option<&Credentials>) -> bool + 'static,
+        F: Fn(&Self, &IOStream, Option<&Credentials>) -> bool + 'static,
     >(
         &self,
         f: F,

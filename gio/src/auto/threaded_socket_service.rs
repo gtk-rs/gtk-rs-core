@@ -57,17 +57,14 @@ impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn run_trampoline<
-            P,
+            P: IsA<ThreadedSocketService>,
             F: Fn(&P, &SocketConnection, Option<&glib::Object>) -> bool + 'static,
         >(
             this: *mut ffi::GThreadedSocketService,
             connection: *mut ffi::GSocketConnection,
             source_object: *mut glib::gobject_ffi::GObject,
             f: glib::ffi::gpointer,
-        ) -> glib::ffi::gboolean
-        where
-            P: IsA<ThreadedSocketService>,
-        {
+        ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
                 &ThreadedSocketService::from_glib_borrow(this).unsafe_cast_ref(),

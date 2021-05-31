@@ -47,7 +47,7 @@ impl PixbufSimpleAnim {
     }
 
     #[doc(alias = "loop")]
-    pub fn connect_loop_notify<F: Fn(&PixbufSimpleAnim) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_loop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_loop_trampoline<F: Fn(&PixbufSimpleAnim) + 'static>(
             this: *mut ffi::GdkPixbufSimpleAnim,
             _param_spec: glib::ffi::gpointer,

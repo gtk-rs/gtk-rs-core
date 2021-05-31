@@ -222,13 +222,14 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         detail: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn action_added_trampoline<P, F: Fn(&P, &str) + 'static>(
+        unsafe extern "C" fn action_added_trampoline<
+            P: IsA<ActionGroup>,
+            F: Fn(&P, &str) + 'static,
+        >(
             this: *mut ffi::GActionGroup,
             action_name: *mut libc::c_char,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ActionGroup>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
@@ -258,14 +259,15 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         detail: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn action_enabled_changed_trampoline<P, F: Fn(&P, &str, bool) + 'static>(
+        unsafe extern "C" fn action_enabled_changed_trampoline<
+            P: IsA<ActionGroup>,
+            F: Fn(&P, &str, bool) + 'static,
+        >(
             this: *mut ffi::GActionGroup,
             action_name: *mut libc::c_char,
             enabled: glib::ffi::gboolean,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ActionGroup>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
@@ -297,13 +299,14 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         detail: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn action_removed_trampoline<P, F: Fn(&P, &str) + 'static>(
+        unsafe extern "C" fn action_removed_trampoline<
+            P: IsA<ActionGroup>,
+            F: Fn(&P, &str) + 'static,
+        >(
             this: *mut ffi::GActionGroup,
             action_name: *mut libc::c_char,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ActionGroup>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
@@ -334,16 +337,14 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn action_state_changed_trampoline<
-            P,
+            P: IsA<ActionGroup>,
             F: Fn(&P, &str, &glib::Variant) + 'static,
         >(
             this: *mut ffi::GActionGroup,
             action_name: *mut libc::c_char,
             value: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<ActionGroup>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),

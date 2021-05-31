@@ -48,15 +48,13 @@ impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn low_memory_warning_trampoline<
-            P,
+            P: IsA<MemoryMonitor>,
             F: Fn(&P, MemoryMonitorWarningLevel) + 'static,
         >(
             this: *mut ffi::GMemoryMonitor,
             level: ffi::GMemoryMonitorWarningLevel,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MemoryMonitor>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &MemoryMonitor::from_glib_borrow(this).unsafe_cast_ref(),

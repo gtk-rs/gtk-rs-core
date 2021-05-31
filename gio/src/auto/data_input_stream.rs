@@ -322,13 +322,14 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
 
     #[doc(alias = "byte-order")]
     fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_byte_order_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_byte_order_trampoline<
+            P: IsA<DataInputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GDataInputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DataInputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DataInputStream::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -347,13 +348,14 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
 
     #[doc(alias = "newline-type")]
     fn connect_newline_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_newline_type_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_newline_type_trampoline<
+            P: IsA<DataInputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GDataInputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DataInputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DataInputStream::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -445,16 +445,14 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn event_trampoline<
-            P,
+            P: IsA<SocketListener>,
             F: Fn(&P, SocketListenerEvent, &Socket) + 'static,
         >(
             this: *mut ffi::GSocketListener,
             event: ffi::GSocketListenerEvent,
             socket: *mut ffi::GSocket,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<SocketListener>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &SocketListener::from_glib_borrow(this).unsafe_cast_ref(),
@@ -477,13 +475,14 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
 
     #[doc(alias = "listen-backlog")]
     fn connect_listen_backlog_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_listen_backlog_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_listen_backlog_trampoline<
+            P: IsA<SocketListener>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GSocketListener,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<SocketListener>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&SocketListener::from_glib_borrow(this).unsafe_cast_ref())
         }

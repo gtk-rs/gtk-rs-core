@@ -589,12 +589,10 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "activate")]
     fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn activate_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn activate_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -617,16 +615,13 @@ impl<O: IsA<Application>> ApplicationExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn command_line_trampoline<
-            P,
+            P: IsA<Application>,
             F: Fn(&P, &ApplicationCommandLine) -> i32 + 'static,
         >(
             this: *mut ffi::GApplication,
             command_line: *mut ffi::GApplicationCommandLine,
             f: glib::ffi::gpointer,
-        ) -> libc::c_int
-        where
-            P: IsA<Application>,
-        {
+        ) -> libc::c_int {
             let f: &F = &*(f as *const F);
             f(
                 &Application::from_glib_borrow(this).unsafe_cast_ref(),
@@ -652,16 +647,13 @@ impl<O: IsA<Application>> ApplicationExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn handle_local_options_trampoline<
-            P,
+            P: IsA<Application>,
             F: Fn(&P, &glib::VariantDict) -> i32 + 'static,
         >(
             this: *mut ffi::GApplication,
             options: *mut glib::ffi::GVariantDict,
             f: glib::ffi::gpointer,
-        ) -> libc::c_int
-        where
-            P: IsA<Application>,
-        {
+        ) -> libc::c_int {
             let f: &F = &*(f as *const F);
             f(
                 &Application::from_glib_borrow(this).unsafe_cast_ref(),
@@ -685,13 +677,13 @@ impl<O: IsA<Application>> ApplicationExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "name-lost")]
     fn connect_name_lost<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn name_lost_trampoline<P, F: Fn(&P) -> bool + 'static>(
+        unsafe extern "C" fn name_lost_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) -> bool + 'static,
+        >(
             this: *mut ffi::GApplication,
             f: glib::ffi::gpointer,
-        ) -> glib::ffi::gboolean
-        where
-            P: IsA<Application>,
-        {
+        ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref()).into_glib()
         }
@@ -710,12 +702,10 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "shutdown")]
     fn connect_shutdown<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn shutdown_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn shutdown_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -734,12 +724,10 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "startup")]
     fn connect_startup<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn startup_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn startup_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -758,13 +746,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "action-group")]
     fn connect_action_group_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_action_group_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_action_group_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -783,13 +772,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "application-id")]
     fn connect_application_id_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_application_id_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_application_id_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -808,13 +798,11 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "flags")]
     fn connect_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_flags_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_flags_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -833,13 +821,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "inactivity-timeout")]
     fn connect_inactivity_timeout_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_inactivity_timeout_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_inactivity_timeout_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -858,13 +847,11 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "is-busy")]
     fn connect_is_busy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_busy_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_busy_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -883,13 +870,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "is-registered")]
     fn connect_is_registered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_registered_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_registered_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -908,13 +896,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "is-remote")]
     fn connect_is_remote_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_is_remote_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_is_remote_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -933,13 +922,14 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[doc(alias = "resource-base-path")]
     fn connect_resource_base_path_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_resource_base_path_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_resource_base_path_trampoline<
+            P: IsA<Application>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GApplication,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Application>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Application::from_glib_borrow(this).unsafe_cast_ref())
         }

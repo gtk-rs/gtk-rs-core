@@ -187,12 +187,10 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
 
     #[doc(alias = "area-prepared")]
     fn connect_area_prepared<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn area_prepared_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn area_prepared_trampoline<P: IsA<PixbufLoader>, F: Fn(&P) + 'static>(
             this: *mut ffi::GdkPixbufLoader,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<PixbufLoader>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -214,16 +212,17 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn area_updated_trampoline<P, F: Fn(&P, i32, i32, i32, i32) + 'static>(
+        unsafe extern "C" fn area_updated_trampoline<
+            P: IsA<PixbufLoader>,
+            F: Fn(&P, i32, i32, i32, i32) + 'static,
+        >(
             this: *mut ffi::GdkPixbufLoader,
             x: libc::c_int,
             y: libc::c_int,
             width: libc::c_int,
             height: libc::c_int,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<PixbufLoader>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
@@ -248,12 +247,10 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
 
     #[doc(alias = "closed")]
     fn connect_closed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn closed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn closed_trampoline<P: IsA<PixbufLoader>, F: Fn(&P) + 'static>(
             this: *mut ffi::GdkPixbufLoader,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<PixbufLoader>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -272,14 +269,15 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
 
     #[doc(alias = "size-prepared")]
     fn connect_size_prepared<F: Fn(&Self, i32, i32) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn size_prepared_trampoline<P, F: Fn(&P, i32, i32) + 'static>(
+        unsafe extern "C" fn size_prepared_trampoline<
+            P: IsA<PixbufLoader>,
+            F: Fn(&P, i32, i32) + 'static,
+        >(
             this: *mut ffi::GdkPixbufLoader,
             width: libc::c_int,
             height: libc::c_int,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<PixbufLoader>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(
                 &PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),

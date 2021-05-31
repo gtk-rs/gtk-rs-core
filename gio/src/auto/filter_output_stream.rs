@@ -66,13 +66,14 @@ impl<O: IsA<FilterOutputStream>> FilterOutputStreamExt for O {
 
     #[doc(alias = "close-base-stream")]
     fn connect_close_base_stream_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_close_base_stream_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_close_base_stream_trampoline<
+            P: IsA<FilterOutputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GFilterOutputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<FilterOutputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&FilterOutputStream::from_glib_borrow(this).unsafe_cast_ref())
         }

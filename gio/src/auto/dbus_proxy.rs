@@ -896,15 +896,13 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn notify_g_default_timeout_trampoline<
-            P,
+            P: IsA<DBusProxy>,
             F: Fn(&P) + Send + Sync + 'static,
         >(
             this: *mut ffi::GDBusProxy,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusProxy>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DBusProxy::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -927,15 +925,13 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn notify_g_interface_info_trampoline<
-            P,
+            P: IsA<DBusProxy>,
             F: Fn(&P) + Send + Sync + 'static,
         >(
             this: *mut ffi::GDBusProxy,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusProxy>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DBusProxy::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -957,13 +953,14 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_g_name_owner_trampoline<P, F: Fn(&P) + Send + Sync + 'static>(
+        unsafe extern "C" fn notify_g_name_owner_trampoline<
+            P: IsA<DBusProxy>,
+            F: Fn(&P) + Send + Sync + 'static,
+        >(
             this: *mut ffi::GDBusProxy,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<DBusProxy>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&DBusProxy::from_glib_borrow(this).unsafe_cast_ref())
         }

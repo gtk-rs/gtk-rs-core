@@ -181,13 +181,11 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
 
     #[doc(alias = "closed")]
     fn connect_closed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_closed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_closed_trampoline<P: IsA<IOStream>, F: Fn(&P) + 'static>(
             this: *mut ffi::GIOStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<IOStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&IOStream::from_glib_borrow(this).unsafe_cast_ref())
         }

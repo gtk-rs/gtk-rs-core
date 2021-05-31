@@ -60,13 +60,14 @@ impl<O: IsA<MemoryOutputStream>> MemoryOutputStreamExt for O {
 
     #[doc(alias = "data-size")]
     fn connect_data_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_data_size_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_data_size_trampoline<
+            P: IsA<MemoryOutputStream>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GMemoryOutputStream,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<MemoryOutputStream>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&MemoryOutputStream::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -76,13 +76,14 @@ impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
 
     #[doc(alias = "anchors")]
     fn connect_anchors_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_anchors_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_anchors_trampoline<
+            P: IsA<TlsFileDatabase>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsFileDatabase,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsFileDatabase>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsFileDatabase::from_glib_borrow(this).unsafe_cast_ref())
         }

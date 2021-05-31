@@ -527,12 +527,10 @@ impl<O: IsA<Drive>> DriveExt for O {
 
     #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn changed_trampoline<P: IsA<Drive>, F: Fn(&P) + 'static>(
             this: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Drive>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Drive::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -551,12 +549,10 @@ impl<O: IsA<Drive>> DriveExt for O {
 
     #[doc(alias = "disconnected")]
     fn connect_disconnected<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn disconnected_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn disconnected_trampoline<P: IsA<Drive>, F: Fn(&P) + 'static>(
             this: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Drive>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Drive::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -575,12 +571,10 @@ impl<O: IsA<Drive>> DriveExt for O {
 
     #[doc(alias = "eject-button")]
     fn connect_eject_button<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn eject_button_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn eject_button_trampoline<P: IsA<Drive>, F: Fn(&P) + 'static>(
             this: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Drive>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Drive::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -599,12 +593,10 @@ impl<O: IsA<Drive>> DriveExt for O {
 
     #[doc(alias = "stop-button")]
     fn connect_stop_button<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn stop_button_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn stop_button_trampoline<P: IsA<Drive>, F: Fn(&P) + 'static>(
             this: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Drive>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Drive::from_glib_borrow(this).unsafe_cast_ref())
         }

@@ -103,13 +103,14 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
 
     #[doc(alias = "scheme")]
     fn connect_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_scheme_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_scheme_trampoline<
+            P: IsA<NetworkService>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GNetworkService,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<NetworkService>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&NetworkService::from_glib_borrow(this).unsafe_cast_ref())
         }

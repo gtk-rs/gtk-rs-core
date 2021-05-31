@@ -164,13 +164,14 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
 
     #[doc(alias = "accepted-cas")]
     fn connect_accepted_cas_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_accepted_cas_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_accepted_cas_trampoline<
+            P: IsA<TlsClientConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsClientConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsClientConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -189,13 +190,14 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
 
     #[doc(alias = "server-identity")]
     fn connect_server_identity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_server_identity_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_server_identity_trampoline<
+            P: IsA<TlsClientConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsClientConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsClientConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -214,13 +216,14 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
 
     #[doc(alias = "use-ssl3")]
     fn connect_use_ssl3_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_use_ssl3_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_use_ssl3_trampoline<
+            P: IsA<TlsClientConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsClientConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsClientConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -239,13 +242,14 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
 
     #[doc(alias = "validation-flags")]
     fn connect_validation_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_validation_flags_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn notify_validation_flags_trampoline<
+            P: IsA<TlsClientConnection>,
+            F: Fn(&P) + 'static,
+        >(
             this: *mut ffi::GTlsClientConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<TlsClientConnection>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
         }

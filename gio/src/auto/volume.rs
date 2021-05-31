@@ -331,12 +331,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
 
     #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn changed_trampoline<P: IsA<Volume>, F: Fn(&P) + 'static>(
             this: *mut ffi::GVolume,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Volume>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Volume::from_glib_borrow(this).unsafe_cast_ref())
         }
@@ -355,12 +353,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
 
     #[doc(alias = "removed")]
     fn connect_removed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn removed_trampoline<P, F: Fn(&P) + 'static>(
+        unsafe extern "C" fn removed_trampoline<P: IsA<Volume>, F: Fn(&P) + 'static>(
             this: *mut ffi::GVolume,
             f: glib::ffi::gpointer,
-        ) where
-            P: IsA<Volume>,
-        {
+        ) {
             let f: &F = &*(f as *const F);
             f(&Volume::from_glib_borrow(this).unsafe_cast_ref())
         }
