@@ -1206,110 +1206,6 @@
 <span id="1203">1203</span>
 <span id="1204">1204</span>
 <span id="1205">1205</span>
-<span id="1206">1206</span>
-<span id="1207">1207</span>
-<span id="1208">1208</span>
-<span id="1209">1209</span>
-<span id="1210">1210</span>
-<span id="1211">1211</span>
-<span id="1212">1212</span>
-<span id="1213">1213</span>
-<span id="1214">1214</span>
-<span id="1215">1215</span>
-<span id="1216">1216</span>
-<span id="1217">1217</span>
-<span id="1218">1218</span>
-<span id="1219">1219</span>
-<span id="1220">1220</span>
-<span id="1221">1221</span>
-<span id="1222">1222</span>
-<span id="1223">1223</span>
-<span id="1224">1224</span>
-<span id="1225">1225</span>
-<span id="1226">1226</span>
-<span id="1227">1227</span>
-<span id="1228">1228</span>
-<span id="1229">1229</span>
-<span id="1230">1230</span>
-<span id="1231">1231</span>
-<span id="1232">1232</span>
-<span id="1233">1233</span>
-<span id="1234">1234</span>
-<span id="1235">1235</span>
-<span id="1236">1236</span>
-<span id="1237">1237</span>
-<span id="1238">1238</span>
-<span id="1239">1239</span>
-<span id="1240">1240</span>
-<span id="1241">1241</span>
-<span id="1242">1242</span>
-<span id="1243">1243</span>
-<span id="1244">1244</span>
-<span id="1245">1245</span>
-<span id="1246">1246</span>
-<span id="1247">1247</span>
-<span id="1248">1248</span>
-<span id="1249">1249</span>
-<span id="1250">1250</span>
-<span id="1251">1251</span>
-<span id="1252">1252</span>
-<span id="1253">1253</span>
-<span id="1254">1254</span>
-<span id="1255">1255</span>
-<span id="1256">1256</span>
-<span id="1257">1257</span>
-<span id="1258">1258</span>
-<span id="1259">1259</span>
-<span id="1260">1260</span>
-<span id="1261">1261</span>
-<span id="1262">1262</span>
-<span id="1263">1263</span>
-<span id="1264">1264</span>
-<span id="1265">1265</span>
-<span id="1266">1266</span>
-<span id="1267">1267</span>
-<span id="1268">1268</span>
-<span id="1269">1269</span>
-<span id="1270">1270</span>
-<span id="1271">1271</span>
-<span id="1272">1272</span>
-<span id="1273">1273</span>
-<span id="1274">1274</span>
-<span id="1275">1275</span>
-<span id="1276">1276</span>
-<span id="1277">1277</span>
-<span id="1278">1278</span>
-<span id="1279">1279</span>
-<span id="1280">1280</span>
-<span id="1281">1281</span>
-<span id="1282">1282</span>
-<span id="1283">1283</span>
-<span id="1284">1284</span>
-<span id="1285">1285</span>
-<span id="1286">1286</span>
-<span id="1287">1287</span>
-<span id="1288">1288</span>
-<span id="1289">1289</span>
-<span id="1290">1290</span>
-<span id="1291">1291</span>
-<span id="1292">1292</span>
-<span id="1293">1293</span>
-<span id="1294">1294</span>
-<span id="1295">1295</span>
-<span id="1296">1296</span>
-<span id="1297">1297</span>
-<span id="1298">1298</span>
-<span id="1299">1299</span>
-<span id="1300">1300</span>
-<span id="1301">1301</span>
-<span id="1302">1302</span>
-<span id="1303">1303</span>
-<span id="1304">1304</span>
-<span id="1305">1305</span>
-<span id="1306">1306</span>
-<span id="1307">1307</span>
-<span id="1308">1308</span>
-<span id="1309">1309</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -1497,27 +1393,6 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The default main loop almost always is the main loop of the main thread.</span>
 <span class="doccomment">/// Thus the closure is called on the main thread.</span>
-<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Adds a function to be called whenever there are no higher priority</span>
-<span class="doccomment">/// events pending to the default main loop. The function is given the</span>
-<span class="doccomment">/// default idle priority, `G_PRIORITY_DEFAULT_IDLE`. If the function</span>
-<span class="doccomment">/// returns [`false`] it is automatically removed from the list of event</span>
-<span class="doccomment">/// sources and will not be called again.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See [memory management of sources][mainloop-memory-management] for details</span>
-<span class="doccomment">/// on how to handle the return value and memory management of `data`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This internally creates a main loop source using `g_idle_source_new()`</span>
-<span class="doccomment">/// and attaches it to the global [`crate::MainContext`] using [`crate::Source::attach()`], so</span>
-<span class="doccomment">/// the callback will be invoked in whichever thread is running that main</span>
-<span class="doccomment">/// context. You can do these steps manually if you need greater control or to</span>
-<span class="doccomment">/// use a custom main context.</span>
-<span class="doccomment">/// ## `function`</span>
-<span class="doccomment">/// function to call</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// the ID (greater than 0) of the event source.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_idle_add_full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">idle_add</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SourceId</span>
 <span class="kw">where</span>
@@ -1633,7 +1508,7 @@
 <span class="doccomment">/// optimizations and more efficient system power usage.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This internally creates a main loop source using `g_timeout_source_new()`</span>
-<span class="doccomment">/// and attaches it to the global [`crate::MainContext`] using [`crate::Source::attach()`], so</span>
+<span class="doccomment">/// and attaches it to the global [`MainContext`][crate::MainContext] using `g_source_attach()`, so</span>
 <span class="doccomment">/// the callback will be invoked in whichever thread is running that main</span>
 <span class="doccomment">/// context. You can do these steps manually if you need greater control or to</span>
 <span class="doccomment">/// use a custom main context.</span>
@@ -1641,7 +1516,7 @@
 <span class="doccomment">/// It is safe to call this function from any thread.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The interval given is in terms of monotonic time, not wall clock</span>
-<span class="doccomment">/// time. See `g_get_monotonic_time()`.</span>
+<span class="doccomment">/// time. See [`monotonic_time()`][crate::monotonic_time()].</span>
 <span class="doccomment">/// ## `interval`</span>
 <span class="doccomment">/// the time between calls to the function, in milliseconds</span>
 <span class="doccomment">///  (1/1000ths of a second)</span>
@@ -1765,7 +1640,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This internally creates a main loop source using</span>
 <span class="doccomment">/// `g_timeout_source_new_seconds()` and attaches it to the main loop context</span>
-<span class="doccomment">/// using [`crate::Source::attach()`]. You can do these steps manually if you need</span>
+<span class="doccomment">/// using `g_source_attach()`. You can do these steps manually if you need</span>
 <span class="doccomment">/// greater control. Also see `g_timeout_add_seconds_full()`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// It is safe to call this function from any thread.</span>
@@ -1778,7 +1653,7 @@
 <span class="doccomment">/// on how to handle the return value and memory management of `data`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The interval given is in terms of monotonic time, not wall clock</span>
-<span class="doccomment">/// time. See `g_get_monotonic_time()`.</span>
+<span class="doccomment">/// time. See [`monotonic_time()`][crate::monotonic_time()].</span>
 <span class="doccomment">/// ## `interval`</span>
 <span class="doccomment">/// the time between calls to the function, in seconds</span>
 <span class="doccomment">/// ## `function`</span>
@@ -1885,37 +1760,6 @@
 <span class="doccomment">/// process exits.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `func` will be called when `pid` exits</span>
-<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Sets a function to be called when the child indicated by `pid`</span>
-<span class="doccomment">/// exits, at a default priority, `G_PRIORITY_DEFAULT`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If you obtain `pid` from `g_spawn_async()` or `g_spawn_async_with_pipes()`</span>
-<span class="doccomment">/// you will need to pass [`crate::SpawnFlags::DoNotReapChild`] as flag to</span>
-<span class="doccomment">/// the spawn function for the child watching to work.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that on platforms where [`crate::Pid`] must be explicitly closed</span>
-<span class="doccomment">/// (see `g_spawn_close_pid()`) `pid` must not be closed while the</span>
-<span class="doccomment">/// source is still active. Typically, you will want to call</span>
-<span class="doccomment">/// `g_spawn_close_pid()` in the callback function for the source.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// GLib supports only a single callback per process id.</span>
-<span class="doccomment">/// On POSIX platforms, the same restrictions mentioned for</span>
-<span class="doccomment">/// `g_child_watch_source_new()` apply to this function.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This internally creates a main loop source using</span>
-<span class="doccomment">/// `g_child_watch_source_new()` and attaches it to the main loop context</span>
-<span class="doccomment">/// using [`crate::Source::attach()`]. You can do these steps manually if you</span>
-<span class="doccomment">/// need greater control.</span>
-<span class="doccomment">/// ## `pid`</span>
-<span class="doccomment">/// process id to watch. On POSIX the positive pid of a child</span>
-<span class="doccomment">/// process. On Windows a handle for a process (which doesn&#39;t have to be</span>
-<span class="doccomment">/// a child).</span>
-<span class="doccomment">/// ## `function`</span>
-<span class="doccomment">/// function to call</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// the ID (greater than 0) of the event source.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_child_watch_add_full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">child_watch_add</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">pid</span>: <span class="ident">Pid</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SourceId</span>
 <span class="kw">where</span>
@@ -1970,8 +1814,8 @@
 <span class="doccomment">/// Thus the closure is called on the main thread.</span>
 <span class="comment">// rustdoc-stripper-ignore-next-stop</span>
 <span class="doccomment">/// A convenience function for `g_unix_signal_source_new()`, which</span>
-<span class="doccomment">/// attaches to the default [`crate::MainContext`]. You can remove the watch</span>
-<span class="doccomment">/// using [`crate::Source::remove()`].</span>
+<span class="doccomment">/// attaches to the default [`MainContext`][crate::MainContext]. You can remove the watch</span>
+<span class="doccomment">/// using `g_source_remove()`.</span>
 <span class="doccomment">/// ## `signum`</span>
 <span class="doccomment">/// Signal number</span>
 <span class="doccomment">/// ## `handler`</span>
@@ -2094,7 +1938,7 @@
 <span class="doccomment">/// when it happens again. If `function` returns [`false`] then the watch</span>
 <span class="doccomment">/// will be cancelled.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The return value of this function can be passed to [`crate::Source::remove()`]</span>
+<span class="doccomment">/// The return value of this function can be passed to `g_source_remove()`</span>
 <span class="doccomment">/// to cancel the watch at any time that it exists.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The source will never close the fd -- you must do it yourself.</span>
@@ -2233,18 +2077,6 @@
 <span class="doccomment">/// Adds a closure to be called by the main loop the return `Source` is attached to when it&#39;s idle.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `func` will be called repeatedly until it returns `Continue(false)`.</span>
-<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Creates a new idle source.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The source will not initially be associated with any [`crate::MainContext`]</span>
-<span class="doccomment">/// and must be added to one with [`crate::Source::attach()`] before it will be</span>
-<span class="doccomment">/// executed. Note that the default priority for idle sources is</span>
-<span class="doccomment">/// `G_PRIORITY_DEFAULT_IDLE`, as compared to other sources which</span>
-<span class="doccomment">/// have a default priority of `G_PRIORITY_DEFAULT`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// the newly-created idle source</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_idle_source_new&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">idle_source_new</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">priority</span>: <span class="ident">Priority</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Source</span>
 <span class="kw">where</span>
@@ -2278,12 +2110,12 @@
 <span class="comment">// rustdoc-stripper-ignore-next-stop</span>
 <span class="doccomment">/// Creates a new timeout source.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The source will not initially be associated with any [`crate::MainContext`]</span>
-<span class="doccomment">/// and must be added to one with [`crate::Source::attach()`] before it will be</span>
+<span class="doccomment">/// The source will not initially be associated with any [`MainContext`][crate::MainContext]</span>
+<span class="doccomment">/// and must be added to one with `g_source_attach()` before it will be</span>
 <span class="doccomment">/// executed.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The interval given is in terms of monotonic time, not wall clock</span>
-<span class="doccomment">/// time. See `g_get_monotonic_time()`.</span>
+<span class="doccomment">/// time. See [`monotonic_time()`][crate::monotonic_time()].</span>
 <span class="doccomment">/// ## `interval`</span>
 <span class="doccomment">/// the timeout interval in milliseconds.</span>
 <span class="doccomment">///</span>
@@ -2327,15 +2159,15 @@
 <span class="comment">// rustdoc-stripper-ignore-next-stop</span>
 <span class="doccomment">/// Creates a new timeout source.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The source will not initially be associated with any [`crate::MainContext`]</span>
-<span class="doccomment">/// and must be added to one with [`crate::Source::attach()`] before it will be</span>
+<span class="doccomment">/// The source will not initially be associated with any [`MainContext`][crate::MainContext]</span>
+<span class="doccomment">/// and must be added to one with `g_source_attach()` before it will be</span>
 <span class="doccomment">/// executed.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The scheduling granularity/accuracy of this timeout source will be</span>
 <span class="doccomment">/// in seconds.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The interval given is in terms of monotonic time, not wall clock time.</span>
-<span class="doccomment">/// See `g_get_monotonic_time()`.</span>
+<span class="doccomment">/// See [`monotonic_time()`][crate::monotonic_time()].</span>
 <span class="doccomment">/// ## `interval`</span>
 <span class="doccomment">/// the timeout interval in seconds</span>
 <span class="doccomment">///</span>
@@ -2374,46 +2206,6 @@
 <span class="doccomment">/// process exits.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `func` will be called when `pid` exits</span>
-<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Creates a new child_watch source.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The source will not initially be associated with any [`crate::MainContext`]</span>
-<span class="doccomment">/// and must be added to one with [`crate::Source::attach()`] before it will be</span>
-<span class="doccomment">/// executed.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that child watch sources can only be used in conjunction with</span>
-<span class="doccomment">/// `g_spawn...` when the [`crate::SpawnFlags::DoNotReapChild`] flag is used.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that on platforms where [`crate::Pid`] must be explicitly closed</span>
-<span class="doccomment">/// (see `g_spawn_close_pid()`) `pid` must not be closed while the</span>
-<span class="doccomment">/// source is still active. Typically, you will want to call</span>
-<span class="doccomment">/// `g_spawn_close_pid()` in the callback function for the source.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// On POSIX platforms, the following restrictions apply to this API</span>
-<span class="doccomment">/// due to limitations in POSIX process interfaces:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// * `pid` must be a child of this process</span>
-<span class="doccomment">/// * `pid` must be positive</span>
-<span class="doccomment">/// * the application must not call `waitpid` with a non-positive</span>
-<span class="doccomment">///  first argument, for instance in another thread</span>
-<span class="doccomment">/// * the application must not wait for `pid` to exit by any other</span>
-<span class="doccomment">///  mechanism, including `waitpid(pid, ...)` or a second child-watch</span>
-<span class="doccomment">///  source for the same `pid`</span>
-<span class="doccomment">/// * the application must not ignore `SIGCHLD`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If any of those conditions are not met, this and related APIs will</span>
-<span class="doccomment">/// not work correctly. This can often be diagnosed via a GLib warning</span>
-<span class="doccomment">/// stating that `ECHILD` was received by `waitpid`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Calling `waitpid` for specific processes other than `pid` remains a</span>
-<span class="doccomment">/// valid thing to do.</span>
-<span class="doccomment">/// ## `pid`</span>
-<span class="doccomment">/// process to watch. On POSIX the positive pid of a child process. On</span>
-<span class="doccomment">/// Windows a handle for a process (which doesn&#39;t have to be a child).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// the newly-created child watch source</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_child_watch_source_new&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">child_watch_source_new</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
     <span class="ident">pid</span>: <span class="ident">Pid</span>,
@@ -2453,7 +2245,7 @@
 <span class="doccomment">/// `func` will be called repeatedly every time `signum` is raised until it</span>
 <span class="doccomment">/// returns `Continue(false)`.</span>
 <span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Create a [`crate::Source`] that will be dispatched upon delivery of the UNIX</span>
+<span class="doccomment">/// Create a [`Source`][crate::Source] that will be dispatched upon delivery of the UNIX</span>
 <span class="doccomment">/// signal `signum`. In GLib versions before 2.36, only `SIGHUP`, `SIGINT`,</span>
 <span class="doccomment">/// `SIGTERM` can be monitored. In GLib 2.36, `SIGUSR1` and `SIGUSR2`</span>
 <span class="doccomment">/// were added. In GLib 2.54, `SIGWINCH` was added.</span>
@@ -2473,15 +2265,15 @@
 <span class="doccomment">/// The interaction of this source when combined with native UNIX</span>
 <span class="doccomment">/// functions like `sigprocmask()` is not defined.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The source will not initially be associated with any [`crate::MainContext`]</span>
-<span class="doccomment">/// and must be added to one with [`crate::Source::attach()`] before it will be</span>
+<span class="doccomment">/// The source will not initially be associated with any [`MainContext`][crate::MainContext]</span>
+<span class="doccomment">/// and must be added to one with `g_source_attach()` before it will be</span>
 <span class="doccomment">/// executed.</span>
 <span class="doccomment">/// ## `signum`</span>
 <span class="doccomment">/// A signal number</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Returns</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// A newly created [`crate::Source`]</span>
+<span class="doccomment">/// A newly created [`Source`][crate::Source]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_signal_source_new&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unix_signal_source_new</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
     <span class="ident">signum</span>: <span class="ident">i32</span>,
@@ -2518,7 +2310,7 @@
 <span class="doccomment">/// `func` will be called repeatedly while the file descriptor matches the given IO condition</span>
 <span class="doccomment">/// until it returns `Continue(false)`.</span>
 <span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Creates a [`crate::Source`] to watch for a particular IO condition on a file</span>
+<span class="doccomment">/// Creates a [`Source`][crate::Source] to watch for a particular IO condition on a file</span>
 <span class="doccomment">/// descriptor.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The source will never close the fd -- you must do it yourself.</span>
@@ -2529,7 +2321,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Returns</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// the newly created [`crate::Source`]</span>
+<span class="doccomment">/// the newly created [`Source`][crate::Source]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_fd_source_new&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unix_fd_source_new</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
     <span class="ident">fd</span>: <span class="ident">RawFd</span>,
@@ -2563,18 +2355,18 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Source</span> {
-    <span class="doccomment">/// Adds a [`crate::Source`] to a `context` so that it will be executed within</span>
-    <span class="doccomment">/// that context. Remove it by calling [`Self::destroy()`].</span>
+    <span class="doccomment">/// Adds a [`Source`][crate::Source] to a `context` so that it will be executed within</span>
+    <span class="doccomment">/// that context. Remove it by calling `g_source_destroy()`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is safe to call from any thread, regardless of which thread</span>
     <span class="doccomment">/// the `context` is running in.</span>
     <span class="doccomment">/// ## `context`</span>
-    <span class="doccomment">/// a [`crate::MainContext`] (if [`None`], the default context will be used)</span>
+    <span class="doccomment">/// a [`MainContext`][crate::MainContext] (if [`None`], the default context will be used)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// the ID (greater than 0) for the source within the</span>
-    <span class="doccomment">///  [`crate::MainContext`].</span>
+    <span class="doccomment">///  [`MainContext`][crate::MainContext].</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_source_attach&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MainContext</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SourceId</span> {
         <span class="kw">unsafe</span> {
@@ -2586,13 +2378,13 @@
     }
 
     <span class="doccomment">/// Removes the source with the given ID from the default main context. You must</span>
-    <span class="doccomment">/// use [`Self::destroy()`] for sources added to a non-default main context.</span>
+    <span class="doccomment">/// use `g_source_destroy()` for sources added to a non-default main context.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The ID of a [`crate::Source`] is given by [`Self::get_id()`], or will be</span>
-    <span class="doccomment">/// returned by the functions [`Self::attach()`], `g_idle_add()`,</span>
+    <span class="doccomment">/// The ID of a [`Source`][crate::Source] is given by `g_source_get_id()`, or will be</span>
+    <span class="doccomment">/// returned by the functions `g_source_attach()`, `g_idle_add()`,</span>
     <span class="doccomment">/// `g_idle_add_full()`, `g_timeout_add()`, `g_timeout_add_full()`,</span>
-    <span class="doccomment">/// `g_child_watch_add()`, `g_child_watch_add_full()`, `g_io_add_watch()`, and</span>
-    <span class="doccomment">/// `g_io_add_watch_full()`.</span>
+    <span class="doccomment">/// `g_child_watch_add()`, `g_child_watch_add_full()`, [`io_add_watch()`][crate::io_add_watch()], and</span>
+    <span class="doccomment">/// [`io_add_watch_full()`][crate::io_add_watch_full()].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is a programmer error to attempt to remove a non-existent source.</span>
     <span class="doccomment">///</span>

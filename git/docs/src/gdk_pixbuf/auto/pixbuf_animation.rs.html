@@ -302,7 +302,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Implements</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`trait@crate::prelude::PixbufAnimationExt`]</span>
+    <span class="doccomment">/// [`PixbufAnimationExt`][trait@crate::prelude::PixbufAnimationExt]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PixbufAnimation</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GdkPixbufAnimation</span>, <span class="ident">ffi::GdkPixbufAnimationClass</span><span class="op">&gt;</span>);
 
     <span class="kw">match</span> <span class="kw">fn</span> {
@@ -379,14 +379,14 @@
     <span class="doccomment">/// The file format is detected automatically. If [`None`] is returned, then</span>
     <span class="doccomment">/// `error` will be set. The `cancellable` can be used to abort the operation</span>
     <span class="doccomment">/// from another thread. If the operation was cancelled, the error</span>
-    <span class="doccomment">/// [`crate::gio::IOErrorEnum::Cancelled`] will be returned. Other possible errors are in</span>
+    <span class="doccomment">/// `G_IO_ERROR_CANCELLED` will be returned. Other possible errors are in</span>
     <span class="doccomment">/// the `GDK_PIXBUF_ERROR` and `G_IO_ERROR` domains.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The stream is not closed.</span>
     <span class="doccomment">/// ## `stream`</span>
-    <span class="doccomment">/// a [`crate::gio::InputStream`] to load the pixbuf from</span>
+    <span class="doccomment">/// a [`gio::InputStream`][crate::gio::InputStream] to load the pixbuf from</span>
     <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`crate::gio::Cancellable`] object, [`None`] to ignore</span>
+    <span class="doccomment">/// optional [`gio::Cancellable`][crate::gio::Cancellable] object, [`None`] to ignore</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Returns</span>
     <span class="doccomment">///</span>
@@ -417,16 +417,16 @@
 
     <span class="doccomment">/// Creates a new animation by asynchronously loading an image from an input stream.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For more details see [`crate::Pixbuf::new_from_stream()`], which is the synchronous</span>
+    <span class="doccomment">/// For more details see [`Pixbuf::from_stream()`][crate::Pixbuf::from_stream()], which is the synchronous</span>
     <span class="doccomment">/// version of this function.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// When the operation is finished, `callback` will be called in the main thread.</span>
-    <span class="doccomment">/// You can then call [`Self::new_from_stream_finish()`] to get the</span>
+    <span class="doccomment">/// You can then call `gdk_pixbuf_animation_new_from_stream_finish()` to get the</span>
     <span class="doccomment">/// result of the operation.</span>
     <span class="doccomment">/// ## `stream`</span>
-    <span class="doccomment">/// a [`crate::gio::InputStream`] from which to load the animation</span>
+    <span class="doccomment">/// a [`gio::InputStream`][crate::gio::InputStream] from which to load the animation</span>
     <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`crate::gio::Cancellable`] object, [`None`] to ignore</span>
+    <span class="doccomment">/// optional [`gio::Cancellable`][crate::gio::Cancellable] object, [`None`] to ignore</span>
     <span class="doccomment">/// ## `callback`</span>
     <span class="doccomment">/// a `GAsyncReadyCallback` to call when the pixbuf is loaded</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_animation_new_from_stream_async&quot;</span>)]</span>
@@ -487,11 +487,11 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE_PIXBUF_ANIMATION</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PixbufAnimation</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-<span class="doccomment">/// Trait containing all `PixbufAnimation` methods.</span>
+<span class="doccomment">/// Trait containing all [`struct@PixbufAnimation`] methods.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Implementors</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`struct@crate::PixbufAnimation`], [`struct@crate::PixbufSimpleAnim`]</span>
+<span class="doccomment">/// [`PixbufAnimation`][struct@crate::PixbufAnimation], [`PixbufSimpleAnim`][struct@crate::PixbufSimpleAnim]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PixbufAnimationExt</span>: <span class="lifetime">&#39;static</span> {
     <span class="doccomment">/// Queries the height of the bounding box of a pixbuf animation.</span>
     <span class="doccomment">///</span>
@@ -525,9 +525,9 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_width&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
 
-    <span class="doccomment">/// If you load a file with [`crate::PixbufAnimation::new_from_file()`] and it</span>
+    <span class="doccomment">/// If you load a file with [`PixbufAnimation::from_file()`][crate::PixbufAnimation::from_file()] and it</span>
     <span class="doccomment">/// turns out to be a plain, unanimated image, then this function will</span>
-    <span class="doccomment">/// return [`true`]. Use [`Self::get_static_image()`] to retrieve</span>
+    <span class="doccomment">/// return [`true`]. Use [`static_image()`][Self::static_image()] to retrieve</span>
     <span class="doccomment">/// the image.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Returns</span>

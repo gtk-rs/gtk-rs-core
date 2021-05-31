@@ -313,12 +313,12 @@
 <span class="macro">glib::wrapper!</span> {
     <span class="doccomment">/// Monitors a file or directory for changes.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// To obtain a [`crate::FileMonitor`] for a file or directory, use</span>
-    <span class="doccomment">/// [`crate::File::monitor()`], [`crate::File::monitor_file()`], or</span>
-    <span class="doccomment">/// [`crate::File::monitor_directory()`].</span>
+    <span class="doccomment">/// To obtain a [`FileMonitor`][crate::FileMonitor] for a file or directory, use</span>
+    <span class="doccomment">/// [`FileExt::monitor()`][crate::prelude::FileExt::monitor()], [`FileExt::monitor_file()`][crate::prelude::FileExt::monitor_file()], or</span>
+    <span class="doccomment">/// [`FileExt::monitor_directory()`][crate::prelude::FileExt::monitor_directory()].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To get informed about changes to the file or directory you are</span>
-    <span class="doccomment">/// monitoring, connect to the [`crate::FileMonitor::changed`] signal. The</span>
+    <span class="doccomment">/// monitoring, connect to the `signal::FileMonitor::changed` signal. The</span>
     <span class="doccomment">/// signal will be emitted in the</span>
     <span class="doccomment">/// [thread-default main context][g-main-context-push-thread-default]</span>
     <span class="doccomment">/// of the thread that the monitor was created in</span>
@@ -330,7 +330,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Implements</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`trait@crate::prelude::FileMonitorExt`], [`trait@glib::object::ObjectExt`]</span>
+    <span class="doccomment">/// [`FileMonitorExt`][trait@crate::prelude::FileMonitorExt], [`trait@glib::ObjectExt`]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileMonitor</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GFileMonitor</span>, <span class="ident">ffi::GFileMonitorClass</span><span class="op">&gt;</span>);
 
     <span class="kw">match</span> <span class="kw">fn</span> {
@@ -340,11 +340,11 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE_FILE_MONITOR</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-<span class="doccomment">/// Trait containing all `FileMonitor` methods.</span>
+<span class="doccomment">/// Trait containing all [`struct@FileMonitor`] methods.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Implementors</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`struct@crate::FileMonitor`]</span>
+<span class="doccomment">/// [`FileMonitor`][struct@crate::FileMonitor]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FileMonitorExt</span>: <span class="lifetime">&#39;static</span> {
     <span class="doccomment">/// Cancels a file monitor.</span>
     <span class="doccomment">///</span>
@@ -354,7 +354,7 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_file_monitor_cancel&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">cancel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 
-    <span class="doccomment">/// Emits the [`crate::FileMonitor::changed`] signal if a change</span>
+    <span class="doccomment">/// Emits the `signal::FileMonitor::changed` signal if a change</span>
     <span class="doccomment">/// has taken place. Should be called from file monitor</span>
     <span class="doccomment">/// implementations only.</span>
     <span class="doccomment">///</span>
@@ -362,11 +362,11 @@
     <span class="doccomment">/// [thread-default main context][g-main-context-push-thread-default] of the</span>
     <span class="doccomment">/// thread that the monitor was created in.</span>
     <span class="doccomment">/// ## `child`</span>
-    <span class="doccomment">/// a [`crate::File`].</span>
+    <span class="doccomment">/// a [`File`][crate::File].</span>
     <span class="doccomment">/// ## `other_file`</span>
-    <span class="doccomment">/// a [`crate::File`].</span>
+    <span class="doccomment">/// a [`File`][crate::File].</span>
     <span class="doccomment">/// ## `event_type`</span>
-    <span class="doccomment">/// a set of [`crate::FileMonitorEvent`] flags.</span>
+    <span class="doccomment">/// a set of [`FileMonitorEvent`][crate::FileMonitorEvent] flags.</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_file_monitor_emit_event&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">emit_event</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>, <span class="ident">Q</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -396,10 +396,10 @@
 
     <span class="doccomment">/// Emitted when `file` has been changed.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If using [`crate::FileMonitorFlags::WatchMoves`] on a directory monitor, and</span>
+    <span class="doccomment">/// If using [`FileMonitorFlags::WATCH_MOVES`][crate::FileMonitorFlags::WATCH_MOVES] on a directory monitor, and</span>
     <span class="doccomment">/// the information is available (and if supported by the backend),</span>
-    <span class="doccomment">/// `event_type` may be [`crate::FileMonitorEvent::Renamed`],</span>
-    <span class="doccomment">/// [`crate::FileMonitorEvent::MovedIn`] or [`crate::FileMonitorEvent::MovedOut`].</span>
+    <span class="doccomment">/// `event_type` may be [`FileMonitorEvent::Renamed`][crate::FileMonitorEvent::Renamed],</span>
+    <span class="doccomment">/// [`FileMonitorEvent::MovedIn`][crate::FileMonitorEvent::MovedIn] or [`FileMonitorEvent::MovedOut`][crate::FileMonitorEvent::MovedOut].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In all cases `file` will be a child of the monitored directory. For</span>
     <span class="doccomment">/// renames, `file` will be the old name and `other_file` is the new</span>
@@ -409,25 +409,25 @@
     <span class="doccomment">/// the file that used to be in this directory and `other_file` is the</span>
     <span class="doccomment">/// name of the file at its new location.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// It makes sense to treat [`crate::FileMonitorEvent::MovedIn`] as</span>
-    <span class="doccomment">/// equivalent to [`crate::FileMonitorEvent::Created`] and</span>
-    <span class="doccomment">/// [`crate::FileMonitorEvent::MovedOut`] as equivalent to</span>
-    <span class="doccomment">/// [`crate::FileMonitorEvent::Deleted`], with extra information.</span>
-    <span class="doccomment">/// [`crate::FileMonitorEvent::Renamed`] is equivalent to a delete/create</span>
+    <span class="doccomment">/// It makes sense to treat [`FileMonitorEvent::MovedIn`][crate::FileMonitorEvent::MovedIn] as</span>
+    <span class="doccomment">/// equivalent to [`FileMonitorEvent::Created`][crate::FileMonitorEvent::Created] and</span>
+    <span class="doccomment">/// [`FileMonitorEvent::MovedOut`][crate::FileMonitorEvent::MovedOut] as equivalent to</span>
+    <span class="doccomment">/// [`FileMonitorEvent::Deleted`][crate::FileMonitorEvent::Deleted], with extra information.</span>
+    <span class="doccomment">/// [`FileMonitorEvent::Renamed`][crate::FileMonitorEvent::Renamed] is equivalent to a delete/create</span>
     <span class="doccomment">/// pair. This is exactly how the events will be reported in the case</span>
-    <span class="doccomment">/// that the [`crate::FileMonitorFlags::WatchMoves`] flag is not in use.</span>
+    <span class="doccomment">/// that the [`FileMonitorFlags::WATCH_MOVES`][crate::FileMonitorFlags::WATCH_MOVES] flag is not in use.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If using the deprecated flag [`crate::FileMonitorFlags::SendMoved`] flag and `event_type` is</span>
-    <span class="doccomment">/// [`crate::FileMonitorEvent::Moved`], `file` will be set to a [`crate::File`] containing the</span>
-    <span class="doccomment">/// old path, and `other_file` will be set to a [`crate::File`] containing the new path.</span>
+    <span class="doccomment">/// If using the deprecated flag [`FileMonitorFlags::SEND_MOVED`][crate::FileMonitorFlags::SEND_MOVED] flag and `event_type` is</span>
+    <span class="doccomment">/// [`FileMonitorEvent::Moved`][crate::FileMonitorEvent::Moved], `file` will be set to a [`File`][crate::File] containing the</span>
+    <span class="doccomment">/// old path, and `other_file` will be set to a [`File`][crate::File] containing the new path.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// In all the other cases, `other_file` will be set to [`crate::None`].</span>
+    <span class="doccomment">/// In all the other cases, `other_file` will be set to [`None`].</span>
     <span class="doccomment">/// ## `file`</span>
-    <span class="doccomment">/// a [`crate::File`].</span>
+    <span class="doccomment">/// a [`File`][crate::File].</span>
     <span class="doccomment">/// ## `other_file`</span>
-    <span class="doccomment">/// a [`crate::File`] or [`crate::None`].</span>
+    <span class="doccomment">/// a [`File`][crate::File] or [`None`].</span>
     <span class="doccomment">/// ## `event_type`</span>
-    <span class="doccomment">/// a [`crate::FileMonitorEvent`].</span>
+    <span class="doccomment">/// a [`FileMonitorEvent`][crate::FileMonitorEvent].</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;changed&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">connect_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="ident">File</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">File</span><span class="op">&gt;</span>, <span class="ident">FileMonitorEvent</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -496,7 +496,7 @@
         <span class="ident">f</span>: <span class="ident">F</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SignalHandlerId</span> {
         <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">changed_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>,
+            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
             <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="kw-2">&amp;</span><span class="ident">File</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">File</span><span class="op">&gt;</span>, <span class="ident">FileMonitorEvent</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="op">&gt;</span>(
             <span class="ident">this</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::GFileMonitor</span>,
@@ -504,9 +504,7 @@
             <span class="ident">other_file</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::GFile</span>,
             <span class="ident">event_type</span>: <span class="ident">ffi::GFileMonitorEvent</span>,
             <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
-        ) <span class="kw">where</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
-        {
+        ) {
             <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">F</span>);
             <span class="ident">f</span>(
                 <span class="kw-2">&amp;</span><span class="ident">FileMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
@@ -532,13 +530,14 @@
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;cancelled&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">connect_cancelled_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_cancelled_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_cancelled_trampoline</span><span class="op">&lt;</span>
+            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="op">&gt;</span>(
             <span class="ident">this</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::GFileMonitor</span>,
             <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
             <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
-        ) <span class="kw">where</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
-        {
+        ) {
             <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">F</span>);
             <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="ident">FileMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
         }
@@ -557,13 +556,14 @@
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;rate-limit&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">connect_rate_limit_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_rate_limit_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_rate_limit_trampoline</span><span class="op">&lt;</span>
+            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="op">&gt;</span>(
             <span class="ident">this</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::GFileMonitor</span>,
             <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
             <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
-        ) <span class="kw">where</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">FileMonitor</span><span class="op">&gt;</span>,
-        {
+        ) {
             <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">F</span>);
             <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="ident">FileMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
         }

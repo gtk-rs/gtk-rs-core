@@ -344,9 +344,9 @@
 <span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
 <span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Gets the resolution for the context. See `pango_cairo_context_set_resolution()`</span>
+<span class="doccomment">/// Gets the resolution for the context. See [`context_set_resolution()`][crate::context_set_resolution()]</span>
 <span class="doccomment">/// ## `context`</span>
-<span class="doccomment">/// a [`crate::pango::Context`], from a pangocairo font map</span>
+<span class="doccomment">/// a [`pango::Context`][crate::pango::Context], from a pangocairo font map</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Returns</span>
 <span class="doccomment">///</span>
@@ -363,12 +363,12 @@
 <span class="comment">//}</span>
 
 <span class="doccomment">/// Sets the font options used when rendering text with this context.</span>
-<span class="doccomment">/// These options override any options that `pango_cairo_update_context()`</span>
+<span class="doccomment">/// These options override any options that [`update_context()`][crate::update_context()]</span>
 <span class="doccomment">/// derives from the target surface.</span>
 <span class="doccomment">/// ## `context`</span>
-<span class="doccomment">/// a [`crate::pango::Context`], from a pangocairo font map</span>
+<span class="doccomment">/// a [`pango::Context`][crate::pango::Context], from a pangocairo font map</span>
 <span class="doccomment">/// ## `options`</span>
-<span class="doccomment">/// a [`crate::cairo::FontOptions`], or [`None`] to unset</span>
+<span class="doccomment">/// a [`cairo::FontOptions`][crate::cairo::FontOptions], or [`None`] to unset</span>
 <span class="doccomment">///  any previously set options. A copy is made.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_context_set_font_options&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">context_set_font_options</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="ident">pango::Context</span>, <span class="ident">options</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">cairo::FontOptions</span><span class="op">&gt;</span>) {
@@ -381,11 +381,11 @@
 }
 
 <span class="doccomment">/// Sets the resolution for the context. This is a scale factor between</span>
-<span class="doccomment">/// points specified in a [`crate::pango::FontDescription`] and Cairo units. The</span>
+<span class="doccomment">/// points specified in a `PangoFontDescription` and Cairo units. The</span>
 <span class="doccomment">/// default value is 96, meaning that a 10 point font will be 13</span>
 <span class="doccomment">/// units high. (10 * 96. / 72. = 13.3).</span>
 <span class="doccomment">/// ## `context`</span>
-<span class="doccomment">/// a [`crate::pango::Context`], from a pangocairo font map</span>
+<span class="doccomment">/// a [`pango::Context`][crate::pango::Context], from a pangocairo font map</span>
 <span class="doccomment">/// ## `dpi`</span>
 <span class="doccomment">/// the resolution in &quot;dots per inch&quot;. (Physical inches aren&#39;t actually</span>
 <span class="doccomment">///  involved; the terminology is conventional.) A 0 or negative value</span>
@@ -404,19 +404,19 @@
 
 <span class="doccomment">/// Creates a context object set up to match the current transformation</span>
 <span class="doccomment">/// and target surface of the Cairo context. This context can then be</span>
-<span class="doccomment">/// used to create a layout using [`crate::pango::Layout::new()`].</span>
+<span class="doccomment">/// used to create a layout using [`pango::Layout::new()`][crate::pango::Layout::new()].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is a convenience function that creates a context using</span>
 <span class="doccomment">/// the default font map, then updates it to `cr`. If you just need to</span>
-<span class="doccomment">/// create a layout for use with `cr` and do not need to access [`crate::pango::Context`]</span>
-<span class="doccomment">/// directly, you can use `pango_cairo_create_layout()` instead.</span>
+<span class="doccomment">/// create a layout for use with `cr` and do not need to access [`pango::Context`][crate::pango::Context]</span>
+<span class="doccomment">/// directly, you can use [`create_layout()`][crate::create_layout()] instead.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Returns</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// the newly created [`crate::pango::Context`]. Free with</span>
-<span class="doccomment">///  [`crate::glib::object::Object::unref()`].</span>
+<span class="doccomment">/// the newly created [`pango::Context`][crate::pango::Context]. Free with</span>
+<span class="doccomment">///  `g_object_unref()`.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_create_context&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_context</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">pango::Context</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> {
@@ -429,21 +429,21 @@
 <span class="doccomment">/// Creates a layout object set up to match the current transformation</span>
 <span class="doccomment">/// and target surface of the Cairo context. This layout can then be</span>
 <span class="doccomment">/// used for text measurement with functions like</span>
-<span class="doccomment">/// [`crate::pango::Layout::get_size()`] or drawing with functions like</span>
-<span class="doccomment">/// `pango_cairo_show_layout()`. If you change the transformation</span>
-<span class="doccomment">/// or target surface for `cr`, you need to call `pango_cairo_update_layout()`</span>
+<span class="doccomment">/// [`Layout::size()`][crate::pango::Layout::size()] or drawing with functions like</span>
+<span class="doccomment">/// [`show_layout()`][crate::show_layout()]. If you change the transformation</span>
+<span class="doccomment">/// or target surface for `cr`, you need to call [`update_layout()`][crate::update_layout()]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is the most convenient way to use Cairo with Pango,</span>
 <span class="doccomment">/// however it is slightly inefficient since it creates a separate</span>
-<span class="doccomment">/// [`crate::pango::Context`] object for each layout. This might matter in an</span>
+<span class="doccomment">/// [`pango::Context`][crate::pango::Context] object for each layout. This might matter in an</span>
 <span class="doccomment">/// application that was laying out large amounts of text.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Returns</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// the newly created [`crate::pango::Layout`]. Free with</span>
-<span class="doccomment">///  [`crate::glib::object::Object::unref()`].</span>
+<span class="doccomment">/// the newly created [`pango::Layout`][crate::pango::Layout]. Free with</span>
+<span class="doccomment">///  `g_object_unref()`.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_create_layout&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_layout</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">pango::Layout</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> {
@@ -487,9 +487,9 @@
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `font`</span>
-<span class="doccomment">/// a [`crate::pango::Font`] from a [`crate::FontMap`]</span>
+<span class="doccomment">/// a [`pango::Font`][crate::pango::Font] from a [`FontMap`][crate::FontMap]</span>
 <span class="doccomment">/// ## `glyphs`</span>
-<span class="doccomment">/// a [`crate::pango::GlyphString`]</span>
+<span class="doccomment">/// a [`pango::GlyphString`][crate::pango::GlyphString]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_glyph_string_path&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">glyph_string_path</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">pango::Font</span><span class="op">&gt;</span><span class="op">&gt;</span>(
     <span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>,
@@ -505,13 +505,13 @@
     }
 }
 
-<span class="doccomment">/// Adds the text in [`crate::pango::LayoutLine`] to the current path in the</span>
+<span class="doccomment">/// Adds the text in [`pango::LayoutLine`][crate::pango::LayoutLine] to the current path in the</span>
 <span class="doccomment">/// specified cairo context. The origin of the glyphs (the left edge</span>
 <span class="doccomment">/// of the line) will be at the current point of the cairo context.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `line`</span>
-<span class="doccomment">/// a [`crate::pango::LayoutLine`]</span>
+<span class="doccomment">/// a [`pango::LayoutLine`][crate::pango::LayoutLine]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_layout_line_path&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">layout_line_path</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>, <span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="ident">pango::LayoutLine</span>) {
     <span class="kw">unsafe</span> {
@@ -519,8 +519,8 @@
     }
 }
 
-<span class="doccomment">/// Adds the text in a [`crate::pango::Layout`] to the current path in the</span>
-<span class="doccomment">/// specified cairo context. The top-left corner of the [`crate::pango::Layout`]</span>
+<span class="doccomment">/// Adds the text in a [`pango::Layout`][crate::pango::Layout] to the current path in the</span>
+<span class="doccomment">/// specified cairo context. The top-left corner of the [`pango::Layout`][crate::pango::Layout]</span>
 <span class="doccomment">/// will be at the current point of the cairo context.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
@@ -564,7 +564,7 @@
 <span class="doccomment">/// Draws the glyphs in `glyph_item` in the specified cairo context,</span>
 <span class="doccomment">/// embedding the text associated with the glyphs in the output if the</span>
 <span class="doccomment">/// output format supports it (PDF for example), otherwise it acts</span>
-<span class="doccomment">/// similar to `pango_cairo_show_glyph_string()`.</span>
+<span class="doccomment">/// similar to [`show_glyph_string()`][crate::show_glyph_string()].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The origin of the glyphs (the left edge of the baseline) will</span>
 <span class="doccomment">/// be drawn at the current point of the cairo context.</span>
@@ -576,7 +576,7 @@
 <span class="doccomment">/// ## `text`</span>
 <span class="doccomment">/// the UTF-8 text that `glyph_item` refers to</span>
 <span class="doccomment">/// ## `glyph_item`</span>
-<span class="doccomment">/// a [`crate::pango::GlyphItem`]</span>
+<span class="doccomment">/// a [`pango::GlyphItem`][crate::pango::GlyphItem]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_show_glyph_item&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">show_glyph_item</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>, <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">glyph_item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pango::GlyphItem</span>) {
     <span class="kw">unsafe</span> {
@@ -594,9 +594,9 @@
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `font`</span>
-<span class="doccomment">/// a [`crate::pango::Font`] from a [`crate::FontMap`]</span>
+<span class="doccomment">/// a [`pango::Font`][crate::pango::Font] from a [`FontMap`][crate::FontMap]</span>
 <span class="doccomment">/// ## `glyphs`</span>
-<span class="doccomment">/// a [`crate::pango::GlyphString`]</span>
+<span class="doccomment">/// a [`pango::GlyphString`][crate::pango::GlyphString]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_show_glyph_string&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">show_glyph_string</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">pango::Font</span><span class="op">&gt;</span><span class="op">&gt;</span>(
     <span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>,
@@ -612,8 +612,8 @@
     }
 }
 
-<span class="doccomment">/// Draws a [`crate::pango::Layout`] in the specified cairo context.</span>
-<span class="doccomment">/// The top-left corner of the [`crate::pango::Layout`] will be drawn</span>
+<span class="doccomment">/// Draws a [`pango::Layout`][crate::pango::Layout] in the specified cairo context.</span>
+<span class="doccomment">/// The top-left corner of the [`pango::Layout`][crate::pango::Layout] will be drawn</span>
 <span class="doccomment">/// at the current point of the cairo context.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
@@ -626,13 +626,13 @@
     }
 }
 
-<span class="doccomment">/// Draws a [`crate::pango::LayoutLine`] in the specified cairo context.</span>
+<span class="doccomment">/// Draws a [`pango::LayoutLine`][crate::pango::LayoutLine] in the specified cairo context.</span>
 <span class="doccomment">/// The origin of the glyphs (the left edge of the line) will</span>
 <span class="doccomment">/// be drawn at the current point of the cairo context.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `line`</span>
-<span class="doccomment">/// a [`crate::pango::LayoutLine`]</span>
+<span class="doccomment">/// a [`pango::LayoutLine`][crate::pango::LayoutLine]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_show_layout_line&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">show_layout_line</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>, <span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="ident">pango::LayoutLine</span>) {
     <span class="kw">unsafe</span> {
@@ -640,15 +640,15 @@
     }
 }
 
-<span class="doccomment">/// Updates a [`crate::pango::Context`] previously created for use with Cairo to</span>
+<span class="doccomment">/// Updates a [`pango::Context`][crate::pango::Context] previously created for use with Cairo to</span>
 <span class="doccomment">/// match the current transformation and target surface of a Cairo</span>
 <span class="doccomment">/// context. If any layouts have been created for the context,</span>
-<span class="doccomment">/// it&#39;s necessary to call [`crate::pango::Layout::context_changed()`] on those</span>
+<span class="doccomment">/// it&#39;s necessary to call [`Layout::context_changed()`][crate::pango::Layout::context_changed()] on those</span>
 <span class="doccomment">/// layouts.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `context`</span>
-<span class="doccomment">/// a [`crate::pango::Context`], from a pangocairo font map</span>
+<span class="doccomment">/// a [`pango::Context`][crate::pango::Context], from a pangocairo font map</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_update_context&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_context</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>, <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="ident">pango::Context</span>) {
     <span class="kw">unsafe</span> {
@@ -659,13 +659,13 @@
     }
 }
 
-<span class="doccomment">/// Updates the private [`crate::pango::Context`] of a [`crate::pango::Layout`] created with</span>
-<span class="doccomment">/// `pango_cairo_create_layout()` to match the current transformation</span>
+<span class="doccomment">/// Updates the private [`pango::Context`][crate::pango::Context] of a [`pango::Layout`][crate::pango::Layout] created with</span>
+<span class="doccomment">/// [`create_layout()`][crate::create_layout()] to match the current transformation</span>
 <span class="doccomment">/// and target surface of a Cairo context.</span>
 <span class="doccomment">/// ## `cr`</span>
 <span class="doccomment">/// a Cairo context</span>
 <span class="doccomment">/// ## `layout`</span>
-<span class="doccomment">/// a [`crate::pango::Layout`], from `pango_cairo_create_layout()`</span>
+<span class="doccomment">/// a [`pango::Layout`][crate::pango::Layout], from [`create_layout()`][crate::create_layout()]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pango_cairo_update_layout&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_layout</span>(<span class="ident">cr</span>: <span class="kw-2">&amp;</span><span class="ident">cairo::Context</span>, <span class="ident">layout</span>: <span class="kw-2">&amp;</span><span class="ident">pango::Layout</span>) {
     <span class="kw">unsafe</span> {

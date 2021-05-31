@@ -28,10 +28,10 @@ with the owner id this function returns.</p>
 <p>If the name is acquired or lost (for example another application
 could acquire the name if you allow replacement or the application
 currently owning the name exits), the handlers are also invoked.
-If the <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>crate::DBusConnection</code></a> that is used for attempting to own the name
+If the <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a> that is used for attempting to own the name
 closes, then <code>name_lost_handler</code> is invoked since it is no longer
 possible for other processes to access the process.</p>
-<p>You cannot use <code>g_bus_own_name()</code> several times for the same name (unless
+<p>You cannot use <a href="fn.bus_own_name.html" title="crate::bus_own_name()"><code>bus_own_name()</code></a> several times for the same name (unless
 interleaved with calls to <code>g_bus_unown_name()</code>) - only the first call
 will work.</p>
 <p>Another guarantee is that invocations of <code>name_acquired_handler</code>
@@ -40,7 +40,7 @@ is, if <code>name_acquired_handler</code> is invoked then you are
 guaranteed that the next time one of the handlers is invoked, it
 will be <code>name_lost_handler</code>. The reverse is also true.</p>
 <p>If you plan on exporting objects (using e.g.
-<a href="struct.DBusConnection.html#method.register_object" title="crate::DBusConnection::register_object()"><code>crate::DBusConnection::register_object()</code></a>), note that it is generally too late
+<a href="struct.DBusConnection.html#method.register_object" title="crate::DBusConnection::register_object()"><code>DBusConnection::register_object()</code></a>), note that it is generally too late
 to export the objects in <code>name_acquired_handler</code>. Instead, you can do this
 in <code>bus_acquired_handler</code> since you are guaranteed that this will run
 before <code>name</code> is requested from the bus.</p>
@@ -53,7 +53,7 @@ unregister the objects (if any) in <code>name_lost_handler</code>.</p>
 <h2 id="name" class="section-header"><a href="#name"><code>name</code></a></h2>
 <p>the well-known name to own</p>
 <h2 id="flags" class="section-header"><a href="#flags"><code>flags</code></a></h2>
-<p>a set of flags from the <a href="struct.BusNameOwnerFlags.html" title="crate::BusNameOwnerFlags"><code>crate::BusNameOwnerFlags</code></a> enumeration</p>
+<p>a set of flags from the <a href="struct.BusNameOwnerFlags.html" title="crate::BusNameOwnerFlags"><code>BusNameOwnerFlags</code></a> enumeration</p>
 <h2 id="bus_acquired_handler" class="section-header"><a href="#bus_acquired_handler"><code>bus_acquired_handler</code></a></h2>
 <p>handler to invoke when connected to the bus of type <code>bus_type</code> or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a></p>
 <h2 id="name_acquired_handler" class="section-header"><a href="#name_acquired_handler"><code>name_acquired_handler</code></a></h2>
