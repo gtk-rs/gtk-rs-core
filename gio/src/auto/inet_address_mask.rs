@@ -16,6 +16,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GInetAddressMask")]
     pub struct InetAddressMask(Object<ffi::GInetAddressMask, ffi::GInetAddressMaskClass>);
 
     match fn {

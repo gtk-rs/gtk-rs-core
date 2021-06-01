@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GTcpConnection")]
     pub struct TcpConnection(Object<ffi::GTcpConnection, ffi::GTcpConnectionClass>) @extends SocketConnection, IOStream;
 
     match fn {

@@ -11,6 +11,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GSimpleIOStream")]
     pub struct SimpleIOStream(Object<ffi::GSimpleIOStream>) @extends IOStream;
 
     match fn {

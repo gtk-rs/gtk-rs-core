@@ -17,6 +17,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "PangoFont")]
     pub struct Font(Object<ffi::PangoFont, ffi::PangoFontClass>);
 
     match fn {

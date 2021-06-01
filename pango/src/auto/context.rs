@@ -20,6 +20,7 @@ use std::mem;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "PangoContext")]
     pub struct Context(Object<ffi::PangoContext, ffi::PangoContextClass>);
 
     match fn {

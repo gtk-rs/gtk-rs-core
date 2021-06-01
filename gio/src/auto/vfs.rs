@@ -11,6 +11,7 @@ use std::boxed::Box as Box_;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GVfs")]
     pub struct Vfs(Object<ffi::GVfs, ffi::GVfsClass>);
 
     match fn {

@@ -7,6 +7,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GUnixFDList")]
     pub struct UnixFDList(Object<ffi::GUnixFDList, ffi::GUnixFDListClass>);
 
     match fn {

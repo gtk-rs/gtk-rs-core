@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusActionGroup")]
     pub struct DBusActionGroup(Object<ffi::GDBusActionGroup>) @implements ActionGroup, RemoteActionGroup;
 
     match fn {

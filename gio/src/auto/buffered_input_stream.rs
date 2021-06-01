@@ -22,6 +22,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GBufferedInputStream")]
     pub struct BufferedInputStream(Object<ffi::GBufferedInputStream, ffi::GBufferedInputStreamClass>) @extends FilterInputStream, InputStream, @implements Seekable;
 
     match fn {
@@ -52,7 +53,8 @@ impl BufferedInputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`BufferedInputStream`]
+    /// Creates a new builder-style object to construct a [`BufferedInputStream`].
+    ///
     /// This method returns an instance of [`BufferedInputStreamBuilder`] which can be used to create a [`BufferedInputStream`].
     pub fn builder() -> BufferedInputStreamBuilder {
         BufferedInputStreamBuilder::default()

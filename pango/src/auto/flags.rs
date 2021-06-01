@@ -14,21 +14,21 @@ bitflags! {
     #[doc(alias = "PangoFontMask")]
     pub struct FontMask: u32 {
         #[doc(alias = "PANGO_FONT_MASK_FAMILY")]
-        const FAMILY = 1;
+        const FAMILY = ffi::PANGO_FONT_MASK_FAMILY as u32;
         #[doc(alias = "PANGO_FONT_MASK_STYLE")]
-        const STYLE = 2;
+        const STYLE = ffi::PANGO_FONT_MASK_STYLE as u32;
         #[doc(alias = "PANGO_FONT_MASK_VARIANT")]
-        const VARIANT = 4;
+        const VARIANT = ffi::PANGO_FONT_MASK_VARIANT as u32;
         #[doc(alias = "PANGO_FONT_MASK_WEIGHT")]
-        const WEIGHT = 8;
+        const WEIGHT = ffi::PANGO_FONT_MASK_WEIGHT as u32;
         #[doc(alias = "PANGO_FONT_MASK_STRETCH")]
-        const STRETCH = 16;
+        const STRETCH = ffi::PANGO_FONT_MASK_STRETCH as u32;
         #[doc(alias = "PANGO_FONT_MASK_SIZE")]
-        const SIZE = 32;
+        const SIZE = ffi::PANGO_FONT_MASK_SIZE as u32;
         #[doc(alias = "PANGO_FONT_MASK_GRAVITY")]
-        const GRAVITY = 64;
+        const GRAVITY = ffi::PANGO_FONT_MASK_GRAVITY as u32;
         #[doc(alias = "PANGO_FONT_MASK_VARIATIONS")]
-        const VARIATIONS = 128;
+        const VARIATIONS = ffi::PANGO_FONT_MASK_VARIATIONS as u32;
     }
 }
 
@@ -92,9 +92,9 @@ bitflags! {
     #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
         #[doc(alias = "PANGO_SHAPE_NONE")]
-        const NONE = 0;
+        const NONE = ffi::PANGO_SHAPE_NONE as u32;
         #[doc(alias = "PANGO_SHAPE_ROUND_POSITIONS")]
-        const ROUND_POSITIONS = 1;
+        const ROUND_POSITIONS = ffi::PANGO_SHAPE_ROUND_POSITIONS as u32;
     }
 }
 
@@ -172,13 +172,13 @@ bitflags! {
     #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
         #[doc(alias = "PANGO_SHOW_NONE")]
-        const NONE = 0;
+        const NONE = ffi::PANGO_SHOW_NONE as u32;
         #[doc(alias = "PANGO_SHOW_SPACES")]
-        const SPACES = 1;
+        const SPACES = ffi::PANGO_SHOW_SPACES as u32;
         #[doc(alias = "PANGO_SHOW_LINE_BREAKS")]
-        const LINE_BREAKS = 2;
+        const LINE_BREAKS = ffi::PANGO_SHOW_LINE_BREAKS as u32;
         #[doc(alias = "PANGO_SHOW_IGNORABLES")]
-        const IGNORABLES = 4;
+        const IGNORABLES = ffi::PANGO_SHOW_IGNORABLES as u32;
     }
 }
 

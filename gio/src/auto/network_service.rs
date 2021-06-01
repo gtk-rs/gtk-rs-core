@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GNetworkService")]
     pub struct NetworkService(Object<ffi::GNetworkService, ffi::GNetworkServiceClass>) @implements SocketConnectable;
 
     match fn {

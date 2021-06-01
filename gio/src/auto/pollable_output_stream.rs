@@ -10,6 +10,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GPollableOutputStream")]
     pub struct PollableOutputStream(Interface<ffi::GPollableOutputStream, ffi::GPollableOutputStreamInterface>) @requires OutputStream;
 
     match fn {

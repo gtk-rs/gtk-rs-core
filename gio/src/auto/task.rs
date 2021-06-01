@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GTask")]
     pub struct Task(Object<ffi::GTask, ffi::GTaskClass>) @implements AsyncResult;
 
     match fn {

@@ -15,6 +15,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GFileIOStream")]
     pub struct FileIOStream(Object<ffi::GFileIOStream, ffi::GFileIOStreamClass>) @extends IOStream, @implements Seekable;
 
     match fn {

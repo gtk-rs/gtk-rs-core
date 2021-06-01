@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusAuthObserver")]
     pub struct DBusAuthObserver(Object<ffi::GDBusAuthObserver>);
 
     match fn {

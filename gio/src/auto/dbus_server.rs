@@ -18,6 +18,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusServer")]
     pub struct DBusServer(Object<ffi::GDBusServer>);
 
     match fn {

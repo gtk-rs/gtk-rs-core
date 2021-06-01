@@ -14,6 +14,7 @@ use std::mem;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDesktopAppInfo")]
     pub struct DesktopAppInfo(Object<ffi::GDesktopAppInfo, ffi::GDesktopAppInfoClass>) @implements AppInfo;
 
     match fn {

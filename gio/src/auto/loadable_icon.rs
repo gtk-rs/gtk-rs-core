@@ -14,6 +14,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GLoadableIcon")]
     pub struct LoadableIcon(Interface<ffi::GLoadableIcon, ffi::GLoadableIconIface>) @requires Icon;
 
     match fn {

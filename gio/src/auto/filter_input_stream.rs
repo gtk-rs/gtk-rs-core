@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GFilterInputStream")]
     pub struct FilterInputStream(Object<ffi::GFilterInputStream, ffi::GFilterInputStreamClass>) @extends InputStream;
 
     match fn {

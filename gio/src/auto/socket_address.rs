@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GSocketAddress")]
     pub struct SocketAddress(Object<ffi::GSocketAddress, ffi::GSocketAddressClass>) @implements SocketConnectable;
 
     match fn {

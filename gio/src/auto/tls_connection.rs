@@ -23,6 +23,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsConnection")]
     pub struct TlsConnection(Object<ffi::GTlsConnection, ffi::GTlsConnectionClass>) @extends IOStream;
 
     match fn {

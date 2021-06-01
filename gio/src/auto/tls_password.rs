@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsPassword")]
     pub struct TlsPassword(Object<ffi::GTlsPassword, ffi::GTlsPasswordClass>);
 
     match fn {

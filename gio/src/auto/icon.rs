@@ -8,6 +8,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GIcon")]
     pub struct Icon(Interface<ffi::GIcon, ffi::GIconIface>);
 
     match fn {

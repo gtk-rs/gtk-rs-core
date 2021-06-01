@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GNotification")]
     pub struct Notification(Object<ffi::GNotification>);
 
     match fn {

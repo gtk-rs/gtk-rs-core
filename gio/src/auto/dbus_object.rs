@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusObject")]
     pub struct DBusObject(Interface<ffi::GDBusObject, ffi::GDBusObjectIface>);
 
     match fn {

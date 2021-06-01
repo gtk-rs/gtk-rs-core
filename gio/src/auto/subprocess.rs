@@ -15,6 +15,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GSubprocess")]
     pub struct Subprocess(Object<ffi::GSubprocess>);
 
     match fn {

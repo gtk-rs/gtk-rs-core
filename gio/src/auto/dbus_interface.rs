@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusInterface")]
     pub struct DBusInterface(Interface<ffi::GDBusInterface, ffi::GDBusInterfaceIface>);
 
     match fn {

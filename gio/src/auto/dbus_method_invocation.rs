@@ -16,6 +16,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusMethodInvocation")]
     pub struct DBusMethodInvocation(Object<ffi::GDBusMethodInvocation>);
 
     match fn {

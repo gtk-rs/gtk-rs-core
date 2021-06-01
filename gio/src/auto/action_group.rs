@@ -12,6 +12,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GActionGroup")]
     pub struct ActionGroup(Interface<ffi::GActionGroup, ffi::GActionGroupInterface>);
 
     match fn {

@@ -7,6 +7,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GSettingsBackend")]
     pub struct SettingsBackend(Object<ffi::GSettingsBackend, ffi::GSettingsBackendClass>);
 
     match fn {

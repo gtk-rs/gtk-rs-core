@@ -17,6 +17,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GSocketConnection")]
     pub struct SocketConnection(Object<ffi::GSocketConnection, ffi::GSocketConnectionClass>) @extends IOStream;
 
     match fn {

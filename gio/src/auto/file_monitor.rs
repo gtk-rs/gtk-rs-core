@@ -15,6 +15,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GFileMonitor")]
     pub struct FileMonitor(Object<ffi::GFileMonitor, ffi::GFileMonitorClass>);
 
     match fn {

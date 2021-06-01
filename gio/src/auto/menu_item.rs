@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GMenuItem")]
     pub struct MenuItem(Object<ffi::GMenuItem>);
 
     match fn {

@@ -22,6 +22,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDrive")]
     pub struct Drive(Interface<ffi::GDrive, ffi::GDriveIface>);
 
     match fn {

@@ -12,6 +12,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GListModel")]
     pub struct ListModel(Interface<ffi::GListModel, ffi::GListModelInterface>);
 
     match fn {

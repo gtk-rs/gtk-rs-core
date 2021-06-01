@@ -14,6 +14,7 @@ use glib::ToValue;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GConverterOutputStream")]
     pub struct ConverterOutputStream(Object<ffi::GConverterOutputStream, ffi::GConverterOutputStreamClass>) @extends FilterOutputStream, OutputStream, @implements PollableOutputStream;
 
     match fn {
@@ -37,7 +38,8 @@ impl ConverterOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`ConverterOutputStream`]
+    /// Creates a new builder-style object to construct a [`ConverterOutputStream`].
+    ///
     /// This method returns an instance of [`ConverterOutputStreamBuilder`] which can be used to create a [`ConverterOutputStream`].
     pub fn builder() -> ConverterOutputStreamBuilder {
         ConverterOutputStreamBuilder::default()

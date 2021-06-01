@@ -7,6 +7,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "PangoCairoFontMap")]
     pub struct FontMap(Interface<ffi::PangoCairoFontMap>) @requires pango::FontMap;
 
     match fn {

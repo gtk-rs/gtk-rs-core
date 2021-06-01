@@ -12,6 +12,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GSubprocessLauncher")]
     pub struct SubprocessLauncher(Object<ffi::GSubprocessLauncher>);
 
     match fn {

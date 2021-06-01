@@ -24,6 +24,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDataInputStream")]
     pub struct DataInputStream(Object<ffi::GDataInputStream, ffi::GDataInputStreamClass>) @extends BufferedInputStream, FilterInputStream, InputStream, @implements Seekable;
 
     match fn {
@@ -42,7 +43,8 @@ impl DataInputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`DataInputStream`]
+    /// Creates a new builder-style object to construct a [`DataInputStream`].
+    ///
     /// This method returns an instance of [`DataInputStreamBuilder`] which can be used to create a [`DataInputStream`].
     pub fn builder() -> DataInputStreamBuilder {
         DataInputStreamBuilder::default()

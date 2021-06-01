@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GEmblem")]
     pub struct Emblem(Object<ffi::GEmblem, ffi::GEmblemClass>) @implements Icon;
 
     match fn {

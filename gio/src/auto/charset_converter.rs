@@ -16,6 +16,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GCharsetConverter")]
     pub struct CharsetConverter(Object<ffi::GCharsetConverter, ffi::GCharsetConverterClass>) @implements Converter;
 
     match fn {
@@ -42,7 +43,8 @@ impl CharsetConverter {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`CharsetConverter`]
+    /// Creates a new builder-style object to construct a [`CharsetConverter`].
+    ///
     /// This method returns an instance of [`CharsetConverterBuilder`] which can be used to create a [`CharsetConverter`].
     pub fn builder() -> CharsetConverterBuilder {
         CharsetConverterBuilder::default()

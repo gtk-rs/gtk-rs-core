@@ -12,6 +12,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GSimpleAction")]
     pub struct SimpleAction(Object<ffi::GSimpleAction>) @implements Action;
 
     match fn {

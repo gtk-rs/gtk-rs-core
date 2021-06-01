@@ -11,6 +11,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsCertificate")]
     pub struct TlsCertificate(Object<ffi::GTlsCertificate, ffi::GTlsCertificateClass>);
 
     match fn {

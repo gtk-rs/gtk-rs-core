@@ -15,6 +15,7 @@ use std::mem;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "PangoFontMap")]
     pub struct FontMap(Object<ffi::PangoFontMap, ffi::PangoFontMapClass>);
 
     match fn {

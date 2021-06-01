@@ -10,6 +10,7 @@ use std::mem;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "PangoFontFamily")]
     pub struct FontFamily(Object<ffi::PangoFontFamily, ffi::PangoFontFamilyClass>);
 
     match fn {

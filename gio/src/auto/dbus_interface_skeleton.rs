@@ -19,6 +19,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusInterfaceSkeleton")]
     pub struct DBusInterfaceSkeleton(Object<ffi::GDBusInterfaceSkeleton, ffi::GDBusInterfaceSkeletonClass>) @implements DBusInterface;
 
     match fn {

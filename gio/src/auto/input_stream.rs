@@ -13,6 +13,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GInputStream")]
     pub struct InputStream(Object<ffi::GInputStream, ffi::GInputStreamClass>);
 
     match fn {
