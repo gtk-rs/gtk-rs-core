@@ -11,6 +11,7 @@ use std::fmt;
 use std::hash;
 
 wrapper! {
+    #[doc(alias = "GDate")]
     pub struct Date(Boxed<ffi::GDate>);
 
     match fn {

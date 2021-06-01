@@ -21,6 +21,7 @@ use crate::{
 #[cfg(feature = "use_glib")]
 glib::wrapper! {
     #[derive(Debug)]
+    #[doc(alias = "cairo_font_options_t")]
     pub struct FontOptions(Boxed<ffi::cairo_font_options_t>);
 
     match fn {
@@ -37,6 +38,7 @@ glib::wrapper! {
 
 #[cfg(not(feature = "use_glib"))]
 #[derive(Debug)]
+#[doc(alias = "cairo_font_options_t")]
 pub struct FontOptions(ptr::NonNull<ffi::cairo_font_options_t>);
 
 impl FontOptions {

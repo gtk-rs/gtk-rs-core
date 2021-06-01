@@ -103,6 +103,7 @@ wrapper! {
     /// A generic immutable value capable of carrying various types.
     ///
     /// See the [module documentation](index.html) for more details.
+    #[doc(alias = "GVariant")]
     pub struct Variant(Shared<ffi::GVariant>);
 
     match fn {

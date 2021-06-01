@@ -2422,6 +2422,7 @@ impl ObjectClass {
 }
 
 wrapper! {
+    #[doc(alias = "GInitiallyUnowned")]
     pub struct InitiallyUnowned(Object<gobject_ffi::GInitiallyUnowned, gobject_ffi::GInitiallyUnownedClass>);
 
     match fn {
@@ -2430,6 +2431,7 @@ wrapper! {
 }
 
 #[derive(Debug)]
+#[doc(alias = "GWeakRef")]
 pub struct WeakRef<T: ObjectType>(Pin<Box<gobject_ffi::GWeakRef>>, PhantomData<*mut T>);
 
 impl<T: ObjectType> WeakRef<T> {

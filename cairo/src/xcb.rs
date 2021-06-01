@@ -42,6 +42,7 @@ impl fmt::Display for XCBPixmap {
 }
 
 #[derive(Debug)]
+#[doc(alias = "xcb_connection_t")]
 pub struct XCBConnection(pub ptr::NonNull<ffi::xcb_connection_t>);
 
 impl XCBConnection {
@@ -112,6 +113,7 @@ impl fmt::Display for XCBConnection {
 }
 
 #[derive(Debug)]
+#[doc(alias = "xcb_render_pictforminfo_t")]
 pub struct XCBRenderPictFormInfo(pub ptr::NonNull<ffi::xcb_render_pictforminfo_t>);
 
 impl XCBRenderPictFormInfo {
@@ -188,6 +190,7 @@ impl fmt::Display for XCBRenderPictFormInfo {
 }
 
 #[derive(Debug)]
+#[doc(alias = "xcb_screen_t")]
 pub struct XCBScreen(pub ptr::NonNull<ffi::xcb_screen_t>);
 
 impl XCBScreen {
@@ -349,6 +352,7 @@ impl XCBSurface {
 }
 
 #[derive(Debug)]
+#[doc(alias = "xcb_visualtype_t")]
 pub struct XCBVisualType(pub ptr::NonNull<ffi::xcb_visualtype_t>);
 
 impl XCBVisualType {

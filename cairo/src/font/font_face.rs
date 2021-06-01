@@ -19,6 +19,7 @@ use crate::utils::status_to_result;
 #[cfg(feature = "use_glib")]
 glib::wrapper! {
     #[derive(Debug)]
+    #[doc(alias = "cairo_font_face_t")]
     pub struct FontFace(Shared<ffi::cairo_font_face_t>);
 
     match fn {
@@ -30,6 +31,7 @@ glib::wrapper! {
 
 #[cfg(not(feature = "use_glib"))]
 #[derive(Debug)]
+#[doc(alias = "cairo_font_face_t")]
 pub struct FontFace(ptr::NonNull<ffi::cairo_font_face_t>);
 
 impl FontFace {

@@ -19,6 +19,7 @@ use crate::rectangle::Rectangle;
 use crate::rectangle_int::RectangleInt;
 
 #[derive(Debug)]
+#[doc(alias = "cairo_surface_t")]
 pub struct Surface(ptr::NonNull<ffi::cairo_surface_t>);
 
 impl Surface {

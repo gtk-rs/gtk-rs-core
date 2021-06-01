@@ -51,6 +51,7 @@ impl IntoGlib for UserDirectory {
 /// Representation of an `enum` for dynamically, at runtime, querying the values of the enum and
 /// using them.
 #[derive(Debug)]
+#[doc(alias = "GEnumClass")]
 pub struct EnumClass(*mut gobject_ffi::GEnumClass);
 
 unsafe impl Send for EnumClass {}
@@ -177,6 +178,7 @@ impl Clone for EnumClass {
 
 /// Representation of a single enum value of an `EnumClass`.
 #[derive(Debug, Clone)]
+#[doc(alias = "GEnumValue")]
 pub struct EnumValue(*const gobject_ffi::GEnumValue, EnumClass);
 
 unsafe impl Send for EnumValue {}
@@ -248,6 +250,7 @@ impl Ord for EnumValue {
 /// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
 /// using them
 #[derive(Debug)]
+#[doc(alias = "GFlagsClass")]
 pub struct FlagsClass(*mut gobject_ffi::GFlagsClass);
 
 unsafe impl Send for FlagsClass {}
@@ -561,6 +564,7 @@ impl Clone for FlagsClass {
 
 /// Representation of a single flags value of a `FlagsClass`.
 #[derive(Debug, Clone)]
+#[doc(alias = "GFlagsValue")]
 pub struct FlagsValue(*const gobject_ffi::GFlagsValue, FlagsClass);
 
 unsafe impl Send for FlagsValue {}

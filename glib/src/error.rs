@@ -14,6 +14,7 @@ use std::str;
 wrapper! {
     /// A generic error capable of representing various error domains (types).
     #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GError")]
     pub struct Error(Boxed<ffi::GError>);
 
     match fn {

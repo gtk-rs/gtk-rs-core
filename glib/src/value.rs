@@ -310,6 +310,7 @@ impl<T: ToValueOptional + StaticType + ?Sized> ToValueOptional for &T {
 /// See the [module documentation](index.html) for more details.
 // TODO: Should use impl !Send for Value {} once stable
 #[repr(transparent)]
+#[doc(alias = "GValue")]
 pub struct Value(pub(crate) gobject_ffi::GValue);
 
 impl Value {
@@ -688,6 +689,7 @@ macro_rules! from_glib {
 
 from_glib!(Value, |v| v);
 
+#[doc(alias = "GValue")]
 pub struct ValueArray(Vec<gobject_ffi::GValue>);
 
 impl Drop for ValueArray {

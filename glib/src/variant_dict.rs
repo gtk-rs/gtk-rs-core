@@ -18,6 +18,7 @@ wrapper! {
     ///
     /// Note, pretty much all methods on this struct will panic if the
     /// [`end_unsafe()`](#method.end_unsafe) method was called on the instance.
+    #[doc(alias = "GVariantDict")]
     pub struct VariantDict(Shared<ffi::GVariantDict>);
 
     match fn {
