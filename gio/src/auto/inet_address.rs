@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GInetAddress")]
     pub struct InetAddress(Object<ffi::GInetAddress, ffi::GInetAddressClass>);
 
     match fn {

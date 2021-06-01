@@ -10,6 +10,7 @@ use glib::StaticType;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GEmblemedIcon")]
     pub struct EmblemedIcon(Object<ffi::GEmblemedIcon, ffi::GEmblemedIconClass>) @implements Icon;
 
     match fn {

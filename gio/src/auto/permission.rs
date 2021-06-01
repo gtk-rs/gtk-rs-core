@@ -16,6 +16,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GPermission")]
     pub struct Permission(Object<ffi::GPermission, ffi::GPermissionClass>);
 
     match fn {

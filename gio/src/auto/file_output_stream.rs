@@ -15,6 +15,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GFileOutputStream")]
     pub struct FileOutputStream(Object<ffi::GFileOutputStream, ffi::GFileOutputStreamClass>) @extends OutputStream, @implements Seekable;
 
     match fn {

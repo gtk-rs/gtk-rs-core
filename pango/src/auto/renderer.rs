@@ -16,6 +16,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "PangoRenderer")]
     pub struct Renderer(Object<ffi::PangoRenderer, ffi::PangoRendererClass>);
 
     match fn {

@@ -14,13 +14,13 @@ bitflags! {
     #[doc(alias = "GBindingFlags")]
     pub struct BindingFlags: u32 {
         #[doc(alias = "G_BINDING_DEFAULT")]
-        const DEFAULT = 0;
+        const DEFAULT = gobject_ffi::G_BINDING_DEFAULT as u32;
         #[doc(alias = "G_BINDING_BIDIRECTIONAL")]
-        const BIDIRECTIONAL = 1;
+        const BIDIRECTIONAL = gobject_ffi::G_BINDING_BIDIRECTIONAL as u32;
         #[doc(alias = "G_BINDING_SYNC_CREATE")]
-        const SYNC_CREATE = 2;
+        const SYNC_CREATE = gobject_ffi::G_BINDING_SYNC_CREATE as u32;
         #[doc(alias = "G_BINDING_INVERT_BOOLEAN")]
-        const INVERT_BOOLEAN = 4;
+        const INVERT_BOOLEAN = gobject_ffi::G_BINDING_INVERT_BOOLEAN as u32;
     }
 }
 
@@ -84,23 +84,23 @@ bitflags! {
     #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
         #[doc(alias = "G_SIGNAL_RUN_FIRST")]
-        const RUN_FIRST = 1;
+        const RUN_FIRST = gobject_ffi::G_SIGNAL_RUN_FIRST as u32;
         #[doc(alias = "G_SIGNAL_RUN_LAST")]
-        const RUN_LAST = 2;
+        const RUN_LAST = gobject_ffi::G_SIGNAL_RUN_LAST as u32;
         #[doc(alias = "G_SIGNAL_RUN_CLEANUP")]
-        const RUN_CLEANUP = 4;
+        const RUN_CLEANUP = gobject_ffi::G_SIGNAL_RUN_CLEANUP as u32;
         #[doc(alias = "G_SIGNAL_NO_RECURSE")]
-        const NO_RECURSE = 8;
+        const NO_RECURSE = gobject_ffi::G_SIGNAL_NO_RECURSE as u32;
         #[doc(alias = "G_SIGNAL_DETAILED")]
-        const DETAILED = 16;
+        const DETAILED = gobject_ffi::G_SIGNAL_DETAILED as u32;
         #[doc(alias = "G_SIGNAL_ACTION")]
-        const ACTION = 32;
+        const ACTION = gobject_ffi::G_SIGNAL_ACTION as u32;
         #[doc(alias = "G_SIGNAL_NO_HOOKS")]
-        const NO_HOOKS = 64;
+        const NO_HOOKS = gobject_ffi::G_SIGNAL_NO_HOOKS as u32;
         #[doc(alias = "G_SIGNAL_MUST_COLLECT")]
-        const MUST_COLLECT = 128;
+        const MUST_COLLECT = gobject_ffi::G_SIGNAL_MUST_COLLECT as u32;
         #[doc(alias = "G_SIGNAL_DEPRECATED")]
-        const DEPRECATED = 256;
+        const DEPRECATED = gobject_ffi::G_SIGNAL_DEPRECATED as u32;
     }
 }
 

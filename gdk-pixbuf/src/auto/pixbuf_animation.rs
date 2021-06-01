@@ -11,6 +11,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GdkPixbufAnimation")]
     pub struct PixbufAnimation(Object<ffi::GdkPixbufAnimation, ffi::GdkPixbufAnimationClass>);
 
     match fn {

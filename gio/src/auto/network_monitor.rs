@@ -18,6 +18,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GNetworkMonitor")]
     pub struct NetworkMonitor(Interface<ffi::GNetworkMonitor, ffi::GNetworkMonitorInterface>);
 
     match fn {

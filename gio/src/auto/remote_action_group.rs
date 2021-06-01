@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GRemoteActionGroup")]
     pub struct RemoteActionGroup(Interface<ffi::GRemoteActionGroup, ffi::GRemoteActionGroupInterface>) @requires ActionGroup;
 
     match fn {

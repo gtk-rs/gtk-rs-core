@@ -15,6 +15,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GOutputStream")]
     pub struct OutputStream(Object<ffi::GOutputStream, ffi::GOutputStreamClass>);
 
     match fn {

@@ -27,6 +27,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusProxy")]
     pub struct DBusProxy(Object<ffi::GDBusProxy, ffi::GDBusProxyClass>) @implements DBusInterface;
 
     match fn {

@@ -17,6 +17,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GBufferedOutputStream")]
     pub struct BufferedOutputStream(Object<ffi::GBufferedOutputStream, ffi::GBufferedOutputStreamClass>) @extends FilterOutputStream, OutputStream, @implements Seekable;
 
     match fn {
@@ -47,7 +48,8 @@ impl BufferedOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`BufferedOutputStream`]
+    /// Creates a new builder-style object to construct a [`BufferedOutputStream`].
+    ///
     /// This method returns an instance of [`BufferedOutputStreamBuilder`] which can be used to create a [`BufferedOutputStream`].
     pub fn builder() -> BufferedOutputStreamBuilder {
         BufferedOutputStreamBuilder::default()

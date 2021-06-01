@@ -29,6 +29,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusConnection")]
     pub struct DBusConnection(Object<ffi::GDBusConnection>);
 
     match fn {

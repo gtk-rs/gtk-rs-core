@@ -15,6 +15,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GMemoryOutputStream")]
     pub struct MemoryOutputStream(Object<ffi::GMemoryOutputStream, ffi::GMemoryOutputStreamClass>) @extends OutputStream, @implements PollableOutputStream, Seekable;
 
     match fn {

@@ -18,6 +18,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsDatabase")]
     pub struct TlsDatabase(Object<ffi::GTlsDatabase, ffi::GTlsDatabaseClass>);
 
     match fn {

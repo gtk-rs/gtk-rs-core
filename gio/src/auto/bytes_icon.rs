@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GBytesIcon")]
     pub struct BytesIcon(Object<ffi::GBytesIcon>) @implements Icon, LoadableIcon;
 
     match fn {

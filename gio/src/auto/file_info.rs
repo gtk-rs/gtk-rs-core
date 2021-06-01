@@ -12,6 +12,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GFileInfo")]
     pub struct FileInfo(Object<ffi::GFileInfo, ffi::GFileInfoClass>);
 
     match fn {

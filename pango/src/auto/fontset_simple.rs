@@ -10,6 +10,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "PangoFontsetSimple")]
     pub struct FontsetSimple(Object<ffi::PangoFontsetSimple, ffi::PangoFontsetSimpleClass>) @extends Fontset;
 
     match fn {

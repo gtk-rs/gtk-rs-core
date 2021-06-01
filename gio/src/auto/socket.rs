@@ -24,6 +24,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GSocket")]
     pub struct Socket(Object<ffi::GSocket, ffi::GSocketClass>);
 
     match fn {

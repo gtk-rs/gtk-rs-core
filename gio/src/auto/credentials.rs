@@ -7,6 +7,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GCredentials")]
     pub struct Credentials(Object<ffi::GCredentials, ffi::GCredentialsClass>);
 
     match fn {

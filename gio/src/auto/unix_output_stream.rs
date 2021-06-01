@@ -9,6 +9,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GUnixOutputStream")]
     pub struct UnixOutputStream(Object<ffi::GUnixOutputStream, ffi::GUnixOutputStreamClass>) @extends OutputStream, @implements PollableOutputStream;
 
     match fn {

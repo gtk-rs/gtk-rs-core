@@ -19,6 +19,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsServerConnection")]
     pub struct TlsServerConnection(Interface<ffi::GTlsServerConnection, ffi::GTlsServerConnectionInterface>) @requires TlsConnection, IOStream;
 
     match fn {

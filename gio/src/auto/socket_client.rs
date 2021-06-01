@@ -28,6 +28,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GSocketClient")]
     pub struct SocketClient(Object<ffi::GSocketClient, ffi::GSocketClientClass>);
 
     match fn {

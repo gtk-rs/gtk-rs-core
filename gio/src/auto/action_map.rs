@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GActionMap")]
     pub struct ActionMap(Interface<ffi::GActionMap, ffi::GActionMapInterface>);
 
     match fn {

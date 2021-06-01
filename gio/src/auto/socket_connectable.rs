@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GSocketConnectable")]
     pub struct SocketConnectable(Interface<ffi::GSocketConnectable, ffi::GSocketConnectableIface>);
 
     match fn {

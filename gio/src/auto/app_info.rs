@@ -24,6 +24,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GAppInfo")]
     pub struct AppInfo(Interface<ffi::GAppInfo, ffi::GAppInfoIface>);
 
     match fn {

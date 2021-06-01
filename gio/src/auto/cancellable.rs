@@ -13,6 +13,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GCancellable")]
     pub struct Cancellable(Object<ffi::GCancellable, ffi::GCancellableClass>);
 
     match fn {

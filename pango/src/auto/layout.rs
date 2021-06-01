@@ -20,6 +20,7 @@ use std::fmt;
 use std::mem;
 
 glib::wrapper! {
+    #[doc(alias = "PangoLayout")]
     pub struct Layout(Object<ffi::PangoLayout, ffi::PangoLayoutClass>);
 
     match fn {

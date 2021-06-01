@@ -9,6 +9,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GMenuLinkIter")]
     pub struct MenuLinkIter(Object<ffi::GMenuLinkIter, ffi::GMenuLinkIterClass>);
 
     match fn {

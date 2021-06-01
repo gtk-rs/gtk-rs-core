@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GMenuModel")]
     pub struct MenuModel(Object<ffi::GMenuModel, ffi::GMenuModelClass>);
 
     match fn {

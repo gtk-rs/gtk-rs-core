@@ -18,6 +18,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GIOStream")]
     pub struct IOStream(Object<ffi::GIOStream, ffi::GIOStreamClass>);
 
     match fn {

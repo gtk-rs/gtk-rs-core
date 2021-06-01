@@ -10,6 +10,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GFileIcon")]
     pub struct FileIcon(Object<ffi::GFileIcon, ffi::GFileIconClass>) @implements Icon, LoadableIcon;
 
     match fn {

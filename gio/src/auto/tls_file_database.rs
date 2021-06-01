@@ -16,6 +16,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsFileDatabase")]
     pub struct TlsFileDatabase(Interface<ffi::GTlsFileDatabase, ffi::GTlsFileDatabaseInterface>) @requires TlsDatabase;
 
     match fn {

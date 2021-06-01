@@ -23,6 +23,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GVolume")]
     pub struct Volume(Interface<ffi::GVolume, ffi::GVolumeIface>);
 
     match fn {

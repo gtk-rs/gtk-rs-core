@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GPropertyAction")]
     pub struct PropertyAction(Object<ffi::GPropertyAction>) @implements Action;
 
     match fn {

@@ -14,6 +14,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GProxy")]
     pub struct Proxy(Interface<ffi::GProxy, ffi::GProxyInterface>);
 
     match fn {

@@ -7,6 +7,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GConverter")]
     pub struct Converter(Interface<ffi::GConverter, ffi::GConverterIface>);
 
     match fn {

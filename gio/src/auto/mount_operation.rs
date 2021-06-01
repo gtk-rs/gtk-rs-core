@@ -15,6 +15,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GMountOperation")]
     pub struct MountOperation(Object<ffi::GMountOperation, ffi::GMountOperationClass>);
 
     match fn {

@@ -9,6 +9,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GNetworkAddress")]
     pub struct NetworkAddress(Object<ffi::GNetworkAddress, ffi::GNetworkAddressClass>) @implements SocketConnectable;
 
     match fn {

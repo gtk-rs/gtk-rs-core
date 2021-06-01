@@ -14,6 +14,7 @@ use std::fmt;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GdkPixbuf")]
     pub struct Pixbuf(Object<ffi::GdkPixbuf>) @implements gio::Icon, gio::LoadableIcon;
 
     match fn {

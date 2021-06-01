@@ -23,6 +23,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GApplication")]
     pub struct Application(Object<ffi::GApplication, ffi::GApplicationClass>) @implements ActionGroup, ActionMap;
 
     match fn {
@@ -42,7 +43,8 @@ impl Application {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`Application`]
+    /// Creates a new builder-style object to construct a [`Application`].
+    ///
     /// This method returns an instance of [`ApplicationBuilder`] which can be used to create a [`Application`].
     pub fn builder() -> ApplicationBuilder {
         ApplicationBuilder::default()

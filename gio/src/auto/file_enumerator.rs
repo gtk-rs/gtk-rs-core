@@ -14,6 +14,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GFileEnumerator")]
     pub struct FileEnumerator(Object<ffi::GFileEnumerator, ffi::GFileEnumeratorClass>);
 
     match fn {

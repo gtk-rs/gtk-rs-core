@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GSimplePermission")]
     pub struct SimplePermission(Object<ffi::GSimplePermission>) @extends Permission;
 
     match fn {

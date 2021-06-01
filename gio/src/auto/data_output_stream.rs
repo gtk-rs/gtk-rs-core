@@ -20,6 +20,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDataOutputStream")]
     pub struct DataOutputStream(Object<ffi::GDataOutputStream, ffi::GDataOutputStreamClass>) @extends FilterOutputStream, OutputStream, @implements Seekable;
 
     match fn {
@@ -38,7 +39,8 @@ impl DataOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`DataOutputStream`]
+    /// Creates a new builder-style object to construct a [`DataOutputStream`].
+    ///
     /// This method returns an instance of [`DataOutputStreamBuilder`] which can be used to create a [`DataOutputStream`].
     pub fn builder() -> DataOutputStreamBuilder {
         DataOutputStreamBuilder::default()

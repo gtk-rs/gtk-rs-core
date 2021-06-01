@@ -13,6 +13,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GThemedIcon")]
     pub struct ThemedIcon(Object<ffi::GThemedIcon, ffi::GThemedIconClass>) @implements Icon;
 
     match fn {

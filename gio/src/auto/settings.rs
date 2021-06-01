@@ -16,6 +16,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GSettings")]
     pub struct Settings(Object<ffi::GSettings, ffi::GSettingsClass>);
 
     match fn {

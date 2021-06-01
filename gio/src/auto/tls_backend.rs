@@ -8,6 +8,7 @@ use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
+    #[doc(alias = "GTlsBackend")]
     pub struct TlsBackend(Interface<ffi::GTlsBackend, ffi::GTlsBackendInterface>);
 
     match fn {

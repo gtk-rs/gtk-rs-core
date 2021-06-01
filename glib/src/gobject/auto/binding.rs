@@ -7,6 +7,7 @@ use crate::BindingFlags;
 use std::fmt;
 
 crate::wrapper! {
+    #[doc(alias = "GBinding")]
     pub struct Binding(Object<gobject_ffi::GBinding>);
 
     match fn {

@@ -22,6 +22,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GResolver")]
     pub struct Resolver(Object<ffi::GResolver, ffi::GResolverClass>);
 
     match fn {

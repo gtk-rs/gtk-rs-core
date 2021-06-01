@@ -11,6 +11,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GAppInfoMonitor")]
     pub struct AppInfoMonitor(Object<ffi::GAppInfoMonitor>);
 
     match fn {

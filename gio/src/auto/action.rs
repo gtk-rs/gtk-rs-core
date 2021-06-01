@@ -13,6 +13,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GAction")]
     pub struct Action(Interface<ffi::GAction, ffi::GActionInterface>);
 
     match fn {

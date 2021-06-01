@@ -15,6 +15,7 @@ use std::fmt;
 use std::mem::transmute;
 
 glib::wrapper! {
+    #[doc(alias = "GZlibDecompressor")]
     pub struct ZlibDecompressor(Object<ffi::GZlibDecompressor, ffi::GZlibDecompressorClass>) @implements Converter;
 
     match fn {

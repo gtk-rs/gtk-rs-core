@@ -23,6 +23,7 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GDBusMessage")]
     pub struct DBusMessage(Object<ffi::GDBusMessage>);
 
     match fn {

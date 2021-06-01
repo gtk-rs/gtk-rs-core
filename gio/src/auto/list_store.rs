@@ -14,6 +14,7 @@ use std::fmt;
 use std::mem;
 
 glib::wrapper! {
+    #[doc(alias = "GListStore")]
     pub struct ListStore(Object<ffi::GListStore, ffi::GListStoreClass>) @implements ListModel;
 
     match fn {
@@ -28,7 +29,8 @@ impl ListStore {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`ListStore`]
+    /// Creates a new builder-style object to construct a [`ListStore`].
+    ///
     /// This method returns an instance of [`ListStoreBuilder`] which can be used to create a [`ListStore`].
     pub fn builder() -> ListStoreBuilder {
         ListStoreBuilder::default()

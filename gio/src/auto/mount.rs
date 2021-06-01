@@ -23,6 +23,7 @@ use std::pin::Pin;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "GMount")]
     pub struct Mount(Interface<ffi::GMount, ffi::GMountIface>);
 
     match fn {

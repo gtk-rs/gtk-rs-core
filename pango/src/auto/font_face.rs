@@ -13,6 +13,7 @@ use std::mem;
 use std::ptr;
 
 glib::wrapper! {
+    #[doc(alias = "PangoFontFace")]
     pub struct FontFace(Object<ffi::PangoFontFace, ffi::PangoFontFaceClass>);
 
     match fn {
