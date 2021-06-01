@@ -14,6 +14,7 @@ use crate::Value;
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+    #[doc(alias = "GClosure")]
     pub struct Closure(Shared<gobject_ffi::GClosure>);
 
     match fn {

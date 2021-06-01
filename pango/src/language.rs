@@ -4,6 +4,7 @@ use crate::Script;
 use glib::translate::*;
 use glib::GString;
 
+#[doc(alias = "PangoLanguage")]
 pub struct Language(*mut ffi::PangoLanguage);
 
 #[doc(hidden)]

@@ -5,6 +5,7 @@ use std::fmt;
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GArray")]
     pub struct Array(Shared<ffi::GArray>);
 
     match fn {

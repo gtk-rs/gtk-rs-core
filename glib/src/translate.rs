@@ -935,6 +935,7 @@ where
     }
 }
 
+#[doc(alias = "GList")]
 pub struct List(*mut ffi::GList);
 
 impl Drop for List {
@@ -1015,6 +1016,7 @@ where
     }
 }
 
+#[doc(alias = "GSList")]
 pub struct SList(*mut ffi::GSList);
 
 impl Drop for SList {
@@ -1073,6 +1075,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
     }
 }
 
+#[doc(alias = "GHashTable")]
 pub struct HashTable(*mut ffi::GHashTable);
 
 impl Drop for HashTable {
@@ -1081,6 +1084,7 @@ impl Drop for HashTable {
     }
 }
 
+#[doc(alias = "GPtrArray")]
 pub struct PtrArray(*mut ffi::GPtrArray);
 
 impl Drop for PtrArray {

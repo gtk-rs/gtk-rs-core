@@ -25,6 +25,7 @@ wrapper! {
     /// let b = Bytes::from_static(s);
     /// assert_eq!(&s[..], b);
     /// ```
+    #[doc(alias = "GBytes")]
     pub struct Bytes(Shared<ffi::GBytes>);
 
     match fn {

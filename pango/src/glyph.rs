@@ -33,6 +33,7 @@ impl GlyphItem {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[doc(alias = "PangoGlyphInfo")]
 pub struct GlyphInfo(*mut ffi::PangoGlyphInfo);
 
 impl GlyphInfo {

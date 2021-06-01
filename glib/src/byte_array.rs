@@ -25,6 +25,7 @@ use std::slice;
 use crate::Bytes;
 
 wrapper! {
+    #[doc(alias = "GByteArray")]
     pub struct ByteArray(Shared<ffi::GByteArray>);
 
     match fn {

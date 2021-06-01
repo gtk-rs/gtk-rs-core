@@ -7,6 +7,7 @@ use std::future::Future;
 use std::ptr;
 
 #[derive(Debug)]
+#[doc(alias = "GThreadPool")]
 pub struct ThreadPool(ptr::NonNull<ffi::GThreadPool>);
 
 unsafe impl Send for ThreadPool {}

@@ -8,6 +8,7 @@ use std::slice;
 
 wrapper! {
     #[derive(Debug)]
+    #[doc(alias = "GValueArray")]
     pub struct ValueArray(Boxed<gobject_ffi::GValueArray>);
 
     match fn {

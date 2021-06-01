@@ -14,6 +14,7 @@ use std::ffi::CStr;
 // Can't use get_type here as this is not a boxed type but another fundamental type
 wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "GParamSpec")]
     pub struct ParamSpec(Shared<gobject_ffi::GParamSpec>);
 
     match fn {

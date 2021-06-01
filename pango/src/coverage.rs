@@ -8,6 +8,7 @@ use std::ptr;
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 glib::wrapper! {
+    #[doc(alias = "PangoCoverage")]
     pub struct Coverage(Object<ffi::PangoCoverage>);
 
     match fn {
@@ -19,6 +20,7 @@ glib::wrapper! {
 #[cfg(not(any(feature = "v1_44", feature = "dox")))]
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[doc(alias = "PangoCoverage")]
     pub struct Coverage(Shared<ffi::PangoCoverage>);
 
     match fn {

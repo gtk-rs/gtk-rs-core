@@ -13,6 +13,7 @@ use std::str;
 
 wrapper! {
     /// A mutable text buffer that grows automatically.
+    #[doc(alias = "GString")]
     pub struct String(Boxed<ffi::GString>);
 
     match fn {

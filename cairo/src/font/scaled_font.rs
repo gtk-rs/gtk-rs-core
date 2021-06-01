@@ -15,6 +15,7 @@ use super::{FontFace, FontOptions};
 #[cfg(feature = "use_glib")]
 glib::wrapper! {
     #[derive(Debug)]
+    #[doc(alias = "cairo_scaled_font_t")]
     pub struct ScaledFont(Shared<ffi::cairo_scaled_font_t>);
 
     match fn {
@@ -26,6 +27,7 @@ glib::wrapper! {
 
 #[cfg(not(feature = "use_glib"))]
 #[derive(Debug)]
+#[doc(alias = "cairo_scaled_font_t")]
 pub struct ScaledFont(ptr::NonNull<ffi::cairo_scaled_font_t>);
 
 impl ScaledFont {

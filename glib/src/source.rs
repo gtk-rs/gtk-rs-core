@@ -38,6 +38,7 @@ impl FromGlib<u32> for SourceId {
 
 /// Process identificator
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
+#[doc(alias = "GPid")]
 pub struct Pid(pub ffi::GPid);
 
 unsafe impl Send for Pid {}

@@ -44,6 +44,7 @@ impl FromGlibPtrFull<*const ffi::PangoAttrClass> for AttrClass {
     }
 }
 
+#[doc(alias = "PangoAttrClass")]
 pub struct AttrClass(*mut ffi::PangoAttrClass);
 
 impl AttrClass {
