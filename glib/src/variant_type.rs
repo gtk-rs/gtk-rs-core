@@ -17,6 +17,7 @@ use std::slice;
 /// "type strings". `VariantType` is an owned immutable type string (you can
 /// think of it as a `Box<str>` statically guaranteed to be a valid type
 /// string), `&VariantTy` is a borrowed one (like `&str`).
+#[doc(alias = "GVariantType")]
 pub struct VariantType {
     // GVariantType* essentially is a char*, that always is valid UTF-8 but
     // isn't NUL-terminated.

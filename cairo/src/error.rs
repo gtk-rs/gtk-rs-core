@@ -6,6 +6,7 @@ use thiserror::Error;
 
 #[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_status_t")]
 pub enum Error {
     #[error("No Memory")]
     #[doc(alias = "STATUS_NO_MEMORY")]

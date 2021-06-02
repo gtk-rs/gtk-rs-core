@@ -8,6 +8,7 @@ use std::mem;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
+#[doc(alias = "cairo_rectangle_int_t")]
 pub struct RectangleInt {
     pub x: i32,
     pub y: i32,

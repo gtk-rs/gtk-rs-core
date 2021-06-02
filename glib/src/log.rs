@@ -79,12 +79,19 @@ impl FromGlib<u32> for LogLevel {
 }
 
 bitflags::bitflags! {
+    #[doc(alias = "GLogLevelFlags")]
     pub struct LogLevels: u32 {
+        #[doc(alias = "G_LOG_LEVEL_ERROR")]
         const LEVEL_ERROR = ffi::G_LOG_LEVEL_ERROR;
+        #[doc(alias = "G_LOG_LEVEL_CRITICAL")]
         const LEVEL_CRITICAL = ffi::G_LOG_LEVEL_CRITICAL;
+        #[doc(alias = "G_LOG_LEVEL_WARNING")]
         const LEVEL_WARNING = ffi::G_LOG_LEVEL_WARNING;
+        #[doc(alias = "G_LOG_LEVEL_MESSAGE")]
         const LEVEL_MESSAGE = ffi::G_LOG_LEVEL_MESSAGE;
+        #[doc(alias = "G_LOG_LEVEL_INFO")]
         const LEVEL_INFO = ffi::G_LOG_LEVEL_INFO;
+        #[doc(alias = "G_LOG_LEVEL_DEBUG")]
         const LEVEL_DEBUG = ffi::G_LOG_LEVEL_DEBUG;
     }
 }

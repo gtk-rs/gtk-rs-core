@@ -8,6 +8,7 @@ use std::mem;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
+#[doc(alias = "cairo_rectangle_t")]
 pub struct Rectangle {
     pub x: f64,
     pub y: f64,
