@@ -1242,16 +1242,6 @@
 <span id="1237">1237</span>
 <span id="1238">1238</span>
 <span id="1239">1239</span>
-<span id="1240">1240</span>
-<span id="1241">1241</span>
-<span id="1242">1242</span>
-<span id="1243">1243</span>
-<span id="1244">1244</span>
-<span id="1245">1245</span>
-<span id="1246">1246</span>
-<span id="1247">1247</span>
-<span id="1248">1248</span>
-<span id="1249">1249</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -1440,6 +1430,27 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The default main loop almost always is the main loop of the main thread.</span>
 <span class="doccomment">/// Thus the closure is called on the main thread.</span>
+<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
+<span class="doccomment">/// Adds a function to be called whenever there are no higher priority</span>
+<span class="doccomment">/// events pending to the default main loop. The function is given the</span>
+<span class="doccomment">/// default idle priority, `G_PRIORITY_DEFAULT_IDLE`. If the function</span>
+<span class="doccomment">/// returns [`false`] it is automatically removed from the list of event</span>
+<span class="doccomment">/// sources and will not be called again.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See [memory management of sources][mainloop-memory-management] for details</span>
+<span class="doccomment">/// on how to handle the return value and memory management of `data`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This internally creates a main loop source using `g_idle_source_new()`</span>
+<span class="doccomment">/// and attaches it to the global [`MainContext`][crate::MainContext] using `g_source_attach()`, so</span>
+<span class="doccomment">/// the callback will be invoked in whichever thread is running that main</span>
+<span class="doccomment">/// context. You can do these steps manually if you need greater control or to</span>
+<span class="doccomment">/// use a custom main context.</span>
+<span class="doccomment">/// ## `function`</span>
+<span class="doccomment">/// function to call</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Returns</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// the ID (greater than 0) of the event source.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_idle_add_full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">idle_add</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SourceId</span>
 <span class="kw">where</span>
@@ -1807,37 +1818,6 @@
 <span class="doccomment">/// process exits.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `func` will be called when `pid` exits</span>
-<span class="comment">// rustdoc-stripper-ignore-next-stop</span>
-<span class="doccomment">/// Sets a function to be called when the child indicated by `pid`</span>
-<span class="doccomment">/// exits, at a default priority, `G_PRIORITY_DEFAULT`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If you obtain `pid` from [`spawn_async()`][crate::spawn_async()] or `g_spawn_async_with_pipes()`</span>
-<span class="doccomment">/// you will need to pass [`SpawnFlags::DO_NOT_REAP_CHILD`][crate::SpawnFlags::DO_NOT_REAP_CHILD] as flag to</span>
-<span class="doccomment">/// the spawn function for the child watching to work.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that on platforms where `GPid` must be explicitly closed</span>
-<span class="doccomment">/// (see `g_spawn_close_pid()`) `pid` must not be closed while the</span>
-<span class="doccomment">/// source is still active. Typically, you will want to call</span>
-<span class="doccomment">/// `g_spawn_close_pid()` in the callback function for the source.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// GLib supports only a single callback per process id.</span>
-<span class="doccomment">/// On POSIX platforms, the same restrictions mentioned for</span>
-<span class="doccomment">/// `g_child_watch_source_new()` apply to this function.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This internally creates a main loop source using</span>
-<span class="doccomment">/// `g_child_watch_source_new()` and attaches it to the main loop context</span>
-<span class="doccomment">/// using `g_source_attach()`. You can do these steps manually if you</span>
-<span class="doccomment">/// need greater control.</span>
-<span class="doccomment">/// ## `pid`</span>
-<span class="doccomment">/// process id to watch. On POSIX the positive pid of a child</span>
-<span class="doccomment">/// process. On Windows a handle for a process (which doesn&#39;t have to be</span>
-<span class="doccomment">/// a child).</span>
-<span class="doccomment">/// ## `function`</span>
-<span class="doccomment">/// function to call</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// the ID (greater than 0) of the event source.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_child_watch_add_full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">child_watch_add</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">pid</span>: <span class="ident">Pid</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SourceId</span>
 <span class="kw">where</span>
