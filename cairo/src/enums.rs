@@ -49,6 +49,7 @@ macro_rules! gvalue_impl {
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_antialias_t")]
 pub enum Antialias {
     #[doc(alias = "ANTIALIAS_DEFAULT")]
     Default,
@@ -128,6 +129,7 @@ gvalue_impl!(Antialias, ffi::gobject::cairo_gobject_antialias_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_fill_rule_t")]
 pub enum FillRule {
     #[doc(alias = "FILL_RULE_WINDING")]
     Winding,
@@ -178,6 +180,7 @@ gvalue_impl!(FillRule, ffi::gobject::cairo_gobject_fill_rule_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_line_cap_t")]
 pub enum LineCap {
     #[doc(alias = "LINE_CAP_BUTT")]
     Butt,
@@ -233,6 +236,7 @@ gvalue_impl!(LineCap, ffi::gobject::cairo_gobject_line_cap_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_line_join_t")]
 pub enum LineJoin {
     #[doc(alias = "LINE_JOIN_MITER")]
     Miter,
@@ -288,6 +292,7 @@ gvalue_impl!(LineJoin, ffi::gobject::cairo_gobject_line_join_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_operator_t")]
 pub enum Operator {
     #[doc(alias = "OPERATOR_CLEAR")]
     Clear,
@@ -477,6 +482,7 @@ gvalue_impl!(Operator, ffi::gobject::cairo_gobject_operator_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_path_data_type_t")]
 pub enum PathDataType {
     #[doc(alias = "PATH_DATA_TYPE_MOVE_TO")]
     MoveTo,
@@ -540,6 +546,7 @@ gvalue_impl!(
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_content_t")]
 pub enum Content {
     #[doc(alias = "CONTENT_COLOR")]
     Color,
@@ -595,6 +602,7 @@ gvalue_impl!(Content, ffi::gobject::cairo_gobject_content_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_extend_t")]
 pub enum Extend {
     #[doc(alias = "EXTEND_NONE")]
     None,
@@ -655,6 +663,7 @@ gvalue_impl!(Extend, ffi::gobject::cairo_gobject_extend_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_filter_t")]
 pub enum Filter {
     #[doc(alias = "FILTER_FAST")]
     Fast,
@@ -725,6 +734,7 @@ gvalue_impl!(Filter, ffi::gobject::cairo_gobject_filter_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_pattern_type_t")]
 pub enum PatternType {
     #[doc(alias = "PATTERN_TYPE_SOLID")]
     Solid,
@@ -798,6 +808,7 @@ gvalue_impl!(
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_font_slant_t")]
 pub enum FontSlant {
     #[doc(alias = "FONT_SLANT_NORMAL")]
     Normal,
@@ -853,6 +864,7 @@ gvalue_impl!(FontSlant, ffi::gobject::cairo_gobject_font_slant_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_font_weight_t")]
 pub enum FontWeight {
     #[doc(alias = "FONT_WEIGHT_NORMAL")]
     Normal,
@@ -903,6 +915,7 @@ gvalue_impl!(FontWeight, ffi::gobject::cairo_gobject_font_weight_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_text_cluster_flags_t")]
 pub enum TextClusterFlags {
     #[doc(alias = "TEXT_CLUSTER_FLAGS_NONE")]
     None,
@@ -956,6 +969,7 @@ gvalue_impl!(
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_font_type_t")]
 pub enum FontType {
     #[doc(alias = "FONT_TYPE_FONT_TYPE_TOY")]
     FontTypeToy,
@@ -1021,6 +1035,7 @@ gvalue_impl!(FontType, ffi::gobject::cairo_gobject_font_type_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_subpixel_order_t")]
 pub enum SubpixelOrder {
     #[doc(alias = "SUBPIXEL_ORDER_DEFAULT")]
     Default,
@@ -1089,6 +1104,7 @@ gvalue_impl!(
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_hint_style_t")]
 pub enum HintStyle {
     #[doc(alias = "HINT_STYLE_DEFAULT")]
     Default,
@@ -1154,6 +1170,7 @@ gvalue_impl!(HintStyle, ffi::gobject::cairo_gobject_hint_style_get_type);
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_hint_metrics_t")]
 pub enum HintMetrics {
     #[doc(alias = "HINT_METRICS_DEFAULT")]
     Default,
@@ -1212,6 +1229,7 @@ gvalue_impl!(
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_surface_type_t")]
 pub enum SurfaceType {
     #[doc(alias = "SURFACE_TYPE_IMAGE")]
     Image,
@@ -1381,6 +1399,7 @@ gvalue_impl!(
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg(any(all(feature = "svg", feature = "v1_16"), feature = "dox"))]
 #[non_exhaustive]
+#[doc(alias = "cairo_svg_unit_t")]
 pub enum SvgUnit {
     #[doc(alias = "SVG_UNIT_USER")]
     User,
@@ -1471,6 +1490,7 @@ impl fmt::Display for SvgUnit {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_format_t")]
 pub enum Format {
     #[doc(alias = "FORMAT_INVALID")]
     Invalid,
@@ -1561,6 +1581,7 @@ impl Format {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_region_overlap_t")]
 pub enum RegionOverlap {
     #[doc(alias = "REGION_OVERLAP_IN")]
     In,
@@ -1619,8 +1640,11 @@ gvalue_impl!(
 
 bitflags::bitflags! {
     pub struct PdfOutline: i32 {
+        #[doc(alias = "PDF_OUTLINE_FLAG_OPEN")]
         const OPEN = ffi::PDF_OUTLINE_FLAG_OPEN;
+        #[doc(alias = "PDF_OUTLINE_FLAG_BOLD")]
         const BOLD = ffi::PDF_OUTLINE_FLAG_BOLD;
+        #[doc(alias = "PDF_OUTLINE_FLAG_ITALIC")]
         const ITALIC = ffi::PDF_OUTLINE_FLAG_ITALIC;
     }
 }
@@ -1628,6 +1652,7 @@ bitflags::bitflags! {
 #[cfg(any(feature = "pdf", feature = "dox"))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_pdf_metadata_t")]
 pub enum PdfMetadata {
     #[doc(alias = "PDF_METADATA_TITLE")]
     Title,
@@ -1704,6 +1729,7 @@ impl fmt::Display for PdfMetadata {
 #[cfg(any(feature = "pdf", feature = "dox"))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_pdf_version_t")]
 pub enum PdfVersion {
     #[doc(alias = "PDF_VERSION__1_4")]
     _1_4,
@@ -1755,6 +1781,7 @@ impl fmt::Display for PdfVersion {
 #[cfg(any(feature = "svg", feature = "dox"))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_svg_version_t")]
 pub enum SvgVersion {
     #[doc(alias = "SVG_VERSION__1_1")]
     _1_1,
@@ -1806,6 +1833,7 @@ impl fmt::Display for SvgVersion {
 #[cfg(any(feature = "ps", feature = "dox"))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
+#[doc(alias = "cairo_ps_level_t")]
 pub enum PsLevel {
     #[doc(alias = "PS_LEVEL__2")]
     _2,
@@ -1856,6 +1884,7 @@ impl fmt::Display for PsLevel {
 
 #[derive(Clone, PartialEq, PartialOrd, Copy, Debug)]
 #[non_exhaustive]
+#[doc(alias = "cairo_mesh_corner_t")]
 pub enum MeshCorner {
     #[doc(alias = "MESH_CORNER_MESH_CORNER0")]
     MeshCorner0,
@@ -1914,6 +1943,7 @@ impl fmt::Display for MeshCorner {
 #[cfg(any(feature = "freetype", feature = "dox"))]
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_ft_synthesize_t")]
 pub enum FtSynthesize {
     #[doc(alias = "CAIRO_FT_SYNTHESIZE_BOLD")]
     Bold,
@@ -1965,6 +1995,7 @@ impl fmt::Display for FtSynthesize {
 #[cfg(any(feature = "script", feature = "dox"))]
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_script_mode_t")]
 pub enum ScriptMode {
     #[doc(alias = "CAIRO_SCRIPT_MODE_ASCII")]
     Ascii,
@@ -2015,6 +2046,7 @@ impl fmt::Display for ScriptMode {
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 #[non_exhaustive]
+#[doc(alias = "cairo_device_type_t")]
 pub enum DeviceType {
     #[doc(alias = "CAIRO_DEVICE_TYPE_DRM")]
     Ascii,
