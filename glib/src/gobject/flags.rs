@@ -4,13 +4,12 @@ use crate::translate::*;
 
 bitflags::bitflags! {
     pub struct ParamFlags: u32 {
-        const READABLE = 1;
-        const WRITABLE = 2;
-        const READWRITE = 3;
-        const CONSTRUCT = 4;
-        const CONSTRUCT_ONLY = 8;
-        const LAX_VALIDATION = 16;
-        const USER_0 = 128;
+        const READABLE = gobject_ffi::G_PARAM_READABLE as u32;
+        const WRITABLE = gobject_ffi::G_PARAM_WRITABLE as u32;
+        const READWRITE = gobject_ffi::G_PARAM_READWRITE as u32;
+        const CONSTRUCT = gobject_ffi::G_PARAM_CONSTRUCT as u32;
+        const CONSTRUCT_ONLY = gobject_ffi::G_PARAM_CONSTRUCT_ONLY as u32;
+        const LAX_VALIDATION = gobject_ffi::G_PARAM_LAX_VALIDATION as u32;
         const USER_1 = 256;
         const USER_2 = 1024;
         const USER_3 = 2048;
@@ -19,8 +18,8 @@ bitflags::bitflags! {
         const USER_6 = 16384;
         const USER_7 = 32768;
         const USER_8 = 65536;
-        const EXPLICIT_NOTIFY = 1073741824;
-        const DEPRECATED = 2147483648;
+        const EXPLICIT_NOTIFY = gobject_ffi::G_PARAM_EXPLICIT_NOTIFY as u32;
+        const DEPRECATED = gobject_ffi::G_PARAM_DEPRECATED as u32;
     }
 }
 
