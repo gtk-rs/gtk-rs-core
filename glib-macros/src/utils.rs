@@ -168,7 +168,7 @@ const KNOWN_GLIB_EXPORTS: [&str; 10] = [
 pub fn crate_ident_new() -> TokenStream {
     use proc_macro_crate::FoundCrate;
 
-    let crate_path = match crate_name("glib") {
+    match crate_name("glib") {
         Ok(FoundCrate::Name(name)) => Some(name),
         Ok(FoundCrate::Itself) => Some("glib".to_string()),
         Err(_) => None,
@@ -176,26 +176,19 @@ pub fn crate_ident_new() -> TokenStream {
     .map(|s| {
         let glib = Ident::new(&s, Span::call_site());
         quote!(#glib)
-    });
-
-    let crate_path = crate_path.or_else(|| {
-        KNOWN_GLIB_EXPORTS.iter().find_map(|c| {
-            if let Ok(f) = crate_name(c) {
-                let crate_name = match f {
-                    FoundCrate::Name(name) => name,
-                    FoundCrate::Itself => c.to_string(),
-                };
-                let crate_root = Ident::new(&crate_name, Span::call_site());
+    })
+    .or_else(|| {
+        KNOWN_GLIB_EXPORTS.iter().find_map(|c| match crate_name(c) {
+            Ok(FoundCrate::Itself) => {
+                let crate_root = Ident::new(&c, Span::call_site());
                 Some(quote::quote! {
                     #crate_root::glib
                 })
-            } else {
-                None
             }
+            _ => None,
         })
-    });
-
-    crate_path.unwrap_or_else(|| {
+    })
+    .unwrap_or_else(|| {
         proc_macro_error::emit_call_site_warning!(
             "Can't find glib crate. Please ensure you have a glib in scope"
         );
