@@ -45,6 +45,9 @@ jobs:
           destination_dir: ${{ env.DEST }}/docs
 
       - run: python3 ./gir-rustdoc/gir-rustdoc.py --project-title 'GTK Core Rust bindings' html-index
+        env:
+          RELEASES: |
+            0.10=0.10
       - name: deploy index page
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
