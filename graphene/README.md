@@ -32,6 +32,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 graphene = "0.13"
 graphene = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "graphene" }
+```
 
 ### See Also
 

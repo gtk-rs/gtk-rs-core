@@ -32,6 +32,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 gdk-pixbuf = "0.13"
 gdk-pixbuf = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gdk-pixbuf" }
+```
 
 ### See Also
 
