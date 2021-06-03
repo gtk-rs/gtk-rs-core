@@ -104,6 +104,10 @@ jobs:
         run: cargo build --manifest-path glib-macros/Cargo.toml
       - name: "glib-macros: test"
         run: cargo test --manifest-path glib-macros/Cargo.toml
+      # glib-macros in 2 levels dependent
+      - name: Check two levels glib dependent
+        run: cargo check
+        working-directory: tests/two-levels-glib-dependent
       # examples
       - name: "examples"
         run: cargo build --manifest-path examples/Cargo.toml --bins --examples --all-features
