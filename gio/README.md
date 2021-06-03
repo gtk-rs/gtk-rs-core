@@ -32,6 +32,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 gio = "0.13"
 gio = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gio" }
+```
 
 ### See Also
 

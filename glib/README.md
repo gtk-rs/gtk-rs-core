@@ -32,6 +32,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 glib = "0.13"
 glib = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "glib" }
+```
 
 ## License
 

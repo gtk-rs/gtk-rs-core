@@ -33,6 +33,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 cairo-rs = "0.13"
 cairo-rs = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "cairo-rs" }
+```
 
 ### See Also
 

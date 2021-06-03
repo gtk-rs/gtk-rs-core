@@ -32,6 +32,7 @@ Avoid mixing versioned and git crates like this:
 [dependencies]
 pango = "0.13"
 pango = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "pango" }
+```
 
 ### See Also
 
