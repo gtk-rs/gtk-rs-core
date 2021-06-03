@@ -1,6 +1,6 @@
 # pangocairo 
 
-__Rust__ bindings and wrappers for __PangoCairo__, part of [gtk-rs](https://github.com/gtk-rs/gtk-rs).
+__Rust__ bindings and wrappers for __PangoCairo__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ## Minimum supported Rust version
 
@@ -21,7 +21,7 @@ If you want to track the bleeding edge, use the git dependency instead:
 
 ```toml
 [dependencies]
-pangocairo = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "pangocairo" }
+pangocairo = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "pangocairo" }
 ```
 
 Avoid mixing versioned and git crates like this:
@@ -30,7 +30,7 @@ Avoid mixing versioned and git crates like this:
 # This will not compile
 [dependencies]
 pangocairo = "0.13"
-pangocairo = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "pangocairo" }
+pangocairo = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "pangocairo" }
 ```
 
 ### See Also

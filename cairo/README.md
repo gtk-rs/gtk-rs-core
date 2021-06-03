@@ -1,6 +1,6 @@
 # cairo 
 
-__Rust__ bindings for Rust and wrappers for __Cairo__.
+__Rust__ bindings for Rust and wrappers for __Cairo__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ![screenshot](https://guillaume-gomez.fr/image/cairo.png)
 
@@ -23,7 +23,7 @@ If you want to track the bleeding edge, use the git dependency instead:
 
 ```toml
 [dependencies]
-cairo-rs = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "cairo-rs" }
+cairo-rs = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "cairo-rs" }
 ```
 
 Avoid mixing versioned and git crates like this:
@@ -32,7 +32,7 @@ Avoid mixing versioned and git crates like this:
 # This will not compile
 [dependencies]
 cairo-rs = "0.13"
-cairo-rs = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "cairo-rs" }
+cairo-rs = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "cairo-rs" }
 ```
 
 ### See Also

@@ -1,6 +1,6 @@
 # graphene
 
-__Rust__ bindings and wrappers for __Graphene__, part of [gtk-rs](https://github.com/gtk-rs/gtk-rs).
+__Rust__ bindings and wrappers for __Graphene__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ## Minimum supported Rust version
 
@@ -22,7 +22,7 @@ If you want to track the bleeding edge, use the git dependency instead:
 
 ```toml
 [dependencies]
-graphene = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "graphene" }
+graphene = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "graphene" }
 ```
 
 Avoid mixing versioned and git crates like this:
@@ -31,7 +31,7 @@ Avoid mixing versioned and git crates like this:
 # This will not compile
 [dependencies]
 graphene = "0.13"
-graphene = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "graphene" }
+graphene = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "graphene" }
 ```
 
 ### See Also
