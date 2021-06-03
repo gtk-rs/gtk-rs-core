@@ -141,8 +141,9 @@ where
     if let Some(ref i) = item {
         let type_ = imp.item_type(wrap.unsafe_cast_ref());
         assert!(
-            type_.is_a(i.type_()),
-            "All ListModel items should be of the same type"
+            i.type_().is_a(type_),
+            "All ListModel items need to be of type {} or a subtype of it",
+            type_.name()
         );
     };
     item.to_glib_full()
