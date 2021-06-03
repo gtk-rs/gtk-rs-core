@@ -1,6 +1,6 @@
 # gio
 
-__Rust__ bindings and wrappers for __GIO__, part of [gtk-rs](https://github.com/gtk-rs/gtk-rs).
+__Rust__ bindings and wrappers for __GIO__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ## Minimum supported Rust version
 
@@ -22,7 +22,7 @@ If you want to track the bleeding edge, use the git dependency instead:
 
 ```toml
 [dependencies]
-gio = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gio" }
+gio = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "gio" }
 ```
 
 Avoid mixing versioned and git crates like this:
@@ -31,7 +31,7 @@ Avoid mixing versioned and git crates like this:
 # This will not compile
 [dependencies]
 gio = "0.13"
-gio = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gio" }
+gio = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "gio" }
 ```
 
 ### See Also

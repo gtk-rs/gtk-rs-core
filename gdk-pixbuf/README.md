@@ -1,6 +1,6 @@
 # gdk-pixbuf
 
-__Rust__ bindings and wrappers for __Gdk-Pixbuf__.
+__Rust__ bindings and wrappers for __Gdk-Pixbuf__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ## Minimum supported Rust version
 
@@ -22,7 +22,7 @@ If you want to track the bleeding edge, use the git dependency instead:
 
 ```toml
 [dependencies]
-gdk-pixbuf = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gdk-pixbuf" }
+gdk-pixbuf = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "gdk-pixbuf" }
 ```
 
 Avoid mixing versioned and git crates like this:
@@ -31,7 +31,7 @@ Avoid mixing versioned and git crates like this:
 # This will not compile
 [dependencies]
 gdk-pixbuf = "0.13"
-gdk-pixbuf = { git = "https://github.com/gtk-rs/gtk-rs.git", package = "gdk-pixbuf" }
+gdk-pixbuf = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "gdk-pixbuf" }
 ```
 
 ### See Also
