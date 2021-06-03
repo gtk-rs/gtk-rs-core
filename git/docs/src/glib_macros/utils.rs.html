@@ -226,13 +226,6 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -404,7 +397,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">crate_ident_new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">use</span> <span class="ident">proc_macro_crate::FoundCrate</span>;
 
-    <span class="kw">let</span> <span class="ident">crate_path</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">crate_name</span>(<span class="string">&quot;glib&quot;</span>) {
+    <span class="kw">match</span> <span class="ident">crate_name</span>(<span class="string">&quot;glib&quot;</span>) {
         <span class="prelude-val">Ok</span>(<span class="ident">FoundCrate::Name</span>(<span class="ident">name</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>),
         <span class="prelude-val">Ok</span>(<span class="ident">FoundCrate::Itself</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="string">&quot;glib&quot;</span>.<span class="ident">to_string</span>()),
         <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
@@ -412,26 +405,19 @@
     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">glib</span> <span class="op">=</span> <span class="ident">Ident::new</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>, <span class="ident">Span::call_site</span>());
         <span class="macro">quote!</span>(#<span class="ident">glib</span>)
-    });
-
-    <span class="kw">let</span> <span class="ident">crate_path</span> <span class="op">=</span> <span class="ident">crate_path</span>.<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="ident">KNOWN_GLIB_EXPORTS</span>.<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">f</span>) <span class="op">=</span> <span class="ident">crate_name</span>(<span class="ident">c</span>) {
-                <span class="kw">let</span> <span class="ident">crate_name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">f</span> {
-                    <span class="ident">FoundCrate::Name</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>,
-                    <span class="ident">FoundCrate::Itself</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>.<span class="ident">to_string</span>(),
-                };
-                <span class="kw">let</span> <span class="ident">crate_root</span> <span class="op">=</span> <span class="ident">Ident::new</span>(<span class="kw-2">&amp;</span><span class="ident">crate_name</span>, <span class="ident">Span::call_site</span>());
+    })
+    .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="ident">KNOWN_GLIB_EXPORTS</span>.<span class="ident">iter</span>().<span class="ident">find_map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">crate_name</span>(<span class="ident">c</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">FoundCrate::Itself</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">crate_root</span> <span class="op">=</span> <span class="ident">Ident::new</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>, <span class="ident">Span::call_site</span>());
                 <span class="prelude-val">Some</span>(<span class="macro">quote::quote!</span> {
                     #<span class="ident">crate_root::glib</span>
                 })
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
             }
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
-    });
-
-    <span class="ident">crate_path</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+    })
+    .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
         <span class="macro">proc_macro_error::emit_call_site_warning!</span>(
             <span class="string">&quot;Can&#39;t find glib crate. Please ensure you have a glib in scope&quot;</span>
         );
