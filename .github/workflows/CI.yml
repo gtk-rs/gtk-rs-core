@@ -77,6 +77,10 @@ jobs:
       - name: build
         run: cargo build --manifest-path ${{ matrix.conf.name }}/Cargo.toml --features "${{ matrix.conf.features }}"
         if: matrix.rust != 'nightly'
+      - name: Test ${{ matrix.conf.name }}/sys
+        run: cargo test
+        working-directory: ${{ matrix.conf.name }}/sys
+        if: matrix.conf.test_sys
 
   build-others:
     runs-on: ubuntu-latest
