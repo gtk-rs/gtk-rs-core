@@ -62,12 +62,6 @@ pub const GRAPHENE_RAY_INTERSECTION_KIND_ENTER: graphene_ray_intersection_kind_t
 pub const GRAPHENE_RAY_INTERSECTION_KIND_LEAVE: graphene_ray_intersection_kind_t = 2;
 
 // Constants
-pub const GRAPHENE_HAS_GCC: c_int = 1;
-pub const GRAPHENE_HAS_SCALAR: c_int = 1;
-pub const GRAPHENE_HAS_SSE: c_int = 1;
-pub const GRAPHENE_PI: c_double = 3.141593;
-pub const GRAPHENE_PI_2: c_double = 1.570796;
-pub const GRAPHENE_SIMD_S: *const c_char = b"sse\0" as *const u8 as *const c_char;
 pub const GRAPHENE_VEC2_LEN: c_int = 2;
 pub const GRAPHENE_VEC3_LEN: c_int = 3;
 pub const GRAPHENE_VEC4_LEN: c_int = 4;
