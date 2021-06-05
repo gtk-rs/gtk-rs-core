@@ -5,33 +5,35 @@
 //! This library contains safe Rust bindings for [Cairo](https://www.cairographics.org/).
 //! It is a part of [Gtk-rs](https://gtk-rs.org/).
 //!
-//! ## Crate features
+//! Cairo 1.14 is the lowest supported version for the underlying library.
 //!
-//! ### Default-on features
+//! # Crate features
+//!
+//! ## Default-on features
 //!
 //! * **use_glib** - Use with [glib](https://gtk-rs.org/docs/glib/)
 //!
-//! ### Fileformat features
+//! ## Fileformat features
 //!
 //! * **png** - Reading and writing PNG images
 //! * **pdf** - Rendering PDF documents
 //! * **svg** - Rendering SVG documents
 //! * **ps** - Rendering PostScript documents
 //!
-//! ### Cairo API version features
+//! ## Cairo API version features
 //!
 //! * **v1_16** - Use Cairo 1.16 APIs
 //!
-//! ### Documentation features
+//! ## Documentation features
 //!
 //! * **dox** - Used to keep system dependent items in documentation
 //!
-//! ### X Window features
+//! ## X Window features
 //!
 //! * **xcb** - X Window System rendering using the XCB library
 //! * **xlib** - X Window System rendering using XLib
 //!
-//! ### Windows API features
+//! ## Windows API features
 //!
 //! * **win32-surface** - Microsoft Windows surface support
 

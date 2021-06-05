@@ -1,5 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+//! # Rust Pango bindings
+//!
+//! This library contains safe Rust bindings for [Pango](https://docs.gtk.org/Pango/).
+//! It is a part of [Gtk-rs](https://gtk-rs.org/).
+//!
+//! Pango 1.38 is the lowest supported version for the underlying library.
+
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 
 pub use ffi;
