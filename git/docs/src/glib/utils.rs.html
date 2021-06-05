@@ -410,6 +410,26 @@
 <span id="334">334</span>
 <span id="335">335</span>
 <span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
 </pre><pre class="rust">
 <span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
@@ -668,6 +688,26 @@
     <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">g_get_tmp_dir</span>()) }
 }
 
+<span class="doccomment">/// Opens a temporary file. See the `mkstemp()` documentation</span>
+<span class="doccomment">/// on most UNIX-like systems.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The parameter is a string that should follow the rules for</span>
+<span class="doccomment">/// `mkstemp()` templates, i.e. contain the string &quot;XXXXXX&quot;.</span>
+<span class="doccomment">/// `g_mkstemp()` is slightly more flexible than `mkstemp()` in that the</span>
+<span class="doccomment">/// sequence does not have to occur at the very end of the template.</span>
+<span class="doccomment">/// The X string will be modified to form the name of a file that</span>
+<span class="doccomment">/// didn&#39;t exist. The string should be in the GLib file name encoding.</span>
+<span class="doccomment">/// Most importantly, on Windows it should be in UTF-8.</span>
+<span class="doccomment">/// ## `tmpl`</span>
+<span class="doccomment">/// template filename</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Returns</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// A file handle (as from `open()`) to the file</span>
+<span class="doccomment">///  opened for reading and writing. The file is opened in binary</span>
+<span class="doccomment">///  mode on platforms where there is a difference. The file handle</span>
+<span class="doccomment">///  should be closed with `close()`. In case of errors, -1 is</span>
+<span class="doccomment">///  returned and `errno` will be set.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_mkstemp&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkstemp</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">tmpl</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
