@@ -239,6 +239,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// }
 /// ```
 #[proc_macro]
+#[proc_macro_error]
 pub fn clone(item: TokenStream) -> TokenStream {
     clone::clone_inner(item)
 }
