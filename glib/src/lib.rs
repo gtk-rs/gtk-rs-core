@@ -12,6 +12,8 @@
 //! would often amount to duplicating the Rust Standard Library or other utility
 //! crates.
 //!
+//! GLib 2.48 is the lowest supported version for the underlying library.
+//!
 //! # Dynamic typing
 //!
 //! Most types in the GLib family have [`Type`] identifiers.
