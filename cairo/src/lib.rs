@@ -11,7 +11,7 @@
 //!
 //! ## Default-on features
 //!
-//! * **use_glib** - Use with [glib](https://gtk-rs.org/docs/glib/)
+//! * **use_glib** - Use with [glib](mod@glib)
 //!
 //! ## Fileformat features
 //!
