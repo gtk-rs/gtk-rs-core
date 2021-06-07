@@ -5,7 +5,7 @@
 //! # Rust PangoCairo bindings
 //!
 //! This library contains safe Rust bindings for [PangoCairo](https://docs.gtk.org/PangoCairo).
-//! It is a part of [Gtk-rs](https://gtk-rs.org/).
+//! It is a part of [gtk-rs](https://gtk-rs.org/).
 //!
 //! PangoCairo 1.38 is the lowest supported version for the underlying library.
 

@@ -3,7 +3,7 @@
 //! # Cairo bindings
 //!
 //! This library contains safe Rust bindings for [Cairo](https://www.cairographics.org/).
-//! It is a part of [Gtk-rs](https://gtk-rs.org/).
+//! It is a part of [gtk-rs](https://gtk-rs.org/).
 //!
 //! Cairo 1.14 is the lowest supported version for the underlying library.
 //!
