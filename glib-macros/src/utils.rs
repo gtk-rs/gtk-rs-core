@@ -148,23 +148,6 @@ pub fn parse_item_attributes(attr_name: &str, attrs: &[Attribute]) -> Result<Vec
     Ok(v)
 }
 
-const KNOWN_GLIB_EXPORTS: [&str; 10] = [
-    // Current Re-exports from gtk-rs
-    "gtk",
-    "gio",
-    "gdk",
-    "pango",
-    "graphene-rs",
-    // Current Re-exports from gtk4-rs
-    "gtk4",
-    "gsk4",
-    "gdk4",
-    // Special Request
-    "gstreamer",
-    // Re-export may fail
-    "cairo-rs",
-];
-
 pub fn crate_ident_new() -> TokenStream {
     use proc_macro_crate::FoundCrate;
 
@@ -176,17 +159,6 @@ pub fn crate_ident_new() -> TokenStream {
     .map(|s| {
         let glib = Ident::new(&s, Span::call_site());
         quote!(#glib)
-    })
-    .or_else(|| {
-        KNOWN_GLIB_EXPORTS.iter().find_map(|c| match crate_name(c) {
-            Ok(FoundCrate::Itself) => {
-                let crate_root = Ident::new(&c, Span::call_site());
-                Some(quote::quote! {
-                    #crate_root::glib
-                })
-            }
-            _ => None,
-        })
     })
     .unwrap_or_else(|| {
         proc_macro_error::emit_call_site_warning!(
