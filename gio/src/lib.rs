@@ -3,7 +3,7 @@
 //! # Rust GIO bindings
 //!
 //! This library contains safe Rust bindings for [GIO](https://developer.gnome.org/gio/).
-//! It is a part of [Gtk-rs](https://gtk-rs.org/).
+//! It is a part of [gtk-rs](https://gtk-rs.org/).
 //!
 //! GIO 2.48 is the lowest supported version for the underlying library.
 

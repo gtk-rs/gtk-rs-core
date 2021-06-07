@@ -3,7 +3,7 @@
 //! # Rust Graphene bindings
 //!
 //! This library contains safe Rust bindings for [Graphene](https://github.com/ebassi/graphene).
-//! It is a part of [Gtk-rs](https://gtk-rs.org/).
+//! It is a part of [gtk-rs](https://gtk-rs.org/).
 //!
 //! Graphene 2.44 is the lowest supported version for the underlying library.
 
