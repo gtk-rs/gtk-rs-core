@@ -51,7 +51,8 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// ### Passing a strong reference
 ///
 /// ```
-/// # use glib_macros::clone;
+/// use glib;
+/// use glib_macros::clone;
 /// use std::rc::Rc;
 ///
 /// let v = Rc::new(1);
@@ -65,7 +66,8 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// ### Passing a weak reference
 ///
 /// ```
-/// # use glib_macros::clone;
+/// use glib;
+/// use glib_macros::clone;
 /// use std::rc::Rc;
 ///
 /// let u = Rc::new(2);
@@ -82,8 +84,10 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// your closure called. In this case, you need to use `@weak-allow-none`:
 ///
 /// ```
-/// # use glib_macros::clone;
+/// use glib;
+/// use glib_macros::clone;
 /// use std::rc::Rc;
+///
 /// let closure = {
 ///     // This `Rc` won't be available in the closure because it's dropped at the end of the
 ///     // current block
@@ -101,6 +105,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// ### Renaming variables
 ///
 /// ```
+/// use glib;
 /// use glib_macros::clone;
 /// use std::rc::Rc;
 ///
@@ -120,6 +125,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// Either by providing the value yourself using `@default-return`:
 ///
 /// ```
+/// use glib;
 /// use glib_macros::clone;
 /// use std::rc::Rc;
 ///
@@ -138,8 +144,10 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// Or by using `@default-panic` (if the value fails to get upgraded, it'll panic):
 ///
 /// ```should_panic
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
+///
 /// # let v = Rc::new(1);
 /// let closure = clone!(@weak v => @default-panic, move |x| {
 ///     println!("v: {}, x: {}", v, x);
@@ -156,6 +164,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// **Missing `@weak` or `@strong`**:
 ///
 /// ```compile_fail
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// let v = Rc::new(1);
@@ -168,6 +177,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// **Passing `self` as an argument**:
 ///
 /// ```compile_fail
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// #[derive(Debug)]
@@ -186,6 +196,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// If you want to use `self` directly, you'll need to rename it:
 ///
 /// ```
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// #[derive(Debug)]
@@ -204,6 +215,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// **Passing fields directly**
 ///
 /// ```compile_fail
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// #[derive(Debug)]
@@ -224,6 +236,7 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// You can do it by renaming it:
 ///
 /// ```
+/// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
 /// # struct Foo {
