@@ -140,14 +140,14 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.close_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.close_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn child(&self, info: &FileInfo) -> File {
@@ -250,14 +250,14 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<FileInfo>, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.next_files_async(num_files, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.next_files_async(num_files, io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn set_pending(&self, pending: bool) {

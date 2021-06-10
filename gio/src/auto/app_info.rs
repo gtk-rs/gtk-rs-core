@@ -183,19 +183,19 @@ impl AppInfo {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let uri = String::from(uri);
         let context = context.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = Cancellable::new();
-            Self::launch_default_for_uri_async(
-                &uri,
-                context.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::launch_default_for_uri_async(
+                    &uri,
+                    context.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_app_info_reset_type_associations")]

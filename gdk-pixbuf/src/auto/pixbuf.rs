@@ -499,19 +499,16 @@ impl Pixbuf {
 
     //let stream = stream.clone();
     //let type_ = String::from(type_);
-    //Box_::pin(gio::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = gio::Cancellable::new();
+    //Box_::pin(gio::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.save_to_stream_async(
     //        &stream,
     //        &type_,
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        ,
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 

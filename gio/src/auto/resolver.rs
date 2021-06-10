@@ -263,14 +263,14 @@ impl<O: IsA<Resolver>> ResolverExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>
     {
         let address = address.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_by_address_async(&address, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_by_address_async(&address, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn lookup_by_name<P: IsA<Cancellable>>(
@@ -340,14 +340,14 @@ impl<O: IsA<Resolver>> ResolverExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>
     {
         let hostname = String::from(hostname);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_by_name_async(&hostname, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_by_name_async(&hostname, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -431,14 +431,19 @@ impl<O: IsA<Resolver>> ResolverExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>
     {
         let hostname = String::from(hostname);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_by_name_with_flags_async(&hostname, flags, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_by_name_with_flags_async(
+                    &hostname,
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn lookup_records<P: IsA<Cancellable>>(
@@ -514,14 +519,14 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         Box_<dyn std::future::Future<Output = Result<Vec<glib::Variant>, glib::Error>> + 'static>,
     > {
         let rrname = String::from(rrname);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_records_async(&rrname, record_type, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_records_async(&rrname, record_type, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn lookup_service<P: IsA<Cancellable>>(
@@ -603,20 +608,20 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         let service = String::from(service);
         let protocol = String::from(protocol);
         let domain = String::from(domain);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_service_async(
-                &service,
-                &protocol,
-                &domain,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_service_async(
+                    &service,
+                    &protocol,
+                    &domain,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn set_default(&self) {

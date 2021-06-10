@@ -255,19 +255,19 @@ impl<O: IsA<Drive>> DriveExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.eject_with_operation(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.eject_with_operation(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn enumerate_identifiers(&self) -> Vec<glib::GString> {
@@ -390,14 +390,14 @@ impl<O: IsA<Drive>> DriveExt for O {
     fn poll_for_media_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.poll_for_media(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.poll_for_media(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn start<
@@ -448,19 +448,19 @@ impl<O: IsA<Drive>> DriveExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.start(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.start(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn stop<
@@ -511,19 +511,19 @@ impl<O: IsA<Drive>> DriveExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.stop(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.stop(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "changed")]

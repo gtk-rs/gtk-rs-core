@@ -161,25 +161,25 @@ impl DBusConnection {
         let method_name = String::from(method_name);
         let parameters = parameters.map(ToOwned::to_owned);
         let reply_type = reply_type.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.call(
-                bus_name.as_ref().map(::std::borrow::Borrow::borrow),
-                &object_path,
-                &interface_name,
-                &method_name,
-                parameters.as_ref().map(::std::borrow::Borrow::borrow),
-                reply_type.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                timeout_msec,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.call(
+                    bus_name.as_ref().map(::std::borrow::Borrow::borrow),
+                    &object_path,
+                    &interface_name,
+                    &method_name,
+                    parameters.as_ref().map(::std::borrow::Borrow::borrow),
+                    reply_type.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    timeout_msec,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_connection_call_sync")]
@@ -309,26 +309,26 @@ impl DBusConnection {
         let parameters = parameters.map(ToOwned::to_owned);
         let reply_type = reply_type.map(ToOwned::to_owned);
         let fd_list = fd_list.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.call_with_unix_fd_list(
-                bus_name.as_ref().map(::std::borrow::Borrow::borrow),
-                &object_path,
-                &interface_name,
-                &method_name,
-                parameters.as_ref().map(::std::borrow::Borrow::borrow),
-                reply_type.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                timeout_msec,
-                fd_list.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.call_with_unix_fd_list(
+                    bus_name.as_ref().map(::std::borrow::Borrow::borrow),
+                    &object_path,
+                    &interface_name,
+                    &method_name,
+                    parameters.as_ref().map(::std::borrow::Borrow::borrow),
+                    reply_type.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    timeout_msec,
+                    fd_list.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[cfg(any(unix, feature = "dox"))]
@@ -411,14 +411,14 @@ impl DBusConnection {
     pub fn close_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.close(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.close(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_connection_close_sync")]
@@ -507,14 +507,14 @@ impl DBusConnection {
     pub fn flush_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.flush(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.flush(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_connection_flush_sync")]
@@ -698,20 +698,20 @@ impl DBusConnection {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<DBusMessage, glib::Error>> + 'static>>
     {
         let message = message.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.send_message_with_reply(
-                &message,
-                flags,
-                timeout_msec,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.send_message_with_reply(
+                    &message,
+                    flags,
+                    timeout_msec,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_connection_send_message_with_reply_sync")]
@@ -830,21 +830,21 @@ impl DBusConnection {
         let stream = stream.clone();
         let guid = guid.map(ToOwned::to_owned);
         let observer = observer.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = Cancellable::new();
-            Self::new(
-                &stream,
-                guid.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                observer.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::new(
+                    &stream,
+                    guid.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    observer.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_connection_new_for_address")]
@@ -898,20 +898,20 @@ impl DBusConnection {
     {
         let address = String::from(address);
         let observer = observer.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = Cancellable::new();
-            Self::for_address(
-                &address,
-                flags,
-                observer.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::for_address(
+                    &address,
+                    flags,
+                    observer.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "closed")]

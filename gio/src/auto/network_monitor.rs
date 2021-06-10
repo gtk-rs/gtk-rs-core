@@ -154,14 +154,14 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         connectable: &P,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let connectable = connectable.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.can_reach_async(&connectable, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.can_reach_async(&connectable, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn connectivity(&self) -> NetworkConnectivity {

@@ -171,14 +171,14 @@ impl<O: IsA<TlsInteraction>> TlsInteractionExt for O {
         Box_<dyn std::future::Future<Output = Result<TlsInteractionResult, glib::Error>> + 'static>,
     > {
         let password = password.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.ask_password_async(&password, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.ask_password_async(&password, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn invoke_ask_password<P: IsA<TlsPassword>, Q: IsA<Cancellable>>(
@@ -302,14 +302,14 @@ impl<O: IsA<TlsInteraction>> TlsInteractionExt for O {
         Box_<dyn std::future::Future<Output = Result<TlsInteractionResult, glib::Error>> + 'static>,
     > {
         let connection = connection.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.request_certificate_async(&connection, flags, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.request_certificate_async(&connection, flags, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 }
 

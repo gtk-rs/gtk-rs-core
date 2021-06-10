@@ -280,20 +280,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
     {
         let handle = String::from(handle);
         let interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_certificate_for_handle_async(
-                &handle,
-                interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_certificate_for_handle_async(
+                    &handle,
+                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn lookup_certificate_issuer<
@@ -386,20 +386,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
     {
         let certificate = certificate.clone();
         let interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_certificate_issuer_async(
-                &certificate,
-                interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_certificate_issuer_async(
+                    &certificate,
+                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn lookup_certificates_issued_by<P: IsA<TlsInteraction>, Q: IsA<Cancellable>>(
@@ -485,20 +485,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
     > {
         let issuer_raw_dn = issuer_raw_dn.clone();
         let interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.lookup_certificates_issued_by_async(
-                &issuer_raw_dn,
-                interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.lookup_certificates_issued_by_async(
+                    &issuer_raw_dn,
+                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn verify_chain<
@@ -604,22 +604,22 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         let purpose = String::from(purpose);
         let identity = identity.map(ToOwned::to_owned);
         let interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.verify_chain_async(
-                &chain,
-                &purpose,
-                identity.as_ref().map(::std::borrow::Borrow::borrow),
-                interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.verify_chain_async(
+                    &chain,
+                    &purpose,
+                    identity.as_ref().map(::std::borrow::Borrow::borrow),
+                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 }
 

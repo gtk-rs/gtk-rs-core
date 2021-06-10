@@ -132,18 +132,18 @@ impl Subprocess {
         >,
     > {
         let stdin_buf = stdin_buf.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.communicate_async(
-                stdin_buf.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.communicate_async(
+                    stdin_buf.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_subprocess_communicate_utf8")]
@@ -303,14 +303,14 @@ impl Subprocess {
     pub fn wait_async_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.wait_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.wait_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[doc(alias = "g_subprocess_wait_check")]
@@ -374,14 +374,14 @@ impl Subprocess {
     pub fn wait_check_async_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.wait_check_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.wait_check_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 }
 

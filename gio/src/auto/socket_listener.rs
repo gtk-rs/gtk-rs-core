@@ -224,14 +224,14 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 > + 'static,
         >,
     > {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.accept_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.accept_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn accept_socket<P: IsA<Cancellable>>(
@@ -306,14 +306,14 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 + 'static,
         >,
     > {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.accept_socket_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.accept_socket_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn add_address<P: IsA<SocketAddress>, Q: IsA<glib::Object>>(

@@ -71,13 +71,13 @@ impl Subprocess {
                 > + 'static,
         >,
     > {
-        Box::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.communicate_utf8_async(stdin_buf, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.communicate_utf8_async(stdin_buf, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 }

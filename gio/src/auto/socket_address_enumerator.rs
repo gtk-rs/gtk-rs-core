@@ -110,14 +110,14 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketAddress, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.next_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.next_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 }
 

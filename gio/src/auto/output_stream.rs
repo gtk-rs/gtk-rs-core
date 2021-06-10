@@ -234,14 +234,14 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.close_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.close_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn flush<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
@@ -300,14 +300,14 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.flush_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.flush_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn has_pending(&self) -> bool {
@@ -424,20 +424,14 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>> {
         let source = source.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.splice_async(
-                &source,
-                flags,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.splice_async(&source, flags, io_priority, Some(cancellable), move |res| {
                     send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+                });
+            },
+        ))
     }
 
     //fn vprintf<P: IsA<Cancellable>>(&self, cancellable: Option<&P>, error: &mut glib::Error, format: &str, args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<usize> {
@@ -536,14 +530,14 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>> {
         let bytes = bytes.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.write_bytes_async(&bytes, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.write_bytes_async(&bytes, io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -570,18 +564,15 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
     //fn writev_all_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
 
     //let vectors = vectors.clone();
-    //Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = Cancellable::new();
+    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.writev_all_async(
     //        &vectors,
     //        io_priority,
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 
@@ -597,18 +588,15 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
     //fn writev_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
 
     //let vectors = vectors.clone();
-    //Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = Cancellable::new();
+    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.writev_async(
     //        &vectors,
     //        io_priority,
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 }

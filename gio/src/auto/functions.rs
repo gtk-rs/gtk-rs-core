@@ -62,14 +62,14 @@ pub fn bus_get<
 pub fn bus_get_future(
     bus_type: BusType,
 ) -> Pin<Box_<dyn std::future::Future<Output = Result<DBusConnection, glib::Error>> + 'static>> {
-    Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-        let cancellable = Cancellable::new();
-        bus_get(bus_type, Some(&cancellable), move |res| {
-            send.resolve(res);
-        });
-
-        cancellable
-    }))
+    Box_::pin(crate::GioFuture::new(
+        &(),
+        move |_obj, cancellable, send| {
+            bus_get(bus_type, Some(cancellable), move |res| {
+                send.resolve(res);
+            });
+        },
+    ))
 }
 
 #[doc(alias = "g_bus_get_sync")]
@@ -319,14 +319,14 @@ pub fn dbus_address_get_stream_future(
     >,
 > {
     let address = String::from(address);
-    Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-        let cancellable = Cancellable::new();
-        dbus_address_get_stream(&address, Some(&cancellable), move |res| {
-            send.resolve(res);
-        });
-
-        cancellable
-    }))
+    Box_::pin(crate::GioFuture::new(
+        &(),
+        move |_obj, cancellable, send| {
+            dbus_address_get_stream(&address, Some(cancellable), move |res| {
+                send.resolve(res);
+            });
+        },
+    ))
 }
 
 #[doc(alias = "g_dbus_address_get_stream_sync")]

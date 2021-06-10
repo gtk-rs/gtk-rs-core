@@ -139,21 +139,21 @@ impl<O: IsA<File>> FileExtManual for O {
         >,
     > {
         let etag = etag.map(glib::GString::from);
-        Box::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.replace_contents_async(
-                contents,
-                etag.as_ref().map(|s| s.as_str()),
-                make_backup,
-                flags,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.replace_contents_async(
+                    contents,
+                    etag.as_ref().map(|s| s.as_str()),
+                    make_backup,
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn enumerate_children_async<
@@ -207,19 +207,19 @@ impl<O: IsA<File>> FileExtManual for O {
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>
     {
-        Box::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.enumerate_children_async(
-                attributes,
-                flags,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.enumerate_children_async(
+                    attributes,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 }

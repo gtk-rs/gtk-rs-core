@@ -984,14 +984,14 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileOutputStream, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.append_to_async(flags, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.append_to_async(flags, io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn copy<P: IsA<File>, Q: IsA<Cancellable>>(
@@ -1049,20 +1049,17 @@ impl<O: IsA<File>> FileExt for O {
 
     //let destination = destination.clone();
     //let progress_callback = progress_callback.map(ToOwned::to_owned);
-    //Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = Cancellable::new();
+    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.copy_async(
     //        &destination,
     //        flags,
     //        io_priority,
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        progress_callback.as_ref().map(::std::borrow::Borrow::borrow),
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 
@@ -1157,14 +1154,14 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileOutputStream, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.create_async(flags, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.create_async(flags, io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn create_readwrite<P: IsA<Cancellable>>(
@@ -1236,14 +1233,14 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.create_readwrite_async(flags, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.create_readwrite_async(flags, io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn delete<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
@@ -1302,14 +1299,14 @@ impl<O: IsA<File>> FileExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.delete_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.delete_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn dup(&self) -> File {
@@ -1368,19 +1365,19 @@ impl<O: IsA<File>> FileExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.eject_mountable_with_operation(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.eject_mountable_with_operation(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn enumerate_children<P: IsA<Cancellable>>(
@@ -1602,14 +1599,14 @@ impl<O: IsA<File>> FileExt for O {
                 > + 'static,
         >,
     > {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.load_bytes_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.load_bytes_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn load_contents<P: IsA<Cancellable>>(
@@ -1698,14 +1695,14 @@ impl<O: IsA<File>> FileExt for O {
                 + 'static,
         >,
     > {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.load_contents_async(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.load_contents_async(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     //fn load_partial_contents_async<P: IsA<Cancellable>, Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static, R: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, cancellable: Option<&P>, read_more_callback: Q, callback: R) {
@@ -1715,17 +1712,14 @@ impl<O: IsA<File>> FileExt for O {
     //
     //fn load_partial_contents_async_future<Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, read_more_callback: Q) -> Pin<Box_<dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>> + 'static>> {
 
-    //Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = Cancellable::new();
+    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.load_partial_contents_async(
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        read_more_callback,
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 
@@ -1791,14 +1785,14 @@ impl<O: IsA<File>> FileExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.make_directory_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.make_directory_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn make_directory_with_parents<P: IsA<Cancellable>>(
@@ -1907,19 +1901,16 @@ impl<O: IsA<File>> FileExt for O {
     //fn measure_disk_usage_async_future<Q: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(&self, flags: FileMeasureFlags, io_priority: glib::Priority, progress_callback: Q) -> Pin<Box_<dyn std::future::Future<Output = Result<(u64, u64, u64), glib::Error>> + 'static>> {
 
     //let progress_callback = progress_callback.map(ToOwned::to_owned);
-    //Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-    //    let cancellable = Cancellable::new();
+    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
     //    obj.measure_disk_usage_async(
     //        flags,
     //        io_priority,
-    //        Some(&cancellable),
+    //        Some(cancellable),
     //        progress_callback.as_ref().map(::std::borrow::Borrow::borrow),
     //        move |res| {
     //            send.resolve(res);
     //        },
     //    );
-
-    //    cancellable
     //}))
     //}
 
@@ -2038,19 +2029,19 @@ impl<O: IsA<File>> FileExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.mount_enclosing_volume(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.mount_enclosing_volume(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn mount_mountable<
@@ -2101,19 +2092,19 @@ impl<O: IsA<File>> FileExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<File, glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.mount_mountable(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.mount_mountable(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn move_<P: IsA<File>, Q: IsA<Cancellable>>(
@@ -2225,14 +2216,14 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.open_readwrite_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.open_readwrite_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[cfg(any(feature = "v2_56", feature = "dox"))]
@@ -2278,14 +2269,14 @@ impl<O: IsA<File>> FileExt for O {
     fn poll_mountable_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.poll_mountable(Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.poll_mountable(Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn query_default_handler<P: IsA<Cancellable>>(
@@ -2355,14 +2346,14 @@ impl<O: IsA<File>> FileExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<AppInfo, glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.query_default_handler_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.query_default_handler_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn query_exists<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> bool {
@@ -2457,19 +2448,19 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>> {
         let attributes = String::from(attributes);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.query_filesystem_info_async(
-                &attributes,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.query_filesystem_info_async(
+                    &attributes,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn query_info<P: IsA<Cancellable>>(
@@ -2545,20 +2536,20 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>> {
         let attributes = String::from(attributes);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.query_info_async(
-                &attributes,
-                flags,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.query_info_async(
+                    &attributes,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     //fn query_settable_attributes<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error> {
@@ -2632,14 +2623,14 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInputStream, glib::Error>> + 'static>>
     {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.read_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.read_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn replace<P: IsA<Cancellable>>(
@@ -2721,21 +2712,21 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileOutputStream, glib::Error>> + 'static>>
     {
         let etag = etag.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.replace_async(
-                etag.as_ref().map(::std::borrow::Borrow::borrow),
-                make_backup,
-                flags,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.replace_async(
+                    etag.as_ref().map(::std::borrow::Borrow::borrow),
+                    make_backup,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn replace_contents<P: IsA<Cancellable>>(
@@ -2853,21 +2844,21 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>
     {
         let etag = etag.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.replace_readwrite_async(
-                etag.as_ref().map(::std::borrow::Borrow::borrow),
-                make_backup,
-                flags,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.replace_readwrite_async(
+                    etag.as_ref().map(::std::borrow::Borrow::borrow),
+                    make_backup,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn resolve_relative_path<P: AsRef<std::path::Path>>(&self, relative_path: P) -> File {
@@ -3089,14 +3080,20 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>> {
         let info = info.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.set_attributes_async(&info, flags, io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.set_attributes_async(
+                    &info,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn set_attributes_from_info<P: IsA<Cancellable>>(
@@ -3191,19 +3188,19 @@ impl<O: IsA<File>> FileExt for O {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<File, glib::Error>> + 'static>> {
         let display_name = String::from(display_name);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.set_display_name_async(
-                &display_name,
-                io_priority,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.set_display_name_async(
+                    &display_name,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn start_mountable<
@@ -3254,19 +3251,19 @@ impl<O: IsA<File>> FileExt for O {
         start_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let start_operation = start_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.start_mountable(
-                flags,
-                start_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.start_mountable(
+                    flags,
+                    start_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn stop_mountable<
@@ -3317,19 +3314,19 @@ impl<O: IsA<File>> FileExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.stop_mountable(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.stop_mountable(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn supports_thread_contexts(&self) -> bool {
@@ -3396,14 +3393,14 @@ impl<O: IsA<File>> FileExt for O {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.trash_async(io_priority, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.trash_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn unmount_mountable_with_operation<
@@ -3458,19 +3455,19 @@ impl<O: IsA<File>> FileExt for O {
         mount_operation: Option<&P>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.unmount_mountable_with_operation(
-                flags,
-                mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.unmount_mountable_with_operation(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 }
 
