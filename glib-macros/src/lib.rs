@@ -25,6 +25,15 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// closure is immediately returning an optional default return value. If none is provided, `()` is
 /// returned.
 ///
+/// **⚠️ IMPORTANT ⚠️**
+///
+/// `glib` needs to be in scope, so unless it's one of the direct crate dependencies, you need to
+/// import it because `clone!` is using it. For example:
+///
+/// ```rust,ignore
+/// use gtk::glib;
+/// ```
+///
 /// ### Debugging
 ///
 /// In case something goes wrong inside the `clone!` macro, we use the [`g_debug`] macro. Meaning
@@ -147,7 +156,6 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 /// # use glib;
 /// # use glib_macros::clone;
 /// # use std::rc::Rc;
-///
 /// # let v = Rc::new(1);
 /// let closure = clone!(@weak v => @default-panic, move |x| {
 ///     println!("v: {}, x: {}", v, x);
