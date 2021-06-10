@@ -206,13 +206,10 @@ impl Pixbuf {
         stream: &P,
     ) -> Pin<Box<dyn Future<Output = Result<Pixbuf, Error>> + 'static>> {
         let stream = stream.clone();
-        Box::pin(gio::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = gio::Cancellable::new();
-            Self::from_stream_async(&stream, Some(&cancellable), move |res| {
+        Box::pin(gio::GioFuture::new(&(), move |_obj, cancellable, send| {
+            Self::from_stream_async(&stream, Some(cancellable), move |res| {
                 send.resolve(res);
             });
-
-            cancellable
         }))
     }
 
@@ -269,20 +266,17 @@ impl Pixbuf {
         preserve_aspect_ratio: bool,
     ) -> Pin<Box<dyn Future<Output = Result<Pixbuf, Error>> + 'static>> {
         let stream = stream.clone();
-        Box::pin(gio::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = gio::Cancellable::new();
+        Box::pin(gio::GioFuture::new(&(), move |_obj, cancellable, send| {
             Self::from_stream_at_scale_async(
                 &stream,
                 width,
                 height,
                 preserve_aspect_ratio,
-                Some(&cancellable),
+                Some(cancellable),
                 move |res| {
                     send.resolve(res);
                 },
             );
-
-            cancellable
         }))
     }
 
@@ -407,13 +401,10 @@ impl Pixbuf {
         filename: T,
     ) -> Pin<Box<dyn Future<Output = Result<Option<(PixbufFormat, i32, i32)>, Error>> + 'static>>
     {
-        Box::pin(gio::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = gio::Cancellable::new();
-            Self::file_info_async(filename, Some(&cancellable), move |res| {
+        Box::pin(gio::GioFuture::new(&(), move |_obj, cancellable, send| {
+            Self::file_info_async(filename, Some(cancellable), move |res| {
                 send.resolve(res);
             });
-
-            cancellable
         }))
     }
 
@@ -542,8 +533,7 @@ impl Pixbuf {
             .iter()
             .map(|&(k, v)| (String::from(k), String::from(v)))
             .collect::<Vec<(String, String)>>();
-        Box::pin(gio::GioFuture::new(self, move |obj, send| {
-            let cancellable = gio::Cancellable::new();
+        Box::pin(gio::GioFuture::new(self, move |obj, cancellable, send| {
             let options = options
                 .iter()
                 .map(|&(ref k, ref v)| (k.as_str(), v.as_str()))
@@ -553,13 +543,11 @@ impl Pixbuf {
                 &stream,
                 &type_,
                 options.as_slice(),
-                Some(&cancellable),
+                Some(cancellable),
                 move |res| {
                     send.resolve(res);
                 },
             );
-
-            cancellable
         }))
     }
 
