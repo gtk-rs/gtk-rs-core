@@ -2909,6 +2909,28 @@ impl<T: IsInterface> Interface<T> {
     }
 
     /// Gets the default interface struct for `Self`.
+    ///
+    /// This will return `None` if `type_` is not an interface.
+    pub fn from_type(type_: Type) -> Option<InterfaceRef<'static, T>> {
+        if !type_.is_a(Type::INTERFACE) {
+            return None;
+        }
+
+        unsafe {
+            let ptr = gobject_ffi::g_type_default_interface_ref(T::static_type().into_glib());
+            if ptr.is_null() {
+                None
+            } else {
+                Some(InterfaceRef(
+                    ptr::NonNull::new_unchecked(ptr as *mut Self),
+                    true,
+                    PhantomData,
+                ))
+            }
+        }
+    }
+
+    /// Gets the default interface struct for `Self`.
     #[doc(alias = "g_type_default_interface_ref")]
     pub fn default() -> InterfaceRef<'static, T> {
         unsafe {
@@ -2939,6 +2961,60 @@ impl<T: IsInterface> Interface<T> {
                     PhantomData,
                 ))
             }
+        }
+    }
+}
+
+impl<T: IsA<Object> + IsInterface> Interface<T> {
+    pub fn has_property<'a, N: Into<&'a str>>(
+        &self,
+        property_name: N,
+        type_: Option<Type>,
+    ) -> bool {
+        let property_name = property_name.into();
+        let ptype = self.property_type(property_name);
+
+        match (ptype, type_) {
+            (None, _) => false,
+            (Some(_), None) => true,
+            (Some(ptype), Some(type_)) => ptype == type_,
+        }
+    }
+
+    #[doc(alias = "get_property_type")]
+    pub fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
+        self.find_property(property_name)
+            .map(|pspec| pspec.value_type())
+    }
+
+    #[doc(alias = "g_object_interface_find_property")]
+    pub fn find_property<'a, N: Into<&'a str>>(
+        &self,
+        property_name: N,
+    ) -> Option<crate::ParamSpec> {
+        let property_name = property_name.into();
+        unsafe {
+            let interface = self as *const _ as *const gobject_ffi::GTypeInterface;
+
+            from_glib_none(gobject_ffi::g_object_interface_find_property(
+                interface as *mut _,
+                property_name.to_glib_none().0,
+            ))
+        }
+    }
+
+    #[doc(alias = "g_object_interface_list_properties")]
+    pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
+        unsafe {
+            let interface = self as *const _ as *const gobject_ffi::GTypeInterface;
+
+            let mut n_properties = 0;
+
+            let props = gobject_ffi::g_object_interface_list_properties(
+                interface as *mut _,
+                &mut n_properties,
+            );
+            FromGlibContainer::from_glib_container_num(props, n_properties as usize)
         }
     }
 }
