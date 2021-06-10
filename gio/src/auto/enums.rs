@@ -3451,6 +3451,8 @@ impl ToValue for TlsRehandshakeMode {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GUnixSocketAddressType")]
@@ -3469,6 +3471,7 @@ pub enum UnixSocketAddressType {
     __Unknown(i32),
 }
 
+#[cfg(any(unix, feature = "dox"))]
 impl fmt::Display for UnixSocketAddressType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -3486,6 +3489,7 @@ impl fmt::Display for UnixSocketAddressType {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 #[doc(hidden)]
 impl IntoGlib for UnixSocketAddressType {
     type GlibType = ffi::GUnixSocketAddressType;
@@ -3502,6 +3506,7 @@ impl IntoGlib for UnixSocketAddressType {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
     unsafe fn from_glib(value: ffi::GUnixSocketAddressType) -> Self {
@@ -3516,16 +3521,19 @@ impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 impl StaticType for UnixSocketAddressType {
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_unix_socket_address_type_get_type()) }
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 impl glib::value::ValueType for UnixSocketAddressType {
     type Type = Self;
 }
 
+#[cfg(any(unix, feature = "dox"))]
 unsafe impl<'a> FromValue<'a> for UnixSocketAddressType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -3534,6 +3542,7 @@ unsafe impl<'a> FromValue<'a> for UnixSocketAddressType {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 impl ToValue for UnixSocketAddressType {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();

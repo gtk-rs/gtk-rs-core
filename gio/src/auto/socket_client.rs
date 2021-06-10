@@ -340,14 +340,14 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketConnection, glib::Error>> + 'static>>
     {
         let connectable = connectable.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.connect_async(&connectable, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.connect_async(&connectable, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn connect_to_host<P: IsA<Cancellable>>(
@@ -425,19 +425,19 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketConnection, glib::Error>> + 'static>>
     {
         let host_and_port = String::from(host_and_port);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.connect_to_host_async(
-                &host_and_port,
-                default_port,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.connect_to_host_async(
+                    &host_and_port,
+                    default_port,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn connect_to_service<P: IsA<Cancellable>>(
@@ -516,14 +516,14 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     {
         let domain = String::from(domain);
         let service = String::from(service);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.connect_to_service_async(&domain, &service, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.connect_to_service_async(&domain, &service, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn connect_to_uri<P: IsA<Cancellable>>(
@@ -601,14 +601,14 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketConnection, glib::Error>> + 'static>>
     {
         let uri = String::from(uri);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.connect_to_uri_async(&uri, default_port, Some(&cancellable), move |res| {
-                send.resolve(res);
-            });
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.connect_to_uri_async(&uri, default_port, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     fn enables_proxy(&self) -> bool {

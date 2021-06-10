@@ -487,6 +487,8 @@ pub use self::enums::TlsChannelBindingType;
 pub use self::enums::TlsDatabaseLookupFlags;
 pub use self::enums::TlsInteractionResult;
 pub use self::enums::TlsRehandshakeMode;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
 pub use self::enums::UnixSocketAddressType;
 pub use self::enums::ZlibCompressorFormat;
 

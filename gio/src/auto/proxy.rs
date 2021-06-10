@@ -149,19 +149,14 @@ impl<O: IsA<Proxy>> ProxyExt for O {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<IOStream, glib::Error>> + 'static>> {
         let connection = connection.clone();
         let proxy_address = proxy_address.clone();
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.connect_async(
-                &connection,
-                &proxy_address,
-                Some(&cancellable),
-                move |res| {
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.connect_async(&connection, &proxy_address, Some(cancellable), move |res| {
                     send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+                });
+            },
+        ))
     }
 
     fn supports_hostname(&self) -> bool {

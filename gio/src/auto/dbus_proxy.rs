@@ -155,23 +155,23 @@ impl DBusProxy {
         let name = name.map(ToOwned::to_owned);
         let object_path = String::from(object_path);
         let interface_name = String::from(interface_name);
-        Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = Cancellable::new();
-            Self::new(
-                &connection,
-                flags,
-                info.as_ref().map(::std::borrow::Borrow::borrow),
-                name.as_ref().map(::std::borrow::Borrow::borrow),
-                &object_path,
-                &interface_name,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::new(
+                    &connection,
+                    flags,
+                    info.as_ref().map(::std::borrow::Borrow::borrow),
+                    name.as_ref().map(::std::borrow::Borrow::borrow),
+                    &object_path,
+                    &interface_name,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[doc(alias = "g_dbus_proxy_new_for_bus")]
@@ -235,23 +235,23 @@ impl DBusProxy {
         let name = String::from(name);
         let object_path = String::from(object_path);
         let interface_name = String::from(interface_name);
-        Box_::pin(crate::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = Cancellable::new();
-            Self::for_bus(
-                bus_type,
-                flags,
-                info.as_ref().map(::std::borrow::Borrow::borrow),
-                &name,
-                &object_path,
-                &interface_name,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::for_bus(
+                    bus_type,
+                    flags,
+                    info.as_ref().map(::std::borrow::Borrow::borrow),
+                    &name,
+                    &object_path,
+                    &interface_name,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 }
 
@@ -495,21 +495,21 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     {
         let method_name = String::from(method_name);
         let parameters = parameters.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.call(
-                &method_name,
-                parameters.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                timeout_msec,
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.call(
+                    &method_name,
+                    parameters.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    timeout_msec,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn call_sync<P: IsA<Cancellable>>(
@@ -613,22 +613,22 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         let method_name = String::from(method_name);
         let parameters = parameters.map(ToOwned::to_owned);
         let fd_list = fd_list.map(ToOwned::to_owned);
-        Box_::pin(crate::GioFuture::new(self, move |obj, send| {
-            let cancellable = Cancellable::new();
-            obj.call_with_unix_fd_list(
-                &method_name,
-                parameters.as_ref().map(::std::borrow::Borrow::borrow),
-                flags,
-                timeout_msec,
-                fd_list.as_ref().map(::std::borrow::Borrow::borrow),
-                Some(&cancellable),
-                move |res| {
-                    send.resolve(res);
-                },
-            );
-
-            cancellable
-        }))
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.call_with_unix_fd_list(
+                    &method_name,
+                    parameters.as_ref().map(::std::borrow::Borrow::borrow),
+                    flags,
+                    timeout_msec,
+                    fd_list.as_ref().map(::std::borrow::Borrow::borrow),
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     #[cfg(any(unix, feature = "dox"))]

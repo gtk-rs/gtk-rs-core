@@ -122,13 +122,10 @@ impl PixbufAnimation {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<PixbufAnimation, glib::Error>> + 'static>>
     {
         let stream = stream.clone();
-        Box_::pin(gio::GioFuture::new(&(), move |_obj, send| {
-            let cancellable = gio::Cancellable::new();
-            Self::from_stream_async(&stream, Some(&cancellable), move |res| {
+        Box_::pin(gio::GioFuture::new(&(), move |_obj, cancellable, send| {
+            Self::from_stream_async(&stream, Some(cancellable), move |res| {
                 send.resolve(res);
             });
-
-            cancellable
         }))
     }
 }
