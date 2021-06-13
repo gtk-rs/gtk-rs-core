@@ -123,7 +123,6 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
         }
     }
 
-    #[doc(alias = "description")]
     fn connect_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_description_trampoline<
             P: IsA<TlsPassword>,
@@ -149,7 +148,6 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
         }
     }
 
-    #[doc(alias = "flags")]
     fn connect_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_flags_trampoline<P: IsA<TlsPassword>, F: Fn(&P) + 'static>(
             this: *mut ffi::GTlsPassword,
@@ -172,7 +170,6 @@ impl<O: IsA<TlsPassword>> TlsPasswordExt for O {
         }
     }
 
-    #[doc(alias = "warning")]
     fn connect_warning_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_warning_trampoline<P: IsA<TlsPassword>, F: Fn(&P) + 'static>(
             this: *mut ffi::GTlsPassword,

@@ -179,7 +179,6 @@ impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {
         }
     }
 
-    #[doc(alias = "is-remote")]
     fn connect_is_remote_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_is_remote_trampoline<
             P: IsA<ApplicationCommandLine>,

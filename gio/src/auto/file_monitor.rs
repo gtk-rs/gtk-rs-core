@@ -108,7 +108,6 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
         }
     }
 
-    #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self, &File, Option<&File>, FileMonitorEvent) + 'static>(
         &self,
         f: F,
@@ -146,7 +145,6 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
         }
     }
 
-    #[doc(alias = "cancelled")]
     fn connect_cancelled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_cancelled_trampoline<
             P: IsA<FileMonitor>,
@@ -172,7 +170,6 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
         }
     }
 
-    #[doc(alias = "rate-limit")]
     fn connect_rate_limit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_rate_limit_trampoline<
             P: IsA<FileMonitor>,

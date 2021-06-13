@@ -589,7 +589,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "activate")]
     fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn activate_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
@@ -611,7 +610,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "command-line")]
     fn connect_command_line<F: Fn(&Self, &ApplicationCommandLine) -> i32 + 'static>(
         &self,
         f: F,
@@ -643,7 +641,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "handle-local-options")]
     fn connect_handle_local_options<F: Fn(&Self, &glib::VariantDict) -> i32 + 'static>(
         &self,
         f: F,
@@ -677,7 +674,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "name-lost")]
     fn connect_name_lost<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn name_lost_trampoline<
             P: IsA<Application>,
@@ -702,7 +698,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "shutdown")]
     fn connect_shutdown<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn shutdown_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
@@ -724,7 +719,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "startup")]
     fn connect_startup<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn startup_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
@@ -746,7 +740,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "action-group")]
     fn connect_action_group_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_action_group_trampoline<
             P: IsA<Application>,
@@ -772,7 +765,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "application-id")]
     fn connect_application_id_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_application_id_trampoline<
             P: IsA<Application>,
@@ -798,7 +790,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "flags")]
     fn connect_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_flags_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
@@ -821,7 +812,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "inactivity-timeout")]
     fn connect_inactivity_timeout_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_inactivity_timeout_trampoline<
             P: IsA<Application>,
@@ -847,7 +837,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "is-busy")]
     fn connect_is_busy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_is_busy_trampoline<P: IsA<Application>, F: Fn(&P) + 'static>(
             this: *mut ffi::GApplication,
@@ -870,7 +859,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "is-registered")]
     fn connect_is_registered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_is_registered_trampoline<
             P: IsA<Application>,
@@ -896,7 +884,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "is-remote")]
     fn connect_is_remote_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_is_remote_trampoline<
             P: IsA<Application>,
@@ -922,7 +909,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[doc(alias = "resource-base-path")]
     fn connect_resource_base_path_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_resource_base_path_trampoline<
             P: IsA<Application>,

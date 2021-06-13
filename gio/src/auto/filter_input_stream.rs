@@ -65,7 +65,6 @@ impl<O: IsA<FilterInputStream>> FilterInputStreamExt for O {
         }
     }
 
-    #[doc(alias = "close-base-stream")]
     fn connect_close_base_stream_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_close_base_stream_trampoline<
             P: IsA<FilterInputStream>,

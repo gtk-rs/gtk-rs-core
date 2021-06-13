@@ -166,7 +166,6 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 
-    #[doc(alias = "auto-grow")]
     fn connect_auto_grow_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_auto_grow_trampoline<
             P: IsA<BufferedOutputStream>,
@@ -192,7 +191,6 @@ impl<O: IsA<BufferedOutputStream>> BufferedOutputStreamExt for O {
         }
     }
 
-    #[doc(alias = "buffer-size")]
     fn connect_buffer_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_buffer_size_trampoline<
             P: IsA<BufferedOutputStream>,

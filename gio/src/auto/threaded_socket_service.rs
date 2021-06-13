@@ -52,7 +52,6 @@ impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
         }
     }
 
-    #[doc(alias = "run")]
     fn connect_run<F: Fn(&Self, &SocketConnection, Option<&glib::Object>) -> bool + 'static>(
         &self,
         f: F,

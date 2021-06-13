@@ -131,7 +131,6 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         }
     }
 
-    #[doc(alias = "items-changed")]
     fn connect_items_changed<F: Fn(&Self, i32, i32, i32) + 'static>(
         &self,
         f: F,

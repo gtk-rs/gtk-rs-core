@@ -686,12 +686,10 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    //#[doc(alias = "change-event")]
     //fn connect_change_event<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
     //    Unimplemented keys: *.CArray TypeId { ns_id: 2, id: 5 }
     //}
 
-    #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self, &str) + 'static>(
         &self,
         detail: Option<&str>,
@@ -725,7 +723,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[doc(alias = "writable-change-event")]
     fn connect_writable_change_event<F: Fn(&Self, u32) -> glib::signal::Inhibit + 'static>(
         &self,
         f: F,
@@ -754,7 +751,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[doc(alias = "writable-changed")]
     fn connect_writable_changed<F: Fn(&Self, &str) + 'static>(
         &self,
         detail: Option<&str>,
@@ -791,7 +787,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[doc(alias = "delay-apply")]
     fn connect_delay_apply_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_delay_apply_trampoline<
             P: IsA<Settings>,
@@ -817,7 +812,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[doc(alias = "has-unapplied")]
     fn connect_has_unapplied_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_has_unapplied_trampoline<
             P: IsA<Settings>,

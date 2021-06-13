@@ -322,7 +322,6 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    #[doc(alias = "byte-order")]
     fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_byte_order_trampoline<
             P: IsA<DataInputStream>,
@@ -348,7 +347,6 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    #[doc(alias = "newline-type")]
     fn connect_newline_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_newline_type_trampoline<
             P: IsA<DataInputStream>,

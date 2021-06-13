@@ -630,7 +630,6 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    #[doc(alias = "reload")]
     fn connect_reload<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn reload_trampoline<P: IsA<Resolver>, F: Fn(&P) + 'static>(
             this: *mut ffi::GResolver,

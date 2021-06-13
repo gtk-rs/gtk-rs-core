@@ -352,7 +352,6 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
         }
     }
 
-    #[doc(alias = "byte-order")]
     fn connect_byte_order_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_byte_order_trampoline<
             P: IsA<DataOutputStream>,

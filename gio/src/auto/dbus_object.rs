@@ -75,7 +75,6 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         }
     }
 
-    #[doc(alias = "interface-added")]
     fn connect_interface_added<F: Fn(&Self, &DBusInterface) + 'static>(
         &self,
         f: F,
@@ -107,7 +106,6 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         }
     }
 
-    #[doc(alias = "interface-removed")]
     fn connect_interface_removed<F: Fn(&Self, &DBusInterface) + 'static>(
         &self,
         f: F,
