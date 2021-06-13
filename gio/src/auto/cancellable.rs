@@ -147,7 +147,6 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
         }
     }
 
-    #[doc(alias = "cancelled")]
     fn connect_cancelled<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn cancelled_trampoline<
             P: IsA<Cancellable>,

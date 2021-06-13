@@ -440,7 +440,6 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    #[doc(alias = "event")]
     fn connect_event<F: Fn(&Self, SocketListenerEvent, &Socket) + 'static>(
         &self,
         f: F,
@@ -474,7 +473,6 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    #[doc(alias = "listen-backlog")]
     fn connect_listen_backlog_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_listen_backlog_trampoline<
             P: IsA<SocketListener>,

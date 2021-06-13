@@ -214,7 +214,6 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
         }
     }
 
-    #[doc(alias = "g-authorize-method")]
     fn connect_g_authorize_method<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(
         &self,
         f: F,
@@ -247,7 +246,6 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
         }
     }
 
-    #[doc(alias = "g-flags")]
     fn connect_g_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_g_flags_trampoline<
             P: IsA<DBusInterfaceSkeleton>,

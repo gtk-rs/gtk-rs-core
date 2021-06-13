@@ -285,7 +285,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
     //    }
     //}
 
-    #[doc(alias = "is-any")]
     fn connect_is_any_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_is_any_trampoline<
             P: IsA<InetAddress>,
@@ -311,7 +310,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-link-local")]
     fn connect_is_link_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -340,7 +338,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-loopback")]
     fn connect_is_loopback_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -369,7 +366,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-mc-global")]
     fn connect_is_mc_global_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -398,7 +394,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-mc-link-local")]
     fn connect_is_mc_link_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -427,7 +422,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-mc-node-local")]
     fn connect_is_mc_node_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -456,7 +450,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-mc-org-local")]
     fn connect_is_mc_org_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -485,7 +478,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-mc-site-local")]
     fn connect_is_mc_site_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -514,7 +506,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-multicast")]
     fn connect_is_multicast_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -543,7 +534,6 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    #[doc(alias = "is-site-local")]
     fn connect_is_site_local_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,

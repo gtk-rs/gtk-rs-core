@@ -217,7 +217,6 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
     }
 
-    #[doc(alias = "action-added")]
     fn connect_action_added<F: Fn(&Self, &str) + 'static>(
         &self,
         detail: Option<&str>,
@@ -254,7 +253,6 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
     }
 
-    #[doc(alias = "action-enabled-changed")]
     fn connect_action_enabled_changed<F: Fn(&Self, &str, bool) + 'static>(
         &self,
         detail: Option<&str>,
@@ -294,7 +292,6 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
     }
 
-    #[doc(alias = "action-removed")]
     fn connect_action_removed<F: Fn(&Self, &str) + 'static>(
         &self,
         detail: Option<&str>,
@@ -331,7 +328,6 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
     }
 
-    #[doc(alias = "action-state-changed")]
     fn connect_action_state_changed<F: Fn(&Self, &str, &glib::Variant) + 'static>(
         &self,
         detail: Option<&str>,

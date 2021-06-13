@@ -76,7 +76,6 @@ impl<O: IsA<ListModel>> ListModelExt for O {
         }
     }
 
-    #[doc(alias = "items-changed")]
     fn connect_items_changed<F: Fn(&Self, u32, u32, u32) + 'static>(
         &self,
         f: F,

@@ -133,7 +133,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "drive-changed")]
     fn connect_drive_changed<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -162,7 +161,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "drive-connected")]
     fn connect_drive_connected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_connected_trampoline<
             P: IsA<VolumeMonitor>,
@@ -191,7 +189,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "drive-disconnected")]
     fn connect_drive_disconnected<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_disconnected_trampoline<
             P: IsA<VolumeMonitor>,
@@ -220,7 +217,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "drive-eject-button")]
     fn connect_drive_eject_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_eject_button_trampoline<
             P: IsA<VolumeMonitor>,
@@ -249,7 +245,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "drive-stop-button")]
     fn connect_drive_stop_button<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn drive_stop_button_trampoline<
             P: IsA<VolumeMonitor>,
@@ -278,7 +273,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "mount-added")]
     fn connect_mount_added<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_added_trampoline<
             P: IsA<VolumeMonitor>,
@@ -307,7 +301,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "mount-changed")]
     fn connect_mount_changed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -336,7 +329,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "mount-pre-unmount")]
     fn connect_mount_pre_unmount<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_pre_unmount_trampoline<
             P: IsA<VolumeMonitor>,
@@ -365,7 +357,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "mount-removed")]
     fn connect_mount_removed<F: Fn(&Self, &Mount) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn mount_removed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -394,7 +385,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "volume-added")]
     fn connect_volume_added<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_added_trampoline<
             P: IsA<VolumeMonitor>,
@@ -423,7 +413,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "volume-changed")]
     fn connect_volume_changed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_changed_trampoline<
             P: IsA<VolumeMonitor>,
@@ -452,7 +441,6 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    #[doc(alias = "volume-removed")]
     fn connect_volume_removed<F: Fn(&Self, &Volume) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn volume_removed_trampoline<
             P: IsA<VolumeMonitor>,

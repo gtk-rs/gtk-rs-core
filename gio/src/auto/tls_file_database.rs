@@ -75,7 +75,6 @@ impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
         }
     }
 
-    #[doc(alias = "anchors")]
     fn connect_anchors_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_anchors_trampoline<
             P: IsA<TlsFileDatabase>,

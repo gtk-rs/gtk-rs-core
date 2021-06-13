@@ -891,7 +891,6 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[doc(alias = "g-default-timeout")]
     fn connect_g_default_timeout_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -920,7 +919,6 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[doc(alias = "g-interface-info")]
     fn connect_g_interface_info_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -949,7 +947,6 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[doc(alias = "g-name-owner")]
     fn connect_g_name_owner_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,

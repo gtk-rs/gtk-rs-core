@@ -91,7 +91,6 @@ impl<O: IsA<SocketService>> SocketServiceExt for O {
         }
     }
 
-    #[doc(alias = "incoming")]
     fn connect_incoming<
         F: Fn(&Self, &SocketConnection, Option<&glib::Object>) -> bool + 'static,
     >(
@@ -130,7 +129,6 @@ impl<O: IsA<SocketService>> SocketServiceExt for O {
         }
     }
 
-    #[doc(alias = "active")]
     fn connect_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_active_trampoline<
             P: IsA<SocketService>,

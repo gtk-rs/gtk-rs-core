@@ -188,7 +188,6 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    #[doc(alias = "network-changed")]
     fn connect_network_changed<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn network_changed_trampoline<
             P: IsA<NetworkMonitor>,
@@ -217,7 +216,6 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    #[doc(alias = "connectivity")]
     fn connect_connectivity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_connectivity_trampoline<
             P: IsA<NetworkMonitor>,
@@ -243,7 +241,6 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    #[doc(alias = "network-available")]
     fn connect_network_available_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_network_available_trampoline<
             P: IsA<NetworkMonitor>,
@@ -269,7 +266,6 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    #[doc(alias = "network-metered")]
     fn connect_network_metered_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_network_metered_trampoline<
             P: IsA<NetworkMonitor>,

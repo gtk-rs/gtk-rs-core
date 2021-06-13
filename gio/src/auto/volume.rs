@@ -330,7 +330,6 @@ impl<O: IsA<Volume>> VolumeExt for O {
         }
     }
 
-    #[doc(alias = "changed")]
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn changed_trampoline<P: IsA<Volume>, F: Fn(&P) + 'static>(
             this: *mut ffi::GVolume,
@@ -352,7 +351,6 @@ impl<O: IsA<Volume>> VolumeExt for O {
         }
     }
 
-    #[doc(alias = "removed")]
     fn connect_removed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn removed_trampoline<P: IsA<Volume>, F: Fn(&P) + 'static>(
             this: *mut ffi::GVolume,

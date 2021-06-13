@@ -131,7 +131,6 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
         }
     }
 
-    #[doc(alias = "launch-failed")]
     fn connect_launch_failed<F: Fn(&Self, &str) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn launch_failed_trampoline<
             P: IsA<AppLaunchContext>,
@@ -160,7 +159,6 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
         }
     }
 
-    #[doc(alias = "launched")]
     fn connect_launched<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
         &self,
         f: F,

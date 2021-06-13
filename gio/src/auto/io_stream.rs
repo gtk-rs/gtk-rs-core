@@ -180,7 +180,6 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
-    #[doc(alias = "closed")]
     fn connect_closed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_closed_trampoline<P: IsA<IOStream>, F: Fn(&P) + 'static>(
             this: *mut ffi::GIOStream,

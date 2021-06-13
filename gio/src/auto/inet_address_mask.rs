@@ -172,7 +172,6 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
         }
     }
 
-    #[doc(alias = "address")]
     fn connect_address_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
         f: F,
@@ -201,7 +200,6 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
         }
     }
 
-    #[doc(alias = "family")]
     fn connect_family_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_family_trampoline<
             P: IsA<InetAddressMask>,
@@ -227,7 +225,6 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
         }
     }
 
-    #[doc(alias = "length")]
     fn connect_length_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_length_trampoline<
             P: IsA<InetAddressMask>,

@@ -186,7 +186,6 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         }
     }
 
-    #[doc(alias = "area-prepared")]
     fn connect_area_prepared<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn area_prepared_trampoline<P: IsA<PixbufLoader>, F: Fn(&P) + 'static>(
             this: *mut ffi::GdkPixbufLoader,
@@ -208,7 +207,6 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         }
     }
 
-    #[doc(alias = "area-updated")]
     fn connect_area_updated<F: Fn(&Self, i32, i32, i32, i32) + 'static>(
         &self,
         f: F,
@@ -246,7 +244,6 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         }
     }
 
-    #[doc(alias = "closed")]
     fn connect_closed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn closed_trampoline<P: IsA<PixbufLoader>, F: Fn(&P) + 'static>(
             this: *mut ffi::GdkPixbufLoader,
@@ -268,7 +265,6 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         }
     }
 
-    #[doc(alias = "size-prepared")]
     fn connect_size_prepared<F: Fn(&Self, i32, i32) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn size_prepared_trampoline<
             P: IsA<PixbufLoader>,

@@ -766,7 +766,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "blocking")]
     fn connect_blocking_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_blocking_trampoline<
             P: IsA<Socket>,
@@ -792,7 +791,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "broadcast")]
     fn connect_broadcast_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_broadcast_trampoline<
             P: IsA<Socket>,
@@ -818,7 +816,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "keepalive")]
     fn connect_keepalive_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_keepalive_trampoline<
             P: IsA<Socket>,
@@ -844,7 +841,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "listen-backlog")]
     fn connect_listen_backlog_notify<F: Fn(&Self) + Send + 'static>(
         &self,
         f: F,
@@ -873,7 +869,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "local-address")]
     fn connect_local_address_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_local_address_trampoline<
             P: IsA<Socket>,
@@ -899,7 +894,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "multicast-loopback")]
     fn connect_multicast_loopback_notify<F: Fn(&Self) + Send + 'static>(
         &self,
         f: F,
@@ -928,7 +922,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "multicast-ttl")]
     fn connect_multicast_ttl_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_multicast_ttl_trampoline<
             P: IsA<Socket>,
@@ -954,7 +947,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "remote-address")]
     fn connect_remote_address_notify<F: Fn(&Self) + Send + 'static>(
         &self,
         f: F,
@@ -983,7 +975,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "timeout")]
     fn connect_timeout_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_timeout_trampoline<
             P: IsA<Socket>,
@@ -1009,7 +1000,6 @@ impl<O: IsA<Socket>> SocketExt for O {
         }
     }
 
-    #[doc(alias = "ttl")]
     fn connect_ttl_notify<F: Fn(&Self) + Send + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_ttl_trampoline<P: IsA<Socket>, F: Fn(&P) + Send + 'static>(
             this: *mut ffi::GSocket,

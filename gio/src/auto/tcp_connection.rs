@@ -54,7 +54,6 @@ impl<O: IsA<TcpConnection>> TcpConnectionExt for O {
         }
     }
 
-    #[doc(alias = "graceful-disconnect")]
     fn connect_graceful_disconnect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_graceful_disconnect_trampoline<
             P: IsA<TcpConnection>,

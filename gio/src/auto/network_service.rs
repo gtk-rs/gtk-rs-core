@@ -102,7 +102,6 @@ impl<O: IsA<NetworkService>> NetworkServiceExt for O {
         }
     }
 
-    #[doc(alias = "scheme")]
     fn connect_scheme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_scheme_trampoline<
             P: IsA<NetworkService>,

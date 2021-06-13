@@ -88,7 +88,6 @@ impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
         }
     }
 
-    #[doc(alias = "authentication-mode")]
     fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_authentication_mode_trampoline<
             P: IsA<TlsServerConnection>,

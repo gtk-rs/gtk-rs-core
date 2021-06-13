@@ -242,7 +242,6 @@ impl<O: IsA<Permission>> PermissionExt for O {
         ))
     }
 
-    #[doc(alias = "allowed")]
     fn connect_allowed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_allowed_trampoline<P: IsA<Permission>, F: Fn(&P) + 'static>(
             this: *mut ffi::GPermission,
@@ -265,7 +264,6 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    #[doc(alias = "can-acquire")]
     fn connect_can_acquire_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_can_acquire_trampoline<
             P: IsA<Permission>,
@@ -291,7 +289,6 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    #[doc(alias = "can-release")]
     fn connect_can_release_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_can_release_trampoline<
             P: IsA<Permission>,
