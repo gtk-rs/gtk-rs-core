@@ -35,7 +35,7 @@
 //! `gtk::Widget` for `GtkWidget`). They are reference counted and feature
 //! interior mutability similarly to Rust's `Rc<RefCell<T>>` idiom.
 //! Consequently, cloning objects is cheap and their methods never require
-//! mutable borrows. Two smart pointers are equal iff they point to the same
+//! mutable borrows. Two smart pointers are equal if they point to the same
 //! object.
 //!
 //! The root of the object hierarchy is [`Object`].
