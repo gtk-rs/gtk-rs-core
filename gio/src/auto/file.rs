@@ -49,7 +49,7 @@ impl File {
 
     #[doc(alias = "g_file_new_for_commandline_arg")]
     #[doc(alias = "new_for_commandline_arg")]
-    pub fn for_commandline_arg<P: AsRef<std::ffi::OsStr>>(arg: P) -> File {
+    pub fn for_commandline_arg<P: AsRef<std::ffi::OsStr>>(arg: P) -> Option<File> {
         unsafe {
             from_glib_full(ffi::g_file_new_for_commandline_arg(
                 arg.as_ref().to_glib_none().0,
