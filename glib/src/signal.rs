@@ -41,7 +41,7 @@ use std::num::NonZeroU64;
 ///     }
 /// }
 /// ```
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SignalHandlerId(NonZeroU64);
 
 impl SignalHandlerId {
