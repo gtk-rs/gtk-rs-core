@@ -75,7 +75,7 @@ pub fn impl_genum(input: &syn::DeriveInput) -> TokenStream {
         _ => abort_call_site!("GEnum only supports enums"),
     };
 
-    let gtype_name = match parse_type_name(&input, "genum") {
+    let gtype_name = match parse_type_name(input, "genum") {
         Ok(v) => v,
         Err(e) => abort_call_site!(
             "{}: derive(GEnum) requires #[genum(type_name = \"EnumTypeName\")]",

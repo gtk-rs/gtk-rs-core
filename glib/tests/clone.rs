@@ -25,7 +25,7 @@ impl State {
 fn clone_and_references() {
     let state = Rc::new(RefCell::new(State::new()));
     let ref_state = &state;
-    assert_eq!(ref_state.borrow().started, false);
+    assert!(!ref_state.borrow().started);
 
     let closure = {
         clone!(@weak ref_state => move || {
@@ -34,7 +34,7 @@ fn clone_and_references() {
     };
 
     closure();
-    assert_eq!(ref_state.borrow().started, true);
+    assert!(ref_state.borrow().started);
 }
 
 #[test]
@@ -61,7 +61,7 @@ fn subfields_renaming() {
 #[test]
 fn renaming() {
     let state = Rc::new(RefCell::new(State::new()));
-    assert_eq!(state.borrow().started, false);
+    assert!(!state.borrow().started);
 
     let closure = {
         clone!(@weak state as hello => move || {
@@ -70,13 +70,13 @@ fn renaming() {
     };
 
     closure();
-    assert_eq!(state.borrow().started, true);
+    assert!(state.borrow().started);
 }
 
 #[test]
 fn clone_closure() {
     let state = Rc::new(RefCell::new(State::new()));
-    assert_eq!(state.borrow().started, false);
+    assert!(!state.borrow().started);
 
     let closure = {
         clone!(@weak state => move || {
@@ -86,12 +86,12 @@ fn clone_closure() {
 
     closure();
 
-    assert_eq!(state.borrow().started, true);
+    assert!(state.borrow().started);
     assert_eq!(state.borrow().count, 0);
 
     let closure = {
         let state2 = Rc::new(RefCell::new(State::new()));
-        assert_eq!(state.borrow().started, true);
+        assert!(state.borrow().started);
 
         clone!(@weak state, @strong state2 => move || {
             state.borrow_mut().count += 1;
@@ -103,7 +103,7 @@ fn clone_closure() {
     closure();
 
     assert_eq!(state.borrow().count, 1);
-    assert_eq!(state.borrow().started, true);
+    assert!(state.borrow().started);
 }
 
 #[test]
@@ -415,30 +415,30 @@ fn test_clone_macro_double_rename() {
     let closure = clone!(@weak v as _x, @weak w => @default-return true, move |_| {
         false
     });
-    assert_eq!(closure(0u8), false);
+    assert!(!closure(0u8));
     let closure = clone!(@weak v as _x, @weak w => @default-return true, move || false);
-    assert_eq!(closure(), false);
+    assert!(!closure());
 
     let closure = clone!(@weak v, @weak w as _x => @default-return true, move |_| {
         false
     });
-    assert_eq!(closure("a"), false);
+    assert!(!closure("a"));
     let closure = clone!(@weak v, @weak w as _x => @default-return true, move || false);
-    assert_eq!(closure(), false);
+    assert!(!closure());
 
     let closure = clone!(@strong v as _x, @strong w => @default-return true, move |_| {
         false
     });
-    assert_eq!(closure('a'), false);
+    assert!(!closure('a'));
     let closure = clone!(@strong v as _x, @strong w => @default-return true, move || false);
-    assert_eq!(closure(), false);
+    assert!(!closure());
 
     let closure = clone!(@strong v, @strong w as _x => @default-return true, move |_| {
         false
     });
-    assert_eq!(closure(12.), false);
+    assert!(!closure(12.));
     let closure = clone!(@strong v, @strong w as _x => @default-return true, move || false);
-    assert_eq!(closure(), false);
+    assert!(!closure());
 }
 
 #[test]
@@ -559,6 +559,7 @@ fn test_clone_macro_typed_args() {
 }
 
 #[test]
+#[allow(clippy::bool_assert_comparison)]
 fn test_clone_macro_default_return() {
     macro_rules! test_default {
         ($ret:expr, $($closure_body:tt)*) => {{

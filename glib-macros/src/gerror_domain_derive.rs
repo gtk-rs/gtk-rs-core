@@ -17,7 +17,7 @@ pub fn impl_gerror_domain(input: &syn::DeriveInput) -> TokenStream {
         _ => abort_call_site!("GErrorDomain only supports enums"),
     };
 
-    let domain_name = match parse_name(&input, "gerror_domain") {
+    let domain_name = match parse_name(input, "gerror_domain") {
         Ok(v) => v,
         Err(e) => abort_call_site!(
             "{}: derive(GErrorDomain) requires #[gerror_domain(name = \"DomainName\")]",

@@ -89,7 +89,7 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
+                DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(interface),
             )
         }
@@ -120,7 +120,7 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
+                DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(interface),
             )
         }

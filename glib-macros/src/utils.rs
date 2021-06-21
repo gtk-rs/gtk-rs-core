@@ -78,7 +78,7 @@ pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
         _ => bail!("Missing meta 'type_name'"),
     };
 
-    match parse_enum_attribute(&meta)? {
+    match parse_enum_attribute(meta)? {
         EnumAttribute::TypeName(n) => Ok(n),
     }
 }
@@ -110,7 +110,7 @@ pub fn parse_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
         _ => bail!("Missing meta 'name'"),
     };
 
-    match parse_error_attribute(&meta)? {
+    match parse_error_attribute(meta)? {
         ErrorDomainAttribute::Name(n) => Ok(n),
     }
 }
@@ -140,7 +140,7 @@ pub fn parse_item_attributes(attr_name: &str, attrs: &[Attribute]) -> Result<Vec
         Some(meta) => meta
             .nested
             .iter()
-            .map(|m| parse_item_attribute(&m))
+            .map(|m| parse_item_attribute(m))
             .collect::<Result<Vec<_>, _>>()?,
         None => Vec::new(),
     };

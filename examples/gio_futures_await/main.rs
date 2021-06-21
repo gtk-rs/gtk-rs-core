@@ -1,4 +1,3 @@
-use gio;
 use gio::prelude::*;
 use glib::{self, clone};
 

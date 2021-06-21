@@ -217,7 +217,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.write(
-        &wrap.unsafe_cast_ref(),
+        wrap.unsafe_cast_ref(),
         slice::from_raw_parts(buffer as *const u8, count),
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
@@ -247,7 +247,7 @@ unsafe extern "C" fn stream_close<T: OutputStreamImpl>(
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.close(
-        &wrap.unsafe_cast_ref(),
+        wrap.unsafe_cast_ref(),
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),
@@ -272,7 +272,7 @@ unsafe extern "C" fn stream_flush<T: OutputStreamImpl>(
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.flush(
-        &wrap.unsafe_cast_ref(),
+        wrap.unsafe_cast_ref(),
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),
@@ -299,7 +299,7 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.splice(
-        &wrap.unsafe_cast_ref(),
+        wrap.unsafe_cast_ref(),
         &from_glib_borrow(input_stream),
         from_glib(flags),
         Option::<Cancellable>::from_glib_borrow(cancellable)

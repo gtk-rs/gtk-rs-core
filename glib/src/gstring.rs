@@ -200,7 +200,7 @@ impl PartialOrd<String> for GString {
 
 impl PartialOrd<GString> for str {
     fn partial_cmp(&self, other: &GString) -> Option<Ordering> {
-        Some(self.cmp(&other))
+        Some(self.cmp(other))
     }
 }
 

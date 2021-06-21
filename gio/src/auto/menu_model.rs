@@ -147,7 +147,7 @@ impl<O: IsA<MenuModel>> MenuModelExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &MenuModel::from_glib_borrow(this).unsafe_cast_ref(),
+                MenuModel::from_glib_borrow(this).unsafe_cast_ref(),
                 position,
                 removed,
                 added,

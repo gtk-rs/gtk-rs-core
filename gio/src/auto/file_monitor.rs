@@ -124,7 +124,7 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &FileMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                FileMonitor::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(file),
                 Option::<File>::from_glib_borrow(other_file)
                     .as_ref()
@@ -155,7 +155,7 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -180,7 +180,7 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

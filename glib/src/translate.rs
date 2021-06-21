@@ -2287,9 +2287,9 @@ mod tests {
     fn boolean() {
         assert_eq!(true.into_glib(), ffi::GTRUE);
         assert_eq!(false.into_glib(), ffi::GFALSE);
-        assert_eq!(true, unsafe { bool::from_glib(ffi::GTRUE) });
-        assert_eq!(false, unsafe { bool::from_glib(ffi::GFALSE) });
-        assert_eq!(true, unsafe { bool::from_glib(42) });
+        assert!(unsafe { bool::from_glib(ffi::GTRUE) });
+        assert!(!unsafe { bool::from_glib(ffi::GFALSE) });
+        assert!(unsafe { bool::from_glib(42) });
     }
 
     #[test]

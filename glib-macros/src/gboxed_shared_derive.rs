@@ -95,7 +95,7 @@ pub fn impl_gshared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream 
     };
 
     let name = &input.ident;
-    let gtype_name = match parse_type_name(&input, "gshared_boxed") {
+    let gtype_name = match parse_type_name(input, "gshared_boxed") {
         Ok(v) => v,
         Err(e) => abort_call_site!(
             "{}: derive(GSharedBoxed) requires #[gshared_boxed(type_name = \"SharedTypeName\")]",

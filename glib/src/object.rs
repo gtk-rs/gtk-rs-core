@@ -1101,7 +1101,7 @@ impl Object {
                 })?;
 
                 let mut value = value.to_value();
-                validate_property_type(type_, true, &pspec, &mut value)?;
+                validate_property_type(type_, true, pspec, &mut value)?;
                 Ok((CString::new(*name).unwrap(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
@@ -1124,7 +1124,7 @@ impl Object {
                 })?;
 
                 let mut value = value.clone();
-                validate_property_type(type_, true, &pspec, &mut value)?;
+                validate_property_type(type_, true, pspec, &mut value)?;
                 Ok((CString::new(*name).unwrap(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
@@ -1462,7 +1462,7 @@ impl<T: ObjectType> ObjectExt for T {
                 })?;
 
                 let mut value = value.to_value();
-                validate_property_type(self.type_(), false, &pspec, &mut value)?;
+                validate_property_type(self.type_(), false, pspec, &mut value)?;
                 Ok((CString::new(name).unwrap(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
@@ -1496,7 +1496,7 @@ impl<T: ObjectType> ObjectExt for T {
                 })?;
 
                 let mut value = value.clone();
-                validate_property_type(self.type_(), false, &pspec, &mut value)?;
+                validate_property_type(self.type_(), false, pspec, &mut value)?;
                 Ok((CString::new(*name).unwrap(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
@@ -2609,7 +2609,7 @@ impl<'a> BindingBuilder<'a> {
                 &*(ptr as *const gobject_ffi::GValue as *const Value)
             };
 
-            match func(&binding, &from) {
+            match func(&binding, from) {
                 None => Some(false.to_value()),
                 Some(value) => {
                     unsafe {

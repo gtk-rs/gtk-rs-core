@@ -1,9 +1,7 @@
 pub mod ffi;
 mod imp;
 
-use gio;
 use gio::prelude::*;
-use glib;
 use glib::subclass::prelude::*;
 
 glib::wrapper! {
@@ -35,11 +33,11 @@ impl FileSize {
                 .get::<i64>()
                 .unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
-            callback(value, &source_object);
+            callback(value, source_object);
         };
 
         let task = gio::Task::new(
-            Some(&self.upcast_ref::<glib::Object>()),
+            Some(self.upcast_ref::<glib::Object>()),
             cancellable,
             closure,
         );
@@ -57,7 +55,7 @@ impl FileSize {
                 .unwrap();
 
             let source_object =
-                imp::FileSize::from_instance(&source_object.downcast_ref::<FileSize>().unwrap());
+                imp::FileSize::from_instance(source_object.downcast_ref::<FileSize>().unwrap());
 
             source_object.size.replace(Some(size));
             task.return_value(&size.to_value());
