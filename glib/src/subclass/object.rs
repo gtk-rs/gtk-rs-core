@@ -436,12 +436,11 @@ mod test {
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
-        assert_eq!(
+        assert!(
             obj.property("constructed")
                 .expect("Failed to get 'constructed' property")
                 .get::<bool>()
                 .expect("Failed to get bool from 'constructed' property"),
-            true
         );
 
         let weak = obj.downgrade();

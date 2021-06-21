@@ -228,7 +228,7 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
-                &DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref(),
+                DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(invocation),
             )
             .into_glib()
@@ -256,7 +256,7 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref())
+            f(DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

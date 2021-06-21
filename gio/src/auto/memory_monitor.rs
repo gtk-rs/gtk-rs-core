@@ -57,7 +57,7 @@ impl<O: IsA<MemoryMonitor>> MemoryMonitorExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &MemoryMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                MemoryMonitor::from_glib_borrow(this).unsafe_cast_ref(),
                 from_glib(level),
             )
         }

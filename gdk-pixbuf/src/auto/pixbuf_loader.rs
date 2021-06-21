@@ -192,7 +192,7 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
+            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -224,7 +224,7 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
+                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
                 x,
                 y,
                 width,
@@ -250,7 +250,7 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
+            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -277,7 +277,7 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
+                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
                 width,
                 height,
             )

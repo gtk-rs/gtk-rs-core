@@ -92,7 +92,7 @@ impl<O: IsA<ListModel>> ListModelExt for O {
         ) {
             let f: &F = &*(f as *const F);
             f(
-                &ListModel::from_glib_borrow(this).unsafe_cast_ref(),
+                ListModel::from_glib_borrow(this).unsafe_cast_ref(),
                 position,
                 removed,
                 added,

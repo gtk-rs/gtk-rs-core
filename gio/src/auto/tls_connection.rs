@@ -417,7 +417,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
-                &TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
+                TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(peer_cert),
                 from_glib(errors),
             )
@@ -448,7 +448,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -473,7 +473,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -498,7 +498,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -523,7 +523,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -550,7 +550,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -575,7 +575,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -603,7 +603,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -628,7 +628,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -653,7 +653,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
-            f(&TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

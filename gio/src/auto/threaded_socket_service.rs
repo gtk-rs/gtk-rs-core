@@ -67,7 +67,7 @@ impl<O: IsA<ThreadedSocketService>> ThreadedSocketServiceExt for O {
         ) -> glib::ffi::gboolean {
             let f: &F = &*(f as *const F);
             f(
-                &ThreadedSocketService::from_glib_borrow(this).unsafe_cast_ref(),
+                ThreadedSocketService::from_glib_borrow(this).unsafe_cast_ref(),
                 &from_glib_borrow(connection),
                 Option::<glib::Object>::from_glib_borrow(source_object)
                     .as_ref()
