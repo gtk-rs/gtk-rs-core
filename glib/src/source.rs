@@ -17,6 +17,9 @@ use crate::MainContext;
 use crate::Source;
 
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
+///
+/// This type does not implement `Clone` to prevent calling [`source_remove()`]
+/// multiple times on the same source.
 #[derive(Debug, Eq, PartialEq)]
 pub struct SourceId(NonZeroU32);
 
