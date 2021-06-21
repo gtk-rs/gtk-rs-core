@@ -12,6 +12,9 @@ use std::num::NonZeroU64;
 
 /// The id of a signal that is returned by `connect`.
 ///
+/// This type does not implement `Clone` to prevent disconnecting
+/// the same signal handler multiple times.
+///
 /// ```ignore
 /// use glib::SignalHandlerId;
 /// use gtk::prelude::*;
