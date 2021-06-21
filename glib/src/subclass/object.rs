@@ -70,7 +70,7 @@ unsafe extern "C" fn property<T: ObjectImpl>(
     let imp = instance.impl_();
 
     let v = imp.property(
-        &from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
+        from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
         id as usize,
         &from_glib_borrow(pspec),
     );
@@ -97,7 +97,7 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.impl_();
     imp.set_property(
-        &from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
+        from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
         id as usize,
         &*(value as *mut Value),
         &from_glib_borrow(pspec),
@@ -108,14 +108,14 @@ unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) 
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.impl_();
 
-    imp.constructed(&from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
+    imp.constructed(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
 }
 
 unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.impl_();
 
-    imp.dispose(&from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
+    imp.dispose(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
 
     // Chain up to the parent's dispose.
     let data = T::type_data();
@@ -436,12 +436,11 @@ mod test {
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
-        assert!(
-            obj.property("constructed")
-                .expect("Failed to get 'constructed' property")
-                .get::<bool>()
-                .expect("Failed to get bool from 'constructed' property"),
-        );
+        assert!(obj
+            .property("constructed")
+            .expect("Failed to get 'constructed' property")
+            .get::<bool>()
+            .expect("Failed to get bool from 'constructed' property"),);
 
         let weak = obj.downgrade();
         drop(obj);

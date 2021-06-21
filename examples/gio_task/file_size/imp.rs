@@ -1,4 +1,3 @@
-use glib;
 use glib::subclass::prelude::*;
 
 // FileSize is a simple object that will just contain the read file size.

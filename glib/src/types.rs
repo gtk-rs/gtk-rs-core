@@ -172,13 +172,13 @@ impl Type {
 
 impl fmt::Debug for Type {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&self.name())
+        f.write_str(self.name())
     }
 }
 
 impl fmt::Display for Type {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&self.name())
+        f.write_str(self.name())
     }
 }
 

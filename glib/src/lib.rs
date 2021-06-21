@@ -66,6 +66,7 @@
 
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
+#![allow(clippy::wrong_self_convention)]
 
 pub use ffi;
 pub use gobject_ffi;

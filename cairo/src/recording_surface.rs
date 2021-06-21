@@ -26,10 +26,7 @@ impl RecordingSurface {
                 None => ::std::ptr::null(),
             };
 
-            Ok(Self::from_raw_full(ffi::cairo_recording_surface_create(
-                content.into(),
-                extends,
-            ))?)
+            Self::from_raw_full(ffi::cairo_recording_surface_create(content.into(), extends))
         }
     }
 

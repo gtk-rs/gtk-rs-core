@@ -1,7 +1,6 @@
 mod file_size;
 
 use futures_channel::oneshot;
-use gio;
 use glib::translate::*;
 use glib::{self, clone};
 

@@ -28,7 +28,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
 
     let source_object = &super::FileSize::from_glib_borrow(this);
     let task = gio::Task::new(
-        Some(&source_object.upcast_ref::<glib::Object>()),
+        Some(source_object.upcast_ref::<glib::Object>()),
         Some(cancellable.as_ref()),
         closure,
     );
@@ -46,7 +46,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .unwrap();
 
         let source_object = super::imp::FileSize::from_instance(
-            &source_object.downcast_ref::<super::FileSize>().unwrap(),
+            source_object.downcast_ref::<super::FileSize>().unwrap(),
         );
 
         source_object.size.replace(Some(size));
@@ -80,7 +80,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
 pub unsafe extern "C" fn my_file_size_get_retrieved_size(this: *mut FileSize) -> i64 {
     let simple_object = super::FileSize::from_glib_borrow(this);
     let simple_object = super::imp::FileSize::from_instance(
-        &simple_object.downcast_ref::<super::FileSize>().unwrap(),
+        simple_object.downcast_ref::<super::FileSize>().unwrap(),
     );
     let x = *simple_object.size.borrow();
     x.unwrap_or(-1)

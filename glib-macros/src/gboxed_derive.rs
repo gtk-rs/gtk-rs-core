@@ -87,7 +87,7 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
 pub fn impl_gboxed(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
 
-    let gtype_name = match parse_type_name(&input, "gboxed") {
+    let gtype_name = match parse_type_name(input, "gboxed") {
         Ok(v) => v,
         Err(e) => abort_call_site!(
             "{}: derive(GBoxed) requires #[gboxed(type_name = \"BoxedTypeName\")]",
