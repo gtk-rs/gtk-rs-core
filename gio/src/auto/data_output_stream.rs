@@ -39,9 +39,9 @@ impl DataOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`DataOutputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`DataOutputStream`] objects.
     ///
-    /// This method returns an instance of [`DataOutputStreamBuilder`] which can be used to create a [`DataOutputStream`].
+    /// This method returns an instance of [`DataOutputStreamBuilder`] which can be used to create [`DataOutputStream`] objects.
     pub fn builder() -> DataOutputStreamBuilder {
         DataOutputStreamBuilder::default()
     }
@@ -49,7 +49,9 @@ impl DataOutputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`DataOutputStream`].
+/// A [builder-pattern] type to construct [`DataOutputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct DataOutputStreamBuilder {
     byte_order: Option<DataStreamByteOrder>,
     base_stream: Option<OutputStream>,

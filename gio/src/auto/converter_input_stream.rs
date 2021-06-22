@@ -38,9 +38,9 @@ impl ConverterInputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`ConverterInputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`ConverterInputStream`] objects.
     ///
-    /// This method returns an instance of [`ConverterInputStreamBuilder`] which can be used to create a [`ConverterInputStream`].
+    /// This method returns an instance of [`ConverterInputStreamBuilder`] which can be used to create [`ConverterInputStream`] objects.
     pub fn builder() -> ConverterInputStreamBuilder {
         ConverterInputStreamBuilder::default()
     }
@@ -48,7 +48,9 @@ impl ConverterInputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`ConverterInputStream`].
+/// A [builder-pattern] type to construct [`ConverterInputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct ConverterInputStreamBuilder {
     converter: Option<Converter>,
     base_stream: Option<InputStream>,

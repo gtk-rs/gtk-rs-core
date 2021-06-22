@@ -48,9 +48,9 @@ impl BufferedOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`BufferedOutputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`BufferedOutputStream`] objects.
     ///
-    /// This method returns an instance of [`BufferedOutputStreamBuilder`] which can be used to create a [`BufferedOutputStream`].
+    /// This method returns an instance of [`BufferedOutputStreamBuilder`] which can be used to create [`BufferedOutputStream`] objects.
     pub fn builder() -> BufferedOutputStreamBuilder {
         BufferedOutputStreamBuilder::default()
     }
@@ -58,7 +58,9 @@ impl BufferedOutputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`BufferedOutputStream`].
+/// A [builder-pattern] type to construct [`BufferedOutputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct BufferedOutputStreamBuilder {
     auto_grow: Option<bool>,
     buffer_size: Option<u32>,
