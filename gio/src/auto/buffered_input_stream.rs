@@ -53,9 +53,9 @@ impl BufferedInputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`BufferedInputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`BufferedInputStream`] objects.
     ///
-    /// This method returns an instance of [`BufferedInputStreamBuilder`] which can be used to create a [`BufferedInputStream`].
+    /// This method returns an instance of [`BufferedInputStreamBuilder`] which can be used to create [`BufferedInputStream`] objects.
     pub fn builder() -> BufferedInputStreamBuilder {
         BufferedInputStreamBuilder::default()
     }
@@ -63,7 +63,9 @@ impl BufferedInputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`BufferedInputStream`].
+/// A [builder-pattern] type to construct [`BufferedInputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct BufferedInputStreamBuilder {
     buffer_size: Option<u32>,
     base_stream: Option<InputStream>,

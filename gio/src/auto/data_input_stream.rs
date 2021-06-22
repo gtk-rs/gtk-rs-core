@@ -43,9 +43,9 @@ impl DataInputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`DataInputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`DataInputStream`] objects.
     ///
-    /// This method returns an instance of [`DataInputStreamBuilder`] which can be used to create a [`DataInputStream`].
+    /// This method returns an instance of [`DataInputStreamBuilder`] which can be used to create [`DataInputStream`] objects.
     pub fn builder() -> DataInputStreamBuilder {
         DataInputStreamBuilder::default()
     }
@@ -53,7 +53,9 @@ impl DataInputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`DataInputStream`].
+/// A [builder-pattern] type to construct [`DataInputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct DataInputStreamBuilder {
     byte_order: Option<DataStreamByteOrder>,
     newline_type: Option<DataStreamNewlineType>,

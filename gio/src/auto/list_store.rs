@@ -29,9 +29,9 @@ impl ListStore {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`ListStore`].
+    /// Creates a new builder-pattern struct instance to construct [`ListStore`] objects.
     ///
-    /// This method returns an instance of [`ListStoreBuilder`] which can be used to create a [`ListStore`].
+    /// This method returns an instance of [`ListStoreBuilder`] which can be used to create [`ListStore`] objects.
     pub fn builder() -> ListStoreBuilder {
         ListStoreBuilder::default()
     }
@@ -112,7 +112,9 @@ impl ListStore {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`ListStore`].
+/// A [builder-pattern] type to construct [`ListStore`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct ListStoreBuilder {
     item_type: Option<glib::types::Type>,
 }

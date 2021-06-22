@@ -38,9 +38,9 @@ impl ConverterOutputStream {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`ConverterOutputStream`].
+    /// Creates a new builder-pattern struct instance to construct [`ConverterOutputStream`] objects.
     ///
-    /// This method returns an instance of [`ConverterOutputStreamBuilder`] which can be used to create a [`ConverterOutputStream`].
+    /// This method returns an instance of [`ConverterOutputStreamBuilder`] which can be used to create [`ConverterOutputStream`] objects.
     pub fn builder() -> ConverterOutputStreamBuilder {
         ConverterOutputStreamBuilder::default()
     }
@@ -48,7 +48,9 @@ impl ConverterOutputStream {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`ConverterOutputStream`].
+/// A [builder-pattern] type to construct [`ConverterOutputStream`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct ConverterOutputStreamBuilder {
     converter: Option<Converter>,
     base_stream: Option<OutputStream>,

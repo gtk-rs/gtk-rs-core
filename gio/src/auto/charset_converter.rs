@@ -43,9 +43,9 @@ impl CharsetConverter {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Creates a new builder-style object to construct a [`CharsetConverter`].
+    /// Creates a new builder-pattern struct instance to construct [`CharsetConverter`] objects.
     ///
-    /// This method returns an instance of [`CharsetConverterBuilder`] which can be used to create a [`CharsetConverter`].
+    /// This method returns an instance of [`CharsetConverterBuilder`] which can be used to create [`CharsetConverter`] objects.
     pub fn builder() -> CharsetConverterBuilder {
         CharsetConverterBuilder::default()
     }
@@ -132,7 +132,9 @@ impl CharsetConverter {
 
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
-/// A builder for generating a [`CharsetConverter`].
+/// A [builder-pattern] type to construct [`CharsetConverter`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 pub struct CharsetConverterBuilder {
     from_charset: Option<String>,
     to_charset: Option<String>,
