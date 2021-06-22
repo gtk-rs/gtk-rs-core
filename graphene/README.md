@@ -8,8 +8,8 @@ Currently, the minimum supported Rust version is `1.51.0`.
 
 ## Documentation
 
- * [Rust API - Stable](https://gtk-rs.org/docs/graphene/)
- * [Rust API - Development](https://gtk-rs.org/gtk-rs/git/docs/graphene)
+ * [Rust API - Stable](https://gtk-rs.org/gtk-rs-core/stable/latest/docs/graphene/)
+ * [Rust API - Development](https://gtk-rs.org/gtk-rs-core/git/docs/graphene)
  * [C API](https://developer.gnome.org/graphene/stable/)
  * [GTK Installation instructions](https://www.gtk.org/docs/installations/)
 

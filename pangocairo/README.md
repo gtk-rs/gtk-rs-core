@@ -8,8 +8,8 @@ Currently, the minimum supported Rust version is `1.51.0`.
 
 ## Documentation
 
- * [Rust API - Stable](https://gtk-rs.org/docs/pangocairo/)
- * [Rust API - Development](https://gtk-rs.org/gtk-rs/git/docs/pangocairo)
+ * [Rust API - Stable](https://gtk-rs.org/gtk-rs-core/stable/latest/docs/pangocairo/)
+ * [Rust API - Development](https://gtk-rs.org/gtk-rs-core/git/docs/pangocairo)
  * [GTK Installation instructions](https://www.gtk.org/docs/installations/)
 
 ## Using
