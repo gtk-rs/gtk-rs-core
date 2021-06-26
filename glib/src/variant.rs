@@ -607,6 +607,10 @@ impl<T: StaticVariantType + ToVariant> ToVariant for [T] {
 
 impl<T: FromVariant> FromVariant for Vec<T> {
     fn from_variant(variant: &Variant) -> Option<Self> {
+        if !variant.is_container() {
+            return None;
+        }
+
         let mut vec = Vec::with_capacity(variant.n_children());
 
         for i in 0..variant.n_children() {
@@ -636,6 +640,17 @@ impl<T: StaticVariantType> StaticVariantType for Vec<T> {
     }
 }
 
+#[test]
+fn test_regression_from_variant_panics() {
+    let variant = "text".to_variant();
+    let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
+    assert!(hashmap.is_none());
+
+    let variant = HashMap::<u64, u64>::new().to_variant();
+    let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
+    assert!(hashmap.is_some());
+}
+
 impl<K, V, H> FromVariant for HashMap<K, V, H>
 where
     K: FromVariant + Eq + Hash,
@@ -643,6 +658,10 @@ where
     H: BuildHasher + Default,
 {
     fn from_variant(variant: &Variant) -> Option<Self> {
+        if !variant.is_container() {
+            return None;
+        }
+
         let mut map = HashMap::default();
 
         for i in 0..variant.n_children() {
