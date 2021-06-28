@@ -462,8 +462,8 @@ mod tests {
     fn ne() {
         let ty1 = VariantTy::new("((iii)s)").unwrap();
         let ty2 = VariantTy::new("((iii)o)").unwrap();
-        assert!(ty1 != ty2);
-        assert!(ty1 != "((iii)o)");
+        assert_ne!(ty1, ty2);
+        assert_ne!(ty1, "((iii)o)");
         unsafe {
             assert!(!equal(ty1.as_ptr(), ty2.as_ptr()));
         }

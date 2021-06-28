@@ -166,13 +166,13 @@ mod tests {
     #[test]
     fn valid_matrix_try_invert() {
         let matrix = Matrix::identity();
-        assert!(matrix.try_invert().unwrap() == Matrix::identity());
+        assert_eq!(matrix.try_invert().unwrap(), Matrix::identity());
     }
 
     #[test]
     fn valid_matrix_invert() {
         let mut matrix = Matrix::identity();
         matrix.invert();
-        assert!(matrix == Matrix::identity());
+        assert_eq!(matrix, Matrix::identity());
     }
 }

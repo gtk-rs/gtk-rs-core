@@ -187,7 +187,7 @@ fn fnmut_callback_wrapper_local(
 /// `func` will be called repeatedly until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 #[doc(alias = "g_idle_add_full")]
 pub fn idle_add<F>(func: F) -> SourceId
 where
@@ -208,7 +208,7 @@ where
 /// `func` will be called repeatedly until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// In comparison to `idle_add()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
@@ -225,7 +225,7 @@ where
 /// `func` will be called repeatedly until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `idle_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -253,7 +253,7 @@ where
 /// `func` will be called repeatedly until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `idle_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -280,7 +280,7 @@ where
 /// precision is not necessary.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 #[doc(alias = "g_timeout_add_full")]
 pub fn timeout_add<F>(interval: Duration, func: F) -> SourceId
 where
@@ -306,7 +306,7 @@ where
 /// precision is not necessary.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// In comparison to `timeout_add()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
@@ -327,7 +327,7 @@ where
 /// precision is not necessary.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `timeout_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -360,7 +360,7 @@ where
 /// precision is not necessary.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `timeout_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -386,7 +386,7 @@ where
 /// be delayed by other events.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 #[doc(alias = "g_timeout_add_seconds_full")]
 pub fn timeout_add_seconds<F>(interval: u32, func: F) -> SourceId
 where
@@ -411,7 +411,7 @@ where
 /// be delayed by other events.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// In comparison to `timeout_add_seconds()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
@@ -431,7 +431,7 @@ where
 /// be delayed by other events.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `timeout_add_seconds()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -463,7 +463,7 @@ where
 /// be delayed by other events.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `timeout_add_seconds()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -536,7 +536,7 @@ where
 /// returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 #[doc(alias = "g_unix_signal_add_full")]
 pub fn unix_signal_add<F>(signum: i32, func: F) -> SourceId
 where
@@ -561,7 +561,7 @@ where
 /// returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// In comparison to `unix_signal_add()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
@@ -581,7 +581,7 @@ where
 /// returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `unix_signal_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -613,7 +613,7 @@ where
 /// returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `unix_signal_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.
@@ -640,7 +640,7 @@ where
 /// until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 #[doc(alias = "g_unix_fd_add_full")]
 pub fn unix_fd_add<F>(fd: RawFd, condition: IOCondition, func: F) -> SourceId
 where
@@ -667,7 +667,7 @@ where
 /// until it returns `Continue(false)`.
 ///
 /// The default main loop almost always is the main loop of the main thread.
-/// Thus the closure is called on the main thread.
+/// Thus, the closure is called on the main thread.
 ///
 /// Different to `unix_fd_add()`, this does not require `func` to be
 /// `Send` but can only be called from the thread that owns the main context.

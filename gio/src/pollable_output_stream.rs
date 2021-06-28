@@ -199,14 +199,14 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         }
     }
 
-    fn poll_close(self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
+    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
         let stream = unsafe { Pin::get_unchecked_mut(self) };
 
         let rx = if let Some(ref mut rx) = stream.1 {
             rx
         } else {
             let (tx, rx) = oneshot::channel();
-            stream.0.as_ref().close_async(
+            stream.0.as_ref().flush_async(
                 glib::PRIORITY_DEFAULT,
                 crate::NONE_CANCELLABLE,
                 move |res| {
@@ -231,14 +231,14 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         }
     }
 
-    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
         let stream = unsafe { Pin::get_unchecked_mut(self) };
 
         let rx = if let Some(ref mut rx) = stream.1 {
             rx
         } else {
             let (tx, rx) = oneshot::channel();
-            stream.0.as_ref().flush_async(
+            stream.0.as_ref().close_async(
                 glib::PRIORITY_DEFAULT,
                 crate::NONE_CANCELLABLE,
                 move |res| {

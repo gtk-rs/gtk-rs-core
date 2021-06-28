@@ -66,7 +66,7 @@ impl VariantDict {
     ///
     /// This will return `None` if the `key` is not present in the dictionary
     /// or if it is present but the type of the value does not match a given
-    /// `expected_type`.  Otherwise `Some(value)` will be returned where
+    /// `expected_type`.  Otherwise, `Some(value)` will be returned where
     /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
     #[doc(alias = "g_variant_dict_lookup_value")]
     pub fn lookup_value(&self, key: &str, expected_type: Option<&VariantTy>) -> Option<Variant> {
@@ -161,7 +161,7 @@ impl VariantDict {
     /// and then reinitialises itself in order to be safe for further use.
     ///
     /// If you are certain that nothing other than disposing of references will
-    /// be done subsequent to ending the instance, you can call the
+    /// be done after ending the instance, you can call the
     /// [`end_unsafe()`](#method.end_unsafe) method instead to avoid the unnecessary
     /// reinitialisation of the dictionary.
     pub fn end(&self) -> Variant {

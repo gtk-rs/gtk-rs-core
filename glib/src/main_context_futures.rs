@@ -34,7 +34,7 @@ impl Future for FutureWrapper {
 }
 
 // The TaskSource and WakerSource are split up as the TaskSource
-// must only be finalized on the thread that owns the main context
+// must only be finalized on the thread that owns the main context,
 // but the WakerSource is passed around to arbitrary threads for
 // being able to wake up the TaskSource.
 //

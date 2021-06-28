@@ -35,7 +35,7 @@ impl ArgumentList {
     pub fn remove(&mut self, idx: usize) {
         unsafe {
             let n_args = glib::ffi::g_strv_length(*self.ptr) as usize;
-            assert!(n_args == self.items.len());
+            assert_eq!(n_args, self.items.len());
             assert!(idx < n_args);
 
             self.items.remove(idx);
@@ -503,6 +503,22 @@ mod tests {
         impl ObjectImpl for SimpleApplication {}
 
         impl ApplicationImpl for SimpleApplication {
+            fn command_line(
+                &self,
+                _application: &Self::Type,
+                cmd_line: &crate::ApplicationCommandLine,
+            ) -> i32 {
+                let arguments = cmd_line.arguments();
+
+                for arg in arguments {
+                    // TODO: we need https://github.com/rust-lang/rust/issues/49802
+                    let a = arg.into_string().unwrap();
+                    assert!(!a.starts_with("--local-"))
+                }
+
+                EXIT_STATUS
+            }
+
             fn local_command_line(
                 &self,
                 _application: &Self::Type,
@@ -526,22 +542,6 @@ mod tests {
 
                 None
             }
-
-            fn command_line(
-                &self,
-                _application: &Self::Type,
-                cmd_line: &crate::ApplicationCommandLine,
-            ) -> i32 {
-                let arguments = cmd_line.arguments();
-
-                for arg in arguments {
-                    // TODO: we need https://github.com/rust-lang/rust/issues/49802
-                    let a = arg.into_string().unwrap();
-                    assert!(!a.starts_with("--local-"))
-                }
-
-                EXIT_STATUS
-            }
         }
     }
 
@@ -561,6 +561,6 @@ mod tests {
 
         app.set_inactivity_timeout(10000);
 
-        assert!(app.run_with_args(&["--local"]) == EXIT_STATUS);
+        assert_eq!(app.run_with_args(&["--local"]), EXIT_STATUS);
     }
 }

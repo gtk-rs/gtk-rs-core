@@ -85,11 +85,11 @@ impl<T: IsA<IOStream> + std::marker::Unpin> AsyncWrite for IOStreamAsyncReadWrit
         Pin::new(&mut Pin::get_mut(self).write).poll_write(cx, buf)
     }
 
-    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
-        Pin::new(&mut Pin::get_mut(self).write).poll_close(cx)
-    }
-
     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
         Pin::new(&mut Pin::get_mut(self).write).poll_flush(cx)
+    }
+
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
+        Pin::new(&mut Pin::get_mut(self).write).poll_close(cx)
     }
 }

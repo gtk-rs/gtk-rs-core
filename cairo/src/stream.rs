@@ -44,7 +44,7 @@ macro_rules! for_stream_constructors {
         /// Since the former is hard to track for sure, the latter is strongly recommended.
         /// The concrete type behind the `Box<dyn Any>` value returned by `finish_output_stream`
         /// is private, so you won’t be able to downcast it.
-        /// But removing it anyway ensures that later writes do no go through a dangling pointer.
+        /// But removing it anyway ensures that later writes do not go through a dangling pointer.
         pub unsafe fn for_raw_stream<W: io::Write + 'static>(
             width: f64,
             height: f64,
@@ -214,13 +214,13 @@ extern "C" fn write_callback<W: io::Write + 'static>(
             stream:
                 Some((
                     stream,
-                    // Don’t attempt another write if a previous one errored or panicked:
+                    // Don’t attempt another write, if a previous one errored or panicked:
                     io_error @ None,
                 )),
             unwind_payload: unwind_payload @ None,
         } = &mut *mutable
         {
-            // Safety: `write_callback<W>` was instanciated in `Surface::_for_stream`
+            // Safety: `write_callback<W>` was instantiated in `Surface::_for_stream`
             // with a W parameter consistent with the box that was unsized to `Box<dyn Any>`.
             let stream = unsafe { stream.downcast_mut_unchecked::<W>() };
             // Safety: this is the callback contract from cairo’s API
@@ -250,11 +250,11 @@ impl<W: io::Write> io::Write for RawStream<W> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         unsafe { (*self.0.as_ptr()).write(buf) }
     }
-    fn write_all(&mut self, buf: &[u8]) -> io::Result<()> {
-        unsafe { (*self.0.as_ptr()).write_all(buf) }
-    }
     fn flush(&mut self) -> io::Result<()> {
         unsafe { (*self.0.as_ptr()).flush() }
+    }
+    fn write_all(&mut self, buf: &[u8]) -> io::Result<()> {
+        unsafe { (*self.0.as_ptr()).write_all(buf) }
     }
 }
 
