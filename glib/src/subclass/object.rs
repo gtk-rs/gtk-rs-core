@@ -266,6 +266,44 @@ mod test {
         }
 
         impl ObjectImpl for SimpleObject {
+            fn properties() -> &'static [ParamSpec] {
+                use once_cell::sync::Lazy;
+                static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
+                    vec![
+                        crate::ParamSpec::new_string(
+                            "name",
+                            "Name",
+                            "Name of this object",
+                            None,
+                            crate::ParamFlags::READWRITE,
+                        ),
+                        crate::ParamSpec::new_string(
+                            "construct-name",
+                            "Construct Name",
+                            "Construct Name of this object",
+                            None,
+                            crate::ParamFlags::READWRITE | crate::ParamFlags::CONSTRUCT_ONLY,
+                        ),
+                        crate::ParamSpec::new_boolean(
+                            "constructed",
+                            "Constructed",
+                            "True if the constructed() virtual method was called",
+                            false,
+                            crate::ParamFlags::READABLE,
+                        ),
+                        crate::ParamSpec::new_object(
+                            "child",
+                            "Child",
+                            "Child object",
+                            super::ChildObject::static_type(),
+                            crate::ParamFlags::READWRITE,
+                        ),
+                    ]
+                });
+
+                PROPERTIES.as_ref()
+            }
+
             fn signals() -> &'static [super::Signal] {
                 use once_cell::sync::Lazy;
                 static SIGNALS: Lazy<Vec<super::Signal>> = Lazy::new(|| {
@@ -312,44 +350,6 @@ mod test {
                 });
 
                 SIGNALS.as_ref()
-            }
-
-            fn properties() -> &'static [ParamSpec] {
-                use once_cell::sync::Lazy;
-                static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
-                    vec![
-                        crate::ParamSpec::new_string(
-                            "name",
-                            "Name",
-                            "Name of this object",
-                            None,
-                            crate::ParamFlags::READWRITE,
-                        ),
-                        crate::ParamSpec::new_string(
-                            "construct-name",
-                            "Construct Name",
-                            "Construct Name of this object",
-                            None,
-                            crate::ParamFlags::READWRITE | crate::ParamFlags::CONSTRUCT_ONLY,
-                        ),
-                        crate::ParamSpec::new_boolean(
-                            "constructed",
-                            "Constructed",
-                            "True if the constructed() virtual method was called",
-                            false,
-                            crate::ParamFlags::READABLE,
-                        ),
-                        crate::ParamSpec::new_object(
-                            "child",
-                            "Child",
-                            "Child object",
-                            super::ChildObject::static_type(),
-                            crate::ParamFlags::READWRITE,
-                        ),
-                    ]
-                });
-
-                PROPERTIES.as_ref()
             }
 
             fn set_property(

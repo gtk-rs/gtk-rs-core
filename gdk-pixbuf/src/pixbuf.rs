@@ -32,8 +32,8 @@ impl Pixbuf {
         assert!(width > 0, "width must be greater than 0");
         assert!(height > 0, "height must be greater than 0");
         assert!(row_stride > 0, "row_stride must be greater than 0");
-        assert!(
-            bits_per_sample == 8,
+        assert_eq!(
+            bits_per_sample, 8,
             "bits_per_sample == 8 is the only supported value"
         );
 

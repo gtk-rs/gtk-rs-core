@@ -60,6 +60,15 @@ mod imp {
             }
         }
 
+        fn close(
+            &self,
+            _stream: &Self::Type,
+            _cancellable: Option<&crate::Cancellable>,
+        ) -> Result<(), glib::Error> {
+            let _ = self.write.borrow_mut().take();
+            Ok(())
+        }
+
         fn flush(
             &self,
             _stream: &Self::Type,
@@ -83,15 +92,6 @@ mod imp {
                     Some(res) => return res,
                 }
             }
-        }
-
-        fn close(
-            &self,
-            _stream: &Self::Type,
-            _cancellable: Option<&crate::Cancellable>,
-        ) -> Result<(), glib::Error> {
-            let _ = self.write.borrow_mut().take();
-            Ok(())
         }
     }
 

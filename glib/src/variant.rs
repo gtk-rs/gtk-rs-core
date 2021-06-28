@@ -929,7 +929,7 @@ mod tests {
         let v2 = "this is a test".to_variant();
         let v3 = "test".to_variant();
         assert_eq!(v1, v2);
-        assert!(v1 != v3);
+        assert_ne!(v1, v3);
     }
 
     #[test]

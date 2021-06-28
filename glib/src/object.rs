@@ -63,7 +63,7 @@ pub trait UnsafeFrom<T> {
     /// # Safety
     ///
     /// It is the responsibility of the caller to ensure *all* invariants of
-    /// the `T` hold before this is called, and that subsequent to conversion
+    /// the `T` hold before this is called, and that after conversion
     /// to assume nothing other than the invariants of the output.  Implementors
     /// of this must ensure that the invariants of the output type hold.
     unsafe fn unsafe_from(t: T) -> Self;
@@ -612,7 +612,7 @@ macro_rules! glib_object_wrapper {
         $(#[$attr])*
         // Always derive Hash/Ord (and below impl Debug, PartialEq, Eq, PartialOrd) for object
         // types. Due to inheritance and up/downcasting we must implement these by pointer or
-        // otherwise they would potentially give differeny results for the same object depending on
+        // otherwise they would potentially give different results for the same object depending on
         // the type we currently know for it
         #[derive(Clone, Hash, Ord, Eq, Debug)]
         pub struct $name($crate::object::ObjectRef);
@@ -1344,7 +1344,7 @@ pub trait ObjectExt: ObjectType {
         signal_id: SignalId,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
-    /// Emit signal by it's name.
+    /// Emit signal by its name.
     fn emit_by_name<'a, N: Into<&'a str>>(
         &self,
         signal_name: N,
@@ -1449,6 +1449,68 @@ impl<T: ObjectType> ObjectExt for T {
         Interface::from_class(self.object_class())
     }
 
+    fn set_property<'a, N: Into<&'a str>, V: ToValue>(
+        &self,
+        property_name: N,
+        value: V,
+    ) -> Result<(), BoolError> {
+        let property_name = property_name.into();
+
+        let pspec = match self.find_property(property_name) {
+            Some(pspec) => pspec,
+            None => {
+                return Err(bool_error!(
+                    "property '{}' of type '{}' not found",
+                    property_name,
+                    self.type_()
+                ));
+            }
+        };
+
+        let mut property_value = value.to_value();
+        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
+        unsafe {
+            gobject_ffi::g_object_set_property(
+                self.as_object_ref().to_glib_none().0,
+                property_name.to_glib_none().0,
+                property_value.to_glib_none().0,
+            );
+        }
+
+        Ok(())
+    }
+
+    fn set_property_from_value<'a, N: Into<&'a str>>(
+        &self,
+        property_name: N,
+        value: &Value,
+    ) -> Result<(), BoolError> {
+        let property_name = property_name.into();
+
+        let pspec = match self.find_property(property_name) {
+            Some(pspec) => pspec,
+            None => {
+                return Err(bool_error!(
+                    "property '{}' of type '{}' not found",
+                    property_name,
+                    self.type_()
+                ));
+            }
+        };
+
+        let mut property_value = value.clone();
+        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
+        unsafe {
+            gobject_ffi::g_object_set_property(
+                self.as_object_ref().to_glib_none().0,
+                property_name.to_glib_none().0,
+                property_value.to_glib_none().0,
+            );
+        }
+
+        Ok(())
+    }
+
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) -> Result<(), BoolError> {
         use std::ffi::CString;
 
@@ -1514,68 +1576,6 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
-    fn set_property<'a, N: Into<&'a str>, V: ToValue>(
-        &self,
-        property_name: N,
-        value: V,
-    ) -> Result<(), BoolError> {
-        let property_name = property_name.into();
-
-        let pspec = match self.find_property(property_name) {
-            Some(pspec) => pspec,
-            None => {
-                return Err(bool_error!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
-                    self.type_()
-                ));
-            }
-        };
-
-        let mut property_value = value.to_value();
-        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
-        unsafe {
-            gobject_ffi::g_object_set_property(
-                self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
-                property_value.to_glib_none().0,
-            );
-        }
-
-        Ok(())
-    }
-
-    fn set_property_from_value<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-        value: &Value,
-    ) -> Result<(), BoolError> {
-        let property_name = property_name.into();
-
-        let pspec = match self.find_property(property_name) {
-            Some(pspec) => pspec,
-            None => {
-                return Err(bool_error!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
-                    self.type_()
-                ));
-            }
-        };
-
-        let mut property_value = value.clone();
-        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
-        unsafe {
-            gobject_ffi::g_object_set_property(
-                self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
-                property_value.to_glib_none().0,
-            );
-        }
-
-        Ok(())
-    }
-
     fn property<'a, N: Into<&'a str>>(&self, property_name: N) -> Result<Value, BoolError> {
         let property_name = property_name.into();
 
@@ -1615,6 +1615,27 @@ impl<T: ObjectType> ObjectExt for T {
                 )
             })
         }
+    }
+
+    fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool {
+        self.object_class().has_property(property_name, type_)
+    }
+
+    fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
+        self.object_class().property_type(property_name)
+    }
+
+    fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec> {
+        self.object_class().find_property(property_name)
+    }
+
+    fn list_properties(&self) -> Vec<crate::ParamSpec> {
+        self.object_class().list_properties()
+    }
+
+    fn freeze_notify(&self) -> PropertyNotificationFreezeGuard {
+        unsafe { gobject_ffi::g_object_freeze_notify(self.as_object_ref().to_glib_none().0) };
+        PropertyNotificationFreezeGuard(self.as_object_ref().clone())
     }
 
     unsafe fn set_qdata<QD: 'static>(&self, key: Quark, value: QD) {
@@ -1690,114 +1711,6 @@ impl<T: ObjectType> ObjectExt for T {
                 signal_name.to_glib_none().0,
             );
         }
-    }
-
-    fn disconnect(&self, handler_id: SignalHandlerId) {
-        unsafe {
-            gobject_ffi::g_signal_handler_disconnect(
-                self.as_object_ref().to_glib_none().0,
-                handler_id.as_raw(),
-            );
-        }
-    }
-
-    fn connect_notify<F: Fn(&Self, &crate::ParamSpec) + Send + Sync + 'static>(
-        &self,
-        name: Option<&str>,
-        f: F,
-    ) -> SignalHandlerId {
-        unsafe { self.connect_notify_unsafe(name, f) }
-    }
-
-    fn connect_notify_local<F: Fn(&Self, &crate::ParamSpec) + 'static>(
-        &self,
-        name: Option<&str>,
-        f: F,
-    ) -> SignalHandlerId {
-        let f = crate::ThreadGuard::new(f);
-
-        unsafe {
-            self.connect_notify_unsafe(name, move |s, pspec| {
-                (f.get_ref())(s, pspec);
-            })
-        }
-    }
-
-    unsafe fn connect_notify_unsafe<F: Fn(&Self, &crate::ParamSpec)>(
-        &self,
-        name: Option<&str>,
-        f: F,
-    ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_trampoline<P, F: Fn(&P, &crate::ParamSpec)>(
-            this: *mut gobject_ffi::GObject,
-            param_spec: *mut gobject_ffi::GParamSpec,
-            f: ffi::gpointer,
-        ) where
-            P: ObjectType,
-        {
-            let f: &F = &*(f as *const F);
-            f(
-                Object::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(param_spec),
-            )
-        }
-
-        let signal_name = if let Some(name) = name {
-            format!("notify::{}\0", name)
-        } else {
-            "notify\0".into()
-        };
-
-        let f: Box<F> = Box::new(f);
-        crate::signal::connect_raw(
-            self.as_object_ref().to_glib_none().0,
-            signal_name.as_ptr() as *const _,
-            Some(mem::transmute::<_, unsafe extern "C" fn()>(
-                notify_trampoline::<Self, F> as *const (),
-            )),
-            Box::into_raw(f),
-        )
-    }
-
-    fn notify<'a, N: Into<&'a str>>(&self, property_name: N) {
-        let property_name = property_name.into();
-
-        unsafe {
-            gobject_ffi::g_object_notify(
-                self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
-            );
-        }
-    }
-
-    fn notify_by_pspec(&self, pspec: &crate::ParamSpec) {
-        unsafe {
-            gobject_ffi::g_object_notify_by_pspec(
-                self.as_object_ref().to_glib_none().0,
-                pspec.to_glib_none().0,
-            );
-        }
-    }
-
-    fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool {
-        self.object_class().has_property(property_name, type_)
-    }
-
-    fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
-        self.object_class().property_type(property_name)
-    }
-
-    fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec> {
-        self.object_class().find_property(property_name)
-    }
-
-    fn list_properties(&self) -> Vec<crate::ParamSpec> {
-        self.object_class().list_properties()
-    }
-
-    fn freeze_notify(&self) -> PropertyNotificationFreezeGuard {
-        unsafe { gobject_ffi::g_object_freeze_notify(self.as_object_ref().to_glib_none().0) };
-        PropertyNotificationFreezeGuard(self.as_object_ref().clone())
     }
 
     fn connect<'a, N, F>(
@@ -2027,6 +1940,74 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    fn emit_with_values(
+        &self,
+        signal_id: SignalId,
+        args: &[Value],
+    ) -> Result<Option<Value>, BoolError> {
+        unsafe {
+            let type_ = self.type_();
+
+            let signal_query = signal_id.query();
+
+            let self_v = {
+                let mut v = Value::uninitialized();
+                gobject_ffi::g_value_init(v.to_glib_none_mut().0, self.type_().into_glib());
+                gobject_ffi::g_value_set_object(
+                    v.to_glib_none_mut().0,
+                    self.as_object_ref().to_glib_none().0,
+                );
+                v
+            };
+
+            let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
+                .collect::<smallvec::SmallVec<[_; 10]>>();
+
+            let signal_detail = validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+
+            let mut return_value = Value::uninitialized();
+            if signal_query.return_type() != Type::UNIT {
+                gobject_ffi::g_value_init(
+                    return_value.to_glib_none_mut().0,
+                    signal_query.return_type().into_glib(),
+                );
+            }
+
+            gobject_ffi::g_signal_emitv(
+                mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
+                signal_id.into_glib(),
+                signal_detail.into_glib(),
+                return_value.to_glib_none_mut().0,
+            );
+
+            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+        }
+    }
+
+    fn emit_by_name<'a, N: Into<&'a str>>(
+        &self,
+        signal_name: N,
+        args: &[&dyn ToValue],
+    ) -> Result<Option<Value>, BoolError> {
+        let signal_name: &str = signal_name.into();
+        let type_ = self.type_();
+        let signal_id = SignalId::lookup(signal_name, type_)
+            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
+        self.emit(signal_id, args)
+    }
+
+    fn emit_by_name_with_values<'a, N: Into<&'a str>>(
+        &self,
+        signal_name: N,
+        args: &[Value],
+    ) -> Result<Option<Value>, BoolError> {
+        let signal_name: &str = signal_name.into();
+        let type_ = self.type_();
+        let signal_id = SignalId::lookup(signal_name, type_)
+            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
+        self.emit_with_values(signal_id, args)
+    }
+
     fn emit_with_details(
         &self,
         signal_id: SignalId,
@@ -2076,104 +2057,6 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn emit_by_name<'a, N: Into<&'a str>>(
-        &self,
-        signal_name: N,
-        args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
-        let signal_name: &str = signal_name.into();
-        let type_ = self.type_();
-        let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.emit(signal_id, args)
-    }
-
-    fn downgrade(&self) -> WeakRef<T> {
-        unsafe {
-            let w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
-            gobject_ffi::g_weak_ref_init(
-                mut_override(&*w.0),
-                self.as_object_ref().to_glib_none().0,
-            );
-            w
-        }
-    }
-
-    fn bind_property<'a, O: ObjectType, N: Into<&'a str>, M: Into<&'a str>>(
-        &'a self,
-        source_property: N,
-        target: &'a O,
-        target_property: M,
-    ) -> BindingBuilder<'a> {
-        let source_property = source_property.into();
-        let target_property = target_property.into();
-
-        BindingBuilder::new(self, source_property, target, target_property)
-    }
-
-    fn ref_count(&self) -> u32 {
-        let stash = self.as_object_ref().to_glib_none();
-        let ptr: *mut gobject_ffi::GObject = stash.0;
-
-        unsafe { ffi::g_atomic_int_get(&(*ptr).ref_count as *const u32 as *const i32) as u32 }
-    }
-
-    fn emit_with_values(
-        &self,
-        signal_id: SignalId,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
-        unsafe {
-            let type_ = self.type_();
-
-            let signal_query = signal_id.query();
-
-            let self_v = {
-                let mut v = Value::uninitialized();
-                gobject_ffi::g_value_init(v.to_glib_none_mut().0, self.type_().into_glib());
-                gobject_ffi::g_value_set_object(
-                    v.to_glib_none_mut().0,
-                    self.as_object_ref().to_glib_none().0,
-                );
-                v
-            };
-
-            let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
-                .collect::<smallvec::SmallVec<[_; 10]>>();
-
-            let signal_detail = validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
-
-            let mut return_value = Value::uninitialized();
-            if signal_query.return_type() != Type::UNIT {
-                gobject_ffi::g_value_init(
-                    return_value.to_glib_none_mut().0,
-                    signal_query.return_type().into_glib(),
-                );
-            }
-
-            gobject_ffi::g_signal_emitv(
-                mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
-                signal_id.into_glib(),
-                signal_detail.into_glib(),
-                return_value.to_glib_none_mut().0,
-            );
-
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
-        }
-    }
-
-    fn emit_by_name_with_values<'a, N: Into<&'a str>>(
-        &self,
-        signal_name: N,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
-        let signal_name: &str = signal_name.into();
-        let type_ = self.type_();
-        let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.emit_with_values(signal_id, args)
-    }
-
     fn emit_with_details_and_values(
         &self,
         signal_id: SignalId,
@@ -2218,6 +2101,123 @@ impl<T: ObjectType> ObjectExt for T {
 
             Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
         }
+    }
+
+    fn disconnect(&self, handler_id: SignalHandlerId) {
+        unsafe {
+            gobject_ffi::g_signal_handler_disconnect(
+                self.as_object_ref().to_glib_none().0,
+                handler_id.as_raw(),
+            );
+        }
+    }
+
+    fn connect_notify<F: Fn(&Self, &crate::ParamSpec) + Send + Sync + 'static>(
+        &self,
+        name: Option<&str>,
+        f: F,
+    ) -> SignalHandlerId {
+        unsafe { self.connect_notify_unsafe(name, f) }
+    }
+
+    fn connect_notify_local<F: Fn(&Self, &crate::ParamSpec) + 'static>(
+        &self,
+        name: Option<&str>,
+        f: F,
+    ) -> SignalHandlerId {
+        let f = crate::ThreadGuard::new(f);
+
+        unsafe {
+            self.connect_notify_unsafe(name, move |s, pspec| {
+                (f.get_ref())(s, pspec);
+            })
+        }
+    }
+
+    unsafe fn connect_notify_unsafe<F: Fn(&Self, &crate::ParamSpec)>(
+        &self,
+        name: Option<&str>,
+        f: F,
+    ) -> SignalHandlerId {
+        unsafe extern "C" fn notify_trampoline<P, F: Fn(&P, &crate::ParamSpec)>(
+            this: *mut gobject_ffi::GObject,
+            param_spec: *mut gobject_ffi::GParamSpec,
+            f: ffi::gpointer,
+        ) where
+            P: ObjectType,
+        {
+            let f: &F = &*(f as *const F);
+            f(
+                Object::from_glib_borrow(this).unsafe_cast_ref(),
+                &from_glib_borrow(param_spec),
+            )
+        }
+
+        let signal_name = if let Some(name) = name {
+            format!("notify::{}\0", name)
+        } else {
+            "notify\0".into()
+        };
+
+        let f: Box<F> = Box::new(f);
+        crate::signal::connect_raw(
+            self.as_object_ref().to_glib_none().0,
+            signal_name.as_ptr() as *const _,
+            Some(mem::transmute::<_, unsafe extern "C" fn()>(
+                notify_trampoline::<Self, F> as *const (),
+            )),
+            Box::into_raw(f),
+        )
+    }
+
+    fn notify<'a, N: Into<&'a str>>(&self, property_name: N) {
+        let property_name = property_name.into();
+
+        unsafe {
+            gobject_ffi::g_object_notify(
+                self.as_object_ref().to_glib_none().0,
+                property_name.to_glib_none().0,
+            );
+        }
+    }
+
+    fn notify_by_pspec(&self, pspec: &crate::ParamSpec) {
+        unsafe {
+            gobject_ffi::g_object_notify_by_pspec(
+                self.as_object_ref().to_glib_none().0,
+                pspec.to_glib_none().0,
+            );
+        }
+    }
+
+    fn downgrade(&self) -> WeakRef<T> {
+        unsafe {
+            let w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
+            gobject_ffi::g_weak_ref_init(
+                mut_override(&*w.0),
+                self.as_object_ref().to_glib_none().0,
+            );
+            w
+        }
+    }
+
+    fn bind_property<'a, O: ObjectType, N: Into<&'a str>, M: Into<&'a str>>(
+        &'a self,
+        source_property: N,
+        target: &'a O,
+        target_property: M,
+    ) -> BindingBuilder<'a> {
+        let source_property = source_property.into();
+        let target_property = target_property.into();
+
+        BindingBuilder::new(self, source_property, target, target_property)
+    }
+
+    fn ref_count(&self) -> u32 {
+        let stash = self.as_object_ref().to_glib_none();
+        let ptr: *mut gobject_ffi::GObject = stash.0;
+
+        unsafe { ffi::g_atomic_int_get(&(*ptr).ref_count as *const u32 as *const i32) as u32 }
     }
 }
 

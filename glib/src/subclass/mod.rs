@@ -25,8 +25,8 @@
 //!     Goat = 0,
 //!     #[genum(name = "The Dog")]
 //!     Dog = 1,
-//!     // name: the name of the GEnumValue (optional, default to the enum name in CamelCase
-//!     // nick: the nick of the GEnumValue (optional, default to the enum name in kebab-case
+//!     // name: the name of the GEnumValue (optional), default to the enum name in CamelCase
+//!     // nick: the nick of the GEnumValue (optional), default to the enum name in kebab-case
 //!     #[genum(name = "The Cat", nick = "chat")]
 //!     Cat = 2,
 //! }

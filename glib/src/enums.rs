@@ -404,7 +404,7 @@ impl FlagsClass {
         }
     }
 
-    /// Sets flags value corresponding to integer `f` in `value`, if part of that flags. If the
+    /// Set flags value corresponding to integer `f` in `value`, if part of that flags. If the
     /// flag is already set, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
@@ -426,7 +426,7 @@ impl FlagsClass {
         }
     }
 
-    /// Sets flags value corresponding to string name `name` in `value`, if part of that flags.
+    /// Set flags value corresponding to string name `name` in `value`, if part of that flags.
     /// If the flag is already set, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
@@ -447,7 +447,7 @@ impl FlagsClass {
         }
     }
 
-    /// Sets flags value corresponding to string nick `nick` in `value`, if part of that flags.
+    /// Set flags value corresponding to string nick `nick` in `value`, if part of that flags.
     /// If the flag is already set, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
@@ -468,7 +468,7 @@ impl FlagsClass {
         }
     }
 
-    /// Unsets flags value corresponding to integer `f` in `value`, if part of that flags.
+    /// Unset flags value corresponding to integer `f` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
@@ -489,7 +489,7 @@ impl FlagsClass {
         }
     }
 
-    /// Unsets flags value corresponding to string name `name` in `value`, if part of that flags.
+    /// Unset flags value corresponding to string name `name` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
@@ -510,7 +510,7 @@ impl FlagsClass {
         }
     }
 
-    /// Unsets flags value corresponding to string nick `nick` in `value`, if part of that flags.
+    /// Unset flags value corresponding to string nick `nick` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
@@ -658,7 +658,7 @@ impl<'a> FlagsBuilder<'a> {
         FlagsBuilder(flags_class, Some(value))
     }
 
-    /// Sets flags corresponding to integer value `f`.
+    /// Set flags corresponding to integer value `f`.
     pub fn set(mut self, f: u32) -> Self {
         if let Some(value) = self.1.take() {
             self.1 = self.0.set(value, f).ok();
@@ -667,7 +667,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
-    /// Sets flags corresponding to string name `name`.
+    /// Set flags corresponding to string name `name`.
     pub fn set_by_name(mut self, name: &str) -> Self {
         if let Some(value) = self.1.take() {
             self.1 = self.0.set_by_name(value, name).ok();
@@ -676,7 +676,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
-    /// Sets flags corresponding to string nick `nick`.
+    /// Set flags corresponding to string nick `nick`.
     pub fn set_by_nick(mut self, nick: &str) -> Self {
         if let Some(value) = self.1.take() {
             self.1 = self.0.set_by_nick(value, nick).ok();
@@ -694,7 +694,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
-    /// Unsets flags corresponding to string name `name`.
+    /// Unset flags corresponding to string name `name`.
     pub fn unset_by_name(mut self, name: &str) -> Self {
         if let Some(value) = self.1.take() {
             self.1 = self.0.unset_by_name(value, name).ok();
@@ -703,7 +703,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
-    /// Unsets flags corresponding to string nick `nick`.
+    /// Unset flags corresponding to string nick `nick`.
     pub fn unset_by_nick(mut self, nick: &str) -> Self {
         if let Some(value) = self.1.take() {
             self.1 = self.0.unset_by_nick(value, nick).ok();

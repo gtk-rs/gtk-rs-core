@@ -143,7 +143,7 @@ mod test {
     }
 
     fn assert_len_close_enough(len_a: usize, len_b: usize) {
-        // It seems cairo randomizies some element IDs which might make one svg slightly
+        // It seems cairo randomizes some element IDs which might make one svg slightly
         // larger than the other. Here we make sure the difference is within ~10%.
         let len_diff = (len_a as isize - len_b as isize).abs() as usize;
         assert!(len_diff < len_b / 10);

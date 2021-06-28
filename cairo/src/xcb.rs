@@ -272,13 +272,13 @@ impl XCBSurface {
         height: i32,
     ) -> Result<Self, Error> {
         unsafe {
-            Ok(Self::from_raw_full(ffi::cairo_xcb_surface_create(
+            Self::from_raw_full(ffi::cairo_xcb_surface_create(
                 connection.to_raw_none(),
                 drawable.to_raw_none(),
                 visual.to_raw_none(),
                 width,
                 height,
-            ))?)
+            ))
         }
     }
 

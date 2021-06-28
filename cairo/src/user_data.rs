@@ -30,7 +30,7 @@ impl<T> UserDataKey<T> {
 // while the borrow still needs to be valid.
 // (Borrowing with `&mut self` would not help as `Self` can be itself reference-counted.)
 //
-// Therefore the value must be reference-counted.
+// Therefore, the value must be reference-counted.
 //
 // We use `Rc` over `Arc` because the types implementing these methods are `!Send` and `!Sync`.
 // See <https://github.com/gtk-rs/cairo/issues/256>
@@ -49,7 +49,7 @@ macro_rules! user_data_methods {
             }
             // Safety:
             //
-            // The destructor’s cast and `from_raw` are symetric
+            // The destructor’s cast and `from_raw` are symmetric
             // with the `into_raw` and cast below.
             // They both transfer ownership of one strong reference:
             // neither of them touches the reference count.
@@ -102,7 +102,7 @@ macro_rules! user_data_methods {
             //   the key used then must live at that address until the end of the process.
             //   Because `UserDataKey<T>` has a non-zero size regardless of `T`,
             //   no other `UserDataKey<U>` value can have the same address.
-            //   Therefore the `T` type was the same then at it is now and `cast` is type-safe.
+            //   Therefore, the `T` type was the same then at it is now and `cast` is type-safe.
             //
             // * Or, it is technically possible that the `set` call was to the C function directly,
             //   with a `cairo_user_data_key_t` in heap-allocated memory that was then freed,
@@ -117,7 +117,7 @@ macro_rules! user_data_methods {
             }
         }
 
-        /// Unattach from `self` the user data associated with `key`, if any.
+        /// Unattached from `self` the user data associated with `key`, if any.
         /// If there is no other `Rc` strong reference, the data is destroyed.
         pub fn remove_user_data<T: 'static>(
             &self,
