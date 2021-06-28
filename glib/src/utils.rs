@@ -211,6 +211,54 @@ pub fn is_canonical_pspec_name(name: &str) -> bool {
     })
 }
 
+#[doc(alias = "g_uri_escape_string")]
+pub fn uri_escape_string(
+    unescaped: &str,
+    reserved_chars_allowed: Option<&str>,
+    allow_utf8: bool,
+) -> crate::GString {
+    unsafe {
+        from_glib_full(ffi::g_uri_escape_string(
+            unescaped.to_glib_none().0,
+            reserved_chars_allowed.to_glib_none().0,
+            allow_utf8.into_glib(),
+        ))
+    }
+}
+
+#[doc(alias = "g_uri_unescape_string")]
+pub fn uri_unescape_string(
+    escaped_string: &str,
+    illegal_characters: Option<&str>,
+) -> Option<crate::GString> {
+    unsafe {
+        from_glib_full(ffi::g_uri_unescape_string(
+            escaped_string.to_glib_none().0,
+            illegal_characters.to_glib_none().0,
+        ))
+    }
+}
+
+#[doc(alias = "g_uri_parse_scheme")]
+pub fn uri_parse_scheme(uri: &str) -> Option<crate::GString> {
+    unsafe { from_glib_full(ffi::g_uri_parse_scheme(uri.to_glib_none().0)) }
+}
+
+#[doc(alias = "g_uri_unescape_segment")]
+pub fn uri_unescape_segment(
+    escaped_string: Option<&str>,
+    escaped_string_end: Option<&str>,
+    illegal_characters: Option<&str>,
+) -> Option<crate::GString> {
+    unsafe {
+        from_glib_full(ffi::g_uri_unescape_segment(
+            escaped_string.to_glib_none().0,
+            escaped_string_end.to_glib_none().0,
+            illegal_characters.to_glib_none().0,
+        ))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::env;
@@ -270,5 +318,27 @@ mod tests {
         } else {
             unreachable!();
         }
+    }
+
+    #[test]
+    fn test_uri_parsing() {
+        use crate::GString;
+        assert_eq!(
+            crate::uri_parse_scheme("foo://bar"),
+            Some(GString::from("foo"))
+        );
+        assert_eq!(crate::uri_parse_scheme("foo"), None);
+
+        let escaped = crate::uri_escape_string("&foo", None, true);
+        assert_eq!(escaped, GString::from("%26foo"));
+
+        let unescaped = crate::uri_unescape_string(escaped.as_str(), None);
+        assert_eq!(unescaped, Some(GString::from("&foo")));
+
+        assert_eq!(
+            crate::uri_unescape_segment(Some("/foo"), None, None),
+            Some(GString::from("/foo"))
+        );
+        assert_eq!(crate::uri_unescape_segment(Some("/foo%"), None, None), None);
     }
 }
