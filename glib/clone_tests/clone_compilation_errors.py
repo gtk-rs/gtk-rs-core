@@ -3,7 +3,6 @@ import os
 import subprocess
 import sys
 
-
 TEST_FILENAME = "tmp_py_file"
 TEST_FOLDER = "clone_tests"
 # Some explanations here: `TESTS` is an array containing tuples of two elements.
@@ -13,64 +12,64 @@ TEST_FOLDER = "clone_tests"
 TESTS = [
     ("clone!(@strong v => @default-return None::<i32>, move || {println!(\"foo\"); 1});", None),
     ("clone!( => move || {})",
-        "If you have nothing to clone, no need to use this macro!"),
+     "If you have nothing to clone, no need to use this macro!"),
     ("clone!(|| {})",
-        "If you have nothing to clone, no need to use this macro!"),
+     "If you have nothing to clone, no need to use this macro!"),
     ("clone!(|a, b| {})",
-        "If you have nothing to clone, no need to use this macro!"),
+     "If you have nothing to clone, no need to use this macro!"),
     ("clone!(@weak a, @weak b => |x| {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a, @weak b => || {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a, @weak b => |x| println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a, @weak b => || println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a => |x| {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a => || {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a => |x| println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak a => || println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@strong self => move |x| {})",
-        "Can't use `self` as variable name. Try storing it in a temporary variable or rename it using `as`."),
+     "Can't use `self` as variable name. Try storing it in a temporary variable or rename it using `as`."),
     ("clone!(@strong self.v => move |x| {})",
-        "Field accesses are not allowed as is, you must rename it!"),
+     "Field accesses are not allowed as is, you must rename it!"),
     ("clone!(@weak v => @default-return false, || {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak v => @default-return false, || println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak v => @default-return false, |bla| {})",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak v => @default-return false, |bla| println!(\"a\"))",
-        "Closure needs to be \"moved\" so please add `move` before closure"),
+     "Closure needs to be \"moved\" so please add `move` before closure"),
     ("clone!(@weak v => default-return false, move || {})",
-        "Missing `@` before `default-return`"),
+     "Missing `@` before `default-return`"),
     ("clone!(@weak v => @default-return false move || {})",
-        "Expected `,` after `@default-return false`"),
+     "Expected `,` after `@default-return false`"),
     ("clone!(@yolo v => move || {})",
-        "Unknown keyword `yolo`, only `weak`, `weak-allow-none` and `strong` are allowed"),
+     "Unknown keyword `yolo`, only `weak`, `weak-allow-none` and `strong` are allowed"),
     ("clone!(v => move || {})",
-        "Unexpected ident `v`: you need to specify if this is a weak or a strong clone."),
+     "Unexpected ident `v`: you need to specify if this is a weak or a strong clone."),
     ("clone!(@strong v => {println!(\"foo\");});",
-        "Missing `move` and closure declaration"),
+     "Missing `move` and closure declaration"),
     ("clone!(@strong v, @default-return lol => move || {println!(\"foo\");});",
-        "`@default-return` should be after `=>`"),
+     "`@default-return` should be after `=>`"),
     ("clone!(@default-return lol, @strong v => move || {println!(\"foo\");});",
-        "`@default-return` should be after `=>`"),
+     "`@default-return` should be after `=>`"),
     # The async part!
     ("clone!(@strong v => async || {println!(\"foo\");});",
-        "Expected `move` after `async`, found `|`"),
+     "Expected `move` after `async`, found `|`"),
     ("clone!(@strong v => async {println!(\"foo\");});",
-        "Expected `move` after `async`, found `{`"),
+     "Expected `move` after `async`, found `{`"),
     ("clone!(@strong v => move || async {println!(\"foo\");});",
-        "Expected `move` after `async`, found `{`"),
+     "Expected `move` after `async`, found `{`"),
     ("clone!(@strong v => move || async println!(\"foo\"););",
-        "Expected `move` after `async`, found `println`"),
+     "Expected `move` after `async`, found `println`"),
     ("clone!(@strong v => move || async move println!(\"foo\"););",
-        "Expected block after `| async move`"),
+     "Expected block after `| async move`"),
 ]
 
 
@@ -83,7 +82,7 @@ def convert_to_string(s):
 def exec_command(command, folder=None):
     child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=folder)
     stdout, stderr = child.communicate()
-    return (child.returncode == 0, convert_to_string(stdout), convert_to_string(stderr))
+    return child.returncode == 0, convert_to_string(stdout), convert_to_string(stderr)
 
 
 def run_test(code, expected_str):
@@ -107,7 +106,7 @@ def run_test(code, expected_str):
                 part += "}"
             x = json.loads(part)
             if (x["reason"] != "compiler-message"
-                or x["message"]["message"] == "aborting due to previous error"):
+                    or x["message"]["message"] == "aborting due to previous error"):
                 continue
             compiler_message = x["message"]
             break

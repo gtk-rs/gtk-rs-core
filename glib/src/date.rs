@@ -52,7 +52,7 @@ impl Date {
     #[doc(alias = "g_date_add_days")]
     pub fn add_days(&mut self, n_days: u32) -> Result<(), BoolError> {
         let julian_days = self.julian();
-        if julian_days == 0 || n_days > std::u32::MAX - julian_days {
+        if julian_days == 0 || n_days > u32::MAX - julian_days {
             Err(bool_error!("Invalid date"))
         } else {
             unsafe {
@@ -75,7 +75,7 @@ impl Date {
     #[doc(alias = "g_date_add_years")]
     pub fn add_years(&mut self, n_years: u16) -> Result<(), BoolError> {
         let year = self.year();
-        if n_years > std::u16::MAX - year {
+        if n_years > u16::MAX - year {
             Err(bool_error!("Invalid date"))
         } else {
             unsafe {

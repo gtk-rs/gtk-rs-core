@@ -104,12 +104,12 @@ impl Device {
         height: f64,
     ) -> Result<Surface, Error> {
         unsafe {
-            Ok(Surface::from_raw_full(ffi::cairo_script_surface_create(
+            Surface::from_raw_full(ffi::cairo_script_surface_create(
                 self.to_raw_none(),
                 content.into(),
                 width,
                 height,
-            ))?)
+            ))
         }
     }
 
@@ -118,12 +118,10 @@ impl Device {
     pub fn surface_create_for_target(&self, target: &Surface) -> Result<Surface, Error> {
         target.status()?;
         unsafe {
-            Ok(Surface::from_raw_full(
-                ffi::cairo_script_surface_create_for_target(
-                    self.to_raw_none(),
-                    target.to_raw_none(),
-                ),
-            )?)
+            Surface::from_raw_full(ffi::cairo_script_surface_create_for_target(
+                self.to_raw_none(),
+                target.to_raw_none(),
+            ))
         }
     }
 

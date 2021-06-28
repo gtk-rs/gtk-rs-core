@@ -7,7 +7,7 @@ use std::ops;
 ///
 /// Note that implementing this trait has to be done especially careful.
 /// It must only be implemented on types where the uniqueness of a reference
-/// can be determined, i.e. the reference count field is accessible and it
+/// can be determined, i.e. the reference count field is accessible, and it
 /// must only have references itself to other types that are `Send`.
 /// `SendUnique` is *not* enough for the other types unless uniqueness of
 /// all of them can be guaranteed, which is e.g. not the case if there's a
@@ -103,7 +103,7 @@ impl<T: SendUnique> SendUniqueCell<T> {
         }
     }
 
-    /// Try extracing the contained object
+    /// Try extracting the contained object
     ///
     /// Borrowing is possible as long as only a single reference
     /// to the object exists, or it is borrowed from the same

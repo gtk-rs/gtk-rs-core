@@ -168,7 +168,7 @@ impl SignalId {
         }
     }
 
-    /// Find a SignalId by it's `name` and the `type` it connects to.
+    /// Find a SignalId by its `name`, and the `type` it connects to.
     #[doc(alias = "g_signal_lookup")]
     pub fn lookup(name: &str, type_: Type) -> Option<Self> {
         unsafe {

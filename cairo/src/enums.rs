@@ -1,8 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::fmt::{self, Debug};
-use std::i32;
-use std::u32;
 
 use crate::error::Error;
 
@@ -2147,6 +2145,6 @@ mod tests {
 
     #[test]
     fn stride_works() {
-        assert!(Format::Rgb24.stride_for_width(1).unwrap() == 4);
+        assert_eq!(Format::Rgb24.stride_for_width(1).unwrap(), 4);
     }
 }

@@ -194,7 +194,7 @@ pub fn mut_override<T>(ptr: *const T) -> *mut T {
 /// Overrides pointer constness.
 ///
 /// Use when the C API need const pointer, but function with `IsA<T>` constraint,
-/// that usaly don't have const pointer conversion.
+/// that usually don't have const pointer conversion.
 pub fn const_override<T>(ptr: *mut T) -> *const T {
     ptr as *const T
 }
@@ -1341,7 +1341,7 @@ pub trait FromGlibPtrFull<P: Ptr>: Sized {
 /// The implementation of this trait as well as the returned type
 /// must satisfy the same constraints together.
 /// They must not take ownership of the underlying value, copy it,
-/// and should not change its rerefence count.
+/// and should not change its reference count.
 /// If it does, it must properly release obtained references.
 ///
 /// The returned value, when dropped,

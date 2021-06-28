@@ -115,7 +115,7 @@ mod test {
         }) {
             Err(_) => panic!(),
             Ok(i) => {
-                assert!(i.get::<i32>().unwrap() == 100);
+                assert_eq!(i.get::<i32>().unwrap(), 100);
             }
         }
     }
@@ -192,7 +192,7 @@ mod test {
                     .downcast::<MySimpleObject>()
                     .unwrap();
 
-                assert!(o.size() == Some(100));
+                assert_eq!(o.size(), Some(100));
             }
         }
     }
