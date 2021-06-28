@@ -25,7 +25,7 @@ unsafe extern "C" fn read_func<R: Read>(
 ) -> cairo_status_t {
     let read_env: &mut ReadEnv<R> = &mut *(closure as *mut ReadEnv<R>);
 
-    // Don’t attempt another read if a previous one errored or panicked:
+    // Don’t attempt another read, if a previous one errored or panicked:
     if read_env.io_error.is_some() || read_env.unwind_payload.is_some() {
         return Error::ReadError.into();
     }
@@ -58,7 +58,7 @@ unsafe extern "C" fn write_func<W: Write>(
 ) -> cairo_status_t {
     let write_env: &mut WriteEnv<W> = &mut *(closure as *mut WriteEnv<W>);
 
-    // Don’t attempt another write if a previous one errored or panicked:
+    // Don’t attempt another write, if a previous one errored or panicked:
     if write_env.io_error.is_some() || write_env.unwind_payload.is_some() {
         return Error::WriteError.into();
     }
@@ -164,17 +164,17 @@ mod tests {
         assert!(r.is_ok());
 
         let mut surface = r.unwrap();
-        assert!(surface.width() == 1);
-        assert!(surface.height() == 1);
-        assert!(surface.format() == Format::Rgb24);
+        assert_eq!(surface.width(), 1);
+        assert_eq!(surface.height(), 1);
+        assert_eq!(surface.format(), Format::Rgb24);
 
         let data = surface.data().unwrap();
         assert!(data.len() >= 3);
 
         let slice = &data[0..3];
-        assert!(slice[0] == 42);
-        assert!(slice[1] == 42);
-        assert!(slice[2] == 42);
+        assert_eq!(slice[0], 42);
+        assert_eq!(slice[1], 42);
+        assert_eq!(slice[2], 42);
     }
 
     #[cfg(not(target_os = "macos"))]

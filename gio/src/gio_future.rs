@@ -68,7 +68,7 @@ where
             // Channel for sending back the GIO async operation
             // result to our future here.
             //
-            // In theory we could directly continue polling the
+            // In theory, we could directly continue polling the
             // corresponding task from the GIO async operation
             // callback, however this would break at the very
             // least the g_main_current_source() API.
@@ -131,7 +131,7 @@ fn thread_id() -> usize {
     THREAD_ID.with(|&x| x)
 }
 
-// Taken from glib-rs but we don't want this to be public API
+// Taken from glib-rs, but we don't want this to be public API
 struct ThreadGuard<T> {
     thread_id: usize,
     value: Option<T>,

@@ -63,7 +63,7 @@ where
 
             // Channel for sending back the Source result to our future here.
             //
-            // In theory we could directly continue polling the
+            // In theory, we could directly continue polling the
             // corresponding task from the Source callback,
             // however this would break at the very least
             // the g_main_current_source() API.

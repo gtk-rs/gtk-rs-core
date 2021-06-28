@@ -41,7 +41,7 @@ pub enum Error {
     #[error("Write Error")]
     #[doc(alias = "STATUS_WRITE_ERROR")]
     WriteError,
-    #[error("Surface Finishied")]
+    #[error("Surface Finished")]
     #[doc(alias = "STATUS_SURFACE_FINISHED")]
     SurfaceFinished,
     #[error("Surface Type Mismatch")]
@@ -101,7 +101,7 @@ pub enum Error {
     #[error("Invalid Weight")]
     #[doc(alias = "STATUS_INVALID_WEIGHT")]
     InvalidWeight,
-    #[error("Ivalid Size")]
+    #[error("Invalid Size")]
     #[doc(alias = "STATUS_INVALID_SIZE")]
     InvalidSize,
     #[error("User Font Not Implemented")]

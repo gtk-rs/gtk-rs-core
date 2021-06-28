@@ -30,7 +30,7 @@ use std::num::TryFromIntError;
 /// The check for whether a Rust `char` (a Unicode scalar value) actually fits in a `libc::c_char` is
 /// done in the `new` function; see its documentation for details.
 ///
-/// The inner `libc::c_char` (which is equivalent to `i8` can be extracted with `.0`, or
+/// The inner `libc::c_char` (which is equivalent to `i8`) can be extracted with `.0`, or
 /// by calling `my_char.into_glib()`.
 ///
 /// # Examples
@@ -99,7 +99,7 @@ impl IntoGlib for Char {
 /// The check for whether a Rust `char` (a Unicode scalar value) actually fits in a `libc::c_uchar` is
 /// done in the `new` function; see its documentation for details.
 ///
-/// The inner `libc::c_uchar` (which is equivalent to `u8` can be extracted with `.0`, or
+/// The inner `libc::c_uchar` (which is equivalent to `u8`) can be extracted with `.0`, or
 /// by calling `my_char.into_glib()`.
 ///
 /// # Examples

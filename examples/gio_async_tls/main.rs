@@ -1,8 +1,6 @@
 use futures::prelude::*;
 use futures::task::{Context, Poll};
-use gio;
 use gio::prelude::*;
-use glib;
 
 use std::io;
 use std::pin::Pin;
@@ -92,11 +90,11 @@ impl AsyncWrite for Connection {
         Pin::new(&mut Pin::get_mut(self).write).poll_write(cx, buf)
     }
 
-    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
-        Pin::new(&mut Pin::get_mut(self).write).poll_close(cx)
-    }
-
     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
         Pin::new(&mut Pin::get_mut(self).write).poll_flush(cx)
+    }
+
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
+        Pin::new(&mut Pin::get_mut(self).write).poll_close(cx)
     }
 }

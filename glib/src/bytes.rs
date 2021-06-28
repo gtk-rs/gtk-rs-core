@@ -215,8 +215,8 @@ mod tests {
         let d = Bytes::from(def);
         assert_eq!(a1, a2);
         assert_eq!(def, d);
-        assert!(a1 != d);
-        assert!(a1 != def);
+        assert_ne!(a1, d);
+        assert_ne!(a1, def);
     }
 
     #[test]

@@ -12,7 +12,7 @@ fn put_pixel_doesnt_overflow() {
     // 'attempt to multiply with overflow', src/pixbuf.rs:274:24
     //
     // release build: thread 'put_pixel_doesnt_overflow' panicked at
-    // 'index out of bounds: the len is 2494800000 but the index is
+    // 'index out of bounds: the len is 2494800000, but the index is
     // 18446744071598664320', src/pixbuf.rs:276:13
 
     pixbuf.put_pixel(20000, 26000, 255, 255, 255, 255);

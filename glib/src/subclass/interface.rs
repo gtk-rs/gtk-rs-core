@@ -68,7 +68,7 @@ pub unsafe trait ObjectInterfaceType {
 
 /// The central trait for defining a `GObject` interface.
 ///
-/// Links together the type name and the interface struct for type registration and allows to hook
+/// Links together the type name, and the interface struct for type registration and allows hooking
 /// into various steps of the type registration and initialization.
 ///
 /// This must only be implemented on `#[repr(C)]` structs and have `gobject_ffi::GTypeInterface` as

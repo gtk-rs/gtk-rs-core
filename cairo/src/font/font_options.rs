@@ -140,8 +140,8 @@ impl FontOptions {
         unsafe {
             let variations = variations.into();
             match variations {
-                Some(ref v) => {
-                    let v = CString::new(*v).unwrap();
+                Some(v) => {
+                    let v = CString::new(v).unwrap();
                     ffi::cairo_font_options_set_variations(self.to_raw_none(), v.as_ptr())
                 }
                 None => {

@@ -30,7 +30,7 @@ pub enum GlibLoggerDomain {
     /// Logs will have no domain specified.
     None,
     /// Logs will use the `target` of the log crate as a domain; this allows
-    /// Rust code like `warn!(target: "my-domain", "...");` to log to the glib
+    /// Rust code, like `warn!(target: "my-domain", "...");` to log to the glib
     /// logger using the specified domain.
     CrateTarget,
     /// Logs will use the crate path as the log domain.
@@ -128,10 +128,7 @@ impl GlibLogger {
         func: Option<&str>,
         message: &str,
     ) {
-        let line_str = match line {
-            None => None,
-            Some(l) => Some(l.to_string()),
-        };
+        let line_str = line.map(|l| l.to_string());
 
         unsafe {
             crate::ffi::g_log_structured_standard(

@@ -710,7 +710,7 @@ mod tests {
             sender.try_send(1).unwrap();
             sender.try_send(2).unwrap();
 
-            // This fills up the channel
+            // This fill up the channel
             assert!(sender.try_send(3).is_err());
             wait_sender.send(()).unwrap();
 

@@ -261,7 +261,7 @@ interface_list_trait!(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S);
 
 /// Type-specific data that is filled in during type creation.
 // FIXME: Once trait bounds other than `Sized` on const fn parameters are stable
-// the content of `TypeData` can be made private and we can add a `const fn new`
+// the content of `TypeData` can be made private, and we can add a `const fn new`
 // for initialization by the `object_subclass_internal!` macro.
 pub struct TypeData {
     #[doc(hidden)]
@@ -407,7 +407,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
 
     /// If this subclass is an abstract class or not.
     ///
-    /// By default all subclasses are non-abstract types but setting this to `true` will create an
+    /// By default, all subclasses are non-abstract types but setting this to `true` will create an
     /// abstract class instead.
     ///
     /// Abstract classes can't be instantiated and require a non-abstract subclass.
@@ -733,7 +733,7 @@ unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject)
 ///
 /// [`object_subclass!`]: ../../macro.object_subclass.html
 pub fn register_type<T: ObjectSubclass>() -> Type {
-    // GLib aligns the type private data to two gsizes so we can't safely store any type there that
+    // GLib aligns the type private data to two gsizes, so we can't safely store any type there that
     // requires a bigger alignment.
     if mem::align_of::<T>() > 2 * mem::size_of::<usize>() {
         panic!(
