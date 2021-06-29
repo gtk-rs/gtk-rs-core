@@ -636,7 +636,7 @@ mod tests {
     fn test_from_glib_container() {
         unsafe {
             let test_a: GString = FromGlibContainer::from_glib_container_num(
-                ffi::g_strdup("hello_world".as_ptr() as *const i8),
+                ffi::g_strdup("hello_world".as_ptr() as *const _),
                 5,
             );
             assert_eq!("hello", test_a.as_str());
@@ -644,16 +644,15 @@ mod tests {
             let test_b: GString = FromGlibContainer::from_glib_none_num("hello_world".as_ptr(), 5);
             assert_eq!("hello", test_b.as_str());
 
-            let test_c: GString = FromGlibContainer::from_glib_none_num(std::ptr::null::<i8>(), 0);
+            let test_c: GString =
+                FromGlibContainer::from_glib_none_num(std::ptr::null::<std::os::raw::c_char>(), 0);
             assert_eq!("", test_c.as_str());
 
             let test_d: GString = FromGlibContainer::from_glib_none_num("".as_ptr(), 0);
             assert_eq!("", test_d.as_str());
 
-            let test_e: GString = FromGlibContainer::from_glib_container_num(
-                ffi::g_strdup(std::ptr::null::<i8>()),
-                0,
-            );
+            let test_e: GString =
+                FromGlibContainer::from_glib_container_num(ffi::g_strdup(std::ptr::null()), 0);
             assert_eq!("", test_e.as_str());
         }
     }
