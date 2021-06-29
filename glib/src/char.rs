@@ -54,6 +54,7 @@ pub struct Char(pub c_char);
 impl TryFrom<char> for Char {
     type Error = TryFromIntError;
 
+    #[allow(clippy::unnecessary_cast)]
     fn try_from(c: char) -> Result<Char, Self::Error> {
         Ok(Self(u8::try_from(u32::from(c))? as c_char))
     }
@@ -66,12 +67,14 @@ impl From<Char> for char {
 }
 
 impl From<u8> for Char {
+    #[allow(clippy::unnecessary_cast)]
     fn from(c: u8) -> Char {
         Char(c as c_char)
     }
 }
 
 impl From<Char> for u8 {
+    #[allow(clippy::unnecessary_cast)]
     fn from(c: Char) -> u8 {
         c.0 as u8
     }
@@ -123,6 +126,7 @@ pub struct UChar(pub c_uchar);
 impl TryFrom<char> for UChar {
     type Error = TryFromIntError;
 
+    #[allow(clippy::unnecessary_cast)]
     fn try_from(c: char) -> Result<UChar, Self::Error> {
         Ok(Self(u8::try_from(u32::from(c))? as c_uchar))
     }
@@ -135,6 +139,7 @@ impl From<UChar> for char {
 }
 
 impl From<u8> for UChar {
+    #[allow(clippy::unnecessary_cast)]
     fn from(c: u8) -> UChar {
         UChar(c as c_uchar)
     }
@@ -168,11 +173,12 @@ mod tests {
     use crate::translate::from_glib;
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn converts_single_byte_chars() {
-        assert_eq!(Char::try_from(0 as char), Ok(Char(0_i8)));
-        assert_eq!(UChar::try_from(0 as char), Ok(UChar(0_u8)));
-        assert_eq!(UChar::try_from(255 as char), Ok(UChar(255_u8)));
-        assert_eq!(UChar::try_from('ñ'), Ok(UChar(241_u8)));
+        assert_eq!(Char::try_from(0 as char), Ok(Char(0 as c_char)));
+        assert_eq!(UChar::try_from(0 as char), Ok(UChar(0 as c_uchar)));
+        assert_eq!(UChar::try_from(255 as char), Ok(UChar(255 as c_uchar)));
+        assert_eq!(UChar::try_from('ñ'), Ok(UChar(241 as c_uchar)));
     }
 
     #[test]
@@ -182,24 +188,28 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn into_i8() {
-        assert_eq!(Char::from(b'A').into_glib(), 65_i8);
+        assert_eq!(Char::from(b'A').into_glib(), 65 as c_char);
     }
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn into_u8() {
-        assert_eq!(UChar::from(b'A').into_glib(), 65_u8);
+        assert_eq!(UChar::from(b'A').into_glib(), 65 as c_uchar);
     }
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn into_char() {
-        assert_eq!(char::from(Char(65_i8)), 'A');
-        assert_eq!('ñ', UChar(241_u8).into());
+        assert_eq!(char::from(Char(65 as c_char)), 'A');
+        assert_eq!('ñ', UChar(241 as c_uchar).into());
     }
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn convert_from_glib() {
-        assert_eq!(Char(65_i8), unsafe { from_glib(65_i8) });
-        assert_eq!(UChar(241_u8), unsafe { from_glib(241_u8) });
+        assert_eq!(Char(65 as c_char), unsafe { from_glib(65 as c_char) });
+        assert_eq!(UChar(241 as c_uchar), unsafe { from_glib(241 as c_uchar) });
     }
 }
