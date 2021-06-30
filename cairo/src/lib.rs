@@ -122,7 +122,7 @@ pub use crate::device::Device;
 
 pub use crate::enums::*;
 
-pub use crate::error::{BorrowError, Error, IoError};
+pub use crate::error::{BorrowError, Error, IoError, Result};
 
 pub use crate::patterns::{
     Gradient, LinearGradient, Mesh, Pattern, RadialGradient, SolidPattern, SurfacePattern,
