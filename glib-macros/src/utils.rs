@@ -161,9 +161,17 @@ pub fn crate_ident_new() -> TokenStream {
         quote!(#glib)
     })
     .unwrap_or_else(|| {
-        proc_macro_error::emit_call_site_warning!(
-            "Can't find glib crate. Please ensure you have a glib in scope"
-        );
+        // We couldn't find the glib crate (renamed or not) so let's just hope it's in scope!
+        //
+        // We will be able to have this information once this code is stable:
+        //
+        // ```
+        // let span = Span::call_site();
+        // let source = span.source_file();
+        // let file_path = source.path();
+        // ```
+        //
+        // Then we can use proc_macro to parse the file and check if glib is imported somehow.
         let glib = Ident::new("glib", Span::call_site());
         quote!(#glib)
     })
