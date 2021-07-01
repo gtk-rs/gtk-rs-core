@@ -246,6 +246,19 @@ where
 }
 
 /// Trait to convert a value to a `Value`.
+///
+/// Similar to other common conversion traits, the following invariants are guaranteed:
+///
+/// - **Invertibility**: `x.to_value().get().unwrap() == x`. In words, [`FromValue`] is the inverse of `ToValue`.
+/// - **Idempotence**: `x.to_value() == x.to_value().to_value()`.
+///   In words, applying `ToValue` multiple times yields the same result as applying it once.
+///   Idempotence also applies the other way around: `value.get::<Value>()` is a no-op.
+///
+/// There is also the possibility to wrap values within values, see [`BoxedValue`]. All (un-)boxing needs to be done
+/// manually, and will be preserved under the conversion methods.
+///
+/// The conversion methods may cause values to be cloned, which may result in reference counter changes or heap allocations depending
+/// on the source and target type.
 pub trait ToValue {
     /// Convert a value to a `Value`.
     fn to_value(&self) -> Value;
@@ -451,6 +464,71 @@ impl From<SendValue> for Value {
 impl Uninitialized for Value {
     unsafe fn uninitialized() -> Value {
         mem::zeroed()
+    }
+}
+
+impl ToValue for Value {
+    fn to_value(&self) -> Value {
+        self.clone()
+    }
+
+    fn value_type(&self) -> Type {
+        self.type_()
+    }
+}
+
+impl<'a> ToValue for &'a Value {
+    fn to_value(&self) -> Value {
+        (*self).clone()
+    }
+
+    fn value_type(&self) -> Type {
+        self.type_()
+    }
+}
+
+pub struct NopChecker;
+
+unsafe impl ValueTypeChecker for NopChecker {
+    type Error = std::convert::Infallible;
+    fn check(_value: &Value) -> Result<(), Self::Error> {
+        Ok(())
+    }
+}
+
+unsafe impl<'a> FromValue<'a> for Value {
+    type Checker = NopChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        value.clone()
+    }
+}
+
+unsafe impl<'a> FromValue<'a> for &'a Value {
+    type Checker = NopChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        value
+    }
+}
+
+impl ToValue for SendValue {
+    fn to_value(&self) -> Value {
+        self.0.clone()
+    }
+
+    fn value_type(&self) -> Type {
+        self.type_()
+    }
+}
+
+impl<'a> ToValue for &'a SendValue {
+    fn to_value(&self) -> Value {
+        self.0.clone()
+    }
+
+    fn value_type(&self) -> Type {
+        self.type_()
     }
 }
 
