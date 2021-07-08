@@ -255,3 +255,5 @@ pub enum BorrowError {
     #[error("Can't get exclusive access")]
     NonExclusive,
 }
+
+pub type Result<T> = std::result::Result<T, Error>;
