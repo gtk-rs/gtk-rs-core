@@ -655,6 +655,20 @@ macro_rules! from_glib {
             }
         }
 
+        impl FromGlibPtrBorrow<*mut gobject_ffi::GValue> for $name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GValue) -> Borrowed<$name> {
+                $crate::translate::from_glib_borrow::<_, $name>(ptr as *mut gobject_ffi::GValue)
+            }
+        }
+
+        impl FromGlibPtrBorrow<*const gobject_ffi::GValue> for $name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GValue) -> Borrowed<$name> {
+                $crate::translate::from_glib_borrow::<_, $name>(ptr as *const gobject_ffi::GValue)
+            }
+        }
+
         impl FromGlibContainerAsVec<*mut gobject_ffi::GValue, *mut *mut gobject_ffi::GValue>
             for $name
         {
