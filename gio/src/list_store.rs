@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::auto::traits::ListModelExt;
+use crate::prelude::*;
 use crate::ListStore;
 use glib::translate::*;
-use glib::{IsA, Object};
+use glib::{Cast, IsA, Object};
 use std::cmp::Ordering;
 
 pub trait ListStoreExtManual {
@@ -15,9 +17,22 @@ pub trait ListStoreExtManual {
 
     #[doc(alias = "g_list_store_sort")]
     fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F);
+
+    /// Returns the item found by `compare_func` or else the inserted `default`.
+    ///
+    /// Call this method only if the list is already sorted in accordance to
+    /// `compare_func`. The search is performed in log time.
+    ///
+    /// ### Panics
+    /// Panics if `T::static_type()` is not of the model’s item type.
+    fn find_or_insert_sorted<T, F, V>(&self, compare_func: F, default: V) -> T
+    where
+        T: IsA<Object>,
+        F: FnMut(&T) -> Ordering,
+        V: FnOnce() -> T;
 }
 
-impl<O: IsA<ListStore>> ListStoreExtManual for O {
+impl<O: IsA<ListStore> + ListModelExt + ListModelExtManual> ListStoreExtManual for O {
     fn insert_sorted<P: IsA<glib::Object>, F: FnMut(&Object, &Object) -> Ordering>(
         &self,
         item: &P,
@@ -51,6 +66,23 @@ impl<O: IsA<ListStore>> ListStoreExtManual for O {
                 func_ptr,
             )
         }
+    }
+
+    fn find_or_insert_sorted<T, F, V>(&self, compare_func: F, default: V) -> T
+    where
+        T: IsA<Object>,
+        F: FnMut(&T) -> Ordering,
+        V: FnOnce() -> T,
+    {
+        let this = self.upcast_ref();
+        let i = match this.find_sorted(compare_func) {
+            Ok(i) => i,
+            Err(i) => {
+                this.insert(i as u32, &default().upcast());
+                i
+            }
+        };
+        this.item(i as u32).unwrap().downcast().unwrap()
     }
 }
 
