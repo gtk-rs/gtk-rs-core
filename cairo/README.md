@@ -6,7 +6,7 @@ __Rust__ bindings for Rust and wrappers for __Cairo__, part of [gtk-rs-core](htt
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.51.0`.
+Currently, the minimum supported Rust version is `1.53.0`.
 
 ## Documentation
 
