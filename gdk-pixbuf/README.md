@@ -4,7 +4,7 @@ __Rust__ bindings and wrappers for __Gdk-Pixbuf__, part of [gtk-rs-core](https:/
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.51.0`.
+Currently, the minimum supported Rust version is `1.53.0`.
 
 ## Documentation
 
