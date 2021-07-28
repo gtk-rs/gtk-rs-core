@@ -167,6 +167,32 @@ impl crate::value::ToValueOptional for Variant {
     }
 }
 
+/// An error returned from the [`try_get`](struct.Variant.html#method.try_get) function
+/// on a [`Variant`](struct.Variant.html) when the expected type does not match the actual type.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct VariantTypeMismatchError {
+    pub actual: VariantType,
+    pub expected: VariantType,
+}
+
+impl VariantTypeMismatchError {
+    pub fn new(actual: VariantType, expected: VariantType) -> Self {
+        Self { actual, expected }
+    }
+}
+
+impl fmt::Display for VariantTypeMismatchError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Type mismatch: Expected '{}' got '{}'",
+            self.expected, self.actual
+        )
+    }
+}
+
+impl std::error::Error for VariantTypeMismatchError {}
+
 impl Variant {
     /// Returns the type of the value.
     pub fn type_(&self) -> &VariantTy {
@@ -185,6 +211,16 @@ impl Variant {
     #[inline]
     pub fn get<T: FromVariant>(&self) -> Option<T> {
         T::from_variant(self)
+    }
+
+    /// Tries to extract a value of type `T`.
+    pub fn try_get<T: FromVariant>(&self) -> Result<T, VariantTypeMismatchError> {
+        self.get().ok_or_else(|| {
+            VariantTypeMismatchError::new(
+                self.type_().to_owned(),
+                (&*T::static_variant_type()).to_owned(),
+            )
+        })
     }
 
     /// Boxes value.
@@ -975,5 +1011,16 @@ mod tests {
             <Vec<(&str, u8, u32)>>::static_variant_type().to_str(),
             "a(syu)"
         );
+    }
+
+    #[test]
+    fn test_get() -> Result<(), Box<dyn std::error::Error>> {
+        let u = 42u32.to_variant();
+        assert!(u.get::<i32>().is_none());
+        assert_eq!(u.get::<u32>().unwrap(), 42);
+        assert!(u.try_get::<i32>().is_err());
+        // Test ? conversion
+        assert_eq!(u.try_get::<u32>()?, 42);
+        Ok(())
     }
 }

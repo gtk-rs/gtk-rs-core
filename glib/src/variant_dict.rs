@@ -59,6 +59,19 @@ impl VariantDict {
         }
     }
 
+    /// Look up a typed value from this `VariantDict`.
+    ///
+    /// The given `key` is looked up in `self`.
+    ///
+    /// This will return `None` if the `key` is not present in the dictionary,
+    /// and an error if the key is present but with the wrong type.
+    #[doc(alias = "g_variant_dict_lookup")]
+    pub fn lookup<T: FromVariant>(&self, key: &str) -> Result<Option<T>, VariantTypeMismatchError> {
+        self.lookup_value(key, None)
+            .map(|v| Variant::try_get(&v))
+            .transpose()
+    }
+
     /// Look up and return a value from this `VariantDict`.
     ///
     /// The given `key` is looked up in `self`.  If `expected_type` is not
@@ -238,6 +251,19 @@ mod test {
         let var: Variant = dict.to_variant();
         let dict = VariantDict::from_variant(&var).expect("Not a dict?");
         assert_eq!(dict.lookup_value("one", None), Some(1u8.to_variant()));
+    }
+
+    #[test]
+    fn lookup() -> Result<(), Box<dyn std::error::Error>> {
+        let dict = VariantDict::default();
+        dict.insert_value("one", &(1u8.to_variant()));
+        assert_eq!(dict.lookup::<u8>("one")?.unwrap(), 1u8);
+        assert_eq!(
+            dict.lookup::<String>("one").err().unwrap().actual,
+            u8::static_variant_type()
+        );
+        assert!(dict.lookup::<u8>("two")?.is_none());
+        Ok(())
     }
 
     #[test]
