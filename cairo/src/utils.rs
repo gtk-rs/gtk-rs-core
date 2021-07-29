@@ -37,13 +37,19 @@ pub struct Version {
 impl Version {
     #[doc(alias = "cairo_version")]
     #[doc(alias = "get_version")]
-    pub fn version() -> Version {
+    pub fn new() -> Version {
         let version = unsafe { ffi::cairo_version() };
         Version {
             major: (version / 10_000 % 100) as _,
             minor: (version / 100 % 100) as _,
             micro: (version % 100) as _,
         }
+    }
+}
+
+impl Default for Version {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -59,6 +65,6 @@ mod tests {
 
     #[test]
     fn check_versions() {
-        assert_eq!(version_string(), Version::version().to_string());
+        assert_eq!(version_string(), Version::new().to_string());
     }
 }
