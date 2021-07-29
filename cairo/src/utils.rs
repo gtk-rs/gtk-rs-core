@@ -37,6 +37,7 @@ pub struct Version {
 impl Version {
     #[doc(alias = "cairo_version")]
     #[doc(alias = "get_version")]
+    #[allow(clippy::self_named_constructor)]
     pub fn version() -> Version {
         let version = unsafe { ffi::cairo_version() };
         Version {
