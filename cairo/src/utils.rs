@@ -37,8 +37,7 @@ pub struct Version {
 impl Version {
     #[doc(alias = "cairo_version")]
     #[doc(alias = "get_version")]
-    #[allow(clippy::self_named_constructor)]
-    pub fn version() -> Version {
+    pub fn new() -> Version {
         let version = unsafe { ffi::cairo_version() };
         Version {
             major: (version / 10_000 % 100) as _,
@@ -60,6 +59,6 @@ mod tests {
 
     #[test]
     fn check_versions() {
-        assert_eq!(version_string(), Version::version().to_string());
+        assert_eq!(version_string(), Version::new().to_string());
     }
 }
