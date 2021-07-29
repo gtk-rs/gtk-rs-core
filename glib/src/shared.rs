@@ -89,8 +89,9 @@ macro_rules! glib_shared_wrapper {
             }
 
             #[inline]
+            #[allow(clippy::no_effect)]
             unsafe fn unref($unref_arg: *mut $ffi_name) {
-                $unref_expr
+                $unref_expr;
             }
         }
 
