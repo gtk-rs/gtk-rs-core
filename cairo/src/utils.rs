@@ -47,6 +47,12 @@ impl Version {
     }
 }
 
+impl Default for Version {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl fmt::Display for Version {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}.{}", self.major, self.minor, self.micro)
