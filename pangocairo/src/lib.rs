@@ -1,15 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-// Take a look at the license at the top of the repository in the LICENSE file.
-
-//! # Rust PangoCairo bindings
-//!
-//! This library contains safe Rust bindings for [PangoCairo](https://docs.gtk.org/PangoCairo).
-//! It is a part of [gtk-rs](https://gtk-rs.org/).
-//!
-//! PangoCairo 1.38 is the lowest supported version for the underlying library.
-
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![doc = include_str!("../README.md")]
 
 pub use cairo;
 pub use ffi;

@@ -1,17 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-//! # Rust GIO bindings
-//!
-//! This library contains safe Rust bindings for [GIO](https://developer.gnome.org/gio/).
-//! It is a part of [gtk-rs](https://gtk-rs.org/).
-//!
-//! GIO 2.48 is the lowest supported version for the underlying library.
-
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::upper_case_acronyms)]
+#![doc = include_str!("../README.md")]
 
 pub use ffi;
 pub use glib;

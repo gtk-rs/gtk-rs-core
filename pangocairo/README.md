@@ -1,6 +1,9 @@
-# pangocairo 
+# Rust PangoCairo bindings
 
-__Rust__ bindings and wrappers for __PangoCairo__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+__Rust__ bindings and wrappers for [PangoCairo](https://docs.gtk.org/PangoCairo),
+part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+
+PangoCairo __1.38__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
