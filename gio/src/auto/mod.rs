@@ -167,6 +167,9 @@ pub use self::inet_address_mask::{InetAddressMask, NONE_INET_ADDRESS_MASK};
 mod inet_socket_address;
 pub use self::inet_socket_address::{InetSocketAddress, NONE_INET_SOCKET_ADDRESS};
 
+mod initable;
+pub use self::initable::{Initable, NONE_INITABLE};
+
 mod input_stream;
 pub use self::input_stream::{InputStream, NONE_INPUT_STREAM};
 
@@ -686,6 +689,7 @@ pub mod traits {
     pub use super::inet_address::InetAddressExt;
     pub use super::inet_address_mask::InetAddressMaskExt;
     pub use super::inet_socket_address::InetSocketAddressExt;
+    pub use super::initable::InitableExt;
     pub use super::input_stream::InputStreamExt;
     pub use super::io_stream::IOStreamExt;
     pub use super::list_model::ListModelExt;

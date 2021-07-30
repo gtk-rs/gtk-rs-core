@@ -3,6 +3,7 @@
 // DO NOT EDIT
 
 use crate::InetAddress;
+use crate::Initable;
 use crate::SocketFamily;
 use glib::object::Cast;
 use glib::object::IsA;
@@ -17,7 +18,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GInetAddressMask")]
-    pub struct InetAddressMask(Object<ffi::GInetAddressMask, ffi::GInetAddressMaskClass>);
+    pub struct InetAddressMask(Object<ffi::GInetAddressMask, ffi::GInetAddressMaskClass>) @implements Initable;
 
     match fn {
         type_ => || ffi::g_inet_address_mask_get_type(),

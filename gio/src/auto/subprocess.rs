@@ -4,6 +4,7 @@
 
 use crate::AsyncResult;
 use crate::Cancellable;
+use crate::Initable;
 use crate::InputStream;
 use crate::OutputStream;
 use crate::SubprocessFlags;
@@ -16,7 +17,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GSubprocess")]
-    pub struct Subprocess(Object<ffi::GSubprocess>);
+    pub struct Subprocess(Object<ffi::GSubprocess>) @implements Initable;
 
     match fn {
         type_ => || ffi::g_subprocess_get_type(),

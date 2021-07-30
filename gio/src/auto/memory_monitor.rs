@@ -2,6 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::Initable;
 use crate::MemoryMonitorWarningLevel;
 use glib::object::Cast;
 use glib::object::IsA;
@@ -14,7 +15,7 @@ use std::mem::transmute;
 
 glib::wrapper! {
     #[doc(alias = "GMemoryMonitor")]
-    pub struct MemoryMonitor(Interface<ffi::GMemoryMonitor, ffi::GMemoryMonitorInterface>);
+    pub struct MemoryMonitor(Interface<ffi::GMemoryMonitor, ffi::GMemoryMonitorInterface>) @requires Initable;
 
     match fn {
         type_ => || ffi::g_memory_monitor_get_type(),
