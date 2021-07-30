@@ -6,7 +6,7 @@ GIO __2.48__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.53.0`.
+Currently, the minimum supported Rust version is `1.54.0`.
 
 ## Documentation
 
