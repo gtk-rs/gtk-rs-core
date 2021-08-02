@@ -362,6 +362,12 @@ impl Variant {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
     }
 
+    /// Returns a copy of the variant in normal form.
+    #[doc(alias = "g_variant_get_normal_form")]
+    pub fn normal_form(&self) -> Self {
+        unsafe { from_glib_full(ffi::g_variant_get_normal_form(self.to_glib_none().0)) }
+    }
+
     /// Determines the number of children in a container GVariant instance.
     #[doc(alias = "g_variant_n_children")]
     pub fn n_children(&self) -> usize {
@@ -976,6 +982,7 @@ mod tests {
         let s = String::from("this is a test");
         let v = s.to_variant();
         assert_eq!(v.get(), Some(s));
+        assert_eq!(v.normal_form(), v);
     }
 
     #[test]
@@ -1005,12 +1012,13 @@ mod tests {
 
     #[test]
     fn test_array() {
-        // Test just the signature for now.
         assert_eq!(<Vec<&str>>::static_variant_type().to_str(), "as");
         assert_eq!(
             <Vec<(&str, u8, u32)>>::static_variant_type().to_str(),
             "a(syu)"
         );
+        let a = ["foo", "bar", "baz"].to_variant();
+        assert_eq!(a.normal_form(), a);
     }
 
     #[test]
