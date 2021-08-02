@@ -3,6 +3,7 @@
 use crate::AttrClass;
 use crate::AttrType;
 use crate::Attribute;
+use crate::FontDescription;
 use crate::Gravity;
 use crate::GravityHint;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
@@ -45,6 +46,11 @@ impl Attribute {
     #[doc(alias = "pango_attr_family_new")]
     pub fn new_family(family: &str) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_family_new(family.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "pango_attr_font_desc_new")]
+    pub fn new_font_desc(desc: &FontDescription) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_font_desc_new(desc.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_attr_font_features_new")]
