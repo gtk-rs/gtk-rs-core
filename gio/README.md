@@ -1,10 +1,12 @@
-# gio
+# Rust GIO bindings
 
-__Rust__ bindings and wrappers for __GIO__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+__Rust__ bindings and wrappers for [GIO](https://developer.gnome.org/gio/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+
+GIO __2.48__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.53.0`.
+Currently, the minimum supported Rust version is `1.54.0`.
 
 ## Documentation
 

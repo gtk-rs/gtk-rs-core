@@ -1,13 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-//! # Rust Graphene bindings
-//!
-//! This library contains safe Rust bindings for [Graphene](https://github.com/ebassi/graphene).
-//! It is a part of [gtk-rs](https://gtk-rs.org/).
-//!
-//! Graphene 2.44 is the lowest supported version for the underlying library.
-
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![doc = include_str!("../README.md")]
 
 pub use ffi;
 pub use glib;

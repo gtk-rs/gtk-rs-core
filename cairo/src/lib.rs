@@ -1,45 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-//! # Cairo bindings
-//!
-//! This library contains safe Rust bindings for [Cairo](https://www.cairographics.org/).
-//! It is a part of [gtk-rs](https://gtk-rs.org/).
-//!
-//! Cairo 1.14 is the lowest supported version for the underlying library.
-//!
-//! # Crate features
-//!
-//! ## Default-on features
-//!
-//! * **use_glib** - Use with [glib](mod@glib)
-//!
-//! ## Fileformat features
-//!
-//! * **png** - Reading and writing PNG images
-//! * **pdf** - Rendering PDF documents
-//! * **svg** - Rendering SVG documents
-//! * **ps** - Rendering PostScript documents
-//!
-//! ## Cairo API version features
-//!
-//! * **v1_16** - Use Cairo 1.16 APIs
-//!
-//! ## Documentation features
-//!
-//! * **dox** - Used to keep system dependent items in documentation
-//!
-//! ## X Window features
-//!
-//! * **xcb** - X Window System rendering using the XCB library
-//! * **xlib** - X Window System rendering using XLib
-//!
-//! ## Windows API features
-//!
-//! * **win32-surface** - Microsoft Windows surface support
-
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::wrong_self_convention)]
+#![doc = include_str!("../README.md")]
 
 pub use ffi;
 #[cfg(feature = "freetype")]

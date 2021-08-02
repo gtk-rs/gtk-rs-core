@@ -1,18 +1,48 @@
-# cairo 
+# Cairo bindings
 
-__Rust__ bindings for Rust and wrappers for __Cairo__, part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+__Rust__ bindings for Rust and wrappers for [Cairo](https://www.cairographics.org/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 ![screenshot](https://guillaume-gomez.fr/image/cairo.png)
 
+Cairo __1.14__ is the lowest supported version for the underlying library.
+
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.53.0`.
+Currently, the minimum supported Rust version is `1.54.0`.
+
+## Default-on features
+
+* **use_glib** - Use with [glib](mod@glib)
+
+## Fileformat features
+
+ * **png** - Reading and writing PNG images
+ * **pdf** - Rendering PDF documents
+ * **svg** - Rendering SVG documents
+ * **ps** - Rendering PostScript documents
+
+## Cairo API version features
+
+ * **v1_16** - Use Cairo 1.16 APIs
 
 ## Documentation
 
  * [Rust API - Stable](https://gtk-rs.org/gtk-rs-core/stable/latest/docs/cairo)
  * [Rust API - Development](https://gtk-rs.org/gtk-rs-core/git/docs/cairo)
  * [C API](https://www.cairographics.org/documentation/)
+
+## Documentation features
+
+ * **dox** - Used to keep system dependent items in documentation
+
+## X Window features
+
+ * **xcb** - X Window System rendering using the XCB library
+ * **xlib** - X Window System rendering using XLib
+
+## Windows API features
+
+ * **win32-surface** - Microsoft Windows surface support
 
 ## Using
 
