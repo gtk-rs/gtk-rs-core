@@ -247,10 +247,24 @@ impl Variant {
     #[doc(alias = "get_child_value")]
     #[doc(alias = "g_variant_get_child_value")]
     pub fn child_value(&self, index: usize) -> Variant {
-        assert!(index < self.n_children());
         assert!(self.is_container());
+        assert!(index < self.n_children());
 
         unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) }
+    }
+
+    /// Try to read a child item out of a container `Variant` instance.
+    ///
+    /// It returns `None` if `self` is not a container type or if the given
+    /// `index` is larger than number of children.
+    pub fn try_child_value(&self, index: usize) -> Option<Variant> {
+        if !(self.is_container() && index < self.n_children()) {
+            return None;
+        }
+
+        let v =
+            unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) };
+        Some(v)
     }
 
     /// Tries to extract a `&str`.
@@ -1030,5 +1044,14 @@ mod tests {
         // Test ? conversion
         assert_eq!(u.try_get::<u32>()?, 42);
         Ok(())
+    }
+
+    #[test]
+    fn test_try_child_value() {
+        let a = ["foo"].to_variant();
+        assert!(a.try_child_value(0).is_some());
+        assert!(a.try_child_value(1).is_none());
+        let u = 42u32.to_variant();
+        assert!(u.try_child_value(0).is_none());
     }
 }
