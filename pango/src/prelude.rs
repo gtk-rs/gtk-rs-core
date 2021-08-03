@@ -2,6 +2,7 @@
 
 //! Traits and essential types intended for blanket imports.
 
+pub use crate::attribute::IsAttribute;
 pub use crate::auto::traits::*;
 #[doc(hidden)]
 pub use glib::prelude::*;
