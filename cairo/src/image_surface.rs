@@ -107,6 +107,25 @@ impl ImageSurface {
         }
     }
 
+    pub fn take_data(self) -> Result<ImageSurfaceDataOwned, BorrowError> {
+        unsafe {
+            if ffi::cairo_surface_get_reference_count(self.to_raw_none()) > 1 {
+                return Err(BorrowError::NonExclusive);
+            }
+
+            self.flush();
+            let status = ffi::cairo_surface_status(self.to_raw_none());
+            if let Some(err) = status_to_result(status).err() {
+                return Err(BorrowError::from(err));
+            }
+            if ffi::cairo_image_surface_get_data(self.to_raw_none()).is_null() || is_finished(&self)
+            {
+                return Err(BorrowError::from(Error::SurfaceFinished));
+            }
+            Ok(ImageSurfaceDataOwned { surface: self })
+        }
+    }
+
     pub fn with_data<F: FnOnce(&[u8])>(&self, f: F) -> Result<(), BorrowError> {
         self.flush();
         unsafe {
@@ -146,6 +165,46 @@ impl ImageSurface {
     #[doc(alias = "get_width")]
     pub fn width(&self) -> i32 {
         unsafe { ffi::cairo_image_surface_get_width(self.to_raw_none()) }
+    }
+}
+
+pub struct ImageSurfaceDataOwned {
+    surface: ImageSurface,
+}
+
+impl AsRef<[u8]> for ImageSurfaceDataOwned {
+    fn as_ref(&self) -> &[u8] {
+        let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
+        unsafe {
+            let ptr = ffi::cairo_image_surface_get_data(self.surface.to_raw_none());
+            debug_assert!(!ptr.is_null());
+            slice::from_raw_parts(ptr, len)
+        }
+    }
+}
+
+impl AsMut<[u8]> for ImageSurfaceDataOwned {
+    fn as_mut(&mut self) -> &mut [u8] {
+        let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
+        unsafe {
+            let ptr = ffi::cairo_image_surface_get_data(self.surface.to_raw_none());
+            debug_assert!(!ptr.is_null());
+            slice::from_raw_parts_mut(ptr, len)
+        }
+    }
+}
+
+impl Deref for ImageSurfaceDataOwned {
+    type Target = [u8];
+
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
+
+impl DerefMut for ImageSurfaceDataOwned {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.as_mut()
     }
 }
 
@@ -239,5 +298,16 @@ mod tests {
         surf.finish();
 
         assert!(surf.data().is_err());
+    }
+
+    #[test]
+    fn create_from_owned() {
+        let result = ImageSurface::create(Format::ARgb32, 10, 10);
+        assert!(result.is_ok());
+        let image_surface = result.unwrap();
+        let stride = image_surface.stride();
+        let data = image_surface.take_data().unwrap();
+        let second = ImageSurface::create_for_data(data, Format::ARgb32, 10, 10, stride);
+        assert!(second.is_ok())
     }
 }
