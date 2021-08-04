@@ -34,6 +34,16 @@
 //! assert_eq!(hello.str(), Some("Hello!"));
 //! assert_eq!(num.str(), None);
 //!
+//! // `bytes` tries to borrow a byte array (GVariant type `ay`),
+//! // rather than creating a deep copy which would be expensive for
+//! // nontrivially sized byte arrays.
+//! // The test data here is the zstd compression header, which
+//! // stands in for arbitrary binary data (e.g. not UTF-8).
+//! let bufdata = b"\xFD\x2F\xB5\x28";
+//! let bufv = bufdata.to_variant();
+//! assert_eq!(bufv.bytes().unwrap(), bufdata);
+//! assert!(num.bytes().is_err());
+//!
 //! // Variant carrying a Variant
 //! let variant = Variant::from_variant(&hello);
 //! let variant = variant.as_variant().unwrap();
@@ -286,6 +296,28 @@ impl Variant {
                     Some(ret)
                 }
                 _ => None,
+            }
+        }
+    }
+
+    /// Tries to extract a `&[u8]` from a variant of type `ay` (array of bytes).
+    ///
+    /// Returns an error if the type is not `ay`.
+    pub fn bytes(&self) -> Result<&[u8], VariantTypeMismatchError> {
+        unsafe {
+            let t = self.type_();
+            let expected_ty = &*Vec::<u8>::static_variant_type();
+            if t == expected_ty {
+                let selfv = self.to_glib_none();
+                let len = ffi::g_variant_get_size(selfv.0);
+                let ptr = ffi::g_variant_get_data(selfv.0);
+                let ret = slice::from_raw_parts(ptr as *const u8, len as usize);
+                Ok(ret)
+            } else {
+                Err(VariantTypeMismatchError {
+                    actual: t.to_owned(),
+                    expected: expected_ty.to_owned(),
+                })
             }
         }
     }
@@ -989,6 +1021,15 @@ mod tests {
         let s = "this is a test";
         let v = s.to_variant();
         assert_eq!(v.str(), Some(s));
+        assert_eq!(42u32.to_variant().str(), None);
+    }
+
+    #[test]
+    fn test_bytes() {
+        let b = b"this is a test";
+        let v = b.to_variant();
+        assert_eq!(v.bytes().unwrap(), b);
+        assert!(42u32.to_variant().bytes().is_err());
     }
 
     #[test]
