@@ -218,7 +218,7 @@ impl Variant {
         self.get().ok_or_else(|| {
             VariantTypeMismatchError::new(
                 self.type_().to_owned(),
-                (&*T::static_variant_type()).to_owned(),
+                T::static_variant_type().into_owned(),
             )
         })
     }
