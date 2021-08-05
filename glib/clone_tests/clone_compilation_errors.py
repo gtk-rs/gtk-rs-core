@@ -130,6 +130,9 @@ def run_test(code, expected_str):
 
 
 def run_tests():
+    if not exec_command(["cp", "../../Cargo.lock", "."], TEST_FOLDER):
+        print("Failed to copy workspace `Cargo.lock` file, aborting...")
+        return 1
     print("About to start the tests on the clone! macro.")
     print("It might be slow to run the first one since cargo has to build dependencies...")
     print("")
@@ -161,6 +164,7 @@ path = "{0}.rs"
             print(" OK")
     print("Ran {} tests, got {} failure{}".format(len(TESTS), errors, "s" if errors > 1 else ""))
     os.remove("{}/Cargo.toml".format(TEST_FOLDER))
+    os.remove("{}/Cargo.lock".format(TEST_FOLDER))
     return errors
 
 
