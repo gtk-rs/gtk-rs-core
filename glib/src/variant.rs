@@ -98,9 +98,9 @@ use crate::gstring::GString;
 use crate::translate::*;
 use crate::StaticType;
 use crate::Type;
-use crate::VariantIter;
 use crate::VariantTy;
 use crate::VariantType;
+use crate::{VariantIter, VariantStrIter};
 use std::borrow::Cow;
 use std::cmp::{Eq, Ordering, PartialEq, PartialOrd};
 use std::collections::HashMap;
@@ -450,10 +450,44 @@ impl Variant {
     }
 
     /// Create an iterator over items in the variant.
+    ///
+    /// Note that this heap allocates a variant for each element,
+    /// which can be particularly expensive for large arrays.
     pub fn iter(&self) -> VariantIter {
         assert!(self.is_container());
 
         VariantIter::new(self.clone())
+    }
+
+    /// Create an iterator over borrowed strings from a GVariant of type `as` (array of string).
+    ///
+    /// This will fail if the variant is not an array of with
+    /// the expected child type.
+    ///
+    /// A benefit of this API over [`Self::iter()`] is that it
+    /// minimizes allocation, and provides strongly typed access.
+    ///
+    /// ```
+    /// # use glib::prelude::*;
+    /// let strs = &["foo", "bar"];
+    /// let strs_variant: glib::Variant = strs.to_variant();
+    /// for s in strs_variant.array_iter_str()? {
+    ///     println!("{}", s);
+    /// }
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn array_iter_str(&self) -> Result<VariantStrIter, VariantTypeMismatchError> {
+        let child_ty = String::static_variant_type();
+        let actual_ty = self.type_();
+        let expected_ty = child_ty.with_array();
+        if actual_ty != expected_ty {
+            return Err(VariantTypeMismatchError {
+                actual: actual_ty.to_owned(),
+                expected: expected_ty,
+            });
+        }
+
+        Ok(VariantStrIter::new(self))
     }
 
     /// Variant has a container type.
@@ -701,12 +735,7 @@ impl<T: StaticVariantType + FromVariant> FromVariant for Option<T> {
 
 impl<T: StaticVariantType> StaticVariantType for [T] {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let child_type = T::static_variant_type();
-        let signature = format!("a{}", child_type.to_str());
-
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+        T::static_variant_type().with_array().into()
     }
 }
 
@@ -1101,6 +1130,9 @@ mod tests {
         );
         let a = ["foo", "bar", "baz"].to_variant();
         assert_eq!(a.normal_form(), a);
+        assert_eq!(a.array_iter_str().unwrap().len(), 3);
+        let o = 0u32.to_variant();
+        assert!(o.array_iter_str().is_err());
     }
 
     #[test]

@@ -193,6 +193,11 @@ impl VariantTy {
     pub fn to_str(&self) -> &str {
         &self.inner
     }
+
+    /// Return this type as an array.
+    pub(crate) fn with_array(&self) -> VariantType {
+        VariantType::new(&format!("a{}", self.to_str())).expect("invalid variant signature")
+    }
 }
 
 unsafe impl Sync for VariantTy {}

@@ -6,6 +6,7 @@
 
 use std::iter::{DoubleEndedIterator, ExactSizeIterator, Iterator};
 
+use crate::translate::*;
 use crate::variant::Variant;
 
 /// Iterator over items in a variant.
@@ -59,6 +60,73 @@ impl DoubleEndedIterator for VariantIter {
 
 impl ExactSizeIterator for VariantIter {}
 
+/// Iterator over items in a variant of type `as`.
+#[derive(Debug)]
+pub struct VariantStrIter<'a> {
+    variant: &'a Variant,
+    head: usize,
+    tail: usize,
+}
+
+impl<'a> VariantStrIter<'a> {
+    pub(crate) fn new(variant: &'a Variant) -> Self {
+        let tail = variant.n_children();
+        Self {
+            variant,
+            head: 0,
+            tail,
+        }
+    }
+
+    fn impl_get(&self, i: usize) -> &'a str {
+        unsafe {
+            let p: *mut libc::c_char = std::ptr::null_mut();
+            let s = b"&s\0";
+            ffi::g_variant_get_child(
+                self.variant.to_glib_none().0,
+                i,
+                s as *const u8 as *const i8,
+                &p,
+                std::ptr::null::<i8>(),
+            );
+            let p = std::ffi::CStr::from_ptr(p);
+            p.to_str().unwrap()
+        }
+    }
+}
+
+impl<'a> Iterator for VariantStrIter<'a> {
+    type Item = &'a str;
+
+    fn next(&mut self) -> Option<&'a str> {
+        if self.head == self.tail {
+            None
+        } else {
+            let v = self.impl_get(self.head);
+            self.head += 1;
+            Some(v)
+        }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let size = self.tail - self.head;
+        (size, Some(size))
+    }
+}
+
+impl<'a> DoubleEndedIterator for VariantStrIter<'a> {
+    fn next_back(&mut self) -> Option<&'a str> {
+        if self.head == self.tail {
+            None
+        } else {
+            self.tail -= 1;
+            Some(self.impl_get(self.tail))
+        }
+    }
+}
+
+impl<'a> ExactSizeIterator for VariantStrIter<'a> {}
+
 #[cfg(test)]
 mod tests {
     use crate::prelude::*;
@@ -79,7 +147,10 @@ mod tests {
             "bar".to_string().to_variant(),
         ]);
         let vec: Vec<String> = v.iter().map(|i| i.get().unwrap()).collect();
-        assert_eq!(vec, vec!["foo".to_string(), "bar".to_string()]);
+        let a = vec!["foo".to_string(), "bar".to_string()];
+        assert_eq!(&vec, &a);
+        let vec: Vec<_> = v.array_iter_str().unwrap().collect();
+        assert_eq!(&vec, &a);
     }
 
     #[test]
