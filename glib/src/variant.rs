@@ -277,6 +277,33 @@ impl Variant {
         Some(v)
     }
 
+    /// Try to read a child item out of a container `Variant` instance.
+    ///
+    /// It returns `Ok(None)` if `self` is not a container type or if the given
+    /// `index` is larger than number of children.  An error is thrown if the
+    /// type does not match.
+    pub fn try_child_get<T: StaticVariantType + FromVariant>(
+        &self,
+        index: usize,
+    ) -> Result<Option<T>, VariantTypeMismatchError> {
+        // TODO: In the future optimize this by using g_variant_get_child()
+        // directly to avoid allocating a GVariant.
+        self.try_child_value(index).map(|v| v.try_get()).transpose()
+    }
+
+    /// Read a child item out of a container `Variant` instance.
+    ///
+    /// # Panics
+    ///
+    /// * if `self` is not a container type.
+    /// * if given `index` is larger than number of children.
+    /// * if the expected variant type does not match
+    pub fn child_get<T: StaticVariantType + FromVariant>(&self, index: usize) -> T {
+        // TODO: In the future optimize this by using g_variant_get_child()
+        // directly to avoid allocating a GVariant.
+        self.child_value(index).get().unwrap()
+    }
+
     /// Tries to extract a `&str`.
     ///
     /// Returns `Some` if the variant has a string type (`s`, `o` or `g` type
@@ -1088,11 +1115,16 @@ mod tests {
     }
 
     #[test]
-    fn test_try_child_value() {
+    fn test_try_child() {
         let a = ["foo"].to_variant();
         assert!(a.try_child_value(0).is_some());
+        assert_eq!(a.try_child_get::<String>(0).unwrap().unwrap(), "foo");
+        assert_eq!(a.child_get::<String>(0), "foo");
+        assert!(a.try_child_get::<u32>(0).is_err());
         assert!(a.try_child_value(1).is_none());
+        assert!(a.try_child_get::<String>(1).unwrap().is_none());
         let u = 42u32.to_variant();
         assert!(u.try_child_value(0).is_none());
+        assert!(u.try_child_get::<String>(0).unwrap().is_none());
     }
 }
