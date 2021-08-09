@@ -143,7 +143,7 @@ pub use crate::region::Region;
 
 pub use crate::surface::{MappedImageSurface, Surface};
 
-pub use crate::image_surface::{ImageSurface, ImageSurfaceData};
+pub use crate::image_surface::{ImageSurface, ImageSurfaceData, ImageSurfaceDataOwned};
 
 #[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
 pub use stream::StreamWithError;

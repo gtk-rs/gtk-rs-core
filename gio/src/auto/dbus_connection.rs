@@ -12,6 +12,7 @@ use crate::DBusConnectionFlags;
 use crate::DBusMessage;
 use crate::DBusSendMessageFlags;
 use crate::IOStream;
+use crate::Initable;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
@@ -30,7 +31,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GDBusConnection")]
-    pub struct DBusConnection(Object<ffi::GDBusConnection>);
+    pub struct DBusConnection(Object<ffi::GDBusConnection>) @implements Initable;
 
     match fn {
         type_ => || ffi::g_dbus_connection_get_type(),

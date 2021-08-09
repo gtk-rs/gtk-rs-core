@@ -309,8 +309,9 @@ macro_rules! glib_boxed_wrapper {
             }
 
             #[inline]
+            #[allow(clippy::no_effect)]
             unsafe fn free($free_arg: *mut $ffi_name) {
-                $free_expr
+                $free_expr;
             }
 
             #[inline]
@@ -335,18 +336,21 @@ macro_rules! glib_boxed_wrapper {
             }
 
             #[inline]
+            #[allow(clippy::no_effect)]
             unsafe fn free($free_arg: *mut $ffi_name) {
-                $free_expr
+                $free_expr;
             }
 
             #[inline]
+            #[allow(clippy::no_effect)]
             unsafe fn init($init_arg: *mut $ffi_name) {
-                $init_expr
+                $init_expr;
             }
 
             #[inline]
+            #[allow(clippy::no_effect)]
             unsafe fn clear($clear_arg: *mut $ffi_name) {
-                $clear_expr
+                $clear_expr;
             }
         }
 

@@ -34,6 +34,16 @@
 //! assert_eq!(hello.str(), Some("Hello!"));
 //! assert_eq!(num.str(), None);
 //!
+//! // `bytes` tries to borrow a byte array (GVariant type `ay`),
+//! // rather than creating a deep copy which would be expensive for
+//! // nontrivially sized byte arrays.
+//! // The test data here is the zstd compression header, which
+//! // stands in for arbitrary binary data (e.g. not UTF-8).
+//! let bufdata = b"\xFD\x2F\xB5\x28";
+//! let bufv = bufdata.to_variant();
+//! assert_eq!(bufv.bytes().unwrap(), bufdata);
+//! assert!(num.bytes().is_err());
+//!
 //! // Variant carrying a Variant
 //! let variant = Variant::from_variant(&hello);
 //! let variant = variant.as_variant().unwrap();
@@ -167,6 +177,32 @@ impl crate::value::ToValueOptional for Variant {
     }
 }
 
+/// An error returned from the [`try_get`](struct.Variant.html#method.try_get) function
+/// on a [`Variant`](struct.Variant.html) when the expected type does not match the actual type.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct VariantTypeMismatchError {
+    pub actual: VariantType,
+    pub expected: VariantType,
+}
+
+impl VariantTypeMismatchError {
+    pub fn new(actual: VariantType, expected: VariantType) -> Self {
+        Self { actual, expected }
+    }
+}
+
+impl fmt::Display for VariantTypeMismatchError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Type mismatch: Expected '{}' got '{}'",
+            self.expected, self.actual
+        )
+    }
+}
+
+impl std::error::Error for VariantTypeMismatchError {}
+
 impl Variant {
     /// Returns the type of the value.
     pub fn type_(&self) -> &VariantTy {
@@ -185,6 +221,16 @@ impl Variant {
     #[inline]
     pub fn get<T: FromVariant>(&self) -> Option<T> {
         T::from_variant(self)
+    }
+
+    /// Tries to extract a value of type `T`.
+    pub fn try_get<T: FromVariant>(&self) -> Result<T, VariantTypeMismatchError> {
+        self.get().ok_or_else(|| {
+            VariantTypeMismatchError::new(
+                self.type_().to_owned(),
+                T::static_variant_type().into_owned(),
+            )
+        })
     }
 
     /// Boxes value.
@@ -211,10 +257,51 @@ impl Variant {
     #[doc(alias = "get_child_value")]
     #[doc(alias = "g_variant_get_child_value")]
     pub fn child_value(&self, index: usize) -> Variant {
-        assert!(index < self.n_children());
         assert!(self.is_container());
+        assert!(index < self.n_children());
 
         unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) }
+    }
+
+    /// Try to read a child item out of a container `Variant` instance.
+    ///
+    /// It returns `None` if `self` is not a container type or if the given
+    /// `index` is larger than number of children.
+    pub fn try_child_value(&self, index: usize) -> Option<Variant> {
+        if !(self.is_container() && index < self.n_children()) {
+            return None;
+        }
+
+        let v =
+            unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) };
+        Some(v)
+    }
+
+    /// Try to read a child item out of a container `Variant` instance.
+    ///
+    /// It returns `Ok(None)` if `self` is not a container type or if the given
+    /// `index` is larger than number of children.  An error is thrown if the
+    /// type does not match.
+    pub fn try_child_get<T: StaticVariantType + FromVariant>(
+        &self,
+        index: usize,
+    ) -> Result<Option<T>, VariantTypeMismatchError> {
+        // TODO: In the future optimize this by using g_variant_get_child()
+        // directly to avoid allocating a GVariant.
+        self.try_child_value(index).map(|v| v.try_get()).transpose()
+    }
+
+    /// Read a child item out of a container `Variant` instance.
+    ///
+    /// # Panics
+    ///
+    /// * if `self` is not a container type.
+    /// * if given `index` is larger than number of children.
+    /// * if the expected variant type does not match
+    pub fn child_get<T: StaticVariantType + FromVariant>(&self, index: usize) -> T {
+        // TODO: In the future optimize this by using g_variant_get_child()
+        // directly to avoid allocating a GVariant.
+        self.child_value(index).get().unwrap()
     }
 
     /// Tries to extract a `&str`.
@@ -236,6 +323,28 @@ impl Variant {
                     Some(ret)
                 }
                 _ => None,
+            }
+        }
+    }
+
+    /// Tries to extract a `&[u8]` from a variant of type `ay` (array of bytes).
+    ///
+    /// Returns an error if the type is not `ay`.
+    pub fn bytes(&self) -> Result<&[u8], VariantTypeMismatchError> {
+        unsafe {
+            let t = self.type_();
+            let expected_ty = &*Vec::<u8>::static_variant_type();
+            if t == expected_ty {
+                let selfv = self.to_glib_none();
+                let len = ffi::g_variant_get_size(selfv.0);
+                let ptr = ffi::g_variant_get_data(selfv.0);
+                let ret = slice::from_raw_parts(ptr as *const u8, len as usize);
+                Ok(ret)
+            } else {
+                Err(VariantTypeMismatchError {
+                    actual: t.to_owned(),
+                    expected: expected_ty.to_owned(),
+                })
             }
         }
     }
@@ -324,6 +433,12 @@ impl Variant {
     #[doc(alias = "g_variant_get_data_as_bytes")]
     pub fn data_as_bytes(&self) -> Bytes {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
+    }
+
+    /// Returns a copy of the variant in normal form.
+    #[doc(alias = "g_variant_get_normal_form")]
+    pub fn normal_form(&self) -> Self {
+        unsafe { from_glib_full(ffi::g_variant_get_normal_form(self.to_glib_none().0)) }
     }
 
     /// Determines the number of children in a container GVariant instance.
@@ -933,6 +1048,15 @@ mod tests {
         let s = "this is a test";
         let v = s.to_variant();
         assert_eq!(v.str(), Some(s));
+        assert_eq!(42u32.to_variant().str(), None);
+    }
+
+    #[test]
+    fn test_bytes() {
+        let b = b"this is a test";
+        let v = b.to_variant();
+        assert_eq!(v.bytes().unwrap(), b);
+        assert!(42u32.to_variant().bytes().is_err());
     }
 
     #[test]
@@ -940,6 +1064,7 @@ mod tests {
         let s = String::from("this is a test");
         let v = s.to_variant();
         assert_eq!(v.get(), Some(s));
+        assert_eq!(v.normal_form(), v);
     }
 
     #[test]
@@ -969,11 +1094,37 @@ mod tests {
 
     #[test]
     fn test_array() {
-        // Test just the signature for now.
         assert_eq!(<Vec<&str>>::static_variant_type().to_str(), "as");
         assert_eq!(
             <Vec<(&str, u8, u32)>>::static_variant_type().to_str(),
             "a(syu)"
         );
+        let a = ["foo", "bar", "baz"].to_variant();
+        assert_eq!(a.normal_form(), a);
+    }
+
+    #[test]
+    fn test_get() -> Result<(), Box<dyn std::error::Error>> {
+        let u = 42u32.to_variant();
+        assert!(u.get::<i32>().is_none());
+        assert_eq!(u.get::<u32>().unwrap(), 42);
+        assert!(u.try_get::<i32>().is_err());
+        // Test ? conversion
+        assert_eq!(u.try_get::<u32>()?, 42);
+        Ok(())
+    }
+
+    #[test]
+    fn test_try_child() {
+        let a = ["foo"].to_variant();
+        assert!(a.try_child_value(0).is_some());
+        assert_eq!(a.try_child_get::<String>(0).unwrap().unwrap(), "foo");
+        assert_eq!(a.child_get::<String>(0), "foo");
+        assert!(a.try_child_get::<u32>(0).is_err());
+        assert!(a.try_child_value(1).is_none());
+        assert!(a.try_child_get::<String>(1).unwrap().is_none());
+        let u = 42u32.to_variant();
+        assert!(u.try_child_value(0).is_none());
+        assert!(u.try_child_get::<String>(0).unwrap().is_none());
     }
 }

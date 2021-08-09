@@ -6,6 +6,7 @@ use crate::Cancellable;
 use crate::DBusAuthObserver;
 use crate::DBusConnection;
 use crate::DBusServerFlags;
+use crate::Initable;
 use glib::object::IsA;
 use glib::object::ObjectType as ObjectType_;
 use glib::signal::connect_raw;
@@ -19,7 +20,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GDBusServer")]
-    pub struct DBusServer(Object<ffi::GDBusServer>);
+    pub struct DBusServer(Object<ffi::GDBusServer>) @implements Initable;
 
     match fn {
         type_ => || ffi::g_dbus_server_get_type(),

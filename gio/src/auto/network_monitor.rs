@@ -4,6 +4,7 @@
 
 use crate::AsyncResult;
 use crate::Cancellable;
+use crate::Initable;
 use crate::NetworkConnectivity;
 use crate::SocketConnectable;
 use glib::object::Cast;
@@ -19,7 +20,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GNetworkMonitor")]
-    pub struct NetworkMonitor(Interface<ffi::GNetworkMonitor, ffi::GNetworkMonitorInterface>);
+    pub struct NetworkMonitor(Interface<ffi::GNetworkMonitor, ffi::GNetworkMonitorInterface>) @requires Initable;
 
     match fn {
         type_ => || ffi::g_network_monitor_get_type(),

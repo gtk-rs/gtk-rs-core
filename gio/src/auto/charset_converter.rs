@@ -3,6 +3,7 @@
 // DO NOT EDIT
 
 use crate::Converter;
+use crate::Initable;
 use glib::object::Cast;
 use glib::object::ObjectType as ObjectType_;
 use glib::signal::connect_raw;
@@ -17,7 +18,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GCharsetConverter")]
-    pub struct CharsetConverter(Object<ffi::GCharsetConverter, ffi::GCharsetConverterClass>) @implements Converter;
+    pub struct CharsetConverter(Object<ffi::GCharsetConverter, ffi::GCharsetConverterClass>) @implements Converter, Initable;
 
     match fn {
         type_ => || ffi::g_charset_converter_get_type(),

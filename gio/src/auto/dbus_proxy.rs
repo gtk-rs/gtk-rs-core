@@ -10,6 +10,7 @@ use crate::DBusConnection;
 use crate::DBusInterface;
 use crate::DBusInterfaceInfo;
 use crate::DBusProxyFlags;
+use crate::Initable;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
@@ -28,7 +29,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GDBusProxy")]
-    pub struct DBusProxy(Object<ffi::GDBusProxy, ffi::GDBusProxyClass>) @implements DBusInterface;
+    pub struct DBusProxy(Object<ffi::GDBusProxy, ffi::GDBusProxyClass>) @implements DBusInterface, Initable;
 
     match fn {
         type_ => || ffi::g_dbus_proxy_get_type(),
