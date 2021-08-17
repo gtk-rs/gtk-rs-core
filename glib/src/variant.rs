@@ -441,6 +441,12 @@ impl Variant {
         unsafe { from_glib_full(ffi::g_variant_get_normal_form(self.to_glib_none().0)) }
     }
 
+    /// Returns a copy of the variant in the opposite endianness.
+    #[doc(alias = "g_variant_byteswap")]
+    pub fn byteswap(&self) -> Self {
+        unsafe { from_glib_full(ffi::g_variant_byteswap(self.to_glib_none().0)) }
+    }
+
     /// Determines the number of children in a container GVariant instance.
     #[doc(alias = "g_variant_n_children")]
     pub fn n_children(&self) -> usize {
@@ -1144,6 +1150,13 @@ mod tests {
         // Test ? conversion
         assert_eq!(u.try_get::<u32>()?, 42);
         Ok(())
+    }
+
+    #[test]
+    fn test_byteswap() {
+        let u = 42u32.to_variant();
+        assert_eq!(u.byteswap().get::<u32>().unwrap(), 704643072u32);
+        assert_eq!(u.byteswap().byteswap().get::<u32>().unwrap(), 42u32);
     }
 
     #[test]
