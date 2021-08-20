@@ -90,16 +90,12 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
 
 unsafe impl<T: IOStreamImpl> IsSubclassable<T> for IOStream {
     fn class_init(class: &mut ::glib::Class<Self>) {
-        <glib::Object as IsSubclassable<T>>::class_init(class);
+        Self::parent_class_init::<T>(class);
 
         let klass = class.as_mut();
         klass.get_input_stream = Some(stream_get_input_stream::<T>);
         klass.get_output_stream = Some(stream_get_output_stream::<T>);
         klass.close_fn = Some(stream_close::<T>);
-    }
-
-    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <glib::Object as IsSubclassable<T>>::instance_init(instance);
     }
 }
 
