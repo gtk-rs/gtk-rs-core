@@ -104,7 +104,7 @@ pub use self::types::{ILong, StaticType, Type, ULong};
 pub use self::value::{BoxedValue, SendValue, ToSendValue, ToValue, Value};
 pub use self::variant::{FromVariant, StaticVariantType, ToVariant, Variant};
 pub use self::variant_dict::VariantDict;
-pub use self::variant_iter::VariantIter;
+pub use self::variant_iter::{VariantIter, VariantStrIter};
 pub use self::variant_type::{VariantTy, VariantType};
 
 pub mod clone;

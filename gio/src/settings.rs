@@ -76,31 +76,44 @@ impl<'a> BindingBuilder<'a> {
         unsafe extern "C" fn destroy_closure(ptr: *mut libc::c_void) {
             Box::<Mappings>::from_raw(ptr as *mut _);
         }
-        let get_trampoline: Option<unsafe extern "C" fn(_, _, _) -> _> =
-            if self.get_mapping.is_none() {
-                None
-            } else {
-                Some(bind_with_mapping_get_trampoline)
-            };
-        let set_trampoline: Option<unsafe extern "C" fn(_, _, _) -> _> =
-            if self.set_mapping.is_none() {
-                None
-            } else {
-                Some(bind_with_mapping_set_trampoline)
-            };
-        let mappings: Mappings = (self.get_mapping, self.set_mapping);
-        unsafe {
-            ffi::g_settings_bind_with_mapping(
-                self.settings.to_glib_none().0,
-                self.key.to_glib_none().0,
-                self.object.to_glib_none().0,
-                self.property.to_glib_none().0,
-                self.flags.into_glib(),
-                get_trampoline,
-                set_trampoline,
-                Box::into_raw(Box::new(mappings)) as *mut libc::c_void,
-                Some(destroy_closure),
-            )
+
+        if self.get_mapping.is_none() && self.set_mapping.is_none() {
+            unsafe {
+                ffi::g_settings_bind(
+                    self.settings.to_glib_none().0,
+                    self.key.to_glib_none().0,
+                    self.object.to_glib_none().0,
+                    self.property.to_glib_none().0,
+                    self.flags.into_glib(),
+                );
+            }
+        } else {
+            let get_trampoline: Option<unsafe extern "C" fn(_, _, _) -> _> =
+                if self.get_mapping.is_none() {
+                    None
+                } else {
+                    Some(bind_with_mapping_get_trampoline)
+                };
+            let set_trampoline: Option<unsafe extern "C" fn(_, _, _) -> _> =
+                if self.set_mapping.is_none() {
+                    None
+                } else {
+                    Some(bind_with_mapping_set_trampoline)
+                };
+            let mappings: Mappings = (self.get_mapping, self.set_mapping);
+            unsafe {
+                ffi::g_settings_bind_with_mapping(
+                    self.settings.to_glib_none().0,
+                    self.key.to_glib_none().0,
+                    self.object.to_glib_none().0,
+                    self.property.to_glib_none().0,
+                    self.flags.into_glib(),
+                    get_trampoline,
+                    set_trampoline,
+                    Box::into_raw(Box::new(mappings)) as *mut libc::c_void,
+                    Some(destroy_closure),
+                )
+            }
         }
     }
 }
