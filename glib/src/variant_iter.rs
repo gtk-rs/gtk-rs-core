@@ -85,7 +85,7 @@ impl<'a> VariantStrIter<'a> {
             ffi::g_variant_get_child(
                 self.variant.to_glib_none().0,
                 i,
-                s as *const u8 as *const i8,
+                s as *const u8 as *const _,
                 &p,
                 std::ptr::null::<i8>(),
             );
