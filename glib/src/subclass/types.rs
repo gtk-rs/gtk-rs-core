@@ -2,7 +2,7 @@
 
 //! Module that contains the basic infrastructure for subclassing `GObject`.
 
-use crate::object::{Cast, IsClass, ObjectSubclassIs, ObjectType, ParentClassIs};
+use crate::object::{Cast, ObjectSubclassIs, ObjectType};
 use crate::translate::*;
 use crate::{Closure, Object, StaticType, Type, Value};
 use std::marker;
@@ -115,75 +115,19 @@ pub unsafe trait ClassStruct: Sized + 'static {
 }
 
 /// Trait for subclassable class structs.
-pub unsafe trait IsSubclassable<T: ObjectSubclass>: IsSubclassableDefault<T> {
+pub unsafe trait IsSubclassable<T: ObjectSubclass>: crate::object::IsClass {
     /// Override the virtual methods of this class for the given subclass and do other class
     /// initialization.
     ///
     /// This is automatically called during type initialization and must call `class_init()` of the
     /// parent class.
-    fn class_init(class: &mut crate::Class<Self>) {
-        Self::default_class_init(class);
-    }
+    fn class_init(class: &mut crate::Class<Self>);
 
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
     /// of the parent class.
-    fn instance_init(instance: &mut InitializingObject<T>) {
-        Self::default_instance_init(instance);
-    }
-}
-
-// FIXME: It should be possible to make implemented for all instances of `IsSubclassable<T>`
-// with specialization, and make it private.
-#[doc(hidden)]
-pub trait IsSubclassableDefault<T: ObjectSubclass>: IsClass {
-    fn default_class_init(class: &mut crate::Class<Self>);
-    fn default_instance_init(instance: &mut InitializingObject<T>);
-}
-
-impl<T: ObjectSubclass, U: IsSubclassable<T> + ParentClassIs> IsSubclassableDefault<T> for U
-where
-    U::Parent: IsSubclassable<T>,
-{
-    fn default_class_init(class: &mut crate::Class<Self>) {
-        U::Parent::class_init(class);
-    }
-
-    fn default_instance_init(instance: &mut InitializingObject<T>) {
-        U::Parent::instance_init(instance);
-    }
-}
-
-impl<T: ObjectSubclass> IsSubclassableDefault<T> for Object {
-    fn default_class_init(_class: &mut crate::Class<Self>) {}
-
-    fn default_instance_init(_instance: &mut InitializingObject<T>) {}
-}
-
-pub trait IsSubclassableExt: IsClass + ParentClassIs {
-    fn parent_class_init<T: ObjectSubclass>(class: &mut crate::Class<Self>)
-    where
-        Self::Parent: IsSubclassable<T>;
-    fn parent_instance_init<T: ObjectSubclass>(instance: &mut InitializingObject<T>)
-    where
-        Self::Parent: IsSubclassable<T>;
-}
-
-impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
-    fn parent_class_init<T: ObjectSubclass>(class: &mut crate::Class<Self>)
-    where
-        U::Parent: IsSubclassable<T>,
-    {
-        Self::Parent::class_init(class);
-    }
-
-    fn parent_instance_init<T: ObjectSubclass>(instance: &mut InitializingObject<T>)
-    where
-        U::Parent: IsSubclassable<T>,
-    {
-        Self::Parent::instance_init(instance);
-    }
+    fn instance_init(instance: &mut InitializingObject<T>);
 }
 
 /// Trait for implementable interfaces.

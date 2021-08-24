@@ -343,7 +343,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
 unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
     fn class_init(class: &mut ::glib::Class<Self>) {
-        Self::parent_class_init::<T>(class);
+        <glib::Object as IsSubclassable<T>>::class_init(class);
 
         let klass = class.as_mut();
         klass.activate = Some(application_activate::<T>);
@@ -357,6 +357,10 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
         klass.shutdown = Some(application_shutdown::<T>);
         klass.startup = Some(application_startup::<T>);
         klass.handle_local_options = Some(application_handle_local_options::<T>);
+    }
+
+    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
+        <glib::Object as IsSubclassable<T>>::instance_init(instance);
     }
 }
 

@@ -272,8 +272,8 @@ pub mod prelude {
     pub use super::object::{ObjectClassSubclassExt, ObjectImpl, ObjectImplExt};
     pub use super::shared::{RefCounted, SharedType};
     pub use super::types::{
-        ClassStruct, InstanceStruct, IsImplementable, IsSubclassable, IsSubclassableExt,
-        ObjectSubclass, ObjectSubclassExt, ObjectSubclassType,
+        ClassStruct, InstanceStruct, IsImplementable, IsSubclassable, ObjectSubclass,
+        ObjectSubclassExt, ObjectSubclassType,
     };
 }
 
