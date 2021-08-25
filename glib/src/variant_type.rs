@@ -103,6 +103,23 @@ impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantType {
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::GVariantType, Self> {
         Stash(self.ptr, self)
     }
+
+    fn to_glib_full(&self) -> *const ffi::GVariantType {
+        unsafe { ffi::g_variant_type_copy(self.ptr) }
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *mut ffi::GVariantType> for VariantType {
+    type Storage = &'a Self;
+
+    fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::GVariantType, Self> {
+        Stash(self.ptr, self)
+    }
+
+    fn to_glib_full(&self) -> *mut ffi::GVariantType {
+        unsafe { ffi::g_variant_type_copy(self.ptr) }
+    }
 }
 
 #[doc(hidden)]
@@ -326,7 +343,7 @@ impl crate::value::ToValue for VariantType {
             let mut value = crate::Value::from_type(VariantType::static_type());
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
-                self.to_glib_none().0 as *mut _,
+                ToGlibPtr::<*mut _>::to_glib_none(&self).0 as *mut _,
             );
             value
         }
@@ -344,7 +361,7 @@ impl crate::value::ToValueOptional for VariantType {
         unsafe {
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
-                s.to_glib_none().0 as *mut _,
+                ToGlibPtr::<*mut _>::to_glib_none(&s).0 as *mut _,
             );
         }
 
