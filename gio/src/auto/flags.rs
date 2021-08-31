@@ -1697,8 +1697,8 @@ impl ToValue for OutputStreamSpliceFlags {
 }
 
 #[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]

@@ -11,8 +11,8 @@ use bitflags::bitflags;
 use std::fmt;
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GFileSetContentsFlags")]
     pub struct FileSetContentsFlags: u32 {
         #[doc(alias = "G_FILE_SET_CONTENTS_NONE")]
@@ -375,8 +375,8 @@ impl FromGlib<ffi::GSpawnFlags> for SpawnFlags {
 }
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriFlags")]
     pub struct UriFlags: u32 {
         #[doc(alias = "G_URI_FLAGS_NONE")]
@@ -429,8 +429,8 @@ impl FromGlib<ffi::GUriFlags> for UriFlags {
 }
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriHideFlags")]
     pub struct UriHideFlags: u32 {
         #[doc(alias = "G_URI_HIDE_NONE")]
@@ -477,8 +477,8 @@ impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
 }
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriParamsFlags")]
     pub struct UriParamsFlags: u32 {
         #[doc(alias = "G_URI_PARAMS_NONE")]
