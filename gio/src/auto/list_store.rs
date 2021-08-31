@@ -63,13 +63,6 @@ impl ListStore {
         }
     }
 
-    //#[cfg(any(feature = "v2_64", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
-    //#[doc(alias = "g_list_store_find_with_equal_func")]
-    //pub fn find_with_equal_func<P: IsA<glib::Object>>(&self, item: &P, equal_func: /*Unimplemented*/FnMut(/*Unimplemented*/Option<Fundamental: Pointer>, /*Unimplemented*/Option<Fundamental: Pointer>) -> bool) -> Option<u32> {
-    //    unsafe { TODO: call ffi:g_list_store_find_with_equal_func() }
-    //}
-
     #[doc(alias = "g_list_store_insert")]
     pub fn insert<P: IsA<glib::Object>>(&self, position: u32, item: &P) {
         unsafe {
