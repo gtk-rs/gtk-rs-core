@@ -99,12 +99,12 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
 
     let ret = imp.lookup_action(wrap.unsafe_cast_ref(), &action_name);
     if let Some(action) = ret {
-        let actionptr = action.to_glib_full();
+        let actionptr = action.to_glib_none().0;
 
         let mut map = wrap
-            .steal_qdata::<HashMap<String, *mut ffi::GAction>>(*ACTION_MAP_LOOKUP_ACTION_QUARK)
+            .steal_qdata::<HashMap<String, Action>>(*ACTION_MAP_LOOKUP_ACTION_QUARK)
             .unwrap_or_else(HashMap::new);
-        map.insert(action_name.to_string(), actionptr);
+        map.insert(action_name.to_string(), action);
         wrap.set_qdata(*ACTION_MAP_LOOKUP_ACTION_QUARK, map);
 
         actionptr
