@@ -542,6 +542,15 @@ unsafe extern "C" fn action_group_get_action_enabled<T: ActionGroupImpl>(
     .into_glib()
 }
 
+/// Struct to hold a pointer and free it on `Drop::drop`
+struct PtrHolder<T, F: Fn(*mut T) + 'static>(*mut T, F);
+
+impl<T, F: Fn(*mut T) + 'static> Drop for PtrHolder<T, F> {
+    fn drop(&mut self) {
+        (self.1)(self.0)
+    }
+}
+
 static ACTION_GROUP_GET_ACTION_PARAMETER_QUARK: Lazy<Quark> =
     Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-get-action-parameter"));
 
@@ -558,7 +567,10 @@ unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
 
     if let Some(param_type) = ret {
         let param_type = param_type.to_glib_full();
-        wrap.set_qdata(*ACTION_GROUP_GET_ACTION_PARAMETER_QUARK, param_type);
+        wrap.set_qdata(
+            *ACTION_GROUP_GET_ACTION_PARAMETER_QUARK,
+            PtrHolder(param_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
+        );
         param_type
     } else {
         ptr::null()
@@ -581,7 +593,10 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
 
     if let Some(state_type) = ret {
         let state_type = state_type.to_glib_full();
-        wrap.set_qdata(*ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK, state_type);
+        wrap.set_qdata(
+            *ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK,
+            PtrHolder(state_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
+        );
         state_type
     } else {
         ptr::null()
@@ -604,7 +619,10 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     let ret = imp.action_state_hint(wrap.unsafe_cast_ref(), &action_name);
     if let Some(state_hint) = ret {
         let state_hint_ptr = state_hint.to_glib_full();
-        wrap.set_qdata(*ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK, state_hint_ptr);
+        wrap.set_qdata(
+            *ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK,
+            PtrHolder(state_hint_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
+        );
         state_hint_ptr
     } else {
         ptr::null_mut()
@@ -625,7 +643,10 @@ unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
     let ret = imp.action_state(wrap.unsafe_cast_ref(), &action_name);
     if let Some(state) = ret {
         let state_ptr = state.to_glib_full();
-        wrap.set_qdata(*ACTION_GROUP_GET_ACTION_STATE_QUARK, state_ptr);
+        wrap.set_qdata(
+            *ACTION_GROUP_GET_ACTION_STATE_QUARK,
+            PtrHolder(state_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
+        );
         state_ptr
     } else {
         ptr::null_mut()
@@ -780,7 +801,10 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
         if !parameter_type.is_null() {
             if let Some(rs_parameter_type) = rs_parameter_type {
                 let ret = rs_parameter_type.to_glib_full();
-                wrap.set_qdata(*ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK, ret);
+                wrap.set_qdata(
+                    *ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
+                );
                 *parameter_type = ret;
             } else {
                 *parameter_type = ptr::null_mut();
@@ -789,7 +813,10 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
         if !state_type.is_null() {
             if let Some(rs_state_type) = rs_state_type {
                 let ret = rs_state_type.to_glib_full();
-                wrap.set_qdata(*ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK, ret);
+                wrap.set_qdata(
+                    *ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
+                );
                 *state_type = ret;
             } else {
                 *state_type = ptr::null_mut();
@@ -798,7 +825,10 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
         if !state_hint.is_null() {
             if let Some(rs_state_hint) = rs_state_hint {
                 let ret = rs_state_hint.to_glib_full();
-                wrap.set_qdata(*ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK, ret);
+                wrap.set_qdata(
+                    *ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
+                );
                 *state_hint = ret;
             } else {
                 *state_hint = ptr::null_mut();
@@ -807,7 +837,10 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
         if !state.is_null() {
             if let Some(rs_state) = rs_state {
                 let ret = rs_state.to_glib_full();
-                wrap.set_qdata(*ACTION_GROUP_QUERY_ACTION_STATE_QUARK, ret);
+                wrap.set_qdata(
+                    *ACTION_GROUP_QUERY_ACTION_STATE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
+                );
                 *state = ret;
             } else {
                 *state = ptr::null_mut();
