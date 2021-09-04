@@ -60,6 +60,55 @@ impl Task {
         }
     }
 
+    #[doc(alias = "g_task_run_in_thread")]
+    pub fn run_in_thread<Q>(&self, task_func: Q)
+    where
+        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>),
+        Q: Send + 'static,
+    {
+        let task_func_data = Box_::new(task_func);
+
+        // We store the func pointer into the task data.
+        // We intentionally do not expose a way to set the task data in the bindings.
+        // If we detect that the task data is set, there is not much we can do, so we panic.
+        unsafe {
+            if !ffi::g_task_get_task_data(self.to_glib_none().0).is_null() {
+                panic!("Task data was manually set or the task was run thread multiple times");
+            }
+
+            ffi::g_task_set_task_data(
+                self.to_glib_none().0,
+                Box_::into_raw(task_func_data) as *mut _,
+                None,
+            );
+        }
+
+        unsafe extern "C" fn trampoline<Q>(
+            task: *mut ffi::GTask,
+            source_object: *mut glib::gobject_ffi::GObject,
+            user_data: glib::ffi::gpointer,
+            cancellable: *mut ffi::GCancellable,
+        ) where
+            Q: FnOnce(&Task, Option<&glib::Object>, Option<&Cancellable>),
+            Q: Send + 'static,
+        {
+            let task = Task::from_glib_borrow(task);
+            let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
+            let cancellable = Option::<Cancellable>::from_glib_borrow(cancellable);
+            let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
+            task_func(
+                task.as_ref(),
+                source_object.as_ref().as_ref(),
+                cancellable.as_ref().as_ref(),
+            );
+        }
+
+        let task_func = trampoline::<Q>;
+        unsafe {
+            ffi::g_task_run_in_thread(self.to_glib_none().0, Some(task_func));
+        }
+    }
+
     pub fn return_value(&self, result: &glib::Value) {
         unsafe extern "C" fn value_free(value: *mut c_void) {
             glib::gobject_ffi::g_value_unset(value as *mut glib::gobject_ffi::GValue);

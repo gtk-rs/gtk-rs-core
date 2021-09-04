@@ -11,6 +11,7 @@ fn main() {
     let main_loop = glib::MainLoop::new(Some(&main_context), false);
     let (send_safe, recv_safe) = oneshot::channel();
     let (send_unsafe, recv_unsafe) = oneshot::channel();
+    let (send_threaded, recv_threaded) = oneshot::channel();
 
     main_context.push_thread_default();
     main_context.invoke_local(move || {
@@ -19,12 +20,17 @@ fn main() {
     main_context.invoke_local(move || {
         run_safe(send_safe);
     });
+    main_context.invoke_local(move || {
+        run_in_thread(send_threaded);
+    });
 
     main_context.spawn_local(clone!(@strong main_loop => async move {
         recv_safe.await.unwrap();
         recv_unsafe.await.unwrap();
+        recv_threaded.await.unwrap();
         main_loop.quit();
     }));
+
     main_loop.run();
     main_context.pop_thread_default();
 }
@@ -95,4 +101,26 @@ fn run_safe(send: oneshot::Sender<()>) {
     };
 
     simple_object.file_size_async(Some(&cancellable), closure);
+}
+
+// A version that uses the safe bindings to accomplish the same task, but running
+// in a thread of the gio thread pool
+fn run_in_thread(send: oneshot::Sender<()>) {
+    let simple_object = FileSize::new();
+    let cancellable = gio::Cancellable::new();
+
+    let closure = move |value: i64, source_object: &FileSize| {
+        println!(
+            "Safe callback (threaded version) - Returned value from task: {}",
+            value
+        );
+        println!(
+            "Safe callback (threaded version) - FileSize::size: {}",
+            source_object.retrieved_size().unwrap()
+        );
+
+        send.send(()).unwrap();
+    };
+
+    simple_object.file_size_in_thread_async(Some(&cancellable), closure);
 }
