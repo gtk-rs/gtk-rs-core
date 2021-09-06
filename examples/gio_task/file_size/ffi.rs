@@ -62,15 +62,19 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
 pub unsafe extern "C" fn my_file_size_get_file_size_finish(
     _this: *mut FileSize,
     result: *mut gio::ffi::GAsyncResult,
-    _error: *mut *mut glib::ffi::GError,
+    error: *mut *mut glib::ffi::GError,
 ) -> i64 {
-    gio::AsyncResult::from_glib_borrow(result)
+    match gio::AsyncResult::from_glib_borrow(result)
         .downcast_ref::<gio::Task>()
         .unwrap()
         .propagate_value()
-        .unwrap()
-        .get::<i64>()
-        .unwrap()
+    {
+        Ok(v) => v.get::<i64>().unwrap(),
+        Err(e) => {
+            *error = e.into_raw();
+            0
+        }
+    }
 }
 
 /// # Safety
