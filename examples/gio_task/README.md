@@ -7,5 +7,5 @@ This can be useful, for example, when porting to Rust some existing C code expos
 Run it by executing:
 
 ```bash
-cargo run --bin gio_futures_await
+cargo run --bin gio_task
 ```
