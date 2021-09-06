@@ -72,12 +72,6 @@ impl Task {
     //    unsafe { TODO: call ffi:g_task_get_source_tag() }
     //}
 
-    //#[doc(alias = "g_task_get_task_data")]
-    //#[doc(alias = "get_task_data")]
-    //pub fn task_data(&self) -> /*Unimplemented*/Option<Fundamental: Pointer> {
-    //    unsafe { TODO: call ffi:g_task_get_task_data() }
-    //}
-
     #[doc(alias = "g_task_had_error")]
     pub fn had_error(&self) -> bool {
         unsafe { from_glib(ffi::g_task_had_error(self.to_glib_none().0)) }
@@ -91,11 +85,6 @@ impl Task {
     //#[doc(alias = "g_task_return_new_error")]
     //pub fn return_new_error(&self, domain: glib::Quark, code: i32, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:g_task_return_new_error() }
-    //}
-
-    //#[doc(alias = "g_task_run_in_thread")]
-    //pub fn run_in_thread(&self, task_func: /*Unimplemented*/FnOnce(&Task, &glib::Object, /*Unimplemented*/Option<Fundamental: Pointer>, Option<&Cancellable>)) {
-    //    unsafe { TODO: call ffi:g_task_run_in_thread() }
     //}
 
     //#[doc(alias = "g_task_run_in_thread_sync")]
@@ -132,11 +121,6 @@ impl Task {
     //#[doc(alias = "g_task_set_source_tag")]
     //pub fn set_source_tag(&self, source_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
     //    unsafe { TODO: call ffi:g_task_set_source_tag() }
-    //}
-
-    //#[doc(alias = "g_task_set_task_data")]
-    //pub fn set_task_data(&self, task_data: /*Unimplemented*/Option<Fundamental: Pointer>) {
-    //    unsafe { TODO: call ffi:g_task_set_task_data() }
     //}
 
     #[doc(alias = "g_task_is_valid")]
