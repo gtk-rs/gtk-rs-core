@@ -35,6 +35,7 @@ pub struct Version {
 }
 
 impl Version {
+    #[allow(clippy::self_named_constructors)]
     #[doc(alias = "cairo_version")]
     #[doc(alias = "get_version")]
     pub fn version() -> Version {
