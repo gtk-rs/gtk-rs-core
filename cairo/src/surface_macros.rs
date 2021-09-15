@@ -25,6 +25,13 @@ macro_rules! declare_surface {
                 let surface = Surface::from_raw_full(ptr)?;
                 Self::try_from(surface).map_err(|_| crate::error::Error::SurfaceTypeMismatch)
             }
+
+            pub unsafe fn from_raw_none(
+                ptr: *mut ffi::cairo_surface_t,
+            ) -> Result<$surf_name, crate::error::Error> {
+                let surface = Surface::from_raw_none(ptr);
+                Self::try_from(surface).map_err(|_| crate::error::Error::SurfaceTypeMismatch)
+            }
         }
 
         #[cfg(feature = "use_glib")]

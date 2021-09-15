@@ -250,7 +250,7 @@ impl Surface {
     #[doc(alias = "cairo_surface_map_to_image")]
     pub fn map_to_image(&self, extents: Option<RectangleInt>) -> Result<MappedImageSurface, Error> {
         unsafe {
-            ImageSurface::from_raw_full(match extents {
+            ImageSurface::from_raw_none(match extents {
                 Some(ref e) => ffi::cairo_surface_map_to_image(self.to_raw_none(), e.to_raw_none()),
                 None => ffi::cairo_surface_map_to_image(self.to_raw_none(), std::ptr::null()),
             })
@@ -392,7 +392,6 @@ impl Drop for MappedImageSurface {
                 self.original_surface.to_raw_none(),
                 self.image_surface.to_raw_none(),
             );
-            ffi::cairo_surface_reference(self.image_surface.to_raw_none());
         }
     }
 }
