@@ -61,6 +61,13 @@ impl BufferedInputStream {
     }
 }
 
+impl Default for BufferedInputStream {
+    fn default() -> Self {
+        glib::object::Object::new::<Self>(&[])
+            .expect("Can't construct BufferedInputStream object with default parameters")
+    }
+}
+
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`BufferedInputStream`] objects.

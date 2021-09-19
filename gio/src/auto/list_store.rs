@@ -103,6 +103,13 @@ impl ListStore {
     }
 }
 
+impl Default for ListStore {
+    fn default() -> Self {
+        glib::object::Object::new::<Self>(&[])
+            .expect("Can't construct ListStore object with default parameters")
+    }
+}
+
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`ListStore`] objects.
