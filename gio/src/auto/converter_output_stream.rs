@@ -46,6 +46,13 @@ impl ConverterOutputStream {
     }
 }
 
+impl Default for ConverterOutputStream {
+    fn default() -> Self {
+        glib::object::Object::new::<Self>(&[])
+            .expect("Can't construct ConverterOutputStream object with default parameters")
+    }
+}
+
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`ConverterOutputStream`] objects.

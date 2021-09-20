@@ -131,6 +131,13 @@ impl CharsetConverter {
     }
 }
 
+impl Default for CharsetConverter {
+    fn default() -> Self {
+        glib::object::Object::new::<Self>(&[])
+            .expect("Can't construct CharsetConverter object with default parameters")
+    }
+}
+
 #[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`CharsetConverter`] objects.
