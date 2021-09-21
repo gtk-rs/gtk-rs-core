@@ -30,7 +30,7 @@ impl DesktopAppInfo {
 
     #[doc(alias = "g_desktop_app_info_new_from_filename")]
     #[doc(alias = "new_from_filename")]
-    pub fn from_filename<P: AsRef<std::path::Path>>(filename: P) -> Option<DesktopAppInfo> {
+    pub fn from_filename(filename: impl AsRef<std::path::Path>) -> Option<DesktopAppInfo> {
         unsafe {
             from_glib_full(ffi::g_desktop_app_info_new_from_filename(
                 filename.as_ref().to_glib_none().0,
@@ -193,10 +193,10 @@ impl DesktopAppInfo {
     }
 
     #[doc(alias = "g_desktop_app_info_launch_action")]
-    pub fn launch_action<P: IsA<AppLaunchContext>>(
+    pub fn launch_action(
         &self,
         action_name: &str,
-        launch_context: Option<&P>,
+        launch_context: Option<&impl IsA<AppLaunchContext>>,
     ) {
         unsafe {
             ffi::g_desktop_app_info_launch_action(
@@ -208,30 +208,28 @@ impl DesktopAppInfo {
     }
 
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager")]
-    pub fn launch_uris_as_manager<P: IsA<AppLaunchContext>>(
+    pub fn launch_uris_as_manager(
         &self,
         uris: &[&str],
-        launch_context: Option<&P>,
+        launch_context: Option<&impl IsA<AppLaunchContext>>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
         pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
-        unsafe extern "C" fn user_setup_func<P: IsA<AppLaunchContext>>(
-            user_data: glib::ffi::gpointer,
-        ) {
+        unsafe extern "C" fn user_setup_func(user_data: glib::ffi::gpointer) {
             let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
                 Box_::from_raw(user_data as *mut _);
             let callback = (*callback).expect("cannot get closure...");
             callback()
         }
         let user_setup = if user_setup_data.is_some() {
-            Some(user_setup_func::<P> as _)
+            Some(user_setup_func as _)
         } else {
             None
         };
         let pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> = pid_callback;
-        unsafe extern "C" fn pid_callback_func<P: IsA<AppLaunchContext>>(
+        unsafe extern "C" fn pid_callback_func(
             appinfo: *mut ffi::GDesktopAppInfo,
             pid: glib::ffi::GPid,
             user_data: glib::ffi::gpointer,
@@ -248,7 +246,7 @@ impl DesktopAppInfo {
             };
         }
         let pid_callback = if pid_callback_data.is_some() {
-            Some(pid_callback_func::<P> as _)
+            Some(pid_callback_func as _)
         } else {
             None
         };

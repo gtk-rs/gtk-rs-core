@@ -27,7 +27,7 @@ impl SubprocessLauncher {
     }
 
     #[doc(alias = "g_subprocess_launcher_getenv")]
-    pub fn getenv<P: AsRef<std::path::Path>>(&self, variable: P) -> Option<std::path::PathBuf> {
+    pub fn getenv(&self, variable: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
         unsafe {
             from_glib_none(ffi::g_subprocess_launcher_getenv(
                 self.to_glib_none().0,
@@ -62,7 +62,7 @@ impl SubprocessLauncher {
     }
 
     #[doc(alias = "g_subprocess_launcher_set_cwd")]
-    pub fn set_cwd<P: AsRef<std::path::Path>>(&self, cwd: P) {
+    pub fn set_cwd(&self, cwd: impl AsRef<std::path::Path>) {
         unsafe {
             ffi::g_subprocess_launcher_set_cwd(
                 self.to_glib_none().0,
@@ -88,7 +88,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stderr_file_path")]
-    pub fn set_stderr_file_path<P: AsRef<std::path::Path>>(&self, path: P) {
+    pub fn set_stderr_file_path(&self, path: impl AsRef<std::path::Path>) {
         unsafe {
             ffi::g_subprocess_launcher_set_stderr_file_path(
                 self.to_glib_none().0,
@@ -112,7 +112,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdout_file_path")]
-    pub fn set_stdout_file_path<P: AsRef<std::path::Path>>(&self, path: P) {
+    pub fn set_stdout_file_path(&self, path: impl AsRef<std::path::Path>) {
         unsafe {
             ffi::g_subprocess_launcher_set_stdout_file_path(
                 self.to_glib_none().0,
@@ -122,10 +122,10 @@ impl SubprocessLauncher {
     }
 
     #[doc(alias = "g_subprocess_launcher_setenv")]
-    pub fn setenv<P: AsRef<std::ffi::OsStr>, Q: AsRef<std::ffi::OsStr>>(
+    pub fn setenv(
         &self,
-        variable: P,
-        value: Q,
+        variable: impl AsRef<std::ffi::OsStr>,
+        value: impl AsRef<std::ffi::OsStr>,
         overwrite: bool,
     ) {
         unsafe {
@@ -162,7 +162,7 @@ impl SubprocessLauncher {
     }
 
     #[doc(alias = "g_subprocess_launcher_unsetenv")]
-    pub fn unsetenv<P: AsRef<std::ffi::OsStr>>(&self, variable: P) {
+    pub fn unsetenv(&self, variable: impl AsRef<std::ffi::OsStr>) {
         unsafe {
             ffi::g_subprocess_launcher_unsetenv(
                 self.to_glib_none().0,

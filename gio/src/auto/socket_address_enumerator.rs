@@ -25,19 +25,16 @@ pub const NONE_SOCKET_ADDRESS_ENUMERATOR: Option<&SocketAddressEnumerator> = Non
 
 pub trait SocketAddressEnumeratorExt: 'static {
     #[doc(alias = "g_socket_address_enumerator_next")]
-    fn next<P: IsA<Cancellable>>(
+    fn next(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketAddress, glib::Error>;
 
     #[doc(alias = "g_socket_address_enumerator_next_async")]
-    fn next_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static,
-    >(
+    fn next_async<P: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn next_async_future(
@@ -46,9 +43,9 @@ pub trait SocketAddressEnumeratorExt: 'static {
 }
 
 impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
-    fn next<P: IsA<Cancellable>>(
+    fn next(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<SocketAddress, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -65,17 +62,14 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         }
     }
 
-    fn next_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static,
-    >(
+    fn next_async<P: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static>(
         &self,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn next_async_trampoline<
-            Q: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<SocketAddress, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -92,10 +86,10 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = next_async_trampoline::<Q>;
+        let callback = next_async_trampoline::<P>;
         unsafe {
             ffi::g_socket_address_enumerator_next_async(
                 self.as_ref().to_glib_none().0,

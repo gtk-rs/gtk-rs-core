@@ -39,9 +39,9 @@ impl DBusAuthObserver {
     }
 
     #[doc(alias = "g_dbus_auth_observer_authorize_authenticated_peer")]
-    pub fn authorize_authenticated_peer<P: IsA<IOStream>>(
+    pub fn authorize_authenticated_peer(
         &self,
-        stream: &P,
+        stream: &impl IsA<IOStream>,
         credentials: Option<&Credentials>,
     ) -> bool {
         unsafe {

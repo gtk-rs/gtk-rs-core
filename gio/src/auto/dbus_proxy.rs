@@ -39,14 +39,14 @@ glib::wrapper! {
 impl DBusProxy {
     #[doc(alias = "g_dbus_proxy_new_for_bus_sync")]
     #[doc(alias = "new_for_bus_sync")]
-    pub fn for_bus_sync<P: IsA<Cancellable>>(
+    pub fn for_bus_sync(
         bus_type: BusType,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
         name: &str,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -69,14 +69,14 @@ impl DBusProxy {
     }
 
     #[doc(alias = "g_dbus_proxy_new_sync")]
-    pub fn new_sync<P: IsA<Cancellable>>(
+    pub fn new_sync(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
         name: Option<&str>,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusProxy, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -99,19 +99,19 @@ impl DBusProxy {
     }
 
     #[doc(alias = "g_dbus_proxy_new")]
-    pub fn new<P: IsA<Cancellable>, Q: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static>(
+    pub fn new<P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static>(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
         name: Option<&str>,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn new_trampoline<
-            Q: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -124,10 +124,10 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = new_trampoline::<Q>;
+        let callback = new_trampoline::<P>;
         unsafe {
             ffi::g_dbus_proxy_new(
                 connection.to_glib_none().0,
@@ -177,22 +177,19 @@ impl DBusProxy {
 
     #[doc(alias = "g_dbus_proxy_new_for_bus")]
     #[doc(alias = "new_for_bus")]
-    pub fn for_bus<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
-    >(
+    pub fn for_bus<P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static>(
         bus_type: BusType,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
         name: &str,
         object_path: &str,
         interface_name: &str,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn for_bus_trampoline<
-            Q: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -205,10 +202,10 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = for_bus_trampoline::<Q>;
+        let callback = for_bus_trampoline::<P>;
         unsafe {
             ffi::g_dbus_proxy_new_for_bus(
                 bus_type.into_glib(),
@@ -270,14 +267,14 @@ pub const NONE_DBUS_PROXY: Option<&DBusProxy> = None;
 
 pub trait DBusProxyExt: 'static {
     #[doc(alias = "g_dbus_proxy_call")]
-    fn call<P: IsA<Cancellable>, Q: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
+    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn call_future(
@@ -289,42 +286,40 @@ pub trait DBusProxyExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::Variant, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_dbus_proxy_call_sync")]
-    fn call_sync<P: IsA<Cancellable>>(
+    fn call_sync(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error>;
 
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
-        P: IsA<UnixFDList>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
     >(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        fd_list: Option<&impl IsA<UnixFDList>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-    fn call_with_unix_fd_list_future<P: IsA<UnixFDList> + Clone + 'static>(
+    fn call_with_unix_fd_list_future(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
+        fd_list: Option<&(impl IsA<UnixFDList> + Clone + 'static)>,
     ) -> Pin<
         Box_<
             dyn std::future::Future<Output = Result<(glib::Variant, UnixFDList), glib::Error>>
@@ -335,14 +330,14 @@ pub trait DBusProxyExt: 'static {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list_sync")]
-    fn call_with_unix_fd_list_sync<P: IsA<UnixFDList>, Q: IsA<Cancellable>>(
+    fn call_with_unix_fd_list_sync(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
-        cancellable: Option<&Q>,
+        fd_list: Option<&impl IsA<UnixFDList>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Variant, UnixFDList), glib::Error>;
 
     #[doc(alias = "g_dbus_proxy_get_cached_property")]
@@ -450,18 +445,18 @@ pub trait DBusProxyExt: 'static {
 }
 
 impl<O: IsA<DBusProxy>> DBusProxyExt for O {
-    fn call<P: IsA<Cancellable>, Q: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
+    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn call_trampoline<
-            Q: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -474,10 +469,10 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = call_trampoline::<Q>;
+        let callback = call_trampoline::<P>;
         unsafe {
             ffi::g_dbus_proxy_call(
                 self.as_ref().to_glib_none().0,
@@ -519,13 +514,13 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         ))
     }
 
-    fn call_sync<P: IsA<Cancellable>>(
+    fn call_sync(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -549,22 +544,20 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     fn call_with_unix_fd_list<
-        P: IsA<UnixFDList>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
     >(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        fd_list: Option<&impl IsA<UnixFDList>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn call_with_unix_fd_list_trampoline<
-            R: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -583,10 +576,10 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = call_with_unix_fd_list_trampoline::<R>;
+        let callback = call_with_unix_fd_list_trampoline::<P>;
         unsafe {
             ffi::g_dbus_proxy_call_with_unix_fd_list(
                 self.as_ref().to_glib_none().0,
@@ -604,13 +597,13 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
 
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-    fn call_with_unix_fd_list_future<P: IsA<UnixFDList> + Clone + 'static>(
+    fn call_with_unix_fd_list_future(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
+        fd_list: Option<&(impl IsA<UnixFDList> + Clone + 'static)>,
     ) -> Pin<
         Box_<
             dyn std::future::Future<Output = Result<(glib::Variant, UnixFDList), glib::Error>>
@@ -640,14 +633,14 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
 
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-    fn call_with_unix_fd_list_sync<P: IsA<UnixFDList>, Q: IsA<Cancellable>>(
+    fn call_with_unix_fd_list_sync(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
         flags: DBusCallFlags,
         timeout_msec: i32,
-        fd_list: Option<&P>,
-        cancellable: Option<&Q>,
+        fd_list: Option<&impl IsA<UnixFDList>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Variant, UnixFDList), glib::Error> {
         unsafe {
             let mut out_fd_list = ptr::null_mut();

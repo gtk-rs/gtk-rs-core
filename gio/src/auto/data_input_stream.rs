@@ -34,7 +34,7 @@ glib::wrapper! {
 
 impl DataInputStream {
     #[doc(alias = "g_data_input_stream_new")]
-    pub fn new<P: IsA<InputStream>>(base_stream: &P) -> DataInputStream {
+    pub fn new(base_stream: &impl IsA<InputStream>) -> DataInputStream {
         unsafe {
             from_glib_full(ffi::g_data_input_stream_new(
                 base_stream.as_ref().to_glib_none().0,
@@ -116,7 +116,7 @@ impl DataInputStreamBuilder {
         self
     }
 
-    pub fn base_stream<P: IsA<InputStream>>(mut self, base_stream: &P) -> Self {
+    pub fn base_stream(mut self, base_stream: &impl IsA<InputStream>) -> Self {
         self.base_stream = Some(base_stream.clone().upcast());
         self
     }
@@ -139,28 +139,25 @@ pub trait DataInputStreamExt: 'static {
     fn newline_type(&self) -> DataStreamNewlineType;
 
     #[doc(alias = "g_data_input_stream_read_byte")]
-    fn read_byte<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<u8, glib::Error>;
+    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u8, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_int16")]
-    fn read_int16<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i16, glib::Error>;
+    fn read_int16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i16, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_int32")]
-    fn read_int32<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i32, glib::Error>;
+    fn read_int32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_int64")]
-    fn read_int64<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i64, glib::Error>;
+    fn read_int64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i64, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_uint16")]
-    fn read_uint16<P: IsA<Cancellable>>(&self, cancellable: Option<&P>)
-        -> Result<u16, glib::Error>;
+    fn read_uint16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u16, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_uint32")]
-    fn read_uint32<P: IsA<Cancellable>>(&self, cancellable: Option<&P>)
-        -> Result<u32, glib::Error>;
+    fn read_uint32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u32, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_uint64")]
-    fn read_uint64<P: IsA<Cancellable>>(&self, cancellable: Option<&P>)
-        -> Result<u64, glib::Error>;
+    fn read_uint64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u64, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_set_byte_order")]
     fn set_byte_order(&self, order: DataStreamByteOrder);
@@ -192,7 +189,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_byte<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<u8, glib::Error> {
+    fn read_byte(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u8, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_byte(
@@ -208,7 +205,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_int16<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i16, glib::Error> {
+    fn read_int16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i16, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int16(
@@ -224,7 +221,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_int32<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i32, glib::Error> {
+    fn read_int32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int32(
@@ -240,7 +237,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_int64<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<i64, glib::Error> {
+    fn read_int64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<i64, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_int64(
@@ -256,10 +253,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_uint16<P: IsA<Cancellable>>(
-        &self,
-        cancellable: Option<&P>,
-    ) -> Result<u16, glib::Error> {
+    fn read_uint16(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u16, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint16(
@@ -275,10 +269,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_uint32<P: IsA<Cancellable>>(
-        &self,
-        cancellable: Option<&P>,
-    ) -> Result<u32, glib::Error> {
+    fn read_uint32(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u32, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint32(
@@ -294,10 +285,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExt for O {
         }
     }
 
-    fn read_uint64<P: IsA<Cancellable>>(
-        &self,
-        cancellable: Option<&P>,
-    ) -> Result<u64, glib::Error> {
+    fn read_uint64(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<u64, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_data_input_stream_read_uint64(

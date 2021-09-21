@@ -31,22 +31,19 @@ pub trait FileIOStreamExt: 'static {
     fn etag(&self) -> Option<glib::GString>;
 
     #[doc(alias = "g_file_io_stream_query_info")]
-    fn query_info<P: IsA<Cancellable>>(
+    fn query_info(
         &self,
         attributes: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error>;
 
     #[doc(alias = "g_file_io_stream_query_info_async")]
-    fn query_info_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
-    >(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn query_info_async_future(
@@ -65,10 +62,10 @@ impl<O: IsA<FileIOStream>> FileIOStreamExt for O {
         }
     }
 
-    fn query_info<P: IsA<Cancellable>>(
+    fn query_info(
         &self,
         attributes: &str,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<FileInfo, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -86,19 +83,16 @@ impl<O: IsA<FileIOStream>> FileIOStreamExt for O {
         }
     }
 
-    fn query_info_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
-    >(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn query_info_async_trampoline<
-            Q: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -112,10 +106,10 @@ impl<O: IsA<FileIOStream>> FileIOStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = query_info_async_trampoline::<Q>;
+        let callback = query_info_async_trampoline::<P>;
         unsafe {
             ffi::g_file_io_stream_query_info_async(
                 self.as_ref().to_glib_none().0,

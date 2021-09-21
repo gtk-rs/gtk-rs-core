@@ -35,9 +35,9 @@ pub const NONE_TLS_CONNECTION: Option<&TlsConnection> = None;
 
 pub trait TlsConnectionExt: 'static {
     #[doc(alias = "g_tls_connection_emit_accept_certificate")]
-    fn emit_accept_certificate<P: IsA<TlsCertificate>>(
+    fn emit_accept_certificate(
         &self,
-        peer_cert: &P,
+        peer_cert: &impl IsA<TlsCertificate>,
         errors: TlsCertificateFlags,
     ) -> bool;
 
@@ -77,14 +77,14 @@ pub trait TlsConnectionExt: 'static {
     fn requires_close_notify(&self) -> bool;
 
     #[doc(alias = "g_tls_connection_handshake")]
-    fn handshake<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_tls_connection_handshake_async")]
-    fn handshake_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn handshake_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn handshake_async_future(
@@ -98,13 +98,13 @@ pub trait TlsConnectionExt: 'static {
     fn set_advertised_protocols(&self, protocols: &[&str]);
 
     #[doc(alias = "g_tls_connection_set_certificate")]
-    fn set_certificate<P: IsA<TlsCertificate>>(&self, certificate: &P);
+    fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>);
 
     #[doc(alias = "g_tls_connection_set_database")]
-    fn set_database<P: IsA<TlsDatabase>>(&self, database: Option<&P>);
+    fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>);
 
     #[doc(alias = "g_tls_connection_set_interaction")]
-    fn set_interaction<P: IsA<TlsInteraction>>(&self, interaction: Option<&P>);
+    fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>);
 
     #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[doc(alias = "g_tls_connection_set_rehandshake_mode")]
@@ -166,9 +166,9 @@ pub trait TlsConnectionExt: 'static {
 }
 
 impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
-    fn emit_accept_certificate<P: IsA<TlsCertificate>>(
+    fn emit_accept_certificate(
         &self,
-        peer_cert: &P,
+        peer_cert: &impl IsA<TlsCertificate>,
         errors: TlsCertificateFlags,
     ) -> bool {
         unsafe {
@@ -246,7 +246,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn handshake<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_tls_connection_handshake(
@@ -262,15 +262,15 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn handshake_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn handshake_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn handshake_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -284,10 +284,10 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = handshake_async_trampoline::<Q>;
+        let callback = handshake_async_trampoline::<P>;
         unsafe {
             ffi::g_tls_connection_handshake_async(
                 self.as_ref().to_glib_none().0,
@@ -324,7 +324,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn set_certificate<P: IsA<TlsCertificate>>(&self, certificate: &P) {
+    fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>) {
         unsafe {
             ffi::g_tls_connection_set_certificate(
                 self.as_ref().to_glib_none().0,
@@ -333,7 +333,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn set_database<P: IsA<TlsDatabase>>(&self, database: Option<&P>) {
+    fn set_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
         unsafe {
             ffi::g_tls_connection_set_database(
                 self.as_ref().to_glib_none().0,
@@ -342,7 +342,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn set_interaction<P: IsA<TlsInteraction>>(&self, interaction: Option<&P>) {
+    fn set_interaction(&self, interaction: Option<&impl IsA<TlsInteraction>>) {
         unsafe {
             ffi::g_tls_connection_set_interaction(
                 self.as_ref().to_glib_none().0,

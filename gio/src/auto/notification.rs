@@ -94,7 +94,7 @@ impl Notification {
     }
 
     #[doc(alias = "g_notification_set_icon")]
-    pub fn set_icon<P: IsA<Icon>>(&self, icon: &P) {
+    pub fn set_icon(&self, icon: &impl IsA<Icon>) {
         unsafe {
             ffi::g_notification_set_icon(self.to_glib_none().0, icon.as_ref().to_glib_none().0);
         }

@@ -28,16 +28,16 @@ pub trait PollableOutputStreamExt: 'static {
     fn is_writable(&self) -> bool;
 
     #[doc(alias = "g_pollable_output_stream_write_nonblocking")]
-    fn write_nonblocking<P: IsA<Cancellable>>(
+    fn write_nonblocking(
         &self,
         buffer: &[u8],
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error>;
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
-    //fn writev_nonblocking<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error>;
+    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error>;
 }
 
 impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
@@ -57,10 +57,10 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
         }
     }
 
-    fn write_nonblocking<P: IsA<Cancellable>>(
+    fn write_nonblocking(
         &self,
         buffer: &[u8],
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
         let count = buffer.len() as usize;
         unsafe {
@@ -82,7 +82,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_nonblocking<P: IsA<Cancellable>>(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&P>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error> {
+    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error> {
     //    unsafe { TODO: call ffi:g_pollable_output_stream_writev_nonblocking() }
     //}
 }

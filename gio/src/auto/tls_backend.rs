@@ -58,7 +58,7 @@ pub trait TlsBackendExt: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_backend_set_default_database")]
-    fn set_default_database<P: IsA<TlsDatabase>>(&self, database: Option<&P>);
+    fn set_default_database(&self, database: Option<&impl IsA<TlsDatabase>>);
 
     #[doc(alias = "g_tls_backend_supports_dtls")]
     fn supports_dtls(&self) -> bool;
@@ -126,7 +126,7 @@ impl<O: IsA<TlsBackend>> TlsBackendExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn set_default_database<P: IsA<TlsDatabase>>(&self, database: Option<&P>) {
+    fn set_default_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
         unsafe {
             ffi::g_tls_backend_set_default_database(
                 self.as_ref().to_glib_none().0,

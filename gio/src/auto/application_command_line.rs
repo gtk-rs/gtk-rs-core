@@ -27,7 +27,7 @@ pub const NONE_APPLICATION_COMMAND_LINE: Option<&ApplicationCommandLine> = None;
 
 pub trait ApplicationCommandLineExt: 'static {
     #[doc(alias = "g_application_command_line_create_file_for_arg")]
-    fn create_file_for_arg<P: AsRef<std::ffi::OsStr>>(&self, arg: P) -> File;
+    fn create_file_for_arg(&self, arg: impl AsRef<std::ffi::OsStr>) -> File;
 
     #[doc(alias = "g_application_command_line_get_arguments")]
     #[doc(alias = "get_arguments")]
@@ -62,7 +62,7 @@ pub trait ApplicationCommandLineExt: 'static {
     fn stdin(&self) -> Option<InputStream>;
 
     #[doc(alias = "g_application_command_line_getenv")]
-    fn getenv<P: AsRef<std::ffi::OsStr>>(&self, name: P) -> Option<glib::GString>;
+    fn getenv(&self, name: impl AsRef<std::ffi::OsStr>) -> Option<glib::GString>;
 
     //#[doc(alias = "g_application_command_line_print")]
     //fn print(&self, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
@@ -78,7 +78,7 @@ pub trait ApplicationCommandLineExt: 'static {
 }
 
 impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {
-    fn create_file_for_arg<P: AsRef<std::ffi::OsStr>>(&self, arg: P) -> File {
+    fn create_file_for_arg(&self, arg: impl AsRef<std::ffi::OsStr>) -> File {
         unsafe {
             from_glib_full(ffi::g_application_command_line_create_file_for_arg(
                 self.as_ref().to_glib_none().0,
@@ -153,7 +153,7 @@ impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {
         }
     }
 
-    fn getenv<P: AsRef<std::ffi::OsStr>>(&self, name: P) -> Option<glib::GString> {
+    fn getenv(&self, name: impl AsRef<std::ffi::OsStr>) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_application_command_line_getenv(
                 self.as_ref().to_glib_none().0,

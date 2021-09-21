@@ -26,14 +26,14 @@ pub const NONE_FILE_ENUMERATOR: Option<&FileEnumerator> = None;
 
 pub trait FileEnumeratorExt: 'static {
     #[doc(alias = "g_file_enumerator_close")]
-    fn close<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error>;
+    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_enumerator_close_async")]
-    fn close_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn close_async_future(
@@ -56,21 +56,18 @@ pub trait FileEnumeratorExt: 'static {
     fn is_closed(&self) -> bool;
 
     #[doc(alias = "g_file_enumerator_next_file")]
-    fn next_file<P: IsA<Cancellable>>(
+    fn next_file(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<FileInfo>, glib::Error>;
 
     #[doc(alias = "g_file_enumerator_next_files_async")]
-    fn next_files_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static,
-    >(
+    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn next_files_async_future(
@@ -84,7 +81,7 @@ pub trait FileEnumeratorExt: 'static {
 }
 
 impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
-    fn close<P: IsA<Cancellable>>(&self, cancellable: Option<&P>) -> Result<(), glib::Error> {
+    fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_file_enumerator_close(
@@ -100,15 +97,15 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn close_async<P: IsA<Cancellable>, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn close_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -121,10 +118,10 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = close_async_trampoline::<Q>;
+        let callback = close_async_trampoline::<P>;
         unsafe {
             ffi::g_file_enumerator_close_async(
                 self.as_ref().to_glib_none().0,
@@ -183,9 +180,9 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn next_file<P: IsA<Cancellable>>(
+    fn next_file(
         &self,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<FileInfo>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -202,19 +199,16 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn next_files_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static,
-    >(
+    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn next_files_async_trampoline<
-            Q: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -228,10 +222,10 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = next_files_async_trampoline::<Q>;
+        let callback = next_files_async_trampoline::<P>;
         unsafe {
             ffi::g_file_enumerator_next_files_async(
                 self.as_ref().to_glib_none().0,

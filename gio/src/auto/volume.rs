@@ -41,22 +41,18 @@ pub trait VolumeExt: 'static {
     fn can_mount(&self) -> bool;
 
     #[doc(alias = "g_volume_eject_with_operation")]
-    fn eject_with_operation<
-        P: IsA<MountOperation>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn eject_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        mount_operation: Option<&impl IsA<MountOperation>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn eject_with_operation_future<P: IsA<MountOperation> + Clone + 'static>(
+    fn eject_with_operation_future(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&P>,
+        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_volume_enumerate_identifiers")]
@@ -98,22 +94,18 @@ pub trait VolumeExt: 'static {
     fn uuid(&self) -> Option<glib::GString>;
 
     #[doc(alias = "g_volume_mount")]
-    fn mount<
-        P: IsA<MountOperation>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn mount<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        mount_operation: Option<&impl IsA<MountOperation>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
-    fn mount_future<P: IsA<MountOperation> + Clone + 'static>(
+    fn mount_future(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&P>,
+        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_volume_should_automount")]
@@ -135,20 +127,16 @@ impl<O: IsA<Volume>> VolumeExt for O {
         unsafe { from_glib(ffi::g_volume_can_mount(self.as_ref().to_glib_none().0)) }
     }
 
-    fn eject_with_operation<
-        P: IsA<MountOperation>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn eject_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        mount_operation: Option<&impl IsA<MountOperation>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn eject_with_operation_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -165,10 +153,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = eject_with_operation_trampoline::<R>;
+        let callback = eject_with_operation_trampoline::<P>;
         unsafe {
             ffi::g_volume_eject_with_operation(
                 self.as_ref().to_glib_none().0,
@@ -181,10 +169,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
         }
     }
 
-    fn eject_with_operation_future<P: IsA<MountOperation> + Clone + 'static>(
+    fn eject_with_operation_future(
         &self,
         flags: MountUnmountFlags,
-        mount_operation: Option<&P>,
+        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(
@@ -259,20 +247,16 @@ impl<O: IsA<Volume>> VolumeExt for O {
         unsafe { from_glib_full(ffi::g_volume_get_uuid(self.as_ref().to_glib_none().0)) }
     }
 
-    fn mount<
-        P: IsA<MountOperation>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn mount<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
+        mount_operation: Option<&impl IsA<MountOperation>>,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn mount_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -285,10 +269,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = mount_trampoline::<R>;
+        let callback = mount_trampoline::<P>;
         unsafe {
             ffi::g_volume_mount(
                 self.as_ref().to_glib_none().0,
@@ -301,10 +285,10 @@ impl<O: IsA<Volume>> VolumeExt for O {
         }
     }
 
-    fn mount_future<P: IsA<MountOperation> + Clone + 'static>(
+    fn mount_future(
         &self,
         flags: MountMountFlags,
-        mount_operation: Option<&P>,
+        mount_operation: Option<&(impl IsA<MountOperation> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         let mount_operation = mount_operation.map(ToOwned::to_owned);
         Box_::pin(crate::GioFuture::new(

@@ -370,7 +370,7 @@ impl DBusMessage {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_unix_fd_list")]
-    pub fn set_unix_fd_list<P: IsA<UnixFDList>>(&self, fd_list: Option<&P>) {
+    pub fn set_unix_fd_list(&self, fd_list: Option<&impl IsA<UnixFDList>>) {
         unsafe {
             ffi::g_dbus_message_set_unix_fd_list(
                 self.to_glib_none().0,

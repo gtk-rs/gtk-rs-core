@@ -30,10 +30,10 @@ pub trait FileMonitorExt: 'static {
     fn cancel(&self) -> bool;
 
     #[doc(alias = "g_file_monitor_emit_event")]
-    fn emit_event<P: IsA<File>, Q: IsA<File>>(
+    fn emit_event(
         &self,
-        child: &P,
-        other_file: &Q,
+        child: &impl IsA<File>,
+        other_file: &impl IsA<File>,
         event_type: FileMonitorEvent,
     );
 
@@ -64,10 +64,10 @@ impl<O: IsA<FileMonitor>> FileMonitorExt for O {
         unsafe { from_glib(ffi::g_file_monitor_cancel(self.as_ref().to_glib_none().0)) }
     }
 
-    fn emit_event<P: IsA<File>, Q: IsA<File>>(
+    fn emit_event(
         &self,
-        child: &P,
-        other_file: &Q,
+        child: &impl IsA<File>,
+        other_file: &impl IsA<File>,
         event_type: FileMonitorEvent,
     ) {
         unsafe {

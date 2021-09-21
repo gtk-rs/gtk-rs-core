@@ -29,12 +29,12 @@ glib::wrapper! {
 
 impl DBusServer {
     #[doc(alias = "g_dbus_server_new_sync")]
-    pub fn new_sync<P: IsA<Cancellable>>(
+    pub fn new_sync(
         address: &str,
         flags: DBusServerFlags,
         guid: &str,
         observer: Option<&DBusAuthObserver>,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<DBusServer, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();

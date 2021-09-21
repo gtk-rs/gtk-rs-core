@@ -31,9 +31,9 @@ impl Settings {
     }
 
     #[doc(alias = "g_settings_new_full")]
-    pub fn new_full<P: IsA<SettingsBackend>>(
+    pub fn new_full(
         schema: &SettingsSchema,
-        backend: Option<&P>,
+        backend: Option<&impl IsA<SettingsBackend>>,
         path: Option<&str>,
     ) -> Settings {
         unsafe {
@@ -47,7 +47,7 @@ impl Settings {
 
     #[doc(alias = "g_settings_new_with_backend")]
     #[doc(alias = "new_with_backend")]
-    pub fn with_backend<P: IsA<SettingsBackend>>(schema_id: &str, backend: &P) -> Settings {
+    pub fn with_backend(schema_id: &str, backend: &impl IsA<SettingsBackend>) -> Settings {
         unsafe {
             from_glib_full(ffi::g_settings_new_with_backend(
                 schema_id.to_glib_none().0,
@@ -58,9 +58,9 @@ impl Settings {
 
     #[doc(alias = "g_settings_new_with_backend_and_path")]
     #[doc(alias = "new_with_backend_and_path")]
-    pub fn with_backend_and_path<P: IsA<SettingsBackend>>(
+    pub fn with_backend_and_path(
         schema_id: &str,
-        backend: &P,
+        backend: &impl IsA<SettingsBackend>,
         path: &str,
     ) -> Settings {
         unsafe {
@@ -91,7 +91,7 @@ impl Settings {
     }
 
     #[doc(alias = "g_settings_unbind")]
-    pub fn unbind<P: IsA<glib::Object>>(object: &P, property: &str) {
+    pub fn unbind(object: &impl IsA<glib::Object>, property: &str) {
         unsafe {
             ffi::g_settings_unbind(object.as_ref().to_glib_none().0, property.to_glib_none().0);
         }
@@ -105,10 +105,10 @@ pub trait SettingsExt: 'static {
     fn apply(&self);
 
     #[doc(alias = "g_settings_bind_writable")]
-    fn bind_writable<P: IsA<glib::Object>>(
+    fn bind_writable(
         &self,
         key: &str,
-        object: &P,
+        object: &impl IsA<glib::Object>,
         property: &str,
         inverted: bool,
     );
@@ -292,10 +292,10 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    fn bind_writable<P: IsA<glib::Object>>(
+    fn bind_writable(
         &self,
         key: &str,
-        object: &P,
+        object: &impl IsA<glib::Object>,
         property: &str,
         inverted: bool,
     ) {

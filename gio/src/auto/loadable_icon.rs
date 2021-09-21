@@ -26,21 +26,18 @@ pub const NONE_LOADABLE_ICON: Option<&LoadableIcon> = None;
 
 pub trait LoadableIconExt: 'static {
     #[doc(alias = "g_loadable_icon_load")]
-    fn load<P: IsA<Cancellable>>(
+    fn load(
         &self,
         size: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(InputStream, glib::GString), glib::Error>;
 
     #[doc(alias = "g_loadable_icon_load_async")]
-    fn load_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static,
-    >(
+    fn load_async<P: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static>(
         &self,
         size: i32,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     );
 
     fn load_async_future(
@@ -55,10 +52,10 @@ pub trait LoadableIconExt: 'static {
 }
 
 impl<O: IsA<LoadableIcon>> LoadableIconExt for O {
-    fn load<P: IsA<Cancellable>>(
+    fn load(
         &self,
         size: i32,
-        cancellable: Option<&P>,
+        cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(InputStream, glib::GString), glib::Error> {
         unsafe {
             let mut type_ = ptr::null_mut();
@@ -78,18 +75,15 @@ impl<O: IsA<LoadableIcon>> LoadableIconExt for O {
         }
     }
 
-    fn load_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static,
-    >(
+    fn load_async<P: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static>(
         &self,
         size: i32,
-        cancellable: Option<&P>,
-        callback: Q,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn load_async_trampoline<
-            Q: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -108,10 +102,10 @@ impl<O: IsA<LoadableIcon>> LoadableIconExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = load_async_trampoline::<Q>;
+        let callback = load_async_trampoline::<P>;
         unsafe {
             ffi::g_loadable_icon_load_async(
                 self.as_ref().to_glib_none().0,

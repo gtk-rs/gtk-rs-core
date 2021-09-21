@@ -50,7 +50,7 @@ pub const NONE_ICON: Option<&Icon> = None;
 
 pub trait IconExt: 'static {
     #[doc(alias = "g_icon_equal")]
-    fn equal<P: IsA<Icon>>(&self, icon2: Option<&P>) -> bool;
+    fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool;
 
     #[doc(alias = "g_icon_serialize")]
     fn serialize(&self) -> Option<glib::Variant>;
@@ -60,7 +60,7 @@ pub trait IconExt: 'static {
 }
 
 impl<O: IsA<Icon>> IconExt for O {
-    fn equal<P: IsA<Icon>>(&self, icon2: Option<&P>) -> bool {
+    fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool {
         unsafe {
             from_glib(ffi::g_icon_equal(
                 self.as_ref().to_glib_none().0,

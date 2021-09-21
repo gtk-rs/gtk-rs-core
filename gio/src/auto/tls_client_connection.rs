@@ -27,9 +27,9 @@ glib::wrapper! {
 
 impl TlsClientConnection {
     #[doc(alias = "g_tls_client_connection_new")]
-    pub fn new<P: IsA<IOStream>, Q: IsA<SocketConnectable>>(
-        base_io_stream: &P,
-        server_identity: Option<&Q>,
+    pub fn new(
+        base_io_stream: &impl IsA<IOStream>,
+        server_identity: Option<&impl IsA<SocketConnectable>>,
     ) -> Result<TlsClientConnection, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -51,7 +51,7 @@ pub const NONE_TLS_CLIENT_CONNECTION: Option<&TlsClientConnection> = None;
 
 pub trait TlsClientConnectionExt: 'static {
     #[doc(alias = "g_tls_client_connection_copy_session_state")]
-    fn copy_session_state<P: IsA<TlsClientConnection>>(&self, source: &P);
+    fn copy_session_state(&self, source: &impl IsA<TlsClientConnection>);
 
     #[doc(alias = "g_tls_client_connection_get_accepted_cas")]
     #[doc(alias = "get_accepted_cas")]
@@ -71,7 +71,7 @@ pub trait TlsClientConnectionExt: 'static {
     fn validation_flags(&self) -> TlsCertificateFlags;
 
     #[doc(alias = "g_tls_client_connection_set_server_identity")]
-    fn set_server_identity<P: IsA<SocketConnectable>>(&self, identity: &P);
+    fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>);
 
     #[cfg_attr(feature = "v2_56", deprecated = "Since 2.56")]
     #[doc(alias = "g_tls_client_connection_set_use_ssl3")]
@@ -95,7 +95,7 @@ pub trait TlsClientConnectionExt: 'static {
 }
 
 impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
-    fn copy_session_state<P: IsA<TlsClientConnection>>(&self, source: &P) {
+    fn copy_session_state(&self, source: &impl IsA<TlsClientConnection>) {
         unsafe {
             ffi::g_tls_client_connection_copy_session_state(
                 self.as_ref().to_glib_none().0,
@@ -136,7 +136,7 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
-    fn set_server_identity<P: IsA<SocketConnectable>>(&self, identity: &P) {
+    fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>) {
         unsafe {
             ffi::g_tls_client_connection_set_server_identity(
                 self.as_ref().to_glib_none().0,

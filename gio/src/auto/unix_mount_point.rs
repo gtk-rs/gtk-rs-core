@@ -137,7 +137,7 @@ impl UnixMountPoint {
     #[cfg(any(feature = "v2_66", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_unix_mount_point_at")]
-    pub fn at<P: AsRef<std::path::Path>>(mount_path: P) -> (Option<UnixMountPoint>, u64) {
+    pub fn at(mount_path: impl AsRef<std::path::Path>) -> (Option<UnixMountPoint>, u64) {
         unsafe {
             let mut time_read = mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_point_at(

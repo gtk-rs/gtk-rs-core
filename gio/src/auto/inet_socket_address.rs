@@ -21,7 +21,7 @@ glib::wrapper! {
 
 impl InetSocketAddress {
     #[doc(alias = "g_inet_socket_address_new")]
-    pub fn new<P: IsA<InetAddress>>(address: &P, port: u16) -> InetSocketAddress {
+    pub fn new(address: &impl IsA<InetAddress>, port: u16) -> InetSocketAddress {
         unsafe {
             SocketAddress::from_glib_full(ffi::g_inet_socket_address_new(
                 address.as_ref().to_glib_none().0,

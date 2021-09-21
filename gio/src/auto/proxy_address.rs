@@ -22,8 +22,8 @@ glib::wrapper! {
 
 impl ProxyAddress {
     #[doc(alias = "g_proxy_address_new")]
-    pub fn new<P: IsA<InetAddress>>(
-        inetaddr: &P,
+    pub fn new(
+        inetaddr: &impl IsA<InetAddress>,
         port: u16,
         protocol: &str,
         dest_hostname: &str,

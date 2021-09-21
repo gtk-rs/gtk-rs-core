@@ -184,7 +184,7 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_font_map")]
-    pub fn set_font_map<P: IsA<FontMap>>(&self, font_map: &P) {
+    pub fn set_font_map(&self, font_map: &impl IsA<FontMap>) {
         unsafe {
             ffi::pango_context_set_font_map(
                 self.to_glib_none().0,

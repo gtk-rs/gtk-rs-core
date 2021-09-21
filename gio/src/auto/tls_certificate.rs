@@ -22,7 +22,7 @@ glib::wrapper! {
 impl TlsCertificate {
     #[doc(alias = "g_tls_certificate_new_from_file")]
     #[doc(alias = "new_from_file")]
-    pub fn from_file<P: AsRef<std::path::Path>>(file: P) -> Result<TlsCertificate, glib::Error> {
+    pub fn from_file(file: impl AsRef<std::path::Path>) -> Result<TlsCertificate, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret =
@@ -37,9 +37,9 @@ impl TlsCertificate {
 
     #[doc(alias = "g_tls_certificate_new_from_files")]
     #[doc(alias = "new_from_files")]
-    pub fn from_files<P: AsRef<std::path::Path>, Q: AsRef<std::path::Path>>(
-        cert_file: P,
-        key_file: Q,
+    pub fn from_files(
+        cert_file: impl AsRef<std::path::Path>,
+        key_file: impl AsRef<std::path::Path>,
     ) -> Result<TlsCertificate, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -73,8 +73,8 @@ impl TlsCertificate {
     }
 
     #[doc(alias = "g_tls_certificate_list_new_from_file")]
-    pub fn list_new_from_file<P: AsRef<std::path::Path>>(
-        file: P,
+    pub fn list_new_from_file(
+        file: impl AsRef<std::path::Path>,
     ) -> Result<Vec<TlsCertificate>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -99,13 +99,13 @@ pub trait TlsCertificateExt: 'static {
     fn issuer(&self) -> Option<TlsCertificate>;
 
     #[doc(alias = "g_tls_certificate_is_same")]
-    fn is_same<P: IsA<TlsCertificate>>(&self, cert_two: &P) -> bool;
+    fn is_same(&self, cert_two: &impl IsA<TlsCertificate>) -> bool;
 
     #[doc(alias = "g_tls_certificate_verify")]
-    fn verify<P: IsA<SocketConnectable>, Q: IsA<TlsCertificate>>(
+    fn verify(
         &self,
-        identity: Option<&P>,
-        trusted_ca: Option<&Q>,
+        identity: Option<&impl IsA<SocketConnectable>>,
+        trusted_ca: Option<&impl IsA<TlsCertificate>>,
     ) -> TlsCertificateFlags;
 
     fn certificate(&self) -> Option<glib::ByteArray>;
@@ -123,7 +123,7 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    fn is_same<P: IsA<TlsCertificate>>(&self, cert_two: &P) -> bool {
+    fn is_same(&self, cert_two: &impl IsA<TlsCertificate>) -> bool {
         unsafe {
             from_glib(ffi::g_tls_certificate_is_same(
                 self.as_ref().to_glib_none().0,
@@ -132,10 +132,10 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    fn verify<P: IsA<SocketConnectable>, Q: IsA<TlsCertificate>>(
+    fn verify(
         &self,
-        identity: Option<&P>,
-        trusted_ca: Option<&Q>,
+        identity: Option<&impl IsA<SocketConnectable>>,
+        trusted_ca: Option<&impl IsA<TlsCertificate>>,
     ) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_certificate_verify(

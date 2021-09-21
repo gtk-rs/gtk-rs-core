@@ -37,7 +37,7 @@ impl ListStore {
     }
 
     #[doc(alias = "g_list_store_append")]
-    pub fn append<P: IsA<glib::Object>>(&self, item: &P) {
+    pub fn append(&self, item: &impl IsA<glib::Object>) {
         unsafe {
             ffi::g_list_store_append(self.to_glib_none().0, item.as_ref().to_glib_none().0);
         }
@@ -46,7 +46,7 @@ impl ListStore {
     #[cfg(any(feature = "v2_64", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
     #[doc(alias = "g_list_store_find")]
-    pub fn find<P: IsA<glib::Object>>(&self, item: &P) -> Option<u32> {
+    pub fn find(&self, item: &impl IsA<glib::Object>) -> Option<u32> {
         unsafe {
             let mut position = mem::MaybeUninit::uninit();
             let ret = from_glib(ffi::g_list_store_find(
@@ -64,7 +64,7 @@ impl ListStore {
     }
 
     #[doc(alias = "g_list_store_insert")]
-    pub fn insert<P: IsA<glib::Object>>(&self, position: u32, item: &P) {
+    pub fn insert(&self, position: u32, item: &impl IsA<glib::Object>) {
         unsafe {
             ffi::g_list_store_insert(
                 self.to_glib_none().0,

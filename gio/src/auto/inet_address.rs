@@ -53,7 +53,7 @@ pub const NONE_INET_ADDRESS: Option<&InetAddress> = None;
 
 pub trait InetAddressExt: 'static {
     #[doc(alias = "g_inet_address_equal")]
-    fn equal<P: IsA<InetAddress>>(&self, other_address: &P) -> bool;
+    fn equal(&self, other_address: &impl IsA<InetAddress>) -> bool;
 
     #[doc(alias = "g_inet_address_get_family")]
     #[doc(alias = "get_family")]
@@ -168,7 +168,7 @@ pub trait InetAddressExt: 'static {
 }
 
 impl<O: IsA<InetAddress>> InetAddressExt for O {
-    fn equal<P: IsA<InetAddress>>(&self, other_address: &P) -> bool {
+    fn equal(&self, other_address: &impl IsA<InetAddress>) -> bool {
         unsafe {
             from_glib(ffi::g_inet_address_equal(
                 self.as_ref().to_glib_none().0,

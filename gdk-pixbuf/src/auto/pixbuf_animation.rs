@@ -22,8 +22,8 @@ glib::wrapper! {
 impl PixbufAnimation {
     #[doc(alias = "gdk_pixbuf_animation_new_from_file")]
     #[doc(alias = "new_from_file")]
-    pub fn from_file<P: AsRef<std::path::Path>>(
-        filename: P,
+    pub fn from_file(
+        filename: impl AsRef<std::path::Path>,
     ) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -58,9 +58,9 @@ impl PixbufAnimation {
 
     #[doc(alias = "gdk_pixbuf_animation_new_from_stream")]
     #[doc(alias = "new_from_stream")]
-    pub fn from_stream<P: IsA<gio::InputStream>, Q: IsA<gio::Cancellable>>(
-        stream: &P,
-        cancellable: Option<&Q>,
+    pub fn from_stream(
+        stream: &impl IsA<gio::InputStream>,
+        cancellable: Option<&impl IsA<gio::Cancellable>>,
     ) -> Result<PixbufAnimation, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -79,18 +79,14 @@ impl PixbufAnimation {
 
     #[doc(alias = "gdk_pixbuf_animation_new_from_stream_async")]
     #[doc(alias = "new_from_stream_async")]
-    pub fn from_stream_async<
-        P: IsA<gio::InputStream>,
-        Q: IsA<gio::Cancellable>,
-        R: FnOnce(Result<PixbufAnimation, glib::Error>) + Send + 'static,
-    >(
-        stream: &P,
-        cancellable: Option<&Q>,
-        callback: R,
+    pub fn from_stream_async<P: FnOnce(Result<PixbufAnimation, glib::Error>) + Send + 'static>(
+        stream: &impl IsA<gio::InputStream>,
+        cancellable: Option<&impl IsA<gio::Cancellable>>,
+        callback: P,
     ) {
-        let user_data: Box_<R> = Box_::new(callback);
+        let user_data: Box_<P> = Box_::new(callback);
         unsafe extern "C" fn from_stream_async_trampoline<
-            R: FnOnce(Result<PixbufAnimation, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<PixbufAnimation, glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -103,10 +99,10 @@ impl PixbufAnimation {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<R> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
             callback(result);
         }
-        let callback = from_stream_async_trampoline::<R>;
+        let callback = from_stream_async_trampoline::<P>;
         unsafe {
             ffi::gdk_pixbuf_animation_new_from_stream_async(
                 stream.as_ref().to_glib_none().0,
@@ -117,8 +113,8 @@ impl PixbufAnimation {
         }
     }
 
-    pub fn from_stream_async_future<P: IsA<gio::InputStream> + Clone + 'static>(
-        stream: &P,
+    pub fn from_stream_async_future(
+        stream: &(impl IsA<gio::InputStream> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<PixbufAnimation, glib::Error>> + 'static>>
     {
         let stream = stream.clone();
