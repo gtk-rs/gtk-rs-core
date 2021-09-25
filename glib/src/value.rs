@@ -646,6 +646,20 @@ macro_rules! from_glib {
             }
         }
 
+        impl FromGlibPtrBorrow<*mut gobject_ffi::GValue> for $name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GValue) -> Borrowed<Self> {
+                Borrowed::new($wrap(ptr::read(ptr as *const Value)))
+            }
+        }
+
+        impl FromGlibPtrBorrow<*const gobject_ffi::GValue> for $name {
+            #[inline]
+            unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GValue) -> Borrowed<Self> {
+                Borrowed::new($wrap(ptr::read(ptr as *const Value)))
+            }
+        }
+
         impl FromGlibPtrFull<*mut gobject_ffi::GValue> for $name {
             unsafe fn from_glib_full(ptr: *mut gobject_ffi::GValue) -> Self {
                 let mut ret = Value::uninitialized();
