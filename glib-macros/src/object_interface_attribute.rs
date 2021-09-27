@@ -9,11 +9,14 @@ pub const WRONG_PLACE_MSG: &str =
 
 pub fn impl_object_interface(input: &syn::ItemImpl) -> TokenStream {
     let mut has_prerequisites = false;
+    let mut has_instance = false;
     for item in &input.items {
         if let syn::ImplItem::Type(type_) = item {
             let name = type_.ident.to_string();
             if name == "Prerequisites" {
                 has_prerequisites = true;
+            } else if name == "Instance" {
+                has_instance = true;
             }
         }
     }
@@ -38,6 +41,12 @@ pub fn impl_object_interface(input: &syn::ItemImpl) -> TokenStream {
 
     let crate_ident = crate::utils::crate_ident_new();
 
+    let instance_opt = if has_instance {
+        None
+    } else {
+        Some(quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;))
+    };
+
     let trait_path = match &trait_ {
         Some(path) => &path.1,
         None => abort_call_site!(WRONG_PLACE_MSG),
@@ -47,6 +56,7 @@ pub fn impl_object_interface(input: &syn::ItemImpl) -> TokenStream {
         #(#attrs)*
         #unsafety impl#generics #trait_path for #self_ty {
             #prerequisites_opt
+            #instance_opt
             #(#items)*
         }
 
