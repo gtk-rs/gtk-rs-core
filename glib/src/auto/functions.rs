@@ -11,6 +11,9 @@ use crate::Error;
 use crate::FileSetContentsFlags;
 use crate::FileTest;
 use crate::FormatSizeFlags;
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+use crate::LogLevelFlags;
 use crate::Pid;
 use crate::Source;
 use crate::SpawnFlags;
@@ -196,7 +199,7 @@ pub fn check_version(
     required_major: u32,
     required_minor: u32,
     required_micro: u32,
-) -> crate::GString {
+) -> Option<crate::GString> {
     unsafe {
         from_glib_none(ffi::glib_check_version(
             required_major,
@@ -897,6 +900,27 @@ pub fn listenv() -> Vec<std::ffi::OsString> {
 //    unsafe { TODO: call ffi:g_log_writer_default() }
 //}
 
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[doc(alias = "g_log_writer_default_set_use_stderr")]
+pub fn log_writer_default_set_use_stderr(use_stderr: bool) {
+    unsafe {
+        ffi::g_log_writer_default_set_use_stderr(use_stderr.into_glib());
+    }
+}
+
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[doc(alias = "g_log_writer_default_would_drop")]
+pub fn log_writer_default_would_drop(log_level: LogLevelFlags, log_domain: Option<&str>) -> bool {
+    unsafe {
+        from_glib(ffi::g_log_writer_default_would_drop(
+            log_level.into_glib(),
+            log_domain.to_glib_none().0,
+        ))
+    }
+}
+
 //#[cfg(any(feature = "v2_50", feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 //#[doc(alias = "g_log_writer_format_fields")]
@@ -980,6 +1004,13 @@ pub fn markup_escape_text(text: &str) -> crate::GString {
 //    unsafe { TODO: call ffi:g_memdup() }
 //}
 
+//#[cfg(any(feature = "v2_68", feature = "dox"))]
+//#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+//#[doc(alias = "g_memdup2")]
+//pub fn memdup2(mem: /*Unimplemented*/Option<Fundamental: Pointer>, byte_size: usize) -> /*Unimplemented*/Option<Fundamental: Pointer> {
+//    unsafe { TODO: call ffi:g_memdup2() }
+//}
+
 #[doc(alias = "g_mkdir_with_parents")]
 pub fn mkdir_with_parents(pathname: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_mkdir_with_parents(pathname.as_ref().to_glib_none().0, mode) }
@@ -1048,6 +1079,7 @@ pub fn path_skip_root(file_name: impl AsRef<std::path::Path>) -> Option<std::pat
     unsafe { from_glib_none(ffi::g_path_skip_root(file_name.as_ref().to_glib_none().0)) }
 }
 
+//#[cfg_attr(feature = "v2_70", deprecated = "Since 2.70")]
 //#[doc(alias = "g_pattern_match")]
 //pub fn pattern_match(pspec: /*Ignored*/&mut PatternSpec, string_length: u32, string: &str, string_reversed: Option<&str>) -> bool {
 //    unsafe { TODO: call ffi:g_pattern_match() }
@@ -1063,6 +1095,7 @@ pub fn pattern_match_simple(pattern: &str, string: &str) -> bool {
     }
 }
 
+//#[cfg_attr(feature = "v2_70", deprecated = "Since 2.70")]
 //#[doc(alias = "g_pattern_match_string")]
 //pub fn pattern_match_string(pspec: /*Ignored*/&mut PatternSpec, string: &str) -> bool {
 //    unsafe { TODO: call ffi:g_pattern_match_string() }
@@ -1351,11 +1384,34 @@ pub fn spawn_async(
     }
 }
 
+//#[cfg(any(feature = "v2_68", feature = "dox"))]
+//#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+//#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
+//pub fn spawn_async_with_pipes_and_fds(working_directory: impl AsRef<std::path::Path>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
+//    unsafe { TODO: call ffi:g_spawn_async_with_pipes_and_fds() }
+//}
+
+#[cfg_attr(feature = "v2_70", deprecated = "Since 2.70")]
 #[doc(alias = "g_spawn_check_exit_status")]
-pub fn spawn_check_exit_status(exit_status: i32) -> Result<(), crate::Error> {
+pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_check_exit_status(exit_status, &mut error);
+        let _ = ffi::g_spawn_check_exit_status(wait_status, &mut error);
+        if error.is_null() {
+            Ok(())
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[doc(alias = "g_spawn_check_wait_status")]
+pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
+    unsafe {
+        let mut error = ptr::null_mut();
+        let _ = ffi::g_spawn_check_wait_status(wait_status, &mut error);
         if error.is_null() {
             Ok(())
         } else {

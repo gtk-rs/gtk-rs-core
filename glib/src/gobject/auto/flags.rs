@@ -101,6 +101,8 @@ bitflags! {
         const MUST_COLLECT = gobject_ffi::G_SIGNAL_MUST_COLLECT as u32;
         #[doc(alias = "G_SIGNAL_DEPRECATED")]
         const DEPRECATED = gobject_ffi::G_SIGNAL_DEPRECATED as u32;
+        #[doc(alias = "G_SIGNAL_ACCUMULATOR_FIRST_RUN")]
+        const ACCUMULATOR_FIRST_RUN = gobject_ffi::G_SIGNAL_ACCUMULATOR_FIRST_RUN as u32;
     }
 }
 

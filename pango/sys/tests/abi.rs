@@ -344,62 +344,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "PangoEngine",
-        Layout {
-            size: size_of::<PangoEngine>(),
-            alignment: align_of::<PangoEngine>(),
-        },
-    ),
-    (
-        "PangoEngineClass",
-        Layout {
-            size: size_of::<PangoEngineClass>(),
-            alignment: align_of::<PangoEngineClass>(),
-        },
-    ),
-    (
-        "PangoEngineInfo",
-        Layout {
-            size: size_of::<PangoEngineInfo>(),
-            alignment: align_of::<PangoEngineInfo>(),
-        },
-    ),
-    (
-        "PangoEngineLang",
-        Layout {
-            size: size_of::<PangoEngineLang>(),
-            alignment: align_of::<PangoEngineLang>(),
-        },
-    ),
-    (
-        "PangoEngineLangClass",
-        Layout {
-            size: size_of::<PangoEngineLangClass>(),
-            alignment: align_of::<PangoEngineLangClass>(),
-        },
-    ),
-    (
-        "PangoEngineScriptInfo",
-        Layout {
-            size: size_of::<PangoEngineScriptInfo>(),
-            alignment: align_of::<PangoEngineScriptInfo>(),
-        },
-    ),
-    (
-        "PangoEngineShape",
-        Layout {
-            size: size_of::<PangoEngineShape>(),
-            alignment: align_of::<PangoEngineShape>(),
-        },
-    ),
-    (
-        "PangoEngineShapeClass",
-        Layout {
-            size: size_of::<PangoEngineShapeClass>(),
-            alignment: align_of::<PangoEngineShapeClass>(),
-        },
-    ),
-    (
         "PangoFont",
         Layout {
             size: size_of::<PangoFont>(),
@@ -554,13 +498,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "PangoIncludedModule",
-        Layout {
-            size: size_of::<PangoIncludedModule>(),
-            alignment: align_of::<PangoIncludedModule>(),
-        },
-    ),
-    (
         "PangoItem",
         Layout {
             size: size_of::<PangoItem>(),
@@ -708,6 +645,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_ATTR_GRAVITY", "21"),
     ("(gint) PANGO_ATTR_GRAVITY_HINT", "22"),
     ("PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING", "0"),
+    ("PANGO_ATTR_INDEX_TO_TEXT_END", "4294967295"),
     ("(gint) PANGO_ATTR_INSERT_HYPHENS", "28"),
     ("(gint) PANGO_ATTR_INVALID", "0"),
     ("(gint) PANGO_ATTR_LANGUAGE", "1"),
@@ -735,14 +673,18 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_BIDI_TYPE_EN", "8"),
     ("(gint) PANGO_BIDI_TYPE_ES", "9"),
     ("(gint) PANGO_BIDI_TYPE_ET", "10"),
+    ("(gint) PANGO_BIDI_TYPE_FSI", "21"),
     ("(gint) PANGO_BIDI_TYPE_L", "0"),
     ("(gint) PANGO_BIDI_TYPE_LRE", "1"),
+    ("(gint) PANGO_BIDI_TYPE_LRI", "19"),
     ("(gint) PANGO_BIDI_TYPE_LRO", "2"),
     ("(gint) PANGO_BIDI_TYPE_NSM", "13"),
     ("(gint) PANGO_BIDI_TYPE_ON", "18"),
     ("(gint) PANGO_BIDI_TYPE_PDF", "7"),
+    ("(gint) PANGO_BIDI_TYPE_PDI", "22"),
     ("(gint) PANGO_BIDI_TYPE_R", "3"),
     ("(gint) PANGO_BIDI_TYPE_RLE", "5"),
+    ("(gint) PANGO_BIDI_TYPE_RLI", "20"),
     ("(gint) PANGO_BIDI_TYPE_RLO", "6"),
     ("(gint) PANGO_BIDI_TYPE_S", "16"),
     ("(gint) PANGO_BIDI_TYPE_WS", "17"),
@@ -761,8 +703,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_ELLIPSIZE_MIDDLE", "2"),
     ("(gint) PANGO_ELLIPSIZE_NONE", "0"),
     ("(gint) PANGO_ELLIPSIZE_START", "1"),
-    ("PANGO_ENGINE_TYPE_LANG", "PangoEngineLang"),
-    ("PANGO_ENGINE_TYPE_SHAPE", "PangoEngineShape"),
     ("(guint) PANGO_FONT_MASK_FAMILY", "1"),
     ("(guint) PANGO_FONT_MASK_GRAVITY", "64"),
     ("(guint) PANGO_FONT_MASK_SIZE", "32"),
@@ -789,7 +729,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_RENDER_PART_OVERLINE", "4"),
     ("(gint) PANGO_RENDER_PART_STRIKETHROUGH", "3"),
     ("(gint) PANGO_RENDER_PART_UNDERLINE", "2"),
-    ("PANGO_RENDER_TYPE_NONE", "PangoRenderNone"),
     ("PANGO_SCALE", "1024"),
     ("(gint) PANGO_SCRIPT_AHOM", "111"),
     ("(gint) PANGO_SCRIPT_ANATOLIAN_HIEROGLYPHS", "112"),
@@ -936,11 +875,12 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_UNDERLINE_NONE", "0"),
     ("(gint) PANGO_UNDERLINE_SINGLE", "1"),
     ("(gint) PANGO_UNDERLINE_SINGLE_LINE", "5"),
-    ("PANGO_UNKNOWN_GLYPH_HEIGHT", "14"),
-    ("PANGO_UNKNOWN_GLYPH_WIDTH", "10"),
     ("(gint) PANGO_VARIANT_NORMAL", "0"),
     ("(gint) PANGO_VARIANT_SMALL_CAPS", "1"),
-    ("PANGO_VERSION_MIN_REQUIRED", "2"),
+    ("PANGO_VERSION_MAJOR", "1"),
+    ("PANGO_VERSION_MICRO", "10"),
+    ("PANGO_VERSION_MINOR", "48"),
+    ("PANGO_VERSION_STRING", "1.48.10"),
     ("(gint) PANGO_WEIGHT_BOLD", "700"),
     ("(gint) PANGO_WEIGHT_BOOK", "380"),
     ("(gint) PANGO_WEIGHT_HEAVY", "900"),

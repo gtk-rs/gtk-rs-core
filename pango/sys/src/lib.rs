@@ -87,6 +87,10 @@ pub const PANGO_BIDI_TYPE_B: PangoBidiType = 15;
 pub const PANGO_BIDI_TYPE_S: PangoBidiType = 16;
 pub const PANGO_BIDI_TYPE_WS: PangoBidiType = 17;
 pub const PANGO_BIDI_TYPE_ON: PangoBidiType = 18;
+pub const PANGO_BIDI_TYPE_LRI: PangoBidiType = 19;
+pub const PANGO_BIDI_TYPE_RLI: PangoBidiType = 20;
+pub const PANGO_BIDI_TYPE_FSI: PangoBidiType = 21;
+pub const PANGO_BIDI_TYPE_PDI: PangoBidiType = 22;
 
 pub type PangoCoverageLevel = c_int;
 pub const PANGO_COVERAGE_NONE: PangoCoverageLevel = 0;
@@ -308,20 +312,16 @@ pub const PANGO_WRAP_WORD_CHAR: PangoWrapMode = 2;
 pub const PANGO_ANALYSIS_FLAG_CENTERED_BASELINE: c_int = 1;
 pub const PANGO_ANALYSIS_FLAG_IS_ELLIPSIS: c_int = 2;
 pub const PANGO_ANALYSIS_FLAG_NEED_HYPHEN: c_int = 4;
-pub const PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING: c_int = 0;
-pub const PANGO_ENGINE_TYPE_LANG: *const c_char =
-    b"PangoEngineLang\0" as *const u8 as *const c_char;
-pub const PANGO_ENGINE_TYPE_SHAPE: *const c_char =
-    b"PangoEngineShape\0" as *const u8 as *const c_char;
+pub const PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING: c_uint = 0;
+pub const PANGO_ATTR_INDEX_TO_TEXT_END: c_uint = 4294967295;
 pub const PANGO_GLYPH_EMPTY: PangoGlyph = 268435455;
 pub const PANGO_GLYPH_INVALID_INPUT: PangoGlyph = 4294967295;
 pub const PANGO_GLYPH_UNKNOWN_FLAG: PangoGlyph = 268435456;
-pub const PANGO_RENDER_TYPE_NONE: *const c_char =
-    b"PangoRenderNone\0" as *const u8 as *const c_char;
 pub const PANGO_SCALE: c_int = 1024;
-pub const PANGO_UNKNOWN_GLYPH_HEIGHT: c_int = 14;
-pub const PANGO_UNKNOWN_GLYPH_WIDTH: c_int = 10;
-pub const PANGO_VERSION_MIN_REQUIRED: c_int = 2;
+pub const PANGO_VERSION_MAJOR: c_int = 1;
+pub const PANGO_VERSION_MICRO: c_int = 10;
+pub const PANGO_VERSION_MINOR: c_int = 48;
+pub const PANGO_VERSION_STRING: *const c_char = b"1.48.10\0" as *const u8 as *const c_char;
 
 // Flags
 pub type PangoFontMask = c_uint;
@@ -355,8 +355,8 @@ pub type PangoFontsetForeachFunc =
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct PangoAnalysis {
-    pub shape_engine: *mut PangoEngineShape,
-    pub lang_engine: *mut PangoEngineLang,
+    pub shape_engine: gpointer,
+    pub lang_engine: gpointer,
     pub font: *mut PangoFont,
     pub level: u8,
     pub gravity: u8,
@@ -617,116 +617,6 @@ impl ::std::fmt::Debug for PangoColor {
 pub struct _PangoContextClass(c_void);
 
 pub type PangoContextClass = *mut _PangoContextClass;
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineClass {
-    pub parent_class: gobject::GObjectClass,
-}
-
-impl ::std::fmt::Debug for PangoEngineClass {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineClass @ {:p}", self))
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineInfo {
-    pub id: *const c_char,
-    pub engine_type: *const c_char,
-    pub render_type: *const c_char,
-    pub scripts: *mut PangoEngineScriptInfo,
-    pub n_scripts: c_int,
-}
-
-impl ::std::fmt::Debug for PangoEngineInfo {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineInfo @ {:p}", self))
-            .field("id", &self.id)
-            .field("engine_type", &self.engine_type)
-            .field("render_type", &self.render_type)
-            .field("scripts", &self.scripts)
-            .field("n_scripts", &self.n_scripts)
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineLangClass {
-    pub parent_class: PangoEngineClass,
-    pub script_break: Option<
-        unsafe extern "C" fn(
-            *mut PangoEngineLang,
-            *const c_char,
-            c_int,
-            *mut PangoAnalysis,
-            *mut PangoLogAttr,
-            c_int,
-        ),
-    >,
-}
-
-impl ::std::fmt::Debug for PangoEngineLangClass {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineLangClass @ {:p}", self))
-            .field("script_break", &self.script_break)
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineScriptInfo {
-    pub script: PangoScript,
-    pub langs: *const c_char,
-}
-
-impl ::std::fmt::Debug for PangoEngineScriptInfo {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineScriptInfo @ {:p}", self))
-            .field("script", &self.script)
-            .field("langs", &self.langs)
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineShapeClass {
-    pub parent_class: PangoEngineClass,
-    pub script_shape: Option<
-        unsafe extern "C" fn(
-            *mut PangoEngineShape,
-            *mut PangoFont,
-            *const c_char,
-            c_uint,
-            *const PangoAnalysis,
-            *mut PangoGlyphString,
-            *const c_char,
-            c_uint,
-        ),
-    >,
-    pub covers: Option<
-        unsafe extern "C" fn(
-            *mut PangoEngineShape,
-            *mut PangoFont,
-            *mut PangoLanguage,
-            u32,
-        ) -> PangoCoverageLevel,
-    >,
-}
-
-impl ::std::fmt::Debug for PangoEngineShapeClass {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineShapeClass @ {:p}", self))
-            .field("script_shape", &self.script_shape)
-            .field("covers", &self.covers)
-            .finish()
-    }
-}
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -1049,26 +939,6 @@ impl ::std::fmt::Debug for PangoGlyphVisAttr {
 
 #[repr(C)]
 #[derive(Copy, Clone)]
-pub struct PangoIncludedModule {
-    pub list: Option<unsafe extern "C" fn(*mut *mut PangoEngineInfo, *mut c_int)>,
-    pub init: Option<unsafe extern "C" fn(*mut gobject::GTypeModule)>,
-    pub exit: Option<unsafe extern "C" fn()>,
-    pub create: Option<unsafe extern "C" fn(*const c_char) -> *mut PangoEngine>,
-}
-
-impl ::std::fmt::Debug for PangoIncludedModule {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoIncludedModule @ {:p}", self))
-            .field("list", &self.list)
-            .field("init", &self.init)
-            .field("exit", &self.exit)
-            .field("create", &self.create)
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
 pub struct PangoItem {
     pub offset: c_int,
     pub length: c_int,
@@ -1149,16 +1019,6 @@ impl ::std::fmt::Debug for PangoLogAttr {
             .finish()
     }
 }
-
-#[repr(C)]
-pub struct _PangoMap(c_void);
-
-pub type PangoMap = *mut _PangoMap;
-
-#[repr(C)]
-pub struct _PangoMapEntry(c_void);
-
-pub type PangoMapEntry = *mut _PangoMapEntry;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -1314,46 +1174,6 @@ pub struct PangoCoverage(c_void);
 impl ::std::fmt::Debug for PangoCoverage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PangoCoverage @ {:p}", self))
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngine {
-    pub parent_instance: gobject::GObject,
-}
-
-impl ::std::fmt::Debug for PangoEngine {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngine @ {:p}", self))
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineLang {
-    pub parent_instance: PangoEngine,
-}
-
-impl ::std::fmt::Debug for PangoEngineLang {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineLang @ {:p}", self))
-            .finish()
-    }
-}
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct PangoEngineShape {
-    pub parent_instance: PangoEngine,
-}
-
-impl ::std::fmt::Debug for PangoEngineShape {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoEngineShape @ {:p}", self))
-            .field("parent_instance", &self.parent_instance)
             .finish()
     }
 }
@@ -1974,6 +1794,9 @@ extern "C" {
     pub fn pango_language_to_string(language: *mut PangoLanguage) -> *const c_char;
     pub fn pango_language_from_string(language: *const c_char) -> *mut PangoLanguage;
     pub fn pango_language_get_default() -> *mut PangoLanguage;
+    #[cfg(any(feature = "v1_48", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_48")))]
+    pub fn pango_language_get_preferred() -> *mut *mut PangoLanguage;
 
     //=========================================================================
     // PangoLayoutIter
@@ -2061,17 +1884,6 @@ extern "C" {
         index_: *mut c_int,
         trailing: *mut c_int,
     ) -> gboolean;
-
-    //=========================================================================
-    // PangoMap
-    //=========================================================================
-    pub fn pango_map_get_engine(map: *mut PangoMap, script: PangoScript) -> *mut PangoEngine;
-    pub fn pango_map_get_engines(
-        map: *mut PangoMap,
-        script: PangoScript,
-        exact_engines: *mut *mut glib::GSList,
-        fallback_engines: *mut *mut glib::GSList,
-    );
 
     //=========================================================================
     // PangoMatrix
@@ -2240,21 +2052,6 @@ extern "C" {
     pub fn pango_coverage_unref(coverage: *mut PangoCoverage);
 
     //=========================================================================
-    // PangoEngine
-    //=========================================================================
-    pub fn pango_engine_get_type() -> GType;
-
-    //=========================================================================
-    // PangoEngineLang
-    //=========================================================================
-    pub fn pango_engine_lang_get_type() -> GType;
-
-    //=========================================================================
-    // PangoEngineShape
-    //=========================================================================
-    pub fn pango_engine_shape_get_type() -> GType;
-
-    //=========================================================================
     // PangoFont
     //=========================================================================
     pub fn pango_font_get_type() -> GType;
@@ -2263,11 +2060,6 @@ extern "C" {
     pub fn pango_font_describe_with_absolute_size(
         font: *mut PangoFont,
     ) -> *mut PangoFontDescription;
-    pub fn pango_font_find_shaper(
-        font: *mut PangoFont,
-        language: *mut PangoLanguage,
-        ch: u32,
-    ) -> *mut PangoEngineShape;
     pub fn pango_font_get_coverage(
         font: *mut PangoFont,
         language: *mut PangoLanguage,
@@ -2663,11 +2455,6 @@ extern "C" {
     );
     pub fn pango_extents_to_pixels(inclusive: *mut PangoRectangle, nearest: *mut PangoRectangle);
     pub fn pango_find_base_dir(text: *const c_char, length: c_int) -> PangoDirection;
-    pub fn pango_find_map(
-        language: *mut PangoLanguage,
-        engine_type_id: c_uint,
-        render_type_id: c_uint,
-    ) -> *mut PangoMap;
     pub fn pango_find_paragraph_boundary(
         text: *const c_char,
         length: c_int,
@@ -2714,7 +2501,6 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn pango_markup_parser_new(accel_marker: u32) -> *mut glib::GMarkupParseContext;
-    pub fn pango_module_register(module: *mut PangoIncludedModule);
     pub fn pango_parse_enum(
         type_: GType,
         str: *const c_char,

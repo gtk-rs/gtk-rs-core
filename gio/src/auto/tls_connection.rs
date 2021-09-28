@@ -9,6 +9,9 @@ use crate::TlsCertificate;
 use crate::TlsCertificateFlags;
 use crate::TlsDatabase;
 use crate::TlsInteraction;
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+use crate::TlsProtocolVersion;
 use crate::TlsRehandshakeMode;
 use glib::object::Cast;
 use glib::object::IsA;
@@ -45,6 +48,12 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "get_certificate")]
     fn certificate(&self) -> Option<TlsCertificate>;
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_tls_connection_get_ciphersuite_name")]
+    #[doc(alias = "get_ciphersuite_name")]
+    fn ciphersuite_name(&self) -> Option<glib::GString>;
+
     #[doc(alias = "g_tls_connection_get_database")]
     #[doc(alias = "get_database")]
     fn database(&self) -> Option<TlsDatabase>;
@@ -66,6 +75,12 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "g_tls_connection_get_peer_certificate_errors")]
     #[doc(alias = "get_peer_certificate_errors")]
     fn peer_certificate_errors(&self) -> TlsCertificateFlags;
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_tls_connection_get_protocol_version")]
+    #[doc(alias = "get_protocol_version")]
+    fn protocol_version(&self) -> TlsProtocolVersion;
 
     #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[doc(alias = "g_tls_connection_get_rehandshake_mode")]
@@ -137,6 +152,11 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "certificate")]
     fn connect_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "ciphersuite-name")]
+    fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
     #[doc(alias = "database")]
     fn connect_database_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -156,6 +176,11 @@ pub trait TlsConnectionExt: 'static {
         &self,
         f: F,
     ) -> SignalHandlerId;
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "protocol-version")]
+    fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
     #[doc(alias = "rehandshake-mode")]
@@ -183,6 +208,16 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
     fn certificate(&self) -> Option<TlsCertificate> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_certificate(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    fn ciphersuite_name(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
                 self.as_ref().to_glib_none().0,
             ))
         }
@@ -225,6 +260,16 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
     fn peer_certificate_errors(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    fn protocol_version(&self) -> TlsProtocolVersion {
+        unsafe {
+            from_glib(ffi::g_tls_connection_get_protocol_version(
                 self.as_ref().to_glib_none().0,
             ))
         }
@@ -488,6 +533,33 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_ciphersuite_name_trampoline<
+            P: IsA<TlsConnection>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::GTlsConnection,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::ciphersuite-name\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_ciphersuite_name_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
     fn connect_database_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_database_trampoline<
             P: IsA<TlsConnection>,
@@ -612,6 +684,33 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
                 b"notify::peer-certificate-errors\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(
                     notify_peer_certificate_errors_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_protocol_version_trampoline<
+            P: IsA<TlsConnection>,
+            F: Fn(&P) + 'static,
+        >(
+            this: *mut ffi::GTlsConnection,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::protocol-version\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_protocol_version_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

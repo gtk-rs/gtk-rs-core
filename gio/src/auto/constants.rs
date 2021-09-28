@@ -666,6 +666,15 @@ pub static NETWORK_MONITOR_EXTENSION_POINT_NAME: once_cell::sync::Lazy<&'static 
             .to_str()
             .unwrap()
     });
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[doc(alias = "G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME")]
+pub static POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME)
+            .to_str()
+            .unwrap()
+    });
 #[doc(alias = "G_PROXY_EXTENSION_POINT_NAME")]
 pub static PROXY_EXTENSION_POINT_NAME: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {

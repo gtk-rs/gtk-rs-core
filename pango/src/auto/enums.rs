@@ -376,6 +376,14 @@ pub enum BidiType {
     Ws,
     #[doc(alias = "PANGO_BIDI_TYPE_ON")]
     On,
+    #[doc(alias = "PANGO_BIDI_TYPE_LRI")]
+    Lri,
+    #[doc(alias = "PANGO_BIDI_TYPE_RLI")]
+    Rli,
+    #[doc(alias = "PANGO_BIDI_TYPE_FSI")]
+    Fsi,
+    #[doc(alias = "PANGO_BIDI_TYPE_PDI")]
+    Pdi,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -412,6 +420,10 @@ impl fmt::Display for BidiType {
                 Self::S => "S",
                 Self::Ws => "Ws",
                 Self::On => "On",
+                Self::Lri => "Lri",
+                Self::Rli => "Rli",
+                Self::Fsi => "Fsi",
+                Self::Pdi => "Pdi",
                 _ => "Unknown",
             }
         )
@@ -443,6 +455,10 @@ impl IntoGlib for BidiType {
             Self::S => ffi::PANGO_BIDI_TYPE_S,
             Self::Ws => ffi::PANGO_BIDI_TYPE_WS,
             Self::On => ffi::PANGO_BIDI_TYPE_ON,
+            Self::Lri => ffi::PANGO_BIDI_TYPE_LRI,
+            Self::Rli => ffi::PANGO_BIDI_TYPE_RLI,
+            Self::Fsi => ffi::PANGO_BIDI_TYPE_FSI,
+            Self::Pdi => ffi::PANGO_BIDI_TYPE_PDI,
             Self::__Unknown(value) => value,
         }
     }
@@ -471,6 +487,10 @@ impl FromGlib<ffi::PangoBidiType> for BidiType {
             ffi::PANGO_BIDI_TYPE_S => Self::S,
             ffi::PANGO_BIDI_TYPE_WS => Self::Ws,
             ffi::PANGO_BIDI_TYPE_ON => Self::On,
+            ffi::PANGO_BIDI_TYPE_LRI => Self::Lri,
+            ffi::PANGO_BIDI_TYPE_RLI => Self::Rli,
+            ffi::PANGO_BIDI_TYPE_FSI => Self::Fsi,
+            ffi::PANGO_BIDI_TYPE_PDI => Self::Pdi,
             value => Self::__Unknown(value),
         }
     }

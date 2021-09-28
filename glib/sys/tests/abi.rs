@@ -1476,6 +1476,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_BREAK_BEFORE_AND_AFTER", "12"),
     ("(gint) G_UNICODE_BREAK_CARRIAGE_RETURN", "1"),
     ("(gint) G_UNICODE_BREAK_CLOSE_PARANTHESIS", "36"),
+    ("(gint) G_UNICODE_BREAK_CLOSE_PARENTHESIS", "36"),
     ("(gint) G_UNICODE_BREAK_CLOSE_PUNCTUATION", "16"),
     ("(gint) G_UNICODE_BREAK_COMBINING_MARK", "3"),
     ("(gint) G_UNICODE_BREAK_COMPLEX_CONTEXT", "26"),
@@ -1719,6 +1720,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_URI_FLAGS_NONE", "0"),
     ("(guint) G_URI_FLAGS_NON_DNS", "16"),
     ("(guint) G_URI_FLAGS_PARSE_RELAXED", "1"),
+    ("(guint) G_URI_FLAGS_SCHEME_NORMALIZE", "256"),
     ("(guint) G_URI_HIDE_AUTH_PARAMS", "4"),
     ("(guint) G_URI_HIDE_FRAGMENT", "16"),
     ("(guint) G_URI_HIDE_NONE", "0"),
@@ -1785,4 +1787,5 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED", "17"),
     ("G_WIN32_MSG_HANDLE", "19981206"),
+    ("g_macro__has_attribute___noreturn__", "0"),
 ];

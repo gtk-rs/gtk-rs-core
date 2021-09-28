@@ -133,6 +133,15 @@ pub trait FileExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileOutputStream, glib::Error>> + 'static>>;
 
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[doc(alias = "g_file_build_attribute_list_for_copy")]
+    fn build_attribute_list_for_copy(
+        &self,
+        flags: FileCopyFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<glib::GString, glib::Error>;
+
     #[doc(alias = "g_file_copy")]
     fn copy(
         &self,
@@ -922,6 +931,29 @@ impl<O: IsA<File>> FileExt for O {
                 });
             },
         ))
+    }
+
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    fn build_attribute_list_for_copy(
+        &self,
+        flags: FileCopyFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<glib::GString, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_build_attribute_list_for_copy(
+                self.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     fn copy(

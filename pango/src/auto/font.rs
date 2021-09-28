@@ -34,9 +34,6 @@ pub trait FontExt: 'static {
     #[doc(alias = "pango_font_describe_with_absolute_size")]
     fn describe_with_absolute_size(&self) -> Option<FontDescription>;
 
-    //#[doc(alias = "pango_font_find_shaper")]
-    //fn find_shaper(&self, language: &Language, ch: u32) -> /*Ignored*/Option<EngineShape>;
-
     #[doc(alias = "pango_font_get_coverage")]
     #[doc(alias = "get_coverage")]
     fn coverage(&self, language: &Language) -> Option<Coverage>;
@@ -89,10 +86,6 @@ impl<O: IsA<Font>> FontExt for O {
             ))
         }
     }
-
-    //fn find_shaper(&self, language: &Language, ch: u32) -> /*Ignored*/Option<EngineShape> {
-    //    unsafe { TODO: call ffi:pango_font_find_shaper() }
-    //}
 
     fn coverage(&self, language: &Language) -> Option<Coverage> {
         unsafe {

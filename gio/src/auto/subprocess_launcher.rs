@@ -26,6 +26,15 @@ impl SubprocessLauncher {
         unsafe { from_glib_full(ffi::g_subprocess_launcher_new(flags.into_glib())) }
     }
 
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[doc(alias = "g_subprocess_launcher_close")]
+    pub fn close(&self) {
+        unsafe {
+            ffi::g_subprocess_launcher_close(self.to_glib_none().0);
+        }
+    }
+
     #[doc(alias = "g_subprocess_launcher_getenv")]
     pub fn getenv(&self, variable: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
         unsafe {

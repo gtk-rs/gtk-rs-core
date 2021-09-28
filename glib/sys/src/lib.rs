@@ -418,6 +418,7 @@ pub const G_UNICODE_BREAK_HANGUL_T_JAMO: GUnicodeBreakType = 33;
 pub const G_UNICODE_BREAK_HANGUL_LV_SYLLABLE: GUnicodeBreakType = 34;
 pub const G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE: GUnicodeBreakType = 35;
 pub const G_UNICODE_BREAK_CLOSE_PARANTHESIS: GUnicodeBreakType = 36;
+pub const G_UNICODE_BREAK_CLOSE_PARENTHESIS: GUnicodeBreakType = 36;
 pub const G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER: GUnicodeBreakType = 37;
 pub const G_UNICODE_BREAK_HEBREW_LETTER: GUnicodeBreakType = 38;
 pub const G_UNICODE_BREAK_REGIONAL_INDICATOR: GUnicodeBreakType = 39;
@@ -780,6 +781,7 @@ pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: *const c_char =
     b"!$&'()*+,;=\0" as *const u8 as *const c_char;
 pub const G_USEC_PER_SEC: c_int = 1000000;
 pub const G_WIN32_MSG_HANDLE: c_int = 19981206;
+pub const g_macro__has_attribute___noreturn__: c_int = 0;
 
 // Flags
 pub type GAsciiType = c_uint;
@@ -955,6 +957,7 @@ pub const G_URI_FLAGS_NON_DNS: GUriFlags = 16;
 pub const G_URI_FLAGS_ENCODED_QUERY: GUriFlags = 32;
 pub const G_URI_FLAGS_ENCODED_PATH: GUriFlags = 64;
 pub const G_URI_FLAGS_ENCODED_FRAGMENT: GUriFlags = 128;
+pub const G_URI_FLAGS_SCHEME_NORMALIZE: GUriFlags = 256;
 
 pub type GUriHideFlags = c_uint;
 pub const G_URI_HIDE_NONE: GUriHideFlags = 0;
@@ -1083,6 +1086,9 @@ pub type GDataForeachFunc = Option<unsafe extern "C" fn(GQuark, gpointer, gpoint
 pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer)>;
 pub type GDuplicateFunc = Option<unsafe extern "C" fn(gpointer, gpointer) -> gpointer>;
 pub type GEqualFunc = Option<unsafe extern "C" fn(gconstpointer, gconstpointer) -> gboolean>;
+pub type GErrorClearFunc = Option<unsafe extern "C" fn(*mut GError)>;
+pub type GErrorCopyFunc = Option<unsafe extern "C" fn(*const GError, *mut GError)>;
+pub type GErrorInitFunc = Option<unsafe extern "C" fn(*mut GError)>;
 pub type GFreeFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GFunc = Option<unsafe extern "C" fn(gpointer, gpointer)>;
 pub type GHFunc = Option<unsafe extern "C" fn(gpointer, gpointer, gpointer)>;
@@ -1138,6 +1144,7 @@ pub type GTestLogFatalFunc = Option<
 pub type GThreadFunc = Option<unsafe extern "C" fn(gpointer) -> gpointer>;
 pub type GTranslateFunc = Option<unsafe extern "C" fn(*const c_char, gpointer) -> *const c_char>;
 pub type GTraverseFunc = Option<unsafe extern "C" fn(gpointer, gpointer, gpointer) -> gboolean>;
+pub type GTraverseNodeFunc = Option<unsafe extern "C" fn(*mut GTreeNode, gpointer) -> gboolean>;
 pub type GUnixFDSourceFunc =
     Option<unsafe extern "C" fn(c_int, GIOCondition, gpointer) -> gboolean>;
 pub type GVoidFunc = Option<unsafe extern "C" fn()>;
@@ -1715,9 +1722,14 @@ impl ::std::fmt::Debug for GOptionGroup {
 }
 
 #[repr(C)]
-pub struct _GPatternSpec(c_void);
+pub struct GPatternSpec(c_void);
 
-pub type GPatternSpec = *mut _GPatternSpec;
+impl ::std::fmt::Debug for GPatternSpec {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GPatternSpec @ {:p}", self))
+            .finish()
+    }
+}
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -2002,6 +2014,11 @@ pub struct _GStringChunk(c_void);
 pub type GStringChunk = *mut _GStringChunk;
 
 #[repr(C)]
+pub struct _GStrvBuilder(c_void);
+
+pub type GStrvBuilder = *mut _GStrvBuilder;
+
+#[repr(C)]
 pub struct _GTestCase(c_void);
 
 pub type GTestCase = *mut _GTestCase;
@@ -2142,9 +2159,18 @@ impl ::std::fmt::Debug for GTrashStack {
 }
 
 #[repr(C)]
-pub struct _GTree(c_void);
+pub struct GTree(c_void);
 
-pub type GTree = *mut _GTree;
+impl ::std::fmt::Debug for GTree {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GTree @ {:p}", self)).finish()
+    }
+}
+
+#[repr(C)]
+pub struct _GTreeNode(c_void);
+
+pub type GTreeNode = *mut _GTreeNode;
 
 #[repr(C)]
 pub struct GUri(c_void);
@@ -2719,6 +2745,14 @@ extern "C" {
     pub fn g_bytes_compare(bytes1: gconstpointer, bytes2: gconstpointer) -> c_int;
     pub fn g_bytes_equal(bytes1: gconstpointer, bytes2: gconstpointer) -> gboolean;
     pub fn g_bytes_get_data(bytes: *mut GBytes, size: *mut size_t) -> gconstpointer;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_bytes_get_region(
+        bytes: *mut GBytes,
+        element_size: size_t,
+        offset: size_t,
+        n_elements: size_t,
+    ) -> gconstpointer;
     pub fn g_bytes_get_size(bytes: *mut GBytes) -> size_t;
     pub fn g_bytes_hash(bytes: gconstpointer) -> c_uint;
     pub fn g_bytes_new_from_bytes(
@@ -2947,6 +2981,24 @@ extern "C" {
     pub fn g_error_copy(error: *const GError) -> *mut GError;
     pub fn g_error_free(error: *mut GError);
     pub fn g_error_matches(error: *const GError, domain: GQuark, code: c_int) -> gboolean;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_error_domain_register(
+        error_type_name: *const c_char,
+        error_type_private_size: size_t,
+        error_type_init: GErrorInitFunc,
+        error_type_copy: GErrorCopyFunc,
+        error_type_clear: GErrorClearFunc,
+    ) -> GQuark;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_error_domain_register_static(
+        error_type_name: *const c_char,
+        error_type_private_size: size_t,
+        error_type_init: GErrorInitFunc,
+        error_type_copy: GErrorCopyFunc,
+        error_type_clear: GErrorClearFunc,
+    ) -> GQuark;
 
     //=========================================================================
     // GHashTable
@@ -3903,9 +3955,25 @@ extern "C" {
     //=========================================================================
     // GPatternSpec
     //=========================================================================
+    pub fn g_pattern_spec_get_type() -> GType;
+    pub fn g_pattern_spec_new(pattern: *const c_char) -> *mut GPatternSpec;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_pattern_spec_copy(pspec: *mut GPatternSpec) -> *mut GPatternSpec;
     pub fn g_pattern_spec_equal(pspec1: *mut GPatternSpec, pspec2: *mut GPatternSpec) -> gboolean;
     pub fn g_pattern_spec_free(pspec: *mut GPatternSpec);
-    pub fn g_pattern_spec_new(pattern: *const c_char) -> *mut GPatternSpec;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_pattern_spec_match(
+        pspec: *mut GPatternSpec,
+        string_length: size_t,
+        string: *const c_char,
+        string_reversed: *const c_char,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_pattern_spec_match_string(pspec: *mut GPatternSpec, string: *const c_char)
+        -> gboolean;
 
     //=========================================================================
     // GPollFD
@@ -4461,6 +4529,9 @@ extern "C" {
     pub fn g_source_set_name(source: *mut GSource, name: *const c_char);
     pub fn g_source_set_priority(source: *mut GSource, priority: c_int);
     pub fn g_source_set_ready_time(source: *mut GSource, ready_time: i64);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_source_set_static_name(source: *mut GSource, name: *const c_char);
     pub fn g_source_unref(source: *mut GSource);
     pub fn g_source_remove(tag: c_uint) -> gboolean;
     pub fn g_source_remove_by_funcs_user_data(
@@ -4474,6 +4545,9 @@ extern "C" {
     // GString
     //=========================================================================
     pub fn g_gstring_get_type() -> GType;
+    pub fn g_string_new(init: *const c_char) -> *mut GString;
+    pub fn g_string_new_len(init: *const c_char, len: ssize_t) -> *mut GString;
+    pub fn g_string_sized_new(dfl_size: size_t) -> *mut GString;
     pub fn g_string_append(string: *mut GString, val: *const c_char) -> *mut GString;
     pub fn g_string_append_c(string: *mut GString, c: c_char) -> *mut GString;
     pub fn g_string_append_len(
@@ -4528,6 +4602,14 @@ extern "C" {
     ) -> *mut GString;
     pub fn g_string_prepend_unichar(string: *mut GString, wc: u32) -> *mut GString;
     pub fn g_string_printf(string: *mut GString, format: *const c_char, ...);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_string_replace(
+        string: *mut GString,
+        find: *const c_char,
+        replace: *const c_char,
+        limit: c_uint,
+    ) -> c_uint;
     pub fn g_string_set_size(string: *mut GString, len: size_t) -> *mut GString;
     pub fn g_string_truncate(string: *mut GString, len: size_t) -> *mut GString;
     pub fn g_string_up(string: *mut GString) -> *mut GString;
@@ -4551,6 +4633,38 @@ extern "C" {
     pub fn g_string_chunk_new(size: size_t) -> *mut GStringChunk;
 
     //=========================================================================
+    // GStrvBuilder
+    //=========================================================================
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_add(builder: *mut GStrvBuilder, value: *const c_char);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_add_many(builder: *mut GStrvBuilder, ...);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_addv(builder: *mut GStrvBuilder, value: *mut *const c_char);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_end(builder: *mut GStrvBuilder) -> c_char;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_ref(builder: *mut GStrvBuilder) -> *mut GStrvBuilder;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_unref(builder: *mut GStrvBuilder);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_strv_builder_new() -> *mut GStrvBuilder;
+
+    //=========================================================================
+    // GTestCase
+    //=========================================================================
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_test_case_free(test_case: *mut GTestCase);
+
+    //=========================================================================
     // GTestLogBuffer
     //=========================================================================
     pub fn g_test_log_buffer_free(tbuffer: *mut GTestLogBuffer);
@@ -4568,6 +4682,9 @@ extern "C" {
     //=========================================================================
     pub fn g_test_suite_add(suite: *mut GTestSuite, test_case: *mut GTestCase);
     pub fn g_test_suite_add_suite(suite: *mut GTestSuite, nestedsuite: *mut GTestSuite);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_test_suite_free(suite: *mut GTestSuite);
 
     //=========================================================================
     // GThread
@@ -4621,6 +4738,16 @@ extern "C" {
         exclusive: gboolean,
         error: *mut *mut GError,
     ) -> *mut GThreadPool;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_thread_pool_new_full(
+        func: GFunc,
+        user_data: gpointer,
+        item_free_func: GDestroyNotify,
+        max_threads: c_int,
+        exclusive: gboolean,
+        error: *mut *mut GError,
+    ) -> *mut GThreadPool;
     pub fn g_thread_pool_set_max_idle_time(interval: c_uint);
     pub fn g_thread_pool_set_max_unused_threads(max_threads: c_int);
     pub fn g_thread_pool_stop_unused_threads();
@@ -4637,6 +4764,9 @@ extern "C" {
     //=========================================================================
     pub fn g_time_zone_get_type() -> GType;
     pub fn g_time_zone_new(identifier: *const c_char) -> *mut GTimeZone;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_time_zone_new_identifier(identifier: *const c_char) -> *mut GTimeZone;
     pub fn g_time_zone_new_local() -> *mut GTimeZone;
     #[cfg(any(feature = "v2_58", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
@@ -4678,34 +4808,7 @@ extern "C" {
     //=========================================================================
     // GTree
     //=========================================================================
-    pub fn g_tree_destroy(tree: *mut GTree);
-    pub fn g_tree_foreach(tree: *mut GTree, func: GTraverseFunc, user_data: gpointer);
-    pub fn g_tree_height(tree: *mut GTree) -> c_int;
-    pub fn g_tree_insert(tree: *mut GTree, key: gpointer, value: gpointer);
-    pub fn g_tree_lookup(tree: *mut GTree, key: gconstpointer) -> gpointer;
-    pub fn g_tree_lookup_extended(
-        tree: *mut GTree,
-        lookup_key: gconstpointer,
-        orig_key: *mut gpointer,
-        value: *mut gpointer,
-    ) -> gboolean;
-    pub fn g_tree_nnodes(tree: *mut GTree) -> c_int;
-    pub fn g_tree_ref(tree: *mut GTree) -> *mut GTree;
-    pub fn g_tree_remove(tree: *mut GTree, key: gconstpointer) -> gboolean;
-    pub fn g_tree_replace(tree: *mut GTree, key: gpointer, value: gpointer);
-    pub fn g_tree_search(
-        tree: *mut GTree,
-        search_func: GCompareFunc,
-        user_data: gconstpointer,
-    ) -> gpointer;
-    pub fn g_tree_steal(tree: *mut GTree, key: gconstpointer) -> gboolean;
-    pub fn g_tree_traverse(
-        tree: *mut GTree,
-        traverse_func: GTraverseFunc,
-        traverse_type: GTraverseType,
-        user_data: gpointer,
-    );
-    pub fn g_tree_unref(tree: *mut GTree);
+    pub fn g_tree_get_type() -> GType;
     pub fn g_tree_new(key_compare_func: GCompareFunc) -> *mut GTree;
     pub fn g_tree_new_full(
         key_compare_func: GCompareDataFunc,
@@ -4717,6 +4820,84 @@ extern "C" {
         key_compare_func: GCompareDataFunc,
         key_compare_data: gpointer,
     ) -> *mut GTree;
+    pub fn g_tree_destroy(tree: *mut GTree);
+    pub fn g_tree_foreach(tree: *mut GTree, func: GTraverseFunc, user_data: gpointer);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_foreach_node(tree: *mut GTree, func: GTraverseNodeFunc, user_data: gpointer);
+    pub fn g_tree_height(tree: *mut GTree) -> c_int;
+    pub fn g_tree_insert(tree: *mut GTree, key: gpointer, value: gpointer);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_insert_node(tree: *mut GTree, key: gpointer, value: gpointer) -> *mut GTreeNode;
+    pub fn g_tree_lookup(tree: *mut GTree, key: gconstpointer) -> gpointer;
+    pub fn g_tree_lookup_extended(
+        tree: *mut GTree,
+        lookup_key: gconstpointer,
+        orig_key: *mut gpointer,
+        value: *mut gpointer,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_lookup_node(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_lower_bound(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
+    pub fn g_tree_nnodes(tree: *mut GTree) -> c_int;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_first(tree: *mut GTree) -> *mut GTreeNode;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_last(tree: *mut GTree) -> *mut GTreeNode;
+    pub fn g_tree_ref(tree: *mut GTree) -> *mut GTree;
+    pub fn g_tree_remove(tree: *mut GTree, key: gconstpointer) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tree_remove_all(tree: *mut GTree);
+    pub fn g_tree_replace(tree: *mut GTree, key: gpointer, value: gpointer);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_replace_node(tree: *mut GTree, key: gpointer, value: gpointer) -> *mut GTreeNode;
+    pub fn g_tree_search(
+        tree: *mut GTree,
+        search_func: GCompareFunc,
+        user_data: gconstpointer,
+    ) -> gpointer;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_search_node(
+        tree: *mut GTree,
+        search_func: GCompareFunc,
+        user_data: gconstpointer,
+    ) -> *mut GTreeNode;
+    pub fn g_tree_steal(tree: *mut GTree, key: gconstpointer) -> gboolean;
+    pub fn g_tree_traverse(
+        tree: *mut GTree,
+        traverse_func: GTraverseFunc,
+        traverse_type: GTraverseType,
+        user_data: gpointer,
+    );
+    pub fn g_tree_unref(tree: *mut GTree);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_upper_bound(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
+
+    //=========================================================================
+    // GTreeNode
+    //=========================================================================
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_key(node: *mut GTreeNode) -> gpointer;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_next(node: *mut GTreeNode) -> *mut GTreeNode;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_previous(node: *mut GTreeNode) -> *mut GTreeNode;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tree_node_value(node: *mut GTreeNode) -> gpointer;
 
     //=========================================================================
     // GUri
@@ -5308,6 +5489,16 @@ extern "C" {
         cmp: *const c_char,
         arg2: *const c_char,
     );
+    pub fn g_assertion_message_cmpstrv(
+        domain: *const c_char,
+        file: *const c_char,
+        line: c_int,
+        func: *const c_char,
+        expr: *const c_char,
+        arg1: *const *const c_char,
+        arg2: *const *const c_char,
+        first_wrong_idx: size_t,
+    );
     pub fn g_assertion_message_error(
         domain: *const c_char,
         file: *const c_char,
@@ -5898,6 +6089,15 @@ extern "C" {
         n_fields: size_t,
         user_data: gpointer,
     ) -> GLogWriterOutput;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_log_writer_default_set_use_stderr(use_stderr: gboolean);
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_log_writer_default_would_drop(
+        log_level: GLogLevelFlags,
+        log_domain: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v2_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_format_fields(
@@ -5952,6 +6152,9 @@ extern "C" {
     pub fn g_mem_profile();
     pub fn g_mem_set_vtable(vtable: *mut GMemVTable);
     pub fn g_memdup(mem: gconstpointer, byte_size: c_uint) -> gpointer;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_memdup2(mem: gconstpointer, byte_size: size_t) -> gpointer;
     pub fn g_mkdir_with_parents(pathname: *const c_char, mode: c_int) -> c_int;
     pub fn g_mkdtemp(tmpl: *mut c_char) -> *mut c_char;
     pub fn g_mkdtemp_full(tmpl: *mut c_char, mode: c_int) -> *mut c_char;
@@ -5987,6 +6190,9 @@ extern "C" {
     pub fn g_pointer_bit_unlock(address: *mut c_void, lock_bit: c_int);
     pub fn g_poll(fds: *mut GPollFD, nfds: c_uint, timeout: c_int) -> c_int;
     pub fn g_prefix_error(err: *mut *mut GError, format: *const c_char, ...);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_prefix_error_literal(err: *mut *mut GError, prefix: *const c_char);
     pub fn g_print(format: *const c_char, ...);
     pub fn g_printerr(format: *const c_char, ...);
     pub fn g_printf(format: *const c_char, ...) -> c_int;
@@ -6209,7 +6415,54 @@ extern "C" {
         standard_error: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
-    pub fn g_spawn_check_exit_status(exit_status: c_int, error: *mut *mut GError) -> gboolean;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(windows, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
+    pub fn g_spawn_async_with_pipes_and_fds_utf8(
+        working_directory: *const c_char,
+        argv: *const *const c_char,
+        envp: *const *const c_char,
+        flags: GSpawnFlags,
+        child_setup: GSpawnChildSetupFunc,
+        user_data: gpointer,
+        stdin_fd: c_int,
+        stdout_fd: c_int,
+        stderr_fd: c_int,
+        source_fds: *const c_int,
+        target_fds: *const c_int,
+        n_fds: size_t,
+        child_pid_out: *mut GPid,
+        stdin_pipe_out: *mut c_int,
+        stdout_pipe_out: *mut c_int,
+        stderr_pipe_out: *mut c_int,
+        error: *mut *mut GError,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_spawn_async_with_pipes_and_fds(
+        working_directory: *const c_char,
+        argv: *const *const c_char,
+        envp: *const *const c_char,
+        flags: GSpawnFlags,
+        child_setup: GSpawnChildSetupFunc,
+        user_data: gpointer,
+        stdin_fd: c_int,
+        stdout_fd: c_int,
+        stderr_fd: c_int,
+        source_fds: *const c_int,
+        target_fds: *const c_int,
+        n_fds: size_t,
+        child_pid_out: *mut GPid,
+        stdin_pipe_out: *mut c_int,
+        stdout_pipe_out: *mut c_int,
+        stderr_pipe_out: *mut c_int,
+        error: *mut *mut GError,
+    ) -> gboolean;
+    pub fn g_spawn_check_exit_status(wait_status: c_int, error: *mut *mut GError) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_spawn_check_wait_status(wait_status: c_int, error: *mut *mut GError) -> gboolean;
     pub fn g_spawn_close_pid(pid: GPid);
     #[cfg(any(windows, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(windows)))]
@@ -6227,14 +6480,14 @@ extern "C" {
         command_line: *const c_char,
         standard_output: *mut *mut u8,
         standard_error: *mut *mut u8,
-        exit_status: *mut c_int,
+        wait_status: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_spawn_command_line_sync(
         command_line: *const c_char,
         standard_output: *mut *mut u8,
         standard_error: *mut *mut u8,
-        exit_status: *mut c_int,
+        wait_status: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_spawn_error_quark() -> GQuark;
@@ -6250,7 +6503,7 @@ extern "C" {
         user_data: gpointer,
         standard_output: *mut *mut u8,
         standard_error: *mut *mut u8,
-        exit_status: *mut c_int,
+        wait_status: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_spawn_sync(
@@ -6262,7 +6515,7 @@ extern "C" {
         user_data: gpointer,
         standard_output: *mut *mut u8,
         standard_error: *mut *mut u8,
-        exit_status: *mut c_int,
+        wait_status: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_sprintf(string: *mut c_char, format: *const c_char, ...) -> c_int;
@@ -6307,9 +6560,6 @@ extern "C" {
     pub fn g_strerror(errnum: c_int) -> *const c_char;
     pub fn g_strescape(source: *const c_char, exceptions: *const c_char) -> *mut c_char;
     pub fn g_strfreev(str_array: *mut *mut c_char);
-    pub fn g_string_new(init: *const c_char) -> *mut GString;
-    pub fn g_string_new_len(init: *const c_char, len: ssize_t) -> *mut GString;
-    pub fn g_string_sized_new(dfl_size: size_t) -> *mut GString;
     pub fn g_strip_context(msgid: *const c_char, msgval: *const c_char) -> *const c_char;
     pub fn g_strjoin(separator: *const c_char, ...) -> *mut c_char;
     pub fn g_strjoinv(separator: *const c_char, str_array: *mut *mut c_char) -> *mut c_char;
@@ -6397,6 +6647,9 @@ extern "C" {
         pattern: *const c_char,
     );
     pub fn g_test_fail();
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_test_fail_printf(format: *const c_char, ...);
     pub fn g_test_failed() -> gboolean;
     pub fn g_test_get_dir(file_type: GTestFileType) -> *const c_char;
     pub fn g_test_get_filename(
@@ -6404,8 +6657,14 @@ extern "C" {
         first_path: *const c_char,
         ...
     ) -> *const c_char;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_test_get_path() -> *const c_char;
     pub fn g_test_get_root() -> *mut GTestSuite;
     pub fn g_test_incomplete(msg: *const c_char);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_test_incomplete_printf(format: *const c_char, ...);
     pub fn g_test_init(argc: *mut c_int, argv: *mut *mut *mut c_char, ...);
     pub fn g_test_log_set_fatal_handler(log_func: GTestLogFatalFunc, user_data: gpointer);
     pub fn g_test_log_type_name(log_type: GTestLogType) -> *const c_char;
@@ -6422,6 +6681,9 @@ extern "C" {
     pub fn g_test_run_suite(suite: *mut GTestSuite) -> c_int;
     pub fn g_test_set_nonfatal_assertions();
     pub fn g_test_skip(msg: *const c_char);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_test_skip_printf(format: *const c_char, ...);
     pub fn g_test_subprocess() -> gboolean;
     #[cfg(any(feature = "v2_62", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]

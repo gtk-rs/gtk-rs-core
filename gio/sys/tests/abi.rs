@@ -1492,6 +1492,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GPowerProfileMonitorInterface",
+        Layout {
+            size: size_of::<GPowerProfileMonitorInterface>(),
+            alignment: align_of::<GPowerProfileMonitorInterface>(),
+        },
+    ),
+    (
         "GProxyAddress",
         Layout {
             size: size_of::<GProxyAddress>(),
@@ -2052,6 +2059,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GTlsProtocolVersion",
+        Layout {
+            size: size_of::<GTlsProtocolVersion>(),
+            alignment: align_of::<GTlsProtocolVersion>(),
+        },
+    ),
+    (
         "GTlsRehandshakeMode",
         Layout {
             size: size_of::<GTlsRehandshakeMode>(),
@@ -2296,6 +2310,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
         "4",
     ),
     ("(guint) G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT", "1"),
+    (
+        "(guint) G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
+        "32",
+    ),
     ("(guint) G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER", "2"),
     (
         "(guint) G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING",
@@ -2380,6 +2398,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_DBUS_MESSAGE_TYPE_METHOD_CALL", "1"),
     ("(gint) G_DBUS_MESSAGE_TYPE_METHOD_RETURN", "2"),
     ("(gint) G_DBUS_MESSAGE_TYPE_SIGNAL", "4"),
+    ("G_DBUS_METHOD_INVOCATION_HANDLED", "1"),
+    ("G_DBUS_METHOD_INVOCATION_UNHANDLED", "0"),
     (
         "(guint) G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START",
         "1",
@@ -2402,6 +2422,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     (
         "(guint) G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS",
         "2",
+    ),
+    (
+        "(guint) G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
+        "4",
     ),
     ("(guint) G_DBUS_SERVER_FLAGS_NONE", "0"),
     ("(guint) G_DBUS_SERVER_FLAGS_RUN_IN_THREAD", "1"),
@@ -2744,6 +2768,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_POLLABLE_RETURN_FAILED", "0"),
     ("(gint) G_POLLABLE_RETURN_OK", "1"),
     ("(gint) G_POLLABLE_RETURN_WOULD_BLOCK", "-27"),
+    (
+        "G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME",
+        "gio-power-profile-monitor",
+    ),
     ("G_PROXY_EXTENSION_POINT_NAME", "gio-proxy"),
     (
         "G_PROXY_RESOLVER_EXTENSION_POINT_NAME",
@@ -2860,7 +2888,18 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TLS_PASSWORD_FINAL_TRY", "8"),
     ("(guint) G_TLS_PASSWORD_MANY_TRIES", "4"),
     ("(guint) G_TLS_PASSWORD_NONE", "0"),
+    ("(guint) G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC", "64"),
+    ("(guint) G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER", "32"),
+    ("(guint) G_TLS_PASSWORD_PKCS11_USER", "16"),
     ("(guint) G_TLS_PASSWORD_RETRY", "2"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_DTLS_1_0", "201"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_DTLS_1_2", "202"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_SSL_3_0", "1"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_TLS_1_0", "2"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_TLS_1_1", "3"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_TLS_1_2", "4"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_TLS_1_3", "5"),
+    ("(gint) G_TLS_PROTOCOL_VERSION_UNKNOWN", "0"),
     ("(gint) G_TLS_REHANDSHAKE_NEVER", "0"),
     ("(gint) G_TLS_REHANDSHAKE_SAFELY", "1"),
     ("(gint) G_TLS_REHANDSHAKE_UNSAFELY", "2"),

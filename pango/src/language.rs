@@ -121,4 +121,24 @@ impl Language {
     pub fn sample_string(&self) -> GString {
         unsafe { from_glib_none(ffi::pango_language_get_sample_string(self.to_glib_none().0)) }
     }
+
+    #[cfg(any(feature = "v1_48", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_48")))]
+    #[doc(alias = "get_preferred")]
+    #[doc(alias = "pango_language_get_preferred")]
+    pub fn preferred(&self) -> Vec<Language> {
+        unsafe {
+            let langs = ffi::pango_language_get_preferred();
+            let mut ptr = langs;
+
+            let mut ret = vec![];
+
+            while !(*ptr).is_null() {
+                ret.push(Language(*ptr));
+                ptr = ptr.add(1);
+            }
+
+            ret
+        }
+    }
 }

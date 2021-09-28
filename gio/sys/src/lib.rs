@@ -357,6 +357,16 @@ pub const G_TLS_INTERACTION_UNHANDLED: GTlsInteractionResult = 0;
 pub const G_TLS_INTERACTION_HANDLED: GTlsInteractionResult = 1;
 pub const G_TLS_INTERACTION_FAILED: GTlsInteractionResult = 2;
 
+pub type GTlsProtocolVersion = c_int;
+pub const G_TLS_PROTOCOL_VERSION_UNKNOWN: GTlsProtocolVersion = 0;
+pub const G_TLS_PROTOCOL_VERSION_SSL_3_0: GTlsProtocolVersion = 1;
+pub const G_TLS_PROTOCOL_VERSION_TLS_1_0: GTlsProtocolVersion = 2;
+pub const G_TLS_PROTOCOL_VERSION_TLS_1_1: GTlsProtocolVersion = 3;
+pub const G_TLS_PROTOCOL_VERSION_TLS_1_2: GTlsProtocolVersion = 4;
+pub const G_TLS_PROTOCOL_VERSION_TLS_1_3: GTlsProtocolVersion = 5;
+pub const G_TLS_PROTOCOL_VERSION_DTLS_1_0: GTlsProtocolVersion = 201;
+pub const G_TLS_PROTOCOL_VERSION_DTLS_1_2: GTlsProtocolVersion = 202;
+
 pub type GTlsRehandshakeMode = c_int;
 pub const G_TLS_REHANDSHAKE_NEVER: GTlsRehandshakeMode = 0;
 pub const G_TLS_REHANDSHAKE_SAFELY: GTlsRehandshakeMode = 1;
@@ -375,6 +385,8 @@ pub const G_ZLIB_COMPRESSOR_FORMAT_GZIP: GZlibCompressorFormat = 1;
 pub const G_ZLIB_COMPRESSOR_FORMAT_RAW: GZlibCompressorFormat = 2;
 
 // Constants
+pub const G_DBUS_METHOD_INVOCATION_HANDLED: gboolean = glib::GTRUE;
+pub const G_DBUS_METHOD_INVOCATION_UNHANDLED: gboolean = glib::GFALSE;
 pub const G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: *const c_char =
     b"gio-desktop-app-info-lookup\0" as *const u8 as *const c_char;
 pub const G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: *const c_char =
@@ -554,6 +566,8 @@ pub const G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME: *const c_char =
     b"gio-native-volume-monitor\0" as *const u8 as *const c_char;
 pub const G_NETWORK_MONITOR_EXTENSION_POINT_NAME: *const c_char =
     b"gio-network-monitor\0" as *const u8 as *const c_char;
+pub const G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME: *const c_char =
+    b"gio-power-profile-monitor\0" as *const u8 as *const c_char;
 pub const G_PROXY_EXTENSION_POINT_NAME: *const c_char =
     b"gio-proxy\0" as *const u8 as *const c_char;
 pub const G_PROXY_RESOLVER_EXTENSION_POINT_NAME: *const c_char =
@@ -637,6 +651,7 @@ pub const G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER: GDBusConnectionFlags = 
 pub const G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: GDBusConnectionFlags = 4;
 pub const G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION: GDBusConnectionFlags = 8;
 pub const G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING: GDBusConnectionFlags = 16;
+pub const G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: GDBusConnectionFlags = 32;
 
 pub type GDBusInterfaceSkeletonFlags = c_uint;
 pub const G_DBUS_INTERFACE_SKELETON_FLAGS_NONE: GDBusInterfaceSkeletonFlags = 0;
@@ -674,6 +689,7 @@ pub type GDBusServerFlags = c_uint;
 pub const G_DBUS_SERVER_FLAGS_NONE: GDBusServerFlags = 0;
 pub const G_DBUS_SERVER_FLAGS_RUN_IN_THREAD: GDBusServerFlags = 1;
 pub const G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: GDBusServerFlags = 2;
+pub const G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: GDBusServerFlags = 4;
 
 pub type GDBusSignalFlags = c_uint;
 pub const G_DBUS_SIGNAL_FLAGS_NONE: GDBusSignalFlags = 0;
@@ -794,6 +810,9 @@ pub const G_TLS_PASSWORD_NONE: GTlsPasswordFlags = 0;
 pub const G_TLS_PASSWORD_RETRY: GTlsPasswordFlags = 2;
 pub const G_TLS_PASSWORD_MANY_TRIES: GTlsPasswordFlags = 4;
 pub const G_TLS_PASSWORD_FINAL_TRY: GTlsPasswordFlags = 8;
+pub const G_TLS_PASSWORD_PKCS11_USER: GTlsPasswordFlags = 16;
+pub const G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER: GTlsPasswordFlags = 32;
+pub const G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC: GTlsPasswordFlags = 64;
 
 // Callbacks
 pub type GAsyncReadyCallback =
@@ -1590,6 +1609,7 @@ pub struct GDBusAnnotationInfo {
 impl ::std::fmt::Debug for GDBusAnnotationInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusAnnotationInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("key", &self.key)
             .field("value", &self.value)
             .field("annotations", &self.annotations)
@@ -1609,6 +1629,7 @@ pub struct GDBusArgInfo {
 impl ::std::fmt::Debug for GDBusArgInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusArgInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("name", &self.name)
             .field("signature", &self.signature)
             .field("annotations", &self.annotations)
@@ -1668,6 +1689,7 @@ pub struct GDBusInterfaceInfo {
 impl ::std::fmt::Debug for GDBusInterfaceInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusInterfaceInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("name", &self.name)
             .field("methods", &self.methods)
             .field("signals", &self.signals)
@@ -1745,6 +1767,7 @@ pub struct GDBusMethodInfo {
 impl ::std::fmt::Debug for GDBusMethodInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusMethodInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("name", &self.name)
             .field("in_args", &self.in_args)
             .field("out_args", &self.out_args)
@@ -1766,6 +1789,7 @@ pub struct GDBusNodeInfo {
 impl ::std::fmt::Debug for GDBusNodeInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusNodeInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("path", &self.path)
             .field("interfaces", &self.interfaces)
             .field("nodes", &self.nodes)
@@ -1965,6 +1989,7 @@ pub struct GDBusPropertyInfo {
 impl ::std::fmt::Debug for GDBusPropertyInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusPropertyInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("name", &self.name)
             .field("signature", &self.signature)
             .field("flags", &self.flags)
@@ -2011,6 +2036,7 @@ pub struct GDBusSignalInfo {
 impl ::std::fmt::Debug for GDBusSignalInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDBusSignalInfo @ {:p}", self))
+            .field("ref_count", &self.ref_count)
             .field("name", &self.name)
             .field("args", &self.args)
             .field("annotations", &self.annotations)
@@ -4983,6 +5009,19 @@ impl ::std::fmt::Debug for GPollableOutputStreamInterface {
 
 #[repr(C)]
 #[derive(Copy, Clone)]
+pub struct GPowerProfileMonitorInterface {
+    pub g_iface: gobject::GTypeInterface,
+}
+
+impl ::std::fmt::Debug for GPowerProfileMonitorInterface {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GPowerProfileMonitorInterface @ {:p}", self))
+            .finish()
+    }
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
 pub struct GProxyAddressClass {
     pub parent_class: GInetSocketAddressClass,
 }
@@ -6091,7 +6130,8 @@ pub struct GTlsConnectionClass {
             *mut *mut glib::GError,
         ) -> gboolean,
     >,
-    pub padding: [gpointer; 7],
+    pub get_negotiated_protocol: Option<unsafe extern "C" fn(*mut GTlsConnection) -> *const c_char>,
+    pub padding: [gpointer; 6],
 }
 
 impl ::std::fmt::Debug for GTlsConnectionClass {
@@ -6103,6 +6143,7 @@ impl ::std::fmt::Debug for GTlsConnectionClass {
             .field("handshake_async", &self.handshake_async)
             .field("handshake_finish", &self.handshake_finish)
             .field("get_binding_data", &self.get_binding_data)
+            .field("get_negotiated_protocol", &self.get_negotiated_protocol)
             .finish()
     }
 }
@@ -8553,6 +8594,15 @@ impl ::std::fmt::Debug for GPollableOutputStream {
 }
 
 #[repr(C)]
+pub struct GPowerProfileMonitor(c_void);
+
+impl ::std::fmt::Debug for GPowerProfileMonitor {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "GPowerProfileMonitor @ {:p}", self)
+    }
+}
+
+#[repr(C)]
 pub struct GProxy(c_void);
 
 impl ::std::fmt::Debug for GProxy {
@@ -8886,6 +8936,13 @@ extern "C" {
     // GTlsInteractionResult
     //=========================================================================
     pub fn g_tls_interaction_result_get_type() -> GType;
+
+    //=========================================================================
+    // GTlsProtocolVersion
+    //=========================================================================
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_protocol_version_get_type() -> GType;
 
     //=========================================================================
     // GTlsRehandshakeMode
@@ -11050,6 +11107,9 @@ extern "C" {
     pub fn g_file_info_clear_status(info: *mut GFileInfo);
     pub fn g_file_info_copy_into(src_info: *mut GFileInfo, dest_info: *mut GFileInfo);
     pub fn g_file_info_dup(other: *mut GFileInfo) -> *mut GFileInfo;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_file_info_get_access_date_time(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_attribute_as_string(
         info: *mut GFileInfo,
         attribute: *const c_char,
@@ -11094,6 +11154,9 @@ extern "C" {
     pub fn g_file_info_get_attribute_uint32(info: *mut GFileInfo, attribute: *const c_char) -> u32;
     pub fn g_file_info_get_attribute_uint64(info: *mut GFileInfo, attribute: *const c_char) -> u64;
     pub fn g_file_info_get_content_type(info: *mut GFileInfo) -> *const c_char;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_file_info_get_creation_date_time(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_deletion_date(info: *mut GFileInfo) -> *mut glib::GDateTime;
     pub fn g_file_info_get_display_name(info: *mut GFileInfo) -> *const c_char;
     pub fn g_file_info_get_edit_name(info: *mut GFileInfo) -> *const c_char;
@@ -11119,6 +11182,9 @@ extern "C" {
         name_space: *const c_char,
     ) -> *mut *mut c_char;
     pub fn g_file_info_remove_attribute(info: *mut GFileInfo, attribute: *const c_char);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_file_info_set_access_date_time(info: *mut GFileInfo, atime: *mut glib::GDateTime);
     pub fn g_file_info_set_attribute(
         info: *mut GFileInfo,
         attribute: *const c_char,
@@ -11177,6 +11243,12 @@ extern "C" {
         attr_value: u64,
     );
     pub fn g_file_info_set_content_type(info: *mut GFileInfo, content_type: *const c_char);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_file_info_set_creation_date_time(
+        info: *mut GFileInfo,
+        creation_time: *mut glib::GDateTime,
+    );
     pub fn g_file_info_set_display_name(info: *mut GFileInfo, display_name: *const c_char);
     pub fn g_file_info_set_edit_name(info: *mut GFileInfo, edit_name: *const c_char);
     pub fn g_file_info_set_file_type(info: *mut GFileInfo, type_: GFileType);
@@ -11906,6 +11978,9 @@ extern "C" {
         target: *mut glib::GVariant,
     );
     pub fn g_notification_set_body(notification: *mut GNotification, body: *const c_char);
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_notification_set_category(notification: *mut GNotification, category: *const c_char);
     pub fn g_notification_set_default_action(
         notification: *mut GNotification,
         detailed_action: *const c_char,
@@ -13344,6 +13419,9 @@ extern "C" {
     //=========================================================================
     pub fn g_subprocess_launcher_get_type() -> GType;
     pub fn g_subprocess_launcher_new(flags: GSubprocessFlags) -> *mut GSubprocessLauncher;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_subprocess_launcher_close(self_: *mut GSubprocessLauncher);
     pub fn g_subprocess_launcher_getenv(
         self_: *mut GSubprocessLauncher,
         variable: *const c_char,
@@ -13568,11 +13646,40 @@ extern "C" {
         length: ssize_t,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_tls_certificate_new_from_pkcs11_uris(
+        pkcs11_uri: *const c_char,
+        private_key_pkcs11_uri: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut GTlsCertificate;
     pub fn g_tls_certificate_list_new_from_file(
         file: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut glib::GList;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_dns_names(cert: *mut GTlsCertificate) -> *mut glib::GPtrArray;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_ip_addresses(cert: *mut GTlsCertificate) -> *mut glib::GPtrArray;
     pub fn g_tls_certificate_get_issuer(cert: *mut GTlsCertificate) -> *mut GTlsCertificate;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_issuer_name(cert: *mut GTlsCertificate) -> *mut c_char;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_not_valid_after(
+        cert: *mut GTlsCertificate,
+    ) -> *mut glib::GDateTime;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_not_valid_before(
+        cert: *mut GTlsCertificate,
+    ) -> *mut glib::GDateTime;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_certificate_get_subject_name(cert: *mut GTlsCertificate) -> *mut c_char;
     pub fn g_tls_certificate_is_same(
         cert_one: *mut GTlsCertificate,
         cert_two: *mut GTlsCertificate,
@@ -13601,6 +13708,9 @@ extern "C" {
         data: *mut glib::GByteArray,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_connection_get_ciphersuite_name(conn: *mut GTlsConnection) -> *mut c_char;
     pub fn g_tls_connection_get_database(conn: *mut GTlsConnection) -> *mut GTlsDatabase;
     pub fn g_tls_connection_get_interaction(conn: *mut GTlsConnection) -> *mut GTlsInteraction;
     #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -13611,6 +13721,9 @@ extern "C" {
     pub fn g_tls_connection_get_peer_certificate_errors(
         conn: *mut GTlsConnection,
     ) -> GTlsCertificateFlags;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_tls_connection_get_protocol_version(conn: *mut GTlsConnection) -> GTlsProtocolVersion;
     pub fn g_tls_connection_get_rehandshake_mode(conn: *mut GTlsConnection) -> GTlsRehandshakeMode;
     pub fn g_tls_connection_get_require_close_notify(conn: *mut GTlsConnection) -> gboolean;
     pub fn g_tls_connection_get_use_system_certdb(conn: *mut GTlsConnection) -> gboolean;
@@ -14580,6 +14693,9 @@ extern "C" {
         data: *mut glib::GByteArray,
         error: *mut *mut glib::GError,
     ) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_dtls_connection_get_ciphersuite_name(conn: *mut GDtlsConnection) -> *mut c_char;
     pub fn g_dtls_connection_get_database(conn: *mut GDtlsConnection) -> *mut GTlsDatabase;
     pub fn g_dtls_connection_get_interaction(conn: *mut GDtlsConnection) -> *mut GTlsInteraction;
     #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -14591,6 +14707,11 @@ extern "C" {
     pub fn g_dtls_connection_get_peer_certificate_errors(
         conn: *mut GDtlsConnection,
     ) -> GTlsCertificateFlags;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_dtls_connection_get_protocol_version(
+        conn: *mut GDtlsConnection,
+    ) -> GTlsProtocolVersion;
     pub fn g_dtls_connection_get_rehandshake_mode(
         conn: *mut GDtlsConnection,
     ) -> GTlsRehandshakeMode;
@@ -14706,6 +14827,14 @@ extern "C" {
         res: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GFileOutputStream;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_file_build_attribute_list_for_copy(
+        file: *mut GFile,
+        flags: GFileCopyFlags,
+        cancellable: *mut GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut c_char;
     pub fn g_file_copy(
         source: *mut GFile,
         destination: *mut GFile,
@@ -15699,6 +15828,21 @@ extern "C" {
     ) -> GPollableReturn;
 
     //=========================================================================
+    // GPowerProfileMonitor
+    //=========================================================================
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_power_profile_monitor_get_type() -> GType;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_power_profile_monitor_dup_default() -> *mut GPowerProfileMonitor;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_power_profile_monitor_get_power_saver_enabled(
+        monitor: *mut GPowerProfileMonitor,
+    ) -> gboolean;
+
+    //=========================================================================
     // GProxy
     //=========================================================================
     pub fn g_proxy_get_type() -> GType;
@@ -16068,6 +16212,12 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GIOStream;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_dbus_escape_object_path(s: *const c_char) -> *mut c_char;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_dbus_escape_object_path_bytestring(bytes: *const u8) -> *mut c_char;
     pub fn g_dbus_generate_guid() -> *mut c_char;
     pub fn g_dbus_gvalue_to_gvariant(
         gvalue: *const gobject::GValue,
@@ -16075,6 +16225,9 @@ extern "C" {
     ) -> *mut glib::GVariant;
     pub fn g_dbus_gvariant_to_gvalue(value: *mut glib::GVariant, out_gvalue: *mut gobject::GValue);
     pub fn g_dbus_is_address(string: *const c_char) -> gboolean;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_dbus_is_error_name(string: *const c_char) -> gboolean;
     pub fn g_dbus_is_guid(string: *const c_char) -> gboolean;
     pub fn g_dbus_is_interface_name(string: *const c_char) -> gboolean;
     pub fn g_dbus_is_member_name(string: *const c_char) -> gboolean;
@@ -16084,6 +16237,9 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_dbus_is_unique_name(string: *const c_char) -> gboolean;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_dbus_unescape_object_path(s: *const c_char) -> *mut u8;
     pub fn g_io_error_from_errno(err_no: c_int) -> GIOErrorEnum;
     pub fn g_io_error_quark() -> glib::GQuark;
     pub fn g_io_modules_load_all_in_directory(dirname: *const c_char) -> *mut glib::GList;

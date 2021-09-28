@@ -109,6 +109,9 @@ pub use self::alias::LayoutRun;
 
 pub mod functions;
 
+mod constants;
+pub use self::constants::VERSION_STRING;
+
 #[doc(hidden)]
 pub mod traits {
     pub use super::font::FontExt;

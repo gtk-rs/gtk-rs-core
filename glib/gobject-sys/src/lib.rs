@@ -100,6 +100,7 @@ pub const G_SIGNAL_ACTION: GSignalFlags = 32;
 pub const G_SIGNAL_NO_HOOKS: GSignalFlags = 64;
 pub const G_SIGNAL_MUST_COLLECT: GSignalFlags = 128;
 pub const G_SIGNAL_DEPRECATED: GSignalFlags = 256;
+pub const G_SIGNAL_ACCUMULATOR_FIRST_RUN: GSignalFlags = 131072;
 
 pub type GSignalMatchType = c_uint;
 pub const G_SIGNAL_MATCH_ID: GSignalMatchType = 1;
@@ -119,6 +120,7 @@ pub const G_TYPE_DEBUG_MASK: GTypeDebugFlags = 7;
 pub type GTypeFlags = c_uint;
 pub const G_TYPE_FLAG_ABSTRACT: GTypeFlags = 16;
 pub const G_TYPE_FLAG_VALUE_ABSTRACT: GTypeFlags = 32;
+pub const G_TYPE_FLAG_FINAL: GTypeFlags = 64;
 
 pub type GTypeFundamentalFlags = c_uint;
 pub const G_TYPE_FLAG_CLASSED: GTypeFundamentalFlags = 1;
@@ -1704,6 +1706,9 @@ extern "C" {
         instance_type: GType,
         interface_type: GType,
     ) -> *mut GTypePlugin;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_type_interface_instantiatable_prerequisite(interface_type: GType) -> GType;
     pub fn g_type_interface_peek(instance_class: gpointer, iface_type: GType) -> gpointer;
     pub fn g_type_interface_prerequisites(
         interface_type: GType,
@@ -1841,6 +1846,12 @@ extern "C" {
     // GBinding
     //=========================================================================
     pub fn g_binding_get_type() -> GType;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_binding_dup_source(binding: *mut GBinding) -> *mut GObject;
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    pub fn g_binding_dup_target(binding: *mut GBinding) -> *mut GObject;
     pub fn g_binding_get_flags(binding: *mut GBinding) -> GBindingFlags;
     pub fn g_binding_get_source(binding: *mut GBinding) -> *mut GObject;
     pub fn g_binding_get_source_property(binding: *mut GBinding) -> *const c_char;
@@ -2003,6 +2014,9 @@ extern "C" {
     );
     pub fn g_object_steal_data(object: *mut GObject, key: *const c_char) -> gpointer;
     pub fn g_object_steal_qdata(object: *mut GObject, quark: glib::GQuark) -> gpointer;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub fn g_object_take_ref(object: *mut GObject) -> *mut GObject;
     pub fn g_object_thaw_notify(object: *mut GObject);
     pub fn g_object_unref(object: *mut GObject);
     pub fn g_object_watch_closure(object: *mut GObject, closure: *mut GClosure);

@@ -327,7 +327,6 @@ pub struct GdkPixbufLoader {
 impl ::std::fmt::Debug for GdkPixbufLoader {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GdkPixbufLoader @ {:p}", self))
-            .field("parent_instance", &self.parent_instance)
             .finish()
     }
 }

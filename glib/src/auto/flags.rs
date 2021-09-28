@@ -397,6 +397,8 @@ bitflags! {
         const ENCODED_PATH = ffi::G_URI_FLAGS_ENCODED_PATH as u32;
         #[doc(alias = "G_URI_FLAGS_ENCODED_FRAGMENT")]
         const ENCODED_FRAGMENT = ffi::G_URI_FLAGS_ENCODED_FRAGMENT as u32;
+        #[doc(alias = "G_URI_FLAGS_SCHEME_NORMALIZE")]
+        const SCHEME_NORMALIZE = ffi::G_URI_FLAGS_SCHEME_NORMALIZE as u32;
     }
 }
 

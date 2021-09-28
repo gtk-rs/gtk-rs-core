@@ -241,6 +241,13 @@ pub use self::pollable_input_stream::{PollableInputStream, NONE_POLLABLE_INPUT_S
 mod pollable_output_stream;
 pub use self::pollable_output_stream::{PollableOutputStream, NONE_POLLABLE_OUTPUT_STREAM};
 
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+mod power_profile_monitor;
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+pub use self::power_profile_monitor::{PowerProfileMonitor, NONE_POWER_PROFILE_MONITOR};
+
 mod property_action;
 pub use self::property_action::PropertyAction;
 
@@ -489,6 +496,9 @@ pub use self::enums::TlsCertificateRequestFlags;
 pub use self::enums::TlsChannelBindingType;
 pub use self::enums::TlsDatabaseLookupFlags;
 pub use self::enums::TlsInteractionResult;
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+pub use self::enums::TlsProtocolVersion;
 pub use self::enums::TlsRehandshakeMode;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
@@ -638,6 +648,9 @@ pub use self::constants::MENU_LINK_SECTION;
 pub use self::constants::MENU_LINK_SUBMENU;
 pub use self::constants::NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME;
 pub use self::constants::NETWORK_MONITOR_EXTENSION_POINT_NAME;
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+pub use self::constants::POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME;
 pub use self::constants::PROXY_EXTENSION_POINT_NAME;
 pub use self::constants::PROXY_RESOLVER_EXTENSION_POINT_NAME;
 pub use self::constants::SETTINGS_BACKEND_EXTENSION_POINT_NAME;
@@ -711,6 +724,9 @@ pub mod traits {
     pub use super::permission::PermissionExt;
     pub use super::pollable_input_stream::PollableInputStreamExt;
     pub use super::pollable_output_stream::PollableOutputStreamExt;
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    pub use super::power_profile_monitor::PowerProfileMonitorExt;
     pub use super::proxy::ProxyExt;
     pub use super::proxy_address::ProxyAddressExt;
     pub use super::proxy_resolver::ProxyResolverExt;
