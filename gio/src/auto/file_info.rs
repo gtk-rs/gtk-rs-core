@@ -45,6 +45,14 @@ impl FileInfo {
         unsafe { from_glib_full(ffi::g_file_info_dup(self.to_glib_none().0)) }
     }
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_file_info_get_access_date_time")]
+    #[doc(alias = "get_access_date_time")]
+    pub fn access_date_time(&self) -> Option<glib::DateTime> {
+        unsafe { from_glib_full(ffi::g_file_info_get_access_date_time(self.to_glib_none().0)) }
+    }
+
     #[doc(alias = "g_file_info_get_attribute_as_string")]
     #[doc(alias = "get_attribute_as_string")]
     pub fn attribute_as_string(&self, attribute: &str) -> Option<glib::GString> {
@@ -175,6 +183,18 @@ impl FileInfo {
     #[doc(alias = "get_content_type")]
     pub fn content_type(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::g_file_info_get_content_type(self.to_glib_none().0)) }
+    }
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_file_info_get_creation_date_time")]
+    #[doc(alias = "get_creation_date_time")]
+    pub fn creation_date_time(&self) -> Option<glib::DateTime> {
+        unsafe {
+            from_glib_full(ffi::g_file_info_get_creation_date_time(
+                self.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "g_file_info_get_deletion_date")]
@@ -310,6 +330,15 @@ impl FileInfo {
         }
     }
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_file_info_set_access_date_time")]
+    pub fn set_access_date_time(&self, atime: &glib::DateTime) {
+        unsafe {
+            ffi::g_file_info_set_access_date_time(self.to_glib_none().0, atime.to_glib_none().0);
+        }
+    }
+
     //#[doc(alias = "g_file_info_set_attribute")]
     //pub fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Fundamental: Pointer) {
     //    unsafe { TODO: call ffi:g_file_info_set_attribute() }
@@ -436,6 +465,18 @@ impl FileInfo {
     pub fn set_content_type(&self, content_type: &str) {
         unsafe {
             ffi::g_file_info_set_content_type(self.to_glib_none().0, content_type.to_glib_none().0);
+        }
+    }
+
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_file_info_set_creation_date_time")]
+    pub fn set_creation_date_time(&self, creation_time: &glib::DateTime) {
+        unsafe {
+            ffi::g_file_info_set_creation_date_time(
+                self.to_glib_none().0,
+                creation_time.to_glib_none().0,
+            );
         }
     }
 

@@ -190,6 +190,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GPollableInputStreamInterface", sizeof(GPollableInputStreamInterface), alignof(GPollableInputStreamInterface));
     printf("%s;%zu;%zu\n", "GPollableOutputStreamInterface", sizeof(GPollableOutputStreamInterface), alignof(GPollableOutputStreamInterface));
     printf("%s;%zu;%zu\n", "GPollableReturn", sizeof(GPollableReturn), alignof(GPollableReturn));
+    printf("%s;%zu;%zu\n", "GPowerProfileMonitorInterface", sizeof(GPowerProfileMonitorInterface), alignof(GPowerProfileMonitorInterface));
     printf("%s;%zu;%zu\n", "GProxyAddress", sizeof(GProxyAddress), alignof(GProxyAddress));
     printf("%s;%zu;%zu\n", "GProxyAddressClass", sizeof(GProxyAddressClass), alignof(GProxyAddressClass));
     printf("%s;%zu;%zu\n", "GProxyAddressEnumerator", sizeof(GProxyAddressEnumerator), alignof(GProxyAddressEnumerator));
@@ -270,6 +271,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GTlsPassword", sizeof(GTlsPassword), alignof(GTlsPassword));
     printf("%s;%zu;%zu\n", "GTlsPasswordClass", sizeof(GTlsPasswordClass), alignof(GTlsPasswordClass));
     printf("%s;%zu;%zu\n", "GTlsPasswordFlags", sizeof(GTlsPasswordFlags), alignof(GTlsPasswordFlags));
+    printf("%s;%zu;%zu\n", "GTlsProtocolVersion", sizeof(GTlsProtocolVersion), alignof(GTlsProtocolVersion));
     printf("%s;%zu;%zu\n", "GTlsRehandshakeMode", sizeof(GTlsRehandshakeMode), alignof(GTlsRehandshakeMode));
     printf("%s;%zu;%zu\n", "GTlsServerConnectionInterface", sizeof(GTlsServerConnectionInterface), alignof(GTlsServerConnectionInterface));
     printf("%s;%zu;%zu\n", "GUnixConnection", sizeof(GUnixConnection), alignof(GUnixConnection));

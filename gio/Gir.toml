@@ -143,6 +143,7 @@ generate = [
     "Gio.TlsInteraction",
     "Gio.TlsInteractionResult",
     "Gio.TlsPasswordFlags",
+    "Gio.TlsProtocolVersion",
     "Gio.TlsRehandshakeMode",
     "Gio.TlsServerConnection",
     "Gio.VolumeMonitor",
@@ -213,6 +214,10 @@ status = "generate"
     [[object.function]]
     name = "bus_unwatch_name"
     #wrapped with newtype manually
+    ignore = true
+    [[object.function]]
+    name = "dbus_unescape_object_path"
+    # zero-terminated byte array that is not a string
     ignore = true
 
 [[object]]
@@ -861,6 +866,13 @@ manual_traits = ["PollableOutputStreamExtManual"]
     # manual source implementation
     manual = true
     doc_trait_name = "PollableOutputStreamExtManual"
+
+[[object]]
+name = "Gio.PowerProfileMonitor"
+status = "generate"
+    [[object.function]]
+    name = "dup_default"
+    rename = "get_default"
 
 [[object]]
 name = "Gio.ProxyAddress"

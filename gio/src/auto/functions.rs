@@ -347,6 +347,20 @@ pub fn dbus_address_get_stream_sync(
     }
 }
 
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[doc(alias = "g_dbus_escape_object_path")]
+pub fn dbus_escape_object_path(s: &str) -> glib::GString {
+    unsafe { from_glib_full(ffi::g_dbus_escape_object_path(s.to_glib_none().0)) }
+}
+
+//#[cfg(any(feature = "v2_68", feature = "dox"))]
+//#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+//#[doc(alias = "g_dbus_escape_object_path_bytestring")]
+//pub fn dbus_escape_object_path_bytestring(bytes: &[u8]) -> glib::GString {
+//    unsafe { TODO: call ffi:g_dbus_escape_object_path_bytestring() }
+//}
+
 #[doc(alias = "g_dbus_generate_guid")]
 pub fn dbus_generate_guid() -> glib::GString {
     unsafe { from_glib_full(ffi::g_dbus_generate_guid()) }
@@ -374,6 +388,13 @@ pub fn dbus_gvariant_to_gvalue(value: &glib::Variant) -> glib::Value {
 #[doc(alias = "g_dbus_is_address")]
 pub fn dbus_is_address(string: &str) -> bool {
     unsafe { from_glib(ffi::g_dbus_is_address(string.to_glib_none().0)) }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[doc(alias = "g_dbus_is_error_name")]
+pub fn dbus_is_error_name(string: &str) -> bool {
+    unsafe { from_glib(ffi::g_dbus_is_error_name(string.to_glib_none().0)) }
 }
 
 #[doc(alias = "g_dbus_is_guid")]

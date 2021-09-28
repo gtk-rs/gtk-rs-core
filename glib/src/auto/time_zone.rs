@@ -23,6 +23,13 @@ impl TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new(identifier.to_glib_none().0)) }
     }
 
+    #[cfg(any(feature = "v2_68", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[doc(alias = "g_time_zone_new_identifier")]
+    pub fn new_identifier(identifier: Option<&str>) -> Option<TimeZone> {
+        unsafe { from_glib_full(ffi::g_time_zone_new_identifier(identifier.to_glib_none().0)) }
+    }
+
     #[doc(alias = "g_time_zone_new_local")]
     pub fn new_local() -> TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new_local()) }

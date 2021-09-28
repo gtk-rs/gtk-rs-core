@@ -3363,6 +3363,134 @@ impl ToValue for TlsInteractionResult {
     }
 }
 
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GTlsProtocolVersion")]
+pub enum TlsProtocolVersion {
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_UNKNOWN")]
+    Unknown,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_SSL_3_0")]
+    Ssl30,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_TLS_1_0")]
+    Tls10,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_TLS_1_1")]
+    Tls11,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_TLS_1_2")]
+    Tls12,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_TLS_1_3")]
+    Tls13,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_DTLS_1_0")]
+    Dtls10,
+    #[doc(alias = "G_TLS_PROTOCOL_VERSION_DTLS_1_2")]
+    Dtls12,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+impl fmt::Display for TlsProtocolVersion {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "TlsProtocolVersion::{}",
+            match *self {
+                Self::Unknown => "Unknown",
+                Self::Ssl30 => "Ssl30",
+                Self::Tls10 => "Tls10",
+                Self::Tls11 => "Tls11",
+                Self::Tls12 => "Tls12",
+                Self::Tls13 => "Tls13",
+                Self::Dtls10 => "Dtls10",
+                Self::Dtls12 => "Dtls12",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[doc(hidden)]
+impl IntoGlib for TlsProtocolVersion {
+    type GlibType = ffi::GTlsProtocolVersion;
+
+    fn into_glib(self) -> ffi::GTlsProtocolVersion {
+        match self {
+            Self::Unknown => ffi::G_TLS_PROTOCOL_VERSION_UNKNOWN,
+            Self::Ssl30 => ffi::G_TLS_PROTOCOL_VERSION_SSL_3_0,
+            Self::Tls10 => ffi::G_TLS_PROTOCOL_VERSION_TLS_1_0,
+            Self::Tls11 => ffi::G_TLS_PROTOCOL_VERSION_TLS_1_1,
+            Self::Tls12 => ffi::G_TLS_PROTOCOL_VERSION_TLS_1_2,
+            Self::Tls13 => ffi::G_TLS_PROTOCOL_VERSION_TLS_1_3,
+            Self::Dtls10 => ffi::G_TLS_PROTOCOL_VERSION_DTLS_1_0,
+            Self::Dtls12 => ffi::G_TLS_PROTOCOL_VERSION_DTLS_1_2,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GTlsProtocolVersion> for TlsProtocolVersion {
+    unsafe fn from_glib(value: ffi::GTlsProtocolVersion) -> Self {
+        match value {
+            ffi::G_TLS_PROTOCOL_VERSION_UNKNOWN => Self::Unknown,
+            ffi::G_TLS_PROTOCOL_VERSION_SSL_3_0 => Self::Ssl30,
+            ffi::G_TLS_PROTOCOL_VERSION_TLS_1_0 => Self::Tls10,
+            ffi::G_TLS_PROTOCOL_VERSION_TLS_1_1 => Self::Tls11,
+            ffi::G_TLS_PROTOCOL_VERSION_TLS_1_2 => Self::Tls12,
+            ffi::G_TLS_PROTOCOL_VERSION_TLS_1_3 => Self::Tls13,
+            ffi::G_TLS_PROTOCOL_VERSION_DTLS_1_0 => Self::Dtls10,
+            ffi::G_TLS_PROTOCOL_VERSION_DTLS_1_2 => Self::Dtls12,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+impl StaticType for TlsProtocolVersion {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_tls_protocol_version_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+impl glib::value::ValueType for TlsProtocolVersion {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+unsafe impl<'a> FromValue<'a> for TlsProtocolVersion {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+impl ToValue for TlsProtocolVersion {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
 #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]

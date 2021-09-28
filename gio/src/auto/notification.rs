@@ -63,6 +63,15 @@ impl Notification {
         }
     }
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[doc(alias = "g_notification_set_category")]
+    pub fn set_category(&self, category: Option<&str>) {
+        unsafe {
+            ffi::g_notification_set_category(self.to_glib_none().0, category.to_glib_none().0);
+        }
+    }
+
     #[doc(alias = "g_notification_set_default_action")]
     pub fn set_default_action(&self, detailed_action: &str) {
         unsafe {

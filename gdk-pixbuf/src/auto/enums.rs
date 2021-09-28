@@ -180,6 +180,7 @@ impl ToValue for InterpType {
     }
 }
 
+#[cfg_attr(feature = "v2_42", deprecated = "Since 2.42")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GdkPixbufAlphaMode")]

@@ -69,7 +69,7 @@ impl Matrix {
     }
 
     //#[doc(alias = "pango_matrix_transform_pixel_rectangle")]
-    //pub fn transform_pixel_rectangle(&self, rect: /*Unimplemented*/Option<Rectangle>) {
+    //pub fn transform_pixel_rectangle(&self, rect: /*Unimplemented*/Rectangle) {
     //    unsafe { TODO: call ffi:pango_matrix_transform_pixel_rectangle() }
     //}
 
@@ -81,7 +81,7 @@ impl Matrix {
     }
 
     //#[doc(alias = "pango_matrix_transform_rectangle")]
-    //pub fn transform_rectangle(&self, rect: /*Unimplemented*/Option<Rectangle>) {
+    //pub fn transform_rectangle(&self, rect: /*Unimplemented*/Rectangle) {
     //    unsafe { TODO: call ffi:pango_matrix_transform_rectangle() }
     //}
 

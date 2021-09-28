@@ -26,14 +26,6 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoCoverageLevel", sizeof(PangoCoverageLevel), alignof(PangoCoverageLevel));
     printf("%s;%zu;%zu\n", "PangoDirection", sizeof(PangoDirection), alignof(PangoDirection));
     printf("%s;%zu;%zu\n", "PangoEllipsizeMode", sizeof(PangoEllipsizeMode), alignof(PangoEllipsizeMode));
-    printf("%s;%zu;%zu\n", "PangoEngine", sizeof(PangoEngine), alignof(PangoEngine));
-    printf("%s;%zu;%zu\n", "PangoEngineClass", sizeof(PangoEngineClass), alignof(PangoEngineClass));
-    printf("%s;%zu;%zu\n", "PangoEngineInfo", sizeof(PangoEngineInfo), alignof(PangoEngineInfo));
-    printf("%s;%zu;%zu\n", "PangoEngineLang", sizeof(PangoEngineLang), alignof(PangoEngineLang));
-    printf("%s;%zu;%zu\n", "PangoEngineLangClass", sizeof(PangoEngineLangClass), alignof(PangoEngineLangClass));
-    printf("%s;%zu;%zu\n", "PangoEngineScriptInfo", sizeof(PangoEngineScriptInfo), alignof(PangoEngineScriptInfo));
-    printf("%s;%zu;%zu\n", "PangoEngineShape", sizeof(PangoEngineShape), alignof(PangoEngineShape));
-    printf("%s;%zu;%zu\n", "PangoEngineShapeClass", sizeof(PangoEngineShapeClass), alignof(PangoEngineShapeClass));
     printf("%s;%zu;%zu\n", "PangoFont", sizeof(PangoFont), alignof(PangoFont));
     printf("%s;%zu;%zu\n", "PangoFontClass", sizeof(PangoFontClass), alignof(PangoFontClass));
     printf("%s;%zu;%zu\n", "PangoFontFace", sizeof(PangoFontFace), alignof(PangoFontFace));
@@ -56,7 +48,6 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoGlyphVisAttr", sizeof(PangoGlyphVisAttr), alignof(PangoGlyphVisAttr));
     printf("%s;%zu;%zu\n", "PangoGravity", sizeof(PangoGravity), alignof(PangoGravity));
     printf("%s;%zu;%zu\n", "PangoGravityHint", sizeof(PangoGravityHint), alignof(PangoGravityHint));
-    printf("%s;%zu;%zu\n", "PangoIncludedModule", sizeof(PangoIncludedModule), alignof(PangoIncludedModule));
     printf("%s;%zu;%zu\n", "PangoItem", sizeof(PangoItem), alignof(PangoItem));
     printf("%s;%zu;%zu\n", "PangoLayoutRun", sizeof(PangoLayoutRun), alignof(PangoLayoutRun));
     printf("%s;%zu;%zu\n", "PangoMatrix", sizeof(PangoMatrix), alignof(PangoMatrix));

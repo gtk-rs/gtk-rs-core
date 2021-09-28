@@ -253,13 +253,6 @@ impl DBusProxy {
     }
 }
 
-impl fmt::Display for DBusProxy {
-    #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&DBusProxyExt::name(self))
-    }
-}
-
 unsafe impl Send for DBusProxy {}
 unsafe impl Sync for DBusProxy {}
 
@@ -370,7 +363,7 @@ pub trait DBusProxyExt: 'static {
 
     #[doc(alias = "g_dbus_proxy_get_name")]
     #[doc(alias = "get_name")]
-    fn name(&self) -> glib::GString;
+    fn name(&self) -> Option<glib::GString>;
 
     #[doc(alias = "g_dbus_proxy_get_name_owner")]
     #[doc(alias = "get_name_owner")]
@@ -713,7 +706,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    fn name(&self) -> glib::GString {
+    fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::g_dbus_proxy_get_name(self.as_ref().to_glib_none().0)) }
     }
 
@@ -1012,5 +1005,11 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
                 Box_::into_raw(f),
             )
         }
+    }
+}
+
+impl fmt::Display for DBusProxy {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str("DBusProxy")
     }
 }
