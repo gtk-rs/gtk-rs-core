@@ -57,9 +57,9 @@
 //! assert_eq!(variant.child_value(1).str(), Some("there!"));
 //!
 //! // You can also convert from and to a Vec
-//! let array = vec!["Hello", "there!"].to_variant();
+//! let variant = vec!["Hello", "there!"].to_variant();
 //! assert_eq!(variant.n_children(), 2);
-//! let vec = <Vec<String>>::from_variant(&array).unwrap();
+//! let vec = <Vec<String>>::from_variant(&variant).unwrap();
 //! assert_eq!(vec[0], "Hello");
 //!
 //! // Conversion to and from HashMap is also possible
