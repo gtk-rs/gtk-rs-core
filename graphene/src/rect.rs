@@ -41,3 +41,24 @@ impl Rect {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Point;
+
+    #[test]
+    fn contains_point() {
+        let rect = Rect::new(100., 100., 100., 100.);
+
+        let right = Point::new(250., 150.);
+        let below = Point::new(150., 50.);
+        let left = Point::new(50., 150.);
+        let above = Point::new(150., 250.);
+
+        assert!(!rect.contains_point(&right));
+        assert!(!rect.contains_point(&below));
+        assert!(!rect.contains_point(&left));
+        assert!(!rect.contains_point(&above));
+    }
+}
