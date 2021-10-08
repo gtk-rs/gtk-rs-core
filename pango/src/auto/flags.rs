@@ -87,8 +87,8 @@ impl ToValue for FontMask {
 }
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
         #[doc(alias = "PANGO_SHAPE_NONE")]
@@ -167,8 +167,8 @@ impl ToValue for ShapeFlags {
 }
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
         #[doc(alias = "PANGO_SHOW_NONE")]
