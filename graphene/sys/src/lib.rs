@@ -364,15 +364,12 @@ extern "C" {
     //=========================================================================
     pub fn graphene_box_get_type() -> GType;
     pub fn graphene_box_alloc() -> *mut graphene_box_t;
-    pub fn graphene_box_contains_box(
-        a: *const graphene_box_t,
-        b: *const graphene_box_t,
-    ) -> gboolean;
+    pub fn graphene_box_contains_box(a: *const graphene_box_t, b: *const graphene_box_t) -> bool;
     pub fn graphene_box_contains_point(
         box_: *const graphene_box_t,
         point: *const graphene_point3d_t,
-    ) -> gboolean;
-    pub fn graphene_box_equal(a: *const graphene_box_t, b: *const graphene_box_t) -> gboolean;
+    ) -> bool;
+    pub fn graphene_box_equal(a: *const graphene_box_t, b: *const graphene_box_t) -> bool;
     pub fn graphene_box_expand(
         box_: *const graphene_box_t,
         point: *const graphene_point3d_t,
@@ -432,7 +429,7 @@ extern "C" {
         a: *const graphene_box_t,
         b: *const graphene_box_t,
         res: *mut graphene_box_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_box_union(
         a: *const graphene_box_t,
         b: *const graphene_box_t,
@@ -450,8 +447,7 @@ extern "C" {
     //=========================================================================
     pub fn graphene_euler_get_type() -> GType;
     pub fn graphene_euler_alloc() -> *mut graphene_euler_t;
-    pub fn graphene_euler_equal(a: *const graphene_euler_t, b: *const graphene_euler_t)
-        -> gboolean;
+    pub fn graphene_euler_equal(a: *const graphene_euler_t, b: *const graphene_euler_t) -> bool;
     pub fn graphene_euler_free(e: *mut graphene_euler_t);
     pub fn graphene_euler_get_alpha(e: *const graphene_euler_t) -> c_float;
     pub fn graphene_euler_get_beta(e: *const graphene_euler_t) -> c_float;
@@ -519,11 +515,11 @@ extern "C" {
     pub fn graphene_frustum_contains_point(
         f: *const graphene_frustum_t,
         point: *const graphene_point3d_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_frustum_equal(
         a: *const graphene_frustum_t,
         b: *const graphene_frustum_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_frustum_free(f: *mut graphene_frustum_t);
     pub fn graphene_frustum_get_planes(
         f: *const graphene_frustum_t,
@@ -549,11 +545,11 @@ extern "C" {
     pub fn graphene_frustum_intersects_box(
         f: *const graphene_frustum_t,
         box_: *const graphene_box_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_frustum_intersects_sphere(
         f: *const graphene_frustum_t,
         sphere: *const graphene_sphere_t,
-    ) -> gboolean;
+    ) -> bool;
 
     //=========================================================================
     // graphene_matrix_t
@@ -567,16 +563,13 @@ extern "C" {
         rotate: *mut graphene_quaternion_t,
         shear: *mut graphene_vec3_t,
         perspective: *mut graphene_vec4_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_matrix_determinant(m: *const graphene_matrix_t) -> c_float;
-    pub fn graphene_matrix_equal(
-        a: *const graphene_matrix_t,
-        b: *const graphene_matrix_t,
-    ) -> gboolean;
+    pub fn graphene_matrix_equal(a: *const graphene_matrix_t, b: *const graphene_matrix_t) -> bool;
     pub fn graphene_matrix_equal_fast(
         a: *const graphene_matrix_t,
         b: *const graphene_matrix_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_matrix_free(m: *mut graphene_matrix_t);
     pub fn graphene_matrix_get_row(
         m: *const graphene_matrix_t,
@@ -679,11 +672,11 @@ extern "C" {
     pub fn graphene_matrix_inverse(
         m: *const graphene_matrix_t,
         res: *mut graphene_matrix_t,
-    ) -> gboolean;
-    pub fn graphene_matrix_is_2d(m: *const graphene_matrix_t) -> gboolean;
-    pub fn graphene_matrix_is_backface_visible(m: *const graphene_matrix_t) -> gboolean;
-    pub fn graphene_matrix_is_identity(m: *const graphene_matrix_t) -> gboolean;
-    pub fn graphene_matrix_is_singular(m: *const graphene_matrix_t) -> gboolean;
+    ) -> bool;
+    pub fn graphene_matrix_is_2d(m: *const graphene_matrix_t) -> bool;
+    pub fn graphene_matrix_is_backface_visible(m: *const graphene_matrix_t) -> bool;
+    pub fn graphene_matrix_is_identity(m: *const graphene_matrix_t) -> bool;
+    pub fn graphene_matrix_is_singular(m: *const graphene_matrix_t) -> bool;
     pub fn graphene_matrix_multiply(
         a: *const graphene_matrix_t,
         b: *const graphene_matrix_t,
@@ -693,7 +686,7 @@ extern "C" {
         a: *const graphene_matrix_t,
         b: *const graphene_matrix_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_matrix_normalize(m: *const graphene_matrix_t, res: *mut graphene_matrix_t);
     pub fn graphene_matrix_perspective(
         m: *const graphene_matrix_t,
@@ -746,7 +739,7 @@ extern "C" {
         yy: *mut c_double,
         x_0: *mut c_double,
         y_0: *mut c_double,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_matrix_to_float(m: *const graphene_matrix_t, v: *mut [c_float; 16]);
     pub fn graphene_matrix_transform_bounds(
         m: *const graphene_matrix_t,
@@ -812,7 +805,7 @@ extern "C" {
         p: *const graphene_point_t,
         bounds: *const graphene_rect_t,
         res: *mut graphene_point_t,
-    ) -> gboolean;
+    ) -> bool;
 
     //=========================================================================
     // graphene_plane_t
@@ -823,8 +816,7 @@ extern "C" {
         p: *const graphene_plane_t,
         point: *const graphene_point3d_t,
     ) -> c_float;
-    pub fn graphene_plane_equal(a: *const graphene_plane_t, b: *const graphene_plane_t)
-        -> gboolean;
+    pub fn graphene_plane_equal(a: *const graphene_plane_t, b: *const graphene_plane_t) -> bool;
     pub fn graphene_plane_free(p: *mut graphene_plane_t);
     pub fn graphene_plane_get_constant(p: *const graphene_plane_t) -> c_float;
     pub fn graphene_plane_get_normal(p: *const graphene_plane_t, normal: *mut graphene_vec3_t);
@@ -883,7 +875,7 @@ extern "C" {
     pub fn graphene_point3d_equal(
         a: *const graphene_point3d_t,
         b: *const graphene_point3d_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_point3d_free(p: *mut graphene_point3d_t);
     pub fn graphene_point3d_init(
         p: *mut graphene_point3d_t,
@@ -910,7 +902,7 @@ extern "C" {
         a: *const graphene_point3d_t,
         b: *const graphene_point3d_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_point3d_normalize(p: *const graphene_point3d_t, res: *mut graphene_point3d_t);
     pub fn graphene_point3d_normalize_viewport(
         p: *const graphene_point3d_t,
@@ -938,8 +930,7 @@ extern "C" {
         d_x: *mut c_float,
         d_y: *mut c_float,
     ) -> c_float;
-    pub fn graphene_point_equal(a: *const graphene_point_t, b: *const graphene_point_t)
-        -> gboolean;
+    pub fn graphene_point_equal(a: *const graphene_point_t, b: *const graphene_point_t) -> bool;
     pub fn graphene_point_free(p: *mut graphene_point_t);
     pub fn graphene_point_init(
         p: *mut graphene_point_t,
@@ -964,7 +955,7 @@ extern "C" {
         a: *const graphene_point_t,
         b: *const graphene_point_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_point_to_vec2(p: *const graphene_point_t, v: *mut graphene_vec2_t);
     pub fn graphene_point_zero() -> *const graphene_point_t;
 
@@ -974,10 +965,7 @@ extern "C" {
     pub fn graphene_quad_get_type() -> GType;
     pub fn graphene_quad_alloc() -> *mut graphene_quad_t;
     pub fn graphene_quad_bounds(q: *const graphene_quad_t, r: *mut graphene_rect_t);
-    pub fn graphene_quad_contains(
-        q: *const graphene_quad_t,
-        p: *const graphene_point_t,
-    ) -> gboolean;
+    pub fn graphene_quad_contains(q: *const graphene_quad_t, p: *const graphene_point_t) -> bool;
     pub fn graphene_quad_free(q: *mut graphene_quad_t);
     pub fn graphene_quad_get_point(
         q: *const graphene_quad_t,
@@ -1016,7 +1004,7 @@ extern "C" {
     pub fn graphene_quaternion_equal(
         a: *const graphene_quaternion_t,
         b: *const graphene_quaternion_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_quaternion_free(q: *mut graphene_quaternion_t);
     pub fn graphene_quaternion_init(
         q: *mut graphene_quaternion_t,
@@ -1113,7 +1101,7 @@ extern "C" {
     //=========================================================================
     pub fn graphene_ray_get_type() -> GType;
     pub fn graphene_ray_alloc() -> *mut graphene_ray_t;
-    pub fn graphene_ray_equal(a: *const graphene_ray_t, b: *const graphene_ray_t) -> gboolean;
+    pub fn graphene_ray_equal(a: *const graphene_ray_t, b: *const graphene_ray_t) -> bool;
     pub fn graphene_ray_free(r: *mut graphene_ray_t);
     pub fn graphene_ray_get_closest_point_to_point(
         r: *const graphene_ray_t,
@@ -1164,18 +1152,15 @@ extern "C" {
         t: *const graphene_triangle_t,
         t_out: *mut c_float,
     ) -> graphene_ray_intersection_kind_t;
-    pub fn graphene_ray_intersects_box(
-        r: *const graphene_ray_t,
-        b: *const graphene_box_t,
-    ) -> gboolean;
+    pub fn graphene_ray_intersects_box(r: *const graphene_ray_t, b: *const graphene_box_t) -> bool;
     pub fn graphene_ray_intersects_sphere(
         r: *const graphene_ray_t,
         s: *const graphene_sphere_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_ray_intersects_triangle(
         r: *const graphene_ray_t,
         t: *const graphene_triangle_t,
-    ) -> gboolean;
+    ) -> bool;
 
     //=========================================================================
     // graphene_rect_t
@@ -1184,12 +1169,12 @@ extern "C" {
     pub fn graphene_rect_contains_point(
         r: *const graphene_rect_t,
         p: *const graphene_point_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_rect_contains_rect(
         a: *const graphene_rect_t,
         b: *const graphene_rect_t,
-    ) -> gboolean;
-    pub fn graphene_rect_equal(a: *const graphene_rect_t, b: *const graphene_rect_t) -> gboolean;
+    ) -> bool;
+    pub fn graphene_rect_equal(a: *const graphene_rect_t, b: *const graphene_rect_t) -> bool;
     pub fn graphene_rect_expand(
         r: *const graphene_rect_t,
         p: *const graphene_point_t,
@@ -1242,7 +1227,7 @@ extern "C" {
         a: *const graphene_rect_t,
         b: *const graphene_rect_t,
         res: *mut graphene_rect_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_rect_normalize(r: *mut graphene_rect_t) -> *mut graphene_rect_t;
     pub fn graphene_rect_normalize_r(r: *const graphene_rect_t, res: *mut graphene_rect_t);
     pub fn graphene_rect_offset(
@@ -1278,7 +1263,7 @@ extern "C" {
     //=========================================================================
     pub fn graphene_size_get_type() -> GType;
     pub fn graphene_size_alloc() -> *mut graphene_size_t;
-    pub fn graphene_size_equal(a: *const graphene_size_t, b: *const graphene_size_t) -> gboolean;
+    pub fn graphene_size_equal(a: *const graphene_size_t, b: *const graphene_size_t) -> bool;
     pub fn graphene_size_free(s: *mut graphene_size_t);
     pub fn graphene_size_init(
         s: *mut graphene_size_t,
@@ -1310,15 +1295,12 @@ extern "C" {
     pub fn graphene_sphere_contains_point(
         s: *const graphene_sphere_t,
         point: *const graphene_point3d_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_sphere_distance(
         s: *const graphene_sphere_t,
         point: *const graphene_point3d_t,
     ) -> c_float;
-    pub fn graphene_sphere_equal(
-        a: *const graphene_sphere_t,
-        b: *const graphene_sphere_t,
-    ) -> gboolean;
+    pub fn graphene_sphere_equal(a: *const graphene_sphere_t, b: *const graphene_sphere_t) -> bool;
     pub fn graphene_sphere_free(s: *mut graphene_sphere_t);
     pub fn graphene_sphere_get_bounding_box(s: *const graphene_sphere_t, box_: *mut graphene_box_t);
     pub fn graphene_sphere_get_center(s: *const graphene_sphere_t, center: *mut graphene_point3d_t);
@@ -1340,7 +1322,7 @@ extern "C" {
         vectors: *const graphene_vec3_t,
         center: *const graphene_point3d_t,
     ) -> *mut graphene_sphere_t;
-    pub fn graphene_sphere_is_empty(s: *const graphene_sphere_t) -> gboolean;
+    pub fn graphene_sphere_is_empty(s: *const graphene_sphere_t) -> bool;
     pub fn graphene_sphere_translate(
         s: *const graphene_sphere_t,
         point: *const graphene_point3d_t,
@@ -1355,18 +1337,18 @@ extern "C" {
     pub fn graphene_triangle_contains_point(
         t: *const graphene_triangle_t,
         p: *const graphene_point3d_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_triangle_equal(
         a: *const graphene_triangle_t,
         b: *const graphene_triangle_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_triangle_free(t: *mut graphene_triangle_t);
     pub fn graphene_triangle_get_area(t: *const graphene_triangle_t) -> c_float;
     pub fn graphene_triangle_get_barycoords(
         t: *const graphene_triangle_t,
         p: *const graphene_point3d_t,
         res: *mut graphene_vec2_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_triangle_get_bounding_box(
         t: *const graphene_triangle_t,
         res: *mut graphene_box_t,
@@ -1390,7 +1372,7 @@ extern "C" {
         uv_b: *const graphene_vec2_t,
         uv_c: *const graphene_vec2_t,
         res: *mut graphene_vec2_t,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_triangle_get_vertices(
         t: *const graphene_triangle_t,
         a: *mut graphene_vec3_t,
@@ -1432,7 +1414,7 @@ extern "C" {
         res: *mut graphene_vec2_t,
     );
     pub fn graphene_vec2_dot(a: *const graphene_vec2_t, b: *const graphene_vec2_t) -> c_float;
-    pub fn graphene_vec2_equal(v1: *const graphene_vec2_t, v2: *const graphene_vec2_t) -> gboolean;
+    pub fn graphene_vec2_equal(v1: *const graphene_vec2_t, v2: *const graphene_vec2_t) -> bool;
     pub fn graphene_vec2_free(v: *mut graphene_vec2_t);
     pub fn graphene_vec2_get_x(v: *const graphene_vec2_t) -> c_float;
     pub fn graphene_vec2_get_y(v: *const graphene_vec2_t) -> c_float;
@@ -1475,7 +1457,7 @@ extern "C" {
         v1: *const graphene_vec2_t,
         v2: *const graphene_vec2_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_vec2_negate(v: *const graphene_vec2_t, res: *mut graphene_vec2_t);
     pub fn graphene_vec2_normalize(v: *const graphene_vec2_t, res: *mut graphene_vec2_t);
     pub fn graphene_vec2_scale(
@@ -1515,7 +1497,7 @@ extern "C" {
         res: *mut graphene_vec3_t,
     );
     pub fn graphene_vec3_dot(a: *const graphene_vec3_t, b: *const graphene_vec3_t) -> c_float;
-    pub fn graphene_vec3_equal(v1: *const graphene_vec3_t, v2: *const graphene_vec3_t) -> gboolean;
+    pub fn graphene_vec3_equal(v1: *const graphene_vec3_t, v2: *const graphene_vec3_t) -> bool;
     pub fn graphene_vec3_free(v: *mut graphene_vec3_t);
     pub fn graphene_vec3_get_x(v: *const graphene_vec3_t) -> c_float;
     pub fn graphene_vec3_get_xy(v: *const graphene_vec3_t, res: *mut graphene_vec2_t);
@@ -1565,7 +1547,7 @@ extern "C" {
         v1: *const graphene_vec3_t,
         v2: *const graphene_vec3_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_vec3_negate(v: *const graphene_vec3_t, res: *mut graphene_vec3_t);
     pub fn graphene_vec3_normalize(v: *const graphene_vec3_t, res: *mut graphene_vec3_t);
     pub fn graphene_vec3_scale(
@@ -1601,7 +1583,7 @@ extern "C" {
         res: *mut graphene_vec4_t,
     );
     pub fn graphene_vec4_dot(a: *const graphene_vec4_t, b: *const graphene_vec4_t) -> c_float;
-    pub fn graphene_vec4_equal(v1: *const graphene_vec4_t, v2: *const graphene_vec4_t) -> gboolean;
+    pub fn graphene_vec4_equal(v1: *const graphene_vec4_t, v2: *const graphene_vec4_t) -> bool;
     pub fn graphene_vec4_free(v: *mut graphene_vec4_t);
     pub fn graphene_vec4_get_w(v: *const graphene_vec4_t) -> c_float;
     pub fn graphene_vec4_get_x(v: *const graphene_vec4_t) -> c_float;
@@ -1661,7 +1643,7 @@ extern "C" {
         v1: *const graphene_vec4_t,
         v2: *const graphene_vec4_t,
         epsilon: c_float,
-    ) -> gboolean;
+    ) -> bool;
     pub fn graphene_vec4_negate(v: *const graphene_vec4_t, res: *mut graphene_vec4_t);
     pub fn graphene_vec4_normalize(v: *const graphene_vec4_t, res: *mut graphene_vec4_t);
     pub fn graphene_vec4_scale(
