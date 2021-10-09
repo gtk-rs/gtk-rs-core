@@ -8,9 +8,9 @@ impl Size {
     pub fn new(width: f32, height: f32) -> Size {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_size_alloc();
-            ffi::graphene_size_init(alloc, width, height);
-            from_glib_full(alloc)
+            let mut siz = Size::uninitialized();
+            ffi::graphene_size_init(siz.to_glib_none_mut().0, width, height);
+            siz
         }
     }
 
@@ -19,9 +19,9 @@ impl Size {
     pub fn from_size(src: &Size) -> Size {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_size_alloc();
-            ffi::graphene_size_init_from_size(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut siz = Size::uninitialized();
+            ffi::graphene_size_init_from_size(siz.to_glib_none_mut().0, src.to_glib_none().0);
+            siz
         }
     }
 }

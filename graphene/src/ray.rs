@@ -10,9 +10,13 @@ impl Ray {
     pub fn new(origin: Option<&Point3D>, direction: Option<&Vec3>) -> Ray {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_ray_alloc();
-            ffi::graphene_ray_init(alloc, origin.to_glib_none().0, direction.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut ray = Ray::uninitialized();
+            ffi::graphene_ray_init(
+                ray.to_glib_none_mut().0,
+                origin.to_glib_none().0,
+                direction.to_glib_none().0,
+            );
+            ray
         }
     }
 
@@ -21,9 +25,9 @@ impl Ray {
     pub fn from_ray(src: &Ray) -> Ray {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_ray_alloc();
-            ffi::graphene_ray_init_from_ray(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut ray = Ray::uninitialized();
+            ffi::graphene_ray_init_from_ray(ray.to_glib_none_mut().0, src.to_glib_none().0);
+            ray
         }
     }
 
@@ -32,13 +36,13 @@ impl Ray {
     pub fn from_vec3(origin: Option<&Vec3>, direction: Option<&Vec3>) -> Ray {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_ray_alloc();
+            let mut ray = Ray::uninitialized();
             ffi::graphene_ray_init_from_vec3(
-                alloc,
+                ray.to_glib_none_mut().0,
                 origin.to_glib_none().0,
                 direction.to_glib_none().0,
             );
-            from_glib_full(alloc)
+            ray
         }
     }
 }
