@@ -27,7 +27,7 @@ macro_rules! glib_boxed_inline_wrapper {
         $(#[$attr])*
         #[derive(Copy, Clone)]
         #[repr(transparent)]
-        pub struct $name($ffi_name);
+        pub struct $name(pub(crate) $ffi_name);
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name, $ffi_name,
@@ -77,7 +77,7 @@ macro_rules! glib_boxed_inline_wrapper {
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[repr(transparent)]
-        pub struct $name($ffi_name);
+        pub struct $name(pub(crate) $ffi_name);
 
         impl Clone for $name {
             fn clone(&self) -> $name {

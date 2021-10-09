@@ -111,15 +111,13 @@ impl Task {
 
     pub fn return_value(&self, result: &glib::Value) {
         unsafe extern "C" fn value_free(value: *mut c_void) {
-            glib::gobject_ffi::g_value_unset(value as *mut glib::gobject_ffi::GValue);
-            glib::ffi::g_free(value);
+            let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
         }
+
         unsafe {
-            let value: *mut glib::gobject_ffi::GValue =
-                <&glib::Value>::to_glib_full_from_slice(&[result]);
             ffi::g_task_return_pointer(
                 self.to_glib_none().0,
-                value as *mut c_void,
+                result.to_glib_full() as *mut _,
                 Some(value_free),
             )
         }

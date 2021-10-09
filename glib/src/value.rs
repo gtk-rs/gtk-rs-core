@@ -310,21 +310,58 @@ impl<T: ToValueOptional + StaticType + ?Sized> ToValueOptional for &T {
     }
 }
 
-/// A generic value capable of carrying various types.
-///
-/// Once created the type of the value can't be changed.
-///
-/// Some types (e.g. `String` and objects) support `None` values while others
-/// (e.g. numeric types) don't.
-///
-/// `Value` does not implement the `Send` trait, but [`SendValue`](struct.SendValue.html) can be
-/// used instead.
-///
-/// See the [module documentation](index.html) for more details.
+unsafe fn copy_value(value: *const gobject_ffi::GValue) -> *mut gobject_ffi::GValue {
+    let copy = ffi::g_malloc0(mem::size_of::<gobject_ffi::GValue>()) as *mut gobject_ffi::GValue;
+    copy_into_value(copy, value);
+    copy
+}
+
+unsafe fn free_value(value: *mut gobject_ffi::GValue) {
+    clear_value(value);
+    ffi::g_free(value as *mut _);
+}
+
+unsafe fn init_value(value: *mut gobject_ffi::GValue) {
+    ptr::write(value, mem::zeroed());
+}
+
+unsafe fn copy_into_value(dest: *mut gobject_ffi::GValue, src: *const gobject_ffi::GValue) {
+    gobject_ffi::g_value_init(dest, (*src).g_type);
+    gobject_ffi::g_value_copy(src, dest);
+}
+
+unsafe fn clear_value(value: *mut gobject_ffi::GValue) {
+    // Before GLib 2.48, unsetting a zeroed GValue would give critical warnings
+    // https://bugzilla.gnome.org/show_bug.cgi?id=755766
+    if (*value).g_type != gobject_ffi::G_TYPE_INVALID {
+        gobject_ffi::g_value_unset(value);
+    }
+}
+
 // TODO: Should use impl !Send for Value {} once stable
-#[repr(transparent)]
-#[doc(alias = "GValue")]
-pub struct Value(pub(crate) gobject_ffi::GValue);
+crate::wrapper! {
+    /// A generic value capable of carrying various types.
+    ///
+    /// Once created the type of the value can't be changed.
+    ///
+    /// Some types (e.g. `String` and objects) support `None` values while others
+    /// (e.g. numeric types) don't.
+    ///
+    /// `Value` does not implement the `Send` trait, but [`SendValue`](struct.SendValue.html) can be
+    /// used instead.
+    ///
+    /// See the [module documentation](index.html) for more details.
+    #[doc(alias = "GValue")]
+    pub struct Value(BoxedInline<gobject_ffi::GValue>);
+
+    match fn {
+        copy => |ptr| copy_value(ptr),
+        free => |ptr| free_value(ptr),
+        init => |ptr| init_value(ptr),
+        copy_into => |dest, src| copy_into_value(dest, src),
+        clear => |ptr| clear_value(ptr),
+    }
+}
 
 impl Value {
     /// Creates a new `Value` that is initialized with `type_`
@@ -411,7 +448,7 @@ impl Value {
 
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
-            Ok(SendValue(self))
+            Ok(SendValue(self.0))
         } else {
             Err(self)
         }
@@ -419,26 +456,6 @@ impl Value {
 
     fn content_debug_string(&self) -> GString {
         unsafe { from_glib_full(gobject_ffi::g_strdup_value_contents(self.to_glib_none().0)) }
-    }
-}
-
-impl Clone for Value {
-    fn clone(&self) -> Self {
-        unsafe {
-            let mut ret = Value::from_type(from_glib(self.0.g_type));
-            gobject_ffi::g_value_copy(self.to_glib_none().0, ret.to_glib_none_mut().0);
-            ret
-        }
-    }
-}
-
-impl Drop for Value {
-    fn drop(&mut self) {
-        // Before GLib 2.48, unsetting a zeroed GValue would give critical warnings
-        // https://bugzilla.gnome.org/show_bug.cgi?id=755766
-        if self.type_().is_valid() {
-            unsafe { gobject_ffi::g_value_unset(self.to_glib_none_mut().0) }
-        }
     }
 }
 
@@ -457,13 +474,7 @@ impl<'a, T: ?Sized + ToValue> From<&'a T> for Value {
 
 impl From<SendValue> for Value {
     fn from(value: SendValue) -> Self {
-        value.0
-    }
-}
-
-impl Uninitialized for Value {
-    unsafe fn uninitialized() -> Value {
-        mem::zeroed()
+        Value(value.0)
     }
 }
 
@@ -514,7 +525,7 @@ unsafe impl<'a> FromValue<'a> for &'a Value {
 
 impl ToValue for SendValue {
     fn to_value(&self) -> Value {
-        self.0.clone()
+        unsafe { from_glib_none(self.to_glib_none().0) }
     }
 
     fn value_type(&self) -> Type {
@@ -524,7 +535,7 @@ impl ToValue for SendValue {
 
 impl<'a> ToValue for &'a SendValue {
     fn to_value(&self) -> Value {
-        self.0.clone()
+        unsafe { from_glib_none(self.to_glib_none().0) }
     }
 
     fn value_type(&self) -> Type {
@@ -538,286 +549,38 @@ impl StaticType for BoxedValue {
     }
 }
 
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const gobject_ffi::GValue> for Value {
-    type Storage = &'a Value;
+crate::wrapper! {
+    /// A version of [`Value`](struct.Value.html) for storing `Send` types, that implements Send
+    /// itself.
+    ///
+    /// See the [module documentation](index.html) for more details.
+    #[doc(alias = "GValue")]
+    pub struct SendValue(BoxedInline<gobject_ffi::GValue>);
 
-    fn to_glib_none(&'a self) -> Stash<'a, *const gobject_ffi::GValue, Self> {
-        Stash(&self.0, self)
+    match fn {
+        copy => |ptr| copy_value(ptr),
+        free => |ptr| free_value(ptr),
+        init => |ptr| init_value(ptr),
+        copy_into => |dest, src| copy_into_value(dest, src),
+        clear => |ptr| clear_value(ptr),
     }
 }
-
-#[doc(hidden)]
-impl<'a> ToGlibPtrMut<'a, *mut gobject_ffi::GValue> for Value {
-    type Storage = &'a mut Value;
-
-    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut gobject_ffi::GValue, Self> {
-        StashMut(&mut self.0, self)
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GValue> for &'a [&'a dyn ToValue] {
-    type Storage = ValueArray;
-
-    fn to_glib_none(&'a self) -> Stash<'a, *mut gobject_ffi::GValue, Self> {
-        let mut values: Vec<gobject_ffi::GValue> =
-            self.iter().map(|v| v.to_value().into_raw()).collect();
-        Stash(values.as_mut_ptr(), ValueArray(values))
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *mut gobject_ffi::GValue> for &'a Value {
-    type Storage = &'a [&'a Value];
-
-    fn to_glib_none_from_slice(t: &'a [&'a Value]) -> (*mut gobject_ffi::GValue, &'a [&'a Value]) {
-        (t.as_ptr() as *mut gobject_ffi::GValue, t)
-    }
-
-    fn to_glib_container_from_slice(
-        t: &'a [&'a Value],
-    ) -> (*mut gobject_ffi::GValue, &'a [&'a Value]) {
-        if t.is_empty() {
-            return (ptr::null_mut(), t);
-        }
-
-        unsafe {
-            let res = ffi::g_malloc(mem::size_of::<gobject_ffi::GValue>() * t.len())
-                as *mut gobject_ffi::GValue;
-            ptr::copy_nonoverlapping(t.as_ptr() as *const gobject_ffi::GValue, res, t.len());
-            (res, t)
-        }
-    }
-
-    fn to_glib_full_from_slice(t: &[&'a Value]) -> *mut gobject_ffi::GValue {
-        if t.is_empty() {
-            return ptr::null_mut();
-        }
-
-        unsafe {
-            let res = ffi::g_malloc0(mem::size_of::<gobject_ffi::GValue>() * t.len())
-                as *mut gobject_ffi::GValue;
-            for (i, v) in t.iter().enumerate() {
-                gobject_ffi::g_value_init(res.add(i), v.type_().into_glib());
-                gobject_ffi::g_value_copy(v.to_glib_none().0, res.add(i));
-            }
-            res
-        }
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *const gobject_ffi::GValue> for &'a Value {
-    type Storage = &'a [&'a Value];
-
-    fn to_glib_none_from_slice(
-        t: &'a [&'a Value],
-    ) -> (*const gobject_ffi::GValue, &'a [&'a Value]) {
-        let (ptr, storage) =
-            ToGlibContainerFromSlice::<'a, *mut gobject_ffi::GValue>::to_glib_none_from_slice(t);
-        (ptr as *const _, storage)
-    }
-
-    fn to_glib_container_from_slice(
-        _: &'a [&'a Value],
-    ) -> (*const gobject_ffi::GValue, &'a [&'a Value]) {
-        unimplemented!()
-    }
-
-    fn to_glib_full_from_slice(_: &[&'a Value]) -> *const gobject_ffi::GValue {
-        unimplemented!()
-    }
-}
-
-macro_rules! from_glib {
-    ($name:ident, $wrap:expr) => {
-        impl FromGlibPtrNone<*const gobject_ffi::GValue> for $name {
-            unsafe fn from_glib_none(ptr: *const gobject_ffi::GValue) -> Self {
-                let mut ret = Value::from_type(from_glib((*ptr).g_type));
-                gobject_ffi::g_value_copy(ptr, ret.to_glib_none_mut().0);
-                $wrap(ret)
-            }
-        }
-
-        impl FromGlibPtrNone<*mut gobject_ffi::GValue> for $name {
-            unsafe fn from_glib_none(ptr: *mut gobject_ffi::GValue) -> Self {
-                from_glib_none(ptr as *const _)
-            }
-        }
-
-        impl FromGlibPtrBorrow<*mut gobject_ffi::GValue> for $name {
-            #[inline]
-            unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GValue) -> Borrowed<Self> {
-                Borrowed::new($wrap(ptr::read(ptr as *const Value)))
-            }
-        }
-
-        impl FromGlibPtrBorrow<*const gobject_ffi::GValue> for $name {
-            #[inline]
-            unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GValue) -> Borrowed<Self> {
-                Borrowed::new($wrap(ptr::read(ptr as *const Value)))
-            }
-        }
-
-        impl FromGlibPtrFull<*mut gobject_ffi::GValue> for $name {
-            unsafe fn from_glib_full(ptr: *mut gobject_ffi::GValue) -> Self {
-                let mut ret = Value::uninitialized();
-                ptr::swap(&mut ret.0, ptr);
-                ffi::g_free(ptr as *mut c_void);
-                $wrap(ret)
-            }
-        }
-
-        impl FromGlibContainerAsVec<*mut gobject_ffi::GValue, *mut *mut gobject_ffi::GValue>
-            for $name
-        {
-            unsafe fn from_glib_none_num_as_vec(
-                ptr: *mut *mut gobject_ffi::GValue,
-                num: usize,
-            ) -> Vec<Self> {
-                if num == 0 || ptr.is_null() {
-                    return Vec::new();
-                }
-
-                let mut res = Vec::with_capacity(num);
-                for i in 0..num {
-                    res.push(from_glib_none(ptr::read(ptr.add(i))));
-                }
-                res
-            }
-
-            unsafe fn from_glib_container_num_as_vec(
-                ptr: *mut *mut gobject_ffi::GValue,
-                num: usize,
-            ) -> Vec<Self> {
-                let res = FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
-                ffi::g_free(ptr as *mut _);
-                res
-            }
-
-            unsafe fn from_glib_full_num_as_vec(
-                ptr: *mut *mut gobject_ffi::GValue,
-                num: usize,
-            ) -> Vec<Self> {
-                if num == 0 || ptr.is_null() {
-                    return Vec::new();
-                }
-
-                let mut res = Vec::with_capacity(num);
-                for i in 0..num {
-                    res.push(from_glib_full(ptr::read(ptr.add(i))));
-                }
-                ffi::g_free(ptr as *mut _);
-                res
-            }
-        }
-
-        impl FromGlibPtrArrayContainerAsVec<*mut gobject_ffi::GValue, *mut *mut gobject_ffi::GValue>
-            for $name
-        {
-            unsafe fn from_glib_none_as_vec(ptr: *mut *mut gobject_ffi::GValue) -> Vec<Self> {
-                FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, c_ptr_array_len(ptr))
-            }
-
-            unsafe fn from_glib_container_as_vec(ptr: *mut *mut gobject_ffi::GValue) -> Vec<Self> {
-                FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr, c_ptr_array_len(ptr))
-            }
-
-            unsafe fn from_glib_full_as_vec(ptr: *mut *mut gobject_ffi::GValue) -> Vec<Self> {
-                FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, c_ptr_array_len(ptr))
-            }
-        }
-
-        impl FromGlibContainerAsVec<*mut gobject_ffi::GValue, *const *mut gobject_ffi::GValue>
-            for $name
-        {
-            unsafe fn from_glib_none_num_as_vec(
-                ptr: *const *mut gobject_ffi::GValue,
-                num: usize,
-            ) -> Vec<Self> {
-                FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *mut *mut _, num)
-            }
-
-            unsafe fn from_glib_container_num_as_vec(
-                _: *const *mut gobject_ffi::GValue,
-                _: usize,
-            ) -> Vec<Self> {
-                // Can't free a *const
-                unimplemented!()
-            }
-
-            unsafe fn from_glib_full_num_as_vec(
-                _: *const *mut gobject_ffi::GValue,
-                _: usize,
-            ) -> Vec<Self> {
-                // Can't free a *const
-                unimplemented!()
-            }
-        }
-
-        impl
-            FromGlibPtrArrayContainerAsVec<
-                *mut gobject_ffi::GValue,
-                *const *mut gobject_ffi::GValue,
-            > for $name
-        {
-            unsafe fn from_glib_none_as_vec(ptr: *const *mut gobject_ffi::GValue) -> Vec<Self> {
-                FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(ptr as *mut *mut _)
-            }
-
-            unsafe fn from_glib_container_as_vec(_: *const *mut gobject_ffi::GValue) -> Vec<Self> {
-                // Can't free a *const
-                unimplemented!()
-            }
-
-            unsafe fn from_glib_full_as_vec(_: *const *mut gobject_ffi::GValue) -> Vec<Self> {
-                // Can't free a *const
-                unimplemented!()
-            }
-        }
-    };
-}
-
-from_glib!(Value, |v| v);
-
-#[doc(alias = "GValue")]
-pub struct ValueArray(Vec<gobject_ffi::GValue>);
-
-impl Drop for ValueArray {
-    fn drop(&mut self) {
-        unsafe {
-            for value in &mut self.0 {
-                // Before GLib 2.48, unsetting a zeroed GValue would give critical warnings
-                // https://bugzilla.gnome.org/show_bug.cgi?id=755766
-                if value.g_type != gobject_ffi::G_TYPE_INVALID {
-                    gobject_ffi::g_value_unset(value);
-                }
-            }
-        }
-    }
-}
-
-/// A version of [`Value`](struct.Value.html) for storing `Send` types, that implements Send
-/// itself.
-///
-/// See the [module documentation](index.html) for more details.
-#[derive(Clone)]
-#[repr(transparent)]
-pub struct SendValue(Value);
 
 unsafe impl Send for SendValue {}
 
 impl SendValue {
     /// Consumes `SendValue` and returns the corresponding `GValue`.
     pub fn into_raw(self) -> gobject_ffi::GValue {
-        self.0.into_raw()
+        unsafe {
+            let s = mem::ManuallyDrop::new(self);
+            ptr::read(&s.0)
+        }
     }
 }
 
 impl fmt::Debug for SendValue {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        <Value as fmt::Debug>::fmt(&self.0, f)
+        write!(f, "({}) {}", self.type_(), self.content_debug_string())
     }
 }
 
@@ -825,7 +588,7 @@ impl Deref for SendValue {
     type Target = Value;
 
     fn deref(&self) -> &Value {
-        &self.0
+        unsafe { &*(self as *const SendValue as *const Value) }
     }
 }
 
@@ -833,17 +596,6 @@ impl<'a, T: ?Sized + ToSendValue> From<&'a T> for SendValue {
     #[inline]
     fn from(value: &'a T) -> Self {
         value.to_send_value()
-    }
-}
-
-from_glib!(SendValue, SendValue);
-
-#[doc(hidden)]
-impl<'a> ToGlibPtrMut<'a, *mut gobject_ffi::GValue> for SendValue {
-    type Storage = &'a mut SendValue;
-
-    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut gobject_ffi::GValue, Self> {
-        StashMut(&mut (self.0).0, self)
     }
 }
 
@@ -855,7 +607,7 @@ pub trait ToSendValue: Send + ToValue {
 
 impl<T: Send + ToValue + ?Sized> ToSendValue for T {
     fn to_send_value(&self) -> SendValue {
-        SendValue(self.to_value())
+        SendValue(self.to_value().0)
     }
 }
 
