@@ -35,9 +35,9 @@
 /// things like the class struct to wrap, plus any interfaces that the
 /// class implements.
 ///
-/// ### Boxed
+/// ### Boxed (heap allocated)
 ///
-/// Boxed records with single ownership.
+/// Boxed records with single ownership allocated on the heap.
 ///
 /// With no registered `glib_ffi::GType`:
 ///
@@ -63,6 +63,45 @@
 /// wrapper! {
 ///     /// Text buffer iterator
 ///     pub struct TextIter(Boxed<ffi::GtkTextIter>);
+///
+///     match fn {
+///         copy     => |ptr| ffi::gtk_text_iter_copy(ptr),
+///         free     => |ptr| ffi::gtk_text_iter_free(ptr),
+///         type_ => ||    ffi::gtk_text_iter_get_type(),
+///     }
+/// }
+/// ```
+///
+/// `type_`: `|| -> glib_ffi::GType` (optional) returns the
+/// `glib_ffi::GType` that corresponds to the foreign struct.
+///
+/// ### BoxedInline (inline, stack allocated)
+///
+/// Boxed records with single ownership allocated on the stack or otherwise inline.
+/// With no registered `glib_ffi::GType`:
+///
+/// ```ignore
+/// wrapper! {
+///     /// Text buffer iterator
+///     pub struct TextIter(BoxedInline<ffi::GtkTextIter>);
+///
+///     match fn {
+///         copy => |ptr| ffi::gtk_text_iter_copy(ptr),
+///         free => |ptr| ffi::gtk_text_iter_free(ptr),
+///     }
+/// }
+/// ```
+///
+/// `copy`: `|*const $foreign| -> *mut $foreign` (optional) creates a heap allocated copy of the value.
+///
+/// `free`: `|*mut $foreign|` (optional) frees the value.
+///
+/// With a registered `glib_ffi::GType`:
+///
+/// ```ignore
+/// wrapper! {
+///     /// Text buffer iterator
+///     pub struct TextIter(BoxedInline<ffi::GtkTextIter>);
 ///
 ///     match fn {
 ///         copy     => |ptr| ffi::gtk_text_iter_copy(ptr),
@@ -256,6 +295,44 @@ macro_rules! wrapper {
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr
             $(, @init $init_arg $init_expr, @clear $clear_arg $clear_expr)?
             $(, @type_ $get_type_expr)?
+        );
+    };
+
+    // BoxedInline
+    (
+        $(#[$attr:meta])*
+        pub struct $name:ident(BoxedInline<$ffi_name:ty>);
+
+        match fn {
+            $(
+            copy => |$copy_arg:ident| $copy_expr:expr,
+            free => |$free_arg:ident| $free_expr:expr,
+            )?
+            $(
+            init => |$init_arg:ident| $init_expr:expr,
+            copy_into => |$copy_into_arg_dest:ident, $copy_into_arg_src:ident| $copy_into_expr:expr,
+            clear => |$clear_arg:ident| $clear_expr:expr,
+            )?
+            $(
+            type_ => || $get_type_expr:expr,
+            )?
+        }
+    ) => {
+        $crate::glib_boxed_inline_wrapper!(
+            [$($attr)*] $name, $ffi_name
+            $(, @copy $copy_arg $copy_expr, @free $free_arg $free_expr)?
+            $(, @init $init_arg $init_expr, @copy_into $copy_into_arg_dest $copy_into_arg_src $copy_into_expr, @clear $clear_arg $clear_expr)?
+            $(, @type_ $get_type_expr)?
+        );
+    };
+
+    // BoxedInline
+    (
+        $(#[$attr:meta])*
+        pub struct $name:ident(BoxedInline<$ffi_name:ty>);
+    ) => {
+        $crate::glib_boxed_inline_wrapper!(
+            [$($attr)*] $name, $ffi_name
         );
     };
 
