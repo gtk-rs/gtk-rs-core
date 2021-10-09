@@ -14,39 +14,24 @@ use std::ptr;
 /// Wrapper implementations for Boxed types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr,
-     @type_ $get_type_expr:expr) => {
+    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+     @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
+     $(, @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr)?
+     $(, @type_ $get_type_expr:expr)?) => {
         $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
-                            @init $init_arg $init_expr, @clear $clear_arg $clear_expr);
-        $crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
-                            @init $init_arg $init_expr, @clear $clear_arg $clear_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @type_ $get_type_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr);
-        $crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);
+        $crate::glib_boxed_wrapper!(
+            @memory_manager_impl $name, $ffi_name,
+            @copy $copy_arg $copy_expr, @free $free_arg $free_expr
+            $(, @init $init_arg $init_expr, @clear $clear_arg $clear_expr)?
+        );
+        $($crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
     (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty) => {
         $(#[$attr])*
         #[derive(Clone)]
         pub struct $name($crate::boxed::Boxed<$ffi_name, $name>);
+
         #[doc(hidden)]
         impl $crate::translate::GlibPtrDefault for $name {
             type GlibType = *mut $ffi_name;
@@ -327,7 +312,7 @@ macro_rules! glib_boxed_wrapper {
     };
 
     (@memory_manager_impl $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr,
-         @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
+     @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
         #[doc(hidden)]
         impl $crate::boxed::BoxedMemoryManager<$ffi_name> for $name {
             #[inline]

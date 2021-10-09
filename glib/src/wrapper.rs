@@ -251,10 +251,12 @@ macro_rules! wrapper {
             )?
         }
     ) => {
-        $crate::glib_boxed_wrapper!([$($attr)*] $name, $ffi_name, @copy $copy_arg $copy_expr,
-            @free $free_arg $free_expr
+        $crate::glib_boxed_wrapper!(
+            [$($attr)*] $name, $ffi_name,
+            @copy $copy_arg $copy_expr, @free $free_arg $free_expr
             $(, @init $init_arg $init_expr, @clear $clear_arg $clear_expr)?
-            $(, @type_ $get_type_expr)?);
+            $(, @type_ $get_type_expr)?
+        );
     };
 
     // Shared
@@ -270,9 +272,11 @@ macro_rules! wrapper {
             )?
         }
     ) => {
-        $crate::glib_shared_wrapper!([$($attr)*] $name, $ffi_name, @ref $ref_arg $ref_expr,
-            @unref $unref_arg $unref_expr
-            $(, @type_ $get_type_expr)?);
+        $crate::glib_shared_wrapper!(
+            [$($attr)*] $name, $ffi_name,
+            @ref $ref_arg $ref_expr, @unref $unref_arg $unref_expr
+            $(, @type_ $get_type_expr)?
+        );
     };
 
     // Object, no parents
@@ -284,9 +288,13 @@ macro_rules! wrapper {
             type_ => || $get_type_expr:expr,
         }
     ) => {
-        $crate::glib_object_wrapper!(@object [$($attr)*] $name, $ffi_name,
+        $crate::glib_object_wrapper!(
+            @object [$($attr)*] $name, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
-            @type_ $get_type_expr, @extends [], @implements [$($($implements),+)?]);
+            @type_ $get_type_expr,
+            @extends [],
+            @implements [$($($implements),+)?]
+        );
     };
 
     // Object, parents
@@ -298,9 +306,13 @@ macro_rules! wrapper {
             type_ => || $get_type_expr:expr,
         }
     ) => {
-        $crate::glib_object_wrapper!(@object [$($attr)*] $name, $ffi_name,
+        $crate::glib_object_wrapper!(
+            @object [$($attr)*] $name, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
-            @type_ $get_type_expr, @extends [$($extends),+], @implements [$($($implements),+)?]);
+            @type_ $get_type_expr,
+            @extends [$($extends),+],
+            @implements [$($($implements),+)?]
+        );
     };
 
     // ObjectSubclass, no parents
@@ -308,8 +320,11 @@ macro_rules! wrapper {
         $(#[$attr:meta])*
         pub struct $name:ident(ObjectSubclass<$subclass:ty>) $(@implements $($implements:path),+)?;
     ) => {
-        $crate::glib_object_wrapper!(@object_subclass [$($attr)*] $name, $subclass,
-            @extends [], @implements [$($($implements),+)?]);
+        $crate::glib_object_wrapper!(
+            @object_subclass [$($attr)*] $name, $subclass,
+            @extends [],
+            @implements [$($($implements),+)?]
+        );
     };
 
     // ObjectSubclass, parents
@@ -317,8 +332,11 @@ macro_rules! wrapper {
         $(#[$attr:meta])*
         pub struct $name:ident(ObjectSubclass<$subclass:ty>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
     ) => {
-        $crate::glib_object_wrapper!(@object_subclass [$($attr)*] $name, $subclass,
-            @extends [$($extends),+], @implements [$($($implements),+)?]);
+        $crate::glib_object_wrapper!(
+            @object_subclass [$($attr)*] $name, $subclass,
+            @extends [$($extends),+],
+            @implements [$($($implements),+)?]
+        );
     };
 
     // Interface
@@ -330,9 +348,12 @@ macro_rules! wrapper {
             type_ => || $get_type_expr:expr,
         }
     ) => {
-        $crate::glib_object_wrapper!(@interface [$($attr)*] $name, $ffi_name,
-        $( @ffi_class $ffi_class_name ,)?
-        @type_ $get_type_expr, @requires [$( $($requires),+ )?]);
+        $crate::glib_object_wrapper!(
+            @interface [$($attr)*] $name, $ffi_name,
+            $( @ffi_class $ffi_class_name ,)?
+            @type_ $get_type_expr,
+            @requires [$( $($requires),+ )?]
+        );
     };
 
     // ObjectInterface
@@ -340,8 +361,11 @@ macro_rules! wrapper {
         $(#[$attr:meta])*
         pub struct $name:ident(ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
     ) => {
-        $crate::glib_object_wrapper!(@interface [$($attr)*] $name, std::os::raw::c_void, @ffi_class $iface_name,
+        $crate::glib_object_wrapper!(
+            @interface [$($attr)*] $name, std::os::raw::c_void,
+            @ffi_class $iface_name,
             @type_ $crate::translate::IntoGlib::into_glib(<$iface_name as $crate::subclass::interface::ObjectInterfaceType>::type_()),
-            @requires [$( $($requires),+ )?]);
+            @requires [$( $($requires),+ )?]
+        );
     };
 }
