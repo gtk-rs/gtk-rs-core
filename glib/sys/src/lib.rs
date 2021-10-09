@@ -1229,16 +1229,17 @@ pub struct _GData(c_void);
 pub type GData = *mut _GData;
 
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct GDate {
     pub julian_days: c_uint,
-    _truncated_record_marker: c_void,
-    // field julian has incomplete type
+    pub flags_dmy: c_uint,
 }
 
 impl ::std::fmt::Debug for GDate {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GDate @ {:p}", self))
             .field("julian_days", &self.julian_days)
+            .field("flags_dmy", &self.flags_dmy)
             .finish()
     }
 }

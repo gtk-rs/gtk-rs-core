@@ -7,14 +7,12 @@ use crate::Point3D;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Sphere(Boxed<ffi::graphene_sphere_t>);
+    #[derive(Debug)]
+    pub struct Sphere(BoxedInline<ffi::graphene_sphere_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_sphere_get_type(), ptr as *mut _) as *mut ffi::graphene_sphere_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_sphere_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_sphere_get_type(),
     }
 }
@@ -61,13 +59,6 @@ impl Sphere {
     #[doc(alias = "get_radius")]
     pub fn radius(&self) -> f32 {
         unsafe { ffi::graphene_sphere_get_radius(self.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_sphere_init")]
-    pub fn init(&mut self, center: Option<&Point3D>, radius: f32) {
-        unsafe {
-            ffi::graphene_sphere_init(self.to_glib_none_mut().0, center.to_glib_none().0, radius);
-        }
     }
 
     #[doc(alias = "graphene_sphere_is_empty")]

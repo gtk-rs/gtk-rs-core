@@ -10,14 +10,12 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Triangle(Boxed<ffi::graphene_triangle_t>);
+    #[derive(Debug)]
+    pub struct Triangle(BoxedInline<ffi::graphene_triangle_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_triangle_get_type(), ptr as *mut _) as *mut ffi::graphene_triangle_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_triangle_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_triangle_get_type(),
     }
 }
@@ -152,40 +150,6 @@ impl Triangle {
                 c.to_glib_none_mut().0,
             );
             (a, b, c)
-        }
-    }
-
-    //#[doc(alias = "graphene_triangle_init_from_float")]
-    //pub fn init_from_float(&mut self, a: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 3, b: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 3, c: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 3) -> Option<Triangle> {
-    //    unsafe { TODO: call ffi:graphene_triangle_init_from_float() }
-    //}
-
-    #[doc(alias = "graphene_triangle_init_from_point3d")]
-    pub fn init_from_point3d(
-        &mut self,
-        a: Option<&Point3D>,
-        b: Option<&Point3D>,
-        c: Option<&Point3D>,
-    ) {
-        unsafe {
-            ffi::graphene_triangle_init_from_point3d(
-                self.to_glib_none_mut().0,
-                a.to_glib_none().0,
-                b.to_glib_none().0,
-                c.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_triangle_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, a: Option<&Vec3>, b: Option<&Vec3>, c: Option<&Vec3>) {
-        unsafe {
-            ffi::graphene_triangle_init_from_vec3(
-                self.to_glib_none_mut().0,
-                a.to_glib_none().0,
-                b.to_glib_none().0,
-                c.to_glib_none().0,
-            );
         }
     }
 }

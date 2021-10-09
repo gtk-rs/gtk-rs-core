@@ -2,7 +2,6 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Euler;
 use crate::Matrix;
 use crate::Vec3;
 use crate::Vec4;
@@ -10,14 +9,12 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Quaternion(Boxed<ffi::graphene_quaternion_t>);
+    #[derive(Debug)]
+    pub struct Quaternion(BoxedInline<ffi::graphene_quaternion_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_quaternion_get_type(), ptr as *mut _) as *mut ffi::graphene_quaternion_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_quaternion_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_quaternion_get_type(),
     }
 }
@@ -44,92 +41,6 @@ impl Quaternion {
     #[doc(alias = "graphene_quaternion_equal")]
     fn equal(&self, b: &Quaternion) -> bool {
         unsafe { ffi::graphene_quaternion_equal(self.to_glib_none().0, b.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_quaternion_init")]
-    pub fn init(&mut self, x: f32, y: f32, z: f32, w: f32) {
-        unsafe {
-            ffi::graphene_quaternion_init(self.to_glib_none_mut().0, x, y, z, w);
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_angle_vec3")]
-    pub fn init_from_angle_vec3(&mut self, angle: f32, axis: &Vec3) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_angle_vec3(
-                self.to_glib_none_mut().0,
-                angle,
-                axis.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_angles")]
-    pub fn init_from_angles(&mut self, deg_x: f32, deg_y: f32, deg_z: f32) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_angles(
-                self.to_glib_none_mut().0,
-                deg_x,
-                deg_y,
-                deg_z,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_euler")]
-    pub fn init_from_euler(&mut self, e: &Euler) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_euler(self.to_glib_none_mut().0, e.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_matrix")]
-    pub fn init_from_matrix(&mut self, m: &Matrix) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_matrix(
-                self.to_glib_none_mut().0,
-                m.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_quaternion")]
-    pub fn init_from_quaternion(&mut self, src: &Quaternion) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_quaternion(
-                self.to_glib_none_mut().0,
-                src.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_radians")]
-    pub fn init_from_radians(&mut self, rad_x: f32, rad_y: f32, rad_z: f32) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_radians(
-                self.to_glib_none_mut().0,
-                rad_x,
-                rad_y,
-                rad_z,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_from_vec4")]
-    pub fn init_from_vec4(&mut self, src: &Vec4) {
-        unsafe {
-            ffi::graphene_quaternion_init_from_vec4(
-                self.to_glib_none_mut().0,
-                src.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_quaternion_init_identity")]
-    pub fn init_identity(&mut self) {
-        unsafe {
-            ffi::graphene_quaternion_init_identity(self.to_glib_none_mut().0);
-        }
     }
 
     #[doc(alias = "graphene_quaternion_invert")]

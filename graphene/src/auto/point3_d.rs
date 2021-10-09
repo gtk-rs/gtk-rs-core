@@ -7,14 +7,12 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Point3D(Boxed<ffi::graphene_point3d_t>);
+    #[derive(Debug)]
+    pub struct Point3D(BoxedInline<ffi::graphene_point3d_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_point3d_get_type(), ptr as *mut _) as *mut ffi::graphene_point3d_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_point3d_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_point3d_get_type(),
     }
 }
@@ -54,27 +52,6 @@ impl Point3D {
     #[doc(alias = "graphene_point3d_equal")]
     fn equal(&self, b: &Point3D) -> bool {
         unsafe { ffi::graphene_point3d_equal(self.to_glib_none().0, b.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_point3d_init")]
-    pub fn init(&mut self, x: f32, y: f32, z: f32) {
-        unsafe {
-            ffi::graphene_point3d_init(self.to_glib_none_mut().0, x, y, z);
-        }
-    }
-
-    #[doc(alias = "graphene_point3d_init_from_point")]
-    pub fn init_from_point(&mut self, src: &Point3D) {
-        unsafe {
-            ffi::graphene_point3d_init_from_point(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_point3d_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, v: &Vec3) {
-        unsafe {
-            ffi::graphene_point3d_init_from_vec3(self.to_glib_none_mut().0, v.to_glib_none().0);
-        }
     }
 
     #[doc(alias = "graphene_point3d_interpolate")]

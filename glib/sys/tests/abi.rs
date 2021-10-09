@@ -260,6 +260,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GDate",
+        Layout {
+            size: size_of::<GDate>(),
+            alignment: align_of::<GDate>(),
+        },
+    ),
+    (
         "GDateDMY",
         Layout {
             size: size_of::<GDateDMY>(),

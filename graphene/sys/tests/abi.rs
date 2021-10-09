@@ -2,9 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use graphene_sys::*;
 use std::env;
 use std::error::Error;
 use std::ffi::OsString;
+use std::mem::{align_of, size_of};
 use std::path::Path;
 use std::process::Command;
 use std::str;
@@ -207,7 +209,155 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
     Ok(String::from_utf8(output.stdout)?)
 }
 
-const RUST_LAYOUTS: &[(&str, Layout)] = &[];
+const RUST_LAYOUTS: &[(&str, Layout)] = &[
+    (
+        "graphene_box_t",
+        Layout {
+            size: size_of::<graphene_box_t>(),
+            alignment: align_of::<graphene_box_t>(),
+        },
+    ),
+    (
+        "graphene_euler_order_t",
+        Layout {
+            size: size_of::<graphene_euler_order_t>(),
+            alignment: align_of::<graphene_euler_order_t>(),
+        },
+    ),
+    (
+        "graphene_euler_t",
+        Layout {
+            size: size_of::<graphene_euler_t>(),
+            alignment: align_of::<graphene_euler_t>(),
+        },
+    ),
+    (
+        "graphene_frustum_t",
+        Layout {
+            size: size_of::<graphene_frustum_t>(),
+            alignment: align_of::<graphene_frustum_t>(),
+        },
+    ),
+    (
+        "graphene_matrix_t",
+        Layout {
+            size: size_of::<graphene_matrix_t>(),
+            alignment: align_of::<graphene_matrix_t>(),
+        },
+    ),
+    (
+        "graphene_plane_t",
+        Layout {
+            size: size_of::<graphene_plane_t>(),
+            alignment: align_of::<graphene_plane_t>(),
+        },
+    ),
+    (
+        "graphene_point3d_t",
+        Layout {
+            size: size_of::<graphene_point3d_t>(),
+            alignment: align_of::<graphene_point3d_t>(),
+        },
+    ),
+    (
+        "graphene_point_t",
+        Layout {
+            size: size_of::<graphene_point_t>(),
+            alignment: align_of::<graphene_point_t>(),
+        },
+    ),
+    (
+        "graphene_quad_t",
+        Layout {
+            size: size_of::<graphene_quad_t>(),
+            alignment: align_of::<graphene_quad_t>(),
+        },
+    ),
+    (
+        "graphene_quaternion_t",
+        Layout {
+            size: size_of::<graphene_quaternion_t>(),
+            alignment: align_of::<graphene_quaternion_t>(),
+        },
+    ),
+    (
+        "graphene_ray_intersection_kind_t",
+        Layout {
+            size: size_of::<graphene_ray_intersection_kind_t>(),
+            alignment: align_of::<graphene_ray_intersection_kind_t>(),
+        },
+    ),
+    (
+        "graphene_ray_t",
+        Layout {
+            size: size_of::<graphene_ray_t>(),
+            alignment: align_of::<graphene_ray_t>(),
+        },
+    ),
+    (
+        "graphene_rect_t",
+        Layout {
+            size: size_of::<graphene_rect_t>(),
+            alignment: align_of::<graphene_rect_t>(),
+        },
+    ),
+    (
+        "graphene_simd4f_t",
+        Layout {
+            size: size_of::<graphene_simd4f_t>(),
+            alignment: align_of::<graphene_simd4f_t>(),
+        },
+    ),
+    (
+        "graphene_simd4x4f_t",
+        Layout {
+            size: size_of::<graphene_simd4x4f_t>(),
+            alignment: align_of::<graphene_simd4x4f_t>(),
+        },
+    ),
+    (
+        "graphene_size_t",
+        Layout {
+            size: size_of::<graphene_size_t>(),
+            alignment: align_of::<graphene_size_t>(),
+        },
+    ),
+    (
+        "graphene_sphere_t",
+        Layout {
+            size: size_of::<graphene_sphere_t>(),
+            alignment: align_of::<graphene_sphere_t>(),
+        },
+    ),
+    (
+        "graphene_triangle_t",
+        Layout {
+            size: size_of::<graphene_triangle_t>(),
+            alignment: align_of::<graphene_triangle_t>(),
+        },
+    ),
+    (
+        "graphene_vec2_t",
+        Layout {
+            size: size_of::<graphene_vec2_t>(),
+            alignment: align_of::<graphene_vec2_t>(),
+        },
+    ),
+    (
+        "graphene_vec3_t",
+        Layout {
+            size: size_of::<graphene_vec3_t>(),
+            alignment: align_of::<graphene_vec3_t>(),
+        },
+    ),
+    (
+        "graphene_vec4_t",
+        Layout {
+            size: size_of::<graphene_vec4_t>(),
+            alignment: align_of::<graphene_vec4_t>(),
+        },
+    ),
+];
 
 const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) GRAPHENE_EULER_ORDER_DEFAULT", "-1"),
