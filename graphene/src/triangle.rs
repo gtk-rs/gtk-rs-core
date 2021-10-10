@@ -6,6 +6,22 @@ use crate::Vec3;
 use glib::translate::*;
 
 impl Triangle {
+    #[doc(alias = "graphene_triangle_init_from_float")]
+    #[doc(alias = "new_from_float")]
+    pub fn from_float(a: [f32; 3], b: [f32; 3], c: [f32; 3]) -> Triangle {
+        assert_initialized_main_thread!();
+        unsafe {
+            let mut tri = Triangle::uninitialized();
+            ffi::graphene_triangle_init_from_float(
+                tri.to_glib_none_mut().0,
+                a.as_ptr() as *const _,
+                b.as_ptr() as *const _,
+                c.as_ptr() as *const _,
+            );
+            tri
+        }
+    }
+
     #[doc(alias = "graphene_triangle_init_from_point3d")]
     #[doc(alias = "new_from_point3d")]
     pub fn from_point3d(a: Option<&Point3D>, b: Option<&Point3D>, c: Option<&Point3D>) -> Triangle {

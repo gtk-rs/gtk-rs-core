@@ -59,6 +59,22 @@ impl Euler {
         }
     }
 
+    #[doc(alias = "graphene_euler_init_from_radians")]
+    #[doc(alias = "new_from_radians")]
+    pub fn from_radians(x: f32, y: f32, z: f32, order: EulerOrder) -> Euler {
+        unsafe {
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_radians(
+                eul.to_glib_none_mut().0,
+                x,
+                y,
+                z,
+                order.into_glib(),
+            );
+            eul
+        }
+    }
+
     #[doc(alias = "graphene_euler_init_from_vec3")]
     #[doc(alias = "new_from_vec3")]
     pub fn from_vec3(v: Option<&Vec3>, order: EulerOrder) -> Euler {
