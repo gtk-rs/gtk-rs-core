@@ -282,10 +282,6 @@ macro_rules! wrapper {
             copy => |$copy_arg:ident| $copy_expr:expr,
             free => |$free_arg:ident| $free_expr:expr,
             $(
-            init => |$init_arg:ident| $init_expr:expr,
-            clear => |$clear_arg:ident| $clear_expr:expr,
-            )?
-            $(
             type_ => || $get_type_expr:expr,
             )?
         }
@@ -293,7 +289,6 @@ macro_rules! wrapper {
         $crate::glib_boxed_wrapper!(
             [$($attr)*] $name, $ffi_name,
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr
-            $(, @init $init_arg $init_expr, @clear $clear_arg $clear_expr)?
             $(, @type_ $get_type_expr)?
         );
     };
