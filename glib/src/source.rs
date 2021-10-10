@@ -18,7 +18,7 @@ use crate::Source;
 
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
 ///
-/// This type does not implement `Clone` to prevent calling [`source_remove()`]
+/// This type does not implement `Clone` to prevent calling [`SourceId::remove`]
 /// multiple times on the same source.
 #[derive(Debug, Eq, PartialEq)]
 pub struct SourceId(NonZeroU32);
@@ -27,6 +27,20 @@ impl SourceId {
     /// Returns the internal source ID.
     pub unsafe fn as_raw(&self) -> u32 {
         self.0.get()
+    }
+
+    /// Removes the source with the given id `source_id` from the default main context.
+    ///
+    /// It is a programmer error to attempt to remove a non-existent source.
+    #[doc(alias = "g_source_remove")]
+    pub fn remove(self) {
+        unsafe {
+            result_from_gboolean!(
+                ffi::g_source_remove(self.as_raw()),
+                "Failed to remove source"
+            )
+            .unwrap()
+        }
     }
 }
 
@@ -692,21 +706,6 @@ where
     }
 }
 
-/// Removes the source with the given id `source_id` from the default main context.
-///
-/// It is a programmer error to attempt to remove a non-existent source.
-/// Note: source id are reused.
-///
-/// For historical reasons, the native function always returns true, so we
-/// ignore it here.
-#[allow(clippy::needless_pass_by_value)]
-#[doc(alias = "g_source_remove")]
-pub fn source_remove(source_id: SourceId) {
-    unsafe {
-        ffi::g_source_remove(source_id.as_raw());
-    }
-}
-
 /// The priority of sources
 ///
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -954,16 +953,6 @@ impl Source {
                 self.to_glib_none().0,
                 context.to_glib_none().0,
             ))
-        }
-    }
-
-    #[doc(alias = "g_source_remove")]
-    pub fn remove(tag: SourceId) -> Result<(), crate::BoolError> {
-        unsafe {
-            result_from_gboolean!(
-                ffi::g_source_remove(tag.as_raw()),
-                "Failed to remove source"
-            )
         }
     }
 }
