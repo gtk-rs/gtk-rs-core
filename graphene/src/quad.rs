@@ -52,4 +52,11 @@ impl Quad {
             quad
         }
     }
+
+    #[doc(alias = "graphene_quad_get_point")]
+    #[doc(alias = "get_point")]
+    pub fn point(&self, index_: u32) -> Point {
+        assert!(index_ < 4);
+        unsafe { from_glib_none(ffi::graphene_quad_get_point(self.to_glib_none().0, index_)) }
+    }
 }
