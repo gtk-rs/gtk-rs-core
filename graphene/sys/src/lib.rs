@@ -68,7 +68,6 @@ pub const GRAPHENE_VEC4_LEN: c_int = 4;
 
 // Records
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_box_t {
     pub min: graphene_vec3_t,
@@ -83,7 +82,6 @@ impl ::std::fmt::Debug for graphene_box_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_euler_t {
     pub angles: graphene_vec3_t,
@@ -98,7 +96,6 @@ impl ::std::fmt::Debug for graphene_euler_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_frustum_t {
     pub planes: [graphene_plane_t; 6],
@@ -126,7 +123,6 @@ impl ::std::fmt::Debug for graphene_matrix_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_plane_t {
     pub normal: graphene_vec3_t,
@@ -204,7 +200,6 @@ impl ::std::fmt::Debug for graphene_quaternion_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_ray_t {
     pub origin: graphene_vec3_t,
@@ -252,6 +247,7 @@ impl ::std::fmt::Debug for graphene_simd4f_t {
 }
 
 #[repr(C)]
+#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_simd4x4f_t {
     pub x: graphene_simd4f_t,
@@ -284,7 +280,6 @@ impl ::std::fmt::Debug for graphene_size_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_sphere_t {
     pub center: graphene_vec3_t,
@@ -299,7 +294,6 @@ impl ::std::fmt::Debug for graphene_sphere_t {
 }
 
 #[repr(C)]
-#[repr(align(16))]
 #[derive(Copy, Clone)]
 pub struct graphene_triangle_t {
     pub a: graphene_vec3_t,

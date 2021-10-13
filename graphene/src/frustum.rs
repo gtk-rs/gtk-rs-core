@@ -27,9 +27,9 @@ impl Frustum {
     pub fn new(p0: &Plane, p1: &Plane, p2: &Plane, p3: &Plane, p4: &Plane, p5: &Plane) -> Frustum {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_frustum_alloc();
+            let mut fru = Frustum::uninitialized();
             ffi::graphene_frustum_init(
-                alloc,
+                fru.to_glib_none_mut().0,
                 p0.to_glib_none().0,
                 p1.to_glib_none().0,
                 p2.to_glib_none().0,
@@ -37,7 +37,7 @@ impl Frustum {
                 p4.to_glib_none().0,
                 p5.to_glib_none().0,
             );
-            from_glib_full(alloc)
+            fru
         }
     }
 
@@ -46,9 +46,9 @@ impl Frustum {
     pub fn from_frustum(src: &Frustum) -> Frustum {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_frustum_alloc();
-            ffi::graphene_frustum_init_from_frustum(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut fru = Frustum::uninitialized();
+            ffi::graphene_frustum_init_from_frustum(fru.to_glib_none_mut().0, src.to_glib_none().0);
+            fru
         }
     }
 
@@ -57,9 +57,12 @@ impl Frustum {
     pub fn from_matrix(matrix: &Matrix) -> Frustum {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_frustum_alloc();
-            ffi::graphene_frustum_init_from_matrix(alloc, matrix.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut fru = Frustum::uninitialized();
+            ffi::graphene_frustum_init_from_matrix(
+                fru.to_glib_none_mut().0,
+                matrix.to_glib_none().0,
+            );
+            fru
         }
     }
 }

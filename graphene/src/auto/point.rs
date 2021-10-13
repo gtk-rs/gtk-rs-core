@@ -7,14 +7,12 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Point(Boxed<ffi::graphene_point_t>);
+    #[derive(Debug)]
+    pub struct Point(BoxedInline<ffi::graphene_point_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_point_get_type(), ptr as *mut _) as *mut ffi::graphene_point_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_point_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_point_get_type(),
     }
 }
@@ -40,27 +38,6 @@ impl Point {
     #[doc(alias = "graphene_point_equal")]
     fn equal(&self, b: &Point) -> bool {
         unsafe { ffi::graphene_point_equal(self.to_glib_none().0, b.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_point_init")]
-    pub fn init(&mut self, x: f32, y: f32) {
-        unsafe {
-            ffi::graphene_point_init(self.to_glib_none_mut().0, x, y);
-        }
-    }
-
-    #[doc(alias = "graphene_point_init_from_point")]
-    pub fn init_from_point(&mut self, src: &Point) {
-        unsafe {
-            ffi::graphene_point_init_from_point(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_point_init_from_vec2")]
-    pub fn init_from_vec2(&mut self, src: &Vec2) {
-        unsafe {
-            ffi::graphene_point_init_from_vec2(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
     }
 
     #[doc(alias = "graphene_point_interpolate")]

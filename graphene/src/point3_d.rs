@@ -9,9 +9,9 @@ impl Point3D {
     pub fn new(x: f32, y: f32, z: f32) -> Point3D {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_point3d_alloc();
-            ffi::graphene_point3d_init(alloc, x, y, z);
-            from_glib_full(alloc)
+            let mut p = Point3D::uninitialized();
+            ffi::graphene_point3d_init(p.to_glib_none_mut().0, x, y, z);
+            p
         }
     }
 
@@ -20,9 +20,9 @@ impl Point3D {
     pub fn from_point(src: &Point3D) -> Point3D {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_point3d_alloc();
-            ffi::graphene_point3d_init_from_point(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut p = Point3D::uninitialized();
+            ffi::graphene_point3d_init_from_point(p.to_glib_none_mut().0, src.to_glib_none().0);
+            p
         }
     }
 
@@ -31,9 +31,9 @@ impl Point3D {
     pub fn from_vec3(v: &Vec3) -> Point3D {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_point3d_alloc();
-            ffi::graphene_point3d_init_from_vec3(alloc, v.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut p = Point3D::uninitialized();
+            ffi::graphene_point3d_init_from_vec3(p.to_glib_none_mut().0, v.to_glib_none().0);
+            p
         }
     }
 }

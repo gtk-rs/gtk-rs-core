@@ -13,14 +13,12 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Ray(Boxed<ffi::graphene_ray_t>);
+    #[derive(Debug)]
+    pub struct Ray(BoxedInline<ffi::graphene_ray_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_ray_get_type(), ptr as *mut _) as *mut ffi::graphene_ray_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_ray_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_ray_get_type(),
     }
 }
@@ -92,35 +90,6 @@ impl Ray {
                 position.to_glib_none_mut().0,
             );
             position
-        }
-    }
-
-    #[doc(alias = "graphene_ray_init")]
-    pub fn init(&mut self, origin: Option<&Point3D>, direction: Option<&Vec3>) {
-        unsafe {
-            ffi::graphene_ray_init(
-                self.to_glib_none_mut().0,
-                origin.to_glib_none().0,
-                direction.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_ray_init_from_ray")]
-    pub fn init_from_ray(&mut self, src: &Ray) {
-        unsafe {
-            ffi::graphene_ray_init_from_ray(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_ray_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, origin: Option<&Vec3>, direction: Option<&Vec3>) {
-        unsafe {
-            ffi::graphene_ray_init_from_vec3(
-                self.to_glib_none_mut().0,
-                origin.to_glib_none().0,
-                direction.to_glib_none().0,
-            );
         }
     }
 

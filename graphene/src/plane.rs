@@ -11,9 +11,13 @@ impl Plane {
     pub fn new(normal: Option<&Vec3>, constant: f32) -> Plane {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_plane_alloc();
-            ffi::graphene_plane_init(alloc, normal.to_glib_none().0, constant);
-            from_glib_full(alloc)
+            let mut plane = Plane::uninitialized();
+            ffi::graphene_plane_init(
+                plane.to_glib_none_mut().0,
+                normal.to_glib_none().0,
+                constant,
+            );
+            plane
         }
     }
 
@@ -22,9 +26,9 @@ impl Plane {
     pub fn from_plane(src: &Plane) -> Plane {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_plane_alloc();
-            ffi::graphene_plane_init_from_plane(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut plane = Plane::uninitialized();
+            ffi::graphene_plane_init_from_plane(plane.to_glib_none_mut().0, src.to_glib_none().0);
+            plane
         }
     }
 
@@ -33,13 +37,13 @@ impl Plane {
     pub fn from_point(normal: &Vec3, point: &Point3D) -> Plane {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_plane_alloc();
+            let mut plane = Plane::uninitialized();
             ffi::graphene_plane_init_from_point(
-                alloc,
+                plane.to_glib_none_mut().0,
                 normal.to_glib_none().0,
                 point.to_glib_none().0,
             );
-            from_glib_full(alloc)
+            plane
         }
     }
 
@@ -48,14 +52,14 @@ impl Plane {
     pub fn from_points(a: &Point3D, b: &Point3D, c: &Point3D) -> Plane {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_plane_alloc();
+            let mut plane = Plane::uninitialized();
             ffi::graphene_plane_init_from_points(
-                alloc,
+                plane.to_glib_none_mut().0,
                 a.to_glib_none().0,
                 b.to_glib_none().0,
                 c.to_glib_none().0,
             );
-            from_glib_full(alloc)
+            plane
         }
     }
 
@@ -64,9 +68,9 @@ impl Plane {
     pub fn from_vec4(src: &Vec4) -> Plane {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_plane_alloc();
-            ffi::graphene_plane_init_from_vec4(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut plane = Plane::uninitialized();
+            ffi::graphene_plane_init_from_vec4(plane.to_glib_none_mut().0, src.to_glib_none().0);
+            plane
         }
     }
 }

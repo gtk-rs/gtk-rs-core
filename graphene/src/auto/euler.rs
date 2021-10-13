@@ -9,14 +9,12 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Euler(Boxed<ffi::graphene_euler_t>);
+    #[derive(Debug)]
+    pub struct Euler(BoxedInline<ffi::graphene_euler_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_euler_get_type(), ptr as *mut _) as *mut ffi::graphene_euler_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_euler_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_euler_get_type(),
     }
 }
@@ -67,85 +65,6 @@ impl Euler {
     #[doc(alias = "get_z")]
     pub fn z(&self) -> f32 {
         unsafe { ffi::graphene_euler_get_z(self.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_euler_init")]
-    pub fn init(&mut self, x: f32, y: f32, z: f32) {
-        unsafe {
-            ffi::graphene_euler_init(self.to_glib_none_mut().0, x, y, z);
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_from_euler")]
-    pub fn init_from_euler(&mut self, src: Option<&Euler>) {
-        unsafe {
-            ffi::graphene_euler_init_from_euler(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_from_matrix")]
-    pub fn init_from_matrix(&mut self, m: Option<&Matrix>, order: EulerOrder) {
-        unsafe {
-            ffi::graphene_euler_init_from_matrix(
-                self.to_glib_none_mut().0,
-                m.to_glib_none().0,
-                order.into_glib(),
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_from_quaternion")]
-    pub fn init_from_quaternion(&mut self, q: Option<&Quaternion>, order: EulerOrder) {
-        unsafe {
-            ffi::graphene_euler_init_from_quaternion(
-                self.to_glib_none_mut().0,
-                q.to_glib_none().0,
-                order.into_glib(),
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_from_radians")]
-    pub fn init_from_radians(
-        &mut self,
-        x: f32,
-        y: f32,
-        z: f32,
-        order: EulerOrder,
-    ) -> Option<Euler> {
-        unsafe {
-            from_glib_none(ffi::graphene_euler_init_from_radians(
-                self.to_glib_none_mut().0,
-                x,
-                y,
-                z,
-                order.into_glib(),
-            ))
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, v: Option<&Vec3>, order: EulerOrder) {
-        unsafe {
-            ffi::graphene_euler_init_from_vec3(
-                self.to_glib_none_mut().0,
-                v.to_glib_none().0,
-                order.into_glib(),
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_euler_init_with_order")]
-    pub fn init_with_order(&mut self, x: f32, y: f32, z: f32, order: EulerOrder) {
-        unsafe {
-            ffi::graphene_euler_init_with_order(
-                self.to_glib_none_mut().0,
-                x,
-                y,
-                z,
-                order.into_glib(),
-            );
-        }
     }
 
     #[doc(alias = "graphene_euler_reorder")]

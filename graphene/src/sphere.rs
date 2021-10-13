@@ -6,85 +6,51 @@ use crate::Vec3;
 use glib::translate::*;
 
 impl Sphere {
-    #[doc(alias = "graphene_sphere_init_from_points")]
-    pub fn init_from_points(&mut self, points: &[&Point3D], center: Option<&Point3D>) {
-        let vec: Vec<_> = points
-            .iter()
-            .map(|e| unsafe { *e.to_glib_none().0 })
-            .collect();
-        let n = vec.len() as u32;
-
-        unsafe {
-            ffi::graphene_sphere_init_from_points(
-                self.to_glib_none_mut().0,
-                n,
-                vec.as_ptr(),
-                center.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_sphere_init_from_vectors")]
-    pub fn init_from_vectors(&mut self, vectors: &[&Vec3], center: Option<&Point3D>) {
-        let vec: Vec<_> = vectors
-            .iter()
-            .map(|e| unsafe { *e.to_glib_none().0 })
-            .collect();
-        let n = vec.len() as u32;
-
-        unsafe {
-            ffi::graphene_sphere_init_from_vectors(
-                self.to_glib_none_mut().0,
-                n,
-                vec.as_ptr(),
-                center.to_glib_none().0,
-            );
-        }
-    }
-
     #[doc(alias = "graphene_sphere_init")]
     pub fn new(center: Option<&Point3D>, radius: f32) -> Sphere {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_sphere_alloc();
-            ffi::graphene_sphere_init(alloc, center.to_glib_none().0, radius);
-            from_glib_full(alloc)
+            let mut sph = Sphere::uninitialized();
+            ffi::graphene_sphere_init(sph.to_glib_none_mut().0, center.to_glib_none().0, radius);
+            sph
         }
     }
 
     #[doc(alias = "graphene_sphere_init_from_points")]
     #[doc(alias = "new_from_points")]
-    pub fn from_points(points: &[&Point3D], center: Option<&Point3D>) -> Sphere {
+    pub fn from_points(points: &[Point3D], center: Option<&Point3D>) -> Sphere {
         assert_initialized_main_thread!();
 
-        let vec: Vec<_> = points
-            .iter()
-            .map(|e| unsafe { *e.to_glib_none().0 })
-            .collect();
-        let n = vec.len() as u32;
+        let n = points.len() as u32;
 
         unsafe {
-            let alloc = ffi::graphene_sphere_alloc();
-            ffi::graphene_sphere_init_from_points(alloc, n, vec.as_ptr(), center.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut sph = Sphere::uninitialized();
+            ffi::graphene_sphere_init_from_points(
+                sph.to_glib_none_mut().0,
+                n,
+                points.to_glib_none().0,
+                center.to_glib_none().0,
+            );
+            sph
         }
     }
 
     #[doc(alias = "graphene_sphere_init_from_vectors")]
     #[doc(alias = "new_from_vectors")]
-    pub fn from_vectors(vectors: &[&Vec3], center: Option<&Point3D>) -> Sphere {
+    pub fn from_vectors(vectors: &[Vec3], center: Option<&Point3D>) -> Sphere {
         assert_initialized_main_thread!();
 
-        let vec: Vec<_> = vectors
-            .iter()
-            .map(|e| unsafe { *e.to_glib_none().0 })
-            .collect();
-        let n = vec.len() as u32;
+        let n = vectors.len() as u32;
 
         unsafe {
-            let alloc = ffi::graphene_sphere_alloc();
-            ffi::graphene_sphere_init_from_vectors(alloc, n, vec.as_ptr(), center.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut sph = Sphere::uninitialized();
+            ffi::graphene_sphere_init_from_vectors(
+                sph.to_glib_none_mut().0,
+                n,
+                vectors.to_glib_none().0,
+                center.to_glib_none().0,
+            );
+            sph
         }
     }
 }

@@ -12,9 +12,9 @@ impl Euler {
     pub fn new(x: f32, y: f32, z: f32) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init(alloc, x, y, z);
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init(eul.to_glib_none_mut().0, x, y, z);
+            eul
         }
     }
 
@@ -23,9 +23,9 @@ impl Euler {
     pub fn from_euler(src: Option<&Euler>) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init_from_euler(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_euler(eul.to_glib_none_mut().0, src.to_glib_none().0);
+            eul
         }
     }
 
@@ -34,9 +34,13 @@ impl Euler {
     pub fn from_matrix(m: Option<&Matrix>, order: EulerOrder) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init_from_matrix(alloc, m.to_glib_none().0, order.into_glib());
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_matrix(
+                eul.to_glib_none_mut().0,
+                m.to_glib_none().0,
+                order.into_glib(),
+            );
+            eul
         }
     }
 
@@ -45,9 +49,29 @@ impl Euler {
     pub fn from_quaternion(q: Option<&Quaternion>, order: EulerOrder) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init_from_quaternion(alloc, q.to_glib_none().0, order.into_glib());
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_quaternion(
+                eul.to_glib_none_mut().0,
+                q.to_glib_none().0,
+                order.into_glib(),
+            );
+            eul
+        }
+    }
+
+    #[doc(alias = "graphene_euler_init_from_radians")]
+    #[doc(alias = "new_from_radians")]
+    pub fn from_radians(x: f32, y: f32, z: f32, order: EulerOrder) -> Euler {
+        unsafe {
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_radians(
+                eul.to_glib_none_mut().0,
+                x,
+                y,
+                z,
+                order.into_glib(),
+            );
+            eul
         }
     }
 
@@ -56,9 +80,13 @@ impl Euler {
     pub fn from_vec3(v: Option<&Vec3>, order: EulerOrder) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init_from_vec3(alloc, v.to_glib_none().0, order.into_glib());
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_from_vec3(
+                eul.to_glib_none_mut().0,
+                v.to_glib_none().0,
+                order.into_glib(),
+            );
+            eul
         }
     }
 
@@ -66,9 +94,15 @@ impl Euler {
     pub fn new_with_order(x: f32, y: f32, z: f32, order: EulerOrder) -> Euler {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_euler_alloc();
-            ffi::graphene_euler_init_with_order(alloc, x, y, z, order.into_glib());
-            from_glib_full(alloc)
+            let mut eul = Euler::uninitialized();
+            ffi::graphene_euler_init_with_order(
+                eul.to_glib_none_mut().0,
+                x,
+                y,
+                z,
+                order.into_glib(),
+            );
+            eul
         }
     }
 }

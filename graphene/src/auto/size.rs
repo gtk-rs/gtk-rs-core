@@ -5,14 +5,12 @@
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Size(Boxed<ffi::graphene_size_t>);
+    #[derive(Debug)]
+    pub struct Size(BoxedInline<ffi::graphene_size_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_size_get_type(), ptr as *mut _) as *mut ffi::graphene_size_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_size_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_size_get_type(),
     }
 }
@@ -21,20 +19,6 @@ impl Size {
     #[doc(alias = "graphene_size_equal")]
     fn equal(&self, b: &Size) -> bool {
         unsafe { ffi::graphene_size_equal(self.to_glib_none().0, b.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_size_init")]
-    pub fn init(&mut self, width: f32, height: f32) {
-        unsafe {
-            ffi::graphene_size_init(self.to_glib_none_mut().0, width, height);
-        }
-    }
-
-    #[doc(alias = "graphene_size_init_from_size")]
-    pub fn init_from_size(&mut self, src: &Size) {
-        unsafe {
-            ffi::graphene_size_init_from_size(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
     }
 
     #[doc(alias = "graphene_size_interpolate")]

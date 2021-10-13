@@ -12,13 +12,11 @@ use std::hash;
 
 wrapper! {
     #[doc(alias = "GDate")]
-    pub struct Date(Boxed<ffi::GDate>);
+    pub struct Date(BoxedInline<ffi::GDate>);
 
     match fn {
         copy => |ptr| gobject_ffi::g_boxed_copy(ffi::g_date_get_type(), ptr as *const _) as *mut _,
         free => |ptr| ffi::g_date_free(ptr),
-        init => |_ptr| (),
-        clear => |ptr| ffi::g_date_clear(ptr, 1),
         type_ => || ffi::g_date_get_type(),
     }
 }
@@ -237,7 +235,7 @@ impl Date {
 
     #[doc(alias = "g_date_set_parse")]
     pub fn set_parse(&mut self, str: &str) -> Result<(), BoolError> {
-        let mut c = self.clone();
+        let mut c = *self;
         if !unsafe {
             ffi::g_date_set_parse(c.to_glib_none_mut().0, str.to_glib_none().0);
             ffi::g_date_valid(c.to_glib_none().0) == 0
@@ -251,7 +249,7 @@ impl Date {
 
     #[doc(alias = "g_date_set_time_t")]
     pub fn set_time(&mut self, time_: u32) -> Result<(), BoolError> {
-        let mut c = self.clone();
+        let mut c = *self;
         unsafe {
             ffi::g_date_set_time_t(c.to_glib_none_mut().0, time_ as _);
         }

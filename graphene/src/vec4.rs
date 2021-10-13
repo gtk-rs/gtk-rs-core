@@ -6,20 +6,13 @@ use crate::Vec4;
 use glib::translate::*;
 
 impl Vec4 {
-    #[doc(alias = "graphene_vec4_init_from_float")]
-    pub fn init_from_float(&mut self, src: &[f32; 4]) {
-        unsafe {
-            ffi::graphene_vec4_init_from_float(self.to_glib_none_mut().0, src as *const _);
-        }
-    }
-
     #[doc(alias = "graphene_vec4_init")]
     pub fn new(x: f32, y: f32, z: f32, w: f32) -> Vec4 {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_vec4_alloc();
-            ffi::graphene_vec4_init(alloc, x, y, z, w);
-            from_glib_full(alloc)
+            let mut vec = Vec4::uninitialized();
+            ffi::graphene_vec4_init(vec.to_glib_none_mut().0, x, y, z, w);
+            vec
         }
     }
 
@@ -28,9 +21,9 @@ impl Vec4 {
     pub fn from_vec2(src: &Vec2, z: f32, w: f32) -> Vec4 {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_vec4_alloc();
-            ffi::graphene_vec4_init_from_vec2(alloc, src.to_glib_none().0, z, w);
-            from_glib_full(alloc)
+            let mut vec = Vec4::uninitialized();
+            ffi::graphene_vec4_init_from_vec2(vec.to_glib_none_mut().0, src.to_glib_none().0, z, w);
+            vec
         }
     }
 
@@ -39,9 +32,9 @@ impl Vec4 {
     pub fn from_vec3(src: &Vec3, w: f32) -> Vec4 {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_vec4_alloc();
-            ffi::graphene_vec4_init_from_vec3(alloc, src.to_glib_none().0, w);
-            from_glib_full(alloc)
+            let mut vec = Vec4::uninitialized();
+            ffi::graphene_vec4_init_from_vec3(vec.to_glib_none_mut().0, src.to_glib_none().0, w);
+            vec
         }
     }
 
@@ -50,9 +43,9 @@ impl Vec4 {
     pub fn from_vec4(src: &Vec4) -> Vec4 {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_vec4_alloc();
-            ffi::graphene_vec4_init_from_vec4(alloc, src.to_glib_none().0);
-            from_glib_full(alloc)
+            let mut vec = Vec4::uninitialized();
+            ffi::graphene_vec4_init_from_vec4(vec.to_glib_none_mut().0, src.to_glib_none().0);
+            vec
         }
     }
 
@@ -61,9 +54,9 @@ impl Vec4 {
     pub fn from_float(src: &[f32; 4]) -> Vec4 {
         assert_initialized_main_thread!();
         unsafe {
-            let alloc = ffi::graphene_vec4_alloc();
-            ffi::graphene_vec4_init_from_float(alloc, src as *const _);
-            from_glib_full(alloc)
+            let mut vec = Vec4::uninitialized();
+            ffi::graphene_vec4_init_from_float(vec.to_glib_none_mut().0, src.as_ptr() as *const _);
+            vec
         }
     }
 

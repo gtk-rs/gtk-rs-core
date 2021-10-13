@@ -5,18 +5,15 @@
 use crate::Matrix;
 use crate::Point3D;
 use crate::Vec3;
-use crate::Vec4;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Plane(Boxed<ffi::graphene_plane_t>);
+    #[derive(Debug)]
+    pub struct Plane(BoxedInline<ffi::graphene_plane_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_plane_get_type(), ptr as *mut _) as *mut ffi::graphene_plane_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_plane_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_plane_get_type(),
     }
 }
@@ -45,50 +42,6 @@ impl Plane {
             let mut normal = Vec3::uninitialized();
             ffi::graphene_plane_get_normal(self.to_glib_none().0, normal.to_glib_none_mut().0);
             normal
-        }
-    }
-
-    #[doc(alias = "graphene_plane_init")]
-    pub fn init(&mut self, normal: Option<&Vec3>, constant: f32) {
-        unsafe {
-            ffi::graphene_plane_init(self.to_glib_none_mut().0, normal.to_glib_none().0, constant);
-        }
-    }
-
-    #[doc(alias = "graphene_plane_init_from_plane")]
-    pub fn init_from_plane(&mut self, src: &Plane) {
-        unsafe {
-            ffi::graphene_plane_init_from_plane(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_plane_init_from_point")]
-    pub fn init_from_point(&mut self, normal: &Vec3, point: &Point3D) {
-        unsafe {
-            ffi::graphene_plane_init_from_point(
-                self.to_glib_none_mut().0,
-                normal.to_glib_none().0,
-                point.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_plane_init_from_points")]
-    pub fn init_from_points(&mut self, a: &Point3D, b: &Point3D, c: &Point3D) {
-        unsafe {
-            ffi::graphene_plane_init_from_points(
-                self.to_glib_none_mut().0,
-                a.to_glib_none().0,
-                b.to_glib_none().0,
-                c.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_plane_init_from_vec4")]
-    pub fn init_from_vec4(&mut self, src: &Vec4) {
-        unsafe {
-            ffi::graphene_plane_init_from_vec4(self.to_glib_none_mut().0, src.to_glib_none().0);
         }
     }
 

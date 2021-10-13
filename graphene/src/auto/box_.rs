@@ -8,14 +8,12 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Box(Boxed<ffi::graphene_box_t>);
+    #[derive(Debug)]
+    pub struct Box(BoxedInline<ffi::graphene_box_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_box_get_type(), ptr as *mut _) as *mut ffi::graphene_box_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_box_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_box_get_type(),
     }
 }
@@ -140,45 +138,10 @@ impl Box {
         }
     }
 
-    //#[doc(alias = "graphene_box_get_vertices")]
-    //#[doc(alias = "get_vertices")]
-    //pub fn vertices(&self, vertices: /*Unimplemented*/FixedArray TypeId { ns_id: 1, id: 0 }; 8) {
-    //    unsafe { TODO: call ffi:graphene_box_get_vertices() }
-    //}
-
     #[doc(alias = "graphene_box_get_width")]
     #[doc(alias = "get_width")]
     pub fn width(&self) -> f32 {
         unsafe { ffi::graphene_box_get_width(self.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_box_init")]
-    pub fn init(&mut self, min: Option<&Point3D>, max: Option<&Point3D>) {
-        unsafe {
-            ffi::graphene_box_init(
-                self.to_glib_none_mut().0,
-                min.to_glib_none().0,
-                max.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "graphene_box_init_from_box")]
-    pub fn init_from_box(&mut self, src: &Box) {
-        unsafe {
-            ffi::graphene_box_init_from_box(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
-    #[doc(alias = "graphene_box_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, min: Option<&Vec3>, max: Option<&Vec3>) {
-        unsafe {
-            ffi::graphene_box_init_from_vec3(
-                self.to_glib_none_mut().0,
-                min.to_glib_none().0,
-                max.to_glib_none().0,
-            );
-        }
     }
 
     #[doc(alias = "graphene_box_intersection")]

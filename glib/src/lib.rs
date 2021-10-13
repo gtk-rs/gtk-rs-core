@@ -50,6 +50,8 @@ pub mod wrapper;
 #[macro_use]
 pub mod boxed;
 #[macro_use]
+pub mod boxed_inline;
+#[macro_use]
 pub mod shared;
 #[macro_use]
 pub mod error;

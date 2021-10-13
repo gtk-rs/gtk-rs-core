@@ -8,6 +8,7 @@ work_mode = "normal"
 generate_safety_asserts = true
 single_version_file = true
 deprecate_by_min_version = true
+trust_return_value_nullability = true
 
 generate = [
     "Graphene.EulerOrder",
@@ -24,372 +25,210 @@ status = "generate"
 [[object]]
 name = "Graphene.Box"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_box"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    # array with size
-    name = "init_from_points"
+    pattern = "init.*"
+    # manual proper constructor
     manual = true
-        [object.function.return]
-        type = "none"
     [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    # array with size
-    name = "init_from_vectors"
+    name = "get_vertices"
+    # float array
     manual = true
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "minus_one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "one_minus_one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "empty"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "infinite"
-        [object.function.return]
-        nullable = false
 
 [[object]]
 name = "Graphene.Euler"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_with_order"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_matrix"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_quaternion"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_euler"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Frustum"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_frustum"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_matrix"
-        [object.function.return]
-        type = "none"
+    name = "get_planes"
+    # float array
+    manual = true
 
 [[object]]
 name = "Graphene.Matrix"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init_identity"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_float"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec4"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_matrix"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_2d"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_perspective"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_ortho"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_look_at"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_frustum"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_scale"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_translate"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_rotate"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_skew"
-        [object.function.return]
-        type = "none"
+    name = "to_float"
+    # float array
+    manual = true
 
 [[object]]
 name = "Graphene.Plane"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_plane"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_point"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_points"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec4"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Point"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_point"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec2"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Point3D"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_point"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Quad"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_rect"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_points"
-        [object.function.return]
-        type = "none"
+    name = "get_point"
+    # needs bounds check
+    manual = true
 
 [[object]]
 name = "Graphene.Quaternion"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_identity"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_quaternion"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec4"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_matrix"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_angles"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_radians"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_angle_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_euler"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Ray"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_ray"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Rect"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
+    [[object.function]]
+    name = "get_vertices"
+    # float array
+    manual = true
+    [[object.function]]
+    name = "inset"
         [object.function.return]
         type = "none"
     [[object.function]]
-    name = "init_from_rect"
+    name = "normalize"
         [object.function.return]
         type = "none"
     [[object.function]]
-    name = "zero"
+    name = "offset"
         [object.function.return]
-        nullable = false
+        type = "none"
 
 [[object]]
 # missing memory management functions
@@ -404,187 +243,107 @@ status = "ignore"
 [[object]]
 name = "Graphene.Size"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_size"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Sphere"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    # array with size
-    name = "init_from_points"
+    pattern = "init.*"
+    # manual proper constructor
     manual = true
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    # array with size
-    name = "init_from_vectors"
-    manual = true
-        [object.function.return]
-        type = "none"
 
 [[object]]
 name = "Graphene.Triangle"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init_from_point3d"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
 
 [[object]]
 name = "Graphene.Vec2"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_vec2"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "x_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "y_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    name = "to_float"
+    # float array
+    manual = true
 
 [[object]]
 name = "Graphene.Vec3"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "x_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "y_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "z_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    name = "to_float"
+    # float array
+    manual = true
 
 [[object]]
 name = "Graphene.Vec4"
 status = "generate"
-init_function_expression = "|_ptr| ()"
-clear_function_expression = "|_ptr| ()"
+boxed_inline = true
+    [[object.derive]]
+    name = "Debug"
+
     [[object.function]]
     # contents undefined
     name = "alloc"
     ignore = true
     [[object.function]]
-    name = "init"
-        [object.function.return]
-        type = "none"
+    pattern = "init.*"
+    # manual proper constructor
+    manual = true
     [[object.function]]
-    name = "init_from_vec2"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec3"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "init_from_vec4"
-        [object.function.return]
-        type = "none"
-    [[object.function]]
-    name = "one"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "w_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "x_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "y_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "z_axis"
-        [object.function.return]
-        nullable = false
-    [[object.function]]
-    name = "zero"
-        [object.function.return]
-        nullable = false
+    name = "to_float"
+    # float array
+    manual = true

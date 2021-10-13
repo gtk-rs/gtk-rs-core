@@ -149,7 +149,7 @@ impl FromGlibPtrFull<*const ffi::PangoGlyphInfo> for GlyphInfo {
 }
 
 #[derive(Clone, Copy, Debug)]
-#[repr(C)]
+#[repr(transparent)]
 #[doc(alias = "PangoGlyphGeometry")]
 pub struct GlyphGeometry(ffi::PangoGlyphGeometry);
 

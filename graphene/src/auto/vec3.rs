@@ -7,14 +7,12 @@ use crate::Vec4;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Vec3(Boxed<ffi::graphene_vec3_t>);
+    #[derive(Debug)]
+    pub struct Vec3(BoxedInline<ffi::graphene_vec3_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_vec3_get_type(), ptr as *mut _) as *mut ffi::graphene_vec3_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_vec3_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_vec3_get_type(),
     }
 }
@@ -137,25 +135,6 @@ impl Vec3 {
         unsafe { ffi::graphene_vec3_get_z(self.to_glib_none().0) }
     }
 
-    #[doc(alias = "graphene_vec3_init")]
-    pub fn init(&mut self, x: f32, y: f32, z: f32) {
-        unsafe {
-            ffi::graphene_vec3_init(self.to_glib_none_mut().0, x, y, z);
-        }
-    }
-
-    //#[doc(alias = "graphene_vec3_init_from_float")]
-    //pub fn init_from_float(&mut self, src: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 3) -> Option<Vec3> {
-    //    unsafe { TODO: call ffi:graphene_vec3_init_from_float() }
-    //}
-
-    #[doc(alias = "graphene_vec3_init_from_vec3")]
-    pub fn init_from_vec3(&mut self, src: &Vec3) {
-        unsafe {
-            ffi::graphene_vec3_init_from_vec3(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
     #[doc(alias = "graphene_vec3_interpolate")]
     pub fn interpolate(&self, v2: &Vec3, factor: f64) -> Vec3 {
         unsafe {
@@ -258,11 +237,6 @@ impl Vec3 {
             res
         }
     }
-
-    //#[doc(alias = "graphene_vec3_to_float")]
-    //pub fn to_float(&self, dest: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 3) {
-    //    unsafe { TODO: call ffi:graphene_vec3_to_float() }
-    //}
 
     #[doc(alias = "graphene_vec3_one")]
     pub fn one() -> Vec3 {

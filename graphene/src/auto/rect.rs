@@ -6,14 +6,12 @@ use crate::Point;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Rect(Boxed<ffi::graphene_rect_t>);
+    #[derive(Debug)]
+    pub struct Rect(BoxedInline<ffi::graphene_rect_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_rect_get_type(), ptr as *mut _) as *mut ffi::graphene_rect_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_rect_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_rect_get_type(),
     }
 }
@@ -109,12 +107,6 @@ impl Rect {
         }
     }
 
-    //#[doc(alias = "graphene_rect_get_vertices")]
-    //#[doc(alias = "get_vertices")]
-    //pub fn vertices(&self, vertices: /*Unimplemented*/FixedArray TypeId { ns_id: 1, id: 16 }; 4) {
-    //    unsafe { TODO: call ffi:graphene_rect_get_vertices() }
-    //}
-
     #[doc(alias = "graphene_rect_get_width")]
     #[doc(alias = "get_width")]
     pub fn width(&self) -> f32 {
@@ -133,28 +125,10 @@ impl Rect {
         unsafe { ffi::graphene_rect_get_y(self.to_glib_none().0) }
     }
 
-    #[doc(alias = "graphene_rect_init")]
-    pub fn init(&mut self, x: f32, y: f32, width: f32, height: f32) {
-        unsafe {
-            ffi::graphene_rect_init(self.to_glib_none_mut().0, x, y, width, height);
-        }
-    }
-
-    #[doc(alias = "graphene_rect_init_from_rect")]
-    pub fn init_from_rect(&mut self, src: &Rect) {
-        unsafe {
-            ffi::graphene_rect_init_from_rect(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
-    }
-
     #[doc(alias = "graphene_rect_inset")]
-    pub fn inset(&mut self, d_x: f32, d_y: f32) -> Option<Rect> {
+    pub fn inset(&mut self, d_x: f32, d_y: f32) {
         unsafe {
-            from_glib_none(ffi::graphene_rect_inset(
-                self.to_glib_none_mut().0,
-                d_x,
-                d_y,
-            ))
+            ffi::graphene_rect_inset(self.to_glib_none_mut().0, d_x, d_y);
         }
     }
 
@@ -199,8 +173,10 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_normalize")]
-    pub fn normalize(&mut self) -> Option<Rect> {
-        unsafe { from_glib_none(ffi::graphene_rect_normalize(self.to_glib_none_mut().0)) }
+    pub fn normalize(&mut self) {
+        unsafe {
+            ffi::graphene_rect_normalize(self.to_glib_none_mut().0);
+        }
     }
 
     #[doc(alias = "graphene_rect_normalize_r")]
@@ -213,13 +189,9 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_offset")]
-    pub fn offset(&mut self, d_x: f32, d_y: f32) -> Option<Rect> {
+    pub fn offset(&mut self, d_x: f32, d_y: f32) {
         unsafe {
-            from_glib_none(ffi::graphene_rect_offset(
-                self.to_glib_none_mut().0,
-                d_x,
-                d_y,
-            ))
+            ffi::graphene_rect_offset(self.to_glib_none_mut().0, d_x, d_y);
         }
     }
 

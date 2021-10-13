@@ -5,14 +5,12 @@
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, PartialOrd, Ord, Hash)]
-    pub struct Vec2(Boxed<ffi::graphene_vec2_t>);
+    #[derive(Debug)]
+    pub struct Vec2(BoxedInline<ffi::graphene_vec2_t>);
 
     match fn {
         copy => |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_vec2_get_type(), ptr as *mut _) as *mut ffi::graphene_vec2_t,
         free => |ptr| glib::gobject_ffi::g_boxed_free(ffi::graphene_vec2_get_type(), ptr as *mut _),
-        init => |_ptr| (),
-        clear => |_ptr| (),
         type_ => || ffi::graphene_vec2_get_type(),
     }
 }
@@ -64,25 +62,6 @@ impl Vec2 {
     #[doc(alias = "get_y")]
     pub fn y(&self) -> f32 {
         unsafe { ffi::graphene_vec2_get_y(self.to_glib_none().0) }
-    }
-
-    #[doc(alias = "graphene_vec2_init")]
-    pub fn init(&mut self, x: f32, y: f32) {
-        unsafe {
-            ffi::graphene_vec2_init(self.to_glib_none_mut().0, x, y);
-        }
-    }
-
-    //#[doc(alias = "graphene_vec2_init_from_float")]
-    //pub fn init_from_float(&mut self, src: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 2) -> Option<Vec2> {
-    //    unsafe { TODO: call ffi:graphene_vec2_init_from_float() }
-    //}
-
-    #[doc(alias = "graphene_vec2_init_from_vec2")]
-    pub fn init_from_vec2(&mut self, src: &Vec2) {
-        unsafe {
-            ffi::graphene_vec2_init_from_vec2(self.to_glib_none_mut().0, src.to_glib_none().0);
-        }
     }
 
     #[doc(alias = "graphene_vec2_interpolate")]
@@ -187,11 +166,6 @@ impl Vec2 {
             res
         }
     }
-
-    //#[doc(alias = "graphene_vec2_to_float")]
-    //pub fn to_float(&self, dest: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 2) {
-    //    unsafe { TODO: call ffi:graphene_vec2_to_float() }
-    //}
 
     #[doc(alias = "graphene_vec2_one")]
     pub fn one() -> Vec2 {

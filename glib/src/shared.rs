@@ -12,71 +12,18 @@ use std::ptr;
 /// Wrapper implementations for shared types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_shared_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @ref $ref_arg:ident $ref_expr:expr,
-     @unref $unref_arg:ident $unref_expr:expr,
-     @type_ $get_type_expr:expr) => {
-        $crate::glib_shared_wrapper!([$($attr)*] $name, $ffi_name, @ref $ref_arg $ref_expr,
-            @unref $unref_arg $unref_expr);
-
-        impl $crate::types::StaticType for $name {
-            fn static_type() -> $crate::types::Type {
-                #[allow(unused_unsafe)]
-                unsafe { $crate::translate::from_glib($get_type_expr) }
-            }
-        }
-
-        #[doc(hidden)]
-        impl $crate::value::ValueType for $name {
-            type Type = $name;
-        }
-
-        #[doc(hidden)]
-        unsafe impl<'a> $crate::value::FromValue<'a> for $name {
-            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
-
-            unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
-                <$name as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
-            }
-        }
-
-        #[doc(hidden)]
-        impl $crate::value::ToValue for $name {
-            fn to_value(&self) -> $crate::Value {
-                unsafe {
-                    let mut value = $crate::Value::from_type(<$name as $crate::StaticType>::static_type());
-                    $crate::gobject_ffi::g_value_take_boxed(
-                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
-                        $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(self) as *mut _,
-                    );
-                    value
-                }
-            }
-
-            fn value_type(&self) -> $crate::Type {
-                <$name as $crate::StaticType>::static_type()
-            }
-        }
-
-        #[doc(hidden)]
-        impl $crate::value::ToValueOptional for $name {
-            fn to_value_optional(s: Option<&Self>) -> $crate::Value {
-                let mut value = $crate::Value::for_value_type::<Self>();
-                unsafe {
-                    $crate::gobject_ffi::g_value_take_boxed(
-                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
-                        $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(&s) as *mut _,
-                    );
-                }
-
-                value
-            }
-        }
+    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+     @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr
+     $(, @type_ $get_type_expr:expr)?) => {
+        $crate::glib_shared_wrapper!(
+            @generic_impl [$($attr)*] $name, $ffi_name,
+            @ref $ref_arg $ref_expr, @unref $unref_arg $unref_expr
+        );
+        $($crate::glib_shared_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @ref $ref_arg:ident $ref_expr:expr,
-     @unref $unref_arg:ident $unref_expr:expr) => {
+    (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty,
+     @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr) => {
         $(#[$attr])*
         #[derive(Clone)]
         pub struct $name($crate::shared::Shared<$ffi_name, $name>);
@@ -303,7 +250,65 @@ macro_rules! glib_shared_wrapper {
                 unimplemented!()
             }
         }
-    }
+    };
+
+    (@value_impl $name:ident, $ffi_name:ty, @type_ $get_type_expr:expr) => {
+        impl $crate::types::StaticType for $name {
+            fn static_type() -> $crate::types::Type {
+                #[allow(unused_unsafe)]
+                unsafe { $crate::translate::from_glib($get_type_expr) }
+            }
+        }
+
+        #[doc(hidden)]
+        impl $crate::value::ValueType for $name {
+            type Type = $name;
+        }
+
+        #[doc(hidden)]
+        unsafe impl<'a> $crate::value::FromValue<'a> for $name {
+            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a $crate::Value) -> Self {
+                let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
+                assert!(!ptr.is_null());
+                <$name as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $crate::value::ToValue for $name {
+            fn to_value(&self) -> $crate::Value {
+                unsafe {
+                    let mut value = $crate::Value::from_type(<$name as $crate::StaticType>::static_type());
+                    $crate::gobject_ffi::g_value_take_boxed(
+                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(self) as *mut _,
+                    );
+                    value
+                }
+            }
+
+            fn value_type(&self) -> $crate::Type {
+                <$name as $crate::StaticType>::static_type()
+            }
+        }
+
+        #[doc(hidden)]
+        impl $crate::value::ToValueOptional for $name {
+            fn to_value_optional(s: Option<&Self>) -> $crate::Value {
+                let mut value = $crate::Value::for_value_type::<Self>();
+                unsafe {
+                    $crate::gobject_ffi::g_value_take_boxed(
+                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(&s) as *mut _,
+                    );
+                }
+
+                value
+            }
+        }
+    };
 }
 
 pub trait SharedMemoryManager<T> {

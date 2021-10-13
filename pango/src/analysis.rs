@@ -7,7 +7,7 @@ use crate::Language;
 use crate::Script;
 use glib::translate::*;
 
-#[repr(C)]
+#[repr(transparent)]
 #[doc(alias = "PangoAnalysis")]
 pub struct Analysis(ffi::PangoAnalysis);
 

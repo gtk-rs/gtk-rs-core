@@ -14,6 +14,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GChecksumType", sizeof(GChecksumType), alignof(GChecksumType));
     printf("%s;%zu;%zu\n", "GCond", sizeof(GCond), alignof(GCond));
     printf("%s;%zu;%zu\n", "GConvertError", sizeof(GConvertError), alignof(GConvertError));
+    printf("%s;%zu;%zu\n", "GDate", sizeof(GDate), alignof(GDate));
     printf("%s;%zu;%zu\n", "GDateDMY", sizeof(GDateDMY), alignof(GDateDMY));
     printf("%s;%zu;%zu\n", "GDateDay", sizeof(GDateDay), alignof(GDateDay));
     printf("%s;%zu;%zu\n", "GDateMonth", sizeof(GDateMonth), alignof(GDateMonth));

@@ -7,46 +7,28 @@ use std::cmp;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
-use std::mem;
 use std::ops::{Deref, DerefMut};
 use std::ptr;
 
 /// Wrapper implementations for Boxed types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr,
-     @type_ $get_type_expr:expr) => {
+    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+     @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
+     $(, @type_ $get_type_expr:expr)?) => {
         $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
-                            @init $init_arg $init_expr, @clear $clear_arg $clear_expr);
-        $crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
-                            @init $init_arg $init_expr, @clear $clear_arg $clear_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr);
-    };
-
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr,
-     @free $free_arg:ident $free_expr:expr, @type_ $get_type_expr:expr) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
-        $crate::glib_boxed_wrapper!(@memory_manager_impl $name, $ffi_name, @copy $copy_arg $copy_expr, @free $free_arg $free_expr);
-        $crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);
+        $crate::glib_boxed_wrapper!(
+            @memory_manager_impl $name, $ffi_name,
+            @copy $copy_arg $copy_expr, @free $free_arg $free_expr
+        );
+        $($crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
     (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty) => {
         $(#[$attr])*
         #[derive(Clone)]
         pub struct $name($crate::boxed::Boxed<$ffi_name, $name>);
+
         #[doc(hidden)]
         impl $crate::translate::GlibPtrDefault for $name {
             type GlibType = *mut $ffi_name;
@@ -313,70 +295,8 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn free($free_arg: *mut $ffi_name) {
                 $free_expr;
             }
-
-            #[inline]
-            unsafe fn init(_: *mut $ffi_name) {
-                unimplemented!()
-            }
-
-            #[inline]
-            unsafe fn clear(_: *mut $ffi_name) {
-                unimplemented!()
-            }
         }
     };
-
-    (@memory_manager_impl $name:ident, $ffi_name:ty, @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr,
-         @init $init_arg:ident $init_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
-        #[doc(hidden)]
-        impl $crate::boxed::BoxedMemoryManager<$ffi_name> for $name {
-            #[inline]
-            unsafe fn copy($copy_arg: *const $ffi_name) -> *mut $ffi_name {
-                $copy_expr
-            }
-
-            #[inline]
-            #[allow(clippy::no_effect)]
-            unsafe fn free($free_arg: *mut $ffi_name) {
-                $free_expr;
-            }
-
-            #[inline]
-            #[allow(clippy::no_effect)]
-            unsafe fn init($init_arg: *mut $ffi_name) {
-                $init_expr;
-            }
-
-            #[inline]
-            #[allow(clippy::no_effect)]
-            unsafe fn clear($clear_arg: *mut $ffi_name) {
-                $clear_expr;
-            }
-        }
-
-        #[doc(hidden)]
-        impl $crate::translate::Uninitialized for $name {
-            #[inline]
-            unsafe fn uninitialized() -> Self {
-                $name($crate::boxed::Boxed::uninitialized())
-            }
-        }
-    };
-}
-
-enum AnyBox<T> {
-    Native(Box<T>),
-    Foreign(ptr::NonNull<T>),
-}
-
-impl<T> fmt::Debug for AnyBox<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use self::AnyBox::*;
-        match *self {
-            Native(ref b) => f.debug_tuple("Native").field(&(&**b as *const T)).finish(),
-            Foreign(ptr) => f.debug_tuple("Foreign").field(&ptr).finish(),
-        }
-    }
 }
 
 // The safety docs really belong in the wrapper!() macro for Boxed<T>
@@ -386,31 +306,12 @@ pub trait BoxedMemoryManager<T>: 'static {
     unsafe fn copy(ptr: *const T) -> *mut T;
     /// Frees the object.
     unsafe fn free(ptr: *mut T);
-    /// Initializes an already allocated object.
-    unsafe fn init(ptr: *mut T);
-    /// Clears and frees all memory of the object, but not the object itself.
-    unsafe fn clear(ptr: *mut T);
 }
 
 /// Encapsulates memory management logic for boxed types.
 pub struct Boxed<T: 'static, MM: BoxedMemoryManager<T>> {
-    inner: AnyBox<T>,
+    inner: ptr::NonNull<T>,
     _dummy: PhantomData<*mut MM>,
-}
-
-impl<T: 'static, MM: BoxedMemoryManager<T>> Uninitialized for Boxed<T, MM> {
-    #[inline]
-    unsafe fn uninitialized() -> Self {
-        Self {
-            inner: {
-                let mut inner = mem::MaybeUninit::zeroed();
-                MM::init(inner.as_mut_ptr());
-
-                AnyBox::Native(Box::new(inner.assume_init()))
-            },
-            _dummy: PhantomData,
-        }
-    }
 }
 
 impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtr<'a, *const T> for Boxed<T, MM> {
@@ -418,21 +319,13 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtr<'a, *const T> for Boxe
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const T, Self> {
-        use self::AnyBox::*;
-        let ptr = match self.inner {
-            Native(ref b) => &**b as *const T,
-            Foreign(p) => p.as_ptr(),
-        };
+        let ptr = self.inner.as_ptr();
         Stash(ptr, self)
     }
 
     #[inline]
     fn to_glib_full(&self) -> *const T {
-        use self::AnyBox::*;
-        let ptr = match self.inner {
-            Native(ref b) => &**b as *const T,
-            Foreign(p) => p.as_ptr(),
-        };
+        let ptr = self.inner.as_ptr();
         unsafe { MM::copy(ptr) }
     }
 }
@@ -442,11 +335,7 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtrMut<'a, *mut T> for Box
 
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut T, Self> {
-        use self::AnyBox::*;
-        let ptr = match self.inner {
-            Native(ref mut b) => &mut **b as *mut T,
-            Foreign(p) => p.as_ptr(),
-        };
+        let ptr = self.inner.as_ptr();
         StashMut(ptr, self)
     }
 }
@@ -474,7 +363,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T,
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
         assert!(!ptr.is_null());
         Self {
-            inner: AnyBox::Foreign(ptr::NonNull::new_unchecked(ptr)),
+            inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,
         }
     }
@@ -485,7 +374,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<
     unsafe fn from_glib_full(ptr: *const T) -> Self {
         assert!(!ptr.is_null());
         Self {
-            inner: AnyBox::Foreign(ptr::NonNull::new_unchecked(ptr as *mut T)),
+            inner: ptr::NonNull::new_unchecked(ptr as *mut T),
             _dummy: PhantomData,
         }
     }
@@ -496,7 +385,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Boxed<
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
         assert!(!ptr.is_null());
         Borrowed::new(Self {
-            inner: AnyBox::Foreign(ptr::NonNull::new_unchecked(ptr)),
+            inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,
         })
     }
@@ -506,14 +395,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> Drop for Boxed<T, MM> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
-            match self.inner {
-                AnyBox::Foreign(ptr) => {
-                    MM::free(ptr.as_ptr());
-                }
-                AnyBox::Native(ref mut box_) => {
-                    MM::clear(&mut **box_);
-                }
-            }
+            MM::free(self.inner.as_ptr());
         }
     }
 }
