@@ -448,7 +448,7 @@ impl Value {
 
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
-            Ok(SendValue(self.0))
+            Ok(SendValue(self.into_raw()))
         } else {
             Err(self)
         }
@@ -474,7 +474,7 @@ impl<'a, T: ?Sized + ToValue> From<&'a T> for Value {
 
 impl From<SendValue> for Value {
     fn from(value: SendValue) -> Self {
-        Value(value.0)
+        Value(value.into_raw())
     }
 }
 
@@ -607,7 +607,7 @@ pub trait ToSendValue: Send + ToValue {
 
 impl<T: Send + ToValue + ?Sized> ToSendValue for T {
     fn to_send_value(&self) -> SendValue {
-        SendValue(self.to_value().0)
+        SendValue(self.to_value().into_raw())
     }
 }
 
