@@ -164,9 +164,9 @@ mod ps;
 #[cfg(any(feature = "svg", feature = "dox"))]
 mod svg;
 
-#[cfg(any(target_os = "macos", target_os = "ios", feature = "dox"))]
+#[cfg(any(target_os = "macos", feature = "dox"))]
 mod quartz_surface;
-#[cfg(any(target_os = "macos", target_os = "ios", feature = "dox"))]
+#[cfg(any(target_os = "macos", feature = "dox"))]
 pub use quartz_surface::QuartzSurface;
 
 #[cfg(any(all(windows, feature = "win32-surface"), feature = "dox"))]
