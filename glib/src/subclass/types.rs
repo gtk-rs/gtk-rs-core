@@ -359,9 +359,11 @@ impl TypeData {
         }
 
         if let Some(ref mut class_data) = self.class_data {
-            if class_data.get(&type_).is_some() {
-                panic!("The class_data already contains a key for {}", type_);
-            }
+            assert!(
+                class_data.get(&type_).is_none(),
+                "The class_data already contains a key for {}",
+                type_
+            );
 
             class_data.insert(type_, Box::new(data));
         }
@@ -626,9 +628,11 @@ impl<T: ObjectSubclass> InitializingObject<T> {
             }
 
             if let Some(ref mut instance_data) = priv_.instance_data {
-                if instance_data.get(&type_).is_some() {
-                    panic!("The class_data already contains a key for {}", type_);
-                }
+                assert!(
+                    instance_data.get(&type_).is_none(),
+                    "The class_data already contains a key for {}",
+                    type_
+                );
 
                 instance_data.insert(type_, Box::new(data));
             }
@@ -735,24 +739,23 @@ unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject)
 pub fn register_type<T: ObjectSubclass>() -> Type {
     // GLib aligns the type private data to two gsizes, so we can't safely store any type there that
     // requires a bigger alignment.
-    if mem::align_of::<T>() > 2 * mem::size_of::<usize>() {
-        panic!(
-            "Alignment {} of type not supported, bigger than {}",
-            mem::align_of::<T>(),
-            2 * mem::size_of::<usize>(),
-        );
-    }
+    assert!(
+        mem::align_of::<T>() <= 2 * mem::size_of::<usize>(),
+        "Alignment {} of type not supported, bigger than {}",
+        mem::align_of::<T>(),
+        2 * mem::size_of::<usize>(),
+    );
 
     unsafe {
         use std::ffi::CString;
 
         let type_name = CString::new(T::NAME).unwrap();
-        if gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID {
-            panic!(
-                "Type {} has already been registered",
-                type_name.to_str().unwrap()
-            );
-        }
+        assert_eq!(
+            gobject_ffi::g_type_from_name(type_name.as_ptr()),
+            gobject_ffi::G_TYPE_INVALID,
+            "Type {} has already been registered",
+            type_name.to_str().unwrap()
+        );
 
         let type_ = from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),

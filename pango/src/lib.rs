@@ -2,6 +2,7 @@
 
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
+#![allow(clippy::missing_safety_doc)]
 
 pub use ffi;
 pub use glib;

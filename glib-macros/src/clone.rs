@@ -211,9 +211,11 @@ fn full_ident(parts: &mut Peekable<ProcIter>, borrow_kind: BorrowKind) -> String
                 if p_s == "," || p_s == "=" {
                     break;
                 } else if p_s == "." {
-                    if !prev_is_ident {
-                        panic!("Unexpected `.` after `{}`", borrow_kind.to_str());
-                    }
+                    assert!(
+                        prev_is_ident,
+                        "Unexpected `.` after `{}`",
+                        borrow_kind.to_str()
+                    );
                     prev_is_ident = false;
                     name.push('.');
                     parts.next();
@@ -236,12 +238,11 @@ fn full_ident(parts: &mut Peekable<ProcIter>, borrow_kind: BorrowKind) -> String
             None => panic!("Unexpected end after ident `{}`", name),
         }
     }
-    if name.is_empty() {
-        panic!(
-            "Expected ident, found `{}`",
-            parts.next().unwrap().to_string()
-        );
-    }
+    assert!(
+        !name.is_empty(),
+        "Expected ident, found `{}`",
+        parts.next().unwrap().to_string()
+    );
     name
 }
 
@@ -312,10 +313,10 @@ fn parse_ident(parts: &mut Peekable<ProcIter>, elements: &mut Vec<ElemToClone>) 
             "Can't use `self` as variable name. Try storing it in a temporary variable or \
                 rename it using `as`."
         );
-    } else if name.ends_with('.') {
-        panic!("Invalid variable name: `{}`", name);
-    } else if name.contains('.') && alias.is_none() {
-        panic!(
+    } else {
+        assert!(!name.ends_with('.'), "Invalid variable name: `{}`", name);
+        assert!(
+            !name.contains('.') || alias.is_some(),
             "`{}`: Field accesses are not allowed as is, you must rename it!",
             name
         );
@@ -429,9 +430,8 @@ fn return_kind(parts: &mut Peekable<ProcIter>) -> WrapperKind {
             let i_s = i.to_string();
             if i_s == "panic" {
                 return WrapperKind::DefaultPanic;
-            } else if i_s != "return" {
-                panic!("Unknown keyword `@default-{}`", i_s);
             }
+            assert!(i_s == "return", "Unknown keyword `@default-{}`", i_s);
         }
         Some(x) => panic!("Unknown token `{}` after `@default-`", x.to_string()),
         None => panic!("Unexpected end after `@default-`"),
@@ -727,16 +727,14 @@ pub(crate) fn clone_inner(item: TokenStream) -> TokenStream {
                     parse_ident(&mut parts, &mut elements);
                     prev_is_ident = true;
                 } else if p_s == "," {
-                    if !prev_is_ident {
-                        panic!("Unexpected `,`");
-                    }
+                    assert!(prev_is_ident, "Unexpected `,`");
                     prev_is_ident = false;
                 } else if p_s == "|" {
-                    if elements.is_empty() {
-                        panic!("If you have nothing to clone, no need to use this macro!");
-                    } else {
-                        panic!("Expected `=>` before closure");
-                    }
+                    assert!(
+                        !elements.is_empty(),
+                        "If you have nothing to clone, no need to use this macro!"
+                    );
+                    panic!("Expected `=>` before closure");
                 }
             }
             Some(TokenTree::Ident(i)) => {
@@ -750,9 +748,10 @@ pub(crate) fn clone_inner(item: TokenStream) -> TokenStream {
             None => panic!("Unexpected end 4"),
         }
     }
-    if elements.is_empty() {
-        panic!("If you have nothing to clone, no need to use this macro!");
-    }
+    assert!(
+        !elements.is_empty(),
+        "If you have nothing to clone, no need to use this macro!"
+    );
     let return_kind = parse_return_kind(&mut parts);
     let kind = check_before_closure(&mut parts);
     build_closure(parts, elements, return_kind, kind)

@@ -72,9 +72,10 @@ impl Task {
         // We intentionally do not expose a way to set the task data in the bindings.
         // If we detect that the task data is set, there is not much we can do, so we panic.
         unsafe {
-            if !ffi::g_task_get_task_data(self.to_glib_none().0).is_null() {
-                panic!("Task data was manually set or the task was run thread multiple times");
-            }
+            assert!(
+                ffi::g_task_get_task_data(self.to_glib_none().0).is_null(),
+                "Task data was manually set or the task was run thread multiple times"
+            );
 
             ffi::g_task_set_task_data(
                 self.to_glib_none().0,

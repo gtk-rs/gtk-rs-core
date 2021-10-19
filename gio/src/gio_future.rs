@@ -146,9 +146,10 @@ impl<T> ThreadGuard<T> {
     }
 
     fn into_inner(mut self) -> T {
-        if self.thread_id != thread_id() {
-            panic!("Value accessed from different thread than where it was created");
-        }
+        assert!(
+            self.thread_id == thread_id(),
+            "Value accessed from different thread than where it was created"
+        );
 
         self.value.take().expect("into_inner() called twice")
     }
@@ -156,9 +157,10 @@ impl<T> ThreadGuard<T> {
 
 impl<T> Drop for ThreadGuard<T> {
     fn drop(&mut self) {
-        if self.thread_id != thread_id() {
-            panic!("Value dropped on a different thread than where it was created");
-        }
+        assert!(
+            self.thread_id == thread_id(),
+            "Value dropped on a different thread than where it was created"
+        );
     }
 }
 

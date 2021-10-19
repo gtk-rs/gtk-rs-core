@@ -55,9 +55,11 @@ pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target:
         .status()
         .unwrap();
 
-    if !status.success() {
-        panic!("glib-compile-resources failed with exit status {}", status);
-    }
+    assert!(
+        status.success(),
+        "glib-compile-resources failed with exit status {}",
+        status
+    );
 
     println!("cargo:rerun-if-changed={}", gresource);
     let output = Command::new("glib-compile-resources")
