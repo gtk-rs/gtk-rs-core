@@ -1842,12 +1842,13 @@ impl<T: ObjectType> ObjectExt for T {
         let signal_name = signal_id.name();
 
         let signal_query_type = signal_query.type_();
-        if !type_.is_a(signal_query_type) {
-            panic!(
-                "Signal '{}' of type '{}' but got type '{}'",
-                signal_name, type_, signal_query_type
-            );
-        }
+        assert!(
+            type_.is_a(signal_query_type),
+            "Signal '{}' of type '{}' but got type '{}'",
+            signal_name,
+            type_,
+            signal_query_type
+        );
 
         let closure = if return_type == Type::UNIT {
             Closure::new_unsafe(move |values| {
@@ -1896,16 +1897,14 @@ impl<T: ObjectType> ObjectExt for T {
                 });
 
                 let actual_type = opt_obj.map_or_else(|| ret.type_(), |obj| obj.type_());
-                if !actual_type.is_a(return_type) {
-                    panic!(
-                        "Signal '{}' of type '{}' required return value of type '{}' but got '{}' (actual '{}')",
-                        signal_name,
-                        type_,
-                        return_type,
-                        ret.type_(),
-                        actual_type
-                    );
-                }
+                assert!(actual_type.is_a(return_type),
+                    "Signal '{}' of type '{}' required return value of type '{}' but got '{}' (actual '{}')",
+                    signal_name,
+                    type_,
+                    return_type,
+                    ret.type_(),
+                    actual_type
+                );
 
                 ret.0.g_type = return_type.into_glib();
                 Some(ret)
@@ -2551,9 +2550,10 @@ impl<T: ObjectType> SendWeakRef<T> {
     }
 
     pub fn into_weak_ref(self) -> WeakRef<T> {
-        if self.1.is_some() && self.1 != Some(thread_id()) {
-            panic!("SendWeakRef dereferenced on a different thread");
-        }
+        assert!(
+            self.1.is_none() || self.1 == Some(thread_id()),
+            "SendWeakRef dereferenced on a different thread",
+        );
 
         self.0
     }
@@ -2563,9 +2563,10 @@ impl<T: ObjectType> ops::Deref for SendWeakRef<T> {
     type Target = WeakRef<T>;
 
     fn deref(&self) -> &WeakRef<T> {
-        if self.1.is_some() && self.1 != Some(thread_id()) {
-            panic!("SendWeakRef dereferenced on a different thread");
-        }
+        assert!(
+            self.1.is_none() || self.1 == Some(thread_id()),
+            "SendWeakRef dereferenced on a different thread"
+        );
 
         &self.0
     }

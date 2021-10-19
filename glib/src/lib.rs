@@ -183,17 +183,19 @@ impl<T> ThreadGuard<T> {
     }
 
     pub(crate) fn get_ref(&self) -> &T {
-        if self.thread_id != thread_id() {
-            panic!("Value accessed from different thread than where it was created");
-        }
+        assert!(
+            self.thread_id == thread_id(),
+            "Value accessed from different thread than where it was created"
+        );
 
         &self.value
     }
 
     pub(crate) fn get_mut(&mut self) -> &mut T {
-        if self.thread_id != thread_id() {
-            panic!("Value accessed from different thread than where it was created");
-        }
+        assert!(
+            self.thread_id == thread_id(),
+            "Value accessed from different thread than where it was created"
+        );
 
         &mut self.value
     }
@@ -201,9 +203,10 @@ impl<T> ThreadGuard<T> {
 
 impl<T> Drop for ThreadGuard<T> {
     fn drop(&mut self) {
-        if self.thread_id != thread_id() {
-            panic!("Value dropped on a different thread than where it was created");
-        }
+        assert!(
+            self.thread_id == thread_id(),
+            "Value dropped on a different thread than where it was created"
+        );
     }
 }
 

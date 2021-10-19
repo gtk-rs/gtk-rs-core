@@ -43,12 +43,12 @@ pub fn register_boxed_type<T: BoxedType>() -> crate::Type {
         use std::ffi::CString;
 
         let type_name = CString::new(T::NAME).unwrap();
-        if gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID {
-            panic!(
-                "Type {} has already been registered",
-                type_name.to_str().unwrap()
-            );
-        }
+        assert_eq!(
+            gobject_ffi::g_type_from_name(type_name.as_ptr()),
+            gobject_ffi::G_TYPE_INVALID,
+            "Type {} has already been registered",
+            type_name.to_str().unwrap()
+        );
 
         from_glib(gobject_ffi::g_boxed_type_register_static(
             type_name.as_ptr(),

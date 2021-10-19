@@ -140,7 +140,7 @@ pub fn parse_item_attributes(attr_name: &str, attrs: &[Attribute]) -> Result<Vec
         Some(meta) => meta
             .nested
             .iter()
-            .map(|m| parse_item_attribute(m))
+            .map(parse_item_attribute)
             .collect::<Result<Vec<_>, _>>()?,
         None => Vec::new(),
     };
