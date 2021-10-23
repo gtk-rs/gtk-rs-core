@@ -67,7 +67,6 @@ mod alias;
 pub use self::alias::DateDay;
 pub use self::alias::DateYear;
 pub use self::alias::Time;
-pub use self::alias::TimeSpan;
 
 pub mod functions;
 
