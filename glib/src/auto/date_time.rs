@@ -153,8 +153,11 @@ impl DateTime {
     #[doc(alias = "g_date_time_add")]
     pub fn add(&self, timespan: TimeSpan) -> Result<DateTime, BoolError> {
         unsafe {
-            Option::<_>::from_glib_full(ffi::g_date_time_add(self.to_glib_none().0, timespan))
-                .ok_or_else(|| crate::bool_error!("Invalid date"))
+            Option::<_>::from_glib_full(ffi::g_date_time_add(
+                self.to_glib_none().0,
+                timespan.into_glib(),
+            ))
+            .ok_or_else(|| crate::bool_error!("Invalid date"))
         }
     }
 
@@ -256,7 +259,12 @@ impl DateTime {
 
     #[doc(alias = "g_date_time_difference")]
     pub fn difference(&self, begin: &DateTime) -> TimeSpan {
-        unsafe { ffi::g_date_time_difference(self.to_glib_none().0, begin.to_glib_none().0) }
+        unsafe {
+            from_glib(ffi::g_date_time_difference(
+                self.to_glib_none().0,
+                begin.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "g_date_time_equal")]
@@ -365,7 +373,7 @@ impl DateTime {
     #[doc(alias = "g_date_time_get_utc_offset")]
     #[doc(alias = "get_utc_offset")]
     pub fn utc_offset(&self) -> TimeSpan {
-        unsafe { ffi::g_date_time_get_utc_offset(self.to_glib_none().0) }
+        unsafe { from_glib(ffi::g_date_time_get_utc_offset(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_date_time_get_week_numbering_year")]

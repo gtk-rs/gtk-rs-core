@@ -8,4 +8,3 @@ use crate::auto::*;
 pub type DateDay = u8;
 pub type DateYear = u16;
 pub type Time = i32;
-pub type TimeSpan = i64;
