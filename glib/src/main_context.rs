@@ -161,7 +161,7 @@ impl MainContext {
             if ret {
                 Ok(MainContextAcquireGuard(self))
             } else {
-                Err(bool_error!("Failed to acquire ownership of main context"))
+                Err(bool_error!("Failed to acquire ownership of main context, already acquired by another thread"))
             }
         }
     }

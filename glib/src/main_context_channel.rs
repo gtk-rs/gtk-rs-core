@@ -531,7 +531,9 @@ impl<T> Receiver<T> {
                 None => MainContext::ref_thread_default(),
             };
 
-            assert!(context.is_owner());
+            let _acquire = context
+                .acquire()
+                .expect("main context already acquired by another thread");
             source.attach(Some(&context))
         }
     }

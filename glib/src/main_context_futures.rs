@@ -280,10 +280,9 @@ impl MainContext {
         priority: Priority,
         f: F,
     ) {
-        assert!(
-            self.is_owner(),
-            "Spawning local futures only allowed on the thread owning the MainContext"
-        );
+        let _acquire = self
+            .acquire()
+            .expect("Spawning local futures only allowed on the thread owning the MainContext");
         let f = LocalFutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::NonSend(ThreadGuard::new(f)));
         source.attach(Some(&*self));
