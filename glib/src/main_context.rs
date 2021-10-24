@@ -94,11 +94,13 @@ impl MainContext {
     /// or otherwise panics immediately. If this behaviour is not desired and `func` should always
     /// be called asynchronously then use [`MainContext::spawn_local`]
     /// [`glib::idle_add_local`](crate::idle_add_local) instead.
+    #[allow(clippy::if_same_then_else)]
     pub fn invoke_local_with_priority<F>(&self, _priority: Priority, func: F)
     where
         F: FnOnce() + 'static,
     {
         // Checks from `g_main_context_invoke_full()`
+        // FIXME: Combine the first two cases somehow
         if self.is_owner() {
             func();
         } else if let Ok(_acquire) = self.acquire() {
