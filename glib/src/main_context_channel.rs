@@ -177,7 +177,8 @@ impl<T> Channel<T> {
         Ok(())
     }
 
-    fn try_recv(&self) -> Result<T, mpsc::TryRecvError> {
+    // SAFETY: Must be called from the main context the channel was attached to.
+    unsafe fn try_recv(&self) -> Result<T, mpsc::TryRecvError> {
         let mut inner = (self.0).0.lock().unwrap();
 
         // Pop item if we have any
