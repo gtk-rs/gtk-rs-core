@@ -8,8 +8,6 @@ fn main() {
     let c = glib::MainContext::default();
     let l = glib::MainLoop::new(Some(&c), false);
 
-    c.push_thread_default();
-
     let file = gio::File::for_path("Cargo.toml");
 
     let l_clone = l.clone();
@@ -27,8 +25,6 @@ fn main() {
     );
 
     l.run();
-
-    c.pop_thread_default();
 }
 
 /// Throughout our chained futures, we convert all errors to strings
