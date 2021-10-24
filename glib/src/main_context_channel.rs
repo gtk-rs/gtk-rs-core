@@ -508,14 +508,13 @@ impl<T> Receiver<T> {
             }
 
             let source = Source::from_glib_full(mut_override(&(*source).source));
-            if let Some(context) = context {
-                assert!(context.is_owner());
-                source.attach(Some(context))
-            } else {
-                let context = MainContext::ref_thread_default();
-                assert!(context.is_owner());
-                source.attach(Some(&context))
-            }
+            let context = match context {
+                Some(context) => context.clone(),
+                None => MainContext::ref_thread_default(),
+            };
+
+            assert!(context.is_owner());
+            source.attach(Some(&context))
         }
     }
 }
