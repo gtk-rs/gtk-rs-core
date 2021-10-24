@@ -161,8 +161,8 @@ pub const CLONE_MACRO_LOG_DOMAIN: &str = "glib-rs-clone";
 // Taken from the fragile crate
 use std::sync::atomic::{AtomicUsize, Ordering};
 fn next_thread_id() -> usize {
-    static mut COUNTER: AtomicUsize = AtomicUsize::new(0);
-    unsafe { COUNTER.fetch_add(1, Ordering::SeqCst) }
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    COUNTER.fetch_add(1, Ordering::SeqCst)
 }
 
 #[doc(alias = "get_thread_id")]
