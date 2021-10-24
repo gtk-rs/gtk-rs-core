@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::{from_glib_borrow, from_glib_full, mut_override, Borrowed, IntoGlib};
+use crate::translate::*;
 use crate::ThreadGuard;
 use futures_core::future::Future;
 use futures_core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
@@ -73,9 +73,34 @@ impl TaskSource {
     unsafe extern "C" fn finalize(source: *mut ffi::GSource) {
         let source = source as *mut TaskSource;
 
-        // This will panic if the future was a local future and is dropped from
-        // a different thread than where it was created.
-        ptr::drop_in_place(&mut (*source).future);
+        // This will panic if the future was a local future and is dropped from a different thread
+        // than where it was created so try to drop it from the main context if we're on another
+        // thread and the main context still exists.
+        //
+        // This can only really happen if the `Source` was manually retrieve from the context, but
+        // better safe than sorry.
+        match (*source).future {
+            FutureWrapper::Send(_) => {
+                ptr::drop_in_place(&mut (*source).future);
+            }
+            FutureWrapper::NonSend(ref mut future) if future.is_owner() => {
+                ptr::drop_in_place(&mut (*source).future);
+            }
+            FutureWrapper::NonSend(ref mut future) => {
+                let context =
+                    ffi::g_source_get_context(source as *mut TaskSource as *mut ffi::GSource);
+                if !context.is_null() {
+                    let future = ptr::read(future);
+                    let context = MainContext::from_glib_none(context);
+                    context.invoke(move || {
+                        drop(future);
+                    });
+                } else {
+                    // This will panic
+                    ptr::drop_in_place(&mut (*source).future);
+                }
+            }
+        }
 
         // Drop the waker to unref the underlying GSource
         ptr::drop_in_place(&mut (*source).waker);

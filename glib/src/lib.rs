@@ -201,6 +201,11 @@ impl<T> ThreadGuard<T> {
 
         &mut self.value
     }
+
+    /// Returns `true` if the current thread owns the value, i.e. it can be accessed safely.
+    pub(crate) fn is_owner(&self) -> bool {
+        self.thread_id == thread_id()
+    }
 }
 
 impl<T> Drop for ThreadGuard<T> {

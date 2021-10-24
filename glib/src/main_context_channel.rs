@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::{mut_override, FromGlibPtrFull, IntoGlib};
+use crate::translate::*;
 use crate::Continue;
 use crate::MainContext;
 use crate::Priority;
@@ -297,8 +297,26 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
     let _ = source.source_funcs.take();
 
     // Take the callback out of the source. This will panic if the value is dropped
-    // from a different thread than where the callback was created
-    let _ = source.callback.take();
+    // from a different thread than where the callback was created so try to drop it
+    // from the main context if we're on another thread and the main context still exists.
+    //
+    // This can only really happen if the caller to `attach()` gets the `Source` from the returned
+    // `SourceId` and sends it to another thread or otherwise retrieves it from the main context,
+    // but better safe than sorry.
+    let callback = source
+        .callback
+        .take()
+        .expect("channel source finalized twice");
+    if !callback.is_owner() {
+        let context =
+            ffi::g_source_get_context(source as *mut ChannelSource<T, F> as *mut ffi::GSource);
+        if !context.is_null() {
+            let context = MainContext::from_glib_none(context);
+            context.invoke(move || {
+                drop(callback);
+            });
+        }
+    }
 }
 
 /// A `Sender` that can be used to send items to the corresponding main context receiver.
