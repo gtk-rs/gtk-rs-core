@@ -310,6 +310,10 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
 /// [`MainContext::channel()`]: struct.MainContext.html#method.channel
 pub struct Sender<T>(Channel<T>);
 
+// It's safe to send the Sender to other threads for attaching it as
+// long as the items to be sent can also be sent between threads.
+unsafe impl<T: Send> Send for Sender<T> {}
+
 impl<T> fmt::Debug for Sender<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Sender").finish()
@@ -355,6 +359,10 @@ impl<T> Drop for Sender<T> {
 ///
 /// [`MainContext::sync_channel()`]: struct.MainContext.html#method.sync_channel
 pub struct SyncSender<T>(Channel<T>);
+
+// It's safe to send the SyncSender to other threads for attaching it as
+// long as the items to be sent can also be sent between threads.
+unsafe impl<T: Send> Send for SyncSender<T> {}
 
 impl<T> fmt::Debug for SyncSender<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
