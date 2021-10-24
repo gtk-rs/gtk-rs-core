@@ -3,7 +3,7 @@
 use glib::*;
 use std::sync::mpsc::{channel, Sender};
 
-#[allow(dead_code)]
+#[cfg(test)]
 pub fn run_async<T: Send + 'static, Q: FnOnce(Sender<T>, MainLoop) + Send + 'static>(
     start: Q,
 ) -> T {
@@ -13,18 +13,16 @@ pub fn run_async<T: Send + 'static, Q: FnOnce(Sender<T>, MainLoop) + Send + 'sta
 
     let (tx, rx) = channel();
 
-    c.push_thread_default();
-    c.invoke(move || {
+    c.spawn(async move {
         start(tx, l_clone);
     });
 
     l.run();
-    c.pop_thread_default();
 
     rx.recv().unwrap()
 }
 
-#[allow(dead_code)]
+#[cfg(test)]
 pub fn run_async_local<T: 'static, Q: FnOnce(Sender<T>, MainLoop) + Send + 'static>(start: Q) -> T {
     let c = MainContext::new();
     let l = MainLoop::new(Some(&c), false);
@@ -32,13 +30,11 @@ pub fn run_async_local<T: 'static, Q: FnOnce(Sender<T>, MainLoop) + Send + 'stat
 
     let (tx, rx) = channel();
 
-    c.push_thread_default();
-    c.invoke_local(move || {
+    c.spawn_local(async move {
         start(tx, l_clone);
     });
 
     l.run();
-    c.pop_thread_default();
 
     rx.recv().unwrap()
 }
