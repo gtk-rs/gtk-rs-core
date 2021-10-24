@@ -196,14 +196,16 @@ impl TaskSource {
             "Polling futures only allowed if the thread is owning the MainContext"
         );
 
-        executor.with_thread_default(|| {
-            let _enter = futures_executor::enter().unwrap();
-            let mut context = Context::from_waker(&self.waker);
+        executor
+            .with_thread_default(|| {
+                let _enter = futures_executor::enter().unwrap();
+                let mut context = Context::from_waker(&self.waker);
 
-            // This will panic if the future was a local future and is called from
-            // a different thread than where it was created.
-            Pin::new(&mut self.future).poll(&mut context)
-        })
+                // This will panic if the future was a local future and is called from
+                // a different thread than where it was created.
+                Pin::new(&mut self.future).poll(&mut context)
+            })
+            .expect("current thread is not owner of the main context")
     }
 }
 
@@ -222,7 +224,7 @@ impl MainContext {
     ///
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
-    /// `push_thread_default` or `acquire` on the main context.
+    /// `with_thread_default` or `acquire` on the main context.
     pub fn spawn_local<F: Future<Output = ()> + 'static>(&self, f: F) {
         self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f);
     }
@@ -247,7 +249,7 @@ impl MainContext {
     ///
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
-    /// `push_thread_default` or `acquire` on the main context.
+    /// `with_thread_default` or `acquire` on the main context.
     pub fn spawn_local_with_priority<F: Future<Output = ()> + 'static>(
         &self,
         priority: Priority,
@@ -362,15 +364,15 @@ mod tests {
         let c = MainContext::new();
         let l = crate::MainLoop::new(Some(&c), false);
 
-        c.push_thread_default();
-        let l_clone = l.clone();
-        c.spawn_local(futures_util::future::lazy(move |_ctx| {
-            l_clone.quit();
-        }));
+        c.with_thread_default(|| {
+            let l_clone = l.clone();
+            c.spawn_local(futures_util::future::lazy(move |_ctx| {
+                l_clone.quit();
+            }));
 
-        l.run();
-
-        c.pop_thread_default();
+            l.run();
+        })
+        .unwrap();
     }
 
     #[test]

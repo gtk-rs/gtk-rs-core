@@ -133,23 +133,27 @@ impl MainContext {
         )
     }
 
-    /// Calls closure with context configured as the thread default one.
+    /// Call closure with the main context configured as the thread default one.
     ///
-    /// Thread default context is changed in panic-safe manner by calling
-    /// [`push_thread_default`][push_thread_default] before calling closure
-    /// and [`pop_thread_default`][pop_thread_default] afterwards regardless
-    /// of whether closure panicked or not.
+    /// The thread default main context is changed in a panic-safe manner before calling `func` and
+    /// released again afterwards regardless of whether closure panicked or not.
     ///
-    /// [push_thread_default]: struct.MainContext.html#method.push_thread_default
-    /// [pop_thread_default]: struct.MainContext.html#method.pop_thread_default
-    pub fn with_thread_default<R, F: Sized>(&self, func: F) -> R
+    /// This will fail if the main context is owned already by another thread.
+    #[doc(alias = "g_main_context_push_thread_default")]
+    pub fn with_thread_default<R, F: Sized>(&self, func: F) -> Result<R, crate::BoolError>
     where
         F: FnOnce() -> R,
     {
+        let _acquire = self.acquire()?;
         let _thread_default = ThreadDefaultContext::new(self);
-        func()
+        Ok(func())
     }
 
+    /// Acquire ownership of the main context.
+    ///
+    /// Ownership will automatically be released again once the returned acquire guard is dropped.
+    ///
+    /// This will fail if the main context is owned already by another thread.
     #[doc(alias = "g_main_context_acquire")]
     pub fn acquire(&self) -> Result<MainContextAcquireGuard, crate::BoolError> {
         unsafe {
@@ -157,7 +161,7 @@ impl MainContext {
             if ret {
                 Ok(MainContextAcquireGuard(self))
             } else {
-                Err(bool_error!("Failed to acquire main context"))
+                Err(bool_error!("Failed to acquire ownership of main context"))
             }
         }
     }
@@ -179,14 +183,18 @@ struct ThreadDefaultContext<'a>(&'a MainContext);
 
 impl<'a> ThreadDefaultContext<'a> {
     fn new(ctx: &MainContext) -> ThreadDefaultContext {
-        ctx.push_thread_default();
+        unsafe {
+            ffi::g_main_context_push_thread_default(ctx.to_glib_none().0);
+        }
         ThreadDefaultContext(ctx)
     }
 }
 
 impl<'a> Drop for ThreadDefaultContext<'a> {
     fn drop(&mut self) {
-        self.0.pop_thread_default();
+        unsafe {
+            ffi::g_main_context_pop_thread_default(self.0.to_glib_none().0);
+        }
     }
 }
 
@@ -228,11 +236,13 @@ mod tests {
             b.with_thread_default(|| {
                 let t = MainContext::thread_default().unwrap();
                 assert!(is_same_context(&b, &t));
-            });
+            })
+            .unwrap();
 
             let t = MainContext::thread_default().unwrap();
             assert!(is_same_context(&a, &t));
-        });
+        })
+        .unwrap();
     }
 
     #[test]
@@ -249,12 +259,14 @@ mod tests {
             let result = panic::catch_unwind(|| {
                 b.with_thread_default(|| {
                     panic!();
-                });
+                })
+                .unwrap();
             });
             assert!(result.is_err());
 
             let t = MainContext::thread_default().unwrap();
             assert!(is_same_context(&a, &t));
-        });
+        })
+        .unwrap();
     }
 }
