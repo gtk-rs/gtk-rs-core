@@ -34,6 +34,12 @@ impl MainContext {
     }
 
     /// Invokes `func` on the main context.
+    ///
+    /// If the current thread is the owner of the main context or the main context currently has no
+    /// owner then `func` will be called directly from inside this function. If this behaviour is
+    /// not desired and `func` should always be called asynchronously then use [`MainContext::spawn`]
+    /// [`glib::idle_add`](crate::idle_add) instead.
+    #[doc(alias = "g_main_context_invoke")]
     pub fn invoke<F>(&self, func: F)
     where
         F: FnOnce() + Send + 'static,
@@ -42,6 +48,12 @@ impl MainContext {
     }
 
     /// Invokes `func` on the main context with the given priority.
+    ///
+    /// If the current thread is the owner of the main context or the main context currently has no
+    /// owner then `func` will be called directly from inside this function. If this behaviour is
+    /// not desired and `func` should always be called asynchronously then use [`MainContext::spawn`]
+    /// [`glib::idle_add`](crate::idle_add) instead.
+    #[doc(alias = "g_main_context_invoke_full")]
     pub fn invoke_with_priority<F>(&self, priority: Priority, func: F)
     where
         F: FnOnce() + Send + 'static,
@@ -58,6 +70,11 @@ impl MainContext {
     ///
     /// This function panics if called from a different thread than the one that
     /// owns the main context.
+    ///
+    /// Note that this effectively means that `func` is called directly from inside this function
+    /// or otherwise panics immediately. If this behaviour is not desired and `func` should always
+    /// be called asynchronously then use [`MainContext::spawn_local`]
+    /// [`glib::idle_add_local`](crate::idle_add_local) instead.
     pub fn invoke_local<F>(&self, func: F)
     where
         F: FnOnce() + 'static,
@@ -72,17 +89,25 @@ impl MainContext {
     ///
     /// This function panics if called from a different thread than the one that
     /// owns the main context.
-    pub fn invoke_local_with_priority<F>(&self, priority: Priority, func: F)
+    ///
+    /// Note that this effectively means that `func` is called directly from inside this function
+    /// or otherwise panics immediately. If this behaviour is not desired and `func` should always
+    /// be called asynchronously then use [`MainContext::spawn_local`]
+    /// [`glib::idle_add_local`](crate::idle_add_local) instead.
+    pub fn invoke_local_with_priority<F>(&self, _priority: Priority, func: F)
     where
         F: FnOnce() + 'static,
     {
-        unsafe {
-            assert!(self.is_owner());
-            self.invoke_unsafe(priority, func);
+        // Checks from `g_main_context_invoke_full()`
+        if self.is_owner() {
+            func();
+        } else if let Ok(_acquire) = self.acquire() {
+            func();
+        } else {
+            panic!("Must be called from a thread that owns the main context");
         }
     }
 
-    #[doc(alias = "g_main_context_invoke_full")]
     unsafe fn invoke_unsafe<F>(&self, priority: Priority, func: F)
     where
         F: FnOnce() + 'static,
