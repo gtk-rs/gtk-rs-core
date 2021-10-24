@@ -131,7 +131,6 @@ unsafe impl Sync for WakerSource {}
 
 impl TaskSource {
     #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_source_new")]
     fn new(priority: Priority, future: FutureWrapper) -> Source {
         unsafe {
             static TASK_SOURCE_FUNCS: ffi::GSourceFuncs = ffi::GSourceFuncs {
