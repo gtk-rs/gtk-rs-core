@@ -13,7 +13,6 @@ fn main() {
     let (send_unsafe, recv_unsafe) = oneshot::channel();
     let (send_threaded, recv_threaded) = oneshot::channel();
 
-    main_context.push_thread_default();
     main_context.invoke_local(move || {
         run_unsafe(send_unsafe);
     });
@@ -32,7 +31,6 @@ fn main() {
     }));
 
     main_loop.run();
-    main_context.pop_thread_default();
 }
 
 // This function mimicks what the C code using the exported async/finish API would do. It first defines a

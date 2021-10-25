@@ -15,6 +15,7 @@ use std::time::Duration;
 
 use crate::MainContext;
 use crate::Source;
+use crate::ThreadGuard;
 
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
 ///
@@ -99,21 +100,39 @@ impl IntoGlib for Continue {
     }
 }
 
-unsafe extern "C" fn trampoline<F: FnMut() -> Continue + 'static>(func: gpointer) -> gboolean {
+unsafe extern "C" fn trampoline<F: FnMut() -> Continue + Send + 'static>(
+    func: gpointer,
+) -> gboolean {
     let func: &RefCell<F> = &*(func as *const RefCell<F>);
     (&mut *func.borrow_mut())().into_glib()
 }
 
-unsafe extern "C" fn destroy_closure<F: FnMut() -> Continue + 'static>(ptr: gpointer) {
+unsafe extern "C" fn trampoline_local<F: FnMut() -> Continue + 'static>(
+    func: gpointer,
+) -> gboolean {
+    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+    (&mut *func.get_ref().borrow_mut())().into_glib()
+}
+
+unsafe extern "C" fn destroy_closure<F: FnMut() -> Continue + Send + 'static>(ptr: gpointer) {
     Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
-fn into_raw<F: FnMut() -> Continue + 'static>(func: F) -> gpointer {
+unsafe extern "C" fn destroy_closure_local<F: FnMut() -> Continue + 'static>(ptr: gpointer) {
+    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+}
+
+fn into_raw<F: FnMut() -> Continue + Send + 'static>(func: F) -> gpointer {
     let func: Box<RefCell<F>> = Box::new(RefCell::new(func));
     Box::into_raw(func) as gpointer
 }
 
-unsafe extern "C" fn trampoline_child_watch<F: FnMut(Pid, i32) + 'static>(
+fn into_raw_local<F: FnMut() -> Continue + 'static>(func: F) -> gpointer {
+    let func: Box<ThreadGuard<RefCell<F>>> = Box::new(ThreadGuard::new(RefCell::new(func)));
+    Box::into_raw(func) as gpointer
+}
+
+unsafe extern "C" fn trampoline_child_watch<F: FnMut(Pid, i32) + Send + 'static>(
     pid: ffi::GPid,
     status: i32,
     func: gpointer,
@@ -122,18 +141,42 @@ unsafe extern "C" fn trampoline_child_watch<F: FnMut(Pid, i32) + 'static>(
     (&mut *func.borrow_mut())(Pid(pid), status)
 }
 
-unsafe extern "C" fn destroy_closure_child_watch<F: FnMut(Pid, i32) + 'static>(ptr: gpointer) {
+unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
+    pid: ffi::GPid,
+    status: i32,
+    func: gpointer,
+) {
+    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+    (&mut *func.get_ref().borrow_mut())(Pid(pid), status)
+}
+
+unsafe extern "C" fn destroy_closure_child_watch<F: FnMut(Pid, i32) + Send + 'static>(
+    ptr: gpointer,
+) {
     Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
-fn into_raw_child_watch<F: FnMut(Pid, i32) + 'static>(func: F) -> gpointer {
+unsafe extern "C" fn destroy_closure_child_watch_local<F: FnMut(Pid, i32) + 'static>(
+    ptr: gpointer,
+) {
+    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+}
+
+fn into_raw_child_watch<F: FnMut(Pid, i32) + Send + 'static>(func: F) -> gpointer {
     let func: Box<RefCell<F>> = Box::new(RefCell::new(func));
+    Box::into_raw(func) as gpointer
+}
+
+fn into_raw_child_watch_local<F: FnMut(Pid, i32) + 'static>(func: F) -> gpointer {
+    let func: Box<ThreadGuard<RefCell<F>>> = Box::new(ThreadGuard::new(RefCell::new(func)));
     Box::into_raw(func) as gpointer
 }
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-unsafe extern "C" fn trampoline_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(
+unsafe extern "C" fn trampoline_unix_fd<
+    F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static,
+>(
     fd: i32,
     condition: ffi::GIOCondition,
     func: gpointer,
@@ -144,7 +187,22 @@ unsafe extern "C" fn trampoline_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-unsafe extern "C" fn destroy_closure_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(
+unsafe extern "C" fn trampoline_unix_fd_local<
+    F: FnMut(RawFd, IOCondition) -> Continue + 'static,
+>(
+    fd: i32,
+    condition: ffi::GIOCondition,
+    func: gpointer,
+) -> gboolean {
+    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+    (&mut *func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
+}
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+unsafe extern "C" fn destroy_closure_unix_fd<
+    F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static,
+>(
     ptr: gpointer,
 ) {
     Box::<RefCell<F>>::from_raw(ptr as *mut _);
@@ -152,8 +210,27 @@ unsafe extern "C" fn destroy_closure_unix_fd<F: FnMut(RawFd, IOCondition) -> Con
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(func: F) -> gpointer {
+unsafe extern "C" fn destroy_closure_unix_fd_local<
+    F: FnMut(RawFd, IOCondition) -> Continue + 'static,
+>(
+    ptr: gpointer,
+) {
+    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+}
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static>(
+    func: F,
+) -> gpointer {
     let func: Box<RefCell<F>> = Box::new(RefCell::new(func));
+    Box::into_raw(func) as gpointer
+}
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+fn into_raw_unix_fd_local<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(func: F) -> gpointer {
+    let func: Box<ThreadGuard<RefCell<F>>> = Box::new(ThreadGuard::new(RefCell::new(func)));
     Box::into_raw(func) as gpointer
 }
 
@@ -245,19 +322,22 @@ where
 /// `Send` but can only be called from the thread that owns the main context.
 ///
 /// This function panics if called from a different thread than the one that
-/// owns the main context.
+/// owns the default main context.
 #[doc(alias = "g_idle_add_full")]
 pub fn idle_add_local<F>(func: F) -> SourceId
 where
     F: FnMut() -> Continue + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
-            Some(trampoline::<F>),
-            into_raw(func),
-            Some(destroy_closure::<F>),
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
         ))
     }
 }
@@ -354,13 +434,16 @@ where
     F: FnMut() -> Continue + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
             interval.as_millis() as _,
-            Some(trampoline::<F>),
-            into_raw(func),
-            Some(destroy_closure::<F>),
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
         ))
     }
 }
@@ -458,13 +541,16 @@ where
     F: FnMut() -> Continue + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
             interval,
-            Some(trampoline::<F>),
-            into_raw(func),
-            Some(destroy_closure::<F>),
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
         ))
     }
 }
@@ -531,13 +617,16 @@ where
     F: FnMut(Pid, i32) + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
             pid.0,
-            Some(trampoline_child_watch::<F>),
-            into_raw_child_watch(func),
-            Some(destroy_closure_child_watch::<F>),
+            Some(trampoline_child_watch_local::<F>),
+            into_raw_child_watch_local(func),
+            Some(destroy_closure_child_watch_local::<F>),
         ))
     }
 }
@@ -608,13 +697,16 @@ where
     F: FnMut() -> Continue + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
             signum,
-            Some(trampoline::<F>),
-            into_raw(func),
-            Some(destroy_closure::<F>),
+            Some(trampoline_local::<F>),
+            into_raw_local(func),
+            Some(destroy_closure_local::<F>),
         ))
     }
 }
@@ -694,14 +786,17 @@ where
     F: FnMut(RawFd, IOCondition) -> Continue + 'static,
 {
     unsafe {
-        assert!(MainContext::default().is_owner());
+        let context = MainContext::default();
+        let _acquire = context
+            .acquire()
+            .expect("default main context already acquired by another thread");
         from_glib(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
             fd,
             condition.into_glib(),
-            Some(trampoline_unix_fd::<F>),
-            into_raw_unix_fd(func),
-            Some(destroy_closure_unix_fd::<F>),
+            Some(trampoline_unix_fd_local::<F>),
+            into_raw_unix_fd_local(func),
+            Some(destroy_closure_unix_fd_local::<F>),
         ))
     }
 }

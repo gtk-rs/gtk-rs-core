@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::{from_glib_borrow, from_glib_full, mut_override, Borrowed, IntoGlib};
+use crate::translate::*;
 use crate::ThreadGuard;
 use futures_core::future::Future;
 use futures_core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
@@ -73,9 +73,34 @@ impl TaskSource {
     unsafe extern "C" fn finalize(source: *mut ffi::GSource) {
         let source = source as *mut TaskSource;
 
-        // This will panic if the future was a local future and is dropped from
-        // a different thread than where it was created.
-        ptr::drop_in_place(&mut (*source).future);
+        // This will panic if the future was a local future and is dropped from a different thread
+        // than where it was created so try to drop it from the main context if we're on another
+        // thread and the main context still exists.
+        //
+        // This can only really happen if the `Source` was manually retrieve from the context, but
+        // better safe than sorry.
+        match (*source).future {
+            FutureWrapper::Send(_) => {
+                ptr::drop_in_place(&mut (*source).future);
+            }
+            FutureWrapper::NonSend(ref mut future) if future.is_owner() => {
+                ptr::drop_in_place(&mut (*source).future);
+            }
+            FutureWrapper::NonSend(ref mut future) => {
+                let context =
+                    ffi::g_source_get_context(source as *mut TaskSource as *mut ffi::GSource);
+                if !context.is_null() {
+                    let future = ptr::read(future);
+                    let context = MainContext::from_glib_none(context);
+                    context.invoke(move || {
+                        drop(future);
+                    });
+                } else {
+                    // This will panic
+                    ptr::drop_in_place(&mut (*source).future);
+                }
+            }
+        }
 
         // Drop the waker to unref the underlying GSource
         ptr::drop_in_place(&mut (*source).waker);
@@ -131,7 +156,7 @@ unsafe impl Sync for WakerSource {}
 
 impl TaskSource {
     #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_source_new")]
+    // checker-ignore-item
     fn new(priority: Priority, future: FutureWrapper) -> Source {
         unsafe {
             static TASK_SOURCE_FUNCS: ffi::GSourceFuncs = ffi::GSourceFuncs {
@@ -197,14 +222,16 @@ impl TaskSource {
             "Polling futures only allowed if the thread is owning the MainContext"
         );
 
-        executor.with_thread_default(|| {
-            let _enter = futures_executor::enter().unwrap();
-            let mut context = Context::from_waker(&self.waker);
+        executor
+            .with_thread_default(|| {
+                let _enter = futures_executor::enter().unwrap();
+                let mut context = Context::from_waker(&self.waker);
 
-            // This will panic if the future was a local future and is called from
-            // a different thread than where it was created.
-            Pin::new(&mut self.future).poll(&mut context)
-        })
+                // This will panic if the future was a local future and is called from
+                // a different thread than where it was created.
+                Pin::new(&mut self.future).poll(&mut context)
+            })
+            .expect("current thread is not owner of the main context")
     }
 }
 
@@ -223,7 +250,7 @@ impl MainContext {
     ///
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
-    /// `push_thread_default` or `acquire` on the main context.
+    /// `with_thread_default` or `acquire` on the main context.
     pub fn spawn_local<F: Future<Output = ()> + 'static>(&self, f: F) {
         self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f);
     }
@@ -248,16 +275,15 @@ impl MainContext {
     ///
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
-    /// `push_thread_default` or `acquire` on the main context.
+    /// `with_thread_default` or `acquire` on the main context.
     pub fn spawn_local_with_priority<F: Future<Output = ()> + 'static>(
         &self,
         priority: Priority,
         f: F,
     ) {
-        assert!(
-            self.is_owner(),
-            "Spawning local futures only allowed on the thread owning the MainContext"
-        );
+        let _acquire = self
+            .acquire()
+            .expect("Spawning local futures only allowed on the thread owning the MainContext");
         let f = LocalFutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::NonSend(ThreadGuard::new(f)));
         source.attach(Some(&*self));
@@ -363,15 +389,15 @@ mod tests {
         let c = MainContext::new();
         let l = crate::MainLoop::new(Some(&c), false);
 
-        c.push_thread_default();
-        let l_clone = l.clone();
-        c.spawn_local(futures_util::future::lazy(move |_ctx| {
-            l_clone.quit();
-        }));
+        c.with_thread_default(|| {
+            let l_clone = l.clone();
+            c.spawn_local(futures_util::future::lazy(move |_ctx| {
+                l_clone.quit();
+            }));
 
-        l.run();
-
-        c.pop_thread_default();
+            l.run();
+        })
+        .unwrap();
     }
 
     #[test]

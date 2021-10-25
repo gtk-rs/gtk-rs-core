@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::{mut_override, FromGlibPtrFull, IntoGlib};
+use crate::translate::*;
 use crate::Continue;
 use crate::MainContext;
 use crate::Priority;
@@ -177,7 +177,8 @@ impl<T> Channel<T> {
         Ok(())
     }
 
-    fn try_recv(&self) -> Result<T, mpsc::TryRecvError> {
+    // SAFETY: Must be called from the main context the channel was attached to.
+    unsafe fn try_recv(&self) -> Result<T, mpsc::TryRecvError> {
         let mut inner = (self.0).0.lock().unwrap();
 
         // Pop item if we have any
@@ -296,8 +297,26 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
     let _ = source.source_funcs.take();
 
     // Take the callback out of the source. This will panic if the value is dropped
-    // from a different thread than where the callback was created
-    let _ = source.callback.take();
+    // from a different thread than where the callback was created so try to drop it
+    // from the main context if we're on another thread and the main context still exists.
+    //
+    // This can only really happen if the caller to `attach()` gets the `Source` from the returned
+    // `SourceId` and sends it to another thread or otherwise retrieves it from the main context,
+    // but better safe than sorry.
+    let callback = source
+        .callback
+        .take()
+        .expect("channel source finalized twice");
+    if !callback.is_owner() {
+        let context =
+            ffi::g_source_get_context(source as *mut ChannelSource<T, F> as *mut ffi::GSource);
+        if !context.is_null() {
+            let context = MainContext::from_glib_none(context);
+            context.invoke(move || {
+                drop(callback);
+            });
+        }
+    }
 }
 
 /// A `Sender` that can be used to send items to the corresponding main context receiver.
@@ -308,6 +327,10 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
 ///
 /// [`MainContext::channel()`]: struct.MainContext.html#method.channel
 pub struct Sender<T>(Channel<T>);
+
+// It's safe to send the Sender to other threads for attaching it as
+// long as the items to be sent can also be sent between threads.
+unsafe impl<T: Send> Send for Sender<T> {}
 
 impl<T> fmt::Debug for Sender<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -354,6 +377,10 @@ impl<T> Drop for Sender<T> {
 ///
 /// [`MainContext::sync_channel()`]: struct.MainContext.html#method.sync_channel
 pub struct SyncSender<T>(Channel<T>);
+
+// It's safe to send the SyncSender to other threads for attaching it as
+// long as the items to be sent can also be sent between threads.
+unsafe impl<T: Send> Send for SyncSender<T> {}
 
 impl<T> fmt::Debug for SyncSender<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -499,14 +526,15 @@ impl<T> Receiver<T> {
             }
 
             let source = Source::from_glib_full(mut_override(&(*source).source));
-            if let Some(context) = context {
-                assert!(context.is_owner());
-                source.attach(Some(context))
-            } else {
-                let context = MainContext::ref_thread_default();
-                assert!(context.is_owner());
-                source.attach(Some(&context))
-            }
+            let context = match context {
+                Some(context) => context.clone(),
+                None => MainContext::ref_thread_default(),
+            };
+
+            let _acquire = context
+                .acquire()
+                .expect("main context already acquired by another thread");
+            source.attach(Some(&context))
         }
     }
 }

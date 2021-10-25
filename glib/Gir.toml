@@ -528,12 +528,6 @@ status = "generate"
         name = "key"
         nullable = true
 
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "get_start_group"
-        [object.function.return]
-        nullable = true
-
 [[object]]
 name = "GLib.DateTime"
 status = "generate"
@@ -562,19 +556,7 @@ concurrency = "send+sync"
     manual = true
     [[object.function]]
     name = "invoke_full"
-    ignore = true
-
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "get_thread_default"
-        [object.function.return]
-        nullable = true
-
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "current_source"
-        [object.function.return]
-        nullable = true
+    manual = true
 
     [[object.function]]
     name = "acquire"
@@ -583,6 +565,16 @@ concurrency = "send+sync"
 
     [[object.function]]
     name = "release"
+    # implemented with a guard type
+    manual = true
+
+    [[object.function]]
+    name = "push_thread_default"
+    # implemented with a guard type
+    manual = true
+
+    [[object.function]]
+    name = "pop_thread_default"
     # implemented with a guard type
     manual = true
 
@@ -616,12 +608,6 @@ concurrency = "send+sync"
     # parameter type
     ignore = true
 
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "get_name"
-        [object.function.return]
-        nullable = true
-
 [[object]]
 name = "GLib.TimeSpan"
 status = "manual"
@@ -641,14 +627,3 @@ concurrency = "send+sync"
 name = "GLib.Uri"
 status = "generate"
 concurrency = "send+sync"
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "unescape_string"
-        [object.function.return]
-        nullable = true
-
-    # Fixed in GLib 2.66.2
-    [[object.function]]
-    name = "unescape_segment"
-        [object.function.return]
-        nullable = true
