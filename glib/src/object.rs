@@ -593,14 +593,14 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
 /// ObjectType implementations for Object types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_object_wrapper {
-    (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
         // Always derive Hash/Ord (and below impl Debug, PartialEq, Eq, PartialOrd) for object
         // types. Due to inheritance and up/downcasting we must implement these by pointer or
         // otherwise they would potentially give different results for the same object depending on
         // the type we currently know for it
         #[derive(Clone, Hash, Ord, Eq, Debug)]
-        pub struct $name($crate::object::ObjectRef);
+        $visibility struct $name($crate::object::ObjectRef);
 
         #[doc(hidden)]
         impl From<$name> for $crate::object::ObjectRef {
@@ -1013,27 +1013,27 @@ macro_rules! glib_object_wrapper {
 
     // This case is only for glib::Object itself below. All other cases have glib::Object in its
     // parent class list
-    (@object [$($attr:meta)*] $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr);
 
         #[doc(hidden)]
         unsafe impl $crate::object::IsClass for $name { }
     };
 
-    (@object [$($attr:meta)*] $name:ident, $ffi_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $name, $ffi_name, @ffi_class std::os::raw::c_void,
+            @object [$($attr)*] $visibility $name, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @extends [$($extends)*], @implements [$($implements)*]
         );
     };
 
-    (@object [$($attr:meta)*] $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
         $crate::glib_object_wrapper!(@munch_first_impl $name, $($extends)*);
@@ -1053,10 +1053,10 @@ macro_rules! glib_object_wrapper {
         unsafe impl $crate::object::IsClass for $name { }
     };
 
-    (@object_subclass [$($attr:meta)*] $name:ident, $subclass:ty,
+    (@object_subclass [$($attr:meta)*] $visibility:vis $name:ident, $subclass:ty,
      @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $name,
+            @object [$($attr)*] $visibility $name,
             <$subclass as $crate::subclass::types::ObjectSubclass>::Instance,
             @ffi_class <$subclass as $crate::subclass::types::ObjectSubclass>::Class,
             @type_ $crate::translate::IntoGlib::into_glib(<$subclass as $crate::subclass::types::ObjectSubclassType>::type_()),
@@ -1068,18 +1068,18 @@ macro_rules! glib_object_wrapper {
         }
     };
 
-    (@interface [$($attr:meta)*] $name:ident, $ffi_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $name, $ffi_name, @ffi_class std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @requires [$($requires)*]
         );
     };
 
-    (@interface [$($attr:meta)*] $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
         $crate::glib_object_wrapper!(@munch_impls $name, $($requires)*);
@@ -1101,7 +1101,7 @@ macro_rules! glib_object_wrapper {
 
 glib_object_wrapper!(@object
     [doc = "The base class in the object hierarchy."]
-    Object, GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
+    pub Object, GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
 );
 pub type ObjectClass = Class<Object>;
 

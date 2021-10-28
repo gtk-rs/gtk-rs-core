@@ -12,21 +12,21 @@ use std::ptr;
 /// Wrapper implementations for shared types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_shared_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $crate::glib_shared_wrapper!(
-            @generic_impl [$($attr)*] $name, $ffi_name,
+            @generic_impl [$($attr)*] $visibility $name, $ffi_name,
             @ref $ref_arg $ref_expr, @unref $unref_arg $unref_expr
         );
         $($crate::glib_shared_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
-    (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty,
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr) => {
         $(#[$attr])*
         #[derive(Clone)]
-        pub struct $name($crate::shared::Shared<$ffi_name, $name>);
+        $visibility struct $name($crate::shared::Shared<$ffi_name, $name>);
 
         #[doc(hidden)]
         impl $crate::shared::SharedMemoryManager<$ffi_name> for $name {
