@@ -2,7 +2,6 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::GlyphItem;
 use glib::translate::*;
 
 glib::wrapper! {
@@ -17,28 +16,6 @@ glib::wrapper! {
 }
 
 impl GlyphItemIter {
-    #[doc(alias = "pango_glyph_item_iter_init_end")]
-    pub fn init_end(&mut self, glyph_item: &mut GlyphItem, text: &str) -> bool {
-        unsafe {
-            from_glib(ffi::pango_glyph_item_iter_init_end(
-                self.to_glib_none_mut().0,
-                glyph_item.to_glib_none_mut().0,
-                text.to_glib_none().0,
-            ))
-        }
-    }
-
-    #[doc(alias = "pango_glyph_item_iter_init_start")]
-    pub fn init_start(&mut self, glyph_item: &mut GlyphItem, text: &str) -> bool {
-        unsafe {
-            from_glib(ffi::pango_glyph_item_iter_init_start(
-                self.to_glib_none_mut().0,
-                glyph_item.to_glib_none_mut().0,
-                text.to_glib_none().0,
-            ))
-        }
-    }
-
     #[doc(alias = "pango_glyph_item_iter_next_cluster")]
     pub fn next_cluster(&mut self) -> bool {
         unsafe {
