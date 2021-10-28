@@ -42,6 +42,7 @@ pub use crate::io_stream::IOStreamAsyncReadWrite;
 mod initable;
 mod input_stream;
 pub use crate::input_stream::{InputStreamAsyncBufRead, InputStreamRead};
+mod list_model;
 mod list_store;
 #[cfg(test)]
 mod memory_input_stream;
