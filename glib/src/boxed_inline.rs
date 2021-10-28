@@ -5,12 +5,12 @@
 /// Wrapper implementations for BoxedInline types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_inline_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[derive(Copy, Clone)]
         #[repr(transparent)]
-        pub struct $name(pub(crate) $ffi_name);
+        $visibility struct $name(pub(crate) $ffi_name);
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name, $ffi_name,
@@ -21,13 +21,13 @@ macro_rules! glib_boxed_inline_wrapper {
         $($crate::glib_boxed_inline_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[derive(Copy, Clone)]
         #[repr(transparent)]
-        pub struct $name(pub(crate) $ffi_name);
+        $visibility struct $name(pub(crate) $ffi_name);
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name, $ffi_name,
@@ -37,12 +37,12 @@ macro_rules! glib_boxed_inline_wrapper {
         $($crate::glib_boxed_inline_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[repr(transparent)]
-        pub struct $name(pub(crate) $ffi_name);
+        $visibility struct $name(pub(crate) $ffi_name);
 
         impl Clone for $name {
             fn clone(&self) -> $name {
@@ -71,13 +71,13 @@ macro_rules! glib_boxed_inline_wrapper {
     };
 
 
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr,
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[repr(transparent)]
-        pub struct $name(pub(crate) $ffi_name);
+        $visibility struct $name(pub(crate) $ffi_name);
 
         impl Clone for $name {
             fn clone(&self) -> $name {

@@ -13,10 +13,10 @@ use std::ptr;
 /// Wrapper implementations for Boxed types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_wrapper {
-    ([$($attr:meta)*] $name:ident, $ffi_name:ty,
+    ([$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
-        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $name, $ffi_name);
+        $crate::glib_boxed_wrapper!(@generic_impl [$($attr)*] $visibility $name, $ffi_name);
         $crate::glib_boxed_wrapper!(
             @memory_manager_impl $name, $ffi_name,
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr
@@ -24,10 +24,10 @@ macro_rules! glib_boxed_wrapper {
         $($crate::glib_boxed_wrapper!(@value_impl $name, $ffi_name, @type_ $get_type_expr);)?
     };
 
-    (@generic_impl [$($attr:meta)*] $name:ident, $ffi_name:ty) => {
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty) => {
         $(#[$attr])*
         #[derive(Clone)]
-        pub struct $name($crate::boxed::Boxed<$ffi_name, $name>);
+        $visibility struct $name($crate::boxed::Boxed<$ffi_name, $name>);
 
         #[doc(hidden)]
         impl $crate::translate::GlibPtrDefault for $name {
