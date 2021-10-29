@@ -77,8 +77,12 @@ pub mod layout;
 pub use crate::layout::HitPosition;
 pub mod rectangle;
 pub use crate::rectangle::Rectangle;
-pub mod glyph;
-pub use glyph::{GlyphGeometry, GlyphInfo};
+mod glyph_geometry;
+pub use glyph_geometry::GlyphGeometry;
+mod glyph_info;
+pub use glyph_info::GlyphInfo;
+mod glyph_item;
+mod glyph_string;
 
 mod coverage;
 pub use crate::coverage::*;
