@@ -55,6 +55,8 @@ mod attr_float;
 pub use attr_float::AttrFloat;
 mod attr_font_desc;
 pub use attr_font_desc::AttrFontDesc;
+mod attr_font_features;
+pub use attr_font_features::AttrFontFeatures;
 mod attr_int;
 pub use attr_int::AttrInt;
 pub mod attr_iterator;
