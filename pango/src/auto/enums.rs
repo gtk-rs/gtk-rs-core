@@ -164,18 +164,32 @@ pub enum AttrType {
     Overline,
     #[doc(alias = "PANGO_ATTR_OVERLINE_COLOR")]
     OverlineColor,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_LINE_HEIGHT")]
     LineHeight,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_ABSOLUTE_LINE_HEIGHT")]
     AbsoluteLineHeight,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_TEXT_TRANSFORM")]
     TextTransform,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_WORD")]
     Word,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_SENTENCE")]
     Sentence,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_BASELINE_SHIFT")]
     BaselineShift,
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_FONT_SCALE")]
     FontScale,
     #[doc(hidden)]
@@ -227,12 +241,19 @@ impl fmt::Display for AttrType {
                 Self::InsertHyphens => "InsertHyphens",
                 Self::Overline => "Overline",
                 Self::OverlineColor => "OverlineColor",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::LineHeight => "LineHeight",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::AbsoluteLineHeight => "AbsoluteLineHeight",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::TextTransform => "TextTransform",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::Word => "Word",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::Sentence => "Sentence",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::BaselineShift => "BaselineShift",
+                #[cfg(any(feature = "v1_50", feature = "dox"))]
                 Self::FontScale => "FontScale",
                 _ => "Unknown",
             }
@@ -277,12 +298,19 @@ impl IntoGlib for AttrType {
             Self::InsertHyphens => ffi::PANGO_ATTR_INSERT_HYPHENS,
             Self::Overline => ffi::PANGO_ATTR_OVERLINE,
             Self::OverlineColor => ffi::PANGO_ATTR_OVERLINE_COLOR,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::LineHeight => ffi::PANGO_ATTR_LINE_HEIGHT,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::AbsoluteLineHeight => ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::TextTransform => ffi::PANGO_ATTR_TEXT_TRANSFORM,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::Word => ffi::PANGO_ATTR_WORD,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::Sentence => ffi::PANGO_ATTR_SENTENCE,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::BaselineShift => ffi::PANGO_ATTR_BASELINE_SHIFT,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             Self::FontScale => ffi::PANGO_ATTR_FONT_SCALE,
             Self::__Unknown(value) => value,
         }
@@ -324,12 +352,19 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
             ffi::PANGO_ATTR_INSERT_HYPHENS => Self::InsertHyphens,
             ffi::PANGO_ATTR_OVERLINE => Self::Overline,
             ffi::PANGO_ATTR_OVERLINE_COLOR => Self::OverlineColor,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_LINE_HEIGHT => Self::LineHeight,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT => Self::AbsoluteLineHeight,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_TEXT_TRANSFORM => Self::TextTransform,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_WORD => Self::Word,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_SENTENCE => Self::Sentence,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_BASELINE_SHIFT => Self::BaselineShift,
+            #[cfg(any(feature = "v1_50", feature = "dox"))]
             ffi::PANGO_ATTR_FONT_SCALE => Self::FontScale,
             value => Self::__Unknown(value),
         }
