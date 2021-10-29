@@ -161,5 +161,11 @@ macro_rules! define_attribute_struct {
                 unsafe { &*(self as *const $rust_type as *const crate::Attribute) }
             }
         }
+
+        impl std::ops::DerefMut for $rust_type {
+            fn deref_mut(&mut self) -> &mut crate::Attribute {
+                unsafe { &mut *(self as *mut $rust_type as *mut crate::Attribute) }
+            }
+        }
     }
 }
