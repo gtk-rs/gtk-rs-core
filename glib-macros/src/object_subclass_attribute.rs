@@ -82,7 +82,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
     quote! {
         #(#attrs)*
-        impl#generics #trait_path for #self_ty {
+        impl #generics #trait_path for #self_ty {
             #interfaces_opt
             #class_opt
             #instance_opt

@@ -45,7 +45,7 @@ pub fn impl_object_interface(input: &syn::ItemImpl) -> TokenStream {
 
     quote! {
         #(#attrs)*
-        #unsafety impl#generics #trait_path for #self_ty {
+        #unsafety impl #generics #trait_path for #self_ty {
             #prerequisites_opt
             #(#items)*
         }
