@@ -2,6 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use glib::translate::*;
+
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 glib::wrapper! {
