@@ -2,7 +2,6 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AttrClass;
 use glib::translate::*;
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
@@ -37,13 +36,6 @@ impl Attribute {
                 self.to_glib_none().0,
                 attr2.to_glib_none().0,
             ))
-        }
-    }
-
-    #[doc(alias = "pango_attribute_init")]
-    pub fn init(&mut self, klass: &AttrClass) {
-        unsafe {
-            ffi::pango_attribute_init(self.to_glib_none_mut().0, klass.to_glib_none().0);
         }
     }
 }

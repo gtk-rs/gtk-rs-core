@@ -84,6 +84,7 @@ pub use glyph_geometry::GlyphGeometry;
 mod glyph_info;
 pub use glyph_info::GlyphInfo;
 mod glyph_item;
+mod glyph_item_iter;
 mod glyph_string;
 
 mod coverage;

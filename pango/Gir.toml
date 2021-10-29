@@ -30,7 +30,6 @@ generate = [
     "Pango.FontsetSimple",
     "Pango.Glyph",
     "Pango.GlyphItem",
-    "Pango.GlyphItemIter",
     "Pango.GlyphString",
     "Pango.GlyphUnit",
     "Pango.Gravity",
@@ -123,6 +122,10 @@ status = "generate"
 [[object]]
 name = "Pango.Attribute"
 status = "generate"
+    [[object.function]]
+    name = "init"
+    # irrelevant with all the constructors and unusable like this
+    ignore = true
     [[object.function]]
     name = "get_type"
     version = "1.44"
@@ -232,6 +235,14 @@ status = "generate"
         [[object.function.parameter]]
         name = "language"
         const = true
+
+[[object]]
+name = "Pango.GlyphItemIter"
+status = "generate"
+    [[object.function]]
+    pattern = "init.*"
+    # converted to proper constructors
+    manual = true
 
 [[object]]
 name = "Pango.Layout"
