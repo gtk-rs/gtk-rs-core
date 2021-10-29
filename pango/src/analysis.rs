@@ -1,15 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Attribute;
-use crate::Font;
-use crate::Gravity;
-use crate::Language;
-use crate::Script;
+use crate::{Attribute, Font, Gravity, Language, Script};
 use glib::translate::*;
+use std::fmt;
 
-#[repr(transparent)]
-#[doc(alias = "PangoAnalysis")]
-pub struct Analysis(ffi::PangoAnalysis);
+glib::wrapper! {
+    #[doc(alias = "PangoAnalysis")]
+    pub struct Analysis(BoxedInline<ffi::PangoAnalysis>);
+}
 
 impl Analysis {
     pub fn font(&self) -> Font {
@@ -41,38 +39,15 @@ impl Analysis {
     }
 }
 
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const ffi::PangoAnalysis> for Analysis {
-    type Storage = &'a Self;
-
-    #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *const ffi::PangoAnalysis, Self> {
-        let ptr: *const ffi::PangoAnalysis = &self.0;
-        Stash(ptr, self)
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibPtrMut<'a, *mut ffi::PangoAnalysis> for Analysis {
-    type Storage = &'a mut Self;
-
-    #[inline]
-    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::PangoAnalysis, Self> {
-        let ptr: *mut ffi::PangoAnalysis = &mut self.0;
-        StashMut(ptr, self)
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrNone<*const ffi::PangoAnalysis> for Analysis {
-    unsafe fn from_glib_none(ptr: *const ffi::PangoAnalysis) -> Self {
-        Self(*ptr)
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrNone<*mut ffi::PangoAnalysis> for Analysis {
-    unsafe fn from_glib_none(ptr: *mut ffi::PangoAnalysis) -> Self {
-        Self(*ptr)
+impl fmt::Debug for Analysis {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("Analysis")
+            .field("font", &self.font())
+            .field("level", &self.level())
+            .field("gravity", &self.gravity())
+            .field("flags", &self.flags())
+            .field("script", &self.script())
+            .field("extra_attrs", &self.extra_attrs())
+            .finish()
     }
 }
