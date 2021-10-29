@@ -73,9 +73,5 @@ unsafe extern "C" fn compare_func_trampoline(
     let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
     let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
 
-    match (*func)(&a, &b) {
-        Ordering::Less => -1,
-        Ordering::Equal => 0,
-        Ordering::Greater => 1,
-    }
+    (*func)(&a, &b).into_glib()
 }

@@ -87,11 +87,7 @@ impl ValueArray {
             let a = &*(a as *const Value);
             let b = &*(b as *const Value);
 
-            match (*func)(a, b) {
-                Ordering::Less => -1,
-                Ordering::Equal => 0,
-                Ordering::Greater => 1,
-            }
+            (*func)(a, b).into_glib()
         }
         unsafe {
             let mut func = compare_func;
