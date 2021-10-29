@@ -5,20 +5,9 @@ use glib::translate::*;
 use glib::{IsA, Object};
 use std::cmp::Ordering;
 
-pub trait ListStoreExtManual {
+impl ListStore {
     #[doc(alias = "g_list_store_insert_sorted")]
-    fn insert_sorted<P: IsA<glib::Object>, F: FnMut(&Object, &Object) -> Ordering>(
-        &self,
-        item: &P,
-        compare_func: F,
-    ) -> u32;
-
-    #[doc(alias = "g_list_store_sort")]
-    fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F);
-}
-
-impl<O: IsA<ListStore>> ListStoreExtManual for O {
-    fn insert_sorted<P: IsA<glib::Object>, F: FnMut(&Object, &Object) -> Ordering>(
+    pub fn insert_sorted<P: IsA<glib::Object>, F: FnMut(&Object, &Object) -> Ordering>(
         &self,
         item: &P,
         compare_func: F,
@@ -30,7 +19,7 @@ impl<O: IsA<ListStore>> ListStoreExtManual for O {
                 as glib::ffi::gpointer;
 
             ffi::g_list_store_insert_sorted(
-                self.as_ref().to_glib_none().0,
+                self.to_glib_none().0,
                 item.as_ref().to_glib_none().0,
                 Some(compare_func_trampoline),
                 func_ptr,
@@ -38,7 +27,8 @@ impl<O: IsA<ListStore>> ListStoreExtManual for O {
         }
     }
 
-    fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F) {
+    #[doc(alias = "g_list_store_sort")]
+    pub fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F) {
         unsafe {
             let mut func = compare_func;
             let func_obj: &mut (dyn FnMut(&Object, &Object) -> Ordering) = &mut func;
@@ -46,10 +36,29 @@ impl<O: IsA<ListStore>> ListStoreExtManual for O {
                 as glib::ffi::gpointer;
 
             ffi::g_list_store_sort(
-                self.as_ref().to_glib_none().0,
+                self.to_glib_none().0,
                 Some(compare_func_trampoline),
                 func_ptr,
             )
+        }
+    }
+
+    #[doc(alias = "g_list_store_splice")]
+    pub fn splice(&self, position: u32, n_removals: u32, additions: &[impl IsA<glib::Object>]) {
+        let n_additions = additions.len() as u32;
+        unsafe {
+            let additions = additions
+                .iter()
+                .map(|o| o.as_ptr() as *mut glib::gobject_ffi::GObject)
+                .collect::<Vec<_>>();
+
+            ffi::g_list_store_splice(
+                self.to_glib_none().0,
+                position,
+                n_removals,
+                mut_override(additions.as_ptr()),
+                n_additions,
+            );
         }
     }
 }
@@ -64,9 +73,5 @@ unsafe extern "C" fn compare_func_trampoline(
     let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
     let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
 
-    match (*func)(&a, &b) {
-        Ordering::Less => -1,
-        Ordering::Equal => 0,
-        Ordering::Greater => 1,
-    }
+    (*func)(&a, &b).into_glib()
 }

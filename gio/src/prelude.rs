@@ -20,7 +20,6 @@ pub use crate::inet_address::InetAddressExtManual;
 pub use crate::initable::InitableError;
 pub use crate::input_stream::InputStreamExtManual;
 pub use crate::io_stream::IOStreamExtManual;
-pub use crate::list_store::ListStoreExtManual;
 pub use crate::output_stream::OutputStreamExtManual;
 pub use crate::pollable_input_stream::PollableInputStreamExtManual;
 pub use crate::pollable_output_stream::PollableOutputStreamExtManual;
