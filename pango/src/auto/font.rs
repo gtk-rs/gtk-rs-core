@@ -64,6 +64,12 @@ pub trait FontExt: 'static {
     //#[doc(alias = "get_hb_font")]
     //fn hb_font(&self) -> /*Ignored*/Option<harf_buzz::font_t>;
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_font_get_languages")]
+    #[doc(alias = "get_languages")]
+    fn languages(&self) -> Option<Language>;
+
     #[doc(alias = "pango_font_get_metrics")]
     #[doc(alias = "get_metrics")]
     fn metrics(&self, language: Option<&Language>) -> Option<FontMetrics>;
@@ -131,6 +137,16 @@ impl<O: IsA<Font>> FontExt for O {
     //fn hb_font(&self) -> /*Ignored*/Option<harf_buzz::font_t> {
     //    unsafe { TODO: call ffi:pango_font_get_hb_font() }
     //}
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    fn languages(&self) -> Option<Language> {
+        unsafe {
+            from_glib_none(ffi::pango_font_get_languages(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
 
     fn metrics(&self, language: Option<&Language>) -> Option<FontMetrics> {
         unsafe {

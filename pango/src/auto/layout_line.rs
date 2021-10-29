@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::Direction;
 use crate::Rectangle;
 use glib::translate::*;
 use std::mem;
@@ -47,6 +50,14 @@ impl LayoutLine {
         }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_line_get_length")]
+    #[doc(alias = "get_length")]
+    pub fn length(&self) -> i32 {
+        unsafe { ffi::pango_layout_line_get_length(self.to_glib_none().0) }
+    }
+
     #[doc(alias = "pango_layout_line_get_pixel_extents")]
     #[doc(alias = "get_pixel_extents")]
     pub fn pixel_extents(&self) -> (Rectangle, Rectangle) {
@@ -60,6 +71,26 @@ impl LayoutLine {
             );
             (ink_rect, logical_rect)
         }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_line_get_resolved_direction")]
+    #[doc(alias = "get_resolved_direction")]
+    pub fn resolved_direction(&self) -> Direction {
+        unsafe {
+            from_glib(ffi::pango_layout_line_get_resolved_direction(
+                self.to_glib_none().0,
+            ))
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_line_get_start_index")]
+    #[doc(alias = "get_start_index")]
+    pub fn start_index(&self) -> i32 {
+        unsafe { ffi::pango_layout_line_get_start_index(self.to_glib_none().0) }
     }
 
     #[doc(alias = "pango_layout_line_get_x_ranges")]
@@ -91,6 +122,17 @@ impl LayoutLine {
             );
             let x_pos = x_pos.assume_init();
             x_pos
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_line_is_paragraph_start")]
+    pub fn is_paragraph_start(&self) -> bool {
+        unsafe {
+            from_glib(ffi::pango_layout_line_is_paragraph_start(
+                self.to_glib_none().0,
+            ))
         }
     }
 }

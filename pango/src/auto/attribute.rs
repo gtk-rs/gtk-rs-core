@@ -2,6 +2,33 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrColor;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrFloat;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrFontDesc;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrFontFeatures;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrInt;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrLanguage;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrShape;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrSize;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::AttrString;
 use glib::translate::*;
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
@@ -29,6 +56,73 @@ glib::wrapper! {
 }
 
 impl Attribute {
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_color")]
+    pub fn as_color(&mut self) -> Option<AttrColor> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_color(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_float")]
+    pub fn as_float(&mut self) -> Option<AttrFloat> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_float(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_font_desc")]
+    pub fn as_font_desc(&mut self) -> Option<AttrFontDesc> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_font_desc(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_font_features")]
+    pub fn as_font_features(&mut self) -> Option<AttrFontFeatures> {
+        unsafe {
+            from_glib_none(ffi::pango_attribute_as_font_features(
+                self.to_glib_none_mut().0,
+            ))
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_int")]
+    pub fn as_int(&mut self) -> Option<AttrInt> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_int(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_language")]
+    pub fn as_language(&mut self) -> Option<AttrLanguage> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_language(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_shape")]
+    pub fn as_shape(&mut self) -> Option<AttrShape> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_shape(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_size")]
+    pub fn as_size(&mut self) -> Option<AttrSize> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_size(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attribute_as_string")]
+    pub fn as_string(&mut self) -> Option<AttrString> {
+        unsafe { from_glib_none(ffi::pango_attribute_as_string(self.to_glib_none_mut().0)) }
+    }
+
     #[doc(alias = "pango_attribute_equal")]
     fn equal(&self, attr2: &Attribute) -> bool {
         unsafe {

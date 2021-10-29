@@ -164,6 +164,20 @@ pub enum AttrType {
     Overline,
     #[doc(alias = "PANGO_ATTR_OVERLINE_COLOR")]
     OverlineColor,
+    #[doc(alias = "PANGO_ATTR_LINE_HEIGHT")]
+    LineHeight,
+    #[doc(alias = "PANGO_ATTR_ABSOLUTE_LINE_HEIGHT")]
+    AbsoluteLineHeight,
+    #[doc(alias = "PANGO_ATTR_TEXT_TRANSFORM")]
+    TextTransform,
+    #[doc(alias = "PANGO_ATTR_WORD")]
+    Word,
+    #[doc(alias = "PANGO_ATTR_SENTENCE")]
+    Sentence,
+    #[doc(alias = "PANGO_ATTR_BASELINE_SHIFT")]
+    BaselineShift,
+    #[doc(alias = "PANGO_ATTR_FONT_SCALE")]
+    FontScale,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -213,6 +227,13 @@ impl fmt::Display for AttrType {
                 Self::InsertHyphens => "InsertHyphens",
                 Self::Overline => "Overline",
                 Self::OverlineColor => "OverlineColor",
+                Self::LineHeight => "LineHeight",
+                Self::AbsoluteLineHeight => "AbsoluteLineHeight",
+                Self::TextTransform => "TextTransform",
+                Self::Word => "Word",
+                Self::Sentence => "Sentence",
+                Self::BaselineShift => "BaselineShift",
+                Self::FontScale => "FontScale",
                 _ => "Unknown",
             }
         )
@@ -256,6 +277,13 @@ impl IntoGlib for AttrType {
             Self::InsertHyphens => ffi::PANGO_ATTR_INSERT_HYPHENS,
             Self::Overline => ffi::PANGO_ATTR_OVERLINE,
             Self::OverlineColor => ffi::PANGO_ATTR_OVERLINE_COLOR,
+            Self::LineHeight => ffi::PANGO_ATTR_LINE_HEIGHT,
+            Self::AbsoluteLineHeight => ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT,
+            Self::TextTransform => ffi::PANGO_ATTR_TEXT_TRANSFORM,
+            Self::Word => ffi::PANGO_ATTR_WORD,
+            Self::Sentence => ffi::PANGO_ATTR_SENTENCE,
+            Self::BaselineShift => ffi::PANGO_ATTR_BASELINE_SHIFT,
+            Self::FontScale => ffi::PANGO_ATTR_FONT_SCALE,
             Self::__Unknown(value) => value,
         }
     }
@@ -296,6 +324,13 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
             ffi::PANGO_ATTR_INSERT_HYPHENS => Self::InsertHyphens,
             ffi::PANGO_ATTR_OVERLINE => Self::Overline,
             ffi::PANGO_ATTR_OVERLINE_COLOR => Self::OverlineColor,
+            ffi::PANGO_ATTR_LINE_HEIGHT => Self::LineHeight,
+            ffi::PANGO_ATTR_ABSOLUTE_LINE_HEIGHT => Self::AbsoluteLineHeight,
+            ffi::PANGO_ATTR_TEXT_TRANSFORM => Self::TextTransform,
+            ffi::PANGO_ATTR_WORD => Self::Word,
+            ffi::PANGO_ATTR_SENTENCE => Self::Sentence,
+            ffi::PANGO_ATTR_BASELINE_SHIFT => Self::BaselineShift,
+            ffi::PANGO_ATTR_FONT_SCALE => Self::FontScale,
             value => Self::__Unknown(value),
         }
     }
@@ -2185,6 +2220,114 @@ unsafe impl<'a> FromValue<'a> for TabAlign {
 }
 
 impl ToValue for TabAlign {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "PangoTextTransform")]
+pub enum TextTransform {
+    #[doc(alias = "PANGO_TEXT_TRANSFORM_NONE")]
+    None,
+    #[doc(alias = "PANGO_TEXT_TRANSFORM_LOWERCASE")]
+    Lowercase,
+    #[doc(alias = "PANGO_TEXT_TRANSFORM_UPPERCASE")]
+    Uppercase,
+    #[doc(alias = "PANGO_TEXT_TRANSFORM_CAPITALIZE")]
+    Capitalize,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for TextTransform {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "TextTransform::{}",
+            match *self {
+                Self::None => "None",
+                Self::Lowercase => "Lowercase",
+                Self::Uppercase => "Uppercase",
+                Self::Capitalize => "Capitalize",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl IntoGlib for TextTransform {
+    type GlibType = ffi::PangoTextTransform;
+
+    fn into_glib(self) -> ffi::PangoTextTransform {
+        match self {
+            Self::None => ffi::PANGO_TEXT_TRANSFORM_NONE,
+            Self::Lowercase => ffi::PANGO_TEXT_TRANSFORM_LOWERCASE,
+            Self::Uppercase => ffi::PANGO_TEXT_TRANSFORM_UPPERCASE,
+            Self::Capitalize => ffi::PANGO_TEXT_TRANSFORM_CAPITALIZE,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoTextTransform> for TextTransform {
+    unsafe fn from_glib(value: ffi::PangoTextTransform) -> Self {
+        match value {
+            ffi::PANGO_TEXT_TRANSFORM_NONE => Self::None,
+            ffi::PANGO_TEXT_TRANSFORM_LOWERCASE => Self::Lowercase,
+            ffi::PANGO_TEXT_TRANSFORM_UPPERCASE => Self::Uppercase,
+            ffi::PANGO_TEXT_TRANSFORM_CAPITALIZE => Self::Capitalize,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl StaticType for TextTransform {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::pango_text_transform_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::value::ValueType for TextTransform {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+unsafe impl<'a> FromValue<'a> for TextTransform {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl ToValue for TextTransform {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
         unsafe {

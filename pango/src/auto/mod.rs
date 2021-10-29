@@ -88,6 +88,9 @@ pub use self::enums::Script;
 pub use self::enums::Stretch;
 pub use self::enums::Style;
 pub use self::enums::TabAlign;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+pub use self::enums::TextTransform;
 pub use self::enums::Underline;
 pub use self::enums::Variant;
 pub use self::enums::Weight;
