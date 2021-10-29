@@ -15,6 +15,9 @@ pub trait ListStoreExtManual {
 
     #[doc(alias = "g_list_store_sort")]
     fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F);
+
+    #[doc(alias = "g_list_store_splice")]
+    fn splice(&self, position: u32, n_removals: u32, additions: &[impl IsA<glib::Object>]);
 }
 
 impl<O: IsA<ListStore>> ListStoreExtManual for O {
@@ -50,6 +53,25 @@ impl<O: IsA<ListStore>> ListStoreExtManual for O {
                 Some(compare_func_trampoline),
                 func_ptr,
             )
+        }
+    }
+
+    #[doc(alias = "g_list_store_splice")]
+    fn splice(&self, position: u32, n_removals: u32, additions: &[impl IsA<glib::Object>]) {
+        let n_additions = additions.len() as u32;
+        unsafe {
+            let additions = additions
+                .iter()
+                .map(|o| o.as_ptr() as *mut glib::gobject_ffi::GObject)
+                .collect::<Vec<_>>();
+
+            ffi::g_list_store_splice(
+                self.as_ref().to_glib_none().0,
+                position,
+                n_removals,
+                mut_override(additions.as_ptr()),
+                n_additions,
+            );
         }
     }
 }

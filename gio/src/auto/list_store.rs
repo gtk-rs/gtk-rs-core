@@ -87,20 +87,6 @@ impl ListStore {
             ffi::g_list_store_remove_all(self.to_glib_none().0);
         }
     }
-
-    #[doc(alias = "g_list_store_splice")]
-    pub fn splice(&self, position: u32, n_removals: u32, additions: &[glib::Object]) {
-        let n_additions = additions.len() as u32;
-        unsafe {
-            ffi::g_list_store_splice(
-                self.to_glib_none().0,
-                position,
-                n_removals,
-                additions.to_glib_none().0,
-                n_additions,
-            );
-        }
-    }
 }
 
 impl Default for ListStore {
