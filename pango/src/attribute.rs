@@ -409,6 +409,11 @@ impl AttrFloat {
 define_attribute_struct!(AttrFontDesc, ffi::PangoAttrFontDesc, &[AttrType::FontDesc]);
 
 impl AttrFontDesc {
+    #[doc(alias = "pango_attr_font_desc_new")]
+    pub fn new(desc: &FontDescription) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_font_desc_new(desc.to_glib_none().0)) }
+    }
+
     pub fn value(&self) -> FontDescription {
         unsafe { from_glib_none(self.0.desc) }
     }
@@ -417,7 +422,60 @@ impl AttrFontDesc {
 define_attribute_struct!(AttrLanguage, ffi::PangoAttrLanguage, &[AttrType::Language]);
 
 impl AttrLanguage {
+    #[doc(alias = "pango_attr_language_new")]
+    pub fn new(language: &Language) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_language_new(language.to_glib_none().0)) }
+    }
+
     pub fn value(&self) -> Language {
         unsafe { from_glib_none(self.0.value) }
+    }
+}
+
+define_attribute_struct!(AttrString, ffi::PangoAttrString, &[AttrType::Family]);
+
+impl AttrString {
+    pub fn value(&self) -> glib::GString {
+        unsafe { from_glib_none(self.0.value) }
+    }
+}
+
+define_attribute_struct!(AttrShape, ffi::PangoAttrShape, &[AttrType::Shape]);
+
+impl AttrShape {
+    #[doc(alias = "pango_attr_shape_new")]
+    pub fn new(ink_rect: &Rectangle, logical_rect: &Rectangle) -> Self {
+        unsafe {
+            from_glib_full(ffi::pango_attr_shape_new(
+                ink_rect.to_glib_none().0,
+                logical_rect.to_glib_none().0,
+            ))
+        }
+    }
+
+    pub fn ink_rect(&self) -> Rectangle {
+        unsafe { from_glib_none(&self.0.ink_rect as *const _) }
+    }
+
+    pub fn logical_rect(&self) -> Rectangle {
+        unsafe { from_glib_none(&self.0.logical_rect as *const _) }
+    }
+}
+
+define_attribute_struct!(
+    AttrSize,
+    ffi::PangoAttrSize,
+    &[AttrType::Size, AttrType::AbsoluteSize]
+);
+
+impl AttrSize {
+    #[doc(alias = "pango_attr_size_new")]
+    pub fn new(size: i32) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_size_new(size)) }
+    }
+
+    #[doc(alias = "pango_attr_size_new_absolute")]
+    pub fn new_size_absolute(size: i32) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_size_new_absolute(size)) }
     }
 }
