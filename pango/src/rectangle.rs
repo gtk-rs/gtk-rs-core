@@ -1,69 +1,46 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use std::mem;
+use std::fmt;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-#[repr(C)]
-#[doc(alias = "PangoRectangle")]
-pub struct Rectangle {
-    pub x: i32,
-    pub y: i32,
-    pub width: i32,
-    pub height: i32,
+glib::wrapper! {
+    #[doc(alias = "PangoRectangle")]
+    pub struct Rectangle(BoxedInline<ffi::PangoRectangle>);
 }
 
 impl Rectangle {
-    pub fn new(x: i32, y: i32, width: i32, height: i32) -> Rectangle {
-        Rectangle {
+    pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
+        Self(ffi::PangoRectangle {
             x,
             y,
             width,
             height,
-        }
+        })
+    }
+
+    pub fn x(&self) -> i32 {
+        self.0.x
+    }
+
+    pub fn y(&self) -> i32 {
+        self.0.y
+    }
+
+    pub fn width(&self) -> i32 {
+        self.0.width
+    }
+
+    pub fn height(&self) -> i32 {
+        self.0.height
     }
 }
 
-#[doc(hidden)]
-impl Uninitialized for Rectangle {
-    #[inline]
-    unsafe fn uninitialized() -> Self {
-        mem::zeroed()
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const ffi::PangoRectangle> for Rectangle {
-    type Storage = &'a Self;
-
-    #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *const ffi::PangoRectangle, Self> {
-        let ptr: *const Rectangle = &*self;
-        Stash(ptr as *const ffi::PangoRectangle, self)
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibPtrMut<'a, *mut ffi::PangoRectangle> for Rectangle {
-    type Storage = &'a mut Self;
-
-    #[inline]
-    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::PangoRectangle, Self> {
-        let ptr: *mut Rectangle = &mut *self;
-        StashMut(ptr as *mut ffi::PangoRectangle, self)
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrNone<*const ffi::PangoRectangle> for Rectangle {
-    unsafe fn from_glib_none(ptr: *const ffi::PangoRectangle) -> Self {
-        *(ptr as *const Rectangle)
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrNone<*mut ffi::PangoRectangle> for Rectangle {
-    unsafe fn from_glib_none(ptr: *mut ffi::PangoRectangle) -> Self {
-        *(ptr as *mut Rectangle)
+impl fmt::Debug for Rectangle {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("Rectangle")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
     }
 }
