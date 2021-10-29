@@ -332,6 +332,21 @@ macro_rules! glib_boxed_inline_wrapper {
         #[doc(hidden)]
         impl $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut $ffi_name> for $name {
             unsafe fn from_glib_none_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *const _, num)
+            }
+
+            unsafe fn from_glib_container_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr as *const _, num)
+            }
+
+            unsafe fn from_glib_full_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr as *const _, num)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *const $ffi_name> for $name {
+            unsafe fn from_glib_none_num_as_vec(ptr: *const $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
                     return Vec::new();
                 }
@@ -343,13 +358,13 @@ macro_rules! glib_boxed_inline_wrapper {
                 res
             }
 
-            unsafe fn from_glib_container_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_container_num_as_vec(ptr: *const $ffi_name, num: usize) -> Vec<Self> {
                 let res = $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
                 $crate::ffi::g_free(ptr as *mut _);
                 res
             }
 
-            unsafe fn from_glib_full_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_full_num_as_vec(ptr: *const $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
                     return Vec::new();
                 }
