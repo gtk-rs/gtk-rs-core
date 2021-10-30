@@ -2,10 +2,15 @@
 
 use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
+use crate::IsA;
 use crate::ParamFlags;
 use crate::StaticType;
 use crate::Type;
 use crate::Value;
+use crate::{
+    object::{Interface, InterfaceRef, IsClass, IsInterface, ObjectClass},
+    Object,
+};
 
 use std::char::CharTryFromError;
 use std::convert::TryFrom;
@@ -525,6 +530,69 @@ impl ParamSpec {
             from_glib_none(gobject_ffi::g_param_spec_override(
                 name.to_glib_none().0,
                 overridden.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Similar to [`ParamSpec::new_override`] but specific for an interface.
+    ///
+    /// # Examples
+    ///
+    /// ```ignore
+    /// let pspec = ParamSpec::new_override_interface::<gtk::Scrollable>("vadjustment");
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// If the property `name` doesn't exist in the interface.
+    #[doc(alias = "g_param_spec_override")]
+    pub fn new_override_interface<T: IsA<Object> + IsInterface>(name: &str) -> Self {
+        assert!(
+            is_canonical_pspec_name(name),
+            "{} is not a valid canonical parameter name",
+            name
+        );
+        // in case it's an interface
+        let interface_ref: InterfaceRef<T> = Interface::from_type(T::static_type()).unwrap();
+        let pspec = interface_ref
+            .find_property(name)
+            .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
+        unsafe {
+            from_glib_none(gobject_ffi::g_param_spec_override(
+                name.to_glib_none().0,
+                pspec.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Similar to [`ParamSpec::new_override`] but specific for a class.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, ignore
+    /// let pspec = ParamSpec::new_override_class::<gtk::Button>("label");
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// If the property `name` doesn't exist in the class.
+    #[doc(alias = "g_param_spec_override")]
+    pub fn new_override_class<T: IsA<Object> + IsClass>(name: &str) -> Self {
+        assert!(
+            is_canonical_pspec_name(name),
+            "{} is not a valid canonical parameter name",
+            name
+        );
+        let pspec = ObjectClass::from_type(T::static_type())
+            .unwrap()
+            .find_property(name)
+            .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
+        unsafe {
+            from_glib_none(gobject_ffi::g_param_spec_override(
+                name.to_glib_none().0,
+                pspec.to_glib_none().0,
             ))
         }
     }
