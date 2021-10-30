@@ -403,6 +403,109 @@ impl ToValue for AttrType {
     }
 }
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "PangoBaselineShift")]
+pub enum BaselineShift {
+    #[doc(alias = "PANGO_BASELINE_SHIFT_NONE")]
+    None,
+    #[doc(alias = "PANGO_BASELINE_SHIFT_SUPERSCRIPT")]
+    Superscript,
+    #[doc(alias = "PANGO_BASELINE_SHIFT_SUBSCRIPT")]
+    Subscript,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for BaselineShift {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "BaselineShift::{}",
+            match *self {
+                Self::None => "None",
+                Self::Superscript => "Superscript",
+                Self::Subscript => "Subscript",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl IntoGlib for BaselineShift {
+    type GlibType = ffi::PangoBaselineShift;
+
+    fn into_glib(self) -> ffi::PangoBaselineShift {
+        match self {
+            Self::None => ffi::PANGO_BASELINE_SHIFT_NONE,
+            Self::Superscript => ffi::PANGO_BASELINE_SHIFT_SUPERSCRIPT,
+            Self::Subscript => ffi::PANGO_BASELINE_SHIFT_SUBSCRIPT,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoBaselineShift> for BaselineShift {
+    unsafe fn from_glib(value: ffi::PangoBaselineShift) -> Self {
+        match value {
+            ffi::PANGO_BASELINE_SHIFT_NONE => Self::None,
+            ffi::PANGO_BASELINE_SHIFT_SUPERSCRIPT => Self::Superscript,
+            ffi::PANGO_BASELINE_SHIFT_SUBSCRIPT => Self::Subscript,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl StaticType for BaselineShift {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::pango_baseline_shift_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::value::ValueType for BaselineShift {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+unsafe impl<'a> FromValue<'a> for BaselineShift {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl ToValue for BaselineShift {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
 #[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -876,6 +979,109 @@ unsafe impl<'a> FromValue<'a> for EllipsizeMode {
 }
 
 impl ToValue for EllipsizeMode {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "PangoFontScale")]
+pub enum FontScale {
+    #[doc(alias = "PANGO_FONT_SCALE_NONE")]
+    None,
+    #[doc(alias = "PANGO_FONT_SCALE_SUPERSCRIPT")]
+    Superscript,
+    #[doc(alias = "PANGO_FONT_SCALE_SUBSCRIPT")]
+    Subscript,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for FontScale {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "FontScale::{}",
+            match *self {
+                Self::None => "None",
+                Self::Superscript => "Superscript",
+                Self::Subscript => "Subscript",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl IntoGlib for FontScale {
+    type GlibType = ffi::PangoFontScale;
+
+    fn into_glib(self) -> ffi::PangoFontScale {
+        match self {
+            Self::None => ffi::PANGO_FONT_SCALE_NONE,
+            Self::Superscript => ffi::PANGO_FONT_SCALE_SUPERSCRIPT,
+            Self::Subscript => ffi::PANGO_FONT_SCALE_SUBSCRIPT,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoFontScale> for FontScale {
+    unsafe fn from_glib(value: ffi::PangoFontScale) -> Self {
+        match value {
+            ffi::PANGO_FONT_SCALE_NONE => Self::None,
+            ffi::PANGO_FONT_SCALE_SUPERSCRIPT => Self::Superscript,
+            ffi::PANGO_FONT_SCALE_SUBSCRIPT => Self::Subscript,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl StaticType for FontScale {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::pango_font_scale_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::value::ValueType for FontScale {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+unsafe impl<'a> FromValue<'a> for FontScale {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl ToValue for FontScale {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
         unsafe {

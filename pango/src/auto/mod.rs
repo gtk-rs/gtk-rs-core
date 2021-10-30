@@ -74,10 +74,16 @@ pub use self::tab_array::TabArray;
 mod enums;
 pub use self::enums::Alignment;
 pub use self::enums::AttrType;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+pub use self::enums::BaselineShift;
 pub use self::enums::BidiType;
 pub use self::enums::CoverageLevel;
 pub use self::enums::Direction;
 pub use self::enums::EllipsizeMode;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+pub use self::enums::FontScale;
 pub use self::enums::Gravity;
 pub use self::enums::GravityHint;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
