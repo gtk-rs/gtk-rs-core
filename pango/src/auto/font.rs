@@ -68,7 +68,7 @@ pub trait FontExt: 'static {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_font_get_languages")]
     #[doc(alias = "get_languages")]
-    fn languages(&self) -> Option<Language>;
+    fn languages(&self) -> Vec<Language>;
 
     #[doc(alias = "pango_font_get_metrics")]
     #[doc(alias = "get_metrics")]
@@ -140,9 +140,9 @@ impl<O: IsA<Font>> FontExt for O {
 
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
-    fn languages(&self) -> Option<Language> {
+    fn languages(&self) -> Vec<Language> {
         unsafe {
-            from_glib_none(ffi::pango_font_get_languages(
+            FromGlibPtrContainer::from_glib_none(ffi::pango_font_get_languages(
                 self.as_ref().to_glib_none().0,
             ))
         }

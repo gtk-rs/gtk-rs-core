@@ -2193,7 +2193,7 @@ extern "C" {
     pub fn pango_font_get_hb_font(font: *mut PangoFont) -> gconstpointer;
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
-    pub fn pango_font_get_languages(font: *mut PangoFont) -> *mut *mut PangoLanguage;
+    pub fn pango_font_get_languages(font: *mut PangoFont) -> *const PangoLanguage;
     pub fn pango_font_get_metrics(
         font: *mut PangoFont,
         language: *mut PangoLanguage,
