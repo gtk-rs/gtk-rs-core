@@ -42,10 +42,12 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoFontsetClass", sizeof(PangoFontsetClass), alignof(PangoFontsetClass));
     printf("%s;%zu;%zu\n", "PangoGlyph", sizeof(PangoGlyph), alignof(PangoGlyph));
     printf("%s;%zu;%zu\n", "PangoGlyphGeometry", sizeof(PangoGlyphGeometry), alignof(PangoGlyphGeometry));
+    printf("%s;%zu;%zu\n", "PangoGlyphInfo", sizeof(PangoGlyphInfo), alignof(PangoGlyphInfo));
     printf("%s;%zu;%zu\n", "PangoGlyphItem", sizeof(PangoGlyphItem), alignof(PangoGlyphItem));
     printf("%s;%zu;%zu\n", "PangoGlyphItemIter", sizeof(PangoGlyphItemIter), alignof(PangoGlyphItemIter));
     printf("%s;%zu;%zu\n", "PangoGlyphString", sizeof(PangoGlyphString), alignof(PangoGlyphString));
     printf("%s;%zu;%zu\n", "PangoGlyphUnit", sizeof(PangoGlyphUnit), alignof(PangoGlyphUnit));
+    printf("%s;%zu;%zu\n", "PangoGlyphVisAttr", sizeof(PangoGlyphVisAttr), alignof(PangoGlyphVisAttr));
     printf("%s;%zu;%zu\n", "PangoGravity", sizeof(PangoGravity), alignof(PangoGravity));
     printf("%s;%zu;%zu\n", "PangoGravityHint", sizeof(PangoGravityHint), alignof(PangoGravityHint));
     printf("%s;%zu;%zu\n", "PangoItem", sizeof(PangoItem), alignof(PangoItem));

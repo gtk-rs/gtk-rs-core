@@ -456,6 +456,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "PangoGlyphInfo",
+        Layout {
+            size: size_of::<PangoGlyphInfo>(),
+            alignment: align_of::<PangoGlyphInfo>(),
+        },
+    ),
+    (
         "PangoGlyphItem",
         Layout {
             size: size_of::<PangoGlyphItem>(),
@@ -481,6 +488,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<PangoGlyphUnit>(),
             alignment: align_of::<PangoGlyphUnit>(),
+        },
+    ),
+    (
+        "PangoGlyphVisAttr",
+        Layout {
+            size: size_of::<PangoGlyphVisAttr>(),
+            alignment: align_of::<PangoGlyphVisAttr>(),
         },
     ),
     (

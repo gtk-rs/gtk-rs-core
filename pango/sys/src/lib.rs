@@ -866,11 +866,11 @@ impl ::std::fmt::Debug for PangoGlyphGeometry {
 }
 
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct PangoGlyphInfo {
     pub glyph: PangoGlyph,
     pub geometry: PangoGlyphGeometry,
-    _truncated_record_marker: c_void,
-    // /*Ignored*/field attr has incomplete type
+    pub attr: PangoGlyphVisAttr,
 }
 
 impl ::std::fmt::Debug for PangoGlyphInfo {
@@ -878,6 +878,7 @@ impl ::std::fmt::Debug for PangoGlyphInfo {
         f.debug_struct(&format!("PangoGlyphInfo @ {:p}", self))
             .field("glyph", &self.glyph)
             .field("geometry", &self.geometry)
+            .field("attr", &self.attr)
             .finish()
     }
 }
@@ -952,10 +953,9 @@ impl ::std::fmt::Debug for PangoGlyphString {
 }
 
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct PangoGlyphVisAttr {
     pub is_cluster_start: c_uint,
-    _truncated_record_marker: c_void,
-    // field is_color has incomplete type
 }
 
 impl ::std::fmt::Debug for PangoGlyphVisAttr {
