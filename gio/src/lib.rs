@@ -96,6 +96,12 @@ mod auto;
 mod gio_future;
 pub use crate::gio_future::*;
 
+mod io_extension;
+pub use crate::io_extension::*;
+
+mod io_extension_point;
+pub use crate::io_extension_point::*;
+
 #[macro_use]
 pub mod subclass;
 mod read_input_stream;
