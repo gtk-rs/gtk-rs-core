@@ -38,12 +38,16 @@ impl LayoutLine {
     /// the source [`Layout`].
     ///
     /// [`Layout`]: crate::Layout
+    #[cfg(not(any(feature = "v1_50", feature = "dox")))]
+    #[cfg_attr(feature = "dox", doc(not(cfg(feature = "v1_50"))))]
     pub fn start_index(&self) -> i32 {
         unsafe { (*self.to_glib_none().0).start_index }
     }
 
     // rustdoc-stripper-ignore-next
     /// The length of this line's text, in bytes.
+    #[cfg(not(any(feature = "v1_50", feature = "dox")))]
+    #[cfg_attr(feature = "dox", doc(not(cfg(feature = "v1_50"))))]
     pub fn length(&self) -> i32 {
         unsafe { (*self.to_glib_none().0).length }
     }

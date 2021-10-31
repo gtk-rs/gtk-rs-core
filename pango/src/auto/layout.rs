@@ -70,6 +70,24 @@ impl Layout {
         unsafe { ffi::pango_layout_get_baseline(self.to_glib_none().0) }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_get_caret_pos")]
+    #[doc(alias = "get_caret_pos")]
+    pub fn caret_pos(&self, index_: i32) -> (Rectangle, Rectangle) {
+        unsafe {
+            let mut strong_pos = Rectangle::uninitialized();
+            let mut weak_pos = Rectangle::uninitialized();
+            ffi::pango_layout_get_caret_pos(
+                self.to_glib_none().0,
+                index_,
+                strong_pos.to_glib_none_mut().0,
+                weak_pos.to_glib_none_mut().0,
+            );
+            (strong_pos, weak_pos)
+        }
+    }
+
     #[doc(alias = "pango_layout_get_character_count")]
     #[doc(alias = "get_character_count")]
     pub fn character_count(&self) -> i32 {
@@ -164,6 +182,18 @@ impl Layout {
     #[doc(alias = "get_justify")]
     pub fn is_justify(&self) -> bool {
         unsafe { from_glib(ffi::pango_layout_get_justify(self.to_glib_none().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_get_justify_last_line")]
+    #[doc(alias = "get_justify_last_line")]
+    pub fn is_justify_last_line(&self) -> bool {
+        unsafe {
+            from_glib(ffi::pango_layout_get_justify_last_line(
+                self.to_glib_none().0,
+            ))
+        }
     }
 
     #[doc(alias = "pango_layout_get_line")]
@@ -444,6 +474,15 @@ impl Layout {
     pub fn set_justify(&self, justify: bool) {
         unsafe {
             ffi::pango_layout_set_justify(self.to_glib_none().0, justify.into_glib());
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_set_justify_last_line")]
+    pub fn set_justify_last_line(&self, justify: bool) {
+        unsafe {
+            ffi::pango_layout_set_justify_last_line(self.to_glib_none().0, justify.into_glib());
         }
     }
 

@@ -21,6 +21,7 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoAttrString", sizeof(PangoAttrString), alignof(PangoAttrString));
     printf("%s;%zu;%zu\n", "PangoAttrType", sizeof(PangoAttrType), alignof(PangoAttrType));
     printf("%s;%zu;%zu\n", "PangoAttribute", sizeof(PangoAttribute), alignof(PangoAttribute));
+    printf("%s;%zu;%zu\n", "PangoBaselineShift", sizeof(PangoBaselineShift), alignof(PangoBaselineShift));
     printf("%s;%zu;%zu\n", "PangoBidiType", sizeof(PangoBidiType), alignof(PangoBidiType));
     printf("%s;%zu;%zu\n", "PangoColor", sizeof(PangoColor), alignof(PangoColor));
     printf("%s;%zu;%zu\n", "PangoCoverageLevel", sizeof(PangoCoverageLevel), alignof(PangoCoverageLevel));
@@ -36,6 +37,7 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoFontMapClass", sizeof(PangoFontMapClass), alignof(PangoFontMapClass));
     printf("%s;%zu;%zu\n", "PangoFontMask", sizeof(PangoFontMask), alignof(PangoFontMask));
     printf("%s;%zu;%zu\n", "PangoFontMetrics", sizeof(PangoFontMetrics), alignof(PangoFontMetrics));
+    printf("%s;%zu;%zu\n", "PangoFontScale", sizeof(PangoFontScale), alignof(PangoFontScale));
     printf("%s;%zu;%zu\n", "PangoFontset", sizeof(PangoFontset), alignof(PangoFontset));
     printf("%s;%zu;%zu\n", "PangoFontsetClass", sizeof(PangoFontsetClass), alignof(PangoFontsetClass));
     printf("%s;%zu;%zu\n", "PangoGlyph", sizeof(PangoGlyph), alignof(PangoGlyph));
@@ -62,6 +64,7 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoStretch", sizeof(PangoStretch), alignof(PangoStretch));
     printf("%s;%zu;%zu\n", "PangoStyle", sizeof(PangoStyle), alignof(PangoStyle));
     printf("%s;%zu;%zu\n", "PangoTabAlign", sizeof(PangoTabAlign), alignof(PangoTabAlign));
+    printf("%s;%zu;%zu\n", "PangoTextTransform", sizeof(PangoTextTransform), alignof(PangoTextTransform));
     printf("%s;%zu;%zu\n", "PangoUnderline", sizeof(PangoUnderline), alignof(PangoUnderline));
     printf("%s;%zu;%zu\n", "PangoVariant", sizeof(PangoVariant), alignof(PangoVariant));
     printf("%s;%zu;%zu\n", "PangoWeight", sizeof(PangoWeight), alignof(PangoWeight));

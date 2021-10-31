@@ -145,6 +145,14 @@ impl LayoutIter {
         unsafe { from_glib_none(ffi::pango_layout_iter_get_run(self.to_glib_none_mut().0)) }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_iter_get_run_baseline")]
+    #[doc(alias = "get_run_baseline")]
+    pub fn run_baseline(&mut self) -> i32 {
+        unsafe { ffi::pango_layout_iter_get_run_baseline(self.to_glib_none_mut().0) }
+    }
+
     #[doc(alias = "pango_layout_iter_get_run_extents")]
     #[doc(alias = "get_run_extents")]
     pub fn run_extents(&mut self) -> (Rectangle, Rectangle) {

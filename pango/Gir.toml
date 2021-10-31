@@ -17,6 +17,7 @@ generate = [
     # "Pango.ScriptForLang",
     # "Pango.ScriptIter",
     "Pango.Alignment",
+    "Pango.BaselineShift",
     "Pango.BidiType",
     "Pango.Color",
     "Pango.CoverageLevel",
@@ -26,6 +27,7 @@ generate = [
     "Pango.FontFamily",
     "Pango.FontMask",
     "Pango.FontMetrics",
+    "Pango.FontScale",
     "Pango.Fontset",
     "Pango.FontsetSimple",
     "Pango.Glyph",
@@ -42,10 +44,13 @@ generate = [
     "Pango.Renderer",
     "Pango.RenderPart",
     "Pango.Script",
+    "Pango.ShapeFlags",
+    "Pango.ShowFlags",
     "Pango.Stretch",
     "Pango.Style",
     "Pango.TabAlign",
     "Pango.TabArray",
+    "Pango.TextTransform",
     "Pango.Underline",
     "Pango.Variant",
     "Pango.Weight",
@@ -129,6 +134,10 @@ status = "generate"
     [[object.function]]
     name = "get_type"
     version = "1.44"
+    [[object.function]]
+    pattern = "as.*"
+    # casting functions, we go with IsAttribute trait in Rust
+    ignore = true
 
 [[object]]
 name = "Pango.AttrIterator"
@@ -165,6 +174,27 @@ status = "generate"
     name = "register"
     # Problematic function needs manual implementation
     ignore = true
+    [[object.member]]
+    name = "line_height"
+    version = "1.50"
+    [[object.member]]
+    name = "absolute_line_height"
+    version = "1.50"
+    [[object.member]]
+    name = "text_transform"
+    version = "1.50"
+    [[object.member]]
+    name = "word"
+    version = "1.50"
+    [[object.member]]
+    name = "sentence"
+    version = "1.50"
+    [[object.member]]
+    name = "baseline_shift"
+    version = "1.50"
+    [[object.member]]
+    name = "font_scale"
+    version = "1.50"
 
 [[object]]
 name = "Pango.Context"
@@ -206,6 +236,10 @@ status = "generate"
         [[object.function.parameter]]
         name = "language"
         const = true
+    [[object.function]]
+    name = "get_languages"
+    # TODO: requires FromGlibPtrArrayContainerAsVec implementation
+    ignore = true
 
 [[object]]
 name = "Pango.FontDescription"
@@ -264,12 +298,3 @@ status = "generate"
     name = "x_to_index"
     manual = true
 
-[[object]]
-name = "Pango.ShapeFlags"
-version = "1.44"
-status = "generate"
-
-[[object]]
-name = "Pango.ShowFlags"
-version = "1.44"
-status = "generate"
