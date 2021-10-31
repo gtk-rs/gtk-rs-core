@@ -7,6 +7,7 @@ use crate::FileEnumerator;
 use crate::FileQueryInfoFlags;
 use glib::object::IsA;
 use glib::translate::*;
+use std::cell::RefCell;
 use std::pin::Pin;
 use std::ptr;
 
@@ -58,6 +59,30 @@ pub trait FileExtManual: Sized {
         flags: FileQueryInfoFlags,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>;
+
+    #[doc(alias = "g_file_copy_async")]
+    fn copy_async<
+        P: FnMut(i64, i64) + Send + 'static,
+        Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+    >(
+        &self,
+        destination: &impl IsA<File>,
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: P,
+        callback: Q,
+    );
+
+    fn copy_async_future(
+        &self,
+        destination: &(impl IsA<File> + Clone + 'static),
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+    ) -> (
+        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
+        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
+    );
 }
 
 impl<O: IsA<File>> FileExtManual for O {
@@ -221,5 +246,99 @@ impl<O: IsA<File>> FileExtManual for O {
                 );
             },
         ))
+    }
+
+    fn copy_async<
+        P: FnMut(i64, i64) + Send + 'static,
+        Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+    >(
+        &self,
+        destination: &impl IsA<File>,
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: P,
+        callback: Q,
+    ) {
+        let user_data: Box<(Q, RefCell<P>)> = Box::new((callback, RefCell::new(progress_callback)));
+        unsafe extern "C" fn copy_async_trampoline<
+            P: FnMut(i64, i64) + Send + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            ffi::g_file_copy_finish(_source_object as *mut _, res, &mut error);
+            let result = if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box<(Q, RefCell<P>)> = Box::from_raw(user_data as *mut _);
+            callback.0(result);
+        }
+        unsafe extern "C" fn copy_async_progress_trampoline<
+            P: FnMut(i64, i64) + Send + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        >(
+            current_num_bytes: i64,
+            total_num_bytes: i64,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let callback: &(Q, RefCell<P>) = &*(user_data as *const _);
+            (&mut *callback.1.borrow_mut())(current_num_bytes, total_num_bytes);
+        }
+
+        let user_data = Box::into_raw(user_data) as *mut _;
+
+        unsafe {
+            ffi::g_file_copy_async(
+                self.as_ref().to_glib_none().0,
+                destination.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(copy_async_progress_trampoline::<P, Q>),
+                user_data,
+                Some(copy_async_trampoline::<P, Q>),
+                user_data,
+            );
+        }
+    }
+
+    fn copy_async_future(
+        &self,
+        destination: &(impl IsA<File> + Clone + 'static),
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+    ) -> (
+        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
+        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
+    ) {
+        let destination = destination.clone();
+
+        let (sender, receiver) = futures_channel::mpsc::unbounded();
+
+        let fut = Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.copy_async(
+                    &destination,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |current_num_bytes, total_num_bytes| {
+                        let _ = sender.unbounded_send((current_num_bytes, total_num_bytes));
+                    },
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ));
+
+        (fut, Box::pin(receiver))
     }
 }

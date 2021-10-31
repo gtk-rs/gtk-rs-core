@@ -156,12 +156,6 @@ pub trait FileExt: 'static {
         progress_callback: Option<&mut dyn (FnMut(i64, i64))>,
     ) -> Result<(), glib::Error>;
 
-    //#[doc(alias = "g_file_copy_async")]
-    //fn copy_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &impl IsA<File>, flags: FileCopyFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q);
-
-    //
-    //fn copy_async_future<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &(impl IsA<File> + Clone + 'static), flags: FileCopyFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
     #[doc(alias = "g_file_copy_attributes")]
     fn copy_attributes(
         &self,
@@ -1006,29 +1000,6 @@ impl<O: IsA<File>> FileExt for O {
             }
         }
     }
-
-    //fn copy_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &impl IsA<File>, flags: FileCopyFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q) {
-    //    unsafe { TODO: call ffi:g_file_copy_async() }
-    //}
-
-    //
-    //fn copy_async_future<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &(impl IsA<File> + Clone + 'static), flags: FileCopyFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-
-    //let destination = destination.clone();
-    //let progress_callback = progress_callback.map(ToOwned::to_owned);
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.copy_async(
-    //        &destination,
-    //        flags,
-    //        io_priority,
-    //        Some(cancellable),
-    //        progress_callback.as_ref().map(::std::borrow::Borrow::borrow),
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
 
     fn copy_attributes(
         &self,
