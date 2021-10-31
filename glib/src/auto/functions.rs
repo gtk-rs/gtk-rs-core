@@ -179,12 +179,12 @@ pub fn build_pathv(separator: &str, args: &[&std::path::Path]) -> std::path::Pat
 #[doc(alias = "g_canonicalize_filename")]
 pub fn canonicalize_filename(
     filename: impl AsRef<std::path::Path>,
-    relative_to: impl AsRef<std::path::Path>,
+    relative_to: Option<impl AsRef<std::path::Path>>,
 ) -> std::path::PathBuf {
     unsafe {
         from_glib_full(ffi::g_canonicalize_filename(
             filename.as_ref().to_glib_none().0,
-            relative_to.as_ref().to_glib_none().0,
+            relative_to.as_ref().map(|p| p.as_ref()).to_glib_none().0,
         ))
     }
 }
@@ -538,12 +538,16 @@ pub fn file_get_contents(filename: impl AsRef<std::path::Path>) -> Result<Vec<u8
 
 #[doc(alias = "g_file_open_tmp")]
 pub fn file_open_tmp(
-    tmpl: impl AsRef<std::path::Path>,
+    tmpl: Option<impl AsRef<std::path::Path>>,
 ) -> Result<(i32, std::path::PathBuf), crate::Error> {
     unsafe {
         let mut name_used = ptr::null_mut();
         let mut error = ptr::null_mut();
-        let ret = ffi::g_file_open_tmp(tmpl.as_ref().to_glib_none().0, &mut name_used, &mut error);
+        let ret = ffi::g_file_open_tmp(
+            tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+            &mut name_used,
+            &mut error,
+        );
         if error.is_null() {
             Ok((ret, from_glib_full(name_used)))
         } else {
@@ -1343,7 +1347,7 @@ pub fn spaced_primes_closest(num: u32) -> u32 {
 
 #[doc(alias = "g_spawn_async")]
 pub fn spawn_async(
-    working_directory: impl AsRef<std::path::Path>,
+    working_directory: Option<impl AsRef<std::path::Path>>,
     argv: &[&std::path::Path],
     envp: &[&std::path::Path],
     flags: SpawnFlags,
@@ -1366,7 +1370,11 @@ pub fn spawn_async(
         let mut child_pid = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
         let _ = ffi::g_spawn_async(
-            working_directory.as_ref().to_glib_none().0,
+            working_directory
+                .as_ref()
+                .map(|p| p.as_ref())
+                .to_glib_none()
+                .0,
             argv.to_glib_none().0,
             envp.to_glib_none().0,
             flags.into_glib(),
@@ -1387,7 +1395,7 @@ pub fn spawn_async(
 //#[cfg(any(feature = "v2_68", feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
-//pub fn spawn_async_with_pipes_and_fds(working_directory: impl AsRef<std::path::Path>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
+//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_async_with_pipes_and_fds() }
 //}
 
@@ -1443,7 +1451,7 @@ pub fn spawn_command_line_async(
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync(working_directory: impl AsRef<std::path::Path>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
