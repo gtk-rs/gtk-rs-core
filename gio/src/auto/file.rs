@@ -84,12 +84,17 @@ impl File {
     }
 
     #[doc(alias = "g_file_new_tmp")]
-    pub fn new_tmp(tmpl: impl AsRef<std::path::Path>) -> Result<(File, FileIOStream), glib::Error> {
+    pub fn new_tmp(
+        tmpl: Option<impl AsRef<std::path::Path>>,
+    ) -> Result<(File, FileIOStream), glib::Error> {
         unsafe {
             let mut iostream = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let ret =
-                ffi::g_file_new_tmp(tmpl.as_ref().to_glib_none().0, &mut iostream, &mut error);
+            let ret = ffi::g_file_new_tmp(
+                tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                &mut iostream,
+                &mut error,
+            );
             if error.is_null() {
                 Ok((from_glib_full(ret), from_glib_full(iostream)))
             } else {
