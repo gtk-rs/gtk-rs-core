@@ -362,12 +362,6 @@ pub trait FileExt: 'static {
         >,
     >;
 
-    //#[doc(alias = "g_file_load_partial_contents_async")]
-    //fn load_partial_contents_async<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static, Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, cancellable: Option<&impl IsA<Cancellable>>, read_more_callback: P, callback: Q);
-
-    //
-    //fn load_partial_contents_async_future<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, read_more_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>> + 'static>>;
-
     #[doc(alias = "g_file_make_directory")]
     fn make_directory(
         &self,
@@ -1630,24 +1624,6 @@ impl<O: IsA<File>> FileExt for O {
             },
         ))
     }
-
-    //fn load_partial_contents_async<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static, Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, cancellable: Option<&impl IsA<Cancellable>>, read_more_callback: P, callback: Q) {
-    //    unsafe { TODO: call ffi:g_file_load_partial_contents_async() }
-    //}
-
-    //
-    //fn load_partial_contents_async_future<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, read_more_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>> + 'static>> {
-
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.load_partial_contents_async(
-    //        Some(cancellable),
-    //        read_more_callback,
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
 
     fn make_directory(
         &self,

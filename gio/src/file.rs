@@ -83,6 +83,17 @@ pub trait FileExtManual: Sized {
         Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
         Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
     );
+
+    #[doc(alias = "g_file_load_partial_contents_async")]
+    fn load_partial_contents_async<
+        P: FnMut(&[u8]) -> bool + Send + 'static,
+        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+    >(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        read_more_callback: P,
+        callback: Q,
+    );
 }
 
 impl<O: IsA<File>> FileExtManual for O {
@@ -340,5 +351,78 @@ impl<O: IsA<File>> FileExtManual for O {
         ));
 
         (fut, Box::pin(receiver))
+    }
+
+    fn load_partial_contents_async<
+        P: FnMut(&[u8]) -> bool + Send + 'static,
+        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+    >(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        read_more_callback: P,
+        callback: Q,
+    ) {
+        let user_data: Box<(Q, RefCell<P>)> =
+            Box::new((callback, RefCell::new(read_more_callback)));
+        unsafe extern "C" fn load_partial_contents_async_trampoline<
+            P: FnMut(&[u8]) -> bool + Send + 'static,
+            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut contents = ptr::null_mut();
+            let mut length = 0;
+            let mut etag_out = ptr::null_mut();
+            let mut error = ptr::null_mut();
+            ffi::g_file_load_partial_contents_finish(
+                _source_object as *mut _,
+                res,
+                &mut contents,
+                &mut length,
+                &mut etag_out,
+                &mut error,
+            );
+            let result = if error.is_null() {
+                Ok((
+                    FromGlibContainer::from_glib_full_num(contents, length as usize),
+                    from_glib_full(etag_out),
+                ))
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box<(Q, RefCell<P>)> = Box::from_raw(user_data as *mut _);
+            callback.0(result);
+        }
+        unsafe extern "C" fn load_partial_contents_async_read_more_trampoline<
+            P: FnMut(&[u8]) -> bool + Send + 'static,
+            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        >(
+            file_contents: *const libc::c_char,
+            file_size: i64,
+            user_data: glib::ffi::gpointer,
+        ) -> glib::ffi::gboolean {
+            use std::slice;
+
+            let callback: &(Q, RefCell<P>) = &*(user_data as *const _);
+            (&mut *callback.1.borrow_mut())(slice::from_raw_parts(
+                file_contents as *const u8,
+                file_size as usize,
+            ))
+            .into_glib()
+        }
+
+        let user_data = Box::into_raw(user_data) as *mut _;
+
+        unsafe {
+            ffi::g_file_load_partial_contents_async(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(load_partial_contents_async_read_more_trampoline::<P, Q>),
+                Some(load_partial_contents_async_trampoline::<P, Q>),
+                user_data,
+            );
+        }
     }
 }
