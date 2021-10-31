@@ -1106,6 +1106,10 @@ glib_object_wrapper!(@object
 pub type ObjectClass = Class<Object>;
 
 impl Object {
+    /// Create a new instance of an object with the given properties.
+    ///
+    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
     #[allow(clippy::new_ret_no_self)]
     pub fn new<T: IsA<Object> + IsClass>(
         properties: &[(&str, &dyn ToValue)],
@@ -1115,6 +1119,10 @@ impl Object {
             .unwrap())
     }
 
+    /// Create a new instance of an object of the given type with the given properties.
+    ///
+    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
     pub fn with_type(
         type_: Type,
         properties: &[(&str, &dyn ToValue)],
@@ -1141,6 +1149,10 @@ impl Object {
         unsafe { Object::new_internal(type_, &params) }
     }
 
+    /// Create a new instance of an object of the given type with the given properties.
+    ///
+    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
     pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Result<Object, BoolError> {
         use std::ffi::CString;
 
@@ -1227,50 +1239,108 @@ pub trait ObjectExt: ObjectType {
     /// Returns `true` if the object is an instance of (can be cast to) `T`.
     fn is<T: StaticType>(&self) -> bool;
 
+    /// Returns the type of the object.
     #[doc(alias = "get_type")]
     fn type_(&self) -> Type;
+
+    /// Returns the [`ObjectClass`] of the object.
+    ///
+    /// This is equivalent to calling `obj.class().upcast_ref::<ObjectClass>()`.
     #[doc(alias = "get_object_class")]
     fn object_class(&self) -> &ObjectClass;
+
+    /// Returns the class of the object.
     #[doc(alias = "get_class")]
     fn class(&self) -> &Class<Self>
     where
         Self: IsClass;
+
+    /// Returns the class of the object in the given type `T`.
+    ///
+    /// `None` is returned if the object is not a subclass of `T`.
     #[doc(alias = "get_class_of")]
     fn class_of<T: IsClass>(&self) -> Option<&Class<T>>;
+
+    /// Returns the interface `T` of the object.
+    ///
+    /// `None` is returned if the object does not implement the interface `T`.
     #[doc(alias = "get_interface")]
     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
 
+    /// Sets the property `property_name` of the object to value `value`.
+    ///
+    /// This fails if the property does not exist, if the type of the property is different than
+    /// the provided value, or if the property is not writable.
     #[doc(alias = "g_object_set_property")]
     fn set_property<'a, N: Into<&'a str>, V: ToValue>(
         &self,
         property_name: N,
         value: V,
     ) -> Result<(), BoolError>;
+
+    /// Sets the property `property_name` of the object to value `value`.
+    ///
+    /// This fails if the property does not exist, the type of the property is different than the
+    /// provided value, or if the property is not writable.
     fn set_property_from_value<'a, N: Into<&'a str>>(
         &self,
         property_name: N,
         value: &Value,
     ) -> Result<(), BoolError>;
+
+    /// Sets multiple properties of the object at once.
+    ///
+    /// This does not set any properties if one or more properties don't exist, values of the wrong
+    /// type are provided, or if any of the properties is not writable.
+    #[doc(alias = "g_object_set")]
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) -> Result<(), BoolError>;
+
+    /// Sets multiple properties of the object at once.
+    ///
+    /// This does not set any properties if one or more properties don't exist, values of the wrong
+    /// type are provided, or if any of the properties is not writable.
     fn set_properties_from_value(&self, property_values: &[(&str, Value)])
         -> Result<(), BoolError>;
+
+    /// Gets the property `property_name` of the object.
+    ///
+    /// This fails if the property does not exist or is not writable.
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
     fn property<'a, N: Into<&'a str>>(&self, property_name: N) -> Result<Value, BoolError>;
+
+    /// Check if the object has a property `property_name` of the given `type_`.
+    ///
+    /// If no type is provided then only the existence of the property is checked.
     fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool;
+
+    /// Get the type of the property `property_name` of this object.
+    ///
+    /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
     fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type>;
+
+    /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object.
     fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec>;
+
+    /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
     fn list_properties(&self) -> Vec<crate::ParamSpec>;
 
+    /// Freeze all property notifications until the return guard object is dropped.
+    ///
+    /// This prevents the `notify` signal for all properties of this object to be emitted.
     #[doc(alias = "g_object_freeze_notify")]
     fn freeze_notify(&self) -> PropertyNotificationFreezeGuard;
 
+    /// Set arbitrary data on this object with the given `key`.
+    ///
     /// # Safety
     ///
     /// This function doesn't store type information
     unsafe fn set_qdata<QD: 'static>(&self, key: Quark, value: QD);
 
+    /// Return previously set arbitrary data of this object with the given `key`.
+    ///
     /// # Safety
     ///
     /// The returned pointer can become invalid by a call to
@@ -1280,16 +1350,24 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_qdata")]
     unsafe fn qdata<QD: 'static>(&self, key: Quark) -> Option<ptr::NonNull<QD>>;
 
+    /// Retrieve previously set arbitrary data of this object with the given `key`.
+    ///
+    /// The data is not set on the object anymore afterwards.
+    ///
     /// # Safety
     ///
     /// The caller is responsible for ensuring the returned value is of a suitable type
     unsafe fn steal_qdata<QD: 'static>(&self, key: Quark) -> Option<QD>;
 
+    /// Set arbitrary data on this object with the given `key`.
+    ///
     /// # Safety
     ///
     /// This function doesn't store type information
     unsafe fn set_data<QD: 'static>(&self, key: &str, value: QD);
 
+    /// Return previously set arbitrary data of this object with the given `key`.
+    ///
     /// # Safety
     ///
     /// The returned pointer can become invalid by a call to
@@ -1299,15 +1377,39 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_data")]
     unsafe fn data<QD: 'static>(&self, key: &str) -> Option<ptr::NonNull<QD>>;
 
+    /// Retrieve previously set arbitrary data of this object with the given `key`.
+    ///
+    /// The data is not set on the object anymore afterwards.
+    ///
     /// # Safety
     ///
     /// The caller is responsible for ensuring the returned value is of a suitable type
     unsafe fn steal_data<QD: 'static>(&self, key: &str) -> Option<QD>;
 
+    /// Block a given signal handler.
+    ///
+    /// It will not be called again during signal emissions until it is unblocked.
+    #[doc(alias = "g_signal_handler_block")]
     fn block_signal(&self, handler_id: &SignalHandlerId);
-    fn unblock_signal(&self, handler_id: &SignalHandlerId);
-    fn stop_signal_emission(&self, signal_name: &str);
 
+    /// Unblock a given signal handler.
+    #[doc(alias = "g_signal_handler_unblock")]
+    fn unblock_signal(&self, handler_id: &SignalHandlerId);
+
+    /// Stop emission of the currently emitted signal.
+    #[doc(alias = "g_signal_stop_emission")]
+    fn stop_signal_emission(&self, signal_id: SignalId, detail: Option<Quark>);
+
+    /// Stop emission of the currently emitted signal by the (possibly detailed) signal name.
+    #[doc(alias = "g_signal_stop_emission_by_name")]
+    fn stop_signal_emission_by_name(&self, signal_name: &str);
+
+    /// Connect to the signal `signal_name` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
     fn connect<'a, N, F>(
         &self,
         signal_name: N,
@@ -1317,6 +1419,14 @@ pub trait ObjectExt: ObjectType {
     where
         N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
+
+    /// Connect to the signal `signal_id` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
+    ///
     /// Same as `connect` but takes a `SignalId` instead of a signal name.
     fn connect_id<F>(
         &self,
@@ -1328,6 +1438,15 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
+    /// Connect to the signal `signal_name` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
+    ///
+    /// Same as `connect` but takes a non-`Send+Sync` closure. If the signal is emitted from a
+    /// different thread than it was connected to then the signal emission will panic.
     fn connect_local<'a, N, F>(
         &self,
         signal_name: N,
@@ -1337,7 +1456,16 @@ pub trait ObjectExt: ObjectType {
     where
         N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + 'static;
-    /// Same as `connect_local` but takes a `SignalId` instead of a signal name.
+
+    /// Connect to the signal `signal_id` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
+    ///
+    /// Same as `connect_id` but takes a non-`Send+Sync` closure. If the signal is emitted from a
+    /// different thread than it was connected to then the signal emission will panic.
     fn connect_local_id<F>(
         &self,
         signal_id: SignalId,
@@ -1348,6 +1476,20 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
+    /// Connect to the signal `signal_name` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
+    ///
+    /// Same as `connect` but takes a non-`Send+Sync` and non-`'static'` closure. No runtime checks
+    /// are performed for ensuring that the closure is called correctly.
+    ///
+    /// # Safety
+    ///
+    /// The provided closure must be valid until the signal handler is disconnected, and it must
+    /// be allowed to call the closure from the threads the signal is emitted from.
     unsafe fn connect_unsafe<'a, N, F>(
         &self,
         signal_name: N,
@@ -1357,7 +1499,21 @@ pub trait ObjectExt: ObjectType {
     where
         N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value>;
-    /// Same as `connect_unsafe` but takes a `SignalId` instead of a signal name.
+
+    /// Connect to the signal `signal_id` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This fails if the signal does not exist.
+    ///
+    /// Same as `connect_id` but takes a non-`Send+Sync` and non-`'static'` closure. No runtime checks
+    /// are performed for ensuring that the closure is called correctly.
+    ///
+    /// # Safety
+    ///
+    /// The provided closure must be valid until the signal handler is disconnected, and it must
+    /// be allowed to call the closure from the threads the signal is emitted from.
     unsafe fn connect_unsafe_id<F>(
         &self,
         signal_id: SignalId,
@@ -1367,7 +1523,13 @@ pub trait ObjectExt: ObjectType {
     ) -> Result<SignalHandlerId, BoolError>
     where
         F: Fn(&[Value]) -> Option<Value>;
+
     /// Emit signal by signal id.
+    ///
+    /// This fails if the wrong number of arguments is provided, or arguments of the wrong types
+    /// were provided.
+    ///
+    /// If the signal has a return value then this is returned here.
     #[doc(alias = "g_signal_emitv")]
     fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Result<Option<Value>, BoolError>;
     /// Same as `emit` but takes `Value` for the arguments.
@@ -1376,57 +1538,124 @@ pub trait ObjectExt: ObjectType {
         signal_id: SignalId,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
+
     /// Emit signal by its name.
+    ///
+    /// This fails if the signal does not exist, the wrong number of arguments is provided, or
+    /// arguments of the wrong types were provided.
+    ///
+    /// If the signal has a return value then this is returned here.
+    #[doc(alias = "g_signal_emit_by_name")]
     fn emit_by_name<'a, N: Into<&'a str>>(
         &self,
         signal_name: N,
         args: &[&dyn ToValue],
     ) -> Result<Option<Value>, BoolError>;
-    /// Same as `emit_by_name` but takes `Value` for the arguments.
+
+    /// Emit signal by its name.
+    ///
+    /// This fails if the signal does not exist, the wrong number of arguments is provided, or
+    /// arguments of the wrong types were provided.
+    ///
+    /// If the signal has a return value then this is returned here.
     fn emit_by_name_with_values<'a, N: Into<&'a str>>(
         &self,
         signal_name: N,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
-    /// Emit signal with details by signal id.
+
+    /// Emit signal by signal id with details.
+    ///
+    /// This fails if the wrong number of arguments is provided, or arguments of the wrong types
+    /// were provided.
+    ///
+    /// If the signal has a return value then this is returned here.
     fn emit_with_details(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
     ) -> Result<Option<Value>, BoolError>;
-    /// Same as `emit_with_details` but takes `Value` for the arguments.
+
+    /// Emit signal by signal id with details.
+    ///
+    /// This fails if the wrong number of arguments is provided, or arguments of the wrong types
+    /// were provided.
+    ///
+    /// If the signal has a return value then this is returned here.
     fn emit_with_details_and_values(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
+
+    /// Disconnect a previously connected signal handler.
     #[doc(alias = "g_signal_handler_disconnect")]
     fn disconnect(&self, handler_id: SignalHandlerId);
 
+    /// Connect to the `notify` signal of the object.
+    ///
+    /// This is emitted whenever a property is changed. If `name` is provided then the signal
+    /// handler is only called for this specific property.
     fn connect_notify<F: Fn(&Self, &crate::ParamSpec) + Send + Sync + 'static>(
         &self,
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId;
+
+    /// Connect to the `notify` signal of the object.
+    ///
+    /// This is emitted whenever a property is changed. If `name` is provided then the signal
+    /// handler is only called for this specific property.
+    ///
+    /// This is like `connect_notify` but doesn't require a `Send+Sync` closure. Signal emission
+    /// will panic if the signal is emitted from the wrong thread.
     fn connect_notify_local<F: Fn(&Self, &crate::ParamSpec) + 'static>(
         &self,
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId;
+
+    /// Connect to the `notify` signal of the object.
+    ///
+    /// This is emitted whenever a property is changed. If `name` is provided then the signal
+    /// handler is only called for this specific property.
+    ///
+    /// This is like `connect_notify` but doesn't require a `Send+Sync` or `'static` closure. No
+    /// runtime checks for wrongly calling the closure are performed.
+    ///
+    /// # Safety
+    ///
+    /// The provided closure must be valid until the signal handler is disconnected, and it must
+    /// be allowed to call the closure from the threads the signal is emitted from.
     unsafe fn connect_notify_unsafe<F: Fn(&Self, &crate::ParamSpec)>(
         &self,
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId;
+
+    /// Notify that the given property has changed its value.
+    ///
+    /// This emits the `notify` signal.
     #[doc(alias = "g_object_notify")]
     fn notify<'a, N: Into<&'a str>>(&self, property_name: N);
+
+    /// Notify that the given property has changed its value.
+    ///
+    /// This emits the `notify` signal.
     #[doc(alias = "g_object_notify_by_pspec")]
     fn notify_by_pspec(&self, pspec: &crate::ParamSpec);
 
+    /// Downgrade this object to a weak reference.
     fn downgrade(&self) -> WeakRef<Self>;
 
+    /// Bind property `source_property` on this object to the `target_property` on the `target` object.
+    ///
+    /// This allows keeping the properties of both objects in sync.
+    ///
+    /// The binding can be unidirectional or bidirectional and optionally it is possible to
+    /// transform the property values before they're passed to the other object.
     fn bind_property<'a, O: ObjectType, N: Into<&'a str>, M: Into<&'a str>>(
         &'a self,
         source_property: N,
@@ -1434,6 +1663,7 @@ pub trait ObjectExt: ObjectType {
         target_property: M,
     ) -> BindingBuilder<'a>;
 
+    /// Returns the strong reference count of this object.
     fn ref_count(&self) -> u32;
 }
 
@@ -1736,7 +1966,17 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn stop_signal_emission(&self, signal_name: &str) {
+    fn stop_signal_emission(&self, signal_id: SignalId, detail: Option<Quark>) {
+        unsafe {
+            gobject_ffi::g_signal_stop_emission(
+                self.as_object_ref().to_glib_none().0,
+                signal_id.into_glib(),
+                detail.map(|d| d.into_glib()).unwrap_or(0),
+            );
+        }
+    }
+
+    fn stop_signal_emission_by_name(&self, signal_name: &str) {
         unsafe {
             gobject_ffi::g_signal_stop_emission_by_name(
                 self.as_object_ref().to_glib_none().0,
@@ -2401,6 +2641,9 @@ fn validate_signal_arguments(
 }
 
 impl ObjectClass {
+    /// Check if the object class has a property `property_name` of the given `type_`.
+    ///
+    /// If no type is provided then only the existence of the property is checked.
     pub fn has_property<'a, N: Into<&'a str>>(
         &self,
         property_name: N,
@@ -2416,12 +2659,16 @@ impl ObjectClass {
         }
     }
 
+    /// Get the type of the property `property_name` of this object class.
+    ///
+    /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
     pub fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
         self.find_property(property_name)
             .map(|pspec| pspec.value_type())
     }
 
+    /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object class.
     #[doc(alias = "g_object_class_find_property")]
     pub fn find_property<'a, N: Into<&'a str>>(
         &self,
@@ -2438,6 +2685,7 @@ impl ObjectClass {
         }
     }
 
+    /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     #[doc(alias = "g_object_class_list_properties")]
     pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
         unsafe {
@@ -2461,11 +2709,15 @@ wrapper! {
     }
 }
 
+/// A weak reference to an object.
 #[derive(Debug)]
 #[doc(alias = "GWeakRef")]
 pub struct WeakRef<T: ObjectType>(Pin<Box<gobject_ffi::GWeakRef>>, PhantomData<*mut T>);
 
 impl<T: ObjectType> WeakRef<T> {
+    /// Create a new empty weak reference.
+    ///
+    /// `upgrade` will always return `None` until an object is set on it.
     pub fn new() -> WeakRef<T> {
         unsafe {
             let mut w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
@@ -2477,6 +2729,7 @@ impl<T: ObjectType> WeakRef<T> {
         }
     }
 
+    /// Set this weak reference to the given object.
     #[doc(alias = "g_weak_ref_set")]
     pub fn set(&self, obj: Option<&T>) {
         unsafe {
@@ -2489,6 +2742,10 @@ impl<T: ObjectType> WeakRef<T> {
         }
     }
 
+    /// Try to upgrade this weak reference to a strong reference.
+    ///
+    /// If the stored object was already destroyed or no object was set in this weak reference then
+    /// `None` is returned.
     pub fn upgrade(&self) -> Option<T> {
         unsafe {
             let ptr = gobject_ffi::g_weak_ref_get(mut_override(Pin::as_ref(&self.0).get_ref()));
@@ -2594,6 +2851,7 @@ impl<T: ObjectType> From<WeakRef<T>> for SendWeakRef<T> {
 unsafe impl<T: ObjectType> Sync for SendWeakRef<T> {}
 unsafe impl<T: ObjectType> Send for SendWeakRef<T> {}
 
+/// Builder for object property bindings.
 #[derive(Debug)]
 #[must_use]
 pub struct BindingBuilder<'a> {
@@ -2658,6 +2916,7 @@ impl<'a> BindingBuilder<'a> {
         })
     }
 
+    /// Transform changed property values from the target object to the source object with the given closure.
     pub fn transform_from<
         F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
     >(
@@ -2670,6 +2929,7 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    /// Transform changed property values from the source object to the target object with the given closure.
     pub fn transform_to<F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>(
         self,
         func: F,
@@ -2680,13 +2940,17 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    /// Bind the properties with the given flags.
     pub fn flags(self, flags: crate::BindingFlags) -> Self {
         Self { flags, ..self }
     }
 
-    pub fn build(self) -> Option<crate::Binding> {
+    /// Establish the property binding.
+    ///
+    /// This fails if the provided properties do not exist.
+    pub fn build(self) -> Result<crate::Binding, crate::BoolError> {
         unsafe {
-            from_glib_none(gobject_ffi::g_object_bind_property_with_closures(
+            Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_with_closures(
                 self.source.to_glib_none().0,
                 self.source_property.to_glib_none().0,
                 self.target.to_glib_none().0,
@@ -2695,6 +2959,7 @@ impl<'a> BindingBuilder<'a> {
                 self.transform_to.to_glib_none().0,
                 self.transform_from.to_glib_none().0,
             ))
+            .ok_or_else(|| bool_error!("Failed to create property bindings"))
         }
     }
 }
@@ -2999,6 +3264,9 @@ impl<T: IsInterface> Interface<T> {
 }
 
 impl<T: IsA<Object> + IsInterface> Interface<T> {
+    /// Check if this interface has a property `property_name` of the given `type_`.
+    ///
+    /// If no type is provided then only the existence of the property is checked.
     pub fn has_property<'a, N: Into<&'a str>>(
         &self,
         property_name: N,
@@ -3014,12 +3282,16 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
         }
     }
 
+    /// Get the type of the property `property_name` of this interface.
+    ///
+    /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
     pub fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
         self.find_property(property_name)
             .map(|pspec| pspec.value_type())
     }
 
+    /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this interface.
     #[doc(alias = "g_object_interface_find_property")]
     pub fn find_property<'a, N: Into<&'a str>>(
         &self,
@@ -3036,6 +3308,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
         }
     }
 
+    /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this interface.
     #[doc(alias = "g_object_interface_list_properties")]
     pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
         unsafe {
