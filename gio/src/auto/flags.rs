@@ -1099,6 +1099,72 @@ impl ToValue for DriveStartFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileAttributeInfoFlags")]
+    pub struct FileAttributeInfoFlags: u32 {
+        #[doc(alias = "G_FILE_ATTRIBUTE_INFO_NONE")]
+        const NONE = ffi::G_FILE_ATTRIBUTE_INFO_NONE as u32;
+        #[doc(alias = "G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE")]
+        const COPY_WITH_FILE = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE as u32;
+        #[doc(alias = "G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED")]
+        const COPY_WHEN_MOVED = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED as u32;
+    }
+}
+
+impl fmt::Display for FileAttributeInfoFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for FileAttributeInfoFlags {
+    type GlibType = ffi::GFileAttributeInfoFlags;
+
+    fn into_glib(self) -> ffi::GFileAttributeInfoFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GFileAttributeInfoFlags> for FileAttributeInfoFlags {
+    unsafe fn from_glib(value: ffi::GFileAttributeInfoFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for FileAttributeInfoFlags {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_file_attribute_info_flags_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for FileAttributeInfoFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for FileAttributeInfoFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for FileAttributeInfoFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+bitflags! {
     #[doc(alias = "GFileCopyFlags")]
     pub struct FileCopyFlags: u32 {
         #[doc(alias = "G_FILE_COPY_NONE")]

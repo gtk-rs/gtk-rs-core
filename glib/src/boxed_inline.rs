@@ -294,7 +294,7 @@ macro_rules! glib_boxed_inline_wrapper {
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
                 copy_into(&mut v.0 as *mut $ffi_name, ptr as *const $ffi_name);
 
-                let free = |$free_arg| $free_expr;
+                let free = |$free_arg: *mut $ffi_name| $free_expr;
                 free(ptr);
 
                 v

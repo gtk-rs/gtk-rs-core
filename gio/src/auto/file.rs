@@ -6,6 +6,7 @@ use crate::AppInfo;
 use crate::AsyncResult;
 use crate::Cancellable;
 use crate::DriveStartFlags;
+use crate::FileAttributeInfoList;
 use crate::FileCopyFlags;
 use crate::FileCreateFlags;
 use crate::FileEnumerator;
@@ -569,11 +570,17 @@ pub trait FileExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>>;
 
-    //#[doc(alias = "g_file_query_settable_attributes")]
-    //fn query_settable_attributes(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error>;
+    #[doc(alias = "g_file_query_settable_attributes")]
+    fn query_settable_attributes(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error>;
 
-    //#[doc(alias = "g_file_query_writable_namespaces")]
-    //fn query_writable_namespaces(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error>;
+    #[doc(alias = "g_file_query_writable_namespaces")]
+    fn query_writable_namespaces(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error>;
 
     #[doc(alias = "g_file_read")]
     fn read(
@@ -2337,13 +2344,43 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    //fn query_settable_attributes(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error> {
-    //    unsafe { TODO: call ffi:g_file_query_settable_attributes() }
-    //}
+    fn query_settable_attributes(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_query_settable_attributes(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 
-    //fn query_writable_namespaces(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error> {
-    //    unsafe { TODO: call ffi:g_file_query_writable_namespaces() }
-    //}
+    fn query_writable_namespaces(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_query_writable_namespaces(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 
     fn read(
         &self,
