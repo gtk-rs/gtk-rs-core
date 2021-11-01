@@ -643,8 +643,7 @@ mod tests {
 
         let helper = Helper(l.clone());
         receiver.attach(Some(&c), move |_| {
-            let _ = helper;
-
+            let _helper = &helper;
             Continue(true)
         });
 
