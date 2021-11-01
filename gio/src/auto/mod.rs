@@ -419,6 +419,9 @@ pub use self::dbus_property_info::DBusPropertyInfo;
 mod dbus_signal_info;
 pub use self::dbus_signal_info::DBusSignalInfo;
 
+mod file_attribute_info_list;
+pub use self::file_attribute_info_list::FileAttributeInfoList;
+
 mod file_attribute_matcher;
 pub use self::file_attribute_matcher::FileAttributeMatcher;
 
@@ -522,6 +525,7 @@ pub use self::flags::DBusSendMessageFlags;
 pub use self::flags::DBusServerFlags;
 pub use self::flags::DBusSignalFlags;
 pub use self::flags::DriveStartFlags;
+pub use self::flags::FileAttributeInfoFlags;
 pub use self::flags::FileCopyFlags;
 pub use self::flags::FileCreateFlags;
 pub use self::flags::FileMeasureFlags;

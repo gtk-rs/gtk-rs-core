@@ -6,13 +6,13 @@ use crate::AppInfo;
 use crate::AsyncResult;
 use crate::Cancellable;
 use crate::DriveStartFlags;
+use crate::FileAttributeInfoList;
 use crate::FileCopyFlags;
 use crate::FileCreateFlags;
 use crate::FileEnumerator;
 use crate::FileIOStream;
 use crate::FileInfo;
 use crate::FileInputStream;
-use crate::FileMeasureFlags;
 use crate::FileMonitor;
 use crate::FileMonitorFlags;
 use crate::FileOutputStream;
@@ -155,12 +155,6 @@ pub trait FileExt: 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
         progress_callback: Option<&mut dyn (FnMut(i64, i64))>,
     ) -> Result<(), glib::Error>;
-
-    //#[doc(alias = "g_file_copy_async")]
-    //fn copy_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &impl IsA<File>, flags: FileCopyFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q);
-
-    //
-    //fn copy_async_future<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &(impl IsA<File> + Clone + 'static), flags: FileCopyFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_copy_attributes")]
     fn copy_attributes(
@@ -368,12 +362,6 @@ pub trait FileExt: 'static {
         >,
     >;
 
-    //#[doc(alias = "g_file_load_partial_contents_async")]
-    //fn load_partial_contents_async<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static, Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, cancellable: Option<&impl IsA<Cancellable>>, read_more_callback: P, callback: Q);
-
-    //
-    //fn load_partial_contents_async_future<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, read_more_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>> + 'static>>;
-
     #[doc(alias = "g_file_make_directory")]
     fn make_directory(
         &self,
@@ -405,20 +393,6 @@ pub trait FileExt: 'static {
         symlink_value: impl AsRef<std::path::Path>,
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_file_measure_disk_usage")]
-    fn measure_disk_usage(
-        &self,
-        flags: FileMeasureFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box_<dyn Fn(bool, u64, u64, u64) + 'static>>,
-    ) -> Result<(u64, u64, u64), glib::Error>;
-
-    //#[doc(alias = "g_file_measure_disk_usage_async")]
-    //fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static, Q: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(&self, flags: FileMeasureFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q);
-
-    //
-    //fn measure_disk_usage_async_future<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(&self, flags: FileMeasureFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(u64, u64, u64), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_monitor")]
     fn monitor(
@@ -596,11 +570,17 @@ pub trait FileExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInfo, glib::Error>> + 'static>>;
 
-    //#[doc(alias = "g_file_query_settable_attributes")]
-    //fn query_settable_attributes(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error>;
+    #[doc(alias = "g_file_query_settable_attributes")]
+    fn query_settable_attributes(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error>;
 
-    //#[doc(alias = "g_file_query_writable_namespaces")]
-    //fn query_writable_namespaces(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error>;
+    #[doc(alias = "g_file_query_writable_namespaces")]
+    fn query_writable_namespaces(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error>;
 
     #[doc(alias = "g_file_read")]
     fn read(
@@ -1006,29 +986,6 @@ impl<O: IsA<File>> FileExt for O {
             }
         }
     }
-
-    //fn copy_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static, Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &impl IsA<File>, flags: FileCopyFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q) {
-    //    unsafe { TODO: call ffi:g_file_copy_async() }
-    //}
-
-    //
-    //fn copy_async_future<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, destination: &(impl IsA<File> + Clone + 'static), flags: FileCopyFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-
-    //let destination = destination.clone();
-    //let progress_callback = progress_callback.map(ToOwned::to_owned);
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.copy_async(
-    //        &destination,
-    //        flags,
-    //        io_priority,
-    //        Some(cancellable),
-    //        progress_callback.as_ref().map(::std::borrow::Borrow::borrow),
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
 
     fn copy_attributes(
         &self,
@@ -1660,24 +1617,6 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    //fn load_partial_contents_async<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static, Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, cancellable: Option<&impl IsA<Cancellable>>, read_more_callback: P, callback: Q) {
-    //    unsafe { TODO: call ffi:g_file_load_partial_contents_async() }
-    //}
-
-    //
-    //fn load_partial_contents_async_future<P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static>(&self, read_more_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(Vec<u8>, Option<glib::GString>), glib::Error>> + 'static>> {
-
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.load_partial_contents_async(
-    //        Some(cancellable),
-    //        read_more_callback,
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
-
     fn make_directory(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -1786,85 +1725,6 @@ impl<O: IsA<File>> FileExt for O {
             }
         }
     }
-
-    fn measure_disk_usage(
-        &self,
-        flags: FileMeasureFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box_<dyn Fn(bool, u64, u64, u64) + 'static>>,
-    ) -> Result<(u64, u64, u64), glib::Error> {
-        let progress_callback_data: Box_<Option<Box_<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-            Box_::new(progress_callback);
-        unsafe extern "C" fn progress_callback_func(
-            reporting: glib::ffi::gboolean,
-            current_size: u64,
-            num_dirs: u64,
-            num_files: u64,
-            user_data: glib::ffi::gpointer,
-        ) {
-            let reporting = from_glib(reporting);
-            let callback: &Option<Box_<dyn Fn(bool, u64, u64, u64) + 'static>> =
-                &*(user_data as *mut _);
-            if let Some(ref callback) = *callback {
-                callback(reporting, current_size, num_dirs, num_files)
-            } else {
-                panic!("cannot get closure...")
-            };
-        }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
-        } else {
-            None
-        };
-        let super_callback0: Box_<Option<Box_<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-            progress_callback_data;
-        unsafe {
-            let mut disk_usage = mem::MaybeUninit::uninit();
-            let mut num_dirs = mem::MaybeUninit::uninit();
-            let mut num_files = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
-            let _ = ffi::g_file_measure_disk_usage(
-                self.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback,
-                Box_::into_raw(super_callback0) as *mut _,
-                disk_usage.as_mut_ptr(),
-                num_dirs.as_mut_ptr(),
-                num_files.as_mut_ptr(),
-                &mut error,
-            );
-            let disk_usage = disk_usage.assume_init();
-            let num_dirs = num_dirs.assume_init();
-            let num_files = num_files.assume_init();
-            if error.is_null() {
-                Ok((disk_usage, num_dirs, num_files))
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
-    //fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static, Q: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(&self, flags: FileMeasureFlags, io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, progress_callback: P, callback: Q) {
-    //    unsafe { TODO: call ffi:g_file_measure_disk_usage_async() }
-    //}
-
-    //
-    //fn measure_disk_usage_async_future<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(&self, flags: FileMeasureFlags, io_priority: glib::Priority, progress_callback: P) -> Pin<Box_<dyn std::future::Future<Output = Result<(u64, u64, u64), glib::Error>> + 'static>> {
-
-    //let progress_callback = progress_callback.map(ToOwned::to_owned);
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.measure_disk_usage_async(
-    //        flags,
-    //        io_priority,
-    //        Some(cancellable),
-    //        progress_callback.as_ref().map(::std::borrow::Borrow::borrow),
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
 
     fn monitor(
         &self,
@@ -2484,13 +2344,43 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    //fn query_settable_attributes(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error> {
-    //    unsafe { TODO: call ffi:g_file_query_settable_attributes() }
-    //}
+    fn query_settable_attributes(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_query_settable_attributes(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 
-    //fn query_writable_namespaces(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result</*Ignored*/FileAttributeInfoList, glib::Error> {
-    //    unsafe { TODO: call ffi:g_file_query_writable_namespaces() }
-    //}
+    fn query_writable_namespaces(
+        &self,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<FileAttributeInfoList, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_query_writable_namespaces(
+                self.as_ref().to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 
     fn read(
         &self,
