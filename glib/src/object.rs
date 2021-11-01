@@ -191,7 +191,7 @@ pub trait Cast: ObjectType {
     /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
     ///
     /// It is not always known at compile-time, whether a specific object implements an interface or
-    /// not, and checking as to be performed at runtime.
+    /// not, and checking has to be performed at runtime.
     ///
     /// Returns `Ok(T)` if the object is an instance of `T` and `Err(self)`
     /// otherwise.
@@ -219,7 +219,7 @@ pub trait Cast: ObjectType {
     /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
     ///
     /// It is not always known at compile-time, whether a specific object implements an interface or
-    /// not, and checking as to be performed at runtime.
+    /// not, and checking has to be performed at runtime.
     ///
     /// Returns `Some(T)` if the object is an instance of `T` and `None`
     /// otherwise.
