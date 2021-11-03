@@ -52,7 +52,7 @@ use crate::translate::*;
 use crate::types::{StaticType, Type};
 
 /// A type that can be stored in `Value`s.
-pub trait ValueType: ToValue + FromValue<'static> + 'static {
+pub trait ValueType: ToValue + for<'a> FromValue<'a> + 'static {
     /// Type to get the `Type` from.
     ///
     /// This exists only for handling optional types.
@@ -71,7 +71,7 @@ pub trait ValueTypeOptional:
 
 impl<T, C> ValueType for Option<T>
 where
-    T: FromValue<'static, Checker = C> + ValueTypeOptional + StaticType + 'static,
+    T: for<'a> FromValue<'a, Checker = C> + ValueTypeOptional + StaticType + 'static,
     C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError>,
 {
     type Type = T::Type;
@@ -392,6 +392,17 @@ impl Value {
         unsafe {
             T::Checker::check(self)?;
             Ok(T::from_value(self))
+        }
+    }
+
+    /// Tries to get a value of an owned type `T`.
+    pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    where
+        T: for<'b> FromValue<'b> + 'static,
+    {
+        unsafe {
+            T::Checker::check(self)?;
+            Ok(FromValue::from_value(self))
         }
     }
 
@@ -964,6 +975,11 @@ mod tests {
 
         let some_v = Some("test").to_value();
         assert_eq!(some_v.get::<&str>(), Ok("test"));
+        assert_eq!(some_v.get_owned::<String>(), Ok("test".to_string()));
+        assert_eq!(
+            some_v.get_owned::<Option<String>>(),
+            Ok(Some("test".to_string()))
+        );
         assert_eq!(some_v.get::<Option<&str>>(), Ok(Some("test")));
         assert_eq!(
             some_v.get::<i32>(),
