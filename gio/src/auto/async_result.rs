@@ -16,7 +16,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_ASYNC_RESULT: Option<&AsyncResult> = None;
+impl AsyncResult {
+    pub const NONE: Option<&'static AsyncResult> = None;
+}
 
 pub trait AsyncResultExt: 'static {
     #[doc(alias = "g_async_result_get_source_object")]

@@ -18,7 +18,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FONT_FAMILY: Option<&FontFamily> = None;
+impl FontFamily {
+    pub const NONE: Option<&'static FontFamily> = None;
+}
 
 pub trait FontFamilyExt: 'static {
     #[cfg(any(feature = "v1_46", feature = "dox"))]

@@ -39,7 +39,9 @@ impl TlsFileDatabase {
     }
 }
 
-pub const NONE_TLS_FILE_DATABASE: Option<&TlsFileDatabase> = None;
+impl TlsFileDatabase {
+    pub const NONE: Option<&'static TlsFileDatabase> = None;
+}
 
 pub trait TlsFileDatabaseExt: 'static {
     fn anchors(&self) -> Option<glib::GString>;

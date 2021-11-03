@@ -24,7 +24,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_THREADED_SOCKET_SERVICE: Option<&ThreadedSocketService> = None;
+impl ThreadedSocketService {
+    pub const NONE: Option<&'static ThreadedSocketService> = None;
+}
 
 pub trait ThreadedSocketServiceExt: 'static {
     #[doc(alias = "max-threads")]

@@ -31,7 +31,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_MOUNT: Option<&Mount> = None;
+impl Mount {
+    pub const NONE: Option<&'static Mount> = None;
+}
 
 pub trait MountExt: 'static {
     #[doc(alias = "g_mount_can_eject")]

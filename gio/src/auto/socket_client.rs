@@ -49,7 +49,9 @@ impl Default for SocketClient {
     }
 }
 
-pub const NONE_SOCKET_CLIENT: Option<&SocketClient> = None;
+impl SocketClient {
+    pub const NONE: Option<&'static SocketClient> = None;
+}
 
 pub trait SocketClientExt: 'static {
     #[doc(alias = "g_socket_client_add_application_proxy")]

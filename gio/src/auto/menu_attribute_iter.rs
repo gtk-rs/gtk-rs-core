@@ -16,7 +16,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_MENU_ATTRIBUTE_ITER: Option<&MenuAttributeIter> = None;
+impl MenuAttributeIter {
+    pub const NONE: Option<&'static MenuAttributeIter> = None;
+}
 
 pub trait MenuAttributeIterExt: 'static {
     #[doc(alias = "g_menu_attribute_iter_get_next")]

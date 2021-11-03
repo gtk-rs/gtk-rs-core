@@ -22,7 +22,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_MENU_MODEL: Option<&MenuModel> = None;
+impl MenuModel {
+    pub const NONE: Option<&'static MenuModel> = None;
+}
 
 pub trait MenuModelExt: 'static {
     //#[doc(alias = "g_menu_model_get_item_attribute")]

@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_INPUT_STREAM: Option<&InputStream> = None;
+impl InputStream {
+    pub const NONE: Option<&'static InputStream> = None;
+}
 
 pub trait InputStreamExt: 'static {
     #[doc(alias = "g_input_stream_clear_pending")]

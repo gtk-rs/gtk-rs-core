@@ -33,7 +33,9 @@ impl SocketAddress {
 unsafe impl Send for SocketAddress {}
 unsafe impl Sync for SocketAddress {}
 
-pub const NONE_SOCKET_ADDRESS: Option<&SocketAddress> = None;
+impl SocketAddress {
+    pub const NONE: Option<&'static SocketAddress> = None;
+}
 
 pub trait SocketAddressExt: 'static {
     #[doc(alias = "g_socket_address_get_family")]

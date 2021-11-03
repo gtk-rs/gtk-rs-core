@@ -45,7 +45,9 @@ impl Default for SocketListener {
     }
 }
 
-pub const NONE_SOCKET_LISTENER: Option<&SocketListener> = None;
+impl SocketListener {
+    pub const NONE: Option<&'static SocketListener> = None;
+}
 
 pub trait SocketListenerExt: 'static {
     #[doc(alias = "g_socket_listener_accept")]

@@ -17,7 +17,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_INITABLE: Option<&Initable> = None;
+impl Initable {
+    pub const NONE: Option<&'static Initable> = None;
+}
 
 pub trait InitableExt: 'static {
     #[doc(alias = "g_initable_init")]

@@ -22,7 +22,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_TCP_CONNECTION: Option<&TcpConnection> = None;
+impl TcpConnection {
+    pub const NONE: Option<&'static TcpConnection> = None;
+}
 
 pub trait TcpConnectionExt: 'static {
     #[doc(alias = "g_tcp_connection_get_graceful_disconnect")]

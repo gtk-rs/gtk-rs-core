@@ -18,7 +18,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_POLLABLE_OUTPUT_STREAM: Option<&PollableOutputStream> = None;
+impl PollableOutputStream {
+    pub const NONE: Option<&'static PollableOutputStream> = None;
+}
 
 pub trait PollableOutputStreamExt: 'static {
     #[doc(alias = "g_pollable_output_stream_can_poll")]

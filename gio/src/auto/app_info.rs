@@ -202,7 +202,9 @@ impl AppInfo {
     }
 }
 
-pub const NONE_APP_INFO: Option<&AppInfo> = None;
+impl AppInfo {
+    pub const NONE: Option<&'static AppInfo> = None;
+}
 
 pub trait AppInfoExt: 'static {
     #[doc(alias = "g_app_info_add_supports_type")]

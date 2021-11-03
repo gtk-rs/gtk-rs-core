@@ -30,7 +30,9 @@ impl EmblemedIcon {
     }
 }
 
-pub const NONE_EMBLEMED_ICON: Option<&EmblemedIcon> = None;
+impl EmblemedIcon {
+    pub const NONE: Option<&'static EmblemedIcon> = None;
+}
 
 pub trait EmblemedIconExt: 'static {
     #[doc(alias = "g_emblemed_icon_add_emblem")]

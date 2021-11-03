@@ -43,7 +43,9 @@ impl Default for Cancellable {
 unsafe impl Send for Cancellable {}
 unsafe impl Sync for Cancellable {}
 
-pub const NONE_CANCELLABLE: Option<&Cancellable> = None;
+impl Cancellable {
+    pub const NONE: Option<&'static Cancellable> = None;
+}
 
 pub trait CancellableExt: 'static {
     #[doc(alias = "g_cancellable_cancel")]

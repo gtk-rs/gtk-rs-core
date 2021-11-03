@@ -30,7 +30,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_DRIVE: Option<&Drive> = None;
+impl Drive {
+    pub const NONE: Option<&'static Drive> = None;
+}
 
 pub trait DriveExt: 'static {
     #[doc(alias = "g_drive_can_eject")]

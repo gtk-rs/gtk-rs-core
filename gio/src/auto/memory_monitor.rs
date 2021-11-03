@@ -29,7 +29,9 @@ impl MemoryMonitor {
     }
 }
 
-pub const NONE_MEMORY_MONITOR: Option<&MemoryMonitor> = None;
+impl MemoryMonitor {
+    pub const NONE: Option<&'static MemoryMonitor> = None;
+}
 
 pub trait MemoryMonitorExt: 'static {
     #[cfg(any(feature = "v2_64", feature = "dox"))]

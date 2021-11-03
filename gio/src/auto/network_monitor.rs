@@ -35,7 +35,9 @@ impl NetworkMonitor {
     }
 }
 
-pub const NONE_NETWORK_MONITOR: Option<&NetworkMonitor> = None;
+impl NetworkMonitor {
+    pub const NONE: Option<&'static NetworkMonitor> = None;
+}
 
 pub trait NetworkMonitorExt: 'static {
     #[doc(alias = "g_network_monitor_can_reach")]

@@ -43,7 +43,9 @@ impl Default for MemoryInputStream {
     }
 }
 
-pub const NONE_MEMORY_INPUT_STREAM: Option<&MemoryInputStream> = None;
+impl MemoryInputStream {
+    pub const NONE: Option<&'static MemoryInputStream> = None;
+}
 
 pub trait MemoryInputStreamExt: 'static {
     #[doc(alias = "g_memory_input_stream_add_bytes")]

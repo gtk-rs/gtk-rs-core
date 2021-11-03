@@ -132,7 +132,9 @@ impl TlsCertificate {
     }
 }
 
-pub const NONE_TLS_CERTIFICATE: Option<&TlsCertificate> = None;
+impl TlsCertificate {
+    pub const NONE: Option<&'static TlsCertificate> = None;
+}
 
 pub trait TlsCertificateExt: 'static {
     #[cfg(any(feature = "v2_70", feature = "dox"))]

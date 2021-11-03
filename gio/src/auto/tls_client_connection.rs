@@ -47,7 +47,9 @@ impl TlsClientConnection {
     }
 }
 
-pub const NONE_TLS_CLIENT_CONNECTION: Option<&TlsClientConnection> = None;
+impl TlsClientConnection {
+    pub const NONE: Option<&'static TlsClientConnection> = None;
+}
 
 pub trait TlsClientConnectionExt: 'static {
     #[doc(alias = "g_tls_client_connection_copy_session_state")]

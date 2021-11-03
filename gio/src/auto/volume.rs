@@ -31,7 +31,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_VOLUME: Option<&Volume> = None;
+impl Volume {
+    pub const NONE: Option<&'static Volume> = None;
+}
 
 pub trait VolumeExt: 'static {
     #[doc(alias = "g_volume_can_eject")]

@@ -17,7 +17,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FONTSET: Option<&Fontset> = None;
+impl Fontset {
+    pub const NONE: Option<&'static Fontset> = None;
+}
 
 pub trait FontsetExt: 'static {
     #[doc(alias = "pango_fontset_foreach")]

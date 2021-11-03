@@ -59,7 +59,9 @@ impl SocketConnection {
     }
 }
 
-pub const NONE_SOCKET_CONNECTION: Option<&SocketConnection> = None;
+impl SocketConnection {
+    pub const NONE: Option<&'static SocketConnection> = None;
+}
 
 pub trait SocketConnectionExt: 'static {
     #[doc(alias = "g_socket_connection_connect")]

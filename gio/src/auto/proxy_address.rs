@@ -49,7 +49,9 @@ impl ProxyAddress {
 unsafe impl Send for ProxyAddress {}
 unsafe impl Sync for ProxyAddress {}
 
-pub const NONE_PROXY_ADDRESS: Option<&ProxyAddress> = None;
+impl ProxyAddress {
+    pub const NONE: Option<&'static ProxyAddress> = None;
+}
 
 pub trait ProxyAddressExt: 'static {
     #[doc(alias = "g_proxy_address_get_destination_hostname")]

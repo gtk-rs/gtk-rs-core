@@ -28,7 +28,9 @@ glib::wrapper! {
 
 impl IOStream {}
 
-pub const NONE_IO_STREAM: Option<&IOStream> = None;
+impl IOStream {
+    pub const NONE: Option<&'static IOStream> = None;
+}
 
 pub trait IOStreamExt: 'static {
     #[doc(alias = "g_io_stream_clear_pending")]

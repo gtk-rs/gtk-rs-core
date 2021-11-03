@@ -6,10 +6,10 @@ mod pixbuf;
 pub use self::pixbuf::Pixbuf;
 
 mod pixbuf_animation;
-pub use self::pixbuf_animation::{PixbufAnimation, NONE_PIXBUF_ANIMATION};
+pub use self::pixbuf_animation::PixbufAnimation;
 
 mod pixbuf_loader;
-pub use self::pixbuf_loader::{PixbufLoader, NONE_PIXBUF_LOADER};
+pub use self::pixbuf_loader::PixbufLoader;
 
 mod pixbuf_simple_anim;
 pub use self::pixbuf_simple_anim::PixbufSimpleAnim;

@@ -119,7 +119,9 @@ impl BufferedInputStreamBuilder {
     }
 }
 
-pub const NONE_BUFFERED_INPUT_STREAM: Option<&BufferedInputStream> = None;
+impl BufferedInputStream {
+    pub const NONE: Option<&'static BufferedInputStream> = None;
+}
 
 pub trait BufferedInputStreamExt: 'static {
     #[doc(alias = "g_buffered_input_stream_fill")]

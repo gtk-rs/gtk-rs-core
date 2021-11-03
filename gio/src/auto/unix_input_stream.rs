@@ -17,7 +17,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_UNIX_INPUT_STREAM: Option<&UnixInputStream> = None;
+impl UnixInputStream {
+    pub const NONE: Option<&'static UnixInputStream> = None;
+}
 
 pub trait UnixInputStreamExt: 'static {
     #[doc(alias = "g_unix_input_stream_get_close_fd")]

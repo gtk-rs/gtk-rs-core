@@ -123,7 +123,9 @@ impl BufferedOutputStreamBuilder {
     }
 }
 
-pub const NONE_BUFFERED_OUTPUT_STREAM: Option<&BufferedOutputStream> = None;
+impl BufferedOutputStream {
+    pub const NONE: Option<&'static BufferedOutputStream> = None;
+}
 
 pub trait BufferedOutputStreamExt: 'static {
     #[doc(alias = "g_buffered_output_stream_get_auto_grow")]

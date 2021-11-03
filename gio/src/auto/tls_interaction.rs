@@ -24,7 +24,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_TLS_INTERACTION: Option<&TlsInteraction> = None;
+impl TlsInteraction {
+    pub const NONE: Option<&'static TlsInteraction> = None;
+}
 
 pub trait TlsInteractionExt: 'static {
     #[doc(alias = "g_tls_interaction_ask_password")]

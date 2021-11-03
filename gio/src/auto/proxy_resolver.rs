@@ -28,7 +28,9 @@ impl ProxyResolver {
     }
 }
 
-pub const NONE_PROXY_RESOLVER: Option<&ProxyResolver> = None;
+impl ProxyResolver {
+    pub const NONE: Option<&'static ProxyResolver> = None;
+}
 
 pub trait ProxyResolverExt: 'static {
     #[doc(alias = "g_proxy_resolver_is_supported")]

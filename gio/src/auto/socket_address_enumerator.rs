@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_SOCKET_ADDRESS_ENUMERATOR: Option<&SocketAddressEnumerator> = None;
+impl SocketAddressEnumerator {
+    pub const NONE: Option<&'static SocketAddressEnumerator> = None;
+}
 
 pub trait SocketAddressEnumeratorExt: 'static {
     #[doc(alias = "g_socket_address_enumerator_next")]

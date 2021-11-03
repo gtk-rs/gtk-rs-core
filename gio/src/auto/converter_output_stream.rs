@@ -104,7 +104,9 @@ impl ConverterOutputStreamBuilder {
     }
 }
 
-pub const NONE_CONVERTER_OUTPUT_STREAM: Option<&ConverterOutputStream> = None;
+impl ConverterOutputStream {
+    pub const NONE: Option<&'static ConverterOutputStream> = None;
+}
 
 pub trait ConverterOutputStreamExt: 'static {
     #[doc(alias = "g_converter_output_stream_get_converter")]

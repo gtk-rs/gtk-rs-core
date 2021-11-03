@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILE_IO_STREAM: Option<&FileIOStream> = None;
+impl FileIOStream {
+    pub const NONE: Option<&'static FileIOStream> = None;
+}
 
 pub trait FileIOStreamExt: 'static {
     #[doc(alias = "g_file_io_stream_get_etag")]

@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILE_OUTPUT_STREAM: Option<&FileOutputStream> = None;
+impl FileOutputStream {
+    pub const NONE: Option<&'static FileOutputStream> = None;
+}
 
 pub trait FileOutputStreamExt: 'static {
     #[doc(alias = "g_file_output_stream_get_etag")]

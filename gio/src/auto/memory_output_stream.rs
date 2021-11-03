@@ -32,7 +32,9 @@ impl MemoryOutputStream {
     }
 }
 
-pub const NONE_MEMORY_OUTPUT_STREAM: Option<&MemoryOutputStream> = None;
+impl MemoryOutputStream {
+    pub const NONE: Option<&'static MemoryOutputStream> = None;
+}
 
 pub trait MemoryOutputStreamExt: 'static {
     #[doc(alias = "g_memory_output_stream_get_data_size")]

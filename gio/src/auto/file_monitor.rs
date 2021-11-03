@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILE_MONITOR: Option<&FileMonitor> = None;
+impl FileMonitor {
+    pub const NONE: Option<&'static FileMonitor> = None;
+}
 
 pub trait FileMonitorExt: 'static {
     #[doc(alias = "g_file_monitor_cancel")]

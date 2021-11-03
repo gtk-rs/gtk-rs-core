@@ -66,7 +66,9 @@ impl Default for PixbufLoader {
     }
 }
 
-pub const NONE_PIXBUF_LOADER: Option<&PixbufLoader> = None;
+impl PixbufLoader {
+    pub const NONE: Option<&'static PixbufLoader> = None;
+}
 
 pub trait PixbufLoaderExt: 'static {
     #[doc(alias = "gdk_pixbuf_loader_close")]

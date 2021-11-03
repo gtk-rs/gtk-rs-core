@@ -63,7 +63,9 @@ unsafe impl glib::SendUnique for Socket {
     }
 }
 
-pub const NONE_SOCKET: Option<&Socket> = None;
+impl Socket {
+    pub const NONE: Option<&'static Socket> = None;
+}
 
 pub trait SocketExt: 'static {
     #[doc(alias = "g_socket_accept")]

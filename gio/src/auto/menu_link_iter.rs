@@ -17,7 +17,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_MENU_LINK_ITER: Option<&MenuLinkIter> = None;
+impl MenuLinkIter {
+    pub const NONE: Option<&'static MenuLinkIter> = None;
+}
 
 pub trait MenuLinkIterExt: 'static {
     #[doc(alias = "g_menu_link_iter_get_next")]

@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_OUTPUT_STREAM: Option<&OutputStream> = None;
+impl OutputStream {
+    pub const NONE: Option<&'static OutputStream> = None;
+}
 
 pub trait OutputStreamExt: 'static {
     #[doc(alias = "g_output_stream_clear_pending")]

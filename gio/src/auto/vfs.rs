@@ -36,7 +36,9 @@ impl Vfs {
 unsafe impl Send for Vfs {}
 unsafe impl Sync for Vfs {}
 
-pub const NONE_VFS: Option<&Vfs> = None;
+impl Vfs {
+    pub const NONE: Option<&'static Vfs> = None;
+}
 
 pub trait VfsExt: 'static {
     #[doc(alias = "g_vfs_get_file_for_path")]

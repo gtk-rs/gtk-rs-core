@@ -29,7 +29,9 @@ impl PowerProfileMonitor {
     }
 }
 
-pub const NONE_POWER_PROFILE_MONITOR: Option<&PowerProfileMonitor> = None;
+impl PowerProfileMonitor {
+    pub const NONE: Option<&'static PowerProfileMonitor> = None;
+}
 
 pub trait PowerProfileMonitorExt: 'static {
     #[doc(alias = "g_power_profile_monitor_get_power_saver_enabled")]

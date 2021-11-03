@@ -22,7 +22,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILE_ENUMERATOR: Option<&FileEnumerator> = None;
+impl FileEnumerator {
+    pub const NONE: Option<&'static FileEnumerator> = None;
+}
 
 pub trait FileEnumeratorExt: 'static {
     #[doc(alias = "g_file_enumerator_close")]

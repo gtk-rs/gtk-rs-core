@@ -6,19 +6,19 @@ mod context;
 pub use self::context::Context;
 
 mod font;
-pub use self::font::{Font, NONE_FONT};
+pub use self::font::Font;
 
 mod font_face;
-pub use self::font_face::{FontFace, NONE_FONT_FACE};
+pub use self::font_face::FontFace;
 
 mod font_family;
-pub use self::font_family::{FontFamily, NONE_FONT_FAMILY};
+pub use self::font_family::FontFamily;
 
 mod font_map;
-pub use self::font_map::{FontMap, NONE_FONT_MAP};
+pub use self::font_map::FontMap;
 
 mod fontset;
-pub use self::fontset::{Fontset, NONE_FONTSET};
+pub use self::fontset::Fontset;
 
 mod fontset_simple;
 pub use self::fontset_simple::FontsetSimple;
@@ -27,7 +27,7 @@ mod layout;
 pub use self::layout::Layout;
 
 mod renderer;
-pub use self::renderer::{Renderer, NONE_RENDERER};
+pub use self::renderer::Renderer;
 
 mod attr_iterator;
 pub use self::attr_iterator::AttrIterator;

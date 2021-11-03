@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FONT_FACE: Option<&FontFace> = None;
+impl FontFace {
+    pub const NONE: Option<&'static FontFace> = None;
+}
 
 pub trait FontFaceExt: 'static {
     #[doc(alias = "pango_font_face_describe")]

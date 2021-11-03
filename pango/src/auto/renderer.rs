@@ -24,7 +24,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_RENDERER: Option<&Renderer> = None;
+impl Renderer {
+    pub const NONE: Option<&'static Renderer> = None;
+}
 
 pub trait RendererExt: 'static {
     #[doc(alias = "pango_renderer_activate")]

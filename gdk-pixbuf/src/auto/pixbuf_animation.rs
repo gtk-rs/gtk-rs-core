@@ -126,7 +126,9 @@ impl PixbufAnimation {
     }
 }
 
-pub const NONE_PIXBUF_ANIMATION: Option<&PixbufAnimation> = None;
+impl PixbufAnimation {
+    pub const NONE: Option<&'static PixbufAnimation> = None;
+}
 
 pub trait PixbufAnimationExt: 'static {
     #[doc(alias = "gdk_pixbuf_animation_get_height")]
