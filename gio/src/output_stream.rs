@@ -278,13 +278,13 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
         let result = self
             .0
             .as_ref()
-            .write(buf, crate::NONE_CANCELLABLE)
+            .write(buf, crate::Cancellable::NONE)
             .map(|size| size as usize);
         to_std_io_result(result)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        let gio_result = self.0.as_ref().flush(crate::NONE_CANCELLABLE);
+        let gio_result = self.0.as_ref().flush(crate::Cancellable::NONE);
         to_std_io_result(gio_result)
     }
 }
@@ -298,7 +298,7 @@ impl<T: IsA<OutputStream> + IsA<Seekable>> io::Seek for OutputStreamWrite<T> {
         };
         let seekable: &Seekable = self.0.as_ref();
         let gio_result = seekable
-            .seek(pos, type_, crate::NONE_CANCELLABLE)
+            .seek(pos, type_, crate::Cancellable::NONE)
             .map(|_| seekable.tell() as u64);
         to_std_io_result(gio_result)
     }
@@ -325,7 +325,7 @@ mod tests {
                 &input,
                 crate::OutputStreamSpliceFlags::CLOSE_SOURCE,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -345,7 +345,7 @@ mod tests {
             strm.write_async(
                 buf,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -367,7 +367,7 @@ mod tests {
             strm.write_all_async(
                 buf,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -390,7 +390,7 @@ mod tests {
             strm.write_bytes_async(
                 &b,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -409,7 +409,7 @@ mod tests {
         let ret = write.write(&b);
 
         let stream = write.into_output_stream();
-        stream.close(crate::NONE_CANCELLABLE).unwrap();
+        stream.close(crate::Cancellable::NONE).unwrap();
         assert_eq!(ret.unwrap(), 3);
         assert_eq!(stream.steal_as_bytes(), [1, 2, 3].as_ref());
     }

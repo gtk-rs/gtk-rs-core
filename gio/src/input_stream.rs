@@ -325,7 +325,7 @@ impl<T: IsA<InputStream>> InputStreamRead<T> {
 
 impl<T: IsA<InputStream>> io::Read for InputStreamRead<T> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        let gio_result = self.0.as_ref().read(buf, crate::NONE_CANCELLABLE);
+        let gio_result = self.0.as_ref().read(buf, crate::Cancellable::NONE);
         to_std_io_result(gio_result)
     }
 }
@@ -339,7 +339,7 @@ impl<T: IsA<InputStream> + IsA<Seekable>> io::Seek for InputStreamRead<T> {
         };
         let seekable: &Seekable = self.0.as_ref();
         let gio_result = seekable
-            .seek(pos, type_, crate::NONE_CANCELLABLE)
+            .seek(pos, type_, crate::Cancellable::NONE)
             .map(|_| seekable.tell() as u64);
         to_std_io_result(gio_result)
     }
@@ -586,7 +586,7 @@ mod tests {
             strm.read_all_async(
                 buf,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -608,7 +608,7 @@ mod tests {
         let strm = MemoryInputStream::from_bytes(&b);
         let mut buf = vec![0; 10];
 
-        let ret = strm.read_all(&mut buf, crate::NONE_CANCELLABLE).unwrap();
+        let ret = strm.read_all(&mut buf, crate::Cancellable::NONE).unwrap();
 
         assert_eq!(ret.0, 3);
         assert!(ret.1.is_none());
@@ -623,7 +623,7 @@ mod tests {
         let strm = MemoryInputStream::from_bytes(&b);
         let mut buf = vec![0; 10];
 
-        let ret = strm.read(&mut buf, crate::NONE_CANCELLABLE);
+        let ret = strm.read(&mut buf, crate::Cancellable::NONE);
 
         assert_eq!(ret.unwrap(), 3);
         assert_eq!(buf[0], 1);
@@ -641,7 +641,7 @@ mod tests {
             strm.read_async(
                 buf,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -665,7 +665,7 @@ mod tests {
             strm.read_bytes_async(
                 10,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();
@@ -686,7 +686,7 @@ mod tests {
             strm.skip_async(
                 10,
                 glib::PRIORITY_DEFAULT_IDLE,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
                     l.quit();

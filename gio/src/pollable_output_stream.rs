@@ -169,7 +169,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         let gio_result = stream
             .0
             .as_ref()
-            .write_nonblocking(buf, crate::NONE_CANCELLABLE);
+            .write_nonblocking(buf, crate::Cancellable::NONE);
 
         match gio_result {
             Ok(size) => Poll::Ready(Ok(size as usize)),
@@ -178,7 +178,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
                 if kind == crate::IOErrorEnum::WouldBlock {
                     let mut waker = Some(cx.waker().clone());
                     let source = stream.0.as_ref().create_source(
-                        crate::NONE_CANCELLABLE,
+                        crate::Cancellable::NONE,
                         None,
                         glib::PRIORITY_DEFAULT,
                         move |_| {
@@ -208,7 +208,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
             let (tx, rx) = oneshot::channel();
             stream.0.as_ref().flush_async(
                 glib::PRIORITY_DEFAULT,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |res| {
                     let _ = tx.send(res);
                 },
@@ -240,7 +240,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
             let (tx, rx) = oneshot::channel();
             stream.0.as_ref().close_async(
                 glib::PRIORITY_DEFAULT,
-                crate::NONE_CANCELLABLE,
+                crate::Cancellable::NONE,
                 move |res| {
                     let _ = tx.send(res);
                 },
