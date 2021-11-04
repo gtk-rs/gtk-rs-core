@@ -622,10 +622,6 @@ impl<T: Send + ToValue + ?Sized> ToSendValue for T {
     }
 }
 
-impl ValueType for &'static str {
-    type Type = Self;
-}
-
 unsafe impl<'a> FromValue<'a> for &'a str {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
