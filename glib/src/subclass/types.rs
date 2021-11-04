@@ -741,6 +741,16 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
     let private_offset = (*data.as_mut()).private_offset;
     let ptr = obj as *mut u8;
     let priv_ptr = ptr.offset(private_offset);
+
+    assert!(
+        priv_ptr as usize & (mem::align_of::<PrivateStruct<T>>() - 1) == 0,
+        "Private instance data has higher alignment requirements ({}) than \
+         the allocation from GLib. If alignment of more than {} bytes \
+         is required, store the corresponding data separately on the heap.",
+        mem::align_of::<PrivateStruct<T>>(),
+        2 * mem::size_of::<usize>(),
+    );
+
     let priv_storage = priv_ptr as *mut PrivateStruct<T>;
 
     let klass = &*(klass as *const T::Class);
