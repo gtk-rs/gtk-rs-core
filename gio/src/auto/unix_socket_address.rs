@@ -40,7 +40,9 @@ impl UnixSocketAddress {
 unsafe impl Send for UnixSocketAddress {}
 unsafe impl Sync for UnixSocketAddress {}
 
-pub const NONE_UNIX_SOCKET_ADDRESS: Option<&UnixSocketAddress> = None;
+impl UnixSocketAddress {
+    pub const NONE: Option<&'static UnixSocketAddress> = None;
+}
 
 pub trait UnixSocketAddressExt: 'static {
     #[doc(alias = "g_unix_socket_address_get_address_type")]

@@ -3,61 +3,61 @@
 // DO NOT EDIT
 
 mod action;
-pub use self::action::{Action, NONE_ACTION};
+pub use self::action::Action;
 
 mod action_group;
-pub use self::action_group::{ActionGroup, NONE_ACTION_GROUP};
+pub use self::action_group::ActionGroup;
 
 mod action_map;
-pub use self::action_map::{ActionMap, NONE_ACTION_MAP};
+pub use self::action_map::ActionMap;
 
 mod app_info;
-pub use self::app_info::{AppInfo, NONE_APP_INFO};
+pub use self::app_info::AppInfo;
 
 mod app_info_monitor;
 pub use self::app_info_monitor::AppInfoMonitor;
 
 mod app_launch_context;
-pub use self::app_launch_context::{AppLaunchContext, NONE_APP_LAUNCH_CONTEXT};
+pub use self::app_launch_context::AppLaunchContext;
 
 mod application;
+pub use self::application::Application;
 pub use self::application::ApplicationBuilder;
-pub use self::application::{Application, NONE_APPLICATION};
 
 mod application_command_line;
-pub use self::application_command_line::{ApplicationCommandLine, NONE_APPLICATION_COMMAND_LINE};
+pub use self::application_command_line::ApplicationCommandLine;
 
 mod async_result;
-pub use self::async_result::{AsyncResult, NONE_ASYNC_RESULT};
+pub use self::async_result::AsyncResult;
 
 mod buffered_input_stream;
+pub use self::buffered_input_stream::BufferedInputStream;
 pub use self::buffered_input_stream::BufferedInputStreamBuilder;
-pub use self::buffered_input_stream::{BufferedInputStream, NONE_BUFFERED_INPUT_STREAM};
 
 mod buffered_output_stream;
+pub use self::buffered_output_stream::BufferedOutputStream;
 pub use self::buffered_output_stream::BufferedOutputStreamBuilder;
-pub use self::buffered_output_stream::{BufferedOutputStream, NONE_BUFFERED_OUTPUT_STREAM};
 
 mod bytes_icon;
 pub use self::bytes_icon::BytesIcon;
 
 mod cancellable;
-pub use self::cancellable::{Cancellable, NONE_CANCELLABLE};
+pub use self::cancellable::Cancellable;
 
 mod charset_converter;
 pub use self::charset_converter::CharsetConverter;
 pub use self::charset_converter::CharsetConverterBuilder;
 
 mod converter;
-pub use self::converter::{Converter, NONE_CONVERTER};
+pub use self::converter::Converter;
 
 mod converter_input_stream;
+pub use self::converter_input_stream::ConverterInputStream;
 pub use self::converter_input_stream::ConverterInputStreamBuilder;
-pub use self::converter_input_stream::{ConverterInputStream, NONE_CONVERTER_INPUT_STREAM};
 
 mod converter_output_stream;
+pub use self::converter_output_stream::ConverterOutputStream;
 pub use self::converter_output_stream::ConverterOutputStreamBuilder;
-pub use self::converter_output_stream::{ConverterOutputStream, NONE_CONVERTER_OUTPUT_STREAM};
 
 mod credentials;
 pub use self::credentials::Credentials;
@@ -72,10 +72,10 @@ mod dbus_connection;
 pub use self::dbus_connection::DBusConnection;
 
 mod dbus_interface;
-pub use self::dbus_interface::{DBusInterface, NONE_DBUS_INTERFACE};
+pub use self::dbus_interface::DBusInterface;
 
 mod dbus_interface_skeleton;
-pub use self::dbus_interface_skeleton::{DBusInterfaceSkeleton, NONE_DBUS_INTERFACE_SKELETON};
+pub use self::dbus_interface_skeleton::DBusInterfaceSkeleton;
 
 mod dbus_menu_model;
 pub use self::dbus_menu_model::DBusMenuModel;
@@ -87,21 +87,21 @@ mod dbus_method_invocation;
 pub use self::dbus_method_invocation::DBusMethodInvocation;
 
 mod dbus_object;
-pub use self::dbus_object::{DBusObject, NONE_DBUS_OBJECT};
+pub use self::dbus_object::DBusObject;
 
 mod dbus_proxy;
-pub use self::dbus_proxy::{DBusProxy, NONE_DBUS_PROXY};
+pub use self::dbus_proxy::DBusProxy;
 
 mod dbus_server;
 pub use self::dbus_server::DBusServer;
 
 mod data_input_stream;
+pub use self::data_input_stream::DataInputStream;
 pub use self::data_input_stream::DataInputStreamBuilder;
-pub use self::data_input_stream::{DataInputStream, NONE_DATA_INPUT_STREAM};
 
 mod data_output_stream;
+pub use self::data_output_stream::DataOutputStream;
 pub use self::data_output_stream::DataOutputStreamBuilder;
-pub use self::data_output_stream::{DataOutputStream, NONE_DATA_OUTPUT_STREAM};
 
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(all(not(windows), not(target_os = "macos")))))]
@@ -111,22 +111,22 @@ mod desktop_app_info;
 pub use self::desktop_app_info::DesktopAppInfo;
 
 mod drive;
-pub use self::drive::{Drive, NONE_DRIVE};
+pub use self::drive::Drive;
 
 mod emblem;
 pub use self::emblem::Emblem;
 
 mod emblemed_icon;
-pub use self::emblemed_icon::{EmblemedIcon, NONE_EMBLEMED_ICON};
+pub use self::emblemed_icon::EmblemedIcon;
 
 mod file;
-pub use self::file::{File, NONE_FILE};
+pub use self::file::File;
 
 mod file_enumerator;
-pub use self::file_enumerator::{FileEnumerator, NONE_FILE_ENUMERATOR};
+pub use self::file_enumerator::FileEnumerator;
 
 mod file_io_stream;
-pub use self::file_io_stream::{FileIOStream, NONE_FILE_IO_STREAM};
+pub use self::file_io_stream::FileIOStream;
 
 mod file_icon;
 pub use self::file_icon::FileIcon;
@@ -135,151 +135,151 @@ mod file_info;
 pub use self::file_info::FileInfo;
 
 mod file_input_stream;
-pub use self::file_input_stream::{FileInputStream, NONE_FILE_INPUT_STREAM};
+pub use self::file_input_stream::FileInputStream;
 
 mod file_monitor;
-pub use self::file_monitor::{FileMonitor, NONE_FILE_MONITOR};
+pub use self::file_monitor::FileMonitor;
 
 mod file_output_stream;
-pub use self::file_output_stream::{FileOutputStream, NONE_FILE_OUTPUT_STREAM};
+pub use self::file_output_stream::FileOutputStream;
 
 mod filename_completer;
 pub use self::filename_completer::FilenameCompleter;
 
 mod filter_input_stream;
-pub use self::filter_input_stream::{FilterInputStream, NONE_FILTER_INPUT_STREAM};
+pub use self::filter_input_stream::FilterInputStream;
 
 mod filter_output_stream;
-pub use self::filter_output_stream::{FilterOutputStream, NONE_FILTER_OUTPUT_STREAM};
+pub use self::filter_output_stream::FilterOutputStream;
 
 mod io_stream;
-pub use self::io_stream::{IOStream, NONE_IO_STREAM};
+pub use self::io_stream::IOStream;
 
 mod icon;
-pub use self::icon::{Icon, NONE_ICON};
+pub use self::icon::Icon;
 
 mod inet_address;
-pub use self::inet_address::{InetAddress, NONE_INET_ADDRESS};
+pub use self::inet_address::InetAddress;
 
 mod inet_address_mask;
-pub use self::inet_address_mask::{InetAddressMask, NONE_INET_ADDRESS_MASK};
+pub use self::inet_address_mask::InetAddressMask;
 
 mod inet_socket_address;
-pub use self::inet_socket_address::{InetSocketAddress, NONE_INET_SOCKET_ADDRESS};
+pub use self::inet_socket_address::InetSocketAddress;
 
 mod initable;
-pub use self::initable::{Initable, NONE_INITABLE};
+pub use self::initable::Initable;
 
 mod input_stream;
-pub use self::input_stream::{InputStream, NONE_INPUT_STREAM};
+pub use self::input_stream::InputStream;
 
 mod list_model;
-pub use self::list_model::{ListModel, NONE_LIST_MODEL};
+pub use self::list_model::ListModel;
 
 mod list_store;
 pub use self::list_store::ListStore;
 pub use self::list_store::ListStoreBuilder;
 
 mod loadable_icon;
-pub use self::loadable_icon::{LoadableIcon, NONE_LOADABLE_ICON};
+pub use self::loadable_icon::LoadableIcon;
 
 mod memory_input_stream;
-pub use self::memory_input_stream::{MemoryInputStream, NONE_MEMORY_INPUT_STREAM};
+pub use self::memory_input_stream::MemoryInputStream;
 
 #[cfg(any(feature = "v2_64", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
 mod memory_monitor;
 #[cfg(any(feature = "v2_64", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
-pub use self::memory_monitor::{MemoryMonitor, NONE_MEMORY_MONITOR};
+pub use self::memory_monitor::MemoryMonitor;
 
 mod memory_output_stream;
-pub use self::memory_output_stream::{MemoryOutputStream, NONE_MEMORY_OUTPUT_STREAM};
+pub use self::memory_output_stream::MemoryOutputStream;
 
 mod menu;
 pub use self::menu::Menu;
 
 mod menu_attribute_iter;
-pub use self::menu_attribute_iter::{MenuAttributeIter, NONE_MENU_ATTRIBUTE_ITER};
+pub use self::menu_attribute_iter::MenuAttributeIter;
 
 mod menu_item;
 pub use self::menu_item::MenuItem;
 
 mod menu_link_iter;
-pub use self::menu_link_iter::{MenuLinkIter, NONE_MENU_LINK_ITER};
+pub use self::menu_link_iter::MenuLinkIter;
 
 mod menu_model;
-pub use self::menu_model::{MenuModel, NONE_MENU_MODEL};
+pub use self::menu_model::MenuModel;
 
 mod mount;
-pub use self::mount::{Mount, NONE_MOUNT};
+pub use self::mount::Mount;
 
 mod mount_operation;
-pub use self::mount_operation::{MountOperation, NONE_MOUNT_OPERATION};
+pub use self::mount_operation::MountOperation;
 
 mod network_address;
-pub use self::network_address::{NetworkAddress, NONE_NETWORK_ADDRESS};
+pub use self::network_address::NetworkAddress;
 
 mod network_monitor;
-pub use self::network_monitor::{NetworkMonitor, NONE_NETWORK_MONITOR};
+pub use self::network_monitor::NetworkMonitor;
 
 mod network_service;
-pub use self::network_service::{NetworkService, NONE_NETWORK_SERVICE};
+pub use self::network_service::NetworkService;
 
 mod notification;
 pub use self::notification::Notification;
 
 mod output_stream;
-pub use self::output_stream::{OutputStream, NONE_OUTPUT_STREAM};
+pub use self::output_stream::OutputStream;
 
 mod permission;
-pub use self::permission::{Permission, NONE_PERMISSION};
+pub use self::permission::Permission;
 
 mod pollable_input_stream;
-pub use self::pollable_input_stream::{PollableInputStream, NONE_POLLABLE_INPUT_STREAM};
+pub use self::pollable_input_stream::PollableInputStream;
 
 mod pollable_output_stream;
-pub use self::pollable_output_stream::{PollableOutputStream, NONE_POLLABLE_OUTPUT_STREAM};
+pub use self::pollable_output_stream::PollableOutputStream;
 
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
 mod power_profile_monitor;
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-pub use self::power_profile_monitor::{PowerProfileMonitor, NONE_POWER_PROFILE_MONITOR};
+pub use self::power_profile_monitor::PowerProfileMonitor;
 
 mod property_action;
 pub use self::property_action::PropertyAction;
 
 mod proxy;
-pub use self::proxy::{Proxy, NONE_PROXY};
+pub use self::proxy::Proxy;
 
 mod proxy_address;
-pub use self::proxy_address::{ProxyAddress, NONE_PROXY_ADDRESS};
+pub use self::proxy_address::ProxyAddress;
 
 mod proxy_resolver;
-pub use self::proxy_resolver::{ProxyResolver, NONE_PROXY_RESOLVER};
+pub use self::proxy_resolver::ProxyResolver;
 
 mod remote_action_group;
-pub use self::remote_action_group::{RemoteActionGroup, NONE_REMOTE_ACTION_GROUP};
+pub use self::remote_action_group::RemoteActionGroup;
 
 mod resolver;
-pub use self::resolver::{Resolver, NONE_RESOLVER};
+pub use self::resolver::Resolver;
 
 mod seekable;
-pub use self::seekable::{Seekable, NONE_SEEKABLE};
+pub use self::seekable::Seekable;
 
 mod settings;
-pub use self::settings::{Settings, NONE_SETTINGS};
+pub use self::settings::Settings;
 
 mod settings_backend;
-pub use self::settings_backend::{SettingsBackend, NONE_SETTINGS_BACKEND};
+pub use self::settings_backend::SettingsBackend;
 
 mod simple_action;
 pub use self::simple_action::SimpleAction;
 
 mod simple_action_group;
-pub use self::simple_action_group::{SimpleActionGroup, NONE_SIMPLE_ACTION_GROUP};
+pub use self::simple_action_group::SimpleActionGroup;
 
 mod simple_io_stream;
 pub use self::simple_io_stream::SimpleIOStream;
@@ -288,30 +288,28 @@ mod simple_permission;
 pub use self::simple_permission::SimplePermission;
 
 mod socket;
-pub use self::socket::{Socket, NONE_SOCKET};
+pub use self::socket::Socket;
 
 mod socket_address;
-pub use self::socket_address::{SocketAddress, NONE_SOCKET_ADDRESS};
+pub use self::socket_address::SocketAddress;
 
 mod socket_address_enumerator;
-pub use self::socket_address_enumerator::{
-    SocketAddressEnumerator, NONE_SOCKET_ADDRESS_ENUMERATOR,
-};
+pub use self::socket_address_enumerator::SocketAddressEnumerator;
 
 mod socket_client;
-pub use self::socket_client::{SocketClient, NONE_SOCKET_CLIENT};
+pub use self::socket_client::SocketClient;
 
 mod socket_connectable;
-pub use self::socket_connectable::{SocketConnectable, NONE_SOCKET_CONNECTABLE};
+pub use self::socket_connectable::SocketConnectable;
 
 mod socket_connection;
-pub use self::socket_connection::{SocketConnection, NONE_SOCKET_CONNECTION};
+pub use self::socket_connection::SocketConnection;
 
 mod socket_listener;
-pub use self::socket_listener::{SocketListener, NONE_SOCKET_LISTENER};
+pub use self::socket_listener::SocketListener;
 
 mod socket_service;
-pub use self::socket_service::{SocketService, NONE_SOCKET_SERVICE};
+pub use self::socket_service::SocketService;
 
 mod subprocess;
 pub use self::subprocess::Subprocess;
@@ -323,77 +321,77 @@ mod task;
 pub use self::task::Task;
 
 mod tcp_connection;
-pub use self::tcp_connection::{TcpConnection, NONE_TCP_CONNECTION};
+pub use self::tcp_connection::TcpConnection;
 
 mod themed_icon;
 pub use self::themed_icon::ThemedIcon;
 
 mod threaded_socket_service;
-pub use self::threaded_socket_service::{ThreadedSocketService, NONE_THREADED_SOCKET_SERVICE};
+pub use self::threaded_socket_service::ThreadedSocketService;
 
 mod tls_backend;
-pub use self::tls_backend::{TlsBackend, NONE_TLS_BACKEND};
+pub use self::tls_backend::TlsBackend;
 
 mod tls_certificate;
-pub use self::tls_certificate::{TlsCertificate, NONE_TLS_CERTIFICATE};
+pub use self::tls_certificate::TlsCertificate;
 
 mod tls_client_connection;
-pub use self::tls_client_connection::{TlsClientConnection, NONE_TLS_CLIENT_CONNECTION};
+pub use self::tls_client_connection::TlsClientConnection;
 
 mod tls_connection;
-pub use self::tls_connection::{TlsConnection, NONE_TLS_CONNECTION};
+pub use self::tls_connection::TlsConnection;
 
 mod tls_database;
-pub use self::tls_database::{TlsDatabase, NONE_TLS_DATABASE};
+pub use self::tls_database::TlsDatabase;
 
 mod tls_file_database;
-pub use self::tls_file_database::{TlsFileDatabase, NONE_TLS_FILE_DATABASE};
+pub use self::tls_file_database::TlsFileDatabase;
 
 mod tls_interaction;
-pub use self::tls_interaction::{TlsInteraction, NONE_TLS_INTERACTION};
+pub use self::tls_interaction::TlsInteraction;
 
 mod tls_password;
-pub use self::tls_password::{TlsPassword, NONE_TLS_PASSWORD};
+pub use self::tls_password::TlsPassword;
 
 mod tls_server_connection;
-pub use self::tls_server_connection::{TlsServerConnection, NONE_TLS_SERVER_CONNECTION};
+pub use self::tls_server_connection::TlsServerConnection;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_fd_list;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-pub use self::unix_fd_list::{UnixFDList, NONE_UNIX_FD_LIST};
+pub use self::unix_fd_list::UnixFDList;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_input_stream;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-pub use self::unix_input_stream::{UnixInputStream, NONE_UNIX_INPUT_STREAM};
+pub use self::unix_input_stream::UnixInputStream;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_output_stream;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-pub use self::unix_output_stream::{UnixOutputStream, NONE_UNIX_OUTPUT_STREAM};
+pub use self::unix_output_stream::UnixOutputStream;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_socket_address;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-pub use self::unix_socket_address::{UnixSocketAddress, NONE_UNIX_SOCKET_ADDRESS};
+pub use self::unix_socket_address::UnixSocketAddress;
 
 mod vfs;
-pub use self::vfs::{Vfs, NONE_VFS};
+pub use self::vfs::Vfs;
 
 mod volume;
-pub use self::volume::{Volume, NONE_VOLUME};
+pub use self::volume::Volume;
 
 mod volume_monitor;
-pub use self::volume_monitor::{VolumeMonitor, NONE_VOLUME_MONITOR};
+pub use self::volume_monitor::VolumeMonitor;
 
 mod zlib_compressor;
 pub use self::zlib_compressor::ZlibCompressor;

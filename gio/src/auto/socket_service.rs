@@ -36,7 +36,9 @@ impl Default for SocketService {
     }
 }
 
-pub const NONE_SOCKET_SERVICE: Option<&SocketService> = None;
+impl SocketService {
+    pub const NONE: Option<&'static SocketService> = None;
+}
 
 pub trait SocketServiceExt: 'static {
     #[doc(alias = "g_socket_service_is_active")]

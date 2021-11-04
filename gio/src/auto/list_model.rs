@@ -20,7 +20,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_LIST_MODEL: Option<&ListModel> = None;
+impl ListModel {
+    pub const NONE: Option<&'static ListModel> = None;
+}
 
 pub trait ListModelExt: 'static {
     #[doc(alias = "g_list_model_get_item_type")]

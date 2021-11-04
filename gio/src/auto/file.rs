@@ -113,7 +113,9 @@ impl File {
 unsafe impl Send for File {}
 unsafe impl Sync for File {}
 
-pub const NONE_FILE: Option<&File> = None;
+impl File {
+    pub const NONE: Option<&'static File> = None;
+}
 
 pub trait FileExt: 'static {
     #[doc(alias = "g_file_append_to")]

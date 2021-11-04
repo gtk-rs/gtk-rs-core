@@ -66,7 +66,9 @@ impl fmt::Display for InetAddressMask {
 unsafe impl Send for InetAddressMask {}
 unsafe impl Sync for InetAddressMask {}
 
-pub const NONE_INET_ADDRESS_MASK: Option<&InetAddressMask> = None;
+impl InetAddressMask {
+    pub const NONE: Option<&'static InetAddressMask> = None;
+}
 
 pub trait InetAddressMaskExt: 'static {
     #[doc(alias = "g_inet_address_mask_equal")]

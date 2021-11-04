@@ -46,7 +46,9 @@ impl Icon {
     }
 }
 
-pub const NONE_ICON: Option<&Icon> = None;
+impl Icon {
+    pub const NONE: Option<&'static Icon> = None;
+}
 
 pub trait IconExt: 'static {
     #[doc(alias = "g_icon_equal")]

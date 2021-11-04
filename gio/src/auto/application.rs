@@ -142,7 +142,9 @@ impl ApplicationBuilder {
     }
 }
 
-pub const NONE_APPLICATION: Option<&Application> = None;
+impl Application {
+    pub const NONE: Option<&'static Application> = None;
+}
 
 pub trait ApplicationExt: 'static {
     #[doc(alias = "g_application_activate")]

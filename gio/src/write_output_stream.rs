@@ -206,7 +206,7 @@ impl WriteOutputStream {
             Some(imp::Writer::WriteSeek(write)) => write.writer,
         };
 
-        let _ = self.close(crate::NONE_CANCELLABLE);
+        let _ = self.close(crate::Cancellable::NONE);
 
         match ret {
             AnyOrPanic::Any(w) => w,
@@ -313,7 +313,7 @@ mod tests {
         let stream = WriteOutputStream::new(cursor);
 
         assert_eq!(
-            stream.write(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], crate::NONE_CANCELLABLE),
+            stream.write(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], crate::Cancellable::NONE),
             Ok(10)
         );
 
@@ -329,20 +329,20 @@ mod tests {
         let stream = WriteOutputStream::new_seekable(cursor);
 
         assert_eq!(
-            stream.write(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], crate::NONE_CANCELLABLE),
+            stream.write(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], crate::Cancellable::NONE),
             Ok(10)
         );
 
         assert!(stream.can_seek());
         assert_eq!(
-            stream.seek(0, glib::SeekType::Set, crate::NONE_CANCELLABLE),
+            stream.seek(0, glib::SeekType::Set, crate::Cancellable::NONE),
             Ok(())
         );
 
         assert_eq!(
             stream.write(
                 &[11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-                crate::NONE_CANCELLABLE
+                crate::Cancellable::NONE
             ),
             Ok(10)
         );

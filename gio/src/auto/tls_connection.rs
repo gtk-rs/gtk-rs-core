@@ -34,7 +34,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_TLS_CONNECTION: Option<&TlsConnection> = None;
+impl TlsConnection {
+    pub const NONE: Option<&'static TlsConnection> = None;
+}
 
 pub trait TlsConnectionExt: 'static {
     #[doc(alias = "g_tls_connection_emit_accept_certificate")]

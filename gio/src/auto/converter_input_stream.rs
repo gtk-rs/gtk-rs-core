@@ -104,7 +104,9 @@ impl ConverterInputStreamBuilder {
     }
 }
 
-pub const NONE_CONVERTER_INPUT_STREAM: Option<&ConverterInputStream> = None;
+impl ConverterInputStream {
+    pub const NONE: Option<&'static ConverterInputStream> = None;
+}
 
 pub trait ConverterInputStreamExt: 'static {
     #[doc(alias = "g_converter_input_stream_get_converter")]

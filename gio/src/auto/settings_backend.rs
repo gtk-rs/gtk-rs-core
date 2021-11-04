@@ -28,7 +28,9 @@ impl SettingsBackend {
     }
 }
 
-pub const NONE_SETTINGS_BACKEND: Option<&SettingsBackend> = None;
+impl SettingsBackend {
+    pub const NONE: Option<&'static SettingsBackend> = None;
+}
 
 pub trait SettingsBackendExt: 'static {
     //#[doc(alias = "g_settings_backend_changed")]

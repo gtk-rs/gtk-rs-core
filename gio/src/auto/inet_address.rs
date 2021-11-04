@@ -49,7 +49,9 @@ impl fmt::Display for InetAddress {
 unsafe impl Send for InetAddress {}
 unsafe impl Sync for InetAddress {}
 
-pub const NONE_INET_ADDRESS: Option<&InetAddress> = None;
+impl InetAddress {
+    pub const NONE: Option<&'static InetAddress> = None;
+}
 
 pub trait InetAddressExt: 'static {
     #[doc(alias = "g_inet_address_equal")]

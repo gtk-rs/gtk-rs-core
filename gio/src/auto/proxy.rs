@@ -34,7 +34,9 @@ impl Proxy {
     }
 }
 
-pub const NONE_PROXY: Option<&Proxy> = None;
+impl Proxy {
+    pub const NONE: Option<&'static Proxy> = None;
+}
 
 pub trait ProxyExt: 'static {
     #[doc(alias = "g_proxy_connect")]

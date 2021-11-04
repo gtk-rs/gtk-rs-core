@@ -16,7 +16,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_ACTION_MAP: Option<&ActionMap> = None;
+impl ActionMap {
+    pub const NONE: Option<&'static ActionMap> = None;
+}
 
 pub trait ActionMapExt: 'static {
     #[doc(alias = "g_action_map_add_action")]

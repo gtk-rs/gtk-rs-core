@@ -181,7 +181,7 @@ impl ReadInputStream {
             Some(imp::Reader::ReadSeek(read)) => read.reader,
         };
 
-        let _ = self.close(crate::NONE_CANCELLABLE);
+        let _ = self.close(crate::Cancellable::NONE);
 
         match ret {
             AnyOrPanic::Any(r) => r,
@@ -343,10 +343,10 @@ mod tests {
         let stream = ReadInputStream::new(cursor);
 
         let mut buf = [0u8; 1024];
-        assert_eq!(stream.read(&mut buf[..], crate::NONE_CANCELLABLE), Ok(10));
+        assert_eq!(stream.read(&mut buf[..], crate::Cancellable::NONE), Ok(10));
         assert_eq!(&buf[..10], &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10][..]);
 
-        assert_eq!(stream.read(&mut buf[..], crate::NONE_CANCELLABLE), Ok(0));
+        assert_eq!(stream.read(&mut buf[..], crate::Cancellable::NONE), Ok(0));
 
         let inner = stream.close_and_take();
         assert!(inner.is::<Cursor<Vec<u8>>>());
@@ -360,17 +360,17 @@ mod tests {
         let stream = ReadInputStream::new_seekable(cursor);
 
         let mut buf = [0u8; 1024];
-        assert_eq!(stream.read(&mut buf[..], crate::NONE_CANCELLABLE), Ok(10));
+        assert_eq!(stream.read(&mut buf[..], crate::Cancellable::NONE), Ok(10));
         assert_eq!(&buf[..10], &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10][..]);
 
-        assert_eq!(stream.read(&mut buf[..], crate::NONE_CANCELLABLE), Ok(0));
+        assert_eq!(stream.read(&mut buf[..], crate::Cancellable::NONE), Ok(0));
 
         assert!(stream.can_seek());
         assert_eq!(
-            stream.seek(0, glib::SeekType::Set, crate::NONE_CANCELLABLE),
+            stream.seek(0, glib::SeekType::Set, crate::Cancellable::NONE),
             Ok(())
         );
-        assert_eq!(stream.read(&mut buf[..], crate::NONE_CANCELLABLE), Ok(10));
+        assert_eq!(stream.read(&mut buf[..], crate::Cancellable::NONE), Ok(10));
         assert_eq!(&buf[..10], &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10][..]);
 
         let inner = stream.close_and_take();

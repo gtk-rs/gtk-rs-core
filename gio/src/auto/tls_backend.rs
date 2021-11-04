@@ -24,7 +24,9 @@ impl TlsBackend {
     }
 }
 
-pub const NONE_TLS_BACKEND: Option<&TlsBackend> = None;
+impl TlsBackend {
+    pub const NONE: Option<&'static TlsBackend> = None;
+}
 
 pub trait TlsBackendExt: 'static {
     #[doc(alias = "g_tls_backend_get_certificate_type")]

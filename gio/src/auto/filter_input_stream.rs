@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILTER_INPUT_STREAM: Option<&FilterInputStream> = None;
+impl FilterInputStream {
+    pub const NONE: Option<&'static FilterInputStream> = None;
+}
 
 pub trait FilterInputStreamExt: 'static {
     #[doc(alias = "g_filter_input_stream_get_base_stream")]

@@ -23,7 +23,9 @@ impl FontMap {
     }
 }
 
-pub const NONE_FONT_MAP: Option<&FontMap> = None;
+impl FontMap {
+    pub const NONE: Option<&'static FontMap> = None;
+}
 
 pub trait FontMapExt: 'static {
     #[doc(alias = "pango_cairo_font_map_get_resolution")]

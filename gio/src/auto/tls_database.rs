@@ -26,7 +26,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_TLS_DATABASE: Option<&TlsDatabase> = None;
+impl TlsDatabase {
+    pub const NONE: Option<&'static TlsDatabase> = None;
+}
 
 pub trait TlsDatabaseExt: 'static {
     #[doc(alias = "g_tls_database_create_certificate_handle")]

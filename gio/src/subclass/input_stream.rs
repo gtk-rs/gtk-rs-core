@@ -356,15 +356,15 @@ mod tests {
         let stream = glib::Object::new::<SimpleInputStream>(&[]).unwrap();
 
         let mut buf = [0; 16];
-        assert_eq!(stream.read(&mut buf, crate::NONE_CANCELLABLE), Ok(16));
+        assert_eq!(stream.read(&mut buf, crate::Cancellable::NONE), Ok(16));
         assert_eq!(
             &buf,
             &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         );
 
-        assert_eq!(stream.skip(2, crate::NONE_CANCELLABLE), Ok(2));
+        assert_eq!(stream.skip(2, crate::Cancellable::NONE), Ok(2));
 
-        assert_eq!(stream.read(&mut buf, crate::NONE_CANCELLABLE), Ok(16));
+        assert_eq!(stream.read(&mut buf, crate::Cancellable::NONE), Ok(16));
         assert_eq!(
             &buf,
             &[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
@@ -375,17 +375,17 @@ mod tests {
         assert!(seekable.can_seek());
 
         assert_eq!(
-            seekable.seek(0, glib::SeekType::Set, crate::NONE_CANCELLABLE),
+            seekable.seek(0, glib::SeekType::Set, crate::Cancellable::NONE),
             Ok(())
         );
 
         assert_eq!(seekable.tell(), 0);
-        assert_eq!(stream.read(&mut buf, crate::NONE_CANCELLABLE), Ok(16));
+        assert_eq!(stream.read(&mut buf, crate::Cancellable::NONE), Ok(16));
         assert_eq!(
             &buf,
             &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         );
 
-        assert_eq!(stream.close(crate::NONE_CANCELLABLE), Ok(()));
+        assert_eq!(stream.close(crate::Cancellable::NONE), Ok(()));
     }
 }

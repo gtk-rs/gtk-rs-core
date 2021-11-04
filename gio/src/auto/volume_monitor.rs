@@ -30,7 +30,9 @@ impl VolumeMonitor {
     }
 }
 
-pub const NONE_VOLUME_MONITOR: Option<&VolumeMonitor> = None;
+impl VolumeMonitor {
+    pub const NONE: Option<&'static VolumeMonitor> = None;
+}
 
 pub trait VolumeMonitorExt: 'static {
     #[doc(alias = "g_volume_monitor_get_connected_drives")]

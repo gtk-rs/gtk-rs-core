@@ -105,7 +105,9 @@ impl DataOutputStreamBuilder {
     }
 }
 
-pub const NONE_DATA_OUTPUT_STREAM: Option<&DataOutputStream> = None;
+impl DataOutputStream {
+    pub const NONE: Option<&'static DataOutputStream> = None;
+}
 
 pub trait DataOutputStreamExt: 'static {
     #[doc(alias = "g_data_output_stream_get_byte_order")]

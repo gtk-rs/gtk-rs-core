@@ -33,7 +33,9 @@ impl TlsPassword {
     }
 }
 
-pub const NONE_TLS_PASSWORD: Option<&TlsPassword> = None;
+impl TlsPassword {
+    pub const NONE: Option<&'static TlsPassword> = None;
+}
 
 pub trait TlsPasswordExt: 'static {
     #[doc(alias = "g_tls_password_get_description")]

@@ -127,7 +127,9 @@ impl DataInputStreamBuilder {
     }
 }
 
-pub const NONE_DATA_INPUT_STREAM: Option<&DataInputStream> = None;
+impl DataInputStream {
+    pub const NONE: Option<&'static DataInputStream> = None;
+}
 
 pub trait DataInputStreamExt: 'static {
     #[doc(alias = "g_data_input_stream_get_byte_order")]

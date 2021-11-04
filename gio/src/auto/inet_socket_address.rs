@@ -47,7 +47,9 @@ impl InetSocketAddress {
 unsafe impl Send for InetSocketAddress {}
 unsafe impl Sync for InetSocketAddress {}
 
-pub const NONE_INET_SOCKET_ADDRESS: Option<&InetSocketAddress> = None;
+impl InetSocketAddress {
+    pub const NONE: Option<&'static InetSocketAddress> = None;
+}
 
 pub trait InetSocketAddressExt: 'static {
     #[doc(alias = "g_inet_socket_address_get_address")]

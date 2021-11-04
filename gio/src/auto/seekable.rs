@@ -17,7 +17,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_SEEKABLE: Option<&Seekable> = None;
+impl Seekable {
+    pub const NONE: Option<&'static Seekable> = None;
+}
 
 pub trait SeekableExt: 'static {
     #[doc(alias = "g_seekable_can_seek")]

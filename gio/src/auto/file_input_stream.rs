@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILE_INPUT_STREAM: Option<&FileInputStream> = None;
+impl FileInputStream {
+    pub const NONE: Option<&'static FileInputStream> = None;
+}
 
 pub trait FileInputStreamExt: 'static {
     #[doc(alias = "g_file_input_stream_query_info")]

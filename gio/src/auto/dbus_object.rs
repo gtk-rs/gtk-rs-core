@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_DBUS_OBJECT: Option<&DBusObject> = None;
+impl DBusObject {
+    pub const NONE: Option<&'static DBusObject> = None;
+}
 
 pub trait DBusObjectExt: 'static {
     #[doc(alias = "g_dbus_object_get_interface")]

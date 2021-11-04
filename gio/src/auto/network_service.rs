@@ -34,7 +34,9 @@ impl NetworkService {
     }
 }
 
-pub const NONE_NETWORK_SERVICE: Option<&NetworkService> = None;
+impl NetworkService {
+    pub const NONE: Option<&'static NetworkService> = None;
+}
 
 pub trait NetworkServiceExt: 'static {
     #[doc(alias = "g_network_service_get_domain")]

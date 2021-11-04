@@ -24,7 +24,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_PERMISSION: Option<&Permission> = None;
+impl Permission {
+    pub const NONE: Option<&'static Permission> = None;
+}
 
 pub trait PermissionExt: 'static {
     #[doc(alias = "g_permission_acquire")]

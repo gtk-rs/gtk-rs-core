@@ -21,7 +21,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILTER_OUTPUT_STREAM: Option<&FilterOutputStream> = None;
+impl FilterOutputStream {
+    pub const NONE: Option<&'static FilterOutputStream> = None;
+}
 
 pub trait FilterOutputStreamExt: 'static {
     #[doc(alias = "g_filter_output_stream_get_base_stream")]

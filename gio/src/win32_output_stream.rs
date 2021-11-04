@@ -15,8 +15,6 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_WIN32_OUTPUT_STREAM: Option<&Win32OutputStream> = None;
-
 pub trait Win32OutputStreamExt: 'static {
     #[doc(alias = "g_win32_output_stream_get_close_handle")]
     #[doc(alias = "get_close_handle")]
@@ -40,6 +38,8 @@ impl fmt::Display for Win32OutputStream {
 }
 
 impl Win32OutputStream {
+    pub const NONE: Option<&'static Win32OutputStream> = None;
+
     #[doc(alias = "g_win32_output_stream_new")]
     #[allow(clippy::missing_safety_doc)]
     pub unsafe fn take_handle<T: IntoRawHandle>(handle: T) -> Win32OutputStream {

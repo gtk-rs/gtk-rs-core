@@ -199,7 +199,7 @@ impl<T: IsA<PollableInputStream>> AsyncRead for InputStreamAsyncRead<T> {
         let gio_result = stream
             .0
             .as_ref()
-            .read_nonblocking(buf, crate::NONE_CANCELLABLE);
+            .read_nonblocking(buf, crate::Cancellable::NONE);
 
         match gio_result {
             Ok(size) => Poll::Ready(Ok(size as usize)),
@@ -208,7 +208,7 @@ impl<T: IsA<PollableInputStream>> AsyncRead for InputStreamAsyncRead<T> {
                 if kind == crate::IOErrorEnum::WouldBlock {
                     let mut waker = Some(cx.waker().clone());
                     let source = stream.0.as_ref().create_source(
-                        crate::NONE_CANCELLABLE,
+                        crate::Cancellable::NONE,
                         None,
                         glib::PRIORITY_DEFAULT,
                         move |_| {

@@ -15,8 +15,6 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_WIN32_INPUT_STREAM: Option<&Win32InputStream> = None;
-
 pub trait Win32InputStreamExt: 'static {
     #[doc(alias = "g_win32_input_stream_get_close_handle")]
     #[doc(alias = "get_close_handle")]
@@ -40,6 +38,8 @@ impl fmt::Display for Win32InputStream {
 }
 
 impl Win32InputStream {
+    pub const NONE: Option<&'static Win32InputStream> = None;
+
     #[doc(alias = "g_win32_input_stream_new")]
     #[allow(clippy::missing_safety_doc)]
     pub unsafe fn take_handle<T: IntoRawHandle>(handle: T) -> Win32InputStream {

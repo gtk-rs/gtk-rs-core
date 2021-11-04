@@ -48,7 +48,9 @@ impl Resolver {
     }
 }
 
-pub const NONE_RESOLVER: Option<&Resolver> = None;
+impl Resolver {
+    pub const NONE: Option<&'static Resolver> = None;
+}
 
 pub trait ResolverExt: 'static {
     #[doc(alias = "g_resolver_lookup_by_address")]

@@ -49,7 +49,9 @@ impl TlsServerConnection {
     }
 }
 
-pub const NONE_TLS_SERVER_CONNECTION: Option<&TlsServerConnection> = None;
+impl TlsServerConnection {
+    pub const NONE: Option<&'static TlsServerConnection> = None;
+}
 
 pub trait TlsServerConnectionExt: 'static {
     #[doc(alias = "authentication-mode")]

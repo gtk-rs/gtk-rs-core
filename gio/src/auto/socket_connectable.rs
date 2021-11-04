@@ -16,7 +16,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_SOCKET_CONNECTABLE: Option<&SocketConnectable> = None;
+impl SocketConnectable {
+    pub const NONE: Option<&'static SocketConnectable> = None;
+}
 
 pub trait SocketConnectableExt: 'static {
     #[doc(alias = "g_socket_connectable_enumerate")]

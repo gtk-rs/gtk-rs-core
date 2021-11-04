@@ -370,7 +370,7 @@ mod tests {
             0
         );
         assert_eq!(
-            stream.write(&[1, 2, 3, 4, 5], crate::NONE_CANCELLABLE),
+            stream.write(&[1, 2, 3, 4, 5], crate::Cancellable::NONE),
             Ok(5)
         );
         assert_eq!(

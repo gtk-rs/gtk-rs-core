@@ -22,7 +22,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_LOADABLE_ICON: Option<&LoadableIcon> = None;
+impl LoadableIcon {
+    pub const NONE: Option<&'static LoadableIcon> = None;
+}
 
 pub trait LoadableIconExt: 'static {
     #[doc(alias = "g_loadable_icon_load")]

@@ -63,7 +63,9 @@ impl Action {
     }
 }
 
-pub const NONE_ACTION: Option<&Action> = None;
+impl Action {
+    pub const NONE: Option<&'static Action> = None;
+}
 
 pub trait ActionExt: 'static {
     #[doc(alias = "g_action_activate")]

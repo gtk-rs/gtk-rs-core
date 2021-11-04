@@ -256,7 +256,9 @@ impl DBusProxy {
 unsafe impl Send for DBusProxy {}
 unsafe impl Sync for DBusProxy {}
 
-pub const NONE_DBUS_PROXY: Option<&DBusProxy> = None;
+impl DBusProxy {
+    pub const NONE: Option<&'static DBusProxy> = None;
+}
 
 pub trait DBusProxyExt: 'static {
     #[doc(alias = "g_dbus_proxy_call")]

@@ -20,7 +20,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_ACTION_GROUP: Option<&ActionGroup> = None;
+impl ActionGroup {
+    pub const NONE: Option<&'static ActionGroup> = None;
+}
 
 pub trait ActionGroupExt: 'static {
     #[doc(alias = "g_action_group_action_added")]

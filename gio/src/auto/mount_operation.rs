@@ -36,7 +36,9 @@ impl Default for MountOperation {
     }
 }
 
-pub const NONE_MOUNT_OPERATION: Option<&MountOperation> = None;
+impl MountOperation {
+    pub const NONE: Option<&'static MountOperation> = None;
+}
 
 pub trait MountOperationExt: 'static {
     #[doc(alias = "g_mount_operation_get_anonymous")]

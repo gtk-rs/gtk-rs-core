@@ -98,7 +98,9 @@ impl Settings {
     }
 }
 
-pub const NONE_SETTINGS: Option<&Settings> = None;
+impl Settings {
+    pub const NONE: Option<&'static Settings> = None;
+}
 
 pub trait SettingsExt: 'static {
     #[doc(alias = "g_settings_apply")]

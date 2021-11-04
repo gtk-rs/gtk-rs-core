@@ -27,7 +27,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_DBUS_INTERFACE_SKELETON: Option<&DBusInterfaceSkeleton> = None;
+impl DBusInterfaceSkeleton {
+    pub const NONE: Option<&'static DBusInterfaceSkeleton> = None;
+}
 
 pub trait DBusInterfaceSkeletonExt: 'static {
     #[doc(alias = "g_dbus_interface_skeleton_export")]

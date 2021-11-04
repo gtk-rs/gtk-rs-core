@@ -63,7 +63,9 @@ impl NetworkAddress {
 unsafe impl Send for NetworkAddress {}
 unsafe impl Sync for NetworkAddress {}
 
-pub const NONE_NETWORK_ADDRESS: Option<&NetworkAddress> = None;
+impl NetworkAddress {
+    pub const NONE: Option<&'static NetworkAddress> = None;
+}
 
 pub trait NetworkAddressExt: 'static {
     #[doc(alias = "g_network_address_get_hostname")]

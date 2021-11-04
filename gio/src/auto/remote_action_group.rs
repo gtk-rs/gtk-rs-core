@@ -16,7 +16,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_REMOTE_ACTION_GROUP: Option<&RemoteActionGroup> = None;
+impl RemoteActionGroup {
+    pub const NONE: Option<&'static RemoteActionGroup> = None;
+}
 
 pub trait RemoteActionGroupExt: 'static {
     #[doc(alias = "g_remote_action_group_activate_action_full")]

@@ -23,7 +23,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_APPLICATION_COMMAND_LINE: Option<&ApplicationCommandLine> = None;
+impl ApplicationCommandLine {
+    pub const NONE: Option<&'static ApplicationCommandLine> = None;
+}
 
 pub trait ApplicationCommandLineExt: 'static {
     #[doc(alias = "g_application_command_line_create_file_for_arg")]
