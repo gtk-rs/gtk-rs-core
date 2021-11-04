@@ -77,6 +77,7 @@ pub mod language;
 pub use crate::language::Language;
 pub mod layout;
 pub use crate::layout::HitPosition;
+mod matrix;
 pub mod rectangle;
 pub use crate::rectangle::Rectangle;
 mod glyph_geometry;

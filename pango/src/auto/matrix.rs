@@ -6,8 +6,7 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct Matrix(Boxed<ffi::PangoMatrix>);
+    pub struct Matrix(BoxedInline<ffi::PangoMatrix>);
 
     match fn {
         copy => |ptr| ffi::pango_matrix_copy(ptr),
@@ -68,22 +67,12 @@ impl Matrix {
         }
     }
 
-    //#[doc(alias = "pango_matrix_transform_pixel_rectangle")]
-    //pub fn transform_pixel_rectangle(&self, rect: /*Unimplemented*/Rectangle) {
-    //    unsafe { TODO: call ffi:pango_matrix_transform_pixel_rectangle() }
-    //}
-
     #[doc(alias = "pango_matrix_transform_point")]
     pub fn transform_point(&self, x: &mut f64, y: &mut f64) {
         unsafe {
             ffi::pango_matrix_transform_point(self.to_glib_none().0, x, y);
         }
     }
-
-    //#[doc(alias = "pango_matrix_transform_rectangle")]
-    //pub fn transform_rectangle(&self, rect: /*Unimplemented*/Rectangle) {
-    //    unsafe { TODO: call ffi:pango_matrix_transform_rectangle() }
-    //}
 
     #[doc(alias = "pango_matrix_translate")]
     pub fn translate(&mut self, tx: f64, ty: f64) {
