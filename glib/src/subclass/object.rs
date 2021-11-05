@@ -332,8 +332,7 @@ mod test {
                             let old_name = imp.name.borrow_mut().take();
                             *imp.name.borrow_mut() = Some(new_name);
 
-                            obj.emit_by_name("name-changed", &[&*imp.name.borrow()])
-                                .expect("Failed to borrow name");
+                            obj.emit_by_name("name-changed", &[&*imp.name.borrow()]);
 
                             Some(old_name.to_value())
                         })
@@ -365,8 +364,7 @@ mod test {
                             .get()
                             .expect("type conformity checked by 'Object::set_property'");
                         self.name.replace(name);
-                        obj.emit_by_name("name-changed", &[&*self.name.borrow()])
-                            .expect("Failed to borrow name");
+                        obj.emit_by_name("name-changed", &[&*self.name.borrow()]);
                     }
                     "construct-name" => {
                         let name = value
