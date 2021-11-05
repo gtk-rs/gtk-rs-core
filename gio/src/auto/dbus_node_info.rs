@@ -32,16 +32,10 @@ impl DBusNodeInfo {
         }
     }
 
-    #[doc(alias = "g_dbus_node_info_generate_xml")]
-    pub fn generate_xml(&self, indent: u32, string_builder: &mut glib::String) {
-        unsafe {
-            ffi::g_dbus_node_info_generate_xml(
-                self.to_glib_none().0,
-                indent,
-                string_builder.to_glib_none_mut().0,
-            );
-        }
-    }
+    //#[doc(alias = "g_dbus_node_info_generate_xml")]
+    //pub fn generate_xml(&self, indent: u32, string_builder: /*Ignored*/&mut glib::String) {
+    //    unsafe { TODO: call ffi:g_dbus_node_info_generate_xml() }
+    //}
 
     #[doc(alias = "g_dbus_node_info_lookup_interface")]
     pub fn lookup_interface(&self, name: &str) -> Option<DBusInterfaceInfo> {
