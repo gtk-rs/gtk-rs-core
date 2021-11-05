@@ -436,11 +436,7 @@ mod test {
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
-        assert!(obj
-            .property("constructed")
-            .expect("Failed to get 'constructed' property")
-            .get::<bool>()
-            .expect("Failed to get bool from 'constructed' property"),);
+        assert!(obj.property::<bool>("constructed"));
 
         let weak = obj.downgrade();
         drop(obj);
@@ -464,45 +460,26 @@ mod test {
         .expect("Object::new failed");
 
         assert_eq!(
-            obj.property("construct-name")
-                .expect("Failed to get 'construct-name' property")
-                .get::<&str>()
-                .expect("Failed to get str from 'construct-name' property"),
-            "meh"
+            obj.property::<String>("construct-name"),
+            String::from("meh")
         );
         assert_eq!(
-            obj.set_property("construct-name", &"test")
+            obj.try_set_property("construct-name", &"test")
                 .err()
                 .expect("Failed to set 'construct-name' property")
                 .to_string(),
             "property 'construct-name' of type 'SimpleObject' is not writable",
         );
         assert_eq!(
-            obj.property("construct-name")
-                .expect("Failed to get 'construct-name' property")
-                .get::<&str>()
-                .expect("Failed to get str from 'construct-name' property"),
-            "meh"
+            obj.property::<String>("construct-name"),
+            String::from("meh")
         );
+        assert_eq!(obj.property::<String>("name"), String::from("initial"));
+        assert!(obj.try_set_property("name", &"test").is_ok());
+        assert_eq!(obj.property::<String>("name"), String::from("test"));
 
         assert_eq!(
-            obj.property("name")
-                .expect("Failed to get 'name' property")
-                .get::<&str>()
-                .expect("Failed to get str from 'name' property"),
-            "initial"
-        );
-        assert!(obj.set_property("name", &"test").is_ok());
-        assert_eq!(
-            obj.property("name")
-                .expect("Failed to get 'name' property")
-                .get::<&str>()
-                .expect("Failed to get str from 'name' property"),
-            "test"
-        );
-
-        assert_eq!(
-            obj.set_property("test", &true)
+            obj.try_set_property("test", &true)
                 .err()
                 .expect("set_property failed")
                 .to_string(),
@@ -510,7 +487,7 @@ mod test {
         );
 
         assert_eq!(
-            obj.set_property("constructed", &false)
+            obj.try_set_property("constructed", &false)
                 .err()
                 .expect("Failed to set 'constructed' property")
                 .to_string(),
@@ -518,7 +495,7 @@ mod test {
         );
 
         assert_eq!(
-            obj.set_property("name", &false)
+            obj.try_set_property("name", &false)
                 .err()
                 .expect("Failed to set 'name' property")
                 .to_string(),
@@ -528,7 +505,7 @@ mod test {
         let other_obj =
             Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
         assert_eq!(
-            obj.set_property("child", &other_obj)
+            obj.try_set_property("child", &other_obj)
                 .err()
                 .expect("Failed to set 'child' property")
                 .to_string(),
@@ -536,7 +513,7 @@ mod test {
         );
 
         let child = Object::with_type(ChildObject::static_type(), &[]).expect("Object::new failed");
-        assert!(obj.set_property("child", &child).is_ok());
+        assert!(obj.try_set_property("child", &child).is_ok());
     }
 
     #[test]
@@ -557,22 +534,14 @@ mod test {
             name_changed_clone.store(true, Ordering::Relaxed);
 
             None
-        })
-        .expect("Failed to connect on 'name-changed'");
+        });
 
-        assert_eq!(
-            obj.property("name")
-                .expect("Failed to get 'name' property")
-                .get::<&str>()
-                .expect("Failed to get str from 'name' property"),
-            "old-name"
-        );
+        assert_eq!(obj.property::<String>("name"), String::from("old-name"));
         assert!(!name_changed_triggered.load(Ordering::Relaxed));
 
         assert_eq!(
             obj.emit_by_name("change-name", &[&"new-name"])
-                .expect("Failed to emit")
-                .expect("Failed to get value from emit")
+                .unwrap()
                 .get::<&str>()
                 .expect("Failed to get str from emit"),
             "old-name"
@@ -586,15 +555,11 @@ mod test {
 
         obj.connect("create-string", false, move |_args| {
             Some("return value".to_value())
-        })
-        .expect("Failed to connect on 'create-string'");
+        });
 
         let signal_id = imp::SimpleObject::signals()[2].signal_id();
 
-        let value = obj
-            .emit(signal_id, &[])
-            .expect("Failed to emit")
-            .expect("Failed to get value from emit");
+        let value = obj.emit(signal_id, &[]).unwrap();
         assert_eq!(value.get::<&str>(), Ok("return value"));
     }
 
@@ -629,13 +594,8 @@ mod test {
                     .expect("Object::new failed")
                     .to_value(),
             )
-        })
-        .expect("Failed to connect on 'create-child-object'");
-
-        let value = obj
-            .emit_by_name("create-child-object", &[])
-            .expect("Failed to emit")
-            .expect("Failed to get value from emit");
+        });
+        let value = obj.emit_by_name("create-child-object", &[]).unwrap();
         assert!(value.type_().is_a(ChildObject::static_type()));
     }
 }
