@@ -62,16 +62,13 @@ pub trait FileExtManual: Sized {
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_copy_async")]
-    fn copy_async<
-        P: FnMut(i64, i64) + Send + 'static,
-        Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         destination: &impl IsA<File>,
         flags: crate::FileCopyFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: P,
+        progress_callback: Option<Box<dyn FnMut(i64, i64) + Send>>,
         callback: Q,
     );
 
@@ -287,21 +284,24 @@ impl<O: IsA<File>> FileExtManual for O {
         ))
     }
 
-    fn copy_async<
-        P: FnMut(i64, i64) + Send + 'static,
-        Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
-    >(
+    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
         &self,
         destination: &impl IsA<File>,
         flags: crate::FileCopyFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: P,
+        progress_callback: Option<Box<dyn FnMut(i64, i64) + Send>>,
         callback: Q,
     ) {
-        let user_data: Box<(Q, RefCell<P>)> = Box::new((callback, RefCell::new(progress_callback)));
+        let progress_trampoline = if progress_callback.is_some() {
+            Some(copy_async_progress_trampoline::<Q> as _)
+        } else {
+            None
+        };
+
+        let user_data: Box<(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>)> =
+            Box::new((callback, RefCell::new(progress_callback)));
         unsafe extern "C" fn copy_async_trampoline<
-            P: FnMut(i64, i64) + Send + 'static,
             Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
@@ -315,19 +315,23 @@ impl<O: IsA<File>> FileExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<(Q, RefCell<P>)> = Box::from_raw(user_data as *mut _);
+            let callback: Box<(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>)> =
+                Box::from_raw(user_data as *mut _);
             callback.0(result);
         }
         unsafe extern "C" fn copy_async_progress_trampoline<
-            P: FnMut(i64, i64) + Send + 'static,
             Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
         >(
             current_num_bytes: i64,
             total_num_bytes: i64,
             user_data: glib::ffi::gpointer,
         ) {
-            let callback: &(Q, RefCell<P>) = &*(user_data as *const _);
-            (&mut *callback.1.borrow_mut())(current_num_bytes, total_num_bytes);
+            let callback: &(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>) =
+                &*(user_data as *const _);
+            (callback.1.borrow_mut().as_mut().expect("no closure"))(
+                current_num_bytes,
+                total_num_bytes,
+            );
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -339,9 +343,9 @@ impl<O: IsA<File>> FileExtManual for O {
                 flags.into_glib(),
                 io_priority.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                Some(copy_async_progress_trampoline::<P, Q>),
+                progress_trampoline,
                 user_data,
-                Some(copy_async_trampoline::<P, Q>),
+                Some(copy_async_trampoline::<Q>),
                 user_data,
             );
         }
@@ -368,9 +372,9 @@ impl<O: IsA<File>> FileExtManual for O {
                     flags,
                     io_priority,
                     Some(cancellable),
-                    move |current_num_bytes, total_num_bytes| {
+                    Some(Box::new(move |current_num_bytes, total_num_bytes| {
                         let _ = sender.unbounded_send((current_num_bytes, total_num_bytes));
-                    },
+                    })),
                     move |res| {
                         send.resolve(res);
                     },
