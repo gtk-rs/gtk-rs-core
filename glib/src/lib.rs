@@ -33,7 +33,6 @@ pub use self::signal::{
     signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
     signal_stop_emission_by_name, SignalHandlerId,
 };
-pub use self::string::String;
 use std::ffi::CStr;
 
 pub use self::enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory};
@@ -73,7 +72,6 @@ mod array;
 mod byte_array;
 mod bytes;
 pub mod char;
-mod string;
 pub use self::char::*;
 mod checksum;
 pub mod closure;
