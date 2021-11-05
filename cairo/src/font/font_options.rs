@@ -136,9 +136,8 @@ impl FontOptions {
 
     #[cfg(any(feature = "v1_16", feature = "dox"))]
     #[doc(alias = "cairo_font_options_set_variations")]
-    pub fn set_variations<'a, T: Into<Option<&'a str>>>(&self, variations: T) {
+    pub fn set_variations(&self, variations: Option<&str>) {
         unsafe {
-            let variations = variations.into();
             match variations {
                 Some(v) => {
                     let v = CString::new(v).unwrap();

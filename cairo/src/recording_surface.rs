@@ -15,18 +15,17 @@ use crate::surface::Surface;
 declare_surface!(RecordingSurface, SurfaceType::Recording);
 impl RecordingSurface {
     #[doc(alias = "cairo_recording_surface_create")]
-    pub fn create<T: Into<Option<Rectangle>>>(
-        content: Content,
-        extends: T,
-    ) -> Result<RecordingSurface, Error> {
+    pub fn create(content: Content, extends: Option<Rectangle>) -> Result<RecordingSurface, Error> {
         unsafe {
-            let extends = extends.into();
-            let extends = match extends {
-                Some(c) => c.to_raw_none(),
+            let extends_ptr = match extends {
+                Some(ref c) => c.to_raw_none(),
                 None => ::std::ptr::null(),
             };
 
-            Self::from_raw_full(ffi::cairo_recording_surface_create(content.into(), extends))
+            Self::from_raw_full(ffi::cairo_recording_surface_create(
+                content.into(),
+                extends_ptr,
+            ))
         }
     }
 

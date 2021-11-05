@@ -155,10 +155,9 @@ impl Type {
     }
 
     #[doc(alias = "g_type_from_name")]
-    pub fn from_name<'a, P: Into<&'a str>>(name: P) -> Option<Self> {
+    pub fn from_name(name: &str) -> Option<Self> {
         unsafe {
-            let type_: Self =
-                from_glib(gobject_ffi::g_type_from_name(name.into().to_glib_none().0));
+            let type_: Self = from_glib(gobject_ffi::g_type_from_name(name.to_glib_none().0));
             Some(type_).filter(|t| t.is_valid())
         }
     }

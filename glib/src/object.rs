@@ -1272,21 +1272,13 @@ pub trait ObjectExt: ObjectType {
     /// This fails if the property does not exist, if the type of the property is different than
     /// the provided value, or if the property is not writable.
     #[doc(alias = "g_object_set_property")]
-    fn set_property<'a, N: Into<&'a str>, V: ToValue>(
-        &self,
-        property_name: N,
-        value: V,
-    ) -> Result<(), BoolError>;
+    fn set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError>;
 
     /// Sets the property `property_name` of the object to value `value`.
     ///
     /// This fails if the property does not exist, the type of the property is different than the
     /// provided value, or if the property is not writable.
-    fn set_property_from_value<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-        value: &Value,
-    ) -> Result<(), BoolError>;
+    fn set_property_from_value(&self, property_name: &str, value: &Value) -> Result<(), BoolError>;
 
     /// Sets multiple properties of the object at once.
     ///
@@ -1307,21 +1299,21 @@ pub trait ObjectExt: ObjectType {
     /// This fails if the property does not exist or is not writable.
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
-    fn property<'a, N: Into<&'a str>>(&self, property_name: N) -> Result<Value, BoolError>;
+    fn property(&self, property_name: &str) -> Result<Value, BoolError>;
 
     /// Check if the object has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
-    fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool;
+    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool;
 
     /// Get the type of the property `property_name` of this object.
     ///
     /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
-    fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type>;
+    fn property_type(&self, property_name: &str) -> Option<Type>;
 
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object.
-    fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec>;
+    fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec>;
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
     fn list_properties(&self) -> Vec<crate::ParamSpec>;
@@ -1410,14 +1402,13 @@ pub trait ObjectExt: ObjectType {
     /// handler of the signal is emitted, otherwise before.
     ///
     /// This fails if the signal does not exist.
-    fn connect<'a, N, F>(
+    fn connect<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
     /// Connect to the signal `signal_id` on this object.
@@ -1447,14 +1438,13 @@ pub trait ObjectExt: ObjectType {
     ///
     /// Same as `connect` but takes a non-`Send+Sync` closure. If the signal is emitted from a
     /// different thread than it was connected to then the signal emission will panic.
-    fn connect_local<'a, N, F>(
+    fn connect_local<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
     /// Connect to the signal `signal_id` on this object.
@@ -1490,14 +1480,13 @@ pub trait ObjectExt: ObjectType {
     ///
     /// The provided closure must be valid until the signal handler is disconnected, and it must
     /// be allowed to call the closure from the threads the signal is emitted from.
-    unsafe fn connect_unsafe<'a, N, F>(
+    unsafe fn connect_unsafe<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value>;
 
     /// Connect to the signal `signal_id` on this object.
@@ -1546,9 +1535,9 @@ pub trait ObjectExt: ObjectType {
     ///
     /// If the signal has a return value then this is returned here.
     #[doc(alias = "g_signal_emit_by_name")]
-    fn emit_by_name<'a, N: Into<&'a str>>(
+    fn emit_by_name(
         &self,
-        signal_name: N,
+        signal_name: &str,
         args: &[&dyn ToValue],
     ) -> Result<Option<Value>, BoolError>;
 
@@ -1558,9 +1547,9 @@ pub trait ObjectExt: ObjectType {
     /// arguments of the wrong types were provided.
     ///
     /// If the signal has a return value then this is returned here.
-    fn emit_by_name_with_values<'a, N: Into<&'a str>>(
+    fn emit_by_name_with_values(
         &self,
-        signal_name: N,
+        signal_name: &str,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
 
@@ -1639,7 +1628,7 @@ pub trait ObjectExt: ObjectType {
     ///
     /// This emits the `notify` signal.
     #[doc(alias = "g_object_notify")]
-    fn notify<'a, N: Into<&'a str>>(&self, property_name: N);
+    fn notify(&self, property_name: &str);
 
     /// Notify that the given property has changed its value.
     ///
@@ -1656,11 +1645,11 @@ pub trait ObjectExt: ObjectType {
     ///
     /// The binding can be unidirectional or bidirectional and optionally it is possible to
     /// transform the property values before they're passed to the other object.
-    fn bind_property<'a, O: ObjectType, N: Into<&'a str>, M: Into<&'a str>>(
+    fn bind_property<'a, O: ObjectType>(
         &'a self,
-        source_property: N,
+        source_property: &'a str,
         target: &'a O,
-        target_property: M,
+        target_property: &'a str,
     ) -> BindingBuilder<'a>;
 
     /// Returns the strong reference count of this object.
@@ -1711,13 +1700,7 @@ impl<T: ObjectType> ObjectExt for T {
         Interface::from_class(self.object_class())
     }
 
-    fn set_property<'a, N: Into<&'a str>, V: ToValue>(
-        &self,
-        property_name: N,
-        value: V,
-    ) -> Result<(), BoolError> {
-        let property_name = property_name.into();
-
+    fn set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError> {
         let pspec = match self.find_property(property_name) {
             Some(pspec) => pspec,
             None => {
@@ -1742,13 +1725,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
-    fn set_property_from_value<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-        value: &Value,
-    ) -> Result<(), BoolError> {
-        let property_name = property_name.into();
-
+    fn set_property_from_value(&self, property_name: &str, value: &Value) -> Result<(), BoolError> {
         let pspec = match self.find_property(property_name) {
             Some(pspec) => pspec,
             None => {
@@ -1838,9 +1815,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
-    fn property<'a, N: Into<&'a str>>(&self, property_name: N) -> Result<Value, BoolError> {
-        let property_name = property_name.into();
-
+    fn property(&self, property_name: &str) -> Result<Value, BoolError> {
         let pspec = match self.find_property(property_name) {
             Some(pspec) => pspec,
             None => {
@@ -1879,15 +1854,15 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn has_property<'a, N: Into<&'a str>>(&self, property_name: N, type_: Option<Type>) -> bool {
+    fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
         self.object_class().has_property(property_name, type_)
     }
 
-    fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
+    fn property_type(&self, property_name: &str) -> Option<Type> {
         self.object_class().property_type(property_name)
     }
 
-    fn find_property<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<crate::ParamSpec> {
+    fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
         self.object_class().find_property(property_name)
     }
 
@@ -1985,14 +1960,13 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn connect<'a, N, F>(
+    fn connect<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
     {
         unsafe { self.connect_unsafe(signal_name, after, callback) }
@@ -2011,14 +1985,13 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe { self.connect_unsafe_id(signal_id, details, after, callback) }
     }
 
-    fn connect_local<'a, N, F>(
+    fn connect_local<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
         let callback = crate::ThreadGuard::new(callback);
@@ -2049,17 +2022,15 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    unsafe fn connect_unsafe<'a, N, F>(
+    unsafe fn connect_unsafe<F>(
         &self,
-        signal_name: N,
+        signal_name: &str,
         after: bool,
         callback: F,
     ) -> Result<SignalHandlerId, BoolError>
     where
-        N: Into<&'a str>,
         F: Fn(&[Value]) -> Option<Value>,
     {
-        let signal_name: &str = signal_name.into();
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
@@ -2255,24 +2226,22 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn emit_by_name<'a, N: Into<&'a str>>(
+    fn emit_by_name(
         &self,
-        signal_name: N,
+        signal_name: &str,
         args: &[&dyn ToValue],
     ) -> Result<Option<Value>, BoolError> {
-        let signal_name: &str = signal_name.into();
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
         self.emit(signal_id, args)
     }
 
-    fn emit_by_name_with_values<'a, N: Into<&'a str>>(
+    fn emit_by_name_with_values(
         &self,
-        signal_name: N,
+        signal_name: &str,
         args: &[Value],
     ) -> Result<Option<Value>, BoolError> {
-        let signal_name: &str = signal_name.into();
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
@@ -2441,9 +2410,7 @@ impl<T: ObjectType> ObjectExt for T {
         )
     }
 
-    fn notify<'a, N: Into<&'a str>>(&self, property_name: N) {
-        let property_name = property_name.into();
-
+    fn notify(&self, property_name: &str) {
         unsafe {
             gobject_ffi::g_object_notify(
                 self.as_object_ref().to_glib_none().0,
@@ -2472,15 +2439,12 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn bind_property<'a, O: ObjectType, N: Into<&'a str>, M: Into<&'a str>>(
+    fn bind_property<'a, O: ObjectType>(
         &'a self,
-        source_property: N,
+        source_property: &'a str,
         target: &'a O,
-        target_property: M,
+        target_property: &'a str,
     ) -> BindingBuilder<'a> {
-        let source_property = source_property.into();
-        let target_property = target_property.into();
-
         BindingBuilder::new(self, source_property, target, target_property)
     }
 
@@ -2644,12 +2608,7 @@ impl ObjectClass {
     /// Check if the object class has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
-    pub fn has_property<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-        type_: Option<Type>,
-    ) -> bool {
-        let property_name = property_name.into();
+    pub fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
         let ptype = self.property_type(property_name);
 
         match (ptype, type_) {
@@ -2663,18 +2622,14 @@ impl ObjectClass {
     ///
     /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
-    pub fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
+    pub fn property_type(&self, property_name: &str) -> Option<Type> {
         self.find_property(property_name)
             .map(|pspec| pspec.value_type())
     }
 
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object class.
     #[doc(alias = "g_object_class_find_property")]
-    pub fn find_property<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-    ) -> Option<crate::ParamSpec> {
-        let property_name = property_name.into();
+    pub fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
@@ -3267,12 +3222,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
     /// Check if this interface has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
-    pub fn has_property<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-        type_: Option<Type>,
-    ) -> bool {
-        let property_name = property_name.into();
+    pub fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
         let ptype = self.property_type(property_name);
 
         match (ptype, type_) {
@@ -3286,18 +3236,14 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
     ///
     /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
-    pub fn property_type<'a, N: Into<&'a str>>(&self, property_name: N) -> Option<Type> {
+    pub fn property_type(&self, property_name: &str) -> Option<Type> {
         self.find_property(property_name)
             .map(|pspec| pspec.value_type())
     }
 
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this interface.
     #[doc(alias = "g_object_interface_find_property")]
-    pub fn find_property<'a, N: Into<&'a str>>(
-        &self,
-        property_name: N,
-    ) -> Option<crate::ParamSpec> {
-        let property_name = property_name.into();
+    pub fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
         unsafe {
             let interface = self as *const _ as *const gobject_ffi::GTypeInterface;
 
