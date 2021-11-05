@@ -62,7 +62,7 @@
 //! let vec = <Vec<String>>::from_variant(&variant).unwrap();
 //! assert_eq!(vec[0], "Hello");
 //!
-//! // Conversion to and from HashMap is also possible
+//! // Conversion to and from HashMap and BTreeMap is also possible
 //! let mut map: HashMap<u16, &str> = HashMap::new();
 //! map.insert(1, "hi");
 //! map.insert(2, "there");
@@ -103,6 +103,7 @@ use crate::VariantType;
 use crate::{VariantIter, VariantStrIter};
 use std::borrow::Cow;
 use std::cmp::{Eq, Ordering, PartialEq, PartialOrd};
+use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::fmt;
 use std::hash::{BuildHasher, Hash, Hasher};
@@ -832,7 +833,52 @@ where
     }
 }
 
+impl<K, V> FromVariant for BTreeMap<K, V>
+where
+    K: FromVariant + Eq + Ord,
+    V: FromVariant,
+{
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        if !variant.is_container() {
+            return None;
+        }
+
+        let mut map = BTreeMap::default();
+
+        for i in 0..variant.n_children() {
+            let entry = variant.child_value(i);
+            let key = match entry.child_value(0).get() {
+                Some(key) => key,
+                None => return None,
+            };
+            let val = match entry.child_value(1).get() {
+                Some(val) => val,
+                None => return None,
+            };
+
+            map.insert(key, val);
+        }
+
+        Some(map)
+    }
+}
+
 impl<K, V> ToVariant for HashMap<K, V>
+where
+    K: StaticVariantType + ToVariant + Eq + Hash,
+    V: StaticVariantType + ToVariant,
+{
+    fn to_variant(&self) -> Variant {
+        let mut vec = Vec::with_capacity(self.len());
+        for (key, value) in self {
+            let entry = DictEntry::new(key, value).to_variant();
+            vec.push(entry);
+        }
+        Variant::from_array::<DictEntry<K, V>>(&vec)
+    }
+}
+
+impl<K, V> ToVariant for BTreeMap<K, V>
 where
     K: StaticVariantType + ToVariant + Eq + Hash,
     V: StaticVariantType + ToVariant,
@@ -947,6 +993,20 @@ impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry
     }
 }
 
+fn static_variant_mapping<K, V>() -> Cow<'static, VariantTy>
+where
+    K: StaticVariantType,
+    V: StaticVariantType,
+{
+    let key_type = K::static_variant_type();
+    let value_type = V::static_variant_type();
+    let signature = format!("a{{{}{}}}", key_type.to_str(), value_type.to_str());
+
+    VariantType::new(&signature)
+        .expect("incorrect signature")
+        .into()
+}
+
 impl<K, V, H> StaticVariantType for HashMap<K, V, H>
 where
     K: StaticVariantType,
@@ -954,13 +1014,17 @@ where
     H: BuildHasher + Default,
 {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let key_type = K::static_variant_type();
-        let value_type = V::static_variant_type();
-        let signature = format!("a{{{}{}}}", key_type.to_str(), value_type.to_str());
+        static_variant_mapping::<K, V>()
+    }
+}
 
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+impl<K, V> StaticVariantType for BTreeMap<K, V>
+where
+    K: StaticVariantType,
+    V: StaticVariantType,
+{
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        static_variant_mapping::<K, V>()
     }
 }
 
@@ -1139,6 +1203,33 @@ mod tests {
         assert_eq!(a.array_iter_str().unwrap().len(), 3);
         let o = 0u32.to_variant();
         assert!(o.array_iter_str().is_err());
+    }
+
+    #[test]
+    fn test_btreemap() {
+        assert_eq!(
+            <BTreeMap<String, u32>>::static_variant_type().to_str(),
+            "a{su}"
+        );
+        // Validate that BTreeMap adds entries to dict in sorted order
+        let mut m = BTreeMap::new();
+        let total = 20;
+        for n in 0..total {
+            let k = format!("v{:04}", n);
+            m.insert(k, n as u32);
+        }
+        let v = m.to_variant();
+        let n = v.n_children();
+        assert_eq!(total, n);
+        for n in 0..total {
+            let child = v
+                .try_child_get::<DictEntry<String, u32>>(n)
+                .unwrap()
+                .unwrap();
+            assert_eq!(*child.value(), n as u32);
+        }
+
+        assert_eq!(BTreeMap::from_variant(&v).unwrap(), m);
     }
 
     #[test]
