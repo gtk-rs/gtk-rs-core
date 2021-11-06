@@ -76,13 +76,16 @@ pub type cairo_ps_level_t = c_int;
 pub type cairo_mesh_corner_t = c_uint;
 
 macro_rules! opaque {
-    ($name:ident) => {
+    ($(#[$attr:meta])*
+     $name:ident) => {
         // https://doc.rust-lang.org/nomicon/ffi.html#representing-opaque-structs
+        $(#[$attr])*
         #[repr(C)]
         pub struct $name {
             _data: [u8; 0],
             _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
         }
+        $(#[$attr])*
         impl ::std::fmt::Debug for $name {
             fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                 write!(f, "{} @ {:?}", stringify!($name), self as *const _)
@@ -96,11 +99,10 @@ opaque!(cairo_surface_t);
 opaque!(cairo_device_t);
 opaque!(cairo_pattern_t);
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_connection_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_connection_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_connection_t
+);
 
 #[cfg(any(feature = "xcb", feature = "dox"))]
 pub type xcb_drawable_t = u32;
@@ -108,23 +110,20 @@ pub type xcb_drawable_t = u32;
 #[cfg(any(feature = "xcb", feature = "dox"))]
 pub type xcb_pixmap_t = u32;
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_visualtype_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_visualtype_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_visualtype_t // has visible fields in <xcb/xproto.h>
+);
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_screen_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_screen_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_screen_t // has visible fields in <xcb/xproto.h>
+);
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_render_pictforminfo_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_render_pictforminfo_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_render_pictforminfo_t // has visible fields in <xcb/render.h>
+);
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
