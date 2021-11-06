@@ -248,7 +248,7 @@ impl ::std::fmt::Display for Matrix {
 pub struct cairo_user_data_key_t {
     pub unused: c_int,
 }
-#[repr(C)]
+#[repr(transparent)]
 #[derive(Debug, Clone, Copy)]
 pub struct cairo_bool_t {
     value: c_int,
