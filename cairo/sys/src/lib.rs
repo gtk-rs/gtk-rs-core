@@ -75,8 +75,17 @@ pub type cairo_ps_level_t = c_int;
 
 pub type cairo_mesh_corner_t = c_uint;
 
-macro_rules! debug_impl {
-    ($name:ty) => {
+macro_rules! opaque {
+    ($(#[$attr:meta])*
+     $name:ident) => {
+        // https://doc.rust-lang.org/nomicon/ffi.html#representing-opaque-structs
+        $(#[$attr])*
+        #[repr(C)]
+        pub struct $name {
+            _data: [u8; 0],
+            _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+        }
+        $(#[$attr])*
         impl ::std::fmt::Debug for $name {
             fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                 write!(f, "{} @ {:?}", stringify!($name), self as *const _)
@@ -85,26 +94,15 @@ macro_rules! debug_impl {
     };
 }
 
-#[repr(C)]
-pub struct cairo_t(c_void);
-debug_impl!(cairo_t);
+opaque!(cairo_t);
+opaque!(cairo_surface_t);
+opaque!(cairo_device_t);
+opaque!(cairo_pattern_t);
 
-#[repr(C)]
-pub struct cairo_surface_t(c_void);
-debug_impl!(cairo_surface_t);
-
-#[repr(C)]
-pub struct cairo_device_t(c_void);
-debug_impl!(cairo_device_t);
-
-#[repr(C)]
-pub struct cairo_pattern_t(c_void);
-
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_connection_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_connection_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_connection_t
+);
 
 #[cfg(any(feature = "xcb", feature = "dox"))]
 pub type xcb_drawable_t = u32;
@@ -112,23 +110,20 @@ pub type xcb_drawable_t = u32;
 #[cfg(any(feature = "xcb", feature = "dox"))]
 pub type xcb_pixmap_t = u32;
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_visualtype_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_visualtype_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_visualtype_t // has visible fields in <xcb/xproto.h>
+);
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_screen_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_screen_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_screen_t // has visible fields in <xcb/xproto.h>
+);
 
-#[cfg(any(feature = "xcb", feature = "dox"))]
-#[repr(C)]
-pub struct xcb_render_pictforminfo_t(c_void);
-#[cfg(any(feature = "xcb", feature = "dox"))]
-debug_impl!(xcb_render_pictforminfo_t);
+opaque!(
+    #[cfg(any(feature = "xcb", feature = "dox"))]
+    xcb_render_pictforminfo_t // has visible fields in <xcb/render.h>
+);
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -172,25 +167,12 @@ pub union cairo_path_data {
     pub header: cairo_path_data_header,
     pub point: [f64; 2],
 }
-#[repr(C)]
-pub struct cairo_glyph_t(c_void);
-debug_impl!(cairo_glyph_t);
 
-#[repr(C)]
-pub struct cairo_region_t(c_void);
-debug_impl!(cairo_region_t);
-
-#[repr(C)]
-pub struct cairo_font_face_t(c_void);
-debug_impl!(cairo_font_face_t);
-
-#[repr(C)]
-pub struct cairo_scaled_font_t(c_void);
-debug_impl!(cairo_scaled_font_t);
-
-#[repr(C)]
-pub struct cairo_font_options_t(c_void);
-debug_impl!(cairo_font_options_t);
+opaque!(cairo_glyph_t);
+opaque!(cairo_region_t);
+opaque!(cairo_font_face_t);
+opaque!(cairo_scaled_font_t);
+opaque!(cairo_font_options_t);
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
@@ -248,7 +230,7 @@ impl ::std::fmt::Display for Matrix {
 pub struct cairo_user_data_key_t {
     pub unused: c_int,
 }
-#[repr(C)]
+#[repr(transparent)]
 #[derive(Debug, Clone, Copy)]
 pub struct cairo_bool_t {
     value: c_int,
