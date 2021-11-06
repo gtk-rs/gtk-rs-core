@@ -75,8 +75,14 @@ pub type cairo_ps_level_t = c_int;
 
 pub type cairo_mesh_corner_t = c_uint;
 
-macro_rules! debug_impl {
-    ($name:ty) => {
+macro_rules! opaque {
+    ($name:ident) => {
+        // https://doc.rust-lang.org/nomicon/ffi.html#representing-opaque-structs
+        #[repr(C)]
+        pub struct $name {
+            _data: [u8; 0],
+            _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+        }
         impl ::std::fmt::Debug for $name {
             fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                 write!(f, "{} @ {:?}", stringify!($name), self as *const _)
@@ -85,20 +91,10 @@ macro_rules! debug_impl {
     };
 }
 
-#[repr(C)]
-pub struct cairo_t(c_void);
-debug_impl!(cairo_t);
-
-#[repr(C)]
-pub struct cairo_surface_t(c_void);
-debug_impl!(cairo_surface_t);
-
-#[repr(C)]
-pub struct cairo_device_t(c_void);
-debug_impl!(cairo_device_t);
-
-#[repr(C)]
-pub struct cairo_pattern_t(c_void);
+opaque!(cairo_t);
+opaque!(cairo_surface_t);
+opaque!(cairo_device_t);
+opaque!(cairo_pattern_t);
 
 #[cfg(any(feature = "xcb", feature = "dox"))]
 #[repr(C)]
@@ -172,25 +168,12 @@ pub union cairo_path_data {
     pub header: cairo_path_data_header,
     pub point: [f64; 2],
 }
-#[repr(C)]
-pub struct cairo_glyph_t(c_void);
-debug_impl!(cairo_glyph_t);
 
-#[repr(C)]
-pub struct cairo_region_t(c_void);
-debug_impl!(cairo_region_t);
-
-#[repr(C)]
-pub struct cairo_font_face_t(c_void);
-debug_impl!(cairo_font_face_t);
-
-#[repr(C)]
-pub struct cairo_scaled_font_t(c_void);
-debug_impl!(cairo_scaled_font_t);
-
-#[repr(C)]
-pub struct cairo_font_options_t(c_void);
-debug_impl!(cairo_font_options_t);
+opaque!(cairo_glyph_t);
+opaque!(cairo_region_t);
+opaque!(cairo_font_face_t);
+opaque!(cairo_scaled_font_t);
+opaque!(cairo_font_options_t);
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
