@@ -332,91 +332,31 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
     }
 
     fn certificate(&self) -> Option<glib::ByteArray> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::ByteArray as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"certificate\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `certificate` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "certificate")
     }
 
     fn certificate_pem(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"certificate-pem\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `certificate-pem` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "certificate-pem")
     }
 
     #[cfg(any(feature = "v2_68", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
     fn pkcs11_uri(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"pkcs11-uri\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `pkcs11-uri` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "pkcs11-uri")
     }
 
     fn private_key(&self) -> Option<glib::ByteArray> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::ByteArray as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"private-key\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `private-key` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "private-key")
     }
 
     fn private_key_pem(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"private-key-pem\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `private-key-pem` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "private-key-pem")
     }
 
     #[cfg(any(feature = "v2_68", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
     fn private_key_pkcs11_uri(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"private-key-pkcs11-uri\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `private-key-pkcs11-uri` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "private-key-pkcs11-uri")
     }
 
     #[cfg(any(feature = "v2_70", feature = "dox"))]

@@ -92,32 +92,12 @@ impl DBusServer {
     }
 
     pub fn address(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"address\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `address` getter")
-        }
+        glib::ObjectExt::property(self, "address")
     }
 
     #[doc(alias = "authentication-observer")]
     pub fn authentication_observer(&self) -> Option<DBusAuthObserver> {
-        unsafe {
-            let mut value = glib::Value::from_type(<DBusAuthObserver as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"authentication-observer\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `authentication-observer` getter")
-        }
+        glib::ObjectExt::property(self, "authentication-observer")
     }
 
     #[doc(alias = "new-connection")]

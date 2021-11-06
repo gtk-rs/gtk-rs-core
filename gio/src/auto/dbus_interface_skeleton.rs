@@ -192,28 +192,11 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
     }
 
     fn g_flags(&self) -> DBusInterfaceSkeletonFlags {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<DBusInterfaceSkeletonFlags as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-flags\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-flags` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-flags")
     }
 
     fn set_g_flags(&self, g_flags: DBusInterfaceSkeletonFlags) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-flags\0".as_ptr() as *const _,
-                g_flags.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "g-flags", &g_flags)
     }
 
     fn connect_g_authorize_method<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(

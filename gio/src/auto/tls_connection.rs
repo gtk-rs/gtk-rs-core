@@ -419,32 +419,11 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     fn advertised_protocols(&self) -> Vec<glib::GString> {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<Vec<glib::GString> as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"advertised-protocols\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `advertised-protocols` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "advertised-protocols")
     }
 
     fn base_io_stream(&self) -> Option<IOStream> {
-        unsafe {
-            let mut value = glib::Value::from_type(<IOStream as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"base-io-stream\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `base-io-stream` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "base-io-stream")
     }
 
     fn connect_accept_certificate<

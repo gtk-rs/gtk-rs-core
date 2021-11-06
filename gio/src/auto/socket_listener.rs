@@ -415,27 +415,11 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     }
 
     fn listen_backlog(&self) -> i32 {
-        unsafe {
-            let mut value = glib::Value::from_type(<i32 as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"listen-backlog\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `listen-backlog` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "listen-backlog")
     }
 
     fn set_listen_backlog(&self, listen_backlog: i32) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"listen-backlog\0".as_ptr() as *const _,
-                listen_backlog.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "listen-backlog", &listen_backlog)
     }
 
     fn connect_event<F: Fn(&Self, SocketListenerEvent, &Socket) + 'static>(

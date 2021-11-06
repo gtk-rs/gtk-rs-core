@@ -43,32 +43,11 @@ impl ZlibCompressor {
     }
 
     pub fn format(&self) -> ZlibCompressorFormat {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<ZlibCompressorFormat as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"format\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `format` getter")
-        }
+        glib::ObjectExt::property(self, "format")
     }
 
     pub fn level(&self) -> i32 {
-        unsafe {
-            let mut value = glib::Value::from_type(<i32 as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"level\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `level` getter")
-        }
+        glib::ObjectExt::property(self, "level")
     }
 
     #[doc(alias = "file-info")]

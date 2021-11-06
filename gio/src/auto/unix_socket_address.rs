@@ -83,17 +83,7 @@ impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExt for O {
     }
 
     fn path_as_array(&self) -> Option<glib::ByteArray> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::ByteArray as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"path-as-array\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `path-as-array` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "path-as-array")
     }
 }
 

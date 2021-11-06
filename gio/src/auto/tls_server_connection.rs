@@ -66,28 +66,11 @@ pub trait TlsServerConnectionExt: 'static {
 
 impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
     fn authentication_mode(&self) -> TlsAuthenticationMode {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<TlsAuthenticationMode as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"authentication-mode\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `authentication-mode` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "authentication-mode")
     }
 
     fn set_authentication_mode(&self, authentication_mode: TlsAuthenticationMode) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"authentication-mode\0".as_ptr() as *const _,
-                authentication_mode.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "authentication-mode", &authentication_mode)
     }
 
     fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
