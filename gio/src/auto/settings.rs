@@ -619,73 +619,23 @@ impl<O: IsA<Settings>> SettingsExt for O {
     }
 
     fn backend(&self) -> Option<SettingsBackend> {
-        unsafe {
-            let mut value = glib::Value::from_type(<SettingsBackend as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"backend\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `backend` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "backend")
     }
 
     fn is_delay_apply(&self) -> bool {
-        unsafe {
-            let mut value = glib::Value::from_type(<bool as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"delay-apply\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `delay-apply` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "delay-apply")
     }
 
     fn path(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"path\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `path` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "path")
     }
 
     fn schema_id(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"schema-id\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `schema-id` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "schema-id")
     }
 
     fn settings_schema(&self) -> Option<SettingsSchema> {
-        unsafe {
-            let mut value = glib::Value::from_type(<SettingsSchema as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"settings-schema\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `settings-schema` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "settings-schema")
     }
 
     //fn connect_change_event<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {

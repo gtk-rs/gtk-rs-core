@@ -36,17 +36,7 @@ impl PropertyAction {
 
     #[doc(alias = "invert-boolean")]
     pub fn inverts_boolean(&self) -> bool {
-        unsafe {
-            let mut value = glib::Value::from_type(<bool as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"invert-boolean\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `invert-boolean` getter")
-        }
+        glib::ObjectExt::property(self, "invert-boolean")
     }
 
     #[doc(alias = "enabled")]

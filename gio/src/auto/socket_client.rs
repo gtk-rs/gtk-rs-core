@@ -720,27 +720,11 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     }
 
     fn type_(&self) -> SocketType {
-        unsafe {
-            let mut value = glib::Value::from_type(<SocketType as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"type\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `type` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "type")
     }
 
     fn set_type(&self, type_: SocketType) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"type\0".as_ptr() as *const _,
-                type_.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "type", &type_)
     }
 
     fn connect_event<

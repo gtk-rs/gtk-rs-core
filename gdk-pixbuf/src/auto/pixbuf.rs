@@ -573,17 +573,7 @@ impl Pixbuf {
 
     #[doc(alias = "pixel-bytes")]
     pub fn pixel_bytes(&self) -> Option<glib::Bytes> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::Bytes as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"pixel-bytes\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `pixel-bytes` getter")
-        }
+        glib::ObjectExt::property(self, "pixel-bytes")
     }
 
     #[cfg(any(feature = "v2_36_8", feature = "dox"))]

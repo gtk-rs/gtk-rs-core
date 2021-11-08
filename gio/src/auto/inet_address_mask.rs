@@ -156,23 +156,11 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
     }
 
     fn set_address<P: IsA<InetAddress>>(&self, address: Option<&P>) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"address\0".as_ptr() as *const _,
-                address.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "address", &address)
     }
 
     fn set_length(&self, length: u32) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"length\0".as_ptr() as *const _,
-                length.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "length", &length)
     }
 
     fn connect_address_notify<F: Fn(&Self) + Send + Sync + 'static>(

@@ -85,17 +85,7 @@ impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
     }
 
     fn gicon(&self) -> Option<Icon> {
-        unsafe {
-            let mut value = glib::Value::from_type(<Icon as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"gicon\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `gicon` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "gicon")
     }
 }
 

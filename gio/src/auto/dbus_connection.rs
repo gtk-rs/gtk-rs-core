@@ -754,18 +754,7 @@ impl DBusConnection {
     }
 
     pub fn get_property_flags(&self) -> DBusConnectionFlags {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<DBusConnectionFlags as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"flags\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `flags` getter")
-        }
+        glib::ObjectExt::property(self, "flags")
     }
 
     #[doc(alias = "g_dbus_connection_new")]

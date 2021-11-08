@@ -207,20 +207,17 @@
 //!     let obj = SimpleObject::new();
 //!
 //!     // Get the name property and change its value.
-//!     assert_eq!(obj.property("name").unwrap().get::<Option<&str>>(), Ok(None));
-//!     obj.set_property("name", &"test").unwrap();
-//!     assert_eq!(
-//!         obj.property("name").unwrap().get::<&str>(),
-//!         Ok("test")
-//!     );
+//!     assert_eq!(obj.property::<Option<String>>("name"), None);
+//!     obj.set_property("name", "test");
+//!     assert_eq!(&obj.property::<String>("name"), "test");
 //!
-//!     assert_eq!(obj.property("animal").unwrap().get::<Animal>(), Ok(Animal::Goat));
-//!     obj.set_property("animal", &Animal::Cat).unwrap();
-//!     assert_eq!(obj.property("animal").unwrap().get::<Animal>(), Ok(Animal::Cat));
+//!     assert_eq!(obj.property::<Animal>("animal"), Animal::Goat);
+//!     obj.set_property("animal", Animal::Cat);
+//!     assert_eq!(obj.property::<Animal>("animal"), Animal::Cat);
 //!
-//!     assert_eq!(obj.property("flags").unwrap().get::<MyFlags>(), Ok(MyFlags::A));
-//!     obj.set_property("flags", &MyFlags::B).unwrap();
-//!     assert_eq!(obj.property("flags").unwrap().get::<MyFlags>(), Ok(MyFlags::B));
+//!     assert_eq!(obj.property::<MyFlags>("flags"), MyFlags::A);
+//!     obj.set_property("flags", MyFlags::B);
+//!     assert_eq!(obj.property::<MyFlags>("flags"), MyFlags::B);
 //! }
 //! ```
 //!

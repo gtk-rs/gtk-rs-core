@@ -79,32 +79,12 @@ impl CharsetConverter {
 
     #[doc(alias = "from-charset")]
     pub fn from_charset(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"from-charset\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `from-charset` getter")
-        }
+        glib::ObjectExt::property(self, "from-charset")
     }
 
     #[doc(alias = "to-charset")]
     pub fn to_charset(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.as_ptr() as *mut glib::gobject_ffi::GObject,
-                b"to-charset\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `to-charset` getter")
-        }
+        glib::ObjectExt::property(self, "to-charset")
     }
 
     #[doc(alias = "use-fallback")]

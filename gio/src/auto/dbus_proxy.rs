@@ -754,136 +754,43 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     }
 
     fn g_connection(&self) -> Option<DBusConnection> {
-        unsafe {
-            let mut value = glib::Value::from_type(<DBusConnection as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-connection\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-connection` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-connection")
     }
 
     fn g_default_timeout(&self) -> i32 {
-        unsafe {
-            let mut value = glib::Value::from_type(<i32 as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-default-timeout\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-default-timeout` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-default-timeout")
     }
 
     fn set_g_default_timeout(&self, g_default_timeout: i32) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-default-timeout\0".as_ptr() as *const _,
-                g_default_timeout.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "g-default-timeout", &g_default_timeout)
     }
 
     fn g_flags(&self) -> DBusProxyFlags {
-        unsafe {
-            let mut value = glib::Value::from_type(<DBusProxyFlags as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-flags\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-flags` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-flags")
     }
 
     fn g_interface_info(&self) -> Option<DBusInterfaceInfo> {
-        unsafe {
-            let mut value =
-                glib::Value::from_type(<DBusInterfaceInfo as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-interface-info\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-interface-info` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-interface-info")
     }
 
     fn set_g_interface_info(&self, g_interface_info: Option<&DBusInterfaceInfo>) {
-        unsafe {
-            glib::gobject_ffi::g_object_set_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-interface-info\0".as_ptr() as *const _,
-                g_interface_info.to_value().to_glib_none().0,
-            );
-        }
+        glib::ObjectExt::set_property(self.as_ref(), "g-interface-info", &g_interface_info)
     }
 
     fn g_interface_name(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-interface-name\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-interface-name` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-interface-name")
     }
 
     fn g_name(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-name\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-name` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-name")
     }
 
     fn g_name_owner(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-name-owner\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-name-owner` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-name-owner")
     }
 
     fn g_object_path(&self) -> Option<glib::GString> {
-        unsafe {
-            let mut value = glib::Value::from_type(<glib::GString as StaticType>::static_type());
-            glib::gobject_ffi::g_object_get_property(
-                self.to_glib_none().0 as *mut glib::gobject_ffi::GObject,
-                b"g-object-path\0".as_ptr() as *const _,
-                value.to_glib_none_mut().0,
-            );
-            value
-                .get()
-                .expect("Return Value for property `g-object-path` getter")
-        }
+        glib::ObjectExt::property(self.as_ref(), "g-object-path")
     }
 
     fn connect_g_signal<
