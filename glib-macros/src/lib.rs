@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 mod clone;
+mod closure;
 mod downgrade_derive;
 mod gboxed_derive;
 mod gboxed_shared_derive;
@@ -264,6 +265,165 @@ use syn::{parse_macro_input, DeriveInput, LitStr};
 #[proc_macro_error]
 pub fn clone(item: TokenStream) -> TokenStream {
     clone::clone_inner(item)
+}
+
+/// Macro for creating a [`Closure`] object. This is a wrapper around [`Closure::new`] that
+/// automatically type checks its arguments at run-time.
+///
+/// A `Closure` takes [`Value`] objects as inputs and output. This macro will automatically convert
+/// the inputs to Rust types when invoking its callback, and then will convert the output back to a
+/// `Value`. All inputs must implement the [`FromValue`] trait, and outputs must either implement
+/// the [`ToValue`] trait or be the unit type `()`. Type-checking of inputs is done at run-time; if
+/// incorrect types are passed via [`Closure::invoke`] then the closure will panic. Note that when
+/// passing input types derived from [`Object`] or [`Interface`], you must take care to upcast to
+/// the exact object or interface type that is being received.
+///
+/// Similarly to [`clone!`](crate::clone!), this macro can be useful in combination with signal
+/// handlers to reduce boilerplate when passing references. Unique to `Closure` objects is the
+/// ability to watch an object using a the `@watch` directive. Only an [`Object`] value can be
+/// passed to `@watch`, and only one object can be watched per closure. When an object is watched,
+/// a weak reference to the object is held in the closure. When the object is destroyed, the
+/// closure will become invalidated: all signal handlers connected to the closure will become
+/// disconnected, and any calls to [`Closure::invoke`] on the closure will be silently ignored.
+/// Internally, this is accomplished using [`Object::watch_closure`] on the watched object.
+///
+/// The `@weak-allow-none` and `@strong` captures are also supported and behave the same as in
+/// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these
+/// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.
+///
+/// [`Closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html
+/// [`Closure::new`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new
+/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::invoke`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.invoke
+/// [`Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+/// [`FromValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.FromValue.html
+/// [`ToValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.ToValue.html
+/// [`Interface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Interface.html
+/// [`Object`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Object.html
+/// [`Object::watch_closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.ObjectExt.html#tymethod.watch_closure
+/// **⚠️ IMPORTANT ⚠️**
+///
+/// `glib` needs to be in scope, so unless it's one of the direct crate dependencies, you need to
+/// import it because `closure!` is using it. For example:
+///
+/// ```rust,ignore
+/// use gtk::glib;
+/// ```
+///
+/// ### Using as a closure object
+///
+/// ```
+/// use glib_macros::closure;
+///
+/// let concat_str = closure!(|s: &str| s.to_owned() + " World");
+/// let result = concat_str.invoke(&[&"Hello"]).unwrap().get::<String>().unwrap();
+/// assert_eq!(result, "Hello World");
+/// ```
+///
+/// ### Connecting to a signal
+///
+/// For wrapping closures that can't be sent across threads, the
+/// [`closure_local!`](crate::closure_local!) macro can be used. It has the same syntax as
+/// `closure!`, but instead uses [`Closure::new_local`] internally.
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+/// obj.connect_closure(
+///     "notify", false,
+///     closure_local!(|_obj: glib::Object, pspec: glib::ParamSpec| {
+///         println!("property notify: {}", pspec.name());
+///     }));
+/// ```
+///
+/// ### Object Watching
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let closure = {
+///     let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+///     let closure = closure_local!(@watch obj => move || {
+///         obj.type_().name()
+///     });
+///     assert_eq!(
+///         closure.invoke(&[]).unwrap().get::<String>().unwrap(),
+///         "GObject"
+///     );
+///     closure
+/// };
+/// // `obj` is dropped, closure invalidated so it always does nothing and returns None
+/// assert!(closure.invoke(&[]).is_none());
+/// ```
+///
+/// `@watch` has special behavior when connected to a signal:
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+/// {
+///     let other = glib::Object::new::<glib::Object>(&[]).unwrap();
+///     obj.connect_closure(
+///         "notify", false,
+///         closure_local!(@watch other as b => move |a: glib::Object, pspec: glib::ParamSpec| {
+///             let value = a.property_value(pspec.name());
+///             b.set_property(pspec.name(), &value);
+///         }));
+///     // The signal handler will disconnect automatically at the end of this
+///     // block when `other` is dropped.
+/// }
+/// ```
+///
+/// ### Weak and Strong References
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure;
+/// use std::sync::Arc;
+///
+/// let closure = {
+///     let a = Arc::new(String::from("Hello"));
+///     let b = Arc::new(String::from("World"));
+///     let closure = closure!(@strong a, @weak-allow-none b => move || {
+///         // `a` is Arc<String>, `b` is Option<Arc<String>>
+///         format!("{} {}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"))
+///     });
+///     assert_eq!(
+///         closure.invoke(&[]).unwrap().get::<String>().unwrap(),
+///         "Hello World"
+///     );
+///     closure
+/// };
+/// // `a` still kept alive, `b` is dropped
+/// assert_eq!(
+///     closure.invoke(&[]).unwrap().get::<String>().unwrap(),
+///     "Hello Moon"
+/// );
+/// ```
+#[proc_macro]
+#[proc_macro_error]
+pub fn closure(item: TokenStream) -> TokenStream {
+    closure::closure_inner(item, "new")
+}
+
+/// The same as [`closure!`](crate::closure!) but uses [`Closure::new_local`] as a constructor.
+/// This is useful for closures which can't be sent across threads. See the documentation of
+/// [`closure!`](crate::closure!) for details.
+///
+/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
+#[proc_macro]
+#[proc_macro_error]
+pub fn closure_local(item: TokenStream) -> TokenStream {
+    closure::closure_inner(item, "new_local")
 }
 
 #[proc_macro_derive(GEnum, attributes(genum))]
