@@ -69,7 +69,11 @@ impl Error {
         }
     }
 
-    fn message(&self) -> &str {
+    /// Returns the error message
+    ///
+    /// Most of the time you can simply print the error since it implements the `Display`
+    /// trait, but you can use this method if you need to have the message as a `&str`.
+    pub fn message(&self) -> &str {
         unsafe {
             let bytes = CStr::from_ptr(self.0.message).to_bytes();
             str::from_utf8(bytes)
