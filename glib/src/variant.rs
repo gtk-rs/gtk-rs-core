@@ -710,6 +710,28 @@ impl_numeric!(
     g_variant_get_double
 );
 
+impl StaticVariantType for () {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        Cow::Borrowed(VariantTy::UNIT)
+    }
+}
+
+impl ToVariant for () {
+    fn to_variant(&self) -> Variant {
+        unsafe { from_glib_none(ffi::g_variant_new_tuple(ptr::null(), 0)) }
+    }
+}
+
+impl FromVariant for () {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        if variant.is::<Self>() {
+            Some(())
+        } else {
+            None
+        }
+    }
+}
+
 impl StaticVariantType for bool {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         Cow::Borrowed(VariantTy::BOOLEAN)
@@ -1399,6 +1421,14 @@ mod tests {
         assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
         assert_eq!(a.try_child_get::<u8>(1), Ok(Some(1u8)));
         assert_eq!(a.try_child_get::<i32>(2), Ok(Some(2i32)));
+    }
+
+    #[test]
+    fn test_empty() {
+        assert_eq!(<()>::static_variant_type().as_str(), "()");
+        let a = ().to_variant();
+        assert_eq!(a.type_().as_str(), "()");
+        assert_eq!(a.get::<()>(), Some(()));
     }
 
     #[test]
