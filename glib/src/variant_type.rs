@@ -342,6 +342,133 @@ impl VariantTy {
         &self.inner
     }
 
+    /// Check if this variant type is a definite type.
+    pub fn is_definite(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_definite(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a container type.
+    pub fn is_container(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_container(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a basic type.
+    pub fn is_basic(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_basic(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a maybe type.
+    pub fn is_maybe(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_maybe(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is an array type.
+    pub fn is_array(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_array(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a tuple type.
+    pub fn is_tuple(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_tuple(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a dict entry type.
+    pub fn is_dict_entry(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_dict_entry(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a variant.
+    pub fn is_variant(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_variant(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a subtype of another.
+    pub fn is_subtype_of(&self, supertype: &Self) -> bool {
+        unsafe {
+            from_glib(ffi::g_variant_type_is_subtype_of(
+                self.to_glib_none().0,
+                supertype.to_glib_none().0,
+            ))
+        }
+    }
+
+    /// Return the element type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an array or maybe type.
+    pub fn element(&self) -> &VariantTy {
+        assert!(self.is_array() || self.is_maybe());
+
+        unsafe {
+            let element = ffi::g_variant_type_element(self.to_glib_none().0);
+            Self::from_ptr(element)
+        }
+    }
+
+    /// Return the first type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an array or dictionary type.
+    pub fn first(&self) -> Option<&VariantTy> {
+        assert!(self.as_str().starts_with('(') || self.as_str().starts_with('{'));
+
+        unsafe {
+            let first = ffi::g_variant_type_first(self.to_glib_none().0);
+            if first.is_null() {
+                None
+            } else {
+                Some(Self::from_ptr(first))
+            }
+        }
+    }
+
+    /// Return the next type of this variant type.
+    pub fn next(&self) -> Option<&VariantTy> {
+        unsafe {
+            let next = ffi::g_variant_type_next(self.to_glib_none().0);
+            if next.is_null() {
+                None
+            } else {
+                Some(Self::from_ptr(next))
+            }
+        }
+    }
+
+    /// Return the number of items in this variant type.
+    pub fn n_items(&self) -> usize {
+        unsafe { ffi::g_variant_type_n_items(self.to_glib_none().0) }
+    }
+
+    /// Return the key type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an dictionary type.
+    pub fn key(&self) -> &VariantTy {
+        assert!(self.as_str().starts_with('{'));
+
+        unsafe {
+            let key = ffi::g_variant_type_key(self.to_glib_none().0);
+            Self::from_ptr(key)
+        }
+    }
+
+    /// Return the value type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an dictionary type.
+    pub fn value(&self) -> &VariantTy {
+        assert!(self.as_str().starts_with('{'));
+
+        unsafe {
+            let value = ffi::g_variant_type_value(self.to_glib_none().0);
+            Self::from_ptr(value)
+        }
+    }
+
     /// Return this type as an array.
     pub(crate) fn as_array<'a>(&self) -> Cow<'a, VariantTy> {
         if self == VariantTy::STRING {
