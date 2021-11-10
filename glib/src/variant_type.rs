@@ -353,46 +353,55 @@ impl VariantTy {
     }
 
     /// Check if this variant type is a definite type.
+    #[doc(alias = "g_variant_type_is_definite")]
     pub fn is_definite(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_definite(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a container type.
+    #[doc(alias = "g_variant_type_is_container")]
     pub fn is_container(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_container(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a basic type.
+    #[doc(alias = "g_variant_type_is_basic")]
     pub fn is_basic(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_basic(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a maybe type.
+    #[doc(alias = "g_variant_type_is_maybe")]
     pub fn is_maybe(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_maybe(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is an array type.
+    #[doc(alias = "g_variant_type_is_array")]
     pub fn is_array(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_array(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a tuple type.
+    #[doc(alias = "g_variant_type_is_tuple")]
     pub fn is_tuple(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_tuple(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a dict entry type.
+    #[doc(alias = "g_variant_type_is_dict_entry")]
     pub fn is_dict_entry(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_dict_entry(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a variant.
+    #[doc(alias = "g_variant_type_is_variant")]
     pub fn is_variant(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_variant(self.to_glib_none().0)) }
     }
 
     /// Check if this variant type is a subtype of another.
+    #[doc(alias = "g_variant_type_is_subtype_of")]
     pub fn is_subtype_of(&self, supertype: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_variant_type_is_subtype_of(
@@ -407,6 +416,7 @@ impl VariantTy {
     /// # Panics
     ///
     /// This function panics if not called with an array or maybe type.
+    #[doc(alias = "g_variant_type_element")]
     pub fn element(&self) -> &VariantTy {
         assert!(self.is_array() || self.is_maybe());
 
@@ -421,6 +431,7 @@ impl VariantTy {
     /// # Panics
     ///
     /// This function panics if not called with an array or dictionary type.
+    #[doc(alias = "g_variant_type_first")]
     pub fn first(&self) -> Option<&VariantTy> {
         assert!(self.as_str().starts_with('(') || self.as_str().starts_with('{'));
 
@@ -435,6 +446,7 @@ impl VariantTy {
     }
 
     /// Return the next type of this variant type.
+    #[doc(alias = "g_variant_type_next")]
     pub fn next(&self) -> Option<&VariantTy> {
         unsafe {
             let next = ffi::g_variant_type_next(self.to_glib_none().0);
@@ -447,6 +459,7 @@ impl VariantTy {
     }
 
     /// Return the number of items in this variant type.
+    #[doc(alias = "g_variant_type_n_items")]
     pub fn n_items(&self) -> usize {
         unsafe { ffi::g_variant_type_n_items(self.to_glib_none().0) }
     }
@@ -456,6 +469,7 @@ impl VariantTy {
     /// # Panics
     ///
     /// This function panics if not called with an dictionary type.
+    #[doc(alias = "g_variant_type_key")]
     pub fn key(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
 
@@ -470,6 +484,7 @@ impl VariantTy {
     /// # Panics
     ///
     /// This function panics if not called with an dictionary type.
+    #[doc(alias = "g_variant_type_value")]
     pub fn value(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
 

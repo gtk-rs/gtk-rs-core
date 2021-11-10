@@ -214,6 +214,7 @@ impl Variant {
 
     /// Returns `true` if the type of the value corresponds to `T`.
     #[inline]
+    #[doc(alias = "g_variant_is_of_type")]
     pub fn is<T: StaticVariantType>(&self) -> bool {
         unsafe {
             from_glib(ffi::g_variant_is_of_type(
@@ -224,6 +225,7 @@ impl Variant {
     }
 
     /// Returns the classification of the variant.
+    #[doc(alias = "g_variant_classify")]
     pub fn classify(&self) -> crate::VariantClass {
         unsafe { from_glib(ffi::g_variant_classify(self.to_glib_none().0)) }
     }
