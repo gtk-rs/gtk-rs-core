@@ -1252,18 +1252,7 @@ tuple_impls! {
 
 impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
-        let type_ = T::static_variant_type();
-
-        unsafe {
-            let mut builder = mem::MaybeUninit::uninit();
-            ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
-            let mut builder = builder.assume_init();
-            for value in iter.into_iter() {
-                let value = value.to_variant();
-                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
-            }
-            from_glib_none(ffi::g_variant_builder_end(&mut builder))
-        }
+        Variant::array_from_iter::<T, _>(iter.into_iter().map(|v| v.to_variant()))
     }
 }
 
