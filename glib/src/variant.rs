@@ -486,11 +486,11 @@ impl Variant {
     pub fn array_iter_str(&self) -> Result<VariantStrIter, VariantTypeMismatchError> {
         let child_ty = String::static_variant_type();
         let actual_ty = self.type_();
-        let expected_ty = child_ty.with_array();
+        let expected_ty = child_ty.as_array();
         if actual_ty != expected_ty {
             return Err(VariantTypeMismatchError {
                 actual: actual_ty.to_owned(),
-                expected: expected_ty,
+                expected: expected_ty.into_owned(),
             });
         }
 
@@ -742,7 +742,7 @@ impl<T: StaticVariantType + FromVariant> FromVariant for Option<T> {
 
 impl<T: StaticVariantType> StaticVariantType for [T] {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        T::static_variant_type().with_array().into()
+        T::static_variant_type().as_array()
     }
 }
 

@@ -343,8 +343,23 @@ impl VariantTy {
     }
 
     /// Return this type as an array.
-    pub(crate) fn with_array(&self) -> VariantType {
-        VariantType::new(&format!("a{}", self.to_str())).expect("invalid variant signature")
+    pub(crate) fn as_array<'a>(&self) -> Cow<'a, VariantTy> {
+        if self == VariantTy::STRING {
+            Cow::Borrowed(VariantTy::STRING_ARRAY)
+        } else if self == VariantTy::BYTE {
+            Cow::Borrowed(VariantTy::BYTE_STRING)
+        } else if self == VariantTy::BYTE_STRING {
+            Cow::Borrowed(VariantTy::BYTE_STRING_ARRAY)
+        } else if self == VariantTy::OBJECT_PATH {
+            Cow::Borrowed(VariantTy::OBJECT_PATH_ARRAY)
+        } else if self == VariantTy::DICT_ENTRY {
+            Cow::Borrowed(VariantTy::DICTIONARY)
+        } else {
+            Cow::Owned(
+                VariantType::new(&format!("a{}", self.to_str()))
+                    .expect("invalid variant signature"),
+            )
+        }
     }
 }
 
