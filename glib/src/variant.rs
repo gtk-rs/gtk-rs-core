@@ -223,6 +223,11 @@ impl Variant {
         }
     }
 
+    /// Returns the classification of the variant.
+    pub fn classify(&self) -> crate::VariantClass {
+        unsafe { from_glib(ffi::g_variant_classify(self.to_glib_none().0)) }
+    }
+
     /// Tries to extract a value of type `T`.
     ///
     /// Returns `Some` if `T` matches the variant's type.
