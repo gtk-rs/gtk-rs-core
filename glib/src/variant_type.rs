@@ -148,6 +148,14 @@ impl FromGlibPtrFull<*const ffi::GVariantType> for VariantType {
     }
 }
 
+#[doc(hidden)]
+impl FromGlibPtrFull<*mut ffi::GVariantType> for VariantType {
+    unsafe fn from_glib_full(ptr: *mut ffi::GVariantType) -> VariantType {
+        let len = ffi::g_variant_type_get_string_length(ptr) as usize;
+        VariantType { ptr, len }
+    }
+}
+
 /// Describes `Variant` types.
 ///
 /// This is a borrowed counterpart of [`VariantType`](struct.VariantType.html).
@@ -484,10 +492,10 @@ impl VariantTy {
         } else if self == VariantTy::DICT_ENTRY {
             Cow::Borrowed(VariantTy::DICTIONARY)
         } else {
-            Cow::Owned(
-                VariantType::new(&format!("a{}", self.as_str()))
-                    .expect("invalid variant signature"),
-            )
+            unsafe {
+                let ptr = ffi::g_variant_type_new_array(self.to_glib_none().0);
+                Cow::Owned(VariantType::from_glib_full(ptr))
+            }
         }
     }
 }

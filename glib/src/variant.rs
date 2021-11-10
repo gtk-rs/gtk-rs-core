@@ -595,7 +595,7 @@ pub trait StaticVariantType {
 
 impl StaticVariantType for Variant {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("v").into() }
+        Cow::Borrowed(VariantTy::VARIANT)
     }
 }
 
@@ -612,10 +612,10 @@ impl<'a, T: ?Sized + StaticVariantType> StaticVariantType for &'a T {
 }
 
 macro_rules! impl_numeric {
-    ($name:ty, $type_str:expr, $new_fn:ident, $get_fn:ident) => {
+    ($name:ty, $typ:expr, $new_fn:ident, $get_fn:ident) => {
         impl StaticVariantType for $name {
             fn static_variant_type() -> Cow<'static, VariantTy> {
-                unsafe { VariantTy::from_str_unchecked($type_str).into() }
+                Cow::Borrowed($typ)
             }
         }
 
@@ -639,18 +639,53 @@ macro_rules! impl_numeric {
     };
 }
 
-impl_numeric!(u8, "y", g_variant_new_byte, g_variant_get_byte);
-impl_numeric!(i16, "n", g_variant_new_int16, g_variant_get_int16);
-impl_numeric!(u16, "q", g_variant_new_uint16, g_variant_get_uint16);
-impl_numeric!(i32, "i", g_variant_new_int32, g_variant_get_int32);
-impl_numeric!(u32, "u", g_variant_new_uint32, g_variant_get_uint32);
-impl_numeric!(i64, "x", g_variant_new_int64, g_variant_get_int64);
-impl_numeric!(u64, "t", g_variant_new_uint64, g_variant_get_uint64);
-impl_numeric!(f64, "d", g_variant_new_double, g_variant_get_double);
+impl_numeric!(u8, VariantTy::BYTE, g_variant_new_byte, g_variant_get_byte);
+impl_numeric!(
+    i16,
+    VariantTy::INT16,
+    g_variant_new_int16,
+    g_variant_get_int16
+);
+impl_numeric!(
+    u16,
+    VariantTy::UINT16,
+    g_variant_new_uint16,
+    g_variant_get_uint16
+);
+impl_numeric!(
+    i32,
+    VariantTy::INT32,
+    g_variant_new_int32,
+    g_variant_get_int32
+);
+impl_numeric!(
+    u32,
+    VariantTy::UINT32,
+    g_variant_new_uint32,
+    g_variant_get_uint32
+);
+impl_numeric!(
+    i64,
+    VariantTy::INT64,
+    g_variant_new_int64,
+    g_variant_get_int64
+);
+impl_numeric!(
+    u64,
+    VariantTy::UINT64,
+    g_variant_new_uint64,
+    g_variant_get_uint64
+);
+impl_numeric!(
+    f64,
+    VariantTy::DOUBLE,
+    g_variant_new_double,
+    g_variant_get_double
+);
 
 impl StaticVariantType for bool {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("b").into() }
+        Cow::Borrowed(VariantTy::BOOLEAN)
     }
 }
 
@@ -676,7 +711,7 @@ impl FromVariant for bool {
 
 impl StaticVariantType for String {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("s").into() }
+        Cow::Borrowed(VariantTy::STRING)
     }
 }
 
@@ -694,7 +729,7 @@ impl FromVariant for String {
 
 impl StaticVariantType for str {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("s").into() }
+        String::static_variant_type()
     }
 }
 
@@ -706,12 +741,10 @@ impl ToVariant for str {
 
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let child_type = T::static_variant_type();
-        let signature = format!("m{}", child_type.as_str());
-
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+        unsafe {
+            let ptr = ffi::g_variant_type_new_maybe(T::static_variant_type().to_glib_none().0);
+            Cow::Owned(from_glib_full(ptr))
+        }
     }
 }
 
@@ -983,13 +1016,13 @@ impl FromVariant for Variant {
 
 impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry<K, V> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let key_type = K::static_variant_type();
-        let value_type = V::static_variant_type();
-        let signature = format!("{{{}{}}}", key_type.as_str(), value_type.as_str());
-
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+        unsafe {
+            let ptr = ffi::g_variant_type_new_dict_entry(
+                K::static_variant_type().to_glib_none().0,
+                V::static_variant_type().to_glib_none().0,
+            );
+            Cow::Owned(from_glib_full(ptr))
+        }
     }
 }
 
@@ -1000,11 +1033,30 @@ where
 {
     let key_type = K::static_variant_type();
     let value_type = V::static_variant_type();
-    let signature = format!("a{{{}{}}}", key_type.as_str(), value_type.as_str());
 
-    VariantType::new(&signature)
-        .expect("incorrect signature")
-        .into()
+    if key_type == VariantTy::STRING && value_type == VariantTy::VARIANT {
+        return Cow::Borrowed(VariantTy::VARDICT);
+    }
+
+    unsafe {
+        let ptr = ffi::g_string_sized_new(16);
+        ffi::g_string_append_len(ptr, b"a{".as_ptr() as *const _, 2);
+        ffi::g_string_append_len(
+            ptr,
+            key_type.as_str().as_ptr() as *const _,
+            key_type.as_str().len() as isize,
+        );
+        ffi::g_string_append_len(
+            ptr,
+            value_type.as_str().as_ptr() as *const _,
+            value_type.as_str().len() as isize,
+        );
+        ffi::g_string_append_c(ptr, b'}' as _);
+
+        Cow::Owned(from_glib_full(
+            ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType
+        ))
+    }
 }
 
 impl<K, V, H> StaticVariantType for HashMap<K, V, H>
@@ -1036,14 +1088,17 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    let mut signature = String::with_capacity(255);
-                    signature.push('(');
-                    $(
-                        signature.push_str($name::static_variant_type().as_str());
-                    )+
-                    signature.push(')');
+                    unsafe {
+                        let ptr = ffi::g_string_sized_new(255);
+                        ffi::g_string_append_c(ptr, b'(' as _);
+                        $(
+                            let t = $name::static_variant_type();
+                            ffi::g_string_append_len(ptr, t.as_str().as_ptr() as *const _, t.as_str().len() as isize);
+                        )+
+                        ffi::g_string_append_c(ptr, b')' as _);
 
-                    VariantType::new(&signature).expect("incorrect signature").into()
+                        Cow::Owned(from_glib_full(ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType))
+                    }
                 }
             }
 
