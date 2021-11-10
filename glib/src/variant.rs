@@ -50,8 +50,8 @@
 //! assert_eq!(variant.str(), Some("Hello!"));
 //!
 //! // Variant carrying an array
-//! let array = ["Hello".to_variant(), "there!".to_variant()];
-//! let variant = Variant::array_from_iter::<&str, _>(array);
+//! let array = ["Hello", "there!"];
+//! let variant = array.into_iter().collect::<Variant>();
 //! assert_eq!(variant.n_children(), 2);
 //! assert_eq!(variant.child_value(0).str(), Some("Hello"));
 //! assert_eq!(variant.child_value(1).str(), Some("there!"));
@@ -995,11 +995,11 @@ where
 /// use glib::{Variant, FromVariant, ToVariant};
 /// use glib::variant::DictEntry;
 ///
-/// let entries = vec![
-///     DictEntry::new("uuid", 1000u32).to_variant(),
-///     DictEntry::new("guid", 1001u32).to_variant(),
+/// let entries = [
+///     DictEntry::new("uuid", 1000u32),
+///     DictEntry::new("guid", 1001u32),
 /// ];
-/// let dict = Variant::array_from_iter::<DictEntry<&str, u32>, _>(entries);
+/// let dict = entries.into_iter().collect::<Variant>();
 /// assert_eq!(dict.n_children(), 2);
 /// assert_eq!(dict.type_().as_str(), "a{su}");
 /// ```
@@ -1218,6 +1218,23 @@ tuple_impls! {
     16 => (0 T0 1 T1 2 T2 3 T3 4 T4 5 T5 6 T6 7 T7 8 T8 9 T9 10 T10 11 T11 12 T12 13 T13 14 T14 15 T15)
 }
 
+impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let type_ = T::static_variant_type();
+
+        unsafe {
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in iter.into_iter() {
+                let value = value.to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1329,6 +1346,17 @@ mod tests {
         let a = Variant::array_from_iter::<String, _>(
             ["foo", "bar", "baz"].into_iter().map(|s| s.to_variant()),
         );
+        assert_eq!(a.type_().as_str(), "as");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<String>(1), Ok(Some(String::from("bar"))));
+        assert_eq!(a.try_child_get::<String>(2), Ok(Some(String::from("baz"))));
+    }
+
+    #[test]
+    fn test_array_collect() {
+        let a = ["foo", "bar", "baz"].into_iter().collect::<Variant>();
         assert_eq!(a.type_().as_str(), "as");
         assert_eq!(a.n_children(), 3);
 
