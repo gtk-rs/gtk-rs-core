@@ -51,7 +51,7 @@
 //!
 //! // Variant carrying an array
 //! let array = ["Hello".to_variant(), "there!".to_variant()];
-//! let variant = Variant::from_array::<&str>(&array);
+//! let variant = Variant::array_from_iter::<&str, _>(array);
 //! assert_eq!(variant.n_children(), 2);
 //! assert_eq!(variant.child_value(0).str(), Some("Hello"));
 //! assert_eq!(variant.child_value(1).str(), Some("there!"));
@@ -362,31 +362,44 @@ impl Variant {
         }
     }
 
-    /// Creates a new GVariant array from children.
+    /// Creates a new Variant array from children.
     ///
-    /// All children must be of type `T`.
-    pub fn from_array<T: StaticVariantType>(children: &[Variant]) -> Self {
+    /// # Panics
+    ///
+    /// This function panics if not all variants are of type `T`.
+    pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
+        children: I,
+    ) -> Self {
         let type_ = T::static_variant_type();
 
-        for child in children {
-            assert_eq!(type_, child.type_());
-        }
         unsafe {
-            from_glib_none(ffi::g_variant_new_array(
-                type_.as_ptr() as *const _,
-                children.to_glib_none().0,
-                children.len(),
-            ))
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in children.into_iter() {
+                if ffi::g_variant_is_of_type(value.to_glib_none().0, type_.to_glib_none().0)
+                    == ffi::GFALSE
+                {
+                    ffi::g_variant_builder_clear(&mut builder);
+                    assert!(value.is::<T>());
+                }
+
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
     }
 
-    /// Creates a new GVariant tuple from children.
-    pub fn from_tuple(children: &[Variant]) -> Self {
+    /// Creates a new Variant tuple from children.
+    pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
         unsafe {
-            from_glib_none(ffi::g_variant_new_tuple(
-                children.to_glib_none().0,
-                children.len(),
-            ))
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in children.into_iter() {
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
     }
 
@@ -986,7 +999,7 @@ where
 ///     DictEntry::new("uuid", 1000u32).to_variant(),
 ///     DictEntry::new("guid", 1001u32).to_variant(),
 /// ];
-/// let dict = Variant::from_array::<DictEntry<&str, u32>>(&entries);
+/// let dict = Variant::array_from_iter::<DictEntry<&str, u32>, _>(entries);
 /// assert_eq!(dict.n_children(), 2);
 /// assert_eq!(dict.type_().as_str(), "a{su}");
 /// ```
@@ -1312,6 +1325,19 @@ mod tests {
     }
 
     #[test]
+    fn test_array_from_iter() {
+        let a = Variant::array_from_iter::<String, _>(
+            ["foo", "bar", "baz"].into_iter().map(|s| s.to_variant()),
+        );
+        assert_eq!(a.type_().as_str(), "as");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<String>(1), Ok(Some(String::from("bar"))));
+        assert_eq!(a.try_child_get::<String>(2), Ok(Some(String::from("baz"))));
+    }
+
+    #[test]
     fn test_tuple() {
         assert_eq!(<(&str, u32)>::static_variant_type().as_str(), "(su)");
         assert_eq!(<(&str, u8, u32)>::static_variant_type().as_str(), "(syu)");
@@ -1324,6 +1350,17 @@ mod tests {
             a.try_get::<(String, u8, u32)>(),
             Ok((String::from("test"), 1u8, 2u32))
         );
+    }
+
+    #[test]
+    fn test_tuple_from_iter() {
+        let a = Variant::tuple_from_iter(["foo".to_variant(), 1u8.to_variant(), 2i32.to_variant()]);
+        assert_eq!(a.type_().as_str(), "(syi)");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<u8>(1), Ok(Some(1u8)));
+        assert_eq!(a.try_child_get::<i32>(2), Ok(Some(2i32)));
     }
 
     #[test]
