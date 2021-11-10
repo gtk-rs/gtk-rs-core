@@ -215,7 +215,12 @@ impl Variant {
     /// Returns `true` if the type of the value corresponds to `T`.
     #[inline]
     pub fn is<T: StaticVariantType>(&self) -> bool {
-        self.type_() == T::static_variant_type()
+        unsafe {
+            from_glib(ffi::g_variant_is_of_type(
+                self.to_glib_none().0,
+                T::static_variant_type().to_glib_none().0,
+            ))
+        }
     }
 
     /// Tries to extract a value of type `T`.
