@@ -674,3 +674,133 @@ impl ErrorDomain for UriError {
         }
     }
 }
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GVariantClass")]
+pub enum VariantClass {
+    #[doc(alias = "G_VARIANT_CLASS_BOOLEAN")]
+    Boolean,
+    #[doc(alias = "G_VARIANT_CLASS_BYTE")]
+    Byte,
+    #[doc(alias = "G_VARIANT_CLASS_INT16")]
+    Int16,
+    #[doc(alias = "G_VARIANT_CLASS_UINT16")]
+    Uint16,
+    #[doc(alias = "G_VARIANT_CLASS_INT32")]
+    Int32,
+    #[doc(alias = "G_VARIANT_CLASS_UINT32")]
+    Uint32,
+    #[doc(alias = "G_VARIANT_CLASS_INT64")]
+    Int64,
+    #[doc(alias = "G_VARIANT_CLASS_UINT64")]
+    Uint64,
+    #[doc(alias = "G_VARIANT_CLASS_HANDLE")]
+    Handle,
+    #[doc(alias = "G_VARIANT_CLASS_DOUBLE")]
+    Double,
+    #[doc(alias = "G_VARIANT_CLASS_STRING")]
+    String,
+    #[doc(alias = "G_VARIANT_CLASS_OBJECT_PATH")]
+    ObjectPath,
+    #[doc(alias = "G_VARIANT_CLASS_SIGNATURE")]
+    Signature,
+    #[doc(alias = "G_VARIANT_CLASS_VARIANT")]
+    Variant,
+    #[doc(alias = "G_VARIANT_CLASS_MAYBE")]
+    Maybe,
+    #[doc(alias = "G_VARIANT_CLASS_ARRAY")]
+    Array,
+    #[doc(alias = "G_VARIANT_CLASS_TUPLE")]
+    Tuple,
+    #[doc(alias = "G_VARIANT_CLASS_DICT_ENTRY")]
+    DictEntry,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for VariantClass {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "VariantClass::{}",
+            match *self {
+                Self::Boolean => "Boolean",
+                Self::Byte => "Byte",
+                Self::Int16 => "Int16",
+                Self::Uint16 => "Uint16",
+                Self::Int32 => "Int32",
+                Self::Uint32 => "Uint32",
+                Self::Int64 => "Int64",
+                Self::Uint64 => "Uint64",
+                Self::Handle => "Handle",
+                Self::Double => "Double",
+                Self::String => "String",
+                Self::ObjectPath => "ObjectPath",
+                Self::Signature => "Signature",
+                Self::Variant => "Variant",
+                Self::Maybe => "Maybe",
+                Self::Array => "Array",
+                Self::Tuple => "Tuple",
+                Self::DictEntry => "DictEntry",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for VariantClass {
+    type GlibType = ffi::GVariantClass;
+
+    fn into_glib(self) -> ffi::GVariantClass {
+        match self {
+            Self::Boolean => ffi::G_VARIANT_CLASS_BOOLEAN,
+            Self::Byte => ffi::G_VARIANT_CLASS_BYTE,
+            Self::Int16 => ffi::G_VARIANT_CLASS_INT16,
+            Self::Uint16 => ffi::G_VARIANT_CLASS_UINT16,
+            Self::Int32 => ffi::G_VARIANT_CLASS_INT32,
+            Self::Uint32 => ffi::G_VARIANT_CLASS_UINT32,
+            Self::Int64 => ffi::G_VARIANT_CLASS_INT64,
+            Self::Uint64 => ffi::G_VARIANT_CLASS_UINT64,
+            Self::Handle => ffi::G_VARIANT_CLASS_HANDLE,
+            Self::Double => ffi::G_VARIANT_CLASS_DOUBLE,
+            Self::String => ffi::G_VARIANT_CLASS_STRING,
+            Self::ObjectPath => ffi::G_VARIANT_CLASS_OBJECT_PATH,
+            Self::Signature => ffi::G_VARIANT_CLASS_SIGNATURE,
+            Self::Variant => ffi::G_VARIANT_CLASS_VARIANT,
+            Self::Maybe => ffi::G_VARIANT_CLASS_MAYBE,
+            Self::Array => ffi::G_VARIANT_CLASS_ARRAY,
+            Self::Tuple => ffi::G_VARIANT_CLASS_TUPLE,
+            Self::DictEntry => ffi::G_VARIANT_CLASS_DICT_ENTRY,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GVariantClass> for VariantClass {
+    unsafe fn from_glib(value: ffi::GVariantClass) -> Self {
+        match value {
+            ffi::G_VARIANT_CLASS_BOOLEAN => Self::Boolean,
+            ffi::G_VARIANT_CLASS_BYTE => Self::Byte,
+            ffi::G_VARIANT_CLASS_INT16 => Self::Int16,
+            ffi::G_VARIANT_CLASS_UINT16 => Self::Uint16,
+            ffi::G_VARIANT_CLASS_INT32 => Self::Int32,
+            ffi::G_VARIANT_CLASS_UINT32 => Self::Uint32,
+            ffi::G_VARIANT_CLASS_INT64 => Self::Int64,
+            ffi::G_VARIANT_CLASS_UINT64 => Self::Uint64,
+            ffi::G_VARIANT_CLASS_HANDLE => Self::Handle,
+            ffi::G_VARIANT_CLASS_DOUBLE => Self::Double,
+            ffi::G_VARIANT_CLASS_STRING => Self::String,
+            ffi::G_VARIANT_CLASS_OBJECT_PATH => Self::ObjectPath,
+            ffi::G_VARIANT_CLASS_SIGNATURE => Self::Signature,
+            ffi::G_VARIANT_CLASS_VARIANT => Self::Variant,
+            ffi::G_VARIANT_CLASS_MAYBE => Self::Maybe,
+            ffi::G_VARIANT_CLASS_ARRAY => Self::Array,
+            ffi::G_VARIANT_CLASS_TUPLE => Self::Tuple,
+            ffi::G_VARIANT_CLASS_DICT_ENTRY => Self::DictEntry,
+            value => Self::__Unknown(value),
+        }
+    }
+}
