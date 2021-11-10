@@ -1032,6 +1032,10 @@ where
     V: FromVariant,
 {
     fn from_variant(variant: &Variant) -> Option<Self> {
+        if !variant.type_().is_subtype_of(VariantTy::DICT_ENTRY) {
+            return None;
+        }
+
         let key = match variant.child_value(0).get() {
             Some(key) => key,
             None => return None,
