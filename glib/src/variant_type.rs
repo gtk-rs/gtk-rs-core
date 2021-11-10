@@ -151,6 +151,7 @@ impl FromGlibPtrFull<*const ffi::GVariantType> for VariantType {
 ///
 /// This is a borrowed counterpart of [`VariantType`](struct.VariantType.html).
 /// Essentially it's a `str` statically guaranteed to be a valid type string.
+#[repr(transparent)]
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct VariantTy {
     inner: str,
