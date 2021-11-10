@@ -7,6 +7,7 @@ mod gboxed_shared_derive;
 mod genum_derive;
 mod gerror_domain_derive;
 mod gflags_attribute;
+mod gvariant_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
 mod utils;
@@ -517,4 +518,29 @@ pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
 pub fn downgrade(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     downgrade_derive::impl_downgrade(input)
+}
+
+/// Derive macro for serializing/deserializing custom structs as [`glib::Variant`]s.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// struct Foo {
+///     some_string: String,
+///     some_int: i32,
+/// }
+///
+/// let v = Foo { some_string: String::from("bar"), some_int: 1 };
+/// let var = v.to_variant();
+/// assert_eq!(var.get::<Foo>(), Some(v));
+/// ```
+///
+/// [`glib::Variant`]: variant/struct.Variant.html
+#[proc_macro_derive(GVariant)]
+pub fn gvariant_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    gvariant_derive::impl_variant(input)
 }

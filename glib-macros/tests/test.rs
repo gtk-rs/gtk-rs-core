@@ -2,7 +2,7 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{gflags, GBoxed, GEnum, GErrorDomain, GSharedBoxed};
+use glib::{gflags, GBoxed, GEnum, GErrorDomain, GSharedBoxed, GVariant};
 
 #[test]
 fn derive_gerror_domain() {
@@ -279,4 +279,64 @@ fn subclassable() {
             pub struct Foo(ObjectSubclass<imp::Foo>);
         }
     }
+}
+
+#[test]
+fn derive_variant() {
+    #[derive(GVariant, PartialEq, Eq, Debug)]
+    struct Variant1 {
+        some_string: String,
+        some_int: i32,
+    }
+
+    assert_eq!(Variant1::static_variant_type().as_str(), "(si)");
+    let v = Variant1 {
+        some_string: String::from("bar"),
+        some_int: 2,
+    };
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(si)");
+    assert_eq!(var.get::<Variant1>(), Some(v));
+
+    #[derive(GVariant, PartialEq, Eq, Debug)]
+    struct Variant2 {
+        some_string: Option<String>,
+        some_int: i32,
+    }
+
+    assert_eq!(Variant2::static_variant_type().as_str(), "(msi)");
+    let v = Variant2 {
+        some_string: Some(String::from("bar")),
+        some_int: 2,
+    };
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(msi)");
+    assert_eq!(var.get::<Variant2>(), Some(v));
+
+    #[derive(GVariant, PartialEq, Eq, Debug)]
+    struct Variant3(u32, String);
+
+    assert_eq!(Variant3::static_variant_type().as_str(), "(us)");
+    let v = Variant3(1, String::from("foo"));
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(us)");
+    assert_eq!(var.get::<Variant3>(), Some(v));
+
+    #[derive(GVariant, PartialEq, Eq, Debug)]
+    struct Variant4;
+
+    assert_eq!(Variant4::static_variant_type().as_str(), "()");
+    let v = Variant4;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "()");
+    assert_eq!(var.get::<Variant4>(), Some(v));
+
+    #[derive(GVariant, PartialEq, Eq, Debug)]
+    struct Variant5();
+
+    assert_eq!(Variant5::static_variant_type().as_str(), "()");
+    let v = Variant5();
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "()");
+    assert_eq!(var.get::<Variant5>(), Some(v));
 }
