@@ -158,9 +158,140 @@ pub struct VariantTy {
 }
 
 impl VariantTy {
+    /// `bool`.
+    #[doc(alias = "G_VARIANT_TYPE_BOOLEAN")]
+    pub const BOOLEAN: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BOOLEAN) };
+
+    /// `u8`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE")]
+    pub const BYTE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE) };
+
+    /// `i16`.
+    #[doc(alias = "G_VARIANT_TYPE_INT16")]
+    pub const INT16: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT16) };
+
+    /// `u16`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT16")]
+    pub const UINT16: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT16) };
+
+    /// `i32`.
+    #[doc(alias = "G_VARIANT_TYPE_INT32")]
+    pub const INT32: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT32) };
+
+    /// `u32`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT32")]
+    pub const UINT32: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT32) };
+
+    /// `i64`.
+    #[doc(alias = "G_VARIANT_TYPE_INT64")]
+    pub const INT64: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT64) };
+
+    /// `u64`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT64")]
+    pub const UINT64: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT64) };
+
+    /// `f64`.
+    #[doc(alias = "G_VARIANT_TYPE_DOUBLE")]
+    pub const DOUBLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DOUBLE) };
+
+    /// `&str`.
+    #[doc(alias = "G_VARIANT_TYPE_STRING")]
+    pub const STRING: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING) };
+
+    /// DBus object path.
+    #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH")]
+    pub const OBJECT_PATH: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH) };
+
+    /// Type signature.
+    #[doc(alias = "G_VARIANT_TYPE_SIGNATURE")]
+    pub const SIGNATURE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_SIGNATURE) };
+
+    /// Variant.
+    #[doc(alias = "G_VARIANT_TYPE_VARIANT")]
+    pub const VARIANT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARIANT) };
+
+    /// Handle.
+    #[doc(alias = "G_VARIANT_TYPE_HANDLE")]
+    pub const HANDLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_HANDLE) };
+
+    /// Unit, i.e. `()`.
+    #[doc(alias = "G_VARIANT_TYPE_UNIT")]
+    pub const UNIT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UNIT) };
+
     /// An indefinite type that is a supertype of every type (including itself).
     #[doc(alias = "G_VARIANT_TYPE_ANY")]
-    pub const ANY: &'static VariantTy = unsafe { std::mem::transmute::<&str, &VariantTy>("*") };
+    pub const ANY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ANY) };
+
+    /// Any basic type.
+    #[doc(alias = "G_VARIANT_TYPE_BASIC")]
+    pub const BASIC: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BASIC) };
+
+    /// Any maybe type, i.e. `Option<T>`.
+    #[doc(alias = "G_VARIANT_TYPE_MAYBE")]
+    pub const MAYBE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_MAYBE) };
+
+    /// Any array type, i.e. `[T]`.
+    #[doc(alias = "G_VARIANT_TYPE_ARRAY")]
+    pub const ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ARRAY) };
+
+    /// Any tuple type, i.e. `(T)`, `(T, T)`, etc.
+    #[doc(alias = "G_VARIANT_TYPE_TUPLE")]
+    pub const TUPLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_TUPLE) };
+
+    /// Any dict entry type, i.e. `DictEntry<K, V>`.
+    #[doc(alias = "G_VARIANT_TYPE_DICT_ENTRY")]
+    pub const DICT_ENTRY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICT_ENTRY) };
+
+    /// Any dictionary type, i.e. `HashMap<K, V>`, `BTreeMap<K, V>`.
+    #[doc(alias = "G_VARIANT_TYPE_DICTIONARY")]
+    pub const DICTIONARY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICTIONARY) };
+
+    /// String array, i.e. `[&str]`.
+    #[doc(alias = "G_VARIANT_TYPE_STRING_ARRAY")]
+    pub const STRING_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING_ARRAY) };
+
+    /// Object path array, i.e. `[&str]`.
+    #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH_ARRAY")]
+    pub const OBJECT_PATH_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH_ARRAY) };
+
+    /// Byte string, i.e. `[u8]`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING")]
+    pub const BYTE_STRING: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING) };
+
+    /// Byte string array, i.e. `[[u8]]`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING_ARRAY")]
+    pub const BYTE_STRING_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING_ARRAY) };
+
+    /// Variant dictionary, i.e. `HashMap<String, Variant>`, `BTreeMap<String, Variant>`, etc.
+    #[doc(alias = "G_VARIANT_TYPE_VARDICT")]
+    pub const VARDICT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARDICT) };
 
     /// Tries to create a `&VariantTy` from a string slice.
     ///
@@ -188,8 +319,8 @@ impl VariantTy {
     /// # Safety
     ///
     /// The caller is responsible for passing in only a valid variant type string.
-    pub unsafe fn from_str_unchecked(type_string: &str) -> &VariantTy {
-        &*(type_string as *const str as *const VariantTy)
+    pub const unsafe fn from_str_unchecked(type_string: &str) -> &VariantTy {
+        std::mem::transmute::<&str, &VariantTy>(type_string)
     }
 
     /// Creates `&VariantTy` with a wildcard lifetime from a `GVariantType`
