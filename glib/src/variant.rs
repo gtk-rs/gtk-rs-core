@@ -1010,7 +1010,7 @@ pub struct DictEntry<K, V> {
 
 impl<K, V> DictEntry<K, V>
 where
-    K: StaticVariantType + ToVariant + Eq + Hash,
+    K: StaticVariantType + ToVariant,
     V: StaticVariantType + ToVariant,
 {
     pub fn new(key: K, value: V) -> Self {
@@ -1028,7 +1028,7 @@ where
 
 impl<K, V> FromVariant for DictEntry<K, V>
 where
-    K: FromVariant + Eq + Hash,
+    K: FromVariant,
     V: FromVariant,
 {
     fn from_variant(variant: &Variant) -> Option<Self> {
@@ -1047,7 +1047,7 @@ where
 
 impl<K, V> ToVariant for DictEntry<K, V>
 where
-    K: StaticVariantType + ToVariant + Eq + Hash,
+    K: StaticVariantType + ToVariant,
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
