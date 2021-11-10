@@ -1171,11 +1171,15 @@ macro_rules! tuple_impls {
                 $($name: FromVariant,)+
             {
                 fn from_variant(variant: &Variant) -> Option<Self> {
+                    if !variant.type_().is_subtype_of(VariantTy::TUPLE) {
+                        return None;
+                    }
+
                     Some((
                         $(
-                            match $name::from_variant(&variant.child_value($n)) {
-                                Some(field) => field,
-                                None => return None,
+                            match variant.try_child_get::<$name>($n) {
+                                Ok(Some(field)) => field,
+                                _ => return None,
                             },
                         )+
                     ))
