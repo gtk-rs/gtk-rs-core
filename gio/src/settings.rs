@@ -139,7 +139,7 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         FromVariant::from_variant(&val).unwrap_or_else(|| {
             panic!(
                 "Type mismatch: Expected '{}' got '{}'",
-                U::static_variant_type().to_str(),
+                U::static_variant_type().as_str(),
                 val.type_()
             )
         })

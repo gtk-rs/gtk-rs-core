@@ -80,7 +80,7 @@ impl fmt::Debug for VariantType {
 
 impl fmt::Display for VariantType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -338,7 +338,7 @@ impl VariantTy {
     }
 
     /// Converts to a string slice.
-    pub fn to_str(&self) -> &str {
+    pub fn as_str(&self) -> &str {
         &self.inner
     }
 
@@ -356,7 +356,7 @@ impl VariantTy {
             Cow::Borrowed(VariantTy::DICTIONARY)
         } else {
             Cow::Owned(
-                VariantType::new(&format!("a{}", self.to_str()))
+                VariantType::new(&format!("a{}", self.as_str()))
                     .expect("invalid variant signature"),
             )
         }
@@ -376,7 +376,7 @@ impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantTy {
 
 impl fmt::Display for VariantTy {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -551,14 +551,14 @@ macro_rules! impl_str_eq {
         impl<'a, 'b> PartialEq<$rhs> for $lhs {
             #[inline]
             fn eq(&self, other: &$rhs) -> bool {
-                self.to_str().eq(&other[..])
+                self.as_str().eq(&other[..])
             }
         }
 
         impl<'a, 'b> PartialEq<$lhs> for $rhs {
             #[inline]
             fn eq(&self, other: &$lhs) -> bool {
-                self[..].eq(other.to_str())
+                self[..].eq(other.as_str())
             }
         }
     };

@@ -75,7 +75,7 @@
 //! // And conversion to and from tuples.
 //! let variant = ("hello", 42u16, vec![ "there", "you" ],).to_variant();
 //! assert_eq!(variant.n_children(), 3);
-//! assert_eq!(variant.type_().to_str(), "(sqas)");
+//! assert_eq!(variant.type_().as_str(), "(sqas)");
 //! let tuple = <(String, u16, Vec<String>)>::from_variant(&variant).unwrap();
 //! assert_eq!(tuple.0, "hello");
 //! assert_eq!(tuple.1, 42);
@@ -313,7 +313,7 @@ impl Variant {
     #[doc(alias = "g_variant_get_string")]
     pub fn str(&self) -> Option<&str> {
         unsafe {
-            match self.type_().to_str() {
+            match self.type_().as_str() {
                 "s" | "o" | "g" => {
                     let mut len = 0;
                     let ptr = ffi::g_variant_get_string(self.to_glib_none().0, &mut len);
@@ -707,7 +707,7 @@ impl ToVariant for str {
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         let child_type = T::static_variant_type();
-        let signature = format!("m{}", child_type.to_str());
+        let signature = format!("m{}", child_type.as_str());
 
         VariantType::new(&signature)
             .expect("incorrect signature")
@@ -910,7 +910,7 @@ where
 /// ];
 /// let dict = Variant::from_array::<DictEntry<&str, u32>>(&entries);
 /// assert_eq!(dict.n_children(), 2);
-/// assert_eq!(dict.type_().to_str(), "a{su}");
+/// assert_eq!(dict.type_().as_str(), "a{su}");
 /// ```
 pub struct DictEntry<K, V> {
     key: K,
@@ -985,7 +985,7 @@ impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry
     fn static_variant_type() -> Cow<'static, VariantTy> {
         let key_type = K::static_variant_type();
         let value_type = V::static_variant_type();
-        let signature = format!("{{{}{}}}", key_type.to_str(), value_type.to_str());
+        let signature = format!("{{{}{}}}", key_type.as_str(), value_type.as_str());
 
         VariantType::new(&signature)
             .expect("incorrect signature")
@@ -1000,7 +1000,7 @@ where
 {
     let key_type = K::static_variant_type();
     let value_type = V::static_variant_type();
-    let signature = format!("a{{{}{}}}", key_type.to_str(), value_type.to_str());
+    let signature = format!("a{{{}{}}}", key_type.as_str(), value_type.as_str());
 
     VariantType::new(&signature)
         .expect("incorrect signature")
@@ -1039,7 +1039,7 @@ macro_rules! tuple_impls {
                     let mut signature = String::with_capacity(255);
                     signature.push('(');
                     $(
-                        signature.push_str($name::static_variant_type().to_str());
+                        signature.push_str($name::static_variant_type().as_str());
                     )+
                     signature.push(')');
 
@@ -1186,16 +1186,16 @@ mod tests {
         assert!(!set.contains(&v3));
 
         assert_eq!(
-            <HashMap<&str, (&str, u8, u32)>>::static_variant_type().to_str(),
+            <HashMap<&str, (&str, u8, u32)>>::static_variant_type().as_str(),
             "a{s(syu)}"
         );
     }
 
     #[test]
     fn test_array() {
-        assert_eq!(<Vec<&str>>::static_variant_type().to_str(), "as");
+        assert_eq!(<Vec<&str>>::static_variant_type().as_str(), "as");
         assert_eq!(
-            <Vec<(&str, u8, u32)>>::static_variant_type().to_str(),
+            <Vec<(&str, u8, u32)>>::static_variant_type().as_str(),
             "a(syu)"
         );
         let a = ["foo", "bar", "baz"].to_variant();
@@ -1208,7 +1208,7 @@ mod tests {
     #[test]
     fn test_btreemap() {
         assert_eq!(
-            <BTreeMap<String, u32>>::static_variant_type().to_str(),
+            <BTreeMap<String, u32>>::static_variant_type().as_str(),
             "a{su}"
         );
         // Validate that BTreeMap adds entries to dict in sorted order
