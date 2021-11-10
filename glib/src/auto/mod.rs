@@ -41,6 +41,7 @@ pub use self::enums::TimeType;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::enums::UriError;
+pub use self::enums::VariantClass;
 
 mod flags;
 #[cfg(any(feature = "v2_66", feature = "dox"))]

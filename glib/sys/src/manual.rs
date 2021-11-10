@@ -56,3 +56,32 @@ mod win32 {
         ) -> *mut c_char;
     }
 }
+
+// These are all non-NUL terminated strings in C
+pub const G_VARIANT_TYPE_BOOLEAN: &str = "b";
+pub const G_VARIANT_TYPE_BYTE: &str = "y";
+pub const G_VARIANT_TYPE_INT16: &str = "n";
+pub const G_VARIANT_TYPE_UINT16: &str = "q";
+pub const G_VARIANT_TYPE_INT32: &str = "i";
+pub const G_VARIANT_TYPE_UINT32: &str = "u";
+pub const G_VARIANT_TYPE_INT64: &str = "x";
+pub const G_VARIANT_TYPE_UINT64: &str = "t";
+pub const G_VARIANT_TYPE_DOUBLE: &str = "d";
+pub const G_VARIANT_TYPE_STRING: &str = "s";
+pub const G_VARIANT_TYPE_OBJECT_PATH: &str = "o";
+pub const G_VARIANT_TYPE_SIGNATURE: &str = "g";
+pub const G_VARIANT_TYPE_VARIANT: &str = "v";
+pub const G_VARIANT_TYPE_HANDLE: &str = "h";
+pub const G_VARIANT_TYPE_UNIT: &str = "()";
+pub const G_VARIANT_TYPE_ANY: &str = "*";
+pub const G_VARIANT_TYPE_BASIC: &str = "?";
+pub const G_VARIANT_TYPE_MAYBE: &str = "m*";
+pub const G_VARIANT_TYPE_ARRAY: &str = "a*";
+pub const G_VARIANT_TYPE_TUPLE: &str = "r";
+pub const G_VARIANT_TYPE_DICT_ENTRY: &str = "{?*}";
+pub const G_VARIANT_TYPE_DICTIONARY: &str = "a{?*}";
+pub const G_VARIANT_TYPE_STRING_ARRAY: &str = "as";
+pub const G_VARIANT_TYPE_OBJECT_PATH_ARRAY: &str = "ao";
+pub const G_VARIANT_TYPE_BYTE_STRING: &str = "ay";
+pub const G_VARIANT_TYPE_BYTE_STRING_ARRAY: &str = "ayy";
+pub const G_VARIANT_TYPE_VARDICT: &str = "a{sv}";

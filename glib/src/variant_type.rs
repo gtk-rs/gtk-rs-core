@@ -9,6 +9,7 @@ use std::cmp::{Eq, PartialEq};
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::Deref;
+use std::ptr;
 use std::slice;
 
 /// Describes `Variant` types.
@@ -80,7 +81,7 @@ impl fmt::Debug for VariantType {
 
 impl fmt::Display for VariantType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -147,34 +148,175 @@ impl FromGlibPtrFull<*const ffi::GVariantType> for VariantType {
     }
 }
 
+#[doc(hidden)]
+impl FromGlibPtrFull<*mut ffi::GVariantType> for VariantType {
+    unsafe fn from_glib_full(ptr: *mut ffi::GVariantType) -> VariantType {
+        let len = ffi::g_variant_type_get_string_length(ptr) as usize;
+        VariantType { ptr, len }
+    }
+}
+
 /// Describes `Variant` types.
 ///
 /// This is a borrowed counterpart of [`VariantType`](struct.VariantType.html).
 /// Essentially it's a `str` statically guaranteed to be a valid type string.
+#[repr(transparent)]
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct VariantTy {
     inner: str,
 }
 
 impl VariantTy {
+    /// `bool`.
+    #[doc(alias = "G_VARIANT_TYPE_BOOLEAN")]
+    pub const BOOLEAN: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BOOLEAN) };
+
+    /// `u8`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE")]
+    pub const BYTE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE) };
+
+    /// `i16`.
+    #[doc(alias = "G_VARIANT_TYPE_INT16")]
+    pub const INT16: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT16) };
+
+    /// `u16`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT16")]
+    pub const UINT16: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT16) };
+
+    /// `i32`.
+    #[doc(alias = "G_VARIANT_TYPE_INT32")]
+    pub const INT32: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT32) };
+
+    /// `u32`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT32")]
+    pub const UINT32: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT32) };
+
+    /// `i64`.
+    #[doc(alias = "G_VARIANT_TYPE_INT64")]
+    pub const INT64: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT64) };
+
+    /// `u64`.
+    #[doc(alias = "G_VARIANT_TYPE_UINT64")]
+    pub const UINT64: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT64) };
+
+    /// `f64`.
+    #[doc(alias = "G_VARIANT_TYPE_DOUBLE")]
+    pub const DOUBLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DOUBLE) };
+
+    /// `&str`.
+    #[doc(alias = "G_VARIANT_TYPE_STRING")]
+    pub const STRING: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING) };
+
+    /// DBus object path.
+    #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH")]
+    pub const OBJECT_PATH: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH) };
+
+    /// Type signature.
+    #[doc(alias = "G_VARIANT_TYPE_SIGNATURE")]
+    pub const SIGNATURE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_SIGNATURE) };
+
+    /// Variant.
+    #[doc(alias = "G_VARIANT_TYPE_VARIANT")]
+    pub const VARIANT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARIANT) };
+
+    /// Handle.
+    #[doc(alias = "G_VARIANT_TYPE_HANDLE")]
+    pub const HANDLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_HANDLE) };
+
+    /// Unit, i.e. `()`.
+    #[doc(alias = "G_VARIANT_TYPE_UNIT")]
+    pub const UNIT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UNIT) };
+
     /// An indefinite type that is a supertype of every type (including itself).
     #[doc(alias = "G_VARIANT_TYPE_ANY")]
-    pub const ANY: &'static VariantTy = unsafe { std::mem::transmute::<&str, &VariantTy>("*") };
+    pub const ANY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ANY) };
+
+    /// Any basic type.
+    #[doc(alias = "G_VARIANT_TYPE_BASIC")]
+    pub const BASIC: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BASIC) };
+
+    /// Any maybe type, i.e. `Option<T>`.
+    #[doc(alias = "G_VARIANT_TYPE_MAYBE")]
+    pub const MAYBE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_MAYBE) };
+
+    /// Any array type, i.e. `[T]`.
+    #[doc(alias = "G_VARIANT_TYPE_ARRAY")]
+    pub const ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ARRAY) };
+
+    /// Any tuple type, i.e. `(T)`, `(T, T)`, etc.
+    #[doc(alias = "G_VARIANT_TYPE_TUPLE")]
+    pub const TUPLE: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_TUPLE) };
+
+    /// Any dict entry type, i.e. `DictEntry<K, V>`.
+    #[doc(alias = "G_VARIANT_TYPE_DICT_ENTRY")]
+    pub const DICT_ENTRY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICT_ENTRY) };
+
+    /// Any dictionary type, i.e. `HashMap<K, V>`, `BTreeMap<K, V>`.
+    #[doc(alias = "G_VARIANT_TYPE_DICTIONARY")]
+    pub const DICTIONARY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICTIONARY) };
+
+    /// String array, i.e. `[&str]`.
+    #[doc(alias = "G_VARIANT_TYPE_STRING_ARRAY")]
+    pub const STRING_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING_ARRAY) };
+
+    /// Object path array, i.e. `[&str]`.
+    #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH_ARRAY")]
+    pub const OBJECT_PATH_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH_ARRAY) };
+
+    /// Byte string, i.e. `[u8]`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING")]
+    pub const BYTE_STRING: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING) };
+
+    /// Byte string array, i.e. `[[u8]]`.
+    #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING_ARRAY")]
+    pub const BYTE_STRING_ARRAY: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING_ARRAY) };
+
+    /// Variant dictionary, i.e. `HashMap<String, Variant>`, `BTreeMap<String, Variant>`, etc.
+    #[doc(alias = "G_VARIANT_TYPE_VARDICT")]
+    pub const VARDICT: &'static VariantTy =
+        unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARDICT) };
 
     /// Tries to create a `&VariantTy` from a string slice.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
     pub fn new(type_string: &str) -> Result<&VariantTy, BoolError> {
-        let ptr = type_string.as_ptr();
-        let limit = ptr as usize + type_string.len();
-        let mut end = 0_usize;
         unsafe {
+            let ptr = type_string.as_ptr();
+            let limit = ptr.add(type_string.len());
+            let mut end = ptr::null();
+
             let ok = from_glib(ffi::g_variant_type_string_scan(
                 ptr as *const _,
                 limit as *const _,
-                &mut end as *mut usize as *mut _,
+                &mut end,
             ));
-            if ok && end == limit {
+            if ok && end as *const _ == limit {
                 Ok(&*(type_string.as_bytes() as *const [u8] as *const VariantTy))
             } else {
                 Err(bool_error!("Invalid type string: '{}'", type_string))
@@ -186,10 +328,9 @@ impl VariantTy {
     ///
     /// # Safety
     ///
-    /// The caller is responsible for passing in only a valid variant type string
-    /// which is already registered with the type system.
-    pub unsafe fn from_str_unchecked(type_string: &str) -> &VariantTy {
-        &*(type_string as *const str as *const VariantTy)
+    /// The caller is responsible for passing in only a valid variant type string.
+    pub const unsafe fn from_str_unchecked(type_string: &str) -> &VariantTy {
+        std::mem::transmute::<&str, &VariantTy>(type_string)
     }
 
     /// Creates `&VariantTy` with a wildcard lifetime from a `GVariantType`
@@ -207,13 +348,170 @@ impl VariantTy {
     }
 
     /// Converts to a string slice.
-    pub fn to_str(&self) -> &str {
+    pub fn as_str(&self) -> &str {
         &self.inner
     }
 
+    /// Check if this variant type is a definite type.
+    #[doc(alias = "g_variant_type_is_definite")]
+    pub fn is_definite(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_definite(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a container type.
+    #[doc(alias = "g_variant_type_is_container")]
+    pub fn is_container(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_container(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a basic type.
+    #[doc(alias = "g_variant_type_is_basic")]
+    pub fn is_basic(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_basic(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a maybe type.
+    #[doc(alias = "g_variant_type_is_maybe")]
+    pub fn is_maybe(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_maybe(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is an array type.
+    #[doc(alias = "g_variant_type_is_array")]
+    pub fn is_array(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_array(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a tuple type.
+    #[doc(alias = "g_variant_type_is_tuple")]
+    pub fn is_tuple(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_tuple(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a dict entry type.
+    #[doc(alias = "g_variant_type_is_dict_entry")]
+    pub fn is_dict_entry(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_dict_entry(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a variant.
+    #[doc(alias = "g_variant_type_is_variant")]
+    pub fn is_variant(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_type_is_variant(self.to_glib_none().0)) }
+    }
+
+    /// Check if this variant type is a subtype of another.
+    #[doc(alias = "g_variant_type_is_subtype_of")]
+    pub fn is_subtype_of(&self, supertype: &Self) -> bool {
+        unsafe {
+            from_glib(ffi::g_variant_type_is_subtype_of(
+                self.to_glib_none().0,
+                supertype.to_glib_none().0,
+            ))
+        }
+    }
+
+    /// Return the element type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an array or maybe type.
+    #[doc(alias = "g_variant_type_element")]
+    pub fn element(&self) -> &VariantTy {
+        assert!(self.is_array() || self.is_maybe());
+
+        unsafe {
+            let element = ffi::g_variant_type_element(self.to_glib_none().0);
+            Self::from_ptr(element)
+        }
+    }
+
+    /// Return the first type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an array or dictionary type.
+    #[doc(alias = "g_variant_type_first")]
+    pub fn first(&self) -> Option<&VariantTy> {
+        assert!(self.as_str().starts_with('(') || self.as_str().starts_with('{'));
+
+        unsafe {
+            let first = ffi::g_variant_type_first(self.to_glib_none().0);
+            if first.is_null() {
+                None
+            } else {
+                Some(Self::from_ptr(first))
+            }
+        }
+    }
+
+    /// Return the next type of this variant type.
+    #[doc(alias = "g_variant_type_next")]
+    pub fn next(&self) -> Option<&VariantTy> {
+        unsafe {
+            let next = ffi::g_variant_type_next(self.to_glib_none().0);
+            if next.is_null() {
+                None
+            } else {
+                Some(Self::from_ptr(next))
+            }
+        }
+    }
+
+    /// Return the number of items in this variant type.
+    #[doc(alias = "g_variant_type_n_items")]
+    pub fn n_items(&self) -> usize {
+        unsafe { ffi::g_variant_type_n_items(self.to_glib_none().0) }
+    }
+
+    /// Return the key type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an dictionary type.
+    #[doc(alias = "g_variant_type_key")]
+    pub fn key(&self) -> &VariantTy {
+        assert!(self.as_str().starts_with('{'));
+
+        unsafe {
+            let key = ffi::g_variant_type_key(self.to_glib_none().0);
+            Self::from_ptr(key)
+        }
+    }
+
+    /// Return the value type of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with an dictionary type.
+    #[doc(alias = "g_variant_type_value")]
+    pub fn value(&self) -> &VariantTy {
+        assert!(self.as_str().starts_with('{'));
+
+        unsafe {
+            let value = ffi::g_variant_type_value(self.to_glib_none().0);
+            Self::from_ptr(value)
+        }
+    }
+
     /// Return this type as an array.
-    pub(crate) fn with_array(&self) -> VariantType {
-        VariantType::new(&format!("a{}", self.to_str())).expect("invalid variant signature")
+    pub(crate) fn as_array<'a>(&self) -> Cow<'a, VariantTy> {
+        if self == VariantTy::STRING {
+            Cow::Borrowed(VariantTy::STRING_ARRAY)
+        } else if self == VariantTy::BYTE {
+            Cow::Borrowed(VariantTy::BYTE_STRING)
+        } else if self == VariantTy::BYTE_STRING {
+            Cow::Borrowed(VariantTy::BYTE_STRING_ARRAY)
+        } else if self == VariantTy::OBJECT_PATH {
+            Cow::Borrowed(VariantTy::OBJECT_PATH_ARRAY)
+        } else if self == VariantTy::DICT_ENTRY {
+            Cow::Borrowed(VariantTy::DICTIONARY)
+        } else {
+            unsafe {
+                let ptr = ffi::g_variant_type_new_array(self.to_glib_none().0);
+                Cow::Owned(VariantType::from_glib_full(ptr))
+            }
+        }
     }
 }
 
@@ -230,7 +528,7 @@ impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantTy {
 
 impl fmt::Display for VariantTy {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.to_str())
+        f.write_str(self.as_str())
     }
 }
 
@@ -405,14 +703,14 @@ macro_rules! impl_str_eq {
         impl<'a, 'b> PartialEq<$rhs> for $lhs {
             #[inline]
             fn eq(&self, other: &$rhs) -> bool {
-                self.to_str().eq(&other[..])
+                self.as_str().eq(&other[..])
             }
         }
 
         impl<'a, 'b> PartialEq<$lhs> for $rhs {
             #[inline]
             fn eq(&self, other: &$lhs) -> bool {
-                self[..].eq(other.to_str())
+                self[..].eq(other.as_str())
             }
         }
     };

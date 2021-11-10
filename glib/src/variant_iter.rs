@@ -142,7 +142,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_array() {
-        let v = Variant::from_array::<String>(&[
+        let v = Variant::array_from_iter::<String, _>([
             "foo".to_string().to_variant(),
             "bar".to_string().to_variant(),
         ]);
@@ -155,7 +155,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_tuple() {
-        let v = Variant::from_tuple(&[
+        let v = Variant::tuple_from_iter([
             "foo".to_string().to_variant(),
             "bar".to_string().to_variant(),
         ]);

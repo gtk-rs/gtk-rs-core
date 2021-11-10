@@ -50,8 +50,8 @@
 //! assert_eq!(variant.str(), Some("Hello!"));
 //!
 //! // Variant carrying an array
-//! let array = ["Hello".to_variant(), "there!".to_variant()];
-//! let variant = Variant::from_array::<&str>(&array);
+//! let array = ["Hello", "there!"];
+//! let variant = array.into_iter().collect::<Variant>();
 //! assert_eq!(variant.n_children(), 2);
 //! assert_eq!(variant.child_value(0).str(), Some("Hello"));
 //! assert_eq!(variant.child_value(1).str(), Some("there!"));
@@ -75,7 +75,7 @@
 //! // And conversion to and from tuples.
 //! let variant = ("hello", 42u16, vec![ "there", "you" ],).to_variant();
 //! assert_eq!(variant.n_children(), 3);
-//! assert_eq!(variant.type_().to_str(), "(sqas)");
+//! assert_eq!(variant.type_().as_str(), "(sqas)");
 //! let tuple = <(String, u16, Vec<String>)>::from_variant(&variant).unwrap();
 //! assert_eq!(tuple.0, "hello");
 //! assert_eq!(tuple.1, 42);
@@ -107,6 +107,8 @@ use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::fmt;
 use std::hash::{BuildHasher, Hash, Hasher};
+use std::mem;
+use std::ptr;
 use std::slice;
 use std::str;
 
@@ -212,8 +214,20 @@ impl Variant {
 
     /// Returns `true` if the type of the value corresponds to `T`.
     #[inline]
+    #[doc(alias = "g_variant_is_of_type")]
     pub fn is<T: StaticVariantType>(&self) -> bool {
-        self.type_() == T::static_variant_type()
+        unsafe {
+            from_glib(ffi::g_variant_is_of_type(
+                self.to_glib_none().0,
+                T::static_variant_type().to_glib_none().0,
+            ))
+        }
+    }
+
+    /// Returns the classification of the variant.
+    #[doc(alias = "g_variant_classify")]
+    pub fn classify(&self) -> crate::VariantClass {
+        unsafe { from_glib(ffi::g_variant_classify(self.to_glib_none().0)) }
     }
 
     /// Tries to extract a value of type `T`.
@@ -313,7 +327,7 @@ impl Variant {
     #[doc(alias = "g_variant_get_string")]
     pub fn str(&self) -> Option<&str> {
         unsafe {
-            match self.type_().to_str() {
+            match self.type_().as_str() {
                 "s" | "o" | "g" => {
                     let mut len = 0;
                     let ptr = ffi::g_variant_get_string(self.to_glib_none().0, &mut len);
@@ -350,31 +364,44 @@ impl Variant {
         }
     }
 
-    /// Creates a new GVariant array from children.
+    /// Creates a new Variant array from children.
     ///
-    /// All children must be of type `T`.
-    pub fn from_array<T: StaticVariantType>(children: &[Variant]) -> Self {
+    /// # Panics
+    ///
+    /// This function panics if not all variants are of type `T`.
+    pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
+        children: I,
+    ) -> Self {
         let type_ = T::static_variant_type();
 
-        for child in children {
-            assert_eq!(type_, child.type_());
-        }
         unsafe {
-            from_glib_none(ffi::g_variant_new_array(
-                type_.as_ptr() as *const _,
-                children.to_glib_none().0,
-                children.len(),
-            ))
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in children.into_iter() {
+                if ffi::g_variant_is_of_type(value.to_glib_none().0, type_.to_glib_none().0)
+                    == ffi::GFALSE
+                {
+                    ffi::g_variant_builder_clear(&mut builder);
+                    assert!(value.is::<T>());
+                }
+
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
     }
 
-    /// Creates a new GVariant tuple from children.
-    pub fn from_tuple(children: &[Variant]) -> Self {
+    /// Creates a new Variant tuple from children.
+    pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
         unsafe {
-            from_glib_none(ffi::g_variant_new_tuple(
-                children.to_glib_none().0,
-                children.len(),
-            ))
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in children.into_iter() {
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
     }
 
@@ -486,11 +513,11 @@ impl Variant {
     pub fn array_iter_str(&self) -> Result<VariantStrIter, VariantTypeMismatchError> {
         let child_ty = String::static_variant_type();
         let actual_ty = self.type_();
-        let expected_ty = child_ty.with_array();
+        let expected_ty = child_ty.as_array();
         if actual_ty != expected_ty {
             return Err(VariantTypeMismatchError {
                 actual: actual_ty.to_owned(),
-                expected: expected_ty,
+                expected: expected_ty.into_owned(),
             });
         }
 
@@ -595,7 +622,7 @@ pub trait StaticVariantType {
 
 impl StaticVariantType for Variant {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("v").into() }
+        Cow::Borrowed(VariantTy::VARIANT)
     }
 }
 
@@ -612,10 +639,10 @@ impl<'a, T: ?Sized + StaticVariantType> StaticVariantType for &'a T {
 }
 
 macro_rules! impl_numeric {
-    ($name:ty, $type_str:expr, $new_fn:ident, $get_fn:ident) => {
+    ($name:ty, $typ:expr, $new_fn:ident, $get_fn:ident) => {
         impl StaticVariantType for $name {
             fn static_variant_type() -> Cow<'static, VariantTy> {
-                unsafe { VariantTy::from_str_unchecked($type_str).into() }
+                Cow::Borrowed($typ)
             }
         }
 
@@ -639,18 +666,53 @@ macro_rules! impl_numeric {
     };
 }
 
-impl_numeric!(u8, "y", g_variant_new_byte, g_variant_get_byte);
-impl_numeric!(i16, "n", g_variant_new_int16, g_variant_get_int16);
-impl_numeric!(u16, "q", g_variant_new_uint16, g_variant_get_uint16);
-impl_numeric!(i32, "i", g_variant_new_int32, g_variant_get_int32);
-impl_numeric!(u32, "u", g_variant_new_uint32, g_variant_get_uint32);
-impl_numeric!(i64, "x", g_variant_new_int64, g_variant_get_int64);
-impl_numeric!(u64, "t", g_variant_new_uint64, g_variant_get_uint64);
-impl_numeric!(f64, "d", g_variant_new_double, g_variant_get_double);
+impl_numeric!(u8, VariantTy::BYTE, g_variant_new_byte, g_variant_get_byte);
+impl_numeric!(
+    i16,
+    VariantTy::INT16,
+    g_variant_new_int16,
+    g_variant_get_int16
+);
+impl_numeric!(
+    u16,
+    VariantTy::UINT16,
+    g_variant_new_uint16,
+    g_variant_get_uint16
+);
+impl_numeric!(
+    i32,
+    VariantTy::INT32,
+    g_variant_new_int32,
+    g_variant_get_int32
+);
+impl_numeric!(
+    u32,
+    VariantTy::UINT32,
+    g_variant_new_uint32,
+    g_variant_get_uint32
+);
+impl_numeric!(
+    i64,
+    VariantTy::INT64,
+    g_variant_new_int64,
+    g_variant_get_int64
+);
+impl_numeric!(
+    u64,
+    VariantTy::UINT64,
+    g_variant_new_uint64,
+    g_variant_get_uint64
+);
+impl_numeric!(
+    f64,
+    VariantTy::DOUBLE,
+    g_variant_new_double,
+    g_variant_get_double
+);
 
 impl StaticVariantType for bool {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("b").into() }
+        Cow::Borrowed(VariantTy::BOOLEAN)
     }
 }
 
@@ -676,7 +738,7 @@ impl FromVariant for bool {
 
 impl StaticVariantType for String {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("s").into() }
+        Cow::Borrowed(VariantTy::STRING)
     }
 }
 
@@ -694,7 +756,7 @@ impl FromVariant for String {
 
 impl StaticVariantType for str {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("s").into() }
+        String::static_variant_type()
     }
 }
 
@@ -706,12 +768,10 @@ impl ToVariant for str {
 
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let child_type = T::static_variant_type();
-        let signature = format!("m{}", child_type.to_str());
-
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+        unsafe {
+            let ptr = ffi::g_variant_type_new_maybe(T::static_variant_type().to_glib_none().0);
+            Cow::Owned(from_glib_full(ptr))
+        }
     }
 }
 
@@ -742,17 +802,30 @@ impl<T: StaticVariantType + FromVariant> FromVariant for Option<T> {
 
 impl<T: StaticVariantType> StaticVariantType for [T] {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        T::static_variant_type().with_array().into()
+        T::static_variant_type().as_array()
     }
 }
 
 impl<T: StaticVariantType + ToVariant> ToVariant for [T] {
     fn to_variant(&self) -> Variant {
-        let mut vec = Vec::with_capacity(self.len());
-        for child in self {
-            vec.push(child.to_variant());
+        unsafe {
+            if self.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    T::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in self {
+                let value = value.to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
-        Variant::from_array::<T>(&vec)
     }
 }
 
@@ -777,11 +850,7 @@ impl<T: FromVariant> FromVariant for Vec<T> {
 
 impl<T: StaticVariantType + ToVariant> ToVariant for Vec<T> {
     fn to_variant(&self) -> Variant {
-        let mut vec = Vec::with_capacity(self.len());
-        for child in self {
-            vec.push(child.to_variant());
-        }
-        Variant::from_array::<T>(&vec)
+        self.as_slice().to_variant()
     }
 }
 
@@ -869,12 +938,24 @@ where
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
-        let mut vec = Vec::with_capacity(self.len());
-        for (key, value) in self {
-            let entry = DictEntry::new(key, value).to_variant();
-            vec.push(entry);
+        unsafe {
+            if self.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    DictEntry::<K, V>::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for (key, value) in self {
+                let entry = DictEntry::new(key, value).to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, entry.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
-        Variant::from_array::<DictEntry<K, V>>(&vec)
     }
 }
 
@@ -884,12 +965,24 @@ where
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
-        let mut vec = Vec::with_capacity(self.len());
-        for (key, value) in self {
-            let entry = DictEntry::new(key, value).to_variant();
-            vec.push(entry);
+        unsafe {
+            if self.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    DictEntry::<K, V>::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for (key, value) in self {
+                let entry = DictEntry::new(key, value).to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, entry.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
-        Variant::from_array::<DictEntry<K, V>>(&vec)
     }
 }
 
@@ -904,13 +997,13 @@ where
 /// use glib::{Variant, FromVariant, ToVariant};
 /// use glib::variant::DictEntry;
 ///
-/// let entries = vec![
-///     DictEntry::new("uuid", 1000u32).to_variant(),
-///     DictEntry::new("guid", 1001u32).to_variant(),
+/// let entries = [
+///     DictEntry::new("uuid", 1000u32),
+///     DictEntry::new("guid", 1001u32),
 /// ];
-/// let dict = Variant::from_array::<DictEntry<&str, u32>>(&entries);
+/// let dict = entries.into_iter().collect::<Variant>();
 /// assert_eq!(dict.n_children(), 2);
-/// assert_eq!(dict.type_().to_str(), "a{su}");
+/// assert_eq!(dict.type_().as_str(), "a{su}");
 /// ```
 pub struct DictEntry<K, V> {
     key: K,
@@ -919,7 +1012,7 @@ pub struct DictEntry<K, V> {
 
 impl<K, V> DictEntry<K, V>
 where
-    K: StaticVariantType + ToVariant + Eq + Hash,
+    K: StaticVariantType + ToVariant,
     V: StaticVariantType + ToVariant,
 {
     pub fn new(key: K, value: V) -> Self {
@@ -937,10 +1030,14 @@ where
 
 impl<K, V> FromVariant for DictEntry<K, V>
 where
-    K: FromVariant + Eq + Hash,
+    K: FromVariant,
     V: FromVariant,
 {
     fn from_variant(variant: &Variant) -> Option<Self> {
+        if !variant.type_().is_subtype_of(VariantTy::DICT_ENTRY) {
+            return None;
+        }
+
         let key = match variant.child_value(0).get() {
             Some(key) => key,
             None => return None,
@@ -956,7 +1053,7 @@ where
 
 impl<K, V> ToVariant for DictEntry<K, V>
 where
-    K: StaticVariantType + ToVariant + Eq + Hash,
+    K: StaticVariantType + ToVariant,
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
@@ -983,13 +1080,13 @@ impl FromVariant for Variant {
 
 impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry<K, V> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        let key_type = K::static_variant_type();
-        let value_type = V::static_variant_type();
-        let signature = format!("{{{}{}}}", key_type.to_str(), value_type.to_str());
-
-        VariantType::new(&signature)
-            .expect("incorrect signature")
-            .into()
+        unsafe {
+            let ptr = ffi::g_variant_type_new_dict_entry(
+                K::static_variant_type().to_glib_none().0,
+                V::static_variant_type().to_glib_none().0,
+            );
+            Cow::Owned(from_glib_full(ptr))
+        }
     }
 }
 
@@ -1000,11 +1097,30 @@ where
 {
     let key_type = K::static_variant_type();
     let value_type = V::static_variant_type();
-    let signature = format!("a{{{}{}}}", key_type.to_str(), value_type.to_str());
 
-    VariantType::new(&signature)
-        .expect("incorrect signature")
-        .into()
+    if key_type == VariantTy::STRING && value_type == VariantTy::VARIANT {
+        return Cow::Borrowed(VariantTy::VARDICT);
+    }
+
+    unsafe {
+        let ptr = ffi::g_string_sized_new(16);
+        ffi::g_string_append_len(ptr, b"a{".as_ptr() as *const _, 2);
+        ffi::g_string_append_len(
+            ptr,
+            key_type.as_str().as_ptr() as *const _,
+            key_type.as_str().len() as isize,
+        );
+        ffi::g_string_append_len(
+            ptr,
+            value_type.as_str().as_ptr() as *const _,
+            value_type.as_str().len() as isize,
+        );
+        ffi::g_string_append_c(ptr, b'}' as _);
+
+        Cow::Owned(from_glib_full(
+            ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType
+        ))
+    }
 }
 
 impl<K, V, H> StaticVariantType for HashMap<K, V, H>
@@ -1036,14 +1152,17 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    let mut signature = String::with_capacity(255);
-                    signature.push('(');
-                    $(
-                        signature.push_str($name::static_variant_type().to_str());
-                    )+
-                    signature.push(')');
+                    unsafe {
+                        let ptr = ffi::g_string_sized_new(255);
+                        ffi::g_string_append_c(ptr, b'(' as _);
+                        $(
+                            let t = $name::static_variant_type();
+                            ffi::g_string_append_len(ptr, t.as_str().as_ptr() as *const _, t.as_str().len() as isize);
+                        )+
+                        ffi::g_string_append_c(ptr, b')' as _);
 
-                    VariantType::new(&signature).expect("incorrect signature").into()
+                        Cow::Owned(from_glib_full(ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType))
+                    }
                 }
             }
 
@@ -1052,11 +1171,15 @@ macro_rules! tuple_impls {
                 $($name: FromVariant,)+
             {
                 fn from_variant(variant: &Variant) -> Option<Self> {
+                    if !variant.type_().is_subtype_of(VariantTy::TUPLE) {
+                        return None;
+                    }
+
                     Some((
                         $(
-                            match $name::from_variant(&variant.child_value($n)) {
-                                Some(field) => field,
-                                None => return None,
+                            match variant.try_child_get::<$name>($n) {
+                                Ok(Some(field)) => field,
+                                _ => return None,
                             },
                         )+
                     ))
@@ -1068,12 +1191,18 @@ macro_rules! tuple_impls {
                 $($name: ToVariant,)+
             {
                 fn to_variant(&self) -> Variant {
-                    let mut fields = Vec::with_capacity($len);
-                    $(
-                        let field = self.$n.to_variant();
-                        fields.push(field);
-                    )+
-                    Variant::from_tuple(&fields)
+                    unsafe {
+                        let mut builder = mem::MaybeUninit::uninit();
+                        ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
+                        let mut builder = builder.assume_init();
+
+                        $(
+                            let field = self.$n.to_variant();
+                            ffi::g_variant_builder_add_value(&mut builder, field.to_glib_none().0);
+                        )+
+
+                        from_glib_none(ffi::g_variant_builder_end(&mut builder))
+                    }
                 }
             }
         )+
@@ -1097,6 +1226,23 @@ tuple_impls! {
     14 => (0 T0 1 T1 2 T2 3 T3 4 T4 5 T5 6 T6 7 T7 8 T8 9 T9 10 T10 11 T11 12 T12 13 T13)
     15 => (0 T0 1 T1 2 T2 3 T3 4 T4 5 T5 6 T6 7 T7 8 T8 9 T9 10 T10 11 T11 12 T12 13 T13 14 T14)
     16 => (0 T0 1 T1 2 T2 3 T3 4 T4 5 T5 6 T6 7 T7 8 T8 9 T9 10 T10 11 T11 12 T12 13 T13 14 T14 15 T15)
+}
+
+impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let type_ = T::static_variant_type();
+
+        unsafe {
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in iter.into_iter() {
+                let value = value.to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
 }
 
 #[cfg(test)]
@@ -1186,16 +1332,16 @@ mod tests {
         assert!(!set.contains(&v3));
 
         assert_eq!(
-            <HashMap<&str, (&str, u8, u32)>>::static_variant_type().to_str(),
+            <HashMap<&str, (&str, u8, u32)>>::static_variant_type().as_str(),
             "a{s(syu)}"
         );
     }
 
     #[test]
     fn test_array() {
-        assert_eq!(<Vec<&str>>::static_variant_type().to_str(), "as");
+        assert_eq!(<Vec<&str>>::static_variant_type().as_str(), "as");
         assert_eq!(
-            <Vec<(&str, u8, u32)>>::static_variant_type().to_str(),
+            <Vec<(&str, u8, u32)>>::static_variant_type().as_str(),
             "a(syu)"
         );
         let a = ["foo", "bar", "baz"].to_variant();
@@ -1206,9 +1352,59 @@ mod tests {
     }
 
     #[test]
+    fn test_array_from_iter() {
+        let a = Variant::array_from_iter::<String, _>(
+            ["foo", "bar", "baz"].into_iter().map(|s| s.to_variant()),
+        );
+        assert_eq!(a.type_().as_str(), "as");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<String>(1), Ok(Some(String::from("bar"))));
+        assert_eq!(a.try_child_get::<String>(2), Ok(Some(String::from("baz"))));
+    }
+
+    #[test]
+    fn test_array_collect() {
+        let a = ["foo", "bar", "baz"].into_iter().collect::<Variant>();
+        assert_eq!(a.type_().as_str(), "as");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<String>(1), Ok(Some(String::from("bar"))));
+        assert_eq!(a.try_child_get::<String>(2), Ok(Some(String::from("baz"))));
+    }
+
+    #[test]
+    fn test_tuple() {
+        assert_eq!(<(&str, u32)>::static_variant_type().as_str(), "(su)");
+        assert_eq!(<(&str, u8, u32)>::static_variant_type().as_str(), "(syu)");
+        let a = ("test", 1u8, 2u32).to_variant();
+        assert_eq!(a.normal_form(), a);
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("test"))));
+        assert_eq!(a.try_child_get::<u8>(1), Ok(Some(1u8)));
+        assert_eq!(a.try_child_get::<u32>(2), Ok(Some(2u32)));
+        assert_eq!(
+            a.try_get::<(String, u8, u32)>(),
+            Ok((String::from("test"), 1u8, 2u32))
+        );
+    }
+
+    #[test]
+    fn test_tuple_from_iter() {
+        let a = Variant::tuple_from_iter(["foo".to_variant(), 1u8.to_variant(), 2i32.to_variant()]);
+        assert_eq!(a.type_().as_str(), "(syi)");
+        assert_eq!(a.n_children(), 3);
+
+        assert_eq!(a.try_child_get::<String>(0), Ok(Some(String::from("foo"))));
+        assert_eq!(a.try_child_get::<u8>(1), Ok(Some(1u8)));
+        assert_eq!(a.try_child_get::<i32>(2), Ok(Some(2i32)));
+    }
+
+    #[test]
     fn test_btreemap() {
         assert_eq!(
-            <BTreeMap<String, u32>>::static_variant_type().to_str(),
+            <BTreeMap<String, u32>>::static_variant_type().as_str(),
             "a{su}"
         );
         // Validate that BTreeMap adds entries to dict in sorted order

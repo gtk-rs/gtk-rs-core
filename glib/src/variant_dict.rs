@@ -195,7 +195,7 @@ impl Default for VariantDict {
 
 impl StaticVariantType for VariantDict {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe { VariantTy::from_str_unchecked("a{sv}").into() }
+        Cow::Borrowed(VariantTy::VARDICT)
     }
 }
 
