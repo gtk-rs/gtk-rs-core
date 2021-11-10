@@ -9,6 +9,7 @@ use std::cmp::{Eq, PartialEq};
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::Deref;
+use std::ptr;
 use std::slice;
 
 /// Describes `Variant` types.
@@ -297,16 +298,17 @@ impl VariantTy {
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
     pub fn new(type_string: &str) -> Result<&VariantTy, BoolError> {
-        let ptr = type_string.as_ptr();
-        let limit = ptr as usize + type_string.len();
-        let mut end = 0_usize;
         unsafe {
+            let ptr = type_string.as_ptr();
+            let limit = ptr.add(type_string.len());
+            let mut end = ptr::null();
+
             let ok = from_glib(ffi::g_variant_type_string_scan(
                 ptr as *const _,
                 limit as *const _,
-                &mut end as *mut usize as *mut _,
+                &mut end,
             ));
-            if ok && end == limit {
+            if ok && end as *const _ == limit {
                 Ok(&*(type_string.as_bytes() as *const [u8] as *const VariantTy))
             } else {
                 Err(bool_error!("Invalid type string: '{}'", type_string))
