@@ -440,13 +440,7 @@ impl Variant {
     /// Constructs a new serialised-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
-        unsafe {
-            from_glib_none(ffi::g_variant_new_from_bytes(
-                T::static_variant_type().as_ptr() as *const _,
-                bytes.to_glib_none().0,
-                false.into_glib(),
-            ))
-        }
+        Variant::from_bytes_with_type(bytes, &T::static_variant_type())
     }
 
     /// Constructs a new serialised-mode GVariant instance.
@@ -462,36 +456,13 @@ impl Variant {
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
     pub unsafe fn from_bytes_trusted<T: StaticVariantType>(bytes: &Bytes) -> Self {
-        from_glib_none(ffi::g_variant_new_from_bytes(
-            T::static_variant_type().as_ptr() as *const _,
-            bytes.to_glib_none().0,
-            true.into_glib(),
-        ))
+        Variant::from_bytes_with_type_trusted(bytes, &T::static_variant_type())
     }
 
     /// Constructs a new serialised-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_data")]
     pub fn from_data<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
-        unsafe {
-            let data = Box::new(data);
-            let (data_ptr, len) = {
-                let data = (&*data).as_ref();
-                (data.as_ptr(), data.len())
-            };
-
-            unsafe extern "C" fn free_data<A: AsRef<[u8]>>(ptr: ffi::gpointer) {
-                let _ = Box::from_raw(ptr as *mut A);
-            }
-
-            from_glib_none(ffi::g_variant_new_from_data(
-                T::static_variant_type().as_ptr() as *const _,
-                data_ptr as ffi::gconstpointer,
-                len,
-                false.into_glib(),
-                Some(free_data::<A>),
-                Box::into_raw(data) as ffi::gpointer,
-            ))
-        }
+        Variant::from_data_with_type(data, &T::static_variant_type())
     }
 
     /// Constructs a new serialised-mode GVariant instance.
@@ -507,6 +478,79 @@ impl Variant {
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
     pub unsafe fn from_data_trusted<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
+        Variant::from_data_with_type_trusted(data, &T::static_variant_type())
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    #[doc(alias = "g_variant_new_from_bytes")]
+    pub fn from_bytes_with_type(bytes: &Bytes, type_: &VariantTy) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_from_bytes(
+                type_.as_ptr() as *const _,
+                bytes.to_glib_none().0,
+                false.into_glib(),
+            ))
+        }
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    ///
+    /// This is the same as `from_bytes`, except that checks on the passed
+    /// data are skipped.
+    ///
+    /// You should not use this function on data from external sources.
+    ///
+    /// # Safety
+    ///
+    /// Since the data is not validated, this is potentially dangerous if called
+    /// on bytes which are not guaranteed to have come from serialising another
+    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
+    pub unsafe fn from_bytes_with_type_trusted(bytes: &Bytes, type_: &VariantTy) -> Self {
+        from_glib_none(ffi::g_variant_new_from_bytes(
+            type_.as_ptr() as *const _,
+            bytes.to_glib_none().0,
+            true.into_glib(),
+        ))
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    #[doc(alias = "g_variant_new_from_data")]
+    pub fn from_data_with_type<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
+        unsafe {
+            let data = Box::new(data);
+            let (data_ptr, len) = {
+                let data = (&*data).as_ref();
+                (data.as_ptr(), data.len())
+            };
+
+            unsafe extern "C" fn free_data<A: AsRef<[u8]>>(ptr: ffi::gpointer) {
+                let _ = Box::from_raw(ptr as *mut A);
+            }
+
+            from_glib_none(ffi::g_variant_new_from_data(
+                type_.as_ptr() as *const _,
+                data_ptr as ffi::gconstpointer,
+                len,
+                false.into_glib(),
+                Some(free_data::<A>),
+                Box::into_raw(data) as ffi::gpointer,
+            ))
+        }
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    ///
+    /// This is the same as `from_data`, except that checks on the passed
+    /// data are skipped.
+    ///
+    /// You should not use this function on data from external sources.
+    ///
+    /// # Safety
+    ///
+    /// Since the data is not validated, this is potentially dangerous if called
+    /// on bytes which are not guaranteed to have come from serialising another
+    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
+    pub unsafe fn from_data_with_type_trusted<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
         let data = Box::new(data);
         let (data_ptr, len) = {
             let data = (&*data).as_ref();
@@ -518,7 +562,7 @@ impl Variant {
         }
 
         from_glib_none(ffi::g_variant_new_from_data(
-            T::static_variant_type().as_ptr() as *const _,
+            type_.as_ptr() as *const _,
             data_ptr as ffi::gconstpointer,
             len,
             true.into_glib(),
