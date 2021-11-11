@@ -12,6 +12,9 @@ pub unsafe trait RefCounted: Clone + Sized + 'static {
     /// The function used to increment the inner type refcount
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType;
 
+    /// Provides access to a raw pointer to InnerType
+    unsafe fn as_ptr(&self) -> *const Self::InnerType;
+
     /// Converts the RefCounted object to a raw pointer to InnerType
     unsafe fn into_raw(self) -> *const Self::InnerType;
 
@@ -28,6 +31,10 @@ where
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType {
         std::sync::Arc::increment_strong_count(this);
         this
+    }
+
+    unsafe fn as_ptr(&self) -> *const Self::InnerType {
+        std::sync::Arc::as_ptr(self)
     }
 
     unsafe fn into_raw(self) -> *const Self::InnerType {
@@ -49,6 +56,10 @@ where
         use std::mem::ManuallyDrop;
         let this_rc = ManuallyDrop::new(std::rc::Rc::from_raw(this));
         std::rc::Rc::into_raw(ManuallyDrop::take(&mut this_rc.clone()))
+    }
+
+    unsafe fn as_ptr(&self) -> *const Self::InnerType {
+        std::rc::Rc::as_ptr(self)
     }
 
     unsafe fn into_raw(self) -> *const Self::InnerType {

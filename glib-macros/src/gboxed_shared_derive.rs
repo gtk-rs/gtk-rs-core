@@ -178,5 +178,65 @@ pub fn impl_gshared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream 
         #impl_to_value_optional
 
         #impl_from_value
+
+        impl #crate_ident::translate::FromGlibPtrNone<*const #refcounted_type_prefix::InnerType> for #name {
+            #[inline]
+            unsafe fn from_glib_none(ptr: *const #refcounted_type_prefix::InnerType) -> Self {
+                let ptr = #refcounted_type_prefix::ref_(ptr);
+                #name(#refcounted_type_prefix::from_raw(ptr))
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrNone<*mut #refcounted_type_prefix::InnerType> for #name {
+            #[inline]
+            unsafe fn from_glib_none(ptr: *mut #refcounted_type_prefix::InnerType) -> Self {
+                #crate_ident::translate::FromGlibPtrNone::from_glib_none(ptr as *const _)
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrFull<*mut #refcounted_type_prefix::InnerType> for #name {
+            #[inline]
+            unsafe fn from_glib_full(ptr: *mut #refcounted_type_prefix::InnerType) -> Self {
+                #name(#refcounted_type_prefix::from_raw(ptr))
+            }
+        }
+
+        impl<'a> #crate_ident::translate::ToGlibPtr<'a, *const #refcounted_type_prefix::InnerType> for #name {
+            type Storage = &'a Self;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *const #refcounted_type_prefix::InnerType, Self> {
+                unsafe {
+                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0), self)
+                }
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *const #refcounted_type_prefix::InnerType {
+                let r = <#name as #crate_ident::subclass::shared::SharedType>::into_refcounted(self.clone());
+                unsafe {
+                    #refcounted_type_prefix::into_raw(r)
+                }
+            }
+        }
+
+        impl<'a> #crate_ident::translate::ToGlibPtr<'a, *mut #refcounted_type_prefix::InnerType> for #name {
+            type Storage = &'a Self;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *mut #refcounted_type_prefix::InnerType, Self> {
+                unsafe {
+                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0) as *mut _, self)
+                }
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *mut #refcounted_type_prefix::InnerType {
+                let r = <#name as #crate_ident::subclass::shared::SharedType>::into_refcounted(self.clone());
+                unsafe {
+                    #refcounted_type_prefix::into_raw(r) as *mut _
+                }
+            }
+        }
     }
 }
