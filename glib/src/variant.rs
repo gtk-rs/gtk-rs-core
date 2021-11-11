@@ -34,15 +34,15 @@
 //! assert_eq!(hello.str(), Some("Hello!"));
 //! assert_eq!(num.str(), None);
 //!
-//! // `bytes` tries to borrow a byte array (GVariant type `ay`),
+//! // `fixed_array` tries to borrow a fixed size array (u8, bool, i16, etc.),
 //! // rather than creating a deep copy which would be expensive for
-//! // nontrivially sized byte arrays.
+//! // nontrivially sized arrays of fixed size elements.
 //! // The test data here is the zstd compression header, which
 //! // stands in for arbitrary binary data (e.g. not UTF-8).
 //! let bufdata = b"\xFD\x2F\xB5\x28";
-//! let bufv = bufdata.to_variant();
-//! assert_eq!(bufv.bytes().unwrap(), bufdata);
-//! assert!(num.bytes().is_err());
+//! let bufv = glib::Variant::array_from_fixed_array(&bufdata[..]);
+//! assert_eq!(bufv.fixed_array::<u8>().unwrap(), bufdata);
+//! assert!(num.fixed_array::<u8>().is_err());
 //!
 //! // Variant carrying a Variant
 //! let variant = Variant::from_variant(&hello);
@@ -208,6 +208,7 @@ impl std::error::Error for VariantTypeMismatchError {}
 
 impl Variant {
     /// Returns the type of the value.
+    #[doc(alias = "g_variant_get_type")]
     pub fn type_(&self) -> &VariantTy {
         unsafe { VariantTy::from_ptr(ffi::g_variant_get_type(self.to_glib_none().0)) }
     }
@@ -342,24 +343,33 @@ impl Variant {
         }
     }
 
-    /// Tries to extract a `&[u8]` from a variant of type `ay` (array of bytes).
+    /// Tries to extract a `&[T]` from a variant of array type with a suitable element type.
     ///
-    /// Returns an error if the type is not `ay`.
-    pub fn bytes(&self) -> Result<&[u8], VariantTypeMismatchError> {
+    /// Returns an error if the type is wrong.
+    #[doc(alias = "g_variant_get_fixed_array")]
+    pub fn fixed_array<T: FixedSizeVariantType>(&self) -> Result<&[T], VariantTypeMismatchError> {
         unsafe {
-            let t = self.type_();
-            let expected_ty = &*Vec::<u8>::static_variant_type();
-            if t == expected_ty {
-                let selfv = self.to_glib_none();
-                let len = ffi::g_variant_get_size(selfv.0);
-                let ptr = ffi::g_variant_get_data(selfv.0);
-                let ret = slice::from_raw_parts(ptr as *const u8, len as usize);
-                Ok(ret)
+            let expected_ty = T::static_variant_type().as_array();
+            if self.type_() != expected_ty {
+                return Err(VariantTypeMismatchError {
+                    actual: self.type_().to_owned(),
+                    expected: expected_ty.into_owned(),
+                });
+            }
+
+            let mut n_elements = mem::MaybeUninit::uninit();
+            let ptr = ffi::g_variant_get_fixed_array(
+                self.to_glib_none().0,
+                n_elements.as_mut_ptr(),
+                mem::size_of::<T>(),
+            );
+            assert!(!ptr.is_null());
+
+            let n_elements = n_elements.assume_init();
+            if n_elements == 0 {
+                Ok(&[])
             } else {
-                Err(VariantTypeMismatchError {
-                    actual: t.to_owned(),
-                    expected: expected_ty.to_owned(),
-                })
+                Ok(slice::from_raw_parts(ptr as *const T, n_elements))
             }
         }
     }
@@ -369,6 +379,7 @@ impl Variant {
     /// # Panics
     ///
     /// This function panics if not all variants are of type `T`.
+    #[doc(alias = "g_variant_new_array")]
     pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
         children: I,
     ) -> Self {
@@ -392,7 +403,23 @@ impl Variant {
         }
     }
 
+    /// Creates a new Variant array from a fixed array.
+    #[doc(alias = "g_variant_new_fixed_array")]
+    pub fn array_from_fixed_array<T: FixedSizeVariantType>(array: &[T]) -> Self {
+        let type_ = T::static_variant_type();
+
+        unsafe {
+            from_glib_none(ffi::g_variant_new_fixed_array(
+                type_.as_ptr(),
+                array.as_ptr() as ffi::gconstpointer,
+                array.len(),
+                mem::size_of::<T>(),
+            ))
+        }
+    }
+
     /// Creates a new Variant tuple from children.
+    #[doc(alias = "g_variant_new_tuple")]
     pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
@@ -406,6 +433,7 @@ impl Variant {
     }
 
     /// Creates a new maybe Variant.
+    #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
         let type_ = T::static_variant_type();
         let ptr = match child {
@@ -427,13 +455,7 @@ impl Variant {
     /// Constructs a new serialised-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
-        unsafe {
-            from_glib_none(ffi::g_variant_new_from_bytes(
-                T::static_variant_type().as_ptr() as *const _,
-                bytes.to_glib_none().0,
-                false.into_glib(),
-            ))
-        }
+        Variant::from_bytes_with_type(bytes, &T::static_variant_type())
     }
 
     /// Constructs a new serialised-mode GVariant instance.
@@ -449,10 +471,118 @@ impl Variant {
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
     pub unsafe fn from_bytes_trusted<T: StaticVariantType>(bytes: &Bytes) -> Self {
+        Variant::from_bytes_with_type_trusted(bytes, &T::static_variant_type())
+    }
+
+    /// Constructs a new serialised-mode GVariant instance.
+    #[doc(alias = "g_variant_new_from_data")]
+    pub fn from_data<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
+        Variant::from_data_with_type(data, &T::static_variant_type())
+    }
+
+    /// Constructs a new serialised-mode GVariant instance.
+    ///
+    /// This is the same as `from_data`, except that checks on the passed
+    /// data are skipped.
+    ///
+    /// You should not use this function on data from external sources.
+    ///
+    /// # Safety
+    ///
+    /// Since the data is not validated, this is potentially dangerous if called
+    /// on bytes which are not guaranteed to have come from serialising another
+    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
+    pub unsafe fn from_data_trusted<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
+        Variant::from_data_with_type_trusted(data, &T::static_variant_type())
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    #[doc(alias = "g_variant_new_from_bytes")]
+    pub fn from_bytes_with_type(bytes: &Bytes, type_: &VariantTy) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_from_bytes(
+                type_.as_ptr() as *const _,
+                bytes.to_glib_none().0,
+                false.into_glib(),
+            ))
+        }
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    ///
+    /// This is the same as `from_bytes`, except that checks on the passed
+    /// data are skipped.
+    ///
+    /// You should not use this function on data from external sources.
+    ///
+    /// # Safety
+    ///
+    /// Since the data is not validated, this is potentially dangerous if called
+    /// on bytes which are not guaranteed to have come from serialising another
+    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
+    pub unsafe fn from_bytes_with_type_trusted(bytes: &Bytes, type_: &VariantTy) -> Self {
         from_glib_none(ffi::g_variant_new_from_bytes(
-            T::static_variant_type().as_ptr() as *const _,
+            type_.as_ptr() as *const _,
             bytes.to_glib_none().0,
             true.into_glib(),
+        ))
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    #[doc(alias = "g_variant_new_from_data")]
+    pub fn from_data_with_type<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
+        unsafe {
+            let data = Box::new(data);
+            let (data_ptr, len) = {
+                let data = (&*data).as_ref();
+                (data.as_ptr(), data.len())
+            };
+
+            unsafe extern "C" fn free_data<A: AsRef<[u8]>>(ptr: ffi::gpointer) {
+                let _ = Box::from_raw(ptr as *mut A);
+            }
+
+            from_glib_none(ffi::g_variant_new_from_data(
+                type_.as_ptr() as *const _,
+                data_ptr as ffi::gconstpointer,
+                len,
+                false.into_glib(),
+                Some(free_data::<A>),
+                Box::into_raw(data) as ffi::gpointer,
+            ))
+        }
+    }
+
+    /// Constructs a new serialised-mode GVariant instance with a given type.
+    ///
+    /// This is the same as `from_data`, except that checks on the passed
+    /// data are skipped.
+    ///
+    /// You should not use this function on data from external sources.
+    ///
+    /// # Safety
+    ///
+    /// Since the data is not validated, this is potentially dangerous if called
+    /// on bytes which are not guaranteed to have come from serialising another
+    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
+    pub unsafe fn from_data_with_type_trusted<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
+        let data = Box::new(data);
+        let (data_ptr, len) = {
+            let data = (&*data).as_ref();
+            (data.as_ptr(), data.len())
+        };
+
+        unsafe extern "C" fn free_data<A: AsRef<[u8]>>(ptr: ffi::gpointer) {
+            let _ = Box::from_raw(ptr as *mut A);
+        }
+
+        from_glib_none(ffi::g_variant_new_from_data(
+            type_.as_ptr() as *const _,
+            data_ptr as ffi::gconstpointer,
+            len,
+            true.into_glib(),
+            Some(free_data::<A>),
+            Box::into_raw(data) as ffi::gpointer,
         ))
     }
 
@@ -461,6 +591,40 @@ impl Variant {
     #[doc(alias = "g_variant_get_data_as_bytes")]
     pub fn data_as_bytes(&self) -> Bytes {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
+    }
+
+    /// Returns the serialised form of a GVariant instance.
+    #[doc(alias = "g_variant_get_data")]
+    pub fn data(&self) -> &[u8] {
+        unsafe {
+            let selfv = self.to_glib_none();
+            let len = ffi::g_variant_get_size(selfv.0);
+            let ptr = ffi::g_variant_get_data(selfv.0);
+            slice::from_raw_parts(ptr as *const u8, len as usize)
+        }
+    }
+
+    /// Returns the size of serialised form of a GVariant instance.
+    #[doc(alias = "g_variant_get_size")]
+    pub fn size(&self) -> usize {
+        unsafe { ffi::g_variant_get_size(self.to_glib_none().0) }
+    }
+
+    /// Stores the serialised form of a GVariant instance into the given slice.
+    ///
+    /// The slice needs to be big enough.
+    #[doc(alias = "g_variant_store")]
+    pub fn store(&self, data: &mut [u8]) -> Result<usize, crate::BoolError> {
+        unsafe {
+            let size = ffi::g_variant_get_size(self.to_glib_none().0);
+            if data.len() < size {
+                return Err(bool_error!("Provided slice is too small"));
+            }
+
+            ffi::g_variant_store(self.to_glib_none().0, data.as_mut_ptr() as ffi::gpointer);
+
+            Ok(size)
+        }
     }
 
     /// Returns a copy of the variant in normal form.
@@ -1256,6 +1420,160 @@ impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
     }
 }
 
+/// Trait for fixed size variant types.
+pub unsafe trait FixedSizeVariantType: StaticVariantType + Sized + Copy {}
+unsafe impl FixedSizeVariantType for u8 {}
+unsafe impl FixedSizeVariantType for i16 {}
+unsafe impl FixedSizeVariantType for u16 {}
+unsafe impl FixedSizeVariantType for i32 {}
+unsafe impl FixedSizeVariantType for u32 {}
+unsafe impl FixedSizeVariantType for i64 {}
+unsafe impl FixedSizeVariantType for u64 {}
+unsafe impl FixedSizeVariantType for f64 {}
+unsafe impl FixedSizeVariantType for bool {}
+
+/// Wrapper type for fixed size type arrays.
+///
+/// Converting this from/to a `Variant` is generally more efficient than working on the type
+/// directly. This is especially important when deriving `Variant` trait implementations on custom
+/// types.
+///
+/// This wrapper type can hold for example `Vec<u8>`, `Box<[u8]>` and similar types.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct FixedSizeVariantArray<A, T>(A, std::marker::PhantomData<T>)
+where
+    A: AsRef<[T]>,
+    T: FixedSizeVariantType;
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<&[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &&[T]) -> bool {
+        self.0.as_ref() == *other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &[T]) -> bool {
+        self.0.as_ref() == other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<[T; N]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &[T; N]) -> bool {
+        self.0.as_ref() == other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<&[T; N]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &&[T; N]) -> bool {
+        self.0.as_ref() == *other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
+    for &[T]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        *self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
+    for [T]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
+    PartialEq<FixedSizeVariantArray<A, T>> for [T; N]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
+    PartialEq<FixedSizeVariantArray<A, T>> for &[T; N]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        *self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<A> for FixedSizeVariantArray<A, T> {
+    fn from(array: A) -> Self {
+        FixedSizeVariantArray(array, std::marker::PhantomData)
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> FixedSizeVariantArray<A, T> {
+    pub fn into_inner(self) -> A {
+        self.0
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::Deref for FixedSizeVariantArray<A, T> {
+    type Target = [T];
+
+    fn deref(&self) -> &Self::Target {
+        self.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> std::ops::DerefMut
+    for FixedSizeVariantArray<A, T>
+{
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.0.as_mut()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArray<A, T> {
+    fn as_ref(&self) -> &[T] {
+        self.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> AsMut<[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn as_mut(&mut self) -> &mut [T] {
+        self.0.as_mut()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> StaticVariantType for FixedSizeVariantArray<A, T> {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        <[T]>::static_variant_type()
+    }
+}
+
+impl<A: AsRef<[T]> + for<'a> From<&'a [T]>, T: FixedSizeVariantType> FromVariant
+    for FixedSizeVariantArray<A, T>
+{
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        Some(FixedSizeVariantArray(
+            A::from(variant.fixed_array::<T>().ok()?),
+            std::marker::PhantomData,
+        ))
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> ToVariant for FixedSizeVariantArray<A, T> {
+    fn to_variant(&self) -> Variant {
+        Variant::array_from_fixed_array(self.0.as_ref())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1308,11 +1626,46 @@ mod tests {
     }
 
     #[test]
-    fn test_bytes() {
+    fn test_fixed_array() {
         let b = b"this is a test";
+        let v = Variant::array_from_fixed_array(&b[..]);
+        assert_eq!(v.type_().as_str(), "ay");
+        assert_eq!(v.fixed_array::<u8>().unwrap(), b);
+        assert!(42u32.to_variant().fixed_array::<u8>().is_err());
+
+        let b = [1u32, 10u32, 100u32];
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "au");
+        assert_eq!(v.fixed_array::<u32>().unwrap(), b);
+        assert!(v.fixed_array::<u8>().is_err());
+
+        let b = [true, false, true];
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "ab");
+        assert_eq!(v.fixed_array::<bool>().unwrap(), b);
+        assert!(v.fixed_array::<u8>().is_err());
+
+        let b = [1.0f64, 2.0f64, 3.0f64];
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "ad");
+        #[allow(clippy::float_cmp)]
+        {
+            assert_eq!(v.fixed_array::<f64>().unwrap(), b);
+        }
+        assert!(v.fixed_array::<u64>().is_err());
+    }
+
+    #[test]
+    fn test_fixed_variant_array() {
+        let b = FixedSizeVariantArray::from(&b"this is a test"[..]);
         let v = b.to_variant();
-        assert_eq!(v.bytes().unwrap(), b);
-        assert!(42u32.to_variant().bytes().is_err());
+        assert_eq!(v.type_().as_str(), "ay");
+        assert_eq!(&*v.get::<FixedSizeVariantArray<Vec<u8>, u8>>().unwrap(), b);
+
+        let b = FixedSizeVariantArray::from(vec![1i32, 2, 3]);
+        let v = b.to_variant();
+        assert_eq!(v.type_().as_str(), "ai");
+        assert_eq!(v.get::<FixedSizeVariantArray<Vec<i32>, i32>>().unwrap(), b);
     }
 
     #[test]
@@ -1477,5 +1830,28 @@ mod tests {
         let u = 42u32.to_variant();
         assert!(u.try_child_value(0).is_none());
         assert!(u.try_child_get::<String>(0).unwrap().is_none());
+    }
+
+    #[test]
+    fn test_serialize() {
+        let a = ("test", 1u8, 2u32).to_variant();
+
+        let bytes = a.data_as_bytes();
+        let data = a.data();
+        let len = a.size();
+        assert_eq!(bytes.len(), len);
+        assert_eq!(data.len(), len);
+
+        let mut store_data = vec![0u8; len];
+        assert_eq!(a.store(&mut store_data).unwrap(), len);
+
+        assert_eq!(&bytes, data);
+        assert_eq!(&store_data, data);
+
+        let b = Variant::from_data::<(String, u8, u32), _>(store_data);
+        assert_eq!(a, b);
+
+        let c = Variant::from_bytes::<(String, u8, u32)>(&bytes);
+        assert_eq!(a, c);
     }
 }

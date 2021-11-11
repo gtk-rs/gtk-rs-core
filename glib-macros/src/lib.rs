@@ -538,6 +538,25 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// assert_eq!(var.get::<Foo>(), Some(v));
 /// ```
 ///
+/// When storing `Vec`s of fixed size types it is a good idea to wrap these in
+/// `glib::FixedSizeVariantArray` as serialization/deserialization will be more efficient.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// struct Foo {
+///     some_vec: glib::FixedSizeVariantArray<Vec<u32>, u32>,
+///     some_int: i32,
+/// }
+///
+/// let v = Foo { some_vec: vec![1u32, 2u32].into(), some_int: 1 };
+/// let var = v.to_variant();
+/// assert_eq!(var.get::<Foo>(), Some(v));
+/// ```
+///
 /// [`glib::Variant`]: variant/struct.Variant.html
 #[proc_macro_derive(GVariant)]
 pub fn gvariant_derive(input: TokenStream) -> TokenStream {
