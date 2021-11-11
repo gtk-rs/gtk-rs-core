@@ -526,6 +526,40 @@ impl Variant {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
     }
 
+    /// Returns the serialised form of a GVariant instance.
+    #[doc(alias = "g_variant_get_data")]
+    pub fn data(&self) -> &[u8] {
+        unsafe {
+            let selfv = self.to_glib_none();
+            let len = ffi::g_variant_get_size(selfv.0);
+            let ptr = ffi::g_variant_get_data(selfv.0);
+            slice::from_raw_parts(ptr as *const u8, len as usize)
+        }
+    }
+
+    /// Returns the size of serialised form of a GVariant instance.
+    #[doc(alias = "g_variant_get_size")]
+    pub fn size(&self) -> usize {
+        unsafe { ffi::g_variant_get_size(self.to_glib_none().0) }
+    }
+
+    /// Stores the serialised form of a GVariant instance into the given slice.
+    ///
+    /// The slice needs to be big enough.
+    #[doc(alias = "g_variant_store")]
+    pub fn store(&self, data: &mut [u8]) -> Result<usize, crate::BoolError> {
+        unsafe {
+            let size = ffi::g_variant_get_size(self.to_glib_none().0);
+            if data.len() < size {
+                return Err(bool_error!("Provided slice is too small"));
+            }
+
+            ffi::g_variant_store(self.to_glib_none().0, data.as_mut_ptr() as ffi::gpointer);
+
+            Ok(size)
+        }
+    }
+
     /// Returns a copy of the variant in normal form.
     #[doc(alias = "g_variant_get_normal_form")]
     pub fn normal_form(&self) -> Self {
