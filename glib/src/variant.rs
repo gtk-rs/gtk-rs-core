@@ -1609,4 +1609,27 @@ mod tests {
         assert!(u.try_child_value(0).is_none());
         assert!(u.try_child_get::<String>(0).unwrap().is_none());
     }
+
+    #[test]
+    fn test_serialize() {
+        let a = ("test", 1u8, 2u32).to_variant();
+
+        let bytes = a.data_as_bytes();
+        let data = a.data();
+        let len = a.size();
+        assert_eq!(bytes.len(), len);
+        assert_eq!(data.len(), len);
+
+        let mut store_data = vec![0u8; len];
+        assert_eq!(a.store(&mut store_data).unwrap(), len);
+
+        assert_eq!(&bytes, data);
+        assert_eq!(&store_data, data);
+
+        let b = Variant::from_data::<(String, u8, u32), _>(store_data);
+        assert_eq!(a, b);
+
+        let c = Variant::from_bytes::<(String, u8, u32)>(&bytes);
+        assert_eq!(a, c);
+    }
 }
