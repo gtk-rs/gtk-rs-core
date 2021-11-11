@@ -34,13 +34,13 @@
 //! assert_eq!(hello.str(), Some("Hello!"));
 //! assert_eq!(num.str(), None);
 //!
-//! // `fixed_array` tries to borrow a fixed size array,
+//! // `fixed_array` tries to borrow a fixed size array (u8, bool, i16, etc.),
 //! // rather than creating a deep copy which would be expensive for
-//! // nontrivially sized byte arrays.
+//! // nontrivially sized arrays of fixed size elements.
 //! // The test data here is the zstd compression header, which
 //! // stands in for arbitrary binary data (e.g. not UTF-8).
 //! let bufdata = b"\xFD\x2F\xB5\x28";
-//! let bufv = bufdata.to_variant();
+//! let bufv = glib::Variant::array_from_fixed_array(&bufdata[..]);
 //! assert_eq!(bufv.fixed_array::<u8>().unwrap(), bufdata);
 //! assert!(num.fixed_array::<u8>().is_err());
 //!
@@ -400,6 +400,21 @@ impl Variant {
                 ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
             }
             from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+
+    /// Creates a new Variant array from a fixed array.
+    #[doc(alias = "g_variant_new_fixed_array")]
+    pub fn array_from_fixed_array<T: FixedSizeVariantType>(array: &[T]) -> Self {
+        let type_ = T::static_variant_type();
+
+        unsafe {
+            from_glib_none(ffi::g_variant_new_fixed_array(
+                type_.as_ptr(),
+                array.as_ptr() as ffi::gconstpointer,
+                array.len(),
+                mem::size_of::<T>(),
+            ))
         }
     }
 
@@ -1470,23 +1485,30 @@ mod tests {
     #[test]
     fn test_fixed_array() {
         let b = b"this is a test";
-        let v = b.to_variant();
+        let v = Variant::array_from_fixed_array(&b[..]);
+        assert_eq!(v.type_().as_str(), "ay");
         assert_eq!(v.fixed_array::<u8>().unwrap(), b);
         assert!(42u32.to_variant().fixed_array::<u8>().is_err());
 
         let b = [1u32, 10u32, 100u32];
-        let v = b.to_variant();
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "au");
         assert_eq!(v.fixed_array::<u32>().unwrap(), b);
         assert!(v.fixed_array::<u8>().is_err());
 
         let b = [true, false, true];
-        let v = b.to_variant();
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "ab");
         assert_eq!(v.fixed_array::<bool>().unwrap(), b);
         assert!(v.fixed_array::<u8>().is_err());
 
         let b = [1.0f64, 2.0f64, 3.0f64];
-        let v = b.to_variant();
-        assert_eq!(v.fixed_array::<f64>().unwrap(), b);
+        let v = Variant::array_from_fixed_array(&b);
+        assert_eq!(v.type_().as_str(), "ad");
+        #[allow(clippy::float_cmp)]
+        {
+            assert_eq!(v.fixed_array::<f64>().unwrap(), b);
+        }
         assert!(v.fixed_array::<u64>().is_err());
     }
 
