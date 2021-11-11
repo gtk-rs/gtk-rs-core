@@ -34,15 +34,15 @@
 //! assert_eq!(hello.str(), Some("Hello!"));
 //! assert_eq!(num.str(), None);
 //!
-//! // `bytes` tries to borrow a byte array (GVariant type `ay`),
+//! // `fixed_array` tries to borrow a fixed size array,
 //! // rather than creating a deep copy which would be expensive for
 //! // nontrivially sized byte arrays.
 //! // The test data here is the zstd compression header, which
 //! // stands in for arbitrary binary data (e.g. not UTF-8).
 //! let bufdata = b"\xFD\x2F\xB5\x28";
 //! let bufv = bufdata.to_variant();
-//! assert_eq!(bufv.bytes().unwrap(), bufdata);
-//! assert!(num.bytes().is_err());
+//! assert_eq!(bufv.fixed_array::<u8>().unwrap(), bufdata);
+//! assert!(num.fixed_array::<u8>().is_err());
 //!
 //! // Variant carrying a Variant
 //! let variant = Variant::from_variant(&hello);
@@ -343,25 +343,33 @@ impl Variant {
         }
     }
 
-    /// Tries to extract a `&[u8]` from a variant of type `ay` (array of bytes).
+    /// Tries to extract a `&[T]` from a variant of array type with a suitable element type.
     ///
-    /// Returns an error if the type is not `ay`.
-    #[doc(alias = "g_variant_get_data")]
-    pub fn bytes(&self) -> Result<&[u8], VariantTypeMismatchError> {
+    /// Returns an error if the type is wrong.
+    #[doc(alias = "g_variant_get_fixed_array")]
+    pub fn fixed_array<T: FixedSizeVariantType>(&self) -> Result<&[T], VariantTypeMismatchError> {
         unsafe {
-            let t = self.type_();
-            let expected_ty = &*Vec::<u8>::static_variant_type();
-            if t == expected_ty {
-                let selfv = self.to_glib_none();
-                let len = ffi::g_variant_get_size(selfv.0);
-                let ptr = ffi::g_variant_get_data(selfv.0);
-                let ret = slice::from_raw_parts(ptr as *const u8, len as usize);
-                Ok(ret)
+            let expected_ty = T::static_variant_type().as_array();
+            if self.type_() != expected_ty {
+                return Err(VariantTypeMismatchError {
+                    actual: self.type_().to_owned(),
+                    expected: expected_ty.into_owned(),
+                });
+            }
+
+            let mut n_elements = mem::MaybeUninit::uninit();
+            let ptr = ffi::g_variant_get_fixed_array(
+                self.to_glib_none().0,
+                n_elements.as_mut_ptr(),
+                mem::size_of::<T>(),
+            );
+            assert!(!ptr.is_null());
+
+            let n_elements = n_elements.assume_init();
+            if n_elements == 0 {
+                Ok(&[])
             } else {
-                Err(VariantTypeMismatchError {
-                    actual: t.to_owned(),
-                    expected: expected_ty.to_owned(),
-                })
+                Ok(slice::from_raw_parts(ptr as *const T, n_elements))
             }
         }
     }
@@ -1353,6 +1361,17 @@ impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
     }
 }
 
+pub unsafe trait FixedSizeVariantType: StaticVariantType + Sized {}
+unsafe impl FixedSizeVariantType for u8 {}
+unsafe impl FixedSizeVariantType for i16 {}
+unsafe impl FixedSizeVariantType for u16 {}
+unsafe impl FixedSizeVariantType for i32 {}
+unsafe impl FixedSizeVariantType for u32 {}
+unsafe impl FixedSizeVariantType for i64 {}
+unsafe impl FixedSizeVariantType for u64 {}
+unsafe impl FixedSizeVariantType for f64 {}
+unsafe impl FixedSizeVariantType for bool {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1405,11 +1424,26 @@ mod tests {
     }
 
     #[test]
-    fn test_bytes() {
+    fn test_fixed_array() {
         let b = b"this is a test";
         let v = b.to_variant();
-        assert_eq!(v.bytes().unwrap(), b);
-        assert!(42u32.to_variant().bytes().is_err());
+        assert_eq!(v.fixed_array::<u8>().unwrap(), b);
+        assert!(42u32.to_variant().fixed_array::<u8>().is_err());
+
+        let b = [1u32, 10u32, 100u32];
+        let v = b.to_variant();
+        assert_eq!(v.fixed_array::<u32>().unwrap(), b);
+        assert!(v.fixed_array::<u8>().is_err());
+
+        let b = [true, false, true];
+        let v = b.to_variant();
+        assert_eq!(v.fixed_array::<bool>().unwrap(), b);
+        assert!(v.fixed_array::<u8>().is_err());
+
+        let b = [1.0f64, 2.0f64, 3.0f64];
+        let v = b.to_variant();
+        assert_eq!(v.fixed_array::<f64>().unwrap(), b);
+        assert!(v.fixed_array::<u64>().is_err());
     }
 
     #[test]
