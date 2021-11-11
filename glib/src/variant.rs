@@ -208,6 +208,7 @@ impl std::error::Error for VariantTypeMismatchError {}
 
 impl Variant {
     /// Returns the type of the value.
+    #[doc(alias = "g_variant_get_type")]
     pub fn type_(&self) -> &VariantTy {
         unsafe { VariantTy::from_ptr(ffi::g_variant_get_type(self.to_glib_none().0)) }
     }
@@ -345,6 +346,7 @@ impl Variant {
     /// Tries to extract a `&[u8]` from a variant of type `ay` (array of bytes).
     ///
     /// Returns an error if the type is not `ay`.
+    #[doc(alias = "g_variant_get_data")]
     pub fn bytes(&self) -> Result<&[u8], VariantTypeMismatchError> {
         unsafe {
             let t = self.type_();
@@ -369,6 +371,7 @@ impl Variant {
     /// # Panics
     ///
     /// This function panics if not all variants are of type `T`.
+    #[doc(alias = "g_variant_new_array")]
     pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
         children: I,
     ) -> Self {
@@ -393,6 +396,7 @@ impl Variant {
     }
 
     /// Creates a new Variant tuple from children.
+    #[doc(alias = "g_variant_new_tuple")]
     pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
@@ -406,6 +410,7 @@ impl Variant {
     }
 
     /// Creates a new maybe Variant.
+    #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
         let type_ = T::static_variant_type();
         let ptr = match child {
