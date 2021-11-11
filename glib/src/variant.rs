@@ -1420,7 +1420,8 @@ impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
     }
 }
 
-pub unsafe trait FixedSizeVariantType: StaticVariantType + Sized {}
+/// Trait for fixed size variant types.
+pub unsafe trait FixedSizeVariantType: StaticVariantType + Sized + Copy {}
 unsafe impl FixedSizeVariantType for u8 {}
 unsafe impl FixedSizeVariantType for i16 {}
 unsafe impl FixedSizeVariantType for u16 {}
@@ -1430,6 +1431,148 @@ unsafe impl FixedSizeVariantType for i64 {}
 unsafe impl FixedSizeVariantType for u64 {}
 unsafe impl FixedSizeVariantType for f64 {}
 unsafe impl FixedSizeVariantType for bool {}
+
+/// Wrapper type for fixed size type arrays.
+///
+/// Converting this from/to a `Variant` is generally more efficient than working on the type
+/// directly. This is especially important when deriving `Variant` trait implementations on custom
+/// types.
+///
+/// This wrapper type can hold for example `Vec<u8>`, `Box<[u8]>` and similar types.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct FixedSizeVariantArray<A, T>(A, std::marker::PhantomData<T>)
+where
+    A: AsRef<[T]>,
+    T: FixedSizeVariantType;
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<&[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &&[T]) -> bool {
+        self.0.as_ref() == *other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &[T]) -> bool {
+        self.0.as_ref() == other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<[T; N]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &[T; N]) -> bool {
+        self.0.as_ref() == other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<&[T; N]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn eq(&self, other: &&[T; N]) -> bool {
+        self.0.as_ref() == *other
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
+    for &[T]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        *self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
+    for [T]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
+    PartialEq<FixedSizeVariantArray<A, T>> for [T; N]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
+    PartialEq<FixedSizeVariantArray<A, T>> for &[T; N]
+{
+    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
+        *self == other.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<A> for FixedSizeVariantArray<A, T> {
+    fn from(array: A) -> Self {
+        FixedSizeVariantArray(array, std::marker::PhantomData)
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> FixedSizeVariantArray<A, T> {
+    pub fn into_inner(self) -> A {
+        self.0
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::Deref for FixedSizeVariantArray<A, T> {
+    type Target = [T];
+
+    fn deref(&self) -> &Self::Target {
+        self.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> std::ops::DerefMut
+    for FixedSizeVariantArray<A, T>
+{
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.0.as_mut()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArray<A, T> {
+    fn as_ref(&self) -> &[T] {
+        self.0.as_ref()
+    }
+}
+
+impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> AsMut<[T]>
+    for FixedSizeVariantArray<A, T>
+{
+    fn as_mut(&mut self) -> &mut [T] {
+        self.0.as_mut()
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> StaticVariantType for FixedSizeVariantArray<A, T> {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        <[T]>::static_variant_type()
+    }
+}
+
+impl<A: AsRef<[T]> + for<'a> From<&'a [T]>, T: FixedSizeVariantType> FromVariant
+    for FixedSizeVariantArray<A, T>
+{
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        Some(FixedSizeVariantArray(
+            A::from(variant.fixed_array::<T>().ok()?),
+            std::marker::PhantomData,
+        ))
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> ToVariant for FixedSizeVariantArray<A, T> {
+    fn to_variant(&self) -> Variant {
+        Variant::array_from_fixed_array(self.0.as_ref())
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -1510,6 +1653,19 @@ mod tests {
             assert_eq!(v.fixed_array::<f64>().unwrap(), b);
         }
         assert!(v.fixed_array::<u64>().is_err());
+    }
+
+    #[test]
+    fn test_fixed_variant_array() {
+        let b = FixedSizeVariantArray::from(&b"this is a test"[..]);
+        let v = b.to_variant();
+        assert_eq!(v.type_().as_str(), "ay");
+        assert_eq!(&*v.get::<FixedSizeVariantArray<Vec<u8>, u8>>().unwrap(), b);
+
+        let b = FixedSizeVariantArray::from(vec![1i32, 2, 3]);
+        let v = b.to_variant();
+        assert_eq!(v.type_().as_str(), "ai");
+        assert_eq!(v.get::<FixedSizeVariantArray<Vec<i32>, i32>>().unwrap(), b);
     }
 
     #[test]
