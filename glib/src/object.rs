@@ -1131,22 +1131,26 @@ impl Object {
     ) -> Result<Object, BoolError> {
         use std::ffi::CString;
 
-        let klass = ObjectClass::from_type(type_)
-            .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-        let pspecs = klass.list_properties();
+        let params = if !properties.is_empty() {
+            let klass = ObjectClass::from_type(type_)
+                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
+            let pspecs = klass.list_properties();
 
-        let params = properties
-            .iter()
-            .map(|(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
+            properties
+                .iter()
+                .map(|(name, value)| {
+                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                    })?;
 
-                let mut value = value.to_value();
-                validate_property_type(type_, true, pspec, &mut value)?;
-                Ok((CString::new(*name).unwrap(), value))
-            })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+                    let mut value = value.to_value();
+                    validate_property_type(type_, true, pspec, &mut value)?;
+                    Ok((CString::new(*name).unwrap(), value))
+                })
+                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+        } else {
+            smallvec::SmallVec::new()
+        };
 
         unsafe { Object::new_internal(type_, &params) }
     }
@@ -1158,22 +1162,26 @@ impl Object {
     pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Result<Object, BoolError> {
         use std::ffi::CString;
 
-        let klass = ObjectClass::from_type(type_)
-            .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-        let pspecs = klass.list_properties();
+        let params = if !properties.is_empty() {
+            let klass = ObjectClass::from_type(type_)
+                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
+            let pspecs = klass.list_properties();
 
-        let params = properties
-            .iter()
-            .map(|(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
+            properties
+                .iter()
+                .map(|(name, value)| {
+                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                    })?;
 
-                let mut value = value.clone();
-                validate_property_type(type_, true, pspec, &mut value)?;
-                Ok((CString::new(*name).unwrap(), value))
-            })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+                    let mut value = value.clone();
+                    validate_property_type(type_, true, pspec, &mut value)?;
+                    Ok((CString::new(*name).unwrap(), value))
+                })
+                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+        } else {
+            smallvec::SmallVec::new()
+        };
 
         unsafe { Object::new_internal(type_, &params) }
     }
