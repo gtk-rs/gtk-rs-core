@@ -29,6 +29,16 @@ impl<T: fmt::Debug + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::Gli
     }
 }
 
+unsafe impl<T: Send + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Send
+    for GPtrSlice<T>
+{
+}
+
+unsafe impl<T: Sync + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Sync
+    for GPtrSlice<T>
+{
+}
+
 impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PartialEq
     for GPtrSlice<T>
 {
@@ -40,6 +50,30 @@ impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::Glib
 impl<T: Eq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Eq
     for GPtrSlice<T>
 {
+}
+
+impl<T: PartialOrd + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PartialOrd
+    for GPtrSlice<T>
+{
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.as_slice().partial_cmp(other.as_slice())
+    }
+}
+
+impl<T: Ord + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Ord
+    for GPtrSlice<T>
+{
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.as_slice().cmp(other.as_slice())
+    }
+}
+
+impl<T: std::hash::Hash + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
+    std::hash::Hash for GPtrSlice<T>
+{
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.as_slice().hash(state)
+    }
 }
 
 impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
@@ -245,6 +279,10 @@ pub struct GSlice<T> {
     transfer: ContainerTransfer,
 }
 
+unsafe impl<T: Send> Send for GSlice<T> {}
+
+unsafe impl<T: Sync> Sync for GSlice<T> {}
+
 impl<T: fmt::Debug> fmt::Debug for GSlice<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.as_slice().fmt(f)
@@ -258,6 +296,24 @@ impl<T: PartialEq> PartialEq for GSlice<T> {
 }
 
 impl<T: Eq> Eq for GSlice<T> {}
+
+impl<T: PartialOrd> PartialOrd for GSlice<T> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.as_slice().partial_cmp(other.as_slice())
+    }
+}
+
+impl<T: Ord> Ord for GSlice<T> {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.as_slice().cmp(other.as_slice())
+    }
+}
+
+impl<T: std::hash::Hash> std::hash::Hash for GSlice<T> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.as_slice().hash(state)
+    }
+}
 
 impl<T: PartialEq> PartialEq<[T]> for GSlice<T> {
     fn eq(&self, other: &[T]) -> bool {
