@@ -451,6 +451,21 @@ mod test {
     }
 
     #[test]
+    fn test_properties() {
+        let type_ = SimpleObject::static_type();
+        let obj = Object::with_type(type_, &[]).expect("Object::new failed");
+
+        assert!(obj.type_().is_a(Dummy::static_type()));
+
+        let properties = obj.list_properties();
+        assert_eq!(properties.len(), 4);
+        assert_eq!(properties[0].name(), "name");
+        assert_eq!(properties[1].name(), "construct-name");
+        assert_eq!(properties[2].name(), "constructed");
+        assert_eq!(properties[3].name(), "child");
+    }
+
+    #[test]
     fn test_create_child_object() {
         let obj: ChildObject = Object::new(&[]).expect("Object::new failed");
 

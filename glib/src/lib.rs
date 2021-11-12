@@ -59,6 +59,9 @@ pub mod error;
 #[macro_use]
 pub mod object;
 
+mod collections;
+pub use collections::GPtrSlice;
+
 pub use self::auto::functions::*;
 pub use self::auto::*;
 #[allow(non_upper_case_globals)]
