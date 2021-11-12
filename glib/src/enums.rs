@@ -2,9 +2,9 @@
 
 use crate::translate::*;
 use crate::value::Value;
-use crate::CStr;
 use crate::Type;
-use std::cmp;
+use std::ffi::CStr;
+use std::{cmp, fmt, ptr};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum UserDirectory {
@@ -50,12 +50,21 @@ impl IntoGlib for UserDirectory {
 
 /// Representation of an `enum` for dynamically, at runtime, querying the values of the enum and
 /// using them.
-#[derive(Debug)]
 #[doc(alias = "GEnumClass")]
-pub struct EnumClass(*mut gobject_ffi::GEnumClass);
+#[repr(transparent)]
+pub struct EnumClass(ptr::NonNull<gobject_ffi::GEnumClass>);
 
 unsafe impl Send for EnumClass {}
 unsafe impl Sync for EnumClass {}
+
+impl fmt::Debug for EnumClass {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("EnumClass")
+            .field("type", &self.type_())
+            .field("values", &self.values())
+            .finish()
+    }
+}
 
 impl EnumClass {
     /// Create a new `EnumClass` from a `Type`.
@@ -72,14 +81,15 @@ impl EnumClass {
             }
 
             Some(EnumClass(
-                gobject_ffi::g_type_class_ref(type_.into_glib()) as *mut _
+                ptr::NonNull::new(gobject_ffi::g_type_class_ref(type_.into_glib()) as *mut _)
+                    .unwrap(),
             ))
         }
     }
 
     /// `Type` of the enum.
     pub fn type_(&self) -> Type {
-        unsafe { from_glib((*self.0).g_type_class.g_type) }
+        unsafe { from_glib(self.0.as_ref().g_type_class.g_type) }
     }
 
     /// Gets `EnumValue` by integer `value`, if existing.
@@ -88,13 +98,13 @@ impl EnumClass {
     /// with `value`.
     #[doc(alias = "g_enum_get_value")]
     #[doc(alias = "get_value")]
-    pub fn value(&self, value: i32) -> Option<EnumValue> {
+    pub fn value(&self, value: i32) -> Option<&EnumValue> {
         unsafe {
-            let v = gobject_ffi::g_enum_get_value(self.0, value);
+            let v = gobject_ffi::g_enum_get_value(self.0.as_ptr(), value);
             if v.is_null() {
                 None
             } else {
-                Some(EnumValue(v, self.clone()))
+                Some(&*(v as *const EnumValue))
             }
         }
     }
@@ -105,13 +115,13 @@ impl EnumClass {
     /// with name `name`.
     #[doc(alias = "g_enum_get_value_by_name")]
     #[doc(alias = "get_value_by_name")]
-    pub fn value_by_name(&self, name: &str) -> Option<EnumValue> {
+    pub fn value_by_name(&self, name: &str) -> Option<&EnumValue> {
         unsafe {
-            let v = gobject_ffi::g_enum_get_value_by_name(self.0, name.to_glib_none().0);
+            let v = gobject_ffi::g_enum_get_value_by_name(self.0.as_ptr(), name.to_glib_none().0);
             if v.is_null() {
                 None
             } else {
-                Some(EnumValue(v, self.clone()))
+                Some(&*(v as *const EnumValue))
             }
         }
     }
@@ -122,108 +132,114 @@ impl EnumClass {
     /// with nick `nick`.
     #[doc(alias = "g_enum_get_value_by_nick")]
     #[doc(alias = "get_value_by_nick")]
-    pub fn value_by_nick(&self, nick: &str) -> Option<EnumValue> {
+    pub fn value_by_nick(&self, nick: &str) -> Option<&EnumValue> {
         unsafe {
-            let v = gobject_ffi::g_enum_get_value_by_nick(self.0, nick.to_glib_none().0);
+            let v = gobject_ffi::g_enum_get_value_by_nick(self.0.as_ptr(), nick.to_glib_none().0);
             if v.is_null() {
                 None
             } else {
-                Some(EnumValue(v, self.clone()))
+                Some(&*(v as *const EnumValue))
             }
         }
     }
 
     /// Gets all `EnumValue` of this `EnumClass`.
     #[doc(alias = "get_values")]
-    pub fn values(&self) -> Vec<EnumValue> {
+    pub fn values(&self) -> &[EnumValue] {
         unsafe {
-            let n = (*self.0).n_values;
-            let mut res = Vec::with_capacity(n as usize);
-            for i in 0..(n as usize) {
-                res.push(EnumValue((*self.0).values.add(i), self.clone()))
-            }
-            res
+            std::slice::from_raw_parts(
+                self.0.as_ref().values as *const EnumValue,
+                self.0.as_ref().n_values as usize,
+            )
         }
     }
 
     /// Converts integer `value` to a `Value`, if part of the enum.
     pub fn to_value(&self, value: i32) -> Option<Value> {
-        self.value(value).map(|v| v.to_value())
+        self.value(value).map(|v| v.to_value(self))
     }
 
     /// Converts string name `name` to a `Value`, if part of the enum.
     pub fn to_value_by_name(&self, name: &str) -> Option<Value> {
-        self.value_by_name(name).map(|v| v.to_value())
+        self.value_by_name(name).map(|v| v.to_value(self))
     }
 
     /// Converts string nick `nick` to a `Value`, if part of the enum.
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
-        self.value_by_nick(nick).map(|v| v.to_value())
+        self.value_by_nick(nick).map(|v| v.to_value(self))
     }
 }
 
 impl Drop for EnumClass {
     fn drop(&mut self) {
         unsafe {
-            gobject_ffi::g_type_class_unref(self.0 as *mut _);
+            gobject_ffi::g_type_class_unref(self.0.as_ptr() as *mut _);
         }
     }
 }
 
 impl Clone for EnumClass {
     fn clone(&self) -> Self {
-        unsafe { Self(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _) }
+        unsafe {
+            Self(ptr::NonNull::new(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _).unwrap())
+        }
     }
 }
 
 /// Representation of a single enum value of an `EnumClass`.
-#[derive(Debug, Clone)]
 #[doc(alias = "GEnumValue")]
-pub struct EnumValue(*const gobject_ffi::GEnumValue, EnumClass);
+#[repr(transparent)]
+pub struct EnumValue(gobject_ffi::GEnumValue);
 
 unsafe impl Send for EnumValue {}
 unsafe impl Sync for EnumValue {}
+
+impl fmt::Debug for EnumValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("EnumValue")
+            .field("value", &self.value())
+            .field("name", &self.name())
+            .field("nick", &self.nick())
+            .finish()
+    }
+}
 
 impl EnumValue {
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
     pub fn value(&self) -> i32 {
-        unsafe { (*self.0).value }
+        self.0.value
     }
 
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
     pub fn name(&self) -> &str {
-        unsafe { CStr::from_ptr((*self.0).value_name).to_str().unwrap() }
+        unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
-        unsafe { CStr::from_ptr((*self.0).value_nick).to_str().unwrap() }
+        unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
     /// Convert enum value to a `Value`.
-    pub fn to_value(&self) -> Value {
+    pub fn to_value(&self, enum_: &EnumClass) -> Value {
         unsafe {
-            let mut v = Value::from_type(self.1.type_());
-            gobject_ffi::g_value_set_enum(v.to_glib_none_mut().0, (*self.0).value);
+            let mut v = Value::from_type(enum_.type_());
+            gobject_ffi::g_value_set_enum(v.to_glib_none_mut().0, self.0.value);
             v
         }
     }
 
     /// Convert enum value from a `Value`.
-    pub fn from_value(value: &Value) -> Option<EnumValue> {
+    pub fn from_value(value: &Value) -> Option<(EnumClass, &EnumValue)> {
         unsafe {
-            let enum_class = EnumClass::new(value.type_());
-            enum_class.and_then(|e| e.value(gobject_ffi::g_value_get_enum(value.to_glib_none().0)))
+            let enum_class = EnumClass::new(value.type_())?;
+            let v = enum_class.value(gobject_ffi::g_value_get_enum(value.to_glib_none().0))?;
+            let v = &*(v as *const EnumValue);
+            Some((enum_class, v))
         }
-    }
-
-    /// Get `EnumClass` to which the enum value belongs.
-    #[doc(alias = "get_class")]
-    pub fn class(&self) -> &EnumClass {
-        &self.1
     }
 }
 
@@ -249,12 +265,21 @@ impl Ord for EnumValue {
 
 /// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
 /// using them
-#[derive(Debug)]
 #[doc(alias = "GFlagsClass")]
-pub struct FlagsClass(*mut gobject_ffi::GFlagsClass);
+#[repr(transparent)]
+pub struct FlagsClass(ptr::NonNull<gobject_ffi::GFlagsClass>);
 
 unsafe impl Send for FlagsClass {}
 unsafe impl Sync for FlagsClass {}
+
+impl fmt::Debug for FlagsClass {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("FlagsClass")
+            .field("type", &self.type_())
+            .field("values", &self.values())
+            .finish()
+    }
+}
 
 impl FlagsClass {
     /// Create a new `FlagsClass` from a `Type`
@@ -271,14 +296,15 @@ impl FlagsClass {
             }
 
             Some(FlagsClass(
-                gobject_ffi::g_type_class_ref(type_.into_glib()) as *mut _
+                ptr::NonNull::new(gobject_ffi::g_type_class_ref(type_.into_glib()) as *mut _)
+                    .unwrap(),
             ))
         }
     }
 
     /// `Type` of the flags.
     pub fn type_(&self) -> Type {
-        unsafe { from_glib((*self.0).g_type_class.g_type) }
+        unsafe { from_glib(self.0.as_ref().g_type_class.g_type) }
     }
 
     /// Gets `FlagsValue` by integer `value`, if existing.
@@ -287,13 +313,13 @@ impl FlagsClass {
     /// with `value`.
     #[doc(alias = "g_flags_get_first_value")]
     #[doc(alias = "get_value")]
-    pub fn value(&self, value: u32) -> Option<FlagsValue> {
+    pub fn value(&self, value: u32) -> Option<&FlagsValue> {
         unsafe {
-            let v = gobject_ffi::g_flags_get_first_value(self.0, value);
+            let v = gobject_ffi::g_flags_get_first_value(self.0.as_ptr(), value);
             if v.is_null() {
                 None
             } else {
-                Some(FlagsValue(v, self.clone()))
+                Some(&*(v as *const FlagsValue))
             }
         }
     }
@@ -304,13 +330,13 @@ impl FlagsClass {
     /// with name `name`.
     #[doc(alias = "g_flags_get_value_by_name")]
     #[doc(alias = "get_value_by_name")]
-    pub fn value_by_name(&self, name: &str) -> Option<FlagsValue> {
+    pub fn value_by_name(&self, name: &str) -> Option<&FlagsValue> {
         unsafe {
-            let v = gobject_ffi::g_flags_get_value_by_name(self.0, name.to_glib_none().0);
+            let v = gobject_ffi::g_flags_get_value_by_name(self.0.as_ptr(), name.to_glib_none().0);
             if v.is_null() {
                 None
             } else {
-                Some(FlagsValue(v, self.clone()))
+                Some(&*(v as *const FlagsValue))
             }
         }
     }
@@ -321,43 +347,41 @@ impl FlagsClass {
     /// with nick `nick`.
     #[doc(alias = "g_flags_get_value_by_nick")]
     #[doc(alias = "get_value_by_nick")]
-    pub fn value_by_nick(&self, nick: &str) -> Option<FlagsValue> {
+    pub fn value_by_nick(&self, nick: &str) -> Option<&FlagsValue> {
         unsafe {
-            let v = gobject_ffi::g_flags_get_value_by_nick(self.0, nick.to_glib_none().0);
+            let v = gobject_ffi::g_flags_get_value_by_nick(self.0.as_ptr(), nick.to_glib_none().0);
             if v.is_null() {
                 None
             } else {
-                Some(FlagsValue(v, self.clone()))
+                Some(&*(v as *const FlagsValue))
             }
         }
     }
 
     /// Gets all `FlagsValue` of this `FlagsClass`.
     #[doc(alias = "get_values")]
-    pub fn values(&self) -> Vec<FlagsValue> {
+    pub fn values(&self) -> &[FlagsValue] {
         unsafe {
-            let n = (*self.0).n_values;
-            let mut res = Vec::with_capacity(n as usize);
-            for i in 0..(n as usize) {
-                res.push(FlagsValue((*self.0).values.add(i), self.clone()))
-            }
-            res
+            std::slice::from_raw_parts(
+                self.0.as_ref().values as *const FlagsValue,
+                self.0.as_ref().n_values as usize,
+            )
         }
     }
 
     /// Converts integer `value` to a `Value`, if part of the flags.
     pub fn to_value(&self, value: u32) -> Option<Value> {
-        self.value(value).map(|v| v.to_value())
+        self.value(value).map(|v| v.to_value(self))
     }
 
     /// Converts string name `name` to a `Value`, if part of the flags.
     pub fn to_value_by_name(&self, name: &str) -> Option<Value> {
-        self.value_by_name(name).map(|v| v.to_value())
+        self.value_by_name(name).map(|v| v.to_value(self))
     }
 
     /// Converts string nick `nick` to a `Value`, if part of the flags.
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
-        self.value_by_nick(nick).map(|v| v.to_value())
+        self.value_by_nick(nick).map(|v| v.to_value(self))
     }
 
     /// Checks if the flags corresponding to integer `f` is set in `value`.
@@ -551,74 +575,78 @@ impl FlagsClass {
 impl Drop for FlagsClass {
     fn drop(&mut self) {
         unsafe {
-            gobject_ffi::g_type_class_unref(self.0 as *mut _);
+            gobject_ffi::g_type_class_unref(self.0.as_ptr() as *mut _);
         }
     }
 }
 
 impl Clone for FlagsClass {
     fn clone(&self) -> Self {
-        unsafe { Self(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _) }
+        unsafe {
+            Self(ptr::NonNull::new(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _).unwrap())
+        }
     }
 }
 
 /// Representation of a single flags value of a `FlagsClass`.
-#[derive(Debug, Clone)]
 #[doc(alias = "GFlagsValue")]
-pub struct FlagsValue(*const gobject_ffi::GFlagsValue, FlagsClass);
+#[repr(transparent)]
+pub struct FlagsValue(gobject_ffi::GFlagsValue);
 
 unsafe impl Send for FlagsValue {}
 unsafe impl Sync for FlagsValue {}
+
+impl fmt::Debug for FlagsValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("FlagsValue")
+            .field("value", &self.value())
+            .field("name", &self.name())
+            .field("nick", &self.nick())
+            .finish()
+    }
+}
 
 impl FlagsValue {
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
     pub fn value(&self) -> u32 {
-        unsafe { (*self.0).value }
+        self.0.value
     }
 
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
     pub fn name(&self) -> &str {
-        unsafe { CStr::from_ptr((*self.0).value_name).to_str().unwrap() }
+        unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
-        unsafe { CStr::from_ptr((*self.0).value_nick).to_str().unwrap() }
+        unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
     /// Convert flags value to a `Value`.
-    pub fn to_value(&self) -> Value {
+    pub fn to_value(&self, flags: &FlagsClass) -> Value {
         unsafe {
-            let mut v = Value::from_type(self.1.type_());
-            gobject_ffi::g_value_set_flags(v.to_glib_none_mut().0, (*self.0).value);
+            let mut v = Value::from_type(flags.type_());
+            gobject_ffi::g_value_set_flags(v.to_glib_none_mut().0, self.0.value);
             v
         }
     }
 
     /// Convert flags values from a `Value`. This returns all flags that are set.
-    pub fn from_value(value: &Value) -> Vec<FlagsValue> {
+    pub fn from_value(value: &Value) -> Option<(FlagsClass, Vec<&FlagsValue>)> {
         unsafe {
-            let flags_class = FlagsClass::new(value.type_());
+            let flags_class = FlagsClass::new(value.type_())?;
             let mut res = Vec::new();
-            if let Some(flags_class) = flags_class {
-                let f = gobject_ffi::g_value_get_flags(value.to_glib_none().0);
-                for v in flags_class.values() {
-                    if v.value() & f != 0 {
-                        res.push(v);
-                    }
+            let f = gobject_ffi::g_value_get_flags(value.to_glib_none().0);
+            for v in flags_class.values() {
+                if v.value() & f != 0 {
+                    res.push(&*(v as *const FlagsValue));
                 }
             }
-            res
+            Some((flags_class, res))
         }
-    }
-
-    /// Get `FlagsClass` to which the flags value belongs.
-    #[doc(alias = "get_class")]
-    pub fn class(&self) -> &FlagsClass {
-        &self.1
     }
 }
 
@@ -715,5 +743,26 @@ impl<'a> FlagsBuilder<'a> {
     /// Converts to the final `Value`, unless any previous setting/unsetting of flags failed.
     pub fn build(self) -> Option<Value> {
         self.1
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::StaticType;
+
+    #[test]
+    fn test_flags() {
+        let flags = FlagsClass::new(crate::BindingFlags::static_type()).unwrap();
+        let values = flags.values();
+        let def1 = values
+            .iter()
+            .find(|v| v.name() == "G_BINDING_DEFAULT")
+            .unwrap();
+        let def2 = flags.value_by_name("G_BINDING_DEFAULT").unwrap();
+        assert!(ptr::eq(def1, def2));
+
+        assert_eq!(def1.value(), crate::BindingFlags::DEFAULT.bits());
     }
 }
