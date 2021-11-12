@@ -162,5 +162,56 @@ pub fn impl_gboxed(input: &syn::DeriveInput) -> TokenStream {
         #impl_to_value_optional
 
         #impl_from_value
+
+        impl #crate_ident::translate::FromGlibPtrNone<*const #name> for #name {
+            #[inline]
+            unsafe fn from_glib_none(ptr: *const #name) -> Self {
+                assert!(!ptr.is_null());
+                (&*ptr).clone()
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrNone<*mut #name> for #name {
+            #[inline]
+            unsafe fn from_glib_none(ptr: *mut #name) -> Self {
+                #crate_ident::translate::FromGlibPtrNone::from_glib_none(ptr as *const _)
+            }
+        }
+
+        impl #crate_ident::translate::FromGlibPtrFull<*mut #name> for #name {
+            #[inline]
+            unsafe fn from_glib_full(ptr: *mut #name) -> Self {
+                assert!(!ptr.is_null());
+                *Box::from_raw(ptr)
+            }
+        }
+
+        impl<'a> #crate_ident::translate::ToGlibPtr<'a, *const #name> for #name {
+            type Storage = &'a Self;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *const #name, Self> {
+                #crate_ident::translate::Stash(self as *const #name, self)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *const #name {
+                Box::into_raw(Box::new(self.clone()))
+            }
+        }
+
+        impl<'a> #crate_ident::translate::ToGlibPtr<'a, *mut #name> for #name {
+            type Storage = &'a Self;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *mut #name, Self> {
+                #crate_ident::translate::Stash(self as *const #name as *mut _, self)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *mut #name {
+                Box::into_raw(Box::new(self.clone())) as *mut _
+            }
+        }
     }
 }
