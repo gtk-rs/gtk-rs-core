@@ -2886,7 +2886,7 @@ fn validate_signal_arguments(
     let param_types = Iterator::zip(args.iter_mut(), signal_query.param_types());
 
     for (i, (arg, param_type)) in param_types.enumerate() {
-        let param_type: Type = param_type.into();
+        let param_type: Type = (*param_type).into();
         if arg.type_().is_a(Object::static_type()) {
             match arg.get::<Option<Object>>() {
                 Ok(Some(obj)) => {

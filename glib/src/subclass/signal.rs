@@ -1,7 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use smallvec::SmallVec;
-
 use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
 use crate::Closure;
@@ -109,12 +107,12 @@ impl SignalQuery {
     }
 
     /// The parameters for the user callback.
-    pub fn param_types(&self) -> SmallVec<[SignalType; 10]> {
+    pub fn param_types(&self) -> &[SignalType] {
         unsafe {
-            let types = self.0.param_types;
-            FromGlibContainerAsVec::from_glib_none_num_as_vec(types, self.n_params() as usize)
-                .into_iter()
-                .collect::<smallvec::SmallVec<[_; 10]>>()
+            std::slice::from_raw_parts(
+                self.0.param_types as *const SignalType,
+                self.0.n_params as usize,
+            )
         }
     }
 }
@@ -221,6 +219,7 @@ impl IntoGlib for SignalId {
 }
 
 #[derive(Copy, Clone, Hash)]
+#[repr(transparent)]
 pub struct SignalType(ffi::GType);
 
 impl SignalType {
@@ -527,12 +526,6 @@ impl Signal {
             SignalRegistration::Registered { .. } => unreachable!(),
         };
 
-        let param_types = self
-            .param_types
-            .iter()
-            .map(|t| t.into_glib())
-            .collect::<Vec<_>>();
-
         let class_handler = class_handler.map(|class_handler| {
             Closure::new(move |values| unsafe {
                 let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
@@ -578,8 +571,8 @@ impl Signal {
                 accumulator as ffi::gpointer,
                 None,
                 self.return_type.into_glib(),
-                param_types.len() as u32,
-                param_types.as_ptr() as *mut _,
+                self.param_types.len() as u32,
+                self.param_types.as_ptr() as *mut _,
             );
             *registration = SignalRegistration::Registered {
                 type_,
