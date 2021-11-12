@@ -513,29 +513,6 @@ pub fn dpgettext2(domain: Option<&str>, context: &str, msgid: &str) -> crate::GS
 //    unsafe { TODO: call ffi:g_file_error_from_errno() }
 //}
 
-#[doc(alias = "g_file_get_contents")]
-pub fn file_get_contents(filename: impl AsRef<std::path::Path>) -> Result<Vec<u8>, crate::Error> {
-    unsafe {
-        let mut contents = ptr::null_mut();
-        let mut length = mem::MaybeUninit::uninit();
-        let mut error = ptr::null_mut();
-        let _ = ffi::g_file_get_contents(
-            filename.as_ref().to_glib_none().0,
-            &mut contents,
-            length.as_mut_ptr(),
-            &mut error,
-        );
-        if error.is_null() {
-            Ok(FromGlibContainer::from_glib_full_num(
-                contents,
-                length.assume_init() as usize,
-            ))
-        } else {
-            Err(from_glib_full(error))
-        }
-    }
-}
-
 #[doc(alias = "g_file_open_tmp")]
 pub fn file_open_tmp(
     tmpl: Option<impl AsRef<std::path::Path>>,

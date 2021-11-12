@@ -5,6 +5,7 @@ use crate::gstring::GString;
 use crate::translate::*;
 use crate::Error;
 use std::ffi::{OsStr, OsString};
+use std::mem;
 use std::path::{Path, PathBuf};
 use std::ptr;
 
@@ -201,6 +202,36 @@ pub fn mkstemp<P: AsRef<std::path::Path>>(tmpl: P) -> i32 {
     use ffi::g_mkstemp_utf8 as g_mkstemp;
 
     unsafe { g_mkstemp(tmpl.as_ref().to_glib_none().0) }
+}
+
+#[doc(alias = "g_file_get_contents")]
+pub fn file_get_contents(
+    filename: impl AsRef<std::path::Path>,
+) -> Result<crate::GSlice<u8>, crate::Error> {
+    #[cfg(not(windows))]
+    use ffi::g_file_get_contents;
+    #[cfg(windows)]
+    use ffi::g_file_get_contents_utf8 as g_file_get_contents;
+
+    unsafe {
+        let mut contents = ptr::null_mut();
+        let mut length = mem::MaybeUninit::uninit();
+        let mut error = ptr::null_mut();
+        let _ = g_file_get_contents(
+            filename.as_ref().to_glib_none().0,
+            &mut contents,
+            length.as_mut_ptr(),
+            &mut error,
+        );
+        if error.is_null() {
+            Ok(crate::GSlice::from_glib_full_num_copy(
+                contents,
+                length.assume_init() as usize,
+            ))
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
 }
 
 pub fn is_canonical_pspec_name(name: &str) -> bool {
