@@ -33,7 +33,6 @@ pub use self::signal::{
     signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
     signal_stop_emission_by_name, SignalHandlerId,
 };
-use std::ffi::CStr;
 
 pub use self::enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory};
 pub use self::types::{ILong, StaticType, Type, ULong};
