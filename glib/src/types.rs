@@ -14,6 +14,7 @@ use std::ptr;
 /// A GLib or GLib-based library type
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[doc(alias = "GType")]
+#[repr(transparent)]
 pub struct Type(ffi::GType);
 
 impl Type {

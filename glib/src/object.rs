@@ -289,6 +289,7 @@ pub trait CanDowncast<T> {}
 impl<Super: IsA<Super>, Sub: IsA<Super>> CanDowncast<Sub> for Super {}
 
 // Manual implementation of glib_shared_wrapper! because of special cases
+#[repr(transparent)]
 pub struct ObjectRef {
     inner: ptr::NonNull<GObject>,
 }
@@ -600,6 +601,7 @@ macro_rules! glib_object_wrapper {
         // otherwise they would potentially give different results for the same object depending on
         // the type we currently know for it
         #[derive(Clone, Hash, Ord, Eq, Debug)]
+        #[repr(transparent)]
         $visibility struct $name($crate::object::ObjectRef);
 
         #[doc(hidden)]
