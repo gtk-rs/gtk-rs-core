@@ -1130,8 +1130,6 @@ impl Object {
         type_: Type,
         properties: &[(&str, &dyn ToValue)],
     ) -> Result<Object, BoolError> {
-        use std::ffi::CString;
-
         let params = if !properties.is_empty() {
             let klass = ObjectClass::from_type(type_)
                 .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
@@ -1146,7 +1144,7 @@ impl Object {
 
                     let mut value = value.to_value();
                     validate_property_type(type_, true, pspec, &mut value)?;
-                    Ok((CString::new(*name).unwrap(), value))
+                    Ok((pspec.name().as_ptr(), value))
                 })
                 .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
         } else {
@@ -1161,8 +1159,6 @@ impl Object {
     /// This fails if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Result<Object, BoolError> {
-        use std::ffi::CString;
-
         let params = if !properties.is_empty() {
             let klass = ObjectClass::from_type(type_)
                 .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
@@ -1177,7 +1173,7 @@ impl Object {
 
                     let mut value = value.clone();
                     validate_property_type(type_, true, pspec, &mut value)?;
-                    Ok((CString::new(*name).unwrap(), value))
+                    Ok((pspec.name().as_ptr(), value))
                 })
                 .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
         } else {
@@ -1189,7 +1185,7 @@ impl Object {
 
     unsafe fn new_internal(
         type_: Type,
-        params: &[(std::ffi::CString, Value)],
+        params: &[(*const u8, Value)],
     ) -> Result<Object, BoolError> {
         if !type_.is_a(Object::static_type()) {
             return Err(bool_error!(
@@ -1214,8 +1210,8 @@ impl Object {
 
         let params_c = params
             .iter()
-            .map(|&(ref name, ref value)| gobject_ffi::GParameter {
-                name: name.as_ptr(),
+            .map(|&(name, ref value)| gobject_ffi::GParameter {
+                name: name as *const _,
                 value: *value.to_glib_none().0,
             })
             .collect::<smallvec::SmallVec<[_; 10]>>();
@@ -1896,7 +1892,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe {
             gobject_ffi::g_object_set_property(
                 self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
+                pspec.name().as_ptr() as *const _,
                 property_value.to_glib_none().0,
             );
         }
@@ -1929,7 +1925,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe {
             gobject_ffi::g_object_set_property(
                 self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
+                pspec.name().as_ptr() as *const _,
                 property_value.to_glib_none().0,
             );
         }
@@ -1946,8 +1942,6 @@ impl<T: ObjectType> ObjectExt for T {
         &self,
         property_values: &[(&str, &dyn ToValue)],
     ) -> Result<(), BoolError> {
-        use std::ffi::CString;
-
         let pspecs = self.list_properties();
 
         let params = property_values
@@ -1959,7 +1953,7 @@ impl<T: ObjectType> ObjectExt for T {
 
                 let mut value = value.to_value();
                 validate_property_type(self.type_(), false, pspec, &mut value)?;
-                Ok((CString::new(name).unwrap(), value))
+                Ok((pspec.name().as_ptr(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
 
@@ -1967,7 +1961,7 @@ impl<T: ObjectType> ObjectExt for T {
             unsafe {
                 gobject_ffi::g_object_set_property(
                     self.as_object_ref().to_glib_none().0,
-                    name.as_ptr(),
+                    name as *const _,
                     value.to_glib_none().0,
                 );
             }
@@ -1984,8 +1978,6 @@ impl<T: ObjectType> ObjectExt for T {
         &self,
         property_values: &[(&str, Value)],
     ) -> Result<(), BoolError> {
-        use std::ffi::CString;
-
         let pspecs = self.list_properties();
 
         let params = property_values
@@ -1997,7 +1989,7 @@ impl<T: ObjectType> ObjectExt for T {
 
                 let mut value = value.clone();
                 validate_property_type(self.type_(), false, pspec, &mut value)?;
-                Ok((CString::new(*name).unwrap(), value))
+                Ok((pspec.name().as_ptr(), value))
             })
             .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
 
@@ -2005,7 +1997,7 @@ impl<T: ObjectType> ObjectExt for T {
             unsafe {
                 gobject_ffi::g_object_set_property(
                     self.as_object_ref().to_glib_none().0,
-                    name.as_ptr(),
+                    name as *const _,
                     value.to_glib_none().0,
                 );
             }
@@ -2057,7 +2049,7 @@ impl<T: ObjectType> ObjectExt for T {
             let mut value = Value::from_type(pspec.value_type());
             gobject_ffi::g_object_get_property(
                 self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
+                pspec.name().as_ptr() as *const _,
                 value.to_glib_none_mut().0,
             );
 
