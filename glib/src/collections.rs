@@ -15,14 +15,14 @@ enum ContainerTransfer {
 /// Slice of elements of type `T` allocated by the GLib allocator.
 ///
 /// This can be used like a `&[T]`.
-pub struct GPtrSlice<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> {
+pub struct PtrSlice<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> {
     ptr: ptr::NonNull<T::GlibType>,
     len: usize,
     transfer: ContainerTransfer,
 }
 
 impl<T: fmt::Debug + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> fmt::Debug
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.as_slice().fmt(f)
@@ -30,30 +30,27 @@ impl<T: fmt::Debug + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::Gli
 }
 
 unsafe impl<T: Send + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Send
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
 }
 
 unsafe impl<T: Sync + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Sync
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
 }
 
 impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PartialEq
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     fn eq(&self, other: &Self) -> bool {
         self.as_slice() == other.as_slice()
     }
 }
 
-impl<T: Eq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Eq
-    for GPtrSlice<T>
-{
-}
+impl<T: Eq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Eq for PtrSlice<T> {}
 
 impl<T: PartialOrd + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PartialOrd
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         self.as_slice().partial_cmp(other.as_slice())
@@ -61,7 +58,7 @@ impl<T: PartialOrd + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::Gli
 }
 
 impl<T: Ord + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Ord
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.as_slice().cmp(other.as_slice())
@@ -69,7 +66,7 @@ impl<T: Ord + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
 }
 
 impl<T: std::hash::Hash + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
-    std::hash::Hash for GPtrSlice<T>
+    std::hash::Hash for PtrSlice<T>
 {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.as_slice().hash(state)
@@ -77,7 +74,7 @@ impl<T: std::hash::Hash + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>
 }
 
 impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
-    PartialEq<[T]> for GPtrSlice<T>
+    PartialEq<[T]> for PtrSlice<T>
 {
     fn eq(&self, other: &[T]) -> bool {
         self.as_slice() == other
@@ -85,14 +82,14 @@ impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::Glib
 }
 
 impl<T: PartialEq + GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>>
-    PartialEq<GPtrSlice<T>> for [T]
+    PartialEq<PtrSlice<T>> for [T]
 {
-    fn eq(&self, other: &GPtrSlice<T>) -> bool {
+    fn eq(&self, other: &PtrSlice<T>) -> bool {
         self == other.as_slice()
     }
 }
 
-impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrSlice<T> {
+impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PtrSlice<T> {
     /// Borrows a static C array.
     pub unsafe fn from_glib_borrow_num<'a>(
         ptr: *const <T as GlibPtrDefault>::GlibType,
@@ -111,7 +108,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         }
     }
 
-    /// Create a new `GPtrSlice` around a static C array.
+    /// Create a new `PtrSlice` around a static C array.
     ///
     /// Must only be called for static allocations that are never invalidated.
     pub unsafe fn from_glib_none_num_static(
@@ -124,7 +121,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         );
         assert!(!ptr.is_null() || len == 0);
 
-        GPtrSlice {
+        PtrSlice {
             ptr: if len == 0 {
                 ptr::NonNull::dangling()
             } else {
@@ -135,7 +132,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         }
     }
 
-    /// Create a new `GPtrSlice` around a C array of which the items are static.
+    /// Create a new `PtrSlice` around a C array of which the items are static.
     ///
     /// Must only be called for static items that are never invalidated.
     pub unsafe fn from_glib_container_num_static(
@@ -148,7 +145,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         );
         assert!(!ptr.is_null() || len == 0);
 
-        GPtrSlice {
+        PtrSlice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -162,7 +159,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         }
     }
 
-    /// Create a new `GPtrSlice` around a C array where the items are borrowed.
+    /// Create a new `PtrSlice` around a C array where the items are borrowed.
     pub unsafe fn from_glib_container_num<'a>(
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         len: usize,
@@ -182,7 +179,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
             *p = v.to_glib_full();
         }
 
-        GPtrSlice {
+        PtrSlice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -196,7 +193,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         }
     }
 
-    /// Create a new `GPtrSlice` around a C array.
+    /// Create a new `PtrSlice` around a C array.
     pub unsafe fn from_glib_full_num(
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         len: usize,
@@ -207,7 +204,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
         );
         assert!(!ptr.is_null() || len == 0);
 
-        GPtrSlice {
+        PtrSlice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -236,7 +233,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> GPtrS
     }
 }
 
-impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Drop for GPtrSlice<T> {
+impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Drop for PtrSlice<T> {
     fn drop(&mut self) {
         unsafe {
             if self.transfer == ContainerTransfer::Full {
@@ -253,7 +250,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> Drop 
 }
 
 impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> AsRef<[T]>
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     fn as_ref(&self) -> &[T] {
         unsafe { std::slice::from_raw_parts(self.ptr.as_ptr() as *const T, self.len) }
@@ -261,7 +258,7 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> AsRef
 }
 
 impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> std::ops::Deref
-    for GPtrSlice<T>
+    for PtrSlice<T>
 {
     type Target = [T];
 
@@ -273,61 +270,61 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> std::
 /// Slice of elements of type `T` allocated by the GLib allocator.
 ///
 /// This can be used like a `&[T]`.
-pub struct GSlice<T> {
+pub struct Slice<T> {
     ptr: ptr::NonNull<T>,
     len: usize,
     transfer: ContainerTransfer,
 }
 
-unsafe impl<T: Send> Send for GSlice<T> {}
+unsafe impl<T: Send> Send for Slice<T> {}
 
-unsafe impl<T: Sync> Sync for GSlice<T> {}
+unsafe impl<T: Sync> Sync for Slice<T> {}
 
-impl<T: fmt::Debug> fmt::Debug for GSlice<T> {
+impl<T: fmt::Debug> fmt::Debug for Slice<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.as_slice().fmt(f)
     }
 }
 
-impl<T: PartialEq> PartialEq for GSlice<T> {
+impl<T: PartialEq> PartialEq for Slice<T> {
     fn eq(&self, other: &Self) -> bool {
         self.as_slice() == other.as_slice()
     }
 }
 
-impl<T: Eq> Eq for GSlice<T> {}
+impl<T: Eq> Eq for Slice<T> {}
 
-impl<T: PartialOrd> PartialOrd for GSlice<T> {
+impl<T: PartialOrd> PartialOrd for Slice<T> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         self.as_slice().partial_cmp(other.as_slice())
     }
 }
 
-impl<T: Ord> Ord for GSlice<T> {
+impl<T: Ord> Ord for Slice<T> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.as_slice().cmp(other.as_slice())
     }
 }
 
-impl<T: std::hash::Hash> std::hash::Hash for GSlice<T> {
+impl<T: std::hash::Hash> std::hash::Hash for Slice<T> {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.as_slice().hash(state)
     }
 }
 
-impl<T: PartialEq> PartialEq<[T]> for GSlice<T> {
+impl<T: PartialEq> PartialEq<[T]> for Slice<T> {
     fn eq(&self, other: &[T]) -> bool {
         self.as_slice() == other
     }
 }
 
-impl<T: PartialEq> PartialEq<GSlice<T>> for [T] {
-    fn eq(&self, other: &GSlice<T>) -> bool {
+impl<T: PartialEq> PartialEq<Slice<T>> for [T] {
+    fn eq(&self, other: &Slice<T>) -> bool {
         self == other.as_slice()
     }
 }
 
-impl<T> GSlice<T> {
+impl<T> Slice<T> {
     /// Borrows a static C array.
     pub unsafe fn from_glib_borrow_num<'a>(ptr: *const T, len: usize) -> &'a [T] {
         assert!(!ptr.is_null() || len == 0);
@@ -339,13 +336,13 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a static C array.
+    /// Create a new `Slice` around a static C array.
     ///
     /// Must only be called for static allocations that are never invalidated.
     pub unsafe fn from_glib_none_num_static(ptr: *const T, len: usize) -> Self {
         assert!(!ptr.is_null() || len == 0);
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 ptr::NonNull::dangling()
             } else {
@@ -356,13 +353,13 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a C array of which the items are static.
+    /// Create a new `Slice` around a C array of which the items are static.
     ///
     /// Must only be called for static items that are never invalidated.
     pub unsafe fn from_glib_container_num_static(ptr: *mut T, len: usize) -> Self {
         assert!(!ptr.is_null() || len == 0);
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -376,14 +373,14 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a C array where the items are `Copy`.
+    /// Create a new `Slice` around a C array where the items are `Copy`.
     pub unsafe fn from_glib_container_num_copy(ptr: *mut T, len: usize) -> Self
     where
         T: Copy,
     {
         assert!(!ptr.is_null() || len == 0);
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -397,7 +394,7 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a C array where the items are borrowed.
+    /// Create a new `Slice` around a C array where the items are borrowed.
     pub unsafe fn from_glib_container_num<P: Ptr>(ptr: *mut T, len: usize) -> Self
     where
         T: FromGlibPtrNone<P>,
@@ -410,7 +407,7 @@ impl<T> GSlice<T> {
             ptr::write(p, v);
         }
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -424,14 +421,14 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a C array where the items are `Copy`.
+    /// Create a new `Slice` around a C array where the items are `Copy`.
     pub unsafe fn from_glib_full_num_copy(ptr: *mut T, len: usize) -> Self
     where
         T: Copy,
     {
         assert!(!ptr.is_null() || len == 0);
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -445,11 +442,11 @@ impl<T> GSlice<T> {
         }
     }
 
-    /// Create a new `GSlice` around a C array.
+    /// Create a new `Slice` around a C array.
     pub unsafe fn from_glib_full_num(ptr: *mut T, len: usize) -> Self {
         assert!(!ptr.is_null() || len == 0);
 
-        GSlice {
+        Slice {
             ptr: if len == 0 {
                 if !ptr.is_null() {
                     ffi::g_free(ptr as ffi::gpointer);
@@ -469,7 +466,7 @@ impl<T> GSlice<T> {
     }
 }
 
-impl<T> Drop for GSlice<T> {
+impl<T> Drop for Slice<T> {
     fn drop(&mut self) {
         unsafe {
             if self.transfer == ContainerTransfer::Full {
@@ -485,13 +482,13 @@ impl<T> Drop for GSlice<T> {
     }
 }
 
-impl<T> AsRef<[T]> for GSlice<T> {
+impl<T> AsRef<[T]> for Slice<T> {
     fn as_ref(&self) -> &[T] {
         unsafe { std::slice::from_raw_parts(self.ptr.as_ptr(), self.len) }
     }
 }
 
-impl<T> std::ops::Deref for GSlice<T> {
+impl<T> std::ops::Deref for Slice<T> {
     type Target = [T];
 
     fn deref(&self) -> &[T] {

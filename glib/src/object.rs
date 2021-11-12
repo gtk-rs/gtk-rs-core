@@ -3,7 +3,7 @@
 //! `IMPL` Object wrapper implementation and `Object` binding.
 
 use crate::types::StaticType;
-use crate::GPtrSlice;
+use crate::PtrSlice;
 use crate::{quark::Quark, subclass::signal::SignalQuery};
 use crate::{translate::*, value::FromValue};
 use std::cmp;
@@ -1380,7 +1380,7 @@ pub trait ObjectExt: ObjectType {
     fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec>;
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
-    fn list_properties(&self) -> GPtrSlice<crate::ParamSpec>;
+    fn list_properties(&self) -> PtrSlice<crate::ParamSpec>;
 
     /// Freeze all property notifications until the return guard object is dropped.
     ///
@@ -2080,7 +2080,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.object_class().find_property(property_name)
     }
 
-    fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
+    fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
         self.object_class().list_properties()
     }
 
@@ -2967,7 +2967,7 @@ impl ObjectClass {
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     #[doc(alias = "g_object_class_list_properties")]
-    pub fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
+    pub fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
@@ -2975,7 +2975,7 @@ impl ObjectClass {
 
             let props =
                 gobject_ffi::g_object_class_list_properties(klass as *mut _, &mut n_properties);
-            GPtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
         }
     }
 }
@@ -3586,7 +3586,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this interface.
     #[doc(alias = "g_object_interface_list_properties")]
-    pub fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
+    pub fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
         unsafe {
             let interface = self as *const _ as *const gobject_ffi::GTypeInterface;
 
@@ -3596,7 +3596,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
                 interface as *mut _,
                 &mut n_properties,
             );
-            GPtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
         }
     }
 }

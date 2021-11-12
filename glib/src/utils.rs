@@ -207,7 +207,7 @@ pub fn mkstemp<P: AsRef<std::path::Path>>(tmpl: P) -> i32 {
 #[doc(alias = "g_file_get_contents")]
 pub fn file_get_contents(
     filename: impl AsRef<std::path::Path>,
-) -> Result<crate::GSlice<u8>, crate::Error> {
+) -> Result<crate::Slice<u8>, crate::Error> {
     #[cfg(not(windows))]
     use ffi::g_file_get_contents;
     #[cfg(windows)]
@@ -224,7 +224,7 @@ pub fn file_get_contents(
             &mut error,
         );
         if error.is_null() {
-            Ok(crate::GSlice::from_glib_full_num_copy(
+            Ok(crate::Slice::from_glib_full_num_copy(
                 contents,
                 length.assume_init() as usize,
             ))
