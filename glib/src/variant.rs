@@ -1445,70 +1445,6 @@ where
     A: AsRef<[T]>,
     T: FixedSizeVariantType;
 
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<&[T]>
-    for FixedSizeVariantArray<A, T>
-{
-    fn eq(&self, other: &&[T]) -> bool {
-        self.0.as_ref() == *other
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<[T]>
-    for FixedSizeVariantArray<A, T>
-{
-    fn eq(&self, other: &[T]) -> bool {
-        self.0.as_ref() == other
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<[T; N]>
-    for FixedSizeVariantArray<A, T>
-{
-    fn eq(&self, other: &[T; N]) -> bool {
-        self.0.as_ref() == other
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize> PartialEq<&[T; N]>
-    for FixedSizeVariantArray<A, T>
-{
-    fn eq(&self, other: &&[T; N]) -> bool {
-        self.0.as_ref() == *other
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
-    for &[T]
-{
-    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
-        *self == other.0.as_ref()
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq> PartialEq<FixedSizeVariantArray<A, T>>
-    for [T]
-{
-    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
-        self == other.0.as_ref()
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
-    PartialEq<FixedSizeVariantArray<A, T>> for [T; N]
-{
-    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
-        self == other.0.as_ref()
-    }
-}
-
-impl<A: AsRef<[T]>, T: FixedSizeVariantType + PartialEq, const N: usize>
-    PartialEq<FixedSizeVariantArray<A, T>> for &[T; N]
-{
-    fn eq(&self, other: &FixedSizeVariantArray<A, T>) -> bool {
-        *self == other.0.as_ref()
-    }
-}
-
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<A> for FixedSizeVariantArray<A, T> {
     fn from(array: A) -> Self {
         FixedSizeVariantArray(array, std::marker::PhantomData)
@@ -1522,18 +1458,28 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> FixedSizeVariantArray<A, T> {
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::Deref for FixedSizeVariantArray<A, T> {
-    type Target = [T];
+    type Target = A;
 
     fn deref(&self) -> &Self::Target {
-        self.0.as_ref()
+        &self.0
     }
 }
 
-impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> std::ops::DerefMut
-    for FixedSizeVariantArray<A, T>
-{
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::DerefMut for FixedSizeVariantArray<A, T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        self.0.as_mut()
+        &mut self.0
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<A> for FixedSizeVariantArray<A, T> {
+    fn as_ref(&self) -> &A {
+        &self.0
+    }
+}
+
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsMut<A> for FixedSizeVariantArray<A, T> {
+    fn as_mut(&mut self) -> &mut A {
+        &mut self.0
     }
 }
 
@@ -1660,7 +1606,10 @@ mod tests {
         let b = FixedSizeVariantArray::from(&b"this is a test"[..]);
         let v = b.to_variant();
         assert_eq!(v.type_().as_str(), "ay");
-        assert_eq!(&*v.get::<FixedSizeVariantArray<Vec<u8>, u8>>().unwrap(), b);
+        assert_eq!(
+            &*v.get::<FixedSizeVariantArray<Vec<u8>, u8>>().unwrap(),
+            &*b
+        );
 
         let b = FixedSizeVariantArray::from(vec![1i32, 2, 3]);
         let v = b.to_variant();
