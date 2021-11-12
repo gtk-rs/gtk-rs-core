@@ -27,6 +27,7 @@ macro_rules! glib_boxed_wrapper {
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty) => {
         $(#[$attr])*
         #[derive(Clone)]
+        #[repr(transparent)]
         $visibility struct $name($crate::boxed::Boxed<$ffi_name, $name>);
 
         #[doc(hidden)]
@@ -309,6 +310,7 @@ pub trait BoxedMemoryManager<T>: 'static {
 }
 
 /// Encapsulates memory management logic for boxed types.
+#[repr(transparent)]
 pub struct Boxed<T: 'static, MM: BoxedMemoryManager<T>> {
     inner: ptr::NonNull<T>,
     _dummy: PhantomData<*mut MM>,

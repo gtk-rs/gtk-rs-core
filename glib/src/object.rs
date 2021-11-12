@@ -3,6 +3,7 @@
 //! `IMPL` Object wrapper implementation and `Object` binding.
 
 use crate::types::StaticType;
+use crate::GPtrSlice;
 use crate::{quark::Quark, subclass::signal::SignalQuery};
 use crate::{translate::*, value::FromValue};
 use std::cmp;
@@ -289,6 +290,7 @@ pub trait CanDowncast<T> {}
 impl<Super: IsA<Super>, Sub: IsA<Super>> CanDowncast<Sub> for Super {}
 
 // Manual implementation of glib_shared_wrapper! because of special cases
+#[repr(transparent)]
 pub struct ObjectRef {
     inner: ptr::NonNull<GObject>,
 }
@@ -600,6 +602,7 @@ macro_rules! glib_object_wrapper {
         // otherwise they would potentially give different results for the same object depending on
         // the type we currently know for it
         #[derive(Clone, Hash, Ord, Eq, Debug)]
+        #[repr(transparent)]
         $visibility struct $name($crate::object::ObjectRef);
 
         #[doc(hidden)]
@@ -1129,22 +1132,26 @@ impl Object {
     ) -> Result<Object, BoolError> {
         use std::ffi::CString;
 
-        let klass = ObjectClass::from_type(type_)
-            .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-        let pspecs = klass.list_properties();
+        let params = if !properties.is_empty() {
+            let klass = ObjectClass::from_type(type_)
+                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
+            let pspecs = klass.list_properties();
 
-        let params = properties
-            .iter()
-            .map(|(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
+            properties
+                .iter()
+                .map(|(name, value)| {
+                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                    })?;
 
-                let mut value = value.to_value();
-                validate_property_type(type_, true, pspec, &mut value)?;
-                Ok((CString::new(*name).unwrap(), value))
-            })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+                    let mut value = value.to_value();
+                    validate_property_type(type_, true, pspec, &mut value)?;
+                    Ok((CString::new(*name).unwrap(), value))
+                })
+                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+        } else {
+            smallvec::SmallVec::new()
+        };
 
         unsafe { Object::new_internal(type_, &params) }
     }
@@ -1156,22 +1163,26 @@ impl Object {
     pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Result<Object, BoolError> {
         use std::ffi::CString;
 
-        let klass = ObjectClass::from_type(type_)
-            .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-        let pspecs = klass.list_properties();
+        let params = if !properties.is_empty() {
+            let klass = ObjectClass::from_type(type_)
+                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
+            let pspecs = klass.list_properties();
 
-        let params = properties
-            .iter()
-            .map(|(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
+            properties
+                .iter()
+                .map(|(name, value)| {
+                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                    })?;
 
-                let mut value = value.clone();
-                validate_property_type(type_, true, pspec, &mut value)?;
-                Ok((CString::new(*name).unwrap(), value))
-            })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+                    let mut value = value.clone();
+                    validate_property_type(type_, true, pspec, &mut value)?;
+                    Ok((CString::new(*name).unwrap(), value))
+                })
+                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+        } else {
+            smallvec::SmallVec::new()
+        };
 
         unsafe { Object::new_internal(type_, &params) }
     }
@@ -1373,7 +1384,7 @@ pub trait ObjectExt: ObjectType {
     fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec>;
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
-    fn list_properties(&self) -> Vec<crate::ParamSpec>;
+    fn list_properties(&self) -> GPtrSlice<crate::ParamSpec>;
 
     /// Freeze all property notifications until the return guard object is dropped.
     ///
@@ -2077,7 +2088,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.object_class().find_property(property_name)
     }
 
-    fn list_properties(&self) -> Vec<crate::ParamSpec> {
+    fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
         self.object_class().list_properties()
     }
 
@@ -2884,7 +2895,7 @@ fn validate_signal_arguments(
     let param_types = Iterator::zip(args.iter_mut(), signal_query.param_types());
 
     for (i, (arg, param_type)) in param_types.enumerate() {
-        let param_type: Type = param_type.into();
+        let param_type: Type = (*param_type).into();
         if arg.type_().is_a(Object::static_type()) {
             match arg.get::<Option<Object>>() {
                 Ok(Some(obj)) => {
@@ -2964,7 +2975,7 @@ impl ObjectClass {
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     #[doc(alias = "g_object_class_list_properties")]
-    pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
+    pub fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
@@ -2972,7 +2983,7 @@ impl ObjectClass {
 
             let props =
                 gobject_ffi::g_object_class_list_properties(klass as *mut _, &mut n_properties);
-            FromGlibContainer::from_glib_container_num(props, n_properties as usize)
+            GPtrSlice::from_glib_container_num_static(props, n_properties as usize)
         }
     }
 }
@@ -3583,7 +3594,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
 
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this interface.
     #[doc(alias = "g_object_interface_list_properties")]
-    pub fn list_properties(&self) -> Vec<crate::ParamSpec> {
+    pub fn list_properties(&self) -> GPtrSlice<crate::ParamSpec> {
         unsafe {
             let interface = self as *const _ as *const gobject_ffi::GTypeInterface;
 
@@ -3593,7 +3604,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
                 interface as *mut _,
                 &mut n_properties,
             );
-            FromGlibContainer::from_glib_container_num(props, n_properties as usize)
+            GPtrSlice::from_glib_container_num_static(props, n_properties as usize)
         }
     }
 }

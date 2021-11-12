@@ -2,10 +2,8 @@
 
 //! Runtime type information.
 
-use crate::translate::{
-    from_glib, FromGlib, FromGlibContainerAsVec, IntoGlib, ToGlibContainerFromSlice, ToGlibPtr,
-    ToGlibPtrMut,
-};
+use crate::translate::*;
+use crate::GSlice;
 
 use std::fmt;
 use std::mem;
@@ -14,6 +12,7 @@ use std::ptr;
 /// A GLib or GLib-based library type
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[doc(alias = "GType")]
+#[repr(transparent)]
 pub struct Type(ffi::GType);
 
 impl Type {
@@ -121,36 +120,42 @@ impl Type {
     }
 
     #[doc(alias = "g_type_children")]
-    pub fn children(self) -> Vec<Self> {
+    pub fn children(self) -> GSlice<Self> {
         unsafe {
             let mut n_children = 0u32;
             let children = gobject_ffi::g_type_children(self.into_glib(), &mut n_children);
 
-            FromGlibContainerAsVec::from_glib_full_num_as_vec(children, n_children as usize)
+            GSlice::from_glib_full_num_copy(children as *mut Self, n_children as usize)
         }
     }
 
     #[doc(alias = "g_type_interfaces")]
-    pub fn interfaces(self) -> Vec<Self> {
+    pub fn interfaces(self) -> GSlice<Self> {
         unsafe {
             let mut n_interfaces = 0u32;
             let interfaces = gobject_ffi::g_type_interfaces(self.into_glib(), &mut n_interfaces);
 
-            FromGlibContainerAsVec::from_glib_full_num_as_vec(interfaces, n_interfaces as usize)
+            GSlice::from_glib_full_num_copy(interfaces as *mut Self, n_interfaces as usize)
         }
     }
 
     #[doc(alias = "g_type_interface_prerequisites")]
-    pub fn interface_prerequisites(self) -> Vec<Self> {
-        match self {
-            t if !t.is_a(Self::INTERFACE) => vec![],
-            _ => unsafe {
-                let mut n_prereqs = 0u32;
-                let prereqs =
-                    gobject_ffi::g_type_interface_prerequisites(self.into_glib(), &mut n_prereqs);
+    pub fn interface_prerequisites(self) -> GSlice<Self> {
+        unsafe {
+            match self {
+                t if !t.is_a(Self::INTERFACE) => {
+                    GSlice::from_glib_full_num_copy(ptr::null_mut(), 0)
+                }
+                _ => {
+                    let mut n_prereqs = 0u32;
+                    let prereqs = gobject_ffi::g_type_interface_prerequisites(
+                        self.into_glib(),
+                        &mut n_prereqs,
+                    );
 
-                FromGlibContainerAsVec::from_glib_full_num_as_vec(prereqs, n_prereqs as usize)
-            },
+                    GSlice::from_glib_full_num_copy(prereqs as *mut Self, n_prereqs as usize)
+                }
+            }
         }
     }
 
@@ -491,9 +496,9 @@ mod tests {
         assert!(invalid.is_a(Type::INVALID));
         assert!(!invalid.is_a(Type::STRING));
         assert_eq!(invalid.parent(), None);
-        assert_eq!(invalid.children(), vec![]);
-        assert_eq!(invalid.interfaces(), vec![]);
-        assert_eq!(invalid.interface_prerequisites(), vec![]);
+        assert!(invalid.children().is_empty());
+        assert!(invalid.interfaces().is_empty());
+        assert!(invalid.interface_prerequisites().is_empty());
         assert!(!invalid.is_valid());
         dbg!(&invalid);
     }
@@ -503,7 +508,11 @@ mod tests {
         // Get this first so the type is registered
         let iu_type = InitiallyUnowned::static_type();
 
-        let set = Type::OBJECT.children().into_iter().collect::<HashSet<_>>();
+        let set = Type::OBJECT
+            .children()
+            .iter()
+            .copied()
+            .collect::<HashSet<_>>();
         assert!(set.contains(&iu_type));
     }
 
@@ -513,7 +522,11 @@ mod tests {
         let iu_type = InitiallyUnowned::static_type();
         assert!(Type::OBJECT < iu_type);
 
-        let set = Type::OBJECT.children().into_iter().collect::<BTreeSet<_>>();
+        let set = Type::OBJECT
+            .children()
+            .iter()
+            .copied()
+            .collect::<BTreeSet<_>>();
         assert!(set.contains(&iu_type));
     }
 }

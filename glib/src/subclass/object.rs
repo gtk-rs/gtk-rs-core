@@ -434,11 +434,35 @@ mod test {
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
+        // Assert that the object representation is equivalent to the underlying C GObject pointer
+        assert_eq!(
+            mem::size_of::<SimpleObject>(),
+            mem::size_of::<ffi::gpointer>()
+        );
+        assert_eq!(obj.as_ptr() as ffi::gpointer, unsafe {
+            *(&obj as *const _ as *const ffi::gpointer)
+        });
+
         assert!(obj.property::<bool>("constructed"));
 
         let weak = obj.downgrade();
         drop(obj);
         assert!(weak.upgrade().is_none());
+    }
+
+    #[test]
+    fn test_properties() {
+        let type_ = SimpleObject::static_type();
+        let obj = Object::with_type(type_, &[]).expect("Object::new failed");
+
+        assert!(obj.type_().is_a(Dummy::static_type()));
+
+        let properties = obj.list_properties();
+        assert_eq!(properties.len(), 4);
+        assert_eq!(properties[0].name(), "name");
+        assert_eq!(properties[1].name(), "construct-name");
+        assert_eq!(properties[2].name(), "constructed");
+        assert_eq!(properties[3].name(), "child");
     }
 
     #[test]

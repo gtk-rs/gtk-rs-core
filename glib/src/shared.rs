@@ -26,6 +26,7 @@ macro_rules! glib_shared_wrapper {
      @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr) => {
         $(#[$attr])*
         #[derive(Clone)]
+        #[repr(transparent)]
         $visibility struct $name($crate::shared::Shared<$ffi_name, $name>);
 
         #[doc(hidden)]
@@ -327,6 +328,7 @@ pub trait SharedMemoryManager<T> {
 }
 
 /// Encapsulates memory management logic for shared types.
+#[repr(transparent)]
 pub struct Shared<T, MM: SharedMemoryManager<T>> {
     inner: ptr::NonNull<T>,
     mm: PhantomData<*const MM>,
