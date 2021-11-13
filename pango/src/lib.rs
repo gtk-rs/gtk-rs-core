@@ -17,7 +17,24 @@ pub use crate::auto::functions::*;
 pub use crate::auto::*;
 pub use crate::functions::*;
 
-pub use ffi::PANGO_SCALE as SCALE;
+#[doc(alias = "PANGO_SCALE")]
+pub const SCALE: i32 = ffi::PANGO_SCALE;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_CENTERED_BASELINE")]
+pub const ANALYSIS_FLAG_CENTERED_BASELINE: i32 = ffi::PANGO_ANALYSIS_FLAG_CENTERED_BASELINE;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_IS_ELLIPSIS")]
+pub const ANALYSIS_FLAG_IS_ELLIPSIS: i32 = ffi::PANGO_ANALYSIS_FLAG_IS_ELLIPSIS;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_NEED_HYPHEN")]
+pub const ANALYSIS_FLAG_NEED_HYPHEN: i32 = ffi::PANGO_ANALYSIS_FLAG_NEED_HYPHEN;
+#[doc(alias = "PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING")]
+pub const ATTR_INDEX_FROM_TEXT_BEGINNING: u32 = ffi::PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+#[doc(alias = "PANGO_ATTR_INDEX_TO_TEXT_END")]
+pub const ATTR_INDEX_TO_TEXT_END: u32 = ffi::PANGO_ATTR_INDEX_TO_TEXT_END;
+#[doc(alias = "PANGO_GLYPH_EMPTY")]
+pub const GLYPH_EMPTY: Glyph = ffi::PANGO_GLYPH_EMPTY;
+#[doc(alias = "PANGO_GLYPH_INVALID_INPUT")]
+pub const GLYPH_INVALID_INPUT: Glyph = ffi::PANGO_GLYPH_INVALID_INPUT;
+#[doc(alias = "PANGO_GLYPH_UNKNOWN_FLAG")]
+pub const GLYPH_UNKNOWN_FLAG: Glyph = ffi::PANGO_GLYPH_UNKNOWN_FLAG;
 
 /// The scale factor for three shrinking steps (1 / (1.2 * 1.2 * 1.2)).
 pub const SCALE_XX_SMALL: f64 = 0.5787037037037;
