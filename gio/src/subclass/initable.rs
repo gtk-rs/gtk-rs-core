@@ -106,7 +106,6 @@ mod tests {
         impl ObjectSubclass for InitableTestType {
             const NAME: &'static str = "InitableTestType";
             type Type = super::InitableTestType;
-            type ParentType = glib::Object;
             type Interfaces = (Initable,);
 
             fn new() -> Self {
