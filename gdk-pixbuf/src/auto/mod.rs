@@ -11,6 +11,9 @@ pub use self::pixbuf_animation::PixbufAnimation;
 mod pixbuf_loader;
 pub use self::pixbuf_loader::PixbufLoader;
 
+mod pixbuf_non_anim;
+pub use self::pixbuf_non_anim::PixbufNonAnim;
+
 mod pixbuf_simple_anim;
 pub use self::pixbuf_simple_anim::PixbufSimpleAnim;
 
@@ -23,6 +26,9 @@ pub use self::enums::InterpType;
 pub use self::enums::PixbufAlphaMode;
 pub use self::enums::PixbufError;
 pub use self::enums::PixbufRotation;
+
+mod flags;
+pub use self::flags::PixbufFormatFlags;
 
 #[doc(hidden)]
 pub mod traits {
