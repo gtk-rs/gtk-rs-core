@@ -9,8 +9,7 @@ use std::fmt;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct Color(Boxed<ffi::PangoColor>);
+    pub struct Color(BoxedInline<ffi::PangoColor>);
 
     match fn {
         copy => |ptr| ffi::pango_color_copy(ptr),
