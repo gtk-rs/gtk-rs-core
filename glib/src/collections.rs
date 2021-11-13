@@ -217,6 +217,76 @@ impl<T: GlibPtrDefault + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>> PtrSl
         }
     }
 
+    /// Create a new `PtrSlice` around a static `NULL`-terminated C array.
+    ///
+    /// Must only be called for static allocations that are never invalidated.
+    pub unsafe fn from_glib_none_static(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
+        let mut len = 0;
+        if !ptr.is_null() {
+            while !(*ptr.add(len)).is_null() {
+                len += 1;
+            }
+        }
+
+        PtrSlice::from_glib_none_num_static(ptr, len)
+    }
+
+    /// Create a new `PtrSlice` around a `NULL`-terminated C array of which the items are static.
+    ///
+    /// Must only be called for static items that are never invalidated.
+    pub unsafe fn from_glib_container_static(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
+        let mut len = 0;
+        if !ptr.is_null() {
+            while !(*ptr.add(len)).is_null() {
+                len += 1;
+            }
+        }
+
+        PtrSlice::from_glib_container_num_static(ptr, len)
+    }
+
+    /// Create a new `PtrSlice` around a `NULL`-terminated C array where the items are borrowed.
+    pub unsafe fn from_glib_container<'a>(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self
+    where
+        T: ToGlibPtr<'a, <T as GlibPtrDefault>::GlibType>,
+    {
+        assert_eq!(
+            mem::size_of::<T>(),
+            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+        );
+
+        let mut len = 0;
+        if !ptr.is_null() {
+            while !(*ptr.add(len)).is_null() {
+                let p = ptr.add(len);
+                let v = &*(p as *const T);
+                *p = v.to_glib_full();
+
+                len += 1;
+            }
+        }
+
+        for i in 0..len {
+            let p = ptr.add(i);
+            let v = &*(p as *const T);
+            *p = v.to_glib_full();
+        }
+
+        PtrSlice::from_glib_full_num(ptr, len)
+    }
+
+    /// Create a new `PtrSlice` around a `NULL`-terminated C array.
+    pub unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
+        let mut len = 0;
+        if !ptr.is_null() {
+            while !(*ptr.add(len)).is_null() {
+                len += 1;
+            }
+        }
+
+        PtrSlice::from_glib_full_num(ptr, len)
+    }
+
     /// Returns the underlying pointer.
     pub fn as_ptr(&self) -> *const <T as GlibPtrDefault>::GlibType {
         if self.len == 0 {
