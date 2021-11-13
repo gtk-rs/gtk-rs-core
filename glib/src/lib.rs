@@ -90,6 +90,8 @@ pub use self::source::*;
 pub mod translate;
 mod gstring;
 pub use self::gstring::GString;
+mod gstring_builder;
+pub use self::gstring_builder::GStringBuilder;
 pub mod types;
 mod unicollate;
 pub use self::unicollate::{CollationKey, FilenameCollationKey};
