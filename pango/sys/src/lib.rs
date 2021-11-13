@@ -341,10 +341,6 @@ pub const PANGO_GLYPH_EMPTY: PangoGlyph = 268435455;
 pub const PANGO_GLYPH_INVALID_INPUT: PangoGlyph = 4294967295;
 pub const PANGO_GLYPH_UNKNOWN_FLAG: PangoGlyph = 268435456;
 pub const PANGO_SCALE: c_int = 1024;
-pub const PANGO_VERSION_MAJOR: c_int = 1;
-pub const PANGO_VERSION_MICRO: c_int = 2;
-pub const PANGO_VERSION_MINOR: c_int = 49;
-pub const PANGO_VERSION_STRING: *const c_char = b"1.49.2\0" as *const u8 as *const c_char;
 
 // Flags
 pub type PangoFontMask = c_uint;

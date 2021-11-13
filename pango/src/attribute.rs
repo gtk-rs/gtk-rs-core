@@ -154,6 +154,12 @@ macro_rules! define_attribute_struct {
             }
         }
 
+        impl From<$rust_type> for crate::Attribute {
+            fn from(attr: $rust_type) -> crate::Attribute {
+                crate::IsAttribute::upcast(attr)
+            }
+        }
+
         impl std::ops::Deref for $rust_type {
             type Target = crate::Attribute;
 

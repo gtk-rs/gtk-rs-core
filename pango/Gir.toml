@@ -12,14 +12,10 @@ deprecate_by_min_version = true
 generate = [
     # "Pango.GlyphVisAttr",
     # "Pango.LogAttr",
-    # "Pango.Map",
-    # "Pango.MapEntry",
-    # "Pango.ScriptForLang",
     # "Pango.ScriptIter",
     "Pango.Alignment",
     "Pango.BaselineShift",
     "Pango.BidiType",
-    "Pango.Color",
     "Pango.CoverageLevel",
     "Pango.Direction",
     "Pango.EllipsizeMode",
@@ -76,14 +72,12 @@ manual = [
     "Pango.Rectangle",
 ]
 
-ignore = [
-    "Pango.EngineLang",
-    "Pango.EngineShape",
-]
-
 [[object]]
 name = "Pango.*"
 status = "generate"
+    [[object.constant]]
+    name = "VERSION_STRING"
+    ignore = true
     [[object.function]]
     name = "extents_to_pixels"
         [[object.function.parameter]]
@@ -194,6 +188,14 @@ status = "generate"
     [[object.member]]
     name = "font_scale"
     version = "1.50"
+
+[[object]]
+name = "Pango.Color"
+status = "generate"
+boxed_inline = true
+    [[object.function]]
+    pattern = "(parse|parse_with_alpha)"
+    manual = true
 
 [[object]]
 name = "Pango.Context"

@@ -17,7 +17,24 @@ pub use crate::auto::functions::*;
 pub use crate::auto::*;
 pub use crate::functions::*;
 
-pub use ffi::PANGO_SCALE as SCALE;
+#[doc(alias = "PANGO_SCALE")]
+pub const SCALE: i32 = ffi::PANGO_SCALE;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_CENTERED_BASELINE")]
+pub const ANALYSIS_FLAG_CENTERED_BASELINE: i32 = ffi::PANGO_ANALYSIS_FLAG_CENTERED_BASELINE;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_IS_ELLIPSIS")]
+pub const ANALYSIS_FLAG_IS_ELLIPSIS: i32 = ffi::PANGO_ANALYSIS_FLAG_IS_ELLIPSIS;
+#[doc(alias = "PANGO_ANALYSIS_FLAG_NEED_HYPHEN")]
+pub const ANALYSIS_FLAG_NEED_HYPHEN: i32 = ffi::PANGO_ANALYSIS_FLAG_NEED_HYPHEN;
+#[doc(alias = "PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING")]
+pub const ATTR_INDEX_FROM_TEXT_BEGINNING: u32 = ffi::PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+#[doc(alias = "PANGO_ATTR_INDEX_TO_TEXT_END")]
+pub const ATTR_INDEX_TO_TEXT_END: u32 = ffi::PANGO_ATTR_INDEX_TO_TEXT_END;
+#[doc(alias = "PANGO_GLYPH_EMPTY")]
+pub const GLYPH_EMPTY: Glyph = ffi::PANGO_GLYPH_EMPTY;
+#[doc(alias = "PANGO_GLYPH_INVALID_INPUT")]
+pub const GLYPH_INVALID_INPUT: Glyph = ffi::PANGO_GLYPH_INVALID_INPUT;
+#[doc(alias = "PANGO_GLYPH_UNKNOWN_FLAG")]
+pub const GLYPH_UNKNOWN_FLAG: Glyph = ffi::PANGO_GLYPH_UNKNOWN_FLAG;
 
 /// The scale factor for three shrinking steps (1 / (1.2 * 1.2 * 1.2)).
 pub const SCALE_XX_SMALL: f64 = 0.5787037037037;
@@ -45,10 +62,10 @@ pub mod prelude;
 #[macro_use]
 mod attribute;
 
-pub mod analysis;
-pub use crate::analysis::Analysis;
-pub mod attr_class;
-pub use crate::attr_class::AttrClass;
+mod analysis;
+pub use analysis::Analysis;
+mod attr_class;
+pub use attr_class::AttrClass;
 mod attr_color;
 pub use attr_color::AttrColor;
 mod attr_float;
@@ -59,34 +76,33 @@ mod attr_font_features;
 pub use attr_font_features::AttrFontFeatures;
 mod attr_int;
 pub use attr_int::AttrInt;
-pub mod attr_iterator;
+mod attr_iterator;
 mod attr_language;
 pub use attr_language::AttrLanguage;
-pub mod attr_list;
+mod attr_list;
 mod attr_shape;
 pub use attr_shape::AttrShape;
 mod attr_size;
 pub use attr_size::AttrSize;
 mod attr_string;
-pub use crate::attribute::IsAttribute;
 pub use attr_string::AttrString;
-pub mod color;
+pub use attribute::IsAttribute;
+mod color;
 mod functions;
-pub mod item;
-pub mod language;
-pub use crate::language::Language;
-pub mod layout;
-pub use crate::layout::HitPosition;
+mod item;
+mod language;
+pub use language::Language;
+mod layout;
+pub use layout::HitPosition;
 mod matrix;
-pub mod rectangle;
-pub use crate::rectangle::Rectangle;
+mod rectangle;
+pub use rectangle::Rectangle;
 mod glyph_geometry;
 pub use glyph_geometry::GlyphGeometry;
 mod glyph_info;
 pub use glyph_info::GlyphInfo;
+mod coverage;
 mod glyph_item;
 mod glyph_item_iter;
 mod glyph_string;
-
-mod coverage;
-pub use crate::coverage::*;
+pub use coverage::Coverage;

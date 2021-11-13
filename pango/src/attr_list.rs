@@ -1,14 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{AttrList, IsAttribute};
+use crate::{AttrList, Attribute};
 use glib::translate::*;
 use std::mem;
 
 impl AttrList {
     #[doc(alias = "pango_attr_list_change")]
-    pub fn change(&self, attr: impl IsAttribute) {
+    pub fn change(&self, attr: impl Into<Attribute>) {
         unsafe {
-            let attr = attr.upcast();
+            let attr = attr.into();
             ffi::pango_attr_list_change(self.to_glib_none().0, attr.to_glib_none().0 as *mut _);
             mem::forget(attr); //As attr transferred fully
         }
@@ -27,18 +27,18 @@ impl AttrList {
     }
 
     #[doc(alias = "pango_attr_list_insert")]
-    pub fn insert(&self, attr: impl IsAttribute) {
+    pub fn insert(&self, attr: impl Into<Attribute>) {
         unsafe {
-            let attr = attr.upcast();
+            let attr = attr.into();
             ffi::pango_attr_list_insert(self.to_glib_none().0, attr.to_glib_none().0 as *mut _);
             mem::forget(attr); //As attr transferred fully
         }
     }
 
     #[doc(alias = "pango_attr_list_insert_before")]
-    pub fn insert_before(&self, attr: impl IsAttribute) {
+    pub fn insert_before(&self, attr: impl Into<Attribute>) {
         unsafe {
-            let attr = attr.upcast();
+            let attr = attr.into();
             ffi::pango_attr_list_insert_before(
                 self.to_glib_none().0,
                 attr.to_glib_none().0 as *mut _,
