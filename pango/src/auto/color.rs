@@ -4,9 +4,6 @@
 
 use glib::translate::*;
 use std::fmt;
-#[cfg(any(feature = "v1_46", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
-use std::mem;
 
 glib::wrapper! {
     pub struct Color(BoxedInline<ffi::PangoColor>);
@@ -19,36 +16,6 @@ glib::wrapper! {
 }
 
 impl Color {
-    #[doc(alias = "pango_color_parse")]
-    pub fn parse(&mut self, spec: &str) -> bool {
-        unsafe {
-            from_glib(ffi::pango_color_parse(
-                self.to_glib_none_mut().0,
-                spec.to_glib_none().0,
-            ))
-        }
-    }
-
-    #[cfg(any(feature = "v1_46", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
-    #[doc(alias = "pango_color_parse_with_alpha")]
-    pub fn parse_with_alpha(&mut self, spec: &str) -> Option<u16> {
-        unsafe {
-            let mut alpha = mem::MaybeUninit::uninit();
-            let ret = from_glib(ffi::pango_color_parse_with_alpha(
-                self.to_glib_none_mut().0,
-                alpha.as_mut_ptr(),
-                spec.to_glib_none().0,
-            ));
-            let alpha = alpha.assume_init();
-            if ret {
-                Some(alpha)
-            } else {
-                None
-            }
-        }
-    }
-
     #[doc(alias = "pango_color_to_string")]
     #[doc(alias = "to_string")]
     pub fn to_str(&self) -> glib::GString {
