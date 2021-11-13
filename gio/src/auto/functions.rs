@@ -8,6 +8,7 @@ use crate::Cancellable;
 use crate::DBusConnection;
 use crate::File;
 use crate::IOErrorEnum;
+use crate::IOModule;
 use crate::IOStream;
 use crate::Icon;
 use crate::InputStream;
@@ -440,13 +441,17 @@ pub fn io_error_from_errno(err_no: i32) -> IOErrorEnum {
     unsafe { from_glib(ffi::g_io_error_from_errno(err_no)) }
 }
 
-//#[doc(alias = "g_io_modules_load_all_in_directory")]
-//pub fn io_modules_load_all_in_directory(dirname: impl AsRef<std::path::Path>) -> /*Ignored*/Vec<IOModule> {
-//    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory() }
-//}
+#[doc(alias = "g_io_modules_load_all_in_directory")]
+pub fn io_modules_load_all_in_directory(dirname: impl AsRef<std::path::Path>) -> Vec<IOModule> {
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::g_io_modules_load_all_in_directory(
+            dirname.as_ref().to_glib_none().0,
+        ))
+    }
+}
 
 //#[doc(alias = "g_io_modules_load_all_in_directory_with_scope")]
-//pub fn io_modules_load_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) -> /*Ignored*/Vec<IOModule> {
+//pub fn io_modules_load_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) -> Vec<IOModule> {
 //    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory_with_scope() }
 //}
 

@@ -4,6 +4,7 @@
 
 use crate::Cancellable;
 use crate::Credentials;
+use crate::DatagramBased;
 use crate::InetAddress;
 use crate::Initable;
 use crate::SocketAddress;
@@ -26,7 +27,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GSocket")]
-    pub struct Socket(Object<ffi::GSocket, ffi::GSocketClass>) @implements Initable;
+    pub struct Socket(Object<ffi::GSocket, ffi::GSocketClass>) @implements DatagramBased, Initable;
 
     match fn {
         type_ => || ffi::g_socket_get_type(),
@@ -80,9 +81,6 @@ pub trait SocketExt: 'static {
 
     #[doc(alias = "g_socket_close")]
     fn close(&self) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_socket_condition_check")]
-    fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition;
 
     #[doc(alias = "g_socket_condition_timed_wait")]
     fn condition_timed_wait(
@@ -349,15 +347,6 @@ impl<O: IsA<Socket>> SocketExt for O {
             } else {
                 Err(from_glib_full(error))
             }
-        }
-    }
-
-    fn condition_check(&self, condition: glib::IOCondition) -> glib::IOCondition {
-        unsafe {
-            from_glib(ffi::g_socket_condition_check(
-                self.as_ref().to_glib_none().0,
-                condition.into_glib(),
-            ))
         }
     }
 

@@ -24,6 +24,7 @@ generate = [
     "Gio.ConverterFlags",
     "Gio.ConverterResult",
     "Gio.CredentialsType",
+    "Gio.DatagramBased",
     "Gio.DataStreamByteOrder",
     "Gio.DataStreamNewlineType",
     "Gio.DBusActionGroup",
@@ -56,6 +57,8 @@ generate = [
     "Gio.Drive",
     "Gio.DriveStartFlags",
     "Gio.DriveStartStopType",
+    "Gio.DtlsClientConnection",
+    "Gio.DtlsServerConnection",
     "Gio.Emblem",
     "Gio.EmblemedIcon",
     "Gio.EmblemOrigin",
@@ -74,9 +77,11 @@ generate = [
     "Gio.FilenameCompleter",
     "Gio.FileOutputStream",
     "Gio.FileQueryInfoFlags",
+    "Gio.FilesystemPreviewType",
     "Gio.FileType",
     "Gio.FilterInputStream",
     "Gio.IOErrorEnum",
+    "Gio.IOModuleScopeFlags",
     "Gio.IOStreamSpliceFlags",
     "Gio.LoadableIcon",
     "Gio.MemoryMonitor",
@@ -88,6 +93,7 @@ generate = [
     "Gio.MountOperation",
     "Gio.MountOperationResult",
     "Gio.MountUnmountFlags",
+    "Gio.NativeVolumeMonitor",
     "Gio.NetworkConnectivity",
     "Gio.NetworkMonitor",
     "Gio.NetworkService",
@@ -101,8 +107,10 @@ generate = [
     "Gio.ProxyResolver",
     "Gio.RemoteActionGroup",
     "Gio.Resolver",
+    "Gio.ResolverError",
     "Gio.ResolverNameLookupFlags",
     "Gio.ResolverRecordType",
+    "Gio.ResourceFlags",
     "Gio.ResourceError",
     "Gio.ResourceLookupFlags",
     "Gio.Seekable",
@@ -130,16 +138,21 @@ generate = [
     "Gio.SrvTarget",
     "Gio.SubprocessFlags",
     "Gio.TcpConnection",
+    "Gio.TcpWrapperConnection",
+    "Gio.TestDBus",
+    "Gio.TestDBusFlags",
     "Gio.TlsAuthenticationMode",
     "Gio.TlsBackend",
     "Gio.TlsCertificate",
     "Gio.TlsCertificateFlags",
     "Gio.TlsCertificateRequestFlags",
+    "Gio.TlsChannelBindingError",
     "Gio.TlsChannelBindingType",
     "Gio.TlsClientConnection",
     "Gio.TlsDatabase",
     "Gio.TlsDatabaseLookupFlags",
     "Gio.TlsDatabaseVerifyFlags",
+    "Gio.TlsError",
     "Gio.TlsFileDatabase",
     "Gio.TlsInteraction",
     "Gio.TlsInteractionResult",
@@ -157,9 +170,9 @@ ignore = [
 ]
 
 manual = [
-    "Gio.Extension",
-    "Gio.ExtensionPoint",
     "Gio.FileAttributeInfo",
+    "Gio.IOExtension",
+    "Gio.IOExtensionPoint",
     "GLib.ByteArray",
     "GLib.Bytes",
     "GLib.DateTime",
@@ -716,6 +729,11 @@ manual_traits = ["InputStreamExtManual"]
     doc_trait_name = "InputStreamExtManual"
 
 [[object]]
+name = "Gio.IOModule"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "Gio.IOStream"
 status = "generate"
 manual_traits = ["IOStreamExtManual"]
@@ -1174,6 +1192,11 @@ status = "generate"
     ignore = true
 
 [[object]]
+name = "Gio.UnixConnection"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "Gio.UnixFDList"
 status = "generate"
 cfg_condition = "unix"
@@ -1245,6 +1268,11 @@ version = "2.54"
 cfg_condition = "unix"
     [[object.derive]]
     name = "Debug"
+
+[[object]]
+name = "Gio.UnixMountMonitor"
+status = "generate"
+cfg_condition = "unix"
 
 [[object]]
 name = "Gio.UnixMountPoint"

@@ -103,6 +103,9 @@ mod data_output_stream;
 pub use self::data_output_stream::DataOutputStream;
 pub use self::data_output_stream::DataOutputStreamBuilder;
 
+mod datagram_based;
+pub use self::datagram_based::DatagramBased;
+
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(all(not(windows), not(target_os = "macos")))))]
 mod desktop_app_info;
@@ -112,6 +115,12 @@ pub use self::desktop_app_info::DesktopAppInfo;
 
 mod drive;
 pub use self::drive::Drive;
+
+mod dtls_client_connection;
+pub use self::dtls_client_connection::DtlsClientConnection;
+
+mod dtls_server_connection;
+pub use self::dtls_server_connection::DtlsServerConnection;
 
 mod emblem;
 pub use self::emblem::Emblem;
@@ -151,6 +160,13 @@ pub use self::filter_input_stream::FilterInputStream;
 
 mod filter_output_stream;
 pub use self::filter_output_stream::FilterOutputStream;
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+mod io_module;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+pub use self::io_module::IOModule;
 
 mod io_stream;
 pub use self::io_stream::IOStream;
@@ -216,6 +232,9 @@ pub use self::mount::Mount;
 
 mod mount_operation;
 pub use self::mount_operation::MountOperation;
+
+mod native_volume_monitor;
+pub use self::native_volume_monitor::NativeVolumeMonitor;
 
 mod network_address;
 pub use self::network_address::NetworkAddress;
@@ -323,6 +342,12 @@ pub use self::task::Task;
 mod tcp_connection;
 pub use self::tcp_connection::TcpConnection;
 
+mod tcp_wrapper_connection;
+pub use self::tcp_wrapper_connection::TcpWrapperConnection;
+
+mod test_dbus;
+pub use self::test_dbus::TestDBus;
+
 mod themed_icon;
 pub use self::themed_icon::ThemedIcon;
 
@@ -358,6 +383,13 @@ pub use self::tls_server_connection::TlsServerConnection;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+mod unix_connection;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+pub use self::unix_connection::UnixConnection;
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_fd_list;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
@@ -369,6 +401,13 @@ mod unix_input_stream;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 pub use self::unix_input_stream::UnixInputStream;
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+mod unix_mount_monitor;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+pub use self::unix_mount_monitor::UnixMountMonitor;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
@@ -475,7 +514,9 @@ pub use self::enums::FileAttributeStatus;
 pub use self::enums::FileAttributeType;
 pub use self::enums::FileMonitorEvent;
 pub use self::enums::FileType;
+pub use self::enums::FilesystemPreviewType;
 pub use self::enums::IOErrorEnum;
+pub use self::enums::IOModuleScopeFlags;
 #[cfg(any(feature = "v2_64", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
 pub use self::enums::MemoryMonitorWarningLevel;
@@ -483,6 +524,7 @@ pub use self::enums::MountOperationResult;
 pub use self::enums::NetworkConnectivity;
 pub use self::enums::NotificationPriority;
 pub use self::enums::PasswordSave;
+pub use self::enums::ResolverError;
 pub use self::enums::ResolverRecordType;
 pub use self::enums::ResourceError;
 pub use self::enums::SocketClientEvent;
@@ -494,8 +536,12 @@ pub use self::enums::TlsAuthenticationMode;
 pub use self::enums::TlsCertificateRequestFlags;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+pub use self::enums::TlsChannelBindingError;
+#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingType;
 pub use self::enums::TlsDatabaseLookupFlags;
+pub use self::enums::TlsError;
 pub use self::enums::TlsInteractionResult;
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
@@ -536,9 +582,11 @@ pub use self::flags::OutputStreamSpliceFlags;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 pub use self::flags::ResolverNameLookupFlags;
+pub use self::flags::ResourceFlags;
 pub use self::flags::ResourceLookupFlags;
 pub use self::flags::SettingsBindFlags;
 pub use self::flags::SubprocessFlags;
+pub use self::flags::TestDBusFlags;
 pub use self::flags::TlsCertificateFlags;
 pub use self::flags::TlsDatabaseVerifyFlags;
 pub use self::flags::TlsPasswordFlags;
@@ -686,11 +734,14 @@ pub mod traits {
     pub use super::converter_output_stream::ConverterOutputStreamExt;
     pub use super::data_input_stream::DataInputStreamExt;
     pub use super::data_output_stream::DataOutputStreamExt;
+    pub use super::datagram_based::DatagramBasedExt;
     pub use super::dbus_interface::DBusInterfaceExt;
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
     pub use super::dbus_proxy::DBusProxyExt;
     pub use super::drive::DriveExt;
+    pub use super::dtls_client_connection::DtlsClientConnectionExt;
+    pub use super::dtls_server_connection::DtlsServerConnectionExt;
     pub use super::emblemed_icon::EmblemedIconExt;
     pub use super::file::FileExt;
     pub use super::file_enumerator::FileEnumeratorExt;
@@ -746,6 +797,7 @@ pub mod traits {
     pub use super::socket_listener::SocketListenerExt;
     pub use super::socket_service::SocketServiceExt;
     pub use super::tcp_connection::TcpConnectionExt;
+    pub use super::tcp_wrapper_connection::TcpWrapperConnectionExt;
     pub use super::threaded_socket_service::ThreadedSocketServiceExt;
     pub use super::tls_backend::TlsBackendExt;
     pub use super::tls_certificate::TlsCertificateExt;
@@ -756,6 +808,9 @@ pub mod traits {
     pub use super::tls_interaction::TlsInteractionExt;
     pub use super::tls_password::TlsPasswordExt;
     pub use super::tls_server_connection::TlsServerConnectionExt;
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    pub use super::unix_connection::UnixConnectionExt;
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub use super::unix_fd_list::UnixFDListExt;

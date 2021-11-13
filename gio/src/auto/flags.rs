@@ -1849,6 +1849,70 @@ impl ToValue for ResolverNameLookupFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GResourceFlags")]
+    pub struct ResourceFlags: u32 {
+        #[doc(alias = "G_RESOURCE_FLAGS_NONE")]
+        const NONE = ffi::G_RESOURCE_FLAGS_NONE as u32;
+        #[doc(alias = "G_RESOURCE_FLAGS_COMPRESSED")]
+        const COMPRESSED = ffi::G_RESOURCE_FLAGS_COMPRESSED as u32;
+    }
+}
+
+impl fmt::Display for ResourceFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for ResourceFlags {
+    type GlibType = ffi::GResourceFlags;
+
+    fn into_glib(self) -> ffi::GResourceFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GResourceFlags> for ResourceFlags {
+    unsafe fn from_glib(value: ffi::GResourceFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for ResourceFlags {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_resource_flags_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for ResourceFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for ResourceFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for ResourceFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+bitflags! {
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
         #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
@@ -2047,6 +2111,68 @@ unsafe impl<'a> FromValue<'a> for SubprocessFlags {
 }
 
 impl ToValue for SubprocessFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+bitflags! {
+    #[doc(alias = "GTestDBusFlags")]
+    pub struct TestDBusFlags: u32 {
+        #[doc(alias = "G_TEST_DBUS_NONE")]
+        const NONE = ffi::G_TEST_DBUS_NONE as u32;
+    }
+}
+
+impl fmt::Display for TestDBusFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for TestDBusFlags {
+    type GlibType = ffi::GTestDBusFlags;
+
+    fn into_glib(self) -> ffi::GTestDBusFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GTestDBusFlags> for TestDBusFlags {
+    unsafe fn from_glib(value: ffi::GTestDBusFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for TestDBusFlags {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_test_dbus_flags_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for TestDBusFlags {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for TestDBusFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for TestDBusFlags {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
         unsafe {
