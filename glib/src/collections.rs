@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use std::marker::PhantomData;
+use std::{fmt, mem, ptr};
 
 #[derive(Debug, PartialEq, Eq)]
 enum ContainerTransfer {
@@ -493,5 +492,237 @@ impl<T> std::ops::Deref for Slice<T> {
 
     fn deref(&self) -> &[T] {
         self.as_ref()
+    }
+}
+
+/// A list of items of type `T`.
+///
+/// Behaves like an `Iterator<Item = T>`.
+pub struct List<
+    T: GlibPtrDefault
+        + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+        + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+> {
+    ptr: Option<ptr::NonNull<ffi::GList>>,
+    transfer: ContainerTransfer,
+    phantom: PhantomData<T>,
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > List<T>
+{
+    /// Create a new `List` around a static list of static items.
+    ///
+    /// Must only be called for a static list of static allocations that are never invalidated.
+    pub unsafe fn from_glib_none_static(list: *mut ffi::GList) -> List<T> {
+        List {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::None,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `List` around a list.
+    pub unsafe fn from_glib_container(list: *mut ffi::GList) -> List<T> {
+        // Need to copy all items as we only own the container
+        let mut l = list;
+        while !l.is_null() {
+            let item: T = from_glib_none(Ptr::from((*l).data));
+            ptr::write((*l).data as *mut T, item);
+            l = (*l).next;
+        }
+
+        List {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Full,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `List` around a list of static items.
+    ///
+    /// Must only be called for static allocations that are never invalidated.
+    pub unsafe fn from_glib_container_static(list: *mut ffi::GList) -> List<T> {
+        List {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Container,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `List` around a list.
+    pub unsafe fn from_glib_full(list: *mut ffi::GList) -> List<T> {
+        List {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Full,
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Drop for List<T>
+{
+    fn drop(&mut self) {
+        // Also cleans up the list itself as needed
+        for item in self {
+            drop(item);
+        }
+    }
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Iterator for List<T>
+{
+    type Item = T;
+
+    fn next(&mut self) -> Option<T> {
+        match self.ptr {
+            None => None,
+            Some(cur) => unsafe {
+                self.ptr = ptr::NonNull::new(cur.as_ref().next);
+                if let Some(mut next) = self.ptr {
+                    next.as_mut().prev = ptr::null_mut();
+                }
+
+                let item = if self.transfer == ContainerTransfer::Full {
+                    from_glib_full(Ptr::from(cur.as_ref().data))
+                } else {
+                    from_glib_none(Ptr::from(cur.as_ref().data))
+                };
+
+                if self.transfer != ContainerTransfer::None {
+                    ffi::g_list_free_1(cur.as_ptr());
+                }
+
+                Some(item)
+            },
+        }
+    }
+}
+
+/// A list of items of type `T`.
+///
+/// Behaves like an `Iterator<Item = T>`.
+pub struct SList<
+    T: GlibPtrDefault
+        + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+        + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+> {
+    ptr: Option<ptr::NonNull<ffi::GSList>>,
+    transfer: ContainerTransfer,
+    phantom: PhantomData<T>,
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > SList<T>
+{
+    /// Create a new `SList` around a static list of static items.
+    ///
+    /// Must only be called for a static list of static allocations that are never invalidated.
+    pub unsafe fn from_glib_none_static(list: *mut ffi::GSList) -> SList<T> {
+        SList {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::None,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `SList` around a list.
+    pub unsafe fn from_glib_container(list: *mut ffi::GSList) -> SList<T> {
+        assert_eq!(
+            mem::size_of::<T>(),
+            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+        );
+
+        // Need to copy all items as we only own the container
+        let mut l = list;
+        while !l.is_null() {
+            let item: T = from_glib_none(Ptr::from((*l).data));
+            ptr::write((*l).data as *mut T, item);
+            l = (*l).next;
+        }
+
+        SList {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Full,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `SList` around a list of static items.
+    ///
+    /// Must only be called for static allocations that are never invalidated.
+    pub unsafe fn from_glib_container_static(list: *mut ffi::GSList) -> SList<T> {
+        SList {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Container,
+            phantom: PhantomData,
+        }
+    }
+
+    /// Create a new `SList` around a list.
+    pub unsafe fn from_glib_full(list: *mut ffi::GSList) -> SList<T> {
+        SList {
+            ptr: ptr::NonNull::new(list),
+            transfer: ContainerTransfer::Full,
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Drop for SList<T>
+{
+    fn drop(&mut self) {
+        // Also cleans up the list itself as needed
+        for item in self {
+            drop(item);
+        }
+    }
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Iterator for SList<T>
+{
+    type Item = T;
+
+    fn next(&mut self) -> Option<T> {
+        match self.ptr {
+            None => None,
+            Some(cur) => unsafe {
+                self.ptr = ptr::NonNull::new(cur.as_ref().next);
+
+                let item = if self.transfer == ContainerTransfer::Full {
+                    from_glib_full(Ptr::from(cur.as_ref().data))
+                } else {
+                    from_glib_none(Ptr::from(cur.as_ref().data))
+                };
+
+                if self.transfer != ContainerTransfer::None {
+                    ffi::g_slist_free_1(cur.as_ptr());
+                }
+
+                Some(item)
+            },
+        }
     }
 }
