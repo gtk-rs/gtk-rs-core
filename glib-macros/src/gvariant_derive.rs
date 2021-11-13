@@ -37,25 +37,19 @@ pub fn derive_variant_for_struct(
             let static_variant_type = quote! {
                 impl #generics glib::StaticVariantType for #ident #generics {
                     fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
-                        static TYP: glib::once_cell::sync::Lazy<glib::VariantType> = glib::once_cell::sync::Lazy::new(|| unsafe {
-                            let ptr = glib::ffi::g_string_sized_new(16);
-                            glib::ffi::g_string_append_c(ptr, b'(' as _);
+                        static TYP: glib::once_cell::sync::Lazy<glib::VariantType> = glib::once_cell::sync::Lazy::new(|| {
+
+                            let mut builder = glib::GStringBuilder::new("(");
 
                             #(
                                 {
                                     let typ = <#types as glib::StaticVariantType>::static_variant_type();
-                                    glib::ffi::g_string_append_len(
-                                        ptr,
-                                        typ.as_str().as_ptr() as *const _,
-                                        typ.as_str().len() as isize,
-                                    );
+                                    builder.append(typ.as_str());
                                 }
                             )*
-                            glib::ffi::g_string_append_c(ptr, b')' as _);
+                            builder.append_c(')');
 
-                            glib::translate::from_glib_full(
-                                glib::ffi::g_string_free(ptr, glib::ffi::GFALSE) as *mut glib::ffi::GVariantType
-                            )
+                            glib::VariantType::from_string(builder.into_string()).unwrap()
                         });
 
                         std::borrow::Cow::Borrowed(&*TYP)

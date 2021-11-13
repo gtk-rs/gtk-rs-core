@@ -35,6 +35,22 @@ impl VariantType {
     pub fn new(type_string: &str) -> Result<VariantType, BoolError> {
         VariantTy::new(type_string).map(ToOwned::to_owned)
     }
+
+    /// Tries to create a `VariantType` from an owned string.
+    ///
+    /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
+    pub fn from_string(type_string: impl Into<crate::GString>) -> Result<VariantType, BoolError> {
+        let type_string = type_string.into();
+        VariantTy::new(&type_string)?;
+
+        let len = type_string.len();
+        let ptr = type_string.into_raw();
+
+        Ok(VariantType {
+            ptr: ptr as *mut ffi::GVariantType,
+            len,
+        })
+    }
 }
 
 unsafe impl Send for VariantType {}
