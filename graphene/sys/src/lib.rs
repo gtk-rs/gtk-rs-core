@@ -67,8 +67,8 @@ pub const GRAPHENE_VEC3_LEN: c_int = 3;
 pub const GRAPHENE_VEC4_LEN: c_int = 4;
 
 // Records
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_box_t {
     pub min: graphene_vec3_t,
     pub max: graphene_vec3_t,
@@ -81,8 +81,8 @@ impl ::std::fmt::Debug for graphene_box_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_euler_t {
     pub angles: graphene_vec3_t,
     pub order: graphene_euler_order_t,
@@ -95,8 +95,8 @@ impl ::std::fmt::Debug for graphene_euler_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_frustum_t {
     pub planes: [graphene_plane_t; 6],
 }
@@ -108,9 +108,9 @@ impl ::std::fmt::Debug for graphene_frustum_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_matrix_t {
     pub value: graphene_simd4x4f_t,
 }
@@ -122,8 +122,8 @@ impl ::std::fmt::Debug for graphene_matrix_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_plane_t {
     pub normal: graphene_vec3_t,
     pub constant: c_float,
@@ -136,8 +136,8 @@ impl ::std::fmt::Debug for graphene_plane_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_point3d_t {
     pub x: c_float,
     pub y: c_float,
@@ -154,8 +154,8 @@ impl ::std::fmt::Debug for graphene_point3d_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_point_t {
     pub x: c_float,
     pub y: c_float,
@@ -170,8 +170,8 @@ impl ::std::fmt::Debug for graphene_point_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_quad_t {
     pub points: [graphene_point_t; 4],
 }
@@ -183,8 +183,8 @@ impl ::std::fmt::Debug for graphene_quad_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_quaternion_t {
     pub x: c_float,
     pub y: c_float,
@@ -199,8 +199,8 @@ impl ::std::fmt::Debug for graphene_quaternion_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_ray_t {
     pub origin: graphene_vec3_t,
     pub direction: graphene_vec3_t,
@@ -213,8 +213,8 @@ impl ::std::fmt::Debug for graphene_ray_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_rect_t {
     pub origin: graphene_point_t,
     pub size: graphene_size_t,
@@ -229,9 +229,9 @@ impl ::std::fmt::Debug for graphene_rect_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_simd4f_t {
     pub x: c_float,
     pub y: c_float,
@@ -246,9 +246,9 @@ impl ::std::fmt::Debug for graphene_simd4f_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_simd4x4f_t {
     pub x: graphene_simd4f_t,
     pub y: graphene_simd4f_t,
@@ -263,8 +263,8 @@ impl ::std::fmt::Debug for graphene_simd4x4f_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_size_t {
     pub width: c_float,
     pub height: c_float,
@@ -279,8 +279,8 @@ impl ::std::fmt::Debug for graphene_size_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_sphere_t {
     pub center: graphene_vec3_t,
     pub radius: c_float,
@@ -293,8 +293,8 @@ impl ::std::fmt::Debug for graphene_sphere_t {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_triangle_t {
     pub a: graphene_vec3_t,
     pub b: graphene_vec3_t,
@@ -308,9 +308,9 @@ impl ::std::fmt::Debug for graphene_triangle_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_vec2_t {
     pub value: graphene_simd4f_t,
 }
@@ -322,9 +322,9 @@ impl ::std::fmt::Debug for graphene_vec2_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_vec3_t {
     pub value: graphene_simd4f_t,
 }
@@ -336,9 +336,9 @@ impl ::std::fmt::Debug for graphene_vec3_t {
     }
 }
 
-#[repr(C)]
 #[repr(align(16))]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct graphene_vec4_t {
     pub value: graphene_simd4f_t,
 }

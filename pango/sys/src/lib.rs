@@ -375,8 +375,8 @@ pub type PangoFontsetForeachFunc =
     Option<unsafe extern "C" fn(*mut PangoFontset, *mut PangoFont, gpointer) -> gboolean>;
 
 // Records
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAnalysis {
     pub shape_engine: gpointer,
     pub lang_engine: gpointer,
@@ -405,8 +405,8 @@ impl ::std::fmt::Debug for PangoAnalysis {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrClass {
     pub type_: PangoAttrType,
     pub copy: Option<unsafe extern "C" fn(*const PangoAttribute) -> *mut PangoAttribute>,
@@ -426,8 +426,8 @@ impl ::std::fmt::Debug for PangoAttrClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrColor {
     pub attr: PangoAttribute,
     pub color: PangoColor,
@@ -442,8 +442,8 @@ impl ::std::fmt::Debug for PangoAttrColor {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrFloat {
     pub attr: PangoAttribute,
     pub value: c_double,
@@ -458,8 +458,8 @@ impl ::std::fmt::Debug for PangoAttrFloat {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrFontDesc {
     pub attr: PangoAttribute,
     pub desc: *mut PangoFontDescription,
@@ -474,8 +474,8 @@ impl ::std::fmt::Debug for PangoAttrFontDesc {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrFontFeatures {
     pub attr: PangoAttribute,
     pub features: *mut c_char,
@@ -490,8 +490,8 @@ impl ::std::fmt::Debug for PangoAttrFontFeatures {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrInt {
     pub attr: PangoAttribute,
     pub value: c_int,
@@ -507,7 +507,10 @@ impl ::std::fmt::Debug for PangoAttrInt {
 }
 
 #[repr(C)]
-pub struct PangoAttrIterator(c_void);
+pub struct PangoAttrIterator {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoAttrIterator {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -516,8 +519,8 @@ impl ::std::fmt::Debug for PangoAttrIterator {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrLanguage {
     pub attr: PangoAttribute,
     pub value: *mut PangoLanguage,
@@ -533,7 +536,10 @@ impl ::std::fmt::Debug for PangoAttrLanguage {
 }
 
 #[repr(C)]
-pub struct PangoAttrList(c_void);
+pub struct PangoAttrList {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoAttrList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -542,8 +548,8 @@ impl ::std::fmt::Debug for PangoAttrList {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrShape {
     pub attr: PangoAttribute,
     pub ink_rect: PangoRectangle,
@@ -566,8 +572,8 @@ impl ::std::fmt::Debug for PangoAttrShape {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrSize {
     pub attr: PangoAttribute,
     pub size: c_int,
@@ -584,8 +590,8 @@ impl ::std::fmt::Debug for PangoAttrSize {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttrString {
     pub attr: PangoAttribute,
     pub value: *mut c_char,
@@ -600,8 +606,8 @@ impl ::std::fmt::Debug for PangoAttrString {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoAttribute {
     pub klass: *const PangoAttrClass,
     pub start_index: c_uint,
@@ -618,8 +624,8 @@ impl ::std::fmt::Debug for PangoAttribute {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoColor {
     pub red: u16,
     pub green: u16,
@@ -637,12 +643,15 @@ impl ::std::fmt::Debug for PangoColor {
 }
 
 #[repr(C)]
-pub struct _PangoContextClass(c_void);
+pub struct _PangoContextClass {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type PangoContextClass = *mut _PangoContextClass;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontClass {
     pub parent_class: gobject::GObjectClass,
     pub describe: Option<unsafe extern "C" fn(*mut PangoFont) -> *mut PangoFontDescription>,
@@ -678,7 +687,10 @@ impl ::std::fmt::Debug for PangoFontClass {
 }
 
 #[repr(C)]
-pub struct PangoFontDescription(c_void);
+pub struct PangoFontDescription {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoFontDescription {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -687,8 +699,8 @@ impl ::std::fmt::Debug for PangoFontDescription {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontFaceClass {
     pub parent_class: gobject::GObjectClass,
     pub get_face_name: Option<unsafe extern "C" fn(*mut PangoFontFace) -> *const c_char>,
@@ -715,8 +727,8 @@ impl ::std::fmt::Debug for PangoFontFaceClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontFamilyClass {
     pub parent_class: gobject::GObjectClass,
     pub list_faces: Option<
@@ -744,8 +756,8 @@ impl ::std::fmt::Debug for PangoFontFamilyClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontMapClass {
     pub parent_class: gobject::GObjectClass,
     pub load_font: Option<
@@ -790,8 +802,8 @@ impl ::std::fmt::Debug for PangoFontMapClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontMetrics {
     pub ref_count: c_uint,
     pub ascent: c_int,
@@ -812,8 +824,8 @@ impl ::std::fmt::Debug for PangoFontMetrics {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontsetClass {
     pub parent_class: gobject::GObjectClass,
     pub get_font: Option<unsafe extern "C" fn(*mut PangoFontset, c_uint) -> *mut PangoFont>,
@@ -843,12 +855,15 @@ impl ::std::fmt::Debug for PangoFontsetClass {
 }
 
 #[repr(C)]
-pub struct _PangoFontsetSimpleClass(c_void);
+pub struct _PangoFontsetSimpleClass {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type PangoFontsetSimpleClass = *mut _PangoFontsetSimpleClass;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphGeometry {
     pub width: PangoGlyphUnit,
     pub x_offset: PangoGlyphUnit,
@@ -865,8 +880,8 @@ impl ::std::fmt::Debug for PangoGlyphGeometry {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphInfo {
     pub glyph: PangoGlyph,
     pub geometry: PangoGlyphGeometry,
@@ -883,8 +898,8 @@ impl ::std::fmt::Debug for PangoGlyphInfo {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphItem {
     pub item: *mut PangoItem,
     pub glyphs: *mut PangoGlyphString,
@@ -905,8 +920,8 @@ impl ::std::fmt::Debug for PangoGlyphItem {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphItemIter {
     pub glyph_item: *mut PangoGlyphItem,
     pub text: *const c_char,
@@ -933,8 +948,8 @@ impl ::std::fmt::Debug for PangoGlyphItemIter {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphString {
     pub num_glyphs: c_int,
     pub glyphs: *mut PangoGlyphInfo,
@@ -952,8 +967,8 @@ impl ::std::fmt::Debug for PangoGlyphString {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoGlyphVisAttr {
     pub is_cluster_start: c_uint,
 }
@@ -966,8 +981,8 @@ impl ::std::fmt::Debug for PangoGlyphVisAttr {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoItem {
     pub offset: c_int,
     pub length: c_int,
@@ -987,7 +1002,10 @@ impl ::std::fmt::Debug for PangoItem {
 }
 
 #[repr(C)]
-pub struct PangoLanguage(c_void);
+pub struct PangoLanguage {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoLanguage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -997,12 +1015,18 @@ impl ::std::fmt::Debug for PangoLanguage {
 }
 
 #[repr(C)]
-pub struct _PangoLayoutClass(c_void);
+pub struct _PangoLayoutClass {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type PangoLayoutClass = *mut _PangoLayoutClass;
 
 #[repr(C)]
-pub struct PangoLayoutIter(c_void);
+pub struct PangoLayoutIter {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoLayoutIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1049,8 +1073,8 @@ impl ::std::fmt::Debug for PangoLogAttr {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoMatrix {
     pub xx: c_double,
     pub xy: c_double,
@@ -1073,8 +1097,8 @@ impl ::std::fmt::Debug for PangoMatrix {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoRectangle {
     pub x: c_int,
     pub y: c_int,
@@ -1093,8 +1117,8 @@ impl ::std::fmt::Debug for PangoRectangle {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoRendererClass {
     pub parent_class: gobject::GObjectClass,
     pub draw_glyphs: Option<
@@ -1162,12 +1186,18 @@ impl ::std::fmt::Debug for PangoRendererClass {
 }
 
 #[repr(C)]
-pub struct _PangoRendererPrivate(c_void);
+pub struct _PangoRendererPrivate {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type PangoRendererPrivate = *mut _PangoRendererPrivate;
 
 #[repr(C)]
-pub struct PangoScriptIter(c_void);
+pub struct PangoScriptIter {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoScriptIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1177,7 +1207,10 @@ impl ::std::fmt::Debug for PangoScriptIter {
 }
 
 #[repr(C)]
-pub struct PangoTabArray(c_void);
+pub struct PangoTabArray {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoTabArray {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1188,7 +1221,10 @@ impl ::std::fmt::Debug for PangoTabArray {
 
 // Classes
 #[repr(C)]
-pub struct PangoContext(c_void);
+pub struct PangoContext {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1198,7 +1234,10 @@ impl ::std::fmt::Debug for PangoContext {
 }
 
 #[repr(C)]
-pub struct PangoCoverage(c_void);
+pub struct PangoCoverage {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoCoverage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1207,8 +1246,8 @@ impl ::std::fmt::Debug for PangoCoverage {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFont {
     pub parent_instance: gobject::GObject,
 }
@@ -1221,8 +1260,8 @@ impl ::std::fmt::Debug for PangoFont {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontFace {
     pub parent_instance: gobject::GObject,
 }
@@ -1235,8 +1274,8 @@ impl ::std::fmt::Debug for PangoFontFace {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontFamily {
     pub parent_instance: gobject::GObject,
 }
@@ -1249,8 +1288,8 @@ impl ::std::fmt::Debug for PangoFontFamily {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontMap {
     pub parent_instance: gobject::GObject,
 }
@@ -1263,8 +1302,8 @@ impl ::std::fmt::Debug for PangoFontMap {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoFontset {
     pub parent_instance: gobject::GObject,
 }
@@ -1278,7 +1317,10 @@ impl ::std::fmt::Debug for PangoFontset {
 }
 
 #[repr(C)]
-pub struct PangoFontsetSimple(c_void);
+pub struct PangoFontsetSimple {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoFontsetSimple {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1288,7 +1330,10 @@ impl ::std::fmt::Debug for PangoFontsetSimple {
 }
 
 #[repr(C)]
-pub struct PangoLayout(c_void);
+pub struct PangoLayout {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for PangoLayout {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1297,8 +1342,8 @@ impl ::std::fmt::Debug for PangoLayout {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct PangoRenderer {
     pub parent_instance: gobject::GObject,
     pub underline: PangoUnderline,

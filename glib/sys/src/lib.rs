@@ -975,7 +975,10 @@ pub const G_URI_PARAMS_PARSE_RELAXED: GUriParamsFlags = 4;
 
 // Unions
 #[repr(C)]
-pub struct GDoubleIEEE754(c_void);
+pub struct GDoubleIEEE754 {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GDoubleIEEE754 {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -985,7 +988,10 @@ impl ::std::fmt::Debug for GDoubleIEEE754 {
 }
 
 #[repr(C)]
-pub struct GFloatIEEE754(c_void);
+pub struct GFloatIEEE754 {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GFloatIEEE754 {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -994,8 +1000,8 @@ impl ::std::fmt::Debug for GFloatIEEE754 {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub union GMutex {
     pub p: gpointer,
     pub i: [c_uint; 2],
@@ -1007,8 +1013,8 @@ impl ::std::fmt::Debug for GMutex {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub union GTokenValue {
     pub v_symbol: gpointer,
     pub v_identifier: *mut c_char,
@@ -1043,8 +1049,8 @@ impl ::std::fmt::Debug for GTokenValue {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub union GVariantBuilder_u {
     pub s: GVariantBuilder_u_s,
     pub x: [size_t; 16],
@@ -1059,8 +1065,8 @@ impl ::std::fmt::Debug for GVariantBuilder_u {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub union GVariantDict_u {
     pub s: GVariantDict_u_s,
     pub x: [size_t; 16],
@@ -1150,8 +1156,8 @@ pub type GUnixFDSourceFunc =
 pub type GVoidFunc = Option<unsafe extern "C" fn()>;
 
 // Records
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GArray {
     pub data: *mut c_char,
     pub len: c_uint,
@@ -1167,17 +1173,23 @@ impl ::std::fmt::Debug for GArray {
 }
 
 #[repr(C)]
-pub struct _GAsyncQueue(c_void);
+pub struct _GAsyncQueue {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GAsyncQueue = *mut _GAsyncQueue;
 
 #[repr(C)]
-pub struct _GBookmarkFile(c_void);
+pub struct _GBookmarkFile {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GBookmarkFile = *mut _GBookmarkFile;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GByteArray {
     pub data: *mut u8,
     pub len: c_uint,
@@ -1193,7 +1205,10 @@ impl ::std::fmt::Debug for GByteArray {
 }
 
 #[repr(C)]
-pub struct GBytes(c_void);
+pub struct GBytes {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GBytes {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1202,7 +1217,10 @@ impl ::std::fmt::Debug for GBytes {
 }
 
 #[repr(C)]
-pub struct GChecksum(c_void);
+pub struct GChecksum {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GChecksum {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1210,8 +1228,8 @@ impl ::std::fmt::Debug for GChecksum {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GCond {
     pub p: gpointer,
     pub i: [c_uint; 2],
@@ -1224,12 +1242,15 @@ impl ::std::fmt::Debug for GCond {
 }
 
 #[repr(C)]
-pub struct _GData(c_void);
+pub struct _GData {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GData = *mut _GData;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GDate {
     pub julian_days: c_uint,
     pub flags_dmy: c_uint,
@@ -1245,7 +1266,10 @@ impl ::std::fmt::Debug for GDate {
 }
 
 #[repr(C)]
-pub struct GDateTime(c_void);
+pub struct GDateTime {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GDateTime {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1253,8 +1277,8 @@ impl ::std::fmt::Debug for GDateTime {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GDebugKey {
     pub key: *const c_char,
     pub value: c_uint,
@@ -1270,7 +1294,10 @@ impl ::std::fmt::Debug for GDebugKey {
 }
 
 #[repr(C)]
-pub struct _GDir(c_void);
+pub struct _GDir {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GDir = *mut _GDir;
 
@@ -1289,8 +1316,8 @@ impl ::std::fmt::Debug for GDoubleIEEE754_mpn {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GError {
     pub domain: GQuark,
     pub code: c_int,
@@ -1323,7 +1350,10 @@ impl ::std::fmt::Debug for GFloatIEEE754_mpn {
 }
 
 #[repr(C)]
-pub struct GHashTable(c_void);
+pub struct GHashTable {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GHashTable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1331,8 +1361,8 @@ impl ::std::fmt::Debug for GHashTable {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GHashTableIter {
     pub dummy1: gpointer,
     pub dummy2: gpointer,
@@ -1350,12 +1380,15 @@ impl ::std::fmt::Debug for GHashTableIter {
 }
 
 #[repr(C)]
-pub struct _GHmac(c_void);
+pub struct _GHmac {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GHmac = *mut _GHmac;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GHook {
     pub data: gpointer,
     pub next: *mut GHook,
@@ -1403,7 +1436,10 @@ impl ::std::fmt::Debug for GHookList {
 }
 
 #[repr(C)]
-pub struct _GIConv(c_void);
+pub struct _GIConv {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GIConv = *mut _GIConv;
 
@@ -1432,8 +1468,8 @@ impl ::std::fmt::Debug for GIOChannel {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GIOFuncs {
     pub io_read: Option<
         unsafe extern "C" fn(
@@ -1481,7 +1517,10 @@ impl ::std::fmt::Debug for GIOFuncs {
 }
 
 #[repr(C)]
-pub struct GKeyFile(c_void);
+pub struct GKeyFile {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GKeyFile {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1489,8 +1528,8 @@ impl ::std::fmt::Debug for GKeyFile {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GList {
     pub data: gpointer,
     pub next: *mut GList,
@@ -1507,8 +1546,8 @@ impl ::std::fmt::Debug for GList {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GLogField {
     pub key: *const c_char,
     pub value: gconstpointer,
@@ -1526,7 +1565,10 @@ impl ::std::fmt::Debug for GLogField {
 }
 
 #[repr(C)]
-pub struct GMainContext(c_void);
+pub struct GMainContext {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GMainContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1536,7 +1578,10 @@ impl ::std::fmt::Debug for GMainContext {
 }
 
 #[repr(C)]
-pub struct GMainLoop(c_void);
+pub struct GMainLoop {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GMainLoop {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1545,7 +1590,10 @@ impl ::std::fmt::Debug for GMainLoop {
 }
 
 #[repr(C)]
-pub struct GMappedFile(c_void);
+pub struct GMappedFile {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GMappedFile {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1555,7 +1603,10 @@ impl ::std::fmt::Debug for GMappedFile {
 }
 
 #[repr(C)]
-pub struct GMarkupParseContext(c_void);
+pub struct GMarkupParseContext {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GMarkupParseContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1564,8 +1615,8 @@ impl ::std::fmt::Debug for GMarkupParseContext {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GMarkupParser {
     pub start_element: Option<
         unsafe extern "C" fn(
@@ -1614,7 +1665,10 @@ impl ::std::fmt::Debug for GMarkupParser {
 }
 
 #[repr(C)]
-pub struct GMatchInfo(c_void);
+pub struct GMatchInfo {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GMatchInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1622,8 +1676,8 @@ impl ::std::fmt::Debug for GMatchInfo {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GMemVTable {
     pub malloc: Option<unsafe extern "C" fn(size_t) -> gpointer>,
     pub realloc: Option<unsafe extern "C" fn(gpointer, size_t) -> gpointer>,
@@ -1646,8 +1700,8 @@ impl ::std::fmt::Debug for GMemVTable {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GNode {
     pub data: gpointer,
     pub next: *mut GNode,
@@ -1668,8 +1722,8 @@ impl ::std::fmt::Debug for GNode {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GOnce {
     pub status: GOnceStatus,
     pub retval: gpointer,
@@ -1682,12 +1736,15 @@ impl ::std::fmt::Debug for GOnce {
 }
 
 #[repr(C)]
-pub struct _GOptionContext(c_void);
+pub struct _GOptionContext {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GOptionContext = *mut _GOptionContext;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GOptionEntry {
     pub long_name: *const c_char,
     pub short_name: c_char,
@@ -1713,7 +1770,10 @@ impl ::std::fmt::Debug for GOptionEntry {
 }
 
 #[repr(C)]
-pub struct GOptionGroup(c_void);
+pub struct GOptionGroup {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GOptionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1723,7 +1783,10 @@ impl ::std::fmt::Debug for GOptionGroup {
 }
 
 #[repr(C)]
-pub struct GPatternSpec(c_void);
+pub struct GPatternSpec {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GPatternSpec {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1732,8 +1795,8 @@ impl ::std::fmt::Debug for GPatternSpec {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GPrivate {
     pub p: gpointer,
     pub notify: GDestroyNotify,
@@ -1746,8 +1809,8 @@ impl ::std::fmt::Debug for GPrivate {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GPtrArray {
     pub pdata: *mut gpointer,
     pub len: c_uint,
@@ -1762,8 +1825,8 @@ impl ::std::fmt::Debug for GPtrArray {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GQueue {
     pub head: *mut GList,
     pub tail: *mut GList,
@@ -1780,8 +1843,8 @@ impl ::std::fmt::Debug for GQueue {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GRWLock {
     pub p: gpointer,
     pub i: [c_uint; 2],
@@ -1794,12 +1857,15 @@ impl ::std::fmt::Debug for GRWLock {
 }
 
 #[repr(C)]
-pub struct _GRand(c_void);
+pub struct _GRand {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GRand = *mut _GRand;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GRecMutex {
     pub p: gpointer,
     pub i: [c_uint; 2],
@@ -1812,7 +1878,10 @@ impl ::std::fmt::Debug for GRecMutex {
 }
 
 #[repr(C)]
-pub struct GRegex(c_void);
+pub struct GRegex {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GRegex {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -1820,8 +1889,8 @@ impl ::std::fmt::Debug for GRegex {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GSList {
     pub data: gpointer,
     pub next: *mut GSList,
@@ -1836,8 +1905,8 @@ impl ::std::fmt::Debug for GSList {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GScanner {
     pub user_data: gpointer,
     pub max_parse_errors: c_uint,
@@ -1908,17 +1977,23 @@ impl ::std::fmt::Debug for GScannerConfig {
 }
 
 #[repr(C)]
-pub struct _GSequence(c_void);
+pub struct _GSequence {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GSequence = *mut _GSequence;
 
 #[repr(C)]
-pub struct _GSequenceIter(c_void);
+pub struct _GSequenceIter {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GSequenceIter = *mut _GSequenceIter;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GSource {
     pub callback_data: gpointer,
     pub callback_funcs: *mut GSourceCallbackFuncs,
@@ -1941,8 +2016,8 @@ impl ::std::fmt::Debug for GSource {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GSourceCallbackFuncs {
     pub ref_: Option<unsafe extern "C" fn(gpointer)>,
     pub unref: Option<unsafe extern "C" fn(gpointer)>,
@@ -1959,8 +2034,8 @@ impl ::std::fmt::Debug for GSourceCallbackFuncs {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GSourceFuncs {
     pub prepare: Option<unsafe extern "C" fn(*mut GSource, *mut c_int) -> gboolean>,
     pub check: Option<unsafe extern "C" fn(*mut GSource) -> gboolean>,
@@ -1982,17 +2057,23 @@ impl ::std::fmt::Debug for GSourceFuncs {
 }
 
 #[repr(C)]
-pub struct _GSourcePrivate(c_void);
+pub struct _GSourcePrivate {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GSourcePrivate = *mut _GSourcePrivate;
 
 #[repr(C)]
-pub struct _GStatBuf(c_void);
+pub struct _GStatBuf {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GStatBuf = *mut _GStatBuf;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GString {
     pub str: *mut c_char,
     pub len: size_t,
@@ -2010,22 +2091,31 @@ impl ::std::fmt::Debug for GString {
 }
 
 #[repr(C)]
-pub struct _GStringChunk(c_void);
+pub struct _GStringChunk {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GStringChunk = *mut _GStringChunk;
 
 #[repr(C)]
-pub struct _GStrvBuilder(c_void);
+pub struct _GStrvBuilder {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GStrvBuilder = *mut _GStrvBuilder;
 
 #[repr(C)]
-pub struct _GTestCase(c_void);
+pub struct _GTestCase {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GTestCase = *mut _GTestCase;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GTestConfig {
     pub test_initialized: gboolean,
     pub test_quick: gboolean,
@@ -2048,8 +2138,8 @@ impl ::std::fmt::Debug for GTestConfig {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GTestLogBuffer {
     pub data: *mut GString,
     pub msgs: *mut GSList,
@@ -2084,12 +2174,18 @@ impl ::std::fmt::Debug for GTestLogMsg {
 }
 
 #[repr(C)]
-pub struct _GTestSuite(c_void);
+pub struct _GTestSuite {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GTestSuite = *mut _GTestSuite;
 
 #[repr(C)]
-pub struct GThread(c_void);
+pub struct GThread {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GThread {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -2097,8 +2193,8 @@ impl ::std::fmt::Debug for GThread {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GThreadPool {
     pub func: GFunc,
     pub user_data: gpointer,
@@ -2115,8 +2211,8 @@ impl ::std::fmt::Debug for GThreadPool {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GTimeVal {
     pub tv_sec: c_long,
     pub tv_usec: c_long,
@@ -2132,7 +2228,10 @@ impl ::std::fmt::Debug for GTimeVal {
 }
 
 #[repr(C)]
-pub struct GTimeZone(c_void);
+pub struct GTimeZone {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GTimeZone {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -2141,12 +2240,15 @@ impl ::std::fmt::Debug for GTimeZone {
 }
 
 #[repr(C)]
-pub struct _GTimer(c_void);
+pub struct _GTimer {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GTimer = *mut _GTimer;
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GTrashStack {
     pub next: *mut GTrashStack,
 }
@@ -2160,7 +2262,10 @@ impl ::std::fmt::Debug for GTrashStack {
 }
 
 #[repr(C)]
-pub struct GTree(c_void);
+pub struct GTree {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GTree {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -2169,12 +2274,18 @@ impl ::std::fmt::Debug for GTree {
 }
 
 #[repr(C)]
-pub struct _GTreeNode(c_void);
+pub struct _GTreeNode {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GTreeNode = *mut _GTreeNode;
 
 #[repr(C)]
-pub struct GUri(c_void);
+pub struct GUri {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GUri {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -2182,8 +2293,8 @@ impl ::std::fmt::Debug for GUri {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GUriParamsIter {
     pub dummy0: c_int,
     pub dummy1: gpointer,
@@ -2199,7 +2310,10 @@ impl ::std::fmt::Debug for GUriParamsIter {
 }
 
 #[repr(C)]
-pub struct GVariant(c_void);
+pub struct GVariant {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GVariant {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -2207,8 +2321,8 @@ impl ::std::fmt::Debug for GVariant {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GVariantBuilder {
     pub u: GVariantBuilder_u,
 }
@@ -2221,8 +2335,8 @@ impl ::std::fmt::Debug for GVariantBuilder {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GVariantBuilder_u_s {
     pub partial_magic: size_t,
     pub type_: *const GVariantType,
@@ -2239,8 +2353,8 @@ impl ::std::fmt::Debug for GVariantBuilder_u_s {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GVariantDict {
     pub u: GVariantDict_u,
 }
@@ -2253,8 +2367,8 @@ impl ::std::fmt::Debug for GVariantDict {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GVariantDict_u_s {
     pub asv: *mut GVariant,
     pub partial_magic: size_t,
@@ -2271,8 +2385,8 @@ impl ::std::fmt::Debug for GVariantDict_u_s {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GVariantIter {
     pub x: [size_t; 16],
 }
@@ -2285,7 +2399,10 @@ impl ::std::fmt::Debug for GVariantIter {
 }
 
 #[repr(C)]
-pub struct GVariantType(c_void);
+pub struct GVariantType {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GVariantType {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {

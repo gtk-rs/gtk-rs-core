@@ -74,8 +74,8 @@ pub type GdkPixbufSaveFunc =
     Option<unsafe extern "C" fn(*const u8, size_t, *mut *mut glib::GError, gpointer) -> gboolean>;
 
 // Records
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufAnimationClass {
     pub parent_class: gobject::GObjectClass,
     pub is_static_image: Option<unsafe extern "C" fn(*mut GdkPixbufAnimation) -> gboolean>,
@@ -101,8 +101,8 @@ impl ::std::fmt::Debug for GdkPixbufAnimationClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufAnimationIterClass {
     pub parent_class: gobject::GObjectClass,
     pub get_delay_time: Option<unsafe extern "C" fn(*mut GdkPixbufAnimationIter) -> c_int>,
@@ -129,8 +129,8 @@ impl ::std::fmt::Debug for GdkPixbufAnimationIterClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufFormat {
     pub name: *mut c_char,
     pub signature: *mut GdkPixbufModulePattern,
@@ -159,8 +159,8 @@ impl ::std::fmt::Debug for GdkPixbufFormat {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufLoaderClass {
     pub parent_class: gobject::GObjectClass,
     pub size_prepared: Option<unsafe extern "C" fn(*mut GdkPixbufLoader, c_int, c_int)>,
@@ -182,8 +182,8 @@ impl ::std::fmt::Debug for GdkPixbufLoaderClass {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufModule {
     pub module_name: *mut c_char,
     pub module_path: *mut c_char,
@@ -256,8 +256,8 @@ impl ::std::fmt::Debug for GdkPixbufModule {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufModulePattern {
     pub prefix: *mut c_char,
     pub mask: *mut c_char,
@@ -275,13 +275,19 @@ impl ::std::fmt::Debug for GdkPixbufModulePattern {
 }
 
 #[repr(C)]
-pub struct _GdkPixbufSimpleAnimClass(c_void);
+pub struct _GdkPixbufSimpleAnimClass {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 pub type GdkPixbufSimpleAnimClass = *mut _GdkPixbufSimpleAnimClass;
 
 // Classes
 #[repr(C)]
-pub struct GdkPixbuf(c_void);
+pub struct GdkPixbuf {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GdkPixbuf {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -289,8 +295,8 @@ impl ::std::fmt::Debug for GdkPixbuf {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufAnimation {
     pub parent_instance: gobject::GObject,
 }
@@ -303,8 +309,8 @@ impl ::std::fmt::Debug for GdkPixbufAnimation {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufAnimationIter {
     pub parent_instance: gobject::GObject,
 }
@@ -317,8 +323,8 @@ impl ::std::fmt::Debug for GdkPixbufAnimationIter {
     }
 }
 
-#[repr(C)]
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GdkPixbufLoader {
     pub parent_instance: gobject::GObject,
     pub priv_: gpointer,
@@ -332,7 +338,10 @@ impl ::std::fmt::Debug for GdkPixbufLoader {
 }
 
 #[repr(C)]
-pub struct GdkPixbufNonAnim(c_void);
+pub struct GdkPixbufNonAnim {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GdkPixbufNonAnim {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -342,7 +351,10 @@ impl ::std::fmt::Debug for GdkPixbufNonAnim {
 }
 
 #[repr(C)]
-pub struct GdkPixbufSimpleAnim(c_void);
+pub struct GdkPixbufSimpleAnim {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GdkPixbufSimpleAnim {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
@@ -352,7 +364,10 @@ impl ::std::fmt::Debug for GdkPixbufSimpleAnim {
 }
 
 #[repr(C)]
-pub struct GdkPixbufSimpleAnimIter(c_void);
+pub struct GdkPixbufSimpleAnimIter {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
 
 impl ::std::fmt::Debug for GdkPixbufSimpleAnimIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
