@@ -9,6 +9,7 @@ pub const WRONG_PLACE_MSG: &str =
 
 pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
     let mut has_new = false;
+    let mut has_parent_type = false;
     let mut has_interfaces = false;
     let mut has_instance = false;
     let mut has_class = false;
@@ -22,7 +23,9 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
             }
             syn::ImplItem::Type(type_) => {
                 let name = type_.ident.to_string();
-                if name == "Interfaces" {
+                if name == "ParentType" {
+                    has_parent_type = true;
+                } else if name == "Interfaces" {
                     has_interfaces = true;
                 } else if name == "Instance" {
                     has_instance = true;
@@ -43,6 +46,16 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         ..
     } = &input;
 
+    let crate_ident = crate::utils::crate_ident_new();
+
+    let parent_type_opt = if has_parent_type {
+        None
+    } else {
+        Some(quote!(
+            type ParentType = #crate_ident::Object;
+        ))
+    };
+
     let interfaces_opt = if has_interfaces {
         None
     } else {
@@ -60,8 +73,6 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
             }
         })
     };
-
-    let crate_ident = crate::utils::crate_ident_new();
 
     let class_opt = if has_class {
         None
@@ -83,6 +94,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
     quote! {
         #(#attrs)*
         impl #generics #trait_path for #self_ty {
+            #parent_type_opt
             #interfaces_opt
             #class_opt
             #instance_opt

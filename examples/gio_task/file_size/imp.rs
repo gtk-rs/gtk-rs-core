@@ -10,7 +10,6 @@ pub struct FileSize {
 #[glib::object_subclass]
 impl ObjectSubclass for FileSize {
     const NAME: &'static str = "FileSize";
-    type ParentType = glib::Object;
     type Type = super::FileSize;
 }
 

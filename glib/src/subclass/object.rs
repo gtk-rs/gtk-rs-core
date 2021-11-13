@@ -245,7 +245,6 @@ mod test {
         impl ObjectSubclass for ChildObject {
             const NAME: &'static str = "ChildObject";
             type Type = super::ChildObject;
-            type ParentType = Object;
         }
 
         impl ObjectImpl for ChildObject {}
@@ -261,7 +260,6 @@ mod test {
         impl ObjectSubclass for SimpleObject {
             const NAME: &'static str = "SimpleObject";
             type Type = super::SimpleObject;
-            type ParentType = Object;
             type Interfaces = (super::Dummy,);
         }
 

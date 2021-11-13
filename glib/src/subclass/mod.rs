@@ -84,11 +84,14 @@
 //!         // This type name must be unique per process.
 //!         const NAME: &'static str = "SimpleObject";
 //!
-//!         // The parent type this one is inheriting from.
 //!         type Type = super::SimpleObject;
+//!
+//!         // The parent type this one is inheriting from.
+//!         // Optional, if not specified it defaults to `glib::Object`
 //!         type ParentType = glib::Object;
 //!
-//!         // Interfaces this type implements
+//!         // Interfaces this type implements.
+//!         // Optional, if not specified it defaults to `()`
 //!         type Interfaces = ();
 //!     }
 //!

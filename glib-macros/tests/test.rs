@@ -258,7 +258,6 @@ fn subclassable() {
             impl ObjectSubclass for Foo {
                 const NAME: &'static str = "MyFoo";
                 type Type = super::Foo;
-                type ParentType = glib::Object;
             }
 
             impl ObjectImpl for Foo {}

@@ -178,7 +178,6 @@ mod test {
         #[glib::object_subclass]
         impl ObjectSubclass for MySimpleObjectPrivate {
             const NAME: &'static str = "MySimpleObjectPrivate";
-            type ParentType = glib::Object;
             type Type = MySimpleObject;
 
             fn new() -> Self {
