@@ -59,7 +59,7 @@ pub mod error;
 pub mod object;
 
 mod collections;
-pub use collections::{GPtrSlice, GSlice};
+pub use collections::{List, PtrSlice, SList, Slice};
 
 pub use self::auto::functions::*;
 pub use self::auto::*;
