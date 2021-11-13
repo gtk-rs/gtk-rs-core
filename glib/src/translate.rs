@@ -882,7 +882,8 @@ where
                 list = ffi::g_list_prepend(list, Ptr::to(stash.0));
             }
         }
-        (list, (Some(List(list)), stash_vec))
+        let stash = (ptr::NonNull::new(list).map(List), stash_vec);
+        (list, stash)
     }
 
     #[inline]
@@ -936,11 +937,11 @@ where
 }
 
 #[doc(alias = "GList")]
-pub struct List(*mut ffi::GList);
+pub struct List(ptr::NonNull<ffi::GList>);
 
 impl Drop for List {
     fn drop(&mut self) {
-        unsafe { ffi::g_list_free(self.0) }
+        unsafe { ffi::g_list_free(self.0.as_ptr()) }
     }
 }
 
@@ -962,7 +963,9 @@ where
                 list = ffi::g_slist_prepend(list, Ptr::to(stash.0));
             }
         }
-        (list, (Some(SList(list)), stash_vec))
+
+        let stash = (ptr::NonNull::new(list).map(SList), stash_vec);
+        (list, stash)
     }
 
     #[inline]
@@ -1017,11 +1020,11 @@ where
 }
 
 #[doc(alias = "GSList")]
-pub struct SList(*mut ffi::GSList);
+pub struct SList(ptr::NonNull<ffi::GSList>);
 
 impl Drop for SList {
     fn drop(&mut self) {
-        unsafe { ffi::g_slist_free(self.0) }
+        unsafe { ffi::g_slist_free(self.0.as_ptr()) }
     }
 }
 
@@ -1053,7 +1056,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::GHashTable, Self> {
         let ptr = self.to_glib_full();
-        Stash(ptr, HashTable(ptr))
+        Stash(ptr, HashTable(unsafe { ptr::NonNull::new_unchecked(ptr) }))
     }
 
     #[inline]
@@ -1076,21 +1079,21 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
 }
 
 #[doc(alias = "GHashTable")]
-pub struct HashTable(*mut ffi::GHashTable);
+pub struct HashTable(ptr::NonNull<ffi::GHashTable>);
 
 impl Drop for HashTable {
     fn drop(&mut self) {
-        unsafe { ffi::g_hash_table_unref(self.0) }
+        unsafe { ffi::g_hash_table_unref(self.0.as_ptr()) }
     }
 }
 
 #[doc(alias = "GPtrArray")]
-pub struct PtrArray(*mut ffi::GPtrArray);
+pub struct PtrArray(ptr::NonNull<ffi::GPtrArray>);
 
 impl Drop for PtrArray {
     fn drop(&mut self) {
         unsafe {
-            ffi::g_ptr_array_unref(self.0);
+            ffi::g_ptr_array_unref(self.0.as_ptr());
         }
     }
 }
@@ -1113,7 +1116,14 @@ where
                 ffi::g_ptr_array_add(arr, Ptr::to(stash.0));
             }
         }
-        (arr, (Some(PtrArray(arr)), stash_vec))
+
+        (
+            arr,
+            (
+                Some(PtrArray(unsafe { ptr::NonNull::new_unchecked(arr) })),
+                stash_vec,
+            ),
+        )
     }
 
     #[inline]
