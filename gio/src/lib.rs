@@ -63,6 +63,7 @@ pub use crate::settings::BindingBuilder;
 mod socket;
 mod subprocess;
 mod subprocess_launcher;
+mod task;
 mod threaded_socket_service;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_fd_list;
@@ -109,8 +110,6 @@ pub use crate::read_input_stream::ReadInputStream;
 mod write_output_stream;
 pub use crate::write_output_stream::WriteOutputStream;
 mod tls_connection;
-
-pub mod task;
 
 #[cfg(target_family = "windows")]
 mod win32_input_stream;
