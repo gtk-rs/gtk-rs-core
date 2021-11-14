@@ -4,7 +4,7 @@ use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::abort_call_site;
 use quote::quote;
 
-use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_type_name};
+use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_name};
 
 fn gen_option_to_ptr() -> TokenStream {
     quote! {
@@ -87,7 +87,7 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
 pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
 
-    let gtype_name = match parse_type_name(input, "boxed_type") {
+    let gtype_name = match parse_name(input, "boxed_type") {
         Ok(name) => name,
         Err(e) => abort_call_site!(
             "{}: #[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]",

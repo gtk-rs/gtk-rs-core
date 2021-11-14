@@ -4,7 +4,7 @@ use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::abort_call_site;
 use quote::quote;
 
-use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_type_name};
+use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_name};
 
 fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
     let refcounted_type_prefix = refcounted_type_prefix(name, crate_ident);
@@ -98,7 +98,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         }
     };
 
-    let gtype_name = match parse_type_name(input, "shared_boxed_type") {
+    let gtype_name = match parse_name(input, "shared_boxed_type") {
         Ok(name) => name,
         Err(e) => abort_call_site!(
             "{}: #[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]",

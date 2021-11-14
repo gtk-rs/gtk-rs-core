@@ -51,7 +51,7 @@ pub fn find_nested_meta<'a>(meta: &'a MetaList, name: &str) -> Option<&'a Nested
     })
 }
 
-pub fn parse_type_name_attr(meta: &NestedMeta) -> Result<String> {
+pub fn parse_name_attribute(meta: &NestedMeta) -> Result<String> {
     let (ident, v) = parse_attribute(meta)?;
 
     match ident.as_ref() {
@@ -62,36 +62,6 @@ pub fn parse_type_name_attr(meta: &NestedMeta) -> Result<String> {
 
 // Parse attribute such as:
 // #[enum_type(name = "TestAnimalType")]
-pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
-    let meta = match find_attribute_meta(&input.attrs, attr_name)? {
-        Some(meta) => meta,
-        _ => bail!("Missing '{}' attribute", attr_name),
-    };
-
-    let meta = match find_nested_meta(&meta, "name") {
-        Some(meta) => meta,
-        _ => bail!("Missing meta 'name'"),
-    };
-
-    parse_type_name_attr(meta)
-}
-
-#[derive(Debug)]
-pub enum ErrorDomainAttribute {
-    Name(String),
-}
-
-pub fn parse_error_attribute(meta: &NestedMeta) -> Result<ErrorDomainAttribute> {
-    let (ident, v) = parse_attribute(meta)?;
-
-    match ident.as_ref() {
-        "name" => Ok(ErrorDomainAttribute::Name(v)),
-        s => bail!("Unknown enum meta {}", s),
-    }
-}
-
-// Parse attribute such as:
-// #[gerror_domain(name = "MyError")]
 pub fn parse_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
     let meta = match find_attribute_meta(&input.attrs, attr_name)? {
         Some(meta) => meta,
@@ -103,9 +73,7 @@ pub fn parse_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
         _ => bail!("Missing meta 'name'"),
     };
 
-    match parse_error_attribute(meta)? {
-        ErrorDomainAttribute::Name(n) => Ok(n),
-    }
+    parse_name_attribute(meta)
 }
 
 #[derive(Debug)]

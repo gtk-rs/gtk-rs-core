@@ -5,8 +5,8 @@ mod clone;
 mod closure;
 mod downgrade_derive;
 mod enum_derive;
+mod error_domain_derive;
 mod flags_attribute;
-mod gerror_domain_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
 mod shared_boxed_derive;
@@ -493,8 +493,8 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Debug, Copy, Clone, glib::GErrorDomain)]
-/// #[gerror_domain(name = "ExFoo")]
+/// #[derive(Debug, Copy, Clone, glib::ErrorDomain)]
+/// #[error_domain(name = "ExFoo")]
 /// enum Foo {
 ///     Blah,
 ///     Baaz,
@@ -502,11 +502,11 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// ```
 ///
 /// [`ErrorDomain`]: error/trait.ErrorDomain.html
-#[proc_macro_derive(GErrorDomain, attributes(gerror_domain))]
+#[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
-pub fn gerror_domain_derive(input: TokenStream) -> TokenStream {
+pub fn error_domain_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gerror_domain_derive::impl_gerror_domain(&input);
+    let gen = error_domain_derive::impl_error_domain(&input);
     gen.into()
 }
 

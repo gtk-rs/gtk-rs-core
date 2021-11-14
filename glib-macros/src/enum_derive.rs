@@ -7,7 +7,7 @@ use quote::{quote, quote_spanned};
 use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Data, Ident, Variant};
 
 use crate::utils::{
-    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_type_name, ItemAttribute,
+    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_name, ItemAttribute,
 };
 
 // Generate glib::gobject_ffi::GEnumValue structs mapping the enum such as:
@@ -73,7 +73,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
 
-    let gtype_name = match parse_type_name(input, "enum_type") {
+    let gtype_name = match parse_name(input, "enum_type") {
         Ok(name) => name,
         Err(e) => abort_call_site!(
             "{}: #[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]",

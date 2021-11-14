@@ -2,12 +2,11 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::GErrorDomain;
 
 #[test]
-fn derive_gerror_domain() {
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, GErrorDomain)]
-    #[gerror_domain(name = "TestError")]
+fn derive_error_domain() {
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::ErrorDomain)]
+    #[error_domain(name = "TestError")]
     enum TestError {
         Invalid,
         Bad,

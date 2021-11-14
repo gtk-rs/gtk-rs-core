@@ -11,7 +11,7 @@ use syn::{
 
 use crate::utils::{
     crate_ident_new, find_attribute_meta, find_nested_meta, parse_item_attributes,
-    parse_type_name_attr, ItemAttribute,
+    parse_name_attribute, ItemAttribute,
 };
 
 // Flag is not registered if it has the #[flags_value(skip)] meta
@@ -105,7 +105,7 @@ fn gen_bitflags(
 }
 
 pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
-    let gtype_name = match parse_type_name_attr(attrs) {
+    let gtype_name = match parse_name_attribute(attrs) {
         Ok(name) => name,
         Err(e) => abort_call_site!(
             "{}: [glib::flags] requires #[glib::flags(name = \"FlagsTypeName\")]",
