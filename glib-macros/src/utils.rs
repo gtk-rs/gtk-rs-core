@@ -51,6 +51,16 @@ pub fn find_nested_meta<'a>(meta: &'a MetaList, name: &str) -> Option<&'a Nested
     })
 }
 
+pub fn parse_type_name_attr(meta: &NestedMeta) -> Result<String> {
+    let (ident, v) = parse_attribute(meta)?;
+
+    match ident.as_ref() {
+        "name" => Ok(v),
+        "type_name" => Ok(v),
+        s => bail!("Unknown meta {}", s),
+    }
+}
+
 // Parse attribute such as:
 // #[enum_type(name = "TestAnimalType")]
 pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
@@ -68,13 +78,7 @@ pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
         },
     };
 
-    let (ident, v) = parse_attribute(meta)?;
-
-    match ident.as_ref() {
-        "name" => Ok(v),
-        "type_name" => Ok(v),
-        s => bail!("Unknown meta {}", s),
-    }
+    parse_type_name_attr(meta)
 }
 
 #[derive(Debug)]

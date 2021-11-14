@@ -37,17 +37,13 @@
 //!     }
 //! }
 //!
-//! // Note that the first `#[glib::gflags(...)]` is the proc-macro invocation,
-//! // while the plain `#[gflags(...)]` inside the braces are just custom attributes that
-//! // get read by the proc-macro, and they must be written exactly like that.
-//!
-//! #[glib::gflags("MyFlags")]
+//! #[glib::flags(name = "MyFlags")]
 //! enum MyFlags {
-//!     #[gflags(name = "Flag A", nick = "nick-a")]
+//!     #[flags_value(name = "Flag A", nick = "nick-a")]
 //!     A = 0b00000001,
-//!     #[gflags(name = "Flag B")]
+//!     #[flags_value(name = "Flag B")]
 //!     B = 0b00000010,
-//!     #[gflags(skip)]
+//!     #[flags_value(skip)]
 //!     AB = Self::A.bits() | Self::B.bits(),
 //!     C = 0b00000100,
 //! }

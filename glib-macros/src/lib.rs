@@ -4,10 +4,10 @@ mod clone;
 mod closure;
 mod downgrade_derive;
 mod enum_derive;
+mod flags_attribute;
 mod gboxed_derive;
 mod gboxed_shared_derive;
 mod gerror_domain_derive;
-mod gflags_attribute;
 mod gvariant_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
@@ -15,7 +15,7 @@ mod utils;
 
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
-use syn::{parse_macro_input, DeriveInput, LitStr};
+use syn::{parse_macro_input, DeriveInput, NestedMeta};
 
 /// Macro for passing variables as strong or weak references into a closure.
 ///
@@ -444,6 +444,45 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
     gen.into()
 }
 
+/// Attribute macro for defining flags using the `bitflags` crate.
+/// This macro will also define a `GFlags::type_` function and
+/// the [`glib::Value`] traits.
+///
+/// The expected `GType` name has to be passed as macro attribute.
+/// The name and nick of each flag can also be optionally defined.
+/// Default name is the flag identifier in CamelCase and default nick
+/// is the identifier in kebab-case.
+/// Combined flags should not be registered with the `GType` system
+/// and so needs to be tagged with the `#[flags_value(skip)]` attribute.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[glib::flags(name = "MyFlags")]
+/// enum MyFlags {
+///     #[flags_value(name = "Flag A", nick = "nick-a")]
+///     A = 0b00000001,
+///     #[flags_value(name = "Flag B")]
+///     B = 0b00000010,
+///     #[flags_value(skip)]
+///     AB = Self::A.bits() | Self::B.bits(),
+///     C = 0b00000100,
+/// }
+/// ```
+///
+/// [`glib::Value`]: value/struct.Value.html
+#[proc_macro_attribute]
+#[proc_macro_error]
+pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let attr_meta = parse_macro_input!(attr as NestedMeta);
+    let input = parse_macro_input!(item as DeriveInput);
+    let gen = flags_attribute::impl_flags(&attr_meta, &input);
+    gen.into()
+}
+
 /// Derive macro for defining a GLib error domain and its associated
 /// [`ErrorDomain`] trait.
 ///
@@ -519,45 +558,6 @@ pub fn gboxed_derive(input: TokenStream) -> TokenStream {
 pub fn gshared_boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let gen = gboxed_shared_derive::impl_gshared_boxed(&input);
-    gen.into()
-}
-
-/// Attribute macro for defining flags using the `bitflags` crate.
-/// This macro will also define a `GFlags::type_` function and
-/// the [`glib::Value`] traits.
-///
-/// The expected `GType` name has to be passed as macro attribute.
-/// The name and nick of each flag can also be optionally defined.
-/// Default name is the flag identifier in CamelCase and default nick
-/// is the identifier in kebab-case.
-/// Combined flags should not be registered with the `GType` system
-/// and so needs to be tagged with the `#[gflags(skip)]` attribute.
-///
-/// # Example
-///
-/// ```
-/// use glib::prelude::*;
-/// use glib::subclass::prelude::*;
-///
-/// #[glib::gflags("MyFlags")]
-/// enum MyFlags {
-///     #[gflags(name = "Flag A", nick = "nick-a")]
-///     A = 0b00000001,
-///     #[gflags(name = "Flag B")]
-///     B = 0b00000010,
-///     #[gflags(skip)]
-///     AB = Self::A.bits() | Self::B.bits(),
-///     C = 0b00000100,
-/// }
-/// ```
-///
-/// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn gflags(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as DeriveInput);
-    let gtype_name = parse_macro_input!(attr as LitStr);
-    let gen = gflags_attribute::impl_gflags(&input, &gtype_name);
     gen.into()
 }
 

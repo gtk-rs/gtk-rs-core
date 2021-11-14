@@ -2,7 +2,7 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{gflags, GBoxed, GErrorDomain, GSharedBoxed, GVariant};
+use glib::{GBoxed, GErrorDomain, GSharedBoxed, GVariant};
 
 #[test]
 fn derive_gerror_domain() {
@@ -182,14 +182,14 @@ fn derive_gboxed_nullable() {
 }
 
 #[test]
-fn attr_gflags() {
-    #[gflags("MyFlags")]
+fn attr_flags() {
+    #[glib::flags(name = "MyFlags")]
     enum MyFlags {
-        #[gflags(name = "Flag A", nick = "nick-a")]
+        #[flags_value(name = "Flag A", nick = "nick-a")]
         A = 0b00000001,
-        #[gflags(name = "Flag B")]
+        #[flags_value(name = "Flag B")]
         B = 0b00000010,
-        #[gflags(skip)]
+        #[flags_value(skip)]
         AB = Self::A.bits() | Self::B.bits(),
         C = 0b00000100,
     }

@@ -6,16 +6,17 @@ use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned};
 use syn::{
     punctuated::Punctuated, spanned::Spanned, token::Comma, Attribute, Data, DeriveInput, Ident,
-    LitStr, Variant, Visibility,
+    NestedMeta, Variant, Visibility,
 };
 
 use crate::utils::{
-    crate_ident_new, find_attribute_meta, find_nested_meta, parse_item_attributes, ItemAttribute,
+    crate_ident_new, find_attribute_meta, find_nested_meta, parse_item_attributes,
+    parse_type_name_attr, ItemAttribute,
 };
 
-// Flag is not registered if it has the #[gflags(skip)] meta
+// Flag is not registered if it has the #[flags_value(skip)] meta
 fn attribute_has_skip(attrs: &[Attribute]) -> bool {
-    let meta = find_attribute_meta(attrs, "gflags").unwrap();
+    let meta = find_attribute_meta(attrs, "flags_value").unwrap();
 
     match meta {
         None => false,
@@ -29,7 +30,7 @@ fn attribute_has_skip(attrs: &[Attribute]) -> bool {
 //         value_name: "The Name\0" as *const _ as *const _,
 //         value_nick: "nick\0" as *const _ as *const _,
 //     },
-fn gen_gflags_values(
+fn gen_flags_values(
     enum_name: &Ident,
     enum_variants: &Punctuated<Variant, Comma>,
 ) -> (TokenStream, usize) {
@@ -42,11 +43,11 @@ fn gen_gflags_values(
         let mut value_name = name.to_string().to_camel_case();
         let mut value_nick = name.to_string().to_kebab_case();
 
-        let attrs = parse_item_attributes("gflags", &v.attrs);
+        let attrs = parse_item_attributes("flags_value", &v.attrs);
         let attrs = match attrs {
             Ok(attrs) => attrs,
             Err(e) => abort_call_site!(
-                "{}: gflags enum supports only the following optional attributes: #[gflags(name = \"The Name\", nick = \"the-nick\")] or #[gflags(skip)]",
+                "{}: #[glib::flags] supports only the following optional attributes: #[flags_value(name = \"The Name\", nick = \"the-nick\")] or #[flags_value(skip)]",
                 e
             ),
         };
@@ -103,18 +104,27 @@ fn gen_bitflags(
     }
 }
 
-pub fn impl_gflags(input: &DeriveInput, gtype_name: &LitStr) -> TokenStream {
-    let visibility = &input.vis;
+pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
+    let gtype_name = match parse_type_name_attr(attrs) {
+        Ok(name) => name,
+        Err(e) => abort_call_site!(
+            "{}: [glib::flags] requires #[glib::flags(name = \"FlagsTypeName\")]",
+            e
+        ),
+    };
+
     let name = &input.ident;
-    let crate_ident = crate_ident_new();
+    let visibility = &input.vis;
 
     let enum_variants = match input.data {
         Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("gflags only supports enums"),
+        _ => abort_call_site!("#[glib::flags] only supports enums"),
     };
 
+    let crate_ident = crate_ident_new();
+
     let bitflags = gen_bitflags(name, visibility, enum_variants, &crate_ident);
-    let (gflags_values, nb_gflags_values) = gen_gflags_values(name, enum_variants);
+    let (flags_values, nb_flags_values) = gen_flags_values(name, enum_variants);
 
     quote! {
         #bitflags
@@ -170,8 +180,8 @@ pub fn impl_gflags(input: &DeriveInput, gtype_name: &LitStr) -> TokenStream {
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
 
                 ONCE.call_once(|| {
-                    static mut VALUES: [#crate_ident::gobject_ffi::GFlagsValue; #nb_gflags_values] = [
-                        #gflags_values
+                    static mut VALUES: [#crate_ident::gobject_ffi::GFlagsValue; #nb_flags_values] = [
+                        #flags_values
                         #crate_ident::gobject_ffi::GFlagsValue {
                             value: 0,
                             value_name: std::ptr::null(),
