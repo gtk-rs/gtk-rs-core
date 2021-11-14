@@ -56,7 +56,6 @@ pub fn parse_type_name_attr(meta: &NestedMeta) -> Result<String> {
 
     match ident.as_ref() {
         "name" => Ok(v),
-        "type_name" => Ok(v),
         s => bail!("Unknown meta {}", s),
     }
 }
@@ -69,13 +68,9 @@ pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
         _ => bail!("Missing '{}' attribute", attr_name),
     };
 
-    // FIXME remove type_name once all macros are ported
     let meta = match find_nested_meta(&meta, "name") {
         Some(meta) => meta,
-        _ => match find_nested_meta(&meta, "type_name") {
-            Some(meta) => meta,
-            _ => bail!("Missing meta 'name'"),
-        },
+        _ => bail!("Missing meta 'name'"),
     };
 
     parse_type_name_attr(meta)

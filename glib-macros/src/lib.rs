@@ -1,16 +1,16 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+mod boxed_derive;
 mod clone;
 mod closure;
 mod downgrade_derive;
 mod enum_derive;
 mod flags_attribute;
-mod gboxed_derive;
-mod gboxed_shared_derive;
 mod gerror_domain_derive;
 mod gvariant_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
+mod shared_boxed_derive;
 mod utils;
 
 use proc_macro::TokenStream;
@@ -518,18 +518,18 @@ pub fn gerror_domain_derive(input: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Clone, Debug, PartialEq, Eq, glib::GBoxed)]
-/// #[gboxed(type_name = "MyBoxed")]
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+/// #[boxed_type(name = "MyBoxed")]
 /// struct MyBoxed(String);
 /// ```
 ///
 /// [`BoxedType`]: subclass/boxed/trait.BoxedType.html
 /// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_derive(GBoxed, attributes(gboxed))]
+#[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
 #[proc_macro_error]
-pub fn gboxed_derive(input: TokenStream) -> TokenStream {
+pub fn boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gboxed_derive::impl_gboxed(&input);
+    let gen = boxed_derive::impl_boxed(&input);
     gen.into()
 }
 
@@ -546,18 +546,18 @@ pub fn gboxed_derive(input: TokenStream) -> TokenStream {
 /// struct MySharedInner {
 ///   foo: String,
 /// }
-/// #[derive(Clone, Debug, PartialEq, Eq, glib::GSharedBoxed)]
-/// #[gshared_boxed(type_name = "MyShared")]
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+/// #[shared_boxed_type(name = "MySharedBoxed")]
 /// struct MyShared(std::sync::Arc<MySharedInner>);
 /// ```
 ///
 /// [`SharedType`]: subclass/shared/trait.SharedType.html
 /// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_derive(GSharedBoxed, attributes(gshared_boxed))]
+#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
 #[proc_macro_error]
-pub fn gshared_boxed_derive(input: TokenStream) -> TokenStream {
+pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gboxed_shared_derive::impl_gshared_boxed(&input);
+    let gen = shared_boxed_derive::impl_shared_boxed(&input);
     gen.into()
 }
 

@@ -88,25 +88,29 @@ fn refcounted_type_prefix(name: &Ident, crate_ident: &TokenStream) -> proc_macro
     }
 }
 
-pub fn impl_gshared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
+pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
+    let name = &input.ident;
+
     let refcounted_type = match refcounted_type(input) {
         Some(p) => p,
-        _ => abort_call_site!("derive(GSharedBoxed) requires struct MyStruct(T: RefCounted)"),
+        _ => {
+            abort_call_site!("#[derive(glib::SharedBoxed)] requires struct MyStruct(T: RefCounted)")
+        }
     };
 
-    let name = &input.ident;
-    let gtype_name = match parse_type_name(input, "gshared_boxed") {
-        Ok(v) => v,
+    let gtype_name = match parse_type_name(input, "shared_boxed_type") {
+        Ok(name) => name,
         Err(e) => abort_call_site!(
-            "{}: derive(GSharedBoxed) requires #[gshared_boxed(type_name = \"SharedTypeName\")]",
+            "{}: #[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]",
             e
         ),
     };
 
-    let meta = find_attribute_meta(&input.attrs, "gshared_boxed")
+    let meta = find_attribute_meta(&input.attrs, "shared_boxed_type")
         .unwrap()
         .unwrap();
     let nullable = find_nested_meta(&meta, "nullable").is_some();
+
     let crate_ident = crate_ident_new();
     let refcounted_type_prefix = refcounted_type_prefix(name, &crate_ident);
 

@@ -84,23 +84,23 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
     }
 }
 
-pub fn impl_gboxed(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
 
-    let gtype_name = match parse_type_name(input, "gboxed") {
-        Ok(v) => v,
+    let gtype_name = match parse_type_name(input, "boxed_type") {
+        Ok(name) => name,
         Err(e) => abort_call_site!(
-            "{}: derive(GBoxed) requires #[gboxed(type_name = \"BoxedTypeName\")]",
+            "{}: #[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]",
             e
         ),
     };
 
-    let crate_ident = crate_ident_new();
-
-    let meta = find_attribute_meta(&input.attrs, "gboxed")
+    let meta = find_attribute_meta(&input.attrs, "boxed_type")
         .unwrap()
         .unwrap();
     let nullable = find_nested_meta(&meta, "nullable").is_some();
+
+    let crate_ident = crate_ident_new();
 
     let impl_from_value = if !nullable {
         gen_impl_from_value(name, &crate_ident)

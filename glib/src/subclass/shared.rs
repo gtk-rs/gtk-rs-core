@@ -146,12 +146,12 @@ mod test {
         foo: String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, glib::GSharedBoxed)]
-    #[gshared_boxed(type_name = "MySharedArc")]
+    #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MySharedArc")]
     struct MySharedArc(std::sync::Arc<MySharedInner>);
 
-    #[derive(Clone, Debug, PartialEq, Eq, glib::GSharedBoxed)]
-    #[gshared_boxed(type_name = "MySharedRc")]
+    #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MySharedRc")]
     struct MySharedRc(std::rc::Rc<MySharedInner>);
 
     #[test]

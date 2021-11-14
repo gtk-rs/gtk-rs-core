@@ -230,8 +230,8 @@
 //! use glib::subclass;
 //! use glib::subclass::prelude::*;
 //!
-//! #[derive(Clone, Debug, PartialEq, Eq, glib::GBoxed)]
-//! #[gboxed(type_name = "MyBoxed")]
+//! #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+//! #[boxed_type(name = "MyBoxed")]
 //! struct MyBoxed(String);
 //!
 //! pub fn main() {

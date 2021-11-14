@@ -2,7 +2,7 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{GBoxed, GErrorDomain, GSharedBoxed, GVariant};
+use glib::{GErrorDomain, GVariant};
 
 #[test]
 fn derive_gerror_domain() {
@@ -25,8 +25,8 @@ fn derive_shared_arc() {
     struct MyInnerShared {
         foo: String,
     }
-    #[derive(Debug, Eq, PartialEq, Clone, GSharedBoxed)]
-    #[gshared_boxed(type_name = "MyShared")]
+    #[derive(Debug, Eq, PartialEq, Clone, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MyShared")]
     struct MyShared(std::sync::Arc<MyInnerShared>);
 
     let t = MyShared::static_type();
@@ -54,8 +54,8 @@ fn derive_shared_arc_nullable() {
     struct MyInnerNullableShared {
         foo: String,
     }
-    #[derive(Clone, Debug, PartialEq, Eq, GSharedBoxed)]
-    #[gshared_boxed(type_name = "MyNullableShared", nullable)]
+    #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MyNullableShared", nullable)]
     struct MyNullableShared(std::sync::Arc<MyInnerNullableShared>);
 
     let t = MyNullableShared::static_type();
@@ -133,9 +133,9 @@ fn derive_enum() {
 }
 
 #[test]
-fn derive_gboxed() {
-    #[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-    #[gboxed(type_name = "MyBoxed")]
+fn derive_boxed() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyBoxed")]
     struct MyBoxed(String);
 
     let t = MyBoxed::static_type();
@@ -149,9 +149,9 @@ fn derive_gboxed() {
 }
 
 #[test]
-fn derive_gboxed_nullable() {
-    #[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-    #[gboxed(type_name = "MyNullableBoxed", nullable)]
+fn derive_boxed_nullable() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyNullableBoxed", nullable)]
     struct MyNullableBoxed(String);
 
     let t = MyNullableBoxed::static_type();
