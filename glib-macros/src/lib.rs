@@ -3,9 +3,9 @@
 mod clone;
 mod closure;
 mod downgrade_derive;
+mod enum_derive;
 mod gboxed_derive;
 mod gboxed_shared_derive;
-mod genum_derive;
 mod gerror_domain_derive;
 mod gflags_attribute;
 mod gvariant_derive;
@@ -417,11 +417,30 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
     closure::closure_inner(item, "new_local")
 }
 
-#[proc_macro_derive(GEnum, attributes(genum))]
+/// Derive macro for register a rust enum in the glib type system and derive the
+/// the [`glib::Value`] traits.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyEnum")]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = "My Val")]
+///     ValWithCustomName,
+///     #[enum_value(name = "My Other Val", nick = "other")]
+///     ValWithCustomNameAndNick,
+/// }
+/// ```
+#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
-pub fn genum_derive(input: TokenStream) -> TokenStream {
+pub fn enum_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = genum_derive::impl_genum(&input);
+    let gen = enum_derive::impl_enum(&input);
     gen.into()
 }
 

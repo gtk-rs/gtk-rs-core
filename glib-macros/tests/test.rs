@@ -2,7 +2,7 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{gflags, GBoxed, GEnum, GErrorDomain, GSharedBoxed, GVariant};
+use glib::{gflags, GBoxed, GErrorDomain, GSharedBoxed, GVariant};
 
 #[test]
 fn derive_gerror_domain() {
@@ -90,15 +90,15 @@ fn derive_shared_arc_nullable() {
 }
 
 #[test]
-fn derive_genum() {
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, GEnum)]
+fn derive_enum() {
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
-    #[genum(type_name = "TestAnimalType")]
+    #[enum_type(name = "TestAnimalType")]
     enum Animal {
         Goat,
-        #[genum(name = "The Dog")]
+        #[enum_value(name = "The Dog")]
         Dog,
-        #[genum(name = "The Cat", nick = "chat")]
+        #[enum_value(name = "The Cat", nick = "chat")]
         Cat = 5,
         Badger,
     }

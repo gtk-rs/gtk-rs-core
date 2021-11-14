@@ -44,20 +44,6 @@ fn parse_attribute(meta: &NestedMeta) -> Result<(String, String)> {
     Ok((ident.to_string(), value))
 }
 
-#[derive(Debug)]
-pub enum EnumAttribute {
-    TypeName(String),
-}
-
-pub fn parse_enum_attribute(meta: &NestedMeta) -> Result<EnumAttribute> {
-    let (ident, v) = parse_attribute(meta)?;
-
-    match ident.as_ref() {
-        "type_name" => Ok(EnumAttribute::TypeName(v)),
-        s => bail!("Unknown enum meta {}", s),
-    }
-}
-
 pub fn find_nested_meta<'a>(meta: &'a MetaList, name: &str) -> Option<&'a NestedMeta> {
     meta.nested.iter().find(|n| match n {
         NestedMeta::Meta(m) => m.path().is_ident(name),
@@ -66,20 +52,28 @@ pub fn find_nested_meta<'a>(meta: &'a MetaList, name: &str) -> Option<&'a Nested
 }
 
 // Parse attribute such as:
-// #[genum(type_name = "TestAnimalType")]
+// #[enum_type(name = "TestAnimalType")]
 pub fn parse_type_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
     let meta = match find_attribute_meta(&input.attrs, attr_name)? {
         Some(meta) => meta,
         _ => bail!("Missing '{}' attribute", attr_name),
     };
 
-    let meta = match find_nested_meta(&meta, "type_name") {
+    // FIXME remove type_name once all macros are ported
+    let meta = match find_nested_meta(&meta, "name") {
         Some(meta) => meta,
-        _ => bail!("Missing meta 'type_name'"),
+        _ => match find_nested_meta(&meta, "type_name") {
+            Some(meta) => meta,
+            _ => bail!("Missing meta 'name'"),
+        },
     };
 
-    match parse_enum_attribute(meta)? {
-        EnumAttribute::TypeName(n) => Ok(n),
+    let (ident, v) = parse_attribute(meta)?;
+
+    match ident.as_ref() {
+        "name" => Ok(v),
+        "type_name" => Ok(v),
+        s => bail!("Unknown meta {}", s),
     }
 }
 
@@ -132,7 +126,7 @@ fn parse_item_attribute(meta: &NestedMeta) -> Result<ItemAttribute> {
 }
 
 // Parse optional enum item attributes such as:
-// #[genum(name = "My Name", nick = "my-nick")]
+// #[enum_value(name = "My Name", nick = "my-nick")]
 pub fn parse_item_attributes(attr_name: &str, attrs: &[Attribute]) -> Result<Vec<ItemAttribute>> {
     let meta = find_attribute_meta(attrs, attr_name)?;
 

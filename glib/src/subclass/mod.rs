@@ -17,17 +17,17 @@
 //!
 //! use std::cell::{Cell, RefCell};
 //!
-//! #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::GEnum)]
+//! #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
 //! #[repr(u32)]
-//! // type_name: GType name of the GEnum (mandatory)
-//! #[genum(type_name = "SimpleObjectAnimal")]
+//! // type_name: GType name of the enum (mandatory)
+//! #[enum_type(name = "SimpleObjectAnimal")]
 //! enum Animal {
 //!     Goat = 0,
-//!     #[genum(name = "The Dog")]
+//!     #[enum_value(name = "The Dog")]
 //!     Dog = 1,
 //!     // name: the name of the GEnumValue (optional), default to the enum name in CamelCase
 //!     // nick: the nick of the GEnumValue (optional), default to the enum name in kebab-case
-//!     #[genum(name = "The Cat", nick = "chat")]
+//!     #[enum_value(name = "The Cat", nick = "chat")]
 //!     Cat = 2,
 //! }
 //!
