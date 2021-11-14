@@ -1559,7 +1559,7 @@ pub trait ObjectExt: ObjectType {
     ///
     /// # Panics
     ///
-    /// This fails if the signal does not exist.
+    /// This panics if the signal does not exist.
     fn connect_local_id<F>(
         &self,
         signal_id: SignalId,
@@ -1642,6 +1642,59 @@ pub trait ObjectExt: ObjectType {
     ) -> SignalHandlerId
     where
         F: Fn(&[Value]) -> Option<Value>;
+
+    /// Similar to [`Self::connect_closure`] but fails instead of panicking.
+    fn try_connect_closure(
+        &self,
+        signal_name: &str,
+        after: bool,
+        closure: Closure,
+    ) -> Result<SignalHandlerId, BoolError>;
+
+    /// Connect a closure to the signal `signal_name` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This panics if the signal does not exist.
+    ///
+    /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    fn connect_closure(&self, signal_name: &str, after: bool, closure: Closure) -> SignalHandlerId;
+
+    /// Similar to [`Self::connect_closure_id`] but fails instead of panicking.
+    #[doc(alias = "g_signal_connect_closure")]
+    fn try_connect_closure_id(
+        &self,
+        signal_id: SignalId,
+        details: Option<Quark>,
+        after: bool,
+        closure: Closure,
+    ) -> Result<SignalHandlerId, BoolError>;
+
+    /// Connect a closure to the signal `signal_id` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// This panics if the signal does not exist.
+    ///
+    /// Same as [`Self::connect_closure`] but takes a
+    /// [`SignalId`](crate::subclass::signal::SignalId) instead of a signal name.
+    #[doc(alias = "g_signal_connect_closure_by_id")]
+    fn connect_closure_id(
+        &self,
+        signal_id: SignalId,
+        details: Option<Quark>,
+        after: bool,
+        closure: Closure,
+    ) -> SignalHandlerId;
+
+    /// Limits the lifetime of `closure` to the lifetime of the object. When
+    /// the object's reference count drops to zero, the closure will be
+    /// invalidated. An invalidated closure will ignore any calls to
+    /// [`Closure::invoke`](crate::Closure::invoke).
+    #[doc(alias = "g_object_watch_closure")]
+    fn watch_closure(&self, closure: &Closure);
 
     /// Similar to [`Self::emit`] but fails instead of panicking.
     #[doc(alias = "g_signal_emitv")]
@@ -2322,15 +2375,6 @@ impl<T: ObjectType> ObjectExt for T {
         let return_type: Type = signal_query.return_type().into();
         let signal_name = signal_id.name();
 
-        let signal_query_type = signal_query.type_();
-        assert!(
-            type_.is_a(signal_query_type),
-            "Signal '{}' of type '{}' but got type '{}'",
-            signal_name,
-            type_,
-            signal_query_type
-        );
-
         let closure = if return_type == Type::UNIT {
             Closure::new_unsafe(move |values| {
                 let ret = callback(values);
@@ -2391,22 +2435,85 @@ impl<T: ObjectType> ObjectExt for T {
                 Some(ret)
             })
         };
-        let handler = gobject_ffi::g_signal_connect_closure_by_id(
-            self.as_object_ref().to_glib_none().0,
-            signal_id.into_glib(),
-            details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
-            closure.to_glib_none().0,
-            after.into_glib(),
+
+        self.try_connect_closure_id(signal_id, details, after, closure)
+    }
+
+    fn try_connect_closure(
+        &self,
+        signal_name: &str,
+        after: bool,
+        closure: Closure,
+    ) -> Result<SignalHandlerId, BoolError> {
+        let type_ = self.type_();
+        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
+            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
+        self.try_connect_closure_id(signal_id, Some(details), after, closure)
+    }
+
+    fn connect_closure(&self, signal_name: &str, after: bool, closure: Closure) -> SignalHandlerId {
+        self.try_connect_closure(signal_name, after, closure)
+            .unwrap()
+    }
+
+    fn try_connect_closure_id(
+        &self,
+        signal_id: SignalId,
+        details: Option<Quark>,
+        after: bool,
+        closure: Closure,
+    ) -> Result<SignalHandlerId, BoolError> {
+        let signal_query = signal_id.query();
+        let type_ = self.type_();
+        let signal_name = signal_id.name();
+
+        let signal_query_type = signal_query.type_();
+        assert!(
+            type_.is_a(signal_query_type),
+            "Signal '{}' of type '{}' but got type '{}'",
+            signal_name,
+            type_,
+            signal_query_type
         );
 
-        if handler == 0 {
-            Err(bool_error!(
-                "Failed to connect to signal '{}' of type '{}'",
-                signal_name,
-                type_
-            ))
-        } else {
-            Ok(from_glib(handler))
+        unsafe {
+            let handler = gobject_ffi::g_signal_connect_closure_by_id(
+                self.as_object_ref().to_glib_none().0,
+                signal_id.into_glib(),
+                details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+                closure.to_glib_none().0,
+                after.into_glib(),
+            );
+
+            if handler == 0 {
+                Err(bool_error!(
+                    "Failed to connect to signal '{}' of type '{}'",
+                    signal_name,
+                    type_
+                ))
+            } else {
+                Ok(from_glib(handler))
+            }
+        }
+    }
+
+    fn connect_closure_id(
+        &self,
+        signal_id: SignalId,
+        details: Option<Quark>,
+        after: bool,
+        closure: Closure,
+    ) -> SignalHandlerId {
+        self.try_connect_closure_id(signal_id, details, after, closure)
+            .unwrap()
+    }
+
+    fn watch_closure(&self, closure: &Closure) {
+        unsafe {
+            gobject_ffi::g_object_watch_closure(
+                self.as_object_ref().to_glib_none().0,
+                closure.to_glib_none().0,
+            );
         }
     }
 
