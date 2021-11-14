@@ -7,10 +7,11 @@ mod downgrade_derive;
 mod enum_derive;
 mod flags_attribute;
 mod gerror_domain_derive;
-mod gvariant_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
 mod shared_boxed_derive;
+mod variant_derive;
+
 mod utils;
 
 use proc_macro::TokenStream;
@@ -697,7 +698,7 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 /// use glib::prelude::*;
 ///
-/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
 /// struct Foo {
 ///     some_string: String,
 ///     some_int: i32,
@@ -716,7 +717,7 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 /// use glib::prelude::*;
 ///
-/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
 /// struct Foo {
 ///     some_vec: glib::FixedSizeVariantArray<Vec<u32>, u32>,
 ///     some_int: i32,
@@ -728,8 +729,8 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// [`glib::Variant`]: variant/struct.Variant.html
-#[proc_macro_derive(GVariant)]
-pub fn gvariant_derive(input: TokenStream) -> TokenStream {
+#[proc_macro_derive(Variant)]
+pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    gvariant_derive::impl_variant(input)
+    variant_derive::impl_variant(input)
 }

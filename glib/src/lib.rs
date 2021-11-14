@@ -16,7 +16,7 @@ pub use once_cell;
 
 pub use glib_macros::{
     clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, GErrorDomain, GVariant, SharedBoxed,
+    Enum, GErrorDomain, SharedBoxed, Variant,
 };
 
 pub use self::byte_array::ByteArray;

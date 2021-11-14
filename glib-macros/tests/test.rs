@@ -2,7 +2,7 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{GErrorDomain, GVariant};
+use glib::GErrorDomain;
 
 #[test]
 fn derive_gerror_domain() {
@@ -282,7 +282,7 @@ fn subclassable() {
 
 #[test]
 fn derive_variant() {
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant1 {
         some_string: String,
         some_int: i32,
@@ -297,7 +297,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(si)");
     assert_eq!(var.get::<Variant1>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant2 {
         some_string: Option<String>,
         some_int: i32,
@@ -312,7 +312,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(msi)");
     assert_eq!(var.get::<Variant2>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant3(u32, String);
 
     assert_eq!(Variant3::static_variant_type().as_str(), "(us)");
@@ -321,7 +321,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(us)");
     assert_eq!(var.get::<Variant3>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant4;
 
     assert_eq!(Variant4::static_variant_type().as_str(), "()");
@@ -330,7 +330,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "()");
     assert_eq!(var.get::<Variant4>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant5();
 
     assert_eq!(Variant5::static_variant_type().as_str(), "()");
