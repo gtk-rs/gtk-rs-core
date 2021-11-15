@@ -876,20 +876,54 @@ pub(crate) unsafe fn signal_override_class_handler<F>(
 ) where
     F: Fn(&super::SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
 {
+    let (signal_id, _) = SignalId::parse_name(name, from_glib(type_), false)
+        .unwrap_or_else(|| panic!("Signal '{}' not found", name));
+
+    let query = signal_id.query();
+    let return_type = query.return_type();
+
     let class_handler = Closure::new(move |values| {
         let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-        class_handler(&super::SignalClassHandlerToken(instance as *mut _), values)
+        let res = class_handler(
+            &super::SignalClassHandlerToken(
+                instance as *mut _,
+                return_type.into(),
+                values.as_ptr(),
+            ),
+            values,
+        );
+
+        if return_type == Type::UNIT {
+            if let Some(ref v) = res {
+                panic!(
+                    "Signal has no return value but class handler returned a value of type {}",
+                    v.type_()
+                );
+            }
+        } else {
+            match res {
+                None => {
+                    panic!("Signal has a return value but class handler returned none");
+                }
+                Some(ref v) => {
+                    assert!(
+                        v.type_().is_a(return_type.into()),
+                        "Signal has a return type of {} but class handler returned {}",
+                        Type::from(return_type),
+                        v.type_()
+                    );
+                }
+            }
+        }
+
+        res
     });
 
-    if let Some((signal_id, _)) = SignalId::parse_name(name, from_glib(type_), false) {
-        gobject_ffi::g_signal_override_class_closure(
-            signal_id.into_glib(),
-            type_,
-            class_handler.to_glib_none().0,
-        );
-    } else {
-        panic!("Signal '{}' not found", name);
-    }
+    gobject_ffi::g_signal_override_class_closure(
+        signal_id.into_glib(),
+        type_,
+        class_handler.to_glib_none().0,
+    );
 }
 
 pub(crate) unsafe fn signal_chain_from_overridden(
@@ -898,7 +932,13 @@ pub(crate) unsafe fn signal_chain_from_overridden(
     values: &[Value],
 ) -> Option<Value> {
     assert_eq!(instance, token.0);
-    let mut result = Value::uninitialized();
+    assert_eq!(
+        values.as_ptr(),
+        token.2,
+        "Arguments must be forwarded without changes when chaining up"
+    );
+
+    let mut result = Value::from_type(token.1);
     gobject_ffi::g_signal_chain_from_overridden(
         values.as_ptr() as *mut Value as *mut gobject_ffi::GValue,
         result.to_glib_none_mut().0,
