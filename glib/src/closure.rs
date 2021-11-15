@@ -9,6 +9,8 @@ use std::slice;
 use libc::{c_uint, c_void};
 
 use crate::translate::{from_glib_none, mut_override, ToGlibPtr, ToGlibPtrMut, Uninitialized};
+use crate::value::FromValue;
+use crate::StaticType;
 use crate::ToValue;
 use crate::Value;
 
@@ -90,14 +92,15 @@ impl Closure {
         from_glib_none(closure)
     }
 
-    pub fn invoke(&self, values: &[&dyn ToValue]) -> Option<Value> {
+    pub fn invoke<R: TryFromClosureReturnValue>(&self, values: &[&dyn ToValue]) -> R {
         let values = values
             .iter()
             .copied()
             .map(ToValue::to_value)
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
-        self.invoke_with_values(&values)
+        R::try_from_closure_return_value(self.invoke_with_values(&values))
+            .expect("Invalid return value")
     }
 
     pub fn invoke_with_values(&self, values: &[Value]) -> Option<Value> {
@@ -131,6 +134,42 @@ impl ToClosureReturnValue for () {
 impl<T: ToValue> ToClosureReturnValue for T {
     fn to_closure_return_value(&self) -> Option<Value> {
         Some(self.to_value())
+    }
+}
+
+pub trait TryFromClosureReturnValue: Sized + 'static {
+    fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError>;
+}
+
+impl TryFromClosureReturnValue for () {
+    fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
+        match v {
+            None => Ok(()),
+            Some(v) => Err(bool_error!(
+                "Invalid return value: expected (), got {}",
+                v.type_()
+            )),
+        }
+    }
+}
+
+impl<T: for<'a> FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue for T {
+    fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
+        v.ok_or_else(|| {
+            bool_error!(
+                "Invalid return value: expected {}, got ()",
+                T::static_type()
+            )
+        })
+        .and_then(|v| {
+            v.get_owned::<T>().map_err(|_| {
+                bool_error!(
+                    "Invalid return value: expected {}, got {}",
+                    T::static_type(),
+                    v.type_()
+                )
+            })
+        })
     }
 }
 
@@ -169,17 +208,14 @@ mod tests {
             assert_eq!(int_arg, Ok(42));
             None
         });
-        let result = closure.invoke(&[&"test", &42]);
-        assert!(result.is_none());
+        closure.invoke::<()>(&[&"test", &42]);
         assert_eq!(call_count.load(Ordering::Relaxed), 1);
 
-        let result = closure.invoke(&[&"test", &42]);
-        assert!(result.is_none());
+        closure.invoke::<()>(&[&"test", &42]);
         assert_eq!(call_count.load(Ordering::Relaxed), 2);
 
         let closure = Closure::new(closure_fn);
-        let result = closure.invoke(&[&"test", &42]);
-        let int_res = result.map(|result| result.get::<i32>());
-        assert_eq!(int_res, Some(Ok(24)));
+        let result = closure.invoke::<i32>(&[&"test", &42]);
+        assert_eq!(result, 24);
     }
 }

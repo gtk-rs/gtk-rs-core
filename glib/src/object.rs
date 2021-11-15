@@ -15,6 +15,7 @@ use std::ops;
 use std::pin::Pin;
 use std::ptr;
 
+use crate::closure::TryFromClosureReturnValue;
 use crate::subclass::{prelude::ObjectSubclass, SignalId};
 use crate::value::ToValue;
 use crate::BoolError;
@@ -1712,11 +1713,11 @@ pub trait ObjectExt: ObjectType {
 
     /// Similar to [`Self::emit`] but fails instead of panicking.
     #[doc(alias = "g_signal_emitv")]
-    fn try_emit(
+    fn try_emit<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by signal id.
     ///
@@ -1727,7 +1728,7 @@ pub trait ObjectExt: ObjectType {
     /// If the wrong number of arguments is provided, or arguments of the wrong types
     /// were provided.
     #[doc(alias = "g_signal_emitv")]
-    fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Option<Value>;
+    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R;
 
     /// Similar to [`Self::emit_with_values`] but fails instead of panicking.
     fn try_emit_with_values(
@@ -1741,11 +1742,11 @@ pub trait ObjectExt: ObjectType {
 
     /// Similar to [`Self::emit_by_name`] but fails instead of panicking.
     #[doc(alias = "g_signal_emit_by_name")]
-    fn try_emit_by_name(
+    fn try_emit_by_name<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by its name.
     ///
@@ -1756,7 +1757,11 @@ pub trait ObjectExt: ObjectType {
     /// If the signal does not exist, the wrong number of arguments is provided, or
     /// arguments of the wrong types were provided.
     #[doc(alias = "g_signal_emit_by_name")]
-    fn emit_by_name(&self, signal_name: &str, args: &[&dyn ToValue]) -> Option<Value>;
+    fn emit_by_name<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        args: &[&dyn ToValue],
+    ) -> R;
 
     /// Similar to [`Self::emit_by_name_with_values`] but fails instead of panicking.
     fn try_emit_by_name_with_values(
@@ -1776,12 +1781,12 @@ pub trait ObjectExt: ObjectType {
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value>;
 
     /// Similar to [`Self::emit_with_details`] but fails instead of panicking.
-    fn try_emit_with_details(
+    fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by signal id with details.
     ///
@@ -1791,12 +1796,12 @@ pub trait ObjectExt: ObjectType {
     ///
     /// If the wrong number of arguments is provided, or arguments of the wrong types
     /// were provided.
-    fn emit_with_details(
+    fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Option<Value>;
+    ) -> R;
 
     /// Similar to [`Self::emit_with_details_and_values`] but fails instead of panicking.
     fn try_emit_with_details_and_values(
@@ -2545,11 +2550,11 @@ impl<T: ObjectType> ObjectExt for T {
             .unwrap()
     }
 
-    fn try_emit(
+    fn try_emit<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let signal_query = signal_id.query();
         unsafe {
             let type_ = self.type_();
@@ -2587,11 +2592,13 @@ impl<T: ObjectType> ObjectExt for T {
                 return_value.to_glib_none_mut().0,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            R::try_from_closure_return_value(
+                Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
+            )
         }
     }
 
-    fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Option<Value> {
+    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R {
         self.try_emit(signal_id, args).unwrap()
     }
 
@@ -2643,18 +2650,22 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit_with_values(signal_id, args).unwrap()
     }
 
-    fn try_emit_by_name(
+    fn try_emit_by_name<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
         self.try_emit(signal_id, args)
     }
 
-    fn emit_by_name(&self, signal_name: &str, args: &[&dyn ToValue]) -> Option<Value> {
+    fn emit_by_name<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        args: &[&dyn ToValue],
+    ) -> R {
         self.try_emit_by_name(signal_name, args).unwrap()
     }
 
@@ -2674,12 +2685,12 @@ impl<T: ObjectType> ObjectExt for T {
             .unwrap()
     }
 
-    fn try_emit_with_details(
+    fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let signal_query = signal_id.query();
         assert!(signal_query.flags().contains(crate::SignalFlags::DETAILED));
 
@@ -2719,16 +2730,18 @@ impl<T: ObjectType> ObjectExt for T {
                 return_value.to_glib_none_mut().0,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            R::try_from_closure_return_value(
+                Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
+            )
         }
     }
 
-    fn emit_with_details(
+    fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Option<Value> {
+    ) -> R {
         self.try_emit_with_details(signal_id, details, args)
             .unwrap()
     }

@@ -316,7 +316,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// use glib_macros::closure;
 ///
 /// let concat_str = closure!(|s: &str| s.to_owned() + " World");
-/// let result = concat_str.invoke(&[&"Hello"]).unwrap().get::<String>().unwrap();
+/// let result = concat_str.invoke::<String>(&[&"Hello"]);
 /// assert_eq!(result, "Hello World");
 /// ```
 ///
@@ -351,14 +351,11 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///     let closure = closure_local!(@watch obj => move || {
 ///         obj.type_().name()
 ///     });
-///     assert_eq!(
-///         closure.invoke(&[]).unwrap().get::<String>().unwrap(),
-///         "GObject"
-///     );
+///     assert_eq!(closure.invoke::<String>(&[]), "GObject");
 ///     closure
 /// };
 /// // `obj` is dropped, closure invalidated so it always does nothing and returns None
-/// assert!(closure.invoke(&[]).is_none());
+/// closure.invoke::<()>(&[]);
 /// ```
 ///
 /// `@watch` has special behavior when connected to a signal:
@@ -397,17 +394,11 @@ pub fn clone(item: TokenStream) -> TokenStream {
 ///         // `a` is Arc<String>, `b` is Option<Arc<String>>
 ///         format!("{} {}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"))
 ///     });
-///     assert_eq!(
-///         closure.invoke(&[]).unwrap().get::<String>().unwrap(),
-///         "Hello World"
-///     );
+///     assert_eq!(closure.invoke::<String>(&[]), "Hello World");
 ///     closure
 /// };
 /// // `a` still kept alive, `b` is dropped
-/// assert_eq!(
-///     closure.invoke(&[]).unwrap().get::<String>().unwrap(),
-///     "Hello Moon"
-/// );
+/// assert_eq!(closure.invoke::<String>(&[]), "Hello Moon");
 /// ```
 #[proc_macro]
 #[proc_macro_error]

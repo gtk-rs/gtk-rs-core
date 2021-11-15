@@ -343,23 +343,16 @@ fn derive_variant() {
 #[test]
 fn closure() {
     let empty = glib::closure!(|| {});
-    assert!(empty.invoke(&[]).is_none());
+    empty.invoke::<()>(&[]);
 
     let no_arg = glib::closure!(|| 2i32);
-    assert_eq!(no_arg.invoke(&[]).unwrap().get::<i32>().unwrap(), 2);
+    assert_eq!(no_arg.invoke::<i32>(&[]), 2);
 
     let add_1 = glib::closure!(|x: i32| x + 1);
-    assert_eq!(add_1.invoke(&[&3i32]).unwrap().get::<i32>().unwrap(), 4);
+    assert_eq!(add_1.invoke::<i32>(&[&3i32]), 4);
 
     let concat_str = glib::closure!(|s: &str| s.to_owned() + " World");
-    assert_eq!(
-        concat_str
-            .invoke(&[&"Hello"])
-            .unwrap()
-            .get::<String>()
-            .unwrap(),
-        "Hello World"
-    );
+    assert_eq!(concat_str.invoke::<String>(&[&"Hello"]), "Hello World");
 
     let weak_test = {
         let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
@@ -367,12 +360,12 @@ fn closure() {
         assert_eq!(obj.ref_count(), 1);
         let weak_test = glib::closure_local!(@watch obj => move || obj.ref_count());
         assert_eq!(obj.ref_count(), 1);
-        assert_eq!(weak_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 3);
+        assert_eq!(weak_test.invoke::<u32>(&[]), 3);
         assert_eq!(obj.ref_count(), 1);
 
         weak_test
     };
-    assert!(weak_test.invoke(&[]).is_none());
+    weak_test.invoke::<()>(&[]);
 
     {
         trait TestExt {
@@ -382,7 +375,7 @@ fn closure() {
         impl TestExt for glib::Object {
             fn ref_count_in_closure(&self) -> u32 {
                 let closure = glib::closure_local!(@watch self as obj => move || obj.ref_count());
-                closure.invoke(&[]).unwrap().get::<u32>().unwrap()
+                closure.invoke::<u32>(&[])
             }
         }
 
@@ -399,7 +392,7 @@ fn closure() {
             fn ref_count_in_closure(&self) -> u32 {
                 let closure =
                     glib::closure_local!(@watch self.obj as obj => move || obj.ref_count());
-                closure.invoke(&[]).unwrap().get::<u32>().unwrap()
+                closure.invoke::<u32>(&[])
             }
         }
 
@@ -413,11 +406,11 @@ fn closure() {
         let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
 
         let strong_test = glib::closure_local!(@strong obj => move || obj.ref_count());
-        assert_eq!(strong_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 2);
+        assert_eq!(strong_test.invoke::<u32>(&[]), 2);
 
         strong_test
     };
-    assert_eq!(strong_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 1);
+    assert_eq!(strong_test.invoke::<u32>(&[]), 1);
 
     let weak_none_test = {
         let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
@@ -425,11 +418,11 @@ fn closure() {
         let weak_none_test = glib::closure_local!(@weak-allow-none obj => move || {
             obj.map(|o| o.ref_count()).unwrap_or_default()
         });
-        assert_eq!(weak_none_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 2);
+        assert_eq!(weak_none_test.invoke::<u32>(&[]), 2);
 
         weak_none_test
     };
-    assert_eq!(weak_none_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 0);
+    assert_eq!(weak_none_test.invoke::<u32>(&[]), 0);
 
     {
         let obj1 = glib::Object::new::<glib::Object>(&[]).unwrap();
@@ -437,17 +430,13 @@ fn closure() {
 
         let obj_arg_test =
             glib::closure!(|a: glib::Object, b: glib::Object| { a.ref_count() + b.ref_count() });
-        let rc = obj_arg_test
-            .invoke(&[&obj1, &obj2])
-            .unwrap()
-            .get::<u32>()
-            .unwrap();
+        let rc = obj_arg_test.invoke::<u32>(&[&obj1, &obj2]);
         assert_eq!(rc, 6);
 
         let alias_test = glib::closure_local!(@strong obj1 as a, @strong obj2 => move || {
             a.ref_count() + obj2.ref_count()
         });
-        assert_eq!(alias_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 4);
+        assert_eq!(alias_test.invoke::<u32>(&[]), 4);
     }
 
     {
@@ -460,6 +449,6 @@ fn closure() {
         let struct_test = glib::closure_local!(@strong a_struct.a as a => move || {
             a.ref_count()
         });
-        assert_eq!(struct_test.invoke(&[]).unwrap().get::<u32>().unwrap(), 2);
+        assert_eq!(struct_test.invoke::<u32>(&[]), 2);
     }
 }
