@@ -59,8 +59,6 @@ unsafe impl<T: InitableImpl> IsImplementable<T> for Initable {
         let iface = iface.as_mut();
         iface.init = Some(initable_init::<T>);
     }
-
-    fn instance_init(_instance: &mut glib::subclass::InitializingObject<T>) {}
 }
 
 unsafe extern "C" fn initable_init<T: InitableImpl>(

@@ -420,10 +420,7 @@ mod test {
         pub struct Dummy(ObjectInterface<imp::DummyInterface>);
     }
 
-    unsafe impl<T: ObjectSubclass> IsImplementable<T> for Dummy {
-        fn interface_init(_iface: &mut crate::Interface<Dummy>) {}
-        fn instance_init(_instance: &mut super::super::InitializingObject<T>) {}
-    }
+    unsafe impl<T: ObjectSubclass> IsImplementable<T> for Dummy {}
 
     #[test]
     fn test_create() {

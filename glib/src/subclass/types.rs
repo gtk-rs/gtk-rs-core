@@ -2,7 +2,7 @@
 
 //! Module that contains the basic infrastructure for subclassing `GObject`.
 
-use crate::object::{Cast, IsClass, ObjectSubclassIs, ObjectType, ParentClassIs};
+use crate::object::{Cast, IsClass, IsInterface, ObjectSubclassIs, ObjectType, ParentClassIs};
 use crate::translate::*;
 use crate::{Closure, Object, StaticType, Type, Value};
 use std::marker;
@@ -187,7 +187,7 @@ impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
 }
 
 /// Trait for implementable interfaces.
-pub unsafe trait IsImplementable<T: ObjectSubclass>: crate::object::IsInterface
+pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface
 where
     <Self as ObjectType>::GlibClassType: Copy,
 {
@@ -195,12 +195,12 @@ where
     /// interface initialization.
     ///
     /// This is automatically called during type initialization.
-    fn interface_init(iface: &mut crate::Interface<Self>);
+    fn interface_init(_iface: &mut crate::Interface<Self>) {}
 
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization.
-    fn instance_init(_instance: &mut InitializingObject<T>);
+    fn instance_init(_instance: &mut InitializingObject<T>) {}
 }
 
 unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
