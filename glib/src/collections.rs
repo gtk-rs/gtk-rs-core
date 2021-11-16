@@ -687,6 +687,24 @@ pub struct List<
     phantom: PhantomData<T>,
 }
 
+unsafe impl<
+        T: Send
+            + GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Send for List<T>
+{
+}
+
+unsafe impl<
+        T: Sync
+            + GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Sync for List<T>
+{
+}
+
 impl<
         T: GlibPtrDefault
             + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
@@ -838,6 +856,24 @@ pub struct SList<
     ptr: Option<ptr::NonNull<ffi::GSList>>,
     transfer: ContainerTransfer,
     phantom: PhantomData<T>,
+}
+
+unsafe impl<
+        T: Send
+            + GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Send for SList<T>
+{
+}
+
+unsafe impl<
+        T: Sync
+            + GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Sync for SList<T>
+{
 }
 
 impl<
