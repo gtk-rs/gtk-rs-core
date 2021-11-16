@@ -23,6 +23,8 @@ glib::wrapper! {
 }
 
 impl Proxy {
+    pub const NONE: Option<&'static Proxy> = None;
+
     #[doc(alias = "g_proxy_get_default_for_protocol")]
     #[doc(alias = "get_default_for_protocol")]
     pub fn default_for_protocol(protocol: &str) -> Option<Proxy> {
@@ -32,10 +34,6 @@ impl Proxy {
             ))
         }
     }
-}
-
-impl Proxy {
-    pub const NONE: Option<&'static Proxy> = None;
 }
 
 pub trait ProxyExt: 'static {

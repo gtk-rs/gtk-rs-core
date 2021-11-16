@@ -22,6 +22,8 @@ glib::wrapper! {
 }
 
 impl InetAddress {
+    pub const NONE: Option<&'static InetAddress> = None;
+
     #[doc(alias = "g_inet_address_new_any")]
     pub fn new_any(family: SocketFamily) -> InetAddress {
         unsafe { from_glib_full(ffi::g_inet_address_new_any(family.into_glib())) }
@@ -48,10 +50,6 @@ impl fmt::Display for InetAddress {
 
 unsafe impl Send for InetAddress {}
 unsafe impl Sync for InetAddress {}
-
-impl InetAddress {
-    pub const NONE: Option<&'static InetAddress> = None;
-}
 
 pub trait InetAddressExt: 'static {
     #[doc(alias = "g_inet_address_equal")]

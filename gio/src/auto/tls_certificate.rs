@@ -38,6 +38,8 @@ glib::wrapper! {
 }
 
 impl TlsCertificate {
+    pub const NONE: Option<&'static TlsCertificate> = None;
+
     #[doc(alias = "g_tls_certificate_new_from_file")]
     #[doc(alias = "new_from_file")]
     pub fn from_file(file: impl AsRef<std::path::Path>) -> Result<TlsCertificate, glib::Error> {
@@ -130,10 +132,6 @@ impl TlsCertificate {
             }
         }
     }
-}
-
-impl TlsCertificate {
-    pub const NONE: Option<&'static TlsCertificate> = None;
 }
 
 pub trait TlsCertificateExt: 'static {

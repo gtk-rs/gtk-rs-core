@@ -25,6 +25,8 @@ glib::wrapper! {
 }
 
 impl TlsFileDatabase {
+    pub const NONE: Option<&'static TlsFileDatabase> = None;
+
     #[doc(alias = "g_tls_file_database_new")]
     pub fn new(anchors: impl AsRef<std::path::Path>) -> Result<TlsFileDatabase, glib::Error> {
         unsafe {
@@ -37,10 +39,6 @@ impl TlsFileDatabase {
             }
         }
     }
-}
-
-impl TlsFileDatabase {
-    pub const NONE: Option<&'static TlsFileDatabase> = None;
 }
 
 pub trait TlsFileDatabaseExt: 'static {

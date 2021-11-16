@@ -46,7 +46,7 @@ impl CharsetConverter {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`CharsetConverter`] objects.
     ///
-    /// This method returns an instance of [`CharsetConverterBuilder`] which can be used to create [`CharsetConverter`] objects.
+    /// This method returns an instance of [`CharsetConverterBuilder`](crate::builders::CharsetConverterBuilder) which can be used to create [`CharsetConverter`] objects.
     pub fn builder() -> CharsetConverterBuilder {
         CharsetConverterBuilder::default()
     }
@@ -138,6 +138,7 @@ impl CharsetConverterBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`CharsetConverter`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> CharsetConverter {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref from_charset) = self.from_charset {

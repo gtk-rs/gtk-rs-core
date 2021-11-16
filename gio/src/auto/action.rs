@@ -22,6 +22,8 @@ glib::wrapper! {
 }
 
 impl Action {
+    pub const NONE: Option<&'static Action> = None;
+
     #[doc(alias = "g_action_name_is_valid")]
     pub fn name_is_valid(action_name: &str) -> bool {
         unsafe { from_glib(ffi::g_action_name_is_valid(action_name.to_glib_none().0)) }
@@ -61,10 +63,6 @@ impl Action {
             ))
         }
     }
-}
-
-impl Action {
-    pub const NONE: Option<&'static Action> = None;
 }
 
 pub trait ActionExt: 'static {

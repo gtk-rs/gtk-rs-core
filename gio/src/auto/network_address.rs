@@ -18,6 +18,8 @@ glib::wrapper! {
 }
 
 impl NetworkAddress {
+    pub const NONE: Option<&'static NetworkAddress> = None;
+
     #[doc(alias = "g_network_address_new")]
     pub fn new(hostname: &str, port: u16) -> NetworkAddress {
         unsafe { from_glib_full(ffi::g_network_address_new(hostname.to_glib_none().0, port)) }
@@ -62,10 +64,6 @@ impl NetworkAddress {
 
 unsafe impl Send for NetworkAddress {}
 unsafe impl Sync for NetworkAddress {}
-
-impl NetworkAddress {
-    pub const NONE: Option<&'static NetworkAddress> = None;
-}
 
 pub trait NetworkAddressExt: 'static {
     #[doc(alias = "g_network_address_get_hostname")]

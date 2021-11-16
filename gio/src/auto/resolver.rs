@@ -31,6 +31,8 @@ glib::wrapper! {
 }
 
 impl Resolver {
+    pub const NONE: Option<&'static Resolver> = None;
+
     //#[doc(alias = "g_resolver_free_addresses")]
     //pub fn free_addresses(addresses: /*Unimplemented*/&[&Fundamental: Pointer]) {
     //    unsafe { TODO: call ffi:g_resolver_free_addresses() }
@@ -46,10 +48,6 @@ impl Resolver {
     pub fn default() -> Resolver {
         unsafe { from_glib_full(ffi::g_resolver_get_default()) }
     }
-}
-
-impl Resolver {
-    pub const NONE: Option<&'static Resolver> = None;
 }
 
 pub trait ResolverExt: 'static {

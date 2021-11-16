@@ -31,6 +31,8 @@ glib::wrapper! {
 }
 
 impl BufferedInputStream {
+    pub const NONE: Option<&'static BufferedInputStream> = None;
+
     #[doc(alias = "g_buffered_input_stream_new")]
     pub fn new(base_stream: &impl IsA<InputStream>) -> BufferedInputStream {
         unsafe {
@@ -55,7 +57,7 @@ impl BufferedInputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`BufferedInputStream`] objects.
     ///
-    /// This method returns an instance of [`BufferedInputStreamBuilder`] which can be used to create [`BufferedInputStream`] objects.
+    /// This method returns an instance of [`BufferedInputStreamBuilder`](crate::builders::BufferedInputStreamBuilder) which can be used to create [`BufferedInputStream`] objects.
     pub fn builder() -> BufferedInputStreamBuilder {
         BufferedInputStreamBuilder::default()
     }
@@ -88,6 +90,7 @@ impl BufferedInputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`BufferedInputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> BufferedInputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref buffer_size) = self.buffer_size {
@@ -117,10 +120,6 @@ impl BufferedInputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl BufferedInputStream {
-    pub const NONE: Option<&'static BufferedInputStream> = None;
 }
 
 pub trait BufferedInputStreamExt: 'static {

@@ -22,6 +22,8 @@ glib::wrapper! {
 }
 
 impl TlsPassword {
+    pub const NONE: Option<&'static TlsPassword> = None;
+
     #[doc(alias = "g_tls_password_new")]
     pub fn new(flags: TlsPasswordFlags, description: &str) -> TlsPassword {
         unsafe {
@@ -31,10 +33,6 @@ impl TlsPassword {
             ))
         }
     }
-}
-
-impl TlsPassword {
-    pub const NONE: Option<&'static TlsPassword> = None;
 }
 
 pub trait TlsPasswordExt: 'static {

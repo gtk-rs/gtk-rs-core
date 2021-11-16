@@ -26,6 +26,8 @@ glib::wrapper! {
 }
 
 impl SocketConnection {
+    pub const NONE: Option<&'static SocketConnection> = None;
+
     #[doc(alias = "g_socket_connection_factory_lookup_type")]
     pub fn factory_lookup_type(
         family: SocketFamily,
@@ -57,10 +59,6 @@ impl SocketConnection {
             );
         }
     }
-}
-
-impl SocketConnection {
-    pub const NONE: Option<&'static SocketConnection> = None;
 }
 
 pub trait SocketConnectionExt: 'static {

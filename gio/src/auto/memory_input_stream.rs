@@ -20,6 +20,8 @@ glib::wrapper! {
 }
 
 impl MemoryInputStream {
+    pub const NONE: Option<&'static MemoryInputStream> = None;
+
     #[doc(alias = "g_memory_input_stream_new")]
     pub fn new() -> MemoryInputStream {
         unsafe { InputStream::from_glib_full(ffi::g_memory_input_stream_new()).unsafe_cast() }
@@ -41,10 +43,6 @@ impl Default for MemoryInputStream {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl MemoryInputStream {
-    pub const NONE: Option<&'static MemoryInputStream> = None;
 }
 
 pub trait MemoryInputStreamExt: 'static {

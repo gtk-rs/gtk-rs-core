@@ -26,6 +26,8 @@ glib::wrapper! {
 }
 
 impl InetAddressMask {
+    pub const NONE: Option<&'static InetAddressMask> = None;
+
     #[doc(alias = "g_inet_address_mask_new")]
     pub fn new(addr: &impl IsA<InetAddress>, length: u32) -> Result<InetAddressMask, glib::Error> {
         unsafe {
@@ -65,10 +67,6 @@ impl fmt::Display for InetAddressMask {
 
 unsafe impl Send for InetAddressMask {}
 unsafe impl Sync for InetAddressMask {}
-
-impl InetAddressMask {
-    pub const NONE: Option<&'static InetAddressMask> = None;
-}
 
 pub trait InetAddressMaskExt: 'static {
     #[doc(alias = "g_inet_address_mask_equal")]

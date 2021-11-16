@@ -20,6 +20,8 @@ glib::wrapper! {
 }
 
 impl UnixSocketAddress {
+    pub const NONE: Option<&'static UnixSocketAddress> = None;
+
     //#[doc(alias = "g_unix_socket_address_new_abstract")]
     //pub fn new_abstract(path: /*Unimplemented*/&CArray TypeId { ns_id: 0, id: 10 }) -> UnixSocketAddress {
     //    unsafe { TODO: call ffi:g_unix_socket_address_new_abstract() }
@@ -39,10 +41,6 @@ impl UnixSocketAddress {
 
 unsafe impl Send for UnixSocketAddress {}
 unsafe impl Sync for UnixSocketAddress {}
-
-impl UnixSocketAddress {
-    pub const NONE: Option<&'static UnixSocketAddress> = None;
-}
 
 pub trait UnixSocketAddressExt: 'static {
     #[doc(alias = "g_unix_socket_address_get_address_type")]

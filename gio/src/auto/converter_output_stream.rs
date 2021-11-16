@@ -23,6 +23,8 @@ glib::wrapper! {
 }
 
 impl ConverterOutputStream {
+    pub const NONE: Option<&'static ConverterOutputStream> = None;
+
     #[doc(alias = "g_converter_output_stream_new")]
     pub fn new(
         base_stream: &impl IsA<OutputStream>,
@@ -40,7 +42,7 @@ impl ConverterOutputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`ConverterOutputStream`] objects.
     ///
-    /// This method returns an instance of [`ConverterOutputStreamBuilder`] which can be used to create [`ConverterOutputStream`] objects.
+    /// This method returns an instance of [`ConverterOutputStreamBuilder`](crate::builders::ConverterOutputStreamBuilder) which can be used to create [`ConverterOutputStream`] objects.
     pub fn builder() -> ConverterOutputStreamBuilder {
         ConverterOutputStreamBuilder::default()
     }
@@ -73,6 +75,7 @@ impl ConverterOutputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`ConverterOutputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> ConverterOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref converter) = self.converter {
@@ -102,10 +105,6 @@ impl ConverterOutputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl ConverterOutputStream {
-    pub const NONE: Option<&'static ConverterOutputStream> = None;
 }
 
 pub trait ConverterOutputStreamExt: 'static {

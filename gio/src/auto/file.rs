@@ -40,6 +40,8 @@ glib::wrapper! {
 }
 
 impl File {
+    pub const NONE: Option<&'static File> = None;
+
     //#[cfg(any(feature = "v2_56", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     //#[doc(alias = "g_file_new_build_filename")]
@@ -112,10 +114,6 @@ impl File {
 
 unsafe impl Send for File {}
 unsafe impl Sync for File {}
-
-impl File {
-    pub const NONE: Option<&'static File> = None;
-}
 
 pub trait FileExt: 'static {
     #[doc(alias = "g_file_append_to")]

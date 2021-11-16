@@ -17,15 +17,13 @@ glib::wrapper! {
 }
 
 impl TlsBackend {
+    pub const NONE: Option<&'static TlsBackend> = None;
+
     #[doc(alias = "g_tls_backend_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> TlsBackend {
         unsafe { from_glib_none(ffi::g_tls_backend_get_default()) }
     }
-}
-
-impl TlsBackend {
-    pub const NONE: Option<&'static TlsBackend> = None;
 }
 
 pub trait TlsBackendExt: 'static {

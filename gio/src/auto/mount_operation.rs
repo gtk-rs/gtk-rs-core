@@ -24,6 +24,8 @@ glib::wrapper! {
 }
 
 impl MountOperation {
+    pub const NONE: Option<&'static MountOperation> = None;
+
     #[doc(alias = "g_mount_operation_new")]
     pub fn new() -> MountOperation {
         unsafe { from_glib_full(ffi::g_mount_operation_new()) }
@@ -34,10 +36,6 @@ impl Default for MountOperation {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl MountOperation {
-    pub const NONE: Option<&'static MountOperation> = None;
 }
 
 pub trait MountOperationExt: 'static {

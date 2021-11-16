@@ -37,6 +37,8 @@ glib::wrapper! {
 }
 
 impl DBusProxy {
+    pub const NONE: Option<&'static DBusProxy> = None;
+
     #[doc(alias = "g_dbus_proxy_new_for_bus_sync")]
     #[doc(alias = "new_for_bus_sync")]
     pub fn for_bus_sync(
@@ -255,10 +257,6 @@ impl DBusProxy {
 
 unsafe impl Send for DBusProxy {}
 unsafe impl Sync for DBusProxy {}
-
-impl DBusProxy {
-    pub const NONE: Option<&'static DBusProxy> = None;
-}
 
 pub trait DBusProxyExt: 'static {
     #[doc(alias = "g_dbus_proxy_call")]

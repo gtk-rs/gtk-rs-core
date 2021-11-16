@@ -8,6 +8,3 @@ pub use self::binding::Binding;
 mod flags;
 pub use self::flags::BindingFlags;
 pub use self::flags::SignalFlags;
-
-#[doc(hidden)]
-pub mod traits {}

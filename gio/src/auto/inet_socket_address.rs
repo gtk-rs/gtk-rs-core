@@ -20,6 +20,8 @@ glib::wrapper! {
 }
 
 impl InetSocketAddress {
+    pub const NONE: Option<&'static InetSocketAddress> = None;
+
     #[doc(alias = "g_inet_socket_address_new")]
     pub fn new(address: &impl IsA<InetAddress>, port: u16) -> InetSocketAddress {
         unsafe {
@@ -46,10 +48,6 @@ impl InetSocketAddress {
 
 unsafe impl Send for InetSocketAddress {}
 unsafe impl Sync for InetSocketAddress {}
-
-impl InetSocketAddress {
-    pub const NONE: Option<&'static InetSocketAddress> = None;
-}
 
 pub trait InetSocketAddressExt: 'static {
     #[doc(alias = "g_inet_socket_address_get_address")]

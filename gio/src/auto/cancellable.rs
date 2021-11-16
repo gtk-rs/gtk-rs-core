@@ -22,6 +22,8 @@ glib::wrapper! {
 }
 
 impl Cancellable {
+    pub const NONE: Option<&'static Cancellable> = None;
+
     #[doc(alias = "g_cancellable_new")]
     pub fn new() -> Cancellable {
         unsafe { from_glib_full(ffi::g_cancellable_new()) }
@@ -42,10 +44,6 @@ impl Default for Cancellable {
 
 unsafe impl Send for Cancellable {}
 unsafe impl Sync for Cancellable {}
-
-impl Cancellable {
-    pub const NONE: Option<&'static Cancellable> = None;
-}
 
 pub trait CancellableExt: 'static {
     #[doc(alias = "g_cancellable_cancel")]

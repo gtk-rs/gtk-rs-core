@@ -56,6 +56,3 @@ pub use self::vec4::Vec4;
 mod enums;
 pub use self::enums::EulerOrder;
 pub use self::enums::RayIntersectionKind;
-
-#[doc(hidden)]
-pub mod traits {}

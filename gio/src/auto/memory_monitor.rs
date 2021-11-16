@@ -23,14 +23,12 @@ glib::wrapper! {
 }
 
 impl MemoryMonitor {
+    pub const NONE: Option<&'static MemoryMonitor> = None;
+
     #[doc(alias = "g_memory_monitor_dup_default")]
     pub fn dup_default() -> MemoryMonitor {
         unsafe { from_glib_full(ffi::g_memory_monitor_dup_default()) }
     }
-}
-
-impl MemoryMonitor {
-    pub const NONE: Option<&'static MemoryMonitor> = None;
 }
 
 pub trait MemoryMonitorExt: 'static {

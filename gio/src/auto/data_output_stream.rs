@@ -29,6 +29,8 @@ glib::wrapper! {
 }
 
 impl DataOutputStream {
+    pub const NONE: Option<&'static DataOutputStream> = None;
+
     #[doc(alias = "g_data_output_stream_new")]
     pub fn new(base_stream: &impl IsA<OutputStream>) -> DataOutputStream {
         unsafe {
@@ -41,7 +43,7 @@ impl DataOutputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`DataOutputStream`] objects.
     ///
-    /// This method returns an instance of [`DataOutputStreamBuilder`] which can be used to create [`DataOutputStream`] objects.
+    /// This method returns an instance of [`DataOutputStreamBuilder`](crate::builders::DataOutputStreamBuilder) which can be used to create [`DataOutputStream`] objects.
     pub fn builder() -> DataOutputStreamBuilder {
         DataOutputStreamBuilder::default()
     }
@@ -74,6 +76,7 @@ impl DataOutputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`DataOutputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> DataOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref byte_order) = self.byte_order {
@@ -103,10 +106,6 @@ impl DataOutputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl DataOutputStream {
-    pub const NONE: Option<&'static DataOutputStream> = None;
 }
 
 pub trait DataOutputStreamExt: 'static {

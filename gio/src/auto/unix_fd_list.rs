@@ -16,6 +16,8 @@ glib::wrapper! {
 }
 
 impl UnixFDList {
+    pub const NONE: Option<&'static UnixFDList> = None;
+
     #[doc(alias = "g_unix_fd_list_new")]
     pub fn new() -> UnixFDList {
         unsafe { from_glib_full(ffi::g_unix_fd_list_new()) }
@@ -26,10 +28,6 @@ impl Default for UnixFDList {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl UnixFDList {
-    pub const NONE: Option<&'static UnixFDList> = None;
 }
 
 pub trait UnixFDListExt: 'static {

@@ -31,7 +31,7 @@ impl ListStore {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`ListStore`] objects.
     ///
-    /// This method returns an instance of [`ListStoreBuilder`] which can be used to create [`ListStore`] objects.
+    /// This method returns an instance of [`ListStoreBuilder`](crate::builders::ListStoreBuilder) which can be used to create [`ListStore`] objects.
     pub fn builder() -> ListStoreBuilder {
         ListStoreBuilder::default()
     }
@@ -114,6 +114,7 @@ impl ListStoreBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`ListStore`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> ListStore {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref item_type) = self.item_type {

@@ -23,6 +23,8 @@ glib::wrapper! {
 }
 
 impl SocketAddress {
+    pub const NONE: Option<&'static SocketAddress> = None;
+
     //#[doc(alias = "g_socket_address_new_from_native")]
     //#[doc(alias = "new_from_native")]
     //pub fn from_native(native: /*Unimplemented*/Fundamental: Pointer, len: usize) -> SocketAddress {
@@ -32,10 +34,6 @@ impl SocketAddress {
 
 unsafe impl Send for SocketAddress {}
 unsafe impl Sync for SocketAddress {}
-
-impl SocketAddress {
-    pub const NONE: Option<&'static SocketAddress> = None;
-}
 
 pub trait SocketAddressExt: 'static {
     #[doc(alias = "g_socket_address_get_family")]

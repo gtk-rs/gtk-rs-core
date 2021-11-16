@@ -23,6 +23,8 @@ glib::wrapper! {
 }
 
 impl AppLaunchContext {
+    pub const NONE: Option<&'static AppLaunchContext> = None;
+
     #[doc(alias = "g_app_launch_context_new")]
     pub fn new() -> AppLaunchContext {
         unsafe { from_glib_full(ffi::g_app_launch_context_new()) }
@@ -33,10 +35,6 @@ impl Default for AppLaunchContext {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl AppLaunchContext {
-    pub const NONE: Option<&'static AppLaunchContext> = None;
 }
 
 pub trait AppLaunchContextExt: 'static {

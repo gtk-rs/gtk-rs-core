@@ -22,7 +22,6 @@ pub use self::app_launch_context::AppLaunchContext;
 
 mod application;
 pub use self::application::Application;
-pub use self::application::ApplicationBuilder;
 
 mod application_command_line;
 pub use self::application_command_line::ApplicationCommandLine;
@@ -32,11 +31,9 @@ pub use self::async_result::AsyncResult;
 
 mod buffered_input_stream;
 pub use self::buffered_input_stream::BufferedInputStream;
-pub use self::buffered_input_stream::BufferedInputStreamBuilder;
 
 mod buffered_output_stream;
 pub use self::buffered_output_stream::BufferedOutputStream;
-pub use self::buffered_output_stream::BufferedOutputStreamBuilder;
 
 mod bytes_icon;
 pub use self::bytes_icon::BytesIcon;
@@ -46,18 +43,15 @@ pub use self::cancellable::Cancellable;
 
 mod charset_converter;
 pub use self::charset_converter::CharsetConverter;
-pub use self::charset_converter::CharsetConverterBuilder;
 
 mod converter;
 pub use self::converter::Converter;
 
 mod converter_input_stream;
 pub use self::converter_input_stream::ConverterInputStream;
-pub use self::converter_input_stream::ConverterInputStreamBuilder;
 
 mod converter_output_stream;
 pub use self::converter_output_stream::ConverterOutputStream;
-pub use self::converter_output_stream::ConverterOutputStreamBuilder;
 
 mod credentials;
 pub use self::credentials::Credentials;
@@ -97,11 +91,9 @@ pub use self::dbus_server::DBusServer;
 
 mod data_input_stream;
 pub use self::data_input_stream::DataInputStream;
-pub use self::data_input_stream::DataInputStreamBuilder;
 
 mod data_output_stream;
 pub use self::data_output_stream::DataOutputStream;
-pub use self::data_output_stream::DataOutputStreamBuilder;
 
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(all(not(windows), not(target_os = "macos")))))]
@@ -178,7 +170,6 @@ pub use self::list_model::ListModel;
 
 mod list_store;
 pub use self::list_store::ListStore;
-pub use self::list_store::ListStoreBuilder;
 
 mod loadable_icon;
 pub use self::loadable_icon::LoadableIcon;
@@ -771,4 +762,16 @@ pub mod traits {
     pub use super::vfs::VfsExt;
     pub use super::volume::VolumeExt;
     pub use super::volume_monitor::VolumeMonitorExt;
+}
+#[doc(hidden)]
+pub mod builders {
+    pub use super::application::ApplicationBuilder;
+    pub use super::buffered_input_stream::BufferedInputStreamBuilder;
+    pub use super::buffered_output_stream::BufferedOutputStreamBuilder;
+    pub use super::charset_converter::CharsetConverterBuilder;
+    pub use super::converter_input_stream::ConverterInputStreamBuilder;
+    pub use super::converter_output_stream::ConverterOutputStreamBuilder;
+    pub use super::data_input_stream::DataInputStreamBuilder;
+    pub use super::data_output_stream::DataOutputStreamBuilder;
+    pub use super::list_store::ListStoreBuilder;
 }

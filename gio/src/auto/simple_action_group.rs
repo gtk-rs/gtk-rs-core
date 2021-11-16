@@ -17,6 +17,8 @@ glib::wrapper! {
 }
 
 impl SimpleActionGroup {
+    pub const NONE: Option<&'static SimpleActionGroup> = None;
+
     #[doc(alias = "g_simple_action_group_new")]
     pub fn new() -> SimpleActionGroup {
         unsafe { from_glib_full(ffi::g_simple_action_group_new()) }
@@ -27,10 +29,6 @@ impl Default for SimpleActionGroup {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl SimpleActionGroup {
-    pub const NONE: Option<&'static SimpleActionGroup> = None;
 }
 
 impl fmt::Display for SimpleActionGroup {
