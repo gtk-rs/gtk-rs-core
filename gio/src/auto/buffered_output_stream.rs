@@ -26,6 +26,8 @@ glib::wrapper! {
 }
 
 impl BufferedOutputStream {
+    pub const NONE: Option<&'static BufferedOutputStream> = None;
+
     #[doc(alias = "g_buffered_output_stream_new")]
     pub fn new(base_stream: &impl IsA<OutputStream>) -> BufferedOutputStream {
         unsafe {
@@ -50,7 +52,7 @@ impl BufferedOutputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`BufferedOutputStream`] objects.
     ///
-    /// This method returns an instance of [`BufferedOutputStreamBuilder`] which can be used to create [`BufferedOutputStream`] objects.
+    /// This method returns an instance of [`BufferedOutputStreamBuilder`](crate::builders::BufferedOutputStreamBuilder) which can be used to create [`BufferedOutputStream`] objects.
     pub fn builder() -> BufferedOutputStreamBuilder {
         BufferedOutputStreamBuilder::default()
     }
@@ -84,6 +86,7 @@ impl BufferedOutputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`BufferedOutputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> BufferedOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref auto_grow) = self.auto_grow {
@@ -121,10 +124,6 @@ impl BufferedOutputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl BufferedOutputStream {
-    pub const NONE: Option<&'static BufferedOutputStream> = None;
 }
 
 pub trait BufferedOutputStreamExt: 'static {

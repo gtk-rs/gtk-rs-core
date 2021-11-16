@@ -22,6 +22,8 @@ glib::wrapper! {
 }
 
 impl NetworkService {
+    pub const NONE: Option<&'static NetworkService> = None;
+
     #[doc(alias = "g_network_service_new")]
     pub fn new(service: &str, protocol: &str, domain: &str) -> NetworkService {
         unsafe {
@@ -32,10 +34,6 @@ impl NetworkService {
             ))
         }
     }
-}
-
-impl NetworkService {
-    pub const NONE: Option<&'static NetworkService> = None;
 }
 
 pub trait NetworkServiceExt: 'static {

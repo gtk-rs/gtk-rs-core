@@ -16,15 +16,13 @@ glib::wrapper! {
 }
 
 impl FontMap {
+    pub const NONE: Option<&'static FontMap> = None;
+
     #[doc(alias = "pango_cairo_font_map_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> Option<pango::FontMap> {
         unsafe { from_glib_none(ffi::pango_cairo_font_map_get_default()) }
     }
-}
-
-impl FontMap {
-    pub const NONE: Option<&'static FontMap> = None;
 }
 
 pub trait FontMapExt: 'static {

@@ -32,6 +32,8 @@ glib::wrapper! {
 }
 
 impl Application {
+    pub const NONE: Option<&'static Application> = None;
+
     #[doc(alias = "g_application_new")]
     pub fn new(application_id: Option<&str>, flags: ApplicationFlags) -> Application {
         unsafe {
@@ -45,7 +47,7 @@ impl Application {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`Application`] objects.
     ///
-    /// This method returns an instance of [`ApplicationBuilder`] which can be used to create [`Application`] objects.
+    /// This method returns an instance of [`ApplicationBuilder`](crate::builders::ApplicationBuilder) which can be used to create [`Application`] objects.
     pub fn builder() -> ApplicationBuilder {
         ApplicationBuilder::default()
     }
@@ -95,6 +97,7 @@ impl ApplicationBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`Application`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> Application {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref action_group) = self.action_group {
@@ -140,10 +143,6 @@ impl ApplicationBuilder {
         self.resource_base_path = Some(resource_base_path.to_string());
         self
     }
-}
-
-impl Application {
-    pub const NONE: Option<&'static Application> = None;
 }
 
 pub trait ApplicationExt: 'static {

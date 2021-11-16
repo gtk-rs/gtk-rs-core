@@ -24,6 +24,8 @@ glib::wrapper! {
 }
 
 impl SocketService {
+    pub const NONE: Option<&'static SocketService> = None;
+
     #[doc(alias = "g_socket_service_new")]
     pub fn new() -> SocketService {
         unsafe { from_glib_full(ffi::g_socket_service_new()) }
@@ -34,10 +36,6 @@ impl Default for SocketService {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl SocketService {
-    pub const NONE: Option<&'static SocketService> = None;
 }
 
 pub trait SocketServiceExt: 'static {

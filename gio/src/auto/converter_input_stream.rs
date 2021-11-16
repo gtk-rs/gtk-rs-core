@@ -23,6 +23,8 @@ glib::wrapper! {
 }
 
 impl ConverterInputStream {
+    pub const NONE: Option<&'static ConverterInputStream> = None;
+
     #[doc(alias = "g_converter_input_stream_new")]
     pub fn new(
         base_stream: &impl IsA<InputStream>,
@@ -40,7 +42,7 @@ impl ConverterInputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`ConverterInputStream`] objects.
     ///
-    /// This method returns an instance of [`ConverterInputStreamBuilder`] which can be used to create [`ConverterInputStream`] objects.
+    /// This method returns an instance of [`ConverterInputStreamBuilder`](crate::builders::ConverterInputStreamBuilder) which can be used to create [`ConverterInputStream`] objects.
     pub fn builder() -> ConverterInputStreamBuilder {
         ConverterInputStreamBuilder::default()
     }
@@ -73,6 +75,7 @@ impl ConverterInputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`ConverterInputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> ConverterInputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref converter) = self.converter {
@@ -102,10 +105,6 @@ impl ConverterInputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl ConverterInputStream {
-    pub const NONE: Option<&'static ConverterInputStream> = None;
 }
 
 pub trait ConverterInputStreamExt: 'static {

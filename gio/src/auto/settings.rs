@@ -25,6 +25,8 @@ glib::wrapper! {
 }
 
 impl Settings {
+    pub const NONE: Option<&'static Settings> = None;
+
     #[doc(alias = "g_settings_new")]
     pub fn new(schema_id: &str) -> Settings {
         unsafe { from_glib_full(ffi::g_settings_new(schema_id.to_glib_none().0)) }
@@ -96,10 +98,6 @@ impl Settings {
             ffi::g_settings_unbind(object.as_ref().to_glib_none().0, property.to_glib_none().0);
         }
     }
-}
-
-impl Settings {
-    pub const NONE: Option<&'static Settings> = None;
 }
 
 pub trait SettingsExt: 'static {

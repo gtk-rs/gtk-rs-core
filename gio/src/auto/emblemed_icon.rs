@@ -19,6 +19,8 @@ glib::wrapper! {
 }
 
 impl EmblemedIcon {
+    pub const NONE: Option<&'static EmblemedIcon> = None;
+
     #[doc(alias = "g_emblemed_icon_new")]
     pub fn new(icon: &impl IsA<Icon>, emblem: Option<&Emblem>) -> EmblemedIcon {
         unsafe {
@@ -28,10 +30,6 @@ impl EmblemedIcon {
             ))
         }
     }
-}
-
-impl EmblemedIcon {
-    pub const NONE: Option<&'static EmblemedIcon> = None;
 }
 
 pub trait EmblemedIconExt: 'static {

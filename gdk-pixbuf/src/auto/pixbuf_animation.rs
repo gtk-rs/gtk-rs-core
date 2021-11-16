@@ -20,6 +20,8 @@ glib::wrapper! {
 }
 
 impl PixbufAnimation {
+    pub const NONE: Option<&'static PixbufAnimation> = None;
+
     #[doc(alias = "gdk_pixbuf_animation_new_from_file")]
     #[doc(alias = "new_from_file")]
     pub fn from_file(
@@ -124,10 +126,6 @@ impl PixbufAnimation {
             });
         }))
     }
-}
-
-impl PixbufAnimation {
-    pub const NONE: Option<&'static PixbufAnimation> = None;
 }
 
 pub trait PixbufAnimationExt: 'static {

@@ -34,6 +34,8 @@ glib::wrapper! {
 }
 
 impl Socket {
+    pub const NONE: Option<&'static Socket> = None;
+
     #[doc(alias = "g_socket_new")]
     pub fn new(
         family: SocketFamily,
@@ -61,10 +63,6 @@ unsafe impl glib::SendUnique for Socket {
     fn is_unique(&self) -> bool {
         self.ref_count() == 1
     }
-}
-
-impl Socket {
-    pub const NONE: Option<&'static Socket> = None;
 }
 
 pub trait SocketExt: 'static {

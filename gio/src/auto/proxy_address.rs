@@ -21,6 +21,8 @@ glib::wrapper! {
 }
 
 impl ProxyAddress {
+    pub const NONE: Option<&'static ProxyAddress> = None;
+
     #[doc(alias = "g_proxy_address_new")]
     pub fn new(
         inetaddr: &impl IsA<InetAddress>,
@@ -48,10 +50,6 @@ impl ProxyAddress {
 
 unsafe impl Send for ProxyAddress {}
 unsafe impl Sync for ProxyAddress {}
-
-impl ProxyAddress {
-    pub const NONE: Option<&'static ProxyAddress> = None;
-}
 
 pub trait ProxyAddressExt: 'static {
     #[doc(alias = "g_proxy_address_get_destination_hostname")]

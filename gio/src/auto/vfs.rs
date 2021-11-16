@@ -20,6 +20,8 @@ glib::wrapper! {
 }
 
 impl Vfs {
+    pub const NONE: Option<&'static Vfs> = None;
+
     #[doc(alias = "g_vfs_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> Vfs {
@@ -35,10 +37,6 @@ impl Vfs {
 
 unsafe impl Send for Vfs {}
 unsafe impl Sync for Vfs {}
-
-impl Vfs {
-    pub const NONE: Option<&'static Vfs> = None;
-}
 
 pub trait VfsExt: 'static {
     #[doc(alias = "g_vfs_get_file_for_path")]

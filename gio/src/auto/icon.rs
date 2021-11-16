@@ -17,6 +17,8 @@ glib::wrapper! {
 }
 
 impl Icon {
+    pub const NONE: Option<&'static Icon> = None;
+
     #[doc(alias = "g_icon_deserialize")]
     pub fn deserialize(value: &glib::Variant) -> Option<Icon> {
         unsafe { from_glib_full(ffi::g_icon_deserialize(value.to_glib_none().0)) }
@@ -44,10 +46,6 @@ impl Icon {
             }
         }
     }
-}
-
-impl Icon {
-    pub const NONE: Option<&'static Icon> = None;
 }
 
 pub trait IconExt: 'static {

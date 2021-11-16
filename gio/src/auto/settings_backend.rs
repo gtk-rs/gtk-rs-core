@@ -16,6 +16,8 @@ glib::wrapper! {
 }
 
 impl SettingsBackend {
+    pub const NONE: Option<&'static SettingsBackend> = None;
+
     //#[doc(alias = "g_settings_backend_flatten_tree")]
     //pub fn flatten_tree(tree: /*Ignored*/&glib::Tree) -> (glib::GString, Vec<glib::GString>, Vec<glib::Variant>) {
     //    unsafe { TODO: call ffi:g_settings_backend_flatten_tree() }
@@ -26,10 +28,6 @@ impl SettingsBackend {
     pub fn default() -> SettingsBackend {
         unsafe { from_glib_full(ffi::g_settings_backend_get_default()) }
     }
-}
-
-impl SettingsBackend {
-    pub const NONE: Option<&'static SettingsBackend> = None;
 }
 
 pub trait SettingsBackendExt: 'static {

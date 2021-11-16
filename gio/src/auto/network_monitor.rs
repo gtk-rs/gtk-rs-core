@@ -28,15 +28,13 @@ glib::wrapper! {
 }
 
 impl NetworkMonitor {
+    pub const NONE: Option<&'static NetworkMonitor> = None;
+
     #[doc(alias = "g_network_monitor_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> NetworkMonitor {
         unsafe { from_glib_none(ffi::g_network_monitor_get_default()) }
     }
-}
-
-impl NetworkMonitor {
-    pub const NONE: Option<&'static NetworkMonitor> = None;
 }
 
 pub trait NetworkMonitorExt: 'static {

@@ -107,6 +107,3 @@ pub use self::constants::STR_DELIMITERS;
 pub use self::constants::TEST_OPTION_ISOLATE_DIRS;
 pub use self::constants::URI_RESERVED_CHARS_GENERIC_DELIMITERS;
 pub use self::constants::URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS;
-
-#[doc(hidden)]
-pub mod traits {}

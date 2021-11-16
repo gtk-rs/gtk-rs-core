@@ -33,6 +33,8 @@ glib::wrapper! {
 }
 
 impl SocketListener {
+    pub const NONE: Option<&'static SocketListener> = None;
+
     #[doc(alias = "g_socket_listener_new")]
     pub fn new() -> SocketListener {
         unsafe { from_glib_full(ffi::g_socket_listener_new()) }
@@ -43,10 +45,6 @@ impl Default for SocketListener {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl SocketListener {
-    pub const NONE: Option<&'static SocketListener> = None;
 }
 
 pub trait SocketListenerExt: 'static {

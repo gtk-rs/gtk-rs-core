@@ -25,6 +25,8 @@ glib::wrapper! {
 }
 
 impl PixbufLoader {
+    pub const NONE: Option<&'static PixbufLoader> = None;
+
     #[doc(alias = "gdk_pixbuf_loader_new")]
     pub fn new() -> PixbufLoader {
         unsafe { from_glib_full(ffi::gdk_pixbuf_loader_new()) }
@@ -64,10 +66,6 @@ impl Default for PixbufLoader {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl PixbufLoader {
-    pub const NONE: Option<&'static PixbufLoader> = None;
 }
 
 pub trait PixbufLoaderExt: 'static {

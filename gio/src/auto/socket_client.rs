@@ -37,6 +37,8 @@ glib::wrapper! {
 }
 
 impl SocketClient {
+    pub const NONE: Option<&'static SocketClient> = None;
+
     #[doc(alias = "g_socket_client_new")]
     pub fn new() -> SocketClient {
         unsafe { from_glib_full(ffi::g_socket_client_new()) }
@@ -47,10 +49,6 @@ impl Default for SocketClient {
     fn default() -> Self {
         Self::new()
     }
-}
-
-impl SocketClient {
-    pub const NONE: Option<&'static SocketClient> = None;
 }
 
 pub trait SocketClientExt: 'static {

@@ -26,8 +26,6 @@ glib::wrapper! {
     }
 }
 
-impl IOStream {}
-
 impl IOStream {
     pub const NONE: Option<&'static IOStream> = None;
 }

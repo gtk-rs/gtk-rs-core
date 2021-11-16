@@ -22,15 +22,13 @@ glib::wrapper! {
 }
 
 impl PowerProfileMonitor {
+    pub const NONE: Option<&'static PowerProfileMonitor> = None;
+
     #[doc(alias = "g_power_profile_monitor_dup_default")]
     #[doc(alias = "dup_default")]
     pub fn get_default() -> PowerProfileMonitor {
         unsafe { from_glib_full(ffi::g_power_profile_monitor_dup_default()) }
     }
-}
-
-impl PowerProfileMonitor {
-    pub const NONE: Option<&'static PowerProfileMonitor> = None;
 }
 
 pub trait PowerProfileMonitorExt: 'static {

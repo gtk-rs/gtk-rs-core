@@ -21,15 +21,13 @@ glib::wrapper! {
 }
 
 impl ProxyResolver {
+    pub const NONE: Option<&'static ProxyResolver> = None;
+
     #[doc(alias = "g_proxy_resolver_get_default")]
     #[doc(alias = "get_default")]
     pub fn default() -> ProxyResolver {
         unsafe { from_glib_none(ffi::g_proxy_resolver_get_default()) }
     }
-}
-
-impl ProxyResolver {
-    pub const NONE: Option<&'static ProxyResolver> = None;
 }
 
 pub trait ProxyResolverExt: 'static {

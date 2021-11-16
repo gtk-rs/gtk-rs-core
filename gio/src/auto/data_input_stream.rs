@@ -33,6 +33,8 @@ glib::wrapper! {
 }
 
 impl DataInputStream {
+    pub const NONE: Option<&'static DataInputStream> = None;
+
     #[doc(alias = "g_data_input_stream_new")]
     pub fn new(base_stream: &impl IsA<InputStream>) -> DataInputStream {
         unsafe {
@@ -45,7 +47,7 @@ impl DataInputStream {
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`DataInputStream`] objects.
     ///
-    /// This method returns an instance of [`DataInputStreamBuilder`] which can be used to create [`DataInputStream`] objects.
+    /// This method returns an instance of [`DataInputStreamBuilder`](crate::builders::DataInputStreamBuilder) which can be used to create [`DataInputStream`] objects.
     pub fn builder() -> DataInputStreamBuilder {
         DataInputStreamBuilder::default()
     }
@@ -80,6 +82,7 @@ impl DataInputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`DataInputStream`].
+    #[must_use = "The builder must be built to be used"]
     pub fn build(self) -> DataInputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref byte_order) = self.byte_order {
@@ -125,10 +128,6 @@ impl DataInputStreamBuilder {
         self.close_base_stream = Some(close_base_stream);
         self
     }
-}
-
-impl DataInputStream {
-    pub const NONE: Option<&'static DataInputStream> = None;
 }
 
 pub trait DataInputStreamExt: 'static {

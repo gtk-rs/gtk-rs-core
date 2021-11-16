@@ -24,16 +24,14 @@ glib::wrapper! {
 }
 
 impl MemoryOutputStream {
+    pub const NONE: Option<&'static MemoryOutputStream> = None;
+
     #[doc(alias = "g_memory_output_stream_new_resizable")]
     pub fn new_resizable() -> MemoryOutputStream {
         unsafe {
             OutputStream::from_glib_full(ffi::g_memory_output_stream_new_resizable()).unsafe_cast()
         }
     }
-}
-
-impl MemoryOutputStream {
-    pub const NONE: Option<&'static MemoryOutputStream> = None;
 }
 
 pub trait MemoryOutputStreamExt: 'static {

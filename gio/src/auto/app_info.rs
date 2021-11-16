@@ -33,6 +33,8 @@ glib::wrapper! {
 }
 
 impl AppInfo {
+    pub const NONE: Option<&'static AppInfo> = None;
+
     #[doc(alias = "g_app_info_create_from_commandline")]
     pub fn create_from_commandline(
         commandline: impl AsRef<std::ffi::OsStr>,
@@ -200,10 +202,6 @@ impl AppInfo {
             ffi::g_app_info_reset_type_associations(content_type.to_glib_none().0);
         }
     }
-}
-
-impl AppInfo {
-    pub const NONE: Option<&'static AppInfo> = None;
 }
 
 pub trait AppInfoExt: 'static {

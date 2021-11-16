@@ -28,6 +28,8 @@ glib::wrapper! {
 }
 
 impl TlsServerConnection {
+    pub const NONE: Option<&'static TlsServerConnection> = None;
+
     #[doc(alias = "g_tls_server_connection_new")]
     pub fn new(
         base_io_stream: &impl IsA<IOStream>,
@@ -47,10 +49,6 @@ impl TlsServerConnection {
             }
         }
     }
-}
-
-impl TlsServerConnection {
-    pub const NONE: Option<&'static TlsServerConnection> = None;
 }
 
 pub trait TlsServerConnectionExt: 'static {

@@ -24,14 +24,12 @@ glib::wrapper! {
 }
 
 impl VolumeMonitor {
+    pub const NONE: Option<&'static VolumeMonitor> = None;
+
     #[doc(alias = "g_volume_monitor_get")]
     pub fn get() -> VolumeMonitor {
         unsafe { from_glib_full(ffi::g_volume_monitor_get()) }
     }
-}
-
-impl VolumeMonitor {
-    pub const NONE: Option<&'static VolumeMonitor> = None;
 }
 
 pub trait VolumeMonitorExt: 'static {

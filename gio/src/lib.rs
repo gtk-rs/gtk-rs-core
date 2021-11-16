@@ -86,6 +86,7 @@ mod test_util;
 pub use crate::auto::functions::*;
 pub use crate::auto::*;
 
+pub use auto::builders;
 pub mod prelude;
 
 #[allow(clippy::wrong_self_convention)]
