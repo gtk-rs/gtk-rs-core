@@ -1281,6 +1281,8 @@ where
     K: StaticVariantType,
     V: StaticVariantType,
 {
+    use std::fmt::Write;
+
     let key_type = K::static_variant_type();
     let value_type = V::static_variant_type();
 
@@ -1288,25 +1290,16 @@ where
         return Cow::Borrowed(VariantTy::VARDICT);
     }
 
-    unsafe {
-        let ptr = ffi::g_string_sized_new(16);
-        ffi::g_string_append_len(ptr, b"a{".as_ptr() as *const _, 2);
-        ffi::g_string_append_len(
-            ptr,
-            key_type.as_str().as_ptr() as *const _,
-            key_type.as_str().len() as isize,
-        );
-        ffi::g_string_append_len(
-            ptr,
-            value_type.as_str().as_ptr() as *const _,
-            value_type.as_str().len() as isize,
-        );
-        ffi::g_string_append_c(ptr, b'}' as _);
+    let mut builder = crate::GStringBuilder::default();
+    write!(
+        &mut builder,
+        "a{{{}{}}}",
+        key_type.as_str(),
+        value_type.as_str()
+    )
+    .unwrap();
 
-        Cow::Owned(from_glib_full(
-            ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType
-        ))
-    }
+    Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
 }
 
 impl<K, V, H> StaticVariantType for HashMap<K, V, H>
@@ -1338,17 +1331,16 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    unsafe {
-                        let ptr = ffi::g_string_sized_new(255);
-                        ffi::g_string_append_c(ptr, b'(' as _);
-                        $(
-                            let t = $name::static_variant_type();
-                            ffi::g_string_append_len(ptr, t.as_str().as_ptr() as *const _, t.as_str().len() as isize);
-                        )+
-                        ffi::g_string_append_c(ptr, b')' as _);
+                    let mut builder = crate::GStringBuilder::new("(");
 
-                        Cow::Owned(from_glib_full(ffi::g_string_free(ptr, ffi::GFALSE) as *mut ffi::GVariantType))
-                    }
+                    $(
+                        let t = $name::static_variant_type();
+                        builder.append(t.as_str());
+                    )+
+
+                    builder.append_c(')');
+
+                    Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
                 }
             }
 

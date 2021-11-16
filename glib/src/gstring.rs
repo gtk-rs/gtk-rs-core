@@ -7,6 +7,7 @@ use std::cmp::Ordering;
 use std::ffi::{CStr, CString, OsStr};
 use std::fmt;
 use std::hash;
+use std::mem;
 use std::ops::Deref;
 use std::os::raw::{c_char, c_void};
 use std::ptr;
@@ -14,78 +15,67 @@ use std::slice;
 use std::string::String;
 
 pub struct GString(Inner);
-
 enum Inner {
     Native(Option<CString>),
-    Foreign(ptr::NonNull<c_char>, usize),
+    Foreign {
+        ptr: ptr::NonNull<c_char>,
+        len: usize,
+    },
 }
 
 unsafe impl Send for GString {}
 unsafe impl Sync for GString {}
 
 impl GString {
-    /// Create a new GString from a glib-originated string, taking ownership.
-    ///
-    /// # Safety
-    ///
-    /// The provided string must be a valid C string (i.e. `'0'` terminated).
-    ///
-    /// The provided pointer must be allocated by glib such that `g_free(ptr)`
-    /// is valid, as the `GString` will call `g_free(ptr)` on drop.
-    ///
-    /// It is essential that noone else free this pointer as it owned by the
-    /// returned `GString`.
-    ///
-    /// The underlying string must not be mutated, in particular in terms of
-    /// length, underneath the `GString` instance.
-    unsafe fn new(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
-        Self(Inner::Foreign(
-            ptr::NonNull::new_unchecked(ptr),
-            libc::strlen(ptr),
-        ))
-    }
-
-    /// Create a new GString from a glib-originated string, borrowing it rather
-    /// than taking ownership.
-    ///
-    /// # Safety
-    ///
-    /// The provided string must be a valid C string (i.e. `'0'` terminated).
-    ///
-    /// It is essential that noone else free this pointer as it owned by the
-    /// returned `GString` until the borrow is dropped.
-    ///
-    /// The underlying string must not be mutated, in particular in terms of
-    /// length, underneath the `GString` instance for the duration of the borrow.
-    unsafe fn new_borrowed(ptr: *const c_char) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
-        Borrowed::new(GString(Inner::Foreign(
-            ptr::NonNull::new_unchecked(ptr as *mut _),
-            libc::strlen(ptr),
-        )))
-    }
-
+    /// Return the `GString` as string slice.
     pub fn as_str(&self) -> &str {
-        let cstr = match self {
-            GString(Inner::Foreign(ptr, length)) => unsafe {
-                let bytes = slice::from_raw_parts(ptr.as_ptr() as *const u8, length + 1);
-                CStr::from_bytes_with_nul_unchecked(bytes)
+        unsafe {
+            let (ptr, len) = match self.0 {
+                Inner::Native(ref cstr) => {
+                    let cstr = cstr.as_ref().unwrap();
+                    (cstr.as_ptr() as *const u8, cstr.to_bytes().len())
+                }
+                Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
+            };
+            let slice = slice::from_raw_parts(ptr, len);
+            std::str::from_utf8_unchecked(slice)
+        }
+    }
+
+    /// Return the underlying pointer of the `GString`.
+    pub fn as_ptr(&self) -> *const c_char {
+        match self.0 {
+            Inner::Native(ref cstr) => cstr.as_ref().unwrap().as_ptr() as *const _,
+            Inner::Foreign { ptr, .. } => ptr.as_ptr(),
+        }
+    }
+
+    /// Transform into a `NUL`-terminated raw C string pointer.
+    pub fn into_raw(self) -> *mut c_char {
+        match self.0 {
+            Inner::Native(ref cstr) => unsafe {
+                let cstr = cstr.as_ref().unwrap();
+
+                let ptr = cstr.as_ptr();
+                let len = cstr.to_bytes().len();
+
+                let copy = ffi::g_malloc(len + 1) as *mut c_char;
+                ptr::copy_nonoverlapping(ptr as *const c_char, copy, len + 1);
+                ptr::write(copy.add(len), 0);
+
+                copy
             },
-            GString(Inner::Native(cstring)) => cstring
-                .as_ref()
-                .expect("Native shouldn't be empty")
-                .as_c_str(),
-        };
-        cstr.to_str().unwrap()
+            Inner::Foreign { ptr, .. } => {
+                let _s = mem::ManuallyDrop::new(self);
+                ptr.as_ptr()
+            }
+        }
     }
 }
 
 impl Clone for GString {
     fn clone(&self) -> GString {
-        let cstring = CString::new(self.as_str().to_string()).expect("CString::new failed");
-
-        GString(Inner::Native(Some(cstring)))
+        self.as_str().into()
     }
 }
 
@@ -97,7 +87,7 @@ impl fmt::Debug for GString {
 
 impl Drop for GString {
     fn drop(&mut self) {
-        if let GString(Inner::Foreign(ptr, _len)) = self {
+        if let Inner::Foreign { ptr, .. } = self.0 {
             unsafe {
                 ffi::g_free(ptr.as_ptr() as *mut _);
             }
@@ -113,16 +103,7 @@ impl fmt::Display for GString {
 
 impl hash::Hash for GString {
     fn hash<H: hash::Hasher>(&self, state: &mut H) {
-        let bytes = match self {
-            GString(Inner::Foreign(ptr, length)) => unsafe {
-                slice::from_raw_parts(ptr.as_ptr() as *const u8, length + 1)
-            },
-            GString(Inner::Native(cstring)) => cstring
-                .as_ref()
-                .expect("Native shouldn't be empty")
-                .as_bytes(),
-        };
-        state.write(bytes);
+        self.as_str().hash(state)
     }
 }
 
@@ -235,22 +216,24 @@ impl Deref for GString {
 impl From<GString> for String {
     #[inline]
     fn from(mut s: GString) -> Self {
-        if let GString(Inner::Native(ref mut cstring)) = s {
-            if let Ok(s) = cstring
-                .take()
-                .expect("Native shouldn't be empty")
-                .into_string()
-            {
-                return s;
+        match s.0 {
+            Inner::Foreign { ptr, len } => unsafe {
+                // Creates a copy
+                let slice = slice::from_raw_parts(ptr.as_ptr() as *const u8, len);
+                std::str::from_utf8_unchecked(slice).into()
+            },
+            Inner::Native(ref mut cstr) => {
+                // Moves the underlying string
+                cstr.take().unwrap().into_string().unwrap()
             }
         }
-        Self::from(s.as_str())
     }
 }
 
 impl From<GString> for Box<str> {
     #[inline]
     fn from(s: GString) -> Self {
+        // Potentially creates a copy
         let st: String = s.into();
         st.into_boxed_str()
     }
@@ -259,27 +242,46 @@ impl From<GString> for Box<str> {
 impl From<String> for GString {
     #[inline]
     fn from(s: String) -> Self {
-        s.into_bytes().into()
+        // Moves the content of the String
+        unsafe {
+            // No check for valid UTF-8 here
+            let cstr = CString::from_vec_unchecked(s.into_bytes());
+            GString(Inner::Native(Some(cstr)))
+        }
     }
 }
 
 impl From<Box<str>> for GString {
     #[inline]
     fn from(s: Box<str>) -> Self {
-        s.as_bytes().to_vec().into()
+        // Moves the content of the String
+        s.into_string().into()
     }
 }
 
 impl<'a> From<&'a str> for GString {
     #[inline]
     fn from(s: &'a str) -> Self {
-        s.as_bytes().to_vec().into()
+        // Allocates with the GLib allocator
+        unsafe {
+            // No check for valid UTF-8 here
+            let copy = ffi::g_malloc(s.len() + 1) as *mut c_char;
+            ptr::copy_nonoverlapping(s.as_ptr() as *const c_char, copy, s.len() + 1);
+            ptr::write(copy.add(s.len()), 0);
+
+            GString(Inner::Foreign {
+                ptr: ptr::NonNull::new_unchecked(copy),
+                len: s.len(),
+            })
+        }
     }
 }
 
 impl From<Vec<u8>> for GString {
     #[inline]
     fn from(s: Vec<u8>) -> Self {
+        // Moves the content of the Vec
+        // Also check if it's valid UTF-8
         let cstring = CString::new(s).expect("CString::new failed");
         cstring.into()
     }
@@ -288,6 +290,9 @@ impl From<Vec<u8>> for GString {
 impl From<CString> for GString {
     #[inline]
     fn from(s: CString) -> Self {
+        // Moves the content of the CString
+        // Also check if it's valid UTF-8
+        assert!(s.to_str().is_ok());
         Self(Inner::Native(Some(s)))
     }
 }
@@ -295,15 +300,9 @@ impl From<CString> for GString {
 impl<'a> From<&'a CStr> for GString {
     #[inline]
     fn from(c: &'a CStr) -> Self {
-        CString::from(c).into()
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrFull<*const c_char> for GString {
-    #[inline]
-    unsafe fn from_glib_full(ptr: *const c_char) -> Self {
-        Self::new(ptr as *mut _)
+        // Creates a copy with the GLib allocator
+        // Also check if it's valid UTF-8
+        c.to_str().unwrap().into()
     }
 }
 
@@ -311,7 +310,15 @@ impl FromGlibPtrFull<*const c_char> for GString {
 impl FromGlibPtrFull<*mut u8> for GString {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut u8) -> Self {
-        Self::new(ptr as *mut _)
+        assert!(!ptr.is_null());
+
+        // Check for valid UTF-8 here
+        let cstr = CStr::from_ptr(ptr as *const _);
+        assert!(cstr.to_str().is_ok());
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            len: cstr.to_bytes().len(),
+        })
     }
 }
 
@@ -319,17 +326,42 @@ impl FromGlibPtrFull<*mut u8> for GString {
 impl FromGlibPtrFull<*mut i8> for GString {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut i8) -> Self {
-        Self::new(ptr as *mut _)
+        from_glib_full(ptr as *mut u8)
     }
 }
 
 #[doc(hidden)]
-impl FromGlibPtrNone<*const c_char> for GString {
+impl FromGlibPtrFull<*const u8> for GString {
     #[inline]
-    unsafe fn from_glib_none(ptr: *const c_char) -> Self {
+    unsafe fn from_glib_full(ptr: *const u8) -> Self {
+        from_glib_full(ptr as *mut u8)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrFull<*const i8> for GString {
+    #[inline]
+    unsafe fn from_glib_full(ptr: *const i8) -> Self {
+        from_glib_full(ptr as *mut u8)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrNone<*const u8> for GString {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const u8) -> Self {
         assert!(!ptr.is_null());
-        let cstr = CStr::from_ptr(ptr);
-        cstr.into()
+        let cstr = CStr::from_ptr(ptr as *const _);
+        // Also check if it's valid UTF-8
+        cstr.to_str().unwrap().into()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrNone<*const i8> for GString {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const i8) -> Self {
+        from_glib_none(ptr as *const u8)
     }
 }
 
@@ -337,9 +369,7 @@ impl FromGlibPtrNone<*const c_char> for GString {
 impl FromGlibPtrNone<*mut u8> for GString {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut u8) -> Self {
-        assert!(!ptr.is_null());
-        let cstr = CStr::from_ptr(ptr as *mut _);
-        cstr.into()
+        from_glib_none(ptr as *const u8)
     }
 }
 
@@ -347,17 +377,31 @@ impl FromGlibPtrNone<*mut u8> for GString {
 impl FromGlibPtrNone<*mut i8> for GString {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut i8) -> Self {
-        assert!(!ptr.is_null());
-        let cstr = CStr::from_ptr(ptr as *mut _);
-        cstr.into()
+        from_glib_none(ptr as *const u8)
     }
 }
 
 #[doc(hidden)]
-impl FromGlibPtrBorrow<*const c_char> for GString {
+impl FromGlibPtrBorrow<*const u8> for GString {
     #[inline]
-    unsafe fn from_glib_borrow(ptr: *const c_char) -> Borrowed<Self> {
-        Self::new_borrowed(ptr)
+    unsafe fn from_glib_borrow(ptr: *const u8) -> Borrowed<Self> {
+        assert!(!ptr.is_null());
+
+        // Check for valid UTF-8 here
+        let cstr = CStr::from_ptr(ptr as *const _);
+        assert!(cstr.to_str().is_ok());
+        Borrowed::new(GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            len: cstr.to_bytes().len(),
+        }))
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrBorrow<*const i8> for GString {
+    #[inline]
+    unsafe fn from_glib_borrow(ptr: *const i8) -> Borrowed<Self> {
+        from_glib_borrow(ptr as *const u8)
     }
 }
 
@@ -365,7 +409,7 @@ impl FromGlibPtrBorrow<*const c_char> for GString {
 impl FromGlibPtrBorrow<*mut u8> for GString {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut u8) -> Borrowed<Self> {
-        Self::new_borrowed(ptr as *const c_char)
+        from_glib_borrow(ptr as *const u8)
     }
 }
 
@@ -373,43 +417,67 @@ impl FromGlibPtrBorrow<*mut u8> for GString {
 impl FromGlibPtrBorrow<*mut i8> for GString {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut i8) -> Borrowed<Self> {
-        Self::new_borrowed(ptr as *const c_char)
+        from_glib_borrow(ptr as *const u8)
     }
 }
 
 #[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *const c_char> for GString {
+impl<'a> ToGlibPtr<'a, *const u8> for GString {
     type Storage = &'a Self;
 
     #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *const c_char, Self> {
-        Stash(self.as_ptr() as *const _, self)
+    fn to_glib_none(&'a self) -> Stash<'a, *const u8, Self> {
+        Stash(self.as_ptr() as *const u8, self)
     }
 
     #[inline]
-    fn to_glib_full(&self) -> *const c_char {
-        unsafe {
-            ffi::g_strndup(self.as_ptr() as *const c_char, self.len() as libc::size_t)
-                as *const c_char
-        }
+    fn to_glib_full(&self) -> *const u8 {
+        self.clone().into_raw() as *const u8
     }
 }
 
 #[doc(hidden)]
-impl<'a> ToGlibPtr<'a, *mut c_char> for GString {
+impl<'a> ToGlibPtr<'a, *const i8> for GString {
     type Storage = &'a Self;
 
     #[inline]
-    fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
-        Stash(self.as_ptr() as *mut _, self)
+    fn to_glib_none(&'a self) -> Stash<'a, *const i8, Self> {
+        Stash(self.as_ptr() as *const i8, self)
     }
 
     #[inline]
-    fn to_glib_full(&self) -> *mut c_char {
-        unsafe {
-            ffi::g_strndup(self.as_ptr() as *const c_char, self.len() as libc::size_t)
-                as *mut c_char
-        }
+    fn to_glib_full(&self) -> *const i8 {
+        self.clone().into_raw() as *const i8
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *mut u8> for GString {
+    type Storage = &'a Self;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *mut u8, Self> {
+        Stash(self.as_ptr() as *mut u8, self)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut u8 {
+        self.clone().into_raw() as *mut u8
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *mut i8> for GString {
+    type Storage = &'a Self;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *mut i8, Self> {
+        Stash(self.as_ptr() as *mut i8, self)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut i8 {
+        self.clone().into_raw() as *mut i8
     }
 }
 
@@ -419,32 +487,39 @@ impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
         if num == 0 || ptr.is_null() {
             return Self::from("");
         }
-        let mut bytes = Vec::with_capacity(num + 1);
         let slice = slice::from_raw_parts(ptr as *const u8, num);
-        bytes.extend_from_slice(slice);
-        bytes.push(0);
-
-        CStr::from_bytes_with_nul_unchecked(bytes.as_slice()).into()
+        // Also check if it's valid UTF-8
+        std::str::from_utf8(slice).unwrap().into()
     }
 
     unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
             return Self::from("");
         }
-        GString(Inner::Foreign(
-            ptr::NonNull::new_unchecked(ptr as *mut _),
-            num,
-        ))
+
+        // Check if it's valid UTF-8
+        let slice = slice::from_raw_parts(ptr as *const u8, num);
+        std::str::from_utf8(slice).unwrap();
+
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            len: num,
+        })
     }
 
     unsafe fn from_glib_full_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
             return Self::from("");
         }
-        GString(Inner::Foreign(
-            ptr::NonNull::new_unchecked(ptr as *mut _),
-            num,
-        ))
+
+        // Check if it's valid UTF-8
+        let slice = slice::from_raw_parts(ptr as *const u8, num);
+        std::str::from_utf8(slice).unwrap();
+
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            len: num,
+        })
     }
 }
 
@@ -571,7 +646,7 @@ impl_from_glib_container_as_vec_string!(GString, *mut c_char);
 #[cfg(test)]
 #[allow(clippy::blacklisted_name)]
 mod tests {
-    use super::{FromGlibContainer, GString};
+    use super::*;
     use std::ffi::CString;
 
     #[test]
@@ -581,7 +656,7 @@ mod tests {
 
         unsafe {
             let ptr_copy = ffi::g_strdup(ptr);
-            let gstring = GString::new(ptr_copy);
+            let gstring = GString::from_glib_full(ptr_copy);
             assert_eq!(gstring.as_str(), "foo");
             let foo: Box<str> = gstring.into();
             assert_eq!(foo.as_ref(), "foo");
@@ -594,7 +669,7 @@ mod tests {
         let ptr = data.as_ptr();
         unsafe {
             let ptr_copy = ffi::g_strdup(ptr);
-            let gstr = GString::new(ptr_copy);
+            let gstr = GString::from_glib_full(ptr_copy);
             assert_eq!(gstr, "foo");
         }
     }
@@ -608,6 +683,14 @@ mod tests {
     }
 
     #[test]
+    fn test_string_from_gstring() {
+        let gstring = GString::from("foo");
+        assert_eq!(gstring.as_str(), "foo");
+        let s = String::from(gstring);
+        assert_eq!(s, "foo");
+    }
+
+    #[test]
     fn test_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
         let gstring = GString::from(cstr);
@@ -617,7 +700,7 @@ mod tests {
     }
 
     #[test]
-    fn test_string_from_gstring() {
+    fn test_string_from_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
         let gstring = GString::from(cstr);
         assert_eq!(gstring.as_str(), "foo");
@@ -661,8 +744,7 @@ mod tests {
     fn test_hashmap() {
         use std::collections::HashMap;
 
-        let cstr = CString::new("foo").unwrap();
-        let gstring = GString::from(cstr);
+        let gstring = GString::from("foo");
         assert_eq!(gstring.as_str(), "foo");
         let mut h: HashMap<GString, i32> = HashMap::new();
         h.insert(gstring, 42);
