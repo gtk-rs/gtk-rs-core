@@ -7,9 +7,6 @@
 
 extern crate libc;
 
-#[cfg(feature = "use_glib")]
-extern crate glib_sys as glib_ffi;
-
 #[cfg(any(feature = "xlib", feature = "dox"))]
 extern crate x11;
 
