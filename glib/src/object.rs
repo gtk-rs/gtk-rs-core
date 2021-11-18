@@ -925,6 +925,18 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl<'a> $crate::value::FromValue<'a> for &'a $name {
+            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a $crate::Value) -> Self {
+                let ptr = $crate::gobject_ffi::g_value_get_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
+                assert!(!ptr.is_null());
+                assert_ne!((*ptr).ref_count, 0);
+                &*(ptr as *const $name)
+            }
+        }
+
+        #[doc(hidden)]
         impl $crate::value::ToValue for $name {
             fn to_value(&self) -> $crate::Value {
                 unsafe {
