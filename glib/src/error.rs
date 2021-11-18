@@ -212,6 +212,7 @@ impl error::Error for BoolError {}
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ToValue;
     use std::ffi::CString;
 
     #[test]
@@ -259,5 +260,19 @@ mod tests {
 
         let true_dynamic_res = result_from_gboolean!(ffi::GTRUE, "{} message", "Dynamic");
         assert!(true_dynamic_res.is_ok());
+    }
+
+    #[test]
+    fn test_value() {
+        let e1 = Error::new(crate::FileError::Failed, "Failed");
+        // This creates a copy ...
+        let v = e1.to_value();
+        // ... so we have to get the raw pointer from inside the value to check for equality.
+        let ptr =
+            unsafe { gobject_ffi::g_value_get_boxed(v.to_glib_none().0) as *const ffi::GError };
+
+        let e2 = v.get::<&Error>().unwrap();
+
+        assert_eq!(ptr, e2.to_glib_none().0);
     }
 }

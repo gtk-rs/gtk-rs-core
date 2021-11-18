@@ -932,7 +932,8 @@ macro_rules! glib_object_wrapper {
                 let ptr = $crate::gobject_ffi::g_value_get_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
                 assert_ne!((*ptr).ref_count, 0);
-                &*(ptr as *const $name)
+                assert_eq!(std::mem::size_of::<$name>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                &*(&ptr as *const _ as *const $name)
             }
         }
 
@@ -3801,5 +3802,14 @@ mod tests {
 
         drop(obj);
         assert!(weakref.upgrade().is_none());
+    }
+
+    #[test]
+    fn test_value() {
+        let obj1: Object = Object::new(&[]).unwrap();
+        let v = obj1.to_value();
+        let obj2 = v.get::<&Object>().unwrap();
+
+        assert_eq!(obj1.as_ptr(), obj2.as_ptr());
     }
 }

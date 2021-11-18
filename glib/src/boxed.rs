@@ -256,7 +256,8 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
-                &*(ptr as *const $name)
+                assert_eq!(std::mem::size_of::<$name>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                &*(&ptr as *const _ as *const $name)
             }
         }
 
