@@ -430,6 +430,7 @@ impl<'a> SignalBuilder<'a> {
     ///
     /// This does not register the signal yet, which only happens as part of object type
     /// registration.
+    #[must_use = "Builder needs to be built to be used"]
     pub fn build(self) -> Signal {
         let flags = if self.flags
             & (SignalFlags::RUN_FIRST | SignalFlags::RUN_LAST | SignalFlags::RUN_CLEANUP)

@@ -31,6 +31,7 @@ impl<'a> IOExtensionPointBuilder<'a> {
         }
     }
 
+    #[must_use = "Builder needs to be built to be used"]
     pub fn build(self) -> IOExtensionPoint {
         unsafe {
             let ep = IOExtensionPoint::from_glib_none(ffi::g_io_extension_point_register(

@@ -42,6 +42,7 @@ impl<'a> BindingBuilder<'a> {
         self
     }
 
+    #[must_use = "Builder needs to be built to be used"]
     pub fn build(self) {
         type Mappings = (
             Option<Box<dyn Fn(&glib::Variant, glib::Type) -> Option<glib::Value>>>,

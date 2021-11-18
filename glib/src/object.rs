@@ -3348,6 +3348,7 @@ impl<'a> BindingBuilder<'a> {
     /// Establish the property binding.
     ///
     /// This fails if the provided properties do not exist.
+    #[must_use = "Builder needs to be built to be used"]
     pub fn try_build(self) -> Result<crate::Binding, crate::BoolError> {
         unsafe {
             Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_with_closures(
