@@ -2569,7 +2569,7 @@ impl<T: ObjectType> ObjectExt for T {
             )
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            let signal_detail = validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
             let mut return_value = Value::uninitialized();
             if signal_query.return_type() != Type::UNIT {
@@ -2582,7 +2582,7 @@ impl<T: ObjectType> ObjectExt for T {
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
-                signal_detail.into_glib(),
+                0,
                 return_value.to_glib_none_mut().0,
             );
 
@@ -2617,7 +2617,7 @@ impl<T: ObjectType> ObjectExt for T {
             let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
                 .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            let signal_detail = validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
             let mut return_value = Value::uninitialized();
             if signal_query.return_type() != Type::UNIT {
@@ -2630,7 +2630,7 @@ impl<T: ObjectType> ObjectExt for T {
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
-                signal_detail.into_glib(),
+                0,
                 return_value.to_glib_none_mut().0,
             );
 
@@ -2987,12 +2987,8 @@ fn validate_signal_arguments(
     type_: Type,
     signal_query: &SignalQuery,
     args: &mut [Value],
-) -> Result<Quark, BoolError> {
+) -> Result<(), BoolError> {
     let signal_name = signal_query.signal_name();
-    let (signal_id, signal_detail) = SignalId::parse_name(signal_name, type_, false)
-        .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-
-    let signal_query = signal_id.query();
 
     if signal_query.n_params() != args.len() as u32 {
         return Err(bool_error!(
@@ -3046,7 +3042,7 @@ fn validate_signal_arguments(
         }
     }
 
-    Ok(signal_detail)
+    Ok(())
 }
 
 impl ObjectClass {

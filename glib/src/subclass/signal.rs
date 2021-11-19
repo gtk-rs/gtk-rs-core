@@ -36,12 +36,21 @@ pub struct Signal {
 }
 
 /// Token passed to signal class handlers.
-pub struct SignalClassHandlerToken(pub(super) *mut gobject_ffi::GTypeInstance);
+pub struct SignalClassHandlerToken(
+    /// Instance for which the signal is emitted.
+    pub(super) *mut gobject_ffi::GTypeInstance,
+    /// Return type.
+    pub(super) Type,
+    /// Arguments value array.
+    pub(super) *const Value,
+);
 
 impl fmt::Debug for SignalClassHandlerToken {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        f.debug_tuple("SignalClassHandlerToken")
-            .field(&unsafe { crate::Object::from_glib_borrow(self.0 as *mut gobject_ffi::GObject) })
+        f.debug_struct("SignalClassHandlerToken")
+            .field("type", &unsafe {
+                crate::Object::from_glib_borrow(self.0 as *mut gobject_ffi::GObject)
+            })
             .finish()
     }
 }
@@ -71,6 +80,9 @@ impl fmt::Debug for SignalInvocationHint {
 
 /// In-depth information of a specific signal
 pub struct SignalQuery(gobject_ffi::GSignalQuery);
+
+unsafe impl Send for SignalQuery {}
+unsafe impl Sync for SignalQuery {}
 
 impl SignalQuery {
     /// The name of the signal.
@@ -526,10 +538,29 @@ impl Signal {
             SignalRegistration::Registered { .. } => unreachable!(),
         };
 
+        let return_type = self.return_type;
+
         let class_handler = class_handler.map(|class_handler| {
             Closure::new(move |values| unsafe {
                 let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-                class_handler(&SignalClassHandlerToken(instance as *mut _), values)
+                let res = class_handler(&SignalClassHandlerToken(instance as *mut _, return_type.into(), values.as_ptr()), values);
+
+                if return_type == Type::UNIT {
+                    if let Some(ref v) = res {
+                        panic!("Signal has no return value but class handler returned a value of type {}", v.type_());
+                    }
+                } else {
+                    match res {
+                        None => {
+                            panic!("Signal has a return value but class handler returned none");
+                        }
+                        Some(ref v) => {
+                            assert!(v.type_().is_a(return_type.into()), "Signal has a return type of {} but class handler returned {}", Type::from(return_type), v.type_());
+                        }
+                    }
+                }
+
+                res
             })
         });
 
@@ -539,27 +570,49 @@ impl Signal {
             handler_return: *const gobject_ffi::GValue,
             data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let accumulator = &**(data
-                as *const *const (dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool
-                     + Send
-                     + Sync
-                     + 'static));
-            accumulator(
-                &SignalInvocationHint(*ihint),
-                &mut *(return_accu as *mut Value),
-                &*(handler_return as *const Value),
-            )
-            .into_glib()
+            let accumulator = &**(data as *const *const (
+                Box<
+                    dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool
+                        + Send
+                        + Sync
+                        + 'static,
+                >,
+                SignalType,
+            ));
+
+            let return_accu = &mut *(return_accu as *mut Value);
+            let handler_return = &*(handler_return as *const Value);
+            let return_type = accumulator.1;
+
+            assert!(
+                handler_return.type_().is_a(return_type.into()),
+                "Signal has a return type of {} but handler returned {}",
+                Type::from(return_type),
+                handler_return.type_()
+            );
+
+            let res = (accumulator.0)(&SignalInvocationHint(*ihint), return_accu, handler_return)
+                .into_glib();
+
+            assert!(
+                return_accu.type_().is_a(return_type.into()),
+                "Signal has a return type of {} but accumulator returned {}",
+                Type::from(return_type),
+                return_accu.type_()
+            );
+
+            res
         }
 
-        let (accumulator, accumulator_trampoline) = if let Some(accumulator) = accumulator {
-            (
-                Box::into_raw(Box::new(accumulator)),
-                Some::<unsafe extern "C" fn(_, _, _, _) -> _>(accumulator_trampoline),
-            )
-        } else {
-            (ptr::null_mut(), None)
-        };
+        let (accumulator, accumulator_trampoline) =
+            if let (Some(accumulator), true) = (accumulator, return_type != Type::UNIT) {
+                (
+                    Box::into_raw(Box::new((return_type, Box::new(accumulator)))),
+                    Some::<unsafe extern "C" fn(_, _, _, _) -> _>(accumulator_trampoline),
+                )
+            } else {
+                (ptr::null_mut(), None)
+            };
 
         unsafe {
             let signal_id = gobject_ffi::g_signal_newv(
@@ -570,7 +623,7 @@ impl Signal {
                 accumulator_trampoline,
                 accumulator as ffi::gpointer,
                 None,
-                self.return_type.into_glib(),
+                return_type.into_glib(),
                 self.param_types.len() as u32,
                 self.param_types.as_ptr() as *mut _,
             );
