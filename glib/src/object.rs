@@ -3279,10 +3279,10 @@ impl<'a> fmt::Debug for BindingBuilder<'a> {
 }
 
 impl<'a> BindingBuilder<'a> {
-    fn new<S: ObjectType, T: ObjectType>(
-        source: &'a S,
+    fn new(
+        source: &'a impl ObjectType,
         source_property: &'a str,
-        target: &'a T,
+        target: &'a impl ObjectType,
         target_property: &'a str,
     ) -> Self {
         Self {
