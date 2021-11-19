@@ -3251,8 +3251,10 @@ impl<T: ObjectType> From<WeakRef<T>> for SendWeakRef<T> {
 unsafe impl<T: ObjectType> Sync for SendWeakRef<T> {}
 unsafe impl<T: ObjectType> Send for SendWeakRef<T> {}
 
+type TransformFn =
+    Option<Box<dyn Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>>;
+
 /// Builder for object property bindings.
-#[derive(Debug)]
 #[must_use]
 pub struct BindingBuilder<'a> {
     source: &'a ObjectRef,
@@ -3260,8 +3262,20 @@ pub struct BindingBuilder<'a> {
     target: &'a ObjectRef,
     target_property: &'a str,
     flags: crate::BindingFlags,
-    transform_to: Option<crate::Closure>,
-    transform_from: Option<crate::Closure>,
+    transform_to: TransformFn,
+    transform_from: TransformFn,
+}
+
+impl<'a> fmt::Debug for BindingBuilder<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("BindingBuilder")
+            .field("source", &self.source)
+            .field("source_property", &self.source_property)
+            .field("target", &self.target)
+            .field("target_property", &self.target_property)
+            .field("flags", &self.flags)
+            .finish()
+    }
 }
 
 impl<'a> BindingBuilder<'a> {
@@ -3282,40 +3296,6 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
-    fn transform_closure<
-        F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
-    >(
-        func: F,
-    ) -> crate::Closure {
-        crate::Closure::new(move |values| {
-            assert_eq!(values.len(), 3);
-            let binding = values[0]
-                .get::<crate::Binding>()
-                .expect("Invalid GBinding argument");
-            let from = unsafe {
-                let ptr = gobject_ffi::g_value_get_boxed(mut_override(
-                    &values[1] as *const Value as *const gobject_ffi::GValue,
-                ));
-                assert!(!ptr.is_null());
-                &*(ptr as *const gobject_ffi::GValue as *const Value)
-            };
-
-            match func(&binding, from) {
-                None => Some(false.to_value()),
-                Some(value) => {
-                    unsafe {
-                        gobject_ffi::g_value_set_boxed(
-                            mut_override(&values[2] as *const Value as *const gobject_ffi::GValue),
-                            &value as *const Value as *const _,
-                        );
-                    }
-
-                    Some(true.to_value())
-                }
-            }
-        })
-    }
-
     /// Transform changed property values from the target object to the source object with the given closure.
     pub fn transform_from<
         F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
@@ -3324,7 +3304,7 @@ impl<'a> BindingBuilder<'a> {
         func: F,
     ) -> Self {
         Self {
-            transform_from: Some(Self::transform_closure(func)),
+            transform_from: Some(Box::new(func)),
             ..self
         }
     }
@@ -3335,7 +3315,7 @@ impl<'a> BindingBuilder<'a> {
         func: F,
     ) -> Self {
         Self {
-            transform_to: Some(Self::transform_closure(func)),
+            transform_to: Some(Box::new(func)),
             ..self
         }
     }
@@ -3349,15 +3329,83 @@ impl<'a> BindingBuilder<'a> {
     ///
     /// This fails if the provided properties do not exist.
     pub fn try_build(self) -> Result<crate::Binding, crate::BoolError> {
+        unsafe extern "C" fn transform_to_trampoline(
+            binding: *mut gobject_ffi::GBinding,
+            from_value: *const gobject_ffi::GValue,
+            to_value: *mut gobject_ffi::GValue,
+            user_data: ffi::gpointer,
+        ) -> ffi::gboolean {
+            let transform_data = &*(user_data as *const (TransformFn, TransformFn));
+
+            match (transform_data.0.as_ref().unwrap())(
+                &from_glib_borrow(binding),
+                &*(from_value as *const Value),
+            ) {
+                None => false,
+                Some(res) => {
+                    *to_value = res.into_raw();
+                    true
+                }
+            }
+            .into_glib()
+        }
+
+        unsafe extern "C" fn transform_from_trampoline(
+            binding: *mut gobject_ffi::GBinding,
+            from_value: *const gobject_ffi::GValue,
+            to_value: *mut gobject_ffi::GValue,
+            user_data: ffi::gpointer,
+        ) -> ffi::gboolean {
+            let transform_data = &*(user_data as *const (TransformFn, TransformFn));
+
+            match (transform_data.1.as_ref().unwrap())(
+                &from_glib_borrow(binding),
+                &*(from_value as *const Value),
+            ) {
+                None => false,
+                Some(res) => {
+                    *to_value = res.into_raw();
+                    true
+                }
+            }
+            .into_glib()
+        }
+
+        unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
+            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn));
+        }
+
         unsafe {
-            Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_with_closures(
+            let have_transform_to = self.transform_to.is_some();
+            let have_transform_from = self.transform_from.is_some();
+            let transform_data = if have_transform_to || have_transform_from {
+                Box::into_raw(Box::new((self.transform_to, self.transform_from)))
+            } else {
+                ptr::null_mut()
+            };
+
+            Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_full(
                 self.source.to_glib_none().0,
                 self.source_property.to_glib_none().0,
                 self.target.to_glib_none().0,
                 self.target_property.to_glib_none().0,
                 self.flags.into_glib(),
-                self.transform_to.to_glib_none().0,
-                self.transform_from.to_glib_none().0,
+                if have_transform_to {
+                    Some(transform_to_trampoline)
+                } else {
+                    None
+                },
+                if have_transform_from {
+                    Some(transform_from_trampoline)
+                } else {
+                    None
+                },
+                transform_data as ffi::gpointer,
+                if transform_data.is_null() {
+                    None
+                } else {
+                    Some(free_transform_data)
+                },
             ))
             .ok_or_else(|| bool_error!("Failed to create property bindings"))
         }
