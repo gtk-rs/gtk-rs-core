@@ -3335,7 +3335,8 @@ impl<'a> BindingBuilder<'a> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data = &*(user_data as *const (TransformFn, TransformFn));
+            let transform_data = &*(user_data
+                as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
 
             match (transform_data.0.as_ref().unwrap())(
                 &from_glib_borrow(binding),
@@ -3343,6 +3344,13 @@ impl<'a> BindingBuilder<'a> {
             ) {
                 None => false,
                 Some(res) => {
+                    assert!(
+                        res.type_().is_a(transform_data.3.value_type()),
+                        "Target property {} expected type {} but transform_to function returned {}",
+                        transform_data.3.name(),
+                        transform_data.3.value_type(),
+                        res.type_()
+                    );
                     *to_value = res.into_raw();
                     true
                 }
@@ -3356,7 +3364,8 @@ impl<'a> BindingBuilder<'a> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data = &*(user_data as *const (TransformFn, TransformFn));
+            let transform_data = &*(user_data
+                as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
 
             match (transform_data.1.as_ref().unwrap())(
                 &from_glib_borrow(binding),
@@ -3364,6 +3373,13 @@ impl<'a> BindingBuilder<'a> {
             ) {
                 None => false,
                 Some(res) => {
+                    assert!(
+                        res.type_().is_a(transform_data.2.value_type()),
+                        "Source property {} expected type {} but transform_from function returned {}",
+                        transform_data.2.name(),
+                        transform_data.2.value_type(),
+                        res.type_()
+                    );
                     *to_value = res.into_raw();
                     true
                 }
@@ -3372,23 +3388,51 @@ impl<'a> BindingBuilder<'a> {
         }
 
         unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
-            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn));
+            let _ = Box::from_raw(
+                data as *mut (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec),
+            );
         }
 
         unsafe {
+            let source = Object(self.source.clone());
+            let target = Object(self.target.clone());
+
+            let source_property = source.find_property(self.source_property).ok_or_else(|| {
+                bool_error!(
+                    "Source property {} on type {} not found",
+                    self.source_property,
+                    source.type_()
+                )
+            })?;
+            let target_property = target.find_property(self.target_property).ok_or_else(|| {
+                bool_error!(
+                    "Target property {} on type {} not found",
+                    self.target_property,
+                    target.type_()
+                )
+            })?;
+
+            let source_property_name = source_property.name().as_ptr();
+            let target_property_name = target_property.name().as_ptr();
+
             let have_transform_to = self.transform_to.is_some();
             let have_transform_from = self.transform_from.is_some();
             let transform_data = if have_transform_to || have_transform_from {
-                Box::into_raw(Box::new((self.transform_to, self.transform_from)))
+                Box::into_raw(Box::new((
+                    self.transform_to,
+                    self.transform_from,
+                    source_property,
+                    target_property,
+                )))
             } else {
                 ptr::null_mut()
             };
 
             Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_full(
-                self.source.to_glib_none().0,
-                self.source_property.to_glib_none().0,
-                self.target.to_glib_none().0,
-                self.target_property.to_glib_none().0,
+                source.to_glib_none().0,
+                source_property_name as *const _,
+                target.to_glib_none().0,
+                target_property_name as *const _,
                 self.flags.into_glib(),
                 if have_transform_to {
                     Some(transform_to_trampoline)
