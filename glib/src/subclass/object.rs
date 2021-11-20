@@ -330,7 +330,7 @@ mod test {
                             let old_name = imp.name.borrow_mut().take();
                             *imp.name.borrow_mut() = Some(new_name);
 
-                            obj.emit_by_name("name-changed", &[&*imp.name.borrow()]);
+                            obj.emit_by_name::<()>("name-changed", &[&*imp.name.borrow()]);
 
                             Some(old_name.to_value())
                         })
@@ -362,7 +362,7 @@ mod test {
                             .get()
                             .expect("type conformity checked by 'Object::set_property'");
                         self.name.replace(name);
-                        obj.emit_by_name("name-changed", &[&*self.name.borrow()]);
+                        obj.emit_by_name::<()>("name-changed", &[&*self.name.borrow()]);
                     }
                     "construct-name" => {
                         let name = value
@@ -557,10 +557,7 @@ mod test {
         assert!(!name_changed_triggered.load(Ordering::Relaxed));
 
         assert_eq!(
-            obj.emit_by_name("change-name", &[&"new-name"])
-                .unwrap()
-                .get::<&str>()
-                .expect("Failed to get str from emit"),
+            obj.emit_by_name::<String>("change-name", &[&"new-name"]),
             "old-name"
         );
         assert!(name_changed_triggered.load(Ordering::Relaxed));
@@ -576,8 +573,8 @@ mod test {
 
         let signal_id = imp::SimpleObject::signals()[2].signal_id();
 
-        let value = obj.emit(signal_id, &[]).unwrap();
-        assert_eq!(value.get::<&str>(), Ok("return value"));
+        let value = obj.emit::<String>(signal_id, &[]);
+        assert_eq!(value, "return value");
     }
 
     #[test]
@@ -612,7 +609,7 @@ mod test {
                     .to_value(),
             )
         });
-        let value = obj.emit_by_name("create-child-object", &[]).unwrap();
+        let value: glib::Object = obj.emit_by_name("create-child-object", &[]);
         assert!(value.type_().is_a(ChildObject::static_type()));
     }
 }

@@ -15,13 +15,14 @@ use std::ops;
 use std::pin::Pin;
 use std::ptr;
 
+use crate::closure::TryFromClosureReturnValue;
 use crate::subclass::{prelude::ObjectSubclass, SignalId};
 use crate::value::ToValue;
 use crate::BoolError;
-use crate::Closure;
 use crate::SignalHandlerId;
 use crate::Type;
 use crate::Value;
+use crate::{Closure, RustClosure};
 
 use crate::thread_id;
 
@@ -1662,7 +1663,7 @@ pub trait ObjectExt: ObjectType {
         &self,
         signal_name: &str,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError>;
 
     /// Connect a closure to the signal `signal_name` on this object.
@@ -1673,7 +1674,12 @@ pub trait ObjectExt: ObjectType {
     /// This panics if the signal does not exist.
     ///
     /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
-    fn connect_closure(&self, signal_name: &str, after: bool, closure: Closure) -> SignalHandlerId;
+    fn connect_closure(
+        &self,
+        signal_name: &str,
+        after: bool,
+        closure: RustClosure,
+    ) -> SignalHandlerId;
 
     /// Similar to [`Self::connect_closure_id`] but fails instead of panicking.
     #[doc(alias = "g_signal_connect_closure")]
@@ -1682,7 +1688,7 @@ pub trait ObjectExt: ObjectType {
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError>;
 
     /// Connect a closure to the signal `signal_id` on this object.
@@ -1700,7 +1706,7 @@ pub trait ObjectExt: ObjectType {
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> SignalHandlerId;
 
     /// Limits the lifetime of `closure` to the lifetime of the object. When
@@ -1708,15 +1714,15 @@ pub trait ObjectExt: ObjectType {
     /// invalidated. An invalidated closure will ignore any calls to
     /// [`Closure::invoke`](crate::Closure::invoke).
     #[doc(alias = "g_object_watch_closure")]
-    fn watch_closure(&self, closure: &Closure);
+    fn watch_closure(&self, closure: &impl AsRef<Closure>);
 
     /// Similar to [`Self::emit`] but fails instead of panicking.
     #[doc(alias = "g_signal_emitv")]
-    fn try_emit(
+    fn try_emit<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by signal id.
     ///
@@ -1727,7 +1733,7 @@ pub trait ObjectExt: ObjectType {
     /// If the wrong number of arguments is provided, or arguments of the wrong types
     /// were provided.
     #[doc(alias = "g_signal_emitv")]
-    fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Option<Value>;
+    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R;
 
     /// Similar to [`Self::emit_with_values`] but fails instead of panicking.
     fn try_emit_with_values(
@@ -1741,11 +1747,11 @@ pub trait ObjectExt: ObjectType {
 
     /// Similar to [`Self::emit_by_name`] but fails instead of panicking.
     #[doc(alias = "g_signal_emit_by_name")]
-    fn try_emit_by_name(
+    fn try_emit_by_name<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by its name.
     ///
@@ -1756,7 +1762,11 @@ pub trait ObjectExt: ObjectType {
     /// If the signal does not exist, the wrong number of arguments is provided, or
     /// arguments of the wrong types were provided.
     #[doc(alias = "g_signal_emit_by_name")]
-    fn emit_by_name(&self, signal_name: &str, args: &[&dyn ToValue]) -> Option<Value>;
+    fn emit_by_name<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        args: &[&dyn ToValue],
+    ) -> R;
 
     /// Similar to [`Self::emit_by_name_with_values`] but fails instead of panicking.
     fn try_emit_by_name_with_values(
@@ -1776,12 +1786,12 @@ pub trait ObjectExt: ObjectType {
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value>;
 
     /// Similar to [`Self::emit_with_details`] but fails instead of panicking.
-    fn try_emit_with_details(
+    fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError>;
+    ) -> Result<R, BoolError>;
 
     /// Emit signal by signal id with details.
     ///
@@ -1791,12 +1801,12 @@ pub trait ObjectExt: ObjectType {
     ///
     /// If the wrong number of arguments is provided, or arguments of the wrong types
     /// were provided.
-    fn emit_with_details(
+    fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Option<Value>;
+    ) -> R;
 
     /// Similar to [`Self::emit_with_details_and_values`] but fails instead of panicking.
     fn try_emit_with_details_and_values(
@@ -2450,14 +2460,43 @@ impl<T: ObjectType> ObjectExt for T {
             })
         };
 
-        self.try_connect_closure_id(signal_id, details, after, closure)
+        let signal_query = signal_id.query();
+        let type_ = self.type_();
+        let signal_name = signal_id.name();
+
+        let signal_query_type = signal_query.type_();
+        assert!(
+            type_.is_a(signal_query_type),
+            "Signal '{}' of type '{}' but got type '{}'",
+            signal_name,
+            type_,
+            signal_query_type
+        );
+
+        let handler = gobject_ffi::g_signal_connect_closure_by_id(
+            self.as_object_ref().to_glib_none().0,
+            signal_id.into_glib(),
+            details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+            closure.as_ref().to_glib_none().0,
+            after.into_glib(),
+        );
+
+        if handler == 0 {
+            Err(bool_error!(
+                "Failed to connect to signal '{}' of type '{}'",
+                signal_name,
+                type_
+            ))
+        } else {
+            Ok(from_glib(handler))
+        }
     }
 
     fn try_connect_closure(
         &self,
         signal_name: &str,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError> {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
@@ -2465,7 +2504,12 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_connect_closure_id(signal_id, Some(details), after, closure)
     }
 
-    fn connect_closure(&self, signal_name: &str, after: bool, closure: Closure) -> SignalHandlerId {
+    fn connect_closure(
+        &self,
+        signal_name: &str,
+        after: bool,
+        closure: RustClosure,
+    ) -> SignalHandlerId {
         self.try_connect_closure(signal_name, after, closure)
             .unwrap()
     }
@@ -2475,7 +2519,7 @@ impl<T: ObjectType> ObjectExt for T {
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError> {
         let signal_query = signal_id.query();
         let type_ = self.type_();
@@ -2495,7 +2539,7 @@ impl<T: ObjectType> ObjectExt for T {
                 self.as_object_ref().to_glib_none().0,
                 signal_id.into_glib(),
                 details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
-                closure.to_glib_none().0,
+                closure.as_ref().to_glib_none().0,
                 after.into_glib(),
             );
 
@@ -2516,13 +2560,14 @@ impl<T: ObjectType> ObjectExt for T {
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
-        closure: Closure,
+        closure: RustClosure,
     ) -> SignalHandlerId {
         self.try_connect_closure_id(signal_id, details, after, closure)
             .unwrap()
     }
 
-    fn watch_closure(&self, closure: &Closure) {
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        let closure = closure.as_ref();
         unsafe {
             gobject_ffi::g_object_watch_closure(
                 self.as_object_ref().to_glib_none().0,
@@ -2545,11 +2590,11 @@ impl<T: ObjectType> ObjectExt for T {
             .unwrap()
     }
 
-    fn try_emit(
+    fn try_emit<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let signal_query = signal_id.query();
         unsafe {
             let type_ = self.type_();
@@ -2572,26 +2617,31 @@ impl<T: ObjectType> ObjectExt for T {
 
             validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
-            let mut return_value = Value::uninitialized();
-            if signal_query.return_type() != Type::UNIT {
-                gobject_ffi::g_value_init(
-                    return_value.to_glib_none_mut().0,
-                    signal_query.return_type().into_glib(),
-                );
-            }
+            let mut return_value = if signal_query.return_type() != Type::UNIT {
+                Value::from_type(signal_query.return_type().into())
+            } else {
+                Value::uninitialized()
+            };
+            let return_value_ptr = if signal_query.return_type() != Type::UNIT {
+                return_value.to_glib_none_mut().0
+            } else {
+                ptr::null_mut()
+            };
 
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
                 0,
-                return_value.to_glib_none_mut().0,
+                return_value_ptr,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            R::try_from_closure_return_value(
+                Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
+            )
         }
     }
 
-    fn emit(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> Option<Value> {
+    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R {
         self.try_emit(signal_id, args).unwrap()
     }
 
@@ -2620,19 +2670,22 @@ impl<T: ObjectType> ObjectExt for T {
 
             validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
-            let mut return_value = Value::uninitialized();
-            if signal_query.return_type() != Type::UNIT {
-                gobject_ffi::g_value_init(
-                    return_value.to_glib_none_mut().0,
-                    signal_query.return_type().into_glib(),
-                );
-            }
+            let mut return_value = if signal_query.return_type() != Type::UNIT {
+                Value::from_type(signal_query.return_type().into())
+            } else {
+                Value::uninitialized()
+            };
+            let return_value_ptr = if signal_query.return_type() != Type::UNIT {
+                return_value.to_glib_none_mut().0
+            } else {
+                ptr::null_mut()
+            };
 
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
                 0,
-                return_value.to_glib_none_mut().0,
+                return_value_ptr,
             );
 
             Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
@@ -2643,18 +2696,22 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit_with_values(signal_id, args).unwrap()
     }
 
-    fn try_emit_by_name(
+    fn try_emit_by_name<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
         self.try_emit(signal_id, args)
     }
 
-    fn emit_by_name(&self, signal_name: &str, args: &[&dyn ToValue]) -> Option<Value> {
+    fn emit_by_name<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        args: &[&dyn ToValue],
+    ) -> R {
         self.try_emit_by_name(signal_name, args).unwrap()
     }
 
@@ -2674,12 +2731,12 @@ impl<T: ObjectType> ObjectExt for T {
             .unwrap()
     }
 
-    fn try_emit_with_details(
+    fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Result<R, BoolError> {
         let signal_query = signal_id.query();
         assert!(signal_query.flags().contains(crate::SignalFlags::DETAILED));
 
@@ -2704,31 +2761,36 @@ impl<T: ObjectType> ObjectExt for T {
 
             validate_signal_arguments(type_, &signal_query, &mut args)?;
 
-            let mut return_value = Value::uninitialized();
-            if signal_query.return_type() != Type::UNIT {
-                gobject_ffi::g_value_init(
-                    return_value.to_glib_none_mut().0,
-                    signal_query.return_type().into_glib(),
-                );
-            }
+            let mut return_value = if signal_query.return_type() != Type::UNIT {
+                Value::from_type(signal_query.return_type().into())
+            } else {
+                Value::uninitialized()
+            };
+            let return_value_ptr = if signal_query.return_type() != Type::UNIT {
+                return_value.to_glib_none_mut().0
+            } else {
+                ptr::null_mut()
+            };
 
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
                 details.into_glib(),
-                return_value.to_glib_none_mut().0,
+                return_value_ptr,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            R::try_from_closure_return_value(
+                Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
+            )
         }
     }
 
-    fn emit_with_details(
+    fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Option<Value> {
+    ) -> R {
         self.try_emit_with_details(signal_id, details, args)
             .unwrap()
     }
@@ -2760,19 +2822,22 @@ impl<T: ObjectType> ObjectExt for T {
 
             validate_signal_arguments(type_, &signal_query, &mut args)?;
 
-            let mut return_value = Value::uninitialized();
-            if signal_query.return_type() != Type::UNIT {
-                gobject_ffi::g_value_init(
-                    return_value.to_glib_none_mut().0,
-                    signal_query.return_type().into_glib(),
-                );
-            }
+            let mut return_value = if signal_query.return_type() != Type::UNIT {
+                Value::from_type(signal_query.return_type().into())
+            } else {
+                Value::uninitialized()
+            };
+            let return_value_ptr = if signal_query.return_type() != Type::UNIT {
+                return_value.to_glib_none_mut().0
+            } else {
+                ptr::null_mut()
+            };
 
             gobject_ffi::g_signal_emitv(
                 mut_override(args.as_ptr()) as *mut gobject_ffi::GValue,
                 signal_id.into_glib(),
                 details.into_glib(),
-                return_value.to_glib_none_mut().0,
+                return_value_ptr,
             );
 
             Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))

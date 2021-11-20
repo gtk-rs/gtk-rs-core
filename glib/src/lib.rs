@@ -21,7 +21,7 @@ pub use glib_macros::{
 
 pub use self::byte_array::ByteArray;
 pub use self::bytes::Bytes;
-pub use self::closure::Closure;
+pub use self::closure::{Closure, RustClosure};
 pub use self::error::{BoolError, Error};
 pub use self::file_error::FileError;
 pub use self::object::{
