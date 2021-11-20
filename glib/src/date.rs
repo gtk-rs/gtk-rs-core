@@ -26,7 +26,7 @@ unsafe impl Sync for Date {}
 
 impl Date {
     #[doc(alias = "g_date_new_dmy")]
-    pub fn new_dmy(day: DateDay, month: DateMonth, year: DateYear) -> Result<Date, BoolError> {
+    pub fn from_dmy(day: DateDay, month: DateMonth, year: DateYear) -> Result<Date, BoolError> {
         let month = month.into_glib();
         unsafe {
             let check: bool = from_glib(ffi::g_date_valid_dmy(day, month, year));
@@ -39,7 +39,7 @@ impl Date {
     }
 
     #[doc(alias = "g_date_new_julian")]
-    pub fn new_julian(julian_day: u32) -> Result<Date, BoolError> {
+    pub fn from_julian(julian_day: u32) -> Result<Date, BoolError> {
         if !Self::valid_julian(julian_day) {
             Err(bool_error!("Invalid date"))
         } else {
