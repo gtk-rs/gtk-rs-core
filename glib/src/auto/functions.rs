@@ -783,7 +783,7 @@ pub fn user_runtime_dir() -> std::path::PathBuf {
 
 #[doc(alias = "g_get_user_special_dir")]
 #[doc(alias = "get_user_special_dir")]
-pub fn user_special_dir(directory: UserDirectory) -> std::path::PathBuf {
+pub fn user_special_dir(directory: UserDirectory) -> Option<std::path::PathBuf> {
     unsafe { from_glib_none(ffi::g_get_user_special_dir(directory.into_glib())) }
 }
 
