@@ -26,24 +26,28 @@ impl TimeZone {
     #[cfg(any(feature = "v2_68", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_time_zone_new_identifier")]
-    pub fn new_identifier(identifier: Option<&str>) -> Option<TimeZone> {
+    #[doc(alias = "new_identifier")]
+    pub fn from_identifier(identifier: Option<&str>) -> Option<TimeZone> {
         unsafe { from_glib_full(ffi::g_time_zone_new_identifier(identifier.to_glib_none().0)) }
     }
 
     #[doc(alias = "g_time_zone_new_local")]
-    pub fn new_local() -> TimeZone {
+    #[doc(alias = "new_local")]
+    pub fn local() -> TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new_local()) }
     }
 
     #[cfg(any(feature = "v2_58", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_time_zone_new_offset")]
-    pub fn new_offset(seconds: i32) -> TimeZone {
+    #[doc(alias = "new_offset")]
+    pub fn from_offset(seconds: i32) -> TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new_offset(seconds)) }
     }
 
     #[doc(alias = "g_time_zone_new_utc")]
-    pub fn new_utc() -> TimeZone {
+    #[doc(alias = "new_utc")]
+    pub fn utc() -> TimeZone {
         unsafe { from_glib_full(ffi::g_time_zone_new_utc()) }
     }
 
