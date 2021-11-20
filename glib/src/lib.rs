@@ -57,7 +57,7 @@ pub mod error;
 #[macro_use]
 pub mod object;
 
-mod collections;
+pub mod collections;
 pub use collections::{List, PtrSlice, SList, Slice};
 
 pub use self::auto::functions::*;

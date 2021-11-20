@@ -758,6 +758,11 @@ impl<
             phantom: PhantomData,
         }
     }
+
+    /// Create a non-destructive iterator over the `List`.
+    pub fn iter(&self) -> ListIter<T> {
+        ListIter::new(self)
+    }
 }
 
 impl<
@@ -842,6 +847,60 @@ impl<
 
     unsafe fn from_glib_full(ptr: *mut ffi::GList) -> Self {
         Self::from_glib_full(ptr)
+    }
+}
+
+/// A non-destructive iterator over a [`List`].
+pub struct ListIter<
+    'a,
+    T: GlibPtrDefault
+        + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+        + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+> {
+    ptr: Option<ptr::NonNull<ffi::GList>>,
+    phantom: PhantomData<&'a T>,
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > ListIter<'a, T>
+{
+    fn new(list: &'a List<T>) -> ListIter<'a, T> {
+        assert_eq!(
+            mem::size_of::<T>(),
+            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+        );
+
+        ListIter {
+            ptr: list.ptr,
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Iterator for ListIter<'a, T>
+{
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<&'a T> {
+        match self.ptr {
+            None => None,
+            Some(cur) => unsafe {
+                self.ptr = ptr::NonNull::new(cur.as_ref().next);
+
+                let item = &*(&cur.as_ref().data as *const ffi::gpointer as *const T);
+
+                Some(item)
+            },
+        }
     }
 }
 
@@ -934,6 +993,11 @@ impl<
             phantom: PhantomData,
         }
     }
+
+    /// Create a non-destructive iterator over the `SList`.
+    pub fn iter(&self) -> SListIter<T> {
+        SListIter::new(self)
+    }
 }
 
 impl<
@@ -1015,5 +1079,59 @@ impl<
 
     unsafe fn from_glib_full(ptr: *mut ffi::GSList) -> Self {
         Self::from_glib_full(ptr)
+    }
+}
+
+/// A non-destructive iterator over a [`SList`].
+pub struct SListIter<
+    'a,
+    T: GlibPtrDefault
+        + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+        + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+> {
+    ptr: Option<ptr::NonNull<ffi::GSList>>,
+    phantom: PhantomData<&'a T>,
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > SListIter<'a, T>
+{
+    fn new(list: &'a SList<T>) -> SListIter<'a, T> {
+        assert_eq!(
+            mem::size_of::<T>(),
+            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+        );
+
+        SListIter {
+            ptr: list.ptr,
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > Iterator for SListIter<'a, T>
+{
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<&'a T> {
+        match self.ptr {
+            None => None,
+            Some(cur) => unsafe {
+                self.ptr = ptr::NonNull::new(cur.as_ref().next);
+
+                let item = &*(&cur.as_ref().data as *const ffi::gpointer as *const T);
+
+                Some(item)
+            },
+        }
     }
 }
