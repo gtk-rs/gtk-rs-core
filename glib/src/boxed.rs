@@ -254,10 +254,11 @@ macro_rules! glib_boxed_wrapper {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0) as *const $ffi_name;
-                assert!(!ptr.is_null());
                 assert_eq!(std::mem::size_of::<$name>(), std::mem::size_of::<$crate::ffi::gpointer>());
-                &*(&ptr as *const *const $ffi_name as *const $name)
+                let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
+                let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
+                assert!(!(*ptr).is_null());
+                &*(ptr as *const $name)
             }
         }
 
