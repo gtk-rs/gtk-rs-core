@@ -93,7 +93,8 @@ impl DateTime {
     }
 
     #[doc(alias = "g_date_time_new_local")]
-    pub fn new_local(
+    #[doc(alias = "new_local")]
+    pub fn from_local(
         year: i32,
         month: i32,
         day: i32,
@@ -110,7 +111,8 @@ impl DateTime {
     }
 
     #[doc(alias = "g_date_time_new_now")]
-    pub fn new_now(tz: &TimeZone) -> Result<DateTime, BoolError> {
+    #[doc(alias = "new_now")]
+    pub fn now(tz: &TimeZone) -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_now(tz.to_glib_none().0))
                 .ok_or_else(|| crate::bool_error!("Invalid date"))
@@ -118,7 +120,8 @@ impl DateTime {
     }
 
     #[doc(alias = "g_date_time_new_now_local")]
-    pub fn new_now_local() -> Result<DateTime, BoolError> {
+    #[doc(alias = "new_now_local")]
+    pub fn now_local() -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_now_local())
                 .ok_or_else(|| crate::bool_error!("Invalid date"))
@@ -126,7 +129,8 @@ impl DateTime {
     }
 
     #[doc(alias = "g_date_time_new_now_utc")]
-    pub fn new_now_utc() -> Result<DateTime, BoolError> {
+    #[doc(alias = "new_now_utc")]
+    pub fn now_utc() -> Result<DateTime, BoolError> {
         unsafe {
             Option::<_>::from_glib_full(ffi::g_date_time_new_now_utc())
                 .ok_or_else(|| crate::bool_error!("Invalid date"))
@@ -134,7 +138,8 @@ impl DateTime {
     }
 
     #[doc(alias = "g_date_time_new_utc")]
-    pub fn new_utc(
+    #[doc(alias = "new_utc")]
+    pub fn from_utc(
         year: i32,
         month: i32,
         day: i32,

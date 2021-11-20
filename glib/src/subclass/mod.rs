@@ -102,14 +102,14 @@
 //!             use once_cell::sync::Lazy;
 //!             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
 //!                 vec![
-//!                     glib::ParamSpec::new_string(
+//!                     glib::ParamSpecString::new(
 //!                         "name",
 //!                         "Name",
 //!                         "Name of this object",
 //!                         None,
 //!                         glib::ParamFlags::READWRITE,
 //!                     ),
-//!                     glib::ParamSpec::new_enum(
+//!                     glib::ParamSpecEnum::new(
 //!                         "animal",
 //!                         "Animal",
 //!                         "Animal",
@@ -117,7 +117,7 @@
 //!                         Animal::default() as i32,
 //!                         glib::ParamFlags::READWRITE,
 //!                     ),
-//!                     glib::ParamSpec::new_flags(
+//!                     glib::ParamSpecFlags::new(
 //!                         "flags",
 //!                         "Flags",
 //!                         "Flags",
@@ -125,7 +125,7 @@
 //!                         MyFlags::default().bits(),
 //!                         glib::ParamFlags::READWRITE,
 //!                     ),
-//!                     glib::ParamSpec::new_variant(
+//!                     glib::ParamSpecVariant::new(
 //!                         "variant",
 //!                         "Variant",
 //!                         "Variant",

@@ -8,7 +8,7 @@ mod tests {
 
     #[test]
     fn test_value() {
-        let dt1 = DateTime::new_now_utc().unwrap();
+        let dt1 = DateTime::now_utc().unwrap();
         let v = dt1.to_value();
         let dt2 = v.get::<&DateTime>().unwrap();
 

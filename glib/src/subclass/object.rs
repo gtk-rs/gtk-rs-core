@@ -268,28 +268,28 @@ mod test {
                 use once_cell::sync::Lazy;
                 static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
                     vec![
-                        crate::ParamSpec::new_string(
+                        crate::ParamSpecString::new(
                             "name",
                             "Name",
                             "Name of this object",
                             None,
                             crate::ParamFlags::READWRITE,
                         ),
-                        crate::ParamSpec::new_string(
+                        crate::ParamSpecString::new(
                             "construct-name",
                             "Construct Name",
                             "Construct Name of this object",
                             None,
                             crate::ParamFlags::READWRITE | crate::ParamFlags::CONSTRUCT_ONLY,
                         ),
-                        crate::ParamSpec::new_boolean(
+                        crate::ParamSpecBoolean::new(
                             "constructed",
                             "Constructed",
                             "True if the constructed() virtual method was called",
                             false,
                             crate::ParamFlags::READABLE,
                         ),
-                        crate::ParamSpec::new_object(
+                        crate::ParamSpecObject::new(
                             "child",
                             "Child",
                             "Child object",
