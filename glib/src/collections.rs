@@ -1135,3 +1135,123 @@ impl<
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn slice() {
+        let items = [
+            crate::Date::from_dmy(20, crate::DateMonth::November, 2021).unwrap(),
+            crate::Date::from_dmy(21, crate::DateMonth::November, 2021).unwrap(),
+            crate::Date::from_dmy(22, crate::DateMonth::November, 2021).unwrap(),
+            crate::Date::from_dmy(23, crate::DateMonth::November, 2021).unwrap(),
+        ];
+
+        let slice = unsafe {
+            let ptr = ffi::g_malloc(mem::size_of::<ffi::GDate>() * 4) as *mut ffi::GDate;
+            ptr::write(ptr.add(0), *items[0].to_glib_none().0);
+            ptr::write(ptr.add(1), *items[1].to_glib_none().0);
+            ptr::write(ptr.add(2), *items[2].to_glib_none().0);
+            ptr::write(ptr.add(3), *items[3].to_glib_none().0);
+
+            Slice::<crate::Date>::from_glib_full_num(ptr as *mut crate::Date, 4)
+        };
+
+        assert_eq!(&items[..], &*slice);
+    }
+
+    #[test]
+    fn ptr_slice() {
+        let items = [
+            crate::Error::new(crate::FileError::Failed, "Failed 1"),
+            crate::Error::new(crate::FileError::Noent, "Failed 2"),
+            crate::Error::new(crate::FileError::Io, "Failed 3"),
+            crate::Error::new(crate::FileError::Perm, "Failed 4"),
+        ];
+
+        let slice = unsafe {
+            let ptr = ffi::g_malloc(mem::size_of::<ffi::GDate>() * 4) as *mut *mut ffi::GError;
+            ptr::write(ptr.add(0), items[0].to_glib_full() as *mut _);
+            ptr::write(ptr.add(1), items[1].to_glib_full() as *mut _);
+            ptr::write(ptr.add(2), items[2].to_glib_full() as *mut _);
+            ptr::write(ptr.add(3), items[3].to_glib_full() as *mut _);
+
+            PtrSlice::<crate::Error>::from_glib_full_num(ptr, 4)
+        };
+
+        for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
+            assert_eq!(a.message(), b.message());
+            assert_eq!(
+                a.kind::<crate::FileError>().unwrap(),
+                b.kind::<crate::FileError>().unwrap()
+            );
+        }
+    }
+
+    #[test]
+    // checker-ignore-item
+    fn list() {
+        let items = [
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 12.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 13.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 14.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 15.0).unwrap(),
+        ];
+        let list = unsafe {
+            let mut list =
+                ffi::g_list_append(ptr::null_mut(), items[0].to_glib_full() as ffi::gpointer);
+            list = ffi::g_list_append(list, items[1].to_glib_full() as ffi::gpointer);
+            list = ffi::g_list_append(list, items[2].to_glib_full() as ffi::gpointer);
+            list = ffi::g_list_append(list, items[3].to_glib_full() as ffi::gpointer);
+            List::<crate::DateTime>::from_glib_full(list)
+        };
+
+        let list_items = list.iter().cloned().collect::<Vec<_>>();
+        assert_eq!(&items[..], &list_items);
+
+        let list_items = list.collect::<Vec<_>>();
+        assert_eq!(&items[..], &list_items);
+    }
+
+    #[test]
+    // checker-ignore-item
+    fn slist() {
+        let items = [
+            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
+            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
+            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
+            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
+        ];
+        let list = unsafe {
+            let mut list = ffi::g_slist_append(
+                ptr::null_mut(),
+                <crate::Object as ToGlibPtr<*mut gobject_ffi::GObject>>::to_glib_full(&items[0])
+                    as ffi::gpointer,
+            );
+            list = ffi::g_slist_append(
+                list,
+                <crate::Object as ToGlibPtr<*mut gobject_ffi::GObject>>::to_glib_full(&items[1])
+                    as ffi::gpointer,
+            );
+            list = ffi::g_slist_append(
+                list,
+                <crate::Object as ToGlibPtr<*mut gobject_ffi::GObject>>::to_glib_full(&items[2])
+                    as ffi::gpointer,
+            );
+            list = ffi::g_slist_append(
+                list,
+                <crate::Object as ToGlibPtr<*mut gobject_ffi::GObject>>::to_glib_full(&items[3])
+                    as ffi::gpointer,
+            );
+            SList::<crate::Object>::from_glib_full(list)
+        };
+
+        let list_items = list.iter().cloned().collect::<Vec<_>>();
+        assert_eq!(&items[..], &list_items);
+
+        let list_items = list.collect::<Vec<_>>();
+        assert_eq!(&items[..], &list_items);
+    }
+}
