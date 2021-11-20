@@ -232,6 +232,7 @@ impl ToTokens for Closure {
             }
         });
         let arg_names = &self.args;
+        let args_len = self.args.len();
         let closure = &self.closure;
         let constructor = Ident::new(self.constructor, Span::call_site());
 
@@ -239,7 +240,8 @@ impl ToTokens for Closure {
             {
                 let #closure_ident = {
                     #(#outer_before)*
-                    #crate_ident::closure::Closure::#constructor(move |#values_ident| {
+                    #crate_ident::closure::RustClosure::#constructor(move |#values_ident| {
+                        assert_eq!(#values_ident.len(), #args_len);
                         #(#inner_before)*
                         #(#arg_values)*
                         #crate_ident::closure::ToClosureReturnValue::to_closure_return_value(
