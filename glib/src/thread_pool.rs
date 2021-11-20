@@ -15,7 +15,7 @@ unsafe impl Sync for ThreadPool {}
 
 impl ThreadPool {
     #[doc(alias = "g_thread_pool_new")]
-    pub fn new_shared(max_threads: Option<u32>) -> Result<Self, crate::Error> {
+    pub fn shared(max_threads: Option<u32>) -> Result<Self, crate::Error> {
         unsafe {
             let mut err = ptr::null_mut();
             let pool = ffi::g_thread_pool_new(
@@ -34,7 +34,7 @@ impl ThreadPool {
     }
 
     #[doc(alias = "g_thread_pool_new")]
-    pub fn new_exclusive(max_threads: u32) -> Result<Self, crate::Error> {
+    pub fn exclusive(max_threads: u32) -> Result<Self, crate::Error> {
         unsafe {
             let mut err = ptr::null_mut();
             let pool = ffi::g_thread_pool_new(
@@ -195,7 +195,7 @@ mod tests {
     fn test_push() {
         use std::sync::mpsc;
 
-        let p = ThreadPool::new_exclusive(1).unwrap();
+        let p = ThreadPool::exclusive(1).unwrap();
         let (sender, receiver) = mpsc::channel();
 
         p.push(move || {
@@ -209,7 +209,7 @@ mod tests {
     #[test]
     fn test_push_future() {
         let c = crate::MainContext::new();
-        let p = ThreadPool::new_shared(None).unwrap();
+        let p = ThreadPool::shared(None).unwrap();
 
         let fut = p.push_future(|| true).unwrap();
 
