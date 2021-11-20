@@ -453,6 +453,17 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl<'a> $crate::value::FromValue<'a> for &'a $name {
+            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a $crate::Value) -> Self {
+                let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
+                assert!(!ptr.is_null());
+                &*(ptr as *const $ffi_name as *const $name)
+            }
+        }
+
+        #[doc(hidden)]
         impl $crate::value::ToValue for $name {
             fn to_value(&self) -> $crate::Value {
                 unsafe {
