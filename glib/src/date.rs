@@ -432,3 +432,18 @@ impl hash::Hash for Date {
         self.day().hash(state);
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::value::ToValue;
+
+    #[test]
+    fn test_value() {
+        let d1 = Date::from_dmy(20, crate::DateMonth::November, 2021).unwrap();
+        let v = d1.to_value();
+        let d2 = v.get::<&Date>().unwrap();
+
+        assert_eq!(&d1, d2);
+    }
+}
