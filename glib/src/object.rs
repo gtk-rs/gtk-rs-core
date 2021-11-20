@@ -929,11 +929,11 @@ macro_rules! glib_object_wrapper {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                let ptr = $crate::gobject_ffi::g_value_get_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
+                let ptr = $crate::gobject_ffi::g_value_get_object($crate::translate::ToGlibPtr::to_glib_none(value).0) as *const $ffi_name;
                 assert!(!ptr.is_null());
-                assert_ne!((*ptr).ref_count, 0);
+                assert_ne!((*(ptr as *const gobject_ffi::GObject)).ref_count, 0);
                 assert_eq!(std::mem::size_of::<$name>(), std::mem::size_of::<$crate::ffi::gpointer>());
-                &*(&ptr as *const _ as *const $name)
+                &*(&ptr as *const *const $ffi_name as *const $name)
             }
         }
 
