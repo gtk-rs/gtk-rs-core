@@ -1,21 +1,22 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+mod boxed_derive;
 mod clone;
 mod closure;
 mod downgrade_derive;
-mod gboxed_derive;
-mod gboxed_shared_derive;
-mod genum_derive;
-mod gerror_domain_derive;
-mod gflags_attribute;
-mod gvariant_derive;
+mod enum_derive;
+mod error_domain_derive;
+mod flags_attribute;
 mod object_interface_attribute;
 mod object_subclass_attribute;
+mod shared_boxed_derive;
+mod variant_derive;
+
 mod utils;
 
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
-use syn::{parse_macro_input, DeriveInput, LitStr};
+use syn::{parse_macro_input, DeriveInput, NestedMeta};
 
 /// Macro for passing variables as strong or weak references into a closure.
 ///
@@ -417,11 +418,69 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
     closure::closure_inner(item, "new_local")
 }
 
-#[proc_macro_derive(GEnum, attributes(genum))]
+/// Derive macro for register a rust enum in the glib type system and derive the
+/// the [`glib::Value`] traits.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = "MyEnum")]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = "My Val")]
+///     ValWithCustomName,
+///     #[enum_value(name = "My Other Val", nick = "other")]
+///     ValWithCustomNameAndNick,
+/// }
+/// ```
+#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
-pub fn genum_derive(input: TokenStream) -> TokenStream {
+pub fn enum_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = genum_derive::impl_genum(&input);
+    let gen = enum_derive::impl_enum(&input);
+    gen.into()
+}
+
+/// Attribute macro for defining flags using the `bitflags` crate.
+/// This macro will also define a `GFlags::type_` function and
+/// the [`glib::Value`] traits.
+///
+/// The expected `GType` name has to be passed as macro attribute.
+/// The name and nick of each flag can also be optionally defined.
+/// Default name is the flag identifier in CamelCase and default nick
+/// is the identifier in kebab-case.
+/// Combined flags should not be registered with the `GType` system
+/// and so needs to be tagged with the `#[flags_value(skip)]` attribute.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[glib::flags(name = "MyFlags")]
+/// enum MyFlags {
+///     #[flags_value(name = "Flag A", nick = "nick-a")]
+///     A = 0b00000001,
+///     #[flags_value(name = "Flag B")]
+///     B = 0b00000010,
+///     #[flags_value(skip)]
+///     AB = Self::A.bits() | Self::B.bits(),
+///     C = 0b00000100,
+/// }
+/// ```
+///
+/// [`glib::Value`]: value/struct.Value.html
+#[proc_macro_attribute]
+#[proc_macro_error]
+pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let attr_meta = parse_macro_input!(attr as NestedMeta);
+    let input = parse_macro_input!(item as DeriveInput);
+    let gen = flags_attribute::impl_flags(&attr_meta, &input);
     gen.into()
 }
 
@@ -434,8 +493,8 @@ pub fn genum_derive(input: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Debug, Copy, Clone, glib::GErrorDomain)]
-/// #[gerror_domain(name = "ExFoo")]
+/// #[derive(Debug, Copy, Clone, glib::ErrorDomain)]
+/// #[error_domain(name = "ExFoo")]
 /// enum Foo {
 ///     Blah,
 ///     Baaz,
@@ -443,11 +502,11 @@ pub fn genum_derive(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// [`ErrorDomain`]: error/trait.ErrorDomain.html
-#[proc_macro_derive(GErrorDomain, attributes(gerror_domain))]
+#[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
-pub fn gerror_domain_derive(input: TokenStream) -> TokenStream {
+pub fn error_domain_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gerror_domain_derive::impl_gerror_domain(&input);
+    let gen = error_domain_derive::impl_error_domain(&input);
     gen.into()
 }
 
@@ -460,18 +519,18 @@ pub fn gerror_domain_derive(input: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib::subclass::prelude::*;
 ///
-/// #[derive(Clone, Debug, PartialEq, Eq, glib::GBoxed)]
-/// #[gboxed(type_name = "MyBoxed")]
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+/// #[boxed_type(name = "MyBoxed")]
 /// struct MyBoxed(String);
 /// ```
 ///
 /// [`BoxedType`]: subclass/boxed/trait.BoxedType.html
 /// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_derive(GBoxed, attributes(gboxed))]
+#[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
 #[proc_macro_error]
-pub fn gboxed_derive(input: TokenStream) -> TokenStream {
+pub fn boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gboxed_derive::impl_gboxed(&input);
+    let gen = boxed_derive::impl_boxed(&input);
     gen.into()
 }
 
@@ -488,57 +547,18 @@ pub fn gboxed_derive(input: TokenStream) -> TokenStream {
 /// struct MySharedInner {
 ///   foo: String,
 /// }
-/// #[derive(Clone, Debug, PartialEq, Eq, glib::GSharedBoxed)]
-/// #[gshared_boxed(type_name = "MyShared")]
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+/// #[shared_boxed_type(name = "MySharedBoxed")]
 /// struct MyShared(std::sync::Arc<MySharedInner>);
 /// ```
 ///
 /// [`SharedType`]: subclass/shared/trait.SharedType.html
 /// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_derive(GSharedBoxed, attributes(gshared_boxed))]
+#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
 #[proc_macro_error]
-pub fn gshared_boxed_derive(input: TokenStream) -> TokenStream {
+pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = gboxed_shared_derive::impl_gshared_boxed(&input);
-    gen.into()
-}
-
-/// Attribute macro for defining flags using the `bitflags` crate.
-/// This macro will also define a `GFlags::type_` function and
-/// the [`glib::Value`] traits.
-///
-/// The expected `GType` name has to be passed as macro attribute.
-/// The name and nick of each flag can also be optionally defined.
-/// Default name is the flag identifier in CamelCase and default nick
-/// is the identifier in kebab-case.
-/// Combined flags should not be registered with the `GType` system
-/// and so needs to be tagged with the `#[gflags(skip)]` attribute.
-///
-/// # Example
-///
-/// ```
-/// use glib::prelude::*;
-/// use glib::subclass::prelude::*;
-///
-/// #[glib::gflags("MyFlags")]
-/// enum MyFlags {
-///     #[gflags(name = "Flag A", nick = "nick-a")]
-///     A = 0b00000001,
-///     #[gflags(name = "Flag B")]
-///     B = 0b00000010,
-///     #[gflags(skip)]
-///     AB = Self::A.bits() | Self::B.bits(),
-///     C = 0b00000100,
-/// }
-/// ```
-///
-/// [`glib::Value`]: value/struct.Value.html
-#[proc_macro_attribute]
-#[proc_macro_error]
-pub fn gflags(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as DeriveInput);
-    let gtype_name = parse_macro_input!(attr as LitStr);
-    let gen = gflags_attribute::impl_gflags(&input, &gtype_name);
+    let gen = shared_boxed_derive::impl_shared_boxed(&input);
     gen.into()
 }
 
@@ -678,7 +698,7 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 /// use glib::prelude::*;
 ///
-/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
 /// struct Foo {
 ///     some_string: String,
 ///     some_int: i32,
@@ -697,7 +717,7 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 /// use glib::prelude::*;
 ///
-/// #[derive(glib::GVariant, PartialEq, Eq, Debug)]
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
 /// struct Foo {
 ///     some_vec: glib::FixedSizeVariantArray<Vec<u32>, u32>,
 ///     some_int: i32,
@@ -709,8 +729,8 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// [`glib::Variant`]: variant/struct.Variant.html
-#[proc_macro_derive(GVariant)]
-pub fn gvariant_derive(input: TokenStream) -> TokenStream {
+#[proc_macro_derive(Variant)]
+pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    gvariant_derive::impl_variant(input)
+    variant_derive::impl_variant(input)
 }

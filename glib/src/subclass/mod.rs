@@ -17,17 +17,17 @@
 //!
 //! use std::cell::{Cell, RefCell};
 //!
-//! #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::GEnum)]
+//! #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
 //! #[repr(u32)]
-//! // type_name: GType name of the GEnum (mandatory)
-//! #[genum(type_name = "SimpleObjectAnimal")]
+//! // type_name: GType name of the enum (mandatory)
+//! #[enum_type(name = "SimpleObjectAnimal")]
 //! enum Animal {
 //!     Goat = 0,
-//!     #[genum(name = "The Dog")]
+//!     #[enum_value(name = "The Dog")]
 //!     Dog = 1,
 //!     // name: the name of the GEnumValue (optional), default to the enum name in CamelCase
 //!     // nick: the nick of the GEnumValue (optional), default to the enum name in kebab-case
-//!     #[genum(name = "The Cat", nick = "chat")]
+//!     #[enum_value(name = "The Cat", nick = "chat")]
 //!     Cat = 2,
 //! }
 //!
@@ -37,17 +37,13 @@
 //!     }
 //! }
 //!
-//! // Note that the first `#[glib::gflags(...)]` is the proc-macro invocation,
-//! // while the plain `#[gflags(...)]` inside the braces are just custom attributes that
-//! // get read by the proc-macro, and they must be written exactly like that.
-//!
-//! #[glib::gflags("MyFlags")]
+//! #[glib::flags(name = "MyFlags")]
 //! enum MyFlags {
-//!     #[gflags(name = "Flag A", nick = "nick-a")]
+//!     #[flags_value(name = "Flag A", nick = "nick-a")]
 //!     A = 0b00000001,
-//!     #[gflags(name = "Flag B")]
+//!     #[flags_value(name = "Flag B")]
 //!     B = 0b00000010,
-//!     #[gflags(skip)]
+//!     #[flags_value(skip)]
 //!     AB = Self::A.bits() | Self::B.bits(),
 //!     C = 0b00000100,
 //! }
@@ -234,8 +230,8 @@
 //! use glib::subclass;
 //! use glib::subclass::prelude::*;
 //!
-//! #[derive(Clone, Debug, PartialEq, Eq, glib::GBoxed)]
-//! #[gboxed(type_name = "MyBoxed")]
+//! #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+//! #[boxed_type(name = "MyBoxed")]
 //! struct MyBoxed(String);
 //!
 //! pub fn main() {

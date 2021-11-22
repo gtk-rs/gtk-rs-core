@@ -7,23 +7,24 @@ use syn::Data;
 
 use crate::utils::{crate_ident_new, gen_enum_from_glib, parse_name};
 
-pub fn impl_gerror_domain(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
-
-    let crate_ident = crate_ident_new();
 
     let enum_variants = match input.data {
         Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("GErrorDomain only supports enums"),
+        _ => abort_call_site!("#[derive(glib::ErrorDomain)] only supports enums"),
     };
 
-    let domain_name = match parse_name(input, "gerror_domain") {
-        Ok(v) => v,
+    let domain_name = match parse_name(input, "error_domain") {
+        Ok(name) => name,
         Err(e) => abort_call_site!(
-            "{}: derive(GErrorDomain) requires #[gerror_domain(name = \"DomainName\")]",
+            "{}: #[derive(glib::ErrorDomain)] requires #[error_domain(name = \"DomainName\")]",
             e
         ),
     };
+
+    let crate_ident = crate_ident_new();
+
     let from_glib = gen_enum_from_glib(name, enum_variants);
 
     quote! {

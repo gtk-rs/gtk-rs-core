@@ -11,10 +11,10 @@ pub fn impl_variant(input: DeriveInput) -> TokenStream {
             derive_variant_for_struct(input.ident, input.generics, data_struct)
         }
         Data::Enum(_) => {
-            panic!("#[derive(Variant)] is not available for enums.");
+            panic!("#[derive(glib::Variant)] is not available for enums.");
         }
         Data::Union(..) => {
-            panic!("#[derive(Variant)] is not available for unions.");
+            panic!("#[derive(glib::Variant)] is not available for unions.");
         }
     }
 }

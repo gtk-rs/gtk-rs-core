@@ -2,12 +2,11 @@
 
 use glib::prelude::*;
 use glib::translate::{FromGlib, IntoGlib};
-use glib::{gflags, GBoxed, GEnum, GErrorDomain, GSharedBoxed, GVariant};
 
 #[test]
-fn derive_gerror_domain() {
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, GErrorDomain)]
-    #[gerror_domain(name = "TestError")]
+fn derive_error_domain() {
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::ErrorDomain)]
+    #[error_domain(name = "TestError")]
     enum TestError {
         Invalid,
         Bad,
@@ -25,8 +24,8 @@ fn derive_shared_arc() {
     struct MyInnerShared {
         foo: String,
     }
-    #[derive(Debug, Eq, PartialEq, Clone, GSharedBoxed)]
-    #[gshared_boxed(type_name = "MyShared")]
+    #[derive(Debug, Eq, PartialEq, Clone, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MyShared")]
     struct MyShared(std::sync::Arc<MyInnerShared>);
 
     let t = MyShared::static_type();
@@ -54,8 +53,8 @@ fn derive_shared_arc_nullable() {
     struct MyInnerNullableShared {
         foo: String,
     }
-    #[derive(Clone, Debug, PartialEq, Eq, GSharedBoxed)]
-    #[gshared_boxed(type_name = "MyNullableShared", nullable)]
+    #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+    #[shared_boxed_type(name = "MyNullableShared", nullable)]
     struct MyNullableShared(std::sync::Arc<MyInnerNullableShared>);
 
     let t = MyNullableShared::static_type();
@@ -90,15 +89,15 @@ fn derive_shared_arc_nullable() {
 }
 
 #[test]
-fn derive_genum() {
-    #[derive(Debug, Eq, PartialEq, Clone, Copy, GEnum)]
+fn derive_enum() {
+    #[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
     #[repr(u32)]
-    #[genum(type_name = "TestAnimalType")]
+    #[enum_type(name = "TestAnimalType")]
     enum Animal {
         Goat,
-        #[genum(name = "The Dog")]
+        #[enum_value(name = "The Dog")]
         Dog,
-        #[genum(name = "The Cat", nick = "chat")]
+        #[enum_value(name = "The Cat", nick = "chat")]
         Cat = 5,
         Badger,
     }
@@ -133,9 +132,9 @@ fn derive_genum() {
 }
 
 #[test]
-fn derive_gboxed() {
-    #[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-    #[gboxed(type_name = "MyBoxed")]
+fn derive_boxed() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyBoxed")]
     struct MyBoxed(String);
 
     let t = MyBoxed::static_type();
@@ -149,9 +148,9 @@ fn derive_gboxed() {
 }
 
 #[test]
-fn derive_gboxed_nullable() {
-    #[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-    #[gboxed(type_name = "MyNullableBoxed", nullable)]
+fn derive_boxed_nullable() {
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyNullableBoxed", nullable)]
     struct MyNullableBoxed(String);
 
     let t = MyNullableBoxed::static_type();
@@ -182,14 +181,14 @@ fn derive_gboxed_nullable() {
 }
 
 #[test]
-fn attr_gflags() {
-    #[gflags("MyFlags")]
+fn attr_flags() {
+    #[glib::flags(name = "MyFlags")]
     enum MyFlags {
-        #[gflags(name = "Flag A", nick = "nick-a")]
+        #[flags_value(name = "Flag A", nick = "nick-a")]
         A = 0b00000001,
-        #[gflags(name = "Flag B")]
+        #[flags_value(name = "Flag B")]
         B = 0b00000010,
-        #[gflags(skip)]
+        #[flags_value(skip)]
         AB = Self::A.bits() | Self::B.bits(),
         C = 0b00000100,
     }
@@ -282,7 +281,7 @@ fn subclassable() {
 
 #[test]
 fn derive_variant() {
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant1 {
         some_string: String,
         some_int: i32,
@@ -297,7 +296,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(si)");
     assert_eq!(var.get::<Variant1>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant2 {
         some_string: Option<String>,
         some_int: i32,
@@ -312,7 +311,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(msi)");
     assert_eq!(var.get::<Variant2>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant3(u32, String);
 
     assert_eq!(Variant3::static_variant_type().as_str(), "(us)");
@@ -321,7 +320,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "(us)");
     assert_eq!(var.get::<Variant3>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant4;
 
     assert_eq!(Variant4::static_variant_type().as_str(), "()");
@@ -330,7 +329,7 @@ fn derive_variant() {
     assert_eq!(var.type_().as_str(), "()");
     assert_eq!(var.get::<Variant4>(), Some(v));
 
-    #[derive(GVariant, PartialEq, Eq, Debug)]
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant5();
 
     assert_eq!(Variant5::static_variant_type().as_str(), "()");

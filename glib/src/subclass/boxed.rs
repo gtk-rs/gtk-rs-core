@@ -24,10 +24,10 @@ pub trait BoxedType: StaticType + Clone + Sized + 'static {
 ///
 /// This must be called only once and will panic on a second call.
 ///
-/// See [`GBoxed!`] for defining a function that ensures that
+/// See [`Boxed!`] for defining a function that ensures that
 /// this is only called once and returns the type id.
 ///
-/// [`GBoxed!`]: ../../derive.GBoxed.html
+/// [`Boxed!`]: ../../derive.Boxed.html
 pub fn register_boxed_type<T: BoxedType>() -> crate::Type {
     unsafe extern "C" fn boxed_copy<T: BoxedType>(v: ffi::gpointer) -> ffi::gpointer {
         let v = &*(v as *mut T);
@@ -67,8 +67,8 @@ mod test {
     use crate::value::ToValue;
     use crate::StaticType;
 
-    #[derive(Clone, Debug, PartialEq, Eq, glib::GBoxed)]
-    #[gboxed(type_name = "MyBoxed")]
+    #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "MyBoxed")]
     struct MyBoxed(String);
 
     #[test]

@@ -7,7 +7,7 @@ use quote::{quote, quote_spanned};
 use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Data, Ident, Variant};
 
 use crate::utils::{
-    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_type_name, ItemAttribute,
+    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_name, ItemAttribute,
 };
 
 // Generate glib::gobject_ffi::GEnumValue structs mapping the enum such as:
@@ -16,7 +16,7 @@ use crate::utils::{
 //         value_name: "Goat\0" as *const _ as *const _,
 //         value_nick: "goat\0" as *const _ as *const _,
 //     },
-fn gen_genum_values(
+fn gen_enum_values(
     enum_name: &Ident,
     enum_variants: &Punctuated<Variant, Comma>,
 ) -> (TokenStream, usize) {
@@ -29,11 +29,11 @@ fn gen_genum_values(
         let mut value_name = name.to_string().to_camel_case();
         let mut value_nick = name.to_string().to_kebab_case();
 
-        let attrs = parse_item_attributes("genum", &v.attrs);
+        let attrs = parse_item_attributes("enum_value", &v.attrs);
         let attrs = match attrs {
             Ok(attrs) => attrs,
             Err(e) => abort_call_site!(
-                "{}: GEnum enum supports only the following optional attributes: #[genum(name = \"The Cat\", nick = \"chat\")]",
+                "{}: derive(glib::Enum) enum supports only the following optional attributes: #[enum_value(name = \"The Cat\", nick = \"chat\")]",
                 e
             ),
         };
@@ -65,26 +65,26 @@ fn gen_genum_values(
     )
 }
 
-pub fn impl_genum(input: &syn::DeriveInput) -> TokenStream {
+pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
-
-    let crate_ident = crate_ident_new();
 
     let enum_variants = match input.data {
         Data::Enum(ref e) => &e.variants,
-        _ => abort_call_site!("GEnum only supports enums"),
+        _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
 
-    let gtype_name = match parse_type_name(input, "genum") {
-        Ok(v) => v,
+    let gtype_name = match parse_name(input, "enum_type") {
+        Ok(name) => name,
         Err(e) => abort_call_site!(
-            "{}: derive(GEnum) requires #[genum(type_name = \"EnumTypeName\")]",
+            "{}: #[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]",
             e
         ),
     };
 
     let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (genum_values, nb_genum_values) = gen_genum_values(name, enum_variants);
+    let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
+
+    let crate_ident = crate_ident_new();
 
     quote! {
         impl #crate_ident::translate::IntoGlib for #name {
@@ -152,8 +152,8 @@ pub fn impl_genum(input: &syn::DeriveInput) -> TokenStream {
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
 
                 ONCE.call_once(|| {
-                    static mut VALUES: [#crate_ident::gobject_ffi::GEnumValue; #nb_genum_values] = [
-                        #genum_values
+                    static mut VALUES: [#crate_ident::gobject_ffi::GEnumValue; #nb_enum_values] = [
+                        #enum_values
                         #crate_ident::gobject_ffi::GEnumValue {
                             value: 0,
                             value_name: std::ptr::null(),

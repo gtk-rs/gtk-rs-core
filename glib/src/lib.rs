@@ -15,8 +15,8 @@ pub use bitflags;
 pub use once_cell;
 
 pub use glib_macros::{
-    clone, closure, closure_local, gflags, object_interface, object_subclass, Downgrade, GBoxed,
-    GEnum, GErrorDomain, GSharedBoxed, GVariant,
+    clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
+    Enum, ErrorDomain, SharedBoxed, Variant,
 };
 
 pub use self::byte_array::ByteArray;
