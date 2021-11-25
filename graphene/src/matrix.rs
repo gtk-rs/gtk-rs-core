@@ -202,33 +202,8 @@ impl Matrix {
         }
     }
 
-    pub fn values(&self) -> [[f32; 4]; 4] {
-        [
-            [
-                self.0.value.x.x,
-                self.0.value.x.y,
-                self.0.value.x.z,
-                self.0.value.x.w,
-            ],
-            [
-                self.0.value.y.x,
-                self.0.value.y.y,
-                self.0.value.y.z,
-                self.0.value.y.w,
-            ],
-            [
-                self.0.value.z.x,
-                self.0.value.z.y,
-                self.0.value.z.z,
-                self.0.value.z.w,
-            ],
-            [
-                self.0.value.w.x,
-                self.0.value.w.y,
-                self.0.value.w.z,
-                self.0.value.w.w,
-            ],
-        ]
+    pub fn values(&self) -> &[[f32; 4]; 4] {
+        unsafe { &*(&self.0.value as *const ffi::graphene_simd4x4f_t as *const [[f32; 4]; 4]) }
     }
 }
 
@@ -237,5 +212,23 @@ impl fmt::Debug for Matrix {
         f.debug_struct("Matrix")
             .field("values", &self.values())
             .finish()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Matrix;
+    #[test]
+    fn test_matrix_values() {
+        let matrix = Matrix::new_identity();
+        assert_eq!(
+            matrix.values(),
+            &[
+                [1.0, 0.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0]
+            ],
+        );
     }
 }

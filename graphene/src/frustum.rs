@@ -9,18 +9,11 @@ use std::fmt;
 impl Frustum {
     #[doc(alias = "graphene_frustum_get_planes")]
     #[doc(alias = "get_planes")]
-    pub fn planes(&self) -> [Plane; 6] {
+    pub fn planes(&self) -> &[Plane; 6] {
         unsafe {
             let mut out: [ffi::graphene_plane_t; 6] = std::mem::zeroed();
             ffi::graphene_frustum_get_planes(self.to_glib_none().0, &mut out as *mut _);
-            [
-                from_glib_none(&out[0] as *const _),
-                from_glib_none(&out[1] as *const _),
-                from_glib_none(&out[2] as *const _),
-                from_glib_none(&out[3] as *const _),
-                from_glib_none(&out[4] as *const _),
-                from_glib_none(&out[5] as *const _),
-            ]
+            &*(&out as *const [ffi::graphene_plane_t; 6] as *const [Plane; 6])
         }
     }
 

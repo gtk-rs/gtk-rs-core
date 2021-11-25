@@ -8,16 +8,11 @@ use std::fmt;
 impl Rect {
     #[doc(alias = "graphene_rect_get_vertices")]
     #[doc(alias = "get_vertices")]
-    pub fn vertices(&self) -> [Vec2; 4] {
+    pub fn vertices(&self) -> &[Vec2; 4] {
         unsafe {
             let mut out: [ffi::graphene_vec2_t; 4] = std::mem::zeroed();
             ffi::graphene_rect_get_vertices(self.to_glib_none().0, &mut out as *mut _);
-            [
-                from_glib_none(&out[0] as *const _),
-                from_glib_none(&out[1] as *const _),
-                from_glib_none(&out[2] as *const _),
-                from_glib_none(&out[3] as *const _),
-            ]
+            &*(&out as *const [ffi::graphene_vec2_t; 4] as *const [Vec2; 4])
         }
     }
 

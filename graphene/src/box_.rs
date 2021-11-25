@@ -9,20 +9,11 @@ use std::fmt;
 impl Box {
     #[doc(alias = "graphene_box_get_vertices")]
     #[doc(alias = "get_vertices")]
-    pub fn vertices(&self) -> [Vec3; 8] {
+    pub fn vertices(&self) -> &[Vec3; 8] {
         unsafe {
             let mut out: [ffi::graphene_vec3_t; 8] = std::mem::zeroed();
             ffi::graphene_box_get_vertices(self.to_glib_none().0, &mut out as *mut _);
-            [
-                from_glib_none(&out[0] as *const _),
-                from_glib_none(&out[1] as *const _),
-                from_glib_none(&out[2] as *const _),
-                from_glib_none(&out[3] as *const _),
-                from_glib_none(&out[4] as *const _),
-                from_glib_none(&out[5] as *const _),
-                from_glib_none(&out[6] as *const _),
-                from_glib_none(&out[7] as *const _),
-            ]
+            &*(&out as *const [ffi::graphene_vec3_t; 8] as *const [Vec3; 8])
         }
     }
 
