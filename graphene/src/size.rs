@@ -2,6 +2,7 @@
 
 use crate::Size;
 use glib::translate::*;
+use std::fmt;
 
 impl Size {
     #[doc(alias = "graphene_size_init")]
@@ -39,5 +40,14 @@ impl Size {
 
     pub fn set_height(&mut self, height: f32) {
         self.0.height = height;
+    }
+}
+
+impl fmt::Debug for Size {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Size")
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
     }
 }

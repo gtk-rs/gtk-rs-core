@@ -4,6 +4,7 @@ use crate::Point3D;
 use crate::Ray;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Ray {
     #[doc(alias = "graphene_ray_init")]
@@ -44,5 +45,14 @@ impl Ray {
             );
             ray
         }
+    }
+}
+
+impl fmt::Debug for Ray {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Ray")
+            .field("origin", &self.origin())
+            .field("direction", &self.direction())
+            .finish()
     }
 }

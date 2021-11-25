@@ -6,6 +6,7 @@ use crate::Quaternion;
 use crate::Vec3;
 use crate::Vec4;
 use glib::translate::*;
+use std::fmt;
 
 impl Quaternion {
     #[doc(alias = "graphene_quaternion_init")]
@@ -142,5 +143,16 @@ impl Quaternion {
 
     pub fn w(&self) -> f32 {
         self.0.w
+    }
+}
+
+impl fmt::Debug for Quaternion {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Quaternion")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("z", &self.z())
+            .field("w", &self.w())
+            .finish()
     }
 }

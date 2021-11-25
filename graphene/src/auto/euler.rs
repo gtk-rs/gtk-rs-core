@@ -9,7 +9,6 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Euler(BoxedInline<ffi::graphene_euler_t>);
 
     match fn {

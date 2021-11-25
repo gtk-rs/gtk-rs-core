@@ -4,6 +4,7 @@ use crate::Box;
 use crate::Point3D;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Box {
     #[doc(alias = "graphene_box_get_vertices")]
@@ -95,5 +96,14 @@ impl Box {
             );
             b
         }
+    }
+}
+
+impl fmt::Debug for Box {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Box")
+            .field("min", &self.min())
+            .field("max", &self.max())
+            .finish()
     }
 }

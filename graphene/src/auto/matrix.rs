@@ -17,7 +17,6 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Matrix(BoxedInline<ffi::graphene_matrix_t>);
 
     match fn {

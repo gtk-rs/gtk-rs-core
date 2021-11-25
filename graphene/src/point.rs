@@ -3,6 +3,7 @@
 use crate::Point;
 use crate::Vec2;
 use glib::translate::*;
+use std::fmt;
 
 impl Point {
     #[doc(alias = "graphene_point_init")]
@@ -51,5 +52,14 @@ impl Point {
 
     pub fn set_y(&mut self, y: f32) {
         self.0.y = y;
+    }
+}
+
+impl fmt::Debug for Point {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Point")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .finish()
     }
 }

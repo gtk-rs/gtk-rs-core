@@ -2,6 +2,7 @@
 
 use crate::Vec2;
 use glib::translate::*;
+use std::fmt;
 
 impl Vec2 {
     #[doc(alias = "graphene_vec2_init")]
@@ -43,5 +44,14 @@ impl Vec2 {
             ffi::graphene_vec2_to_float(self.to_glib_none().0, out.as_mut_ptr());
             out.assume_init()
         }
+    }
+}
+
+impl fmt::Debug for Vec2 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Vec2")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .finish()
     }
 }

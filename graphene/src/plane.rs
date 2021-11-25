@@ -5,6 +5,7 @@ use crate::Point3D;
 use crate::Vec3;
 use crate::Vec4;
 use glib::translate::*;
+use std::fmt;
 
 impl Plane {
     #[doc(alias = "graphene_plane_init")]
@@ -72,5 +73,14 @@ impl Plane {
             ffi::graphene_plane_init_from_vec4(plane.to_glib_none_mut().0, src.to_glib_none().0);
             plane
         }
+    }
+}
+
+impl fmt::Debug for Plane {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Plane")
+            .field("constant", &self.constant())
+            .field("normal", &self.normal())
+            .finish()
     }
 }

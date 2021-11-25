@@ -13,7 +13,6 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Ray(BoxedInline<ffi::graphene_ray_t>);
 
     match fn {

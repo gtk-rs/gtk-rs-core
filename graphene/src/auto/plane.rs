@@ -8,7 +8,6 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Plane(BoxedInline<ffi::graphene_plane_t>);
 
     match fn {

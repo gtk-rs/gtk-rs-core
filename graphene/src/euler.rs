@@ -6,6 +6,7 @@ use crate::Matrix;
 use crate::Quaternion;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Euler {
     #[doc(alias = "graphene_euler_init")]
@@ -104,5 +105,16 @@ impl Euler {
             );
             eul
         }
+    }
+}
+
+impl fmt::Debug for Euler {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Euler")
+            .field("order", &self.order())
+            .field("alpha", &self.alpha())
+            .field("beta", &self.beta())
+            .field("gamma", &self.gamma())
+            .finish()
     }
 }

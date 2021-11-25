@@ -3,6 +3,7 @@
 use crate::Point3D;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Point3D {
     #[doc(alias = "graphene_point3d_init")]
@@ -59,5 +60,15 @@ impl Point3D {
 
     pub fn set_z(&mut self, z: f32) {
         self.0.z = z;
+    }
+}
+
+impl fmt::Debug for Point3D {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Point3D")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("z", &self.z())
+            .finish()
     }
 }

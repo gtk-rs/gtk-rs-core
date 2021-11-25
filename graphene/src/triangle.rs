@@ -4,6 +4,7 @@ use crate::Point3D;
 use crate::Triangle;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Triangle {
     #[doc(alias = "graphene_triangle_init_from_float")]
@@ -52,5 +53,13 @@ impl Triangle {
             );
             tri
         }
+    }
+}
+
+impl fmt::Debug for Triangle {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Triangle")
+            .field("points", &self.points())
+            .finish()
     }
 }

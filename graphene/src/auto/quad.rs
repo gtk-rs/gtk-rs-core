@@ -7,7 +7,6 @@ use crate::Rect;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Quad(BoxedInline<ffi::graphene_quad_t>);
 
     match fn {

@@ -4,6 +4,7 @@ use crate::Point3D;
 use crate::Sphere;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Sphere {
     #[doc(alias = "graphene_sphere_init")]
@@ -52,5 +53,14 @@ impl Sphere {
             );
             sph
         }
+    }
+}
+
+impl fmt::Debug for Sphere {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Sphere")
+            .field("radius", &self.radius())
+            .field("center", &self.center())
+            .finish()
     }
 }

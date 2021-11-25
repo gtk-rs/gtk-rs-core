@@ -5,7 +5,6 @@
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Vec2(BoxedInline<ffi::graphene_vec2_t>);
 
     match fn {

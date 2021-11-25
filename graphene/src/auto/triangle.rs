@@ -10,7 +10,6 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Triangle(BoxedInline<ffi::graphene_triangle_t>);
 
     match fn {

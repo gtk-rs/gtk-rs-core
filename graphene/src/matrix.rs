@@ -5,6 +5,7 @@ use crate::Point3D;
 use crate::Vec3;
 use crate::Vec4;
 use glib::translate::*;
+use std::fmt;
 
 impl Matrix {
     #[doc(alias = "graphene_matrix_init_from_2d")]
@@ -228,5 +229,13 @@ impl Matrix {
                 self.0.value.w.w,
             ],
         ]
+    }
+}
+
+impl fmt::Debug for Matrix {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Matrix")
+            .field("values", &self.values())
+            .finish()
     }
 }

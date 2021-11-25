@@ -2,6 +2,7 @@
 
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Vec3 {
     #[doc(alias = "graphene_vec3_init")]
@@ -43,5 +44,15 @@ impl Vec3 {
             ffi::graphene_vec3_to_float(self.to_glib_none().0, out.as_mut_ptr());
             out.assume_init()
         }
+    }
+}
+
+impl fmt::Debug for Vec3 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Vec3")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("z", &self.z())
+            .finish()
     }
 }

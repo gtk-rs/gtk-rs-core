@@ -4,6 +4,7 @@ use crate::Frustum;
 use crate::Matrix;
 use crate::Plane;
 use glib::translate::*;
+use std::fmt;
 
 impl Frustum {
     #[doc(alias = "graphene_frustum_get_planes")]
@@ -64,5 +65,13 @@ impl Frustum {
             );
             fru
         }
+    }
+}
+
+impl fmt::Debug for Frustum {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Frustum")
+            .field("planes", &self.planes())
+            .finish()
     }
 }

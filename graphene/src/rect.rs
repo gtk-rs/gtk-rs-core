@@ -3,6 +3,7 @@
 use crate::Rect;
 use crate::Vec2;
 use glib::translate::*;
+use std::fmt;
 
 impl Rect {
     #[doc(alias = "graphene_rect_get_vertices")]
@@ -39,6 +40,17 @@ impl Rect {
             ffi::graphene_rect_init_from_rect(rect.to_glib_none_mut().0, src.to_glib_none().0);
             rect
         }
+    }
+}
+
+impl fmt::Debug for Rect {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rect")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
     }
 }
 

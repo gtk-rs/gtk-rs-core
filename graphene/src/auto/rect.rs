@@ -6,7 +6,6 @@ use crate::Point;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Rect(BoxedInline<ffi::graphene_rect_t>);
 
     match fn {

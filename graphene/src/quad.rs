@@ -4,6 +4,7 @@ use crate::Point;
 use crate::Quad;
 use crate::Rect;
 use glib::translate::*;
+use std::fmt;
 
 impl Quad {
     #[doc(alias = "graphene_quad_init")]
@@ -62,5 +63,13 @@ impl Quad {
 
     pub fn points(&self) -> &[Point; 4] {
         unsafe { &*(&self.0.points as *const [ffi::graphene_point_t; 4] as *const [Point; 4]) }
+    }
+}
+
+impl fmt::Debug for Quad {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Quad")
+            .field("points", &self.points())
+            .finish()
     }
 }
