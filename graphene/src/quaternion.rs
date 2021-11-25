@@ -127,4 +127,20 @@ impl Quaternion {
             quat
         }
     }
+
+    pub fn x(&self) -> f32 {
+        self.0.x
+    }
+
+    pub fn y(&self) -> f32 {
+        self.0.y
+    }
+
+    pub fn z(&self) -> f32 {
+        self.0.z
+    }
+
+    pub fn w(&self) -> f32 {
+        self.0.w
+    }
 }

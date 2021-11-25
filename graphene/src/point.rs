@@ -36,4 +36,20 @@ impl Point {
             p
         }
     }
+
+    pub fn x(&self) -> f32 {
+        self.0.x
+    }
+
+    pub fn set_x(&mut self, x: f32) {
+        self.0.x = x;
+    }
+
+    pub fn y(&self) -> f32 {
+        self.0.y
+    }
+
+    pub fn set_y(&mut self, y: f32) {
+        self.0.y = y;
+    }
 }

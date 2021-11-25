@@ -200,4 +200,33 @@ impl Matrix {
             out.assume_init()
         }
     }
+
+    pub fn values(&self) -> [[f32; 4]; 4] {
+        [
+            [
+                self.0.value.x.x,
+                self.0.value.x.y,
+                self.0.value.x.z,
+                self.0.value.x.w,
+            ],
+            [
+                self.0.value.y.x,
+                self.0.value.y.y,
+                self.0.value.y.z,
+                self.0.value.y.w,
+            ],
+            [
+                self.0.value.z.x,
+                self.0.value.z.y,
+                self.0.value.z.z,
+                self.0.value.z.w,
+            ],
+            [
+                self.0.value.w.x,
+                self.0.value.w.y,
+                self.0.value.w.z,
+                self.0.value.w.w,
+            ],
+        ]
+    }
 }

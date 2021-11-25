@@ -59,4 +59,8 @@ impl Quad {
         assert!(index_ < 4);
         unsafe { from_glib_none(ffi::graphene_quad_get_point(self.to_glib_none().0, index_)) }
     }
+
+    pub fn points(&self) -> &[Point; 4] {
+        unsafe { &*(&self.0.points as *const [ffi::graphene_point_t; 4] as *const [Point; 4]) }
+    }
 }
