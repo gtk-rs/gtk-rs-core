@@ -10,10 +10,10 @@ use std::fmt;
 
 impl Quaternion {
     #[doc(alias = "graphene_quaternion_init")]
-    pub fn new(x: f32, y: f32, z: f32, w: f32) -> Quaternion {
+    pub fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init(quat.to_glib_none_mut().0, x, y, z, w);
             quat
         }
@@ -21,10 +21,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_angle_vec3")]
     #[doc(alias = "new_from_angle_vec3")]
-    pub fn from_angle_vec3(angle: f32, axis: &Vec3) -> Quaternion {
+    pub fn from_angle_vec3(angle: f32, axis: &Vec3) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_angle_vec3(
                 quat.to_glib_none_mut().0,
                 angle,
@@ -36,10 +36,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_angles")]
     #[doc(alias = "new_from_angles")]
-    pub fn from_angles(deg_x: f32, deg_y: f32, deg_z: f32) -> Quaternion {
+    pub fn from_angles(deg_x: f32, deg_y: f32, deg_z: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_angles(
                 quat.to_glib_none_mut().0,
                 deg_x,
@@ -52,10 +52,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_euler")]
     #[doc(alias = "new_from_euler")]
-    pub fn from_euler(e: &Euler) -> Quaternion {
+    pub fn from_euler(e: &Euler) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_euler(quat.to_glib_none_mut().0, e.to_glib_none().0);
             quat
         }
@@ -63,10 +63,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_matrix")]
     #[doc(alias = "new_from_matrix")]
-    pub fn from_matrix(m: &Matrix) -> Quaternion {
+    pub fn from_matrix(m: &Matrix) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_matrix(
                 quat.to_glib_none_mut().0,
                 m.to_glib_none().0,
@@ -77,10 +77,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_quaternion")]
     #[doc(alias = "new_from_quaternion")]
-    pub fn from_quaternion(src: &Quaternion) -> Quaternion {
+    pub fn from_quaternion(src: &Quaternion) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_quaternion(
                 quat.to_glib_none_mut().0,
                 src.to_glib_none().0,
@@ -91,10 +91,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_radians")]
     #[doc(alias = "new_from_radians")]
-    pub fn from_radians(rad_x: f32, rad_y: f32, rad_z: f32) -> Quaternion {
+    pub fn from_radians(rad_x: f32, rad_y: f32, rad_z: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_radians(
                 quat.to_glib_none_mut().0,
                 rad_x,
@@ -107,10 +107,10 @@ impl Quaternion {
 
     #[doc(alias = "graphene_quaternion_init_from_vec4")]
     #[doc(alias = "new_from_vec4")]
-    pub fn from_vec4(src: &Vec4) -> Quaternion {
+    pub fn from_vec4(src: &Vec4) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_from_vec4(
                 quat.to_glib_none_mut().0,
                 src.to_glib_none().0,
@@ -120,10 +120,10 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_identity")]
-    pub fn new_identity() -> Quaternion {
+    pub fn new_identity() -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quat = Quaternion::uninitialized();
+            let mut quat = Self::uninitialized();
             ffi::graphene_quaternion_init_identity(quat.to_glib_none_mut().0);
             quat
         }

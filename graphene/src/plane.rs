@@ -9,10 +9,10 @@ use std::fmt;
 
 impl Plane {
     #[doc(alias = "graphene_plane_init")]
-    pub fn new(normal: Option<&Vec3>, constant: f32) -> Plane {
+    pub fn new(normal: Option<&Vec3>, constant: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut plane = Plane::uninitialized();
+            let mut plane = Self::uninitialized();
             ffi::graphene_plane_init(
                 plane.to_glib_none_mut().0,
                 normal.to_glib_none().0,
@@ -24,10 +24,10 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_init_from_plane")]
     #[doc(alias = "new_from_plane")]
-    pub fn from_plane(src: &Plane) -> Plane {
+    pub fn from_plane(src: &Plane) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut plane = Plane::uninitialized();
+            let mut plane = Self::uninitialized();
             ffi::graphene_plane_init_from_plane(plane.to_glib_none_mut().0, src.to_glib_none().0);
             plane
         }
@@ -35,10 +35,10 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_init_from_point")]
     #[doc(alias = "new_from_point")]
-    pub fn from_point(normal: &Vec3, point: &Point3D) -> Plane {
+    pub fn from_point(normal: &Vec3, point: &Point3D) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut plane = Plane::uninitialized();
+            let mut plane = Self::uninitialized();
             ffi::graphene_plane_init_from_point(
                 plane.to_glib_none_mut().0,
                 normal.to_glib_none().0,
@@ -50,10 +50,10 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_init_from_points")]
     #[doc(alias = "new_from_points")]
-    pub fn from_points(a: &Point3D, b: &Point3D, c: &Point3D) -> Plane {
+    pub fn from_points(a: &Point3D, b: &Point3D, c: &Point3D) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut plane = Plane::uninitialized();
+            let mut plane = Self::uninitialized();
             ffi::graphene_plane_init_from_points(
                 plane.to_glib_none_mut().0,
                 a.to_glib_none().0,
@@ -66,10 +66,10 @@ impl Plane {
 
     #[doc(alias = "graphene_plane_init_from_vec4")]
     #[doc(alias = "new_from_vec4")]
-    pub fn from_vec4(src: &Vec4) -> Plane {
+    pub fn from_vec4(src: &Vec4) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut plane = Plane::uninitialized();
+            let mut plane = Self::uninitialized();
             ffi::graphene_plane_init_from_vec4(plane.to_glib_none_mut().0, src.to_glib_none().0);
             plane
         }

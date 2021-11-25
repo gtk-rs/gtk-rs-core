@@ -18,10 +18,10 @@ impl Frustum {
     }
 
     #[doc(alias = "graphene_frustum_init")]
-    pub fn new(p0: &Plane, p1: &Plane, p2: &Plane, p3: &Plane, p4: &Plane, p5: &Plane) -> Frustum {
+    pub fn new(p0: &Plane, p1: &Plane, p2: &Plane, p3: &Plane, p4: &Plane, p5: &Plane) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut fru = Frustum::uninitialized();
+            let mut fru = Self::uninitialized();
             ffi::graphene_frustum_init(
                 fru.to_glib_none_mut().0,
                 p0.to_glib_none().0,
@@ -37,10 +37,10 @@ impl Frustum {
 
     #[doc(alias = "graphene_frustum_init_from_frustum")]
     #[doc(alias = "new_from_frustum")]
-    pub fn from_frustum(src: &Frustum) -> Frustum {
+    pub fn from_frustum(src: &Frustum) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut fru = Frustum::uninitialized();
+            let mut fru = Self::uninitialized();
             ffi::graphene_frustum_init_from_frustum(fru.to_glib_none_mut().0, src.to_glib_none().0);
             fru
         }
@@ -48,10 +48,10 @@ impl Frustum {
 
     #[doc(alias = "graphene_frustum_init_from_matrix")]
     #[doc(alias = "new_from_matrix")]
-    pub fn from_matrix(matrix: &Matrix) -> Frustum {
+    pub fn from_matrix(matrix: &Matrix) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut fru = Frustum::uninitialized();
+            let mut fru = Self::uninitialized();
             ffi::graphene_frustum_init_from_matrix(
                 fru.to_glib_none_mut().0,
                 matrix.to_glib_none().0,

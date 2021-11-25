@@ -8,10 +8,10 @@ use std::fmt;
 
 impl Quad {
     #[doc(alias = "graphene_quad_init")]
-    pub fn new(p1: &Point, p2: &Point, p3: &Point, p4: &Point) -> Quad {
+    pub fn new(p1: &Point, p2: &Point, p3: &Point, p4: &Point) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quad = Quad::uninitialized();
+            let mut quad = Self::uninitialized();
             ffi::graphene_quad_init(
                 quad.to_glib_none_mut().0,
                 p1.to_glib_none().0,
@@ -25,10 +25,10 @@ impl Quad {
 
     #[doc(alias = "graphene_quad_init_from_rect")]
     #[doc(alias = "new_from_rect")]
-    pub fn from_rect(r: &Rect) -> Quad {
+    pub fn from_rect(r: &Rect) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut quad = Quad::uninitialized();
+            let mut quad = Self::uninitialized();
             ffi::graphene_quad_init_from_rect(quad.to_glib_none_mut().0, r.to_glib_none().0);
             quad
         }
@@ -36,7 +36,7 @@ impl Quad {
 
     #[doc(alias = "graphene_quad_init_from_points")]
     #[doc(alias = "new_from_points")]
-    pub fn from_points(points: &[Point; 4]) -> Quad {
+    pub fn from_points(points: &[Point; 4]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
             let points = [
@@ -45,7 +45,7 @@ impl Quad {
                 *points[2].to_glib_none().0,
                 *points[3].to_glib_none().0,
             ];
-            let mut quad = Quad::uninitialized();
+            let mut quad = Self::uninitialized();
             ffi::graphene_quad_init_from_points(
                 quad.to_glib_none_mut().0,
                 points.as_ptr() as *const _,

@@ -17,10 +17,10 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_init")]
-    pub fn new(x: f32, y: f32, width: f32, height: f32) -> Rect {
+    pub fn new(x: f32, y: f32, width: f32, height: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut rect = Rect::uninitialized();
+            let mut rect = Self::uninitialized();
             ffi::graphene_rect_init(rect.to_glib_none_mut().0, x, y, width, height);
             rect
         }
@@ -28,10 +28,10 @@ impl Rect {
 
     #[doc(alias = "graphene_rect_init_from_rect")]
     #[doc(alias = "new_from_rect")]
-    pub fn from_rect(src: &Rect) -> Rect {
+    pub fn from_rect(src: &Rect) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut rect = Rect::uninitialized();
+            let mut rect = Self::uninitialized();
             ffi::graphene_rect_init_from_rect(rect.to_glib_none_mut().0, src.to_glib_none().0);
             rect
         }
