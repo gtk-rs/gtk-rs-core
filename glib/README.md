@@ -60,7 +60,7 @@ GLib-based libraries largely operate on pointers to various boxed or
 reference counted structures so the bindings have to implement corresponding
 smart pointers (wrappers), which encapsulate resource management and safety
 checks. Such wrappers are defined via the
-[wrapper`][`macro@wrapper`] macro, which uses abstractions
+[`wrapper`][`macro@wrapper`] macro, which uses abstractions
 defined in the [`wrapper`][`mod@wrapper`], [`boxed`][`mod@boxed`],
 [`shared`][`mod@shared`] and [`object`][`mod@object`] modules.
 
