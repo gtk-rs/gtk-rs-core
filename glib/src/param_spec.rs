@@ -1191,7 +1191,7 @@ impl ParamSpecOverride {
     /// If the property `name` doesn't exist in the interface.
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
-    pub fn for_interface<T: IsA<Object> + IsInterface>(name: &str) -> Self {
+    pub fn for_interface<T: IsA<Object> + IsInterface>(name: &str) -> ParamSpec {
         assert!(
             is_canonical_pspec_name(name),
             "{} is not a valid canonical parameter name",
@@ -1224,7 +1224,7 @@ impl ParamSpecOverride {
     /// If the property `name` doesn't exist in the class.
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
-    pub fn for_class<T: IsA<Object> + IsClass>(name: &str) -> Self {
+    pub fn for_class<T: IsA<Object> + IsClass>(name: &str) -> ParamSpec {
         assert!(
             is_canonical_pspec_name(name),
             "{} is not a valid canonical parameter name",
