@@ -55,7 +55,7 @@ impl Capture {
         let alias = self.alias();
         match self.kind {
             CaptureKind::Watch => {
-                let err_msg = format!("failed to upgrade `{}`", alias.to_string());
+                let err_msg = format!("failed to upgrade `{}`", alias);
                 quote! {
                     let #alias = match #crate_ident::clone::Upgrade::upgrade(&#alias) {
                         Some(val) => val,

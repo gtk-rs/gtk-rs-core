@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![allow(unknown_lints)]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::upper_case_acronyms)]
+#![allow(clippy::non_send_fields_in_send_ty)]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
