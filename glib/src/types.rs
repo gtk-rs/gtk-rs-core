@@ -17,69 +17,91 @@ pub struct Type(ffi::GType);
 
 impl Type {
     /// An invalid `Type` used as error return value in some functions
+    #[doc(alias = "G_TYPE_INVALID")]
     pub const INVALID: Self = Self(gobject_ffi::G_TYPE_INVALID);
 
     /// The fundamental type corresponding to the unit type `()`
+    #[doc(alias = "G_TYPE_NONE")]
     pub const UNIT: Self = Self(gobject_ffi::G_TYPE_NONE);
 
     /// The fundamental type corresponding to `i8`
+    #[doc(alias = "G_TYPE_CHAR")]
     pub const I8: Self = Self(gobject_ffi::G_TYPE_CHAR);
 
     /// The fundamental type corresponding to `u8`
+    #[doc(alias = "G_TYPE_UCHAR")]
     pub const U8: Self = Self(gobject_ffi::G_TYPE_UCHAR);
 
     /// The fundamental type corresponding to `bool`
+    #[doc(alias = "G_TYPE_BOOLEAN")]
     pub const BOOL: Self = Self(gobject_ffi::G_TYPE_BOOLEAN);
 
     /// The fundamental type corresponding to `i32`
+    #[doc(alias = "G_TYPE_INT")]
     pub const I32: Self = Self(gobject_ffi::G_TYPE_INT);
 
     /// The fundamental type corresponding to `u32`
+    #[doc(alias = "G_TYPE_UINT")]
     pub const U32: Self = Self(gobject_ffi::G_TYPE_UINT);
 
     /// The fundamental type corresponding to C `long`
+    #[doc(alias = "G_TYPE_LONG")]
     pub const I_LONG: Self = Self(gobject_ffi::G_TYPE_LONG);
 
     /// The fundamental type corresponding to C `unsigned long`
+    #[doc(alias = "G_TYPE_ULONG")]
     pub const U_LONG: Self = Self(gobject_ffi::G_TYPE_ULONG);
 
     /// The fundamental type corresponding to `i64`
+    #[doc(alias = "G_TYPE_INT64")]
     pub const I64: Self = Self(gobject_ffi::G_TYPE_INT64);
 
     /// The fundamental type corresponding to `u64`
+    #[doc(alias = "G_TYPE_UINT64")]
     pub const U64: Self = Self(gobject_ffi::G_TYPE_UINT64);
 
     /// The fundamental type corresponding to `f32`
+    #[doc(alias = "G_TYPE_FLOAT")]
     pub const F32: Self = Self(gobject_ffi::G_TYPE_FLOAT);
 
     /// The fundamental type corresponding to `f64`
+    #[doc(alias = "G_TYPE_DOUBLE")]
     pub const F64: Self = Self(gobject_ffi::G_TYPE_DOUBLE);
 
     /// The fundamental type corresponding to `String`
+    #[doc(alias = "G_TYPE_STRING")]
     pub const STRING: Self = Self(gobject_ffi::G_TYPE_STRING);
 
     /// The fundamental type corresponding to a pointer
+    #[doc(alias = "G_TYPE_POINTER")]
     pub const POINTER: Self = Self(gobject_ffi::G_TYPE_POINTER);
 
     /// The fundamental type of GVariant
+    #[doc(alias = "G_TYPE_VARIANT")]
     pub const VARIANT: Self = Self(gobject_ffi::G_TYPE_VARIANT);
 
     /// The fundamental type from which all interfaces are derived
+    #[doc(alias = "G_TYPE_INTERFACE")]
     pub const INTERFACE: Self = Self(gobject_ffi::G_TYPE_INTERFACE);
 
     /// The fundamental type from which all enumeration types are derived
+    #[doc(alias = "G_TYPE_ENUM")]
     pub const ENUM: Self = Self(gobject_ffi::G_TYPE_ENUM);
 
     /// The fundamental type from which all flags types are derived
+    #[doc(alias = "G_TYPE_FLAGS")]
     pub const FLAGS: Self = Self(gobject_ffi::G_TYPE_FLAGS);
 
     /// The fundamental type from which all boxed types are derived
+    #[doc(alias = "G_TYPE_BOXED")]
     pub const BOXED: Self = Self(gobject_ffi::G_TYPE_BOXED);
 
     /// The fundamental type from which all `GParamSpec` types are derived
+    #[doc(alias = "G_TYPE_PARAM")]
     pub const PARAM_SPEC: Self = Self(gobject_ffi::G_TYPE_PARAM);
 
     /// The fundamental type from which all objects are derived
+    #[doc(alias = "G_TYPE_OBJECT")]
     pub const OBJECT: Self = Self(gobject_ffi::G_TYPE_OBJECT);
 
     #[doc(alias = "g_type_name")]
