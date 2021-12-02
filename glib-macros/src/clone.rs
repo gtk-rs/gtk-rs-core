@@ -233,15 +233,15 @@ fn full_ident(parts: &mut Peekable<ProcIter>, borrow_kind: BorrowKind) -> String
                 name.push_str(&i.to_string());
                 parts.next();
             }
-            Some(x) if name.is_empty() => panic!("Expected ident, found `{}`", x.to_string()),
-            Some(x) => panic!("Expected ident, found `{}` after `{}`", x.to_string(), name),
+            Some(x) if name.is_empty() => panic!("Expected ident, found `{}`", x),
+            Some(x) => panic!("Expected ident, found `{}` after `{}`", x, name),
             None => panic!("Unexpected end after ident `{}`", name),
         }
     }
     assert!(
         !name.is_empty(),
         "Expected ident, found `{}`",
-        parts.next().unwrap().to_string()
+        parts.next().unwrap()
     );
     name
 }
@@ -298,14 +298,11 @@ fn parse_ident(parts: &mut Peekable<ProcIter>, elements: &mut Vec<ElemToClone>) 
             parts.next();
             match parts.next() {
                 Some(TokenTree::Ident(i)) => Some(i.to_string()),
-                Some(x) => panic!(
-                    "Expected ident after `as` keyword, found `{}`",
-                    x.to_string()
-                ),
+                Some(x) => panic!("Expected ident after `as` keyword, found `{}`", x),
                 None => panic!("Unexpected end after `as` keyword"),
             }
         }
-        Some(TokenTree::Ident(p)) => panic!("Unexpected `{}`", p.to_string()),
+        Some(TokenTree::Ident(p)) => panic!("Unexpected `{}`", p),
         _ => None,
     };
     if name == "self" && alias.is_none() {
@@ -433,7 +430,7 @@ fn return_kind(parts: &mut Peekable<ProcIter>) -> WrapperKind {
             }
             assert!(i_s == "return", "Unknown keyword `@default-{}`", i_s);
         }
-        Some(x) => panic!("Unknown token `{}` after `@default-`", x.to_string()),
+        Some(x) => panic!("Unknown token `{}` after `@default-`", x),
         None => panic!("Unexpected end after `@default-`"),
     }
     WrapperKind::DefaultReturn(expr(parts))
@@ -485,10 +482,10 @@ fn check_move_after_async(parts: &mut Peekable<ProcIter>) {
         Some(TokenTree::Ident(i)) if i.to_string() == "move" => {}
         // The next checks are just for better error messages.
         Some(TokenTree::Ident(i)) => {
-            panic!("Expected `move` after `async`, found `{}`", i.to_string());
+            panic!("Expected `move` after `async`, found `{}`", i);
         }
         Some(TokenTree::Punct(p)) => {
-            panic!("Expected `move` after `async`, found `{}`", p.to_string());
+            panic!("Expected `move` after `async`, found `{}`", p);
         }
         Some(TokenTree::Group(g)) => {
             panic!(
@@ -510,7 +507,7 @@ fn check_async_syntax(parts: &mut Peekable<ProcIter>) -> BlockKind {
         Some(TokenTree::Punct(p)) => {
             panic!(
                 "Expected closure or block after `async move`, found `{}`",
-                p.to_string()
+                p
             );
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => BlockKind::AsyncBlock,
@@ -544,7 +541,7 @@ fn check_before_closure(parts: &mut Peekable<ProcIter>) -> BlockKind {
     }
     match parts.next() {
         Some(TokenTree::Punct(p)) if p.to_string() == "|" => {}
-        Some(x) => panic!("Expected closure, found `{}`", x.to_string()),
+        Some(x) => panic!("Expected closure, found `{}`", x),
         None => panic!("Expected closure"),
     }
     let closure = closure(parts);
@@ -558,10 +555,7 @@ fn check_before_closure(parts: &mut Peekable<ProcIter>) -> BlockKind {
                 }
                 // The next matchings are for better error messages.
                 Some(TokenTree::Punct(p)) => {
-                    panic!(
-                        "Expected block after `| async move`, found `{}`",
-                        p.to_string()
-                    );
+                    panic!("Expected block after `| async move`, found `{}`", p);
                 }
                 Some(TokenTree::Group(g)) => {
                     panic!(
@@ -741,10 +735,10 @@ pub(crate) fn clone_inner(item: TokenStream) -> TokenStream {
                 panic!(
                     "Unexpected ident `{}`: you need to specify if this is a weak or a strong \
                      clone.",
-                    i.to_string(),
+                    i,
                 );
             }
-            Some(t) => panic!("Unexpected token `{}`", t.to_string()),
+            Some(t) => panic!("Unexpected token `{}`", t),
             None => panic!("Unexpected end 4"),
         }
     }

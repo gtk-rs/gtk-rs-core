@@ -192,8 +192,9 @@ impl ScaledFont {
             let glyphs: Vec<Glyph> = {
                 let mut glyphs: Vec<Glyph> = Vec::with_capacity(glyph_count);
 
-                glyphs.set_len(glyph_count);
                 ptr::copy(glyphs_ptr, glyphs.as_mut_ptr(), glyph_count);
+
+                glyphs.set_len(glyph_count);
 
                 glyphs
             };
@@ -202,8 +203,9 @@ impl ScaledFont {
             let clusters: Vec<TextCluster> = {
                 let mut clusters = Vec::with_capacity(cluster_count);
 
-                clusters.set_len(cluster_count);
                 ptr::copy(clusters_ptr, clusters.as_mut_ptr(), cluster_count);
+
+                clusters.set_len(cluster_count);
 
                 clusters
             };
