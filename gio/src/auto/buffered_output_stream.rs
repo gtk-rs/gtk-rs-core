@@ -70,6 +70,7 @@ impl Default for BufferedOutputStream {
 /// A [builder-pattern] type to construct [`BufferedOutputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+#[must_use = "The builder must be built to be used"]
 pub struct BufferedOutputStreamBuilder {
     auto_grow: Option<bool>,
     buffer_size: Option<u32>,
@@ -86,7 +87,7 @@ impl BufferedOutputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`BufferedOutputStream`].
-    #[must_use = "The builder must be built to be used"]
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> BufferedOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref auto_grow) = self.auto_grow {

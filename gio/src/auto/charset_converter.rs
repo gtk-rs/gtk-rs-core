@@ -123,6 +123,7 @@ impl Default for CharsetConverter {
 /// A [builder-pattern] type to construct [`CharsetConverter`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+#[must_use = "The builder must be built to be used"]
 pub struct CharsetConverterBuilder {
     from_charset: Option<String>,
     to_charset: Option<String>,
@@ -138,7 +139,7 @@ impl CharsetConverterBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`CharsetConverter`].
-    #[must_use = "The builder must be built to be used"]
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> CharsetConverter {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref from_charset) = self.from_charset {
