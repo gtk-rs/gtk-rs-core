@@ -830,10 +830,15 @@ impl Default for Priority {
     }
 }
 
+#[doc(alias = "G_PRIORITY_HIGH")]
 pub const PRIORITY_HIGH: Priority = Priority(ffi::G_PRIORITY_HIGH);
+#[doc(alias = "G_PRIORITY_DEFAULT")]
 pub const PRIORITY_DEFAULT: Priority = Priority(ffi::G_PRIORITY_DEFAULT);
+#[doc(alias = "G_PRIORITY_HIGH_IDLE")]
 pub const PRIORITY_HIGH_IDLE: Priority = Priority(ffi::G_PRIORITY_HIGH_IDLE);
+#[doc(alias = "G_PRIORITY_DEFAULT_IDLE")]
 pub const PRIORITY_DEFAULT_IDLE: Priority = Priority(ffi::G_PRIORITY_DEFAULT_IDLE);
+#[doc(alias = "G_PRIORITY_LOW")]
 pub const PRIORITY_LOW: Priority = Priority(ffi::G_PRIORITY_LOW);
 
 /// Adds a closure to be called by the main loop the return `Source` is attached to when it's idle.
