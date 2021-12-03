@@ -15,7 +15,9 @@ generate = [
     "GLib.DateWeekday",
     "GLib.DateYear",
     "GLib.FileSetContentsFlags",
+    "GLib.FileTest",
     "GLib.FormatSizeFlags",
+    "GLib.IOCondition",
     "GLib.KeyFileError",
     "GLib.KeyFileFlags",
     "GLib.LogLevelFlags",
@@ -25,8 +27,6 @@ generate = [
     "GLib.SpawnFlags",
     "GLib.Time",
     "GLib.TimeType",
-    "GLib.FileTest",
-    "GLib.IOCondition",
     "GLib.UriError",
     "GLib.UriFlags",
     "GLib.UriHideFlags",
@@ -38,12 +38,12 @@ ignore = [
 ]
 
 manual = [
-    "GLib.Bytes",
     "GLib.ByteArray",
+    "GLib.Bytes",
     "GLib.Error",
+    "GLib.UserDirectory",
     "GLib.Variant",
     "GLib.VariantType",
-    "GLib.UserDirectory",
     "GObject.Object",
 ]
 
@@ -474,6 +474,30 @@ status = "generate"
     version = "2.52"
 
 [[object]]
+name = "GLib.DateTime"
+status = "generate"
+concurrency = "send+sync"
+    [[object.function]]
+    name = "new_local"
+    rename = "from_local"
+    [[object.function]]
+    name = "new_now"
+    rename = "now"
+    [[object.function]]
+    name = "new_now_local"
+    rename = "now_local"
+    [[object.function]]
+    name = "new_now_utc"
+    rename = "now_utc"
+    [[object.function]]
+    name = "new_utc"
+    rename = "from_utc"
+    [[object.function]]
+    pattern = ".+"
+        [object.function.return]
+        nullable_return_is_error = "Invalid date"
+
+[[object]]
 name = "GLib.KeyFile"
 status = "generate"
     [[object.function]]
@@ -538,30 +562,6 @@ status = "generate"
         [[object.function.parameter]]
         name = "key"
         nullable = true
-
-[[object]]
-name = "GLib.DateTime"
-status = "generate"
-concurrency = "send+sync"
-    [[object.function]]
-    name = "new_local"
-    rename = "from_local"
-    [[object.function]]
-    name = "new_now"
-    rename = "now"
-    [[object.function]]
-    name = "new_now_local"
-    rename = "now_local"
-    [[object.function]]
-    name = "new_now_utc"
-    rename = "now_utc"
-    [[object.function]]
-    name = "new_utc"
-    rename = "from_utc"
-    [[object.function]]
-    pattern = ".+"
-        [object.function.return]
-        nullable_return_is_error = "Invalid date"
 
 [[object]]
 name = "GLib.MainContext"
@@ -635,11 +635,6 @@ concurrency = "send+sync"
     ignore = true
 
 [[object]]
-name = "GLib.TimeSpan"
-status = "manual"
-conversion_type = "scalar"
-
-[[object]]
 name = "GLib.ThreadPool"
 status = "manual"
 concurrency = "send+sync"
@@ -649,6 +644,11 @@ concurrency = "send+sync"
     [[object.function]]
     name = "new_exclusive"
     rename = "exclusive"
+
+[[object]]
+name = "GLib.TimeSpan"
+status = "manual"
+conversion_type = "scalar"
 
 [[object]]
 name = "GLib.TimeZone"
