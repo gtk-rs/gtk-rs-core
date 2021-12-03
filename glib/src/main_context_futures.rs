@@ -13,6 +13,7 @@ use crate::MainContext;
 use crate::MainLoop;
 use crate::Priority;
 use crate::Source;
+use crate::SourceId;
 
 // Wrapper around Send Futures and non-Send Futures that will panic
 // if the non-Send Future is polled/dropped from a different thread
@@ -240,8 +241,8 @@ impl MainContext {
     ///
     /// This can be called from any thread and will execute the future from the thread
     /// where main context is running, e.g. via a `MainLoop`.
-    pub fn spawn<F: Future<Output = ()> + Send + 'static>(&self, f: F) {
-        self.spawn_with_priority(crate::PRIORITY_DEFAULT, f);
+    pub fn spawn<F: Future<Output = ()> + Send + 'static>(&self, f: F) -> SourceId {
+        self.spawn_with_priority(crate::PRIORITY_DEFAULT, f)
     }
 
     /// Spawn a new infallible `Future` on the main context.
@@ -251,8 +252,8 @@ impl MainContext {
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
     /// `with_thread_default` or `acquire` on the main context.
-    pub fn spawn_local<F: Future<Output = ()> + 'static>(&self, f: F) {
-        self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f);
+    pub fn spawn_local<F: Future<Output = ()> + 'static>(&self, f: F) -> SourceId {
+        self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f)
     }
 
     /// Spawn a new infallible `Future` on the main context, with a non-default priority.
@@ -263,10 +264,10 @@ impl MainContext {
         &self,
         priority: Priority,
         f: F,
-    ) {
+    ) -> SourceId {
         let f = FutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::Send(f));
-        source.attach(Some(&*self));
+        source.attach(Some(&*self))
     }
 
     /// Spawn a new infallible `Future` on the main context, with a non-default priority.
@@ -280,13 +281,13 @@ impl MainContext {
         &self,
         priority: Priority,
         f: F,
-    ) {
+    ) -> SourceId {
         let _acquire = self
             .acquire()
             .expect("Spawning local futures only allowed on the thread owning the MainContext");
         let f = LocalFutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::NonSend(ThreadGuard::new(f)));
-        source.attach(Some(&*self));
+        source.attach(Some(&*self))
     }
 
     /// Runs a new, infallible `Future` on the main context and block until it finished, returning
