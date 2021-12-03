@@ -13,6 +13,7 @@ use std::{fmt, num::NonZeroU32};
 
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
+#[must_use = "The builder must be built to be used"]
 pub struct SignalBuilder<'a> {
     name: &'a str,
     flags: SignalFlags,
@@ -442,6 +443,7 @@ impl<'a> SignalBuilder<'a> {
     ///
     /// This does not register the signal yet, which only happens as part of object type
     /// registration.
+    #[must_use = "Signal returned from the builder must be used for it to be registered"]
     pub fn build(self) -> Signal {
         let flags = if self.flags
             & (SignalFlags::RUN_FIRST | SignalFlags::RUN_LAST | SignalFlags::RUN_CLEANUP)

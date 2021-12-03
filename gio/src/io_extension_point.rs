@@ -9,7 +9,7 @@ use crate::io_extension::IOExtension;
 
 /// Builder for extension points.
 #[derive(Debug)]
-#[must_use = "Builder doesn't do anything unless built"]
+#[must_use = "The builder must be built to be used"]
 pub struct IOExtensionPointBuilder<'a> {
     name: &'a str,
     required_type: Option<Type>,
@@ -31,6 +31,7 @@ impl<'a> IOExtensionPointBuilder<'a> {
         }
     }
 
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> IOExtensionPoint {
         unsafe {
             let ep = IOExtensionPoint::from_glib_none(ffi::g_io_extension_point_register(

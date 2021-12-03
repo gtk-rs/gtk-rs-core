@@ -13,6 +13,7 @@ use std::str;
 wrapper! {
     /// A mutable text buffer that grows automatically.
     #[doc(alias = "GString")]
+    #[must_use = "The builder must be built to be used"]
     pub struct GStringBuilder(Boxed<ffi::GString>);
 
     match fn {
@@ -96,6 +97,7 @@ impl GStringBuilder {
     /// # Panics
     ///
     /// If the string builder contains invalid UTF-8 this function panics.
+    #[must_use = "String returned from the builder should probably be used"]
     pub fn into_string(self) -> crate::GString {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
