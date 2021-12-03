@@ -675,6 +675,7 @@ impl Eq for FlagsValue {}
 /// ```
 ///
 /// If setting/unsetting any value fails, `build()` returns `None`.
+#[must_use = "The builder must be built to be used"]
 pub struct FlagsBuilder<'a>(&'a FlagsClass, Option<Value>);
 impl<'a> FlagsBuilder<'a> {
     fn new(flags_class: &FlagsClass) -> FlagsBuilder {
@@ -741,6 +742,7 @@ impl<'a> FlagsBuilder<'a> {
     }
 
     /// Converts to the final `Value`, unless any previous setting/unsetting of flags failed.
+    #[must_use = "Value returned from the builder should probably be used"]
     pub fn build(self) -> Option<Value> {
         self.1
     }

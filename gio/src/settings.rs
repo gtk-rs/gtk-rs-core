@@ -6,7 +6,7 @@ use glib::translate::{from_glib_borrow, from_glib_none, IntoGlib, ToGlibPtr};
 use glib::variant::FromVariant;
 use glib::{BoolError, IsA, ToVariant};
 
-#[must_use]
+#[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
     settings: &'a Settings,
     key: &'a str,

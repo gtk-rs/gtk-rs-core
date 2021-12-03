@@ -3317,7 +3317,7 @@ type TransformFn =
     Option<Box<dyn Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>>;
 
 /// Builder for object property bindings.
-#[must_use]
+#[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
     source: &'a ObjectRef,
     source_property: &'a str,

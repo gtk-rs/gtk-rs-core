@@ -61,6 +61,7 @@ impl Default for DataOutputStream {
 /// A [builder-pattern] type to construct [`DataOutputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+#[must_use = "The builder must be built to be used"]
 pub struct DataOutputStreamBuilder {
     byte_order: Option<DataStreamByteOrder>,
     base_stream: Option<OutputStream>,
@@ -76,7 +77,7 @@ impl DataOutputStreamBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Build the [`DataOutputStream`].
-    #[must_use = "The builder must be built to be used"]
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> DataOutputStream {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref byte_order) = self.byte_order {
