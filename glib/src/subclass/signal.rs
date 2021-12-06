@@ -572,19 +572,19 @@ impl Signal {
             handler_return: *const gobject_ffi::GValue,
             data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let accumulator = &**(data as *const *const (
+            let accumulator = &*(data as *const (
+                SignalType,
                 Box<
                     dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool
                         + Send
                         + Sync
                         + 'static,
                 >,
-                SignalType,
             ));
 
             let return_accu = &mut *(return_accu as *mut Value);
             let handler_return = &*(handler_return as *const Value);
-            let return_type = accumulator.1;
+            let return_type = accumulator.0;
 
             assert!(
                 handler_return.type_().is_a(return_type.into()),
@@ -593,7 +593,7 @@ impl Signal {
                 handler_return.type_()
             );
 
-            let res = (accumulator.0)(&SignalInvocationHint(*ihint), return_accu, handler_return)
+            let res = (accumulator.1)(&SignalInvocationHint(*ihint), return_accu, handler_return)
                 .into_glib();
 
             assert!(
@@ -609,7 +609,7 @@ impl Signal {
         let (accumulator, accumulator_trampoline) =
             if let (Some(accumulator), true) = (accumulator, return_type != Type::UNIT) {
                 (
-                    Box::into_raw(Box::new((return_type, Box::new(accumulator)))),
+                    Box::into_raw(Box::new((return_type, accumulator))),
                     Some::<unsafe extern "C" fn(_, _, _, _) -> _>(accumulator_trampoline),
                 )
             } else {
