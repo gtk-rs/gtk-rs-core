@@ -135,10 +135,11 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
     fn set_error_if_cancelled(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_cancellable_set_error_if_cancelled(
+            let is_ok = ffi::g_cancellable_set_error_if_cancelled(
                 self.as_ref().to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

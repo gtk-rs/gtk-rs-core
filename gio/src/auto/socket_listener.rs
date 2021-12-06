@@ -322,7 +322,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         unsafe {
             let mut effective_address = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_listener_add_address(
+            let is_ok = ffi::g_socket_listener_add_address(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
                 type_.into_glib(),
@@ -331,6 +331,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 &mut effective_address,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(from_glib_full(effective_address))
             } else {
@@ -365,12 +366,13 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_listener_add_inet_port(
+            let is_ok = ffi::g_socket_listener_add_inet_port(
                 self.as_ref().to_glib_none().0,
                 port,
                 source_object.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -386,12 +388,13 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_listener_add_socket(
+            let is_ok = ffi::g_socket_listener_add_socket(
                 self.as_ref().to_glib_none().0,
                 socket.as_ref().to_glib_none().0,
                 source_object.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

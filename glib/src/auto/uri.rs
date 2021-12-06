@@ -208,7 +208,9 @@ impl Uri {
     pub fn is_valid(uri_string: &str, flags: UriFlags) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_uri_is_valid(uri_string.to_glib_none().0, flags.into_glib(), &mut error);
+            let is_ok =
+                ffi::g_uri_is_valid(uri_string.to_glib_none().0, flags.into_glib(), &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -355,7 +357,7 @@ impl Uri {
             let mut query = ptr::null_mut();
             let mut fragment = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_uri_split(
+            let is_ok = ffi::g_uri_split(
                 uri_ref.to_glib_none().0,
                 flags.into_glib(),
                 &mut scheme,
@@ -368,6 +370,7 @@ impl Uri {
                 &mut error,
             );
             let port = port.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),
@@ -394,7 +397,7 @@ impl Uri {
             let mut host = ptr::null_mut();
             let mut port = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_uri_split_network(
+            let is_ok = ffi::g_uri_split_network(
                 uri_string.to_glib_none().0,
                 flags.into_glib(),
                 &mut scheme,
@@ -403,6 +406,7 @@ impl Uri {
                 &mut error,
             );
             let port = port.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(scheme), from_glib_full(host), port))
             } else {
@@ -440,7 +444,7 @@ impl Uri {
             let mut query = ptr::null_mut();
             let mut fragment = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_uri_split_with_user(
+            let is_ok = ffi::g_uri_split_with_user(
                 uri_ref.to_glib_none().0,
                 flags.into_glib(),
                 &mut scheme,
@@ -455,6 +459,7 @@ impl Uri {
                 &mut error,
             );
             let port = port.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),

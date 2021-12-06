@@ -63,11 +63,12 @@ impl Credentials {
     pub fn is_same_user(&self, other_credentials: &Credentials) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_credentials_is_same_user(
+            let is_ok = ffi::g_credentials_is_same_user(
                 self.to_glib_none().0,
                 other_credentials.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -87,7 +88,8 @@ impl Credentials {
     pub fn set_unix_user(&self, uid: u32) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_credentials_set_unix_user(self.to_glib_none().0, uid, &mut error);
+            let is_ok = ffi::g_credentials_set_unix_user(self.to_glib_none().0, uid, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

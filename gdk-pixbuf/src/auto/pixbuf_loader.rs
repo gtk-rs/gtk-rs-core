@@ -113,7 +113,8 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
     fn close(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::gdk_pixbuf_loader_close(self.as_ref().to_glib_none().0, &mut error);
+            let is_ok = ffi::gdk_pixbuf_loader_close(self.as_ref().to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -156,12 +157,13 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
         let count = buf.len() as usize;
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::gdk_pixbuf_loader_write(
+            let is_ok = ffi::gdk_pixbuf_loader_write(
                 self.as_ref().to_glib_none().0,
                 buf.to_glib_none().0,
                 count,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -173,11 +175,12 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
     fn write_bytes(&self, buffer: &glib::Bytes) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::gdk_pixbuf_loader_write_bytes(
+            let is_ok = ffi::gdk_pixbuf_loader_write_bytes(
                 self.as_ref().to_glib_none().0,
                 buffer.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

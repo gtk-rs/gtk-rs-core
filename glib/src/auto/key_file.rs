@@ -271,12 +271,13 @@ impl KeyFile {
     pub fn load_from_bytes(&self, bytes: &Bytes, flags: KeyFileFlags) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_load_from_bytes(
+            let is_ok = ffi::g_key_file_load_from_bytes(
                 self.to_glib_none().0,
                 bytes.to_glib_none().0,
                 flags.into_glib(),
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -290,13 +291,14 @@ impl KeyFile {
         let length = data.len() as usize;
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_load_from_data(
+            let is_ok = ffi::g_key_file_load_from_data(
                 self.to_glib_none().0,
                 data.to_glib_none().0,
                 length,
                 flags.into_glib(),
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -313,12 +315,13 @@ impl KeyFile {
     ) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_load_from_file(
+            let is_ok = ffi::g_key_file_load_from_file(
                 self.to_glib_none().0,
                 file.as_ref().to_glib_none().0,
                 flags.into_glib(),
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -335,12 +338,13 @@ impl KeyFile {
     ) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_remove_comment(
+            let is_ok = ffi::g_key_file_remove_comment(
                 self.to_glib_none().0,
                 group_name.to_glib_none().0,
                 key.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -353,11 +357,12 @@ impl KeyFile {
     pub fn remove_group(&self, group_name: &str) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_remove_group(
+            let is_ok = ffi::g_key_file_remove_group(
                 self.to_glib_none().0,
                 group_name.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -370,12 +375,13 @@ impl KeyFile {
     pub fn remove_key(&self, group_name: &str, key: &str) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_remove_key(
+            let is_ok = ffi::g_key_file_remove_key(
                 self.to_glib_none().0,
                 group_name.to_glib_none().0,
                 key.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -410,13 +416,14 @@ impl KeyFile {
     ) -> Result<(), crate::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_key_file_set_comment(
+            let is_ok = ffi::g_key_file_set_comment(
                 self.to_glib_none().0,
                 group_name.to_glib_none().0,
                 key.to_glib_none().0,
                 comment.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

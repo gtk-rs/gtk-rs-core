@@ -56,10 +56,11 @@ impl<O: IsA<AsyncResult>> AsyncResultExt for O {
     fn legacy_propagate_error(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_async_result_legacy_propagate_error(
+            let is_ok = ffi::g_async_result_legacy_propagate_error(
                 self.as_ref().to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

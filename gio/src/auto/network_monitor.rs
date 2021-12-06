@@ -91,12 +91,13 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_network_monitor_can_reach(
+            let is_ok = ffi::g_network_monitor_can_reach(
                 self.as_ref().to_glib_none().0,
                 connectable.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

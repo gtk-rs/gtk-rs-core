@@ -193,12 +193,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_byte(
+            let is_ok = ffi::g_data_output_stream_put_byte(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -214,12 +215,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_int16(
+            let is_ok = ffi::g_data_output_stream_put_int16(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -235,12 +237,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_int32(
+            let is_ok = ffi::g_data_output_stream_put_int32(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -256,12 +259,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_int64(
+            let is_ok = ffi::g_data_output_stream_put_int64(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -277,12 +281,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_string(
+            let is_ok = ffi::g_data_output_stream_put_string(
                 self.as_ref().to_glib_none().0,
                 str.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -298,12 +303,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_uint16(
+            let is_ok = ffi::g_data_output_stream_put_uint16(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -319,12 +325,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_uint32(
+            let is_ok = ffi::g_data_output_stream_put_uint32(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -340,12 +347,13 @@ impl<O: IsA<DataOutputStream>> DataOutputStreamExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_data_output_stream_put_uint64(
+            let is_ok = ffi::g_data_output_stream_put_uint64(
                 self.as_ref().to_glib_none().0,
                 data,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

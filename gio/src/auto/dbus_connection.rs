@@ -424,11 +424,12 @@ impl DBusConnection {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_connection_close_sync(
+            let is_ok = ffi::g_dbus_connection_close_sync(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -448,7 +449,7 @@ impl DBusConnection {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_connection_emit_signal(
+            let is_ok = ffi::g_dbus_connection_emit_signal(
                 self.to_glib_none().0,
                 destination_bus_name.to_glib_none().0,
                 object_path.to_glib_none().0,
@@ -457,6 +458,7 @@ impl DBusConnection {
                 parameters.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -520,11 +522,12 @@ impl DBusConnection {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_connection_flush_sync(
+            let is_ok = ffi::g_dbus_connection_flush_sync(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -618,7 +621,7 @@ impl DBusConnection {
         unsafe {
             let mut out_serial = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_connection_send_message(
+            let is_ok = ffi::g_dbus_connection_send_message(
                 self.to_glib_none().0,
                 message.to_glib_none().0,
                 flags.into_glib(),
@@ -626,6 +629,7 @@ impl DBusConnection {
                 &mut error,
             );
             let out_serial = out_serial.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(out_serial)
             } else {

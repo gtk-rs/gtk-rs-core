@@ -53,7 +53,7 @@ impl Resource {
             let mut size = mem::MaybeUninit::uninit();
             let mut flags = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_resource_get_info(
+            let is_ok = ffi::g_resource_get_info(
                 self.to_glib_none().0,
                 path.to_glib_none().0,
                 lookup_flags.into_glib(),
@@ -63,6 +63,7 @@ impl Resource {
             );
             let size = size.assume_init();
             let flags = flags.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((size, flags))
             } else {

@@ -543,12 +543,13 @@ pub fn file_set_contents(
     let length = contents.len() as isize;
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_file_set_contents(
+        let is_ok = ffi::g_file_set_contents(
             filename.as_ref().to_glib_none().0,
             contents.to_glib_none().0,
             length,
             &mut error,
         );
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -569,7 +570,7 @@ pub fn file_set_contents_full(
     let length = contents.len() as isize;
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_file_set_contents_full(
+        let is_ok = ffi::g_file_set_contents_full(
             filename.as_ref().to_glib_none().0,
             contents.to_glib_none().0,
             length,
@@ -577,6 +578,7 @@ pub fn file_set_contents_full(
             mode,
             &mut error,
         );
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1218,12 +1220,13 @@ pub fn shell_parse_argv(
         let mut argcp = mem::MaybeUninit::uninit();
         let mut argvp = ptr::null_mut();
         let mut error = ptr::null_mut();
-        let _ = ffi::g_shell_parse_argv(
+        let is_ok = ffi::g_shell_parse_argv(
             command_line.as_ref().to_glib_none().0,
             argcp.as_mut_ptr(),
             &mut argvp,
             &mut error,
         );
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(FromGlibContainer::from_glib_full_num(
                 argvp,
@@ -1333,7 +1336,7 @@ pub fn spawn_async(
     unsafe {
         let mut child_pid = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_async(
+        let is_ok = ffi::g_spawn_async(
             working_directory
                 .as_ref()
                 .map(|p| p.as_ref())
@@ -1348,6 +1351,7 @@ pub fn spawn_async(
             &mut error,
         );
         let child_pid = from_glib(child_pid.assume_init());
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(child_pid)
         } else {
@@ -1368,7 +1372,8 @@ pub fn spawn_async(
 pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_check_exit_status(wait_status, &mut error);
+        let is_ok = ffi::g_spawn_check_exit_status(wait_status, &mut error);
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1383,7 +1388,8 @@ pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
 pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_check_wait_status(wait_status, &mut error);
+        let is_ok = ffi::g_spawn_check_wait_status(wait_status, &mut error);
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1400,7 +1406,9 @@ pub fn spawn_command_line_async(
 ) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_command_line_async(command_line.as_ref().to_glib_none().0, &mut error);
+        let is_ok =
+            ffi::g_spawn_command_line_async(command_line.as_ref().to_glib_none().0, &mut error);
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {

@@ -106,12 +106,13 @@ impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_connection_connect(
+            let is_ok = ffi::g_socket_connection_connect(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

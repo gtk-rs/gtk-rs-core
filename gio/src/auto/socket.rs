@@ -312,12 +312,13 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_bind(
+            let is_ok = ffi::g_socket_bind(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
                 allow_reuse.into_glib(),
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -329,7 +330,9 @@ impl<O: IsA<Socket>> SocketExt for O {
     fn check_connect_result(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_check_connect_result(self.as_ref().to_glib_none().0, &mut error);
+            let is_ok =
+                ffi::g_socket_check_connect_result(self.as_ref().to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -341,7 +344,8 @@ impl<O: IsA<Socket>> SocketExt for O {
     fn close(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_close(self.as_ref().to_glib_none().0, &mut error);
+            let is_ok = ffi::g_socket_close(self.as_ref().to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -367,13 +371,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_condition_timed_wait(
+            let is_ok = ffi::g_socket_condition_timed_wait(
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
                 timeout_us,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -389,12 +394,13 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_condition_wait(
+            let is_ok = ffi::g_socket_condition_wait(
                 self.as_ref().to_glib_none().0,
                 condition.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -410,12 +416,13 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_connect(
+            let is_ok = ffi::g_socket_connect(
                 self.as_ref().to_glib_none().0,
                 address.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -496,7 +503,7 @@ impl<O: IsA<Socket>> SocketExt for O {
         unsafe {
             let mut value = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_get_option(
+            let is_ok = ffi::g_socket_get_option(
                 self.as_ref().to_glib_none().0,
                 level,
                 optname,
@@ -504,6 +511,7 @@ impl<O: IsA<Socket>> SocketExt for O {
                 &mut error,
             );
             let value = value.assume_init();
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(value)
             } else {
@@ -560,13 +568,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_join_multicast_group(
+            let is_ok = ffi::g_socket_join_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.into_glib(),
                 iface.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -585,13 +594,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_join_multicast_group_ssm(
+            let is_ok = ffi::g_socket_join_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.map(|p| p.as_ref()).to_glib_none().0,
                 iface.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -608,13 +618,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_leave_multicast_group(
+            let is_ok = ffi::g_socket_leave_multicast_group(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.into_glib(),
                 iface.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -633,13 +644,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_leave_multicast_group_ssm(
+            let is_ok = ffi::g_socket_leave_multicast_group_ssm(
                 self.as_ref().to_glib_none().0,
                 group.as_ref().to_glib_none().0,
                 source_specific.map(|p| p.as_ref()).to_glib_none().0,
                 iface.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -651,7 +663,8 @@ impl<O: IsA<Socket>> SocketExt for O {
     fn listen(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_listen(self.as_ref().to_glib_none().0, &mut error);
+            let is_ok = ffi::g_socket_listen(self.as_ref().to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -702,13 +715,14 @@ impl<O: IsA<Socket>> SocketExt for O {
     fn set_option(&self, level: i32, optname: i32, value: i32) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_set_option(
+            let is_ok = ffi::g_socket_set_option(
                 self.as_ref().to_glib_none().0,
                 level,
                 optname,
                 value,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -732,12 +746,13 @@ impl<O: IsA<Socket>> SocketExt for O {
     fn shutdown(&self, shutdown_read: bool, shutdown_write: bool) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_socket_shutdown(
+            let is_ok = ffi::g_socket_shutdown(
                 self.as_ref().to_glib_none().0,
                 shutdown_read.into_glib(),
                 shutdown_write.into_glib(),
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

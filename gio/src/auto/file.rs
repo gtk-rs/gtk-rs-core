@@ -970,7 +970,7 @@ impl<O: IsA<File>> FileExt for O {
         let super_callback0: &Option<&mut dyn (FnMut(i64, i64))> = &progress_callback_data;
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_copy(
+            let is_ok = ffi::g_file_copy(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -979,6 +979,7 @@ impl<O: IsA<File>> FileExt for O {
                 super_callback0 as *const _ as usize as *mut _,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -995,13 +996,14 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_copy_attributes(
+            let is_ok = ffi::g_file_copy_attributes(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1164,11 +1166,12 @@ impl<O: IsA<File>> FileExt for O {
     fn delete(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_delete(
+            let is_ok = ffi::g_file_delete(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1531,7 +1534,7 @@ impl<O: IsA<File>> FileExt for O {
             let mut length = mem::MaybeUninit::uninit();
             let mut etag_out = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_load_contents(
+            let is_ok = ffi::g_file_load_contents(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut contents,
@@ -1539,6 +1542,7 @@ impl<O: IsA<File>> FileExt for O {
                 &mut etag_out,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((
                     FromGlibContainer::from_glib_full_num(contents, length.assume_init() as usize),
@@ -1623,11 +1627,12 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_make_directory(
+            let is_ok = ffi::g_file_make_directory(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1692,11 +1697,12 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_make_directory_with_parents(
+            let is_ok = ffi::g_file_make_directory_with_parents(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1712,12 +1718,13 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_make_symbolic_link(
+            let is_ok = ffi::g_file_make_symbolic_link(
                 self.as_ref().to_glib_none().0,
                 symlink_value.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1940,7 +1947,7 @@ impl<O: IsA<File>> FileExt for O {
         let super_callback0: &Option<&mut dyn (FnMut(i64, i64))> = &progress_callback_data;
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_move(
+            let is_ok = ffi::g_file_move(
                 self.as_ref().to_glib_none().0,
                 destination.as_ref().to_glib_none().0,
                 flags.into_glib(),
@@ -1949,6 +1956,7 @@ impl<O: IsA<File>> FileExt for O {
                 super_callback0 as *const _ as usize as *mut _,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2557,7 +2565,7 @@ impl<O: IsA<File>> FileExt for O {
         unsafe {
             let mut new_etag = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_replace_contents(
+            let is_ok = ffi::g_file_replace_contents(
                 self.as_ref().to_glib_none().0,
                 contents.to_glib_none().0,
                 length,
@@ -2568,6 +2576,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(from_glib_full(new_etag))
             } else {
@@ -2696,7 +2705,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_byte_string(
+            let is_ok = ffi::g_file_set_attribute_byte_string(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value.to_glib_none().0,
@@ -2704,6 +2713,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2721,7 +2731,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_int32(
+            let is_ok = ffi::g_file_set_attribute_int32(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value,
@@ -2729,6 +2739,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2746,7 +2757,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_int64(
+            let is_ok = ffi::g_file_set_attribute_int64(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value,
@@ -2754,6 +2765,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2771,7 +2783,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_string(
+            let is_ok = ffi::g_file_set_attribute_string(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value.to_glib_none().0,
@@ -2779,6 +2791,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2796,7 +2809,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_uint32(
+            let is_ok = ffi::g_file_set_attribute_uint32(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value,
@@ -2804,6 +2817,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2821,7 +2835,7 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attribute_uint64(
+            let is_ok = ffi::g_file_set_attribute_uint64(
                 self.as_ref().to_glib_none().0,
                 attribute.to_glib_none().0,
                 value,
@@ -2829,6 +2843,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2914,13 +2929,14 @@ impl<O: IsA<File>> FileExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_set_attributes_from_info(
+            let is_ok = ffi::g_file_set_attributes_from_info(
                 self.as_ref().to_glib_none().0,
                 info.to_glib_none().0,
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -3139,11 +3155,12 @@ impl<O: IsA<File>> FileExt for O {
     fn trash(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_file_trash(
+            let is_ok = ffi::g_file_trash(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

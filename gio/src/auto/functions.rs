@@ -421,7 +421,8 @@ pub fn dbus_is_name(string: &str) -> bool {
 pub fn dbus_is_supported_address(string: &str) -> Result<(), glib::Error> {
     unsafe {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_dbus_is_supported_address(string.to_glib_none().0, &mut error);
+        let is_ok = ffi::g_dbus_is_supported_address(string.to_glib_none().0, &mut error);
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -535,7 +536,7 @@ pub fn resources_get_info(
         let mut size = mem::MaybeUninit::uninit();
         let mut flags = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
-        let _ = ffi::g_resources_get_info(
+        let is_ok = ffi::g_resources_get_info(
             path.to_glib_none().0,
             lookup_flags.into_glib(),
             size.as_mut_ptr(),
@@ -544,6 +545,7 @@ pub fn resources_get_info(
         );
         let size = size.assume_init();
         let flags = flags.assume_init();
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok((size, flags))
         } else {
