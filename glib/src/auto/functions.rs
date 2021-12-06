@@ -209,19 +209,6 @@ pub fn check_version(
     }
 }
 
-#[doc(alias = "g_clear_error")]
-pub fn clear_error() -> Result<(), crate::Error> {
-    unsafe {
-        let mut error = ptr::null_mut();
-        let _ = ffi::g_clear_error(&mut error);
-        if error.is_null() {
-            Ok(())
-        } else {
-            Err(from_glib_full(error))
-        }
-    }
-}
-
 //#[cfg(any(feature = "v2_56", feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
 //#[doc(alias = "g_clear_handle_id")]
