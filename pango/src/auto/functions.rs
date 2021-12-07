@@ -140,7 +140,7 @@ pub fn parse_markup(
         let mut text = ptr::null_mut();
         let mut accel_char = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
-        let _ = ffi::pango_parse_markup(
+        let is_ok = ffi::pango_parse_markup(
             markup_text.to_glib_none().0,
             length,
             accel_marker.into_glib(),
@@ -150,6 +150,7 @@ pub fn parse_markup(
             &mut error,
         );
         let accel_char = accel_char.assume_init();
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok((
                 from_glib_full(attr_list),

@@ -81,11 +81,12 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_io_stream_close(
+            let is_ok = ffi::g_io_stream_close(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -171,7 +172,8 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
     fn set_pending(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_io_stream_set_pending(self.as_ref().to_glib_none().0, &mut error);
+            let is_ok = ffi::g_io_stream_set_pending(self.as_ref().to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

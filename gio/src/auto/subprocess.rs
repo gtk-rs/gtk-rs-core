@@ -56,7 +56,7 @@ impl Subprocess {
             let mut stdout_buf = ptr::null_mut();
             let mut stderr_buf = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_subprocess_communicate(
+            let is_ok = ffi::g_subprocess_communicate(
                 self.to_glib_none().0,
                 stdin_buf.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -64,6 +64,7 @@ impl Subprocess {
                 &mut stderr_buf,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
             } else {
@@ -156,7 +157,7 @@ impl Subprocess {
             let mut stdout_buf = ptr::null_mut();
             let mut stderr_buf = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_subprocess_communicate_utf8(
+            let is_ok = ffi::g_subprocess_communicate_utf8(
                 self.to_glib_none().0,
                 stdin_buf.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
@@ -164,6 +165,7 @@ impl Subprocess {
                 &mut stderr_buf,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
             } else {
@@ -252,11 +254,12 @@ impl Subprocess {
     pub fn wait(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_subprocess_wait(
+            let is_ok = ffi::g_subprocess_wait(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -320,11 +323,12 @@ impl Subprocess {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_subprocess_wait_check(
+            let is_ok = ffi::g_subprocess_wait_check(
                 self.to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

@@ -296,11 +296,12 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
     fn handshake(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_tls_connection_handshake(
+            let is_ok = ffi::g_tls_connection_handshake(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

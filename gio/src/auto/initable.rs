@@ -29,11 +29,12 @@ pub trait InitableExt: 'static {
 impl<O: IsA<Initable>> InitableExt for O {
     unsafe fn init(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         let mut error = ptr::null_mut();
-        let _ = ffi::g_initable_init(
+        let is_ok = ffi::g_initable_init(
             self.as_ref().to_glib_none().0,
             cancellable.map(|p| p.as_ref()).to_glib_none().0,
             &mut error,
         );
+        assert_eq!(is_ok == 0, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {

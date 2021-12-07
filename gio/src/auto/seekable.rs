@@ -64,13 +64,14 @@ impl<O: IsA<Seekable>> SeekableExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_seekable_seek(
+            let is_ok = ffi::g_seekable_seek(
                 self.as_ref().to_glib_none().0,
                 offset,
                 type_.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -90,12 +91,13 @@ impl<O: IsA<Seekable>> SeekableExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_seekable_truncate(
+            let is_ok = ffi::g_seekable_truncate(
                 self.as_ref().to_glib_none().0,
                 offset,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

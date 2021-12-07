@@ -94,12 +94,13 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
     fn export(&self, connection: &DBusConnection, object_path: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_interface_skeleton_export(
+            let is_ok = ffi::g_dbus_interface_skeleton_export(
                 self.as_ref().to_glib_none().0,
                 connection.to_glib_none().0,
                 object_path.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

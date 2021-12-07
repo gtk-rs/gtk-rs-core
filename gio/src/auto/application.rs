@@ -464,11 +464,12 @@ impl<O: IsA<Application>> ApplicationExt for O {
     fn register(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_application_register(
+            let is_ok = ffi::g_application_register(
                 self.as_ref().to_glib_none().0,
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

@@ -37,12 +37,13 @@ impl Action {
             let mut action_name = ptr::null_mut();
             let mut target_value = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let _ = ffi::g_action_parse_detailed_name(
+            let is_ok = ffi::g_action_parse_detailed_name(
                 detailed_name.to_glib_none().0,
                 &mut action_name,
                 &mut target_value,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(action_name), from_glib_full(target_value)))
             } else {

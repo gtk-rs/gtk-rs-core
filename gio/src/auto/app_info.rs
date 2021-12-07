@@ -121,11 +121,12 @@ impl AppInfo {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_launch_default_for_uri(
+            let is_ok = ffi::g_app_info_launch_default_for_uri(
                 uri.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -298,11 +299,12 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     fn add_supports_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_add_supports_type(
+            let is_ok = ffi::g_app_info_add_supports_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -399,12 +401,13 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_launch(
+            let is_ok = ffi::g_app_info_launch(
                 self.as_ref().to_glib_none().0,
                 files.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -420,12 +423,13 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_launch_uris(
+            let is_ok = ffi::g_app_info_launch_uris(
                 self.as_ref().to_glib_none().0,
                 uris.to_glib_none().0,
                 context.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -437,11 +441,12 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     fn remove_supports_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_remove_supports_type(
+            let is_ok = ffi::g_app_info_remove_supports_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -456,11 +461,12 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_set_as_default_for_extension(
+            let is_ok = ffi::g_app_info_set_as_default_for_extension(
                 self.as_ref().to_glib_none().0,
                 extension.as_ref().to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -472,11 +478,12 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     fn set_as_default_for_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_set_as_default_for_type(
+            let is_ok = ffi::g_app_info_set_as_default_for_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -488,11 +495,12 @@ impl<O: IsA<AppInfo>> AppInfoExt for O {
     fn set_as_last_used_for_type(&self, content_type: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_set_as_last_used_for_type(
+            let is_ok = ffi::g_app_info_set_as_last_used_for_type(
                 self.as_ref().to_glib_none().0,
                 content_type.to_glib_none().0,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

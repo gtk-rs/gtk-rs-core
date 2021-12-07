@@ -255,7 +255,7 @@ impl DesktopAppInfo {
             &pid_callback_data;
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_desktop_app_info_launch_uris_as_manager(
+            let is_ok = ffi::g_desktop_app_info_launch_uris_as_manager(
                 self.to_glib_none().0,
                 uris.to_glib_none().0,
                 launch_context.map(|p| p.as_ref()).to_glib_none().0,
@@ -266,6 +266,7 @@ impl DesktopAppInfo {
                 super_callback1 as *const _ as usize as *mut _,
                 &mut error,
             );
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

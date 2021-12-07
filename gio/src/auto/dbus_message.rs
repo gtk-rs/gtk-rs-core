@@ -405,7 +405,8 @@ impl DBusMessage {
     pub fn to_gerror(&self) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_dbus_message_to_gerror(self.to_glib_none().0, &mut error);
+            let is_ok = ffi::g_dbus_message_to_gerror(self.to_glib_none().0, &mut error);
+            assert_eq!(is_ok == 0, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
