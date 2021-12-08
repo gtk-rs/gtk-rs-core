@@ -7,7 +7,6 @@ use crate::Point3D;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Sphere(BoxedInline<ffi::graphene_sphere_t>);
 
     match fn {

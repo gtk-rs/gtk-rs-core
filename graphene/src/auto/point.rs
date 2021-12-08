@@ -7,7 +7,6 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Point(BoxedInline<ffi::graphene_point_t>);
 
     match fn {

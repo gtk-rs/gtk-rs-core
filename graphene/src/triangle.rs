@@ -4,14 +4,15 @@ use crate::Point3D;
 use crate::Triangle;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Triangle {
     #[doc(alias = "graphene_triangle_init_from_float")]
-    #[doc(alias = "new_from_float")]
-    pub fn from_float(a: [f32; 3], b: [f32; 3], c: [f32; 3]) -> Triangle {
+    #[doc(alias = "init_from_float")]
+    pub fn from_float(a: [f32; 3], b: [f32; 3], c: [f32; 3]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut tri = Triangle::uninitialized();
+            let mut tri = Self::uninitialized();
             ffi::graphene_triangle_init_from_float(
                 tri.to_glib_none_mut().0,
                 a.as_ptr() as *const _,
@@ -23,11 +24,11 @@ impl Triangle {
     }
 
     #[doc(alias = "graphene_triangle_init_from_point3d")]
-    #[doc(alias = "new_from_point3d")]
-    pub fn from_point3d(a: Option<&Point3D>, b: Option<&Point3D>, c: Option<&Point3D>) -> Triangle {
+    #[doc(alias = "init_from_point3d")]
+    pub fn from_point3d(a: Option<&Point3D>, b: Option<&Point3D>, c: Option<&Point3D>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut tri = Triangle::uninitialized();
+            let mut tri = Self::uninitialized();
             ffi::graphene_triangle_init_from_point3d(
                 tri.to_glib_none_mut().0,
                 a.to_glib_none().0,
@@ -39,11 +40,11 @@ impl Triangle {
     }
 
     #[doc(alias = "graphene_triangle_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
-    pub fn from_vec3(a: Option<&Vec3>, b: Option<&Vec3>, c: Option<&Vec3>) -> Triangle {
+    #[doc(alias = "init_from_vec3")]
+    pub fn from_vec3(a: Option<&Vec3>, b: Option<&Vec3>, c: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut tri = Triangle::uninitialized();
+            let mut tri = Self::uninitialized();
             ffi::graphene_triangle_init_from_vec3(
                 tri.to_glib_none_mut().0,
                 a.to_glib_none().0,
@@ -52,5 +53,13 @@ impl Triangle {
             );
             tri
         }
+    }
+}
+
+impl fmt::Debug for Triangle {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Triangle")
+            .field("points", &self.points())
+            .finish()
     }
 }

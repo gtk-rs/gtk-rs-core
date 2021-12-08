@@ -8,7 +8,6 @@ use crate::Sphere;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Frustum(BoxedInline<ffi::graphene_frustum_t>);
 
     match fn {

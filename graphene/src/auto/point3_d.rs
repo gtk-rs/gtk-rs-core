@@ -7,7 +7,6 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Point3D(BoxedInline<ffi::graphene_point3d_t>);
 
     match fn {

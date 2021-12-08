@@ -5,7 +5,6 @@
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Size(BoxedInline<ffi::graphene_size_t>);
 
     match fn {

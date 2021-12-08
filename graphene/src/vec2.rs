@@ -2,35 +2,25 @@
 
 use crate::Vec2;
 use glib::translate::*;
+use std::fmt;
 
 impl Vec2 {
     #[doc(alias = "graphene_vec2_init")]
-    pub fn new(x: f32, y: f32) -> Vec2 {
+    pub fn new(x: f32, y: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut vec = Vec2::uninitialized();
+            let mut vec = Self::uninitialized();
             ffi::graphene_vec2_init(vec.to_glib_none_mut().0, x, y);
             vec
         }
     }
 
-    #[doc(alias = "graphene_vec2_init_from_vec2")]
-    #[doc(alias = "new_from_vec2")]
-    pub fn from_vec2(src: &Vec2) -> Vec2 {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut vec = Vec2::uninitialized();
-            ffi::graphene_vec2_init_from_vec2(vec.to_glib_none_mut().0, src.to_glib_none().0);
-            vec
-        }
-    }
-
     #[doc(alias = "graphene_vec2_init_from_float")]
-    #[doc(alias = "new_from_float")]
-    pub fn from_float(src: &[f32; 2]) -> Vec2 {
+    #[doc(alias = "init_from_float")]
+    pub fn from_float(src: [f32; 2]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut vec = Vec2::uninitialized();
+            let mut vec = Self::uninitialized();
             ffi::graphene_vec2_init_from_float(vec.to_glib_none_mut().0, src.as_ptr() as *const _);
             vec
         }
@@ -43,5 +33,14 @@ impl Vec2 {
             ffi::graphene_vec2_to_float(self.to_glib_none().0, out.as_mut_ptr());
             out.assume_init()
         }
+    }
+}
+
+impl fmt::Debug for Vec2 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Vec2")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .finish()
     }
 }

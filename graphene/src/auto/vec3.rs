@@ -7,7 +7,6 @@ use crate::Vec4;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Vec3(BoxedInline<ffi::graphene_vec3_t>);
 
     match fn {

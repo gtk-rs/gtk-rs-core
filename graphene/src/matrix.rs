@@ -5,47 +5,37 @@ use crate::Point3D;
 use crate::Vec3;
 use crate::Vec4;
 use glib::translate::*;
+use std::fmt;
 
 impl Matrix {
     #[doc(alias = "graphene_matrix_init_from_2d")]
-    #[doc(alias = "new_from_2d")]
-    pub fn from_2d(xx: f64, yx: f64, xy: f64, yy: f64, x_0: f64, y_0: f64) -> Matrix {
+    #[doc(alias = "init_from_2d")]
+    pub fn from_2d(xx: f64, yx: f64, xy: f64, yy: f64, x_0: f64, y_0: f64) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_from_2d(mat.to_glib_none_mut().0, xx, yx, xy, yy, x_0, y_0);
             mat
         }
     }
 
     #[doc(alias = "graphene_matrix_init_from_float")]
-    #[doc(alias = "new_from_float")]
-    pub fn from_float(v: &[f32; 16]) -> Matrix {
+    #[doc(alias = "init_from_float")]
+    pub fn from_float(v: [f32; 16]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_from_float(mat.to_glib_none_mut().0, v.as_ptr() as *const _);
             mat
         }
     }
 
-    #[doc(alias = "graphene_matrix_init_from_matrix")]
-    #[doc(alias = "new_from_matrix")]
-    pub fn from_matrix(src: &Matrix) -> Matrix {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut mat = Matrix::uninitialized();
-            ffi::graphene_matrix_init_from_matrix(mat.to_glib_none_mut().0, src.to_glib_none().0);
-            mat
-        }
-    }
-
     #[doc(alias = "graphene_matrix_init_from_vec4")]
-    #[doc(alias = "new_from_vec4")]
-    pub fn from_vec4(v0: &Vec4, v1: &Vec4, v2: &Vec4, v3: &Vec4) -> Matrix {
+    #[doc(alias = "init_from_vec4")]
+    pub fn from_vec4(v0: &Vec4, v1: &Vec4, v2: &Vec4, v3: &Vec4) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_from_vec4(
                 mat.to_glib_none_mut().0,
                 v0.to_glib_none().0,
@@ -58,6 +48,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_frustum")]
+    #[doc(alias = "init_frustum")]
     pub fn new_frustum(
         left: f32,
         right: f32,
@@ -65,10 +56,10 @@ impl Matrix {
         top: f32,
         z_near: f32,
         z_far: f32,
-    ) -> Matrix {
+    ) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_frustum(
                 mat.to_glib_none_mut().0,
                 left,
@@ -83,20 +74,22 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_identity")]
-    pub fn new_identity() -> Matrix {
+    #[doc(alias = "init_identity")]
+    pub fn new_identity() -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_identity(mat.to_glib_none_mut().0);
             mat
         }
     }
 
     #[doc(alias = "graphene_matrix_init_look_at")]
-    pub fn new_look_at(eye: &Vec3, center: &Vec3, up: &Vec3) -> Matrix {
+    #[doc(alias = "init_look_at")]
+    pub fn new_look_at(eye: &Vec3, center: &Vec3, up: &Vec3) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_look_at(
                 mat.to_glib_none_mut().0,
                 eye.to_glib_none().0,
@@ -108,6 +101,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_ortho")]
+    #[doc(alias = "init_ortho")]
     pub fn new_ortho(
         left: f32,
         right: f32,
@@ -115,10 +109,10 @@ impl Matrix {
         bottom: f32,
         z_near: f32,
         z_far: f32,
-    ) -> Matrix {
+    ) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_ortho(
                 mat.to_glib_none_mut().0,
                 left,
@@ -133,10 +127,11 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_perspective")]
-    pub fn new_perspective(fovy: f32, aspect: f32, z_near: f32, z_far: f32) -> Matrix {
+    #[doc(alias = "init_perspective")]
+    pub fn new_perspective(fovy: f32, aspect: f32, z_near: f32, z_far: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_perspective(
                 mat.to_glib_none_mut().0,
                 fovy,
@@ -149,10 +144,11 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_rotate")]
-    pub fn new_rotate(angle: f32, axis: &Vec3) -> Matrix {
+    #[doc(alias = "init_rotate")]
+    pub fn new_rotate(angle: f32, axis: &Vec3) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_rotate(
                 mat.to_glib_none_mut().0,
                 angle,
@@ -163,30 +159,33 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_init_scale")]
-    pub fn new_scale(x: f32, y: f32, z: f32) -> Matrix {
+    #[doc(alias = "init_scale")]
+    pub fn new_scale(x: f32, y: f32, z: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_scale(mat.to_glib_none_mut().0, x, y, z);
             mat
         }
     }
 
     #[doc(alias = "graphene_matrix_init_skew")]
-    pub fn new_skew(x_skew: f32, y_skew: f32) -> Matrix {
+    #[doc(alias = "init_skew")]
+    pub fn new_skew(x_skew: f32, y_skew: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_skew(mat.to_glib_none_mut().0, x_skew, y_skew);
             mat
         }
     }
 
     #[doc(alias = "graphene_matrix_init_translate")]
-    pub fn new_translate(p: &Point3D) -> Matrix {
+    #[doc(alias = "init_translate")]
+    pub fn new_translate(p: &Point3D) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut mat = Matrix::uninitialized();
+            let mut mat = Self::uninitialized();
             ffi::graphene_matrix_init_translate(mat.to_glib_none_mut().0, p.to_glib_none().0);
             mat
         }
@@ -199,5 +198,35 @@ impl Matrix {
             ffi::graphene_matrix_to_float(self.to_glib_none().0, out.as_mut_ptr());
             out.assume_init()
         }
+    }
+
+    pub fn values(&self) -> &[[f32; 4]; 4] {
+        unsafe { &*(&self.0.value as *const ffi::graphene_simd4x4f_t as *const [[f32; 4]; 4]) }
+    }
+}
+
+impl fmt::Debug for Matrix {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Matrix")
+            .field("values", &self.values())
+            .finish()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Matrix;
+    #[test]
+    fn test_matrix_values() {
+        let matrix = Matrix::new_identity();
+        assert_eq!(
+            matrix.values(),
+            &[
+                [1.0, 0.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0]
+            ],
+        );
     }
 }

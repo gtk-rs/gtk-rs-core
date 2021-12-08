@@ -3,42 +3,38 @@
 use crate::Rect;
 use crate::Vec2;
 use glib::translate::*;
+use std::fmt;
 
 impl Rect {
     #[doc(alias = "graphene_rect_get_vertices")]
     #[doc(alias = "get_vertices")]
-    pub fn vertices(&self) -> [Vec2; 4] {
+    pub fn vertices(&self) -> &[Vec2; 4] {
         unsafe {
             let mut out: [ffi::graphene_vec2_t; 4] = std::mem::zeroed();
             ffi::graphene_rect_get_vertices(self.to_glib_none().0, &mut out as *mut _);
-            [
-                from_glib_none(&out[0] as *const _),
-                from_glib_none(&out[1] as *const _),
-                from_glib_none(&out[2] as *const _),
-                from_glib_none(&out[3] as *const _),
-            ]
+            &*(&out as *const [ffi::graphene_vec2_t; 4] as *const [Vec2; 4])
         }
     }
 
     #[doc(alias = "graphene_rect_init")]
-    pub fn new(x: f32, y: f32, width: f32, height: f32) -> Rect {
+    pub fn new(x: f32, y: f32, width: f32, height: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut rect = Rect::uninitialized();
+            let mut rect = Self::uninitialized();
             ffi::graphene_rect_init(rect.to_glib_none_mut().0, x, y, width, height);
             rect
         }
     }
+}
 
-    #[doc(alias = "graphene_rect_init_from_rect")]
-    #[doc(alias = "new_from_rect")]
-    pub fn from_rect(src: &Rect) -> Rect {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut rect = Rect::uninitialized();
-            ffi::graphene_rect_init_from_rect(rect.to_glib_none_mut().0, src.to_glib_none().0);
-            rect
-        }
+impl fmt::Debug for Rect {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rect")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
     }
 }
 

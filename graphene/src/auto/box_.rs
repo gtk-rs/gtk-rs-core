@@ -8,7 +8,6 @@ use crate::Vec3;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Box(BoxedInline<ffi::graphene_box_t>);
 
     match fn {

@@ -4,13 +4,14 @@ use crate::Point3D;
 use crate::Ray;
 use crate::Vec3;
 use glib::translate::*;
+use std::fmt;
 
 impl Ray {
     #[doc(alias = "graphene_ray_init")]
-    pub fn new(origin: Option<&Point3D>, direction: Option<&Vec3>) -> Ray {
+    pub fn new(origin: Option<&Point3D>, direction: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut ray = Ray::uninitialized();
+            let mut ray = Self::uninitialized();
             ffi::graphene_ray_init(
                 ray.to_glib_none_mut().0,
                 origin.to_glib_none().0,
@@ -20,23 +21,12 @@ impl Ray {
         }
     }
 
-    #[doc(alias = "graphene_ray_init_from_ray")]
-    #[doc(alias = "new_from_ray")]
-    pub fn from_ray(src: &Ray) -> Ray {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut ray = Ray::uninitialized();
-            ffi::graphene_ray_init_from_ray(ray.to_glib_none_mut().0, src.to_glib_none().0);
-            ray
-        }
-    }
-
     #[doc(alias = "graphene_ray_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
-    pub fn from_vec3(origin: Option<&Vec3>, direction: Option<&Vec3>) -> Ray {
+    #[doc(alias = "init_from_vec3")]
+    pub fn from_vec3(origin: Option<&Vec3>, direction: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
-            let mut ray = Ray::uninitialized();
+            let mut ray = Self::uninitialized();
             ffi::graphene_ray_init_from_vec3(
                 ray.to_glib_none_mut().0,
                 origin.to_glib_none().0,
@@ -44,5 +34,14 @@ impl Ray {
             );
             ray
         }
+    }
+}
+
+impl fmt::Debug for Ray {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Ray")
+            .field("origin", &self.origin())
+            .field("direction", &self.direction())
+            .finish()
     }
 }

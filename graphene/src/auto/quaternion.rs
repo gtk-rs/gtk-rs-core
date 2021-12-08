@@ -9,7 +9,6 @@ use glib::translate::*;
 use std::mem;
 
 glib::wrapper! {
-    #[derive(Debug)]
     pub struct Quaternion(BoxedInline<ffi::graphene_quaternion_t>);
 
     match fn {
