@@ -35,17 +35,6 @@ impl Frustum {
         }
     }
 
-    #[doc(alias = "graphene_frustum_init_from_frustum")]
-    #[doc(alias = "new_from_frustum")]
-    pub fn from_frustum(src: &Frustum) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut fru = Self::uninitialized();
-            ffi::graphene_frustum_init_from_frustum(fru.to_glib_none_mut().0, src.to_glib_none().0);
-            fru
-        }
-    }
-
     #[doc(alias = "graphene_frustum_init_from_matrix")]
     #[doc(alias = "new_from_matrix")]
     pub fn from_matrix(matrix: &Matrix) -> Self {

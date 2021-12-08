@@ -25,17 +25,6 @@ impl Rect {
             rect
         }
     }
-
-    #[doc(alias = "graphene_rect_init_from_rect")]
-    #[doc(alias = "new_from_rect")]
-    pub fn from_rect(src: &Rect) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut rect = Self::uninitialized();
-            ffi::graphene_rect_init_from_rect(rect.to_glib_none_mut().0, src.to_glib_none().0);
-            rect
-        }
-    }
 }
 
 impl fmt::Debug for Rect {

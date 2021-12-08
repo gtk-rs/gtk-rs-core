@@ -15,17 +15,6 @@ impl Vec3 {
         }
     }
 
-    #[doc(alias = "graphene_vec3_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
-    pub fn from_vec3(src: &Vec3) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut vec = Self::uninitialized();
-            ffi::graphene_vec3_init_from_vec3(vec.to_glib_none_mut().0, src.to_glib_none().0);
-            vec
-        }
-    }
-
     #[doc(alias = "graphene_vec3_init_from_float")]
     #[doc(alias = "new_from_float")]
     pub fn from_float(src: &[f32; 3]) -> Self {

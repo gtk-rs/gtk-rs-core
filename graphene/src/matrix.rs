@@ -30,17 +30,6 @@ impl Matrix {
         }
     }
 
-    #[doc(alias = "graphene_matrix_init_from_matrix")]
-    #[doc(alias = "new_from_matrix")]
-    pub fn from_matrix(src: &Matrix) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut mat = Self::uninitialized();
-            ffi::graphene_matrix_init_from_matrix(mat.to_glib_none_mut().0, src.to_glib_none().0);
-            mat
-        }
-    }
-
     #[doc(alias = "graphene_matrix_init_from_vec4")]
     #[doc(alias = "new_from_vec4")]
     pub fn from_vec4(v0: &Vec4, v1: &Vec4, v2: &Vec4, v3: &Vec4) -> Self {

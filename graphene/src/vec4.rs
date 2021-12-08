@@ -39,17 +39,6 @@ impl Vec4 {
         }
     }
 
-    #[doc(alias = "graphene_vec4_init_from_vec4")]
-    #[doc(alias = "new_from_vec4")]
-    pub fn from_vec4(src: &Vec4) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut vec = Self::uninitialized();
-            ffi::graphene_vec4_init_from_vec4(vec.to_glib_none_mut().0, src.to_glib_none().0);
-            vec
-        }
-    }
-
     #[doc(alias = "graphene_vec4_init_from_float")]
     #[doc(alias = "new_from_float")]
     pub fn from_float(src: &[f32; 4]) -> Self {

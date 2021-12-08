@@ -19,17 +19,6 @@ impl Euler {
         }
     }
 
-    #[doc(alias = "graphene_euler_init_from_euler")]
-    #[doc(alias = "new_from_euler")]
-    pub fn from_euler(src: Option<&Euler>) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut eul = Self::uninitialized();
-            ffi::graphene_euler_init_from_euler(eul.to_glib_none_mut().0, src.to_glib_none().0);
-            eul
-        }
-    }
-
     #[doc(alias = "graphene_euler_init_from_matrix")]
     #[doc(alias = "new_from_matrix")]
     pub fn from_matrix(m: Option<&Matrix>, order: EulerOrder) -> Self {

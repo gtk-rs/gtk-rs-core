@@ -31,17 +31,6 @@ impl Box {
         }
     }
 
-    #[doc(alias = "graphene_box_init_from_box")]
-    #[doc(alias = "new_from_box")]
-    pub fn from_box(src: &Box) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut b = Self::uninitialized();
-            ffi::graphene_box_init_from_box(b.to_glib_none_mut().0, src.to_glib_none().0);
-            b
-        }
-    }
-
     #[doc(alias = "graphene_box_init_from_points")]
     #[doc(alias = "new_from_points")]
     pub fn from_points(&mut self, points: &[Point3D]) -> Self {

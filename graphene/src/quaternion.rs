@@ -75,20 +75,6 @@ impl Quaternion {
         }
     }
 
-    #[doc(alias = "graphene_quaternion_init_from_quaternion")]
-    #[doc(alias = "new_from_quaternion")]
-    pub fn from_quaternion(src: &Quaternion) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut quat = Self::uninitialized();
-            ffi::graphene_quaternion_init_from_quaternion(
-                quat.to_glib_none_mut().0,
-                src.to_glib_none().0,
-            );
-            quat
-        }
-    }
-
     #[doc(alias = "graphene_quaternion_init_from_radians")]
     #[doc(alias = "new_from_radians")]
     pub fn from_radians(rad_x: f32, rad_y: f32, rad_z: f32) -> Self {

@@ -16,17 +16,6 @@ impl Point3D {
         }
     }
 
-    #[doc(alias = "graphene_point3d_init_from_point")]
-    #[doc(alias = "new_from_point")]
-    pub fn from_point(src: &Point3D) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut p = Self::uninitialized();
-            ffi::graphene_point3d_init_from_point(p.to_glib_none_mut().0, src.to_glib_none().0);
-            p
-        }
-    }
-
     #[doc(alias = "graphene_point3d_init_from_vec3")]
     #[doc(alias = "new_from_vec3")]
     pub fn from_vec3(v: &Vec3) -> Self {

@@ -15,17 +15,6 @@ impl Size {
         }
     }
 
-    #[doc(alias = "graphene_size_init_from_size")]
-    #[doc(alias = "new_from_size")]
-    pub fn from_size(src: &Size) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut siz = Self::uninitialized();
-            ffi::graphene_size_init_from_size(siz.to_glib_none_mut().0, src.to_glib_none().0);
-            siz
-        }
-    }
-
     pub fn width(&self) -> f32 {
         self.0.width
     }

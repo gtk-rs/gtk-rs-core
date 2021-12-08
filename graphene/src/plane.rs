@@ -22,16 +22,6 @@ impl Plane {
         }
     }
 
-    #[doc(alias = "graphene_plane_init_from_plane")]
-    #[doc(alias = "new_from_plane")]
-    pub fn from_plane(src: &Plane) -> Self {
-        assert_initialized_main_thread!();
-        unsafe {
-            let mut plane = Self::uninitialized();
-            ffi::graphene_plane_init_from_plane(plane.to_glib_none_mut().0, src.to_glib_none().0);
-            plane
-        }
-    }
 
     #[doc(alias = "graphene_plane_init_from_point")]
     #[doc(alias = "new_from_point")]
