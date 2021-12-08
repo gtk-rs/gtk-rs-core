@@ -33,7 +33,7 @@ impl Box {
 
     #[doc(alias = "graphene_box_init_from_points")]
     #[doc(alias = "new_from_points")]
-    pub fn from_points(&mut self, points: &[Point3D]) -> Self {
+    pub fn from_points(points: &[Point3D]) -> Self {
         assert_initialized_main_thread!();
 
         let n = points.len() as u32;
