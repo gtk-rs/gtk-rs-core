@@ -21,7 +21,7 @@ impl Matrix {
 
     #[doc(alias = "graphene_matrix_init_from_float")]
     #[doc(alias = "new_from_float")]
-    pub fn from_float(v: &[f32; 16]) -> Self {
+    pub fn from_float(v: [f32; 16]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
             let mut mat = Self::uninitialized();

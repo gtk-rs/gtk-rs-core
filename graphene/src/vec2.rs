@@ -17,7 +17,7 @@ impl Vec2 {
 
     #[doc(alias = "graphene_vec2_init_from_float")]
     #[doc(alias = "new_from_float")]
-    pub fn from_float(src: &[f32; 2]) -> Self {
+    pub fn from_float(src: [f32; 2]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
             let mut vec = Self::uninitialized();
