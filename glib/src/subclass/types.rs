@@ -86,6 +86,18 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     }
 }
 
+/// Trait implemented by any type implementing `ObjectSubclassIs` to return the implementation, private Rust struct.
+pub trait ObjectSubclassIsExt: ObjectSubclassIs {
+    /// Returns the implementation (the private Rust struct) of this class instance
+    fn impl_(&self) -> &Self::Subclass;
+}
+
+impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSubclassIsExt for T {
+    fn impl_(&self) -> &T::Subclass {
+        T::Subclass::from_instance(self)
+    }
+}
+
 /// Trait implemented by structs that implement a `GObject` C class struct.
 ///
 /// The struct must be `#[repr(C)]` and have the parent type's class struct
