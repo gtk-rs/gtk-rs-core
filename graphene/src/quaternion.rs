@@ -20,7 +20,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_angle_vec3")]
-    #[doc(alias = "new_from_angle_vec3")]
+    #[doc(alias = "init_from_angle_vec3")]
     pub fn from_angle_vec3(angle: f32, axis: &Vec3) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -35,7 +35,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_angles")]
-    #[doc(alias = "new_from_angles")]
+    #[doc(alias = "init_from_angles")]
     pub fn from_angles(deg_x: f32, deg_y: f32, deg_z: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -51,7 +51,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_euler")]
-    #[doc(alias = "new_from_euler")]
+    #[doc(alias = "init_from_euler")]
     pub fn from_euler(e: &Euler) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -62,7 +62,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_matrix")]
-    #[doc(alias = "new_from_matrix")]
+    #[doc(alias = "init_from_matrix")]
     pub fn from_matrix(m: &Matrix) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -76,7 +76,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_radians")]
-    #[doc(alias = "new_from_radians")]
+    #[doc(alias = "init_from_radians")]
     pub fn from_radians(rad_x: f32, rad_y: f32, rad_z: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -92,7 +92,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_from_vec4")]
-    #[doc(alias = "new_from_vec4")]
+    #[doc(alias = "init_from_vec4")]
     pub fn from_vec4(src: &Vec4) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -106,6 +106,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_init_identity")]
+    #[doc(alias = "init_identity")]
     pub fn new_identity() -> Self {
         assert_initialized_main_thread!();
         unsafe {

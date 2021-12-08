@@ -17,7 +17,7 @@ impl Point {
     }
 
     #[doc(alias = "graphene_point_init_from_vec2")]
-    #[doc(alias = "new_from_vec2")]
+    #[doc(alias = "init_from_vec2")]
     pub fn from_vec2(src: &Vec2) -> Point {
         assert_initialized_main_thread!();
         unsafe {

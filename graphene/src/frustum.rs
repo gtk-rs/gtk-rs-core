@@ -36,7 +36,7 @@ impl Frustum {
     }
 
     #[doc(alias = "graphene_frustum_init_from_matrix")]
-    #[doc(alias = "new_from_matrix")]
+    #[doc(alias = "init_from_matrix")]
     pub fn from_matrix(matrix: &Matrix) -> Self {
         assert_initialized_main_thread!();
         unsafe {

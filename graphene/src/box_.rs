@@ -32,7 +32,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_init_from_points")]
-    #[doc(alias = "new_from_points")]
+    #[doc(alias = "init_from_points")]
     pub fn from_points(points: &[Point3D]) -> Self {
         assert_initialized_main_thread!();
 
@@ -46,7 +46,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
+    #[doc(alias = "init_from_vec3")]
     pub fn from_vec3(min: Option<&Vec3>, max: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -61,7 +61,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_init_from_vectors")]
-    #[doc(alias = "new_from_vectors")]
+    #[doc(alias = "init_from_vectors")]
     pub fn from_vectors(vectors: &[Vec3]) -> Self {
         assert_initialized_main_thread!();
 

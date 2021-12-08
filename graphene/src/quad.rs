@@ -24,7 +24,7 @@ impl Quad {
     }
 
     #[doc(alias = "graphene_quad_init_from_rect")]
-    #[doc(alias = "new_from_rect")]
+    #[doc(alias = "init_from_rect")]
     pub fn from_rect(r: &Rect) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -35,7 +35,7 @@ impl Quad {
     }
 
     #[doc(alias = "graphene_quad_init_from_points")]
-    #[doc(alias = "new_from_points")]
+    #[doc(alias = "init_from_points")]
     pub fn from_points(points: &[Point; 4]) -> Self {
         assert_initialized_main_thread!();
         unsafe {

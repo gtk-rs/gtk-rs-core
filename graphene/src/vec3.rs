@@ -16,7 +16,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_init_from_float")]
-    #[doc(alias = "new_from_float")]
+    #[doc(alias = "init_from_float")]
     pub fn from_float(src: [f32; 3]) -> Self {
         assert_initialized_main_thread!();
         unsafe {

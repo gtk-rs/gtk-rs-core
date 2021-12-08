@@ -18,7 +18,7 @@ impl Sphere {
     }
 
     #[doc(alias = "graphene_sphere_init_from_points")]
-    #[doc(alias = "new_from_points")]
+    #[doc(alias = "init_from_points")]
     pub fn from_points(points: &[Point3D], center: Option<&Point3D>) -> Self {
         assert_initialized_main_thread!();
 
@@ -37,7 +37,7 @@ impl Sphere {
     }
 
     #[doc(alias = "graphene_sphere_init_from_vectors")]
-    #[doc(alias = "new_from_vectors")]
+    #[doc(alias = "init_from_vectors")]
     pub fn from_vectors(vectors: &[Vec3], center: Option<&Point3D>) -> Self {
         assert_initialized_main_thread!();
 

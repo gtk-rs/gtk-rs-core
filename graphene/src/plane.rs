@@ -22,9 +22,8 @@ impl Plane {
         }
     }
 
-
     #[doc(alias = "graphene_plane_init_from_point")]
-    #[doc(alias = "new_from_point")]
+    #[doc(alias = "init_from_point")]
     pub fn from_point(normal: &Vec3, point: &Point3D) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -39,7 +38,7 @@ impl Plane {
     }
 
     #[doc(alias = "graphene_plane_init_from_points")]
-    #[doc(alias = "new_from_points")]
+    #[doc(alias = "init_from_points")]
     pub fn from_points(a: &Point3D, b: &Point3D, c: &Point3D) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -55,7 +54,7 @@ impl Plane {
     }
 
     #[doc(alias = "graphene_plane_init_from_vec4")]
-    #[doc(alias = "new_from_vec4")]
+    #[doc(alias = "init_from_vec4")]
     pub fn from_vec4(src: &Vec4) -> Self {
         assert_initialized_main_thread!();
         unsafe {

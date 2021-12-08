@@ -22,7 +22,7 @@ impl Ray {
     }
 
     #[doc(alias = "graphene_ray_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
+    #[doc(alias = "init_from_vec3")]
     pub fn from_vec3(origin: Option<&Vec3>, direction: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {

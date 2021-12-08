@@ -20,7 +20,7 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_init_from_matrix")]
-    #[doc(alias = "new_from_matrix")]
+    #[doc(alias = "init_from_matrix")]
     pub fn from_matrix(m: Option<&Matrix>, order: EulerOrder) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -35,7 +35,7 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_init_from_quaternion")]
-    #[doc(alias = "new_from_quaternion")]
+    #[doc(alias = "init_from_quaternion")]
     pub fn from_quaternion(q: Option<&Quaternion>, order: EulerOrder) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -50,7 +50,7 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_init_from_radians")]
-    #[doc(alias = "new_from_radians")]
+    #[doc(alias = "init_from_radians")]
     pub fn from_radians(x: f32, y: f32, z: f32, order: EulerOrder) -> Self {
         unsafe {
             let mut eul = Self::uninitialized();
@@ -66,7 +66,7 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
+    #[doc(alias = "init_from_vec3")]
     pub fn from_vec3(v: Option<&Vec3>, order: EulerOrder) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -81,7 +81,8 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_init_with_order")]
-    pub fn new_with_order(x: f32, y: f32, z: f32, order: EulerOrder) -> Self {
+    #[doc(alias = "init_with_order")]
+    pub fn with_order(x: f32, y: f32, z: f32, order: EulerOrder) -> Self {
         assert_initialized_main_thread!();
         unsafe {
             let mut eul = Self::uninitialized();

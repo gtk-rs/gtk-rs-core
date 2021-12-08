@@ -8,7 +8,7 @@ use std::fmt;
 
 impl Triangle {
     #[doc(alias = "graphene_triangle_init_from_float")]
-    #[doc(alias = "new_from_float")]
+    #[doc(alias = "init_from_float")]
     pub fn from_float(a: [f32; 3], b: [f32; 3], c: [f32; 3]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -24,7 +24,7 @@ impl Triangle {
     }
 
     #[doc(alias = "graphene_triangle_init_from_point3d")]
-    #[doc(alias = "new_from_point3d")]
+    #[doc(alias = "init_from_point3d")]
     pub fn from_point3d(a: Option<&Point3D>, b: Option<&Point3D>, c: Option<&Point3D>) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -40,7 +40,7 @@ impl Triangle {
     }
 
     #[doc(alias = "graphene_triangle_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
+    #[doc(alias = "init_from_vec3")]
     pub fn from_vec3(a: Option<&Vec3>, b: Option<&Vec3>, c: Option<&Vec3>) -> Self {
         assert_initialized_main_thread!();
         unsafe {

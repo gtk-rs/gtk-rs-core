@@ -18,7 +18,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_init_from_vec2")]
-    #[doc(alias = "new_from_vec2")]
+    #[doc(alias = "init_from_vec2")]
     pub fn from_vec2(src: &Vec2, z: f32, w: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -29,7 +29,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_init_from_vec3")]
-    #[doc(alias = "new_from_vec3")]
+    #[doc(alias = "init_from_vec3")]
     pub fn from_vec3(src: &Vec3, w: f32) -> Self {
         assert_initialized_main_thread!();
         unsafe {
@@ -40,7 +40,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_init_from_float")]
-    #[doc(alias = "new_from_float")]
+    #[doc(alias = "init_from_float")]
     pub fn from_float(src: [f32; 4]) -> Self {
         assert_initialized_main_thread!();
         unsafe {
