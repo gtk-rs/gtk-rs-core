@@ -57,7 +57,7 @@ pub trait InputStreamExtManual: Sized {
         callback: Q,
     );
 
-    fn read_all_async_future<B: AsMut<[u8]> + Send + 'static>(
+    fn read_all_future<B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -69,7 +69,7 @@ pub trait InputStreamExtManual: Sized {
         >,
     >;
 
-    fn read_async_future<B: AsMut<[u8]> + Send + 'static>(
+    fn read_future<B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -272,7 +272,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         }
     }
 
-    fn read_all_async_future<'a, B: AsMut<[u8]> + Send + 'static>(
+    fn read_all_future<'a, B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -293,7 +293,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         ))
     }
 
-    fn read_async_future<'a, B: AsMut<[u8]> + Send + 'static>(
+    fn read_future<'a, B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -422,9 +422,7 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
             State::Waiting { .. } => {
                 let waiting = mem::replace(&mut self.state, State::Transitioning);
                 let buffer = waiting.into_buffer();
-                let pending = self
-                    .input_stream()
-                    .read_async_future(buffer, Priority::default());
+                let pending = self.input_stream().read_future(buffer, Priority::default());
                 self.state = State::Reading { pending };
             }
             State::Reading { .. } => {}

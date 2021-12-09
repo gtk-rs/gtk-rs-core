@@ -28,7 +28,7 @@ pub trait FileExtManual: Sized {
         callback: R,
     );
 
-    fn replace_contents_async_future<B: AsRef<[u8]> + Send + 'static>(
+    fn replace_contents_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         contents: B,
         etag: Option<&str>,
@@ -54,7 +54,7 @@ pub trait FileExtManual: Sized {
         callback: Q,
     );
 
-    fn enumerate_children_async_future(
+    fn enumerate_children_future(
         &self,
         attributes: &'static str,
         flags: FileQueryInfoFlags,
@@ -72,7 +72,7 @@ pub trait FileExtManual: Sized {
         callback: Q,
     );
 
-    fn copy_async_future(
+    fn copy_future(
         &self,
         destination: &(impl IsA<File> + Clone + 'static),
         flags: crate::FileCopyFlags,
@@ -111,7 +111,7 @@ pub trait FileExtManual: Sized {
         callback: P,
     );
 
-    fn measure_disk_usage_async_future(
+    fn measure_disk_usage_future(
         &self,
         flags: crate::FileMeasureFlags,
         io_priority: glib::Priority,
@@ -187,7 +187,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    fn replace_contents_async_future<B: AsRef<[u8]> + Send + 'static>(
+    fn replace_contents_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         contents: B,
         etag: Option<&str>,
@@ -261,7 +261,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    fn enumerate_children_async_future(
+    fn enumerate_children_future(
         &self,
         attributes: &'static str,
         flags: FileQueryInfoFlags,
@@ -351,7 +351,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    fn copy_async_future(
+    fn copy_future(
         &self,
         destination: &(impl IsA<File> + Clone + 'static),
         flags: crate::FileCopyFlags,
@@ -612,7 +612,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    fn measure_disk_usage_async_future(
+    fn measure_disk_usage_future(
         &self,
         flags: crate::FileMeasureFlags,
         io_priority: glib::Priority,

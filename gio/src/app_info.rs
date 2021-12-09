@@ -35,7 +35,7 @@ pub trait AppInfoExtManual: 'static {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
+    fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
         uris: &[&str],
         context: Option<&P>,
@@ -91,7 +91,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn launch_uris_async_future<P: IsA<AppLaunchContext> + Clone + 'static>(
+    fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
         uris: &[&str],
         context: Option<&P>,

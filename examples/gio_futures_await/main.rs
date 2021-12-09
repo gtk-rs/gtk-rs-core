@@ -29,7 +29,7 @@ fn main() {
 async fn read_file(file: gio::File) -> Result<(), String> {
     // Try to open the file.
     let strm = file
-        .read_async_future(glib::PRIORITY_DEFAULT)
+        .read_future(glib::PRIORITY_DEFAULT)
         .map_err(|err| format!("Failed to open file: {}", err))
         .await?;
 
@@ -41,7 +41,7 @@ async fn read_file(file: gio::File) -> Result<(), String> {
 
     loop {
         let (b, len) = strm
-            .read_async_future(buf, glib::PRIORITY_DEFAULT)
+            .read_future(buf, glib::PRIORITY_DEFAULT)
             .map_err(|(_buf, err)| format!("Failed to read from stream: {}", err))
             .await?;
 
@@ -60,7 +60,7 @@ async fn read_file(file: gio::File) -> Result<(), String> {
 
     // Asynchronously close the stream in the end.
     let _ = strm
-        .close_async_future(glib::PRIORITY_DEFAULT)
+        .close_future(glib::PRIORITY_DEFAULT)
         .map_err(|err| format!("Failed to close stream: {}", err))
         .await?;
 

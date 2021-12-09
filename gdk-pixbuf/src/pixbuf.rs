@@ -202,7 +202,7 @@ impl Pixbuf {
         }
     }
 
-    pub fn from_stream_async_future<P: IsA<gio::InputStream> + Clone + 'static>(
+    pub fn from_stream_future<P: IsA<gio::InputStream> + Clone + 'static>(
         stream: &P,
     ) -> Pin<Box<dyn Future<Output = Result<Pixbuf, Error>> + 'static>> {
         let stream = stream.clone();
@@ -259,7 +259,7 @@ impl Pixbuf {
         }
     }
 
-    pub fn from_stream_at_scale_async_future<P: IsA<gio::InputStream> + Clone + 'static>(
+    pub fn from_stream_at_scale_future<P: IsA<gio::InputStream> + Clone + 'static>(
         stream: &P,
         width: i32,
         height: i32,
@@ -396,8 +396,8 @@ impl Pixbuf {
     }
 
     #[allow(clippy::type_complexity)]
-    #[doc(alias = "get_file_info_async_future")]
-    pub fn file_info_async_future<T: AsRef<Path> + Clone + 'static>(
+    #[doc(alias = "get_file_info_async")]
+    pub fn file_info_future<T: AsRef<Path> + Clone + 'static>(
         filename: T,
     ) -> Pin<Box<dyn Future<Output = Result<Option<(PixbufFormat, i32, i32)>, Error>> + 'static>>
     {
@@ -521,7 +521,7 @@ impl Pixbuf {
 
     #[cfg(any(feature = "v2_36", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
-    pub fn save_to_streamv_async_future<P: IsA<gio::OutputStream> + Clone + 'static>(
+    pub fn save_to_streamv_future<P: IsA<gio::OutputStream> + Clone + 'static>(
         &self,
         stream: &P,
         type_: &str,
