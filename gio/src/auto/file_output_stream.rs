@@ -48,7 +48,7 @@ pub trait FileOutputStreamExt: 'static {
         callback: P,
     );
 
-    fn query_info_async_future(
+    fn query_info_future(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
@@ -127,7 +127,7 @@ impl<O: IsA<FileOutputStream>> FileOutputStreamExt for O {
         }
     }
 
-    fn query_info_async_future(
+    fn query_info_future(
         &self,
         attributes: &str,
         io_priority: glib::Priority,

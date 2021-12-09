@@ -49,7 +49,7 @@ pub trait ProxyResolverExt: 'static {
         callback: P,
     );
 
-    fn lookup_async_future(
+    fn lookup_future(
         &self,
         uri: &str,
     ) -> Pin<
@@ -124,7 +124,7 @@ impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {
         }
     }
 
-    fn lookup_async_future(
+    fn lookup_future(
         &self,
         uri: &str,
     ) -> Pin<

@@ -122,7 +122,7 @@ impl Subprocess {
         }
     }
 
-    pub fn communicate_async_future(
+    pub fn communicate_future(
         &self,
         stdin_buf: Option<&glib::Bytes>,
     ) -> Pin<
@@ -303,7 +303,7 @@ impl Subprocess {
         }
     }
 
-    pub fn wait_async_future(
+    pub fn wait_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         Box_::pin(crate::GioFuture::new(
@@ -372,7 +372,7 @@ impl Subprocess {
         }
     }
 
-    pub fn wait_check_async_future(
+    pub fn wait_check_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         Box_::pin(crate::GioFuture::new(

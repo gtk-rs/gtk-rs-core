@@ -66,7 +66,7 @@ pub trait ResolverExt: 'static {
         callback: P,
     );
 
-    fn lookup_by_address_async_future(
+    fn lookup_by_address_future(
         &self,
         address: &(impl IsA<InetAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>;
@@ -86,7 +86,7 @@ pub trait ResolverExt: 'static {
         callback: P,
     );
 
-    fn lookup_by_name_async_future(
+    fn lookup_by_name_future(
         &self,
         hostname: &str,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>;
@@ -116,7 +116,7 @@ pub trait ResolverExt: 'static {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn lookup_by_name_with_flags_async_future(
+    fn lookup_by_name_with_flags_future(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
@@ -139,7 +139,7 @@ pub trait ResolverExt: 'static {
         callback: P,
     );
 
-    fn lookup_records_async_future(
+    fn lookup_records_future(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
@@ -166,7 +166,7 @@ pub trait ResolverExt: 'static {
         callback: P,
     );
 
-    fn lookup_service_async_future(
+    fn lookup_service_future(
         &self,
         service: &str,
         protocol: &str,
@@ -239,7 +239,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_address_async_future(
+    fn lookup_by_address_future(
         &self,
         address: &(impl IsA<InetAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<glib::GString, glib::Error>> + 'static>>
@@ -313,7 +313,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_name_async_future(
+    fn lookup_by_name_future(
         &self,
         hostname: &str,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>
@@ -402,7 +402,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn lookup_by_name_with_flags_async_future(
+    fn lookup_by_name_with_flags_future(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
@@ -486,7 +486,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_records_async_future(
+    fn lookup_records_future(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
@@ -570,7 +570,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_service_async_future(
+    fn lookup_service_future(
         &self,
         service: &str,
         protocol: &str,

@@ -104,7 +104,7 @@ pub trait TlsConnectionExt: 'static {
         callback: P,
     );
 
-    fn handshake_async_future(
+    fn handshake_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -347,7 +347,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    fn handshake_async_future(
+    fn handshake_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

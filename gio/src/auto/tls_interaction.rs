@@ -44,7 +44,7 @@ pub trait TlsInteractionExt: 'static {
         callback: P,
     );
 
-    fn ask_password_async_future(
+    fn ask_password_future(
         &self,
         password: &(impl IsA<TlsPassword> + Clone + 'static),
     ) -> Pin<
@@ -85,7 +85,7 @@ pub trait TlsInteractionExt: 'static {
         callback: P,
     );
 
-    fn request_certificate_async_future(
+    fn request_certificate_future(
         &self,
         connection: &(impl IsA<TlsConnection> + Clone + 'static),
         flags: TlsCertificateRequestFlags,
@@ -156,7 +156,7 @@ impl<O: IsA<TlsInteraction>> TlsInteractionExt for O {
         }
     }
 
-    fn ask_password_async_future(
+    fn ask_password_future(
         &self,
         password: &(impl IsA<TlsPassword> + Clone + 'static),
     ) -> Pin<
@@ -284,7 +284,7 @@ impl<O: IsA<TlsInteraction>> TlsInteractionExt for O {
         }
     }
 
-    fn request_certificate_async_future(
+    fn request_certificate_future(
         &self,
         connection: &(impl IsA<TlsConnection> + Clone + 'static),
         flags: TlsCertificateRequestFlags,

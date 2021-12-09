@@ -77,7 +77,7 @@ pub trait SocketConnectionExt: 'static {
         callback: P,
     );
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         address: &(impl IsA<SocketAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -158,7 +158,7 @@ impl<O: IsA<SocketConnection>> SocketConnectionExt for O {
         }
     }
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         address: &(impl IsA<SocketAddress> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

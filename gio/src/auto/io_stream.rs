@@ -45,7 +45,7 @@ pub trait IOStreamExt: 'static {
         callback: P,
     );
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -131,7 +131,7 @@ impl<O: IsA<IOStream>> IOStreamExt for O {
         }
     }
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

@@ -140,7 +140,7 @@ pub trait BufferedInputStreamExt: 'static {
         callback: P,
     );
 
-    fn fill_async_future(
+    fn fill_future(
         &self,
         count: isize,
         io_priority: glib::Priority,
@@ -228,7 +228,7 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
         }
     }
 
-    fn fill_async_future(
+    fn fill_future(
         &self,
         count: isize,
         io_priority: glib::Priority,

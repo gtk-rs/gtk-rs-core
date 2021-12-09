@@ -39,7 +39,7 @@ pub trait SocketAddressEnumeratorExt: 'static {
         callback: P,
     );
 
-    fn next_async_future(
+    fn next_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketAddress, glib::Error>> + 'static>>;
 }
@@ -102,7 +102,7 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         }
     }
 
-    fn next_async_future(
+    fn next_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketAddress, glib::Error>> + 'static>>
     {

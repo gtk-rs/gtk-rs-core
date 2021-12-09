@@ -40,7 +40,7 @@ pub trait InputStreamExt: 'static {
         callback: P,
     );
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -67,7 +67,7 @@ pub trait InputStreamExt: 'static {
         callback: P,
     );
 
-    fn read_bytes_async_future(
+    fn read_bytes_future(
         &self,
         count: usize,
         io_priority: glib::Priority,
@@ -92,7 +92,7 @@ pub trait InputStreamExt: 'static {
         callback: P,
     );
 
-    fn skip_async_future(
+    fn skip_future(
         &self,
         count: usize,
         io_priority: glib::Priority,
@@ -159,7 +159,7 @@ impl<O: IsA<InputStream>> InputStreamExt for O {
         }
     }
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -249,7 +249,7 @@ impl<O: IsA<InputStream>> InputStreamExt for O {
         }
     }
 
-    fn read_bytes_async_future(
+    fn read_bytes_future(
         &self,
         count: usize,
         io_priority: glib::Priority,
@@ -337,7 +337,7 @@ impl<O: IsA<InputStream>> InputStreamExt for O {
         }
     }
 
-    fn skip_async_future(
+    fn skip_future(
         &self,
         count: usize,
         io_priority: glib::Priority,
