@@ -115,7 +115,7 @@ impl PixbufAnimation {
         }
     }
 
-    pub fn from_stream_async_future(
+    pub fn from_stream_future(
         stream: &(impl IsA<gio::InputStream> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<PixbufAnimation, glib::Error>> + 'static>>
     {

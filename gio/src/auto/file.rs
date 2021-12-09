@@ -132,7 +132,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn append_to_async_future(
+    fn append_to_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -180,7 +180,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn create_async_future(
+    fn create_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -202,7 +202,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn create_readwrite_async_future(
+    fn create_readwrite_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -219,7 +219,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn delete_async_future(
+    fn delete_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -328,7 +328,7 @@ pub trait FileExt: 'static {
 
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
-    fn load_bytes_async_future(
+    fn load_bytes_future(
         &self,
     ) -> Pin<
         Box_<
@@ -353,7 +353,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn load_contents_async_future(
+    fn load_contents_future(
         &self,
     ) -> Pin<
         Box_<
@@ -376,7 +376,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn make_directory_async_future(
+    fn make_directory_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -469,7 +469,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn open_readwrite_async_future(
+    fn open_readwrite_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>;
@@ -508,7 +508,7 @@ pub trait FileExt: 'static {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn query_default_handler_async_future(
+    fn query_default_handler_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<AppInfo, glib::Error>> + 'static>>;
@@ -539,7 +539,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn query_filesystem_info_async_future(
+    fn query_filesystem_info_future(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
@@ -563,7 +563,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn query_info_async_future(
+    fn query_info_future(
         &self,
         attributes: &str,
         flags: FileQueryInfoFlags,
@@ -596,7 +596,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn read_async_future(
+    fn read_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInputStream, glib::Error>> + 'static>>;
@@ -621,7 +621,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn replace_async_future(
+    fn replace_future(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -662,7 +662,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn replace_readwrite_async_future(
+    fn replace_readwrite_future(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -740,7 +740,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn set_attributes_async_future(
+    fn set_attributes_future(
         &self,
         info: &FileInfo,
         flags: FileQueryInfoFlags,
@@ -771,7 +771,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn set_display_name_async_future(
+    fn set_display_name_future(
         &self,
         display_name: &str,
         io_priority: glib::Priority,
@@ -821,7 +821,7 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    fn trash_async_future(
+    fn trash_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -902,7 +902,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn append_to_async_future(
+    fn append_to_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -1071,7 +1071,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn create_async_future(
+    fn create_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -1147,7 +1147,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn create_readwrite_async_future(
+    fn create_readwrite_future(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -1216,7 +1216,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn delete_async_future(
+    fn delete_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -1506,7 +1506,7 @@ impl<O: IsA<File>> FileExt for O {
 
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
-    fn load_bytes_async_future(
+    fn load_bytes_future(
         &self,
     ) -> Pin<
         Box_<
@@ -1603,7 +1603,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn load_contents_async_future(
+    fn load_contents_future(
         &self,
     ) -> Pin<
         Box_<
@@ -1677,7 +1677,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn make_directory_async_future(
+    fn make_directory_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -2020,7 +2020,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn open_readwrite_async_future(
+    fn open_readwrite_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>
@@ -2148,7 +2148,7 @@ impl<O: IsA<File>> FileExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn query_default_handler_async_future(
+    fn query_default_handler_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<AppInfo, glib::Error>> + 'static>> {
@@ -2245,7 +2245,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn query_filesystem_info_async_future(
+    fn query_filesystem_info_future(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
@@ -2329,7 +2329,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn query_info_async_future(
+    fn query_info_future(
         &self,
         attributes: &str,
         flags: FileQueryInfoFlags,
@@ -2445,7 +2445,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn read_async_future(
+    fn read_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileInputStream, glib::Error>> + 'static>>
@@ -2527,7 +2527,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn replace_async_future(
+    fn replace_future(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -2657,7 +2657,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn replace_readwrite_async_future(
+    fn replace_readwrite_future(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -2898,7 +2898,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn set_attributes_async_future(
+    fn set_attributes_future(
         &self,
         info: &FileInfo,
         flags: FileQueryInfoFlags,
@@ -3005,7 +3005,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn set_display_name_async_future(
+    fn set_display_name_future(
         &self,
         display_name: &str,
         io_priority: glib::Priority,
@@ -3205,7 +3205,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn trash_async_future(
+    fn trash_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

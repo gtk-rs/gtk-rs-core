@@ -58,7 +58,7 @@ pub trait TlsDatabaseExt: 'static {
         callback: P,
     );
 
-    fn lookup_certificate_for_handle_async_future(
+    fn lookup_certificate_for_handle_future(
         &self,
         handle: &str,
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -86,7 +86,7 @@ pub trait TlsDatabaseExt: 'static {
         callback: P,
     );
 
-    fn lookup_certificate_issuer_async_future(
+    fn lookup_certificate_issuer_future(
         &self,
         certificate: &(impl IsA<TlsCertificate> + Clone + 'static),
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -114,7 +114,7 @@ pub trait TlsDatabaseExt: 'static {
         callback: P,
     );
 
-    fn lookup_certificates_issued_by_async_future(
+    fn lookup_certificates_issued_by_future(
         &self,
         issuer_raw_dn: &glib::ByteArray,
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -146,7 +146,7 @@ pub trait TlsDatabaseExt: 'static {
         callback: P,
     );
 
-    fn verify_chain_async_future(
+    fn verify_chain_future(
         &self,
         chain: &(impl IsA<TlsCertificate> + Clone + 'static),
         purpose: &str,
@@ -242,7 +242,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn lookup_certificate_for_handle_async_future(
+    fn lookup_certificate_for_handle_future(
         &self,
         handle: &str,
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -338,7 +338,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn lookup_certificate_issuer_async_future(
+    fn lookup_certificate_issuer_future(
         &self,
         certificate: &(impl IsA<TlsCertificate> + Clone + 'static),
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -434,7 +434,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn lookup_certificates_issued_by_async_future(
+    fn lookup_certificates_issued_by_future(
         &self,
         issuer_raw_dn: &glib::ByteArray,
         interaction: Option<&(impl IsA<TlsInteraction> + Clone + 'static)>,
@@ -534,7 +534,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn verify_chain_async_future(
+    fn verify_chain_future(
         &self,
         chain: &(impl IsA<TlsCertificate> + Clone + 'static),
         purpose: &str,

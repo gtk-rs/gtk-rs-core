@@ -47,13 +47,13 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: Q,
     );
 
-    fn write_async_future<B: AsRef<[u8]> + Send + 'static>(
+    fn write_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
     ) -> Pin<Box<dyn std::future::Future<Output = Result<(B, usize), (B, glib::Error)>> + 'static>>;
 
-    fn write_all_async_future<B: AsRef<[u8]> + Send + 'static>(
+    fn write_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -222,7 +222,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    fn write_async_future<'a, B: AsRef<[u8]> + Send + 'static>(
+    fn write_future<'a, B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -238,7 +238,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    fn write_all_async_future<'a, B: AsRef<[u8]> + Send + 'static>(
+    fn write_all_future<'a, B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,

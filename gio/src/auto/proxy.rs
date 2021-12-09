@@ -54,7 +54,7 @@ pub trait ProxyExt: 'static {
         callback: P,
     );
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         connection: &(impl IsA<IOStream> + Clone + 'static),
         proxy_address: &(impl IsA<ProxyAddress> + Clone + 'static),
@@ -126,7 +126,7 @@ impl<O: IsA<Proxy>> ProxyExt for O {
         }
     }
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         connection: &(impl IsA<IOStream> + Clone + 'static),
         proxy_address: &(impl IsA<ProxyAddress> + Clone + 'static),

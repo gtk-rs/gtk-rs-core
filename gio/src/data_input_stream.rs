@@ -28,7 +28,7 @@ pub trait DataInputStreamExtManual: 'static {
         callback: Q,
     );
 
-    fn read_line_async_future(
+    fn read_line_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>>;
@@ -49,7 +49,7 @@ pub trait DataInputStreamExtManual: 'static {
         callback: Q,
     );
 
-    fn read_line_utf8_async_future(
+    fn read_line_utf8_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Option<GString>, glib::Error>> + 'static>>;
@@ -76,7 +76,7 @@ pub trait DataInputStreamExtManual: 'static {
     );
 
     #[cfg_attr(feature = "v2_56", deprecated)]
-    fn read_until_async_future(
+    fn read_until_future(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -101,7 +101,7 @@ pub trait DataInputStreamExtManual: 'static {
         callback: Q,
     );
 
-    fn read_upto_async_future(
+    fn read_upto_future(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -177,7 +177,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_line_async_future(
+    fn read_line_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<u8>, glib::Error>> + 'static>> {
@@ -255,7 +255,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_line_utf8_async_future(
+    fn read_line_utf8_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Option<GString>, glib::Error>> + 'static>>
@@ -364,7 +364,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_until_async_future(
+    fn read_until_future(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -462,7 +462,7 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_upto_async_future(
+    fn read_upto_future(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,

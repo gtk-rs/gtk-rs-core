@@ -42,7 +42,7 @@ pub trait LoadableIconExt: 'static {
         callback: P,
     );
 
-    fn load_async_future(
+    fn load_future(
         &self,
         size: i32,
     ) -> Pin<
@@ -119,7 +119,7 @@ impl<O: IsA<LoadableIcon>> LoadableIconExt for O {
         }
     }
 
-    fn load_async_future(
+    fn load_future(
         &self,
         size: i32,
     ) -> Pin<

@@ -39,7 +39,7 @@ pub trait PermissionExt: 'static {
         callback: P,
     );
 
-    fn acquire_async_future(
+    fn acquire_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
@@ -68,7 +68,7 @@ pub trait PermissionExt: 'static {
         callback: P,
     );
 
-    fn release_async_future(
+    fn release_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
@@ -134,7 +134,7 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    fn acquire_async_future(
+    fn acquire_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         Box_::pin(crate::GioFuture::new(
@@ -233,7 +233,7 @@ impl<O: IsA<Permission>> PermissionExt for O {
         }
     }
 
-    fn release_async_future(
+    fn release_future(
         &self,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
         Box_::pin(crate::GioFuture::new(

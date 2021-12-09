@@ -495,7 +495,7 @@ impl Pixbuf {
     //}
 
     //
-    //pub fn save_to_stream_async_future(&self, stream: &(impl IsA<gio::OutputStream> + Clone + 'static), type_: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
+    //pub fn save_to_stream_future(&self, stream: &(impl IsA<gio::OutputStream> + Clone + 'static), type_: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
 
     //let stream = stream.clone();
     //let type_ = String::from(type_);

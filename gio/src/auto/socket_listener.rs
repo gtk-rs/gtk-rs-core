@@ -63,7 +63,7 @@ pub trait SocketListenerExt: 'static {
         callback: P,
     );
 
-    fn accept_async_future(
+    fn accept_future(
         &self,
     ) -> Pin<
         Box_<
@@ -88,7 +88,7 @@ pub trait SocketListenerExt: 'static {
         callback: P,
     );
 
-    fn accept_socket_async_future(
+    fn accept_socket_future(
         &self,
     ) -> Pin<
         Box_<
@@ -212,7 +212,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    fn accept_async_future(
+    fn accept_future(
         &self,
     ) -> Pin<
         Box_<
@@ -294,7 +294,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
         }
     }
 
-    fn accept_socket_async_future(
+    fn accept_socket_future(
         &self,
     ) -> Pin<
         Box_<

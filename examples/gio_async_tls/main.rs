@@ -18,7 +18,7 @@ async fn run() -> Result<(), Box<dyn Error>> {
     let client = gio::SocketClient::new();
     let connectable = gio::NetworkAddress::new("www.rust-lang.org", 443);
 
-    let connection = client.connect_async_future(&connectable).await?;
+    let connection = client.connect_future(&connectable).await?;
     let connection = connection.downcast::<gio::TcpConnection>().unwrap();
 
     // Get the input/output streams and convert them to the AsyncRead and AsyncWrite adapters

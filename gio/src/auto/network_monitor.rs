@@ -53,7 +53,7 @@ pub trait NetworkMonitorExt: 'static {
         callback: P,
     );
 
-    fn can_reach_async_future(
+    fn can_reach_future(
         &self,
         connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -143,7 +143,7 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    fn can_reach_async_future(
+    fn can_reach_future(
         &self,
         connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

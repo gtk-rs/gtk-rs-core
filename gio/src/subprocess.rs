@@ -61,7 +61,7 @@ impl Subprocess {
         }
     }
 
-    pub fn communicate_utf8_async_future(
+    pub fn communicate_utf8_future(
         &self,
         stdin_buf: Option<String>,
     ) -> Pin<

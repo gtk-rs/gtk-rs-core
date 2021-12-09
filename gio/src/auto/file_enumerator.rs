@@ -38,7 +38,7 @@ pub trait FileEnumeratorExt: 'static {
         callback: P,
     );
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -72,7 +72,7 @@ pub trait FileEnumeratorExt: 'static {
         callback: P,
     );
 
-    fn next_files_async_future(
+    fn next_files_future(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
@@ -136,7 +136,7 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -241,7 +241,7 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn next_files_async_future(
+    fn next_files_future(
         &self,
         num_files: i32,
         io_priority: glib::Priority,

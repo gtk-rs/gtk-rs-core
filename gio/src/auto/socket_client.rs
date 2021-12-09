@@ -70,7 +70,7 @@ pub trait SocketClientExt: 'static {
         callback: P,
     );
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketConnection, glib::Error>> + 'static>>;
@@ -92,7 +92,7 @@ pub trait SocketClientExt: 'static {
         callback: P,
     );
 
-    fn connect_to_host_async_future(
+    fn connect_to_host_future(
         &self,
         host_and_port: &str,
         default_port: u16,
@@ -115,7 +115,7 @@ pub trait SocketClientExt: 'static {
         callback: P,
     );
 
-    fn connect_to_service_async_future(
+    fn connect_to_service_future(
         &self,
         domain: &str,
         service: &str,
@@ -138,7 +138,7 @@ pub trait SocketClientExt: 'static {
         callback: P,
     );
 
-    fn connect_to_uri_async_future(
+    fn connect_to_uri_future(
         &self,
         uri: &str,
         default_port: u16,
@@ -317,7 +317,7 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_async_future(
+    fn connect_future(
         &self,
         connectable: &(impl IsA<SocketConnectable> + Clone + 'static),
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketConnection, glib::Error>> + 'static>>
@@ -398,7 +398,7 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_host_async_future(
+    fn connect_to_host_future(
         &self,
         host_and_port: &str,
         default_port: u16,
@@ -487,7 +487,7 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_service_async_future(
+    fn connect_to_service_future(
         &self,
         domain: &str,
         service: &str,
@@ -570,7 +570,7 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_uri_async_future(
+    fn connect_to_uri_future(
         &self,
         uri: &str,
         default_port: u16,

@@ -176,7 +176,7 @@ impl AppInfo {
 
     #[cfg(any(feature = "v2_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
-    pub fn launch_default_for_uri_async_future(
+    pub fn launch_default_for_uri_future(
         uri: &str,
         context: Option<&(impl IsA<AppLaunchContext> + Clone + 'static)>,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {

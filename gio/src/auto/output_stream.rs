@@ -42,7 +42,7 @@ pub trait OutputStreamExt: 'static {
         callback: P,
     );
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -58,7 +58,7 @@ pub trait OutputStreamExt: 'static {
         callback: P,
     );
 
-    fn flush_async_future(
+    fn flush_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
@@ -96,7 +96,7 @@ pub trait OutputStreamExt: 'static {
         callback: P,
     );
 
-    fn splice_async_future(
+    fn splice_future(
         &self,
         source: &(impl IsA<InputStream> + Clone + 'static),
         flags: OutputStreamSpliceFlags,
@@ -129,7 +129,7 @@ pub trait OutputStreamExt: 'static {
         callback: P,
     );
 
-    fn write_bytes_async_future(
+    fn write_bytes_future(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
@@ -153,7 +153,7 @@ pub trait OutputStreamExt: 'static {
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
+    //fn writev_all_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
@@ -163,7 +163,7 @@ pub trait OutputStreamExt: 'static {
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
+    //fn writev_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
 }
 
 impl<O: IsA<OutputStream>> OutputStreamExt for O {
@@ -226,7 +226,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn close_async_future(
+    fn close_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -293,7 +293,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn flush_async_future(
+    fn flush_future(
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
@@ -412,7 +412,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn splice_async_future(
+    fn splice_future(
         &self,
         source: &(impl IsA<InputStream> + Clone + 'static),
         flags: OutputStreamSpliceFlags,
@@ -516,7 +516,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn write_bytes_async_future(
+    fn write_bytes_future(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
@@ -553,7 +553,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
+    //fn writev_all_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
 
     //let vectors = vectors.clone();
     //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
@@ -577,7 +577,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_async_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
+    //fn writev_future(&self, vectors: /*Ignored*/&[&OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
 
     //let vectors = vectors.clone();
     //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
