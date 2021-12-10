@@ -59,7 +59,8 @@ pub mod error;
 #[macro_use]
 pub mod object;
 
-pub mod any_gobject;
+mod boxed_any_object;
+pub use boxed_any_object::BoxedAnyObject;
 
 pub mod collections;
 pub use collections::{List, PtrSlice, SList, Slice};
