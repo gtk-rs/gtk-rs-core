@@ -138,6 +138,7 @@ pub use self::send_unique::{SendUnique, SendUniqueCell};
 
 #[macro_use]
 pub mod subclass;
+pub use self::subclass::Signal;
 
 mod main_context_futures;
 mod source_futures;
