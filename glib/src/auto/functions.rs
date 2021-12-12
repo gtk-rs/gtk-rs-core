@@ -196,26 +196,6 @@ pub fn dpgettext2(domain: Option<&str>, context: &str, msgid: &str) -> crate::GS
     }
 }
 
-#[doc(alias = "g_file_open_tmp")]
-pub fn file_open_tmp(
-    tmpl: Option<impl AsRef<std::path::Path>>,
-) -> Result<(i32, std::path::PathBuf), crate::Error> {
-    unsafe {
-        let mut name_used = ptr::null_mut();
-        let mut error = ptr::null_mut();
-        let ret = ffi::g_file_open_tmp(
-            tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
-            &mut name_used,
-            &mut error,
-        );
-        if error.is_null() {
-            Ok((ret, from_glib_full(name_used)))
-        } else {
-            Err(from_glib_full(error))
-        }
-    }
-}
-
 #[doc(alias = "g_file_set_contents")]
 pub fn file_set_contents(
     filename: impl AsRef<std::path::Path>,
