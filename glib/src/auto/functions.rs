@@ -13,6 +13,7 @@ use crate::FormatSizeFlags;
 use crate::Pid;
 use crate::Source;
 use crate::SpawnFlags;
+use crate::UnicodeScript;
 use crate::UserDirectory;
 use std::boxed::Box as Box_;
 use std::mem;
@@ -700,15 +701,15 @@ pub fn spawn_command_line_async(
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 
-//#[doc(alias = "g_unicode_script_from_iso15924")]
-//pub fn unicode_script_from_iso15924(iso15924: u32) -> /*Ignored*/UnicodeScript {
-//    unsafe { TODO: call ffi:g_unicode_script_from_iso15924() }
-//}
+#[doc(alias = "g_unicode_script_from_iso15924")]
+pub fn unicode_script_from_iso15924(iso15924: u32) -> UnicodeScript {
+    unsafe { from_glib(ffi::g_unicode_script_from_iso15924(iso15924)) }
+}
 
-//#[doc(alias = "g_unicode_script_to_iso15924")]
-//pub fn unicode_script_to_iso15924(script: /*Ignored*/UnicodeScript) -> u32 {
-//    unsafe { TODO: call ffi:g_unicode_script_to_iso15924() }
-//}
+#[doc(alias = "g_unicode_script_to_iso15924")]
+pub fn unicode_script_to_iso15924(script: UnicodeScript) -> u32 {
+    unsafe { ffi::g_unicode_script_to_iso15924(script.into_glib()) }
+}
 
 //#[cfg(any(unix, feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(unix)))]
