@@ -12,12 +12,24 @@ impl GlyphGeometry {
         self.0.width
     }
 
+    pub fn set_width(&mut self, width: i32) {
+        self.0.width = width;
+    }
+
     pub fn x_offset(&self) -> i32 {
         self.0.x_offset
     }
 
+    pub fn set_x_offset(&mut self, x_offset: i32) {
+        self.0.x_offset = x_offset;
+    }
+
     pub fn y_offset(&self) -> i32 {
         self.0.y_offset
+    }
+
+    pub fn set_y_offset(&mut self, y_offset: i32) {
+        self.0.y_offset = y_offset;
     }
 }
 
