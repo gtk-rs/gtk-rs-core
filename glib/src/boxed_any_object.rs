@@ -21,7 +21,7 @@ mod imp {
 
     #[derive(Debug)]
     pub struct BoxedAnyObject {
-        pub item: RefCell<Box<dyn Any>>,
+        pub value: RefCell<Box<dyn Any>>,
     }
     #[object_subclass]
     impl ObjectSubclass for BoxedAnyObject {
@@ -31,7 +31,7 @@ mod imp {
     impl Default for BoxedAnyObject {
         fn default() -> Self {
             Self {
-                item: RefCell::new(Box::new(None::<usize>)),
+                value: RefCell::new(Box::new(None::<usize>)),
             }
         }
     }
@@ -73,15 +73,15 @@ impl Default for BoxedAnyObject {
     }
 }
 impl BoxedAnyObject {
-    pub fn new<T: 'static>(item: T) -> Self {
+    pub fn new<T: 'static>(value: T) -> Self {
         let obj = Self::default();
-        obj.replace(item);
+        obj.replace(value);
         obj
     }
 
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
-        self.impl_().item.replace(Box::new(t) as Box<dyn Any>)
+        self.impl_().value.replace(Box::new(t) as Box<dyn Any>)
     }
 
     /// Immutably borrows the wrapped value, returning an error if the value is currently mutably
@@ -96,7 +96,7 @@ impl BoxedAnyObject {
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
         // As a workaround, I check if everything is safe, then I unwrap
 
-        let borrowed = self.impl_().item.try_borrow()?;
+        let borrowed = self.impl_().value.try_borrow()?;
         borrowed
             .as_ref()
             .downcast_ref::<T>()
@@ -117,7 +117,7 @@ impl BoxedAnyObject {
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap.
 
-        let mut borrowed_mut = self.impl_().item.try_borrow_mut()?;
+        let mut borrowed_mut = self.impl_().value.try_borrow_mut()?;
         borrowed_mut
             .as_mut()
             .downcast_mut::<T>()
@@ -138,8 +138,8 @@ impl BoxedAnyObject {
     /// For a non-panicking variant, use
     /// [`try_borrow`](#method.try_borrow).
     pub fn borrow<T: 'static>(&self) -> Ref<'_, T> {
-        Ref::map(self.impl_().item.borrow(), |item| {
-            item.as_ref().downcast_ref::<T>().unwrap()
+        Ref::map(self.impl_().value.borrow(), |value| {
+            value.as_ref().downcast_ref::<T>().unwrap()
         })
     }
 
@@ -156,8 +156,8 @@ impl BoxedAnyObject {
     /// For a non-panicking variant, use
     /// [`try_borrow_mut`](#method.try_borrow_mut).
     pub fn borrow_mut<T: 'static>(&self) -> RefMut<'_, T> {
-        RefMut::map(self.impl_().item.borrow_mut(), |item| {
-            item.as_mut().downcast_mut::<T>().unwrap()
+        RefMut::map(self.impl_().value.borrow_mut(), |value| {
+            value.as_mut().downcast_mut::<T>().unwrap()
         })
     }
 }
