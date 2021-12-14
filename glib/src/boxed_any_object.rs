@@ -8,11 +8,16 @@ use std::cell::{Ref, RefCell, RefMut};
 
 #[derive(thiserror::Error, Debug)]
 pub enum BorrowError {
-    #[error("Can't convert item inside BoxedAnyObject to requested type")]
+    #[error("type of the inner value is not as requested")]
     InvalidType,
-    #[error("Item already immutably borrowed")]
+    #[error("value is already mutably borrowed")]
     AlreadyBorrowed(#[from] std::cell::BorrowError),
-    #[error("Item already mutably borrowed")]
+}
+#[derive(thiserror::Error, Debug)]
+pub enum BorrowMutError {
+    #[error("type of the inner value is not as requested")]
+    InvalidType,
+    #[error("value is already immutably borrowed")]
     AlreadyMutBorrowed(#[from] std::cell::BorrowMutError),
 }
 
@@ -112,7 +117,7 @@ impl BoxedAnyObject {
     /// active.
     ///
     /// This is the non-panicking variant of [`borrow_mut`](#method.borrow_mut).
-    pub fn try_borrow_mut<T: 'static>(&mut self) -> Result<RefMut<'_, T>, BorrowError> {
+    pub fn try_borrow_mut<T: 'static>(&mut self) -> Result<RefMut<'_, T>, BorrowMutError> {
         // The required function is only available on nightly:
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap.
@@ -121,7 +126,7 @@ impl BoxedAnyObject {
         borrowed_mut
             .as_mut()
             .downcast_mut::<T>()
-            .ok_or(BorrowError::InvalidType)?;
+            .ok_or(BorrowMutError::InvalidType)?;
         drop(borrowed_mut);
         Ok(self.borrow_mut()) // Now this won't panic
     }
