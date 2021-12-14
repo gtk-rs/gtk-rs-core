@@ -64,7 +64,7 @@ impl Subprocess {
                 &mut stderr_buf,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
             } else {
@@ -165,7 +165,7 @@ impl Subprocess {
                 &mut stderr_buf,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
             } else {
@@ -259,7 +259,7 @@ impl Subprocess {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -328,7 +328,7 @@ impl Subprocess {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

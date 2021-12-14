@@ -181,7 +181,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -248,7 +248,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -340,7 +340,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             let mut error = ptr::null_mut();
             let is_ok =
                 ffi::g_output_stream_set_pending(self.as_ref().to_glib_none().0, &mut error);
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
