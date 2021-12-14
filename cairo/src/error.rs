@@ -1,143 +1,152 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::fmt::Debug;
+use std::fmt::{self, Debug};
 use std::io;
-use thiserror::Error;
 
-#[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]
+#[derive(Debug, Clone, PartialEq, Copy, Eq)]
 #[non_exhaustive]
 #[doc(alias = "cairo_status_t")]
 pub enum Error {
-    #[error("No Memory")]
     #[doc(alias = "STATUS_NO_MEMORY")]
     NoMemory,
-    #[error("Invalid Restore")]
     #[doc(alias = "STATUS_INVALID_RESTORE")]
     InvalidRestore,
-    #[error("Invalid Pop Group")]
     #[doc(alias = "STATUS_INVALID_POP_GROUP")]
     InvalidPopGroup,
-    #[error("No Current Point")]
     #[doc(alias = "STATUS_NO_CURRENT_POINT")]
     NoCurrentPoint,
-    #[error("Invalid Matrix")]
     #[doc(alias = "STATUS_INVALID_MATRIX")]
     InvalidMatrix,
-    #[error("Invalid Status")]
     #[doc(alias = "STATUS_INVALID_STATUS")]
     InvalidStatus,
-    #[error("Null Pointer")]
     #[doc(alias = "STATUS_NULL_POINTER")]
     NullPointer,
-    #[error("Invalid String")]
     #[doc(alias = "STATUS_INVALID_STRING")]
     InvalidString,
-    #[error("Invalid Path Data")]
     #[doc(alias = "STATUS_INVALID_PATH_DATA")]
     InvalidPathData,
-    #[error("Cairo : Read Error")]
     #[doc(alias = "STATUS_READ_ERROR")]
     ReadError,
-    #[error("Write Error")]
     #[doc(alias = "STATUS_WRITE_ERROR")]
     WriteError,
-    #[error("Surface Finished")]
     #[doc(alias = "STATUS_SURFACE_FINISHED")]
     SurfaceFinished,
-    #[error("Surface Type Mismatch")]
     #[doc(alias = "STATUS_SURFACE_TYPE_MISMATCH")]
     SurfaceTypeMismatch,
-    #[error("Pattern Type Mismatch")]
     #[doc(alias = "STATUS_PATTERN_TYPE_MISMATCH")]
     PatternTypeMismatch,
-    #[error("Invalid Content")]
     #[doc(alias = "STATUS_INVALID_CONTENT")]
     InvalidContent,
-    #[error("Invalid Format")]
     #[doc(alias = "STATUS_INVALID_FORMAT")]
     InvalidFormat,
-    #[error("Invalid Visual")]
     #[doc(alias = "STATUS_INVALID_VISUAL")]
     InvalidVisual,
-    #[error("File Not Found")]
     #[doc(alias = "STATUS_FILE_NOT_FOUND")]
     FileNotFound,
-    #[error("Invalid Dash")]
     #[doc(alias = "STATUS_INVALID_DASH")]
     InvalidDash,
-    #[error("Invalid Dash Comment")]
     #[doc(alias = "STATUS_INVALID_DSC_COMMENT")]
     InvalidDscComment,
-    #[error("Invalid Index")]
     #[doc(alias = "STATUS_INVALID_INDEX")]
     InvalidIndex,
-    #[error("Clip Not Representable")]
     #[doc(alias = "STATUS_CLIP_NOT_REPRESENTABLE")]
     ClipNotRepresentable,
-    #[error("Temp File Error")]
     #[doc(alias = "STATUS_TEMP_FILE_ERROR")]
     TempFileError,
-    #[error("Invalid Stride")]
     #[doc(alias = "STATUS_INVALID_STRIDE")]
     InvalidStride,
-    #[error("Font Type Mismatch")]
     #[doc(alias = "STATUS_FONT_TYPE_MISMATCH")]
     FontTypeMismatch,
-    #[error("User Font Immutable")]
     #[doc(alias = "STATUS_USER_FONT_IMMUTABLE")]
     UserFontImmutable,
-    #[error("User Font Error")]
     #[doc(alias = "STATUS_USER_FONT_ERROR")]
     UserFontError,
-    #[error("Negative Count")]
     #[doc(alias = "STATUS_NEGATIVE_COUNT")]
     NegativeCount,
-    #[error("Invalid Clusters")]
     #[doc(alias = "STATUS_INVALID_CLUSTERS")]
     InvalidClusters,
-    #[error("Invalid Slant")]
     #[doc(alias = "STATUS_INVALID_SLANT")]
     InvalidSlant,
-    #[error("Invalid Weight")]
     #[doc(alias = "STATUS_INVALID_WEIGHT")]
     InvalidWeight,
-    #[error("Invalid Size")]
     #[doc(alias = "STATUS_INVALID_SIZE")]
     InvalidSize,
-    #[error("User Font Not Implemented")]
     #[doc(alias = "STATUS_USER_FONT_NOT_IMPLEMENTED")]
     UserFontNotImplemented,
-    #[error("Device Type Mismatch")]
     #[doc(alias = "STATUS_DEVICE_TYPE_MISMATCH")]
     DeviceTypeMismatch,
-    #[error("Device Error")]
     #[doc(alias = "STATUS_DEVICE_ERROR")]
     DeviceError,
-    #[error("Invalid Mesh Construction")]
     #[doc(alias = "STATUS_INVALID_MESH_CONSTRUCTION")]
     InvalidMeshConstruction,
-    #[error("Device Finished")]
     #[doc(alias = "STATUS_DEVICE_FINISHED")]
     DeviceFinished,
-    #[error("JBig2Global Missing")]
     #[doc(alias = "STATUS_J_BIG2_GLOBAL_MISSING")]
     JBig2GlobalMissing,
-    #[error("PNG Error")]
     #[doc(alias = "STATUS_PNG_ERROR")]
     PngError,
-    #[error("Freetype Error")]
     #[doc(alias = "STATUS_FREETYPE_ERROR")]
     FreetypeError,
-    #[error("Win32Gdi Error")]
     #[doc(alias = "STATUS_WIN32_GDI_ERROR")]
     Win32GdiError,
-    #[error("LastStatus")]
     #[doc(alias = "STATUS_LAST_STATUS")]
     LastStatus,
-    #[error("Unknown {0}")]
     #[doc(hidden)]
     __Unknown(i32),
 }
+
+impl std::error::Error for Error {}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::NoMemory => write!(f, "No Memory"),
+            Self::InvalidRestore => write!(f, "Invalid Restore"),
+            Self::InvalidPopGroup => write!(f, "Invalid Pop Group"),
+            Self::NoCurrentPoint => write!(f, "No Current Point"),
+            Self::InvalidMatrix => write!(f, "Invalid Matrix"),
+            Self::InvalidStatus => write!(f, "Invalid Status"),
+            Self::NullPointer => write!(f, "Null Pointer"),
+            Self::InvalidString => write!(f, "Invalid String"),
+            Self::InvalidPathData => write!(f, "Invalid Path Data"),
+            Self::ReadError => write!(f, "Cairo: Read Error"),
+            Self::WriteError => write!(f, "Write Error"),
+            Self::SurfaceFinished => write!(f, "Surface Finished"),
+            Self::SurfaceTypeMismatch => write!(f, "Surface Type Mismatch"),
+            Self::PatternTypeMismatch => write!(f, "Pattern Type Mismatch"),
+            Self::InvalidContent => write!(f, "Invalid Content"),
+            Self::InvalidFormat => write!(f, "Invalid Format"),
+            Self::InvalidVisual => write!(f, "Invalid Visual"),
+            Self::FileNotFound => write!(f, "File Not Found"),
+            Self::InvalidDash => write!(f, "Invalid Dash"),
+            Self::InvalidDscComment => write!(f, "Invalid Dash Comment"),
+            Self::InvalidIndex => write!(f, "Invalid Index"),
+            Self::ClipNotRepresentable => write!(f, "Clip Not Representable"),
+            Self::TempFileError => write!(f, "Temp File Error"),
+            Self::InvalidStride => write!(f, "Invalid Stride"),
+            Self::FontTypeMismatch => write!(f, "Font Type Mismatch"),
+            Self::UserFontImmutable => write!(f, "User Font Immutable"),
+            Self::UserFontError => write!(f, "User Font Error"),
+            Self::NegativeCount => write!(f, "Negative Count"),
+            Self::InvalidClusters => write!(f, "Invalid Clusters"),
+            Self::InvalidSlant => write!(f, "Invalid Slant"),
+            Self::InvalidWeight => write!(f, "Invalid Weight"),
+            Self::InvalidSize => write!(f, "Invalid Size"),
+            Self::UserFontNotImplemented => write!(f, "User Font Not Implemented"),
+            Self::DeviceTypeMismatch => write!(f, "Device Type Mismatch"),
+            Self::DeviceError => write!(f, "Device Error"),
+            Self::InvalidMeshConstruction => write!(f, "Invalid Mesh Construction"),
+            Self::DeviceFinished => write!(f, "Device Finished"),
+            Self::JBig2GlobalMissing => write!(f, "JBig2Global Missing"),
+            Self::PngError => write!(f, "PNG Error"),
+            Self::FreetypeError => write!(f, "Freetype Error"),
+            Self::Win32GdiError => write!(f, "Win32Gdi Error"),
+            Self::LastStatus => write!(f, "LastStatus"),
+            Self::__Unknown(e) => write!(f, "Unknown {}", e),
+        }
+    }
+}
+
 #[doc(hidden)]
 impl From<Error> for ffi::cairo_status_t {
     fn from(err: Error) -> ffi::cairo_status_t {
@@ -240,20 +249,70 @@ impl From<ffi::cairo_status_t> for Error {
     }
 }
 
-#[derive(Error, Debug)]
+#[derive(Debug)]
 pub enum IoError {
-    #[error("Cairo error: {0}")]
-    Cairo(#[from] Error),
-    #[error("IO error: {0}")]
-    Io(#[from] io::Error),
+    Cairo(Error),
+    Io(io::Error),
 }
 
-#[derive(Error, Debug)]
+impl From<Error> for IoError {
+    fn from(err: Error) -> Self {
+        Self::Cairo(err)
+    }
+}
+
+impl From<io::Error> for IoError {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
+    }
+}
+
+impl std::error::Error for IoError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Cairo(e) => Some(e),
+            Self::Io(e) => Some(e),
+        }
+    }
+}
+
+impl fmt::Display for IoError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Cairo(e) => write!(f, "Cairo error: {}", e),
+            Self::Io(e) => write!(f, "IO error: {}", e),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub enum BorrowError {
-    #[error("Failed to borrow with Cairo error: {0}")]
-    Cairo(#[from] crate::Error),
-    #[error("Can't get exclusive access")]
+    Cairo(Error),
     NonExclusive,
+}
+
+impl From<Error> for BorrowError {
+    fn from(err: Error) -> Self {
+        Self::Cairo(err)
+    }
+}
+
+impl std::error::Error for BorrowError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Cairo(e) => Some(e),
+            Self::NonExclusive => None,
+        }
+    }
+}
+
+impl fmt::Display for BorrowError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Cairo(e) => write!(f, "Failed to borrow with Cairo error: {}", e),
+            Self::NonExclusive => write!(f, "Can't get exclusive access"),
+        }
+    }
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

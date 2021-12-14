@@ -10,6 +10,7 @@ use futures_io::{AsyncBufRead, AsyncRead};
 use glib::object::IsA;
 use glib::translate::*;
 use glib::Priority;
+use std::fmt;
 use std::future::Future;
 use std::io;
 use std::mem;
@@ -525,10 +526,19 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 enum BufReadError {
-    #[error("Previous read operation failed")]
     Failed,
+}
+
+impl std::error::Error for BufReadError {}
+
+impl fmt::Display for BufReadError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Failed => write!(f, "Previous read operation failed"),
+        }
+    }
 }
 
 impl<T: IsA<InputStream>> AsyncRead for InputStreamAsyncBufRead<T> {
