@@ -549,7 +549,7 @@ pub fn file_set_contents(
             length,
             &mut error,
         );
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -578,7 +578,7 @@ pub fn file_set_contents_full(
             mode,
             &mut error,
         );
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1226,7 +1226,7 @@ pub fn shell_parse_argv(
             &mut argvp,
             &mut error,
         );
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(FromGlibContainer::from_glib_full_num(
                 argvp,
@@ -1351,7 +1351,7 @@ pub fn spawn_async(
             &mut error,
         );
         let child_pid = from_glib(child_pid.assume_init());
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(child_pid)
         } else {
@@ -1373,7 +1373,7 @@ pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_spawn_check_exit_status(wait_status, &mut error);
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1389,7 +1389,7 @@ pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_spawn_check_wait_status(wait_status, &mut error);
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -1408,7 +1408,7 @@ pub fn spawn_command_line_async(
         let mut error = ptr::null_mut();
         let is_ok =
             ffi::g_spawn_command_line_async(command_line.as_ref().to_glib_none().0, &mut error);
-        assert_eq!(is_ok == 0, !error.is_null());
+        assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {

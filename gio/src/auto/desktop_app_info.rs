@@ -266,7 +266,7 @@ impl DesktopAppInfo {
                 super_callback1 as *const _ as usize as *mut _,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

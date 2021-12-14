@@ -331,7 +331,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 &mut effective_address,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(from_glib_full(effective_address))
             } else {
@@ -372,7 +372,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 source_object.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -394,7 +394,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
                 source_object.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == 0, !error.is_null());
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
