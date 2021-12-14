@@ -54,7 +54,7 @@ wrapper! {
     ///
     /// // The boxed data can be stored as a GObject
     /// let list = gio::ListStore::new(BoxedAnyObject::static_type());
-    /// list.append(boxed.clone() as glib::Object);
+    /// list.append(boxed.clone().upcast());
     ///
     /// // And can be retrieved with `borrow`
     /// let author: Author = boxed.borrow();
