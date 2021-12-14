@@ -81,7 +81,7 @@ impl BoxedAnyObject {
 
     /// Immutably borrows the wrapped value, returning none if the value is currently mutably borrowed or
     /// the inner value has never been seet
-    pub fn try_borrow<'a, T: 'static>(&'a self) -> Result<Ref<'a, T>, BorrowError> {
+    pub fn try_borrow<T: 'static>(&self) -> Result<Ref<'_, T>, BorrowError> {
         // The required function is only available on nightly:
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
         // As a workaround, I check if everything is safe, then I unwrap
@@ -96,7 +96,7 @@ impl BoxedAnyObject {
 
     /// Mutably borrows the wrapped value, returning none if the value is currently immutably borrowed or
     /// the inner value has never been seet
-    pub fn try_borrow_mut<'a, T: 'static>(&'a mut self) -> Result<RefMut<'a, T>, BorrowError> {
+    pub fn try_borrow_mut<T: 'static>(&mut self) -> Result<RefMut<'_, T>, BorrowError> {
         // The required function is only available on nightly:
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap
@@ -116,7 +116,7 @@ impl BoxedAnyObject {
     /// # Panics
     /// Panics if the value is currently mutably borrowed or the inner value has never been set
     /// or if the conversion to `T` fails
-    pub fn borrow<'a, T: 'static>(&'a self) -> Ref<'a, T> {
+    pub fn borrow<T: 'static>(&self) -> Ref<'_, T> {
         Ref::map(self.impl_().item.borrow(), |item| {
             item.as_ref().downcast_ref::<T>().unwrap()
         })
@@ -125,7 +125,7 @@ impl BoxedAnyObject {
     ///
     /// # Panics
     /// Panics if the value is currently borrowed or if the conversion to `T` fails
-    pub fn borrow_mut<'a, T: 'static>(&'a mut self) -> RefMut<'a, T> {
+    pub fn borrow_mut<T: 'static>(&self) -> RefMut<'_, T> {
         RefMut::map(self.impl_().item.borrow_mut(), |item| {
             item.as_mut().downcast_mut::<T>().unwrap()
         })
