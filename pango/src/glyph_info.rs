@@ -14,7 +14,11 @@ impl GlyphInfo {
     }
 
     pub fn geometry(&self) -> &GlyphGeometry {
-        unsafe { &*(&((self.0).geometry) as *const _ as *const GlyphGeometry) }
+        unsafe { &*(&self.0.geometry as *const _ as *const GlyphGeometry) }
+    }
+
+    pub fn geometry_mut(&mut self) -> &mut GlyphGeometry {
+        unsafe { &mut *(&mut self.0.geometry as *mut _ as *mut GlyphGeometry) }
     }
 }
 
