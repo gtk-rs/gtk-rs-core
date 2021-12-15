@@ -72,14 +72,9 @@ wrapper! {
     pub struct BoxedAnyObject(ObjectSubclass<imp::BoxedAnyObject>);
 }
 
-impl Default for BoxedAnyObject {
-    fn default() -> Self {
-        Object::new(&[]).expect("Failed to create BoxedAnyObject")
-    }
-}
 impl BoxedAnyObject {
     pub fn new<T: 'static>(value: T) -> Self {
-        let obj = Self::default();
+        let obj: Self = Object::new(&[]).expect("Failed to create BoxedAnyObject");
         obj.replace(value);
         obj
     }
