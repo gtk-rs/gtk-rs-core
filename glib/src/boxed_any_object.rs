@@ -85,6 +85,7 @@ impl BoxedAnyObject {
     }
 
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
+    /// The returned value is inside a Box and must be manually downcasted.
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
         self.impl_().value.replace(Box::new(t) as Box<dyn Any>)
     }
