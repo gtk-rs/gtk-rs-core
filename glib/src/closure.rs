@@ -34,6 +34,7 @@ wrapper! {
 pub struct RustClosure(Closure);
 
 impl RustClosure {
+    // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
     /// See [`glib::closure!`] for a way to create a closure with concrete types.
@@ -63,6 +64,7 @@ impl RustClosure {
         Self(Closure::new(callback))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
     /// See [`glib::closure_local!`] for a way to create a closure with concrete types.
@@ -78,6 +80,7 @@ impl RustClosure {
         Self(Closure::new_local(callback))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes the closure with the given arguments.
     ///
     /// For invalidated closures this returns the "default" value of the return type. For nullable
@@ -100,6 +103,7 @@ impl RustClosure {
             .expect("Invalid return value")
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes the closure with the given arguments.
     ///
     /// For invalidated closures this returns the "default" value of the return type.
@@ -113,6 +117,7 @@ impl RustClosure {
         unsafe { self.0.invoke_with_values(return_type, values) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invalidates the closure.
     ///
     /// Invoking an invalidated closure has no effect.
@@ -141,6 +146,7 @@ impl AsRef<Closure> for Closure {
 }
 
 impl Closure {
+    // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
     /// Note that [`RustClosure`] provides more convenient and non-unsafe API for invoking
@@ -178,6 +184,7 @@ impl Closure {
         unsafe { Self::new_unsafe(callback) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
     /// Note that [`RustClosure`] provides more convenient and non-unsafe API for invoking
@@ -196,6 +203,7 @@ impl Closure {
         unsafe { Self::new_unsafe(move |values| (callback.get_ref())(values)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
     /// # Safety
@@ -273,6 +281,7 @@ impl Closure {
         from_glib_none(closure)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes the closure with the given arguments.
     ///
     /// For invalidated closures this returns the "default" value of the return type.
@@ -312,6 +321,7 @@ impl Closure {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invalidates the closure.
     ///
     /// Invoking an invalidated closure has no effect.

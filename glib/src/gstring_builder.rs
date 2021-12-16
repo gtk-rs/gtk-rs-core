@@ -11,6 +11,7 @@ use std::slice;
 use std::str;
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A mutable text buffer that grows automatically.
     #[doc(alias = "GString")]
     #[must_use = "The builder must be built to be used"]
@@ -78,6 +79,7 @@ impl GStringBuilder {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `&str` slice.
     ///
     /// # Panics
@@ -92,6 +94,7 @@ impl GStringBuilder {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `&str` slice.
     ///
     /// # Panics
@@ -110,6 +113,7 @@ impl GStringBuilder {
 }
 
 impl Default for GStringBuilder {
+    // rustdoc-stripper-ignore-next
     /// Creates a new empty string.
     fn default() -> Self {
         unsafe { from_glib_full(ffi::g_string_new(ptr::null())) }

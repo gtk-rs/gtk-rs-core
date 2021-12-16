@@ -9,6 +9,7 @@ use std::ops::Deref;
 use std::slice;
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A shared immutable byte slice (the equivalent of `Rc<[u8]>`).
     ///
     /// `From` implementations that take references (e.g. `&[u8]`) copy the
@@ -36,6 +37,7 @@ wrapper! {
 }
 
 impl Bytes {
+    // rustdoc-stripper-ignore-next
     /// Copies `data` into a new shared slice.
     #[doc(alias = "g_bytes_new")]
     fn new<T: AsRef<[u8]>>(data: T) -> Bytes {
@@ -43,6 +45,7 @@ impl Bytes {
         unsafe { from_glib_full(ffi::g_bytes_new(data.as_ptr() as *const _, data.len())) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a view into static `data` without copying.
     #[doc(alias = "g_bytes_new_static")]
     pub fn from_static(data: &'static [u8]) -> Bytes {
@@ -54,6 +57,7 @@ impl Bytes {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Takes ownership of `data` and creates a new `Bytes` without copying.
     pub fn from_owned<T: AsRef<[u8]> + Send + 'static>(data: T) -> Bytes {
         let data: Box<T> = Box::new(data);

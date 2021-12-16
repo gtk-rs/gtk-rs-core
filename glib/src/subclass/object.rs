@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Module that contains all types needed for creating a direct subclass of `GObject`
 //! or implementing virtual methods of it.
 
@@ -10,20 +11,24 @@ use crate::{Cast, Object, ObjectType, ParamSpec, Value};
 use std::mem;
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.
 ///
 /// This allows overriding the virtual methods of `glib::Object`.
 pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
+    // rustdoc-stripper-ignore-next
     /// Properties installed for this type.
     fn properties() -> &'static [ParamSpec] {
         &[]
     }
 
+    // rustdoc-stripper-ignore-next
     /// Signals installed for this type.
     fn signals() -> &'static [Signal] {
         &[]
     }
 
+    // rustdoc-stripper-ignore-next
     /// Property setter.
     ///
     /// This is called whenever the property of this specific subclass with the
@@ -32,6 +37,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
         unimplemented!()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Property getter.
     ///
     /// This is called whenever the property value of the specific subclass with the
@@ -41,6 +47,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
         unimplemented!()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Constructed.
     ///
     /// This is called once construction of the instance is finished.
@@ -50,6 +57,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
         self.parent_constructed(obj);
     }
 
+    // rustdoc-stripper-ignore-next
     /// Disposes of the object.
     ///
     /// When `dispose()` ends, the object should not hold any reference to any other member object.
@@ -125,6 +133,7 @@ unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Extension trait for `glib::Object`'s class struct.
 ///
 /// This contains various class methods and allows subclasses to override signal class handlers.
@@ -183,9 +192,11 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
 }
 
 pub trait ObjectImplExt: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
     /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
     fn parent_constructed(&self, obj: &Self::Type);
 
+    // rustdoc-stripper-ignore-next
     /// Chain up to parent class signal handler.
     fn signal_chain_from_overridden(
         &self,

@@ -1,7 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` BoxedInline wrapper implementation.
 
+// rustdoc-stripper-ignore-next
 /// Wrapper implementations for BoxedInline types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_inline_wrapper {

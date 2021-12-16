@@ -4,26 +4,32 @@ use std::marker::PhantomData;
 use std::rc::{self, Rc};
 use std::sync::{self, Arc};
 
+// rustdoc-stripper-ignore-next
 /// Trait for generalizing downgrading a strong reference to a weak reference.
 pub trait Downgrade
 where
     Self: Sized,
 {
+    // rustdoc-stripper-ignore-next
     /// Weak reference type.
     type Weak;
 
+    // rustdoc-stripper-ignore-next
     /// Downgrade to a weak reference.
     fn downgrade(&self) -> Self::Weak;
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for generalizing upgrading a weak reference to a strong reference.
 pub trait Upgrade
 where
     Self: Sized,
 {
+    // rustdoc-stripper-ignore-next
     /// Strong reference type.
     type Strong;
 
+    // rustdoc-stripper-ignore-next
     /// Try upgrading a weak reference to a strong reference.
     fn upgrade(&self) -> Option<Self::Strong>;
 }

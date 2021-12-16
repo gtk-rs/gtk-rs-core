@@ -540,6 +540,7 @@ unsafe extern "C" fn action_group_get_action_enabled<T: ActionGroupImpl>(
     .into_glib()
 }
 
+// rustdoc-stripper-ignore-next
 /// Struct to hold a pointer and free it on `Drop::drop`
 struct PtrHolder<T, F: Fn(*mut T) + 'static>(*mut T, F);
 

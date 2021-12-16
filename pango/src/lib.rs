@@ -36,24 +36,31 @@ pub const GLYPH_INVALID_INPUT: Glyph = ffi::PANGO_GLYPH_INVALID_INPUT;
 #[doc(alias = "PANGO_GLYPH_UNKNOWN_FLAG")]
 pub const GLYPH_UNKNOWN_FLAG: Glyph = ffi::PANGO_GLYPH_UNKNOWN_FLAG;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for three shrinking steps (1 / (1.2 * 1.2 * 1.2)).
 pub const SCALE_XX_SMALL: f64 = 0.5787037037037;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for two shrinking steps (1 / (1.2 * 1.2)).
 pub const SCALE_X_SMALL: f64 = 0.6944444444444;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for one shrinking step (1 / 1.2).
 pub const SCALE_SMALL: f64 = 0.8333333333333;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for normal size (1.0).
 pub const SCALE_MEDIUM: f64 = 1.0;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for one magnification step (1.2).
 pub const SCALE_LARGE: f64 = 1.2;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for two magnification steps (1.2 * 1.2).
 pub const SCALE_X_LARGE: f64 = 1.44;
 
+// rustdoc-stripper-ignore-next
 /// The scale factor for three magnification steps (1.2 * 1.2 * 1.2).
 pub const SCALE_XX_LARGE: f64 = 1.728;
 

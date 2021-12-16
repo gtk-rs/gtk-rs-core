@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Runtime type information.
 
 use crate::translate::*;
@@ -9,6 +10,7 @@ use std::fmt;
 use std::mem;
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// A GLib or GLib-based library type
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[doc(alias = "GType")]
@@ -16,90 +18,112 @@ use std::ptr;
 pub struct Type(ffi::GType);
 
 impl Type {
+    // rustdoc-stripper-ignore-next
     /// An invalid `Type` used as error return value in some functions
     #[doc(alias = "G_TYPE_INVALID")]
     pub const INVALID: Self = Self(gobject_ffi::G_TYPE_INVALID);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to the unit type `()`
     #[doc(alias = "G_TYPE_NONE")]
     pub const UNIT: Self = Self(gobject_ffi::G_TYPE_NONE);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `i8`
     #[doc(alias = "G_TYPE_CHAR")]
     pub const I8: Self = Self(gobject_ffi::G_TYPE_CHAR);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `u8`
     #[doc(alias = "G_TYPE_UCHAR")]
     pub const U8: Self = Self(gobject_ffi::G_TYPE_UCHAR);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `bool`
     #[doc(alias = "G_TYPE_BOOLEAN")]
     pub const BOOL: Self = Self(gobject_ffi::G_TYPE_BOOLEAN);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `i32`
     #[doc(alias = "G_TYPE_INT")]
     pub const I32: Self = Self(gobject_ffi::G_TYPE_INT);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `u32`
     #[doc(alias = "G_TYPE_UINT")]
     pub const U32: Self = Self(gobject_ffi::G_TYPE_UINT);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to C `long`
     #[doc(alias = "G_TYPE_LONG")]
     pub const I_LONG: Self = Self(gobject_ffi::G_TYPE_LONG);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to C `unsigned long`
     #[doc(alias = "G_TYPE_ULONG")]
     pub const U_LONG: Self = Self(gobject_ffi::G_TYPE_ULONG);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `i64`
     #[doc(alias = "G_TYPE_INT64")]
     pub const I64: Self = Self(gobject_ffi::G_TYPE_INT64);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `u64`
     #[doc(alias = "G_TYPE_UINT64")]
     pub const U64: Self = Self(gobject_ffi::G_TYPE_UINT64);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `f32`
     #[doc(alias = "G_TYPE_FLOAT")]
     pub const F32: Self = Self(gobject_ffi::G_TYPE_FLOAT);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `f64`
     #[doc(alias = "G_TYPE_DOUBLE")]
     pub const F64: Self = Self(gobject_ffi::G_TYPE_DOUBLE);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to `String`
     #[doc(alias = "G_TYPE_STRING")]
     pub const STRING: Self = Self(gobject_ffi::G_TYPE_STRING);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type corresponding to a pointer
     #[doc(alias = "G_TYPE_POINTER")]
     pub const POINTER: Self = Self(gobject_ffi::G_TYPE_POINTER);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type of GVariant
     #[doc(alias = "G_TYPE_VARIANT")]
     pub const VARIANT: Self = Self(gobject_ffi::G_TYPE_VARIANT);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all interfaces are derived
     #[doc(alias = "G_TYPE_INTERFACE")]
     pub const INTERFACE: Self = Self(gobject_ffi::G_TYPE_INTERFACE);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all enumeration types are derived
     #[doc(alias = "G_TYPE_ENUM")]
     pub const ENUM: Self = Self(gobject_ffi::G_TYPE_ENUM);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all flags types are derived
     #[doc(alias = "G_TYPE_FLAGS")]
     pub const FLAGS: Self = Self(gobject_ffi::G_TYPE_FLAGS);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all boxed types are derived
     #[doc(alias = "G_TYPE_BOXED")]
     pub const BOXED: Self = Self(gobject_ffi::G_TYPE_BOXED);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all `GParamSpec` types are derived
     #[doc(alias = "G_TYPE_PARAM")]
     pub const PARAM_SPEC: Self = Self(gobject_ffi::G_TYPE_PARAM);
 
+    // rustdoc-stripper-ignore-next
     /// The fundamental type from which all objects are derived
     #[doc(alias = "G_TYPE_OBJECT")]
     pub const OBJECT: Self = Self(gobject_ffi::G_TYPE_OBJECT);
@@ -187,6 +211,7 @@ impl Type {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Checks that the type is not [`INVALID`](Self::INVALID)
     #[inline]
     pub fn is_valid(self) -> bool {
@@ -206,8 +231,10 @@ impl fmt::Display for Type {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Types that are supported by GLib dynamic typing.
 pub trait StaticType {
+    // rustdoc-stripper-ignore-next
     /// Returns the type identifier of `Self`.
     fn static_type() -> Type;
 }

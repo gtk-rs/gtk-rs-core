@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` Shared (reference counted) wrapper implementation.
 
 use crate::translate::*;
@@ -9,6 +10,7 @@ use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// Wrapper implementations for shared types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_shared_wrapper {

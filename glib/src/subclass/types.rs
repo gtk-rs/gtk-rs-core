@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Module that contains the basic infrastructure for subclassing `GObject`.
 
 use crate::object::{Cast, IsClass, IsInterface, ObjectSubclassIs, ObjectType, ParentClassIs};
@@ -12,6 +13,7 @@ use std::{any::Any, collections::HashMap};
 
 use super::SignalId;
 
+// rustdoc-stripper-ignore-next
 /// A newly registered `glib::Type` that is currently still being initialized.
 ///
 /// This allows running additional type-setup functions.
@@ -26,12 +28,14 @@ impl<T> IntoGlib for InitializingType<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Struct used for the instance private data of the GObject.
 struct PrivateStruct<T: ObjectSubclass> {
     imp: T,
     instance_data: Option<HashMap<Type, Box<dyn Any + Send + Sync>>>,
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait implemented by structs that implement a `GObject` C instance struct.
 ///
 /// The struct must be `#[repr(C)]` and have the parent type's instance struct
@@ -43,9 +47,11 @@ struct PrivateStruct<T: ObjectSubclass> {
 ///
 /// [`basic::InstanceStruct`]: ../basic/struct.InstanceStruct.html
 pub unsafe trait InstanceStruct: Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// Corresponding object subclass type for this instance struct.
     type Type: ObjectSubclass;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the implementation for from this instance struct, that
     /// is the implementor of [`ObjectImpl`] or subtraits.
     ///
@@ -63,12 +69,14 @@ pub unsafe trait InstanceStruct: Sized + 'static {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the class struct for this specific instance.
     #[doc(alias = "get_class")]
     fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
         unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
@@ -86,8 +94,10 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait implemented by any type implementing `ObjectSubclassIs` to return the implementation, private Rust struct.
 pub trait ObjectSubclassIsExt: ObjectSubclassIs {
+    // rustdoc-stripper-ignore-next
     /// Returns the implementation (the private Rust struct) of this class instance
     fn impl_(&self) -> &Self::Subclass;
 }
@@ -98,6 +108,7 @@ impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSu
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait implemented by structs that implement a `GObject` C class struct.
 ///
 /// The struct must be `#[repr(C)]` and have the parent type's class struct
@@ -109,9 +120,11 @@ impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSu
 ///
 /// [`basic::ClassStruct`]: ../basic/struct.ClassStruct.html
 pub unsafe trait ClassStruct: Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// Corresponding object subclass type for this class struct.
     type Type: ObjectSubclass;
 
+    // rustdoc-stripper-ignore-next
     /// Override the vfuncs of all parent types.
     ///
     /// This is automatically called during type initialization.
@@ -126,8 +139,10 @@ pub unsafe trait ClassStruct: Sized + 'static {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for subclassable class structs.
 pub unsafe trait IsSubclassable<T: ObjectSubclass>: IsSubclassableDefault<T> {
+    // rustdoc-stripper-ignore-next
     /// Override the virtual methods of this class for the given subclass and do other class
     /// initialization.
     ///
@@ -137,6 +152,7 @@ pub unsafe trait IsSubclassable<T: ObjectSubclass>: IsSubclassableDefault<T> {
         Self::default_class_init(class);
     }
 
+    // rustdoc-stripper-ignore-next
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
@@ -198,17 +214,20 @@ impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for implementable interfaces.
 pub unsafe trait IsImplementable<T: ObjectSubclass>: IsInterface
 where
     <Self as ObjectType>::GlibClassType: Copy,
 {
+    // rustdoc-stripper-ignore-next
     /// Override the virtual methods of this interface for the given subclass and do other
     /// interface initialization.
     ///
     /// This is automatically called during type initialization.
     fn interface_init(_iface: &mut crate::Interface<Self>) {}
 
+    // rustdoc-stripper-ignore-next
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization.
@@ -239,11 +258,14 @@ unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
     A::interface_init(iface);
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for a type list of interfaces.
 pub trait InterfaceList<T: ObjectSubclass> {
+    // rustdoc-stripper-ignore-next
     /// Returns the list of types and corresponding interface infos for this list.
     fn iface_infos() -> Vec<(ffi::GType, gobject_ffi::GInterfaceInfo)>;
 
+    // rustdoc-stripper-ignore-next
     /// Runs `instance_init` on each of the `IsImplementable` items.
     fn instance_init(_instance: &mut InitializingObject<T>);
 }
@@ -350,12 +372,14 @@ unsafe impl Send for TypeData {}
 unsafe impl Sync for TypeData {}
 
 impl TypeData {
+    // rustdoc-stripper-ignore-next
     /// Returns the type ID.
     #[doc(alias = "get_type")]
     pub fn type_(&self) -> Type {
         self.type_
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the native parent class.
     ///
     /// This is used for chaining up to the parent class' implementation
@@ -366,6 +390,7 @@ impl TypeData {
         self.parent_class
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the native parent interface struct for interface `type_`.
     ///
     /// This is used for chaining up to the parent interface's implementation
@@ -385,6 +410,7 @@ impl TypeData {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the class implementation specific data.
     ///
     /// This is used for class implementations to store additional data.
@@ -396,6 +422,7 @@ impl TypeData {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets a mutable reference of the class implementation specific data.
     ///
     /// # Safety
@@ -412,6 +439,7 @@ impl TypeData {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Sets class specific implementation data.
     ///
     /// # Safety
@@ -437,6 +465,7 @@ impl TypeData {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the offset of the private implementation struct in bytes relative to the beginning
     /// of the instance struct.
     #[doc(alias = "get_impl_offset")]
@@ -445,13 +474,16 @@ impl TypeData {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Type methods required for an [`ObjectSubclass`] implementation.
 ///
 /// This is usually generated by the [`#[object_subclass]`](crate::object_subclass) attribute macro.
 pub unsafe trait ObjectSubclassType {
+    // rustdoc-stripper-ignore-next
     /// Storage for the type-specific data used during registration.
     fn type_data() -> ptr::NonNull<TypeData>;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the `glib::Type` ID of the subclass.
     ///
     /// This will register the type with the type system on the first call.
@@ -459,6 +491,7 @@ pub unsafe trait ObjectSubclassType {
     fn type_() -> Type;
 }
 
+// rustdoc-stripper-ignore-next
 /// The central trait for subclassing a `GObject` type.
 ///
 /// Links together the type name, parent type and the instance and
@@ -470,11 +503,13 @@ pub unsafe trait ObjectSubclassType {
 ///
 /// [`register_type`]: fn.register_type.html
 pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// `GObject` type name.
     ///
     /// This must be unique in the whole process.
     const NAME: &'static str;
 
+    // rustdoc-stripper-ignore-next
     /// If this subclass is an abstract class or not.
     ///
     /// By default, all subclasses are non-abstract types but setting this to `true` will create an
@@ -485,6 +520,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     /// Optional.
     const ABSTRACT: bool = false;
 
+    // rustdoc-stripper-ignore-next
     /// Wrapper around this subclass defined with `wrapper!`
     type Type: ObjectType
         + ObjectSubclassIs<Subclass = Self>
@@ -492,15 +528,18 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
         + FromGlibPtrBorrow<*mut <Self::Type as ObjectType>::GlibType>
         + FromGlibPtrNone<*mut <Self::Type as ObjectType>::GlibType>;
 
+    // rustdoc-stripper-ignore-next
     /// Parent Rust type to inherit from.
     type ParentType: IsSubclassable<Self>
         + FromGlibPtrFull<*mut <Self::ParentType as ObjectType>::GlibType>
         + FromGlibPtrBorrow<*mut <Self::ParentType as ObjectType>::GlibType>
         + FromGlibPtrNone<*mut <Self::ParentType as ObjectType>::GlibType>;
 
+    // rustdoc-stripper-ignore-next
     /// List of interfaces implemented by this type.
     type Interfaces: InterfaceList<Self>;
 
+    // rustdoc-stripper-ignore-next
     /// The C instance struct.
     ///
     /// See [`basic::InstanceStruct`] for an basic instance struct that should be
@@ -511,6 +550,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     // type defaults are stabilized https://github.com/rust-lang/rust/issues/29661
     type Instance: InstanceStruct<Type = Self>;
 
+    // rustdoc-stripper-ignore-next
     /// The C class struct.
     ///
     /// See [`basic::ClassStruct`] for an basic instance struct that should be
@@ -521,6 +561,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     // type defaults are stabilized https://github.com/rust-lang/rust/issues/29661
     type Class: ClassStruct<Type = Self>;
 
+    // rustdoc-stripper-ignore-next
     /// Additional type initialization.
     ///
     /// This is called right after the type was registered and allows
@@ -532,6 +573,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
 
     /// Class initialization.
     ///
+    // rustdoc-stripper-ignore-next
     /// This is called after `type_init` and before the first instance
     /// of the subclass is created. Subclasses can use this to do class-
     /// specific initialization, e.g. for registering signals on the class
@@ -540,6 +582,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     /// Optional
     fn class_init(_klass: &mut Self::Class) {}
 
+    // rustdoc-stripper-ignore-next
     /// Constructor.
     ///
     /// This is called during object instantiation before further subclasses
@@ -551,6 +594,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
         unimplemented!();
     }
 
+    // rustdoc-stripper-ignore-next
     /// Constructor.
     ///
     /// This is called during object instantiation before further subclasses
@@ -565,6 +609,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
         Self::new()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Performs additional instance initialization.
     ///
     /// Called just after `with_class()`. At this point the initialization has not completed yet, so
@@ -572,15 +617,19 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     fn instance_init(_obj: &InitializingObject<Self>) {}
 }
 
+// rustdoc-stripper-ignore-next
 /// Extension methods for all `ObjectSubclass` impls.
 pub trait ObjectSubclassExt: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
     /// Returns the corresponding object instance.
     #[doc(alias = "get_instance")]
     fn instance(&self) -> Self::Type;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the implementation from an instance.
     fn from_instance(obj: &Self::Type) -> &Self;
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the instance implementation specific data.
     ///
     /// This is used for the subclassing infrastructure to store additional instance data.
@@ -620,6 +669,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the instance implementation specific data.
     ///
     /// This is used for the subclassing infrastructure to store additional instance data.
@@ -644,6 +694,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// An object that is currently being initialized.
 ///
 /// Binding crates should use traits for adding methods to this struct. Only methods explicitly safe
@@ -651,6 +702,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
 pub struct InitializingObject<T: ObjectSubclass>(Borrowed<T::Type>);
 
 impl<T: ObjectSubclass> InitializingObject<T> {
+    // rustdoc-stripper-ignore-next
     /// Returns a reference to the object.
     ///
     /// # Safety
@@ -662,6 +714,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
         &self.0
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the object.
     ///
     /// # Safety
@@ -673,6 +726,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
         self.0.as_ptr() as *const T::Type as *mut T::Type
     }
 
+    // rustdoc-stripper-ignore-next
     /// Sets instance specific implementation data.
     ///
     /// # Panics
@@ -806,6 +860,7 @@ unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject)
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Register a `glib::Type` ID for `T`.
 ///
 /// This must be called only once and will panic on a second call.

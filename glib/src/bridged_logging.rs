@@ -3,6 +3,7 @@
 use crate::log as glib_log;
 use crate::translate::*;
 
+// rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a
 /// [`GlibLogger`](struct.GlibLogger.html).
 ///
@@ -10,16 +11,20 @@ use crate::translate::*;
 /// enabled.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GlibLoggerFormat {
+    // rustdoc-stripper-ignore-next
     /// A simple format, writing only the message on output.
     Plain,
+    // rustdoc-stripper-ignore-next
     /// A simple format, writing file, line and message on output.
     LineAndFile,
+    // rustdoc-stripper-ignore-next
     /// A logger using glib structured logging. Structured logging is available
     /// only on features `v2_56` and later.
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     Structured,
 }
 
+// rustdoc-stripper-ignore-next
 /// Enumeration of the possible domain handling behaviours for a
 /// [`GlibLogger`](struct.GlibLogger.html).
 ///
@@ -27,16 +32,20 @@ pub enum GlibLoggerFormat {
 /// enabled.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GlibLoggerDomain {
+    // rustdoc-stripper-ignore-next
     /// Logs will have no domain specified.
     None,
+    // rustdoc-stripper-ignore-next
     /// Logs will use the `target` of the log crate as a domain; this allows
     /// Rust code, like `warn!(target: "my-domain", "...");` to log to the glib
     /// logger using the specified domain.
     CrateTarget,
+    // rustdoc-stripper-ignore-next
     /// Logs will use the crate path as the log domain.
     CratePath,
 }
 
+// rustdoc-stripper-ignore-next
 /// An implementation of a [`log`](https://crates.io/crates/log) compatible
 /// logger which logs over glib logging facilities.
 ///
@@ -73,6 +82,7 @@ pub struct GlibLogger {
 }
 
 impl GlibLogger {
+    // rustdoc-stripper-ignore-next
     /// Creates a new instance of [`GlibLogger`](struct.GlibLogger.html).
     /// See documentation of [`GlibLogger`](struct.GlibLogger.html) for more
     /// information.
@@ -190,6 +200,7 @@ impl rs_log::Log for GlibLogger {
     fn flush(&self) {}
 }
 
+// rustdoc-stripper-ignore-next
 /// Provides a glib log handler which routes all logging messages to the
 /// [`log crate`](https://crates.io/crates/log).
 ///
@@ -217,6 +228,7 @@ pub fn rust_log_handler(domain: Option<&str>, level: glib_log::LogLevel, message
     rs_log::log!(target: domain.unwrap_or("<null>"), level, "{}", message);
 }
 
+// rustdoc-stripper-ignore-next
 /// A macro which behaves exactly as `log::error!` except that it sets the
 /// current log target to the contents of a `G_LOG_DOMAIN` constant (and fails
 /// to build if not defined).
@@ -242,6 +254,7 @@ macro_rules! error {
     )
 }
 
+// rustdoc-stripper-ignore-next
 /// A macro which behaves exactly as `log::warn!` except that it sets the
 /// current log target to the contents of a `G_LOG_DOMAIN` constant (and fails
 /// to build if not defined).
@@ -267,6 +280,7 @@ macro_rules! warn {
     )
 }
 
+// rustdoc-stripper-ignore-next
 /// A macro which behaves exactly as `log::info!` except that it sets the
 /// current log target to the contents of a `G_LOG_DOMAIN` constant (and fails
 /// to build if not defined).
@@ -292,6 +306,7 @@ macro_rules! info {
     )
 }
 
+// rustdoc-stripper-ignore-next
 /// A macro which behaves exactly as `log::debug!` except that it sets the
 /// current log target to the contents of a `G_LOG_DOMAIN` constant (and fails
 /// to build if not defined).
@@ -317,6 +332,7 @@ macro_rules! debug {
     )
 }
 
+// rustdoc-stripper-ignore-next
 /// A macro which behaves exactly as `log::trace!` except that it sets the
 /// current log target to the contents of a `G_LOG_DOMAIN` constant (and fails
 /// to build if not defined).

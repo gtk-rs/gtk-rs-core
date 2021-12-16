@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `Value` binding and helper traits.
 //!
 //! The type of a [`Value`](struct.Value.html) is dynamic in that it generally
@@ -51,8 +52,10 @@ use crate::gstring::GString;
 use crate::translate::*;
 use crate::types::{StaticType, Type};
 
+// rustdoc-stripper-ignore-next
 /// A type that can be stored in `Value`s.
 pub trait ValueType: ToValue + for<'a> FromValue<'a> + 'static {
+    // rustdoc-stripper-ignore-next
     /// Type to get the `Type` from.
     ///
     /// This exists only for handling optional types.
@@ -61,6 +64,7 @@ pub trait ValueType: ToValue + for<'a> FromValue<'a> + 'static {
     type Type: StaticType;
 }
 
+// rustdoc-stripper-ignore-next
 /// A type that can be stored in `Value`s and is optional.
 ///
 /// These are types were storing an `Option` is valid. Examples are `String` and all object types.
@@ -77,6 +81,7 @@ where
     type Type = T::Type;
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for `Value` type checkers.
 pub unsafe trait ValueTypeChecker {
     type Error: std::error::Error + Send + Sized + 'static;
@@ -84,6 +89,7 @@ pub unsafe trait ValueTypeChecker {
     fn check(value: &Value) -> Result<(), Self::Error>;
 }
 
+// rustdoc-stripper-ignore-next
 /// An error returned from the [`get`](struct.Value.html#method.get) function
 /// on a [`Value`](struct.Value.html) for non-optional types an `Option`.
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -121,6 +127,7 @@ impl fmt::Display for ValueTypeMismatchError {
 
 impl error::Error for ValueTypeMismatchError {}
 
+// rustdoc-stripper-ignore-next
 /// Generic `Value` type checker for types.
 pub struct GenericValueTypeChecker<T>(std::marker::PhantomData<T>);
 
@@ -144,6 +151,7 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeChecker<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// An error returned from the [`get`](struct.Value.html#method.get)
 /// function on a [`Value`](struct.Value.html) for optional types.
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -169,6 +177,7 @@ impl From<ValueTypeMismatchError> for ValueTypeMismatchOrNoneError {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Generic `Value` type checker for optional types.
 pub struct GenericValueTypeOrNoneChecker<T>(std::marker::PhantomData<T>);
 
@@ -190,14 +199,17 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeOrNoneChecker<T>
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait to retrieve the contained value from a `Value`.
 ///
 /// Usually this would not be used directly but from the [`get`](struct.Value.html#method.get)
 /// function on a [`Value`](struct.Value.html)
 pub unsafe trait FromValue<'a>: Sized {
+    // rustdoc-stripper-ignore-next
     /// Value type checker.
     type Checker: ValueTypeChecker;
 
+    // rustdoc-stripper-ignore-next
     /// Get the contained value from a `Value`.
     ///
     /// # Safety
@@ -205,6 +217,7 @@ pub unsafe trait FromValue<'a>: Sized {
     unsafe fn from_value(value: &'a Value) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for types that implement `FromValue` and are Optional.
 ///
 /// This trait is auto-implemented for the appropriate types and is sealed.
@@ -228,6 +241,7 @@ mod private {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Blanket implementation for all optional types.
 unsafe impl<'a, T, C> FromValue<'a> for Option<T>
 where
@@ -245,6 +259,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait to convert a value to a `Value`.
 ///
 /// Similar to other common conversion traits, the following invariants are guaranteed:
@@ -260,15 +275,18 @@ where
 /// The conversion methods may cause values to be cloned, which may result in reference counter changes or heap allocations depending
 /// on the source and target type.
 pub trait ToValue {
+    // rustdoc-stripper-ignore-next
     /// Convert a value to a `Value`.
     fn to_value(&self) -> Value;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the type identifer of `self`.
     ///
     /// This is the type of the value to be returned by `to_value`.
     fn value_type(&self) -> Type;
 }
 
+// rustdoc-stripper-ignore-next
 /// Blanket implementation for all references.
 impl<T: ToValue + StaticType> ToValue for &T {
     fn to_value(&self) -> Value {
@@ -280,13 +298,16 @@ impl<T: ToValue + StaticType> ToValue for &T {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait to convert an `Option` to a `Value` for optional types.
 pub trait ToValueOptional {
+    // rustdoc-stripper-ignore-next
     /// Convert an `Option` to a `Value`.
     #[allow(clippy::wrong_self_convention)]
     fn to_value_optional(s: Option<&Self>) -> Value;
 }
 
+// rustdoc-stripper-ignore-next
 /// Blanket implementation for all optional types.
 impl<T: ToValueOptional + StaticType> ToValue for Option<T> {
     fn to_value(&self) -> Value {
@@ -340,6 +361,7 @@ unsafe fn clear_value(value: *mut gobject_ffi::GValue) {
 
 // TODO: Should use impl !Send for Value {} once stable
 crate::wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A generic value capable of carrying various types.
     ///
     /// Once created the type of the value can't be changed.
@@ -364,6 +386,7 @@ crate::wrapper! {
 }
 
 impl Value {
+    // rustdoc-stripper-ignore-next
     /// Creates a new `Value` that is initialized with `type_`
     pub fn from_type(type_: Type) -> Self {
         unsafe {
@@ -377,11 +400,13 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new `Value` that is initialized for a given `ValueType`.
     pub fn for_value_type<T: ValueType>() -> Self {
         Value::from_type(T::Type::static_type())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to get a value of type `T`.
     ///
     /// Returns `Ok` if the type is correct.
@@ -395,6 +420,7 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to get a value of an owned type `T`.
     pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
     where
@@ -406,6 +432,7 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if the type of the value corresponds to `T`
     /// or is a sub-type of `T`.
     #[inline]
@@ -413,11 +440,13 @@ impl Value {
         self.type_().is_a(T::static_type())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the type of the value.
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.0.g_type) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns whether `Value`s of type `src` can be transformed to type `dst`.
     #[doc(alias = "g_value_type_transformable")]
     pub fn type_transformable(src: Type, dst: Type) -> bool {
@@ -429,6 +458,7 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to transform the value into a value of the target type
     #[doc(alias = "g_value_transform")]
     pub fn transform<T: ValueType>(&self) -> Result<Value, crate::BoolError> {
@@ -449,6 +479,7 @@ impl Value {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Consumes `Value` and returns the corresponding `GValue`.
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
@@ -561,6 +592,7 @@ impl StaticType for BoxedValue {
 }
 
 crate::wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A version of [`Value`](struct.Value.html) for storing `Send` types, that implements Send
     /// itself.
     ///
@@ -580,6 +612,7 @@ crate::wrapper! {
 unsafe impl Send for SendValue {}
 
 impl SendValue {
+    // rustdoc-stripper-ignore-next
     /// Consumes `SendValue` and returns the corresponding `GValue`.
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
@@ -610,8 +643,10 @@ impl<'a, T: ?Sized + ToSendValue> From<&'a T> for SendValue {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Converts to `SendValue`.
 pub trait ToSendValue: Send + ToValue {
+    // rustdoc-stripper-ignore-next
     /// Returns a `SendValue` clone of `self`.
     fn to_send_value(&self) -> SendValue;
 }
@@ -861,6 +896,7 @@ numeric!(
     gobject_ffi::g_value_set_double
 );
 
+// rustdoc-stripper-ignore-next
 /// A [`Value`] containing another [`Value`].
 pub struct BoxedValue(pub Value);
 

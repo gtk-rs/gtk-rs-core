@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` Low level signal support.
 
 use crate::object::ObjectType;
@@ -10,6 +11,7 @@ use libc::{c_char, c_ulong, c_void};
 use std::mem;
 use std::num::NonZeroU64;
 
+// rustdoc-stripper-ignore-next
 /// The id of a signal that is returned by `connect`.
 ///
 /// This type does not implement `Clone` to prevent disconnecting
@@ -48,6 +50,7 @@ use std::num::NonZeroU64;
 pub struct SignalHandlerId(NonZeroU64);
 
 impl SignalHandlerId {
+    // rustdoc-stripper-ignore-next
     /// Returns the internal signal handler ID.
     pub unsafe fn as_raw(&self) -> libc::c_ulong {
         self.0.get() as libc::c_ulong
@@ -62,6 +65,7 @@ impl FromGlib<c_ulong> for SignalHandlerId {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Whether to propagate the signal to the default handler.
 ///
 /// Don't inhibit default handlers without a reason, they're usually helpful.

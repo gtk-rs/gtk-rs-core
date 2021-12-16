@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! This module contains basic instance and class structs to be used for
 //! `GObject` subclasses that don't require any additional data in these
 //! structs and don't provide any new virtual methods.
@@ -10,6 +11,7 @@ use crate::object::ObjectType;
 use std::fmt;
 use std::ops;
 
+// rustdoc-stripper-ignore-next
 /// A basic instance struct that does not store any additional data.
 #[repr(C)]
 pub struct InstanceStruct<T: ObjectSubclass> {
@@ -31,6 +33,7 @@ unsafe impl<T: ObjectSubclass> super::types::InstanceStruct for InstanceStruct<T
     type Type = T;
 }
 
+// rustdoc-stripper-ignore-next
 /// A basic class struct that does not store any additional data
 /// or virtual methods.
 #[repr(C)]

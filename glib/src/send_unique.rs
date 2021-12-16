@@ -3,6 +3,7 @@
 use std::cell::RefCell;
 use std::ops;
 
+// rustdoc-stripper-ignore-next
 /// Like `Send` but only if we have the unique reference to the object
 ///
 /// Note that implementing this trait has to be done especially careful.
@@ -16,6 +17,7 @@ pub unsafe trait SendUnique: 'static {
     fn is_unique(&self) -> bool;
 }
 
+// rustdoc-stripper-ignore-next
 /// Allows sending reference counted objects that don't implement `Send` to other threads
 /// as long as only a single reference to the object exists.
 #[derive(Debug)]
@@ -31,6 +33,7 @@ unsafe impl<T: SendUnique> Send for SendUniqueCell<T> {}
 pub struct BorrowError;
 
 impl<T: SendUnique> SendUniqueCell<T> {
+    // rustdoc-stripper-ignore-next
     /// Create a new `SendUniqueCell` out of `obj`
     ///
     /// Fails if `obj` is not unique at this time
@@ -45,6 +48,7 @@ impl<T: SendUnique> SendUniqueCell<T> {
         })
     }
 
+    // rustdoc-stripper-ignore-next
     /// Borrow the contained object or panic if borrowing
     /// is not possible at this time
     pub fn borrow(&self) -> Ref<T> {
@@ -55,6 +59,7 @@ impl<T: SendUnique> SendUniqueCell<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Try borrowing the contained object
     ///
     /// Borrowing is possible as long as only a single reference
@@ -93,6 +98,7 @@ impl<T: SendUnique> SendUniqueCell<T> {
         Ok(Ref(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Extract the contained object or panic if it is not possible
     /// at this time
     pub fn into_inner(self) -> T {
@@ -103,6 +109,7 @@ impl<T: SendUnique> SendUniqueCell<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Try extracting the contained object
     ///
     /// Borrowing is possible as long as only a single reference

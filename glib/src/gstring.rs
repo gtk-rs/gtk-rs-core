@@ -27,6 +27,7 @@ unsafe impl Send for GString {}
 unsafe impl Sync for GString {}
 
 impl GString {
+    // rustdoc-stripper-ignore-next
     /// Return the `GString` as string slice.
     pub fn as_str(&self) -> &str {
         unsafe {
@@ -42,6 +43,7 @@ impl GString {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the underlying pointer of the `GString`.
     pub fn as_ptr(&self) -> *const c_char {
         match self.0 {
@@ -50,6 +52,7 @@ impl GString {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Transform into a `NUL`-terminated raw C string pointer.
     pub fn into_raw(self) -> *mut c_char {
         match self.0 {

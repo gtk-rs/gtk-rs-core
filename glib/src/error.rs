@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `Error` binding and helper trait.
 
 use crate::translate::*;
@@ -12,6 +13,7 @@ use std::mem;
 use std::str;
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A generic error capable of representing various error domains (types).
     #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = "GError")]
@@ -28,6 +30,7 @@ unsafe impl Send for Error {}
 unsafe impl Sync for Error {}
 
 impl Error {
+    // rustdoc-stripper-ignore-next
     /// Creates an error with supplied error enum variant and message.
     #[doc(alias = "g_error_new_literal")]
     #[doc(alias = "g_error_new")]
@@ -41,11 +44,13 @@ impl Error {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Checks if the error domain matches `T`.
     pub fn is<T: ErrorDomain>(&self) -> bool {
         self.0.domain == T::domain().into_glib()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to convert to a specific error enum.
     ///
     /// Returns `Some` if the error belongs to the enum's error domain and
@@ -70,6 +75,7 @@ impl Error {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the error message
     ///
     /// Most of the time you can simply print the error since it implements the `Display`
@@ -82,6 +88,7 @@ impl Error {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Consumes the `Error` and returns the corresponding `GError` pointer.
     pub fn into_raw(self) -> *mut ffi::GError {
         let mut e = mem::ManuallyDrop::new(self);
@@ -107,18 +114,22 @@ impl fmt::Debug for Error {
 
 impl error::Error for Error {}
 
+// rustdoc-stripper-ignore-next
 /// `GLib` error domain.
 ///
 /// This trait is implemented by error enums that represent error domains (types).
 pub trait ErrorDomain: Copy {
+    // rustdoc-stripper-ignore-next
     /// Returns the quark identifying the error domain.
     ///
     /// As returned from `g_some_error_quark`.
     fn domain() -> Quark;
 
+    // rustdoc-stripper-ignore-next
     /// Gets the integer representation of the variant.
     fn code(self) -> i32;
 
+    // rustdoc-stripper-ignore-next
     /// Tries to convert an integer code to an enum variant.
     ///
     /// By convention, the `Failed` variant, if present, is a catch-all,
@@ -128,6 +139,7 @@ pub trait ErrorDomain: Copy {
         Self: Sized;
 }
 
+// rustdoc-stripper-ignore-next
 /// Generic error used for functions that fail without any further information
 #[macro_export]
 macro_rules! bool_error(

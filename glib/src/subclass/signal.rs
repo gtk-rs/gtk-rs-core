@@ -11,6 +11,7 @@ use std::ptr;
 use std::sync::Mutex;
 use std::{fmt, num::NonZeroU32};
 
+// rustdoc-stripper-ignore-next
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
 #[must_use = "The builder must be built to be used"]
@@ -27,6 +28,7 @@ pub struct SignalBuilder<'a> {
     >,
 }
 
+// rustdoc-stripper-ignore-next
 /// Signal metadata.
 pub struct Signal {
     name: String,
@@ -36,12 +38,16 @@ pub struct Signal {
     registration: Mutex<SignalRegistration>,
 }
 
+// rustdoc-stripper-ignore-next
 /// Token passed to signal class handlers.
 pub struct SignalClassHandlerToken(
+    // rustdoc-stripper-ignore-next
     /// Instance for which the signal is emitted.
     pub(super) *mut gobject_ffi::GTypeInstance,
+    // rustdoc-stripper-ignore-next
     /// Return type.
     pub(super) Type,
+    // rustdoc-stripper-ignore-next
     /// Arguments value array.
     pub(super) *const Value,
 );
@@ -56,6 +62,7 @@ impl fmt::Debug for SignalClassHandlerToken {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Signal invocation hint passed to signal accumulators.
 #[repr(transparent)]
 pub struct SignalInvocationHint(gobject_ffi::GSignalInvocationHint);
@@ -79,6 +86,7 @@ impl fmt::Debug for SignalInvocationHint {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// In-depth information of a specific signal
 pub struct SignalQuery(gobject_ffi::GSignalQuery);
 
@@ -86,6 +94,7 @@ unsafe impl Send for SignalQuery {}
 unsafe impl Sync for SignalQuery {}
 
 impl SignalQuery {
+    // rustdoc-stripper-ignore-next
     /// The name of the signal.
     pub fn signal_name<'a>(&self) -> &'a str {
         unsafe {
@@ -94,31 +103,37 @@ impl SignalQuery {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// The ID of the signal.
     pub fn signal_id(&self) -> SignalId {
         unsafe { SignalId::from_glib(self.0.signal_id) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// The instance type this signal can be emitted for.
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.0.itype) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// The signal flags.
     pub fn flags(&self) -> SignalFlags {
         unsafe { from_glib(self.0.signal_flags) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// The return type for the user callback.
     pub fn return_type(&self) -> SignalType {
         unsafe { from_glib(self.0.return_type) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// The number of parameters the user callback takes.
     pub fn n_params(&self) -> u32 {
         self.0.n_params
     }
 
+    // rustdoc-stripper-ignore-next
     /// The parameters for the user callback.
     pub fn param_types(&self) -> &[SignalType] {
         unsafe {
@@ -141,11 +156,14 @@ impl fmt::Debug for SignalQuery {
             .finish()
     }
 }
+
+// rustdoc-stripper-ignore-next
 /// Signal ID.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SignalId(NonZeroU32);
 
 impl SignalId {
+    // rustdoc-stripper-ignore-next
     /// Create a new Signal Identifier.
     ///
     /// # Safety
@@ -179,6 +197,7 @@ impl SignalId {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Find a SignalId by its `name`, and the `type` it connects to.
     #[doc(alias = "g_signal_lookup")]
     pub fn lookup(name: &str, type_: Type) -> Option<Self> {
@@ -192,6 +211,7 @@ impl SignalId {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Queries more in-depth information about the current signal.
     #[doc(alias = "g_signal_query")]
     pub fn query(&self) -> SignalQuery {
@@ -204,6 +224,7 @@ impl SignalId {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Find the signal name.
     #[doc(alias = "g_signal_name")]
     pub fn name<'a>(&self) -> &'a str {
@@ -349,24 +370,28 @@ enum SignalRegistration {
 }
 
 impl<'a> SignalBuilder<'a> {
+    // rustdoc-stripper-ignore-next
     /// Run the signal class handler in the first emission stage.
     pub fn run_first(mut self) -> Self {
         self.flags |= SignalFlags::RUN_FIRST;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Run the signal class handler in the third emission stage.
     pub fn run_last(mut self) -> Self {
         self.flags |= SignalFlags::RUN_LAST;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Run the signal class handler in the last emission stage.
     pub fn run_cleanup(mut self) -> Self {
         self.flags |= SignalFlags::RUN_CLEANUP;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Signals being emitted for an object while currently being in emission for this very object
     /// will not be emitted recursively, but instead cause the first emission to be restarted.
     pub fn no_recurse(mut self) -> Self {
@@ -374,6 +399,7 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// This signal supports "::detail" appendices to the signal name upon handler connections and
     /// emissions.
     pub fn detailed(mut self) -> Self {
@@ -381,18 +407,21 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Action signals are signals that may freely be emitted on alive objects from user code.
     pub fn action(mut self) -> Self {
         self.flags |= SignalFlags::ACTION;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// No emissions hooks are supported for this signal.
     pub fn no_hooks(mut self) -> Self {
         self.flags |= SignalFlags::NO_HOOKS;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Varargs signal emission will always collect the arguments, even if there are no signal
     /// handlers connected.
     pub fn must_collect(mut self) -> Self {
@@ -400,12 +429,14 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// The signal is deprecated and will be removed in a future version.
     pub fn deprecated(mut self) -> Self {
         self.flags |= SignalFlags::DEPRECATED;
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Explicitly set all flags.
     ///
     /// This overrides previously set flags on this builder.
@@ -414,6 +445,7 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
     pub fn class_handler<
         F: Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
@@ -425,6 +457,7 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Accumulator for the return values of the signal.
     ///
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
@@ -439,6 +472,7 @@ impl<'a> SignalBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Build the signal.
     ///
     /// This does not register the signal yet, which only happens as part of object type
@@ -468,6 +502,7 @@ impl<'a> SignalBuilder<'a> {
 }
 
 impl Signal {
+    // rustdoc-stripper-ignore-next
     /// Create a new builder for a signal.
     pub fn builder<'a>(
         name: &'a str,
@@ -489,26 +524,31 @@ impl Signal {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Name of the signal.
     pub fn name(&self) -> &str {
         &self.name
     }
 
+    // rustdoc-stripper-ignore-next
     /// Flags of the signal.
     pub fn flags(&self) -> SignalFlags {
         self.flags
     }
 
+    // rustdoc-stripper-ignore-next
     /// Parameter types of the signal.
     pub fn param_types(&self) -> &[SignalType] {
         &self.param_types
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return type of the signal.
     pub fn return_type(&self) -> SignalType {
         self.return_type
     }
 
+    // rustdoc-stripper-ignore-next
     /// Signal ID.
     ///
     /// This will panic if called before the signal was registered.
@@ -519,6 +559,7 @@ impl Signal {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Type this signal was registered for.
     ///
     /// This will panic if called before the signal was registered.
