@@ -147,7 +147,10 @@ impl BoxedAnyObject {
     /// [`try_borrow`](#method.try_borrow).
     pub fn borrow<T: 'static>(&self) -> Ref<'_, T> {
         Ref::map(self.impl_().value.borrow(), |value| {
-            value.as_ref().downcast_ref::<T>().expect("can't downcast value to requested type")
+            value
+                .as_ref()
+                .downcast_ref::<T>()
+                .expect("can't downcast value to requested type")
         })
     }
 
@@ -166,7 +169,10 @@ impl BoxedAnyObject {
     /// [`try_borrow_mut`](#method.try_borrow_mut).
     pub fn borrow_mut<T: 'static>(&self) -> RefMut<'_, T> {
         RefMut::map(self.impl_().value.borrow_mut(), |value| {
-            value.as_mut().downcast_mut::<T>().expect("can't downcast value to requested type")
+            value
+                .as_mut()
+                .downcast_mut::<T>()
+                .expect("can't downcast value to requested type")
         })
     }
 }
