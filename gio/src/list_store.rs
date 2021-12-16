@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::auto::traits::ListModelExt;
 use crate::ListStore;
 use glib::translate::*;
 use glib::{IsA, Object};
@@ -74,4 +75,24 @@ unsafe extern "C" fn compare_func_trampoline(
     let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
 
     (*func)(&a, &b).into_glib()
+}
+
+impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        unsafe {
+            let additions = iter
+                .into_iter()
+                .map(|o| o.as_ptr() as *mut glib::gobject_ffi::GObject)
+                .collect::<Vec<_>>();
+            let n_additions = additions.len() as u32;
+
+            ffi::g_list_store_splice(
+                self.to_glib_none().0,
+                self.n_items() - 1,
+                0,
+                mut_override(additions.as_ptr()),
+                n_additions,
+            );
+        }
+    }
 }
