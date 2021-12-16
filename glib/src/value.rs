@@ -707,6 +707,8 @@ impl ValueType for String {
     type Type = String;
 }
 
+impl ValueTypeOptional for String {}
+
 unsafe impl<'a> FromValue<'a> for String {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
