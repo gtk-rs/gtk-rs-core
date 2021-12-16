@@ -44,6 +44,7 @@ mod imp {
 }
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// This is a subclass of `glib::object::Object` capable of storing any Rust type.
     /// It let's you insert a Rust type anywhere a `glib::object::Object` is needed.
     /// The inserted value can then be borrowed as a Rust type, by using the various
@@ -73,6 +74,7 @@ wrapper! {
 }
 
 impl BoxedAnyObject {
+    // rustdoc-stripper-ignore-next
     /// Creates a new `BoxedAnyObject` containing `value`
     pub fn new<T: 'static>(value: T) -> Self {
         let obj: Self = Object::new(&[]).expect("Failed to create BoxedAnyObject");
@@ -80,12 +82,14 @@ impl BoxedAnyObject {
         obj
     }
 
+    // rustdoc-stripper-ignore-next
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
     /// The returned value is inside a `Box` and must be manually downcasted if needed.
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
         self.impl_().value.replace(Box::new(t) as Box<dyn Any>)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Immutably borrows the wrapped value, returning an error if the value is currently mutably
     /// borrowed or if it's not of type `T`.
     ///
@@ -106,6 +110,7 @@ impl BoxedAnyObject {
         Ok(self.borrow()) // Now this won't panic
     }
 
+    // rustdoc-stripper-ignore-next
     /// Mutably borrows the wrapped value, returning an error if the value is currently borrowed.
     /// or if it's not of type `T`.
     ///
@@ -128,6 +133,7 @@ impl BoxedAnyObject {
         Ok(self.borrow_mut()) // Now this won't panic
     }
 
+    // rustdoc-stripper-ignore-next
     /// Immutably borrows the wrapped value.
     ///
     /// The borrow lasts until the returned `Ref` exits scope. Multiple
@@ -145,6 +151,7 @@ impl BoxedAnyObject {
         })
     }
 
+    // rustdoc-stripper-ignore-next
     /// Mutably borrows the wrapped value.
     ///
     /// The borrow lasts until the returned `RefMut` or all `RefMut`s derived
