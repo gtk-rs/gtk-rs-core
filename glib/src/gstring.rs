@@ -585,6 +585,8 @@ impl crate::value::ValueType for GString {
     type Type = String;
 }
 
+impl crate::value::ValueTypeOptional for GString {}
+
 unsafe impl<'a> crate::value::FromValue<'a> for GString {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 

@@ -81,6 +81,8 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
                 value
             }
         }
+
+        impl #crate_ident::value::ValueTypeOptional for #name { }
     }
 }
 

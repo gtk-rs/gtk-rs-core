@@ -40,6 +40,9 @@ impl crate::value::ValueType for ParamSpec {
 }
 
 #[doc(hidden)]
+impl crate::value::ValueTypeOptional for ParamSpec {}
+
+#[doc(hidden)]
 unsafe impl<'a> crate::value::FromValue<'a> for ParamSpec {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
@@ -239,6 +242,9 @@ macro_rules! define_param_spec {
         impl crate::value::ValueType for $rust_type {
             type Type = $rust_type;
         }
+
+        #[doc(hidden)]
+        impl crate::value::ValueTypeOptional for $rust_type {}
 
         #[doc(hidden)]
         unsafe impl<'a> crate::value::FromValue<'a> for $rust_type {

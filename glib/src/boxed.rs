@@ -241,6 +241,9 @@ macro_rules! glib_boxed_wrapper {
         }
 
         #[doc(hidden)]
+        impl $crate::value::ValueTypeOptional for $name { }
+
+        #[doc(hidden)]
         unsafe impl<'a> $crate::value::FromValue<'a> for $name {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
