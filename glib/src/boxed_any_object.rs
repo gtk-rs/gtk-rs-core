@@ -44,10 +44,10 @@ mod imp {
 }
 
 wrapper! {
-    /// This is a type subclassing `glib::object::Object` capable of storing any Rust type.
+    /// This is a subclass of `glib::object::Object` capable of storing any Rust type.
     /// It let's you insert a Rust type anywhere a `glib::object::Object` is needed.
     /// The inserted value can then be borrowed as a Rust type, by using the various
-    /// included methods.
+    /// provided methods.
     ///
     /// # Examples
     /// ```
@@ -73,6 +73,7 @@ wrapper! {
 }
 
 impl BoxedAnyObject {
+    /// Creates a new `BoxedAnyObject` containing `value`
     pub fn new<T: 'static>(value: T) -> Self {
         let obj: Self = Object::new(&[]).expect("Failed to create BoxedAnyObject");
         obj.replace(value);
@@ -80,13 +81,13 @@ impl BoxedAnyObject {
     }
 
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
-    /// The returned value is inside a Box and must be manually downcasted.
+    /// The returned value is inside a `Box` and must be manually downcasted if needed.
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
         self.impl_().value.replace(Box::new(t) as Box<dyn Any>)
     }
 
     /// Immutably borrows the wrapped value, returning an error if the value is currently mutably
-    /// borrowed or if it's not of type T.
+    /// borrowed or if it's not of type `T`.
     ///
     /// The borrow lasts until the returned `Ref` exits scope. Multiple immutable borrows can be
     /// taken out at the same time.
@@ -106,7 +107,7 @@ impl BoxedAnyObject {
     }
 
     /// Mutably borrows the wrapped value, returning an error if the value is currently borrowed.
-    /// or if it's not of type T.
+    /// or if it's not of type `T`.
     ///
     /// The borrow lasts until the returned `RefMut` or all `RefMut`s derived
     /// from it exit scope. The value cannot be borrowed while this borrow is
@@ -134,7 +135,7 @@ impl BoxedAnyObject {
     ///
     /// # Panics
     ///
-    /// Panics if the value is currently mutably borrowed or if it's not of type T.
+    /// Panics if the value is currently mutably borrowed or if it's not of type `T`.
     ///
     /// For a non-panicking variant, use
     /// [`try_borrow`](#method.try_borrow).
@@ -152,7 +153,7 @@ impl BoxedAnyObject {
     ///
     /// # Panics
     ///
-    /// Panics if the value is currently borrowed or if it's not of type T.
+    /// Panics if the value is currently borrowed or if it's not of type `T`.
     ///
     /// For a non-panicking variant, use
     /// [`try_borrow_mut`](#method.try_borrow_mut).
