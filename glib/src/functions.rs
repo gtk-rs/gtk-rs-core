@@ -209,6 +209,7 @@ pub fn spawn_async_with_pipes<
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Obtain the character set for the current locale.
 ///
 /// This returns whether the locale's encoding is UTF-8, and the current

@@ -1,7 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` The `wrapper!` macro and miscellaneous wrapper traits.
 
+// rustdoc-stripper-ignore-next
 /// Defines a wrapper type and implements the appropriate traits.
 ///
 /// The basic syntax is

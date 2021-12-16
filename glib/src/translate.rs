@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Translation between GLib/GLib-based FFI types and their Rust counterparts.
 //!
 //! This module allows library bindings authors to decouple type translation
@@ -143,6 +144,7 @@ use std::os::unix::prelude::*;
 use std::path::{Path, PathBuf};
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// A pointer
 pub trait Ptr: Copy + 'static {
     fn is_null(&self) -> bool;
@@ -184,6 +186,7 @@ impl<T: 'static> Ptr for *mut T {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Overrides pointer mutability.
 ///
 /// Use when the C API should be specifying a const pointer but doesn't.
@@ -191,6 +194,7 @@ pub fn mut_override<T>(ptr: *const T) -> *mut T {
     ptr as *mut T
 }
 
+// rustdoc-stripper-ignore-next
 /// Overrides pointer constness.
 ///
 /// Use when the C API need const pointer, but function with `IsA<T>` constraint,
@@ -199,18 +203,21 @@ pub fn const_override<T>(ptr: *mut T) -> *const T {
     ptr as *const T
 }
 
+// rustdoc-stripper-ignore-next
 /// A trait for creating an uninitialized value. Handy for receiving outparams.
 pub trait Uninitialized {
-    /// Returns an uninitialized value.
+    // Returns an uninitialized value.
     unsafe fn uninitialized() -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Returns an uninitialized value.
 #[inline]
 pub unsafe fn uninitialized<T: Uninitialized>() -> T {
     T::uninitialized()
 }
 
+// rustdoc-stripper-ignore-next
 /// Helper type that stores temporary values used for translation.
 ///
 /// `P` is the foreign type pointer and the first element of the tuple.
@@ -248,6 +255,7 @@ pub struct StashMut<'a, P: Copy, T: ?Sized>(pub P, pub <T as ToGlibPtrMut<'a, P>
 where
     T: ToGlibPtrMut<'a, P>;
 
+// rustdoc-stripper-ignore-next
 /// Wrapper around values representing borrowed C memory.
 ///
 /// This is returned by `from_glib_borrow()` and ensures that the wrapped value
@@ -259,11 +267,13 @@ where
 pub struct Borrowed<T>(mem::ManuallyDrop<T>);
 
 impl<T> Borrowed<T> {
+    // rustdoc-stripper-ignore-next
     /// Creates a new borrowed value.
     pub fn new(val: T) -> Self {
         Self(mem::ManuallyDrop::new(val))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Extracts the contained value.
     ///
     /// # Safety
@@ -289,6 +299,7 @@ impl<T> std::ops::Deref for Borrowed<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate a simple type.
 pub trait IntoGlib {
     type GlibType: Copy;
@@ -357,6 +368,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A Rust type `T` for which `Option<T>` translates to the same glib type as T.
 pub trait OptionIntoGlib: IntoGlib {
     const GLIB_NONE: Self::GlibType;
@@ -374,6 +386,7 @@ impl<T: OptionIntoGlib> IntoGlib for Option<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Provides the default pointer type to be used in some container conversions.
 ///
 /// It's `*mut c_char` for `String`, `*mut GtkButton` for `gtk::Button`, etc.
@@ -385,15 +398,18 @@ impl<'a, T: ?Sized + GlibPtrDefault> GlibPtrDefault for &'a T {
     type GlibType = <T as GlibPtrDefault>::GlibType;
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate to a pointer.
 pub trait ToGlibPtr<'a, P: Copy> {
     type Storage;
 
+    // rustdoc-stripper-ignore-next
     /// Transfer: none.
     ///
     /// The pointer in the `Stash` is only valid for the lifetime of the `Stash`.
     fn to_glib_none(&'a self) -> Stash<'a, P, Self>;
 
+    // rustdoc-stripper-ignore-next
     /// Transfer: container.
     ///
     /// We transfer the container ownership to the foreign library retaining
@@ -402,6 +418,7 @@ pub trait ToGlibPtr<'a, P: Copy> {
         unimplemented!();
     }
 
+    // rustdoc-stripper-ignore-next
     /// Transfer: full.
     ///
     /// We transfer the ownership to the foreign library.
@@ -409,11 +426,13 @@ pub trait ToGlibPtr<'a, P: Copy> {
         unimplemented!();
     }
 }
-///
+
+// rustdoc-stripper-ignore-next
 /// Translate to a pointer with a mutable borrow.
 pub trait ToGlibPtrMut<'a, P: Copy> {
     type Storage;
 
+    // rustdoc-stripper-ignore-next
     /// Transfer: none.
     ///
     /// The pointer in the `Stash` is only valid for the lifetime of the `Stash`.
@@ -1177,11 +1196,13 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate a simple type.
 pub trait FromGlib<G: Copy>: Sized {
     unsafe fn from_glib(val: G) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate a simple type.
 #[inline]
 pub unsafe fn from_glib<G: Copy, T: FromGlib<G>>(val: G) -> T {
@@ -1202,12 +1223,14 @@ impl FromGlib<i32> for Ordering {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a Glib type which can result in an undefined and/or invalid value.
 pub trait TryFromGlib<G: Copy>: Sized {
     type Error;
     unsafe fn try_from_glib(val: G) -> Result<Self, Self::Error>;
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a Glib type which can result in an undefined and/or invalid value.
 #[inline]
 pub unsafe fn try_from_glib<G: Copy, T: TryFromGlib<G>>(
@@ -1216,6 +1239,7 @@ pub unsafe fn try_from_glib<G: Copy, T: TryFromGlib<G>>(
     TryFromGlib::try_from_glib(val)
 }
 
+// rustdoc-stripper-ignore-next
 /// Error type for [`TryFromGlib`] when the Glib value is None.
 #[derive(Debug, PartialEq, Eq)]
 pub struct GlibNoneError;
@@ -1235,6 +1259,7 @@ impl<G: Copy, T: TryFromGlib<G, Error = GlibNoneError>> FromGlib<G> for Option<T
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Error type for [`TryFromGlib`] when the Glib value can be None or invalid.
 #[derive(Debug, Eq, PartialEq)]
 pub enum GlibNoneOrInvalidError<I: Error> {
@@ -1243,16 +1268,19 @@ pub enum GlibNoneOrInvalidError<I: Error> {
 }
 
 impl<I: Error> GlibNoneOrInvalidError<I> {
+    // rustdoc-stripper-ignore-next
     /// Builds the `None` variant.
     pub fn none() -> Self {
         Self::None
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if `self` is the `None` variant.
     pub fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if `self` is the `Invalid` variant.
     pub fn is_invalid(&self) -> bool {
         matches!(self, Self::Invalid(_))
@@ -1292,6 +1320,7 @@ impl<G: Copy, I: Error, T: TryFromGlib<G, Error = GlibNoneOrInvalidError<I>>> Fr
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type which is annotated with `transfer none`.
 /// The resulting value is referenced at least once, by the bindings.
 ///
@@ -1309,12 +1338,14 @@ impl<G: Copy, I: Error, T: TryFromGlib<G, Error = GlibNoneOrInvalidError<I>>> Fr
 ///
 /// For more information, refer to module level documentation.
 pub trait FromGlibPtrNone<P: Ptr>: Sized {
+    // rustdoc-stripper-ignore-next
     /// # Safety
     ///
     /// See trait level [notes on safety](#safety_points)
     unsafe fn from_glib_none(ptr: P) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type which is annotated with `transfer full`.
 /// This transfers the ownership of the value to the Rust side.
 ///
@@ -1331,12 +1362,14 @@ pub trait FromGlibPtrNone<P: Ptr>: Sized {
 ///
 /// For more information, refer to module level documentation.
 pub trait FromGlibPtrFull<P: Ptr>: Sized {
+    // rustdoc-stripper-ignore-next
     /// # Safety
     ///
     /// See trait level [notes on safety](#safety_points)
     unsafe fn from_glib_full(ptr: P) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type by borrowing, without affecting the refcount.
 ///
 /// The purpose of this trait is to access values inside callbacks
@@ -1362,6 +1395,7 @@ pub trait FromGlibPtrFull<P: Ptr>: Sized {
 ///
 /// For more information, refer to module level documentation.
 pub trait FromGlibPtrBorrow<P: Ptr>: Sized {
+    // rustdoc-stripper-ignore-next
     /// # Safety
     ///
     /// See trait level [notes on safety](#safety_points)
@@ -1370,6 +1404,7 @@ pub trait FromGlibPtrBorrow<P: Ptr>: Sized {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type, transfer: none.
 ///
 /// See [`FromGlibPtrNone`](trait.FromGlibPtrNone.html).
@@ -1378,6 +1413,7 @@ pub unsafe fn from_glib_none<P: Ptr, T: FromGlibPtrNone<P>>(ptr: P) -> T {
     FromGlibPtrNone::from_glib_none(ptr)
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type, transfer: full (assume ownership).
 ///
 /// See [`FromGlibPtrFull`](trait.FromGlibPtrFull.html).
@@ -1386,6 +1422,7 @@ pub unsafe fn from_glib_full<P: Ptr, T: FromGlibPtrFull<P>>(ptr: P) -> T {
     FromGlibPtrFull::from_glib_full(ptr)
 }
 
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type, borrowing the pointer.
 ///
 /// See [`FromGlibPtrBorrow`](trait.FromGlibPtrBorrow.html).

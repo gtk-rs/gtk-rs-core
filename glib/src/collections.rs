@@ -11,6 +11,7 @@ enum ContainerTransfer {
     None,
 }
 
+// rustdoc-stripper-ignore-next
 /// Slice of elements of type `T` allocated by the GLib allocator.
 ///
 /// This can be used like a `&[T]`.
@@ -141,6 +142,7 @@ impl<
             + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
     > PtrSlice<T>
 {
+    // rustdoc-stripper-ignore-next
     /// Borrows a static C array.
     pub unsafe fn from_glib_borrow_num<'a>(
         ptr: *const <T as GlibPtrDefault>::GlibType,
@@ -159,6 +161,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a static C array.
     ///
     /// Must only be called for static allocations that are never invalidated.
@@ -183,6 +186,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a C array of which the items are static.
     ///
     /// Must only be called for static items that are never invalidated.
@@ -210,6 +214,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a C array where the items are borrowed.
     pub unsafe fn from_glib_container_num(
         ptr: *mut <T as GlibPtrDefault>::GlibType,
@@ -241,6 +246,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a C array.
     pub unsafe fn from_glib_full_num(
         ptr: *mut <T as GlibPtrDefault>::GlibType,
@@ -266,6 +272,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a static `NULL`-terminated C array.
     ///
     /// Must only be called for static allocations that are never invalidated.
@@ -280,6 +287,7 @@ impl<
         PtrSlice::from_glib_none_num_static(ptr, len)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a `NULL`-terminated C array of which the items are static.
     ///
     /// Must only be called for static items that are never invalidated.
@@ -294,6 +302,7 @@ impl<
         PtrSlice::from_glib_container_num_static(ptr, len)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a `NULL`-terminated C array where the items are borrowed.
     pub unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
         assert_eq!(
@@ -315,6 +324,7 @@ impl<
         PtrSlice::from_glib_full_num(ptr, len)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a `NULL`-terminated C array.
     pub unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
         let mut len = 0;
@@ -327,6 +337,7 @@ impl<
         PtrSlice::from_glib_full_num(ptr, len)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the underlying pointer.
     pub fn as_ptr(&self) -> *const <T as GlibPtrDefault>::GlibType {
         if self.len == 0 {
@@ -336,6 +347,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Borrows this slice as a `&[T]`.
     pub fn as_slice(&self) -> &[T] {
         self.as_ref()
@@ -430,6 +442,7 @@ impl<
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Slice of elements of type `T` allocated by the GLib allocator.
 ///
 /// This can be used like a `&[T]`.
@@ -488,6 +501,7 @@ impl<T: PartialEq + 'static> PartialEq<Slice<T>> for [T] {
 }
 
 impl<T: 'static> Slice<T> {
+    // rustdoc-stripper-ignore-next
     /// Borrows a static C array.
     pub unsafe fn from_glib_borrow_num<'a>(ptr: *const T, len: usize) -> &'a [T] {
         assert!(!ptr.is_null() || len == 0);
@@ -499,6 +513,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a static C array.
     ///
     /// Must only be called for static allocations that are never invalidated.
@@ -516,6 +531,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a C array of which the items are static.
     ///
     /// Must only be called for static items that are never invalidated.
@@ -536,6 +552,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a C array where the items are `Copy`.
     pub unsafe fn from_glib_container_num_copy(ptr: *mut T, len: usize) -> Self
     where
@@ -557,6 +574,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a C array where the items are borrowed.
     pub unsafe fn from_glib_container_num<P: Ptr>(ptr: *mut T, len: usize) -> Self
     where
@@ -584,6 +602,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a C array where the items are `Copy`.
     pub unsafe fn from_glib_full_num_copy(ptr: *mut T, len: usize) -> Self
     where
@@ -605,6 +624,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `Slice` around a C array.
     pub unsafe fn from_glib_full_num(ptr: *mut T, len: usize) -> Self {
         assert!(!ptr.is_null() || len == 0);
@@ -623,6 +643,7 @@ impl<T: 'static> Slice<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Borrows this slice as a `&[T]`.
     pub fn as_slice(&self) -> &[T] {
         self.as_ref()
@@ -674,6 +695,7 @@ impl<T: FromGlibPtrNone<*mut T> + 'static> FromGlibContainer<T, *mut T> for Slic
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A list of items of type `T`.
 ///
 /// Behaves like an `Iterator<Item = T>`.
@@ -711,6 +733,7 @@ impl<
             + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
     > List<T>
 {
+    // rustdoc-stripper-ignore-next
     /// Create a new `List` around a static list of static items.
     ///
     /// Must only be called for a static list of static allocations that are never invalidated.
@@ -722,6 +745,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `List` around a list.
     pub unsafe fn from_glib_container(list: *mut ffi::GList) -> List<T> {
         // Need to copy all items as we only own the container
@@ -739,6 +763,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `List` around a list of static items.
     ///
     /// Must only be called for static allocations that are never invalidated.
@@ -750,6 +775,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `List` around a list.
     pub unsafe fn from_glib_full(list: *mut ffi::GList) -> List<T> {
         List {
@@ -759,6 +785,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a non-destructive iterator over the `List`.
     pub fn iter(&self) -> ListIter<T> {
         ListIter::new(self)
@@ -850,6 +877,7 @@ impl<
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A non-destructive iterator over a [`List`].
 pub struct ListIter<
     'a,
@@ -904,6 +932,7 @@ impl<
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A list of items of type `T`.
 ///
 /// Behaves like an `Iterator<Item = T>`.
@@ -941,6 +970,7 @@ impl<
             + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
     > SList<T>
 {
+    // rustdoc-stripper-ignore-next
     /// Create a new `SList` around a static list of static items.
     ///
     /// Must only be called for a static list of static allocations that are never invalidated.
@@ -952,6 +982,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `SList` around a list.
     pub unsafe fn from_glib_container(list: *mut ffi::GSList) -> SList<T> {
         assert_eq!(
@@ -974,6 +1005,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `SList` around a list of static items.
     ///
     /// Must only be called for static allocations that are never invalidated.
@@ -985,6 +1017,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new `SList` around a list.
     pub unsafe fn from_glib_full(list: *mut ffi::GSList) -> SList<T> {
         SList {
@@ -994,6 +1027,7 @@ impl<
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a non-destructive iterator over the `SList`.
     pub fn iter(&self) -> SListIter<T> {
         SListIter::new(self)
@@ -1082,6 +1116,7 @@ impl<
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A non-destructive iterator over a [`SList`].
 pub struct SListIter<
     'a,

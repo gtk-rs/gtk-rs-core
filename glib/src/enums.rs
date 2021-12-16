@@ -48,6 +48,7 @@ impl IntoGlib for UserDirectory {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Representation of an `enum` for dynamically, at runtime, querying the values of the enum and
 /// using them.
 #[doc(alias = "GEnumClass")]
@@ -67,6 +68,7 @@ impl fmt::Debug for EnumClass {
 }
 
 impl EnumClass {
+    // rustdoc-stripper-ignore-next
     /// Create a new `EnumClass` from a `Type`.
     ///
     /// Returns `None` if `type_` is not representing an enum.
@@ -87,11 +89,13 @@ impl EnumClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// `Type` of the enum.
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.0.as_ref().g_type_class.g_type) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `EnumValue` by integer `value`, if existing.
     ///
     /// Returns `None` if the enum does not contain any value
@@ -109,6 +113,7 @@ impl EnumClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `EnumValue` by string name `name`, if existing.
     ///
     /// Returns `None` if the enum does not contain any value
@@ -126,6 +131,7 @@ impl EnumClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `EnumValue` by string nick `nick`, if existing.
     ///
     /// Returns `None` if the enum does not contain any value
@@ -143,6 +149,7 @@ impl EnumClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets all `EnumValue` of this `EnumClass`.
     #[doc(alias = "get_values")]
     pub fn values(&self) -> &[EnumValue] {
@@ -154,16 +161,19 @@ impl EnumClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts integer `value` to a `Value`, if part of the enum.
     pub fn to_value(&self, value: i32) -> Option<Value> {
         self.value(value).map(|v| v.to_value(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts string name `name` to a `Value`, if part of the enum.
     pub fn to_value_by_name(&self, name: &str) -> Option<Value> {
         self.value_by_name(name).map(|v| v.to_value(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts string nick `nick` to a `Value`, if part of the enum.
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
         self.value_by_nick(nick).map(|v| v.to_value(self))
@@ -186,6 +196,7 @@ impl Clone for EnumClass {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Representation of a single enum value of an `EnumClass`.
 #[doc(alias = "GEnumValue")]
 #[repr(transparent)]
@@ -205,24 +216,28 @@ impl fmt::Debug for EnumValue {
 }
 
 impl EnumValue {
+    // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
     pub fn value(&self) -> i32 {
         self.0.value
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
     pub fn name(&self) -> &str {
         unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
         unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert enum value to a `Value`.
     pub fn to_value(&self, enum_: &EnumClass) -> Value {
         unsafe {
@@ -232,6 +247,7 @@ impl EnumValue {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert enum value from a `Value`.
     pub fn from_value(value: &Value) -> Option<(EnumClass, &EnumValue)> {
         unsafe {
@@ -263,6 +279,7 @@ impl Ord for EnumValue {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
 /// using them
 #[doc(alias = "GFlagsClass")]
@@ -282,6 +299,7 @@ impl fmt::Debug for FlagsClass {
 }
 
 impl FlagsClass {
+    // rustdoc-stripper-ignore-next
     /// Create a new `FlagsClass` from a `Type`
     ///
     /// Returns `None` if `type_` is not representing a flags type.
@@ -302,11 +320,13 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// `Type` of the flags.
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.0.as_ref().g_type_class.g_type) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `FlagsValue` by integer `value`, if existing.
     ///
     /// Returns `None` if the flags do not contain any value
@@ -324,6 +344,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `FlagsValue` by string name `name`, if existing.
     ///
     /// Returns `None` if the flags do not contain any value
@@ -341,6 +362,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets `FlagsValue` by string nick `nick`, if existing.
     ///
     /// Returns `None` if the flags do not contain any value
@@ -358,6 +380,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets all `FlagsValue` of this `FlagsClass`.
     #[doc(alias = "get_values")]
     pub fn values(&self) -> &[FlagsValue] {
@@ -369,21 +392,25 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts integer `value` to a `Value`, if part of the flags.
     pub fn to_value(&self, value: u32) -> Option<Value> {
         self.value(value).map(|v| v.to_value(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts string name `name` to a `Value`, if part of the flags.
     pub fn to_value_by_name(&self, name: &str) -> Option<Value> {
         self.value_by_name(name).map(|v| v.to_value(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts string nick `nick` to a `Value`, if part of the flags.
     pub fn to_value_by_nick(&self, nick: &str) -> Option<Value> {
         self.value_by_nick(nick).map(|v| v.to_value(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Checks if the flags corresponding to integer `f` is set in `value`.
     pub fn is_set(&self, value: &Value, f: u32) -> bool {
         unsafe {
@@ -396,6 +423,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Checks if the flags corresponding to string name `name` is set in `value`.
     pub fn is_set_by_name(&self, value: &Value, name: &str) -> bool {
         unsafe {
@@ -412,6 +440,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Checks if the flags corresponding to string nick `nick` is set in `value`.
     pub fn is_set_by_nick(&self, value: &Value, nick: &str) -> bool {
         unsafe {
@@ -428,6 +457,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags value corresponding to integer `f` in `value`, if part of that flags. If the
     /// flag is already set, it will succeed without doing any changes.
     ///
@@ -450,6 +480,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags value corresponding to string name `name` in `value`, if part of that flags.
     /// If the flag is already set, it will succeed without doing any changes.
     ///
@@ -471,6 +502,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags value corresponding to string nick `nick` in `value`, if part of that flags.
     /// If the flag is already set, it will succeed without doing any changes.
     ///
@@ -492,6 +524,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unset flags value corresponding to integer `f` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
@@ -513,6 +546,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unset flags value corresponding to string name `name` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
@@ -534,6 +568,7 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unset flags value corresponding to string nick `nick` in `value`, if part of that flags.
     /// If the flag is already unset, it will succeed without doing any changes.
     ///
@@ -555,12 +590,14 @@ impl FlagsClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`.
     pub fn builder(&self) -> FlagsBuilder {
         FlagsBuilder::new(self)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`. The `Value` is initialized with `value`.
     pub fn builder_with_value(&self, value: Value) -> Option<FlagsBuilder> {
@@ -588,6 +625,7 @@ impl Clone for FlagsClass {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Representation of a single flags value of a `FlagsClass`.
 #[doc(alias = "GFlagsValue")]
 #[repr(transparent)]
@@ -607,24 +645,28 @@ impl fmt::Debug for FlagsValue {
 }
 
 impl FlagsValue {
+    // rustdoc-stripper-ignore-next
     /// Get integer value corresponding to the value.
     #[doc(alias = "get_value")]
     pub fn value(&self) -> u32 {
         self.0.value
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
     pub fn name(&self) -> &str {
         unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
         unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert flags value to a `Value`.
     pub fn to_value(&self, flags: &FlagsClass) -> Value {
         unsafe {
@@ -634,6 +676,7 @@ impl FlagsValue {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert flags values from a `Value`. This returns all flags that are set.
     pub fn from_value(value: &Value) -> Option<(FlagsClass, Vec<&FlagsValue>)> {
         unsafe {
@@ -658,6 +701,7 @@ impl PartialEq for FlagsValue {
 
 impl Eq for FlagsValue {}
 
+// rustdoc-stripper-ignore-next
 /// Builder for conveniently setting/unsetting flags and returning a `Value`.
 ///
 /// Example for getting a flags property, unsetting some flags and setting the updated flags on the
@@ -687,6 +731,7 @@ impl<'a> FlagsBuilder<'a> {
         FlagsBuilder(flags_class, Some(value))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags corresponding to integer value `f`.
     pub fn set(mut self, f: u32) -> Self {
         if let Some(value) = self.1.take() {
@@ -696,6 +741,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags corresponding to string name `name`.
     pub fn set_by_name(mut self, name: &str) -> Self {
         if let Some(value) = self.1.take() {
@@ -705,6 +751,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set flags corresponding to string nick `nick`.
     pub fn set_by_nick(mut self, nick: &str) -> Self {
         if let Some(value) = self.1.take() {
@@ -714,6 +761,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unsets flags corresponding to integer value `f`.
     pub fn unset(mut self, f: u32) -> Self {
         if let Some(value) = self.1.take() {
@@ -723,6 +771,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unset flags corresponding to string name `name`.
     pub fn unset_by_name(mut self, name: &str) -> Self {
         if let Some(value) = self.1.take() {
@@ -732,6 +781,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unset flags corresponding to string nick `nick`.
     pub fn unset_by_nick(mut self, nick: &str) -> Self {
         if let Some(value) = self.1.take() {
@@ -741,6 +791,7 @@ impl<'a> FlagsBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts to the final `Value`, unless any previous setting/unsetting of flags failed.
     #[must_use = "Value returned from the builder should probably be used"]
     pub fn build(self) -> Option<Value> {

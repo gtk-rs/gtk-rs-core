@@ -9,6 +9,7 @@ use std::iter::{DoubleEndedIterator, ExactSizeIterator, Iterator};
 use crate::translate::*;
 use crate::variant::Variant;
 
+// rustdoc-stripper-ignore-next
 /// Iterator over items in a variant.
 #[derive(Debug)]
 pub struct VariantIter {
@@ -60,6 +61,7 @@ impl DoubleEndedIterator for VariantIter {
 
 impl ExactSizeIterator for VariantIter {}
 
+// rustdoc-stripper-ignore-next
 /// Iterator over items in a variant of type `as`.
 #[derive(Debug)]
 pub struct VariantStrIter<'a> {

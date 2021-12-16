@@ -5,6 +5,7 @@ use glib::Type;
 use std::fmt;
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// The implementation of an `IOExtensionPoint`.
 #[doc(alias = "GIOExtension")]
 #[derive(Copy, Clone, Eq, PartialEq)]

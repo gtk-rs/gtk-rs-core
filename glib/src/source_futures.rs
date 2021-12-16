@@ -15,6 +15,7 @@ use crate::MainContext;
 use crate::Priority;
 use crate::Source;
 
+// rustdoc-stripper-ignore-next
 /// Represents a `Future` around a `glib::Source`. The future will
 /// be resolved once the source has provided a value
 pub struct SourceFuture<F, T> {
@@ -26,6 +27,7 @@ impl<F, T: 'static> SourceFuture<F, T>
 where
     F: FnOnce(oneshot::Sender<T>) -> Source + 'static,
 {
+    // rustdoc-stripper-ignore-next
     /// Create a new `SourceFuture`
     ///
     /// The provided closure should return a newly created `glib::Source` when called
@@ -102,6 +104,7 @@ impl<T, F> Drop for SourceFuture<T, F> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve after the given number of milliseconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -109,6 +112,7 @@ pub fn timeout_future(value: Duration) -> Pin<Box<dyn Future<Output = ()> + Send
     timeout_future_with_priority(crate::PRIORITY_DEFAULT, value)
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve after the given number of milliseconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -125,6 +129,7 @@ pub fn timeout_future_with_priority(
     }))
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve after the given number of seconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -132,6 +137,7 @@ pub fn timeout_future_seconds(value: u32) -> Pin<Box<dyn Future<Output = ()> + S
     timeout_future_seconds_with_priority(crate::PRIORITY_DEFAULT, value)
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve after the given number of seconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -148,6 +154,7 @@ pub fn timeout_future_seconds_with_priority(
     }))
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the child process with the given pid exits
 ///
 /// The `Future` will resolve to the pid of the child process and the exit code.
@@ -159,6 +166,7 @@ pub fn child_watch_future(
     child_watch_future_with_priority(crate::PRIORITY_DEFAULT, pid)
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the child process with the given pid exits
 ///
 /// The `Future` will resolve to the pid of the child process and the exit code.
@@ -178,6 +186,7 @@ pub fn child_watch_future_with_priority(
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the given UNIX signal is raised
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -187,6 +196,7 @@ pub fn unix_signal_future(signum: i32) -> Pin<Box<dyn Future<Output = ()> + Send
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Create a `Future` that will resolve once the given UNIX signal is raised
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -203,6 +213,7 @@ pub fn unix_signal_future_with_priority(
     }))
 }
 
+// rustdoc-stripper-ignore-next
 /// Represents a `Stream` around a `glib::Source`. The stream will
 /// be provide all values that are provided by the source
 pub struct SourceStream<F, T> {
@@ -216,6 +227,7 @@ impl<F, T: 'static> SourceStream<F, T>
 where
     F: FnOnce(mpsc::UnboundedSender<T>) -> Source + 'static,
 {
+    // rustdoc-stripper-ignore-next
     /// Create a new `SourceStream`
     ///
     /// The provided closure should return a newly created `glib::Source` when called
@@ -291,6 +303,7 @@ impl<T, F> Drop for SourceStream<T, F> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value every given number of milliseconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -298,6 +311,7 @@ pub fn interval_stream(value: Duration) -> Pin<Box<dyn Stream<Item = ()> + Send 
     interval_stream_with_priority(crate::PRIORITY_DEFAULT, value)
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value every given number of milliseconds.
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -316,6 +330,7 @@ pub fn interval_stream_with_priority(
     }))
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value every given number of seconds.
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -323,6 +338,7 @@ pub fn interval_stream_seconds(value: u32) -> Pin<Box<dyn Stream<Item = ()> + Se
     interval_stream_seconds_with_priority(crate::PRIORITY_DEFAULT, value)
 }
 
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value every given number of seconds.
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -343,6 +359,7 @@ pub fn interval_stream_seconds_with_priority(
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
@@ -352,6 +369,7 @@ pub fn unix_signal_stream(signum: i32) -> Pin<Box<dyn Stream<Item = ()> + Send +
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.

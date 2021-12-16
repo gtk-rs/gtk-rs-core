@@ -319,6 +319,7 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A `Sender` that can be used to send items to the corresponding main context receiver.
 ///
 /// This `Sender` behaves the same as `std::sync::mpsc::Sender`.
@@ -351,6 +352,7 @@ impl<T> Sender<T> {
         Self(channel.clone())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Sends a value to the channel.
     pub fn send(&self, t: T) -> Result<(), mpsc::SendError<T>> {
         self.0.send(t)
@@ -369,6 +371,7 @@ impl<T> Drop for Sender<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A `SyncSender` that can be used to send items to the corresponding main context receiver.
 ///
 /// This `SyncSender` behaves the same as `std::sync::mpsc::SyncSender`.
@@ -401,11 +404,13 @@ impl<T> SyncSender<T> {
         Self(channel.clone())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Sends a value to the channel and blocks if the channel is full.
     pub fn send(&self, t: T) -> Result<(), mpsc::SendError<T>> {
         self.0.send(t)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Sends a value to the channel.
     pub fn try_send(&self, t: T) -> Result<(), mpsc::TrySendError<T>> {
         self.0.try_send(t)
@@ -424,6 +429,7 @@ impl<T> Drop for SyncSender<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A `Receiver` that can be attached to a main context to receive items from its corresponding
 /// `Sender` or `SyncSender`.
 ///
@@ -458,6 +464,7 @@ impl<T> Drop for Receiver<T> {
 }
 
 impl<T> Receiver<T> {
+    // rustdoc-stripper-ignore-next
     /// Attaches the receiver to the given `context` and calls `func` whenever an item is
     /// available on the channel.
     ///
@@ -540,6 +547,7 @@ impl<T> Receiver<T> {
 }
 
 impl MainContext {
+    // rustdoc-stripper-ignore-next
     /// Creates a channel for a main context.
     ///
     /// The `Receiver` has to be attached to a main context at a later time, together with a
@@ -561,6 +569,7 @@ impl MainContext {
         (sender, receiver)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a synchronous channel for a main context with a given bound on the capacity of the
     /// channel.
     ///

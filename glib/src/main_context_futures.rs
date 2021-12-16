@@ -237,6 +237,7 @@ impl TaskSource {
 }
 
 impl MainContext {
+    // rustdoc-stripper-ignore-next
     /// Spawn a new infallible `Future` on the main context.
     ///
     /// This can be called from any thread and will execute the future from the thread
@@ -245,6 +246,7 @@ impl MainContext {
         self.spawn_with_priority(crate::PRIORITY_DEFAULT, f)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Spawn a new infallible `Future` on the main context.
     ///
     /// The given `Future` does not have to be `Send`.
@@ -256,6 +258,7 @@ impl MainContext {
         self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Spawn a new infallible `Future` on the main context, with a non-default priority.
     ///
     /// This can be called from any thread and will execute the future from the thread
@@ -270,6 +273,7 @@ impl MainContext {
         source.attach(Some(&*self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Spawn a new infallible `Future` on the main context, with a non-default priority.
     ///
     /// The given `Future` does not have to be `Send`.
@@ -290,6 +294,7 @@ impl MainContext {
         source.attach(Some(&*self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Runs a new, infallible `Future` on the main context and block until it finished, returning
     /// the result of the `Future`.
     ///

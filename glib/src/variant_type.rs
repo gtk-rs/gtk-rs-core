@@ -12,6 +12,7 @@ use std::ops::Deref;
 use std::ptr;
 use std::slice;
 
+// rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
 ///
 /// The `Variant` type system (based on the D-Bus one) describes types with
@@ -29,6 +30,7 @@ pub struct VariantType {
 }
 
 impl VariantType {
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from a string slice.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -36,6 +38,7 @@ impl VariantType {
         VariantTy::new(type_string).map(ToOwned::to_owned)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -172,6 +175,7 @@ impl FromGlibPtrFull<*mut ffi::GVariantType> for VariantType {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
 ///
 /// This is a borrowed counterpart of [`VariantType`](struct.VariantType.html).
@@ -183,141 +187,169 @@ pub struct VariantTy {
 }
 
 impl VariantTy {
+    // rustdoc-stripper-ignore-next
     /// `bool`.
     #[doc(alias = "G_VARIANT_TYPE_BOOLEAN")]
     pub const BOOLEAN: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BOOLEAN) };
 
+    // rustdoc-stripper-ignore-next
     /// `u8`.
     #[doc(alias = "G_VARIANT_TYPE_BYTE")]
     pub const BYTE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE) };
 
+    // rustdoc-stripper-ignore-next
     /// `i16`.
     #[doc(alias = "G_VARIANT_TYPE_INT16")]
     pub const INT16: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT16) };
 
+    // rustdoc-stripper-ignore-next
     /// `u16`.
     #[doc(alias = "G_VARIANT_TYPE_UINT16")]
     pub const UINT16: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT16) };
 
+    // rustdoc-stripper-ignore-next
     /// `i32`.
     #[doc(alias = "G_VARIANT_TYPE_INT32")]
     pub const INT32: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT32) };
 
+    // rustdoc-stripper-ignore-next
     /// `u32`.
     #[doc(alias = "G_VARIANT_TYPE_UINT32")]
     pub const UINT32: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT32) };
 
+    // rustdoc-stripper-ignore-next
     /// `i64`.
     #[doc(alias = "G_VARIANT_TYPE_INT64")]
     pub const INT64: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_INT64) };
 
+    // rustdoc-stripper-ignore-next
     /// `u64`.
     #[doc(alias = "G_VARIANT_TYPE_UINT64")]
     pub const UINT64: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UINT64) };
 
+    // rustdoc-stripper-ignore-next
     /// `f64`.
     #[doc(alias = "G_VARIANT_TYPE_DOUBLE")]
     pub const DOUBLE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DOUBLE) };
 
+    // rustdoc-stripper-ignore-next
     /// `&str`.
     #[doc(alias = "G_VARIANT_TYPE_STRING")]
     pub const STRING: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING) };
 
+    // rustdoc-stripper-ignore-next
     /// DBus object path.
     #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH")]
     pub const OBJECT_PATH: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH) };
 
+    // rustdoc-stripper-ignore-next
     /// Type signature.
     #[doc(alias = "G_VARIANT_TYPE_SIGNATURE")]
     pub const SIGNATURE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_SIGNATURE) };
 
+    // rustdoc-stripper-ignore-next
     /// Variant.
     #[doc(alias = "G_VARIANT_TYPE_VARIANT")]
     pub const VARIANT: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARIANT) };
 
+    // rustdoc-stripper-ignore-next
     /// Handle.
     #[doc(alias = "G_VARIANT_TYPE_HANDLE")]
     pub const HANDLE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_HANDLE) };
 
+    // rustdoc-stripper-ignore-next
     /// Unit, i.e. `()`.
     #[doc(alias = "G_VARIANT_TYPE_UNIT")]
     pub const UNIT: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_UNIT) };
 
+    // rustdoc-stripper-ignore-next
     /// An indefinite type that is a supertype of every type (including itself).
     #[doc(alias = "G_VARIANT_TYPE_ANY")]
     pub const ANY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ANY) };
 
+    // rustdoc-stripper-ignore-next
     /// Any basic type.
     #[doc(alias = "G_VARIANT_TYPE_BASIC")]
     pub const BASIC: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BASIC) };
 
+    // rustdoc-stripper-ignore-next
     /// Any maybe type, i.e. `Option<T>`.
     #[doc(alias = "G_VARIANT_TYPE_MAYBE")]
     pub const MAYBE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_MAYBE) };
 
+    // rustdoc-stripper-ignore-next
     /// Any array type, i.e. `[T]`.
     #[doc(alias = "G_VARIANT_TYPE_ARRAY")]
     pub const ARRAY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_ARRAY) };
 
+    // rustdoc-stripper-ignore-next
     /// Any tuple type, i.e. `(T)`, `(T, T)`, etc.
     #[doc(alias = "G_VARIANT_TYPE_TUPLE")]
     pub const TUPLE: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_TUPLE) };
 
+    // rustdoc-stripper-ignore-next
     /// Any dict entry type, i.e. `DictEntry<K, V>`.
     #[doc(alias = "G_VARIANT_TYPE_DICT_ENTRY")]
     pub const DICT_ENTRY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICT_ENTRY) };
 
+    // rustdoc-stripper-ignore-next
     /// Any dictionary type, i.e. `HashMap<K, V>`, `BTreeMap<K, V>`.
     #[doc(alias = "G_VARIANT_TYPE_DICTIONARY")]
     pub const DICTIONARY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_DICTIONARY) };
 
+    // rustdoc-stripper-ignore-next
     /// String array, i.e. `[&str]`.
     #[doc(alias = "G_VARIANT_TYPE_STRING_ARRAY")]
     pub const STRING_ARRAY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_STRING_ARRAY) };
 
+    // rustdoc-stripper-ignore-next
     /// Object path array, i.e. `[&str]`.
     #[doc(alias = "G_VARIANT_TYPE_OBJECT_PATH_ARRAY")]
     pub const OBJECT_PATH_ARRAY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_OBJECT_PATH_ARRAY) };
 
+    // rustdoc-stripper-ignore-next
     /// Byte string, i.e. `[u8]`.
     #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING")]
     pub const BYTE_STRING: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING) };
 
+    // rustdoc-stripper-ignore-next
     /// Byte string array, i.e. `[[u8]]`.
     #[doc(alias = "G_VARIANT_TYPE_BYTE_STRING_ARRAY")]
     pub const BYTE_STRING_ARRAY: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_BYTE_STRING_ARRAY) };
 
+    // rustdoc-stripper-ignore-next
     /// Variant dictionary, i.e. `HashMap<String, Variant>`, `BTreeMap<String, Variant>`, etc.
     #[doc(alias = "G_VARIANT_TYPE_VARDICT")]
     pub const VARDICT: &'static VariantTy =
         unsafe { VariantTy::from_str_unchecked(ffi::G_VARIANT_TYPE_VARDICT) };
 
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `&VariantTy` from a string slice.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -340,6 +372,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts a type string into `&VariantTy` without any checks.
     ///
     /// # Safety
@@ -349,6 +382,7 @@ impl VariantTy {
         std::mem::transmute::<&str, &VariantTy>(type_string)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates `&VariantTy` with a wildcard lifetime from a `GVariantType`
     /// pointer.
     #[doc(hidden)]
@@ -357,65 +391,76 @@ impl VariantTy {
         &*(slice::from_raw_parts(ptr as *const u8, len) as *const [u8] as *const VariantTy)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a `GVariantType` pointer.
     #[doc(hidden)]
     pub fn as_ptr(&self) -> *const ffi::GVariantType {
         self.inner.as_ptr() as *const _
     }
 
+    // rustdoc-stripper-ignore-next
     /// Converts to a string slice.
     pub fn as_str(&self) -> &str {
         &self.inner
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a definite type.
     #[doc(alias = "g_variant_type_is_definite")]
     pub fn is_definite(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_definite(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a container type.
     #[doc(alias = "g_variant_type_is_container")]
     pub fn is_container(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_container(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a basic type.
     #[doc(alias = "g_variant_type_is_basic")]
     pub fn is_basic(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_basic(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a maybe type.
     #[doc(alias = "g_variant_type_is_maybe")]
     pub fn is_maybe(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_maybe(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is an array type.
     #[doc(alias = "g_variant_type_is_array")]
     pub fn is_array(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_array(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a tuple type.
     #[doc(alias = "g_variant_type_is_tuple")]
     pub fn is_tuple(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_tuple(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a dict entry type.
     #[doc(alias = "g_variant_type_is_dict_entry")]
     pub fn is_dict_entry(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_dict_entry(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a variant.
     #[doc(alias = "g_variant_type_is_variant")]
     pub fn is_variant(&self) -> bool {
         unsafe { from_glib(ffi::g_variant_type_is_variant(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this variant type is a subtype of another.
     #[doc(alias = "g_variant_type_is_subtype_of")]
     pub fn is_subtype_of(&self, supertype: &Self) -> bool {
@@ -427,6 +472,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the element type of this variant type.
     ///
     /// # Panics
@@ -442,6 +488,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the first type of this variant type.
     ///
     /// # Panics
@@ -461,6 +508,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the next type of this variant type.
     #[doc(alias = "g_variant_type_next")]
     pub fn next(&self) -> Option<&VariantTy> {
@@ -474,12 +522,14 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the number of items in this variant type.
     #[doc(alias = "g_variant_type_n_items")]
     pub fn n_items(&self) -> usize {
         unsafe { ffi::g_variant_type_n_items(self.to_glib_none().0) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the key type of this variant type.
     ///
     /// # Panics
@@ -495,6 +545,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return the value type of this variant type.
     ///
     /// # Panics
@@ -510,6 +561,7 @@ impl VariantTy {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return this type as an array.
     pub(crate) fn as_array<'a>(&self) -> Cow<'a, VariantTy> {
         if self == VariantTy::STRING {

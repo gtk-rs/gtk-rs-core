@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Module for registering boxed types for Rust types.
 
 use crate::translate::*;
 use crate::StaticType;
 
+// rustdoc-stripper-ignore-next
 /// Trait for defining boxed types.
 ///
 /// Links together the type name with the type itself.
@@ -14,12 +16,14 @@ use crate::StaticType;
 ///
 /// [`register_boxed_type`]: fn.register_boxed_type.html
 pub trait BoxedType: StaticType + Clone + Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// Boxed type name.
     ///
     /// This must be unique in the whole process.
     const NAME: &'static str;
 }
 
+// rustdoc-stripper-ignore-next
 /// Register a boxed `glib::Type` ID for `T`.
 ///
 /// This must be called only once and will panic on a second call.

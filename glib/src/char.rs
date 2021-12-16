@@ -6,6 +6,7 @@ use libc::{c_char, c_uchar};
 use std::convert::TryFrom;
 use std::num::TryFromIntError;
 
+// rustdoc-stripper-ignore-next
 /// Wrapper for values where C functions expect a plain C `char`
 ///
 /// Consider the following C function prototype from glib:
@@ -96,6 +97,7 @@ impl IntoGlib for Char {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Wrapper for values where C functions expect a plain C `unsigned char`
 ///
 /// This `UChar` type is a wrapper over an `libc::c_uchar`, so that we can pass it to Glib or C functions.

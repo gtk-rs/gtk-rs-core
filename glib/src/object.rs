@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` Object wrapper implementation and `Object` binding.
 
 use crate::types::StaticType;
@@ -32,6 +33,7 @@ pub use gobject_ffi::GObject;
 #[doc(hidden)]
 pub use gobject_ffi::GObjectClass;
 
+// rustdoc-stripper-ignore-next
 /// Implemented by types representing `glib::Object` and subclasses of it.
 pub unsafe trait ObjectType:
     UnsafeFrom<ObjectRef>
@@ -51,8 +53,10 @@ pub unsafe trait ObjectType:
     + for<'a> ToGlibPtr<'a, *mut <Self as ObjectType>::GlibType>
     + 'static
 {
+    // rustdoc-stripper-ignore-next
     /// type of the FFI Instance structure.
     type GlibType: 'static;
+    // rustdoc-stripper-ignore-next
     /// type of the FFI Class structure.
     type GlibClassType: 'static;
 
@@ -60,8 +64,10 @@ pub unsafe trait ObjectType:
     fn as_ptr(&self) -> *mut Self::GlibType;
 }
 
+// rustdoc-stripper-ignore-next
 /// Unsafe variant of the `From` trait.
 pub trait UnsafeFrom<T> {
+    // rustdoc-stripper-ignore-next
     /// # Safety
     ///
     /// It is the responsibility of the caller to ensure *all* invariants of
@@ -71,6 +77,7 @@ pub trait UnsafeFrom<T> {
     unsafe fn unsafe_from(t: T) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Declares the "is a" relationship.
 ///
 /// `Self` is said to implement `T`.
@@ -84,10 +91,12 @@ pub trait UnsafeFrom<T> {
 /// implementations exist.
 pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> + 'static {}
 
+// rustdoc-stripper-ignore-next
 /// Upcasting and downcasting support.
 ///
 /// Provides conversions up and down the class hierarchy tree.
 pub trait Cast: ObjectType {
+    // rustdoc-stripper-ignore-next
     /// Upcasts an object to a superclass or interface `T`.
     ///
     /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
@@ -109,6 +118,7 @@ pub trait Cast: ObjectType {
         unsafe { self.unsafe_cast() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Upcasts an object to a reference of its superclass or interface `T`.
     ///
     /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
@@ -130,6 +140,7 @@ pub trait Cast: ObjectType {
         unsafe { self.unsafe_cast_ref() }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to downcast to a subclass or interface implementor `T`.
     ///
     /// Returns `Ok(T)` if the object is an instance of `T` and `Err(self)`
@@ -159,6 +170,7 @@ pub trait Cast: ObjectType {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to downcast to a reference of its subclass or interface implementor `T`.
     ///
     /// Returns `Some(T)` if the object is an instance of `T` and `None`
@@ -188,6 +200,7 @@ pub trait Cast: ObjectType {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to cast to an object of type `T`. This handles upcasting, downcasting
     /// and casting between interface and interface implementors. All checks are performed at
     /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
@@ -216,6 +229,7 @@ pub trait Cast: ObjectType {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to cast to reference to an object of type `T`. This handles upcasting, downcasting
     /// and casting between interface and interface implementors. All checks are performed at
     /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
@@ -248,6 +262,7 @@ pub trait Cast: ObjectType {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts to `T` unconditionally.
     ///
     /// # Panics
@@ -263,6 +278,7 @@ pub trait Cast: ObjectType {
         T::unsafe_from(self.into())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts to `&T` unconditionally.
     ///
     /// # Panics
@@ -285,6 +301,7 @@ pub trait Cast: ObjectType {
 
 impl<T: ObjectType> Cast for T {}
 
+// rustdoc-stripper-ignore-next
 /// Marker trait for the statically known possibility of downcasting from `Self` to `T`.
 pub trait CanDowncast<T> {}
 
@@ -593,6 +610,7 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// ObjectType implementations for Object types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_object_wrapper {
@@ -1124,6 +1142,7 @@ glib_object_wrapper!(@object
 pub type ObjectClass = Class<Object>;
 
 impl Object {
+    // rustdoc-stripper-ignore-next
     /// Create a new instance of an object with the given properties.
     ///
     /// This fails if the object is not instantiable, doesn't have all the given properties or
@@ -1137,6 +1156,7 @@ impl Object {
             .unwrap())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
     /// This fails if the object is not instantiable, doesn't have all the given properties or
@@ -1169,6 +1189,7 @@ impl Object {
         unsafe { Object::new_internal(type_, &params) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
     /// This fails if the object is not instantiable, doesn't have all the given properties or
@@ -1258,13 +1279,16 @@ impl Drop for PropertyNotificationFreezeGuard {
 }
 
 pub trait ObjectExt: ObjectType {
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if the object is an instance of (can be cast to) `T`.
     fn is<T: StaticType>(&self) -> bool;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the type of the object.
     #[doc(alias = "get_type")]
     fn type_(&self) -> Type;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the [`ObjectClass`] of the object.
     ///
     /// This is equivalent to calling `obj.class().upcast_ref::<ObjectClass>()`.
@@ -1277,22 +1301,26 @@ pub trait ObjectExt: ObjectType {
     where
         Self: IsClass;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the class of the object in the given type `T`.
     ///
     /// `None` is returned if the object is not a subclass of `T`.
     #[doc(alias = "get_class_of")]
     fn class_of<T: IsClass>(&self) -> Option<&Class<T>>;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the interface `T` of the object.
     ///
     /// `None` is returned if the object does not implement the interface `T`.
     #[doc(alias = "get_interface")]
     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::set_property`] but fails instead of panicking.
     #[doc(alias = "g_object_set_property")]
     fn try_set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
     ///
     /// # Panics
@@ -1302,6 +1330,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_set_property")]
     fn set_property<V: ToValue>(&self, property_name: &str, value: V);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::set_property`] but fails instead of panicking.
     #[doc(alias = "g_object_set_property")]
     fn try_set_property_from_value(
@@ -1310,6 +1339,7 @@ pub trait ObjectExt: ObjectType {
         value: &Value,
     ) -> Result<(), BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
     ///
     /// # Panics
@@ -1319,11 +1349,13 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_set_property")]
     fn set_property_from_value(&self, property_name: &str, value: &Value);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::set_properties`] but fails instead of panicking.
     #[doc(alias = "g_object_set")]
     fn try_set_properties(&self, property_values: &[(&str, &dyn ToValue)])
         -> Result<(), BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Sets multiple properties of the object at once.
     ///
     /// # Panics
@@ -1333,6 +1365,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_set")]
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::set_properties_from_value`] but fails instead of panicking.
     #[doc(alias = "g_object_set")]
     fn try_set_properties_from_value(
@@ -1340,6 +1373,7 @@ pub trait ObjectExt: ObjectType {
         property_values: &[(&str, Value)],
     ) -> Result<(), BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Sets multiple properties of the object at once.
     ///
     /// # Panics
@@ -1349,6 +1383,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_set")]
     fn set_properties_from_value(&self, property_values: &[(&str, Value)]);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::property`] but fails instead of panicking.
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
@@ -1357,6 +1392,7 @@ pub trait ObjectExt: ObjectType {
         property_name: &str,
     ) -> Result<V, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Gets the property `property_name` of the object and cast it to the type V.
     ///
     /// # Panics
@@ -1366,11 +1402,13 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_get_property")]
     fn property<V: for<'b> FromValue<'b> + 'static>(&self, property_name: &str) -> V;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::property_value`] but fails instead of panicking.
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
     fn try_property_value(&self, property_name: &str) -> Result<Value, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Gets the property `property_name` of the object.
     ///
     /// # Panics
@@ -1380,29 +1418,35 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_get_property")]
     fn property_value(&self, property_name: &str) -> Value;
 
+    // rustdoc-stripper-ignore-next
     /// Check if the object has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
     fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool;
 
+    // rustdoc-stripper-ignore-next
     /// Get the type of the property `property_name` of this object.
     ///
     /// This returns `None` if the property does not exist.
     #[doc(alias = "get_property_type")]
     fn property_type(&self, property_name: &str) -> Option<Type>;
 
+    // rustdoc-stripper-ignore-next
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object.
     fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec>;
 
+    // rustdoc-stripper-ignore-next
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object.
     fn list_properties(&self) -> PtrSlice<crate::ParamSpec>;
 
+    // rustdoc-stripper-ignore-next
     /// Freeze all property notifications until the return guard object is dropped.
     ///
     /// This prevents the `notify` signal for all properties of this object to be emitted.
     #[doc(alias = "g_object_freeze_notify")]
     fn freeze_notify(&self) -> PropertyNotificationFreezeGuard;
 
+    // rustdoc-stripper-ignore-next
     /// Set arbitrary data on this object with the given `key`.
     ///
     /// # Safety
@@ -1410,6 +1454,7 @@ pub trait ObjectExt: ObjectType {
     /// This function doesn't store type information
     unsafe fn set_qdata<QD: 'static>(&self, key: Quark, value: QD);
 
+    // rustdoc-stripper-ignore-next
     /// Return previously set arbitrary data of this object with the given `key`.
     ///
     /// # Safety
@@ -1421,6 +1466,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_qdata")]
     unsafe fn qdata<QD: 'static>(&self, key: Quark) -> Option<ptr::NonNull<QD>>;
 
+    // rustdoc-stripper-ignore-next
     /// Retrieve previously set arbitrary data of this object with the given `key`.
     ///
     /// The data is not set on the object anymore afterwards.
@@ -1430,6 +1476,7 @@ pub trait ObjectExt: ObjectType {
     /// The caller is responsible for ensuring the returned value is of a suitable type
     unsafe fn steal_qdata<QD: 'static>(&self, key: Quark) -> Option<QD>;
 
+    // rustdoc-stripper-ignore-next
     /// Set arbitrary data on this object with the given `key`.
     ///
     /// # Safety
@@ -1437,6 +1484,7 @@ pub trait ObjectExt: ObjectType {
     /// This function doesn't store type information
     unsafe fn set_data<QD: 'static>(&self, key: &str, value: QD);
 
+    // rustdoc-stripper-ignore-next
     /// Return previously set arbitrary data of this object with the given `key`.
     ///
     /// # Safety
@@ -1448,6 +1496,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_data")]
     unsafe fn data<QD: 'static>(&self, key: &str) -> Option<ptr::NonNull<QD>>;
 
+    // rustdoc-stripper-ignore-next
     /// Retrieve previously set arbitrary data of this object with the given `key`.
     ///
     /// The data is not set on the object anymore afterwards.
@@ -1457,24 +1506,29 @@ pub trait ObjectExt: ObjectType {
     /// The caller is responsible for ensuring the returned value is of a suitable type
     unsafe fn steal_data<QD: 'static>(&self, key: &str) -> Option<QD>;
 
+    // rustdoc-stripper-ignore-next
     /// Block a given signal handler.
     ///
     /// It will not be called again during signal emissions until it is unblocked.
     #[doc(alias = "g_signal_handler_block")]
     fn block_signal(&self, handler_id: &SignalHandlerId);
 
+    // rustdoc-stripper-ignore-next
     /// Unblock a given signal handler.
     #[doc(alias = "g_signal_handler_unblock")]
     fn unblock_signal(&self, handler_id: &SignalHandlerId);
 
+    // rustdoc-stripper-ignore-next
     /// Stop emission of the currently emitted signal.
     #[doc(alias = "g_signal_stop_emission")]
     fn stop_signal_emission(&self, signal_id: SignalId, detail: Option<Quark>);
 
+    // rustdoc-stripper-ignore-next
     /// Stop emission of the currently emitted signal by the (possibly detailed) signal name.
     #[doc(alias = "g_signal_stop_emission_by_name")]
     fn stop_signal_emission_by_name(&self, signal_name: &str);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect`] but fails instead of panicking.
     fn try_connect<F>(
         &self,
@@ -1485,6 +1539,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1497,6 +1552,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_id`] but fails instead of panicking.
     fn try_connect_id<F>(
         &self,
@@ -1508,6 +1564,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_id` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1528,6 +1585,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_local`] but fails instead of panicking.
     fn try_connect_local<F>(
         &self,
@@ -1538,6 +1596,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1564,6 +1623,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_id` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1585,6 +1645,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_unsafe`] but fails instead of panicking.
     unsafe fn try_connect_unsafe<F>(
         &self,
@@ -1595,6 +1656,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1620,6 +1682,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_unsafe_id`] but fails instead of panicking.
     unsafe fn try_connect_unsafe_id<F>(
         &self,
@@ -1631,6 +1694,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_id` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1658,6 +1722,7 @@ pub trait ObjectExt: ObjectType {
     where
         F: Fn(&[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_closure`] but fails instead of panicking.
     fn try_connect_closure(
         &self,
@@ -1666,6 +1731,7 @@ pub trait ObjectExt: ObjectType {
         closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Connect a closure to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1691,6 +1757,7 @@ pub trait ObjectExt: ObjectType {
         closure: RustClosure,
     ) -> Result<SignalHandlerId, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Connect a closure to the signal `signal_id` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1709,6 +1776,7 @@ pub trait ObjectExt: ObjectType {
         closure: RustClosure,
     ) -> SignalHandlerId;
 
+    // rustdoc-stripper-ignore-next
     /// Limits the lifetime of `closure` to the lifetime of the object. When
     /// the object's reference count drops to zero, the closure will be
     /// invalidated. An invalidated closure will ignore any calls to
@@ -1716,6 +1784,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_object_watch_closure")]
     fn watch_closure(&self, closure: &impl AsRef<Closure>);
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit`] but fails instead of panicking.
     #[doc(alias = "g_signal_emitv")]
     fn try_emit<R: TryFromClosureReturnValue>(
@@ -1724,6 +1793,7 @@ pub trait ObjectExt: ObjectType {
         args: &[&dyn ToValue],
     ) -> Result<R, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Emit signal by signal id.
     ///
     /// If the signal has a return value then this is returned here.
@@ -1735,6 +1805,7 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "g_signal_emitv")]
     fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_with_values`] but fails instead of panicking.
     fn try_emit_with_values(
         &self,
@@ -1742,9 +1813,11 @@ pub trait ObjectExt: ObjectType {
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Same as [`Self::emit`] but takes `Value` for the arguments.
     fn emit_with_values(&self, signal_id: SignalId, args: &[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_by_name`] but fails instead of panicking.
     #[doc(alias = "g_signal_emit_by_name")]
     fn try_emit_by_name<R: TryFromClosureReturnValue>(
@@ -1753,6 +1826,7 @@ pub trait ObjectExt: ObjectType {
         args: &[&dyn ToValue],
     ) -> Result<R, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Emit signal by its name.
     ///
     /// If the signal has a return value then this is returned here.
@@ -1768,6 +1842,7 @@ pub trait ObjectExt: ObjectType {
         args: &[&dyn ToValue],
     ) -> R;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_by_name_with_values`] but fails instead of panicking.
     fn try_emit_by_name_with_values(
         &self,
@@ -1775,6 +1850,7 @@ pub trait ObjectExt: ObjectType {
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Emit signal by its name.
     ///
     /// If the signal has a return value then this is returned here.
@@ -1785,6 +1861,7 @@ pub trait ObjectExt: ObjectType {
     /// arguments of the wrong types were provided.
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_with_details`] but fails instead of panicking.
     fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
@@ -1793,6 +1870,7 @@ pub trait ObjectExt: ObjectType {
         args: &[&dyn ToValue],
     ) -> Result<R, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Emit signal by signal id with details.
     ///
     /// If the signal has a return value then this is returned here.
@@ -1808,6 +1886,7 @@ pub trait ObjectExt: ObjectType {
         args: &[&dyn ToValue],
     ) -> R;
 
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_with_details_and_values`] but fails instead of panicking.
     fn try_emit_with_details_and_values(
         &self,
@@ -1816,6 +1895,7 @@ pub trait ObjectExt: ObjectType {
         args: &[Value],
     ) -> Result<Option<Value>, BoolError>;
 
+    // rustdoc-stripper-ignore-next
     /// Emit signal by signal id with details.
     ///
     /// If the signal has a return value then this is returned here.
@@ -1831,10 +1911,12 @@ pub trait ObjectExt: ObjectType {
         args: &[Value],
     ) -> Option<Value>;
 
+    // rustdoc-stripper-ignore-next
     /// Disconnect a previously connected signal handler.
     #[doc(alias = "g_signal_handler_disconnect")]
     fn disconnect(&self, handler_id: SignalHandlerId);
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the `notify` signal of the object.
     ///
     /// This is emitted whenever a property is changed. If `name` is provided then the signal
@@ -1845,6 +1927,7 @@ pub trait ObjectExt: ObjectType {
         f: F,
     ) -> SignalHandlerId;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the `notify` signal of the object.
     ///
     /// This is emitted whenever a property is changed. If `name` is provided then the signal
@@ -1858,6 +1941,7 @@ pub trait ObjectExt: ObjectType {
         f: F,
     ) -> SignalHandlerId;
 
+    // rustdoc-stripper-ignore-next
     /// Connect to the `notify` signal of the object.
     ///
     /// This is emitted whenever a property is changed. If `name` is provided then the signal
@@ -1876,21 +1960,25 @@ pub trait ObjectExt: ObjectType {
         f: F,
     ) -> SignalHandlerId;
 
+    // rustdoc-stripper-ignore-next
     /// Notify that the given property has changed its value.
     ///
     /// This emits the `notify` signal.
     #[doc(alias = "g_object_notify")]
     fn notify(&self, property_name: &str);
 
+    // rustdoc-stripper-ignore-next
     /// Notify that the given property has changed its value.
     ///
     /// This emits the `notify` signal.
     #[doc(alias = "g_object_notify_by_pspec")]
     fn notify_by_pspec(&self, pspec: &crate::ParamSpec);
 
+    // rustdoc-stripper-ignore-next
     /// Downgrade this object to a weak reference.
     fn downgrade(&self) -> WeakRef<Self>;
 
+    // rustdoc-stripper-ignore-next
     /// Bind property `source_property` on this object to the `target_property` on the `target` object.
     ///
     /// This allows keeping the properties of both objects in sync.
@@ -1904,6 +1992,7 @@ pub trait ObjectExt: ObjectType {
         target_property: &'a str,
     ) -> BindingBuilder<'a>;
 
+    // rustdoc-stripper-ignore-next
     /// Returns the strong reference count of this object.
     fn ref_count(&self) -> u32;
 }
@@ -3112,6 +3201,7 @@ fn validate_signal_arguments(
 }
 
 impl ObjectClass {
+    // rustdoc-stripper-ignore-next
     /// Check if the object class has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
@@ -3125,6 +3215,7 @@ impl ObjectClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get the type of the property `property_name` of this object class.
     ///
     /// This returns `None` if the property does not exist.
@@ -3134,6 +3225,7 @@ impl ObjectClass {
             .map(|pspec| pspec.value_type())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this object class.
     #[doc(alias = "g_object_class_find_property")]
     pub fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
@@ -3147,6 +3239,7 @@ impl ObjectClass {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this object class.
     #[doc(alias = "g_object_class_list_properties")]
     pub fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
@@ -3171,12 +3264,14 @@ wrapper! {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// A weak reference to an object.
 #[derive(Debug)]
 #[doc(alias = "GWeakRef")]
 pub struct WeakRef<T: ObjectType>(Pin<Box<gobject_ffi::GWeakRef>>, PhantomData<*mut T>);
 
 impl<T: ObjectType> WeakRef<T> {
+    // rustdoc-stripper-ignore-next
     /// Create a new empty weak reference.
     ///
     /// `upgrade` will always return `None` until an object is set on it.
@@ -3191,6 +3286,7 @@ impl<T: ObjectType> WeakRef<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Set this weak reference to the given object.
     #[doc(alias = "g_weak_ref_set")]
     pub fn set(&self, obj: Option<&T>) {
@@ -3204,6 +3300,7 @@ impl<T: ObjectType> WeakRef<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Try to upgrade this weak reference to a strong reference.
     ///
     /// If the stored object was already destroyed or no object was set in this weak reference then
@@ -3254,6 +3351,7 @@ impl<T: ObjectType> Default for WeakRef<T> {
 unsafe impl<T: ObjectType + Sync + Sync> Sync for WeakRef<T> {}
 unsafe impl<T: ObjectType + Send + Sync> Send for WeakRef<T> {}
 
+// rustdoc-stripper-ignore-next
 /// A weak reference to the object it was created for that can be sent to
 /// different threads even for object types that don't implement `Send`.
 ///
@@ -3316,6 +3414,7 @@ unsafe impl<T: ObjectType> Send for SendWeakRef<T> {}
 type TransformFn =
     Option<Box<dyn Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>>;
 
+// rustdoc-stripper-ignore-next
 /// Builder for object property bindings.
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
@@ -3358,6 +3457,7 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Transform changed property values from the target object to the source object with the given closure.
     pub fn transform_from<
         F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
@@ -3371,6 +3471,7 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Transform changed property values from the source object to the target object with the given closure.
     pub fn transform_to<F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>(
         self,
@@ -3382,11 +3483,13 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Bind the properties with the given flags.
     pub fn flags(self, flags: crate::BindingFlags) -> Self {
         Self { flags, ..self }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Establish the property binding.
     ///
     /// This fails if the provided properties do not exist.
@@ -3517,17 +3620,20 @@ impl<'a> BindingBuilder<'a> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Similar to `try_build` but fails instead of panicking.
     pub fn build(self) -> crate::Binding {
         self.try_build().unwrap()
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Class struct of type `T`.
 #[repr(transparent)]
 pub struct Class<T: IsClass>(T::GlibClassType);
 
 impl<T: IsClass> Class<T> {
+    // rustdoc-stripper-ignore-next
     /// Get the type id for this class.
     ///
     /// This is not equivalent to `T::static_type()` but is the type of the subclass of `T` where
@@ -3542,6 +3648,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts this class to a reference to a parent type's class.
     pub fn upcast_ref<U: IsClass>(&self) -> &Class<U>
     where
@@ -3553,6 +3660,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts this class to a mutable reference to a parent type's class.
     pub fn upcast_ref_mut<U: IsClass>(&mut self) -> &mut Class<U>
     where
@@ -3564,6 +3672,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts this class to a reference to a child type's class or
     /// fails if this class is not implementing the child class.
     pub fn downcast_ref<U: IsClass>(&self) -> Option<&Class<U>>
@@ -3580,6 +3689,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Casts this class to a mutable reference to a child type's class or
     /// fails if this class is not implementing the child class.
     pub fn downcast_ref_mut<U: IsClass>(&mut self) -> Option<&mut Class<U>>
@@ -3596,6 +3706,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the class struct for `Self` of `type_`.
     ///
     /// This will return `None` if `type_` is not a subclass of `Self`.
@@ -3618,6 +3729,7 @@ impl<T: IsClass> Class<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the parent class struct, if any.
     #[doc(alias = "g_type_class_peek_parent")]
     pub fn parent(&self) -> Option<ClassRef<T>> {
@@ -3651,6 +3763,7 @@ impl<T: IsClass> AsMut<T::GlibClassType> for Class<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Reference to the class struct of type `T`.
 #[derive(Debug)]
 pub struct ClassRef<'a, T: IsClass>(ptr::NonNull<Class<T>>, bool, PhantomData<&'a ()>);
@@ -3681,6 +3794,7 @@ pub unsafe trait ParentClassIs: IsClass {
     type Parent: IsClass;
 }
 
+// rustdoc-stripper-ignore-next
 /// Automatically implemented by `ObjectSubclass` variants of
 /// [`wrapper!`][crate::wrapper!]
 pub unsafe trait ObjectSubclassIs: IsClass {
@@ -3707,14 +3821,17 @@ impl<T: ParentClassIs> ops::DerefMut for Class<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait implemented by class types.
 pub unsafe trait IsClass: ObjectType {}
 
+// rustdoc-stripper-ignore-next
 /// Interface struct of type `T` for some type.
 #[repr(transparent)]
 pub struct Interface<T: IsInterface>(T::GlibClassType);
 
 impl<T: IsInterface> Interface<T> {
+    // rustdoc-stripper-ignore-next
     /// Get the type id for this interface.
     ///
     /// This is equivalent to `T::static_type()`.
@@ -3726,6 +3843,7 @@ impl<T: IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get the type id for the instance type of this interface.
     ///
     /// This is not equivalent to `T::static_type()` but is the type id of the type this specific
@@ -3740,6 +3858,7 @@ impl<T: IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the interface struct for `Self` of `klass`.
     ///
     /// This will return `None` if `klass` is not implementing `Self`.
@@ -3765,6 +3884,7 @@ impl<T: IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the default interface struct for `Self`.
     ///
     /// This will return `None` if `type_` is not an interface.
@@ -3787,6 +3907,7 @@ impl<T: IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the default interface struct for `Self`.
     #[doc(alias = "g_type_default_interface_ref")]
     pub fn default() -> InterfaceRef<'static, T> {
@@ -3801,6 +3922,7 @@ impl<T: IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Gets the parent interface struct, if any.
     ///
     /// This returns the parent interface if a parent type of the instance type also implements the
@@ -3823,6 +3945,7 @@ impl<T: IsInterface> Interface<T> {
 }
 
 impl<T: IsA<Object> + IsInterface> Interface<T> {
+    // rustdoc-stripper-ignore-next
     /// Check if this interface has a property `property_name` of the given `type_`.
     ///
     /// If no type is provided then only the existence of the property is checked.
@@ -3836,6 +3959,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get the type of the property `property_name` of this interface.
     ///
     /// This returns `None` if the property does not exist.
@@ -3845,6 +3969,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
             .map(|pspec| pspec.value_type())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Get the [`ParamSpec`](crate::ParamSpec) of the property `property_name` of this interface.
     #[doc(alias = "g_object_interface_find_property")]
     pub fn find_property(&self, property_name: &str) -> Option<crate::ParamSpec> {
@@ -3858,6 +3983,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Return all [`ParamSpec`](crate::ParamSpec) of the properties of this interface.
     #[doc(alias = "g_object_interface_list_properties")]
     pub fn list_properties(&self) -> PtrSlice<crate::ParamSpec> {
@@ -3890,6 +4016,7 @@ impl<T: IsInterface> AsMut<T::GlibClassType> for Interface<T> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Reference to a class struct of type `T`.
 #[derive(Debug)]
 pub struct InterfaceRef<'a, T: IsInterface>(ptr::NonNull<Interface<T>>, bool, PhantomData<&'a ()>);
@@ -3915,6 +4042,7 @@ impl<'a, T: IsInterface> ops::Deref for InterfaceRef<'a, T> {
 unsafe impl<'a, T: IsInterface> Send for InterfaceRef<'a, T> {}
 unsafe impl<'a, T: IsInterface> Sync for InterfaceRef<'a, T> {}
 
+// rustdoc-stripper-ignore-next
 /// Trait implemented by interface types.
 pub unsafe trait IsInterface: ObjectType {}
 

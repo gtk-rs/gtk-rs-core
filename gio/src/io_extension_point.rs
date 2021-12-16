@@ -7,6 +7,7 @@ use std::ptr;
 
 use crate::io_extension::IOExtension;
 
+// rustdoc-stripper-ignore-next
 /// Builder for extension points.
 #[derive(Debug)]
 #[must_use = "The builder must be built to be used"]
@@ -45,6 +46,7 @@ impl<'a> IOExtensionPointBuilder<'a> {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// An extension point provides a mechanism to extend the functionality of a library or application.
 /// Each extension point is identified by a name, and it may optionally require that any implementation
 /// must be of a certain type.
@@ -76,6 +78,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GIOExtensionPoint> for &'a IOExtensionPoint {
 }
 
 impl IOExtensionPoint {
+    // rustdoc-stripper-ignore-next
     /// Create a new builder for an extension point.
     #[doc(alias = "g_io_extension_point_register")]
     pub fn builder(name: &str) -> IOExtensionPointBuilder {

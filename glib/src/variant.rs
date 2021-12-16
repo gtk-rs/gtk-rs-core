@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `Variant` binding and helper traits.
 //!
 //! [`Variant`](struct.Variant.html) is an immutable dynamically-typed generic
@@ -113,6 +114,7 @@ use std::slice;
 use std::str;
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// A generic immutable value capable of carrying various types.
     ///
     /// See the [module documentation](index.html) for more details.
@@ -180,6 +182,7 @@ impl crate::value::ToValueOptional for Variant {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// An error returned from the [`try_get`](struct.Variant.html#method.try_get) function
 /// on a [`Variant`](struct.Variant.html) when the expected type does not match the actual type.
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -207,12 +210,14 @@ impl fmt::Display for VariantTypeMismatchError {
 impl std::error::Error for VariantTypeMismatchError {}
 
 impl Variant {
+    // rustdoc-stripper-ignore-next
     /// Returns the type of the value.
     #[doc(alias = "g_variant_get_type")]
     pub fn type_(&self) -> &VariantTy {
         unsafe { VariantTy::from_ptr(ffi::g_variant_get_type(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if the type of the value corresponds to `T`.
     #[inline]
     #[doc(alias = "g_variant_is_of_type")]
@@ -225,12 +230,14 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns the classification of the variant.
     #[doc(alias = "g_variant_classify")]
     pub fn classify(&self) -> crate::VariantClass {
         unsafe { from_glib(ffi::g_variant_classify(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to extract a value of type `T`.
     ///
     /// Returns `Some` if `T` matches the variant's type.
@@ -239,6 +246,7 @@ impl Variant {
         T::from_variant(self)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to extract a value of type `T`.
     pub fn try_get<T: FromVariant>(&self) -> Result<T, VariantTypeMismatchError> {
         self.get().ok_or_else(|| {
@@ -249,12 +257,14 @@ impl Variant {
         })
     }
 
+    // rustdoc-stripper-ignore-next
     /// Boxes value.
     #[inline]
     pub fn from_variant(value: &Variant) -> Self {
         unsafe { from_glib_none(ffi::g_variant_new_variant(value.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Unboxes self.
     ///
     /// Returns `Some` if self contains a `Variant`.
@@ -264,6 +274,7 @@ impl Variant {
         unsafe { from_glib_full(ffi::g_variant_get_variant(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Reads a child item out of a container `Variant` instance.
     ///
     /// # Panics
@@ -279,6 +290,7 @@ impl Variant {
         unsafe { from_glib_full(ffi::g_variant_get_child_value(self.to_glib_none().0, index)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Try to read a child item out of a container `Variant` instance.
     ///
     /// It returns `None` if `self` is not a container type or if the given
@@ -293,6 +305,7 @@ impl Variant {
         Some(v)
     }
 
+    // rustdoc-stripper-ignore-next
     /// Try to read a child item out of a container `Variant` instance.
     ///
     /// It returns `Ok(None)` if `self` is not a container type or if the given
@@ -307,6 +320,7 @@ impl Variant {
         self.try_child_value(index).map(|v| v.try_get()).transpose()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Read a child item out of a container `Variant` instance.
     ///
     /// # Panics
@@ -320,6 +334,7 @@ impl Variant {
         self.child_value(index).get().unwrap()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to extract a `&str`.
     ///
     /// Returns `Some` if the variant has a string type (`s`, `o` or `g` type
@@ -343,6 +358,7 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Tries to extract a `&[T]` from a variant of array type with a suitable element type.
     ///
     /// Returns an error if the type is wrong.
@@ -374,6 +390,7 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new Variant array from children.
     ///
     /// # Panics
@@ -403,6 +420,7 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new Variant array from a fixed array.
     #[doc(alias = "g_variant_new_fixed_array")]
     pub fn array_from_fixed_array<T: FixedSizeVariantType>(array: &[T]) -> Self {
@@ -418,6 +436,7 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new Variant tuple from children.
     #[doc(alias = "g_variant_new_tuple")]
     pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
@@ -432,6 +451,7 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Creates a new maybe Variant.
     #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
@@ -452,13 +472,15 @@ impl Variant {
         }
     }
 
-    /// Constructs a new serialised-mode GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
         Variant::from_bytes_with_type(bytes, &T::static_variant_type())
     }
 
-    /// Constructs a new serialised-mode GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance.
     ///
     /// This is the same as `from_bytes`, except that checks on the passed
     /// data are skipped.
@@ -474,13 +496,15 @@ impl Variant {
         Variant::from_bytes_with_type_trusted(bytes, &T::static_variant_type())
     }
 
-    /// Constructs a new serialised-mode GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_data")]
     pub fn from_data<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
         Variant::from_data_with_type(data, &T::static_variant_type())
     }
 
-    /// Constructs a new serialised-mode GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance.
     ///
     /// This is the same as `from_data`, except that checks on the passed
     /// data are skipped.
@@ -496,7 +520,8 @@ impl Variant {
         Variant::from_data_with_type_trusted(data, &T::static_variant_type())
     }
 
-    /// Constructs a new serialised-mode GVariant instance with a given type.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance with a given type.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes_with_type(bytes: &Bytes, type_: &VariantTy) -> Self {
         unsafe {
@@ -508,7 +533,8 @@ impl Variant {
         }
     }
 
-    /// Constructs a new serialised-mode GVariant instance with a given type.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance with a given type.
     ///
     /// This is the same as `from_bytes`, except that checks on the passed
     /// data are skipped.
@@ -528,7 +554,8 @@ impl Variant {
         ))
     }
 
-    /// Constructs a new serialised-mode GVariant instance with a given type.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance with a given type.
     #[doc(alias = "g_variant_new_from_data")]
     pub fn from_data_with_type<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
         unsafe {
@@ -553,7 +580,8 @@ impl Variant {
         }
     }
 
-    /// Constructs a new serialised-mode GVariant instance with a given type.
+    // rustdoc-stripper-ignore-next
+    /// Constructs a new serialized-mode GVariant instance with a given type.
     ///
     /// This is the same as `from_data`, except that checks on the passed
     /// data are skipped.
@@ -586,14 +614,16 @@ impl Variant {
         ))
     }
 
-    /// Returns the serialised form of a GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Returns the serialized form of a GVariant instance.
     #[doc(alias = "get_data_as_bytes")]
     #[doc(alias = "g_variant_get_data_as_bytes")]
     pub fn data_as_bytes(&self) -> Bytes {
         unsafe { from_glib_full(ffi::g_variant_get_data_as_bytes(self.to_glib_none().0)) }
     }
 
-    /// Returns the serialised form of a GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Returns the serialized form of a GVariant instance.
     #[doc(alias = "g_variant_get_data")]
     pub fn data(&self) -> &[u8] {
         unsafe {
@@ -604,13 +634,15 @@ impl Variant {
         }
     }
 
-    /// Returns the size of serialised form of a GVariant instance.
+    // rustdoc-stripper-ignore-next
+    /// Returns the size of serialized form of a GVariant instance.
     #[doc(alias = "g_variant_get_size")]
     pub fn size(&self) -> usize {
         unsafe { ffi::g_variant_get_size(self.to_glib_none().0) }
     }
 
-    /// Stores the serialised form of a GVariant instance into the given slice.
+    // rustdoc-stripper-ignore-next
+    /// Stores the serialized form of a GVariant instance into the given slice.
     ///
     /// The slice needs to be big enough.
     #[doc(alias = "g_variant_store")]
@@ -627,18 +659,21 @@ impl Variant {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a copy of the variant in normal form.
     #[doc(alias = "g_variant_get_normal_form")]
     pub fn normal_form(&self) -> Self {
         unsafe { from_glib_full(ffi::g_variant_get_normal_form(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns a copy of the variant in the opposite endianness.
     #[doc(alias = "g_variant_byteswap")]
     pub fn byteswap(&self) -> Self {
         unsafe { from_glib_full(ffi::g_variant_byteswap(self.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Determines the number of children in a container GVariant instance.
     #[doc(alias = "g_variant_n_children")]
     pub fn n_children(&self) -> usize {
@@ -647,6 +682,7 @@ impl Variant {
         unsafe { ffi::g_variant_n_children(self.to_glib_none().0) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create an iterator over items in the variant.
     ///
     /// Note that this heap allocates a variant for each element,
@@ -657,6 +693,7 @@ impl Variant {
         VariantIter::new(self.clone())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Create an iterator over borrowed strings from a GVariant of type `as` (array of string).
     ///
     /// This will fail if the variant is not an array of with
@@ -688,6 +725,7 @@ impl Variant {
         Ok(VariantStrIter::new(self))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Variant has a container type.
     #[doc(alias = "g_variant_is_container")]
     pub fn is_container(&self) -> bool {
@@ -764,22 +802,28 @@ impl Hash for Variant {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Converts to `Variant`.
 pub trait ToVariant {
+    // rustdoc-stripper-ignore-next
     /// Returns a `Variant` clone of `self`.
     fn to_variant(&self) -> Variant;
 }
 
+// rustdoc-stripper-ignore-next
 /// Extracts a value.
 pub trait FromVariant: Sized + StaticVariantType {
+    // rustdoc-stripper-ignore-next
     /// Tries to extract a value.
     ///
     /// Returns `Some` if the variant's type matches `Self`.
     fn from_variant(variant: &Variant) -> Option<Self>;
 }
 
+// rustdoc-stripper-ignore-next
 /// Returns `VariantType` of `Self`.
 pub trait StaticVariantType {
+    // rustdoc-stripper-ignore-next
     /// Returns the `VariantType` corresponding to `Self`.
     fn static_variant_type() -> Cow<'static, VariantTy>;
 }

@@ -155,11 +155,13 @@ pub use self::source_futures::*;
 mod thread_pool;
 pub use self::thread_pool::ThreadPool;
 
+// rustdoc-stripper-ignore-next
 /// This is the log domain used by the [`clone!`][crate::clone!] macro. If you want to use a custom
 /// logger (it prints to stdout by default), you can set your own logger using the corresponding
 /// `log` functions.
 pub const CLONE_MACRO_LOG_DOMAIN: &str = "glib-rs-clone";
 
+// rustdoc-stripper-ignore-next
 // Actual thread IDs can be reused by the OS once the old thread finished.
 // This works around it by using our own counter for threads.
 //
@@ -207,6 +209,7 @@ impl<T> ThreadGuard<T> {
         &mut self.value
     }
 
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if the current thread owns the value, i.e. it can be accessed safely.
     pub(crate) fn is_owner(&self) -> bool {
         self.thread_id == thread_id()

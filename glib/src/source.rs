@@ -17,6 +17,7 @@ use crate::MainContext;
 use crate::Source;
 use crate::ThreadGuard;
 
+// rustdoc-stripper-ignore-next
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
 ///
 /// This type does not implement `Clone` to prevent calling [`SourceId::remove`]
@@ -25,11 +26,13 @@ use crate::ThreadGuard;
 pub struct SourceId(NonZeroU32);
 
 impl SourceId {
+    // rustdoc-stripper-ignore-next
     /// Returns the internal source ID.
     pub unsafe fn as_raw(&self) -> u32 {
         self.0.get()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Removes the source with the given id `source_id` from the default main context.
     ///
     /// It is a programmer error to attempt to remove a non-existent source.
@@ -54,6 +57,7 @@ impl FromGlib<u32> for SourceId {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Process identificator
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[doc(alias = "GPid")]
@@ -80,6 +84,7 @@ impl FromGlib<ffi::GPid> for Pid {
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Continue calling the closure in the future iterations or drop it.
 ///
 /// This is the return type of `idle_add` and `timeout_add` closures.
@@ -234,6 +239,7 @@ fn into_raw_unix_fd_local<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(fu
     Box::into_raw(func) as gpointer
 }
 
+// rustdoc-stripper-ignore-next
 /// Transform a generic FnOnce into a closure that can be used as callback in various glib methods
 ///
 /// The resulting function can only be called once and will panic otherwise. It will return `Continue(false)`
@@ -252,6 +258,7 @@ fn fnmut_callback_wrapper(
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Transform a generic FnOnce into a closure that can be used as callback in various glib methods
 ///
 /// The resulting function can only be called once and will panic otherwise. It will return `Continue(false)`
@@ -273,6 +280,7 @@ fn fnmut_callback_wrapper_local(
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop when it's idle.
 ///
 /// `func` will be called repeatedly until it returns `Continue(false)`.
@@ -294,6 +302,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop when it's idle.
 ///
 /// `func` will be called repeatedly until it returns `Continue(false)`.
@@ -311,6 +320,7 @@ where
     idle_add(fnmut_callback_wrapper(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop when it's idle.
 ///
 /// `func` will be called repeatedly until it returns `Continue(false)`.
@@ -342,6 +352,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop when it's idle.
 ///
 /// `func` will be called repeatedly until it returns `Continue(false)`.
@@ -365,6 +376,7 @@ where
     idle_add_local(fnmut_callback_wrapper_local(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with millisecond granularity.
 ///
@@ -391,6 +403,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with millisecond granularity.
 ///
@@ -412,6 +425,7 @@ where
     timeout_add(interval, fnmut_callback_wrapper(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with millisecond granularity.
 ///
@@ -448,6 +462,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with millisecond granularity.
 ///
@@ -475,6 +490,7 @@ where
     timeout_add_local(interval, fnmut_callback_wrapper_local(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with second granularity.
 ///
@@ -500,6 +516,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with second granularity.
 ///
@@ -520,6 +537,7 @@ where
     timeout_add_seconds(interval, fnmut_callback_wrapper(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with second granularity.
 ///
@@ -555,6 +573,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop at regular intervals
 /// with second granularity.
 ///
@@ -581,6 +600,7 @@ where
     timeout_add_seconds_local(interval, fnmut_callback_wrapper_local(func))
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to when a child
 /// process exits.
 ///
@@ -601,6 +621,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to when a child
 /// process exits.
 ///
@@ -633,6 +654,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
 /// `func` will be called repeatedly every time `signum` is raised until it
@@ -658,6 +680,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
 /// `func` will be called repeatedly every time `signum` is raised until it
@@ -678,6 +701,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
 /// `func` will be called repeatedly every time `signum` is raised until it
@@ -713,6 +737,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
 /// `func` will be called repeatedly every time `signum` is raised until it
@@ -739,6 +764,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
 ///
@@ -766,6 +792,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
 ///
@@ -801,8 +828,8 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// The priority of sources
-///
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Priority(i32);
 
@@ -841,6 +868,7 @@ pub const PRIORITY_DEFAULT_IDLE: Priority = Priority(ffi::G_PRIORITY_DEFAULT_IDL
 #[doc(alias = "G_PRIORITY_LOW")]
 pub const PRIORITY_LOW: Priority = Priority(ffi::G_PRIORITY_LOW);
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the return `Source` is attached to when it's idle.
 ///
 /// `func` will be called repeatedly until it returns `Continue(false)`.
@@ -867,6 +895,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to at regular
 /// intervals with millisecond granularity.
 ///
@@ -902,6 +931,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to at regular
 /// intervals with second granularity.
 ///
@@ -936,6 +966,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to when a child
 /// process exits.
 ///
@@ -973,6 +1004,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX signal is raised.
 ///
@@ -1008,6 +1040,7 @@ where
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
 ///

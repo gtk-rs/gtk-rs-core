@@ -1,23 +1,29 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! Module for registering shared types for Rust types.
 
 use crate::translate::*;
 use crate::StaticType;
 
 pub unsafe trait RefCounted: Clone + Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// The inner type
     type InnerType;
 
+    // rustdoc-stripper-ignore-next
     /// The function used to increment the inner type refcount
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType;
 
+    // rustdoc-stripper-ignore-next
     /// Provides access to a raw pointer to InnerType
     unsafe fn as_ptr(&self) -> *const Self::InnerType;
 
+    // rustdoc-stripper-ignore-next
     /// Converts the RefCounted object to a raw pointer to InnerType
     unsafe fn into_raw(self) -> *const Self::InnerType;
 
+    // rustdoc-stripper-ignore-next
     /// Converts a raw pointer to InnerType to a RefCounted object
     unsafe fn from_raw(this: *const Self::InnerType) -> Self;
 }
@@ -71,6 +77,7 @@ where
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Trait for defining shared types.
 ///
 /// Links together the type name with the type itself.
@@ -80,21 +87,26 @@ where
 ///
 /// [`register_shared_type`]: fn.register_shared_type.html
 pub trait SharedType: StaticType + Clone + Sized + 'static {
+    // rustdoc-stripper-ignore-next
     /// Shared type name.
     ///
     /// This must be unique in the whole process.
     const NAME: &'static str;
 
+    // rustdoc-stripper-ignore-next
     /// The inner refcounted type
     type RefCountedType: RefCounted;
 
+    // rustdoc-stripper-ignore-next
     /// Converts the SharedType into its inner RefCountedType
     fn into_refcounted(self) -> Self::RefCountedType;
 
+    // rustdoc-stripper-ignore-next
     /// Constructs a SharedType from a RefCountedType
     fn from_refcounted(this: Self::RefCountedType) -> Self;
 }
 
+// rustdoc-stripper-ignore-next
 /// Register a boxed `glib::Type` ID for `T`.
 ///
 /// This must be called only once and will panic on a second call.

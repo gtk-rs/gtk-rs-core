@@ -205,6 +205,7 @@ type PrintCallback = dyn Fn(&str) + Send + Sync + 'static;
 
 static PRINT_HANDLER: Lazy<Mutex<Option<Arc<PrintCallback>>>> = Lazy::new(|| Mutex::new(None));
 
+// rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`unset_print_handler`] function.
 #[doc(alias = "g_set_print_handler")]
 pub fn set_print_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
@@ -225,6 +226,7 @@ pub fn set_print_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
     unsafe { ffi::g_set_print_handler(Some(func_func as _)) };
 }
 
+// rustdoc-stripper-ignore-next
 /// To set the default print handler, use the [`set_print_handler`] function.
 pub fn unset_print_handler() {
     *PRINT_HANDLER
@@ -235,6 +237,7 @@ pub fn unset_print_handler() {
 
 static PRINTERR_HANDLER: Lazy<Mutex<Option<Arc<PrintCallback>>>> = Lazy::new(|| Mutex::new(None));
 
+// rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`unset_printerr_handler`] function.
 #[doc(alias = "g_set_printerr_handler")]
 pub fn set_printerr_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
@@ -255,6 +258,7 @@ pub fn set_printerr_handler<P: Fn(&str) + Send + Sync + 'static>(func: P) {
     unsafe { ffi::g_set_printerr_handler(Some(func_func as _)) };
 }
 
+// rustdoc-stripper-ignore-next
 /// To set the default print handler, use the [`set_printerr_handler`] function.
 pub fn unset_printerr_handler() {
     *PRINTERR_HANDLER
@@ -267,6 +271,7 @@ type LogCallback = dyn Fn(Option<&str>, LogLevel, &str) + Send + Sync + 'static;
 
 static DEFAULT_HANDLER: Lazy<Mutex<Option<Arc<LogCallback>>>> = Lazy::new(|| Mutex::new(None));
 
+// rustdoc-stripper-ignore-next
 /// To set back the default print handler, use the [`log_unset_default_handler`] function.
 #[doc(alias = "g_log_set_default_handler")]
 pub fn log_set_default_handler<P: Fn(Option<&str>, LogLevel, &str) + Send + Sync + 'static>(
@@ -299,6 +304,7 @@ pub fn log_set_default_handler<P: Fn(Option<&str>, LogLevel, &str) + Send + Sync
     unsafe { ffi::g_log_set_default_handler(Some(func_func as _), std::ptr::null_mut()) };
 }
 
+// rustdoc-stripper-ignore-next
 /// To set the default print handler, use the [`log_set_default_handler`] function.
 #[doc(alias = "g_log_set_default_handler")]
 pub fn log_unset_default_handler() {
@@ -322,6 +328,7 @@ pub fn log_default_handler(log_domain: Option<&str>, log_level: LogLevel, messag
     }
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -437,6 +444,7 @@ macro_rules! g_log {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -473,6 +481,7 @@ macro_rules! g_error {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -509,6 +518,7 @@ macro_rules! g_critical {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -545,6 +555,7 @@ macro_rules! g_warning {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -581,6 +592,7 @@ macro_rules! g_message {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -617,6 +629,7 @@ macro_rules! g_info {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
 /// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
@@ -682,6 +695,7 @@ macro_rules! g_print_inner {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to print messages. It uses [g_print].
 ///
 /// [g_print]: https://developer.gnome.org/glib/stable/glib-Warnings-and-Assertions.html#g-print
@@ -711,6 +725,7 @@ macro_rules! g_print {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 /// Macro used to print error messages. It uses [g_printerr].
 ///
 /// [g_printerr]: https://developer.gnome.org/glib/stable/glib-Warnings-and-Assertions.html#g-printerr
@@ -740,6 +755,7 @@ macro_rules! g_printerr {
     }};
 }
 
+// rustdoc-stripper-ignore-next
 // /// Macro used to log using GLib logging system. It uses [g_log_structured][gls].
 // ///
 // /// [gls]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log-structured)

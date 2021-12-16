@@ -8,6 +8,7 @@ use crate::variant::*;
 use crate::variant_type::*;
 
 wrapper! {
+    // rustdoc-stripper-ignore-next
     /// `VariantDict` is a mutable key/value store where the keys are always
     /// strings and the values are [`Variant`s](variant/struct.Variant.html).
     ///
@@ -29,6 +30,7 @@ wrapper! {
 }
 
 impl VariantDict {
+    // rustdoc-stripper-ignore-next
     /// Create a new `VariantDict` optionally populating it with the given `Variant`
     ///
     /// Since `Variant`s are immutable, this does not couple the `VariantDict` with
@@ -45,6 +47,7 @@ impl VariantDict {
         unsafe { from_glib_full(ffi::g_variant_dict_new(from_asv.to_glib_none().0)) }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Check if this `VariantDict` contains the given key.
     ///
     /// Look up whether or not the given key is present, returning `true` if it
@@ -59,6 +62,7 @@ impl VariantDict {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Look up a typed value from this `VariantDict`.
     ///
     /// The given `key` is looked up in `self`.
@@ -72,6 +76,7 @@ impl VariantDict {
             .transpose()
     }
 
+    // rustdoc-stripper-ignore-next
     /// Look up and return a value from this `VariantDict`.
     ///
     /// The given `key` is looked up in `self`.  If `expected_type` is not
@@ -92,6 +97,7 @@ impl VariantDict {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Insert a variant into the dictionary.
     ///
     /// The given `key`/`value` pair is inserted into `self`.  If a value
@@ -110,6 +116,7 @@ impl VariantDict {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Insert a value into the dictionary
     ///
     /// The given `key`/`value` pair is inserted into `self`.  If a value
@@ -133,6 +140,7 @@ impl VariantDict {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Remove the given `key` from the dictionary.
     ///
     /// This removes the given `key` from the dictionary, releasing the reference
@@ -150,6 +158,7 @@ impl VariantDict {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)
     ///
     /// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)
@@ -168,6 +177,7 @@ impl VariantDict {
         from_glib_none(ffi::g_variant_dict_end(self.to_glib_none().0))
     }
 
+    // rustdoc-stripper-ignore-next
     /// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)
     ///
     /// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)

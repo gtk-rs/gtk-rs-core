@@ -6,8 +6,10 @@ use crate::{IsA, Object, ObjectExt, ParamSpec, Type};
 use std::marker;
 use std::mem;
 
+// rustdoc-stripper-ignore-next
 /// Trait for a type list of prerequisite object types.
 pub trait PrerequisiteList {
+    // rustdoc-stripper-ignore-next
     /// Returns the list of types for this list.
     fn types() -> Vec<ffi::GType>;
 }

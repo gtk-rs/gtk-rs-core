@@ -33,6 +33,7 @@ impl MainContext {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes `func` on the main context.
     ///
     /// If the current thread is the owner of the main context or the main context currently has no
@@ -47,6 +48,7 @@ impl MainContext {
         self.invoke_with_priority(crate::PRIORITY_DEFAULT_IDLE, func);
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes `func` on the main context with the given priority.
     ///
     /// If the current thread is the owner of the main context or the main context currently has no
@@ -63,6 +65,7 @@ impl MainContext {
         }
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes `func` on the main context.
     ///
     /// Different to `invoke()`, this does not require `func` to be
@@ -82,6 +85,7 @@ impl MainContext {
         self.invoke_local_with_priority(crate::PRIORITY_DEFAULT_IDLE, func);
     }
 
+    // rustdoc-stripper-ignore-next
     /// Invokes `func` on the main context with the given priority.
     ///
     /// Different to `invoke_with_priority()`, this does not require `func` to be
@@ -135,6 +139,7 @@ impl MainContext {
         )
     }
 
+    // rustdoc-stripper-ignore-next
     /// Call closure with the main context configured as the thread default one.
     ///
     /// The thread default main context is changed in a panic-safe manner before calling `func` and
@@ -151,6 +156,7 @@ impl MainContext {
         Ok(func())
     }
 
+    // rustdoc-stripper-ignore-next
     /// Acquire ownership of the main context.
     ///
     /// Ownership will automatically be released again once the returned acquire guard is dropped.

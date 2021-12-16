@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #![allow(clippy::needless_doctest_main)]
-
+// rustdoc-stripper-ignore-next
 //! Module containing infrastructure for subclassing `GObject`s and registering boxed types.
 //!
 //! # Example for registering a `glib::Object` subclass
@@ -262,6 +262,7 @@ pub mod shared;
 pub mod signal;
 
 pub mod prelude {
+    // rustdoc-stripper-ignore-next
     //! Prelude that re-exports all important traits from this crate.
     pub use super::boxed::BoxedType;
     pub use super::interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType};

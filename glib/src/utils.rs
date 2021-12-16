@@ -9,6 +9,7 @@ use std::mem;
 use std::path::{Path, PathBuf};
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// Same as [`get_prgname()`].
 ///
 /// [`get_prgname()`]: fn.get_prgname.html
@@ -23,6 +24,7 @@ pub fn prgname() -> Option<String> {
     unsafe { from_glib_none(ffi::g_get_prgname()) }
 }
 
+// rustdoc-stripper-ignore-next
 /// Same as [`set_prgname()`].
 ///
 /// [`set_prgname()`]: fn.set_prgname.html

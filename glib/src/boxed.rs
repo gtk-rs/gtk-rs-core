@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
 //! `IMPL` Boxed wrapper implementation.
 
 use crate::translate::*;
@@ -10,6 +11,7 @@ use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use std::ptr;
 
+// rustdoc-stripper-ignore-next
 /// Wrapper implementations for Boxed types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_boxed_wrapper {
