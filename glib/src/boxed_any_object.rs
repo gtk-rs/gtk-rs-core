@@ -66,7 +66,7 @@ wrapper! {
     ///     subscribers: 1000
     /// });
     ///
-    /// // And can be retrieved with `borrow`
+    /// // The value can be retrieved with `borrow`
     /// let author: Ref<Author> = boxed.borrow();
     /// ```
     ///
