@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use heck::{CamelCase, KebabCase};
+use heck::{ToKebabCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned};
@@ -40,7 +40,7 @@ fn gen_flags_values(
     let mut n = 1;
     let recurse = enum_variants.iter().filter(|v| { !attribute_has_skip(&v.attrs) } ).map(|v| {
         let name = &v.ident;
-        let mut value_name = name.to_string().to_camel_case();
+        let mut value_name = name.to_string().to_upper_camel_case();
         let mut value_nick = name.to_string().to_kebab_case();
 
         let attrs = parse_item_attributes("flags_value", &v.attrs);
