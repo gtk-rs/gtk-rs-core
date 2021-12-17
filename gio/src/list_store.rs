@@ -44,17 +44,6 @@ impl ListStore {
         }
     }
 
-    /// Dumbest possible example just to test this. Will remove.
-    /// ```
-    /// use glib::prelude::*;
-    /// use gio::ListStore;
-    /// use gio::prelude::*;
-    /// let item1 = ListStore::new(ListStore::static_type());
-    /// let item2 = ListStore::new(ListStore::static_type());
-    /// let list = ListStore::new(ListStore::static_type());
-    /// list.splice(0, 0, &[item1, item2.clone()]);
-    /// assert!(list.item(1) == Some(item2.upcast()))
-    /// ```
     #[doc(alias = "g_list_store_splice")]
     pub fn splice(&self, position: u32, n_removals: u32, additions: &[impl IsA<glib::Object>]) {
         let n_additions = additions.len() as u32;
@@ -85,9 +74,27 @@ unsafe extern "C" fn compare_func_trampoline(
     (*func)(&a, &b).into_glib()
 }
 
-impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
+impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
     fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
-        let additions = iter.into_iter().collect::<Vec<_>>();
+        let additions = iter
+            .into_iter()
+            .map(|a| a.as_ref().clone())
+            .collect::<Vec<_>>();
         self.splice(self.n_items(), 0, &additions)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+    use crate::ListStore;
+    #[test]
+    fn splice() {
+        let item0 = ListStore::new(ListStore::static_type());
+        let item1 = ListStore::new(ListStore::static_type());
+        let list = ListStore::new(ListStore::static_type());
+        list.splice(0, 0, &[item0.clone(), item1.clone()]);
+        assert_eq!(list.item(0), Some(item0.upcast()));
+        assert_eq!(list.item(1), Some(item1.upcast()));
     }
 }
