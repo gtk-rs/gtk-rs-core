@@ -52,7 +52,10 @@ wrapper! {
     ///
     /// # Examples
     /// ```
+    /// use glib::prelude::*;
     /// use glib::BoxedAnyObject;
+    /// use std::cell::Ref;
+    ///
     /// struct Author {
     ///     name: String,
     ///     subscribers: usize
@@ -63,12 +66,16 @@ wrapper! {
     ///     subscribers: 1000
     /// });
     ///
-    /// // The boxed data can be stored as a `glib::object::Object`
-    /// let list = gio::ListStore::new(BoxedAnyObject::static_type());
-    /// list.append(boxed.clone().upcast());
-    ///
     /// // And can be retrieved with `borrow`
-    /// let author: Author = boxed.borrow();
+    /// let author: Ref<Author> = boxed.borrow();
+    /// ```
+    ///
+    /// ```ignore
+    /// use gio::ListStore;
+    ///
+    /// // The boxed data can be stored as a `glib::object::Object`
+    /// let list = ListStore::new(BoxedAnyObject::static_type());
+    /// list.append(boxed.upcast());
     /// ```
     pub struct BoxedAnyObject(ObjectSubclass<imp::BoxedAnyObject>);
 }
