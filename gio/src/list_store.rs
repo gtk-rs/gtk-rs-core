@@ -59,6 +59,12 @@ impl ListStore {
             );
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Appends all elements in a slice to the `ListStore`.
+    pub fn extend_from_slice(&self, additions: &[impl IsA<glib::Object>]) {
+        self.splice(self.n_items() - 1, 0, additions)
+    }
 }
 
 unsafe extern "C" fn compare_func_trampoline(
