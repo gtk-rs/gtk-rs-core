@@ -80,12 +80,9 @@ unsafe extern "C" fn compare_func_trampoline(
     (*func)(&a, &b).into_glib()
 }
 
-impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
+impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
     fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
-        let additions = iter
-            .into_iter()
-            .map(|a| a.as_ref().clone())
-            .collect::<Vec<_>>();
+        let additions = iter.into_iter().collect::<Vec<_>>();
         self.splice(self.n_items(), 0, &additions)
     }
 }
