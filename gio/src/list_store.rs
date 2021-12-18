@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::auto::traits::ListModelExt;
 use crate::ListStore;
 use glib::translate::*;
 use glib::{IsA, Object};
@@ -47,19 +48,22 @@ impl ListStore {
     pub fn splice(&self, position: u32, n_removals: u32, additions: &[impl IsA<glib::Object>]) {
         let n_additions = additions.len() as u32;
         unsafe {
-            let additions = additions
-                .iter()
-                .map(|o| o.as_ptr() as *mut glib::gobject_ffi::GObject)
-                .collect::<Vec<_>>();
+            let additions = additions.as_ptr() as *mut *mut glib::gobject_ffi::GObject;
 
             ffi::g_list_store_splice(
                 self.to_glib_none().0,
                 position,
                 n_removals,
-                mut_override(additions.as_ptr()),
+                additions,
                 n_additions,
             );
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Appends all elements in a slice to the `ListStore`.
+    pub fn extend_from_slice(&self, additions: &[impl IsA<glib::Object>]) {
+        self.splice(self.n_items() - 1, 0, additions)
     }
 }
 
@@ -74,4 +78,26 @@ unsafe extern "C" fn compare_func_trampoline(
     let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
 
     (*func)(&a, &b).into_glib()
+}
+
+impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let additions = iter.into_iter().collect::<Vec<_>>();
+        self.splice(self.n_items(), 0, &additions)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+    use crate::ListStore;
+    #[test]
+    fn splice() {
+        let item0 = ListStore::new(ListStore::static_type());
+        let item1 = ListStore::new(ListStore::static_type());
+        let list = ListStore::new(ListStore::static_type());
+        list.splice(0, 0, &[item0.clone(), item1.clone()]);
+        assert_eq!(list.item(0), Some(item0.upcast()));
+        assert_eq!(list.item(1), Some(item1.upcast()));
+    }
 }
