@@ -3,7 +3,7 @@
 use crate::prelude::*;
 use crate::ListModel;
 
-pub trait ListModelExtManual: ListModelExt {
+pub trait ListModelExtManual: Sized {
     // rustdoc-stripper-ignore-next
     /// Get an immutable snapshot of the container inside the `ListModel`.
     /// Any modification done to the returned container `Vec` will not be
@@ -11,7 +11,7 @@ pub trait ListModelExtManual: ListModelExt {
     fn snapshot(&self) -> Vec<glib::Object>;
 }
 
-impl<T: ListModelExt> ListModelExtManual for T {
+impl<T: IsA<ListModel>> ListModelExtManual for T {
     fn snapshot(&self) -> Vec<glib::Object> {
         let mut res = Vec::with_capacity(self.n_items() as usize);
         for i in 0..self.n_items() {
