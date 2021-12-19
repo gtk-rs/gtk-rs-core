@@ -80,9 +80,12 @@ unsafe extern "C" fn compare_func_trampoline(
     (*func)(&a, &b).into_glib()
 }
 
-impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
+impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
     fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
-        let additions = iter.into_iter().collect::<Vec<_>>();
+        let additions = iter
+            .into_iter()
+            .map(|o| o.as_ref().clone())
+            .collect::<Vec<_>>();
         self.splice(self.n_items(), 0, &additions)
     }
 }
@@ -91,6 +94,7 @@ impl<A: IsA<glib::Object>> std::iter::Extend<A> for ListStore {
 mod tests {
     use crate::prelude::*;
     use crate::ListStore;
+
     #[test]
     fn splice() {
         let item0 = ListStore::new(ListStore::static_type());
@@ -99,5 +103,18 @@ mod tests {
         list.splice(0, 0, &[item0.clone(), item1.clone()]);
         assert_eq!(list.item(0), Some(item0.upcast()));
         assert_eq!(list.item(1), Some(item1.upcast()));
+    }
+
+    #[test]
+    fn extend() {
+        let item0 = ListStore::new(ListStore::static_type());
+        let item1 = ListStore::new(ListStore::static_type());
+        let mut list = ListStore::new(ListStore::static_type());
+        list.extend(&[&item0, &item1]);
+        assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
+        assert_eq!(list.item(1).as_ref(), Some(item1.upcast_ref()));
+        list.extend(&[item0.clone(), item1.clone()]);
+        assert_eq!(list.item(2).as_ref(), Some(item0.upcast_ref()));
+        assert_eq!(list.item(3).as_ref(), Some(item1.upcast_ref()));
     }
 }
