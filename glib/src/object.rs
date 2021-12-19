@@ -12,6 +12,7 @@ use std::fmt;
 use std::hash;
 use std::marker::PhantomData;
 use std::mem;
+use std::mem::ManuallyDrop;
 use std::ops;
 use std::pin::Pin;
 use std::ptr;
@@ -2095,6 +2096,20 @@ pub trait ObjectExt: ObjectType {
     fn downgrade(&self) -> WeakRef<Self>;
 
     // rustdoc-stripper-ignore-next
+    /// Add a callback to be notified when the Object is disposed.
+    #[doc(alias = "g_object_weak_ref")]
+    fn add_weak_ref_notify<F: FnOnce() + Send + Sync + 'static>(&self, f: F)
+        -> WeakRefNotify<Self>;
+
+    // rustdoc-stripper-ignore-next
+    /// Add a callback to be notified when the Object is disposed.
+    ///
+    /// This is like [`add_weak_ref_notify`][`crate::OBjectExt::add_weak_ref_notify`]  but doesn't require a `Send+Sync` closure.
+    /// Object dispose will panic if the object is disposed from the wrong thread.
+    #[doc(alias = "g_object_weak_ref")]
+    fn add_weak_ref_notify_local<F: FnOnce() + 'static>(&self, f: F) -> WeakRefNotify<Self>;
+
+    // rustdoc-stripper-ignore-next
     /// Bind property `source_property` on this object to the `target_property` on the `target` object.
     ///
     /// This allows keeping the properties of both objects in sync.
@@ -3151,6 +3166,16 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    fn add_weak_ref_notify<F: FnOnce() + Send + Sync + 'static>(&self, f: F) -> WeakRefNotify<T> {
+        WeakRefNotify::new(self, f)
+    }
+
+    fn add_weak_ref_notify_local<F: FnOnce() + 'static>(&self, f: F) -> WeakRefNotify<T> {
+        let callback = crate::thread_guard::ThreadGuard::new(f);
+
+        WeakRefNotify::new(self, move || callback.into_inner()())
+    }
+
     fn bind_property<'a, O: ObjectType>(
         &'a self,
         source_property: &'a str,
@@ -3373,6 +3398,65 @@ wrapper! {
 
     match fn {
         type_ => || gobject_ffi::g_initially_unowned_get_type(),
+    }
+}
+
+type WeakRefNotifyData = ManuallyDrop<Pin<Box<Option<Box<dyn FnOnce() + 'static>>>>>;
+
+// rustdoc-stripper-ignore-next
+/// A handle to disconnect a weak ref notify closure.
+pub struct WeakRefNotify<T: ObjectType> {
+    object: WeakRef<T>,
+    data: WeakRefNotifyData,
+}
+
+unsafe extern "C" fn notify_func(data: ffi::gpointer, _obj: *mut gobject_ffi::GObject) {
+    let callback: Box<Option<Box<dyn FnOnce()>>> = Box::from_raw(data as *mut _);
+
+    let callback = (*callback).expect("cannot get closure...");
+    callback()
+}
+
+impl<T: ObjectType> WeakRefNotify<T> {
+    fn new<F: FnOnce() + 'static>(obj: &T, f: F) -> WeakRefNotify<T> {
+        unsafe {
+            let data: WeakRefNotifyData = ManuallyDrop::new(Box::pin(Some(Box::new(f))));
+
+            let data_ptr: *const Option<Box<dyn FnOnce()>> = Pin::as_ref(&data).get_ref();
+            gobject_ffi::g_object_weak_ref(
+                obj.as_ptr() as *mut GObject,
+                Some(notify_func),
+                data_ptr as *mut _,
+            );
+
+            WeakRefNotify {
+                object: obj.unsafe_cast_ref::<T>().downgrade(),
+                data,
+            }
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Try to upgrade this weak reference to a strong reference.
+    ///
+    /// If the stored object was already destroyed then `None` is returned.
+    pub fn upgrade(&self) -> Option<T> {
+        self.object.upgrade()
+    }
+
+    #[doc(alias = "g_object_weak_unref")]
+    pub fn disconnect(mut self) {
+        unsafe {
+            if let Some(obj) = self.object.upgrade() {
+                let data_ptr: *const Option<Box<dyn FnOnce()>> = Pin::as_ref(&self.data).get_ref();
+                gobject_ffi::g_object_weak_unref(
+                    obj.as_ptr() as *mut GObject,
+                    Some(notify_func),
+                    data_ptr as *mut _,
+                );
+                ManuallyDrop::drop(&mut self.data);
+            }
+        }
     }
 }
 
@@ -4167,6 +4251,10 @@ pub unsafe trait IsInterface: ObjectType {}
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::Cell;
+    use std::rc::Rc;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::Arc;
 
     #[test]
     fn new() {
@@ -4202,6 +4290,49 @@ mod tests {
 
         drop(obj);
         assert!(weakref.upgrade().is_none());
+    }
+
+    #[test]
+    fn weak_ref_notify() {
+        let obj: Object = Object::new(&[]).unwrap();
+
+        let handle = obj.add_weak_ref_notify(|| {
+            unreachable!();
+        });
+
+        handle.disconnect();
+
+        let called = Arc::new(AtomicBool::new(false));
+        let called_weak = Arc::downgrade(&called);
+        let handle = obj.add_weak_ref_notify(move || {
+            called_weak.upgrade().unwrap().store(true, Ordering::SeqCst);
+        });
+
+        drop(obj);
+        assert!(called.load(Ordering::SeqCst));
+        handle.disconnect();
+
+        let obj: Object = Object::new(&[]).unwrap();
+
+        let called = Arc::new(AtomicBool::new(false));
+        let called_weak = Arc::downgrade(&called);
+        obj.add_weak_ref_notify(move || {
+            called_weak.upgrade().unwrap().store(true, Ordering::SeqCst);
+        });
+
+        drop(obj);
+        assert!(called.load(Ordering::SeqCst));
+
+        let obj: Object = Object::new(&[]).unwrap();
+
+        let called = Rc::new(Cell::new(false));
+        let called_weak = Rc::downgrade(&called);
+        obj.add_weak_ref_notify_local(move || {
+            called_weak.upgrade().unwrap().set(true);
+        });
+
+        drop(obj);
+        assert!(called.get());
     }
 
     #[test]
