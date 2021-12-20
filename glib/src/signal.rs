@@ -82,6 +82,16 @@ impl IntoGlib for Inhibit {
     }
 }
 
+impl crate::ToValue for Inhibit {
+    fn to_value(&self) -> crate::Value {
+        self.0.to_value()
+    }
+
+    fn value_type(&self) -> crate::Type {
+        <bool as crate::StaticType>::static_type()
+    }
+}
+
 pub unsafe fn connect_raw<F>(
     receiver: *mut gobject_ffi::GObject,
     signal_name: *const c_char,
