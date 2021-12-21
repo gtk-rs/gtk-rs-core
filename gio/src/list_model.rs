@@ -25,6 +25,8 @@ impl std::iter::IntoIterator for ListModel {
     type Item = glib::Object;
     type IntoIter = std::vec::IntoIter<glib::Object>;
 
+    // rustdoc-stripper-ignore-next
+    /// Returns an iterator with the elements returned by `ListModel::snapshot`
     fn into_iter(self) -> Self::IntoIter {
         self.snapshot().into_iter()
     }
