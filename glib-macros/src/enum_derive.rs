@@ -98,7 +98,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::translate::TryFromGlib<i32> for #name {
             type Error = i32;
 
-            unsafe fn try_from_glib(value: i32) -> Result<Self, i32> {
+            unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
                 let from_glib = || {
                     #from_glib
                 };
@@ -148,7 +148,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
 
         impl #crate_ident::StaticType for #name {
             fn static_type() -> #crate_ident::Type {
-                static ONCE: std::sync::Once = std::sync::Once::new();
+                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
 
                 ONCE.call_once(|| {
@@ -156,12 +156,12 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                         #enum_values
                         #crate_ident::gobject_ffi::GEnumValue {
                             value: 0,
-                            value_name: std::ptr::null(),
-                            value_nick: std::ptr::null(),
+                            value_name: ::std::ptr::null(),
+                            value_nick: ::std::ptr::null(),
                         },
                     ];
 
-                    let name = std::ffi::CString::new(#gtype_name).expect("CString::new failed");
+                    let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
                         let type_ = #crate_ident::gobject_ffi::g_enum_register_static(name.as_ptr(), VALUES.as_ptr());
                         TYPE = #crate_ident::translate::from_glib(type_);

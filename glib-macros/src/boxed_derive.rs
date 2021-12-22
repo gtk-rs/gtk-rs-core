@@ -9,8 +9,8 @@ use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse
 fn gen_option_to_ptr() -> TokenStream {
     quote! {
         match s {
-            Some(s) => Box::into_raw(Box::new(s.clone())),
-            None => std::ptr::null_mut(),
+            Some(s) => ::std::boxed::Box::into_raw(::std::boxed::Box::new(s.clone())),
+            None => ::std::ptr::null_mut(),
         };
     }
 }
@@ -23,7 +23,7 @@ fn gen_impl_from_value_optional(name: &Ident, crate_ident: &TokenStream) -> Toke
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
-                *Box::from_raw(ptr as *mut #name)
+                *::std::boxed::Box::from_raw(ptr as *mut #name)
             }
         }
 
@@ -47,7 +47,7 @@ fn gen_impl_from_value(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
-                *Box::from_raw(ptr as *mut #name)
+                *::std::boxed::Box::from_raw(ptr as *mut #name)
             }
         }
 
@@ -68,7 +68,7 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
 
     quote! {
         impl #crate_ident::value::ToValueOptional for #name {
-            fn to_value_optional(s: Option<&Self>) -> #crate_ident::Value {
+            fn to_value_optional(s: ::core::option::Option<&Self>) -> #crate_ident::Value {
                 let mut value = #crate_ident::Value::for_value_type::<Self>();
                 unsafe {
                     let ptr: *mut #name = #option_to_ptr;
@@ -146,7 +146,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::value::ToValue for #name {
             fn to_value(&self) -> #crate_ident::Value {
                 unsafe {
-                    let ptr: *mut #name = Box::into_raw(Box::new(self.clone()));
+                    let ptr: *mut #name = ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone()));
                     let mut value = #crate_ident::Value::from_type(<#name as #crate_ident::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
@@ -184,7 +184,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             #[inline]
             unsafe fn from_glib_full(ptr: *mut #name) -> Self {
                 assert!(!ptr.is_null());
-                *Box::from_raw(ptr)
+                *::std::boxed::Box::from_raw(ptr)
             }
         }
 
@@ -198,7 +198,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
             #[inline]
             fn to_glib_full(&self) -> *const #name {
-                Box::into_raw(Box::new(self.clone()))
+                ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone()))
             }
         }
 
@@ -212,7 +212,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
             #[inline]
             fn to_glib_full(&self) -> *mut #name {
-                Box::into_raw(Box::new(self.clone())) as *mut _
+                ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone())) as *mut _
             }
         }
     }

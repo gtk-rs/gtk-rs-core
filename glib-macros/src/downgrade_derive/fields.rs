@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::utils::crate_ident_new;
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use syn::{Fields, FieldsNamed, FieldsUnnamed, Ident, Type};
@@ -97,6 +98,7 @@ pub struct DowngradeStructParts {
 /// }
 /// ```
 pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
+    let glib = crate_ident_new();
     match fields {
         Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
             let fields: Vec<Type> = unnamed
@@ -109,7 +111,7 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 .iter()
                 .map(|ty| {
                     quote! {
-                        <#ty as glib::clone::Downgrade>::Weak
+                        <#ty as #glib::clone::Downgrade>::Weak
                     }
                 })
                 .collect();
@@ -131,12 +133,12 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 },
                 downgrade: quote! {
                     (#(
-                        glib::clone::Downgrade::downgrade(#field_ident)
+                        #glib::clone::Downgrade::downgrade(#field_ident)
                     ),*)
                 },
                 upgrade: quote! {
                     (#(
-                        glib::clone::Upgrade::upgrade(#field_ident)?
+                        #glib::clone::Upgrade::upgrade(#field_ident)?
                     ),*)
                 },
             }
@@ -152,7 +154,7 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 .iter()
                 .map(|(ident, ty)| {
                     quote! {
-                        #ident: <#ty as glib::clone::Downgrade>::Weak
+                        #ident: <#ty as #glib::clone::Downgrade>::Weak
                     }
                 })
                 .collect();
@@ -173,12 +175,12 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 },
                 downgrade: quote! {
                     {#(
-                        #field_ident: glib::clone::Downgrade::downgrade(#field_ident)
+                        #field_ident: #glib::clone::Downgrade::downgrade(#field_ident)
                     ),*}
                 },
                 upgrade: quote! {
                     {#(
-                        #field_ident: glib::clone::Upgrade::upgrade(#field_ident)?
+                        #field_ident: #glib::clone::Upgrade::upgrade(#field_ident)?
                     ),*}
                 },
             }

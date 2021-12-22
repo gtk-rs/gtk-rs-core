@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::utils::crate_ident_new;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput};
@@ -24,6 +25,7 @@ pub fn derive_variant_for_struct(
     generics: Generics,
     data_struct: syn::DataStruct,
 ) -> TokenStream {
+    let glib = crate_ident_new();
     let (static_variant_type, to_variant, from_variant) = match data_struct.fields {
         Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
             let types = unnamed
@@ -35,34 +37,34 @@ pub fn derive_variant_for_struct(
             let idents = (0..types.len()).map(syn::Index::from).collect::<Vec<_>>();
 
             let static_variant_type = quote! {
-                impl #generics glib::StaticVariantType for #ident #generics {
-                    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
-                        static TYP: glib::once_cell::sync::Lazy<glib::VariantType> = glib::once_cell::sync::Lazy::new(|| {
+                impl #generics #glib::StaticVariantType for #ident #generics {
+                    fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
+                        static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| {
 
-                            let mut builder = glib::GStringBuilder::new("(");
+                            let mut builder = #glib::GStringBuilder::new("(");
 
                             #(
                                 {
-                                    let typ = <#types as glib::StaticVariantType>::static_variant_type();
+                                    let typ = <#types as #glib::StaticVariantType>::static_variant_type();
                                     builder.append(typ.as_str());
                                 }
                             )*
                             builder.append_c(')');
 
-                            glib::VariantType::from_string(builder.into_string()).unwrap()
+                            #glib::VariantType::from_string(builder.into_string()).unwrap()
                         });
 
-                        std::borrow::Cow::Borrowed(&*TYP)
+                        ::std::borrow::Cow::Borrowed(&*TYP)
                     }
                 }
             };
 
             let to_variant = quote! {
-                impl #generics glib::ToVariant for #ident #generics {
-                    fn to_variant(&self) -> glib::Variant {
-                        glib::Variant::tuple_from_iter(std::array::IntoIter::new([
+                impl #generics #glib::ToVariant for #ident #generics {
+                    fn to_variant(&self) -> #glib::Variant {
+                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::new([
                             #(
-                                glib::ToVariant::to_variant(&self.#idents)
+                                #glib::ToVariant::to_variant(&self.#idents)
                             ),*
                         ]))
                     }
@@ -70,8 +72,8 @@ pub fn derive_variant_for_struct(
             };
 
             let from_variant = quote! {
-                impl #generics glib::FromVariant for #ident #generics {
-                    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+                impl #generics #glib::FromVariant for #ident #generics {
+                    fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return None;
                         }
@@ -101,40 +103,40 @@ pub fn derive_variant_for_struct(
             let counts = (0..types.len()).map(syn::Index::from).collect::<Vec<_>>();
 
             let static_variant_type = quote! {
-                impl #generics glib::StaticVariantType for #ident #generics {
-                    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
-                        static TYP: glib::once_cell::sync::Lazy<glib::VariantType> = glib::once_cell::sync::Lazy::new(|| unsafe {
-                            let ptr = glib::ffi::g_string_sized_new(16);
-                            glib::ffi::g_string_append_c(ptr, b'(' as _);
+                impl #generics #glib::StaticVariantType for #ident #generics {
+                    fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
+                        static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| unsafe {
+                            let ptr = #glib::ffi::g_string_sized_new(16);
+                            #glib::ffi::g_string_append_c(ptr, b'(' as _);
 
                             #(
                                 {
-                                    let typ = <#types as glib::StaticVariantType>::static_variant_type();
-                                    glib::ffi::g_string_append_len(
+                                    let typ = <#types as #glib::StaticVariantType>::static_variant_type();
+                                    #glib::ffi::g_string_append_len(
                                         ptr,
                                         typ.as_str().as_ptr() as *const _,
                                         typ.as_str().len() as isize,
                                     );
                                 }
                             )*
-                            glib::ffi::g_string_append_c(ptr, b')' as _);
+                            #glib::ffi::g_string_append_c(ptr, b')' as _);
 
-                            glib::translate::from_glib_full(
-                                glib::ffi::g_string_free(ptr, glib::ffi::GFALSE) as *mut glib::ffi::GVariantType
+                            #glib::translate::from_glib_full(
+                                #glib::ffi::g_string_free(ptr, #glib::ffi::GFALSE) as *mut #glib::ffi::GVariantType
                             )
                         });
 
-                        std::borrow::Cow::Borrowed(&*TYP)
+                        ::std::borrow::Cow::Borrowed(&*TYP)
                     }
                 }
             };
 
             let to_variant = quote! {
-                impl #generics glib::ToVariant for #ident #generics {
-                    fn to_variant(&self) -> glib::Variant {
-                        glib::Variant::tuple_from_iter(std::array::IntoIter::new([
+                impl #generics #glib::ToVariant for #ident #generics {
+                    fn to_variant(&self) -> #glib::Variant {
+                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::new([
                             #(
-                                glib::ToVariant::to_variant(&self.#idents)
+                                #glib::ToVariant::to_variant(&self.#idents)
                             ),*
                         ]))
                     }
@@ -142,8 +144,8 @@ pub fn derive_variant_for_struct(
             };
 
             let from_variant = quote! {
-                impl #generics glib::FromVariant for #ident #generics {
-                    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+                impl #generics #glib::FromVariant for #ident #generics {
+                    fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return None;
                         }
@@ -163,24 +165,24 @@ pub fn derive_variant_for_struct(
         }
         Fields::Unit => {
             let static_variant_type = quote! {
-                impl #generics glib::StaticVariantType for #ident #generics {
-                    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
-                        std::borrow::Cow::Borrowed(glib::VariantTy::UNIT)
+                impl #generics #glib::StaticVariantType for #ident #generics {
+                    fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
+                        ::std::borrow::Cow::Borrowed(#glib::VariantTy::UNIT)
                     }
                 }
             };
 
             let to_variant = quote! {
-                impl #generics glib::ToVariant for #ident #generics {
-                    fn to_variant(&self) -> glib::Variant {
-                        glib::ToVariant::to_variant(&())
+                impl #generics #glib::ToVariant for #ident #generics {
+                    fn to_variant(&self) -> #glib::Variant {
+                        #glib::ToVariant::to_variant(&())
                     }
                 }
             };
 
             let from_variant = quote! {
-                impl #generics glib::FromVariant for #ident #generics {
-                    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+                impl #generics #glib::FromVariant for #ident #generics {
+                    fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         Some(Self)
                     }
                 }

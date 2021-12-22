@@ -176,7 +176,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
 
         impl #crate_ident::StaticType for #name {
             fn static_type() -> #crate_ident::Type {
-                static ONCE: std::sync::Once = std::sync::Once::new();
+                static ONCE: ::std::sync::Once = ::std::sync::Once::new();
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
 
                 ONCE.call_once(|| {
@@ -184,12 +184,12 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
                         #flags_values
                         #crate_ident::gobject_ffi::GFlagsValue {
                             value: 0,
-                            value_name: std::ptr::null(),
-                            value_nick: std::ptr::null(),
+                            value_name: ::std::ptr::null(),
+                            value_nick: ::std::ptr::null(),
                         },
                     ];
 
-                    let name = std::ffi::CString::new(#gtype_name).expect("CString::new failed");
+                    let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
                         let type_ = #crate_ident::gobject_ffi::g_flags_register_static(name.as_ptr(), VALUES.as_ptr());
                         TYPE = #crate_ident::translate::from_glib(type_);
