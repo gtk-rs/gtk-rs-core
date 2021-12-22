@@ -43,7 +43,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
                 self as i32
             }
 
-            fn from(value: i32) -> Option<Self>
+            fn from(value: i32) -> ::core::option::Option<Self>
             where
                 Self: Sized
             {

@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use super::fields::{derive_downgrade_fields, DowngradeStructParts};
+use crate::utils::crate_ident_new;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{Generics, Ident};
@@ -84,6 +85,7 @@ pub fn derive_downgrade_for_struct(
     generics: Generics,
     data_struct: syn::DataStruct,
 ) -> TokenStream {
+    let glib = crate_ident_new();
     let weak_type = format_ident!("{}Weak", ident);
 
     let DowngradeStructParts {
@@ -97,7 +99,7 @@ pub fn derive_downgrade_for_struct(
     let derived = quote! {
         pub struct #weak_type #generics #weak_fields #end_of_struct
 
-        impl #generics glib::clone::Downgrade for #ident #generics {
+        impl #generics #glib::clone::Downgrade for #ident #generics {
             type Weak = #weak_type #generics;
 
             fn downgrade(&self) -> Self::Weak {
@@ -106,10 +108,10 @@ pub fn derive_downgrade_for_struct(
             }
         }
 
-        impl #generics glib::clone::Upgrade for #weak_type #generics {
+        impl #generics #glib::clone::Upgrade for #weak_type #generics {
             type Strong = #ident #generics;
 
-            fn upgrade(&self) -> Option<Self::Strong> {
+            fn upgrade(&self) -> ::core::option::Option<Self::Strong> {
                 let Self #destruct = self;
                 Some(#ident #upgrade)
             }
