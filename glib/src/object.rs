@@ -1896,7 +1896,8 @@ pub trait ObjectExt: ObjectType {
     /// Limits the lifetime of `closure` to the lifetime of the object. When
     /// the object's reference count drops to zero, the closure will be
     /// invalidated. An invalidated closure will ignore any calls to
-    /// [`Closure::invoke`](crate::Closure::invoke).
+    /// [`invoke_with_values`](crate::closure::Closure::invoke_with_values), or
+    /// [`invoke`](crate::closure::RustClosure::invoke) when using Rust closures.
     #[doc(alias = "g_object_watch_closure")]
     fn watch_closure(&self, closure: &impl AsRef<Closure>);
 

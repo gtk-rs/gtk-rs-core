@@ -437,6 +437,8 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 ///     ValWithCustomNameAndNick,
 /// }
 /// ```
+///
+/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
 #[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
 pub fn enum_derive(input: TokenStream) -> TokenStream {
@@ -474,7 +476,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: value/struct.Value.html
+/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -501,7 +503,7 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ErrorDomain`]: error/trait.ErrorDomain.html
+/// [`ErrorDomain`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/error/trait.ErrorDomain.html
 #[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
 pub fn error_domain_derive(input: TokenStream) -> TokenStream {
@@ -524,8 +526,8 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 /// struct MyBoxed(String);
 /// ```
 ///
-/// [`BoxedType`]: subclass/boxed/trait.BoxedType.html
-/// [`glib::Value`]: value/struct.Value.html
+/// [`BoxedType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/boxed/trait.BoxedType.html
+/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
 #[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
 #[proc_macro_error]
 pub fn boxed_derive(input: TokenStream) -> TokenStream {
@@ -552,8 +554,8 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 /// struct MyShared(std::sync::Arc<MySharedInner>);
 /// ```
 ///
-/// [`SharedType`]: subclass/shared/trait.SharedType.html
-/// [`glib::Value`]: value/struct.Value.html
+/// [`SharedType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/shared/trait.SharedType.html
+/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
 #[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
 #[proc_macro_error]
 pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
@@ -590,7 +592,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ObjectSubclass`]: subclass/types/trait.ObjectSubclass.html
+/// [`ObjectSubclass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/types/trait.ObjectSubclass.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -615,7 +617,7 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// type Prerequisites = ();
 /// ```
 ///
-/// [`ObjectInterface`]: interface/types/trait.ObjectInterface.html
+/// [`ObjectInterface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/interface/trait.ObjectInterface.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -683,8 +685,8 @@ pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::clone::Downgrade`]: clone/trait.Downgrade.html
-/// [`glib::clone::Upgrade`]: clone/trait.Upgrade.html
+/// [`glib::clone::Downgrade`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/clone/trait.Downgrade.html
+/// [`glib::clone::Upgrade`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/clone/trait.Upgrade.html
 #[proc_macro_derive(Downgrade)]
 pub fn downgrade(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);

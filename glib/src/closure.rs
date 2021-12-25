@@ -37,7 +37,8 @@ impl RustClosure {
     // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
-    /// See [`glib::closure!`] for a way to create a closure with concrete types.
+    /// See [`glib::closure!`](macro@crate::closure) for a way to create a closure with concrete
+    /// types.
     ///
     /// # Panics
     ///
@@ -67,7 +68,8 @@ impl RustClosure {
     // rustdoc-stripper-ignore-next
     /// Creates a new closure around a Rust closure.
     ///
-    /// See [`glib::closure_local!`] for a way to create a closure with concrete types.
+    /// See [`glib::closure_local!`](crate::closure_local) for a way to create a closure with
+    /// concrete types.
     ///
     /// # Panics
     ///
