@@ -691,7 +691,7 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
     downgrade_derive::impl_downgrade(input)
 }
 
-/// Derive macro for serializing/deserializing custom structs as [`glib::Variant`]s.
+/// Derive macro for serializing/deserializing custom structs/enums as [`glib::Variant`]s.
 ///
 /// # Example
 ///
@@ -728,8 +728,75 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// assert_eq!(var.get::<Foo>(), Some(v));
 /// ```
 ///
-/// [`glib::Variant`]: variant/struct.Variant.html
-#[proc_macro_derive(Variant)]
+/// Enums are serialized as a tuple `(sv)` with the first value as a [kebab case] string for the
+/// enum variant, or just `s` if this is a C-style enum. Some additional attributes are supported
+/// for enums:
+/// - `#[variant_enum(repr)]` to serialize the enum variant as an integer type instead of `s`.  The
+/// `#[repr]` attribute must also be specified on the enum with a sized integer type, and the type
+/// must implement `Copy`.
+/// - `#[variant_enum(enum)]` uses [`EnumClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::Enum`](Enum).
+/// - `#[variant_enum(flags)]` uses [`FlagsClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::flags`](macro@flags).
+/// - `#[variant_enum(enum, repr)]` serializes as `i32`. Meant for use with [`glib::Enum`](Enum).
+/// The type must also implement `Copy`.
+/// - `#[variant_enum(flags, repr)]` serializes as `u32`. Meant for use with
+/// [`glib::flags`](macro@flags).
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
+/// enum Foo {
+///     MyA,
+///     MyB(i32),
+///     MyC { some_int: u32, some_string: String }
+/// }
+///
+/// let v = Foo::MyC { some_int: 1, some_string: String::from("bar") };
+/// let var = v.to_variant();
+/// assert_eq!(var.child_value(0).str(), Some("my-c"));
+/// assert_eq!(var.get::<Foo>(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Variant)]
+/// #[variant_enum(repr)]
+/// #[repr(u8)]
+/// enum Bar {
+///     A,
+///     B = 3,
+///     C = 7
+/// }
+///
+/// let v = Bar::B;
+/// let var = v.to_variant();
+/// assert_eq!(var.get::<u8>(), Some(3));
+/// assert_eq!(var.get::<Bar>(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, glib::Variant)]
+/// #[variant_enum(enum)]
+/// #[enum_type(name = "MyEnum")]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = "My Val")]
+///     ValWithCustomName,
+///     #[enum_value(name = "My Other Val", nick = "other")]
+///     ValWithCustomNameAndNick,
+/// }
+///
+/// let v = MyEnum::ValWithCustomNameAndNick;
+/// let var = v.to_variant();
+/// assert_eq!(var.str(), Some("other"));
+/// assert_eq!(var.get::<MyEnum>(), Some(v));
+/// ```
+///
+/// [`glib::Variant`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/variant/struct.Variant.html
+/// [`EnumClass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/struct.EnumClass.html
+/// [`FlagsClass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/struct.FlagsClass.html
+/// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
+#[proc_macro_derive(Variant, attributes(variant_enum))]
+#[proc_macro_error]
 pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     variant_derive::impl_variant(input)

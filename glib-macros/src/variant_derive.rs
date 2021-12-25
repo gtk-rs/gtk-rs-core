@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::crate_ident_new;
+use crate::utils::{crate_ident_new, find_attribute_meta};
+use heck::ToKebabCase;
 use proc_macro::TokenStream;
-use quote::quote;
+use proc_macro_error::abort;
+use quote::{format_ident, quote};
 use syn::{Data, DeriveInput};
 use syn::{Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Type};
 
@@ -11,8 +13,17 @@ pub fn impl_variant(input: DeriveInput) -> TokenStream {
         Data::Struct(data_struct) => {
             derive_variant_for_struct(input.ident, input.generics, data_struct)
         }
-        Data::Enum(_) => {
-            panic!("#[derive(glib::Variant)] is not available for enums.");
+        Data::Enum(data_enum) => {
+            let mode = get_enum_mode(&input.attrs);
+            let has_data = data_enum
+                .variants
+                .iter()
+                .any(|v| !matches!(v.fields, syn::Fields::Unit));
+            if has_data {
+                derive_variant_for_enum(input.ident, input.generics, data_enum, mode)
+            } else {
+                derive_variant_for_c_enum(input.ident, input.generics, data_enum, mode)
+            }
         }
         Data::Union(..) => {
             panic!("#[derive(glib::Variant)] is not available for unions.");
@@ -20,7 +31,7 @@ pub fn impl_variant(input: DeriveInput) -> TokenStream {
     }
 }
 
-pub fn derive_variant_for_struct(
+fn derive_variant_for_struct(
     ident: Ident,
     generics: Generics,
     data_struct: syn::DataStruct,
@@ -135,7 +146,7 @@ pub fn derive_variant_for_struct(
             let to_variant = quote! {
                 impl #generics #glib::ToVariant for #ident #generics {
                     fn to_variant(&self) -> #glib::Variant {
-                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::new([
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
                             #(
                                 #glib::ToVariant::to_variant(&self.#idents)
                             ),*
@@ -202,4 +213,386 @@ pub fn derive_variant_for_struct(
     };
 
     derived.into()
+}
+
+enum EnumMode {
+    String,
+    Repr(Ident),
+    Enum { repr: bool },
+    Flags { repr: bool },
+}
+
+impl EnumMode {
+    fn tag_type(&self) -> char {
+        match self {
+            EnumMode::String => 's',
+            EnumMode::Repr(repr) => match repr.to_string().as_str() {
+                "i8" | "i16" => 'n',
+                "i32" => 'i',
+                "i64" => 'x',
+                "u8" => 'y',
+                "u16" => 'q',
+                "u32" => 'u',
+                "u64" => 't',
+                _ => unimplemented!(),
+            },
+            EnumMode::Enum { repr } => {
+                if *repr {
+                    'i'
+                } else {
+                    's'
+                }
+            }
+            EnumMode::Flags { repr } => {
+                if *repr {
+                    'u'
+                } else {
+                    's'
+                }
+            }
+        }
+    }
+}
+
+fn derive_variant_for_enum(
+    ident: Ident,
+    generics: Generics,
+    data_enum: syn::DataEnum,
+    mode: EnumMode,
+) -> TokenStream {
+    let glib = crate_ident_new();
+    let static_variant_type = format!("({}v)", mode.tag_type());
+
+    let to = data_enum.variants.iter().enumerate().map(|(index, v)| {
+        let ident = &v.ident;
+        let tag = match &mode {
+            EnumMode::String => {
+                let nick = ToKebabCase::to_kebab_case(ident.to_string().as_str());
+                quote! { #nick }
+            },
+            EnumMode::Repr(repr) => quote! { #index as #repr },
+            _ => unimplemented!(),
+        };
+        if !matches!(v.fields, syn::Fields::Unit) {
+            match &mode {
+                EnumMode::Enum { .. } =>
+                    abort!(v, "#[variant_enum(enum) only allowed with C-style enums using #[derive(glib::Enum)]"),
+                EnumMode::Flags { .. } =>
+                    abort!(v, "#[variant_enum(flags) only allowed with bitflags using #[glib::flags]"),
+                _ => (),
+            }
+        }
+        match &v.fields {
+            syn::Fields::Named(FieldsNamed { named, .. }) => {
+                let field_names = named.iter().map(|f| f.ident.as_ref().unwrap());
+                let field_names2 = field_names.clone();
+                quote! {
+                    Self::#ident { #(#field_names),* } => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
+                            #(#glib::ToVariant::to_variant(&#field_names2)),*
+                        ]))
+                    ))
+                }
+            },
+            syn::Fields::Unnamed(FieldsUnnamed  { unnamed, .. }) => {
+                let field_names = unnamed.iter().enumerate().map(|(i, _)| {
+                    format_ident!("field{}", i)
+                });
+                let field_names2 = field_names.clone();
+                quote! {
+                    Self::#ident(#(#field_names),*) => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
+                            #(#glib::ToVariant::to_variant(&#field_names2)),*
+                        ]))
+                    ))
+                }
+            },
+            syn::Fields::Unit => {
+                quote! {
+                    Self::#ident => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::ToVariant::to_variant(&())
+                    ))
+                }
+            },
+        }
+    });
+    let from = data_enum.variants.iter().enumerate().map(|(index, v)| {
+        let ident = &v.ident;
+        let tag = match &mode {
+            EnumMode::String => {
+                let nick = ToKebabCase::to_kebab_case(ident.to_string().as_str());
+                quote! { #nick }
+            }
+            EnumMode::Repr(_) => quote! { #index },
+            _ => unimplemented!(),
+        };
+        match &v.fields {
+            syn::Fields::Named(FieldsNamed { named, .. }) => {
+                let fields = named.iter().enumerate().map(|(index, f)| {
+                    let name = f.ident.as_ref().unwrap();
+                    let repr = &f.ty;
+                    quote! {
+                        #name: <#repr as #glib::FromVariant>::from_variant(
+                            &#glib::Variant::try_child_value(&value, #index)?
+                        )?
+                    }
+                });
+                quote! { #tag => ::std::option::Option::Some(Self::#ident { #(#fields),* }), }
+            }
+            syn::Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
+                let indices = 0..unnamed.iter().count();
+                let repr = unnamed.iter().map(|f| &f.ty);
+                quote! {
+                    #tag => ::std::option::Option::Some(Self::#ident(
+                        #(
+                            <#repr as #glib::FromVariant>::from_variant(
+                                &#glib::Variant::try_child_value(&value, #indices)?
+                            )?
+                        ),*
+                    )),
+                }
+            }
+            syn::Fields::Unit => {
+                quote! { #tag => ::std::option::Option::Some(Self::#ident), }
+            }
+        }
+    });
+
+    let (repr, tag_match) = match &mode {
+        EnumMode::String => (quote! { String }, quote! { tag.as_str() }),
+        EnumMode::Repr(repr) => (quote! { #repr }, quote! { tag as usize }),
+        _ => unimplemented!(),
+    };
+
+    let derived = quote! {
+        impl #generics #glib::StaticVariantType for #ident #generics {
+            fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
+                ::std::borrow::Cow::Borrowed(
+                    unsafe {
+                        #glib::VariantTy::from_str_unchecked(#static_variant_type)
+                    }
+                )
+            }
+        }
+
+        impl #generics #glib::ToVariant for #ident #generics {
+            fn to_variant(&self) -> #glib::Variant {
+                match self {
+                    #(#to),*
+                }
+            }
+        }
+
+        impl #generics #glib::FromVariant for #ident #generics {
+            fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
+                let (tag, value) = <(#repr, #glib::Variant) as #glib::FromVariant>::from_variant(&variant)?;
+                if !#glib::VariantTy::is_tuple(#glib::Variant::type_(&value)) {
+                    return ::std::option::Option::None;
+                }
+                match #tag_match {
+                    #(#from)*
+                    _ => ::std::option::Option::None
+                }
+            }
+        }
+    };
+    derived.into()
+}
+
+fn derive_variant_for_c_enum(
+    ident: Ident,
+    generics: Generics,
+    data_enum: syn::DataEnum,
+    mode: EnumMode,
+) -> TokenStream {
+    let glib = crate_ident_new();
+    let static_variant_type = mode.tag_type().to_string();
+
+    let (to_variant, from_variant) = match mode {
+        EnumMode::String => {
+            let idents = data_enum.variants.iter().map(|v| &v.ident);
+            let nicks = data_enum.variants.iter().map(|v| {
+                let nick = ToKebabCase::to_kebab_case(v.ident.to_string().as_str());
+                quote! { #nick }
+            });
+            let idents2 = idents.clone();
+            let nicks2 = nicks.clone();
+            (
+                quote! {
+                    #glib::ToVariant::to_variant(match self {
+                        #(Self::#idents => #nicks),*
+                    })
+                },
+                quote! {
+                    let tag = #glib::Variant::str(&variant)?;
+                    match tag {
+                        #(#nicks2 => ::std::option::Option::Some(Self::#idents2),)*
+                        _ => ::std::option::Option::None
+                    }
+                },
+            )
+        }
+        EnumMode::Repr(repr) => {
+            let idents = data_enum.variants.iter().map(|v| &v.ident);
+            (
+                quote! {
+                    #glib::ToVariant::to_variant(&(*self as #repr))
+                },
+                quote! {
+                    let value = <#repr as #glib::FromVariant>::from_variant(&variant)?;
+                    #(if value == Self::#idents as #repr {
+                        return Some(Self::#idents);
+                    })*
+                    None
+                },
+            )
+        }
+        EnumMode::Enum { repr: true } => (
+            quote! {
+                #glib::ToVariant::to_variant(&(*self as i32))
+            },
+            quote! {
+                let value = <i32 as #glib::FromVariant>::from_variant(&variant)?;
+                unsafe { #glib::translate::try_from_glib(value) }.ok()
+            },
+        ),
+        EnumMode::Enum { repr: false } => (
+            quote! {
+                let ty = <Self as #glib::StaticType>::static_type();
+                let enum_class = #glib::EnumClass::new(ty);
+                let enum_class = ::std::option::Option::unwrap(enum_class);
+                let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
+                let value = #glib::EnumClass::value(&enum_class, value);
+                let value = ::std::option::Option::unwrap(value);
+                let nick = #glib::EnumValue::nick(&value);
+                #glib::ToVariant::to_variant(nick)
+            },
+            quote! {
+                let ty = <Self as #glib::StaticType>::static_type();
+                let enum_class = #glib::EnumClass::new(ty)?;
+                let tag = #glib::Variant::str(&variant)?;
+                let value = #glib::EnumClass::value_by_nick(&enum_class, tag)?;
+                let value = #glib::EnumValue::value(&value);
+                unsafe { #glib::translate::try_from_glib(value) }.ok()
+            },
+        ),
+        EnumMode::Flags { repr: true } => (
+            quote! {
+                #glib::ToVariant::to_variant(&self.bits())
+            },
+            quote! {
+                let value = <u32 as #glib::FromVariant>::from_variant(&variant)?;
+                Self::from_bits(value)
+            },
+        ),
+        EnumMode::Flags { repr: false } => (
+            quote! {
+                let ty = <Self as #glib::StaticType>::static_type();
+                let flags_class = #glib::FlagsClass::new(ty);
+                let flags_class = ::std::option::Option::unwrap(flags_class);
+                let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
+                let s = #glib::FlagsClass::to_nick_string(&flags_class, value);
+                #glib::ToVariant::to_variant(&s)
+            },
+            quote! {
+                let ty = <Self as #glib::StaticType>::static_type();
+                let flags_class = #glib::FlagsClass::new(ty)?;
+                let s = #glib::Variant::str(&variant)?;
+                let value = #glib::FlagsClass::from_nick_string(&flags_class, s).ok()?;
+                Some(unsafe { #glib::translate::from_glib(value) })
+            },
+        ),
+    };
+
+    let derived = quote! {
+        impl #generics #glib::StaticVariantType for #ident #generics {
+            fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
+                ::std::borrow::Cow::Borrowed(
+                    unsafe {
+                        #glib::VariantTy::from_str_unchecked(#static_variant_type)
+                    }
+                )
+            }
+        }
+
+        impl #generics #glib::ToVariant for #ident #generics {
+            fn to_variant(&self) -> #glib::Variant {
+                #to_variant
+            }
+        }
+
+        impl #generics #glib::FromVariant for #ident #generics {
+            fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
+                #from_variant
+            }
+        }
+    };
+    derived.into()
+}
+
+fn get_enum_mode(attrs: &[syn::Attribute]) -> EnumMode {
+    let meta = find_attribute_meta(attrs, "variant_enum").unwrap();
+    let mut repr_attr = None;
+    let mut mode = EnumMode::String;
+    if let Some(meta) = meta.as_ref() {
+        for nested in &meta.nested {
+            let meta = match nested {
+                syn::NestedMeta::Meta(m) => m,
+                syn::NestedMeta::Lit(s) => abort!(s, "wrong meta type"),
+            };
+            let meta = match meta {
+                syn::Meta::Path(p) => p,
+                _ => abort!(meta, "wrong meta type"),
+            };
+            let path = match meta.get_ident() {
+                Some(p) => p,
+                None => abort!(meta, "wrong meta type"),
+            };
+            match path.to_string().as_ref() {
+                "repr" => repr_attr = Some(path),
+                "enum" => mode = EnumMode::Enum { repr: false },
+                "flags" => mode = EnumMode::Flags { repr: false },
+                s => abort!(path, "Unknown variant_enum meta {}", s),
+            }
+        }
+    }
+    match mode {
+        EnumMode::String if repr_attr.is_some() => {
+            let repr_attr = repr_attr.unwrap();
+            let repr = get_repr(attrs).unwrap_or_else(|| {
+                abort!(
+                    repr_attr,
+                    "Must have #[repr] attribute with one of i8, i16, i32, i64, u8, u16, u32, u64"
+                )
+            });
+            EnumMode::Repr(repr)
+        }
+        EnumMode::Enum { .. } => EnumMode::Enum {
+            repr: repr_attr.is_some(),
+        },
+        EnumMode::Flags { .. } => EnumMode::Flags {
+            repr: repr_attr.is_some(),
+        },
+        e => e,
+    }
+}
+
+fn get_repr(attrs: &[syn::Attribute]) -> Option<Ident> {
+    let list = find_attribute_meta(attrs, "repr").ok()??;
+    for nested in list.nested {
+        if let syn::NestedMeta::Meta(meta @ syn::Meta::Path(_)) = nested {
+            if let Some(ty) = meta.path().get_ident() {
+                match ty.to_string().as_str() {
+                    "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" => {
+                        return Some(ty.clone())
+                    }
+                    _ => (),
+                }
+            }
+        }
+    }
+    None
 }
