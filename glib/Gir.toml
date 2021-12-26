@@ -34,10 +34,6 @@ generate = [
     "GLib.VariantClass",
 ]
 
-ignore = [
-    "GLib.FileTest", # g_file_test is ignored
-]
-
 manual = [
     "GLib.ByteArray",
     "GLib.Bytes",
@@ -64,7 +60,7 @@ status = "generate"
     pattern = "(slice_get_config|slice_get_config_state|slice_set_config|slice_alloc|slice_alloc0|slice_copy|slice_free1|slice_free_chain_with_offset)"
     ignore = true # Not useful slices functions
     [[object.function]]
-    pattern = "(path_.*|rmdir|basename|canonicalize_filename|build_filename|build_filename_valist|build_filenamev|build_path|build_pathv|canonicalize_filename|chdir)"
+    pattern = "(path_is_absolute|path_skip_root|rmdir|basename|canonicalize_filename|build_filename|build_filename_valist|build_filenamev|build_path|build_pathv|canonicalize_filename|chdir)"
     ignore = true # Not useful paths functions, use Path/PathBuf
     [[object.function]]
     pattern = "(int64_equal|int64_hash|int_equal|int_hash|double_equal|double_hash|direct_equal|direct_hash)"
@@ -75,6 +71,9 @@ status = "generate"
     [[object.function]]
     pattern = "(datalist_.*|dataset_.*)"
     ignore = true # Not useful GData related functions
+    [[object.function]]
+    pattern = "(path_get_basename|path_get_dirname|file_test)"
+    visibility = "crate" # used for tests
     [[object.function]]
     pattern = "(propagate_prefixed_error|set_error|file_error_from_errno|propagate_error|set_error_literal|set_error)"
     ignore = true # Not useful error handling functions
@@ -97,7 +96,7 @@ status = "generate"
     pattern = "pointer_.*"
     ignore = true # Not usable, uses raw pointers
     [[object.function]]
-    pattern = "file_read_link|file_test"
+    pattern = "file_read_link"
     ignore = true # use the ones from the std
     [[object.function]]
     pattern = "pattern_.*"
@@ -552,6 +551,11 @@ concurrency = "send+sync"
     pattern = ".+"
         [object.function.return]
         nullable_return_is_error = "Invalid date"
+
+[[object]]
+name = "GLib.FileTest" # used for tests
+status = "generate"
+visibility = "crate"
 
 [[object]]
 name = "GLib.KeyFile"

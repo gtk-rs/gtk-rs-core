@@ -48,6 +48,7 @@ mod flags;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::flags::FileSetContentsFlags;
+pub(crate) use self::flags::FileTest;
 pub use self::flags::FormatSizeFlags;
 pub use self::flags::IOCondition;
 pub use self::flags::KeyFileFlags;

@@ -55,6 +55,44 @@ impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GFileTest")]
+    pub(crate) struct FileTest: u32 {
+        #[doc(alias = "G_FILE_TEST_IS_REGULAR")]
+        const IS_REGULAR = ffi::G_FILE_TEST_IS_REGULAR as u32;
+        #[doc(alias = "G_FILE_TEST_IS_SYMLINK")]
+        const IS_SYMLINK = ffi::G_FILE_TEST_IS_SYMLINK as u32;
+        #[doc(alias = "G_FILE_TEST_IS_DIR")]
+        const IS_DIR = ffi::G_FILE_TEST_IS_DIR as u32;
+        #[doc(alias = "G_FILE_TEST_IS_EXECUTABLE")]
+        const IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE as u32;
+        #[doc(alias = "G_FILE_TEST_EXISTS")]
+        const EXISTS = ffi::G_FILE_TEST_EXISTS as u32;
+    }
+}
+
+impl fmt::Display for FileTest {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for FileTest {
+    type GlibType = ffi::GFileTest;
+
+    fn into_glib(self) -> ffi::GFileTest {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GFileTest> for FileTest {
+    unsafe fn from_glib(value: ffi::GFileTest) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
     #[doc(alias = "GFormatSizeFlags")]
     pub struct FormatSizeFlags: u32 {
         #[doc(alias = "G_FORMAT_SIZE_DEFAULT")]

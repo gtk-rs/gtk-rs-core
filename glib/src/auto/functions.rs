@@ -9,6 +9,7 @@ use crate::Error;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
+use crate::FileTest;
 use crate::FormatSizeFlags;
 use crate::Pid;
 use crate::Source;
@@ -249,6 +250,17 @@ pub fn file_set_contents_full(
     }
 }
 
+#[doc(alias = "g_file_test")]
+#[allow(dead_code)]
+pub(crate) fn file_test(filename: impl AsRef<std::path::Path>, test: FileTest) -> bool {
+    unsafe {
+        from_glib(ffi::g_file_test(
+            filename.as_ref().to_glib_none().0,
+            test.into_glib(),
+        ))
+    }
+}
+
 #[doc(alias = "g_filename_display_basename")]
 pub fn filename_display_basename(filename: impl AsRef<std::path::Path>) -> crate::GString {
     unsafe {
@@ -483,6 +495,22 @@ pub fn on_error_stack_trace(prg_name: &str) {
     unsafe {
         ffi::g_on_error_stack_trace(prg_name.to_glib_none().0);
     }
+}
+
+#[doc(alias = "g_path_get_basename")]
+#[allow(dead_code)]
+pub(crate) fn path_get_basename(file_name: impl AsRef<std::path::Path>) -> std::path::PathBuf {
+    unsafe {
+        from_glib_full(ffi::g_path_get_basename(
+            file_name.as_ref().to_glib_none().0,
+        ))
+    }
+}
+
+#[doc(alias = "g_path_get_dirname")]
+#[allow(dead_code)]
+pub(crate) fn path_get_dirname(file_name: impl AsRef<std::path::Path>) -> std::path::PathBuf {
+    unsafe { from_glib_full(ffi::g_path_get_dirname(file_name.as_ref().to_glib_none().0)) }
 }
 
 //#[doc(alias = "g_poll")]
