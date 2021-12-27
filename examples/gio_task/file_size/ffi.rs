@@ -45,9 +45,10 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .source_object()
             .unwrap();
 
-        let source_object = super::imp::FileSize::from_instance(
-            source_object.downcast_ref::<super::FileSize>().unwrap(),
-        );
+        let source_object = source_object
+            .downcast_ref::<super::FileSize>()
+            .unwrap()
+            .impl_();
 
         source_object.size.replace(Some(size));
         task.return_value(&size.to_value());
@@ -83,9 +84,10 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
 #[no_mangle]
 pub unsafe extern "C" fn my_file_size_get_retrieved_size(this: *mut FileSize) -> i64 {
     let simple_object = super::FileSize::from_glib_borrow(this);
-    let simple_object = super::imp::FileSize::from_instance(
-        simple_object.downcast_ref::<super::FileSize>().unwrap(),
-    );
+    let simple_object = simple_object
+        .downcast_ref::<super::FileSize>()
+        .unwrap()
+        .impl_();
     let x = *simple_object.size.borrow();
     x.unwrap_or(-1)
 }

@@ -268,7 +268,7 @@ fn subclassable() {
 
         impl<O: IsA<Foo>> FooExt for O {
             fn test(&self) {
-                let _self = imp::Foo::from_instance(self.as_ref().downcast_ref::<Foo>().unwrap());
+                let _self = self.as_ref().downcast_ref::<Foo>().unwrap().impl_();
                 unimplemented!()
             }
         }

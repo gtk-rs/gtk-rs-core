@@ -336,7 +336,7 @@ mod test {
                             let new_name = args[1]
                                 .get::<String>()
                                 .expect("Failed to get Object from args[1]");
-                            let imp = SimpleObject::from_instance(&obj);
+                            let imp = obj.impl_();
 
                             let old_name = imp.name.borrow_mut().take();
                             *imp.name.borrow_mut() = Some(new_name);
@@ -401,7 +401,7 @@ mod test {
                 self.parent_constructed(obj);
 
                 assert_eq!(obj, &self.instance());
-                assert_eq!(self as *const _, Self::from_instance(obj) as *const _);
+                assert_eq!(self as *const _, obj.impl_() as *const _);
 
                 *self.constructed.borrow_mut() = true;
             }
@@ -475,8 +475,7 @@ mod test {
     fn test_create_child_object() {
         let obj: ChildObject = Object::new(&[]).expect("Object::new failed");
 
-        let imp = imp::ChildObject::from_instance(&obj);
-        assert_eq!(obj, imp.instance());
+        assert_eq!(obj, obj.impl_().instance());
     }
 
     #[test]

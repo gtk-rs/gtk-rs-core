@@ -114,12 +114,10 @@ mod tests {
         impl InitableImpl for InitableTestType {
             fn init(
                 &self,
-                initable: &Self::Type,
+                _initable: &Self::Type,
                 _cancellable: Option<&Cancellable>,
             ) -> Result<(), glib::Error> {
-                InitableTestType::from_instance(initable)
-                    .0
-                    .set(0x123456789abcdef);
+                self.0.set(0x123456789abcdef);
                 Ok(())
             }
         }
@@ -139,7 +137,7 @@ mod tests {
         #[no_mangle]
         pub unsafe extern "C" fn initable_test_type_get_value(this: *mut InitableTestType) -> u64 {
             let this = super::InitableTestType::from_glib_borrow(this);
-            imp::InitableTestType::from_instance(&this).0.get()
+            this.impl_().0.get()
         }
     }
 
@@ -163,7 +161,7 @@ mod tests {
         }
 
         pub fn value(&self) -> u64 {
-            imp::InitableTestType::from_instance(self).0.get()
+            self.impl_().0.get()
         }
     }
 
