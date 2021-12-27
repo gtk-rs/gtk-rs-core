@@ -675,6 +675,14 @@ macro_rules! glib_object_wrapper {
         unsafe impl $crate::object::IsA<$name> for $name { }
 
         #[doc(hidden)]
+        impl $crate::subclass::types::FromObject for $name {
+            type FromObjectType = $name;
+            fn from_object(obj: &Self::FromObjectType) -> &Self {
+                obj
+            }
+        }
+
+        #[doc(hidden)]
         impl<'a> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name {
             type Storage = <$crate::object::ObjectRef as
                 $crate::translate::ToGlibPtr<'a, *mut $crate::object::GObject>>::Storage;
