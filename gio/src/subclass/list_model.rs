@@ -90,7 +90,7 @@ where
     <T as ObjectSubclass>::Type: IsA<glib::Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap = from_glib_borrow::<_, ListModel>(list_model);
 
     let type_ = imp.item_type(wrap.unsafe_cast_ref()).into_glib();
@@ -118,7 +118,7 @@ where
     <T as ObjectSubclass>::Type: IsA<glib::Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     imp.n_items(from_glib_borrow::<_, ListModel>(list_model).unsafe_cast_ref())
 }
@@ -131,7 +131,7 @@ where
     <T as ObjectSubclass>::Type: IsA<glib::Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap = from_glib_borrow::<_, ListModel>(list_model);
 
     let item = imp.item(wrap.unsafe_cast_ref(), position);

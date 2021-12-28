@@ -209,7 +209,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.write(
@@ -239,7 +239,7 @@ unsafe extern "C" fn stream_close<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.close(
@@ -264,7 +264,7 @@ unsafe extern "C" fn stream_flush<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.flush(
@@ -291,7 +291,7 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<OutputStream> = from_glib_borrow(ptr);
 
     match imp.splice(

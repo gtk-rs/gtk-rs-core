@@ -108,7 +108,7 @@ unsafe extern "C" fn stream_get_input_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GInputStream {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<IOStream> = from_glib_borrow(ptr);
 
     let ret = imp.input_stream(wrap.unsafe_cast_ref());
@@ -131,7 +131,7 @@ unsafe extern "C" fn stream_get_output_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GOutputStream {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<IOStream> = from_glib_borrow(ptr);
 
     let ret = imp.output_stream(wrap.unsafe_cast_ref());
@@ -156,7 +156,7 @@ unsafe extern "C" fn stream_close<T: IOStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<IOStream> = from_glib_borrow(ptr);
 
     match imp.close(

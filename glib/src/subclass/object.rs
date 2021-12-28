@@ -75,7 +75,7 @@ unsafe extern "C" fn property<T: ObjectImpl>(
     pspec: *mut gobject_ffi::GParamSpec,
 ) {
     let instance = &*(obj as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     let v = imp.property(
         from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
@@ -103,7 +103,7 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     pspec: *mut gobject_ffi::GParamSpec,
 ) {
     let instance = &*(obj as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     imp.set_property(
         from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
         id as usize,
@@ -114,14 +114,14 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
 
 unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     let instance = &*(obj as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     imp.constructed(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
 }
 
 unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     let instance = &*(obj as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     imp.dispose(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
 

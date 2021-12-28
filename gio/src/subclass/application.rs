@@ -362,7 +362,7 @@ unsafe impl<T: ApplicationImpl> IsSubclassable<T> for Application {
 
 unsafe extern "C" fn application_activate<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.activate(wrap.unsafe_cast_ref())
@@ -373,7 +373,7 @@ unsafe extern "C" fn application_after_emit<T: ApplicationImpl>(
     platform_data: *mut glib::ffi::GVariant,
 ) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.after_emit(wrap.unsafe_cast_ref(), &from_glib_borrow(platform_data))
@@ -383,7 +383,7 @@ unsafe extern "C" fn application_before_emit<T: ApplicationImpl>(
     platform_data: *mut glib::ffi::GVariant,
 ) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.before_emit(wrap.unsafe_cast_ref(), &from_glib_borrow(platform_data))
@@ -393,7 +393,7 @@ unsafe extern "C" fn application_command_line<T: ApplicationImpl>(
     command_line: *mut ffi::GApplicationCommandLine,
 ) -> i32 {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.command_line(wrap.unsafe_cast_ref(), &from_glib_borrow(command_line))
@@ -404,7 +404,7 @@ unsafe extern "C" fn application_local_command_line<T: ApplicationImpl>(
     exit_status: *mut i32,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     let mut args = ArgumentList::new(arguments);
@@ -426,7 +426,7 @@ unsafe extern "C" fn application_open<T: ApplicationImpl>(
     hint: *const c_char,
 ) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     let files: Vec<crate::File> = FromGlibContainer::from_glib_none_num(files, num_files as usize);
@@ -438,28 +438,28 @@ unsafe extern "C" fn application_open<T: ApplicationImpl>(
 }
 unsafe extern "C" fn application_quit_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.quit_mainloop(wrap.unsafe_cast_ref())
 }
 unsafe extern "C" fn application_run_mainloop<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.run_mainloop(wrap.unsafe_cast_ref())
 }
 unsafe extern "C" fn application_shutdown<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.shutdown(wrap.unsafe_cast_ref())
 }
 unsafe extern "C" fn application_startup<T: ApplicationImpl>(ptr: *mut ffi::GApplication) {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.startup(wrap.unsafe_cast_ref())
@@ -470,7 +470,7 @@ unsafe extern "C" fn application_handle_local_options<T: ApplicationImpl>(
     options: *mut glib::ffi::GVariantDict,
 ) -> c_int {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<Application> = from_glib_borrow(ptr);
 
     imp.handle_local_options(wrap.unsafe_cast_ref(), &from_glib_borrow(options))

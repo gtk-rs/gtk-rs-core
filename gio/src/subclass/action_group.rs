@@ -516,7 +516,7 @@ unsafe extern "C" fn action_group_has_action<T: ActionGroupImpl>(
 ) -> glib::ffi::gboolean {
     let instance = &*(action_group as *mut T::Instance);
     let action_name = GString::from_glib_borrow(action_nameptr);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     imp.has_action(
         from_glib_borrow::<_, ActionGroup>(action_group).unsafe_cast_ref(),
@@ -530,7 +530,7 @@ unsafe extern "C" fn action_group_get_action_enabled<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> glib::ffi::gboolean {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     imp.action_is_enabled(
@@ -558,7 +558,7 @@ unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 
@@ -584,7 +584,7 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 
@@ -610,7 +610,7 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
@@ -635,7 +635,7 @@ unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 
@@ -658,7 +658,7 @@ unsafe extern "C" fn action_group_change_action_state<T: ActionGroupImpl>(
     stateptr: *mut glib::ffi::GVariant,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let state = Variant::from_glib_borrow(stateptr);
 
@@ -675,7 +675,7 @@ unsafe extern "C" fn action_group_activate_action<T: ActionGroupImpl>(
     parameterptr: *mut glib::ffi::GVariant,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let param: Borrowed<Option<Variant>> = from_glib_borrow(parameterptr);
 
@@ -691,7 +691,7 @@ unsafe extern "C" fn action_group_action_added<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     imp.action_added(
@@ -705,7 +705,7 @@ unsafe extern "C" fn action_group_action_removed<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     imp.action_removed(
@@ -720,7 +720,7 @@ unsafe extern "C" fn action_group_action_enabled_changed<T: ActionGroupImpl>(
     enabled: glib::ffi::gboolean,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     imp.action_enabled_changed(
@@ -736,7 +736,7 @@ unsafe extern "C" fn action_group_action_state_changed<T: ActionGroupImpl>(
     stateptr: *mut glib::ffi::GVariant,
 ) {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let state = Variant::from_glib_borrow(stateptr);
 
@@ -754,7 +754,7 @@ unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
 ) -> *mut *mut libc::c_char {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 
     let actions = imp.list_actions(wrap.unsafe_cast_ref());
@@ -788,7 +788,7 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
     state: *mut *mut glib::ffi::GVariant,
 ) -> glib::ffi::gboolean {
     let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
     let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 

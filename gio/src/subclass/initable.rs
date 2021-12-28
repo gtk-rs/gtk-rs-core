@@ -67,7 +67,7 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
     error: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
     let instance = &*(initable as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
 
     match imp.init(
         from_glib_borrow::<_, Initable>(initable).unsafe_cast_ref(),

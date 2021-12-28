@@ -92,7 +92,7 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
 ) -> *mut ffi::GAction {
     let instance = &*(action_map as *mut T::Instance);
     let action_name = GString::from_glib_borrow(action_nameptr);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap = from_glib_borrow::<_, ActionMap>(action_map);
 
     let ret = imp.lookup_action(wrap.unsafe_cast_ref(), &action_name);
@@ -116,7 +116,7 @@ unsafe extern "C" fn action_map_add_action<T: ActionMapImpl>(
     actionptr: *mut ffi::GAction,
 ) {
     let instance = &*(action_map as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action: Borrowed<Action> = from_glib_borrow(actionptr);
 
     imp.add_action(
@@ -130,7 +130,7 @@ unsafe extern "C" fn action_map_remove_action<T: ActionMapImpl>(
     action_nameptr: *const libc::c_char,
 ) {
     let instance = &*(action_map as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let action_name = GString::from_glib_borrow(action_nameptr);
 
     imp.remove_action(

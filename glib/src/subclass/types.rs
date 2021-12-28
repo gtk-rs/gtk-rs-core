@@ -57,7 +57,7 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     ///
     /// [`ObjectImpl`]: ../object/trait.ObjectImpl.html
     #[doc(alias = "get_impl")]
-    fn impl_(&self) -> &Self::Type {
+    fn imp(&self) -> &Self::Type {
         unsafe {
             let data = Self::Type::type_data();
             let private_offset = data.as_ref().impl_offset();
@@ -665,7 +665,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
     fn from_instance(obj: &Self::Type) -> &Self {
         unsafe {
             let ptr = obj.as_ptr() as *const Self::Instance;
-            (*ptr).impl_()
+            (*ptr).imp()
         }
     }
 
