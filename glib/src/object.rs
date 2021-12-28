@@ -1153,6 +1153,8 @@ glib_object_wrapper!(@object
 pub type ObjectClass = Class<Object>;
 
 impl Object {
+    pub const NONE: Option<&'static Object> = None;
+
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object with the given properties.
     ///
