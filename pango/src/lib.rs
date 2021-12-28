@@ -114,3 +114,4 @@ mod glyph_item;
 mod glyph_item_iter;
 mod glyph_string;
 pub use coverage::Coverage;
+mod tab_array;

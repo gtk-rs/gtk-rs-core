@@ -159,8 +159,11 @@ impl TabArray {
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_from_string")]
-    pub fn from_string(text: &str) -> Option<TabArray> {
-        unsafe { from_glib_full(ffi::pango_tab_array_from_string(text.to_glib_none().0)) }
+    pub fn from_string(text: &str) -> Result<TabArray, glib::BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::pango_tab_array_from_string(text.to_glib_none().0))
+                .ok_or_else(|| glib::bool_error!("Can't parse a TabArray"))
+        }
     }
 }
 
