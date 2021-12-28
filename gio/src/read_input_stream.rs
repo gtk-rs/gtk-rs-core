@@ -152,26 +152,23 @@ glib::wrapper! {
 
 impl ReadInputStream {
     pub fn new<R: Read + Send + 'static>(read: R) -> ReadInputStream {
-        let obj = glib::Object::new(&[]).expect("Failed to create read input stream");
+        let obj: Self = glib::Object::new(&[]).expect("Failed to create read input stream");
 
-        let imp = imp::ReadInputStream::from_instance(&obj);
-        *imp.read.borrow_mut() = Some(imp::Reader::Read(AnyReader::new(read)));
+        *obj.impl_().read.borrow_mut() = Some(imp::Reader::Read(AnyReader::new(read)));
 
         obj
     }
 
     pub fn new_seekable<R: Read + Seek + Send + 'static>(read: R) -> ReadInputStream {
-        let obj = glib::Object::new(&[]).expect("Failed to create read input stream");
+        let obj: Self = glib::Object::new(&[]).expect("Failed to create read input stream");
 
-        let imp = imp::ReadInputStream::from_instance(&obj);
-        *imp.read.borrow_mut() = Some(imp::Reader::ReadSeek(AnyReader::new_seekable(read)));
+        *obj.impl_().read.borrow_mut() = Some(imp::Reader::ReadSeek(AnyReader::new_seekable(read)));
 
         obj
     }
 
     pub fn close_and_take(&self) -> Box<dyn Any + Send + 'static> {
-        let imp = imp::ReadInputStream::from_instance(self);
-        let inner = imp.read.borrow_mut().take();
+        let inner = self.impl_().read.borrow_mut().take();
 
         let ret = match inner {
             None => {

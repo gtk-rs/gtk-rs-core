@@ -200,13 +200,11 @@ mod test {
 
             #[doc(alias = "get_size")]
             pub fn size(&self) -> Option<i64> {
-                let imp = MySimpleObjectPrivate::from_instance(self);
-                *imp.size.borrow()
+                *self.impl_().size.borrow()
             }
 
             pub fn set_size(&self, size: i64) {
-                let imp = MySimpleObjectPrivate::from_instance(self);
-                imp.size.borrow_mut().replace(size);
+                self.impl_().size.borrow_mut().replace(size);
             }
         }
 

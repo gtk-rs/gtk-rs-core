@@ -365,17 +365,11 @@ mod tests {
     fn test_simple_stream() {
         let stream = glib::Object::new::<SimpleOutputStream>(&[]).unwrap();
 
-        assert_eq!(
-            *imp::SimpleOutputStream::from_instance(&stream).sum.borrow(),
-            0
-        );
+        assert_eq!(*stream.impl_().sum.borrow(), 0);
         assert_eq!(
             stream.write(&[1, 2, 3, 4, 5], crate::Cancellable::NONE),
             Ok(5)
         );
-        assert_eq!(
-            *imp::SimpleOutputStream::from_instance(&stream).sum.borrow(),
-            15
-        );
+        assert_eq!(*stream.impl_().sum.borrow(), 15);
     }
 }
