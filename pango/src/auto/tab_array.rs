@@ -41,10 +41,10 @@ impl TabArray {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_get_decimal_point")]
     #[doc(alias = "get_decimal_point")]
-    pub fn decimal_point(&mut self, tab_index: i32) -> char {
+    pub fn decimal_point(&self, tab_index: i32) -> char {
         unsafe {
             std::convert::TryFrom::try_from(ffi::pango_tab_array_get_decimal_point(
-                self.to_glib_none_mut().0,
+                mut_override(self.to_glib_none().0),
                 tab_index,
             ))
             .expect("conversion from an invalid Unicode value attempted")
@@ -53,11 +53,11 @@ impl TabArray {
 
     #[doc(alias = "pango_tab_array_get_positions_in_pixels")]
     #[doc(alias = "get_positions_in_pixels")]
-    pub fn is_positions_in_pixels(&mut self) -> bool {
+    pub fn is_positions_in_pixels(&self) -> bool {
         unsafe {
-            from_glib(ffi::pango_tab_array_get_positions_in_pixels(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib(ffi::pango_tab_array_get_positions_in_pixels(mut_override(
+                self.to_glib_none().0,
+            )))
         }
     }
 
@@ -69,12 +69,12 @@ impl TabArray {
 
     #[doc(alias = "pango_tab_array_get_tab")]
     #[doc(alias = "get_tab")]
-    pub fn tab(&mut self, tab_index: i32) -> (TabAlign, i32) {
+    pub fn tab(&self, tab_index: i32) -> (TabAlign, i32) {
         unsafe {
             let mut alignment = mem::MaybeUninit::uninit();
             let mut location = mem::MaybeUninit::uninit();
             ffi::pango_tab_array_get_tab(
-                self.to_glib_none_mut().0,
+                mut_override(self.to_glib_none().0),
                 tab_index,
                 alignment.as_mut_ptr(),
                 location.as_mut_ptr(),
@@ -148,8 +148,12 @@ impl TabArray {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_to_string")]
     #[doc(alias = "to_string")]
-    pub fn to_str(&mut self) -> glib::GString {
-        unsafe { from_glib_full(ffi::pango_tab_array_to_string(self.to_glib_none_mut().0)) }
+    pub fn to_str(&self) -> glib::GString {
+        unsafe {
+            from_glib_full(ffi::pango_tab_array_to_string(mut_override(
+                self.to_glib_none().0,
+            )))
+        }
     }
 
     #[cfg(any(feature = "v1_50", feature = "dox"))]
