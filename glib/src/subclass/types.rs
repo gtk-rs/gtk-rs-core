@@ -695,6 +695,13 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
 }
 
 // rustdoc-stripper-ignore-next
+/// Helper trait for macros to access a subclass or its wrapper.
+pub trait FromObject {
+    type FromObjectType;
+    fn from_object(obj: &Self::FromObjectType) -> &Self;
+}
+
+// rustdoc-stripper-ignore-next
 /// An object that is currently being initialized.
 ///
 /// Binding crates should use traits for adding methods to this struct. Only methods explicitly safe
