@@ -168,7 +168,7 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
     assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.read(
@@ -198,7 +198,7 @@ unsafe extern "C" fn stream_close<T: InputStreamImpl>(
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.close(
@@ -228,7 +228,7 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
     assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.impl_();
+    let imp = instance.imp();
     let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.skip(
