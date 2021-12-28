@@ -23,7 +23,7 @@ pub trait FooExt: 'static {
 
 impl<O: IsA<Foo>> FooExt for O {
     fn test(&self) {
-        let _self = self.as_ref().downcast_ref::<Foo>().unwrap().impl_();
+        let _self = self.as_ref().downcast_ref::<Foo>().unwrap().imp();
         unimplemented!();
     }
 }

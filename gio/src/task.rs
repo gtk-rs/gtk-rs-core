@@ -200,11 +200,11 @@ mod test {
 
             #[doc(alias = "get_size")]
             pub fn size(&self) -> Option<i64> {
-                *self.impl_().size.borrow()
+                *self.imp().size.borrow()
             }
 
             pub fn set_size(&self, size: i64) {
-                self.impl_().size.borrow_mut().replace(size);
+                self.imp().size.borrow_mut().replace(size);
             }
         }
 

@@ -137,7 +137,7 @@ mod tests {
         #[no_mangle]
         pub unsafe extern "C" fn initable_test_type_get_value(this: *mut InitableTestType) -> u64 {
             let this = super::InitableTestType::from_glib_borrow(this);
-            this.impl_().0.get()
+            this.imp().0.get()
         }
     }
 
@@ -161,7 +161,7 @@ mod tests {
         }
 
         pub fn value(&self) -> u64 {
-            self.impl_().0.get()
+            self.imp().0.get()
         }
     }
 

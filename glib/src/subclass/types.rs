@@ -99,11 +99,11 @@ pub unsafe trait InstanceStruct: Sized + 'static {
 pub trait ObjectSubclassIsExt: ObjectSubclassIs {
     // rustdoc-stripper-ignore-next
     /// Returns the implementation (the private Rust struct) of this class instance
-    fn impl_(&self) -> &Self::Subclass;
+    fn imp(&self) -> &Self::Subclass;
 }
 
 impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSubclassIsExt for T {
-    fn impl_(&self) -> &T::Subclass {
+    fn imp(&self) -> &T::Subclass {
         T::Subclass::from_instance(self)
     }
 }

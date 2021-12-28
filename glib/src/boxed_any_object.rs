@@ -93,7 +93,7 @@ impl BoxedAnyObject {
     /// Replaces the wrapped value with a new one, returning the old value, without deinitializing either one.
     /// The returned value is inside a `Box` and must be manually downcasted if needed.
     pub fn replace<T: 'static>(&self, t: T) -> Box<dyn Any> {
-        self.impl_().value.replace(Box::new(t) as Box<dyn Any>)
+        self.imp().value.replace(Box::new(t) as Box<dyn Any>)
     }
 
     // rustdoc-stripper-ignore-next
@@ -109,7 +109,7 @@ impl BoxedAnyObject {
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
         // As a workaround, I check if everything is safe, then I unwrap
 
-        let borrowed = self.impl_().value.try_borrow()?;
+        let borrowed = self.imp().value.try_borrow()?;
         borrowed
             .as_ref()
             .downcast_ref::<T>()
@@ -131,7 +131,7 @@ impl BoxedAnyObject {
         // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
         // As a workaround, I check if everything is safe, then I unwrap.
 
-        let mut borrowed_mut = self.impl_().value.try_borrow_mut()?;
+        let mut borrowed_mut = self.imp().value.try_borrow_mut()?;
         borrowed_mut
             .as_mut()
             .downcast_mut::<T>()
@@ -153,7 +153,7 @@ impl BoxedAnyObject {
     /// For a non-panicking variant, use
     /// [`try_borrow`](#method.try_borrow).
     pub fn borrow<T: 'static>(&self) -> Ref<'_, T> {
-        Ref::map(self.impl_().value.borrow(), |value| {
+        Ref::map(self.imp().value.borrow(), |value| {
             value
                 .as_ref()
                 .downcast_ref::<T>()
@@ -175,7 +175,7 @@ impl BoxedAnyObject {
     /// For a non-panicking variant, use
     /// [`try_borrow_mut`](#method.try_borrow_mut).
     pub fn borrow_mut<T: 'static>(&self) -> RefMut<'_, T> {
-        RefMut::map(self.impl_().value.borrow_mut(), |value| {
+        RefMut::map(self.imp().value.borrow_mut(), |value| {
             value
                 .as_mut()
                 .downcast_mut::<T>()
