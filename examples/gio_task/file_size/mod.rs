@@ -14,7 +14,7 @@ impl FileSize {
     }
 
     pub fn retrieved_size(&self) -> Option<i64> {
-        *self.impl_().size.borrow()
+        *self.imp().size.borrow()
     }
 
     pub fn file_size_async<Q: FnOnce(i64, &FileSize) + 'static>(
@@ -52,7 +52,7 @@ impl FileSize {
                 .source_object()
                 .unwrap();
 
-            let source_object = source_object.downcast_ref::<FileSize>().unwrap().impl_();
+            let source_object = source_object.downcast_ref::<FileSize>().unwrap().imp();
 
             source_object.size.replace(Some(size));
             task.return_value(&size.to_value());
@@ -94,7 +94,7 @@ impl FileSize {
                 .unwrap()
                 .downcast_ref::<FileSize>()
                 .unwrap()
-                .impl_();
+                .imp();
 
             source_object.size.replace(Some(size));
             task.return_value(&size.to_value());

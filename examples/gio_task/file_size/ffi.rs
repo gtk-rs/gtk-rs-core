@@ -48,7 +48,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
         let source_object = source_object
             .downcast_ref::<super::FileSize>()
             .unwrap()
-            .impl_();
+            .imp();
 
         source_object.size.replace(Some(size));
         task.return_value(&size.to_value());
@@ -87,7 +87,7 @@ pub unsafe extern "C" fn my_file_size_get_retrieved_size(this: *mut FileSize) ->
     let simple_object = simple_object
         .downcast_ref::<super::FileSize>()
         .unwrap()
-        .impl_();
+        .imp();
     let x = *simple_object.size.borrow();
     x.unwrap_or(-1)
 }
