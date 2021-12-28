@@ -106,7 +106,7 @@ pub trait FontExt: 'static {
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_font_serialize")]
-    fn serialize(&self) -> Option<glib::Bytes>;
+    fn serialize(&self) -> glib::Bytes;
 }
 
 impl<O: IsA<Font>> FontExt for O {
@@ -189,7 +189,7 @@ impl<O: IsA<Font>> FontExt for O {
 
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
-    fn serialize(&self) -> Option<glib::Bytes> {
+    fn serialize(&self) -> glib::Bytes {
         unsafe { from_glib_full(ffi::pango_font_serialize(self.as_ref().to_glib_none().0)) }
     }
 }

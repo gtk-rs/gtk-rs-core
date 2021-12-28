@@ -431,7 +431,7 @@ impl Layout {
     #[cfg(any(feature = "v1_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_layout_serialize")]
-    pub fn serialize(&self, flags: LayoutSerializeFlags) -> Option<glib::Bytes> {
+    pub fn serialize(&self, flags: LayoutSerializeFlags) -> glib::Bytes {
         unsafe {
             from_glib_full(ffi::pango_layout_serialize(
                 self.to_glib_none().0,
