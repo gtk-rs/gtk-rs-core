@@ -70,6 +70,7 @@ pub mod prelude;
 mod attribute;
 
 mod analysis;
+mod enums;
 pub use analysis::Analysis;
 mod attr_class;
 pub use attr_class::AttrClass;
