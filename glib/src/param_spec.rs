@@ -83,6 +83,12 @@ impl crate::value::ToValueOptional for ParamSpec {
     }
 }
 
+impl AsRef<ParamSpec> for ParamSpec {
+    fn as_ref(&self) -> &ParamSpec {
+        self
+    }
+}
+
 unsafe impl Send for ParamSpec {}
 unsafe impl Sync for ParamSpec {}
 
@@ -326,6 +332,12 @@ macro_rules! define_param_spec {
 
             pub fn upcast_ref(&self) -> &ParamSpec {
                 &*self
+            }
+        }
+
+        impl AsRef<ParamSpec> for $rust_type {
+            fn as_ref(&self) -> &ParamSpec {
+                &self
             }
         }
     };
