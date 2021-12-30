@@ -51,7 +51,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .imp();
 
         source_object.size.replace(Some(size));
-        task.return_value(&size.to_value());
+        task.return_value(&size);
     });
 }
 
@@ -70,7 +70,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
         .unwrap()
         .propagate_value()
     {
-        Ok(v) => v.get::<i64>().unwrap(),
+        Ok(v) => v,
         Err(e) => {
             *error = e.into_raw();
             0

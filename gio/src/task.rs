@@ -5,6 +5,7 @@ use crate::Cancellable;
 use crate::Task;
 use glib::object::IsA;
 use glib::translate::*;
+use glib::value::{ToSendValue, ValueType};
 use libc::c_void;
 use std::boxed::Box as Box_;
 use std::ptr;
@@ -60,11 +61,42 @@ impl Task {
         }
     }
 
+    #[doc(alias = "g_task_return_value")]
+    pub fn return_value<V: ValueType>(&self, result: &V) {
+        unsafe extern "C" fn value_free(value: *mut c_void) {
+            let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
+        }
+
+        unsafe {
+            ffi::g_task_return_pointer(
+                self.to_glib_none().0,
+                result.to_value().to_glib_full() as *mut _,
+                Some(value_free),
+            )
+        }
+    }
+
+    #[doc(alias = "g_task_propagate_value")]
+    pub fn propagate_value<V: ValueType>(&self) -> Result<V, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
+            if !error.is_null() {
+                return Err(from_glib_full(error));
+            }
+            let value =
+                Option::<glib::Value>::from_glib_full(value as *mut glib::gobject_ffi::GValue)
+                    .unwrap_or_else(|| glib::Value::from_type(glib::types::Type::UNIT));
+            Ok(V::from_value(&value))
+        }
+    }
+
     #[doc(alias = "g_task_run_in_thread")]
-    pub fn run_in_thread<Q>(&self, task_func: Q)
+    pub fn run_in_thread<Q, V>(&self, task_func: Q)
     where
-        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>),
+        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>) -> Result<V, glib::Error>,
         Q: Send + 'static,
+        V: ValueType + ToSendValue,
     {
         let task_func_data = Box_::new(task_func);
 
@@ -84,58 +116,33 @@ impl Task {
             );
         }
 
-        unsafe extern "C" fn trampoline<Q>(
+        unsafe extern "C" fn trampoline<Q, V>(
             task: *mut ffi::GTask,
             source_object: *mut glib::gobject_ffi::GObject,
             user_data: glib::ffi::gpointer,
             cancellable: *mut ffi::GCancellable,
         ) where
-            Q: FnOnce(&Task, Option<&glib::Object>, Option<&Cancellable>),
+            Q: FnOnce(&Task, Option<&glib::Object>, Option<&Cancellable>) -> Result<V, glib::Error>,
             Q: Send + 'static,
+            V: ValueType + ToSendValue,
         {
             let task = Task::from_glib_borrow(task);
             let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
             let cancellable = Option::<Cancellable>::from_glib_borrow(cancellable);
             let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
-            task_func(
+            match task_func(
                 task.as_ref(),
                 source_object.as_ref().as_ref(),
                 cancellable.as_ref().as_ref(),
-            );
+            ) {
+                Ok(v) => task.return_value(&v),
+                Err(e) => task.return_error(e),
+            }
         }
 
-        let task_func = trampoline::<Q>;
+        let task_func = trampoline::<Q, V>;
         unsafe {
             ffi::g_task_run_in_thread(self.to_glib_none().0, Some(task_func));
-        }
-    }
-
-    pub fn return_value(&self, result: &glib::Value) {
-        unsafe extern "C" fn value_free(value: *mut c_void) {
-            let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
-        }
-
-        unsafe {
-            ffi::g_task_return_pointer(
-                self.to_glib_none().0,
-                result.to_glib_full() as *mut _,
-                Some(value_free),
-            )
-        }
-    }
-
-    pub fn propagate_value(&self) -> Result<glib::Value, glib::Error> {
-        unsafe {
-            let mut error = ptr::null_mut();
-            let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
-            if !error.is_null() {
-                return Err(from_glib_full(error));
-            }
-            let value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
-            match value {
-                Some(value) => Ok(value),
-                None => Ok(glib::Value::from_type(glib::types::Type::UNIT)),
-            }
         }
     }
 }

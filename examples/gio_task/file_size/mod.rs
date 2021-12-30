@@ -27,8 +27,6 @@ impl FileSize {
                 .downcast_ref::<gio::Task>()
                 .unwrap()
                 .propagate_value()
-                .unwrap()
-                .get::<i64>()
                 .unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -55,7 +53,7 @@ impl FileSize {
             let source_object = source_object.downcast_ref::<FileSize>().unwrap().imp();
 
             source_object.size.replace(Some(size));
-            task.return_value(&size.to_value());
+            task.return_value(&size);
         });
     }
 
@@ -69,8 +67,6 @@ impl FileSize {
                 .downcast_ref::<gio::Task>()
                 .unwrap()
                 .propagate_value()
-                .unwrap()
-                .get::<i64>()
                 .unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -82,7 +78,7 @@ impl FileSize {
             closure,
         );
 
-        let task_func = move |task: &gio::Task,
+        let task_func = move |_task: &gio::Task,
                               source_object: Option<&glib::Object>,
                               cancellable: Option<&gio::Cancellable>| {
             let size = gio::File::for_path("Cargo.toml")
@@ -97,7 +93,8 @@ impl FileSize {
                 .imp();
 
             source_object.size.replace(Some(size));
-            task.return_value(&size.to_value());
+
+            Ok(size)
         };
 
         task.run_in_thread(task_func);
