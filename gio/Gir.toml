@@ -157,9 +157,9 @@ ignore = [
 ]
 
 manual = [
-    "Gio.Extension",
-    "Gio.ExtensionPoint",
     "Gio.FileAttributeInfo",
+    "Gio.IOExtension",
+    "Gio.IOExtensionPoint",
     "GLib.ByteArray",
     "GLib.Bytes",
     "GLib.DateTime",
@@ -186,6 +186,12 @@ manual = [
 [[object]]
 name = "Gio.*"
 status = "generate"
+    [[object.function]]
+    name = "networking_init"
+    ignore = true # useless, std does that already
+    [[object.function]]
+    pattern = "io_scheduler_.*"
+    ignore = true # Deprecated & dangerous
     [[object.function]]
     pattern = "unix_.+"
     cfg_condition = "unix"

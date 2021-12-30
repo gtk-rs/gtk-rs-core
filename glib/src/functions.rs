@@ -8,7 +8,7 @@ use std::mem;
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 use std::os::unix::io::AsRawFd;
 #[cfg(not(windows))]
-use std::os::unix::io::{FromRawFd, RawFd};
+use std::os::unix::io::{FromRawFd, IntoRawFd, RawFd};
 // #[cfg(windows)]
 // #[cfg(any(feature = "v2_58", feature = "dox"))]
 // use std::os::windows::io::AsRawHandle;
@@ -237,6 +237,27 @@ pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
                 FromRawFd::from_raw_fd(fds[0]),
                 FromRawFd::from_raw_fd(fds[1]),
             ))
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
+}
+
+#[cfg(unix)]
+#[doc(alias = "g_file_open_tmp")]
+pub fn file_open_tmp(
+    tmpl: Option<impl AsRef<std::path::Path>>,
+) -> Result<(RawFd, std::path::PathBuf), crate::Error> {
+    unsafe {
+        let mut name_used = ptr::null_mut();
+        let mut error = ptr::null_mut();
+        let ret = ffi::g_file_open_tmp(
+            tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+            &mut name_used,
+            &mut error,
+        );
+        if error.is_null() {
+            Ok((ret.into_raw_fd(), from_glib_full(name_used)))
         } else {
             Err(from_glib_full(error))
         }

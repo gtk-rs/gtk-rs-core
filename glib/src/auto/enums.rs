@@ -549,6 +549,836 @@ impl FromGlib<ffi::GTimeType> for TimeType {
     }
 }
 
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GUnicodeScript")]
+pub enum UnicodeScript {
+    #[doc(alias = "G_UNICODE_SCRIPT_INVALID_CODE")]
+    InvalidCode,
+    #[doc(alias = "G_UNICODE_SCRIPT_COMMON")]
+    Common,
+    #[doc(alias = "G_UNICODE_SCRIPT_INHERITED")]
+    Inherited,
+    #[doc(alias = "G_UNICODE_SCRIPT_ARABIC")]
+    Arabic,
+    #[doc(alias = "G_UNICODE_SCRIPT_ARMENIAN")]
+    Armenian,
+    #[doc(alias = "G_UNICODE_SCRIPT_BENGALI")]
+    Bengali,
+    #[doc(alias = "G_UNICODE_SCRIPT_BOPOMOFO")]
+    Bopomofo,
+    #[doc(alias = "G_UNICODE_SCRIPT_CHEROKEE")]
+    Cherokee,
+    #[doc(alias = "G_UNICODE_SCRIPT_COPTIC")]
+    Coptic,
+    #[doc(alias = "G_UNICODE_SCRIPT_CYRILLIC")]
+    Cyrillic,
+    #[doc(alias = "G_UNICODE_SCRIPT_DESERET")]
+    Deseret,
+    #[doc(alias = "G_UNICODE_SCRIPT_DEVANAGARI")]
+    Devanagari,
+    #[doc(alias = "G_UNICODE_SCRIPT_ETHIOPIC")]
+    Ethiopic,
+    #[doc(alias = "G_UNICODE_SCRIPT_GEORGIAN")]
+    Georgian,
+    #[doc(alias = "G_UNICODE_SCRIPT_GOTHIC")]
+    Gothic,
+    #[doc(alias = "G_UNICODE_SCRIPT_GREEK")]
+    Greek,
+    #[doc(alias = "G_UNICODE_SCRIPT_GUJARATI")]
+    Gujarati,
+    #[doc(alias = "G_UNICODE_SCRIPT_GURMUKHI")]
+    Gurmukhi,
+    #[doc(alias = "G_UNICODE_SCRIPT_HAN")]
+    Han,
+    #[doc(alias = "G_UNICODE_SCRIPT_HANGUL")]
+    Hangul,
+    #[doc(alias = "G_UNICODE_SCRIPT_HEBREW")]
+    Hebrew,
+    #[doc(alias = "G_UNICODE_SCRIPT_HIRAGANA")]
+    Hiragana,
+    #[doc(alias = "G_UNICODE_SCRIPT_KANNADA")]
+    Kannada,
+    #[doc(alias = "G_UNICODE_SCRIPT_KATAKANA")]
+    Katakana,
+    #[doc(alias = "G_UNICODE_SCRIPT_KHMER")]
+    Khmer,
+    #[doc(alias = "G_UNICODE_SCRIPT_LAO")]
+    Lao,
+    #[doc(alias = "G_UNICODE_SCRIPT_LATIN")]
+    Latin,
+    #[doc(alias = "G_UNICODE_SCRIPT_MALAYALAM")]
+    Malayalam,
+    #[doc(alias = "G_UNICODE_SCRIPT_MONGOLIAN")]
+    Mongolian,
+    #[doc(alias = "G_UNICODE_SCRIPT_MYANMAR")]
+    Myanmar,
+    #[doc(alias = "G_UNICODE_SCRIPT_OGHAM")]
+    Ogham,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_ITALIC")]
+    OldItalic,
+    #[doc(alias = "G_UNICODE_SCRIPT_ORIYA")]
+    Oriya,
+    #[doc(alias = "G_UNICODE_SCRIPT_RUNIC")]
+    Runic,
+    #[doc(alias = "G_UNICODE_SCRIPT_SINHALA")]
+    Sinhala,
+    #[doc(alias = "G_UNICODE_SCRIPT_SYRIAC")]
+    Syriac,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAMIL")]
+    Tamil,
+    #[doc(alias = "G_UNICODE_SCRIPT_TELUGU")]
+    Telugu,
+    #[doc(alias = "G_UNICODE_SCRIPT_THAANA")]
+    Thaana,
+    #[doc(alias = "G_UNICODE_SCRIPT_THAI")]
+    Thai,
+    #[doc(alias = "G_UNICODE_SCRIPT_TIBETAN")]
+    Tibetan,
+    #[doc(alias = "G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL")]
+    CanadianAboriginal,
+    #[doc(alias = "G_UNICODE_SCRIPT_YI")]
+    Yi,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAGALOG")]
+    Tagalog,
+    #[doc(alias = "G_UNICODE_SCRIPT_HANUNOO")]
+    Hanunoo,
+    #[doc(alias = "G_UNICODE_SCRIPT_BUHID")]
+    Buhid,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAGBANWA")]
+    Tagbanwa,
+    #[doc(alias = "G_UNICODE_SCRIPT_BRAILLE")]
+    Braille,
+    #[doc(alias = "G_UNICODE_SCRIPT_CYPRIOT")]
+    Cypriot,
+    #[doc(alias = "G_UNICODE_SCRIPT_LIMBU")]
+    Limbu,
+    #[doc(alias = "G_UNICODE_SCRIPT_OSMANYA")]
+    Osmanya,
+    #[doc(alias = "G_UNICODE_SCRIPT_SHAVIAN")]
+    Shavian,
+    #[doc(alias = "G_UNICODE_SCRIPT_LINEAR_B")]
+    LinearB,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAI_LE")]
+    TaiLe,
+    #[doc(alias = "G_UNICODE_SCRIPT_UGARITIC")]
+    Ugaritic,
+    #[doc(alias = "G_UNICODE_SCRIPT_NEW_TAI_LUE")]
+    NewTaiLue,
+    #[doc(alias = "G_UNICODE_SCRIPT_BUGINESE")]
+    Buginese,
+    #[doc(alias = "G_UNICODE_SCRIPT_GLAGOLITIC")]
+    Glagolitic,
+    #[doc(alias = "G_UNICODE_SCRIPT_TIFINAGH")]
+    Tifinagh,
+    #[doc(alias = "G_UNICODE_SCRIPT_SYLOTI_NAGRI")]
+    SylotiNagri,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_PERSIAN")]
+    OldPersian,
+    #[doc(alias = "G_UNICODE_SCRIPT_KHAROSHTHI")]
+    Kharoshthi,
+    #[doc(alias = "G_UNICODE_SCRIPT_UNKNOWN")]
+    Unknown,
+    #[doc(alias = "G_UNICODE_SCRIPT_BALINESE")]
+    Balinese,
+    #[doc(alias = "G_UNICODE_SCRIPT_CUNEIFORM")]
+    Cuneiform,
+    #[doc(alias = "G_UNICODE_SCRIPT_PHOENICIAN")]
+    Phoenician,
+    #[doc(alias = "G_UNICODE_SCRIPT_PHAGS_PA")]
+    PhagsPa,
+    #[doc(alias = "G_UNICODE_SCRIPT_NKO")]
+    Nko,
+    #[doc(alias = "G_UNICODE_SCRIPT_KAYAH_LI")]
+    KayahLi,
+    #[doc(alias = "G_UNICODE_SCRIPT_LEPCHA")]
+    Lepcha,
+    #[doc(alias = "G_UNICODE_SCRIPT_REJANG")]
+    Rejang,
+    #[doc(alias = "G_UNICODE_SCRIPT_SUNDANESE")]
+    Sundanese,
+    #[doc(alias = "G_UNICODE_SCRIPT_SAURASHTRA")]
+    Saurashtra,
+    #[doc(alias = "G_UNICODE_SCRIPT_CHAM")]
+    Cham,
+    #[doc(alias = "G_UNICODE_SCRIPT_OL_CHIKI")]
+    OlChiki,
+    #[doc(alias = "G_UNICODE_SCRIPT_VAI")]
+    Vai,
+    #[doc(alias = "G_UNICODE_SCRIPT_CARIAN")]
+    Carian,
+    #[doc(alias = "G_UNICODE_SCRIPT_LYCIAN")]
+    Lycian,
+    #[doc(alias = "G_UNICODE_SCRIPT_LYDIAN")]
+    Lydian,
+    #[doc(alias = "G_UNICODE_SCRIPT_AVESTAN")]
+    Avestan,
+    #[doc(alias = "G_UNICODE_SCRIPT_BAMUM")]
+    Bamum,
+    #[doc(alias = "G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS")]
+    EgyptianHieroglyphs,
+    #[doc(alias = "G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC")]
+    ImperialAramaic,
+    #[doc(alias = "G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI")]
+    InscriptionalPahlavi,
+    #[doc(alias = "G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN")]
+    InscriptionalParthian,
+    #[doc(alias = "G_UNICODE_SCRIPT_JAVANESE")]
+    Javanese,
+    #[doc(alias = "G_UNICODE_SCRIPT_KAITHI")]
+    Kaithi,
+    #[doc(alias = "G_UNICODE_SCRIPT_LISU")]
+    Lisu,
+    #[doc(alias = "G_UNICODE_SCRIPT_MEETEI_MAYEK")]
+    MeeteiMayek,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN")]
+    OldSouthArabian,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_TURKIC")]
+    OldTurkic,
+    #[doc(alias = "G_UNICODE_SCRIPT_SAMARITAN")]
+    Samaritan,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAI_THAM")]
+    TaiTham,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAI_VIET")]
+    TaiViet,
+    #[doc(alias = "G_UNICODE_SCRIPT_BATAK")]
+    Batak,
+    #[doc(alias = "G_UNICODE_SCRIPT_BRAHMI")]
+    Brahmi,
+    #[doc(alias = "G_UNICODE_SCRIPT_MANDAIC")]
+    Mandaic,
+    #[doc(alias = "G_UNICODE_SCRIPT_CHAKMA")]
+    Chakma,
+    #[doc(alias = "G_UNICODE_SCRIPT_MEROITIC_CURSIVE")]
+    MeroiticCursive,
+    #[doc(alias = "G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS")]
+    MeroiticHieroglyphs,
+    #[doc(alias = "G_UNICODE_SCRIPT_MIAO")]
+    Miao,
+    #[doc(alias = "G_UNICODE_SCRIPT_SHARADA")]
+    Sharada,
+    #[doc(alias = "G_UNICODE_SCRIPT_SORA_SOMPENG")]
+    SoraSompeng,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAKRI")]
+    Takri,
+    #[doc(alias = "G_UNICODE_SCRIPT_BASSA_VAH")]
+    BassaVah,
+    #[doc(alias = "G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN")]
+    CaucasianAlbanian,
+    #[doc(alias = "G_UNICODE_SCRIPT_DUPLOYAN")]
+    Duployan,
+    #[doc(alias = "G_UNICODE_SCRIPT_ELBASAN")]
+    Elbasan,
+    #[doc(alias = "G_UNICODE_SCRIPT_GRANTHA")]
+    Grantha,
+    #[doc(alias = "G_UNICODE_SCRIPT_KHOJKI")]
+    Khojki,
+    #[doc(alias = "G_UNICODE_SCRIPT_KHUDAWADI")]
+    Khudawadi,
+    #[doc(alias = "G_UNICODE_SCRIPT_LINEAR_A")]
+    LinearA,
+    #[doc(alias = "G_UNICODE_SCRIPT_MAHAJANI")]
+    Mahajani,
+    #[doc(alias = "G_UNICODE_SCRIPT_MANICHAEAN")]
+    Manichaean,
+    #[doc(alias = "G_UNICODE_SCRIPT_MENDE_KIKAKUI")]
+    MendeKikakui,
+    #[doc(alias = "G_UNICODE_SCRIPT_MODI")]
+    Modi,
+    #[doc(alias = "G_UNICODE_SCRIPT_MRO")]
+    Mro,
+    #[doc(alias = "G_UNICODE_SCRIPT_NABATAEAN")]
+    Nabataean,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN")]
+    OldNorthArabian,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_PERMIC")]
+    OldPermic,
+    #[doc(alias = "G_UNICODE_SCRIPT_PAHAWH_HMONG")]
+    PahawhHmong,
+    #[doc(alias = "G_UNICODE_SCRIPT_PALMYRENE")]
+    Palmyrene,
+    #[doc(alias = "G_UNICODE_SCRIPT_PAU_CIN_HAU")]
+    PauCinHau,
+    #[doc(alias = "G_UNICODE_SCRIPT_PSALTER_PAHLAVI")]
+    PsalterPahlavi,
+    #[doc(alias = "G_UNICODE_SCRIPT_SIDDHAM")]
+    Siddham,
+    #[doc(alias = "G_UNICODE_SCRIPT_TIRHUTA")]
+    Tirhuta,
+    #[doc(alias = "G_UNICODE_SCRIPT_WARANG_CITI")]
+    WarangCiti,
+    #[doc(alias = "G_UNICODE_SCRIPT_AHOM")]
+    Ahom,
+    #[doc(alias = "G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS")]
+    AnatolianHieroglyphs,
+    #[doc(alias = "G_UNICODE_SCRIPT_HATRAN")]
+    Hatran,
+    #[doc(alias = "G_UNICODE_SCRIPT_MULTANI")]
+    Multani,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_HUNGARIAN")]
+    OldHungarian,
+    #[doc(alias = "G_UNICODE_SCRIPT_SIGNWRITING")]
+    Signwriting,
+    #[doc(alias = "G_UNICODE_SCRIPT_ADLAM")]
+    Adlam,
+    #[doc(alias = "G_UNICODE_SCRIPT_BHAIKSUKI")]
+    Bhaiksuki,
+    #[doc(alias = "G_UNICODE_SCRIPT_MARCHEN")]
+    Marchen,
+    #[doc(alias = "G_UNICODE_SCRIPT_NEWA")]
+    Newa,
+    #[doc(alias = "G_UNICODE_SCRIPT_OSAGE")]
+    Osage,
+    #[doc(alias = "G_UNICODE_SCRIPT_TANGUT")]
+    Tangut,
+    #[doc(alias = "G_UNICODE_SCRIPT_MASARAM_GONDI")]
+    MasaramGondi,
+    #[doc(alias = "G_UNICODE_SCRIPT_NUSHU")]
+    Nushu,
+    #[doc(alias = "G_UNICODE_SCRIPT_SOYOMBO")]
+    Soyombo,
+    #[doc(alias = "G_UNICODE_SCRIPT_ZANABAZAR_SQUARE")]
+    ZanabazarSquare,
+    #[doc(alias = "G_UNICODE_SCRIPT_DOGRA")]
+    Dogra,
+    #[doc(alias = "G_UNICODE_SCRIPT_GUNJALA_GONDI")]
+    GunjalaGondi,
+    #[doc(alias = "G_UNICODE_SCRIPT_HANIFI_ROHINGYA")]
+    HanifiRohingya,
+    #[doc(alias = "G_UNICODE_SCRIPT_MAKASAR")]
+    Makasar,
+    #[doc(alias = "G_UNICODE_SCRIPT_MEDEFAIDRIN")]
+    Medefaidrin,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_SOGDIAN")]
+    OldSogdian,
+    #[doc(alias = "G_UNICODE_SCRIPT_SOGDIAN")]
+    Sogdian,
+    #[doc(alias = "G_UNICODE_SCRIPT_ELYMAIC")]
+    Elymaic,
+    #[doc(alias = "G_UNICODE_SCRIPT_NANDINAGARI")]
+    Nandinagari,
+    #[doc(alias = "G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG")]
+    NyiakengPuachueHmong,
+    #[doc(alias = "G_UNICODE_SCRIPT_WANCHO")]
+    Wancho,
+    #[doc(alias = "G_UNICODE_SCRIPT_CHORASMIAN")]
+    Chorasmian,
+    #[doc(alias = "G_UNICODE_SCRIPT_DIVES_AKURU")]
+    DivesAkuru,
+    #[doc(alias = "G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT")]
+    KhitanSmallScript,
+    #[doc(alias = "G_UNICODE_SCRIPT_YEZIDI")]
+    Yezidi,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for UnicodeScript {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "UnicodeScript::{}",
+            match *self {
+                Self::InvalidCode => "InvalidCode",
+                Self::Common => "Common",
+                Self::Inherited => "Inherited",
+                Self::Arabic => "Arabic",
+                Self::Armenian => "Armenian",
+                Self::Bengali => "Bengali",
+                Self::Bopomofo => "Bopomofo",
+                Self::Cherokee => "Cherokee",
+                Self::Coptic => "Coptic",
+                Self::Cyrillic => "Cyrillic",
+                Self::Deseret => "Deseret",
+                Self::Devanagari => "Devanagari",
+                Self::Ethiopic => "Ethiopic",
+                Self::Georgian => "Georgian",
+                Self::Gothic => "Gothic",
+                Self::Greek => "Greek",
+                Self::Gujarati => "Gujarati",
+                Self::Gurmukhi => "Gurmukhi",
+                Self::Han => "Han",
+                Self::Hangul => "Hangul",
+                Self::Hebrew => "Hebrew",
+                Self::Hiragana => "Hiragana",
+                Self::Kannada => "Kannada",
+                Self::Katakana => "Katakana",
+                Self::Khmer => "Khmer",
+                Self::Lao => "Lao",
+                Self::Latin => "Latin",
+                Self::Malayalam => "Malayalam",
+                Self::Mongolian => "Mongolian",
+                Self::Myanmar => "Myanmar",
+                Self::Ogham => "Ogham",
+                Self::OldItalic => "OldItalic",
+                Self::Oriya => "Oriya",
+                Self::Runic => "Runic",
+                Self::Sinhala => "Sinhala",
+                Self::Syriac => "Syriac",
+                Self::Tamil => "Tamil",
+                Self::Telugu => "Telugu",
+                Self::Thaana => "Thaana",
+                Self::Thai => "Thai",
+                Self::Tibetan => "Tibetan",
+                Self::CanadianAboriginal => "CanadianAboriginal",
+                Self::Yi => "Yi",
+                Self::Tagalog => "Tagalog",
+                Self::Hanunoo => "Hanunoo",
+                Self::Buhid => "Buhid",
+                Self::Tagbanwa => "Tagbanwa",
+                Self::Braille => "Braille",
+                Self::Cypriot => "Cypriot",
+                Self::Limbu => "Limbu",
+                Self::Osmanya => "Osmanya",
+                Self::Shavian => "Shavian",
+                Self::LinearB => "LinearB",
+                Self::TaiLe => "TaiLe",
+                Self::Ugaritic => "Ugaritic",
+                Self::NewTaiLue => "NewTaiLue",
+                Self::Buginese => "Buginese",
+                Self::Glagolitic => "Glagolitic",
+                Self::Tifinagh => "Tifinagh",
+                Self::SylotiNagri => "SylotiNagri",
+                Self::OldPersian => "OldPersian",
+                Self::Kharoshthi => "Kharoshthi",
+                Self::Unknown => "Unknown",
+                Self::Balinese => "Balinese",
+                Self::Cuneiform => "Cuneiform",
+                Self::Phoenician => "Phoenician",
+                Self::PhagsPa => "PhagsPa",
+                Self::Nko => "Nko",
+                Self::KayahLi => "KayahLi",
+                Self::Lepcha => "Lepcha",
+                Self::Rejang => "Rejang",
+                Self::Sundanese => "Sundanese",
+                Self::Saurashtra => "Saurashtra",
+                Self::Cham => "Cham",
+                Self::OlChiki => "OlChiki",
+                Self::Vai => "Vai",
+                Self::Carian => "Carian",
+                Self::Lycian => "Lycian",
+                Self::Lydian => "Lydian",
+                Self::Avestan => "Avestan",
+                Self::Bamum => "Bamum",
+                Self::EgyptianHieroglyphs => "EgyptianHieroglyphs",
+                Self::ImperialAramaic => "ImperialAramaic",
+                Self::InscriptionalPahlavi => "InscriptionalPahlavi",
+                Self::InscriptionalParthian => "InscriptionalParthian",
+                Self::Javanese => "Javanese",
+                Self::Kaithi => "Kaithi",
+                Self::Lisu => "Lisu",
+                Self::MeeteiMayek => "MeeteiMayek",
+                Self::OldSouthArabian => "OldSouthArabian",
+                Self::OldTurkic => "OldTurkic",
+                Self::Samaritan => "Samaritan",
+                Self::TaiTham => "TaiTham",
+                Self::TaiViet => "TaiViet",
+                Self::Batak => "Batak",
+                Self::Brahmi => "Brahmi",
+                Self::Mandaic => "Mandaic",
+                Self::Chakma => "Chakma",
+                Self::MeroiticCursive => "MeroiticCursive",
+                Self::MeroiticHieroglyphs => "MeroiticHieroglyphs",
+                Self::Miao => "Miao",
+                Self::Sharada => "Sharada",
+                Self::SoraSompeng => "SoraSompeng",
+                Self::Takri => "Takri",
+                Self::BassaVah => "BassaVah",
+                Self::CaucasianAlbanian => "CaucasianAlbanian",
+                Self::Duployan => "Duployan",
+                Self::Elbasan => "Elbasan",
+                Self::Grantha => "Grantha",
+                Self::Khojki => "Khojki",
+                Self::Khudawadi => "Khudawadi",
+                Self::LinearA => "LinearA",
+                Self::Mahajani => "Mahajani",
+                Self::Manichaean => "Manichaean",
+                Self::MendeKikakui => "MendeKikakui",
+                Self::Modi => "Modi",
+                Self::Mro => "Mro",
+                Self::Nabataean => "Nabataean",
+                Self::OldNorthArabian => "OldNorthArabian",
+                Self::OldPermic => "OldPermic",
+                Self::PahawhHmong => "PahawhHmong",
+                Self::Palmyrene => "Palmyrene",
+                Self::PauCinHau => "PauCinHau",
+                Self::PsalterPahlavi => "PsalterPahlavi",
+                Self::Siddham => "Siddham",
+                Self::Tirhuta => "Tirhuta",
+                Self::WarangCiti => "WarangCiti",
+                Self::Ahom => "Ahom",
+                Self::AnatolianHieroglyphs => "AnatolianHieroglyphs",
+                Self::Hatran => "Hatran",
+                Self::Multani => "Multani",
+                Self::OldHungarian => "OldHungarian",
+                Self::Signwriting => "Signwriting",
+                Self::Adlam => "Adlam",
+                Self::Bhaiksuki => "Bhaiksuki",
+                Self::Marchen => "Marchen",
+                Self::Newa => "Newa",
+                Self::Osage => "Osage",
+                Self::Tangut => "Tangut",
+                Self::MasaramGondi => "MasaramGondi",
+                Self::Nushu => "Nushu",
+                Self::Soyombo => "Soyombo",
+                Self::ZanabazarSquare => "ZanabazarSquare",
+                Self::Dogra => "Dogra",
+                Self::GunjalaGondi => "GunjalaGondi",
+                Self::HanifiRohingya => "HanifiRohingya",
+                Self::Makasar => "Makasar",
+                Self::Medefaidrin => "Medefaidrin",
+                Self::OldSogdian => "OldSogdian",
+                Self::Sogdian => "Sogdian",
+                Self::Elymaic => "Elymaic",
+                Self::Nandinagari => "Nandinagari",
+                Self::NyiakengPuachueHmong => "NyiakengPuachueHmong",
+                Self::Wancho => "Wancho",
+                Self::Chorasmian => "Chorasmian",
+                Self::DivesAkuru => "DivesAkuru",
+                Self::KhitanSmallScript => "KhitanSmallScript",
+                Self::Yezidi => "Yezidi",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for UnicodeScript {
+    type GlibType = ffi::GUnicodeScript;
+
+    fn into_glib(self) -> ffi::GUnicodeScript {
+        match self {
+            Self::InvalidCode => ffi::G_UNICODE_SCRIPT_INVALID_CODE,
+            Self::Common => ffi::G_UNICODE_SCRIPT_COMMON,
+            Self::Inherited => ffi::G_UNICODE_SCRIPT_INHERITED,
+            Self::Arabic => ffi::G_UNICODE_SCRIPT_ARABIC,
+            Self::Armenian => ffi::G_UNICODE_SCRIPT_ARMENIAN,
+            Self::Bengali => ffi::G_UNICODE_SCRIPT_BENGALI,
+            Self::Bopomofo => ffi::G_UNICODE_SCRIPT_BOPOMOFO,
+            Self::Cherokee => ffi::G_UNICODE_SCRIPT_CHEROKEE,
+            Self::Coptic => ffi::G_UNICODE_SCRIPT_COPTIC,
+            Self::Cyrillic => ffi::G_UNICODE_SCRIPT_CYRILLIC,
+            Self::Deseret => ffi::G_UNICODE_SCRIPT_DESERET,
+            Self::Devanagari => ffi::G_UNICODE_SCRIPT_DEVANAGARI,
+            Self::Ethiopic => ffi::G_UNICODE_SCRIPT_ETHIOPIC,
+            Self::Georgian => ffi::G_UNICODE_SCRIPT_GEORGIAN,
+            Self::Gothic => ffi::G_UNICODE_SCRIPT_GOTHIC,
+            Self::Greek => ffi::G_UNICODE_SCRIPT_GREEK,
+            Self::Gujarati => ffi::G_UNICODE_SCRIPT_GUJARATI,
+            Self::Gurmukhi => ffi::G_UNICODE_SCRIPT_GURMUKHI,
+            Self::Han => ffi::G_UNICODE_SCRIPT_HAN,
+            Self::Hangul => ffi::G_UNICODE_SCRIPT_HANGUL,
+            Self::Hebrew => ffi::G_UNICODE_SCRIPT_HEBREW,
+            Self::Hiragana => ffi::G_UNICODE_SCRIPT_HIRAGANA,
+            Self::Kannada => ffi::G_UNICODE_SCRIPT_KANNADA,
+            Self::Katakana => ffi::G_UNICODE_SCRIPT_KATAKANA,
+            Self::Khmer => ffi::G_UNICODE_SCRIPT_KHMER,
+            Self::Lao => ffi::G_UNICODE_SCRIPT_LAO,
+            Self::Latin => ffi::G_UNICODE_SCRIPT_LATIN,
+            Self::Malayalam => ffi::G_UNICODE_SCRIPT_MALAYALAM,
+            Self::Mongolian => ffi::G_UNICODE_SCRIPT_MONGOLIAN,
+            Self::Myanmar => ffi::G_UNICODE_SCRIPT_MYANMAR,
+            Self::Ogham => ffi::G_UNICODE_SCRIPT_OGHAM,
+            Self::OldItalic => ffi::G_UNICODE_SCRIPT_OLD_ITALIC,
+            Self::Oriya => ffi::G_UNICODE_SCRIPT_ORIYA,
+            Self::Runic => ffi::G_UNICODE_SCRIPT_RUNIC,
+            Self::Sinhala => ffi::G_UNICODE_SCRIPT_SINHALA,
+            Self::Syriac => ffi::G_UNICODE_SCRIPT_SYRIAC,
+            Self::Tamil => ffi::G_UNICODE_SCRIPT_TAMIL,
+            Self::Telugu => ffi::G_UNICODE_SCRIPT_TELUGU,
+            Self::Thaana => ffi::G_UNICODE_SCRIPT_THAANA,
+            Self::Thai => ffi::G_UNICODE_SCRIPT_THAI,
+            Self::Tibetan => ffi::G_UNICODE_SCRIPT_TIBETAN,
+            Self::CanadianAboriginal => ffi::G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL,
+            Self::Yi => ffi::G_UNICODE_SCRIPT_YI,
+            Self::Tagalog => ffi::G_UNICODE_SCRIPT_TAGALOG,
+            Self::Hanunoo => ffi::G_UNICODE_SCRIPT_HANUNOO,
+            Self::Buhid => ffi::G_UNICODE_SCRIPT_BUHID,
+            Self::Tagbanwa => ffi::G_UNICODE_SCRIPT_TAGBANWA,
+            Self::Braille => ffi::G_UNICODE_SCRIPT_BRAILLE,
+            Self::Cypriot => ffi::G_UNICODE_SCRIPT_CYPRIOT,
+            Self::Limbu => ffi::G_UNICODE_SCRIPT_LIMBU,
+            Self::Osmanya => ffi::G_UNICODE_SCRIPT_OSMANYA,
+            Self::Shavian => ffi::G_UNICODE_SCRIPT_SHAVIAN,
+            Self::LinearB => ffi::G_UNICODE_SCRIPT_LINEAR_B,
+            Self::TaiLe => ffi::G_UNICODE_SCRIPT_TAI_LE,
+            Self::Ugaritic => ffi::G_UNICODE_SCRIPT_UGARITIC,
+            Self::NewTaiLue => ffi::G_UNICODE_SCRIPT_NEW_TAI_LUE,
+            Self::Buginese => ffi::G_UNICODE_SCRIPT_BUGINESE,
+            Self::Glagolitic => ffi::G_UNICODE_SCRIPT_GLAGOLITIC,
+            Self::Tifinagh => ffi::G_UNICODE_SCRIPT_TIFINAGH,
+            Self::SylotiNagri => ffi::G_UNICODE_SCRIPT_SYLOTI_NAGRI,
+            Self::OldPersian => ffi::G_UNICODE_SCRIPT_OLD_PERSIAN,
+            Self::Kharoshthi => ffi::G_UNICODE_SCRIPT_KHAROSHTHI,
+            Self::Unknown => ffi::G_UNICODE_SCRIPT_UNKNOWN,
+            Self::Balinese => ffi::G_UNICODE_SCRIPT_BALINESE,
+            Self::Cuneiform => ffi::G_UNICODE_SCRIPT_CUNEIFORM,
+            Self::Phoenician => ffi::G_UNICODE_SCRIPT_PHOENICIAN,
+            Self::PhagsPa => ffi::G_UNICODE_SCRIPT_PHAGS_PA,
+            Self::Nko => ffi::G_UNICODE_SCRIPT_NKO,
+            Self::KayahLi => ffi::G_UNICODE_SCRIPT_KAYAH_LI,
+            Self::Lepcha => ffi::G_UNICODE_SCRIPT_LEPCHA,
+            Self::Rejang => ffi::G_UNICODE_SCRIPT_REJANG,
+            Self::Sundanese => ffi::G_UNICODE_SCRIPT_SUNDANESE,
+            Self::Saurashtra => ffi::G_UNICODE_SCRIPT_SAURASHTRA,
+            Self::Cham => ffi::G_UNICODE_SCRIPT_CHAM,
+            Self::OlChiki => ffi::G_UNICODE_SCRIPT_OL_CHIKI,
+            Self::Vai => ffi::G_UNICODE_SCRIPT_VAI,
+            Self::Carian => ffi::G_UNICODE_SCRIPT_CARIAN,
+            Self::Lycian => ffi::G_UNICODE_SCRIPT_LYCIAN,
+            Self::Lydian => ffi::G_UNICODE_SCRIPT_LYDIAN,
+            Self::Avestan => ffi::G_UNICODE_SCRIPT_AVESTAN,
+            Self::Bamum => ffi::G_UNICODE_SCRIPT_BAMUM,
+            Self::EgyptianHieroglyphs => ffi::G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS,
+            Self::ImperialAramaic => ffi::G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC,
+            Self::InscriptionalPahlavi => ffi::G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI,
+            Self::InscriptionalParthian => ffi::G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN,
+            Self::Javanese => ffi::G_UNICODE_SCRIPT_JAVANESE,
+            Self::Kaithi => ffi::G_UNICODE_SCRIPT_KAITHI,
+            Self::Lisu => ffi::G_UNICODE_SCRIPT_LISU,
+            Self::MeeteiMayek => ffi::G_UNICODE_SCRIPT_MEETEI_MAYEK,
+            Self::OldSouthArabian => ffi::G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,
+            Self::OldTurkic => ffi::G_UNICODE_SCRIPT_OLD_TURKIC,
+            Self::Samaritan => ffi::G_UNICODE_SCRIPT_SAMARITAN,
+            Self::TaiTham => ffi::G_UNICODE_SCRIPT_TAI_THAM,
+            Self::TaiViet => ffi::G_UNICODE_SCRIPT_TAI_VIET,
+            Self::Batak => ffi::G_UNICODE_SCRIPT_BATAK,
+            Self::Brahmi => ffi::G_UNICODE_SCRIPT_BRAHMI,
+            Self::Mandaic => ffi::G_UNICODE_SCRIPT_MANDAIC,
+            Self::Chakma => ffi::G_UNICODE_SCRIPT_CHAKMA,
+            Self::MeroiticCursive => ffi::G_UNICODE_SCRIPT_MEROITIC_CURSIVE,
+            Self::MeroiticHieroglyphs => ffi::G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS,
+            Self::Miao => ffi::G_UNICODE_SCRIPT_MIAO,
+            Self::Sharada => ffi::G_UNICODE_SCRIPT_SHARADA,
+            Self::SoraSompeng => ffi::G_UNICODE_SCRIPT_SORA_SOMPENG,
+            Self::Takri => ffi::G_UNICODE_SCRIPT_TAKRI,
+            Self::BassaVah => ffi::G_UNICODE_SCRIPT_BASSA_VAH,
+            Self::CaucasianAlbanian => ffi::G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN,
+            Self::Duployan => ffi::G_UNICODE_SCRIPT_DUPLOYAN,
+            Self::Elbasan => ffi::G_UNICODE_SCRIPT_ELBASAN,
+            Self::Grantha => ffi::G_UNICODE_SCRIPT_GRANTHA,
+            Self::Khojki => ffi::G_UNICODE_SCRIPT_KHOJKI,
+            Self::Khudawadi => ffi::G_UNICODE_SCRIPT_KHUDAWADI,
+            Self::LinearA => ffi::G_UNICODE_SCRIPT_LINEAR_A,
+            Self::Mahajani => ffi::G_UNICODE_SCRIPT_MAHAJANI,
+            Self::Manichaean => ffi::G_UNICODE_SCRIPT_MANICHAEAN,
+            Self::MendeKikakui => ffi::G_UNICODE_SCRIPT_MENDE_KIKAKUI,
+            Self::Modi => ffi::G_UNICODE_SCRIPT_MODI,
+            Self::Mro => ffi::G_UNICODE_SCRIPT_MRO,
+            Self::Nabataean => ffi::G_UNICODE_SCRIPT_NABATAEAN,
+            Self::OldNorthArabian => ffi::G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN,
+            Self::OldPermic => ffi::G_UNICODE_SCRIPT_OLD_PERMIC,
+            Self::PahawhHmong => ffi::G_UNICODE_SCRIPT_PAHAWH_HMONG,
+            Self::Palmyrene => ffi::G_UNICODE_SCRIPT_PALMYRENE,
+            Self::PauCinHau => ffi::G_UNICODE_SCRIPT_PAU_CIN_HAU,
+            Self::PsalterPahlavi => ffi::G_UNICODE_SCRIPT_PSALTER_PAHLAVI,
+            Self::Siddham => ffi::G_UNICODE_SCRIPT_SIDDHAM,
+            Self::Tirhuta => ffi::G_UNICODE_SCRIPT_TIRHUTA,
+            Self::WarangCiti => ffi::G_UNICODE_SCRIPT_WARANG_CITI,
+            Self::Ahom => ffi::G_UNICODE_SCRIPT_AHOM,
+            Self::AnatolianHieroglyphs => ffi::G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS,
+            Self::Hatran => ffi::G_UNICODE_SCRIPT_HATRAN,
+            Self::Multani => ffi::G_UNICODE_SCRIPT_MULTANI,
+            Self::OldHungarian => ffi::G_UNICODE_SCRIPT_OLD_HUNGARIAN,
+            Self::Signwriting => ffi::G_UNICODE_SCRIPT_SIGNWRITING,
+            Self::Adlam => ffi::G_UNICODE_SCRIPT_ADLAM,
+            Self::Bhaiksuki => ffi::G_UNICODE_SCRIPT_BHAIKSUKI,
+            Self::Marchen => ffi::G_UNICODE_SCRIPT_MARCHEN,
+            Self::Newa => ffi::G_UNICODE_SCRIPT_NEWA,
+            Self::Osage => ffi::G_UNICODE_SCRIPT_OSAGE,
+            Self::Tangut => ffi::G_UNICODE_SCRIPT_TANGUT,
+            Self::MasaramGondi => ffi::G_UNICODE_SCRIPT_MASARAM_GONDI,
+            Self::Nushu => ffi::G_UNICODE_SCRIPT_NUSHU,
+            Self::Soyombo => ffi::G_UNICODE_SCRIPT_SOYOMBO,
+            Self::ZanabazarSquare => ffi::G_UNICODE_SCRIPT_ZANABAZAR_SQUARE,
+            Self::Dogra => ffi::G_UNICODE_SCRIPT_DOGRA,
+            Self::GunjalaGondi => ffi::G_UNICODE_SCRIPT_GUNJALA_GONDI,
+            Self::HanifiRohingya => ffi::G_UNICODE_SCRIPT_HANIFI_ROHINGYA,
+            Self::Makasar => ffi::G_UNICODE_SCRIPT_MAKASAR,
+            Self::Medefaidrin => ffi::G_UNICODE_SCRIPT_MEDEFAIDRIN,
+            Self::OldSogdian => ffi::G_UNICODE_SCRIPT_OLD_SOGDIAN,
+            Self::Sogdian => ffi::G_UNICODE_SCRIPT_SOGDIAN,
+            Self::Elymaic => ffi::G_UNICODE_SCRIPT_ELYMAIC,
+            Self::Nandinagari => ffi::G_UNICODE_SCRIPT_NANDINAGARI,
+            Self::NyiakengPuachueHmong => ffi::G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG,
+            Self::Wancho => ffi::G_UNICODE_SCRIPT_WANCHO,
+            Self::Chorasmian => ffi::G_UNICODE_SCRIPT_CHORASMIAN,
+            Self::DivesAkuru => ffi::G_UNICODE_SCRIPT_DIVES_AKURU,
+            Self::KhitanSmallScript => ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,
+            Self::Yezidi => ffi::G_UNICODE_SCRIPT_YEZIDI,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
+    unsafe fn from_glib(value: ffi::GUnicodeScript) -> Self {
+        match value {
+            ffi::G_UNICODE_SCRIPT_INVALID_CODE => Self::InvalidCode,
+            ffi::G_UNICODE_SCRIPT_COMMON => Self::Common,
+            ffi::G_UNICODE_SCRIPT_INHERITED => Self::Inherited,
+            ffi::G_UNICODE_SCRIPT_ARABIC => Self::Arabic,
+            ffi::G_UNICODE_SCRIPT_ARMENIAN => Self::Armenian,
+            ffi::G_UNICODE_SCRIPT_BENGALI => Self::Bengali,
+            ffi::G_UNICODE_SCRIPT_BOPOMOFO => Self::Bopomofo,
+            ffi::G_UNICODE_SCRIPT_CHEROKEE => Self::Cherokee,
+            ffi::G_UNICODE_SCRIPT_COPTIC => Self::Coptic,
+            ffi::G_UNICODE_SCRIPT_CYRILLIC => Self::Cyrillic,
+            ffi::G_UNICODE_SCRIPT_DESERET => Self::Deseret,
+            ffi::G_UNICODE_SCRIPT_DEVANAGARI => Self::Devanagari,
+            ffi::G_UNICODE_SCRIPT_ETHIOPIC => Self::Ethiopic,
+            ffi::G_UNICODE_SCRIPT_GEORGIAN => Self::Georgian,
+            ffi::G_UNICODE_SCRIPT_GOTHIC => Self::Gothic,
+            ffi::G_UNICODE_SCRIPT_GREEK => Self::Greek,
+            ffi::G_UNICODE_SCRIPT_GUJARATI => Self::Gujarati,
+            ffi::G_UNICODE_SCRIPT_GURMUKHI => Self::Gurmukhi,
+            ffi::G_UNICODE_SCRIPT_HAN => Self::Han,
+            ffi::G_UNICODE_SCRIPT_HANGUL => Self::Hangul,
+            ffi::G_UNICODE_SCRIPT_HEBREW => Self::Hebrew,
+            ffi::G_UNICODE_SCRIPT_HIRAGANA => Self::Hiragana,
+            ffi::G_UNICODE_SCRIPT_KANNADA => Self::Kannada,
+            ffi::G_UNICODE_SCRIPT_KATAKANA => Self::Katakana,
+            ffi::G_UNICODE_SCRIPT_KHMER => Self::Khmer,
+            ffi::G_UNICODE_SCRIPT_LAO => Self::Lao,
+            ffi::G_UNICODE_SCRIPT_LATIN => Self::Latin,
+            ffi::G_UNICODE_SCRIPT_MALAYALAM => Self::Malayalam,
+            ffi::G_UNICODE_SCRIPT_MONGOLIAN => Self::Mongolian,
+            ffi::G_UNICODE_SCRIPT_MYANMAR => Self::Myanmar,
+            ffi::G_UNICODE_SCRIPT_OGHAM => Self::Ogham,
+            ffi::G_UNICODE_SCRIPT_OLD_ITALIC => Self::OldItalic,
+            ffi::G_UNICODE_SCRIPT_ORIYA => Self::Oriya,
+            ffi::G_UNICODE_SCRIPT_RUNIC => Self::Runic,
+            ffi::G_UNICODE_SCRIPT_SINHALA => Self::Sinhala,
+            ffi::G_UNICODE_SCRIPT_SYRIAC => Self::Syriac,
+            ffi::G_UNICODE_SCRIPT_TAMIL => Self::Tamil,
+            ffi::G_UNICODE_SCRIPT_TELUGU => Self::Telugu,
+            ffi::G_UNICODE_SCRIPT_THAANA => Self::Thaana,
+            ffi::G_UNICODE_SCRIPT_THAI => Self::Thai,
+            ffi::G_UNICODE_SCRIPT_TIBETAN => Self::Tibetan,
+            ffi::G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL => Self::CanadianAboriginal,
+            ffi::G_UNICODE_SCRIPT_YI => Self::Yi,
+            ffi::G_UNICODE_SCRIPT_TAGALOG => Self::Tagalog,
+            ffi::G_UNICODE_SCRIPT_HANUNOO => Self::Hanunoo,
+            ffi::G_UNICODE_SCRIPT_BUHID => Self::Buhid,
+            ffi::G_UNICODE_SCRIPT_TAGBANWA => Self::Tagbanwa,
+            ffi::G_UNICODE_SCRIPT_BRAILLE => Self::Braille,
+            ffi::G_UNICODE_SCRIPT_CYPRIOT => Self::Cypriot,
+            ffi::G_UNICODE_SCRIPT_LIMBU => Self::Limbu,
+            ffi::G_UNICODE_SCRIPT_OSMANYA => Self::Osmanya,
+            ffi::G_UNICODE_SCRIPT_SHAVIAN => Self::Shavian,
+            ffi::G_UNICODE_SCRIPT_LINEAR_B => Self::LinearB,
+            ffi::G_UNICODE_SCRIPT_TAI_LE => Self::TaiLe,
+            ffi::G_UNICODE_SCRIPT_UGARITIC => Self::Ugaritic,
+            ffi::G_UNICODE_SCRIPT_NEW_TAI_LUE => Self::NewTaiLue,
+            ffi::G_UNICODE_SCRIPT_BUGINESE => Self::Buginese,
+            ffi::G_UNICODE_SCRIPT_GLAGOLITIC => Self::Glagolitic,
+            ffi::G_UNICODE_SCRIPT_TIFINAGH => Self::Tifinagh,
+            ffi::G_UNICODE_SCRIPT_SYLOTI_NAGRI => Self::SylotiNagri,
+            ffi::G_UNICODE_SCRIPT_OLD_PERSIAN => Self::OldPersian,
+            ffi::G_UNICODE_SCRIPT_KHAROSHTHI => Self::Kharoshthi,
+            ffi::G_UNICODE_SCRIPT_UNKNOWN => Self::Unknown,
+            ffi::G_UNICODE_SCRIPT_BALINESE => Self::Balinese,
+            ffi::G_UNICODE_SCRIPT_CUNEIFORM => Self::Cuneiform,
+            ffi::G_UNICODE_SCRIPT_PHOENICIAN => Self::Phoenician,
+            ffi::G_UNICODE_SCRIPT_PHAGS_PA => Self::PhagsPa,
+            ffi::G_UNICODE_SCRIPT_NKO => Self::Nko,
+            ffi::G_UNICODE_SCRIPT_KAYAH_LI => Self::KayahLi,
+            ffi::G_UNICODE_SCRIPT_LEPCHA => Self::Lepcha,
+            ffi::G_UNICODE_SCRIPT_REJANG => Self::Rejang,
+            ffi::G_UNICODE_SCRIPT_SUNDANESE => Self::Sundanese,
+            ffi::G_UNICODE_SCRIPT_SAURASHTRA => Self::Saurashtra,
+            ffi::G_UNICODE_SCRIPT_CHAM => Self::Cham,
+            ffi::G_UNICODE_SCRIPT_OL_CHIKI => Self::OlChiki,
+            ffi::G_UNICODE_SCRIPT_VAI => Self::Vai,
+            ffi::G_UNICODE_SCRIPT_CARIAN => Self::Carian,
+            ffi::G_UNICODE_SCRIPT_LYCIAN => Self::Lycian,
+            ffi::G_UNICODE_SCRIPT_LYDIAN => Self::Lydian,
+            ffi::G_UNICODE_SCRIPT_AVESTAN => Self::Avestan,
+            ffi::G_UNICODE_SCRIPT_BAMUM => Self::Bamum,
+            ffi::G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS => Self::EgyptianHieroglyphs,
+            ffi::G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC => Self::ImperialAramaic,
+            ffi::G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI => Self::InscriptionalPahlavi,
+            ffi::G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN => Self::InscriptionalParthian,
+            ffi::G_UNICODE_SCRIPT_JAVANESE => Self::Javanese,
+            ffi::G_UNICODE_SCRIPT_KAITHI => Self::Kaithi,
+            ffi::G_UNICODE_SCRIPT_LISU => Self::Lisu,
+            ffi::G_UNICODE_SCRIPT_MEETEI_MAYEK => Self::MeeteiMayek,
+            ffi::G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN => Self::OldSouthArabian,
+            ffi::G_UNICODE_SCRIPT_OLD_TURKIC => Self::OldTurkic,
+            ffi::G_UNICODE_SCRIPT_SAMARITAN => Self::Samaritan,
+            ffi::G_UNICODE_SCRIPT_TAI_THAM => Self::TaiTham,
+            ffi::G_UNICODE_SCRIPT_TAI_VIET => Self::TaiViet,
+            ffi::G_UNICODE_SCRIPT_BATAK => Self::Batak,
+            ffi::G_UNICODE_SCRIPT_BRAHMI => Self::Brahmi,
+            ffi::G_UNICODE_SCRIPT_MANDAIC => Self::Mandaic,
+            ffi::G_UNICODE_SCRIPT_CHAKMA => Self::Chakma,
+            ffi::G_UNICODE_SCRIPT_MEROITIC_CURSIVE => Self::MeroiticCursive,
+            ffi::G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS => Self::MeroiticHieroglyphs,
+            ffi::G_UNICODE_SCRIPT_MIAO => Self::Miao,
+            ffi::G_UNICODE_SCRIPT_SHARADA => Self::Sharada,
+            ffi::G_UNICODE_SCRIPT_SORA_SOMPENG => Self::SoraSompeng,
+            ffi::G_UNICODE_SCRIPT_TAKRI => Self::Takri,
+            ffi::G_UNICODE_SCRIPT_BASSA_VAH => Self::BassaVah,
+            ffi::G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN => Self::CaucasianAlbanian,
+            ffi::G_UNICODE_SCRIPT_DUPLOYAN => Self::Duployan,
+            ffi::G_UNICODE_SCRIPT_ELBASAN => Self::Elbasan,
+            ffi::G_UNICODE_SCRIPT_GRANTHA => Self::Grantha,
+            ffi::G_UNICODE_SCRIPT_KHOJKI => Self::Khojki,
+            ffi::G_UNICODE_SCRIPT_KHUDAWADI => Self::Khudawadi,
+            ffi::G_UNICODE_SCRIPT_LINEAR_A => Self::LinearA,
+            ffi::G_UNICODE_SCRIPT_MAHAJANI => Self::Mahajani,
+            ffi::G_UNICODE_SCRIPT_MANICHAEAN => Self::Manichaean,
+            ffi::G_UNICODE_SCRIPT_MENDE_KIKAKUI => Self::MendeKikakui,
+            ffi::G_UNICODE_SCRIPT_MODI => Self::Modi,
+            ffi::G_UNICODE_SCRIPT_MRO => Self::Mro,
+            ffi::G_UNICODE_SCRIPT_NABATAEAN => Self::Nabataean,
+            ffi::G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN => Self::OldNorthArabian,
+            ffi::G_UNICODE_SCRIPT_OLD_PERMIC => Self::OldPermic,
+            ffi::G_UNICODE_SCRIPT_PAHAWH_HMONG => Self::PahawhHmong,
+            ffi::G_UNICODE_SCRIPT_PALMYRENE => Self::Palmyrene,
+            ffi::G_UNICODE_SCRIPT_PAU_CIN_HAU => Self::PauCinHau,
+            ffi::G_UNICODE_SCRIPT_PSALTER_PAHLAVI => Self::PsalterPahlavi,
+            ffi::G_UNICODE_SCRIPT_SIDDHAM => Self::Siddham,
+            ffi::G_UNICODE_SCRIPT_TIRHUTA => Self::Tirhuta,
+            ffi::G_UNICODE_SCRIPT_WARANG_CITI => Self::WarangCiti,
+            ffi::G_UNICODE_SCRIPT_AHOM => Self::Ahom,
+            ffi::G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS => Self::AnatolianHieroglyphs,
+            ffi::G_UNICODE_SCRIPT_HATRAN => Self::Hatran,
+            ffi::G_UNICODE_SCRIPT_MULTANI => Self::Multani,
+            ffi::G_UNICODE_SCRIPT_OLD_HUNGARIAN => Self::OldHungarian,
+            ffi::G_UNICODE_SCRIPT_SIGNWRITING => Self::Signwriting,
+            ffi::G_UNICODE_SCRIPT_ADLAM => Self::Adlam,
+            ffi::G_UNICODE_SCRIPT_BHAIKSUKI => Self::Bhaiksuki,
+            ffi::G_UNICODE_SCRIPT_MARCHEN => Self::Marchen,
+            ffi::G_UNICODE_SCRIPT_NEWA => Self::Newa,
+            ffi::G_UNICODE_SCRIPT_OSAGE => Self::Osage,
+            ffi::G_UNICODE_SCRIPT_TANGUT => Self::Tangut,
+            ffi::G_UNICODE_SCRIPT_MASARAM_GONDI => Self::MasaramGondi,
+            ffi::G_UNICODE_SCRIPT_NUSHU => Self::Nushu,
+            ffi::G_UNICODE_SCRIPT_SOYOMBO => Self::Soyombo,
+            ffi::G_UNICODE_SCRIPT_ZANABAZAR_SQUARE => Self::ZanabazarSquare,
+            ffi::G_UNICODE_SCRIPT_DOGRA => Self::Dogra,
+            ffi::G_UNICODE_SCRIPT_GUNJALA_GONDI => Self::GunjalaGondi,
+            ffi::G_UNICODE_SCRIPT_HANIFI_ROHINGYA => Self::HanifiRohingya,
+            ffi::G_UNICODE_SCRIPT_MAKASAR => Self::Makasar,
+            ffi::G_UNICODE_SCRIPT_MEDEFAIDRIN => Self::Medefaidrin,
+            ffi::G_UNICODE_SCRIPT_OLD_SOGDIAN => Self::OldSogdian,
+            ffi::G_UNICODE_SCRIPT_SOGDIAN => Self::Sogdian,
+            ffi::G_UNICODE_SCRIPT_ELYMAIC => Self::Elymaic,
+            ffi::G_UNICODE_SCRIPT_NANDINAGARI => Self::Nandinagari,
+            ffi::G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG => Self::NyiakengPuachueHmong,
+            ffi::G_UNICODE_SCRIPT_WANCHO => Self::Wancho,
+            ffi::G_UNICODE_SCRIPT_CHORASMIAN => Self::Chorasmian,
+            ffi::G_UNICODE_SCRIPT_DIVES_AKURU => Self::DivesAkuru,
+            ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT => Self::KhitanSmallScript,
+            ffi::G_UNICODE_SCRIPT_YEZIDI => Self::Yezidi,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]

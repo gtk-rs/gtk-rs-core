@@ -56,7 +56,7 @@ impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
 
 bitflags! {
     #[doc(alias = "GFileTest")]
-    pub struct FileTest: u32 {
+    pub(crate) struct FileTest: u32 {
         #[doc(alias = "G_FILE_TEST_IS_REGULAR")]
         const IS_REGULAR = ffi::G_FILE_TEST_IS_REGULAR as u32;
         #[doc(alias = "G_FILE_TEST_IS_SYMLINK")]

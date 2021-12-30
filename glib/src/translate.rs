@@ -2323,6 +2323,7 @@ where
 
 #[cfg(test)]
 mod tests {
+    use crate::FileTest;
     use std::fs;
     use tempfile::tempdir;
 
@@ -2444,11 +2445,11 @@ mod tests {
         );
         assert!(crate::file_test(
             &dir_1,
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
         assert!(crate::file_test(
             &dir_1.canonicalize().unwrap(),
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
 
         // And test with some non-ASCII characters
@@ -2468,11 +2469,11 @@ mod tests {
         );
         assert!(crate::file_test(
             &dir_2,
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
         assert!(crate::file_test(
             &dir_2.canonicalize().unwrap(),
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
     }
 
@@ -2497,11 +2498,11 @@ mod tests {
         );
         assert!(crate::file_test(
             &dir_1,
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
         assert!(crate::file_test(
             &dir_1.canonicalize().unwrap(),
-            crate::FileTest::EXISTS | crate::FileTest::IS_DIR
+            FileTest::EXISTS | FileTest::IS_DIR
         ));
     }
 

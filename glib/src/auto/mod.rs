@@ -38,6 +38,7 @@ pub use self::enums::KeyFileError;
 pub use self::enums::OptionArg;
 pub use self::enums::SeekType;
 pub use self::enums::TimeType;
+pub use self::enums::UnicodeScript;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::enums::UriError;
@@ -47,7 +48,7 @@ mod flags;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::flags::FileSetContentsFlags;
-pub use self::flags::FileTest;
+pub(crate) use self::flags::FileTest;
 pub use self::flags::FormatSizeFlags;
 pub use self::flags::IOCondition;
 pub use self::flags::KeyFileFlags;

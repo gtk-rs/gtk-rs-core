@@ -466,18 +466,6 @@ pub fn io_modules_scan_all_in_directory(dirname: impl AsRef<std::path::Path>) {
 //    unsafe { TODO: call ffi:g_io_modules_scan_all_in_directory_with_scope() }
 //}
 
-#[doc(alias = "g_io_scheduler_cancel_all_jobs")]
-pub fn io_scheduler_cancel_all_jobs() {
-    unsafe {
-        ffi::g_io_scheduler_cancel_all_jobs();
-    }
-}
-
-//#[doc(alias = "g_io_scheduler_push_job")]
-//pub fn io_scheduler_push_job(job_func: /*Unimplemented*/Fn(/*Ignored*/IOSchedulerJob, Option<&Cancellable>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>, io_priority: i32, cancellable: Option<&impl IsA<Cancellable>>) {
-//    unsafe { TODO: call ffi:g_io_scheduler_push_job() }
-//}
-
 #[doc(alias = "g_keyfile_settings_backend_new")]
 pub fn keyfile_settings_backend_new(
     filename: &str,
@@ -496,13 +484,6 @@ pub fn keyfile_settings_backend_new(
 #[doc(alias = "g_memory_settings_backend_new")]
 pub fn memory_settings_backend_new() -> SettingsBackend {
     unsafe { from_glib_full(ffi::g_memory_settings_backend_new()) }
-}
-
-#[doc(alias = "g_networking_init")]
-pub fn networking_init() {
-    unsafe {
-        ffi::g_networking_init();
-    }
 }
 
 #[doc(alias = "g_null_settings_backend_new")]
