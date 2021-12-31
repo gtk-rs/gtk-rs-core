@@ -83,6 +83,12 @@ impl crate::value::ToValueOptional for ParamSpec {
     }
 }
 
+impl AsRef<ParamSpec> for ParamSpec {
+    fn as_ref(&self) -> &ParamSpec {
+        self
+    }
+}
+
 unsafe impl Send for ParamSpec {}
 unsafe impl Sync for ParamSpec {}
 
@@ -205,6 +211,17 @@ impl ParamSpec {
     //pub fn steal_qdata(&self, quark: /*Ignored*/glib::Quark) -> /*Unimplemented*/Option<Fundamental: Pointer> {
     //    unsafe { TODO: call gobject_ffi::g_param_spec_steal_qdata() }
     //}
+
+    #[cfg(any(feature = "v2_66", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[doc(alias = "g_param_spec_is_valid_name")]
+    pub fn is_valid_name(name: &str) -> bool {
+        unsafe {
+            from_glib(gobject_ffi::g_param_spec_is_valid_name(
+                name.to_glib_none().0,
+            ))
+        }
+    }
 }
 
 pub unsafe trait ParamSpecType:
@@ -315,6 +332,12 @@ macro_rules! define_param_spec {
 
             pub fn upcast_ref(&self) -> &ParamSpec {
                 &*self
+            }
+        }
+
+        impl AsRef<ParamSpec> for $rust_type {
+            fn as_ref(&self) -> &ParamSpec {
+                &self
             }
         }
     };
