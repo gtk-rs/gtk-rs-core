@@ -5,7 +5,7 @@ use crate::Cancellable;
 use crate::Task;
 use glib::object::IsA;
 use glib::translate::*;
-use glib::value::{ToSendValue, ValueType};
+use glib::value::ValueType;
 use libc::c_void;
 use std::boxed::Box as Box_;
 use std::ptr;
@@ -60,9 +60,18 @@ impl Task {
             ffi::g_task_set_priority(self.to_glib_none().0, priority.into_glib());
         }
     }
+}
 
+pub trait TaskExtManual<T: ValueType> {
     #[doc(alias = "g_task_return_value")]
-    pub fn return_value<V: ValueType>(&self, result: &V) {
+    fn return_value(&self, result: &T);
+
+    #[doc(alias = "g_task_propagate_value")]
+    fn propagate_value(&self) -> Result<T, glib::Error>;
+}
+
+impl<T: ValueType> TaskExtManual<T> for Task {
+    fn return_value(&self, result: &T) {
         unsafe extern "C" fn value_free(value: *mut c_void) {
             let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
         }
@@ -76,8 +85,7 @@ impl Task {
         }
     }
 
-    #[doc(alias = "g_task_propagate_value")]
-    pub fn propagate_value<V: ValueType>(&self) -> Result<V, glib::Error> {
+    fn propagate_value(&self) -> Result<T, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
@@ -87,16 +95,24 @@ impl Task {
             let value =
                 Option::<glib::Value>::from_glib_full(value as *mut glib::gobject_ffi::GValue)
                     .unwrap_or_else(|| glib::Value::from_type(glib::types::Type::UNIT));
-            Ok(V::from_value(&value))
+            Ok(T::from_value(&value))
         }
     }
+}
 
+pub trait TaskExtManualSend<T: ValueType + Send>: TaskExtManual<T> {
     #[doc(alias = "g_task_run_in_thread")]
-    pub fn run_in_thread<Q, V>(&self, task_func: Q)
+    fn run_in_thread<Q>(&self, task_func: Q)
     where
-        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>) -> Result<V, glib::Error>,
+        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>) -> Result<T, glib::Error>,
+        Q: Send + 'static;
+}
+
+impl<T: ValueType + Send> TaskExtManualSend<T> for Task {
+    fn run_in_thread<Q>(&self, task_func: Q)
+    where
+        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>) -> Result<T, glib::Error>,
         Q: Send + 'static,
-        V: ValueType + ToSendValue,
     {
         let task_func_data = Box_::new(task_func);
 
@@ -124,7 +140,7 @@ impl Task {
         ) where
             Q: FnOnce(&Task, Option<&glib::Object>, Option<&Cancellable>) -> Result<V, glib::Error>,
             Q: Send + 'static,
-            V: ValueType + ToSendValue,
+            V: ValueType + Send,
         {
             let task = Task::from_glib_borrow(task);
             let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
@@ -140,7 +156,7 @@ impl Task {
             }
         }
 
-        let task_func = trampoline::<Q, V>;
+        let task_func = trampoline::<Q, T>;
         unsafe {
             ffi::g_task_run_in_thread(self.to_glib_none().0, Some(task_func));
         }

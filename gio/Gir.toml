@@ -1086,6 +1086,7 @@ status = "generate"
 [[object]]
 name = "Gio.Task"
 status = "generate"
+manual_traits = ["TaskExtManual", "TaskExtManualSend"]
     [[object.function]]
     name = "new"
     #wrong prototype
@@ -1110,10 +1111,6 @@ status = "generate"
     name = "set_task_data"
     #high level bindings should not manually touch task data
     ignore = true
-    [[object.function]]
-    name = "run_in_thread"
-    #needs custom impl for task func
-    manual = true
     [[object.function]]
     name = "return_boolean"
     #not needed
@@ -1142,10 +1139,17 @@ status = "generate"
     name = "return_value"
     #wrong mutability
     manual = true
+    doc_trait_name = "TaskExtManual"
     [[object.function]]
     name = "propagate_value"
     #wrong mutability
     manual = true
+    doc_trait_name = "TaskExtManual"
+    [[object.function]]
+    name = "run_in_thread"
+    #needs custom impl for task func
+    manual = true
+    doc_trait_name = "TaskExtManualSend"
 
 [[object]]
 name = "Gio.ThemedIcon"

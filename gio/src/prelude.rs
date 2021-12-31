@@ -27,6 +27,7 @@ pub use crate::pollable_input_stream::PollableInputStreamExtManual;
 pub use crate::pollable_output_stream::PollableOutputStreamExtManual;
 pub use crate::settings::SettingsExtManual;
 pub use crate::socket::*;
+pub use crate::task::{TaskExtManual, TaskExtManualSend};
 pub use crate::tls_connection::TlsConnectionExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_fd_list::UnixFDListExtManual;
