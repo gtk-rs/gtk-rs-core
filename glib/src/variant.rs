@@ -283,6 +283,7 @@ impl Variant {
     /// * if given `index` is larger than number of children.
     #[doc(alias = "get_child_value")]
     #[doc(alias = "g_variant_get_child_value")]
+    #[must_use]
     pub fn child_value(&self, index: usize) -> Variant {
         assert!(self.is_container());
         assert!(index < self.n_children());
@@ -662,6 +663,7 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Returns a copy of the variant in normal form.
     #[doc(alias = "g_variant_get_normal_form")]
+    #[must_use]
     pub fn normal_form(&self) -> Self {
         unsafe { from_glib_full(ffi::g_variant_get_normal_form(self.to_glib_none().0)) }
     }
@@ -669,6 +671,7 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Returns a copy of the variant in the opposite endianness.
     #[doc(alias = "g_variant_byteswap")]
+    #[must_use]
     pub fn byteswap(&self) -> Self {
         unsafe { from_glib_full(ffi::g_variant_byteswap(self.to_glib_none().0)) }
     }

@@ -157,7 +157,7 @@ impl Device {
             let status = ffi::cairo_device_acquire(self.to_raw_none());
             status_to_result(status)?;
         }
-        Ok(DeviceAcquireGuard { 0: self })
+        Ok(DeviceAcquireGuard(self))
     }
 
     #[doc(alias = "cairo_device_release")]
