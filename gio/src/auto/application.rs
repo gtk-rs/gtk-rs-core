@@ -162,7 +162,7 @@ pub trait ApplicationExt: 'static {
     );
 
     //#[doc(alias = "g_application_add_main_option_entries")]
-    //fn add_main_option_entries(&self, entries: /*Ignored*/&[&glib::OptionEntry]);
+    //fn add_main_option_entries(&self, entries: /*Ignored*/&[glib::OptionEntry]);
 
     //#[doc(alias = "g_application_add_option_group")]
     //fn add_option_group(&self, group: /*Ignored*/&glib::OptionGroup);
@@ -349,7 +349,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    //fn add_main_option_entries(&self, entries: /*Ignored*/&[&glib::OptionEntry]) {
+    //fn add_main_option_entries(&self, entries: /*Ignored*/&[glib::OptionEntry]) {
     //    unsafe { TODO: call ffi:g_application_add_main_option_entries() }
     //}
 

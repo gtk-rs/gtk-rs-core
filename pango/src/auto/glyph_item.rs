@@ -35,7 +35,7 @@ impl GlyphItem {
     //}
 
     //#[doc(alias = "pango_glyph_item_letter_space")]
-    //pub fn letter_space(&mut self, text: &str, log_attrs: /*Ignored*/&[&LogAttr], letter_spacing: i32) {
+    //pub fn letter_space(&mut self, text: &str, log_attrs: /*Ignored*/&[LogAttr], letter_spacing: i32) {
     //    unsafe { TODO: call ffi:pango_glyph_item_letter_space() }
     //}
 
