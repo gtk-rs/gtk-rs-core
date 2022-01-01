@@ -101,7 +101,7 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
 
         let mut map = wrap
             .steal_qdata::<HashMap<String, Action>>(*ACTION_MAP_LOOKUP_ACTION_QUARK)
-            .unwrap_or_else(HashMap::new);
+            .unwrap_or_default();
         map.insert(action_name.to_string(), action);
         wrap.set_qdata(*ACTION_MAP_LOOKUP_ACTION_QUARK, map);
 

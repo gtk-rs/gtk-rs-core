@@ -145,6 +145,7 @@ impl Region {
     }
 
     #[doc(alias = "cairo_region_copy")]
+    #[must_use]
     pub fn copy(&self) -> Region {
         unsafe { Self::from_raw_full(ffi::cairo_region_copy(self.0.as_ptr())) }
     }
