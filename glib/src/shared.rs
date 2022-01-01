@@ -30,7 +30,10 @@ macro_rules! glib_shared_wrapper {
         $(#[$attr])*
         #[derive(Clone)]
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ($crate::shared::Shared<$ffi_name, $name $(<$($generic),+>)?>);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            inner: $crate::shared::Shared<$ffi_name, $name $(<$($generic),+>)?>,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::shared::SharedMemoryManager<$ffi_name> for $name $(<$($generic),+>)? {
@@ -57,13 +60,13 @@ macro_rules! glib_shared_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.0);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
                 $crate::translate::Stash(stash.0, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.0)
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner)
             }
         }
 
@@ -132,7 +135,10 @@ macro_rules! glib_shared_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
-                $name($crate::translate::from_glib_none(ptr))
+                Self {
+                    inner: $crate::translate::from_glib_none(ptr),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -140,7 +146,10 @@ macro_rules! glib_shared_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
-                $name($crate::translate::from_glib_none(ptr))
+                Self {
+                    inner: $crate::translate::from_glib_none(ptr),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -148,7 +157,10 @@ macro_rules! glib_shared_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrFull<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
-                $name($crate::translate::from_glib_full(ptr))
+                Self {
+                    inner: $crate::translate::from_glib_full(ptr),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -157,9 +169,10 @@ macro_rules! glib_shared_wrapper {
             #[inline]
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
                 $crate::translate::Borrowed::new(
-                    $name(
-                        $crate::translate::from_glib_borrow::<_, $crate::shared::Shared<_, _>>(ptr).into_inner()
-                    )
+                    Self {
+                        inner: $crate::translate::from_glib_borrow::<_, $crate::shared::Shared<_, _>>(ptr).into_inner(),
+                        phantom: std::marker::PhantomData,
+                    }
                 )
             }
         }

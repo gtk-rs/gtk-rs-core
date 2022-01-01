@@ -21,19 +21,19 @@ impl Rectangle {
     }
 
     pub fn x(&self) -> i32 {
-        self.0.x
+        self.inner.x
     }
 
     pub fn y(&self) -> i32 {
-        self.0.y
+        self.inner.y
     }
 
     pub fn width(&self) -> i32 {
-        self.0.width
+        self.inner.width
     }
 
     pub fn height(&self) -> i32 {
-        self.0.height
+        self.inner.height
     }
 }
 

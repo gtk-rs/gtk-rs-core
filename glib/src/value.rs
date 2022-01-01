@@ -137,11 +137,11 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeChecker<T> {
     #[doc(alias = "g_type_check_value_holds")]
     fn check(value: &Value) -> Result<(), Self::Error> {
         unsafe {
-            if gobject_ffi::g_type_check_value_holds(&value.0, T::static_type().into_glib())
+            if gobject_ffi::g_type_check_value_holds(&value.inner, T::static_type().into_glib())
                 == ffi::GFALSE
             {
                 Err(ValueTypeMismatchError::new(
-                    Type::from_glib(value.0.g_type),
+                    Type::from_glib(value.inner.g_type),
                     T::static_type(),
                 ))
             } else {
@@ -190,7 +190,7 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeOrNoneChecker<T>
         unsafe {
             // Values are always zero-initialized so even if pointers are only 32 bits then the
             // whole 64 bit value will be 0 for NULL pointers.
-            if value.0.data[0].v_uint64 == 0 {
+            if value.inner.data[0].v_uint64 == 0 {
                 return Err(Self::Error::UnexpectedNone);
             }
         }
@@ -443,7 +443,7 @@ impl Value {
     // rustdoc-stripper-ignore-next
     /// Returns the type of the value.
     pub fn type_(&self) -> Type {
-        unsafe { from_glib(self.0.g_type) }
+        unsafe { from_glib(self.inner.g_type) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -484,7 +484,7 @@ impl Value {
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
-            ptr::read(&s.0)
+            ptr::read(&s.inner)
         }
     }
 
@@ -516,7 +516,7 @@ impl<'a, T: ?Sized + ToValue> From<&'a T> for Value {
 
 impl From<SendValue> for Value {
     fn from(value: SendValue) -> Self {
-        Value(value.into_raw())
+        unsafe { Value::unsafe_from(value.into_raw()) }
     }
 }
 
@@ -617,7 +617,7 @@ impl SendValue {
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
-            ptr::read(&s.0)
+            ptr::read(&s.inner)
         }
     }
 }
@@ -807,7 +807,7 @@ impl ToValue for bool {
     fn to_value(&self) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {
-            gobject_ffi::g_value_set_boolean(&mut value.0, self.into_glib());
+            gobject_ffi::g_value_set_boolean(&mut value.inner, self.into_glib());
         }
         value
     }
@@ -835,7 +835,7 @@ macro_rules! numeric {
             fn to_value(&self) -> Value {
                 let mut value = Value::for_value_type::<Self>();
                 unsafe {
-                    $set(&mut value.0, *self);
+                    $set(&mut value.inner, *self);
                 }
                 value
             }

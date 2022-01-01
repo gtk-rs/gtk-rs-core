@@ -46,18 +46,18 @@ impl FileAttributeInfo {
         unsafe {
             use std::ffi::CStr;
 
-            CStr::from_ptr(self.0.name)
+            CStr::from_ptr(self.inner.name)
                 .to_str()
                 .expect("non-UTF-8 string")
         }
     }
 
     pub fn type_(&self) -> crate::FileAttributeType {
-        unsafe { from_glib(self.0.type_) }
+        unsafe { from_glib(self.inner.type_) }
     }
 
     pub fn flags(&self) -> crate::FileAttributeInfoFlags {
-        unsafe { from_glib(self.0.flags) }
+        unsafe { from_glib(self.inner.flags) }
     }
 }
 

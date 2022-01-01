@@ -11,31 +11,31 @@ glib::wrapper! {
 
 impl Analysis {
     pub fn font(&self) -> Font {
-        unsafe { from_glib_none(self.0.font) }
+        unsafe { from_glib_none(self.inner.font) }
     }
 
     pub fn level(&self) -> u8 {
-        self.0.level
+        self.inner.level
     }
 
     pub fn gravity(&self) -> Gravity {
-        unsafe { from_glib(self.0.gravity as i32) }
+        unsafe { from_glib(self.inner.gravity as i32) }
     }
 
     pub fn flags(&self) -> u8 {
-        self.0.flags
+        self.inner.flags
     }
 
     pub fn script(&self) -> Script {
-        unsafe { from_glib(self.0.script as i32) }
+        unsafe { from_glib(self.inner.script as i32) }
     }
 
     pub fn language(&self) -> Language {
-        unsafe { from_glib_none(self.0.language) }
+        unsafe { from_glib_none(self.inner.language) }
     }
 
     pub fn extra_attrs(&self) -> Vec<Attribute> {
-        unsafe { FromGlibPtrContainer::from_glib_none(self.0.extra_attrs) }
+        unsafe { FromGlibPtrContainer::from_glib_none(self.inner.extra_attrs) }
     }
 }
 

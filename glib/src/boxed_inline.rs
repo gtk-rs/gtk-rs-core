@@ -12,7 +12,10 @@ macro_rules! glib_boxed_inline_wrapper {
         $(#[$attr])*
         #[derive(Copy, Clone)]
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? (pub(crate) $ffi_name);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            pub(crate) inner: $ffi_name,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
@@ -30,7 +33,10 @@ macro_rules! glib_boxed_inline_wrapper {
         $(#[$attr])*
         #[derive(Copy, Clone)]
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? (pub(crate) $ffi_name);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            pub(crate) inner: $ffi_name,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
@@ -46,12 +52,15 @@ macro_rules! glib_boxed_inline_wrapper {
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? (pub(crate) $ffi_name);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            pub(crate) inner: $ffi_name,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             fn clone(&self) -> Self {
                 unsafe {
-                    $crate::translate::from_glib_none(&self.0 as *const $ffi_name)
+                    $crate::translate::from_glib_none(&self.inner as *const $ffi_name)
                 }
             }
         }
@@ -60,7 +69,7 @@ macro_rules! glib_boxed_inline_wrapper {
             fn drop(&mut self) {
                 unsafe {
                     let clear = |$clear_arg: *mut $ffi_name| $clear_expr;
-                    clear(&mut self.0 as *mut $ffi_name);
+                    clear(&mut self.inner as *mut $ffi_name);
                 }
             }
         }
@@ -82,12 +91,15 @@ macro_rules! glib_boxed_inline_wrapper {
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? (pub(crate) $ffi_name);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            pub(crate) inner: $ffi_name,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             fn clone(&self) -> Self {
                 unsafe {
-                    $crate::translate::from_glib_none(&self.0 as *const $ffi_name)
+                    $crate::translate::from_glib_none(&self.inner as *const $ffi_name)
                 }
             }
         }
@@ -96,7 +108,7 @@ macro_rules! glib_boxed_inline_wrapper {
             fn drop(&mut self) {
                 unsafe {
                     let clear = |$clear_arg: *mut $ffi_name| $clear_expr;
-                    clear(&mut self.0 as *mut $ffi_name);
+                    clear(&mut self.inner as *mut $ffi_name);
                 }
             }
         }
@@ -126,14 +138,20 @@ macro_rules! glib_boxed_inline_wrapper {
                 let mut v = std::mem::MaybeUninit::zeroed();
                 let init = |$init_arg: *mut $ffi_name| $init_expr;
                 init(v.as_mut_ptr());
-                $name(v.assume_init())
+                Self {
+                    inner: v.assume_init(),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn unsafe_from(t: $ffi_name) -> Self {
-                $name(t)
+                Self {
+                    inner: t,
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -143,14 +161,14 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
-                $crate::translate::Stash(&self.0 as *const $ffi_name, self)
+                $crate::translate::Stash(&self.inner as *const $ffi_name, self)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *const $ffi_name {
                 unsafe {
                     let copy = |$copy_arg: *const $ffi_name| $copy_expr;
-                    copy(&self.0 as *const $ffi_name)
+                    copy(&self.inner as *const $ffi_name)
                 }
             }
         }
@@ -161,7 +179,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[inline]
             fn to_glib_none_mut(&'a mut self) -> $crate::translate::StashMut<'a, *mut $ffi_name, Self> {
-                let ptr = &mut self.0 as *mut $ffi_name;
+                let ptr = &mut self.inner as *mut $ffi_name;
                 $crate::translate::StashMut(ptr, self)
             }
         }
@@ -171,7 +189,7 @@ macro_rules! glib_boxed_inline_wrapper {
             type Storage = Option<Vec<*const $ffi_name>>;
 
             fn to_glib_none_from_slice(t: &'a [$name $(<$($generic),+>)?]) -> (*mut *const $ffi_name, Self::Storage) {
-                let mut v: Vec<_> = t.iter().map(|s| &s.0 as *const $ffi_name).collect();
+                let mut v: Vec<_> = t.iter().map(|s| &s.inner as *const $ffi_name).collect();
                 v.push(std::ptr::null_mut() as *const $ffi_name);
 
                 (v.as_mut_ptr(), Some(v))
@@ -182,7 +200,7 @@ macro_rules! glib_boxed_inline_wrapper {
                     let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
-                        std::ptr::write(v_ptr.add(i), &s.0 as *const $ffi_name);
+                        std::ptr::write(v_ptr.add(i), &s.inner as *const $ffi_name);
                     }
 
                     v_ptr
@@ -245,7 +263,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
                     for (i, s) in t.iter().enumerate() {
                         let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
-                        copy_into(v_ptr.add(i), &s.0 as *const $ffi_name);
+                        copy_into(v_ptr.add(i), &s.inner as *const $ffi_name);
                     }
 
                     v_ptr
@@ -283,7 +301,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
                 let mut v = <$name $(<$($generic),+>)? as $crate::translate::Uninitialized>::uninitialized();
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
-                copy_into(&mut v.0 as *mut $ffi_name, ptr as *const $ffi_name);
+                copy_into(&mut v.inner as *mut $ffi_name, ptr as *const $ffi_name);
 
                 v
             }
@@ -305,7 +323,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
                 let mut v = <$name $(<$($generic),+>)? as $crate::translate::Uninitialized>::uninitialized();
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
-                copy_into(&mut v.0 as *mut $ffi_name, ptr as *const $ffi_name);
+                copy_into(&mut v.inner as *mut $ffi_name, ptr as *const $ffi_name);
 
                 let free = |$free_arg: *mut $ffi_name| $free_expr;
                 free(ptr);
@@ -328,9 +346,10 @@ macro_rules! glib_boxed_inline_wrapper {
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
                 assert!(!ptr.is_null());
 
-                let v = std::ptr::read(ptr);
-
-                $crate::translate::Borrowed::new($name(v))
+                $crate::translate::Borrowed::new(Self {
+                    inner: std::ptr::read(ptr),
+                    phantom: std::marker::PhantomData,
+                })
             }
         }
 

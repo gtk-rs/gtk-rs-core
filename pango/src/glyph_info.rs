@@ -10,15 +10,15 @@ glib::wrapper! {
 
 impl GlyphInfo {
     pub fn glyph(&self) -> u32 {
-        self.0.glyph
+        self.inner.glyph
     }
 
     pub fn geometry(&self) -> &GlyphGeometry {
-        unsafe { &*(&self.0.geometry as *const _ as *const GlyphGeometry) }
+        unsafe { &*(&self.inner.geometry as *const _ as *const GlyphGeometry) }
     }
 
     pub fn geometry_mut(&mut self) -> &mut GlyphGeometry {
-        unsafe { &mut *(&mut self.0.geometry as *mut _ as *mut GlyphGeometry) }
+        unsafe { &mut *(&mut self.inner.geometry as *mut _ as *mut GlyphGeometry) }
     }
 }
 

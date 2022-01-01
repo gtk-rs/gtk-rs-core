@@ -16,6 +16,6 @@ impl AttrFontFeatures {
     }
 
     pub fn features(&self) -> glib::GString {
-        unsafe { from_glib_none(self.0.features) }
+        unsafe { from_glib_none(self.inner.features) }
     }
 }

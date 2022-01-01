@@ -87,8 +87,8 @@ impl GStringBuilder {
     /// If the string builder contains invalid UTF-8 this function panics.
     pub fn as_str(&self) -> &str {
         unsafe {
-            let ptr: *const u8 = (*self.0).str as _;
-            let len: usize = (*self.0).len;
+            let ptr: *const u8 = (*self.inner).str as _;
+            let len: usize = (*self.inner).len;
             let slice = slice::from_raw_parts(ptr, len);
             std::str::from_utf8(slice).unwrap()
         }

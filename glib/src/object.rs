@@ -609,19 +609,25 @@ macro_rules! glib_object_wrapper {
         // the type we currently know for it
         #[derive(Clone, Hash, Ord, Eq, Debug)]
         #[repr(transparent)]
-        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ($crate::object::ObjectRef);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            inner: $crate::object::ObjectRef,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::ObjectRef {
             fn from(s: $name $(<$($generic),+>)?) -> $crate::object::ObjectRef {
-                s.0
+                s.inner
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
-                $name(t)
+                $name {
+                    inner: t,
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -636,18 +642,18 @@ macro_rules! glib_object_wrapper {
             type GlibClassType = $ffi_class_name;
 
             fn as_object_ref(&self) -> &$crate::object::ObjectRef {
-                &self.0
+                &self.inner
             }
 
             fn as_ptr(&self) -> *mut Self::GlibType {
-                $crate::translate::ToGlibPtr::to_glib_none(&self.0).0 as *mut _
+                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::ObjectRef {
-                &self.0
+                &self.inner
             }
         }
 
@@ -676,13 +682,13 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.0);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
                 $crate::translate::Stash(stash.0 as *const _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *const $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.0) as *const _
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *const _
             }
         }
 
@@ -693,13 +699,13 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.0);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
                 $crate::translate::Stash(stash.0 as *mut _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.0) as *mut _
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *mut _
             }
         }
 
@@ -770,7 +776,10 @@ macro_rules! glib_object_wrapper {
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_none(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -780,7 +789,10 @@ macro_rules! glib_object_wrapper {
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_none(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -790,7 +802,10 @@ macro_rules! glib_object_wrapper {
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_full(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_full(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
@@ -801,9 +816,10 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $crate::translate::Borrowed::new(
-                    $name(
-                        $crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner()
-                    )
+                    $name {
+                        inner: $crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner(),
+                        phantom: std::marker::PhantomData,
+                    }
                 )
             }
         }
@@ -910,14 +926,14 @@ macro_rules! glib_object_wrapper {
         impl<T: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<T> for $name $(<$($generic),+>)? {
             #[inline]
             fn eq(&self, other: &T) -> bool {
-                std::cmp::PartialEq::eq(&self.0, $crate::object::ObjectType::as_object_ref(other))
+                std::cmp::PartialEq::eq(&self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 
         impl<T: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<T> for $name $(<$($generic),+>)? {
             #[inline]
             fn partial_cmp(&self, other: &T) -> Option<std::cmp::Ordering> {
-                std::cmp::PartialOrd::partial_cmp(&self.0, $crate::object::ObjectType::as_object_ref(other))
+                std::cmp::PartialOrd::partial_cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 
@@ -2546,7 +2562,7 @@ impl<T: ObjectType> ObjectExt for T {
                     actual_type
                 );
 
-                ret.0.g_type = return_type.into_glib();
+                ret.inner.g_type = return_type.into_glib();
                 Some(ret)
             })
         };
@@ -3094,7 +3110,7 @@ fn validate_property_type(
             match property_value.get::<Option<Object>>() {
                 Ok(Some(obj)) => {
                     if obj.type_().is_a(pspec.value_type()) {
-                        property_value.0.g_type = pspec.value_type().into_glib();
+                        property_value.inner.g_type = pspec.value_type().into_glib();
                     } else {
                         return Err(
                             bool_error!(
@@ -3109,7 +3125,7 @@ fn validate_property_type(
                 }
                 Ok(None) => {
                     // If the value is None then the type is compatible too
-                    property_value.0.g_type = pspec.value_type().into_glib();
+                    property_value.inner.g_type = pspec.value_type().into_glib();
                 }
                 Err(_) => unreachable!("property_value type conformity already checked"),
             }
@@ -3165,7 +3181,7 @@ fn validate_signal_arguments(
             match arg.get::<Option<Object>>() {
                 Ok(Some(obj)) => {
                     if obj.type_().is_a(param_type) {
-                        arg.0.g_type = param_type.into_glib();
+                        arg.inner.g_type = param_type.into_glib();
                     } else {
                         return Err(
                             bool_error!(
@@ -3181,7 +3197,7 @@ fn validate_signal_arguments(
                 }
                 Ok(None) => {
                     // If the value is None then the type is compatible too
-                    arg.0.g_type = param_type.into_glib();
+                    arg.inner.g_type = param_type.into_glib();
                 }
                 Err(_) => unreachable!("property_value type conformity already checked"),
             }
@@ -3561,8 +3577,14 @@ impl<'a> BindingBuilder<'a> {
         }
 
         unsafe {
-            let source = Object(self.source.clone());
-            let target = Object(self.target.clone());
+            let source = Object {
+                inner: self.source.clone(),
+                phantom: std::marker::PhantomData,
+            };
+            let target = Object {
+                inner: self.target.clone(),
+                phantom: std::marker::PhantomData,
+            };
 
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(

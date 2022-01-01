@@ -12,6 +12,6 @@ impl AttrFloat {
     }
 
     pub fn value(&self) -> f64 {
-        self.0.value
+        self.inner.value
     }
 }

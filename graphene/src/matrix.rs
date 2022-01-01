@@ -201,7 +201,7 @@ impl Matrix {
     }
 
     pub fn values(&self) -> &[[f32; 4]; 4] {
-        unsafe { &*(&self.0.value as *const ffi::graphene_simd4x4f_t as *const [[f32; 4]; 4]) }
+        unsafe { &*(&self.inner.value as *const ffi::graphene_simd4x4f_t as *const [[f32; 4]; 4]) }
     }
 }
 

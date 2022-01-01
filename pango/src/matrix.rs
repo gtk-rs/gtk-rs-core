@@ -36,27 +36,27 @@ impl Matrix {
     }
 
     pub fn xx(&self) -> f64 {
-        self.0.xx
+        self.inner.xx
     }
 
     pub fn xy(&self) -> f64 {
-        self.0.xy
+        self.inner.xy
     }
 
     pub fn yx(&self) -> f64 {
-        self.0.yx
+        self.inner.yx
     }
 
     pub fn yy(&self) -> f64 {
-        self.0.yy
+        self.inner.yy
     }
 
     pub fn x0(&self) -> f64 {
-        self.0.x0
+        self.inner.x0
     }
 
     pub fn y0(&self) -> f64 {
-        self.0.y0
+        self.inner.y0
     }
 }
 

@@ -44,6 +44,6 @@ impl AttrColor {
     }
 
     pub fn color(&self) -> Color {
-        unsafe { from_glib_none((&self.0.color) as *const ffi::PangoColor) }
+        unsafe { from_glib_none((&self.inner.color) as *const ffi::PangoColor) }
     }
 }

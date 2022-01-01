@@ -132,6 +132,6 @@ impl AttrInt {
     }
 
     pub fn value(&self) -> i32 {
-        self.0.value
+        self.inner.value
     }
 }
