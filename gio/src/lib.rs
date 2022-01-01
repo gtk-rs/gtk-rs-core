@@ -66,7 +66,6 @@ pub use crate::settings::BindingBuilder;
 mod socket;
 mod subprocess;
 mod subprocess_launcher;
-mod task;
 mod threaded_socket_service;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_fd_list;
@@ -106,6 +105,9 @@ pub use crate::io_extension::*;
 
 mod io_extension_point;
 pub use crate::io_extension_point::*;
+
+mod task;
+pub use crate::task::*;
 
 #[macro_use]
 pub mod subclass;

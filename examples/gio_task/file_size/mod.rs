@@ -8,13 +8,16 @@ glib::wrapper! {
     pub struct FileSize(ObjectSubclass<imp::FileSize>);
 }
 
+unsafe impl Send for FileSize {}
+unsafe impl Sync for FileSize {}
+
 impl FileSize {
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create FileSize")
     }
 
     pub fn retrieved_size(&self) -> Option<i64> {
-        *self.imp().size.borrow()
+        *self.imp().size.lock().unwrap()
     }
 
     pub fn file_size_async<Q: FnOnce(i64, &FileSize) + 'static>(
@@ -24,11 +27,9 @@ impl FileSize {
     ) {
         let closure = move |result: &gio::AsyncResult, source_object: Option<&glib::Object>| {
             let value = result
-                .downcast_ref::<gio::Task>()
+                .downcast_ref::<gio::Task<i64>>()
                 .unwrap()
                 .propagate_value()
-                .unwrap()
-                .get::<i64>()
                 .unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -54,8 +55,8 @@ impl FileSize {
 
             let source_object = source_object.downcast_ref::<FileSize>().unwrap().imp();
 
-            source_object.size.replace(Some(size));
-            task.return_value(&size.to_value());
+            *source_object.size.lock().unwrap() = Some(size);
+            task.return_value(&size);
         });
     }
 
@@ -66,11 +67,9 @@ impl FileSize {
     ) {
         let closure = move |result: &gio::AsyncResult, source_object: Option<&glib::Object>| {
             let value = result
-                .downcast_ref::<gio::Task>()
+                .downcast_ref::<gio::Task<i64>>()
                 .unwrap()
                 .propagate_value()
-                .unwrap()
-                .get::<i64>()
                 .unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -82,22 +81,16 @@ impl FileSize {
             closure,
         );
 
-        let task_func = move |task: &gio::Task,
-                              source_object: Option<&glib::Object>,
+        let task_func = move |task: &gio::Task<i64>,
+                              source_object: Option<&FileSize>,
                               cancellable: Option<&gio::Cancellable>| {
             let size = gio::File::for_path("Cargo.toml")
                 .query_info("*", gio::FileQueryInfoFlags::NONE, cancellable)
                 .unwrap()
                 .size();
 
-            let source_object = source_object
-                .unwrap()
-                .downcast_ref::<FileSize>()
-                .unwrap()
-                .imp();
-
-            source_object.size.replace(Some(size));
-            task.return_value(&size.to_value());
+            *source_object.unwrap().imp().size.lock().unwrap() = Some(size);
+            task.return_value(&size);
         };
 
         task.run_in_thread(task_func);

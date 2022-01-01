@@ -50,8 +50,8 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .unwrap()
             .imp();
 
-        source_object.size.replace(Some(size));
-        task.return_value(&size.to_value());
+        *source_object.size.lock().unwrap() = Some(size);
+        task.return_value(&size);
     });
 }
 
@@ -66,13 +66,15 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
     error: *mut *mut glib::ffi::GError,
 ) -> i64 {
     match gio::AsyncResult::from_glib_borrow(result)
-        .downcast_ref::<gio::Task>()
+        .downcast_ref::<gio::Task<i64>>()
         .unwrap()
         .propagate_value()
     {
-        Ok(v) => v.get::<i64>().unwrap(),
+        Ok(v) => v,
         Err(e) => {
-            *error = e.into_raw();
+            if !error.is_null() {
+                *error = e.into_raw();
+            }
             0
         }
     }
@@ -88,6 +90,6 @@ pub unsafe extern "C" fn my_file_size_get_retrieved_size(this: *mut FileSize) ->
         .downcast_ref::<super::FileSize>()
         .unwrap()
         .imp();
-    let x = *simple_object.size.borrow();
+    let x = *simple_object.size.lock().unwrap();
     x.unwrap_or(-1)
 }

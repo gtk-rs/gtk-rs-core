@@ -2,20 +2,42 @@
 
 use crate::AsyncResult;
 use crate::Cancellable;
-use crate::Task;
 use glib::object::IsA;
+use glib::object::ObjectType as ObjectType_;
+use glib::signal::connect_raw;
+use glib::signal::SignalHandlerId;
 use glib::translate::*;
+use glib::value::ValueType;
+use glib::Cast;
 use libc::c_void;
 use std::boxed::Box as Box_;
+use std::fmt;
+use std::mem::transmute;
 use std::ptr;
 
-impl Task {
+// Implemented manually to make it generic over the return type to ensure the API
+// is sound when the task is moved across threads.
+
+glib::wrapper! {
+    #[doc(alias = "GTask")]
+    pub struct Task<V: ValueType>(Object<ffi::GTask, ffi::GTaskClass>) @implements AsyncResult;
+
+    match fn {
+        type_ => || ffi::g_task_get_type(),
+    }
+}
+
+impl<V: ValueType> Task<V> {
     #[doc(alias = "g_task_new")]
-    pub fn new<P: IsA<Cancellable>, Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static>(
+    pub fn new<P, Q>(
         source_object: Option<&glib::Object>,
         cancellable: Option<&P>,
         callback: Q,
-    ) -> Task {
+    ) -> Self
+    where
+        P: IsA<Cancellable>,
+        Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static,
+    {
         let callback_data = Box_::new(callback);
         unsafe extern "C" fn trampoline<
             Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static,
@@ -40,11 +62,16 @@ impl Task {
         }
     }
 
-    #[doc(alias = "g_task_return_error")]
-    pub fn return_error(&self, error: glib::Error) {
-        unsafe {
-            ffi::g_task_return_error(self.to_glib_none().0, error.to_glib_full() as *mut _);
-        }
+    #[doc(alias = "g_task_get_cancellable")]
+    #[doc(alias = "get_cancellable")]
+    pub fn cancellable(&self) -> Cancellable {
+        unsafe { from_glib_none(ffi::g_task_get_cancellable(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_get_check_cancellable")]
+    #[doc(alias = "get_check_cancellable")]
+    pub fn is_check_cancellable(&self) -> bool {
+        unsafe { from_glib(ffi::g_task_get_check_cancellable(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "get_priority")]
@@ -60,10 +87,152 @@ impl Task {
         }
     }
 
+    #[doc(alias = "g_task_get_completed")]
+    #[doc(alias = "get_completed")]
+    pub fn is_completed(&self) -> bool {
+        unsafe { from_glib(ffi::g_task_get_completed(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_get_context")]
+    #[doc(alias = "get_context")]
+    pub fn context(&self) -> glib::MainContext {
+        unsafe { from_glib_none(ffi::g_task_get_context(self.to_glib_none().0)) }
+    }
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_task_get_name")]
+    #[doc(alias = "get_name")]
+    pub fn name(&self) -> Option<glib::GString> {
+        unsafe { from_glib_none(ffi::g_task_get_name(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_get_return_on_cancel")]
+    #[doc(alias = "get_return_on_cancel")]
+    pub fn is_return_on_cancel(&self) -> bool {
+        unsafe { from_glib(ffi::g_task_get_return_on_cancel(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_had_error")]
+    pub fn had_error(&self) -> bool {
+        unsafe { from_glib(ffi::g_task_had_error(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_return_error_if_cancelled")]
+    pub fn return_error_if_cancelled(&self) -> bool {
+        unsafe { from_glib(ffi::g_task_return_error_if_cancelled(self.to_glib_none().0)) }
+    }
+
+    #[doc(alias = "g_task_set_check_cancellable")]
+    pub fn set_check_cancellable(&self, check_cancellable: bool) {
+        unsafe {
+            ffi::g_task_set_check_cancellable(self.to_glib_none().0, check_cancellable.into_glib());
+        }
+    }
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_task_set_name")]
+    pub fn set_name(&self, name: Option<&str>) {
+        unsafe {
+            ffi::g_task_set_name(self.to_glib_none().0, name.to_glib_none().0);
+        }
+    }
+
+    #[doc(alias = "g_task_set_return_on_cancel")]
+    pub fn set_return_on_cancel(&self, return_on_cancel: bool) -> bool {
+        unsafe {
+            from_glib(ffi::g_task_set_return_on_cancel(
+                self.to_glib_none().0,
+                return_on_cancel.into_glib(),
+            ))
+        }
+    }
+
+    #[doc(alias = "g_task_is_valid")]
+    pub fn is_valid(
+        result: &impl IsA<AsyncResult>,
+        source_object: Option<&impl IsA<glib::Object>>,
+    ) -> bool {
+        unsafe {
+            from_glib(ffi::g_task_is_valid(
+                result.as_ref().to_glib_none().0,
+                source_object.map(|p| p.as_ref()).to_glib_none().0,
+            ))
+        }
+    }
+
+    #[doc(alias = "completed")]
+    pub fn connect_completed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_completed_trampoline<V, F>(
+            this: *mut ffi::GTask,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) where
+            V: ValueType,
+            F: Fn(&Task<V>) + 'static,
+        {
+            let f: &F = &*(f as *const F);
+            f(&from_glib_borrow(this))
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"notify::completed\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    notify_completed_trampoline::<V, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[doc(alias = "g_task_return_error")]
+    pub fn return_error(&self, error: glib::Error) {
+        unsafe {
+            ffi::g_task_return_error(self.to_glib_none().0, error.to_glib_full() as *mut _);
+        }
+    }
+
+    #[doc(alias = "g_task_return_value")]
+    pub fn return_value(&self, result: &V) {
+        unsafe extern "C" fn value_free(value: *mut c_void) {
+            let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
+        }
+
+        unsafe {
+            ffi::g_task_return_pointer(
+                self.to_glib_none().0,
+                result.to_value().to_glib_full() as *mut _,
+                Some(value_free),
+            )
+        }
+    }
+
+    #[doc(alias = "g_task_propagate_value")]
+    pub fn propagate_value(&self) -> Result<V, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
+            if error.is_null() {
+                let value =
+                    Option::<glib::Value>::from_glib_full(value as *mut glib::gobject_ffi::GValue)
+                        .expect("Task::propagate() called before Task::return_result()");
+                Ok(V::from_value(&value))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+}
+
+impl<V: ValueType + Send> Task<V> {
     #[doc(alias = "g_task_run_in_thread")]
-    pub fn run_in_thread<Q>(&self, task_func: Q)
+    pub fn run_in_thread<S, Q>(&self, task_func: Q)
     where
-        Q: FnOnce(&Self, Option<&glib::Object>, Option<&Cancellable>),
+        S: IsA<glib::Object> + Send,
+        Q: FnOnce(&Self, Option<&S>, Option<&Cancellable>),
         Q: Send + 'static,
     {
         let task_func_data = Box_::new(task_func);
@@ -84,13 +253,15 @@ impl Task {
             );
         }
 
-        unsafe extern "C" fn trampoline<Q>(
+        unsafe extern "C" fn trampoline<V, S, Q>(
             task: *mut ffi::GTask,
             source_object: *mut glib::gobject_ffi::GObject,
             user_data: glib::ffi::gpointer,
             cancellable: *mut ffi::GCancellable,
         ) where
-            Q: FnOnce(&Task, Option<&glib::Object>, Option<&Cancellable>),
+            V: ValueType,
+            S: IsA<glib::Object> + Send,
+            Q: FnOnce(&Task<V>, Option<&S>, Option<&Cancellable>),
             Q: Send + 'static,
         {
             let task = Task::from_glib_borrow(task);
@@ -99,44 +270,24 @@ impl Task {
             let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
             task_func(
                 task.as_ref(),
-                source_object.as_ref().as_ref(),
+                source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
                 cancellable.as_ref().as_ref(),
             );
         }
 
-        let task_func = trampoline::<Q>;
+        let task_func = trampoline::<V, S, Q>;
         unsafe {
             ffi::g_task_run_in_thread(self.to_glib_none().0, Some(task_func));
         }
     }
+}
 
-    pub fn return_value(&self, result: &glib::Value) {
-        unsafe extern "C" fn value_free(value: *mut c_void) {
-            let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
-        }
+unsafe impl<V: ValueType + Send> Send for Task<V> {}
+unsafe impl<V: ValueType + Send> Sync for Task<V> {}
 
-        unsafe {
-            ffi::g_task_return_pointer(
-                self.to_glib_none().0,
-                result.to_glib_full() as *mut _,
-                Some(value_free),
-            )
-        }
-    }
-
-    pub fn propagate_value(&self) -> Result<glib::Value, glib::Error> {
-        unsafe {
-            let mut error = ptr::null_mut();
-            let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
-            if !error.is_null() {
-                return Err(from_glib_full(error));
-            }
-            let value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
-            match value {
-                Some(value) => Ok(value),
-                None => Ok(glib::Value::from_type(glib::types::Type::UNIT)),
-            }
-        }
+impl<V: ValueType> fmt::Display for Task<V> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str("Task")
     }
 }
 
@@ -154,17 +305,15 @@ mod test {
                 None,
                 Some(&c),
                 move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task>().unwrap();
+                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
-            t.return_value(&100_i32.to_value());
+            t.return_value(&100_i32);
         }) {
             Err(_) => panic!(),
-            Ok(i) => {
-                assert_eq!(i.get::<i32>().unwrap(), 100);
-            }
+            Ok(i) => assert_eq!(i, 100),
         }
     }
 
@@ -220,23 +369,18 @@ mod test {
                 None,
                 Some(&c),
                 move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task>().unwrap();
+                    let t = a.downcast_ref::<crate::Task<glib::Object>>().unwrap();
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
-            t.return_value(&my_object.upcast::<glib::Object>().to_value());
+            t.return_value(&my_object.upcast::<glib::Object>());
         }) {
             Err(_) => panic!(),
             Ok(o) => {
-                let o = o
-                    .get::<glib::Object>()
-                    .unwrap()
-                    .downcast::<MySimpleObject>()
-                    .unwrap();
-
+                let o = o.downcast::<MySimpleObject>().unwrap();
                 assert_eq!(o.size(), Some(100));
             }
         }
@@ -246,11 +390,11 @@ mod test {
     fn test_error() {
         match run_async_local(|tx, l| {
             let c = crate::Cancellable::new();
-            let t = crate::Task::new(
+            let t = crate::Task::<i32>::new(
                 None,
                 Some(&c),
                 move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task>().unwrap();
+                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
@@ -272,11 +416,11 @@ mod test {
     fn test_cancelled() {
         match run_async_local(|tx, l| {
             let c = crate::Cancellable::new();
-            let t = crate::Task::new(
+            let t = crate::Task::<i32>::new(
                 None,
                 Some(&c),
                 move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task>().unwrap();
+                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },

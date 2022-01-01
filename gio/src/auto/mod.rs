@@ -308,9 +308,6 @@ pub use self::subprocess::Subprocess;
 mod subprocess_launcher;
 pub use self::subprocess_launcher::SubprocessLauncher;
 
-mod task;
-pub use self::task::Task;
-
 mod tcp_connection;
 pub use self::tcp_connection::TcpConnection;
 
