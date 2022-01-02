@@ -36,22 +36,27 @@ impl<V: ValueType> Task<V> {
     ) -> Self
     where
         P: IsA<Cancellable>,
-        Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static,
+        Q: FnOnce(&Self, Option<&glib::Object>) + 'static,
     {
         let callback_data = Box_::new(callback);
         unsafe extern "C" fn trampoline<
-            Q: FnOnce(&AsyncResult, Option<&glib::Object>) + 'static,
+            Q: FnOnce(&R, Option<&glib::Object>) + 'static,
+            R: IsA<AsyncResult>,
         >(
             source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
-            let res = AsyncResult::from_glib_borrow(res);
             let callback: Box_<Q> = Box::from_raw(user_data as *mut _);
-            callback(&res, source_object.as_ref().as_ref());
+            callback(
+                AsyncResult::from_glib_borrow(res)
+                    .downcast_ref::<R>()
+                    .unwrap(),
+                source_object.as_ref().as_ref(),
+            );
         }
-        let callback = trampoline::<Q>;
+        let callback = trampoline::<Q, Self>;
         unsafe {
             from_glib_full(ffi::g_task_new(
                 source_object.to_glib_none().0,
@@ -300,17 +305,16 @@ mod test {
     #[test]
     fn test_int_async_result() {
         match run_async_local(|tx, l| {
-            let c = crate::Cancellable::new();
-            let t = crate::Task::new(
+            let cancellable = crate::Cancellable::new();
+            let task = crate::Task::new(
                 None,
-                Some(&c),
-                move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
+                Some(&cancellable),
+                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
-            t.return_value(&100_i32);
+            task.return_value(&100_i32);
         }) {
             Err(_) => panic!(),
             Ok(i) => assert_eq!(i, 100),
@@ -364,19 +368,18 @@ mod test {
         }
 
         match run_async_local(|tx, l| {
-            let c = crate::Cancellable::new();
-            let t = crate::Task::new(
+            let cancellable = crate::Cancellable::new();
+            let task = crate::Task::new(
                 None,
-                Some(&c),
-                move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task<glib::Object>>().unwrap();
+                Some(&cancellable),
+                move |t: &crate::Task<glib::Object>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
-            t.return_value(&my_object.upcast::<glib::Object>());
+            task.return_value(&my_object.upcast::<glib::Object>());
         }) {
             Err(_) => panic!(),
             Ok(o) => {
@@ -389,17 +392,16 @@ mod test {
     #[test]
     fn test_error() {
         match run_async_local(|tx, l| {
-            let c = crate::Cancellable::new();
-            let t = crate::Task::<i32>::new(
+            let cancellable = crate::Cancellable::new();
+            let task = crate::Task::<i32>::new(
                 None,
-                Some(&c),
-                move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
+                Some(&cancellable),
+                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
-            t.return_error(glib::Error::new(
+            task.return_error(glib::Error::new(
                 crate::IOErrorEnum::WouldBlock,
                 "WouldBlock",
             ));
@@ -415,18 +417,17 @@ mod test {
     #[test]
     fn test_cancelled() {
         match run_async_local(|tx, l| {
-            let c = crate::Cancellable::new();
-            let t = crate::Task::<i32>::new(
+            let cancellable = crate::Cancellable::new();
+            let task = crate::Task::<i32>::new(
                 None,
-                Some(&c),
-                move |a: &AsyncResult, _b: Option<&glib::Object>| {
-                    let t = a.downcast_ref::<crate::Task<i32>>().unwrap();
+                Some(&cancellable),
+                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate_value()).unwrap();
                     l.quit();
                 },
             );
-            c.cancel();
-            t.return_error_if_cancelled();
+            cancellable.cancel();
+            task.return_error_if_cancelled();
         }) {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::Cancelled => {}

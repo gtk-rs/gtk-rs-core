@@ -25,12 +25,8 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |result: &gio::AsyncResult, source_object: Option<&glib::Object>| {
-            let value = result
-                .downcast_ref::<gio::Task<i64>>()
-                .unwrap()
-                .propagate_value()
-                .unwrap();
+        let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
+            let value = task.propagate_value().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
@@ -65,12 +61,8 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |result: &gio::AsyncResult, source_object: Option<&glib::Object>| {
-            let value = result
-                .downcast_ref::<gio::Task<i64>>()
-                .unwrap()
-                .propagate_value()
-                .unwrap();
+        let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
+            let value = task.propagate_value().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
