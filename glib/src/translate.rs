@@ -300,6 +300,19 @@ impl<T> std::ops::Deref for Borrowed<T> {
 }
 
 // rustdoc-stripper-ignore-next
+/// Unsafe variant of the `From` trait.
+pub trait UnsafeFrom<T> {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// It is the responsibility of the caller to ensure *all* invariants of
+    /// the `T` hold before this is called, and that after conversion
+    /// to assume nothing other than the invariants of the output.  Implementors
+    /// of this must ensure that the invariants of the output type hold.
+    unsafe fn unsafe_from(t: T) -> Self;
+}
+
+// rustdoc-stripper-ignore-next
 /// Translate a simple type.
 pub trait IntoGlib {
     type GlibType: Copy;

@@ -65,19 +65,6 @@ pub unsafe trait ObjectType:
 }
 
 // rustdoc-stripper-ignore-next
-/// Unsafe variant of the `From` trait.
-pub trait UnsafeFrom<T> {
-    // rustdoc-stripper-ignore-next
-    /// # Safety
-    ///
-    /// It is the responsibility of the caller to ensure *all* invariants of
-    /// the `T` hold before this is called, and that after conversion
-    /// to assume nothing other than the invariants of the output.  Implementors
-    /// of this must ensure that the invariants of the output type hold.
-    unsafe fn unsafe_from(t: T) -> Self;
-}
-
-// rustdoc-stripper-ignore-next
 /// Declares the "is a" relationship.
 ///
 /// `Self` is said to implement `T`.
@@ -632,7 +619,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
                 $name(t)
             }
