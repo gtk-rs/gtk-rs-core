@@ -9,7 +9,6 @@ use glib::signal::SignalHandlerId;
 use glib::translate::*;
 use glib::value::ValueType;
 use glib::Cast;
-use libc::c_void;
 use std::boxed::Box as Box_;
 use std::fmt;
 use std::mem::transmute;
@@ -197,11 +196,20 @@ impl<V: ValueType> Task<V> {
     #[doc(alias = "g_task_return_pointer")]
     #[doc(alias = "g_task_return_error")]
     pub fn return_result(self, result: Result<&V, glib::Error>) {
-        unsafe extern "C" fn value_free(value: *mut c_void) {
+        #[cfg(not(feature = "v2_64"))]
+        unsafe extern "C" fn value_free(value: *mut libc::c_void) {
             let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
         }
 
         match result {
+            #[cfg(feature = "v2_64")]
+            Ok(v) => unsafe {
+                ffi::g_task_return_value(
+                    self.to_glib_none().0,
+                    v.to_value().to_glib_full() as *mut _,
+                )
+            },
+            #[cfg(not(feature = "v2_64"))]
             Ok(v) => unsafe {
                 ffi::g_task_return_pointer(
                     self.to_glib_none().0,
@@ -222,14 +230,36 @@ impl<V: ValueType> Task<V> {
     pub fn propagate(self) -> Result<V, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
-            if error.is_null() {
-                let value =
-                    Option::<glib::Value>::from_glib_full(value as *mut glib::gobject_ffi::GValue)
-                        .expect("Task::propagate() called before Task::return_result()");
-                Ok(V::from_value(&value))
-            } else {
-                Err(from_glib_full(error))
+
+            #[cfg(feature = "v2_64")]
+            {
+                let mut value = glib::Value::uninitialized();
+                ffi::g_task_propagate_value(
+                    self.to_glib_none().0,
+                    value.to_glib_none_mut().0,
+                    &mut error,
+                );
+
+                if error.is_null() {
+                    Ok(V::from_value(&value))
+                } else {
+                    Err(from_glib_full(error))
+                }
+            }
+
+            #[cfg(not(feature = "v2_64"))]
+            {
+                let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
+
+                if error.is_null() {
+                    let value = Option::<glib::Value>::from_glib_full(
+                        value as *mut glib::gobject_ffi::GValue,
+                    )
+                    .expect("Task::propagate() called before Task::return_result()");
+                    Ok(V::from_value(&value))
+                } else {
+                    Err(from_glib_full(error))
+                }
             }
         }
     }
