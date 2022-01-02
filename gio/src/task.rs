@@ -36,11 +36,11 @@ impl<V: ValueType> Task<V> {
     ) -> Self
     where
         P: IsA<Cancellable>,
-        Q: FnOnce(&Self, Option<&glib::Object>) + 'static,
+        Q: FnOnce(Self, Option<&glib::Object>) + 'static,
     {
         let callback_data = Box_::new(callback);
         unsafe extern "C" fn trampoline<
-            Q: FnOnce(&R, Option<&glib::Object>) + 'static,
+            Q: FnOnce(R, Option<&glib::Object>) + 'static,
             R: IsA<AsyncResult>,
         >(
             source_object: *mut glib::gobject_ffi::GObject,
@@ -50,9 +50,7 @@ impl<V: ValueType> Task<V> {
             let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
             let callback: Box_<Q> = Box::from_raw(user_data as *mut _);
             callback(
-                AsyncResult::from_glib_borrow(res)
-                    .downcast_ref::<R>()
-                    .unwrap(),
+                AsyncResult::from_glib_none(res).downcast::<R>().unwrap(),
                 source_object.as_ref().as_ref(),
             );
         }
@@ -198,7 +196,7 @@ impl<V: ValueType> Task<V> {
     #[doc(alias = "g_task_return_int")]
     #[doc(alias = "g_task_return_pointer")]
     #[doc(alias = "g_task_return_error")]
-    pub fn return_result(&self, result: Result<&V, glib::Error>) {
+    pub fn return_result(self, result: Result<&V, glib::Error>) {
         unsafe extern "C" fn value_free(value: *mut c_void) {
             let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
         }
@@ -221,7 +219,7 @@ impl<V: ValueType> Task<V> {
     #[doc(alias = "g_task_propagate_boolean")]
     #[doc(alias = "g_task_propagate_int")]
     #[doc(alias = "g_task_propagate_pointer")]
-    pub fn propagate(&self) -> Result<V, glib::Error> {
+    pub fn propagate(self) -> Result<V, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
@@ -242,7 +240,7 @@ impl<V: ValueType + Send> Task<V> {
     pub fn run_in_thread<S, Q>(&self, task_func: Q)
     where
         S: IsA<glib::Object> + Send,
-        Q: FnOnce(&Self, Option<&S>, Option<&Cancellable>),
+        Q: FnOnce(Self, Option<&S>, Option<&Cancellable>),
         Q: Send + 'static,
     {
         let task_func_data = Box_::new(task_func);
@@ -271,15 +269,15 @@ impl<V: ValueType + Send> Task<V> {
         ) where
             V: ValueType,
             S: IsA<glib::Object> + Send,
-            Q: FnOnce(&Task<V>, Option<&S>, Option<&Cancellable>),
+            Q: FnOnce(Task<V>, Option<&S>, Option<&Cancellable>),
             Q: Send + 'static,
         {
-            let task = Task::from_glib_borrow(task);
+            let task = Task::from_glib_none(task);
             let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
             let cancellable = Option::<Cancellable>::from_glib_borrow(cancellable);
             let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
             task_func(
-                task.as_ref(),
+                task,
                 source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
                 cancellable.as_ref().as_ref(),
             );
@@ -314,7 +312,7 @@ mod test {
             let task = crate::Task::new(
                 None,
                 Some(&cancellable),
-                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
+                move |t: crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
@@ -377,7 +375,7 @@ mod test {
             let task = crate::Task::new(
                 None,
                 Some(&cancellable),
-                move |t: &crate::Task<glib::Object>, _b: Option<&glib::Object>| {
+                move |t: crate::Task<glib::Object>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
@@ -401,7 +399,7 @@ mod test {
             let task = crate::Task::<i32>::new(
                 None,
                 Some(&cancellable),
-                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
+                move |t: crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
@@ -426,7 +424,7 @@ mod test {
             let task = crate::Task::<i32>::new(
                 None,
                 Some(&cancellable),
-                move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
+                move |t: crate::Task<i32>, _b: Option<&glib::Object>| {
                     tx.send(t.propagate()).unwrap();
                     l.quit();
                 },

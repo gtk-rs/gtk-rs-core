@@ -25,7 +25,7 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
+        let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
             let value = task.propagate().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -61,7 +61,7 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
+        let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
             let value = task.propagate().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
@@ -73,7 +73,7 @@ impl FileSize {
             closure,
         );
 
-        let task_func = move |task: &gio::Task<i64>,
+        let task_func = move |task: gio::Task<i64>,
                               source_object: Option<&FileSize>,
                               cancellable: Option<&gio::Cancellable>| {
             let size = gio::File::for_path("Cargo.toml")
