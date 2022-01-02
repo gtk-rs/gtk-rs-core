@@ -216,7 +216,10 @@ impl<V: ValueType> Task<V> {
     }
 
     #[doc(alias = "g_task_propagate_value")]
-    pub fn propagate_value(&self) -> Result<V, glib::Error> {
+    #[doc(alias = "g_task_propagate_boolean")]
+    #[doc(alias = "g_task_propagate_int")]
+    #[doc(alias = "g_task_propagate_pointer")]
+    pub fn propagate(&self) -> Result<V, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let value = ffi::g_task_propagate_pointer(self.to_glib_none().0, &mut error);
@@ -310,7 +313,7 @@ mod test {
                 None,
                 Some(&cancellable),
                 move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate_value()).unwrap();
+                    tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
             );
@@ -373,7 +376,7 @@ mod test {
                 None,
                 Some(&cancellable),
                 move |t: &crate::Task<glib::Object>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate_value()).unwrap();
+                    tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
             );
@@ -397,7 +400,7 @@ mod test {
                 None,
                 Some(&cancellable),
                 move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate_value()).unwrap();
+                    tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
             );
@@ -422,7 +425,7 @@ mod test {
                 None,
                 Some(&cancellable),
                 move |t: &crate::Task<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate_value()).unwrap();
+                    tx.send(t.propagate()).unwrap();
                     l.quit();
                 },
             );

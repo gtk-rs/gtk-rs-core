@@ -26,7 +26,7 @@ impl FileSize {
         callback: Q,
     ) {
         let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
-            let value = task.propagate_value().unwrap();
+            let value = task.propagate().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
@@ -62,7 +62,7 @@ impl FileSize {
         callback: Q,
     ) {
         let closure = move |task: &gio::Task<i64>, source_object: Option<&glib::Object>| {
-            let value = task.propagate_value().unwrap();
+            let value = task.propagate().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };

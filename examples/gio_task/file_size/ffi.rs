@@ -69,7 +69,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
     match gio::AsyncResult::from_glib_borrow(result)
         .downcast_ref::<gio::Task<i64>>()
         .unwrap()
-        .propagate_value()
+        .propagate()
     {
         Ok(v) => v,
         Err(e) => {
