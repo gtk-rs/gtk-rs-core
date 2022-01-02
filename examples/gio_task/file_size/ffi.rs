@@ -52,7 +52,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .imp();
 
         *source_object.size.lock().unwrap() = Some(size);
-        task.return_value(&size);
+        task.return_result(Ok(&size));
     });
 }
 

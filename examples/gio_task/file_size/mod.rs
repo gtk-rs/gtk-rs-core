@@ -52,7 +52,7 @@ impl FileSize {
             let source_object = source_object.downcast_ref::<FileSize>().unwrap().imp();
 
             *source_object.size.lock().unwrap() = Some(size);
-            task.return_value(&size);
+            task.return_result(Ok(&size));
         });
     }
 
@@ -82,7 +82,7 @@ impl FileSize {
                 .size();
 
             *source_object.unwrap().imp().size.lock().unwrap() = Some(size);
-            task.return_value(&size);
+            task.return_result(Ok(&size));
         };
 
         task.run_in_thread(task_func);

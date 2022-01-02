@@ -193,25 +193,27 @@ impl<V: ValueType> Task<V> {
         }
     }
 
-    #[doc(alias = "g_task_return_error")]
-    pub fn return_error(&self, error: glib::Error) {
-        unsafe {
-            ffi::g_task_return_error(self.to_glib_none().0, error.to_glib_full() as *mut _);
-        }
-    }
-
     #[doc(alias = "g_task_return_value")]
-    pub fn return_value(&self, result: &V) {
+    #[doc(alias = "g_task_return_boolean")]
+    #[doc(alias = "g_task_return_int")]
+    #[doc(alias = "g_task_return_pointer")]
+    #[doc(alias = "g_task_return_error")]
+    pub fn return_result(&self, result: Result<&V, glib::Error>) {
         unsafe extern "C" fn value_free(value: *mut c_void) {
             let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
         }
 
-        unsafe {
-            ffi::g_task_return_pointer(
-                self.to_glib_none().0,
-                result.to_value().to_glib_full() as *mut _,
-                Some(value_free),
-            )
+        match result {
+            Ok(v) => unsafe {
+                ffi::g_task_return_pointer(
+                    self.to_glib_none().0,
+                    v.to_value().to_glib_full() as *mut _,
+                    Some(value_free),
+                )
+            },
+            Err(e) => unsafe {
+                ffi::g_task_return_error(self.to_glib_none().0, e.to_glib_full() as *mut _);
+            },
         }
     }
 
@@ -317,7 +319,7 @@ mod test {
                     l.quit();
                 },
             );
-            task.return_value(&100_i32);
+            task.return_result(Ok(&100_i32));
         }) {
             Err(_) => panic!(),
             Ok(i) => assert_eq!(i, 100),
@@ -382,7 +384,7 @@ mod test {
             );
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
-            task.return_value(&my_object.upcast::<glib::Object>());
+            task.return_result(Ok(&my_object.upcast::<glib::Object>()));
         }) {
             Err(_) => panic!(),
             Ok(o) => {
@@ -404,10 +406,10 @@ mod test {
                     l.quit();
                 },
             );
-            task.return_error(glib::Error::new(
+            task.return_result(Err(glib::Error::new(
                 crate::IOErrorEnum::WouldBlock,
                 "WouldBlock",
-            ));
+            )));
         }) {
             Err(e) => match e.kind().unwrap() {
                 crate::IOErrorEnum::WouldBlock => {}
