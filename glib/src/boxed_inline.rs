@@ -131,6 +131,13 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn unsafe_from(t: $ffi_name) -> Self {
+                $name(t)
+            }
+        }
+
+        #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = &'a $name $(<$($generic),+>)?;
 

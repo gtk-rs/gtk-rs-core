@@ -490,7 +490,7 @@ impl Value {
 
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
-            Ok(SendValue(self.into_raw()))
+            unsafe { Ok(SendValue::unsafe_from(self.into_raw())) }
         } else {
             Err(self)
         }
@@ -653,7 +653,7 @@ pub trait ToSendValue: Send + ToValue {
 
 impl<T: Send + ToValue + ?Sized> ToSendValue for T {
     fn to_send_value(&self) -> SendValue {
-        SendValue(self.to_value().into_raw())
+        unsafe { SendValue::unsafe_from(self.to_value().into_raw()) }
     }
 }
 

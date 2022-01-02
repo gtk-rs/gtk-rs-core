@@ -6,14 +6,16 @@ use std::fmt;
 
 impl Matrix {
     pub fn new(xx: f64, xy: f64, yx: f64, yy: f64, x0: f64, y0: f64) -> Self {
-        Self(ffi::PangoMatrix {
-            xx,
-            xy,
-            yx,
-            yy,
-            x0,
-            y0,
-        })
+        unsafe {
+            Self::unsafe_from(ffi::PangoMatrix {
+                xx,
+                xy,
+                yx,
+                yy,
+                x0,
+                y0,
+            })
+        }
     }
 
     #[doc(alias = "pango_matrix_transform_pixel_rectangle")]

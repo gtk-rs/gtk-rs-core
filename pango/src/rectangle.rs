@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {
@@ -9,12 +10,14 @@ glib::wrapper! {
 
 impl Rectangle {
     pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
-        Self(ffi::PangoRectangle {
-            x,
-            y,
-            width,
-            height,
-        })
+        unsafe {
+            Self::unsafe_from(ffi::PangoRectangle {
+                x,
+                y,
+                width,
+                height,
+            })
+        }
     }
 
     pub fn x(&self) -> i32 {
