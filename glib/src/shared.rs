@@ -28,11 +28,20 @@ macro_rules! glib_shared_wrapper {
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
      @ref $ref_arg:ident $ref_expr:expr, @unref $unref_arg:ident $unref_expr:expr) => {
         $(#[$attr])*
-        #[derive(Clone)]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::shared::Shared<$ffi_name, $name $(<$($generic),+>)?>,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
         }
 
         #[doc(hidden)]

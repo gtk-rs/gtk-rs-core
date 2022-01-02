@@ -603,15 +603,66 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
 macro_rules! glib_object_wrapper {
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
-        // Always derive Hash/Ord (and below impl Debug, PartialEq, Eq, PartialOrd) for object
-        // types. Due to inheritance and up/downcasting we must implement these by pointer or
-        // otherwise they would potentially give different results for the same object depending on
-        // the type we currently know for it
-        #[derive(Clone, Hash, Ord, Eq, Debug)]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::object::ObjectRef,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
+
+        // Always implement Clone, Hash, PartialEq, Eq, PartialOrd, Ord, and Debug for object types.
+        // Due to inheritance and up/downcasting we must implement these by pointer or otherwise they
+        // would potentially give different results for the same object depending on the type we
+        // currently know for it.
+        // Implement them manually rather than generating #[derive] macros since so that when generics
+        // are specified, these traits are not required.
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::hash::Hash for $name $(<$($generic),+>)? {
+            #[inline]
+            fn hash<H>(&self, state: &mut H)
+            where
+                H: std::hash::Hasher
+            {
+                std::hash::Hash::hash(&self.inner, state);
+            }
+        }
+
+        impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<OT> for $name $(<$($generic),+>)? {
+            #[inline]
+            fn eq(&self, other: &OT) -> bool {
+                std::cmp::PartialEq::eq(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Eq for $name $(<$($generic),+>)? {}
+
+        impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<OT> for $name $(<$($generic),+>)? {
+            #[inline]
+            fn partial_cmp(&self, other: &OT) -> Option<std::cmp::Ordering> {
+                std::cmp::PartialOrd::partial_cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Ord for $name $(<$($generic),+>)? {
+            #[inline]
+            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                std::cmp::Ord::cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::fmt::Debug for $name $(<$($generic),+>)? {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                f.debug_struct(stringify!($name)).field("inner", &self.inner).finish()
+            }
         }
 
         #[doc(hidden)]
@@ -920,20 +971,6 @@ macro_rules! glib_object_wrapper {
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
-            }
-        }
-
-        impl<T: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<T> for $name $(<$($generic),+>)? {
-            #[inline]
-            fn eq(&self, other: &T) -> bool {
-                std::cmp::PartialEq::eq(&self.inner, $crate::object::ObjectType::as_object_ref(other))
-            }
-        }
-
-        impl<T: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<T> for $name $(<$($generic),+>)? {
-            #[inline]
-            fn partial_cmp(&self, other: &T) -> Option<std::cmp::Ordering> {
-                std::cmp::PartialOrd::partial_cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 

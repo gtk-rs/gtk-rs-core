@@ -30,11 +30,20 @@ macro_rules! glib_boxed_wrapper {
 
     (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => {
         $(#[$attr])*
-        #[derive(Clone)]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::boxed::Boxed<$ffi_name, $name $(<$($generic),+>)?>,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
         }
 
         #[doc(hidden)]

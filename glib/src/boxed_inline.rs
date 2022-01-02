@@ -10,12 +10,23 @@ macro_rules! glib_boxed_inline_wrapper {
     ([$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
-        #[derive(Copy, Clone)]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::marker::Copy for $name $(<$($generic),+>)? {}
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
@@ -31,12 +42,23 @@ macro_rules! glib_boxed_inline_wrapper {
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr
      $(, @type_ $get_type_expr:expr)?) => {
         $(#[$attr])*
-        #[derive(Copy, Clone)]
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::marker::Copy for $name $(<$($generic),+>)? {}
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
@@ -58,6 +80,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
             fn clone(&self) -> Self {
                 unsafe {
                     $crate::translate::from_glib_none(&self.inner as *const $ffi_name)
@@ -97,6 +120,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
             fn clone(&self) -> Self {
                 unsafe {
                     $crate::translate::from_glib_none(&self.inner as *const $ffi_name)
