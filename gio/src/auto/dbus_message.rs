@@ -226,11 +226,13 @@ impl DBusMessage {
     }
 
     //#[doc(alias = "g_dbus_message_new_method_error")]
+    //#[must_use]
     //pub fn new_method_error(&self, error_name: &str, error_message_format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error() }
     //}
 
     #[doc(alias = "g_dbus_message_new_method_error_literal")]
+    #[must_use]
     pub fn new_method_error_literal(&self, error_name: &str, error_message: &str) -> DBusMessage {
         unsafe {
             from_glib_full(ffi::g_dbus_message_new_method_error_literal(
@@ -242,11 +244,13 @@ impl DBusMessage {
     }
 
     //#[doc(alias = "g_dbus_message_new_method_error_valist")]
+    //#[must_use]
     //pub fn new_method_error_valist(&self, error_name: &str, error_message_format: &str, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error_valist() }
     //}
 
     #[doc(alias = "g_dbus_message_new_method_reply")]
+    #[must_use]
     pub fn new_method_reply(&self) -> DBusMessage {
         unsafe { from_glib_full(ffi::g_dbus_message_new_method_reply(self.to_glib_none().0)) }
     }

@@ -166,6 +166,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_add_alpha")]
+    #[must_use]
     pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_add_alpha(
@@ -179,6 +180,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_apply_embedded_orientation")]
+    #[must_use]
     pub fn apply_embedded_orientation(&self) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_apply_embedded_orientation(
@@ -264,6 +266,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_composite_color_simple")]
+    #[must_use]
     pub fn composite_color_simple(
         &self,
         dest_width: i32,
@@ -289,6 +292,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_copy")]
+    #[must_use]
     pub fn copy(&self) -> Option<Pixbuf> {
         unsafe { from_glib_full(ffi::gdk_pixbuf_copy(self.to_glib_none().0)) }
     }
@@ -338,6 +342,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_flip")]
+    #[must_use]
     pub fn flip(&self, horizontal: bool) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_flip(
@@ -413,6 +418,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_new_subpixbuf")]
+    #[must_use]
     pub fn new_subpixbuf(&self, src_x: i32, src_y: i32, width: i32, height: i32) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_new_subpixbuf(
@@ -443,6 +449,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_rotate_simple")]
+    #[must_use]
     pub fn rotate_simple(&self, angle: PixbufRotation) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_rotate_simple(
@@ -544,6 +551,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_scale_simple")]
+    #[must_use]
     pub fn scale_simple(
         &self,
         dest_width: i32,

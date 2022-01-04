@@ -18,6 +18,7 @@ glib::wrapper! {
 
 impl Vec3 {
     #[doc(alias = "graphene_vec3_add")]
+    #[must_use]
     pub fn add(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -31,6 +32,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_cross")]
+    #[must_use]
     pub fn cross(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -44,6 +46,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_divide")]
+    #[must_use]
     pub fn divide(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -84,6 +87,7 @@ impl Vec3 {
 
     #[doc(alias = "graphene_vec3_get_xy0")]
     #[doc(alias = "get_xy0")]
+    #[must_use]
     pub fn xy0(&self) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -135,6 +139,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, v2: &Vec3, factor: f64) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -154,6 +159,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_max")]
+    #[must_use]
     pub fn max(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -167,6 +173,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_min")]
+    #[must_use]
     pub fn min(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -180,6 +187,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_multiply")]
+    #[must_use]
     pub fn multiply(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -198,6 +206,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_negate")]
+    #[must_use]
     pub fn negate(&self) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -207,6 +216,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -216,6 +226,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_scale")]
+    #[must_use]
     pub fn scale(&self, factor: f32) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();
@@ -225,6 +236,7 @@ impl Vec3 {
     }
 
     #[doc(alias = "graphene_vec3_subtract")]
+    #[must_use]
     pub fn subtract(&self, b: &Vec3) -> Vec3 {
         unsafe {
             let mut res = Vec3::uninitialized();

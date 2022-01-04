@@ -57,6 +57,7 @@ impl FileAttributeMatcher {
     }
 
     #[doc(alias = "g_file_attribute_matcher_subtract")]
+    #[must_use]
     pub fn subtract(
         &self,
         subtract: Option<&FileAttributeMatcher>,

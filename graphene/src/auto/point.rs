@@ -40,6 +40,7 @@ impl Point {
     }
 
     #[doc(alias = "graphene_point_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, b: &Point, factor: f64) -> Point {
         unsafe {
             let mut res = Point::uninitialized();

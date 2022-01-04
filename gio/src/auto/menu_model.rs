@@ -42,6 +42,7 @@ pub trait MenuModelExt: 'static {
 
     #[doc(alias = "g_menu_model_get_item_link")]
     #[doc(alias = "get_item_link")]
+    #[must_use]
     fn item_link(&self, item_index: i32, link: &str) -> Option<MenuModel>;
 
     #[doc(alias = "g_menu_model_get_n_items")]

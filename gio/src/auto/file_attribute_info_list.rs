@@ -36,6 +36,7 @@ impl FileAttributeInfoList {
     }
 
     #[doc(alias = "g_file_attribute_info_list_dup")]
+    #[must_use]
     pub fn dup(&self) -> FileAttributeInfoList {
         unsafe { from_glib_full(ffi::g_file_attribute_info_list_dup(self.to_glib_none().0)) }
     }

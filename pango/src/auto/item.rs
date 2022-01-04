@@ -34,6 +34,7 @@ impl Item {
     }
 
     #[doc(alias = "pango_item_split")]
+    #[must_use]
     pub fn split(&mut self, split_index: i32, split_offset: i32) -> Option<Item> {
         unsafe {
             from_glib_full(ffi::pango_item_split(

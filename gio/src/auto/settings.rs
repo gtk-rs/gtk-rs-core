@@ -128,6 +128,7 @@ pub trait SettingsExt: 'static {
 
     #[doc(alias = "g_settings_get_child")]
     #[doc(alias = "get_child")]
+    #[must_use]
     fn child(&self, name: &str) -> Settings;
 
     #[doc(alias = "g_settings_get_default_value")]

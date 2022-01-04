@@ -20,6 +20,7 @@ glib::wrapper! {
 
 impl Quaternion {
     #[doc(alias = "graphene_quaternion_add")]
+    #[must_use]
     pub fn add(&self, b: &Quaternion) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();
@@ -43,6 +44,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_invert")]
+    #[must_use]
     pub fn invert(&self) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();
@@ -52,6 +54,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_multiply")]
+    #[must_use]
     pub fn multiply(&self, b: &Quaternion) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();
@@ -65,6 +68,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();
@@ -74,6 +78,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_scale")]
+    #[must_use]
     pub fn scale(&self, factor: f32) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();
@@ -83,6 +88,7 @@ impl Quaternion {
     }
 
     #[doc(alias = "graphene_quaternion_slerp")]
+    #[must_use]
     pub fn slerp(&self, b: &Quaternion, factor: f32) -> Quaternion {
         unsafe {
             let mut res = Quaternion::uninitialized();

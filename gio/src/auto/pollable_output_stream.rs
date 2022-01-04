@@ -39,7 +39,7 @@ pub trait PollableOutputStreamExt: 'static {
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
-    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error>;
+    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error>;
 }
 
 impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
@@ -84,7 +84,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[&OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error> {
+    //fn writev_nonblocking(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<(/*Ignored*/PollableReturn, usize), glib::Error> {
     //    unsafe { TODO: call ffi:g_pollable_output_stream_writev_nonblocking() }
     //}
 }

@@ -67,6 +67,7 @@ impl Euler {
     }
 
     #[doc(alias = "graphene_euler_reorder")]
+    #[must_use]
     pub fn reorder(&self, order: EulerOrder) -> Euler {
         unsafe {
             let mut res = Euler::uninitialized();

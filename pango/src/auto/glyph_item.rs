@@ -35,11 +35,12 @@ impl GlyphItem {
     //}
 
     //#[doc(alias = "pango_glyph_item_letter_space")]
-    //pub fn letter_space(&mut self, text: &str, log_attrs: /*Ignored*/&[&LogAttr], letter_spacing: i32) {
+    //pub fn letter_space(&mut self, text: &str, log_attrs: /*Ignored*/&[LogAttr], letter_spacing: i32) {
     //    unsafe { TODO: call ffi:pango_glyph_item_letter_space() }
     //}
 
     #[doc(alias = "pango_glyph_item_split")]
+    #[must_use]
     pub fn split(&mut self, text: &str, split_index: i32) -> Option<GlyphItem> {
         unsafe {
             from_glib_full(ffi::pango_glyph_item_split(

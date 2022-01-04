@@ -32,6 +32,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_expand")]
+    #[must_use]
     pub fn expand(&self, p: &Point) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -132,6 +133,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_inset_r")]
+    #[must_use]
     pub fn inset_r(&self, d_x: f32, d_y: f32) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -141,6 +143,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, b: &Rect, factor: f64) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -179,6 +182,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_normalize_r")]
+    #[must_use]
     pub fn normalize_r(&self) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -195,6 +199,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_offset_r")]
+    #[must_use]
     pub fn offset_r(&self, d_x: f32, d_y: f32) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -204,6 +209,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_round_extents")]
+    #[must_use]
     pub fn round_extents(&self) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -213,6 +219,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_scale")]
+    #[must_use]
     pub fn scale(&self, s_h: f32, s_v: f32) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();
@@ -222,6 +229,7 @@ impl Rect {
     }
 
     #[doc(alias = "graphene_rect_union")]
+    #[must_use]
     pub fn union(&self, b: &Rect) -> Rect {
         unsafe {
             let mut res = Rect::uninitialized();

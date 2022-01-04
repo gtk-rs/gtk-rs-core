@@ -149,6 +149,7 @@ pub trait TlsCertificateExt: 'static {
 
     #[doc(alias = "g_tls_certificate_get_issuer")]
     #[doc(alias = "get_issuer")]
+    #[must_use]
     fn issuer(&self) -> Option<TlsCertificate>;
 
     #[cfg(any(feature = "v2_70", feature = "dox"))]

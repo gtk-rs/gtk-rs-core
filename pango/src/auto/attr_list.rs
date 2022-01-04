@@ -24,11 +24,13 @@ impl AttrList {
     }
 
     #[doc(alias = "pango_attr_list_copy")]
+    #[must_use]
     pub fn copy(&self) -> Option<AttrList> {
         unsafe { from_glib_full(ffi::pango_attr_list_copy(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_attr_list_filter")]
+    #[must_use]
     pub fn filter<P: FnMut(&Attribute) -> bool>(&self, func: P) -> Option<AttrList> {
         let func_data: P = func;
         unsafe extern "C" fn func_func<P: FnMut(&Attribute) -> bool>(
