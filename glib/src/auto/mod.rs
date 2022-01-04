@@ -53,6 +53,9 @@ pub use self::flags::FormatSizeFlags;
 pub use self::flags::IOCondition;
 pub use self::flags::KeyFileFlags;
 pub use self::flags::LogLevelFlags;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+pub use self::flags::MainContextFlags;
 pub use self::flags::OptionFlags;
 pub use self::flags::SpawnFlags;
 #[cfg(any(feature = "v2_66", feature = "dox"))]

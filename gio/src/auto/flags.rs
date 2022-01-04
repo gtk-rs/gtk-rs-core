@@ -779,6 +779,8 @@ bitflags! {
         const GET_INVALIDATED_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES as u32;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION")]
         const DO_NOT_AUTO_START_AT_CONSTRUCTION = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION as u32;
+        #[cfg(any(feature = "v2_70", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NO_MATCH_RULE")]
         const NO_MATCH_RULE = ffi::G_DBUS_PROXY_FLAGS_NO_MATCH_RULE as u32;
     }

@@ -62,6 +62,8 @@ pub trait AppLaunchContextExt: 'static {
     #[doc(alias = "launch-failed")]
     fn connect_launch_failed<F: Fn(&Self, &str) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
     #[doc(alias = "launch-started")]
     fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
         &self,
@@ -160,6 +162,8 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
         }
     }
 
+    #[cfg(any(feature = "v2_70", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
     fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
         &self,
         f: F,
