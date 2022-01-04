@@ -13,6 +13,7 @@ pub use crate::app_info::AppInfoExtManual;
 pub use crate::application::*;
 pub use crate::converter::*;
 pub use crate::data_input_stream::DataInputStreamExtManual;
+pub use crate::dbus_proxy::DBusProxyExtManual;
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 pub use crate::desktop_app_info::DesktopAppInfoExtManual;

@@ -6090,6 +6090,8 @@ extern "C" {
     pub fn g_get_user_name() -> *const c_char;
     pub fn g_get_user_runtime_dir() -> *const c_char;
     pub fn g_get_user_special_dir(directory: GUserDirectory) -> *const c_char;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     pub fn g_get_user_state_dir() -> *const c_char;
     #[cfg(any(windows, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(windows)))]
