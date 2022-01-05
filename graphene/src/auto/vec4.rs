@@ -18,6 +18,7 @@ glib::wrapper! {
 
 impl Vec4 {
     #[doc(alias = "graphene_vec4_add")]
+    #[must_use]
     pub fn add(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -31,6 +32,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_divide")]
+    #[must_use]
     pub fn divide(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -98,6 +100,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, v2: &Vec4, factor: f64) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -117,6 +120,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_max")]
+    #[must_use]
     pub fn max(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -130,6 +134,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_min")]
+    #[must_use]
     pub fn min(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -143,6 +148,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_multiply")]
+    #[must_use]
     pub fn multiply(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -161,6 +167,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_negate")]
+    #[must_use]
     pub fn negate(&self) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -170,6 +177,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -179,6 +187,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_scale")]
+    #[must_use]
     pub fn scale(&self, factor: f32) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();
@@ -188,6 +197,7 @@ impl Vec4 {
     }
 
     #[doc(alias = "graphene_vec4_subtract")]
+    #[must_use]
     pub fn subtract(&self, b: &Vec4) -> Vec4 {
         unsafe {
             let mut res = Vec4::uninitialized();

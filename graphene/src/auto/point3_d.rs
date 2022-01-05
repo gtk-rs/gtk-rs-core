@@ -18,6 +18,7 @@ glib::wrapper! {
 
 impl Point3D {
     #[doc(alias = "graphene_point3d_cross")]
+    #[must_use]
     pub fn cross(&self, b: &Point3D) -> Point3D {
         unsafe {
             let mut res = Point3D::uninitialized();
@@ -54,6 +55,7 @@ impl Point3D {
     }
 
     #[doc(alias = "graphene_point3d_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, b: &Point3D, factor: f64) -> Point3D {
         unsafe {
             let mut res = Point3D::uninitialized();
@@ -78,6 +80,7 @@ impl Point3D {
     }
 
     #[doc(alias = "graphene_point3d_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Point3D {
         unsafe {
             let mut res = Point3D::uninitialized();
@@ -87,6 +90,7 @@ impl Point3D {
     }
 
     #[doc(alias = "graphene_point3d_normalize_viewport")]
+    #[must_use]
     pub fn normalize_viewport(&self, viewport: &Rect, z_near: f32, z_far: f32) -> Point3D {
         unsafe {
             let mut res = Point3D::uninitialized();
@@ -102,6 +106,7 @@ impl Point3D {
     }
 
     #[doc(alias = "graphene_point3d_scale")]
+    #[must_use]
     pub fn scale(&self, factor: f32) -> Point3D {
         unsafe {
             let mut res = Point3D::uninitialized();

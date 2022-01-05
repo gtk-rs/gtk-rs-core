@@ -42,6 +42,7 @@ impl Layout {
     }
 
     #[doc(alias = "pango_layout_copy")]
+    #[must_use]
     pub fn copy(&self) -> Option<Layout> {
         unsafe { from_glib_full(ffi::pango_layout_copy(self.to_glib_none().0)) }
     }

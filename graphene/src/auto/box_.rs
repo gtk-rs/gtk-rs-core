@@ -34,6 +34,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_expand")]
+    #[must_use]
     pub fn expand(&self, point: &Point3D) -> Box {
         unsafe {
             let mut res = Box::uninitialized();
@@ -47,6 +48,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_expand_scalar")]
+    #[must_use]
     pub fn expand_scalar(&self, scalar: f32) -> Box {
         unsafe {
             let mut res = Box::uninitialized();
@@ -60,6 +62,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_expand_vec3")]
+    #[must_use]
     pub fn expand_vec3(&self, vec: &Vec3) -> Box {
         unsafe {
             let mut res = Box::uninitialized();
@@ -161,6 +164,7 @@ impl Box {
     }
 
     #[doc(alias = "graphene_box_union")]
+    #[must_use]
     pub fn union(&self, b: &Box) -> Box {
         unsafe {
             let mut res = Box::uninitialized();

@@ -41,6 +41,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_dup")]
+    #[must_use]
     pub fn dup(&self) -> FileInfo {
         unsafe { from_glib_full(ffi::g_file_info_dup(self.to_glib_none().0)) }
     }

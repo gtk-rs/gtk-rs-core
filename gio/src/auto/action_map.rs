@@ -25,7 +25,7 @@ pub trait ActionMapExt: 'static {
     fn add_action(&self, action: &impl IsA<Action>);
 
     //#[doc(alias = "g_action_map_add_action_entries")]
-    //fn add_action_entries(&self, entries: /*Ignored*/&[&ActionEntry], user_data: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn add_action_entries(&self, entries: /*Ignored*/&[ActionEntry], user_data: /*Unimplemented*/Option<Fundamental: Pointer>);
 
     #[doc(alias = "g_action_map_lookup_action")]
     fn lookup_action(&self, action_name: &str) -> Option<Action>;
@@ -44,7 +44,7 @@ impl<O: IsA<ActionMap>> ActionMapExt for O {
         }
     }
 
-    //fn add_action_entries(&self, entries: /*Ignored*/&[&ActionEntry], user_data: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn add_action_entries(&self, entries: /*Ignored*/&[ActionEntry], user_data: /*Unimplemented*/Option<Fundamental: Pointer>) {
     //    unsafe { TODO: call ffi:g_action_map_add_action_entries() }
     //}
 

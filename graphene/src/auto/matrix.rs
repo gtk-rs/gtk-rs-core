@@ -119,6 +119,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, b: &Matrix, factor: f64) -> Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();
@@ -166,6 +167,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_multiply")]
+    #[must_use]
     pub fn multiply(&self, b: &Matrix) -> Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();
@@ -184,6 +186,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();
@@ -193,6 +196,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_perspective")]
+    #[must_use]
     pub fn perspective(&self, depth: f32) -> Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();
@@ -478,6 +482,7 @@ impl Matrix {
     }
 
     #[doc(alias = "graphene_matrix_transpose")]
+    #[must_use]
     pub fn transpose(&self) -> Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();

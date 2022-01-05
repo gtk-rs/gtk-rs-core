@@ -45,6 +45,7 @@ impl Plane {
     }
 
     #[doc(alias = "graphene_plane_negate")]
+    #[must_use]
     pub fn negate(&self) -> Plane {
         unsafe {
             let mut res = Plane::uninitialized();
@@ -54,6 +55,7 @@ impl Plane {
     }
 
     #[doc(alias = "graphene_plane_normalize")]
+    #[must_use]
     pub fn normalize(&self) -> Plane {
         unsafe {
             let mut res = Plane::uninitialized();
@@ -63,6 +65,7 @@ impl Plane {
     }
 
     #[doc(alias = "graphene_plane_transform")]
+    #[must_use]
     pub fn transform(&self, matrix: &Matrix, normal_matrix: Option<&Matrix>) -> Plane {
         unsafe {
             let mut res = Plane::uninitialized();

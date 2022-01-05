@@ -21,6 +21,7 @@ impl Size {
     }
 
     #[doc(alias = "graphene_size_interpolate")]
+    #[must_use]
     pub fn interpolate(&self, b: &Size, factor: f64) -> Size {
         unsafe {
             let mut res = Size::uninitialized();
@@ -35,6 +36,7 @@ impl Size {
     }
 
     #[doc(alias = "graphene_size_scale")]
+    #[must_use]
     pub fn scale(&self, factor: f32) -> Size {
         unsafe {
             let mut res = Size::uninitialized();

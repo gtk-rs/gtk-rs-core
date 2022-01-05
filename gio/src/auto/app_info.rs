@@ -219,6 +219,7 @@ pub trait AppInfoExt: 'static {
     fn delete(&self) -> bool;
 
     #[doc(alias = "g_app_info_dup")]
+    #[must_use]
     fn dup(&self) -> AppInfo;
 
     #[doc(alias = "g_app_info_equal")]

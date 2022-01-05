@@ -225,6 +225,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_dup")]
+    #[must_use]
     fn dup(&self) -> File;
 
     #[doc(alias = "g_file_eject_mountable_with_operation")]
@@ -265,6 +266,7 @@ pub trait FileExt: 'static {
 
     #[doc(alias = "g_file_get_child")]
     #[doc(alias = "get_child")]
+    #[must_use]
     fn child(&self, name: impl AsRef<std::path::Path>) -> File;
 
     #[doc(alias = "g_file_get_child_for_display_name")]
@@ -273,6 +275,7 @@ pub trait FileExt: 'static {
 
     #[doc(alias = "g_file_get_parent")]
     #[doc(alias = "get_parent")]
+    #[must_use]
     fn parent(&self) -> Option<File>;
 
     #[doc(alias = "g_file_get_parse_name")]
@@ -671,6 +674,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_resolve_relative_path")]
+    #[must_use]
     fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File;
 
     //#[doc(alias = "g_file_set_attribute")]

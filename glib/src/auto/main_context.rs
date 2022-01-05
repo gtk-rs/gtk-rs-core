@@ -27,7 +27,7 @@ impl MainContext {
     //}
 
     //#[doc(alias = "g_main_context_check")]
-    //pub fn check(&self, max_priority: i32, fds: /*Ignored*/&[&PollFD]) -> bool {
+    //pub fn check(&self, max_priority: i32, fds: /*Ignored*/&[PollFD]) -> bool {
     //    unsafe { TODO: call ffi:g_main_context_check() }
     //}
 

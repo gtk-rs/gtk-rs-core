@@ -66,6 +66,7 @@ impl Sphere {
     }
 
     #[doc(alias = "graphene_sphere_translate")]
+    #[must_use]
     pub fn translate(&self, point: &Point3D) -> Sphere {
         unsafe {
             let mut res = Sphere::uninitialized();
