@@ -20,7 +20,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
     user_data: glib::ffi::gpointer,
 ) {
     let cancellable = gio::Cancellable::from_glib_borrow(cancellable);
-    let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
+    let closure = move |task: gio::LocalTask<i64>, source_object: Option<&glib::Object>| {
         let result: *mut gio::ffi::GAsyncResult =
             task.upcast_ref::<gio::AsyncResult>().to_glib_none().0;
         let source_object: *mut glib::object::GObject = source_object.to_glib_none().0;
@@ -28,7 +28,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
     };
 
     let source_object = &super::FileSize::from_glib_borrow(this);
-    let task = gio::Task::new(
+    let task = gio::LocalTask::new(
         Some(source_object.upcast_ref::<glib::Object>()),
         Some(cancellable.as_ref()),
         closure,
@@ -52,7 +52,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .imp();
 
         *source_object.size.lock().unwrap() = Some(size);
-        task.return_result(Ok(&size));
+        task.return_result(Ok(size));
     });
 }
 

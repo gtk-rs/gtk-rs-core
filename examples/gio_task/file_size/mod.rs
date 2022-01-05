@@ -25,13 +25,13 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
+        let closure = move |task: gio::LocalTask<i64>, source_object: Option<&glib::Object>| {
             let value = task.propagate().unwrap();
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
 
-        let task = gio::Task::new(
+        let task = gio::LocalTask::new(
             Some(self.upcast_ref::<glib::Object>()),
             cancellable,
             closure,
@@ -52,17 +52,18 @@ impl FileSize {
             let source_object = source_object.downcast_ref::<FileSize>().unwrap().imp();
 
             *source_object.size.lock().unwrap() = Some(size);
-            task.return_result(Ok(&size));
+            task.return_result(Ok(size));
         });
     }
 
-    pub fn file_size_in_thread_async<Q: FnOnce(i64, &FileSize) + 'static>(
+    pub fn file_size_in_thread_async<Q: FnOnce(i64, &FileSize) + Send + 'static>(
         &self,
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
         let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
-            let value = task.propagate().unwrap();
+            // SAFETY: this is safe because we call propagate just once
+            let value = unsafe { task.propagate().unwrap() };
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
@@ -82,7 +83,11 @@ impl FileSize {
                 .size();
 
             *source_object.unwrap().imp().size.lock().unwrap() = Some(size);
-            task.return_result(Ok(&size));
+
+            // SAFETY: this is safe because we call return_result just once
+            unsafe {
+                task.return_result(Ok(size));
+            }
         };
 
         task.run_in_thread(task_func);
