@@ -12,12 +12,18 @@ use crate::EllipsizeMode;
 use crate::FontDescription;
 use crate::LayoutIter;
 use crate::LayoutLine;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::LayoutSerializeFlags;
 use crate::Rectangle;
 use crate::TabArray;
 use crate::WrapMode;
 use glib::translate::*;
 use std::fmt;
 use std::mem;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "PangoLayout")]
@@ -422,6 +428,18 @@ impl Layout {
         }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_serialize")]
+    pub fn serialize(&self, flags: LayoutSerializeFlags) -> Option<glib::Bytes> {
+        unsafe {
+            from_glib_full(ffi::pango_layout_serialize(
+                self.to_glib_none().0,
+                flags.into_glib(),
+            ))
+        }
+    }
+
     #[doc(alias = "pango_layout_set_alignment")]
     pub fn set_alignment(&self, alignment: Alignment) {
         unsafe {
@@ -562,6 +580,31 @@ impl Layout {
     pub fn set_wrap(&self, wrap: WrapMode) {
         unsafe {
             ffi::pango_layout_set_wrap(self.to_glib_none().0, wrap.into_glib());
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_layout_write_to_file")]
+    pub fn write_to_file(
+        &self,
+        flags: LayoutSerializeFlags,
+        filename: impl AsRef<std::path::Path>,
+    ) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let is_ok = ffi::pango_layout_write_to_file(
+                self.to_glib_none().0,
+                flags.into_glib(),
+                filename.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
         }
     }
 

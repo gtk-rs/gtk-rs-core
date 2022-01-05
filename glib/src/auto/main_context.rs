@@ -21,6 +21,14 @@ impl MainContext {
         unsafe { from_glib_full(ffi::g_main_context_new()) }
     }
 
+    //#[cfg(any(feature = "v2_72", feature = "dox"))]
+    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    //#[doc(alias = "g_main_context_new_with_flags")]
+    //#[doc(alias = "new_with_flags")]
+    //pub fn with_flags(flags: /*Ignored*/MainContextFlags) -> MainContext {
+    //    unsafe { TODO: call ffi:g_main_context_new_with_flags() }
+    //}
+
     //#[doc(alias = "g_main_context_add_poll")]
     //pub fn add_poll(&self, fd: /*Ignored*/&mut PollFD, priority: i32) {
     //    unsafe { TODO: call ffi:g_main_context_add_poll() }

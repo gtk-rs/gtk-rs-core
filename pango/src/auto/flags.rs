@@ -86,6 +86,168 @@ impl ToValue for FontMask {
     }
 }
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "PangoLayoutDeserializeFlags")]
+    pub struct LayoutDeserializeFlags: u32 {
+        #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_DEFAULT")]
+        const DEFAULT = ffi::PANGO_LAYOUT_DESERIALIZE_DEFAULT as u32;
+        #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_CONTEXT")]
+        const CONTEXT = ffi::PANGO_LAYOUT_DESERIALIZE_CONTEXT as u32;
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for LayoutDeserializeFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl IntoGlib for LayoutDeserializeFlags {
+    type GlibType = ffi::PangoLayoutDeserializeFlags;
+
+    fn into_glib(self) -> ffi::PangoLayoutDeserializeFlags {
+        self.bits()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoLayoutDeserializeFlags> for LayoutDeserializeFlags {
+    unsafe fn from_glib(value: ffi::PangoLayoutDeserializeFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl StaticType for LayoutDeserializeFlags {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::pango_layout_deserialize_flags_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::value::ValueType for LayoutDeserializeFlags {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+unsafe impl<'a> FromValue<'a> for LayoutDeserializeFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl ToValue for LayoutDeserializeFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "PangoLayoutSerializeFlags")]
+    pub struct LayoutSerializeFlags: u32 {
+        #[doc(alias = "PANGO_LAYOUT_SERIALIZE_DEFAULT")]
+        const DEFAULT = ffi::PANGO_LAYOUT_SERIALIZE_DEFAULT as u32;
+        #[doc(alias = "PANGO_LAYOUT_SERIALIZE_CONTEXT")]
+        const CONTEXT = ffi::PANGO_LAYOUT_SERIALIZE_CONTEXT as u32;
+        #[doc(alias = "PANGO_LAYOUT_SERIALIZE_OUTPUT")]
+        const OUTPUT = ffi::PANGO_LAYOUT_SERIALIZE_OUTPUT as u32;
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for LayoutSerializeFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl IntoGlib for LayoutSerializeFlags {
+    type GlibType = ffi::PangoLayoutSerializeFlags;
+
+    fn into_glib(self) -> ffi::PangoLayoutSerializeFlags {
+        self.bits()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoLayoutSerializeFlags> for LayoutSerializeFlags {
+    unsafe fn from_glib(value: ffi::PangoLayoutSerializeFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl StaticType for LayoutSerializeFlags {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::pango_layout_serialize_flags_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::value::ValueType for LayoutSerializeFlags {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+unsafe impl<'a> FromValue<'a> for LayoutSerializeFlags {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl ToValue for LayoutSerializeFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 bitflags! {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]

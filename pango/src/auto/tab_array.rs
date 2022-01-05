@@ -4,6 +4,9 @@
 
 use crate::TabAlign;
 use glib::translate::*;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use std::fmt;
 use std::mem;
 
 glib::wrapper! {
@@ -33,6 +36,20 @@ impl TabArray {
     //pub fn with_positions(size: i32, positions_in_pixels: bool, first_alignment: TabAlign, first_position: i32, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> TabArray {
     //    unsafe { TODO: call ffi:pango_tab_array_new_with_positions() }
     //}
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_get_decimal_point")]
+    #[doc(alias = "get_decimal_point")]
+    pub fn decimal_point(&mut self, tab_index: i32) -> char {
+        unsafe {
+            std::convert::TryFrom::try_from(ffi::pango_tab_array_get_decimal_point(
+                self.to_glib_none_mut().0,
+                tab_index,
+            ))
+            .expect("conversion from an invalid Unicode value attempted")
+        }
+    }
 
     #[doc(alias = "pango_tab_array_get_positions_in_pixels")]
     #[doc(alias = "get_positions_in_pixels")]
@@ -81,6 +98,31 @@ impl TabArray {
         }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_set_decimal_point")]
+    pub fn set_decimal_point(&mut self, tab_index: i32, decimal_point: char) {
+        unsafe {
+            ffi::pango_tab_array_set_decimal_point(
+                self.to_glib_none_mut().0,
+                tab_index,
+                decimal_point.into_glib(),
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_set_positions_in_pixels")]
+    pub fn set_positions_in_pixels(&mut self, positions_in_pixels: bool) {
+        unsafe {
+            ffi::pango_tab_array_set_positions_in_pixels(
+                self.to_glib_none_mut().0,
+                positions_in_pixels.into_glib(),
+            );
+        }
+    }
+
     #[doc(alias = "pango_tab_array_set_tab")]
     pub fn set_tab(&mut self, tab_index: i32, alignment: TabAlign, location: i32) {
         unsafe {
@@ -91,5 +133,38 @@ impl TabArray {
                 location,
             );
         }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_sort")]
+    pub fn sort(&mut self) {
+        unsafe {
+            ffi::pango_tab_array_sort(self.to_glib_none_mut().0);
+        }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_to_string")]
+    #[doc(alias = "to_string")]
+    pub fn to_str(&mut self) -> glib::GString {
+        unsafe { from_glib_full(ffi::pango_tab_array_to_string(self.to_glib_none_mut().0)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_tab_array_from_string")]
+    pub fn from_string(text: &str) -> Option<TabArray> {
+        unsafe { from_glib_full(ffi::pango_tab_array_from_string(text.to_glib_none().0)) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for TabArray {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(&self.to_str())
     }
 }

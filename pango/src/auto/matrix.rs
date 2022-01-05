@@ -46,6 +46,14 @@ impl Matrix {
         }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_matrix_get_slant_ratio")]
+    #[doc(alias = "get_slant_ratio")]
+    pub fn slant_ratio(&self) -> f64 {
+        unsafe { ffi::pango_matrix_get_slant_ratio(self.to_glib_none().0) }
+    }
+
     #[doc(alias = "pango_matrix_rotate")]
     pub fn rotate(&mut self, degrees: f64) {
         unsafe {

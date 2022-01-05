@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::Context;
 use crate::Coverage;
 use crate::FontDescription;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
@@ -15,6 +18,9 @@ use crate::Rectangle;
 use glib::object::IsA;
 use glib::translate::*;
 use std::fmt;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "PangoFont")]
@@ -27,6 +33,28 @@ glib::wrapper! {
 
 impl Font {
     pub const NONE: Option<&'static Font> = None;
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_font_deserialize")]
+    pub fn deserialize(
+        context: &Context,
+        bytes: &glib::Bytes,
+    ) -> Result<Option<Font>, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::pango_font_deserialize(
+                context.to_glib_none().0,
+                bytes.to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 }
 
 pub trait FontExt: 'static {
@@ -74,6 +102,11 @@ pub trait FontExt: 'static {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_font_has_char")]
     fn has_char(&self, wc: char) -> bool;
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_font_serialize")]
+    fn serialize(&self) -> Option<glib::Bytes>;
 }
 
 impl<O: IsA<Font>> FontExt for O {
@@ -152,6 +185,12 @@ impl<O: IsA<Font>> FontExt for O {
                 wc.into_glib(),
             ))
         }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    fn serialize(&self) -> Option<glib::Bytes> {
+        unsafe { from_glib_full(ffi::pango_font_serialize(self.as_ref().to_glib_none().0)) }
     }
 }
 

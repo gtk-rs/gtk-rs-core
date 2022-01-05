@@ -869,6 +869,16 @@ pub enum UnicodeScript {
     KhitanSmallScript,
     #[doc(alias = "G_UNICODE_SCRIPT_YEZIDI")]
     Yezidi,
+    #[doc(alias = "G_UNICODE_SCRIPT_CYPRO_MINOAN")]
+    CyproMinoan,
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_UYGHUR")]
+    OldUyghur,
+    #[doc(alias = "G_UNICODE_SCRIPT_TANGSA")]
+    Tangsa,
+    #[doc(alias = "G_UNICODE_SCRIPT_TOTO")]
+    Toto,
+    #[doc(alias = "G_UNICODE_SCRIPT_VITHKUQI")]
+    Vithkuqi,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1037,6 +1047,11 @@ impl fmt::Display for UnicodeScript {
                 Self::DivesAkuru => "DivesAkuru",
                 Self::KhitanSmallScript => "KhitanSmallScript",
                 Self::Yezidi => "Yezidi",
+                Self::CyproMinoan => "CyproMinoan",
+                Self::OldUyghur => "OldUyghur",
+                Self::Tangsa => "Tangsa",
+                Self::Toto => "Toto",
+                Self::Vithkuqi => "Vithkuqi",
                 _ => "Unknown",
             }
         )
@@ -1207,6 +1222,11 @@ impl IntoGlib for UnicodeScript {
             Self::DivesAkuru => ffi::G_UNICODE_SCRIPT_DIVES_AKURU,
             Self::KhitanSmallScript => ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,
             Self::Yezidi => ffi::G_UNICODE_SCRIPT_YEZIDI,
+            Self::CyproMinoan => ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN,
+            Self::OldUyghur => ffi::G_UNICODE_SCRIPT_OLD_UYGHUR,
+            Self::Tangsa => ffi::G_UNICODE_SCRIPT_TANGSA,
+            Self::Toto => ffi::G_UNICODE_SCRIPT_TOTO,
+            Self::Vithkuqi => ffi::G_UNICODE_SCRIPT_VITHKUQI,
             Self::__Unknown(value) => value,
         }
     }
@@ -1374,6 +1394,11 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_DIVES_AKURU => Self::DivesAkuru,
             ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT => Self::KhitanSmallScript,
             ffi::G_UNICODE_SCRIPT_YEZIDI => Self::Yezidi,
+            ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN => Self::CyproMinoan,
+            ffi::G_UNICODE_SCRIPT_OLD_UYGHUR => Self::OldUyghur,
+            ffi::G_UNICODE_SCRIPT_TANGSA => Self::Tangsa,
+            ffi::G_UNICODE_SCRIPT_TOTO => Self::Toto,
+            ffi::G_UNICODE_SCRIPT_VITHKUQI => Self::Vithkuqi,
             value => Self::__Unknown(value),
         }
     }
