@@ -12,6 +12,6 @@ impl AttrString {
     }
 
     pub fn value(&self) -> glib::GString {
-        unsafe { from_glib_none(self.0.value) }
+        unsafe { from_glib_none(self.inner.value) }
     }
 }

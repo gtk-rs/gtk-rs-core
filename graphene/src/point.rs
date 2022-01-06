@@ -28,19 +28,19 @@ impl Point {
     }
 
     pub fn x(&self) -> f32 {
-        self.0.x
+        self.inner.x
     }
 
     pub fn set_x(&mut self, x: f32) {
-        self.0.x = x;
+        self.inner.x = x;
     }
 
     pub fn y(&self) -> f32 {
-        self.0.y
+        self.inner.y
     }
 
     pub fn set_y(&mut self, y: f32) {
-        self.0.y = y;
+        self.inner.y = y;
     }
 }
 

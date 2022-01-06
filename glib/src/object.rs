@@ -65,19 +65,6 @@ pub unsafe trait ObjectType:
 }
 
 // rustdoc-stripper-ignore-next
-/// Unsafe variant of the `From` trait.
-pub trait UnsafeFrom<T> {
-    // rustdoc-stripper-ignore-next
-    /// # Safety
-    ///
-    /// It is the responsibility of the caller to ensure *all* invariants of
-    /// the `T` hold before this is called, and that after conversion
-    /// to assume nothing other than the invariants of the output.  Implementors
-    /// of this must ensure that the invariants of the output type hold.
-    unsafe fn unsafe_from(t: T) -> Self;
-}
-
-// rustdoc-stripper-ignore-next
 /// Declares the "is a" relationship.
 ///
 /// `Self` is said to implement `T`.
@@ -614,113 +601,170 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
 /// ObjectType implementations for Object types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_object_wrapper {
-    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
-        // Always derive Hash/Ord (and below impl Debug, PartialEq, Eq, PartialOrd) for object
-        // types. Due to inheritance and up/downcasting we must implement these by pointer or
-        // otherwise they would potentially give different results for the same object depending on
-        // the type we currently know for it
-        #[derive(Clone, Hash, Ord, Eq, Debug)]
         #[repr(transparent)]
-        $visibility struct $name($crate::object::ObjectRef);
+        $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
+            inner: $crate::object::ObjectRef,
+            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+        }
 
-        #[doc(hidden)]
-        impl From<$name> for $crate::object::ObjectRef {
-            fn from(s: $name) -> $crate::object::ObjectRef {
-                s.0
+        // Always implement Clone, Hash, PartialEq, Eq, PartialOrd, Ord, and Debug for object types.
+        // Due to inheritance and up/downcasting we must implement these by pointer or otherwise they
+        // would potentially give different results for the same object depending on the type we
+        // currently know for it.
+        // Implement them manually rather than generating #[derive] macros since so that when generics
+        // are specified, these traits are not required.
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
+            #[inline]
+            fn clone(&self) -> Self {
+                Self {
+                    inner: std::clone::Clone::clone(&self.inner),
+                    phantom: std::marker::PhantomData,
+                }
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::hash::Hash for $name $(<$($generic),+>)? {
+            #[inline]
+            fn hash<H>(&self, state: &mut H)
+            where
+                H: std::hash::Hasher
+            {
+                std::hash::Hash::hash(&self.inner, state);
+            }
+        }
+
+        impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<OT> for $name $(<$($generic),+>)? {
+            #[inline]
+            fn eq(&self, other: &OT) -> bool {
+                std::cmp::PartialEq::eq(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Eq for $name $(<$($generic),+>)? {}
+
+        impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<OT> for $name $(<$($generic),+>)? {
+            #[inline]
+            fn partial_cmp(&self, other: &OT) -> Option<std::cmp::Ordering> {
+                std::cmp::PartialOrd::partial_cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Ord for $name $(<$($generic),+>)? {
+            #[inline]
+            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                std::cmp::Ord::cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::fmt::Debug for $name $(<$($generic),+>)? {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                f.debug_struct(stringify!($name)).field("inner", &self.inner).finish()
             }
         }
 
         #[doc(hidden)]
-        impl $crate::object::UnsafeFrom<$crate::object::ObjectRef> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::ObjectRef {
+            fn from(s: $name $(<$($generic),+>)?) -> $crate::object::ObjectRef {
+                s.inner
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
-                $name(t)
+                $name {
+                    inner: t,
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::GlibPtrDefault for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::GlibPtrDefault for $name $(<$($generic),+>)? {
             type GlibType = *mut $ffi_name;
         }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::ObjectType for $name {
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ObjectType for $name $(<$($generic),+>)? {
             type GlibType = $ffi_name;
             type GlibClassType = $ffi_class_name;
 
             fn as_object_ref(&self) -> &$crate::object::ObjectRef {
-                &self.0
+                &self.inner
             }
 
             fn as_ptr(&self) -> *mut Self::GlibType {
-                $crate::translate::ToGlibPtr::to_glib_none(&self.0).0 as *mut _
+                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
             }
         }
 
         #[doc(hidden)]
-        impl AsRef<$crate::object::ObjectRef> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::ObjectRef {
-                &self.0
+                &self.inner
             }
         }
 
         #[doc(hidden)]
-        impl AsRef<$name> for $name {
-            fn as_ref(&self) -> &$name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$name $(<$($generic),+>)?> for $name $(<$($generic),+>)? {
+            fn as_ref(&self) -> &$name $(<$($generic),+>)? {
                 self
             }
         }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsA<$name> for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$name $(<$($generic),+>)?> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
-        impl $crate::subclass::types::FromObject for $name {
-            type FromObjectType = $name;
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::subclass::types::FromObject for $name $(<$($generic),+>)? {
+            type FromObjectType = $name $(<$($generic),+>)?;
             fn from_object(obj: &Self::FromObjectType) -> &Self {
                 obj
             }
         }
 
         #[doc(hidden)]
-        impl<'a> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = <$crate::object::ObjectRef as
                 $crate::translate::ToGlibPtr<'a, *mut $crate::object::GObject>>::Storage;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.0);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
                 $crate::translate::Stash(stash.0 as *const _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *const $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.0) as *const _
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *const _
             }
         }
 
         #[doc(hidden)]
-        impl<'a> $crate::translate::ToGlibPtr<'a, *mut $ffi_name> for $name {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = <$crate::object::ObjectRef as
                 $crate::translate::ToGlibPtr<'a, *mut $crate::object::GObject>>::Storage;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.0);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
                 $crate::translate::Stash(stash.0 as *mut _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.0) as *mut _
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *mut _
             }
         }
 
         #[doc(hidden)]
-        impl<'a> $crate::translate::ToGlibContainerFromSlice<'a, *mut *mut $ffi_name> for $name {
-            type Storage = (Vec<$crate::translate::Stash<'a, *mut $ffi_name, $name>>, Option<Vec<*mut $ffi_name>>);
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
+            type Storage = (Vec<$crate::translate::Stash<'a, *mut $ffi_name, $name $(<$($generic),+>)?>>, Option<Vec<*mut $ffi_name>>);
 
-            fn to_glib_none_from_slice(t: &'a [$name]) -> (*mut *mut $ffi_name, Self::Storage) {
+            fn to_glib_none_from_slice(t: &'a [$name $(<$($generic),+>)?]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let v: Vec<_> = t.iter().map(|s| $crate::translate::ToGlibPtr::to_glib_none(s)).collect();
                 let mut v_ptr: Vec<_> = v.iter().map(|s| s.0).collect();
                 v_ptr.push(std::ptr::null_mut() as *mut $ffi_name);
@@ -728,7 +772,7 @@ macro_rules! glib_object_wrapper {
                 (v_ptr.as_ptr() as *mut *mut $ffi_name, (v, Some(v_ptr)))
             }
 
-            fn to_glib_container_from_slice(t: &'a [$name]) -> (*mut *mut $ffi_name, Self::Storage) {
+            fn to_glib_container_from_slice(t: &'a [$name $(<$($generic),+>)?]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let v: Vec<_> = t.iter().map(|s| $crate::translate::ToGlibPtr::to_glib_none(s)).collect();
 
                 let v_ptr = unsafe {
@@ -744,7 +788,7 @@ macro_rules! glib_object_wrapper {
                 (v_ptr, (v, None))
             }
 
-            fn to_glib_full_from_slice(t: &[$name]) -> *mut *mut $ffi_name {
+            fn to_glib_full_from_slice(t: &[$name $(<$($generic),+>)?]) -> *mut *mut $ffi_name {
                 unsafe {
                     let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
 
@@ -758,80 +802,90 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a> $crate::translate::ToGlibContainerFromSlice<'a, *const *mut $ffi_name> for $name {
-            type Storage = (Vec<$crate::translate::Stash<'a, *mut $ffi_name, $name>>, Option<Vec<*mut $ffi_name>>);
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const *mut $ffi_name> for $name $(<$($generic),+>)? {
+            type Storage = (Vec<$crate::translate::Stash<'a, *mut $ffi_name, $name $(<$($generic),+>)?>>, Option<Vec<*mut $ffi_name>>);
 
-            fn to_glib_none_from_slice(t: &'a [$name]) -> (*const *mut $ffi_name, Self::Storage) {
+            fn to_glib_none_from_slice(t: &'a [$name $(<$($generic),+>)?]) -> (*const *mut $ffi_name, Self::Storage) {
                 let (ptr, stash) = $crate::translate::ToGlibContainerFromSlice::<'a, *mut *mut $ffi_name>::to_glib_none_from_slice(t);
                 (ptr as *const *mut $ffi_name, stash)
             }
 
-            fn to_glib_container_from_slice(_: &'a [$name]) -> (*const *mut $ffi_name, Self::Storage) {
+            fn to_glib_container_from_slice(_: &'a [$name $(<$($generic),+>)?]) -> (*const *mut $ffi_name, Self::Storage) {
                 // Can't have consumer free a *const pointer
                 unimplemented!()
             }
 
-            fn to_glib_full_from_slice(_: &[$name]) -> *const *mut $ffi_name {
+            fn to_glib_full_from_slice(_: &[$name $(<$($generic),+>)?]) -> *const *mut $ffi_name {
                 // Can't have consumer free a *const pointer
                 unimplemented!()
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrNone<*mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_none(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrNone<*const $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_none(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrFull<*mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrFull<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
-                $name($crate::translate::from_glib_full(ptr as *mut _))
+                $name {
+                    inner: $crate::translate::from_glib_full(ptr as *mut _),
+                    phantom: std::marker::PhantomData,
+                }
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrBorrow<*mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $crate::translate::Borrowed::new(
-                    $name(
-                        $crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner()
-                    )
+                    $name {
+                        inner: $crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner(),
+                        phantom: std::marker::PhantomData,
+                    }
                 )
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrBorrow<*const $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_borrow(ptr: *const $ffi_name) -> $crate::translate::Borrowed<Self> {
-                $crate::translate::from_glib_borrow::<_, $name>(ptr as *mut $ffi_name)
+                $crate::translate::from_glib_borrow::<_, $name $(<$($generic),+>)?>(ptr as *mut $ffi_name)
             }
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
                     return Vec::new();
@@ -865,7 +919,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
                 $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
             }
@@ -880,7 +934,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_num_as_vec(ptr: *const *mut $ffi_name, num: usize) -> Vec<Self> {
                 $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *mut *mut _, num)
             }
@@ -897,7 +951,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
-        impl $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_as_vec(ptr: *const *mut $ffi_name) -> Vec<Self> {
                 $crate::translate::FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(ptr as *mut *mut _)
             }
@@ -913,66 +967,52 @@ macro_rules! glib_object_wrapper {
             }
         }
 
-        impl $crate::types::StaticType for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
             }
         }
 
-        impl<T: $crate::object::ObjectType> std::cmp::PartialEq<T> for $name {
-            #[inline]
-            fn eq(&self, other: &T) -> bool {
-                std::cmp::PartialEq::eq(&self.0, $crate::object::ObjectType::as_object_ref(other))
-            }
-        }
-
-        impl<T: $crate::object::ObjectType> std::cmp::PartialOrd<T> for $name {
-            #[inline]
-            fn partial_cmp(&self, other: &T) -> Option<std::cmp::Ordering> {
-                std::cmp::PartialOrd::partial_cmp(&self.0, $crate::object::ObjectType::as_object_ref(other))
-            }
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ValueType for $name $(<$($generic),+>)? {
+            type Type = $name $(<$($generic),+>)?;
         }
 
         #[doc(hidden)]
-        impl $crate::value::ValueType for $name {
-            type Type = $name;
-        }
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ValueTypeOptional for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
-        impl $crate::value::ValueTypeOptional for $name { }
-
-        #[doc(hidden)]
-        unsafe impl<'a> $crate::value::FromValue<'a> for $name {
+        unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
                 assert_ne!((*ptr).ref_count, 0);
-                <$name as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
+                <$name $(<$($generic),+>)? as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
 
         #[doc(hidden)]
-        unsafe impl<'a> $crate::value::FromValue<'a> for &'a $name {
+        unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for &'a $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<$name>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                assert_eq!(std::mem::size_of::<$name $(<$($generic),+>)?>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
                 assert!(!(*ptr).is_null());
                 assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
-                &*(ptr as *const $name)
+                &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
 
         #[doc(hidden)]
-        impl $crate::value::ToValue for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValue for $name $(<$($generic),+>)? {
             fn to_value(&self) -> $crate::Value {
                 unsafe {
-                    let mut value = $crate::Value::from_type(<$name as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_take_object(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(self) as *mut _,
@@ -982,12 +1022,12 @@ macro_rules! glib_object_wrapper {
             }
 
             fn value_type(&self) -> $crate::Type {
-                <$name as $crate::StaticType>::static_type()
+                <$name $(<$($generic),+>)? as $crate::StaticType>::static_type()
             }
         }
 
         #[doc(hidden)]
-        impl $crate::value::ToValueOptional for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
                 unsafe {
@@ -1001,12 +1041,12 @@ macro_rules! glib_object_wrapper {
             }
         }
 
-        $crate::glib_object_wrapper!(@weak_impl $name);
+        $crate::glib_object_wrapper!(@weak_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?);
     };
 
-    (@weak_impl $name:ident) => {
+    (@weak_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?) => {
         #[doc(hidden)]
-        impl $crate::clone::Downgrade for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::clone::Downgrade for $name $(<$($generic),+>)? {
             type Weak = $crate::object::WeakRef<Self>;
 
             fn downgrade(&self) -> Self::Weak {
@@ -1015,134 +1055,136 @@ macro_rules! glib_object_wrapper {
         }
     };
 
-    (@munch_impls $name:ident, ) => { };
+    (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, ) => { };
 
-    (@munch_impls $name:ident, $super_name:path) => {
-        unsafe impl $crate::object::IsA<$super_name> for $name { }
+    (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path) => {
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$super_name> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
-        impl AsRef<$super_name> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$super_name> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$super_name {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
     };
 
-    (@munch_impls $name:ident, $super_name:path, $($implements:tt)*) => {
-        $crate::glib_object_wrapper!(@munch_impls $name, $super_name);
-        $crate::glib_object_wrapper!(@munch_impls $name, $($implements)*);
+    (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path, $($implements:tt)*) => {
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $super_name);
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($implements)*);
     };
 
     // If there is no parent class, i.e. only glib::Object
-    (@munch_first_impl $name:ident, ) => {
-        $crate::glib_object_wrapper!(@munch_impls $name, );
-        unsafe impl $crate::object::ParentClassIs for $name {
+    (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, ) => {
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, );
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $crate::object::Object;
         }
     };
 
     // If there is only one parent class
-    (@munch_first_impl $name:ident, $super_name:path) => {
-        $crate::glib_object_wrapper!(@munch_impls $name, $super_name);
-        unsafe impl $crate::object::ParentClassIs for $name {
+    (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path) => {
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $super_name);
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $super_name;
         }
     };
 
     // If there is more than one parent class
-    (@munch_first_impl $name:ident, $super_name:path, $($implements:tt)*) => {
-        $crate::glib_object_wrapper!(@munch_impls $name, $super_name);
-        unsafe impl $crate::object::ParentClassIs for $name {
+    (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path, $($implements:tt)*) => {
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $super_name);
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $super_name;
         }
-        $crate::glib_object_wrapper!(@munch_impls $name, $($implements)*);
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($implements)*);
     };
 
     // This case is only for glib::Object itself below. All other cases have glib::Object in its
     // parent class list
-    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr);
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsClass for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsClass for $name $(<$($generic),+>)? { }
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name, $ffi_name, @ffi_class std::os::raw::c_void,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @extends [$($extends)*], @implements [$($implements)*]
         );
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
-        $crate::glib_object_wrapper!(@munch_first_impl $name, $($extends)*);
-        $crate::glib_object_wrapper!(@munch_impls $name, $($implements)*);
+
+        $crate::glib_object_wrapper!(@munch_first_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($extends)*);
+
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($implements)*);
 
         #[doc(hidden)]
-        impl AsRef<$crate::object::Object> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsA<$crate::object::Object> for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$crate::object::Object> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsClass for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsClass for $name $(<$($generic),+>)? { }
     };
 
-    (@object_subclass [$($attr:meta)*] $visibility:vis $name:ident, $subclass:ty,
+    (@object_subclass [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $subclass:ty,
      @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
             <$subclass as $crate::subclass::types::ObjectSubclass>::Instance,
             @ffi_class <$subclass as $crate::subclass::types::ObjectSubclass>::Class,
             @type_ $crate::translate::IntoGlib::into_glib(<$subclass as $crate::subclass::types::ObjectSubclassType>::type_()),
             @extends [$($extends)*], @implements [$($implements)*]
         );
 
-        unsafe impl $crate::object::ObjectSubclassIs for $name {
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ObjectSubclassIs for $name $(<$($generic),+>)? {
             type Subclass = $subclass;
         }
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name, $ffi_name, @ffi_class std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @requires [$($requires)*]
         );
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
-        $crate::glib_object_wrapper!(@munch_impls $name, $($requires)*);
+        $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($requires)*);
 
         #[doc(hidden)]
-        impl AsRef<$crate::object::Object> for $name {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsA<$crate::object::Object> for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$crate::object::Object> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
-        unsafe impl $crate::object::IsInterface for $name { }
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsInterface for $name $(<$($generic),+>)? { }
     };
 }
 
@@ -2557,7 +2599,7 @@ impl<T: ObjectType> ObjectExt for T {
                     actual_type
                 );
 
-                ret.0.g_type = return_type.into_glib();
+                ret.inner.g_type = return_type.into_glib();
                 Some(ret)
             })
         };
@@ -3105,7 +3147,7 @@ fn validate_property_type(
             match property_value.get::<Option<Object>>() {
                 Ok(Some(obj)) => {
                     if obj.type_().is_a(pspec.value_type()) {
-                        property_value.0.g_type = pspec.value_type().into_glib();
+                        property_value.inner.g_type = pspec.value_type().into_glib();
                     } else {
                         return Err(
                             bool_error!(
@@ -3120,7 +3162,7 @@ fn validate_property_type(
                 }
                 Ok(None) => {
                     // If the value is None then the type is compatible too
-                    property_value.0.g_type = pspec.value_type().into_glib();
+                    property_value.inner.g_type = pspec.value_type().into_glib();
                 }
                 Err(_) => unreachable!("property_value type conformity already checked"),
             }
@@ -3176,7 +3218,7 @@ fn validate_signal_arguments(
             match arg.get::<Option<Object>>() {
                 Ok(Some(obj)) => {
                     if obj.type_().is_a(param_type) {
-                        arg.0.g_type = param_type.into_glib();
+                        arg.inner.g_type = param_type.into_glib();
                     } else {
                         return Err(
                             bool_error!(
@@ -3192,7 +3234,7 @@ fn validate_signal_arguments(
                 }
                 Ok(None) => {
                     // If the value is None then the type is compatible too
-                    arg.0.g_type = param_type.into_glib();
+                    arg.inner.g_type = param_type.into_glib();
                 }
                 Err(_) => unreachable!("property_value type conformity already checked"),
             }
@@ -3572,8 +3614,14 @@ impl<'a> BindingBuilder<'a> {
         }
 
         unsafe {
-            let source = Object(self.source.clone());
-            let target = Object(self.target.clone());
+            let source = Object {
+                inner: self.source.clone(),
+                phantom: std::marker::PhantomData,
+            };
+            let target = Object {
+                inner: self.target.clone(),
+                phantom: std::marker::PhantomData,
+            };
 
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(

@@ -117,19 +117,19 @@ impl Quaternion {
     }
 
     pub fn x(&self) -> f32 {
-        self.0.x
+        self.inner.x
     }
 
     pub fn y(&self) -> f32 {
-        self.0.y
+        self.inner.y
     }
 
     pub fn z(&self) -> f32 {
-        self.0.z
+        self.inner.z
     }
 
     pub fn w(&self) -> f32 {
-        self.0.w
+        self.inner.w
     }
 }
 

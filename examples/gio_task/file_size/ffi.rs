@@ -20,14 +20,15 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
     user_data: glib::ffi::gpointer,
 ) {
     let cancellable = gio::Cancellable::from_glib_borrow(cancellable);
-    let closure = move |result: &gio::AsyncResult, source_object: Option<&glib::Object>| {
-        let result: *mut gio::ffi::GAsyncResult = result.to_glib_none().0;
+    let closure = move |task: gio::LocalTask<i64>, source_object: Option<&glib::Object>| {
+        let result: *mut gio::ffi::GAsyncResult =
+            task.upcast_ref::<gio::AsyncResult>().to_glib_none().0;
         let source_object: *mut glib::object::GObject = source_object.to_glib_none().0;
         callback.unwrap()(source_object, result, user_data)
     };
 
     let source_object = &super::FileSize::from_glib_borrow(this);
-    let task = gio::Task::new(
+    let task = gio::LocalTask::new(
         Some(source_object.upcast_ref::<glib::Object>()),
         Some(cancellable.as_ref()),
         closure,
@@ -50,8 +51,8 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
             .unwrap()
             .imp();
 
-        source_object.size.replace(Some(size));
-        task.return_value(&size.to_value());
+        *source_object.size.lock().unwrap() = Some(size);
+        task.return_result(Ok(size));
     });
 }
 
@@ -65,14 +66,16 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
     result: *mut gio::ffi::GAsyncResult,
     error: *mut *mut glib::ffi::GError,
 ) -> i64 {
-    match gio::AsyncResult::from_glib_borrow(result)
-        .downcast_ref::<gio::Task>()
+    match gio::AsyncResult::from_glib_none(result)
+        .downcast::<gio::Task<i64>>()
         .unwrap()
-        .propagate_value()
+        .propagate()
     {
-        Ok(v) => v.get::<i64>().unwrap(),
+        Ok(v) => v,
         Err(e) => {
-            *error = e.into_raw();
+            if !error.is_null() {
+                *error = e.into_raw();
+            }
             0
         }
     }
@@ -88,6 +91,6 @@ pub unsafe extern "C" fn my_file_size_get_retrieved_size(this: *mut FileSize) ->
         .downcast_ref::<super::FileSize>()
         .unwrap()
         .imp();
-    let x = *simple_object.size.borrow();
+    let x = *simple_object.size.lock().unwrap();
     x.unwrap_or(-1)
 }

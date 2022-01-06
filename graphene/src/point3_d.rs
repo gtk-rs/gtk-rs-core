@@ -28,27 +28,27 @@ impl Point3D {
     }
 
     pub fn x(&self) -> f32 {
-        self.0.x
+        self.inner.x
     }
 
     pub fn set_x(&mut self, x: f32) {
-        self.0.x = x;
+        self.inner.x = x;
     }
 
     pub fn y(&self) -> f32 {
-        self.0.y
+        self.inner.y
     }
 
     pub fn set_y(&mut self, y: f32) {
-        self.0.y = y;
+        self.inner.y = y;
     }
 
     pub fn z(&self) -> f32 {
-        self.0.z
+        self.inner.z
     }
 
     pub fn set_z(&mut self, z: f32) {
-        self.0.z = z;
+        self.inner.z = z;
     }
 }
 

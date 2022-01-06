@@ -278,7 +278,7 @@ macro_rules! wrapper {
     // Boxed
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(Boxed<$ffi_name:ty>);
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Boxed<$ffi_name:ty>);
 
         match fn {
             copy => |$copy_arg:ident| $copy_expr:expr,
@@ -289,7 +289,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_boxed_wrapper!(
-            [$($attr)*] $visibility $name, $ffi_name,
+            [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr
             $(, @type_ $get_type_expr)?
         );
@@ -298,7 +298,7 @@ macro_rules! wrapper {
     // BoxedInline
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(BoxedInline<$ffi_name:ty>);
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (BoxedInline<$ffi_name:ty>);
 
         match fn {
             $(
@@ -316,7 +316,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_boxed_inline_wrapper!(
-            [$($attr)*] $visibility $name, $ffi_name
+            [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name
             $(, @copy $copy_arg $copy_expr, @free $free_arg $free_expr)?
             $(, @init $init_arg $init_expr, @copy_into $copy_into_arg_dest $copy_into_arg_src $copy_into_expr, @clear $clear_arg $clear_expr)?
             $(, @type_ $get_type_expr)?
@@ -326,17 +326,17 @@ macro_rules! wrapper {
     // BoxedInline
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(BoxedInline<$ffi_name:ty>);
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (BoxedInline<$ffi_name:ty>);
     ) => {
         $crate::glib_boxed_inline_wrapper!(
-            [$($attr)*] $visibility $name, $ffi_name
+            [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name
         );
     };
 
     // Shared
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(Shared<$ffi_name:ty>);
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Shared<$ffi_name:ty>);
 
         match fn {
             ref => |$ref_arg:ident| $ref_expr:expr,
@@ -347,7 +347,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_shared_wrapper!(
-            [$($attr)*] $visibility $name, $ffi_name,
+            [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @ref $ref_arg $ref_expr, @unref $unref_arg $unref_expr
             $(, @type_ $get_type_expr)?
         );
@@ -356,14 +356,14 @@ macro_rules! wrapper {
     // Object, no parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@implements $($implements:path),+)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [],
@@ -374,14 +374,14 @@ macro_rules! wrapper {
     // Object, parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [$($extends),+],
@@ -392,10 +392,10 @@ macro_rules! wrapper {
     // ObjectSubclass, no parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(ObjectSubclass<$subclass:ty>) $(@implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>) $(@implements $($implements:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @object_subclass [$($attr)*] $visibility $name, $subclass,
+            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $subclass,
             @extends [],
             @implements [$($($implements),+)?]
         );
@@ -404,10 +404,10 @@ macro_rules! wrapper {
     // ObjectSubclass, parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(ObjectSubclass<$subclass:ty>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @object_subclass [$($attr)*] $visibility $name, $subclass,
+            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $subclass,
             @extends [$($extends),+],
             @implements [$($($implements),+)?]
         );
@@ -416,14 +416,14 @@ macro_rules! wrapper {
     // Interface
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(Interface<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@requires $($requires:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Interface<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@requires $($requires:path),+)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name, $ffi_name,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @requires [$( $($requires),+ )?]
@@ -433,10 +433,10 @@ macro_rules! wrapper {
     // ObjectInterface
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident(ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name, std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, std::os::raw::c_void,
             @ffi_class $iface_name,
             @type_ $crate::translate::IntoGlib::into_glib(<$iface_name as $crate::subclass::interface::ObjectInterfaceType>::type_()),
             @requires [$( $($requires),+ )?]

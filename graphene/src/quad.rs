@@ -62,7 +62,7 @@ impl Quad {
     }
 
     pub fn points(&self) -> &[Point; 4] {
-        unsafe { &*(&self.0.points as *const [ffi::graphene_point_t; 4] as *const [Point; 4]) }
+        unsafe { &*(&self.inner.points as *const [ffi::graphene_point_t; 4] as *const [Point; 4]) }
     }
 }
 
