@@ -76,7 +76,7 @@ macro_rules! glib_boxed_inline_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
-            phantom: std::marker::PhantomData<($($($generic),+)?)>,
+            pub(crate) phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
