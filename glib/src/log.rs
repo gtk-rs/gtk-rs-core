@@ -658,28 +658,47 @@ macro_rules! g_debug {
 #[doc(hidden)]
 #[macro_export]
 macro_rules! g_print_inner {
-    ($func:ident, $format:expr) => {{
-        use $crate::translate::ToGlibPtr;
+    ($func:ident, $format:expr $(, $arg:expr)* $(,)?) => {{
+        use $crate::translate::{IntoGlib, ToGlibPtr};
+        use $crate::LogLevel;
+        use std::fmt::{self, Write};
 
         fn check_arg(_format: &str) {}
 
         check_arg($format);
-        // to prevent the glib formatter to look for arguments which don't exist
-        let f = $format.replace("%", "%%");
-        unsafe {
-            $crate::ffi::$func(f.to_glib_none().0);
+
+        // Replace literal percentage signs with two so that they are not interpreted as printf
+        // format specifiers
+        struct GWrite($crate::GStringBuilder);
+
+        impl fmt::Write for GWrite {
+            fn write_str(&mut self, mut s: &str) -> Result<(), fmt::Error> {
+                while let Some((prefix, suffix)) = s.split_once('%') {
+                    self.0.append(prefix);
+                    self.0.append("%%");
+                    s = suffix;
+                }
+                self.0.append(s);
+                Ok(())
+            }
+
+            fn write_char(&mut self, c: char) -> fmt::Result {
+                if c == '%' {
+                    self.0.append("%%");
+                } else {
+                    self.0.append_c(c);
+                }
+                Ok(())
+            }
         }
-    }};
-    ($func:ident, $format:expr, $($arg:expr),*) => {{
-        use $crate::translate::ToGlibPtr;
 
-        fn check_arg(_format: &str) {}
+        let mut w = GWrite($crate::GStringBuilder::default());
 
-        check_arg($format);
-        // to prevent the glib formatter to look for arguments which don't exist
-        let f = format!($format, $($arg),*).replace("%", "%%");
-        unsafe {
-            $crate::ffi::$func(f.to_glib_none().0);
+        // Can't really happen but better safe than sorry
+        if !std::write!(&mut w, $format, $($arg),*).is_err() {
+            unsafe {
+                $crate::ffi::$func(w.0.into_string().to_glib_none().0);
+            }
         }
     }};
 }
@@ -706,11 +725,8 @@ macro_rules! g_print_inner {
 /// ```
 #[macro_export]
 macro_rules! g_print {
-    ($format:expr, $($arg:expr),* $(,)?) => {{
+    ($format:expr $(,$arg:expr)* $(,)?) => {{
         $crate::g_print_inner!(g_print, $format, $($arg),*);
-    }};
-    ($format:expr $(,)?) => {{
-        $crate::g_print_inner!(g_print, $format);
     }};
 }
 
@@ -736,10 +752,7 @@ macro_rules! g_print {
 /// ```
 #[macro_export]
 macro_rules! g_printerr {
-    ($format:expr $(,)?) => {{
-        $crate::g_print_inner!(g_printerr, $format);
-    }};
-    ($format:expr, $($arg:expr),* $(,)?) => {{
+    ($format:expr $(, $arg:expr)* $(,)?) => {{
         $crate::g_print_inner!(g_printerr, $format, $($arg),*);
     }};
 }
