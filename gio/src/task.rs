@@ -39,19 +39,21 @@ macro_rules! task_impl {
     ($name:ident $(, @bound: $bound:tt)? $(, @safety: $safety:tt)?) => {
         impl <V: ValueType $(+ $bound)?> $name<V> {
             #[doc(alias = "g_task_new")]
-            pub fn new<P, Q>(
-                source_object: Option<&glib::Object>,
+            pub fn new<S, P, Q>(
+                source_object: Option<&S>,
                 cancellable: Option<&P>,
                 callback: Q,
             ) -> Self
             where
+                S: IsA<glib::Object> $(+ $bound)?,
                 P: IsA<Cancellable>,
-                Q: FnOnce($name<V>, Option<&glib::Object>) $(+ $bound)? + 'static,
+                Q: FnOnce($name<V>, Option<&S>) $(+ $bound)? + 'static,
             {
                 let callback_data = Box_::new(callback);
                 unsafe extern "C" fn trampoline<
+                    S: IsA<glib::Object> $(+ $bound)?,
                     V: ValueType $(+ $bound)?,
-                    Q: FnOnce($name<V>, Option<&glib::Object>) $(+ $bound)? + 'static,
+                    Q: FnOnce($name<V>, Option<&S>) $(+ $bound)? + 'static,
                 >(
                     source_object: *mut glib::gobject_ffi::GObject,
                     res: *mut ffi::GAsyncResult,
@@ -62,12 +64,15 @@ macro_rules! task_impl {
                         .downcast::<$name<V>>()
                         .unwrap();
                     let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
-                    callback(task, source_object.as_ref().as_ref());
+                    callback(
+                        task,
+                        source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
+                    );
                 }
-                let callback = trampoline::<V, Q>;
+                let callback = trampoline::<S, V, Q>;
                 unsafe {
                     from_glib_full(ffi::g_task_new(
-                        source_object.to_glib_none().0,
+                        source_object.map(|p| p.as_ref()).to_glib_none().0,
                         cancellable.map(|p| p.as_ref()).to_glib_none().0,
                         Some(callback),
                         Box_::into_raw(callback_data) as *mut _,

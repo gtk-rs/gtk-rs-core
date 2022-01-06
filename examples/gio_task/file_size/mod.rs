@@ -61,18 +61,14 @@ impl FileSize {
         cancellable: Option<&gio::Cancellable>,
         callback: Q,
     ) {
-        let closure = move |task: gio::Task<i64>, source_object: Option<&glib::Object>| {
+        let closure = move |task: gio::Task<i64>, source_object: Option<&FileSize>| {
             // SAFETY: this is safe because we call propagate just once
             let value = unsafe { task.propagate().unwrap() };
             let source_object = source_object.unwrap().downcast_ref::<FileSize>().unwrap();
             callback(value, source_object);
         };
 
-        let task = gio::Task::new(
-            Some(self.upcast_ref::<glib::Object>()),
-            cancellable,
-            closure,
-        );
+        let task = gio::Task::new(Some(self), cancellable, closure);
 
         let task_func = move |task: gio::Task<i64>,
                               source_object: Option<&FileSize>,
