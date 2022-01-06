@@ -370,7 +370,7 @@ pub fn log_default_handler(log_domain: Option<&str>, log_level: LogLevel, messag
 /// ```
 #[macro_export]
 macro_rules! g_log {
-    ($log_level:expr, $format:literal, $($arg:expr),* $(,)?) => {{
+    ($log_level:expr, $format:literal $(,$arg:expr)* $(,)?) => {{
         use $crate::translate::{IntoGlib, ToGlibPtr};
         use $crate::LogLevel;
 
@@ -387,24 +387,7 @@ macro_rules! g_log {
             );
         }
     }};
-    ($log_level:expr, $format:literal $(,)?) => {{
-        use $crate::translate::{IntoGlib, ToGlibPtr};
-        use $crate::LogLevel;
-
-        fn check_log_args(_log_level: LogLevel, _format: &str) {}
-
-        check_log_args($log_level, $format);
-        // to prevent the glib formatter to look for arguments which don't exist
-        let f = $format.replace("%", "%%");
-        unsafe {
-            $crate::ffi::g_log(
-                std::ptr::null(),
-                $log_level.into_glib(),
-                f.to_glib_none().0,
-            );
-        }
-    }};
-    ($log_domain:expr, $log_level:expr, $format:literal, $($arg:expr),* $(,)?) => {{
+    ($log_domain:expr, $log_level:expr, $format:literal $(,$arg:expr)* $(,)?) => {{
         use $crate::translate::{IntoGlib, ToGlibPtr};
         use $crate::LogLevel;
 
@@ -415,25 +398,6 @@ macro_rules! g_log {
         check_log_args($log_level, $format);
         // to prevent the glib formatter to look for arguments which don't exist
         let f = format!($format, $($arg),*).replace("%", "%%");
-        unsafe {
-            $crate::ffi::g_log(
-                log_domain.to_glib_none().0,
-                $log_level.into_glib(),
-                f.to_glib_none().0,
-            );
-        }
-    }};
-    ($log_domain:expr, $log_level:expr, $format:literal $(,)?) => {{
-        use $crate::translate::{IntoGlib, ToGlibPtr};
-        use $crate::LogLevel;
-
-        fn check_log_args(_log_level: LogLevel, _format: &str) {}
-
-        // the next line is used to enforce the type for the macro checker...
-        let log_domain: Option<&str> = $log_domain.into();
-        check_log_args($log_level, $format);
-        // to prevent the glib formatter to look for arguments which don't exist
-        let f = $format.replace("%", "%%");
         unsafe {
             $crate::ffi::g_log(
                 log_domain.to_glib_none().0,
