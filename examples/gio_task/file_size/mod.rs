@@ -31,11 +31,13 @@ impl FileSize {
             callback(value, source_object);
         };
 
-        let task = gio::LocalTask::new(
-            Some(self.upcast_ref::<glib::Object>()),
-            cancellable,
-            closure,
-        );
+        let task = unsafe {
+            gio::LocalTask::new(
+                Some(self.upcast_ref::<glib::Object>()),
+                cancellable,
+                closure,
+            )
+        };
 
         glib::MainContext::default().spawn_local(async move {
             let size = gio::File::for_path("Cargo.toml")
@@ -68,7 +70,7 @@ impl FileSize {
             callback(value, source_object);
         };
 
-        let task = gio::Task::new(Some(self), cancellable, closure);
+        let task = unsafe { gio::Task::new(Some(self), cancellable, closure) };
 
         let task_func = move |task: gio::Task<i64>,
                               source_object: Option<&FileSize>,
