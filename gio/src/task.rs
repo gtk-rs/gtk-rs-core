@@ -1,5 +1,27 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+// rustdoc-stripper-ignore-next
+//! `Task` bindings.
+//!
+//! The API distinguishes between `LocalTask` and `Task`, where the latter can be used
+//! with threads, but has more strict requirements, in particular it requires its value,
+//! source object, and callbacks must implement the `Send` trait.
+//!
+//! The `Task` and `LocalTask` types provide idiomatic access to glib's `GTask` API, for
+//! instance by being generic over their value type, while not completely departing
+//! from the underlying C API.
+//! Unfortunately this API does not allow to automatically enforce all the
+//! invariants required to be a completely safe abstraction.
+//!
+//! For this reason, the constructors of `Task` and `LocalTask` are marked as
+//! unsafe and when using these types the caller is responsible to ensure the
+//! following requirements are satisfied
+//!
+//! * You should not create a `LocalTask`, upcast it to a `glib::Object` and then
+//!   downcast it to a `Task`, as this will bypass the thread safety requirements
+//! * You should ensure that the `return_result`, `return_error_if_cancelled` and
+//!   `propagate()` methods are only called once.
+
 use crate::AsyncResult;
 use crate::Cancellable;
 use glib::object::IsA;
@@ -12,10 +34,6 @@ use glib::Cast;
 use std::boxed::Box as Box_;
 use std::mem::transmute;
 use std::ptr;
-
-// Implemented manually to ensure the API is sound and ergonic. In particular
-// 1. Distinguish between `LocalTask` and `Task`, where the latter can be used with threads
-// 2. Make the task generic over the return type.
 
 glib::wrapper! {
     #[doc(alias = "GTask")]
@@ -39,7 +57,8 @@ macro_rules! task_impl {
     ($name:ident $(, @bound: $bound:tt)? $(, @safety: $safety:tt)?) => {
         impl <V: ValueType $(+ $bound)?> $name<V> {
             #[doc(alias = "g_task_new")]
-            pub fn new<S, P, Q>(
+            #[allow(unused_unsafe)]
+            pub unsafe fn new<S, P, Q>(
                 source_object: Option<&S>,
                 cancellable: Option<&P>,
                 callback: Q,
@@ -367,14 +386,16 @@ mod test {
     fn test_int_async_result() {
         match run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
-            let task = crate::LocalTask::new(
-                None,
-                Some(&cancellable),
-                move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate()).unwrap();
-                    l.quit();
-                },
-            );
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
             task.return_result(Ok(100_i32));
         }) {
             Err(_) => panic!(),
@@ -430,14 +451,16 @@ mod test {
 
         match run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
-            let task = crate::LocalTask::new(
-                None,
-                Some(&cancellable),
-                move |t: LocalTask<glib::Object>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate()).unwrap();
-                    l.quit();
-                },
-            );
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<glib::Object>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
             let my_object = MySimpleObject::new();
             my_object.set_size(100);
             task.return_result(Ok(my_object.upcast::<glib::Object>()));
@@ -454,14 +477,16 @@ mod test {
     fn test_error() {
         match run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
-            let task = crate::LocalTask::<i32>::new(
-                None,
-                Some(&cancellable),
-                move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate()).unwrap();
-                    l.quit();
-                },
-            );
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
             task.return_result(Err(glib::Error::new(
                 crate::IOErrorEnum::WouldBlock,
                 "WouldBlock",
@@ -479,14 +504,16 @@ mod test {
     fn test_cancelled() {
         match run_async_local(|tx, l| {
             let cancellable = crate::Cancellable::new();
-            let task = crate::LocalTask::<i32>::new(
-                None,
-                Some(&cancellable),
-                move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
-                    tx.send(t.propagate()).unwrap();
-                    l.quit();
-                },
-            );
+            let task = unsafe {
+                crate::LocalTask::new(
+                    None,
+                    Some(&cancellable),
+                    move |t: LocalTask<i32>, _b: Option<&glib::Object>| {
+                        tx.send(t.propagate()).unwrap();
+                        l.quit();
+                    },
+                )
+            };
             cancellable.cancel();
             task.return_error_if_cancelled();
         }) {
