@@ -2417,6 +2417,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES", "1"),
     ("(guint) G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES", "8"),
     ("(guint) G_DBUS_PROXY_FLAGS_NONE", "0"),
+    ("(guint) G_DBUS_PROXY_FLAGS_NO_MATCH_RULE", "32"),
     ("(guint) G_DBUS_SEND_MESSAGE_FLAGS_NONE", "0"),
     ("(guint) G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL", "1"),
     (
@@ -2835,6 +2836,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_SOCKET_TYPE_STREAM", "1"),
     ("(guint) G_SUBPROCESS_FLAGS_INHERIT_FDS", "128"),
     ("(guint) G_SUBPROCESS_FLAGS_NONE", "0"),
+    ("(guint) G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP", "256"),
     ("(guint) G_SUBPROCESS_FLAGS_STDERR_MERGE", "64"),
     ("(guint) G_SUBPROCESS_FLAGS_STDERR_PIPE", "16"),
     ("(guint) G_SUBPROCESS_FLAGS_STDERR_SILENCE", "32"),

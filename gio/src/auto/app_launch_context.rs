@@ -62,6 +62,14 @@ pub trait AppLaunchContextExt: 'static {
     #[doc(alias = "launch-failed")]
     fn connect_launch_failed<F: Fn(&Self, &str) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "launch-started")]
+    fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
+
     #[doc(alias = "launched")]
     fn connect_launched<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
         &self,
@@ -148,6 +156,41 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
                 b"launch-failed\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(
                     launch_failed_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        unsafe extern "C" fn launch_started_trampoline<
+            P: IsA<AppLaunchContext>,
+            F: Fn(&P, &AppInfo, &glib::Variant) + 'static,
+        >(
+            this: *mut ffi::GAppLaunchContext,
+            object: *mut ffi::GAppInfo,
+            p0: *mut glib::ffi::GVariant,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(
+                AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
+                &from_glib_borrow(object),
+                &from_glib_borrow(p0),
+            )
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                b"launch-started\0".as_ptr() as *const _,
+                Some(transmute::<_, unsafe extern "C" fn()>(
+                    launch_started_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

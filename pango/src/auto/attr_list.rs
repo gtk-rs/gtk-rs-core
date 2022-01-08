@@ -5,6 +5,9 @@
 use crate::AttrIterator;
 use crate::Attribute;
 use glib::translate::*;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug)]
@@ -78,6 +81,14 @@ impl AttrList {
         }
     }
 
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_list_to_string")]
+    #[doc(alias = "to_string")]
+    pub fn to_str(&self) -> glib::GString {
+        unsafe { from_glib_full(ffi::pango_attr_list_to_string(self.to_glib_none().0)) }
+    }
+
     #[cfg(any(feature = "v1_44", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_list_update")]
@@ -86,10 +97,29 @@ impl AttrList {
             ffi::pango_attr_list_update(self.to_glib_none().0, pos, remove, add);
         }
     }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_list_from_string")]
+    pub fn from_string(text: &str) -> Result<AttrList, glib::BoolError> {
+        unsafe {
+            Option::<_>::from_glib_full(ffi::pango_attr_list_from_string(text.to_glib_none().0))
+                .ok_or_else(|| glib::bool_error!("Can't parse AttrList"))
+        }
+    }
 }
 
 impl Default for AttrList {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl fmt::Display for AttrList {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(&self.to_str())
     }
 }

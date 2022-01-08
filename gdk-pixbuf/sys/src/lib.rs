@@ -59,11 +59,51 @@ pub const GDK_PIXBUF_FORMAT_THREADSAFE: GdkPixbufFormatFlags = 4;
 
 // Callbacks
 pub type GdkPixbufDestroyNotify = Option<unsafe extern "C" fn(*mut u8, gpointer)>;
+pub type GdkPixbufModuleBeginLoadFunc = Option<
+    unsafe extern "C" fn(
+        GdkPixbufModuleSizeFunc,
+        GdkPixbufModulePreparedFunc,
+        GdkPixbufModuleUpdatedFunc,
+        gpointer,
+        *mut *mut glib::GError,
+    ) -> gpointer,
+>;
 pub type GdkPixbufModuleFillInfoFunc = Option<unsafe extern "C" fn(*mut GdkPixbufFormat)>;
 pub type GdkPixbufModuleFillVtableFunc = Option<unsafe extern "C" fn(*mut GdkPixbufModule)>;
+pub type GdkPixbufModuleIncrementLoadFunc =
+    Option<unsafe extern "C" fn(gpointer, *const u8, c_uint, *mut *mut glib::GError) -> gboolean>;
+pub type GdkPixbufModuleLoadAnimationFunc =
+    Option<unsafe extern "C" fn(*mut FILE, *mut *mut glib::GError) -> *mut GdkPixbufAnimation>;
+pub type GdkPixbufModuleLoadFunc =
+    Option<unsafe extern "C" fn(*mut FILE, *mut *mut glib::GError) -> *mut GdkPixbuf>;
+pub type GdkPixbufModuleLoadXpmDataFunc =
+    Option<unsafe extern "C" fn(*mut *const c_char) -> *mut GdkPixbuf>;
 pub type GdkPixbufModulePreparedFunc =
     Option<unsafe extern "C" fn(*mut GdkPixbuf, *mut GdkPixbufAnimation, gpointer)>;
+pub type GdkPixbufModuleSaveCallbackFunc = Option<
+    unsafe extern "C" fn(
+        GdkPixbufSaveFunc,
+        gpointer,
+        *mut GdkPixbuf,
+        *mut *mut c_char,
+        *mut *mut c_char,
+        *mut *mut glib::GError,
+    ) -> gboolean,
+>;
+pub type GdkPixbufModuleSaveFunc = Option<
+    unsafe extern "C" fn(
+        *mut FILE,
+        *mut GdkPixbuf,
+        *mut *mut c_char,
+        *mut *mut c_char,
+        *mut *mut glib::GError,
+    ) -> gboolean,
+>;
+pub type GdkPixbufModuleSaveOptionSupportedFunc =
+    Option<unsafe extern "C" fn(*const c_char) -> gboolean>;
 pub type GdkPixbufModuleSizeFunc = Option<unsafe extern "C" fn(*mut c_int, *mut c_int, gpointer)>;
+pub type GdkPixbufModuleStopLoadFunc =
+    Option<unsafe extern "C" fn(gpointer, *mut *mut glib::GError) -> gboolean>;
 pub type GdkPixbufModuleUpdatedFunc =
     Option<unsafe extern "C" fn(*mut GdkPixbuf, c_int, c_int, c_int, c_int, gpointer)>;
 pub type GdkPixbufSaveFunc =
@@ -185,43 +225,15 @@ pub struct GdkPixbufModule {
     pub module_path: *mut c_char,
     pub module: gpointer,
     pub info: *mut GdkPixbufFormat,
-    pub load: Option<unsafe extern "C" fn(*mut FILE, *mut *mut glib::GError) -> *mut GdkPixbuf>,
-    pub load_xpm_data: Option<unsafe extern "C" fn(*mut *const c_char) -> *mut GdkPixbuf>,
-    pub begin_load: Option<
-        unsafe extern "C" fn(
-            GdkPixbufModuleSizeFunc,
-            GdkPixbufModulePreparedFunc,
-            GdkPixbufModuleUpdatedFunc,
-            gpointer,
-            *mut *mut glib::GError,
-        ) -> gpointer,
-    >,
-    pub stop_load: Option<unsafe extern "C" fn(gpointer, *mut *mut glib::GError) -> gboolean>,
-    pub load_increment: Option<
-        unsafe extern "C" fn(gpointer, *const u8, c_uint, *mut *mut glib::GError) -> gboolean,
-    >,
-    pub load_animation:
-        Option<unsafe extern "C" fn(*mut FILE, *mut *mut glib::GError) -> *mut GdkPixbufAnimation>,
-    pub save: Option<
-        unsafe extern "C" fn(
-            *mut FILE,
-            *mut GdkPixbuf,
-            *mut *mut c_char,
-            *mut *mut c_char,
-            *mut *mut glib::GError,
-        ) -> gboolean,
-    >,
-    pub save_to_callback: Option<
-        unsafe extern "C" fn(
-            GdkPixbufSaveFunc,
-            gpointer,
-            *mut GdkPixbuf,
-            *mut *mut c_char,
-            *mut *mut c_char,
-            *mut *mut glib::GError,
-        ) -> gboolean,
-    >,
-    pub is_save_option_supported: Option<unsafe extern "C" fn(*const c_char) -> gboolean>,
+    pub load: GdkPixbufModuleLoadFunc,
+    pub load_xpm_data: GdkPixbufModuleLoadXpmDataFunc,
+    pub begin_load: GdkPixbufModuleBeginLoadFunc,
+    pub stop_load: GdkPixbufModuleStopLoadFunc,
+    pub load_increment: GdkPixbufModuleIncrementLoadFunc,
+    pub load_animation: GdkPixbufModuleLoadAnimationFunc,
+    pub save: GdkPixbufModuleSaveFunc,
+    pub save_to_callback: GdkPixbufModuleSaveCallbackFunc,
+    pub is_save_option_supported: GdkPixbufModuleSaveOptionSupportedFunc,
     pub _reserved1: Option<unsafe extern "C" fn()>,
     pub _reserved2: Option<unsafe extern "C" fn()>,
     pub _reserved3: Option<unsafe extern "C" fn()>,

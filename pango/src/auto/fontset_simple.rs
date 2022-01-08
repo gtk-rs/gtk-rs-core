@@ -27,7 +27,7 @@ impl FontsetSimple {
     #[doc(alias = "pango_fontset_simple_append")]
     pub fn append(&self, font: &impl IsA<Font>) {
         unsafe {
-            ffi::pango_fontset_simple_append(self.to_glib_none().0, font.as_ref().to_glib_none().0);
+            ffi::pango_fontset_simple_append(self.to_glib_none().0, font.as_ref().to_glib_full());
         }
     }
 

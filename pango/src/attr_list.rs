@@ -58,3 +58,12 @@ impl PartialEq for AttrList {
 
 #[cfg(any(feature = "v1_46", feature = "dox"))]
 impl Eq for AttrList {}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+impl std::str::FromStr for AttrList {
+    type Err = glib::BoolError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::from_string(s)
+    }
+}

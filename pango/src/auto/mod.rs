@@ -104,6 +104,12 @@ pub use self::enums::WrapMode;
 
 mod flags;
 pub use self::flags::FontMask;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+pub use self::flags::LayoutDeserializeFlags;
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+pub use self::flags::LayoutSerializeFlags;
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 pub use self::flags::ShapeFlags;

@@ -51,7 +51,10 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoGravity", sizeof(PangoGravity), alignof(PangoGravity));
     printf("%s;%zu;%zu\n", "PangoGravityHint", sizeof(PangoGravityHint), alignof(PangoGravityHint));
     printf("%s;%zu;%zu\n", "PangoItem", sizeof(PangoItem), alignof(PangoItem));
+    printf("%s;%zu;%zu\n", "PangoLayoutDeserializeError", sizeof(PangoLayoutDeserializeError), alignof(PangoLayoutDeserializeError));
+    printf("%s;%zu;%zu\n", "PangoLayoutDeserializeFlags", sizeof(PangoLayoutDeserializeFlags), alignof(PangoLayoutDeserializeFlags));
     printf("%s;%zu;%zu\n", "PangoLayoutRun", sizeof(PangoLayoutRun), alignof(PangoLayoutRun));
+    printf("%s;%zu;%zu\n", "PangoLayoutSerializeFlags", sizeof(PangoLayoutSerializeFlags), alignof(PangoLayoutSerializeFlags));
     printf("%s;%zu;%zu\n", "PangoMatrix", sizeof(PangoMatrix), alignof(PangoMatrix));
     printf("%s;%zu;%zu\n", "PangoOverline", sizeof(PangoOverline), alignof(PangoOverline));
     printf("%s;%zu;%zu\n", "PangoRectangle", sizeof(PangoRectangle), alignof(PangoRectangle));

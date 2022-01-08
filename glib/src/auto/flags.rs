@@ -282,6 +282,46 @@ impl FromGlib<ffi::GLogLevelFlags> for LogLevelFlags {
     }
 }
 
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+bitflags! {
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "GMainContextFlags")]
+    pub struct MainContextFlags: u32 {
+        #[doc(alias = "G_MAIN_CONTEXT_FLAGS_NONE")]
+        const NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE as u32;
+        #[doc(alias = "G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING")]
+        const OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING as u32;
+    }
+}
+
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+impl fmt::Display for MainContextFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[doc(hidden)]
+impl IntoGlib for MainContextFlags {
+    type GlibType = ffi::GMainContextFlags;
+
+    fn into_glib(self) -> ffi::GMainContextFlags {
+        self.bits()
+    }
+}
+
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GMainContextFlags> for MainContextFlags {
+    unsafe fn from_glib(value: ffi::GMainContextFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GOptionFlags")]
     pub struct OptionFlags: u32 {

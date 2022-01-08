@@ -43,6 +43,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GLogField", sizeof(GLogField), alignof(GLogField));
     printf("%s;%zu;%zu\n", "GLogLevelFlags", sizeof(GLogLevelFlags), alignof(GLogLevelFlags));
     printf("%s;%zu;%zu\n", "GLogWriterOutput", sizeof(GLogWriterOutput), alignof(GLogWriterOutput));
+    printf("%s;%zu;%zu\n", "GMainContextFlags", sizeof(GMainContextFlags), alignof(GMainContextFlags));
     printf("%s;%zu;%zu\n", "GMarkupCollectType", sizeof(GMarkupCollectType), alignof(GMarkupCollectType));
     printf("%s;%zu;%zu\n", "GMarkupError", sizeof(GMarkupError), alignof(GMarkupError));
     printf("%s;%zu;%zu\n", "GMarkupParseFlags", sizeof(GMarkupParseFlags), alignof(GMarkupParseFlags));

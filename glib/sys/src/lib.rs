@@ -585,6 +585,11 @@ pub const G_UNICODE_SCRIPT_CHORASMIAN: GUnicodeScript = 153;
 pub const G_UNICODE_SCRIPT_DIVES_AKURU: GUnicodeScript = 154;
 pub const G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT: GUnicodeScript = 155;
 pub const G_UNICODE_SCRIPT_YEZIDI: GUnicodeScript = 156;
+pub const G_UNICODE_SCRIPT_CYPRO_MINOAN: GUnicodeScript = 157;
+pub const G_UNICODE_SCRIPT_OLD_UYGHUR: GUnicodeScript = 158;
+pub const G_UNICODE_SCRIPT_TANGSA: GUnicodeScript = 159;
+pub const G_UNICODE_SCRIPT_TOTO: GUnicodeScript = 160;
+pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -855,6 +860,10 @@ pub const G_LOG_LEVEL_MESSAGE: GLogLevelFlags = 32;
 pub const G_LOG_LEVEL_INFO: GLogLevelFlags = 64;
 pub const G_LOG_LEVEL_DEBUG: GLogLevelFlags = 128;
 pub const G_LOG_LEVEL_MASK: GLogLevelFlags = 4294967292;
+
+pub type GMainContextFlags = c_uint;
+pub const G_MAIN_CONTEXT_FLAGS_NONE: GMainContextFlags = 0;
+pub const G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING: GMainContextFlags = 1;
 
 pub type GMarkupCollectType = c_uint;
 pub const G_MARKUP_COLLECT_INVALID: GMarkupCollectType = 0;
@@ -3751,6 +3760,9 @@ extern "C" {
     //=========================================================================
     pub fn g_main_context_get_type() -> GType;
     pub fn g_main_context_new() -> *mut GMainContext;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_main_context_new_with_flags(flags: GMainContextFlags) -> *mut GMainContext;
     pub fn g_main_context_acquire(context: *mut GMainContext) -> gboolean;
     pub fn g_main_context_add_poll(context: *mut GMainContext, fd: *mut GPollFD, priority: c_int);
     pub fn g_main_context_check(
@@ -6078,6 +6090,9 @@ extern "C" {
     pub fn g_get_user_name() -> *const c_char;
     pub fn g_get_user_runtime_dir() -> *const c_char;
     pub fn g_get_user_special_dir(directory: GUserDirectory) -> *const c_char;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_get_user_state_dir() -> *const c_char;
     #[cfg(any(windows, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(windows)))]
     pub fn g_getenv_utf8(variable: *const c_char) -> *const c_char;

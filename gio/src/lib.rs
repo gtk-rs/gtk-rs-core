@@ -115,6 +115,7 @@ mod read_input_stream;
 pub use crate::read_input_stream::ReadInputStream;
 mod write_output_stream;
 pub use crate::write_output_stream::WriteOutputStream;
+mod dbus_proxy;
 mod tls_connection;
 
 #[cfg(target_family = "windows")]

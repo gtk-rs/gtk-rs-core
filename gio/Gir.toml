@@ -47,7 +47,6 @@ generate = [
     "Gio.DBusNodeInfo",
     "Gio.DBusObject",
     "Gio.DBusPropertyInfo",
-    "Gio.DBusProxyFlags",
     "Gio.DBusSendMessageFlags",
     "Gio.DBusServer",
     "Gio.DBusServerFlags",
@@ -128,7 +127,6 @@ generate = [
     "Gio.SocketService",
     "Gio.SocketType",
     "Gio.SrvTarget",
-    "Gio.SubprocessFlags",
     "Gio.TcpConnection",
     "Gio.TlsAuthenticationMode",
     "Gio.TlsBackend",
@@ -271,6 +269,9 @@ status = "generate"
         [[object.function.parameter]]
         name = "value"
         string_type = "os_string"
+    [[object.signal]]
+    name = "launch-started"
+    version = "2.72" # has the annotation upstream no idea why it doesn't appear in the gir file
 
 [[object]]
 name = "Gio.Application"
@@ -526,6 +527,7 @@ status = "generate"
 name = "Gio.DBusProxy"
 status = "generate"
 concurrency = "send+sync"
+manual_traits = ["DBusProxyExtManual"]
     [[object.signal]]
     name = "g-properties-changed"
     # libc::c_char vs str
@@ -536,6 +538,16 @@ concurrency = "send+sync"
     [[object.function]]
     name = "new_for_bus"
     constructor = true
+    [[object.signal]]
+    name = "g-signal"
+    ignore = true # manually provide a variant with the details
+
+[[object]]
+name = "Gio.DBusProxyFlags"
+status = "generate"
+    [[object.member]]
+    name = "no_match_rule"
+    version = "2.70"
 
 [[object]]
 name = "Gio.DesktopAppInfo"
@@ -1051,6 +1063,13 @@ status = "generate"
     [[object.function]]
     name = "send_signal"
     cfg_condition = "not(windows)"
+
+[[object]]
+name = "Gio.SubprocessFlags"
+status = "generate"
+    [[object.member]]
+    name = "search_path_from_envp"
+    version = "2.72"
 
 [[object]]
 name = "Gio.SubprocessLauncher"

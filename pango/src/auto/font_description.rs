@@ -219,7 +219,7 @@ impl FontDescription {
     #[cfg(any(feature = "v1_42", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_42")))]
     #[doc(alias = "pango_font_description_set_variations")]
-    pub fn set_variations(&mut self, variations: &str) {
+    pub fn set_variations(&mut self, variations: Option<&str>) {
         unsafe {
             ffi::pango_font_description_set_variations(
                 self.to_glib_none_mut().0,

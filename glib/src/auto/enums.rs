@@ -869,6 +869,26 @@ pub enum UnicodeScript {
     KhitanSmallScript,
     #[doc(alias = "G_UNICODE_SCRIPT_YEZIDI")]
     Yezidi,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_CYPRO_MINOAN")]
+    CyproMinoan,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_OLD_UYGHUR")]
+    OldUyghur,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_TANGSA")]
+    Tangsa,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_TOTO")]
+    Toto,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_VITHKUQI")]
+    Vithkuqi,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1037,6 +1057,16 @@ impl fmt::Display for UnicodeScript {
                 Self::DivesAkuru => "DivesAkuru",
                 Self::KhitanSmallScript => "KhitanSmallScript",
                 Self::Yezidi => "Yezidi",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::CyproMinoan => "CyproMinoan",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::OldUyghur => "OldUyghur",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::Tangsa => "Tangsa",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::Toto => "Toto",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::Vithkuqi => "Vithkuqi",
                 _ => "Unknown",
             }
         )
@@ -1207,6 +1237,16 @@ impl IntoGlib for UnicodeScript {
             Self::DivesAkuru => ffi::G_UNICODE_SCRIPT_DIVES_AKURU,
             Self::KhitanSmallScript => ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,
             Self::Yezidi => ffi::G_UNICODE_SCRIPT_YEZIDI,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::CyproMinoan => ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::OldUyghur => ffi::G_UNICODE_SCRIPT_OLD_UYGHUR,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::Tangsa => ffi::G_UNICODE_SCRIPT_TANGSA,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::Toto => ffi::G_UNICODE_SCRIPT_TOTO,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::Vithkuqi => ffi::G_UNICODE_SCRIPT_VITHKUQI,
             Self::__Unknown(value) => value,
         }
     }
@@ -1374,6 +1414,16 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_DIVES_AKURU => Self::DivesAkuru,
             ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT => Self::KhitanSmallScript,
             ffi::G_UNICODE_SCRIPT_YEZIDI => Self::Yezidi,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN => Self::CyproMinoan,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_OLD_UYGHUR => Self::OldUyghur,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_TANGSA => Self::Tangsa,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_TOTO => Self::Toto,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_VITHKUQI => Self::Vithkuqi,
             value => Self::__Unknown(value),
         }
     }

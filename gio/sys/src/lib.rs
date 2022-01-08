@@ -677,6 +677,7 @@ pub const G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS: GDBusProxyFlags = 2;
 pub const G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START: GDBusProxyFlags = 4;
 pub const G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES: GDBusProxyFlags = 8;
 pub const G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION: GDBusProxyFlags = 16;
+pub const G_DBUS_PROXY_FLAGS_NO_MATCH_RULE: GDBusProxyFlags = 32;
 
 pub type GDBusSendMessageFlags = c_uint;
 pub const G_DBUS_SEND_MESSAGE_FLAGS_NONE: GDBusSendMessageFlags = 0;
@@ -785,6 +786,7 @@ pub const G_SUBPROCESS_FLAGS_STDERR_PIPE: GSubprocessFlags = 16;
 pub const G_SUBPROCESS_FLAGS_STDERR_SILENCE: GSubprocessFlags = 32;
 pub const G_SUBPROCESS_FLAGS_STDERR_MERGE: GSubprocessFlags = 64;
 pub const G_SUBPROCESS_FLAGS_INHERIT_FDS: GSubprocessFlags = 128;
+pub const G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP: GSubprocessFlags = 256;
 
 pub type GTestDBusFlags = c_uint;
 pub const G_TEST_DBUS_NONE: GTestDBusFlags = 0;
@@ -1209,10 +1211,11 @@ pub struct GAppLaunchContextClass {
     pub launch_failed: Option<unsafe extern "C" fn(*mut GAppLaunchContext, *const c_char)>,
     pub launched:
         Option<unsafe extern "C" fn(*mut GAppLaunchContext, *mut GAppInfo, *mut glib::GVariant)>,
+    pub launch_started:
+        Option<unsafe extern "C" fn(*mut GAppLaunchContext, *mut GAppInfo, *mut glib::GVariant)>,
     pub _g_reserved1: Option<unsafe extern "C" fn()>,
     pub _g_reserved2: Option<unsafe extern "C" fn()>,
     pub _g_reserved3: Option<unsafe extern "C" fn()>,
-    pub _g_reserved4: Option<unsafe extern "C" fn()>,
 }
 
 impl ::std::fmt::Debug for GAppLaunchContextClass {
@@ -1223,10 +1226,10 @@ impl ::std::fmt::Debug for GAppLaunchContextClass {
             .field("get_startup_notify_id", &self.get_startup_notify_id)
             .field("launch_failed", &self.launch_failed)
             .field("launched", &self.launched)
+            .field("launch_started", &self.launch_started)
             .field("_g_reserved1", &self._g_reserved1)
             .field("_g_reserved2", &self._g_reserved2)
             .field("_g_reserved3", &self._g_reserved3)
-            .field("_g_reserved4", &self._g_reserved4)
             .finish()
     }
 }

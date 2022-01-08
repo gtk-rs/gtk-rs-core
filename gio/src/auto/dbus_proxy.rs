@@ -412,12 +412,6 @@ pub trait DBusProxyExt: 'static {
     #[doc(alias = "g-object-path")]
     fn g_object_path(&self) -> Option<glib::GString>;
 
-    #[doc(alias = "g-signal")]
-    fn connect_g_signal<F: Fn(&Self, Option<&str>, &str, &glib::Variant) + Send + Sync + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
-
     #[doc(alias = "g-default-timeout")]
     fn connect_g_default_timeout_notify<F: Fn(&Self) + Send + Sync + 'static>(
         &self,
@@ -789,45 +783,6 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
 
     fn g_object_path(&self) -> Option<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "g-object-path")
-    }
-
-    fn connect_g_signal<
-        F: Fn(&Self, Option<&str>, &str, &glib::Variant) + Send + Sync + 'static,
-    >(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unsafe extern "C" fn g_signal_trampoline<
-            P: IsA<DBusProxy>,
-            F: Fn(&P, Option<&str>, &str, &glib::Variant) + Send + Sync + 'static,
-        >(
-            this: *mut ffi::GDBusProxy,
-            sender_name: *mut libc::c_char,
-            signal_name: *mut libc::c_char,
-            parameters: *mut glib::ffi::GVariant,
-            f: glib::ffi::gpointer,
-        ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
-                Option::<glib::GString>::from_glib_borrow(sender_name)
-                    .as_ref()
-                    .as_deref(),
-                &glib::GString::from_glib_borrow(signal_name),
-                &from_glib_borrow(parameters),
-            )
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                b"g-signal\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
-                    g_signal_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
-        }
     }
 
     fn connect_g_default_timeout_notify<F: Fn(&Self) + Send + Sync + 'static>(
