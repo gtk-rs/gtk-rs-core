@@ -2007,6 +2007,8 @@ bitflags! {
         const STDERR_MERGE = ffi::G_SUBPROCESS_FLAGS_STDERR_MERGE as u32;
         #[doc(alias = "G_SUBPROCESS_FLAGS_INHERIT_FDS")]
         const INHERIT_FDS = ffi::G_SUBPROCESS_FLAGS_INHERIT_FDS as u32;
+        #[cfg(any(feature = "v2_72", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
         #[doc(alias = "G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP")]
         const SEARCH_PATH_FROM_ENVP = ffi::G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP as u32;
     }
