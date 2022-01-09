@@ -63,6 +63,7 @@ mod resource;
 pub use crate::resource::{compile_resources, resources_register_include_impl};
 mod settings;
 pub use crate::settings::BindingBuilder;
+mod simple_proxy_resolver;
 mod socket;
 mod subprocess;
 mod subprocess_launcher;
