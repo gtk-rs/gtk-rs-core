@@ -278,6 +278,9 @@ pub use self::simple_io_stream::SimpleIOStream;
 mod simple_permission;
 pub use self::simple_permission::SimplePermission;
 
+mod simple_proxy_resolver;
+pub use self::simple_proxy_resolver::SimpleProxyResolver;
+
 mod socket;
 pub use self::socket::Socket;
 
@@ -725,6 +728,7 @@ pub mod traits {
     pub use super::seekable::SeekableExt;
     pub use super::settings::SettingsExt;
     pub use super::settings_backend::SettingsBackendExt;
+    pub use super::simple_proxy_resolver::SimpleProxyResolverExt;
     pub use super::socket::SocketExt;
     pub use super::socket_address::SocketAddressExt;
     pub use super::socket_address_enumerator::SocketAddressEnumeratorExt;
