@@ -474,6 +474,7 @@ pub use self::enums::MountOperationResult;
 pub use self::enums::NetworkConnectivity;
 pub use self::enums::NotificationPriority;
 pub use self::enums::PasswordSave;
+pub use self::enums::ResolverError;
 pub use self::enums::ResolverRecordType;
 pub use self::enums::ResourceError;
 pub use self::enums::SocketClientEvent;
@@ -487,6 +488,7 @@ pub use self::enums::TlsCertificateRequestFlags;
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingType;
 pub use self::enums::TlsDatabaseLookupFlags;
+pub use self::enums::TlsError;
 pub use self::enums::TlsInteractionResult;
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
