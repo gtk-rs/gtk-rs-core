@@ -2903,7 +2903,7 @@ impl<T: ObjectType> ObjectExt for T {
             )
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args)?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
@@ -2964,7 +2964,7 @@ impl<T: ObjectType> ObjectExt for T {
             let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
                 .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args)?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
