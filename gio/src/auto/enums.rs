@@ -2247,6 +2247,112 @@ impl ToValue for PasswordSave {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GResolverError")]
+pub enum ResolverError {
+    #[doc(alias = "G_RESOLVER_ERROR_NOT_FOUND")]
+    NotFound,
+    #[doc(alias = "G_RESOLVER_ERROR_TEMPORARY_FAILURE")]
+    TemporaryFailure,
+    #[doc(alias = "G_RESOLVER_ERROR_INTERNAL")]
+    Internal,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for ResolverError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "ResolverError::{}",
+            match *self {
+                Self::NotFound => "NotFound",
+                Self::TemporaryFailure => "TemporaryFailure",
+                Self::Internal => "Internal",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for ResolverError {
+    type GlibType = ffi::GResolverError;
+
+    fn into_glib(self) -> ffi::GResolverError {
+        match self {
+            Self::NotFound => ffi::G_RESOLVER_ERROR_NOT_FOUND,
+            Self::TemporaryFailure => ffi::G_RESOLVER_ERROR_TEMPORARY_FAILURE,
+            Self::Internal => ffi::G_RESOLVER_ERROR_INTERNAL,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GResolverError> for ResolverError {
+    unsafe fn from_glib(value: ffi::GResolverError) -> Self {
+        match value {
+            ffi::G_RESOLVER_ERROR_NOT_FOUND => Self::NotFound,
+            ffi::G_RESOLVER_ERROR_TEMPORARY_FAILURE => Self::TemporaryFailure,
+            ffi::G_RESOLVER_ERROR_INTERNAL => Self::Internal,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl ErrorDomain for ResolverError {
+    fn domain() -> Quark {
+        unsafe { from_glib(ffi::g_resolver_error_quark()) }
+    }
+
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    fn from(code: i32) -> Option<Self> {
+        match code {
+            ffi::G_RESOLVER_ERROR_NOT_FOUND => Some(Self::NotFound),
+            ffi::G_RESOLVER_ERROR_TEMPORARY_FAILURE => Some(Self::TemporaryFailure),
+            ffi::G_RESOLVER_ERROR_INTERNAL => Some(Self::Internal),
+            value => Some(Self::__Unknown(value)),
+        }
+    }
+}
+
+impl StaticType for ResolverError {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_resolver_error_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for ResolverError {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for ResolverError {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for ResolverError {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GResolverRecordType")]
 pub enum ResolverRecordType {
     #[doc(alias = "G_RESOLVER_RECORD_SRV")]
@@ -3263,6 +3369,142 @@ unsafe impl<'a> FromValue<'a> for TlsDatabaseLookupFlags {
 }
 
 impl ToValue for TlsDatabaseLookupFlags {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GTlsError")]
+pub enum TlsError {
+    #[doc(alias = "G_TLS_ERROR_UNAVAILABLE")]
+    Unavailable,
+    #[doc(alias = "G_TLS_ERROR_MISC")]
+    Misc,
+    #[doc(alias = "G_TLS_ERROR_BAD_CERTIFICATE")]
+    BadCertificate,
+    #[doc(alias = "G_TLS_ERROR_NOT_TLS")]
+    NotTls,
+    #[doc(alias = "G_TLS_ERROR_HANDSHAKE")]
+    Handshake,
+    #[doc(alias = "G_TLS_ERROR_CERTIFICATE_REQUIRED")]
+    CertificateRequired,
+    #[doc(alias = "G_TLS_ERROR_EOF")]
+    Eof,
+    #[doc(alias = "G_TLS_ERROR_INAPPROPRIATE_FALLBACK")]
+    InappropriateFallback,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for TlsError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "TlsError::{}",
+            match *self {
+                Self::Unavailable => "Unavailable",
+                Self::Misc => "Misc",
+                Self::BadCertificate => "BadCertificate",
+                Self::NotTls => "NotTls",
+                Self::Handshake => "Handshake",
+                Self::CertificateRequired => "CertificateRequired",
+                Self::Eof => "Eof",
+                Self::InappropriateFallback => "InappropriateFallback",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for TlsError {
+    type GlibType = ffi::GTlsError;
+
+    fn into_glib(self) -> ffi::GTlsError {
+        match self {
+            Self::Unavailable => ffi::G_TLS_ERROR_UNAVAILABLE,
+            Self::Misc => ffi::G_TLS_ERROR_MISC,
+            Self::BadCertificate => ffi::G_TLS_ERROR_BAD_CERTIFICATE,
+            Self::NotTls => ffi::G_TLS_ERROR_NOT_TLS,
+            Self::Handshake => ffi::G_TLS_ERROR_HANDSHAKE,
+            Self::CertificateRequired => ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED,
+            Self::Eof => ffi::G_TLS_ERROR_EOF,
+            Self::InappropriateFallback => ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GTlsError> for TlsError {
+    unsafe fn from_glib(value: ffi::GTlsError) -> Self {
+        match value {
+            ffi::G_TLS_ERROR_UNAVAILABLE => Self::Unavailable,
+            ffi::G_TLS_ERROR_MISC => Self::Misc,
+            ffi::G_TLS_ERROR_BAD_CERTIFICATE => Self::BadCertificate,
+            ffi::G_TLS_ERROR_NOT_TLS => Self::NotTls,
+            ffi::G_TLS_ERROR_HANDSHAKE => Self::Handshake,
+            ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED => Self::CertificateRequired,
+            ffi::G_TLS_ERROR_EOF => Self::Eof,
+            ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK => Self::InappropriateFallback,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl ErrorDomain for TlsError {
+    fn domain() -> Quark {
+        unsafe { from_glib(ffi::g_tls_error_quark()) }
+    }
+
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    fn from(code: i32) -> Option<Self> {
+        match code {
+            ffi::G_TLS_ERROR_UNAVAILABLE => Some(Self::Unavailable),
+            ffi::G_TLS_ERROR_MISC => Some(Self::Misc),
+            ffi::G_TLS_ERROR_BAD_CERTIFICATE => Some(Self::BadCertificate),
+            ffi::G_TLS_ERROR_NOT_TLS => Some(Self::NotTls),
+            ffi::G_TLS_ERROR_HANDSHAKE => Some(Self::Handshake),
+            ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED => Some(Self::CertificateRequired),
+            ffi::G_TLS_ERROR_EOF => Some(Self::Eof),
+            ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK => Some(Self::InappropriateFallback),
+            value => Some(Self::__Unknown(value)),
+        }
+    }
+}
+
+impl StaticType for TlsError {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_tls_error_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for TlsError {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for TlsError {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for TlsError {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
         unsafe {
