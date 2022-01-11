@@ -3,11 +3,12 @@
 use crate::translate::*;
 use std::ffi::CStr;
 use std::fmt;
+use std::num::NonZeroU32;
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
 #[doc(alias = "GQuark")]
-pub struct Quark(ffi::GQuark);
+pub struct Quark(NonZeroU32);
 
 impl Quark {
     #[doc(alias = "g_quark_from_string")]
@@ -45,7 +46,8 @@ impl fmt::Debug for Quark {
 #[doc(hidden)]
 impl FromGlib<ffi::GQuark> for Quark {
     unsafe fn from_glib(value: ffi::GQuark) -> Self {
-        Self(value)
+        assert_ne!(value, 0);
+        Self(NonZeroU32::new_unchecked(value))
     }
 }
 
@@ -54,6 +56,19 @@ impl IntoGlib for Quark {
     type GlibType = ffi::GQuark;
 
     fn into_glib(self) -> ffi::GQuark {
-        self.0
+        self.0.get()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_from_string() {
+        let q1 = Quark::from_string("some-quark");
+        let q2 = Quark::try_string("some-quark");
+        assert_eq!(Some(q1), q2);
+        assert_eq!(q1.to_string(), "some-quark");
     }
 }
