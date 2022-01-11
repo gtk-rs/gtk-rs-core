@@ -2542,6 +2542,7 @@ impl<T: ObjectType> ObjectExt for T {
         let type_ = self.type_();
         let return_type: Type = signal_query.return_type().into();
         let signal_name = signal_id.name();
+        let signal_query_type = signal_query.type_();
 
         let closure = if return_type == Type::UNIT {
             Closure::new_unsafe(move |values| {
@@ -2604,11 +2605,6 @@ impl<T: ObjectType> ObjectExt for T {
             })
         };
 
-        let signal_query = signal_id.query();
-        let type_ = self.type_();
-        let signal_name = signal_id.name();
-
-        let signal_query_type = signal_query.type_();
         assert!(
             type_.is_a(signal_query_type),
             "Signal '{}' of type '{}' but got type '{}'",
