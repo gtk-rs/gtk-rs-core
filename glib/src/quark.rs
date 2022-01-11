@@ -28,12 +28,7 @@ impl Quark {
 
     #[doc(alias = "g_quark_try_string")]
     pub fn try_string(s: &str) -> Option<Quark> {
-        unsafe {
-            match ffi::g_quark_try_string(s.to_glib_none().0) {
-                0 => None,
-                x => Some(from_glib(x)),
-            }
-        }
+        unsafe { Self::try_from_glib(ffi::g_quark_try_string(s.to_glib_none().0)).ok() }
     }
 }
 
@@ -48,6 +43,18 @@ impl FromGlib<ffi::GQuark> for Quark {
     unsafe fn from_glib(value: ffi::GQuark) -> Self {
         assert_ne!(value, 0);
         Self(NonZeroU32::new_unchecked(value))
+    }
+}
+
+#[doc(hidden)]
+impl TryFromGlib<ffi::GQuark> for Quark {
+    type Error = GlibNoneError;
+    unsafe fn try_from_glib(value: ffi::GQuark) -> Result<Self, Self::Error> {
+        if value == 0 {
+            Err(GlibNoneError)
+        } else {
+            Ok(Self(NonZeroU32::new_unchecked(value)))
+        }
     }
 }
 
