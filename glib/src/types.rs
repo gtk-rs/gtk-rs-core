@@ -142,7 +142,7 @@ impl Type {
     #[doc(alias = "g_type_qname")]
     pub fn qname(self) -> crate::Quark {
         match self.into_glib() {
-            gobject_ffi::G_TYPE_INVALID => crate::Quark::from_string("<invalid>"),
+            gobject_ffi::G_TYPE_INVALID => crate::Quark::from_str("<invalid>"),
             x => unsafe { from_glib(gobject_ffi::g_type_qname(x)) },
         }
     }
@@ -539,7 +539,7 @@ mod tests {
         let invalid = Type::INVALID;
 
         assert_eq!(invalid.name(), "<invalid>");
-        assert_eq!(invalid.qname(), crate::Quark::from_string("<invalid>"));
+        assert_eq!(invalid.qname(), crate::Quark::from_str("<invalid>"));
         assert!(invalid.is_a(Type::INVALID));
         assert!(!invalid.is_a(Type::STRING));
         assert_eq!(invalid.parent(), None);

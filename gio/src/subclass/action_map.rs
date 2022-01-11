@@ -84,7 +84,7 @@ where
 }
 
 static ACTION_MAP_LOOKUP_ACTION_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-map-lookup-action"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-map-lookup-action"));
 
 unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
     action_map: *mut ffi::GActionMap,

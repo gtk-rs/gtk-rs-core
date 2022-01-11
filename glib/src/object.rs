@@ -2347,15 +2347,15 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     unsafe fn set_data<QD: 'static>(&self, key: &str, value: QD) {
-        self.set_qdata::<QD>(Quark::from_string(key), value)
+        self.set_qdata::<QD>(Quark::from_str(key), value)
     }
 
     unsafe fn data<QD: 'static>(&self, key: &str) -> Option<ptr::NonNull<QD>> {
-        self.qdata::<QD>(Quark::from_string(key))
+        self.qdata::<QD>(Quark::from_str(key))
     }
 
     unsafe fn steal_data<QD: 'static>(&self, key: &str) -> Option<QD> {
-        self.steal_qdata::<QD>(Quark::from_string(key))
+        self.steal_qdata::<QD>(Quark::from_str(key))
     }
 
     fn block_signal(&self, handler_id: &SignalHandlerId) {
@@ -2381,7 +2381,7 @@ impl<T: ObjectType> ObjectExt for T {
             gobject_ffi::g_signal_stop_emission(
                 self.as_object_ref().to_glib_none().0,
                 signal_id.into_glib(),
-                detail.map(|d| d.into_glib()).unwrap_or(0),
+                detail.into_glib(),
             );
         }
     }
@@ -2512,7 +2512,7 @@ impl<T: ObjectType> ObjectExt for T {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_unsafe_id(signal_id, Some(details), after, callback)
+        self.try_connect_unsafe_id(signal_id, details, after, callback)
     }
 
     unsafe fn connect_unsafe<F>(
@@ -2616,7 +2616,7 @@ impl<T: ObjectType> ObjectExt for T {
         let handler = gobject_ffi::g_signal_connect_closure_by_id(
             self.as_object_ref().to_glib_none().0,
             signal_id.into_glib(),
-            details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+            details.into_glib(),
             closure.as_ref().to_glib_none().0,
             after.into_glib(),
         );
@@ -2641,7 +2641,7 @@ impl<T: ObjectType> ObjectExt for T {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_closure_id(signal_id, Some(details), after, closure)
+        self.try_connect_closure_id(signal_id, details, after, closure)
     }
 
     fn connect_closure(
@@ -2678,7 +2678,7 @@ impl<T: ObjectType> ObjectExt for T {
             let handler = gobject_ffi::g_signal_connect_closure_by_id(
                 self.as_object_ref().to_glib_none().0,
                 signal_id.into_glib(),
-                details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+                details.into_glib(),
                 closure.as_ref().to_glib_none().0,
                 after.into_glib(),
             );

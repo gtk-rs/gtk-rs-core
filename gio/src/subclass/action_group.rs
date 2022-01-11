@@ -551,7 +551,7 @@ impl<T, F: Fn(*mut T) + 'static> Drop for PtrHolder<T, F> {
 }
 
 static ACTION_GROUP_GET_ACTION_PARAMETER_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-get-action-parameter"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-get-action-parameter"));
 
 unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
@@ -577,7 +577,7 @@ unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
 }
 
 static ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-get-action-state-type"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-get-action-state-type"));
 
 unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
@@ -603,7 +603,7 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
 }
 
 static ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-get-action-state-hint"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-get-action-state-hint"));
 
 unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
@@ -628,7 +628,7 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     }
 }
 static ACTION_GROUP_GET_ACTION_STATE_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-get-action-state"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-get-action-state"));
 
 unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
@@ -748,7 +748,7 @@ unsafe extern "C" fn action_group_action_state_changed<T: ActionGroupImpl>(
 }
 
 static ACTION_GROUP_LIST_ACTIONS_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-list-actions"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-list-actions"));
 
 unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
@@ -767,16 +767,16 @@ unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
 }
 
 static ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-query-action-parameter-type"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-query-action-parameter-type"));
 
 static ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-query-action-state-type"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-query-action-state-type"));
 
 static ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-query-action-state-hint"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-query-action-state-hint"));
 
 static ACTION_GROUP_QUERY_ACTION_STATE_QUARK: Lazy<Quark> =
-    Lazy::new(|| Quark::from_string("gtk-rs-subclass-action-group-query-action-state"));
+    Lazy::new(|| Quark::from_str("gtk-rs-subclass-action-group-query-action-state"));
 
 unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,

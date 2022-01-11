@@ -68,8 +68,8 @@ impl fmt::Debug for SignalClassHandlerToken {
 pub struct SignalInvocationHint(gobject_ffi::GSignalInvocationHint);
 
 impl SignalInvocationHint {
-    pub fn detail(&self) -> crate::Quark {
-        unsafe { from_glib(self.0.detail) }
+    pub fn detail(&self) -> Option<crate::Quark> {
+        unsafe { try_from_glib(self.0.detail).ok() }
     }
 
     pub fn run_type(&self) -> SignalFlags {
@@ -174,7 +174,11 @@ impl SignalId {
     }
 
     #[doc(alias = "g_signal_parse_name")]
-    pub fn parse_name(name: &str, type_: Type, force_detail: bool) -> Option<(Self, crate::Quark)> {
+    pub fn parse_name(
+        name: &str,
+        type_: Type,
+        force_detail: bool,
+    ) -> Option<(Self, Option<crate::Quark>)> {
         let mut signal_id = std::mem::MaybeUninit::uninit();
         let mut detail_quark = std::mem::MaybeUninit::uninit();
         unsafe {
@@ -189,7 +193,7 @@ impl SignalId {
             if found {
                 Some((
                     from_glib(signal_id.assume_init()),
-                    crate::Quark::from_glib(detail_quark.assume_init()),
+                    crate::Quark::try_from_glib(detail_quark.assume_init()).ok(),
                 ))
             } else {
                 None
