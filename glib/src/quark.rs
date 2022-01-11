@@ -12,6 +12,7 @@ pub struct Quark(NonZeroU32);
 
 impl Quark {
     #[doc(alias = "g_quark_from_string")]
+    #[allow(clippy::should_implement_trait)]
     pub fn from_str(s: &str) -> Quark {
         unsafe { from_glib(ffi::g_quark_from_string(s.to_glib_none().0)) }
     }
@@ -41,6 +42,14 @@ impl fmt::Debug for Quark {
 impl<'a> From<&'a str> for Quark {
     fn from(s: &'a str) -> Self {
         Self::from_str(s)
+    }
+}
+
+impl std::str::FromStr for Quark {
+    type Err = std::convert::Infallible;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Self::from_str(s))
     }
 }
 
