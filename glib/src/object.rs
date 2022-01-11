@@ -2512,7 +2512,7 @@ impl<T: ObjectType> ObjectExt for T {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_unsafe_id(signal_id, Some(details), after, callback)
+        self.try_connect_unsafe_id(signal_id, details, after, callback)
     }
 
     unsafe fn connect_unsafe<F>(
@@ -2645,7 +2645,7 @@ impl<T: ObjectType> ObjectExt for T {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
             .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_closure_id(signal_id, Some(details), after, closure)
+        self.try_connect_closure_id(signal_id, details, after, closure)
     }
 
     fn connect_closure(
