@@ -81,7 +81,7 @@ where
 }
 
 static LIST_ITEM_TYPE_QUARK: Lazy<glib::Quark> =
-    Lazy::new(|| glib::Quark::from_string("gtk-rs-subclass-list-model-item-type"));
+    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-list-model-item-type"));
 
 unsafe extern "C" fn list_model_get_item_type<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,

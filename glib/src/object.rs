@@ -2347,15 +2347,15 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     unsafe fn set_data<QD: 'static>(&self, key: &str, value: QD) {
-        self.set_qdata::<QD>(Quark::from_string(key), value)
+        self.set_qdata::<QD>(Quark::from_str(key), value)
     }
 
     unsafe fn data<QD: 'static>(&self, key: &str) -> Option<ptr::NonNull<QD>> {
-        self.qdata::<QD>(Quark::from_string(key))
+        self.qdata::<QD>(Quark::from_str(key))
     }
 
     unsafe fn steal_data<QD: 'static>(&self, key: &str) -> Option<QD> {
-        self.steal_qdata::<QD>(Quark::from_string(key))
+        self.steal_qdata::<QD>(Quark::from_str(key))
     }
 
     fn block_signal(&self, handler_id: &SignalHandlerId) {

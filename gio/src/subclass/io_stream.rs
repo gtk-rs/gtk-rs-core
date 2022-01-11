@@ -100,9 +100,9 @@ unsafe impl<T: IOStreamImpl> IsSubclassable<T> for IOStream {
 }
 
 static OUTPUT_STREAM_QUARK: Lazy<glib::Quark> =
-    Lazy::new(|| glib::Quark::from_string("gtk-rs-subclass-output-stream"));
+    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-output-stream"));
 static INPUT_STREAM_QUARK: Lazy<glib::Quark> =
-    Lazy::new(|| glib::Quark::from_string("gtk-rs-subclass-input-stream"));
+    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-input-stream"));
 
 unsafe extern "C" fn stream_get_input_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
