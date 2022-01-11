@@ -67,6 +67,15 @@ impl IntoGlib for Quark {
     }
 }
 
+#[doc(hidden)]
+impl IntoGlib for Option<Quark> {
+    type GlibType = ffi::GQuark;
+
+    fn into_glib(self) -> ffi::GQuark {
+        self.map(|s| s.0.get()).unwrap_or(0)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

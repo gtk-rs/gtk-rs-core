@@ -2381,7 +2381,7 @@ impl<T: ObjectType> ObjectExt for T {
             gobject_ffi::g_signal_stop_emission(
                 self.as_object_ref().to_glib_none().0,
                 signal_id.into_glib(),
-                detail.map(|d| d.into_glib()).unwrap_or(0),
+                detail.into_glib(),
             );
         }
     }
@@ -2620,7 +2620,7 @@ impl<T: ObjectType> ObjectExt for T {
         let handler = gobject_ffi::g_signal_connect_closure_by_id(
             self.as_object_ref().to_glib_none().0,
             signal_id.into_glib(),
-            details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+            details.into_glib(),
             closure.as_ref().to_glib_none().0,
             after.into_glib(),
         );
@@ -2682,7 +2682,7 @@ impl<T: ObjectType> ObjectExt for T {
             let handler = gobject_ffi::g_signal_connect_closure_by_id(
                 self.as_object_ref().to_glib_none().0,
                 signal_id.into_glib(),
-                details.map(|d| d.into_glib()).unwrap_or(0), // 0 matches no detail
+                details.into_glib(),
                 closure.as_ref().to_glib_none().0,
                 after.into_glib(),
             );
