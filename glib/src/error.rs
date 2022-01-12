@@ -6,6 +6,7 @@
 use crate::translate::*;
 use crate::Quark;
 use std::borrow::Cow;
+use std::convert::Infallible;
 use std::error;
 use std::ffi::CStr;
 use std::fmt;
@@ -115,6 +116,12 @@ impl fmt::Debug for Error {
 }
 
 impl error::Error for Error {}
+
+impl From<Infallible> for Error {
+    fn from(e: Infallible) -> Self {
+        match e {}
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// `GLib` error domain.
