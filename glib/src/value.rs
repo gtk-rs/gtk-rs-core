@@ -41,6 +41,7 @@
 //! ```
 
 use libc::{c_char, c_void};
+use std::convert::Infallible;
 use std::error;
 use std::ffi::CStr;
 use std::fmt;
@@ -127,6 +128,12 @@ impl fmt::Display for ValueTypeMismatchError {
 
 impl error::Error for ValueTypeMismatchError {}
 
+impl From<Infallible> for ValueTypeMismatchError {
+    fn from(e: Infallible) -> Self {
+        match e {}
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Generic `Value` type checker for types.
 pub struct GenericValueTypeChecker<T>(std::marker::PhantomData<T>);
@@ -174,6 +181,12 @@ impl error::Error for ValueTypeMismatchOrNoneError {}
 impl From<ValueTypeMismatchError> for ValueTypeMismatchOrNoneError {
     fn from(err: ValueTypeMismatchError) -> Self {
         Self::WrongValueType(err)
+    }
+}
+
+impl From<Infallible> for ValueTypeMismatchOrNoneError {
+    fn from(e: Infallible) -> Self {
+        match e {}
     }
 }
 
@@ -543,7 +556,7 @@ impl<'a> ToValue for &'a Value {
 pub struct NopChecker;
 
 unsafe impl ValueTypeChecker for NopChecker {
-    type Error = std::convert::Infallible;
+    type Error = Infallible;
     fn check(_value: &Value) -> Result<(), Self::Error> {
         Ok(())
     }
