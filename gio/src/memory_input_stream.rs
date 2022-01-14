@@ -12,7 +12,7 @@ mod tests {
     fn new() {
         let strm = MemoryInputStream::new();
         let ret = strm.skip(1, crate::Cancellable::NONE);
-        assert!(!ret.is_err());
+        assert!(ret.is_ok());
         assert_eq!(ret.unwrap(), 0);
 
         let mut buf = vec![0; 10];
