@@ -175,6 +175,12 @@ pub struct ImageSurfaceDataOwned {
 unsafe impl Send for ImageSurfaceDataOwned {}
 unsafe impl Sync for ImageSurfaceDataOwned {}
 
+impl ImageSurfaceDataOwned {
+    pub fn into_inner(self) -> ImageSurface {
+        self.surface
+    }
+}
+
 impl AsRef<[u8]> for ImageSurfaceDataOwned {
     fn as_ref(&self) -> &[u8] {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
