@@ -560,6 +560,7 @@ fn test_clone_macro_typed_args() {
 
 #[test]
 #[allow(clippy::bool_assert_comparison)]
+#[allow(clippy::nonminimal_bool)]
 fn test_clone_macro_default_return() {
     macro_rules! test_default {
         ($ret:expr, $($closure_body:tt)*) => {{
