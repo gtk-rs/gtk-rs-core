@@ -172,6 +172,9 @@ pub struct ImageSurfaceDataOwned {
     surface: ImageSurface,
 }
 
+unsafe impl Send for ImageSurfaceDataOwned {}
+unsafe impl Sync for ImageSurfaceDataOwned {}
+
 impl AsRef<[u8]> for ImageSurfaceDataOwned {
     fn as_ref(&self) -> &[u8] {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
@@ -214,6 +217,9 @@ pub struct ImageSurfaceData<'a> {
     slice: &'a mut [u8],
     dirty: bool,
 }
+
+unsafe impl<'a> Send for ImageSurfaceData<'a> {}
+unsafe impl<'a> Sync for ImageSurfaceData<'a> {}
 
 impl<'a> ImageSurfaceData<'a> {
     fn new(surface: &'a mut ImageSurface) -> ImageSurfaceData<'a> {
