@@ -3,6 +3,7 @@
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::wrong_self_convention)]
+#![allow(clippy::non_send_fields_in_send_ty)]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
