@@ -345,7 +345,7 @@ macro_rules! g_log_inner {
         struct GWrite($crate::GStringBuilder);
 
         impl fmt::Write for GWrite {
-            fn write_str(&mut self, mut s: &str) -> Result<(), fmt::Error> {
+            fn write_str(&mut self, mut s: &str) -> ::std::result::Result<(), fmt::Error> {
                 while let Some((prefix, suffix)) = s.split_once('%') {
                     self.0.append(prefix);
                     self.0.append("%%");
@@ -672,7 +672,7 @@ macro_rules! g_print_inner {
         struct GWrite($crate::GStringBuilder);
 
         impl fmt::Write for GWrite {
-            fn write_str(&mut self, mut s: &str) -> Result<(), fmt::Error> {
+            fn write_str(&mut self, mut s: &str) -> ::std::result::Result<(), fmt::Error> {
                 while let Some((prefix, suffix)) = s.split_once('%') {
                     self.0.append(prefix);
                     self.0.append("%%");
