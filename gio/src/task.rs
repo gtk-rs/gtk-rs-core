@@ -1,27 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-// rustdoc-stripper-ignore-next
-//! `Task` bindings.
-//!
-//! The API distinguishes between `LocalTask` and `Task`, where the latter can be used
-//! with threads, but has more strict requirements, in particular it requires its value,
-//! source object, and callbacks must implement the `Send` trait.
-//!
-//! The `Task` and `LocalTask` types provide idiomatic access to glib's `GTask` API, for
-//! instance by being generic over their value type, while not completely departing
-//! from the underlying C API.
-//! Unfortunately this API does not allow to automatically enforce all the
-//! invariants required to be a completely safe abstraction.
-//!
-//! For this reason, the constructors of `Task` and `LocalTask` are marked as
-//! unsafe and when using these types the caller is responsible to ensure the
-//! following requirements are satisfied
-//!
-//! * You should not create a `LocalTask`, upcast it to a `glib::Object` and then
-//!   downcast it to a `Task`, as this will bypass the thread safety requirements
-//! * You should ensure that the `return_result`, `return_error_if_cancelled` and
-//!   `propagate()` methods are only called once.
-
 use crate::AsyncResult;
 use crate::Cancellable;
 use glib::object::IsA;
@@ -36,6 +14,17 @@ use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
+    // rustdoc-stripper-ignore-next
+    /// `LocalTask` provides idiomatic access to gio's `GTask` API, for
+    /// instance by being generic over their value type, while not completely departing
+    /// from the underlying C API. `LocalTask` does not require its value to be `Send`
+    /// and `Sync` and thus is useful to to implement gio style asynchronous
+    /// tasks that run in the glib main loop. If you need to run tasks in threads
+    /// see the `Task` type.
+    ///
+    /// The constructors of `LocalTask` and `Task` is marked as unsafe because this API does
+    /// not allow to automatically enforce all the invariants required to be a completely
+    /// safe abstraction. See the `Task` type for more details.
     #[doc(alias = "GTask")]
     pub struct LocalTask<V: ValueType>(Object<ffi::GTask, ffi::GTaskClass>) @implements AsyncResult;
 
@@ -45,6 +34,23 @@ glib::wrapper! {
 }
 
 glib::wrapper! {
+    // rustdoc-stripper-ignore-next
+    /// `Task` provides idiomatic access to gio's `GTask` API, for
+    /// instance by being generic over their value type, while not completely departing
+    /// from the underlying C API. `Task` is `Send` and `Sync` and requires its value to
+    /// also be `Send` and `Sync`, thus is useful to to implement gio style asynchronous
+    /// tasks that run in threads. If you need to only run tasks in glib main loop
+    /// see the `LocalTask` type.
+    ///
+    /// The constructors of `LocalTask` and `Task` is marked as unsafe because this API does
+    /// not allow to automatically enforce all the invariants required to be a completely
+    /// safe abstraction. The caller is responsible to ensure the following requirements
+    /// are satisfied
+    ///
+    /// * You should not create a `LocalTask`, upcast it to a `glib::Object` and then
+    ///   downcast it to a `Task`, as this will bypass the thread safety requirements
+    /// * You should ensure that the `return_result`, `return_error_if_cancelled` and
+    ///   `propagate()` methods are only called once.
     #[doc(alias = "GTask")]
     pub struct Task<V: ValueType + Send>(Object<ffi::GTask, ffi::GTaskClass>) @implements AsyncResult;
 
