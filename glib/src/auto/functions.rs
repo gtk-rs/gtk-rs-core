@@ -463,6 +463,12 @@ pub fn main_depth() -> i32 {
     unsafe { ffi::g_main_depth() }
 }
 
+#[doc(alias = "g_markup_escape_text")]
+pub fn markup_escape_text(text: &str) -> crate::GString {
+    let length = text.len() as isize;
+    unsafe { from_glib_full(ffi::g_markup_escape_text(text.to_glib_none().0, length)) }
+}
+
 #[doc(alias = "g_mkdir_with_parents")]
 pub fn mkdir_with_parents(pathname: impl AsRef<std::path::Path>, mode: i32) -> i32 {
     unsafe { ffi::g_mkdir_with_parents(pathname.as_ref().to_glib_none().0, mode) }
