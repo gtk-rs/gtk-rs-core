@@ -14,7 +14,7 @@ pub use ffi;
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
     clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, ErrorDomain, SharedBoxed, Variant,
+    Enum, ErrorDomain, Properties, SharedBoxed, Variant,
 };
 pub use gobject_ffi;
 #[doc(hidden)]
@@ -127,6 +127,8 @@ mod byte_array;
 mod bytes;
 pub mod char;
 pub use self::char::*;
+mod construct_cell;
+pub use construct_cell::*;
 mod checksum;
 pub mod closure;
 mod convert;
@@ -171,6 +173,8 @@ mod value_array;
 pub use self::value_array::ValueArray;
 mod param_spec;
 pub use self::param_spec::*;
+mod property;
+pub use self::property::*;
 mod quark;
 pub use self::quark::Quark;
 #[macro_use]

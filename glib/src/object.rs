@@ -1117,6 +1117,16 @@ macro_rules! glib_object_wrapper {
         }
 
         $crate::glib_object_wrapper!(@weak_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?);
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecObject;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecObjectBuilder<Self>;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name)
+            }
+        }
     };
 
     (@weak_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?) => {

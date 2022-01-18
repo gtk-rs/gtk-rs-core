@@ -9,7 +9,6 @@ use crate::{
     utils::is_canonical_pspec_name,
     Object, ParamFlags, Type, Value,
 };
-
 // Can't use get_type here as this is not a boxed type but another fundamental type
 wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -2056,6 +2055,152 @@ impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecVariantBuilder<'a>
     }
 }
 
+pub trait HasParamSpec {
+    type ParamSpec;
+
+    // rustdoc-stripper-ignore-next
+    /// Preferred value to be used as setter for the associated ParamSpec.
+    type SetValue: ?Sized;
+    type BuilderFn;
+    fn param_spec_builder() -> Self::BuilderFn;
+}
+
+impl<T: crate::value::ToValueOptional + HasParamSpec> HasParamSpec for Option<T> {
+    type ParamSpec = T::ParamSpec;
+    type SetValue = T::SetValue;
+    type BuilderFn = T::BuilderFn;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        T::param_spec_builder()
+    }
+}
+impl<T: HasParamSpec + ?Sized> HasParamSpec for &T {
+    type ParamSpec = T::ParamSpec;
+    type SetValue = T::SetValue;
+    type BuilderFn = T::BuilderFn;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        T::param_spec_builder()
+    }
+}
+impl HasParamSpec for crate::GString {
+    type ParamSpec = ParamSpecString;
+    type SetValue = str;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for str {
+    type ParamSpec = ParamSpecString;
+    type SetValue = str;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for String {
+    type ParamSpec = ParamSpecString;
+    type SetValue = str;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for char {
+    type ParamSpec = ParamSpecUnichar;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, char) -> ParamSpecUnicharBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for f64 {
+    type ParamSpec = ParamSpecDouble;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecDoubleBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for f32 {
+    type ParamSpec = ParamSpecFloat;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecFloatBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for i64 {
+    type ParamSpec = ParamSpecInt64;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecInt64Builder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for i32 {
+    type ParamSpec = ParamSpecInt;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecIntBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for i8 {
+    type ParamSpec = ParamSpecChar;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecCharBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for u64 {
+    type ParamSpec = ParamSpecUInt64;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecUInt64Builder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for u32 {
+    type ParamSpec = ParamSpecUInt;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecUIntBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for u8 {
+    type ParamSpec = ParamSpecUChar;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecUCharBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for bool {
+    type ParamSpec = ParamSpecBoolean;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> ParamSpecBooleanBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2134,5 +2279,21 @@ mod tests {
             .unwrap();
         assert_eq!(pspec.minimum(), -2);
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
+    }
+
+    #[test]
+    fn test_has_param_spec() {
+        let pspec = <i32 as HasParamSpec>::param_spec_builder()("name")
+            .blurb("Simple int parameter")
+            .minimum(-2)
+            .explicit_notify()
+            .build();
+
+        assert_eq!(pspec.name(), "name");
+        assert_eq!(pspec.blurb(), Some("Simple int parameter"));
+        assert_eq!(
+            pspec.flags(),
+            ParamFlags::READWRITE | ParamFlags::EXPLICIT_NOTIFY
+        );
     }
 }
