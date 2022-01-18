@@ -803,7 +803,6 @@ pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     variant_derive::impl_variant(input)
 }
-
 #[proc_macro]
 pub fn cstr_bytes(item: TokenStream) -> TokenStream {
     syn::parse::Parser::parse2(
@@ -819,4 +818,75 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
         item.into(),
     )
     .unwrap_or_else(|e| e.into_compile_error().into())
+}
+
+use quote::quote;
+#[proc_macro_derive(Props, attributes(prop))]
+pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+    let properties_match: Vec<syn::Field> = fields_prop(input.data).collect();
+    let match_text = properties_match.iter().map(|field| {
+        let field_name = &field.ident;
+        let field_name_str = field.ident.as_ref().unwrap().to_string();
+        quote!(#field_name_str => self.#field_name.get())
+    });
+    let match_text_set = properties_match.iter().map(|field| {
+        let field_name = &field.ident;
+        let field_name_str = field.ident.as_ref().unwrap().to_string();
+        quote!(#field_name_str => self.#field_name.set(value))
+    });
+    let n_props = properties_match.len();
+    let properties = properties_match.iter().map(|prop| {
+        let ty = &prop.ty;
+        let attr_data: &syn::Attribute =
+            prop.attrs.iter().find(|a| a.path.is_ident("prop")).unwrap();
+        let tokens = attr_data.parse_meta();
+        if let Ok(syn::Meta::List(ls)) = tokens {
+            let nested = ls.nested;
+            quote!(<#ty as glib::Parametrize>::Spec::new(#nested))
+        } else {
+            unreachable!("Invalid attribute params")
+        }
+    });
+    let expanded = quote! {
+        use glib::{Parametrize, ParametrizeMut};
+        impl ObjectImpl for #name {
+            fn properties() -> &'static [glib::ParamSpec] {
+                use once_cell::sync::Lazy;
+                static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
+                    #(#properties,)*
+                ]);
+                PROPERTIES.as_ref()
+            }
+            fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+                match pspec.name() {
+                    #(#match_text,)*
+                    p => unreachable!("Invalid property {}", p)
+                }
+            }
+            fn set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+                match pspec.name() {
+                    #(#match_text_set,)*
+                    p => unreachable!("Invalid property {}", p)
+                }
+            }
+        }
+    };
+    proc_macro::TokenStream::from(expanded)
+}
+
+fn fields_prop(data: syn::Data) -> impl Iterator<Item = syn::Field> {
+    match data {
+        syn::Data::Struct(data) => data.fields.into_iter().filter(|field| {
+            field
+                .attrs
+                .iter()
+                .find(|a| a.path.is_ident("prop"))
+                .is_some()
+        }),
+        _ => {
+            panic!("Can't derive ObjectProps on non struct")
+        }
+    }
 }

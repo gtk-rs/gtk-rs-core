@@ -1217,6 +1217,77 @@ define_builder!(
     requires (type_: &'a crate::VariantTy,)
 );
 
+pub trait Parametrize {
+    type Spec;
+    fn get(&self) -> crate::Value;
+}
+pub trait ParametrizeMut {
+    fn set(&self, value: &crate::Value);
+}
+
+use crate::ToValue;
+impl Parametrize for String {
+    type Spec = ParamSpecString;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for crate::Object {
+    type Spec = ParamSpecObject;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for f64 {
+    type Spec = ParamSpecDouble;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for f32 {
+    type Spec = ParamSpecFloat;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for i64 {
+    type Spec = ParamSpecInt64;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for i32 {
+    type Spec = ParamSpecInt;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for u64 {
+    type Spec = ParamSpecUInt64;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl Parametrize for u32 {
+    type Spec = ParamSpecUInt;
+    fn get(&self) -> crate::Value {
+        self.to_value()
+    }
+}
+impl<T: Parametrize + ToValue> Parametrize for std::cell::RefCell<T> {
+    type Spec = T::Spec;
+    fn get(&self) -> crate::Value {
+        self.borrow().to_value()
+    }
+}
+impl<T: 'static + Parametrize + for <'b> crate::value::FromValue<'b>> ParametrizeMut for std::cell::RefCell<T> {
+    fn set(&self, value: &crate::Value) {
+        let v = value.get_owned().expect("Invalid value for parameter");
+        self.replace(v);
+    }
+
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
