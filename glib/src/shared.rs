@@ -423,6 +423,16 @@ macro_rules! glib_shared_wrapper {
                 value
             }
         }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecBoxed;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecBoxedBuilder<Self>;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name)
+            }
+        }
     };
 }
 
