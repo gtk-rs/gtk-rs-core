@@ -9,9 +9,8 @@
 //! `Variant` types are described by [`VariantType`](../struct.VariantType.html)
 //! "type strings".
 //!
-//! Although `GVariant` supports arbitrarily complex types, this crate only provides bindings for a
-//! subset of common types. This subset includes primitives, strings, data structures from the
-//! standard library, and [`VariantDict`](crate::VariantDict). See [`ToVariant#foreign-impls`] for
+//! `GVariant` supports arbitrarily complex types built from primitives like integers, floating point
+//! numbers, strings, arrays, tuples and dictionaries. See [`ToVariant#foreign-impls`] for
 //! a full list of supported types. You may also implement [`ToVariant`] and [`FromVariant`]
 //! manually, or derive them using the [`Variant`](derive@crate::Variant) derive macro.
 //!
