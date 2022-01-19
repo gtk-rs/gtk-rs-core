@@ -9,9 +9,17 @@
 //! `Variant` types are described by [`VariantType`](../struct.VariantType.html)
 //! "type strings".
 //!
-//! Although `GVariant` supports arbitrarily complex types, this binding is
-//! currently limited to the basic ones: `bool`, `u8`, `i16`, `u16`, `i32`,
-//! `u32`, `i64`, `u64`, `f64`, `&str`/`String`, and [`VariantDict`](../struct.VariantDict.html).
+//! `GVariant` supports arbitrarily complex types built from primitives like integers, floating point
+//! numbers, strings, arrays, tuples and dictionaries. See [`ToVariant#foreign-impls`] for
+//! a full list of supported types. You may also implement [`ToVariant`] and [`FromVariant`]
+//! manually, or derive them using the [`Variant`](derive@crate::Variant) derive macro.
+//!
+//! ## Portability Warning
+//!
+//! Variant conversion traits are also implemented for certain platform-specific data types from
+//! the standard library like [`PathBuf`](std::path::PathBuf) and [`OsString`](std::ffi::OsString).
+//! These types will be serialized to their platform-specific representation and **should not** be
+//! deserialized on a different machine from where they were serialized.
 //!
 //! # Examples
 //!
@@ -92,6 +100,12 @@
 //! assert_eq!(variant.n_children(), 0);
 //! let s = <Option<String>>::from_variant(&variant).unwrap();
 //! assert!(s.is_none());
+//!
+//! // Paths may be converted, too. Please note the portability warning above!
+//! use std::path::{Path, PathBuf};
+//! let path = Path::new("foo/bar");
+//! let path_variant = path.to_variant();
+//! assert_eq!(PathBuf::from_variant(&path_variant).as_deref(), Some(path));
 //! ```
 
 use crate::bytes::Bytes;
@@ -999,6 +1013,154 @@ impl ToVariant for str {
     }
 }
 
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl StaticVariantType for std::path::PathBuf {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        std::ffi::OsStr::static_variant_type()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl ToVariant for std::path::PathBuf {
+    fn to_variant(&self) -> Variant {
+        self.as_os_str().to_variant()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl FromVariant for std::path::PathBuf {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        Some(std::ffi::OsString::from_variant(variant)?.into())
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl StaticVariantType for std::path::Path {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        std::ffi::OsStr::static_variant_type()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl ToVariant for std::path::Path {
+    fn to_variant(&self) -> Variant {
+        self.as_os_str().to_variant()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl StaticVariantType for std::ffi::OsString {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        std::ffi::OsStr::static_variant_type()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(any(unix, windows))]
+impl ToVariant for std::ffi::OsString {
+    fn to_variant(&self) -> Variant {
+        self.as_os_str().to_variant()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(unix)]
+impl FromVariant for std::ffi::OsString {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        let bytes = <_>::from_variant(variant)?;
+        Some(std::os::unix::ffi::OsStringExt::from_vec(bytes))
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(windows)]
+impl FromVariant for std::ffi::OsString {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        let wide = <Vec<u16>>::from_variant(variant)?;
+        Some(std::os::windows::ffi::OsStringExt::from_wide(&wide))
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(unix)]
+impl StaticVariantType for std::ffi::OsStr {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        <&[u8]>::static_variant_type()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(unix)]
+impl ToVariant for std::ffi::OsStr {
+    fn to_variant(&self) -> Variant {
+        use std::os::unix::ffi::OsStrExt;
+        self.as_bytes().to_variant()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(windows)]
+impl StaticVariantType for std::ffi::OsStr {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        <&[u16]>::static_variant_type()
+    }
+}
+
+/// ## Portability Warning
+///
+/// This impl is for a platform-specific type. Any variants serialized from this type should be
+/// deserialized on the same machine.
+#[cfg(windows)]
+impl ToVariant for std::ffi::OsStr {
+    fn to_variant(&self) -> Variant {
+        use std::os::windows::ffi::OsStrExt;
+        let wide = self.encode_wide().collect::<Vec<u16>>();
+        wide.to_variant()
+    }
+}
+
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         unsafe {
@@ -1841,5 +2003,15 @@ mod tests {
 
         let c = Variant::from_bytes::<(String, u8, u32)>(&bytes);
         assert_eq!(a, c);
+    }
+
+    #[cfg(any(unix, windows))]
+    #[test]
+    fn test_paths() {
+        use std::path::PathBuf;
+
+        let path = PathBuf::from("foo");
+        let v = path.to_variant();
+        assert_eq!(PathBuf::from_variant(&v), Some(path));
     }
 }
