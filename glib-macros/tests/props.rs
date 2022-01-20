@@ -6,16 +6,19 @@ fn props() {
         use glib::subclass::prelude::*;
         use glib_macros::Props;
         use std::cell::RefCell;
+        use std::sync::Mutex;
 
         mod imp {
             use super::*;
 
             #[derive(Props, Default)]
             pub struct Foo {
-                #[prop("bar", "bar", "This is a bar", None, glib::ParamFlags::READWRITE)]
-                bar: RefCell<String>,
-                #[prop("buzz", "buzz", "This is a buzz", 1, 100, 1, glib::ParamFlags::READWRITE)]
-                buzz: RefCell<u32>,
+                #[prop(get, set, name = "bar")]
+                bar: Mutex<String>,
+                #[prop(get = Self::hello_world, name = "buzz")]
+                _buzz: RefCell<String>,
+                #[prop(get, set = Self::set_fizz, name = "fizz")]
+                fizz: RefCell<String>,
             }
 
             #[glib::object_subclass]
@@ -23,16 +26,15 @@ fn props() {
                 const NAME: &'static str = "MyFoo";
                 type Type = super::Foo;
             }
-        }
 
-        pub trait FooExt: 'static {
-            fn test(&self);
-        }
-
-        impl<O: IsA<Foo>> FooExt for O {
-            fn test(&self) {
-                let _self = self.as_ref().downcast_ref::<Foo>().unwrap().imp();
-                unimplemented!()
+            impl Foo {
+                fn hello_world(&self) -> glib::Value {
+                    "Hello world!".to_value()
+                }
+                fn set_fizz(&self, value: &glib::Value) {
+                    let v: String = value.get().unwrap();
+                    *self.fizz.borrow_mut() = format!("custom set: {}", v);
+                }
             }
         }
 
@@ -43,15 +45,21 @@ fn props() {
 
     let myfoo: foo::Foo = glib::object::Object::new(&[]).unwrap();
 
+    // Read bar
     let bar: String = myfoo.property("bar");
     assert_eq!(bar, "".to_string());
 
+    // Set bar
     myfoo.set_property("bar", "epic".to_value());
     let bar: String = myfoo.property("bar");
     assert_eq!(bar, "epic".to_string());
 
-    myfoo.set_property("buzz", 100u32);
-    let buzz: u32 = myfoo.property("buzz");
-    assert_eq!(buzz, 100);
+    // Custom getter
+    let buzz: String = myfoo.property("buzz");
+    assert_eq!(buzz, "Hello world!".to_string());
 
+    // Custom setter
+    myfoo.set_property("fizz", "test");
+    let fizz: String = myfoo.property("fizz");
+    assert_eq!(fizz, "custom set: test".to_string());
 }

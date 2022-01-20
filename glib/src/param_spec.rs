@@ -1217,76 +1217,87 @@ define_builder!(
     requires (type_: &'a crate::VariantTy,)
 );
 
-pub trait Parametrize {
+pub trait HasParamSpec {
     type Spec;
+}
+pub trait ParamStoreRead {
     fn get(&self) -> crate::Value;
 }
-pub trait ParametrizeMut {
+pub trait ParamStoreWrite {
     fn set(&self, value: &crate::Value);
 }
 
-use crate::ToValue;
-impl Parametrize for String {
+impl HasParamSpec for String {
     type Spec = ParamSpecString;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for crate::Object {
+impl HasParamSpec for crate::Object {
     type Spec = ParamSpecObject;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for f64 {
+impl HasParamSpec for f64 {
     type Spec = ParamSpecDouble;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for f32 {
+impl HasParamSpec for f32 {
     type Spec = ParamSpecFloat;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for i64 {
+impl HasParamSpec for i64 {
     type Spec = ParamSpecInt64;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for i32 {
+impl HasParamSpec for i32 {
     type Spec = ParamSpecInt;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for u64 {
+impl HasParamSpec for u64 {
     type Spec = ParamSpecUInt64;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl Parametrize for u32 {
+impl HasParamSpec for u32 {
     type Spec = ParamSpecUInt;
-    fn get(&self) -> crate::Value {
-        self.to_value()
-    }
 }
-impl<T: Parametrize + ToValue> Parametrize for std::cell::RefCell<T> {
+
+impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
     type Spec = T::Spec;
+}
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::cell::RefCell<T> {
     fn get(&self) -> crate::Value {
         self.borrow().to_value()
     }
 }
-impl<T: 'static + Parametrize + for <'b> crate::value::FromValue<'b>> ParametrizeMut for std::cell::RefCell<T> {
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::cell::RefCell<T> {
     fn set(&self, value: &crate::Value) {
-        let v = value.get_owned().expect("Invalid value for parameter");
+        let v = value.get_owned().expect("Invalid value for property");
         self.replace(v);
     }
-
 }
+
+impl<T: HasParamSpec> HasParamSpec for std::sync::Mutex<T> {
+    type Spec = T::Spec;
+}
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::sync::Mutex<T> {
+    fn get(&self) -> crate::Value {
+        self.lock().unwrap().to_value()
+    }
+}
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::Mutex<T> {
+    fn set(&self, value: &crate::Value) {
+        let v = value.get_owned().expect("Invalid value for property");
+        *self.lock().unwrap() = v;
+    }
+}
+
+impl<T: HasParamSpec> HasParamSpec for std::sync::RwLock<T> {
+    type Spec = T::Spec;
+}
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::sync::RwLock<T> {
+    fn get(&self) -> crate::Value {
+        self.read().unwrap().to_value()
+    }
+}
+impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::RwLock<T> {
+    fn set(&self, value: &crate::Value) {
+        let v = value.get_owned().expect("Invalid value for property");
+        *self.write().unwrap() = v;
+    }
+}
+
+// TODO: impl ParamStoreRead/Write in some way for pointers (Rc,Arc...)
 
 #[cfg(test)]
 mod tests {
