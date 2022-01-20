@@ -13,9 +13,9 @@ fn props() {
 
             #[derive(Props, Default)]
             pub struct Foo {
-                #[prop(get, set, name = "bar")]
+                #[prop(get, set)]
                 bar: Mutex<String>,
-                #[prop(get = Self::hello_world, name = "buzz")]
+                #[prop(get = Self::hello_world)]
                 _buzz: RefCell<String>,
                 #[prop(get, set = Self::set_fizz, name = "fizz")]
                 fizz: RefCell<String>,

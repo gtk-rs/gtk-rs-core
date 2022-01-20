@@ -822,6 +822,11 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 
 // TODO: Needs cleanup before merge...
 
+use proc_macro2::TokenStream as TokenStream2;
+use quote::{quote, ToTokens};
+use syn::parse::Parse;
+use syn::spanned::Spanned;
+use syn::Token;
 enum MaybeCustomFn {
     CustomFn(syn::Expr),
     DefaultFn,
@@ -841,8 +846,6 @@ enum PropAttr {
     Blurb(syn::LitStr),
 }
 
-use syn::parse::Parse;
-use syn::Token;
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let name: syn::Ident = input.parse()?;
@@ -895,6 +898,7 @@ struct PropDesc {
     set: Option<MaybeCustomFn>,
     construct: bool,
     construct_only: bool,
+    // These are not syn::LitStr because `name` may be set by default with `field.ident`
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
@@ -913,6 +917,19 @@ impl PropDesc {
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
         }
     }
+    fn clean(mut self) -> Self {
+        self.name = self.name.or_else(|| {
+            self.field.as_ref().map(|x| {
+                syn::LitStr::new(
+                    &x.ident.as_ref().unwrap().to_string().trim_matches('_'),
+                    x.ident.span(),
+                )
+            })
+        });
+        self.nick = self.nick.or_else(|| self.name.clone());
+        self.blurb = self.blurb.or_else(|| self.name.clone());
+        self
+    }
 }
 impl FromIterator<PropAttr> for PropDesc {
     fn from_iter<T: IntoIterator<Item = PropAttr>>(iter: T) -> Self {
@@ -924,7 +941,6 @@ impl FromIterator<PropAttr> for PropDesc {
     }
 }
 
-use quote::quote;
 #[proc_macro_derive(Props, attributes(prop))]
 pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -954,8 +970,8 @@ pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
     let properties_build_phase = props.iter().map(|prop| {
         let ty = &prop.field.as_ref().unwrap().ty;
         let name = &prop.name;
-        let nick = prop.nick.as_ref().unwrap_or(name.as_ref().unwrap());
-        let blurb = prop.blurb.as_ref().unwrap_or(name.as_ref().unwrap());
+        let nick = &prop.nick;
+        let blurb = &prop.blurb;
         let get = prop.get.is_some();
         let set = prop.get.is_some();
         let default = prop
@@ -1018,7 +1034,7 @@ fn fields_prop(data: syn::Data) -> impl Iterator<Item = PropDesc> {
             let mut prop_desc = PropDesc::from_iter(prop_attrs);
             prop_desc.field = Some(field);
 
-            prop_desc
+            prop_desc.clean()
         }),
         _ => {
             panic!("Can't derive Props on non struct")
