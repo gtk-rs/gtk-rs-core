@@ -889,7 +889,18 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
     unsafe {
         use std::ffi::CString;
 
-        let type_name = CString::new(T::NAME).unwrap();
+        let type_name: CString = CString::from_vec_unchecked(
+            T::NAME
+                .chars()
+                .map(|c| {
+                    if c.is_ascii_alphanumeric() {
+                        c as u8
+                    } else {
+                        b'_'
+                    }
+                })
+                .collect(),
+        );
         assert_eq!(
             gobject_ffi::g_type_from_name(type_name.as_ptr()),
             gobject_ffi::G_TYPE_INVALID,

@@ -280,6 +280,59 @@ fn subclassable() {
 }
 
 #[test]
+fn subclass_derives_name() {
+    mod foo {
+        use glib::subclass::prelude::*;
+
+        mod imp {
+            use super::*;
+
+            #[derive(Default)]
+            pub struct Foo {}
+
+            #[glib::object_subclass]
+            impl ObjectSubclass for Foo {
+                type Type = super::Foo;
+            }
+
+            impl ObjectImpl for Foo {}
+        }
+
+        glib::wrapper! {
+            pub struct Foo(ObjectSubclass<imp::Foo>);
+        }
+    }
+
+    mod bar {
+        use glib::subclass::prelude::*;
+
+        mod imp {
+            use super::*;
+
+            #[derive(Default)]
+            pub struct Bar {}
+
+            #[glib::object_subclass]
+            impl ObjectSubclass for super::imp::Bar {
+                type Type = super::Bar;
+            }
+
+            impl ObjectImpl for Bar {}
+        }
+
+        glib::wrapper! {
+            pub struct Bar(ObjectSubclass<imp::Bar>);
+        }
+    }
+
+    let foo_obj: foo::Foo = glib::Object::new(&[]).unwrap();
+    assert_eq!(foo_obj.type_().name(), "test__foo__imp_Foo");
+
+    let bar_obj: bar::Bar = glib::Object::new(&[]).unwrap();
+    assert_eq!(bar_obj.type_().name(), "test__bar__imp_Bar");
+}
+
+#[test]
 fn derive_variant() {
     #[derive(Debug, PartialEq, Eq, glib::Variant)]
     struct Variant1 {
