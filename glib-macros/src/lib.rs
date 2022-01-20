@@ -956,7 +956,7 @@ pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
         let name = &p.name;
         let ident = &p.field.as_ref().unwrap().ident;
         match &p.get {
-            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => #expr(&self))),
+            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self))),
             Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.get())),
             None => None,
         }
@@ -965,7 +965,7 @@ pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
         let name = &p.name;
         let ident = &p.field.as_ref().unwrap().ident;
         match &p.set {
-            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => #expr(&self, value))),
+            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self, value))),
             Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.set(value))),
             None => None,
         }

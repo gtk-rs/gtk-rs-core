@@ -26,7 +26,9 @@ fn props() {
                 #[prop(get, set = Self::set_fizz, name = "fizz")]
                 fizz: RefCell<String>,
                 author: RefCell<Author>,
-                #[prop(get = Self::get_author_name, set = Self::set_author_name)]
+                #[prop(
+                    get = |t: &Self| t.author.borrow().name.to_value(), 
+                    set = Self::set_author_name)]
                 author_name: PhantomData<String>,
             }
 
@@ -37,9 +39,6 @@ fn props() {
             }
 
             impl Foo {
-                fn get_author_name(&self) -> glib::Value {
-                    self.author.borrow().name.to_value()
-                }
                 fn set_author_name(&self, value: &glib::Value) {
                     self.author.borrow_mut().name = value.get().unwrap();
                 }
