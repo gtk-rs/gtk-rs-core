@@ -2,6 +2,8 @@
 
 use crate::prelude::*;
 use crate::Cancellable;
+use futures_channel::oneshot;
+use futures_core::Future;
 use glib::{translate::*, IsA};
 use std::num::NonZeroU64;
 
@@ -62,6 +64,10 @@ pub trait CancellableExtManual {
     /// operation is finished and the signal handler is removed.
     #[doc(alias = "g_cancellable_disconnect")]
     fn disconnect_cancelled(&self, id: CancelledHandlerId);
+    // rustdoc-stripper-ignore-next
+    /// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
+    /// immediately if the cancellable is already cancelled.
+    fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>;
 }
 
 impl<O: IsA<Cancellable>> CancellableExtManual for O {
@@ -101,6 +107,19 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
     fn disconnect_cancelled(&self, id: CancelledHandlerId) {
         unsafe { ffi::g_cancellable_disconnect(self.as_ptr() as *mut _, id.as_raw()) };
     }
+    fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>> {
+        let cancellable = self.as_ref().clone();
+        let (tx, rx) = oneshot::channel();
+        let id = cancellable.connect_cancelled(move |_| {
+            let _ = tx.send(());
+        });
+        Box::pin(async move {
+            rx.await.unwrap();
+            if let Some(id) = id {
+                cancellable.disconnect_cancelled(id);
+            }
+        })
+    }
 }
 
 #[cfg(test)]
@@ -113,5 +132,36 @@ mod tests {
         let id = c.connect_cancelled(|_| {});
         c.cancel(); // if it doesn't crash at this point, then we're good to go!
         c.disconnect_cancelled(id.unwrap());
+    }
+
+    #[test]
+    fn cancellable_future() {
+        let c = Cancellable::new();
+        c.cancel();
+        glib::MainContext::new().block_on(c.future());
+    }
+
+    #[test]
+    fn cancellable_future_thread() {
+        let cancellable = Cancellable::new();
+        let c = cancellable.clone();
+        std::thread::spawn(move || c.cancel()).join().unwrap();
+        glib::MainContext::new().block_on(cancellable.future());
+    }
+
+    #[test]
+    fn cancellable_future_delayed() {
+        let ctx = glib::MainContext::new();
+        let c = Cancellable::new();
+        let (tx, rx) = oneshot::channel();
+        {
+            let c = c.clone();
+            ctx.spawn_local(async move {
+                c.future().await;
+                tx.send(()).unwrap();
+            });
+        }
+        std::thread::spawn(move || c.cancel()).join().unwrap();
+        ctx.block_on(rx).unwrap();
     }
 }
