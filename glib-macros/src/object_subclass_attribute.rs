@@ -92,15 +92,8 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
         unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
             fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
-                static mut DATA: #crate_ident::subclass::TypeData = #crate_ident::subclass::TypeData {
-                    type_: #crate_ident::Type::INVALID,
-                    parent_class: ::std::ptr::null_mut(),
-                    parent_ifaces: None,
-                    class_data: None,
-                    private_offset: 0,
-                    private_imp_offset: 0,
-                };
-
+                static mut DATA: #crate_ident::subclass::TypeData =
+                    #crate_ident::subclass::types::INIT_TYPE_DATA;
                 unsafe { ::std::ptr::NonNull::new_unchecked(&mut DATA) }
             }
 

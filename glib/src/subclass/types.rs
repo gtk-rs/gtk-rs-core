@@ -491,6 +491,15 @@ pub unsafe trait ObjectSubclassType {
     fn type_() -> Type;
 }
 
+pub const INIT_TYPE_DATA: TypeData = TypeData {
+    type_: Type::INVALID,
+    parent_class: ::std::ptr::null_mut(),
+    parent_ifaces: None,
+    class_data: None,
+    private_offset: 0,
+    private_imp_offset: 0,
+};
+
 // rustdoc-stripper-ignore-next
 /// The central trait for subclassing a `GObject` type.
 ///
