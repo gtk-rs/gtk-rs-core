@@ -979,7 +979,7 @@ pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
         use glib::{ParamStoreRead, ParamStoreWrite};
         impl ObjectImpl for #name {
             fn properties() -> &'static [glib::ParamSpec] {
-                use once_cell::sync::Lazy;
+                use glib::once_cell::sync::Lazy;
                 static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
                     #(#properties_build_phase,)*
                 ]);
