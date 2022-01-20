@@ -48,43 +48,31 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
     let crate_ident = crate::utils::crate_ident_new();
 
-    let parent_type_opt = if has_parent_type {
-        None
-    } else {
-        Some(quote!(
+    let parent_type_opt = (!has_parent_type).then(|| {
+        quote!(
             type ParentType = #crate_ident::Object;
-        ))
-    };
+        )
+    });
 
-    let interfaces_opt = if has_interfaces {
-        None
-    } else {
-        Some(quote!(
+    let interfaces_opt = (!has_interfaces).then(|| {
+        quote!(
             type Interfaces = ();
-        ))
-    };
+        )
+    });
 
-    let new_opt = if has_new {
-        None
-    } else {
-        Some(quote! {
+    let new_opt = (!has_new).then(|| {
+        quote! {
             fn new() -> Self {
                 ::std::default::Default::default()
             }
-        })
-    };
+        }
+    });
 
-    let class_opt = if has_class {
-        None
-    } else {
-        Some(quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;))
-    };
+    let class_opt = (!has_class)
+        .then(|| quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;));
 
-    let instance_opt = if has_instance {
-        None
-    } else {
-        Some(quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;))
-    };
+    let instance_opt = (!has_instance)
+        .then(|| quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;));
 
     let trait_path = match &trait_ {
         Some(path) => &path.1,
