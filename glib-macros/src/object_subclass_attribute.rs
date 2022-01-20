@@ -16,13 +16,13 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
     for item in &input.items {
         match item {
             syn::ImplItem::Method(method) => {
-                let name = method.sig.ident.to_string();
+                let name = &method.sig.ident;
                 if name == "new" || name == "with_class" {
                     has_new = true;
                 }
             }
             syn::ImplItem::Type(type_) => {
-                let name = type_.ident.to_string();
+                let name = &type_.ident;
                 if name == "ParentType" {
                     has_parent_type = true;
                 } else if name == "Interfaces" {
