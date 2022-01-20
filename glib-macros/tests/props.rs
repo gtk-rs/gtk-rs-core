@@ -7,6 +7,12 @@ fn props() {
         use glib_macros::Props;
         use std::cell::RefCell;
         use std::sync::Mutex;
+        use std::marker::PhantomData;
+
+        #[derive(Default)]
+        struct Author {
+            name: String
+        }
 
         mod imp {
             use super::*;
@@ -16,9 +22,12 @@ fn props() {
                 #[prop(get, set)]
                 bar: Mutex<String>,
                 #[prop(get = Self::hello_world)]
-                _buzz: RefCell<String>,
+                _buzz: PhantomData<String>,
                 #[prop(get, set = Self::set_fizz, name = "fizz")]
                 fizz: RefCell<String>,
+                author: RefCell<Author>,
+                #[prop(get = Self::get_author_name, set = Self::set_author_name)]
+                author_name: PhantomData<String>,
             }
 
             #[glib::object_subclass]
@@ -28,6 +37,12 @@ fn props() {
             }
 
             impl Foo {
+                fn get_author_name(&self) -> glib::Value {
+                    self.author.borrow().name.to_value()
+                }
+                fn set_author_name(&self, value: &glib::Value) {
+                    self.author.borrow_mut().name = value.get().unwrap();
+                }
                 fn hello_world(&self) -> glib::Value {
                     "Hello world!".to_value()
                 }
@@ -62,4 +77,9 @@ fn props() {
     myfoo.set_property("fizz", "test");
     let fizz: String = myfoo.property("fizz");
     assert_eq!(fizz, "custom set: test".to_string());
+
+    // PhantomData with custom getter/setter to other inner value
+    myfoo.set_property("author-name", "freddy".to_value());
+    let author_name: String = myfoo.property("author-name");
+    assert_eq!(author_name, "freddy".to_string());
 }

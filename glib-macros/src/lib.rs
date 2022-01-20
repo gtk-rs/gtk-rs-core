@@ -921,7 +921,12 @@ impl PropDesc {
         self.name = self.name.or_else(|| {
             self.field.as_ref().map(|x| {
                 syn::LitStr::new(
-                    &x.ident.as_ref().unwrap().to_string().trim_matches('_'),
+                    &x.ident
+                        .as_ref()
+                        .unwrap()
+                        .to_string()
+                        .trim_matches('_')
+                        .replace("_", "-"),
                     x.ident.span(),
                 )
             })
@@ -1020,22 +1025,29 @@ pub fn derive_props(input: TokenStream) -> proc_macro::TokenStream {
 
 fn fields_prop(data: syn::Data) -> impl Iterator<Item = PropDesc> {
     match data {
-        syn::Data::Struct(syn::DataStruct { fields, .. }) => fields.into_iter().map(|field| {
-            let prop_attrs = field
-                .attrs
-                .iter()
-                .filter(|a| a.path.is_ident("prop"))
-                .flat_map(|attrs| {
-                    attrs.parse_args_with(
-                        syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
-                    )
-                })
-                .flatten();
-            let mut prop_desc = PropDesc::from_iter(prop_attrs);
-            prop_desc.field = Some(field);
+        syn::Data::Struct(syn::DataStruct { fields, .. }) => {
+            fields.into_iter().filter_map(|field| {
+                let mut prop_attrs = field
+                    .attrs
+                    .iter()
+                    .filter(|a| a.path.is_ident("prop"))
+                    .flat_map(|attrs| {
+                        attrs.parse_args_with(
+                            syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
+                        )
+                    })
+                    .flatten()
+                    .peekable();
 
-            prop_desc.clean()
-        }),
+                if let None = prop_attrs.peek() {
+                    return None;
+                }
+                let mut prop_desc = PropDesc::from_iter(prop_attrs);
+                prop_desc.field = Some(field);
+
+                Some(prop_desc.clean())
+            })
+        }
         _ => {
             panic!("Can't derive Props on non struct")
         }

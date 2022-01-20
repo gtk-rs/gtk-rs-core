@@ -1251,6 +1251,9 @@ impl HasParamSpec for u64 {
 impl HasParamSpec for u32 {
     type Spec = ParamSpecUInt;
 }
+impl<T: HasParamSpec> HasParamSpec for std::marker::PhantomData<T> {
+    type Spec = T::Spec;
+}
 
 impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
     type Spec = T::Spec;
