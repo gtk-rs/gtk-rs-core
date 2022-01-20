@@ -14,7 +14,6 @@ pub use glib;
 
 mod app_info;
 mod application;
-#[cfg(test)]
 mod cancellable;
 mod converter;
 mod data_input_stream;
