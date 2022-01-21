@@ -69,16 +69,15 @@ jobs:
 
     strategy:
       matrix:
-        # FIXME: for now we turn off almost all sys tests, since they fail the ABI check
         conf:
-          - { name: "cairo", test: true, test-sys: true, args: "--features png,pdf,svg,ps,use_glib,v1_16,freetype,script,win32-surface" }
-          - { name: "gdk-pixbuf", test: true, test-sys: false, args: "--features v2_40" }
-          - { name: "gio", test: true, test-sys: false, args: "--features v2_66" }
-          - { name: "glib", test: true, test-sys: false, args: "--features v2_66" }
-          - { name: "graphene", test: false, test-sys: false, args: "" }
-          - { name: "pango", test: true, test-sys: false, args: "--features v1_46" }
-          - { name: "pangocairo", test: true, test-sys: false, args: "" }
-          - { name: "examples", test: false, test-sys: false, args: "--bins --examples --all-features" }
+          - { name: "cairo", test: true, args: "--features png,pdf,svg,ps,use_glib,v1_16,freetype,script,win32-surface" }
+          - { name: "gdk-pixbuf", test: true, args: "--features v2_40" }
+          - { name: "gio", test: true, args: "--features v2_66" }
+          - { name: "glib", test: true, args: "--features v2_66" }
+          - { name: "graphene", test: false, args: "" }
+          - { name: "pango", test: true, args: "--features v1_46" }
+          - { name: "pangocairo", test: true, args: "" }
+          - { name: "examples", test: false, args: "--bins --examples --all-features" }
 
     steps:
 
@@ -118,7 +117,7 @@ jobs:
         with:
           command: test
           args: --manifest-path ${{ matrix.conf.name }}/sys/Cargo.toml ${{ matrix.conf.args }}
-        if: matrix.conf.test-sys
+        if: matrix.conf.name != "examples"
 
       - name: build
         uses: actions-rs/cargo@v1
