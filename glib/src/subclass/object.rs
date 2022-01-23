@@ -479,6 +479,22 @@ mod test {
     }
 
     #[test]
+    fn test_builder() {
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build()
+            .expect("Object::new failed");
+
+        assert_eq!(
+            obj.property::<String>("construct-name"),
+            String::from("meh")
+        );
+
+        assert_eq!(obj.property::<String>("name"), String::from("initial"));
+    }
+
+    #[test]
     fn test_set_properties() {
         let obj = Object::with_type(
             SimpleObject::static_type(),
