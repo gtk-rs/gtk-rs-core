@@ -1849,7 +1849,14 @@ pub trait ObjectExt: ObjectType {
     ///
     /// This panics if the signal does not exist.
     ///
+    /// A recurring case is connecting a handler which will be automatically disconnected
+    /// when an object it refers to is destroyed, as it happens with `g_signal_connect_object`
+    /// in C. This can be achieved with a closure that watches an object: see the documentation
+    /// of the [`closure!`](crate::closure!) macro for more details.
+    ///
     /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    #[doc(alias = "g_signal_connect_closure")]
+    #[doc(alias = "g_signal_connect_object")]
     fn connect_closure(
         &self,
         signal_name: &str,
@@ -1858,7 +1865,6 @@ pub trait ObjectExt: ObjectType {
     ) -> SignalHandlerId;
 
     /// Similar to [`Self::connect_closure_id`] but fails instead of panicking.
-    #[doc(alias = "g_signal_connect_closure")]
     fn try_connect_closure_id(
         &self,
         signal_id: SignalId,
