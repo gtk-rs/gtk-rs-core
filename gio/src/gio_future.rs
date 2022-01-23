@@ -8,6 +8,8 @@ use std::pin::{self, Pin};
 use crate::prelude::*;
 use crate::Cancellable;
 
+use glib::thread_guard::ThreadGuard;
+
 pub struct GioFuture<F, O, T, E> {
     obj: O,
     schedule_operation: Option<F>,
@@ -114,54 +116,3 @@ impl<F, O, T, E> Drop for GioFuture<F, O, T, E> {
 }
 
 impl<F, O, T, E> Unpin for GioFuture<F, O, T, E> {}
-
-// Actual thread IDs can be reused by the OS once the old thread finished.
-// This works around it by using our own counter for threads.
-//
-// Taken from the fragile crate
-use std::sync::atomic::{AtomicUsize, Ordering};
-fn next_thread_id() -> usize {
-    static COUNTER: AtomicUsize = AtomicUsize::new(0);
-    COUNTER.fetch_add(1, Ordering::SeqCst)
-}
-
-#[doc(alias = "get_thread_id")]
-fn thread_id() -> usize {
-    thread_local!(static THREAD_ID: usize = next_thread_id());
-    THREAD_ID.with(|&x| x)
-}
-
-// Taken from glib-rs, but we don't want this to be public API
-struct ThreadGuard<T> {
-    thread_id: usize,
-    value: Option<T>,
-}
-
-impl<T> ThreadGuard<T> {
-    fn new(value: T) -> Self {
-        Self {
-            thread_id: thread_id(),
-            value: Some(value),
-        }
-    }
-
-    fn into_inner(mut self) -> T {
-        assert!(
-            self.thread_id == thread_id(),
-            "Value accessed from different thread than where it was created"
-        );
-
-        self.value.take().expect("into_inner() called twice")
-    }
-}
-
-impl<T> Drop for ThreadGuard<T> {
-    fn drop(&mut self) {
-        assert!(
-            self.thread_id == thread_id(),
-            "Value dropped on a different thread than where it was created"
-        );
-    }
-}
-
-unsafe impl<T> Send for ThreadGuard<T> {}
