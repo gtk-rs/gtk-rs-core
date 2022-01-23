@@ -158,77 +158,13 @@ pub use self::source_futures::*;
 mod thread_pool;
 pub use self::thread_pool::ThreadPool;
 
+pub mod thread_guard;
+
 // rustdoc-stripper-ignore-next
 /// This is the log domain used by the [`clone!`][crate::clone!] macro. If you want to use a custom
 /// logger (it prints to stdout by default), you can set your own logger using the corresponding
 /// `log` functions.
 pub const CLONE_MACRO_LOG_DOMAIN: &str = "glib-rs-clone";
-
-// rustdoc-stripper-ignore-next
-// Actual thread IDs can be reused by the OS once the old thread finished.
-// This works around it by using our own counter for threads.
-//
-// Taken from the fragile crate
-use std::sync::atomic::{AtomicUsize, Ordering};
-fn next_thread_id() -> usize {
-    static COUNTER: AtomicUsize = AtomicUsize::new(0);
-    COUNTER.fetch_add(1, Ordering::SeqCst)
-}
-
-#[doc(alias = "get_thread_id")]
-pub(crate) fn thread_id() -> usize {
-    thread_local!(static THREAD_ID: usize = next_thread_id());
-    THREAD_ID.with(|&x| x)
-}
-
-pub(crate) struct ThreadGuard<T> {
-    thread_id: usize,
-    value: T,
-}
-
-impl<T> ThreadGuard<T> {
-    pub(crate) fn new(value: T) -> Self {
-        Self {
-            thread_id: thread_id(),
-            value,
-        }
-    }
-
-    pub(crate) fn get_ref(&self) -> &T {
-        assert!(
-            self.thread_id == thread_id(),
-            "Value accessed from different thread than where it was created"
-        );
-
-        &self.value
-    }
-
-    pub(crate) fn get_mut(&mut self) -> &mut T {
-        assert!(
-            self.thread_id == thread_id(),
-            "Value accessed from different thread than where it was created"
-        );
-
-        &mut self.value
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Returns `true` if the current thread owns the value, i.e. it can be accessed safely.
-    pub(crate) fn is_owner(&self) -> bool {
-        self.thread_id == thread_id()
-    }
-}
-
-impl<T> Drop for ThreadGuard<T> {
-    fn drop(&mut self) {
-        assert!(
-            self.thread_id == thread_id(),
-            "Value dropped on a different thread than where it was created"
-        );
-    }
-}
-
-unsafe impl<T> Send for ThreadGuard<T> {}
 
 #[cfg(target_family = "windows")]
 mod win32;

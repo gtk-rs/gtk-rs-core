@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::thread_guard::ThreadGuard;
 use crate::translate::*;
 use crate::Continue;
 use crate::MainContext;
 use crate::Priority;
 use crate::Source;
 use crate::SourceId;
-use crate::ThreadGuard;
 use std::collections::VecDeque;
 use std::fmt;
 use std::mem;

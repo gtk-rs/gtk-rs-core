@@ -198,7 +198,7 @@ impl Closure {
     /// Invoking the closure from a different thread than this one will panic.
     #[doc(alias = "g_closure_new")]
     pub fn new_local<F: Fn(&[Value]) -> Option<Value> + 'static>(callback: F) -> Self {
-        let callback = crate::ThreadGuard::new(callback);
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe { Self::new_unsafe(move |values| (callback.get_ref())(values)) }
     }
