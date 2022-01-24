@@ -24,7 +24,7 @@ pub trait AppInfoExtManual: 'static {
     fn launch_uris_async<
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
     >(
         &self,
         uris: &[&str],
@@ -48,7 +48,7 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
     fn launch_uris_async<
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+        R: FnOnce(Result<(), glib::Error>) + 'static,
     >(
         &self,
         uris: &[&str],
@@ -56,10 +56,23 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         cancellable: Option<&Q>,
         callback: R,
     ) {
-        let user_data: Box_<(R, *mut *mut libc::c_char)> =
-            Box_::new((callback, uris.to_glib_full()));
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<(glib::thread_guard::ThreadGuard<R>, *mut *mut libc::c_char)> =
+            Box_::new((
+                glib::thread_guard::ThreadGuard::new(callback),
+                uris.to_glib_full(),
+            ));
         unsafe extern "C" fn launch_uris_async_trampoline<
-            R: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            R: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -72,9 +85,12 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<(R, *mut *mut libc::c_char)> = Box_::from_raw(user_data as *mut _);
-            (callback.0)(result);
-            glib::ffi::g_strfreev(callback.1);
+            let callback: Box_<(glib::thread_guard::ThreadGuard<R>, *mut *mut libc::c_char)> =
+                Box_::from_raw(user_data as *mut _);
+            let (callback, uris) = *callback;
+            let callback = callback.into_inner();
+            callback(result);
+            glib::ffi::g_strfreev(uris);
         }
         let callback = launch_uris_async_trampoline::<R>;
         unsafe {
