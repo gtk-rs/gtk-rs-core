@@ -12,7 +12,7 @@ use std::ptr;
 impl Subprocess {
     #[doc(alias = "g_subprocess_communicate_utf8_async")]
     pub fn communicate_utf8_async<
-        R: FnOnce(Result<(Option<GString>, Option<GString>), glib::Error>) + Send + 'static,
+        R: FnOnce(Result<(Option<GString>, Option<GString>), glib::Error>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -20,12 +20,23 @@ impl Subprocess {
         cancellable: Option<&C>,
         callback: R,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let stdin_buf = stdin_buf.to_glib_full();
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let user_data: Box<(R, *mut c_char)> = Box::new((callback, stdin_buf));
+        let user_data: Box<(glib::thread_guard::ThreadGuard<R>, *mut c_char)> =
+            Box::new((glib::thread_guard::ThreadGuard::new(callback), stdin_buf));
         unsafe extern "C" fn communicate_utf8_async_trampoline<
-            R: FnOnce(Result<(Option<GString>, Option<GString>), glib::Error>) + Send + 'static,
+            R: FnOnce(Result<(Option<GString>, Option<GString>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -46,9 +57,10 @@ impl Subprocess {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<(R, *mut c_char)> = Box::from_raw(user_data as *mut _);
+            let callback: Box<(glib::thread_guard::ThreadGuard<R>, *mut c_char)> =
+                Box::from_raw(user_data as *mut _);
             glib::ffi::g_free(callback.1 as *mut _);
-            callback.0(result);
+            (callback.0.into_inner())(result);
         }
         unsafe {
             ffi::g_subprocess_communicate_utf8_async(

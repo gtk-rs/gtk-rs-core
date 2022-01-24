@@ -166,16 +166,27 @@ impl Pixbuf {
     pub fn from_stream_async<
         P: IsA<gio::InputStream>,
         Q: IsA<gio::Cancellable>,
-        R: FnOnce(Result<Pixbuf, Error>) + Send + 'static,
+        R: FnOnce(Result<Pixbuf, Error>) + 'static,
     >(
         stream: &P,
         cancellable: Option<&Q>,
         callback: R,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|p| p.as_ref());
-        let user_data: Box<R> = Box::new(callback);
+        let user_data: Box<glib::thread_guard::ThreadGuard<R>> =
+            Box::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn from_stream_async_trampoline<
-            R: FnOnce(Result<Pixbuf, Error>) + Send + 'static,
+            R: FnOnce(Result<Pixbuf, Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -188,7 +199,9 @@ impl Pixbuf {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<R> = Box::from_raw(user_data as *mut _);
+            let callback: Box<glib::thread_guard::ThreadGuard<R>> =
+                Box::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = from_stream_async_trampoline::<R>;
@@ -217,7 +230,7 @@ impl Pixbuf {
     pub fn from_stream_at_scale_async<
         P: IsA<gio::InputStream>,
         Q: IsA<gio::Cancellable>,
-        R: FnOnce(Result<Pixbuf, Error>) + Send + 'static,
+        R: FnOnce(Result<Pixbuf, Error>) + 'static,
     >(
         stream: &P,
         width: i32,
@@ -226,10 +239,21 @@ impl Pixbuf {
         cancellable: Option<&Q>,
         callback: R,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|p| p.as_ref());
-        let user_data: Box<R> = Box::new(callback);
+        let user_data: Box<glib::thread_guard::ThreadGuard<R>> =
+            Box::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn from_stream_at_scale_async_trampoline<
-            R: FnOnce(Result<Pixbuf, Error>) + Send + 'static,
+            R: FnOnce(Result<Pixbuf, Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -242,7 +266,9 @@ impl Pixbuf {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<R> = Box::from_raw(user_data as *mut _);
+            let callback: Box<glib::thread_guard::ThreadGuard<R>> =
+                Box::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = from_stream_at_scale_async_trampoline::<R>;
@@ -345,17 +371,28 @@ impl Pixbuf {
     #[doc(alias = "get_file_info_async")]
     pub fn file_info_async<
         P: IsA<gio::Cancellable>,
-        Q: FnOnce(Result<Option<(PixbufFormat, i32, i32)>, Error>) + Send + 'static,
+        Q: FnOnce(Result<Option<(PixbufFormat, i32, i32)>, Error>) + 'static,
         T: AsRef<Path>,
     >(
         filename: T,
         cancellable: Option<&P>,
         callback: Q,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|p| p.as_ref());
-        let user_data: Box<Q> = Box::new(callback);
+        let user_data: Box<glib::thread_guard::ThreadGuard<Q>> =
+            Box::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn get_file_info_async_trampoline<
-            Q: FnOnce(Result<Option<(PixbufFormat, i32, i32)>, Error>) + Send + 'static,
+            Q: FnOnce(Result<Option<(PixbufFormat, i32, i32)>, Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -381,7 +418,9 @@ impl Pixbuf {
                     height.assume_init(),
                 )))
             };
-            let callback: Box<Q> = Box::from_raw(user_data as *mut _);
+            let callback: Box<glib::thread_guard::ThreadGuard<Q>> =
+                Box::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = get_file_info_async_trampoline::<Q>;
@@ -474,7 +513,7 @@ impl Pixbuf {
     pub fn save_to_streamv_async<
         P: IsA<gio::OutputStream>,
         Q: IsA<gio::Cancellable>,
-        R: FnOnce(Result<(), Error>) + Send + 'static,
+        R: FnOnce(Result<(), Error>) + 'static,
     >(
         &self,
         stream: &P,
@@ -483,10 +522,21 @@ impl Pixbuf {
         cancellable: Option<&Q>,
         callback: R,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|p| p.as_ref());
-        let user_data: Box<R> = Box::new(callback);
+        let user_data: Box<glib::thread_guard::ThreadGuard<R>> =
+            Box::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn save_to_streamv_async_trampoline<
-            R: FnOnce(Result<(), Error>) + Send + 'static,
+            R: FnOnce(Result<(), Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut gio::ffi::GAsyncResult,
@@ -499,7 +549,9 @@ impl Pixbuf {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<R> = Box::from_raw(user_data as *mut _);
+            let callback: Box<glib::thread_guard::ThreadGuard<R>> =
+                Box::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = save_to_streamv_async_trampoline::<R>;

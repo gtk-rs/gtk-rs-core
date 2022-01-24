@@ -34,7 +34,7 @@ pub trait InputStreamExtManual: Sized {
     #[doc(alias = "g_input_stream_read_all_async")]
     fn read_all_async<
         B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + Send + 'static,
+        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -47,7 +47,7 @@ pub trait InputStreamExtManual: Sized {
     #[doc(alias = "g_input_stream_read_async")]
     fn read_async<
         B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + Send + 'static,
+        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -153,7 +153,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
 
     fn read_all_async<
         B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + Send + 'static,
+        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -162,25 +162,38 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         cancellable: Option<&C>,
         callback: Q,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let mut user_data: Box<Option<(Q, B)>> = Box::new(Some((callback, buffer)));
+        let mut user_data: Box<(glib::thread_guard::ThreadGuard<Q>, B)> =
+            Box::new((glib::thread_guard::ThreadGuard::new(callback), buffer));
         // Need to do this after boxing as the contents pointer might change by moving into the box
         let (count, buffer_ptr) = {
-            let buffer = &mut (*user_data).as_mut().unwrap().1;
+            let buffer = &mut user_data.1;
             let slice = (*buffer).as_mut();
             (slice.len(), slice.as_mut_ptr())
         };
         unsafe extern "C" fn read_all_async_trampoline<
             B: AsMut<[u8]> + Send + 'static,
-            Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + Send + 'static,
+            Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut user_data: Box<Option<(Q, B)>> = Box::from_raw(user_data as *mut _);
-            let (callback, buffer) = user_data.take().unwrap();
+            let user_data: Box<(glib::thread_guard::ThreadGuard<Q>, B)> =
+                Box::from_raw(user_data as *mut _);
+            let (callback, buffer) = *user_data;
+            let callback = callback.into_inner();
 
             let mut error = ptr::null_mut();
             let mut bytes_read = mem::MaybeUninit::uninit();
@@ -218,7 +231,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
 
     fn read_async<
         B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + Send + 'static,
+        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -227,25 +240,38 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         cancellable: Option<&C>,
         callback: Q,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let mut user_data: Box<Option<(Q, B)>> = Box::new(Some((callback, buffer)));
+        let mut user_data: Box<(glib::thread_guard::ThreadGuard<Q>, B)> =
+            Box::new((glib::thread_guard::ThreadGuard::new(callback), buffer));
         // Need to do this after boxing as the contents pointer might change by moving into the box
         let (count, buffer_ptr) = {
-            let buffer = &mut (*user_data).as_mut().unwrap().1;
+            let buffer = &mut user_data.1;
             let slice = (*buffer).as_mut();
             (slice.len(), slice.as_mut_ptr())
         };
         unsafe extern "C" fn read_async_trampoline<
             B: AsMut<[u8]> + Send + 'static,
-            Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + Send + 'static,
+            Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut user_data: Box<Option<(Q, B)>> = Box::from_raw(user_data as *mut _);
-            let (callback, buffer) = user_data.take().unwrap();
+            let user_data: Box<(glib::thread_guard::ThreadGuard<Q>, B)> =
+                Box::from_raw(user_data as *mut _);
+            let (callback, buffer) = *user_data;
+            let callback = callback.into_inner();
 
             let mut error = ptr::null_mut();
             let ret = ffi::g_input_stream_read_finish(_source_object as *mut _, res, &mut error);
