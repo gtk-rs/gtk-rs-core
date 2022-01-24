@@ -25,7 +25,7 @@ use crate::Type;
 use crate::Value;
 use crate::{Closure, RustClosure};
 
-use crate::thread_id;
+use crate::thread_guard::thread_id;
 
 #[doc(hidden)]
 pub use gobject_ffi::GObject;
@@ -2511,7 +2511,7 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        let callback = crate::ThreadGuard::new(callback);
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe {
             self.try_connect_unsafe(signal_name, after, move |values| {
@@ -2538,7 +2538,7 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        let callback = crate::ThreadGuard::new(callback);
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe {
             self.try_connect_unsafe_id(signal_id, details, after, move |values| {
@@ -3077,7 +3077,7 @@ impl<T: ObjectType> ObjectExt for T {
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        let f = crate::ThreadGuard::new(f);
+        let f = crate::thread_guard::ThreadGuard::new(f);
 
         unsafe {
             self.connect_notify_unsafe(name, move |s, pspec| {
