@@ -138,15 +138,26 @@ impl AppInfo {
     #[cfg(any(feature = "v2_50", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_app_info_launch_default_for_uri_async")]
-    pub fn launch_default_for_uri_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    pub fn launch_default_for_uri_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         uri: &str,
         context: Option<&impl IsA<AppLaunchContext>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn launch_default_for_uri_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -159,7 +170,9 @@ impl AppInfo {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = launch_default_for_uri_async_trampoline::<P>;
