@@ -16,13 +16,13 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
     for item in &input.items {
         match item {
             syn::ImplItem::Method(method) => {
-                let name = method.sig.ident.to_string();
+                let name = &method.sig.ident;
                 if name == "new" || name == "with_class" {
                     has_new = true;
                 }
             }
             syn::ImplItem::Type(type_) => {
-                let name = type_.ident.to_string();
+                let name = &type_.ident;
                 if name == "ParentType" {
                     has_parent_type = true;
                 } else if name == "Interfaces" {
@@ -48,43 +48,31 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
     let crate_ident = crate::utils::crate_ident_new();
 
-    let parent_type_opt = if has_parent_type {
-        None
-    } else {
-        Some(quote!(
+    let parent_type_opt = (!has_parent_type).then(|| {
+        quote!(
             type ParentType = #crate_ident::Object;
-        ))
-    };
+        )
+    });
 
-    let interfaces_opt = if has_interfaces {
-        None
-    } else {
-        Some(quote!(
+    let interfaces_opt = (!has_interfaces).then(|| {
+        quote!(
             type Interfaces = ();
-        ))
-    };
+        )
+    });
 
-    let new_opt = if has_new {
-        None
-    } else {
-        Some(quote! {
+    let new_opt = (!has_new).then(|| {
+        quote! {
             fn new() -> Self {
                 ::std::default::Default::default()
             }
-        })
-    };
+        }
+    });
 
-    let class_opt = if has_class {
-        None
-    } else {
-        Some(quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;))
-    };
+    let class_opt = (!has_class)
+        .then(|| quote!(type Class = #crate_ident::subclass::basic::ClassStruct<Self>;));
 
-    let instance_opt = if has_instance {
-        None
-    } else {
-        Some(quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;))
-    };
+    let instance_opt = (!has_instance)
+        .then(|| quote!(type Instance = #crate_ident::subclass::basic::InstanceStruct<Self>;));
 
     let trait_path = match &trait_ {
         Some(path) => &path.1,
@@ -104,15 +92,8 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
         unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
             fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
-                static mut DATA: #crate_ident::subclass::TypeData = #crate_ident::subclass::TypeData {
-                    type_: #crate_ident::Type::INVALID,
-                    parent_class: ::std::ptr::null_mut(),
-                    parent_ifaces: None,
-                    class_data: None,
-                    private_offset: 0,
-                    private_imp_offset: 0,
-                };
-
+                static mut DATA: #crate_ident::subclass::TypeData =
+                    #crate_ident::subclass::types::INIT_TYPE_DATA;
                 unsafe { ::std::ptr::NonNull::new_unchecked(&mut DATA) }
             }
 

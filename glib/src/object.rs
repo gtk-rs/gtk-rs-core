@@ -25,7 +25,7 @@ use crate::Type;
 use crate::Value;
 use crate::{Closure, RustClosure};
 
-use crate::thread_id;
+use crate::thread_guard::thread_id;
 
 #[doc(hidden)]
 pub use gobject_ffi::GObject;
@@ -1321,6 +1321,61 @@ impl Object {
             Ok(from_glib_full(ptr))
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Create a new object builder for a specific type.
+    pub fn builder<'a, O: IsA<Object> + IsClass>() -> ObjectBuilder<'a, O> {
+        ObjectBuilder::new(O::static_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Create a new object builder for a specific type.
+    pub fn builder_with_type<'a>(type_: Type) -> ObjectBuilder<'a, Object> {
+        ObjectBuilder::new(type_)
+    }
+}
+
+#[must_use = "builder doesn't do anything unless built"]
+pub struct ObjectBuilder<'a, O> {
+    type_: Type,
+    properties: Vec<(&'a str, Value)>,
+    phantom: PhantomData<O>,
+}
+
+impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
+    fn new(type_: Type) -> Self {
+        ObjectBuilder {
+            type_,
+            properties: vec![],
+            phantom: PhantomData,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set property `name` to the given value `value`.
+    pub fn property<T: ToValue + 'a>(self, name: &'a str, value: T) -> Self {
+        let ObjectBuilder {
+            type_,
+            mut properties,
+            ..
+        } = self;
+        properties.push((name, value.to_value()));
+
+        ObjectBuilder {
+            type_,
+            properties,
+            phantom: PhantomData,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Build the object with the provided properties.
+    ///
+    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
+    pub fn build(self) -> Result<O, BoolError> {
+        Object::with_values(self.type_, &self.properties).map(|o| unsafe { o.unsafe_cast::<O>() })
+    }
 }
 
 #[must_use = "if unused the property notifications will immediately be thawed"]
@@ -1794,7 +1849,14 @@ pub trait ObjectExt: ObjectType {
     ///
     /// This panics if the signal does not exist.
     ///
+    /// A recurring case is connecting a handler which will be automatically disconnected
+    /// when an object it refers to is destroyed, as it happens with `g_signal_connect_object`
+    /// in C. This can be achieved with a closure that watches an object: see the documentation
+    /// of the [`closure!`](crate::closure!) macro for more details.
+    ///
     /// Same as [`Self::connect`] but takes a [`Closure`](crate::Closure) instead of a `Fn`.
+    #[doc(alias = "g_signal_connect_closure")]
+    #[doc(alias = "g_signal_connect_object")]
     fn connect_closure(
         &self,
         signal_name: &str,
@@ -1803,7 +1865,6 @@ pub trait ObjectExt: ObjectType {
     ) -> SignalHandlerId;
 
     /// Similar to [`Self::connect_closure_id`] but fails instead of panicking.
-    #[doc(alias = "g_signal_connect_closure")]
     fn try_connect_closure_id(
         &self,
         signal_id: SignalId,
@@ -2450,7 +2511,7 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        let callback = crate::ThreadGuard::new(callback);
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe {
             self.try_connect_unsafe(signal_name, after, move |values| {
@@ -2477,7 +2538,7 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        let callback = crate::ThreadGuard::new(callback);
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe {
             self.try_connect_unsafe_id(signal_id, details, after, move |values| {
@@ -3016,7 +3077,7 @@ impl<T: ObjectType> ObjectExt for T {
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        let f = crate::ThreadGuard::new(f);
+        let f = crate::thread_guard::ThreadGuard::new(f);
 
         unsafe {
             self.connect_notify_unsafe(name, move |s, pspec| {

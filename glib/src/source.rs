@@ -13,9 +13,9 @@ use std::num::NonZeroU32;
 use std::os::unix::io::RawFd;
 use std::time::Duration;
 
+use crate::thread_guard::ThreadGuard;
 use crate::MainContext;
 use crate::Source;
-use crate::ThreadGuard;
 
 // rustdoc-stripper-ignore-next
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
