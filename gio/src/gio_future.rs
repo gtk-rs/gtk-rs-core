@@ -8,8 +8,6 @@ use std::pin::{self, Pin};
 use crate::prelude::*;
 use crate::Cancellable;
 
-use glib::thread_guard::ThreadGuard;
-
 pub struct GioFuture<F, O, T, E> {
     obj: O,
     schedule_operation: Option<F>,
@@ -18,14 +16,12 @@ pub struct GioFuture<F, O, T, E> {
 }
 
 pub struct GioFutureResult<T, E> {
-    sender: ThreadGuard<oneshot::Sender<Result<T, E>>>,
+    sender: oneshot::Sender<Result<T, E>>,
 }
-
-unsafe impl<T, E> Send for GioFutureResult<T, E> {}
 
 impl<T, E> GioFutureResult<T, E> {
     pub fn resolve(self, res: Result<T, E>) {
-        let _ = self.sender.into_inner().send(res);
+        let _ = self.sender.send(res);
     }
 }
 
@@ -79,9 +75,7 @@ where
             schedule_operation(
                 obj,
                 cancellable.as_ref().unwrap(),
-                GioFutureResult {
-                    sender: ThreadGuard::new(send),
-                },
+                GioFutureResult { sender: send },
             );
 
             *receiver = Some(recv);
