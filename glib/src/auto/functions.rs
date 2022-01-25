@@ -427,7 +427,7 @@ pub fn user_special_dir(directory: UserDirectory) -> Option<std::path::PathBuf> 
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 #[doc(alias = "g_get_user_state_dir")]
 #[doc(alias = "get_user_state_dir")]
-pub fn user_state_dir() -> crate::GString {
+pub fn user_state_dir() -> std::path::PathBuf {
     unsafe { from_glib_none(ffi::g_get_user_state_dir()) }
 }
 
