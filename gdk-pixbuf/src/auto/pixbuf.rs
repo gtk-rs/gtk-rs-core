@@ -497,7 +497,7 @@ impl Pixbuf {
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_stream_async")]
-    //pub fn save_to_stream_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, callback: P, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn save_to_stream_async<P: FnOnce(Result<(), glib::Error>) + 'static>(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, callback: P, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_stream_async() }
     //}
 

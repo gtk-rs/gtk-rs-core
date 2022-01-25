@@ -101,7 +101,7 @@ impl DBusProxy {
     }
 
     #[doc(alias = "g_dbus_proxy_new")]
-    pub fn new<P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static>(
+    pub fn new<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
         connection: &DBusConnection,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
@@ -111,10 +111,19 @@ impl DBusProxy {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
-        unsafe extern "C" fn new_trampoline<
-            P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
-        >(
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn new_trampoline<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -126,7 +135,9 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = new_trampoline::<P>;
@@ -179,7 +190,7 @@ impl DBusProxy {
 
     #[doc(alias = "g_dbus_proxy_new_for_bus")]
     #[doc(alias = "new_for_bus")]
-    pub fn for_bus<P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static>(
+    pub fn for_bus<P: FnOnce(Result<DBusProxy, glib::Error>) + 'static>(
         bus_type: BusType,
         flags: DBusProxyFlags,
         info: Option<&DBusInterfaceInfo>,
@@ -189,9 +200,20 @@ impl DBusProxy {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn for_bus_trampoline<
-            P: FnOnce(Result<DBusProxy, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<DBusProxy, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -204,7 +226,9 @@ impl DBusProxy {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = for_bus_trampoline::<P>;
@@ -260,7 +284,7 @@ unsafe impl Sync for DBusProxy {}
 
 pub trait DBusProxyExt: 'static {
     #[doc(alias = "g_dbus_proxy_call")]
-    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
+    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
@@ -292,7 +316,7 @@ pub trait DBusProxyExt: 'static {
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
-        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
     >(
         &self,
         method_name: &str,
@@ -432,7 +456,7 @@ pub trait DBusProxyExt: 'static {
 }
 
 impl<O: IsA<DBusProxy>> DBusProxyExt for O {
-    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static>(
+    fn call<P: FnOnce(Result<glib::Variant, glib::Error>) + 'static>(
         &self,
         method_name: &str,
         parameters: Option<&glib::Variant>,
@@ -441,9 +465,20 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_trampoline<
-            P: FnOnce(Result<glib::Variant, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<glib::Variant, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -456,7 +491,9 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = call_trampoline::<P>;
@@ -531,7 +568,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     fn call_with_unix_fd_list<
-        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
     >(
         &self,
         method_name: &str,
@@ -542,9 +579,20 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn call_with_unix_fd_list_trampoline<
-            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -563,7 +611,9 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = call_with_unix_fd_list_trampoline::<P>;

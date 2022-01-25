@@ -18,10 +18,7 @@ pub trait DataInputStreamExtManual: 'static {
     ) -> Result<Vec<u8>, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_line_async")]
-    fn read_line_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_line_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
@@ -41,7 +38,7 @@ pub trait DataInputStreamExtManual: 'static {
 
     fn read_line_utf8_async<
         P: IsA<Cancellable>,
-        Q: FnOnce(Result<Option<GString>, glib::Error>) + Send + 'static,
+        Q: FnOnce(Result<Option<GString>, glib::Error>) + 'static,
     >(
         &self,
         io_priority: glib::Priority,
@@ -64,10 +61,7 @@ pub trait DataInputStreamExtManual: 'static {
 
     #[cfg_attr(feature = "v2_56", deprecated)]
     #[doc(alias = "g_data_input_stream_read_until_async")]
-    fn read_until_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_until_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -90,10 +84,7 @@ pub trait DataInputStreamExtManual: 'static {
     ) -> Result<Vec<u8>, glib::Error>;
 
     #[doc(alias = "g_data_input_stream_read_upto_async")]
-    fn read_upto_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_upto_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
@@ -131,18 +122,26 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_line_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_line_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
         callback: Q,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_line_async_trampoline<
-            Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -162,7 +161,9 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = read_line_async_trampoline::<Q>;
@@ -213,16 +214,27 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
 
     fn read_line_utf8_async<
         P: IsA<Cancellable>,
-        Q: FnOnce(Result<Option<GString>, glib::Error>) + Send + 'static,
+        Q: FnOnce(Result<Option<GString>, glib::Error>) + 'static,
     >(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
         callback: Q,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_line_async_trampoline<
-            Q: FnOnce(Result<Option<GString>, glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<Option<GString>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -240,7 +252,9 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = read_line_async_trampoline::<Q>;
@@ -305,19 +319,27 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_until_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_until_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
         cancellable: Option<&P>,
         callback: Q,
     ) {
-        let user_data: Box_<Q> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_until_async_trampoline<
-            Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -340,7 +362,9 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         // Need to ensure that it does not contain a NUL byte and then NUL-terminate it ourselves
@@ -409,20 +433,28 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
         }
     }
 
-    fn read_upto_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
-    >(
+    fn read_upto_async<P: IsA<Cancellable>, Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static>(
         &self,
         stop_chars: &[u8],
         io_priority: glib::Priority,
         cancellable: Option<&P>,
         callback: Q,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let stop_chars_len = stop_chars.len() as isize;
-        let user_data: Box_<Q> = Box_::new(callback);
+        let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_upto_async_trampoline<
-            Q: FnOnce(Result<Vec<u8>, glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<Vec<u8>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -445,7 +477,9 @@ impl<O: IsA<DataInputStream>> DataInputStreamExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<Q> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = read_upto_async_trampoline::<Q>;

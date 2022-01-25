@@ -16,7 +16,7 @@ pub trait FileExtManual: Sized {
     #[doc(alias = "g_file_replace_contents_async")]
     fn replace_contents_async<
         B: AsRef<[u8]> + Send + 'static,
-        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + Send + 'static,
+        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -44,7 +44,7 @@ pub trait FileExtManual: Sized {
     #[doc(alias = "g_file_enumerate_children_async")]
     fn enumerate_children_async<
         P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileEnumerator, glib::Error>) + Send + 'static,
+        Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
     >(
         &self,
         attributes: &'static str,
@@ -62,13 +62,13 @@ pub trait FileExtManual: Sized {
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_copy_async")]
-    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         destination: &impl IsA<File>,
         flags: crate::FileCopyFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(i64, i64) + Send>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
         callback: Q,
     );
 
@@ -84,8 +84,8 @@ pub trait FileExtManual: Sized {
 
     #[doc(alias = "g_file_load_partial_contents_async")]
     fn load_partial_contents_async<
-        P: FnMut(&[u8]) -> bool + Send + 'static,
-        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnMut(&[u8]) -> bool + 'static,
+        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -102,12 +102,12 @@ pub trait FileExtManual: Sized {
     ) -> Result<(u64, u64, u64), glib::Error>;
 
     #[doc(alias = "g_file_measure_disk_usage_async")]
-    fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static>(
+    fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static>(
         &self,
         flags: crate::FileMeasureFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + Send + 'static>>,
+        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
         callback: P,
     );
 
@@ -124,7 +124,7 @@ pub trait FileExtManual: Sized {
 impl<O: IsA<File>> FileExtManual for O {
     fn replace_contents_async<
         B: AsRef<[u8]> + Send + 'static,
-        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + Send + 'static,
+        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -135,26 +135,39 @@ impl<O: IsA<File>> FileExtManual for O {
         cancellable: Option<&C>,
         callback: R,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let etag = etag.to_glib_none();
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let user_data: Box<Option<(R, B)>> = Box::new(Some((callback, contents)));
+        let user_data: Box<(glib::thread_guard::ThreadGuard<R>, B)> =
+            Box::new((glib::thread_guard::ThreadGuard::new(callback), contents));
         // Need to do this after boxing as the contents pointer might change by moving into the box
         let (count, contents_ptr) = {
-            let contents = &(*user_data).as_ref().unwrap().1;
+            let contents = &user_data.1;
             let slice = contents.as_ref();
             (slice.len(), slice.as_ptr())
         };
         unsafe extern "C" fn replace_contents_async_trampoline<
             B: AsRef<[u8]> + Send + 'static,
-            R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + Send + 'static,
+            R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut user_data: Box<Option<(R, B)>> = Box::from_raw(user_data as *mut _);
-            let (callback, contents) = user_data.take().unwrap();
+            let user_data: Box<(glib::thread_guard::ThreadGuard<R>, B)> =
+                Box::from_raw(user_data as *mut _);
+            let (callback, contents) = *user_data;
+            let callback = callback.into_inner();
 
             let mut error = ptr::null_mut();
             let mut new_etag = ptr::null_mut();
@@ -219,7 +232,7 @@ impl<O: IsA<File>> FileExtManual for O {
 
     fn enumerate_children_async<
         P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileEnumerator, glib::Error>) + Send + 'static,
+        Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
     >(
         &self,
         attributes: &'static str,
@@ -228,9 +241,20 @@ impl<O: IsA<File>> FileExtManual for O {
         cancellable: Option<&P>,
         callback: Q,
     ) {
-        let user_data: Box<Q> = Box::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box<glib::thread_guard::ThreadGuard<Q>> =
+            Box::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn create_async_trampoline<
-            Q: FnOnce(Result<FileEnumerator, glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -244,7 +268,9 @@ impl<O: IsA<File>> FileExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<Q> = Box::from_raw(user_data as *mut _);
+            let callback: Box<glib::thread_guard::ThreadGuard<Q>> =
+                Box::from_raw(user_data as *mut _);
+            let callback = callback.into_inner();
             callback(result);
         }
         let callback = create_async_trampoline::<Q>;
@@ -284,26 +310,39 @@ impl<O: IsA<File>> FileExtManual for O {
         ))
     }
 
-    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         destination: &impl IsA<File>,
         flags: crate::FileCopyFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(i64, i64) + Send>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
         callback: Q,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let progress_trampoline = if progress_callback.is_some() {
             Some(copy_async_progress_trampoline::<Q> as _)
         } else {
             None
         };
 
-        let user_data: Box<(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>)> =
-            Box::new((callback, RefCell::new(progress_callback)));
-        unsafe extern "C" fn copy_async_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
-        >(
+        let user_data: Box<(
+            glib::thread_guard::ThreadGuard<Q>,
+            RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+        )> = Box::new((
+            glib::thread_guard::ThreadGuard::new(callback),
+            RefCell::new(progress_callback.map(glib::thread_guard::ThreadGuard::new)),
+        ));
+        unsafe extern "C" fn copy_async_trampoline<Q: FnOnce(Result<(), glib::Error>) + 'static>(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
@@ -315,23 +354,30 @@ impl<O: IsA<File>> FileExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>)> =
-                Box::from_raw(user_data as *mut _);
-            callback.0(result);
+            let callback: Box<(
+                glib::thread_guard::ThreadGuard<Q>,
+                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+            )> = Box::from_raw(user_data as *mut _);
+            let callback = callback.0.into_inner();
+            callback(result);
         }
         unsafe extern "C" fn copy_async_progress_trampoline<
-            Q: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             current_num_bytes: i64,
             total_num_bytes: i64,
             user_data: glib::ffi::gpointer,
         ) {
-            let callback: &(Q, RefCell<Option<Box<dyn FnMut(i64, i64) + Send>>>) =
-                &*(user_data as *const _);
-            (callback.1.borrow_mut().as_mut().expect("no closure"))(
-                current_num_bytes,
-                total_num_bytes,
-            );
+            let callback: &(
+                Q,
+                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+            ) = &*(user_data as *const _);
+            (callback
+                .1
+                .borrow_mut()
+                .as_mut()
+                .expect("no closure")
+                .get_mut())(current_num_bytes, total_num_bytes);
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -386,19 +432,34 @@ impl<O: IsA<File>> FileExtManual for O {
     }
 
     fn load_partial_contents_async<
-        P: FnMut(&[u8]) -> bool + Send + 'static,
-        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnMut(&[u8]) -> bool + 'static,
+        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         read_more_callback: P,
         callback: Q,
     ) {
-        let user_data: Box<(Q, RefCell<P>)> =
-            Box::new((callback, RefCell::new(read_more_callback)));
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box<(
+            glib::thread_guard::ThreadGuard<Q>,
+            RefCell<glib::thread_guard::ThreadGuard<P>>,
+        )> = Box::new((
+            glib::thread_guard::ThreadGuard::new(callback),
+            RefCell::new(glib::thread_guard::ThreadGuard::new(read_more_callback)),
+        ));
         unsafe extern "C" fn load_partial_contents_async_trampoline<
-            P: FnMut(&[u8]) -> bool + Send + 'static,
-            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+            P: FnMut(&[u8]) -> bool + 'static,
+            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -424,12 +485,16 @@ impl<O: IsA<File>> FileExtManual for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box<(Q, RefCell<P>)> = Box::from_raw(user_data as *mut _);
-            callback.0(result);
+            let callback: Box<(
+                glib::thread_guard::ThreadGuard<Q>,
+                RefCell<glib::thread_guard::ThreadGuard<P>>,
+            )> = Box::from_raw(user_data as *mut _);
+            let callback = callback.0.into_inner();
+            callback(result);
         }
         unsafe extern "C" fn load_partial_contents_async_read_more_trampoline<
-            P: FnMut(&[u8]) -> bool + Send + 'static,
-            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+            P: FnMut(&[u8]) -> bool + 'static,
+            Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
         >(
             file_contents: *const libc::c_char,
             file_size: i64,
@@ -437,8 +502,11 @@ impl<O: IsA<File>> FileExtManual for O {
         ) -> glib::ffi::gboolean {
             use std::slice;
 
-            let callback: &(Q, RefCell<P>) = &*(user_data as *const _);
-            (&mut *callback.1.borrow_mut())(slice::from_raw_parts(
+            let callback: &(
+                glib::thread_guard::ThreadGuard<Q>,
+                RefCell<glib::thread_guard::ThreadGuard<P>>,
+            ) = &*(user_data as *const _);
+            (&mut *callback.1.borrow_mut().get_mut())(slice::from_raw_parts(
                 file_contents as *const u8,
                 file_size as usize,
             ))
@@ -517,16 +585,24 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    fn measure_disk_usage_async<
-        P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static,
-    >(
+    fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static>(
         &self,
         flags: crate::FileMeasureFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + Send + 'static>>,
+        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
         callback: P,
     ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
         let progress_callback_trampoline = if progress_callback.is_some() {
             Some(measure_disk_usage_async_progress_trampoline::<P> as _)
         } else {
@@ -534,11 +610,18 @@ impl<O: IsA<File>> FileExtManual for O {
         };
 
         let user_data: Box<(
-            P,
-            Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + Send + 'static>>>,
-        )> = Box::new((callback, progress_callback.map(RefCell::new)));
+            glib::thread_guard::ThreadGuard<P>,
+            RefCell<
+                Option<
+                    glib::thread_guard::ThreadGuard<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
+                >,
+            >,
+        )> = Box::new((
+            glib::thread_guard::ThreadGuard::new(callback),
+            RefCell::new(progress_callback.map(glib::thread_guard::ThreadGuard::new)),
+        ));
         unsafe extern "C" fn measure_disk_usage_async_trampoline<
-            P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -566,13 +649,20 @@ impl<O: IsA<File>> FileExtManual for O {
                 Err(from_glib_full(error))
             };
             let callback: Box<(
-                P,
-                Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + Send + 'static>>>,
+                glib::thread_guard::ThreadGuard<P>,
+                RefCell<
+                    Option<
+                        glib::thread_guard::ThreadGuard<
+                            Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+                        >,
+                    >,
+                >,
             )> = Box::from_raw(user_data as *mut _);
-            callback.0(result);
+            let callback = callback.0.into_inner();
+            callback(result);
         }
         unsafe extern "C" fn measure_disk_usage_async_progress_trampoline<
-            P: FnOnce(Result<(u64, u64, u64), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static,
         >(
             reporting: glib::ffi::gboolean,
             disk_usage: u64,
@@ -581,19 +671,21 @@ impl<O: IsA<File>> FileExtManual for O {
             user_data: glib::ffi::gpointer,
         ) {
             let callback: &(
-                P,
-                Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + Send + 'static>>>,
+                glib::thread_guard::ThreadGuard<P>,
+                RefCell<
+                    Option<
+                        glib::thread_guard::ThreadGuard<
+                            Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+                        >,
+                    >,
+                >,
             ) = &*(user_data as *const _);
-            if let Some(ref callback) = callback.1 {
-                (&mut *callback.borrow_mut())(
-                    from_glib(reporting),
-                    disk_usage,
-                    num_dirs,
-                    num_files,
-                );
-            } else {
-                panic!("cannot get closure...")
-            }
+            (callback
+                .1
+                .borrow_mut()
+                .as_mut()
+                .expect("can't get callback")
+                .get_mut())(from_glib(reporting), disk_usage, num_dirs, num_files);
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;

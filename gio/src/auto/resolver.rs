@@ -59,7 +59,7 @@ pub trait ResolverExt: 'static {
     ) -> Result<glib::GString, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_by_address_async")]
-    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static>(
+    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + 'static>(
         &self,
         address: &impl IsA<InetAddress>,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -79,7 +79,7 @@ pub trait ResolverExt: 'static {
     ) -> Result<Vec<InetAddress>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_by_name_async")]
-    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static>(
+    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
         &self,
         hostname: &str,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -104,9 +104,7 @@ pub trait ResolverExt: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
-    fn lookup_by_name_with_flags_async<
-        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_by_name_with_flags_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
         &self,
         hostname: &str,
         flags: ResolverNameLookupFlags,
@@ -131,7 +129,7 @@ pub trait ResolverExt: 'static {
     ) -> Result<Vec<glib::Variant>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_records_async")]
-    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static>(
+    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static>(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
@@ -157,7 +155,7 @@ pub trait ResolverExt: 'static {
     ) -> Result<Vec<SrvTarget>, glib::Error>;
 
     #[doc(alias = "g_resolver_lookup_service_async")]
-    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static>(
+    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static>(
         &self,
         service: &str,
         protocol: &str,
@@ -202,15 +200,26 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static>(
+    fn lookup_by_address_async<P: FnOnce(Result<glib::GString, glib::Error>) + 'static>(
         &self,
         address: &impl IsA<InetAddress>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_address_async_trampoline<
-            P: FnOnce(Result<glib::GString, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<glib::GString, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -224,7 +233,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_by_address_async_trampoline::<P>;
@@ -276,15 +287,26 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static>(
+    fn lookup_by_name_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
         &self,
         hostname: &str,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_name_async_trampoline<
-            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -298,7 +320,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_by_name_async_trampoline::<P>;
@@ -357,7 +381,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_async<
-        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
     >(
         &self,
         hostname: &str,
@@ -365,9 +389,20 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_by_name_with_flags_async_trampoline<
-            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -384,7 +419,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_by_name_with_flags_async_trampoline::<P>;
@@ -447,16 +484,27 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static>(
+    fn lookup_records_async<P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static>(
         &self,
         rrname: &str,
         record_type: ResolverRecordType,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_records_async_trampoline<
-            P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<glib::Variant>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -470,7 +518,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_records_async_trampoline::<P>;
@@ -529,7 +579,7 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static>(
+    fn lookup_service_async<P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static>(
         &self,
         service: &str,
         protocol: &str,
@@ -537,9 +587,20 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_service_async_trampoline<
-            P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<SrvTarget>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -553,7 +614,9 @@ impl<O: IsA<Resolver>> ResolverExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_service_async_trampoline::<P>;

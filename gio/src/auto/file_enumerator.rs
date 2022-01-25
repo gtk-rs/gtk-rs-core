@@ -31,7 +31,7 @@ pub trait FileEnumeratorExt: 'static {
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_enumerator_close_async")]
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -64,7 +64,7 @@ pub trait FileEnumeratorExt: 'static {
     ) -> Result<Option<FileInfo>, glib::Error>;
 
     #[doc(alias = "g_file_enumerator_next_files_async")]
-    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static>(
+    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
@@ -100,15 +100,26 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn close_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -121,7 +132,9 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = close_async_trampoline::<P>;
@@ -202,16 +215,27 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static>(
+    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn next_files_async_trampoline<
-            P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -225,7 +249,9 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = next_files_async_trampoline::<P>;
