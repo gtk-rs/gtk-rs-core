@@ -9,6 +9,7 @@ mod error_domain_derive;
 mod flags_attribute;
 mod object_interface_attribute;
 mod object_subclass_attribute;
+mod param_spec_builder;
 mod shared_boxed_derive;
 mod variant_derive;
 
@@ -733,4 +734,27 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     variant_derive::impl_variant(input)
+}
+
+/// # Example
+/// Geneterates a builder with default `nick` and `blurb`
+/// ```ignore
+/// #[param_spec_builder(nick = self.name, blurb = self.name)]
+/// impl ParamSpecInt {
+///      fn new(name: &str, nick: &str, blurb: &str, minimum: i8) -> ParamSpec {...};
+/// }
+/// ```
+///
+/// Usable as
+/// ```ignore
+/// ParamSpecInt::builder()
+///   .name("name")
+///   .nick("nick").
+///   .blurb("blurb")
+///   .minimum(0i8)
+///   .build()
+/// ```
+#[proc_macro_attribute]
+pub fn param_spec_builder(args: TokenStream, input: TokenStream) -> TokenStream {
+    param_spec_builder::impl_builder(args, input)
 }

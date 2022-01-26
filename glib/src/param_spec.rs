@@ -12,6 +12,7 @@ use crate::{
     Object,
 };
 
+use glib_macros::param_spec_builder;
 use std::char::CharTryFromError;
 use std::convert::TryFrom;
 use std::ffi::CStr;
@@ -393,6 +394,15 @@ define_param_spec_numeric!(
     |x| x
 );
 
+use crate as glib;
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = i8::MIN,
+  maximum = i8::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecChar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_char")]
@@ -433,6 +443,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = u8::MIN,
+  maximum = u8::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecUChar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_uchar")]
@@ -473,6 +491,12 @@ define_param_spec!(
 
 define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  default_value = false,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecBoolean {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boolean")]
@@ -509,6 +533,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = i32::MIN,
+  maximum = i32::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecInt {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_int")]
@@ -549,6 +581,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = u32::MIN,
+  maximum = u32::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecUInt {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_uint")]
@@ -589,6 +629,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = libc::c_long::MIN,
+  maximum = libc::c_long::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecLong {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_long")]
@@ -629,6 +677,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = libc::c_ulong::MIN,
+  maximum = libc::c_ulong::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecULong {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_ulong")]
@@ -669,6 +725,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = i64::MIN,
+  maximum = i64::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecInt64 {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_int64")]
@@ -709,6 +773,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = u64::MIN,
+  maximum = u64::MAX,
+  default_value = 0,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecUInt64 {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_uint64")]
@@ -749,6 +821,11 @@ define_param_spec!(
 
 define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecUnichar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_unichar")]
@@ -785,6 +862,11 @@ define_param_spec!(
 
 define_param_spec_default!(ParamSpecEnum, i32, |x| x);
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecEnum {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_enum")]
@@ -835,6 +917,11 @@ define_param_spec!(
 
 define_param_spec_default!(ParamSpecFlags, u32, |x| x);
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecFlags {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_flags")]
@@ -885,6 +972,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = f32::MIN,
+  maximum = f32::MAX,
+  default_value = 0f32,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecFloat {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_float")]
@@ -925,6 +1020,14 @@ define_param_spec_numeric!(
     |x| x
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  minimum = f64::MIN,
+  maximum = f64::MAX,
+  default_value = 0f64,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecDouble {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_double")]
@@ -973,6 +1076,12 @@ define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char|
     }
 });
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  default_value = "",
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecString {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_string")]
@@ -1008,6 +1117,11 @@ define_param_spec!(
     15
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecParam {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_param")]
@@ -1042,6 +1156,11 @@ define_param_spec!(
     16
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecBoxed {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boxed")]
@@ -1076,6 +1195,11 @@ define_param_spec!(
     17
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
@@ -1103,6 +1227,11 @@ define_param_spec!(
     18
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecValueArray {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_value_array")]
@@ -1155,6 +1284,11 @@ define_param_spec!(
     19
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecObject {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_object")]
@@ -1189,6 +1323,9 @@ define_param_spec!(
     20
 );
 
+#[param_spec_builder(
+  nick = self.name,
+)]
 impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
@@ -1288,6 +1425,11 @@ define_param_spec!(
     21
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecGType {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_gtype")]
@@ -1328,6 +1470,12 @@ define_param_spec_default!(
     |x: *mut ffi::GVariant| from_glib_none(x)
 );
 
+#[param_spec_builder(
+  nick = self.name,
+  blurb = self.name,
+  default_value = None,
+  flags = glib::ParamFlags::READWRITE,
+)]
 impl ParamSpecVariant {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_variant")]
