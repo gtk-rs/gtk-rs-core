@@ -30,7 +30,7 @@ fn adjusted_lifetime<'a>(symbol: &str, ty: &'a syn::Type) -> Cow<'a, syn::Type> 
             r.lifetime = Some(syn::Lifetime::new(symbol, Span::call_site()));
             Cow::Owned(syn::Type::Reference(r))
         }
-        syn::Type::Path(p) => (match &p.path.segments.last().unwrap().arguments {
+        syn::Type::Path(p) => match &p.path.segments.last().unwrap().arguments {
             syn::PathArguments::AngleBracketed(bracketed) => {
                 let generic_arg = bracketed.args.first().unwrap();
                 match generic_arg {
@@ -39,7 +39,7 @@ fn adjusted_lifetime<'a>(symbol: &str, ty: &'a syn::Type) -> Cow<'a, syn::Type> 
                 }
             }
             _ => Cow::Borrowed(ty),
-        }),
+        },
         _ => Cow::Borrowed(ty),
     }
 }
@@ -65,44 +65,34 @@ pub fn impl_builder(args: TokenStream, input: TokenStream) -> TokenStream {
     let args_parser = Punctuated::<Attr, Token![,]>::parse_terminated;
     let default_vals = args_parser.parse(args).unwrap();
 
-    let params: Vec<_> = new_fn
-        .sig
-        .inputs
-        .iter()
-        .filter_map(|input| match input {
-            syn::FnArg::Typed(arg) => {
-                let ident = match &*arg.pat {
-                    syn::Pat::Ident(ident) => Some(ident),
-                    _ => None,
-                };
-                ident.map(|id| (id, &arg.ty))
-            }
+    let params = new_fn.sig.inputs.iter().filter_map(|input| match input {
+        syn::FnArg::Typed(arg) => match &*arg.pat {
+            syn::Pat::Ident(ident) => Some((ident, &arg.ty)),
             _ => None,
-        })
+        },
+        _ => None,
+    });
+    let params_with_defaults: Vec<_> = params
         .map(|(id, ty)| {
-            let default_val = default_vals.iter().find_map(|attr| {
-                if attr.name == id.ident {
-                    Some(&attr.expr)
-                } else {
-                    None
-                }
-            });
+            let default_val = default_vals
+                .iter()
+                .find_map(|attr| (attr.name == id.ident).then(|| &attr.expr));
             (id, ty, default_val)
         })
         .collect();
 
-    let builder_struct_fields = params.iter().map(|(ident, ty, _)| {
-        let ty = adjusted_lifetime("'a", &ty);
+    let builder_struct_fields = params_with_defaults.iter().map(|(ident, ty, _)| {
+        let ty = adjusted_lifetime("'a", ty);
         quote!(#ident: Option<#ty>)
     });
-    let builder_setters = params.iter().map(|(ident, ty, _)| {
-        let ty = adjusted_lifetime("'a", &ty);
+    let builder_setters = params_with_defaults.iter().map(|(ident, ty, _)| {
+        let ty = adjusted_lifetime("'a", ty);
         quote!(pub fn #ident(mut self, value: #ty) -> Self {
             self.#ident = Some(value);
             self
         })
     });
-    let spec_new_call_params = params.iter().map(|(ident, _, default_val)| {
+    let spec_new_call_params = params_with_defaults.iter().map(|(ident, _, default_val)| {
         let missing_err = format!("Missing parameter {}", ident.ident);
         let default_val_quote = default_val.map(|v| quote!(.or_else(|| #v.into())));
         quote!(
