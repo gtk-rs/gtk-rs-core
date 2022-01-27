@@ -1323,9 +1323,6 @@ define_param_spec!(
     20
 );
 
-#[param_spec_builder(
-  nick = self.name,
-)]
 impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
