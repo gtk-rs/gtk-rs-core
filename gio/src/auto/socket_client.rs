@@ -63,7 +63,7 @@ pub trait SocketClientExt: 'static {
     ) -> Result<SocketConnection, glib::Error>;
 
     #[doc(alias = "g_socket_client_connect_async")]
-    fn connect_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -84,7 +84,7 @@ pub trait SocketClientExt: 'static {
     ) -> Result<SocketConnection, glib::Error>;
 
     #[doc(alias = "g_socket_client_connect_to_host_async")]
-    fn connect_to_host_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_to_host_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         host_and_port: &str,
         default_port: u16,
@@ -107,7 +107,7 @@ pub trait SocketClientExt: 'static {
     ) -> Result<SocketConnection, glib::Error>;
 
     #[doc(alias = "g_socket_client_connect_to_service_async")]
-    fn connect_to_service_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_to_service_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         domain: &str,
         service: &str,
@@ -130,7 +130,7 @@ pub trait SocketClientExt: 'static {
     ) -> Result<SocketConnection, glib::Error>;
 
     #[doc(alias = "g_socket_client_connect_to_uri_async")]
-    fn connect_to_uri_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_to_uri_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         uri: &str,
         default_port: u16,
@@ -176,6 +176,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "get_tls")]
     fn is_tls(&self) -> bool;
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_socket_client_get_tls_validation_flags")]
     #[doc(alias = "get_tls_validation_flags")]
     fn tls_validation_flags(&self) -> TlsCertificateFlags;
@@ -204,6 +205,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "g_socket_client_set_tls")]
     fn set_tls(&self, tls: bool);
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_socket_client_set_tls_validation_flags")]
     fn set_tls_validation_flags(&self, flags: TlsCertificateFlags);
 
@@ -242,6 +244,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "tls")]
     fn connect_tls_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "tls-validation-flags")]
     fn connect_tls_validation_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -280,15 +283,26 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -302,7 +316,9 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = connect_async_trampoline::<P>;
@@ -356,16 +372,27 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_host_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_to_host_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         host_and_port: &str,
         default_port: u16,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_host_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -382,7 +409,9 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = connect_to_host_async_trampoline::<P>;
@@ -443,18 +472,27 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_service_async<
-        P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static,
-    >(
+    fn connect_to_service_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         domain: &str,
         service: &str,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_service_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -471,7 +509,9 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = connect_to_service_async_trampoline::<P>;
@@ -528,16 +568,27 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
         }
     }
 
-    fn connect_to_uri_async<P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static>(
+    fn connect_to_uri_async<P: FnOnce(Result<SocketConnection, glib::Error>) + 'static>(
         &self,
         uri: &str,
         default_port: u16,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn connect_to_uri_async_trampoline<
-            P: FnOnce(Result<SocketConnection, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<SocketConnection, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -554,7 +605,9 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = connect_to_uri_async_trampoline::<P>;

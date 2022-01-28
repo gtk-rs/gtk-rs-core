@@ -40,7 +40,7 @@ pub trait FileOutputStreamExt: 'static {
     ) -> Result<FileInfo, glib::Error>;
 
     #[doc(alias = "g_file_output_stream_query_info_async")]
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
@@ -85,16 +85,27 @@ impl<O: IsA<FileOutputStream>> FileOutputStreamExt for O {
         }
     }
 
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn query_info_async_trampoline<
-            P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -111,7 +122,9 @@ impl<O: IsA<FileOutputStream>> FileOutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = query_info_async_trampoline::<P>;

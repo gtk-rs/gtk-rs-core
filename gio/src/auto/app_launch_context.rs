@@ -65,7 +65,7 @@ pub trait AppLaunchContextExt: 'static {
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     #[doc(alias = "launch-started")]
-    fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
+    fn connect_launch_started<F: Fn(&Self, &AppInfo, Option<&glib::Variant>) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId;
@@ -164,24 +164,26 @@ impl<O: IsA<AppLaunchContext>> AppLaunchContextExt for O {
 
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
-    fn connect_launch_started<F: Fn(&Self, &AppInfo, &glib::Variant) + 'static>(
+    fn connect_launch_started<F: Fn(&Self, &AppInfo, Option<&glib::Variant>) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn launch_started_trampoline<
             P: IsA<AppLaunchContext>,
-            F: Fn(&P, &AppInfo, &glib::Variant) + 'static,
+            F: Fn(&P, &AppInfo, Option<&glib::Variant>) + 'static,
         >(
             this: *mut ffi::GAppLaunchContext,
-            object: *mut ffi::GAppInfo,
-            p0: *mut glib::ffi::GVariant,
+            info: *mut ffi::GAppInfo,
+            platform_data: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
             let f: &F = &*(f as *const F);
             f(
                 AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object),
-                &from_glib_borrow(p0),
+                &from_glib_borrow(info),
+                Option::<glib::Variant>::from_glib_borrow(platform_data)
+                    .as_ref()
+                    .as_ref(),
             )
         }
         unsafe {

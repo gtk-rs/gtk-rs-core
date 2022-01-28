@@ -35,7 +35,7 @@ pub trait OutputStreamExt: 'static {
     fn close(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_output_stream_close_async")]
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -51,7 +51,7 @@ pub trait OutputStreamExt: 'static {
     fn flush(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_output_stream_flush_async")]
-    fn flush_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn flush_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -87,7 +87,7 @@ pub trait OutputStreamExt: 'static {
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_output_stream_splice_async")]
-    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
@@ -121,7 +121,7 @@ pub trait OutputStreamExt: 'static {
     ) -> Result<isize, glib::Error>;
 
     #[doc(alias = "g_output_stream_write_bytes_async")]
-    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
@@ -148,7 +148,7 @@ pub trait OutputStreamExt: 'static {
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev_all_async")]
-    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
+    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
 
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -158,7 +158,7 @@ pub trait OutputStreamExt: 'static {
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     //#[doc(alias = "g_output_stream_writev_async")]
-    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
+    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
 
     //
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -190,15 +190,26 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn close_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn close_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn close_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -211,7 +222,9 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = close_async_trampoline::<P>;
@@ -257,15 +270,26 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn flush_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn flush_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn flush_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -278,7 +302,9 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = flush_async_trampoline::<P>;
@@ -372,7 +398,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn splice_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         source: &impl IsA<InputStream>,
         flags: OutputStreamSpliceFlags,
@@ -380,9 +406,20 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn splice_async_trampoline<
-            P: FnOnce(Result<isize, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<isize, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -395,7 +432,9 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = splice_async_trampoline::<P>;
@@ -477,16 +516,27 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + Send + 'static>(
+    fn write_bytes_async<P: FnOnce(Result<isize, glib::Error>) + 'static>(
         &self,
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn write_bytes_async_trampoline<
-            P: FnOnce(Result<isize, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<isize, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -500,7 +550,9 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = write_bytes_async_trampoline::<P>;
@@ -546,7 +598,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
+    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
     //    unsafe { TODO: call ffi:g_output_stream_writev_all_async() }
     //}
 
@@ -570,7 +622,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
 
     //#[cfg(any(feature = "v2_60", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + Send + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
+    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
     //    unsafe { TODO: call ffi:g_output_stream_writev_async() }
     //}
 

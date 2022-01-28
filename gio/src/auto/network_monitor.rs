@@ -46,7 +46,7 @@ pub trait NetworkMonitorExt: 'static {
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_network_monitor_can_reach_async")]
-    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -106,15 +106,26 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
         }
     }
 
-    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn can_reach_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         connectable: &impl IsA<SocketConnectable>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn can_reach_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -128,7 +139,9 @@ impl<O: IsA<NetworkMonitor>> NetworkMonitorExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = can_reach_async_trampoline::<P>;
