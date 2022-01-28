@@ -124,7 +124,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileOutputStream, glib::Error>;
 
     #[doc(alias = "g_file_append_to_async")]
-    fn append_to_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn append_to_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -172,7 +172,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileOutputStream, glib::Error>;
 
     #[doc(alias = "g_file_create_async")]
-    fn create_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn create_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -194,7 +194,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileIOStream, glib::Error>;
 
     #[doc(alias = "g_file_create_readwrite_async")]
-    fn create_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn create_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
@@ -212,7 +212,7 @@ pub trait FileExt: 'static {
     fn delete(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_delete_async")]
-    fn delete_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn delete_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -229,7 +229,7 @@ pub trait FileExt: 'static {
     fn dup(&self) -> File;
 
     #[doc(alias = "g_file_eject_mountable_with_operation")]
-    fn eject_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn eject_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
@@ -322,7 +322,7 @@ pub trait FileExt: 'static {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_file_load_bytes_async")]
     fn load_bytes_async<
-        P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -349,7 +349,7 @@ pub trait FileExt: 'static {
 
     #[doc(alias = "g_file_load_contents_async")]
     fn load_contents_async<
-        P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -372,7 +372,7 @@ pub trait FileExt: 'static {
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_make_directory_async")]
-    fn make_directory_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn make_directory_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -419,7 +419,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileMonitor, glib::Error>;
 
     #[doc(alias = "g_file_mount_enclosing_volume")]
-    fn mount_enclosing_volume<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn mount_enclosing_volume<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountMountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
@@ -434,7 +434,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_mount_mountable")]
-    fn mount_mountable<P: FnOnce(Result<File, glib::Error>) + Send + 'static>(
+    fn mount_mountable<P: FnOnce(Result<File, glib::Error>) + 'static>(
         &self,
         flags: MountMountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
@@ -465,7 +465,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileIOStream, glib::Error>;
 
     #[doc(alias = "g_file_open_readwrite_async")]
-    fn open_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn open_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -483,7 +483,7 @@ pub trait FileExt: 'static {
     fn peek_path(&self) -> Option<std::path::PathBuf>;
 
     #[doc(alias = "g_file_poll_mountable")]
-    fn poll_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn poll_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
@@ -502,7 +502,7 @@ pub trait FileExt: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_file_query_default_handler_async")]
-    fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + Send + 'static>(
+    fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -534,7 +534,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileInfo, glib::Error>;
 
     #[doc(alias = "g_file_query_filesystem_info_async")]
-    fn query_filesystem_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_filesystem_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
@@ -557,7 +557,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileInfo, glib::Error>;
 
     #[doc(alias = "g_file_query_info_async")]
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         flags: FileQueryInfoFlags,
@@ -592,7 +592,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileInputStream, glib::Error>;
 
     #[doc(alias = "g_file_read_async")]
-    fn read_async<P: FnOnce(Result<FileInputStream, glib::Error>) + Send + 'static>(
+    fn read_async<P: FnOnce(Result<FileInputStream, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -614,7 +614,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileOutputStream, glib::Error>;
 
     #[doc(alias = "g_file_replace_async")]
-    fn replace_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn replace_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -655,7 +655,7 @@ pub trait FileExt: 'static {
     ) -> Result<FileIOStream, glib::Error>;
 
     #[doc(alias = "g_file_replace_readwrite_async")]
-    fn replace_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn replace_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -675,7 +675,7 @@ pub trait FileExt: 'static {
 
     #[doc(alias = "g_file_resolve_relative_path")]
     #[must_use]
-    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File;
+    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> Option<File>;
 
     //#[doc(alias = "g_file_set_attribute")]
     //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Fundamental: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
@@ -735,7 +735,7 @@ pub trait FileExt: 'static {
     ) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_set_attributes_async")]
-    fn set_attributes_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn set_attributes_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         info: &FileInfo,
         flags: FileQueryInfoFlags,
@@ -767,7 +767,7 @@ pub trait FileExt: 'static {
     ) -> Result<File, glib::Error>;
 
     #[doc(alias = "g_file_set_display_name_async")]
-    fn set_display_name_async<P: FnOnce(Result<File, glib::Error>) + Send + 'static>(
+    fn set_display_name_async<P: FnOnce(Result<File, glib::Error>) + 'static>(
         &self,
         display_name: &str,
         io_priority: glib::Priority,
@@ -782,7 +782,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<File, glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_start_mountable")]
-    fn start_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn start_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: DriveStartFlags,
         start_operation: Option<&impl IsA<MountOperation>>,
@@ -797,7 +797,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_stop_mountable")]
-    fn stop_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn stop_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
@@ -818,7 +818,7 @@ pub trait FileExt: 'static {
     fn trash(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_trash_async")]
-    fn trash_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn trash_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -831,7 +831,7 @@ pub trait FileExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_file_unmount_mountable_with_operation")]
-    fn unmount_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn unmount_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
@@ -868,16 +868,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn append_to_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn append_to_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn append_to_async_trampoline<
-            P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -890,7 +901,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = append_to_async_trampoline::<P>;
@@ -1037,16 +1050,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn create_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn create_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn create_async_trampoline<
-            P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1059,7 +1083,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = create_async_trampoline::<P>;
@@ -1112,16 +1138,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn create_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn create_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         flags: FileCreateFlags,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn create_readwrite_async_trampoline<
-            P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileIOStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1135,7 +1172,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = create_readwrite_async_trampoline::<P>;
@@ -1184,15 +1223,26 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn delete_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn delete_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn delete_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1205,7 +1255,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = delete_async_trampoline::<P>;
@@ -1238,16 +1290,27 @@ impl<O: IsA<File>> FileExt for O {
         unsafe { from_glib_full(ffi::g_file_dup(self.as_ref().to_glib_none().0)) }
     }
 
-    fn eject_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn eject_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn eject_mountable_with_operation_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1264,7 +1327,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = eject_mountable_with_operation_trampoline::<P>;
@@ -1467,15 +1532,26 @@ impl<O: IsA<File>> FileExt for O {
     #[cfg(any(feature = "v2_56", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn load_bytes_async<
-        P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn load_bytes_async_trampoline<
-            P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1494,7 +1570,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = load_bytes_async_trampoline::<P>;
@@ -1559,15 +1637,26 @@ impl<O: IsA<File>> FileExt for O {
     }
 
     fn load_contents_async<
-        P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+        P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
     >(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn load_contents_async_trampoline<
-            P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1593,7 +1682,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = load_contents_async_trampoline::<P>;
@@ -1645,15 +1736,26 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn make_directory_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn make_directory_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn make_directory_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1666,7 +1768,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = make_directory_async_trampoline::<P>;
@@ -1800,16 +1904,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn mount_enclosing_volume<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn mount_enclosing_volume<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountMountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn mount_enclosing_volume_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1826,7 +1941,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = mount_enclosing_volume_trampoline::<P>;
@@ -1863,16 +1980,27 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn mount_mountable<P: FnOnce(Result<File, glib::Error>) + Send + 'static>(
+    fn mount_mountable<P: FnOnce(Result<File, glib::Error>) + 'static>(
         &self,
         flags: MountMountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn mount_mountable_trampoline<
-            P: FnOnce(Result<File, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<File, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -1885,7 +2013,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = mount_mountable_trampoline::<P>;
@@ -1988,15 +2118,26 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn open_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn open_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn open_readwrite_async_trampoline<
-            P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileIOStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2009,7 +2150,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = open_readwrite_async_trampoline::<P>;
@@ -2045,14 +2188,25 @@ impl<O: IsA<File>> FileExt for O {
         unsafe { from_glib_none(ffi::g_file_peek_path(self.as_ref().to_glib_none().0)) }
     }
 
-    fn poll_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn poll_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn poll_mountable_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2065,7 +2219,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = poll_mountable_trampoline::<P>;
@@ -2113,15 +2269,26 @@ impl<O: IsA<File>> FileExt for O {
 
     #[cfg(any(feature = "v2_60", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + Send + 'static>(
+    fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn query_default_handler_async_trampoline<
-            P: FnOnce(Result<AppInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<AppInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2135,7 +2302,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = query_default_handler_async_trampoline::<P>;
@@ -2210,16 +2379,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn query_filesystem_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_filesystem_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn query_filesystem_info_async_trampoline<
-            P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2233,7 +2413,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = query_filesystem_info_async_trampoline::<P>;
@@ -2293,7 +2475,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn query_info_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         attributes: &str,
         flags: FileQueryInfoFlags,
@@ -2301,9 +2483,20 @@ impl<O: IsA<File>> FileExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn query_info_async_trampoline<
-            P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2316,7 +2509,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = query_info_async_trampoline::<P>;
@@ -2413,15 +2608,26 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn read_async<P: FnOnce(Result<FileInputStream, glib::Error>) + Send + 'static>(
+    fn read_async<P: FnOnce(Result<FileInputStream, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_async_trampoline<
-            P: FnOnce(Result<FileInputStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInputStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2434,7 +2640,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = read_async_trampoline::<P>;
@@ -2489,7 +2697,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn replace_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static>(
+    fn replace_async<P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static>(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -2498,9 +2706,20 @@ impl<O: IsA<File>> FileExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn replace_async_trampoline<
-            P: FnOnce(Result<FileOutputStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileOutputStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2513,7 +2732,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = replace_async_trampoline::<P>;
@@ -2618,7 +2839,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn replace_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static>(
+    fn replace_readwrite_async<P: FnOnce(Result<FileIOStream, glib::Error>) + 'static>(
         &self,
         etag: Option<&str>,
         make_backup: bool,
@@ -2627,9 +2848,20 @@ impl<O: IsA<File>> FileExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn replace_readwrite_async_trampoline<
-            P: FnOnce(Result<FileIOStream, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileIOStream, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2643,7 +2875,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = replace_readwrite_async_trampoline::<P>;
@@ -2687,7 +2921,7 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File {
+    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> Option<File> {
         unsafe {
             from_glib_full(ffi::g_file_resolve_relative_path(
                 self.as_ref().to_glib_none().0,
@@ -2856,7 +3090,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn set_attributes_async<P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static>(
+    fn set_attributes_async<P: FnOnce(Result<FileInfo, glib::Error>) + 'static>(
         &self,
         info: &FileInfo,
         flags: FileQueryInfoFlags,
@@ -2864,9 +3098,20 @@ impl<O: IsA<File>> FileExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn set_attributes_async_trampoline<
-            P: FnOnce(Result<FileInfo, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<FileInfo, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2885,7 +3130,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = set_attributes_async_trampoline::<P>;
@@ -2970,16 +3217,27 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn set_display_name_async<P: FnOnce(Result<File, glib::Error>) + Send + 'static>(
+    fn set_display_name_async<P: FnOnce(Result<File, glib::Error>) + 'static>(
         &self,
         display_name: &str,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn set_display_name_async_trampoline<
-            P: FnOnce(Result<File, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<File, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -2993,7 +3251,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = set_display_name_async_trampoline::<P>;
@@ -3030,16 +3290,27 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn start_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn start_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: DriveStartFlags,
         start_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn start_mountable_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -3052,7 +3323,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = start_mountable_trampoline::<P>;
@@ -3089,16 +3362,27 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn stop_mountable<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn stop_mountable<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn stop_mountable_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -3111,7 +3395,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = stop_mountable_trampoline::<P>;
@@ -3173,15 +3459,26 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    fn trash_async<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn trash_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn trash_async_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -3194,7 +3491,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = trash_async_trampoline::<P>;
@@ -3223,16 +3522,27 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn unmount_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + Send + 'static>(
+    fn unmount_mountable_with_operation<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         flags: MountUnmountFlags,
         mount_operation: Option<&impl IsA<MountOperation>>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn unmount_mountable_with_operation_trampoline<
-            P: FnOnce(Result<(), glib::Error>) + Send + 'static,
+            P: FnOnce(Result<(), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -3249,7 +3559,9 @@ impl<O: IsA<File>> FileExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = unmount_mountable_with_operation_trampoline::<P>;

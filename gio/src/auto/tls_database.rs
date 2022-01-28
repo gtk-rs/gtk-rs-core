@@ -48,7 +48,7 @@ pub trait TlsDatabaseExt: 'static {
 
     #[doc(alias = "g_tls_database_lookup_certificate_for_handle_async")]
     fn lookup_certificate_for_handle_async<
-        P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static,
     >(
         &self,
         handle: &str,
@@ -75,9 +75,7 @@ pub trait TlsDatabaseExt: 'static {
     ) -> Result<TlsCertificate, glib::Error>;
 
     #[doc(alias = "g_tls_database_lookup_certificate_issuer_async")]
-    fn lookup_certificate_issuer_async<
-        P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_certificate_issuer_async<P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static>(
         &self,
         certificate: &impl IsA<TlsCertificate>,
         interaction: Option<&impl IsA<TlsInteraction>>,
@@ -104,7 +102,7 @@ pub trait TlsDatabaseExt: 'static {
 
     #[doc(alias = "g_tls_database_lookup_certificates_issued_by_async")]
     fn lookup_certificates_issued_by_async<
-        P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + 'static,
     >(
         &self,
         issuer_raw_dn: &glib::ByteArray,
@@ -135,7 +133,7 @@ pub trait TlsDatabaseExt: 'static {
     ) -> Result<TlsCertificateFlags, glib::Error>;
 
     #[doc(alias = "g_tls_database_verify_chain_async")]
-    fn verify_chain_async<P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + Send + 'static>(
+    fn verify_chain_async<P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + 'static>(
         &self,
         chain: &impl IsA<TlsCertificate>,
         purpose: &str,
@@ -197,7 +195,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
     }
 
     fn lookup_certificate_for_handle_async<
-        P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static,
     >(
         &self,
         handle: &str,
@@ -206,9 +204,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_certificate_for_handle_async_trampoline<
-            P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -225,7 +234,9 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_certificate_for_handle_async_trampoline::<P>;
@@ -292,9 +303,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn lookup_certificate_issuer_async<
-        P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
-    >(
+    fn lookup_certificate_issuer_async<P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static>(
         &self,
         certificate: &impl IsA<TlsCertificate>,
         interaction: Option<&impl IsA<TlsInteraction>>,
@@ -302,9 +311,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_certificate_issuer_async_trampoline<
-            P: FnOnce(Result<TlsCertificate, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<TlsCertificate, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -321,7 +341,9 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_certificate_issuer_async_trampoline::<P>;
@@ -389,7 +411,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
     }
 
     fn lookup_certificates_issued_by_async<
-        P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + Send + 'static,
+        P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + 'static,
     >(
         &self,
         issuer_raw_dn: &glib::ByteArray,
@@ -398,9 +420,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn lookup_certificates_issued_by_async_trampoline<
-            P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<Vec<TlsCertificate>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -417,7 +450,9 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = lookup_certificates_issued_by_async_trampoline::<P>;
@@ -489,7 +524,7 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         }
     }
 
-    fn verify_chain_async<P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + Send + 'static>(
+    fn verify_chain_async<P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + 'static>(
         &self,
         chain: &impl IsA<TlsCertificate>,
         purpose: &str,
@@ -499,9 +534,20 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
     ) {
-        let user_data: Box_<P> = Box_::new(callback);
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn verify_chain_async_trampoline<
-            P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + Send + 'static,
+            P: FnOnce(Result<TlsCertificateFlags, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -515,7 +561,9 @@ impl<O: IsA<TlsDatabase>> TlsDatabaseExt for O {
             } else {
                 Err(from_glib_full(error))
             };
-            let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
             callback(result);
         }
         let callback = verify_chain_async_trampoline::<P>;

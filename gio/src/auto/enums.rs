@@ -3402,6 +3402,10 @@ pub enum TlsError {
     Eof,
     #[doc(alias = "G_TLS_ERROR_INAPPROPRIATE_FALLBACK")]
     InappropriateFallback,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD")]
+    BadCertificatePassword,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -3420,6 +3424,8 @@ impl fmt::Display for TlsError {
                 Self::CertificateRequired => "CertificateRequired",
                 Self::Eof => "Eof",
                 Self::InappropriateFallback => "InappropriateFallback",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::BadCertificatePassword => "BadCertificatePassword",
                 _ => "Unknown",
             }
         )
@@ -3440,6 +3446,8 @@ impl IntoGlib for TlsError {
             Self::CertificateRequired => ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED,
             Self::Eof => ffi::G_TLS_ERROR_EOF,
             Self::InappropriateFallback => ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::BadCertificatePassword => ffi::G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD,
             Self::__Unknown(value) => value,
         }
     }
@@ -3457,6 +3465,8 @@ impl FromGlib<ffi::GTlsError> for TlsError {
             ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED => Self::CertificateRequired,
             ffi::G_TLS_ERROR_EOF => Self::Eof,
             ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK => Self::InappropriateFallback,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD => Self::BadCertificatePassword,
             value => Self::__Unknown(value),
         }
     }
@@ -3481,6 +3491,8 @@ impl ErrorDomain for TlsError {
             ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED => Some(Self::CertificateRequired),
             ffi::G_TLS_ERROR_EOF => Some(Self::Eof),
             ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK => Some(Self::InappropriateFallback),
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD => Some(Self::BadCertificatePassword),
             value => Some(Self::__Unknown(value)),
         }
     }
