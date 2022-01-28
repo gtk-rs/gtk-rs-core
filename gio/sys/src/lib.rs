@@ -348,6 +348,7 @@ pub const G_TLS_ERROR_HANDSHAKE: GTlsError = 4;
 pub const G_TLS_ERROR_CERTIFICATE_REQUIRED: GTlsError = 5;
 pub const G_TLS_ERROR_EOF: GTlsError = 6;
 pub const G_TLS_ERROR_INAPPROPRIATE_FALLBACK: GTlsError = 7;
+pub const G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD: GTlsError = 8;
 
 pub type GTlsInteractionResult = c_int;
 pub const G_TLS_INTERACTION_UNHANDLED: GTlsInteractionResult = 0;
@@ -14116,6 +14117,13 @@ extern "C" {
         file: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_tls_certificate_new_from_file_with_password(
+        file: *const c_char,
+        password: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut GTlsCertificate;
     pub fn g_tls_certificate_new_from_files(
         cert_file: *const c_char,
         key_file: *const c_char,
@@ -14131,6 +14139,14 @@ extern "C" {
     pub fn g_tls_certificate_new_from_pkcs11_uris(
         pkcs11_uri: *const c_char,
         private_key_pkcs11_uri: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut GTlsCertificate;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_tls_certificate_new_from_pkcs12(
+        data: *const u8,
+        length: size_t,
+        password: *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GTlsCertificate;
     pub fn g_tls_certificate_list_new_from_file(

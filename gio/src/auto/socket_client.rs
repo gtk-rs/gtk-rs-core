@@ -176,6 +176,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "get_tls")]
     fn is_tls(&self) -> bool;
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_socket_client_get_tls_validation_flags")]
     #[doc(alias = "get_tls_validation_flags")]
     fn tls_validation_flags(&self) -> TlsCertificateFlags;
@@ -204,6 +205,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "g_socket_client_set_tls")]
     fn set_tls(&self, tls: bool);
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_socket_client_set_tls_validation_flags")]
     fn set_tls_validation_flags(&self, flags: TlsCertificateFlags);
 
@@ -242,6 +244,7 @@ pub trait SocketClientExt: 'static {
     #[doc(alias = "tls")]
     fn connect_tls_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "tls-validation-flags")]
     fn connect_tls_validation_flags_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 

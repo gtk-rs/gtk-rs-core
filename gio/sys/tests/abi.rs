@@ -2879,6 +2879,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(guint) G_TLS_DATABASE_VERIFY_NONE", "0"),
     ("(gint) G_TLS_ERROR_BAD_CERTIFICATE", "2"),
+    ("(gint) G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD", "8"),
     ("(gint) G_TLS_ERROR_CERTIFICATE_REQUIRED", "5"),
     ("(gint) G_TLS_ERROR_EOF", "6"),
     ("(gint) G_TLS_ERROR_HANDSHAKE", "4"),

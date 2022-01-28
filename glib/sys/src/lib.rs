@@ -3175,6 +3175,9 @@ extern "C" {
         key_destroy_func: GDestroyNotify,
         value_destroy_func: GDestroyNotify,
     ) -> *mut GHashTable;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_hash_table_new_similar(other_hash_table: *mut GHashTable) -> *mut GHashTable;
     pub fn g_hash_table_ref(hash_table: *mut GHashTable) -> *mut GHashTable;
     pub fn g_hash_table_remove(hash_table: *mut GHashTable, key: gconstpointer) -> gboolean;
     pub fn g_hash_table_remove_all(hash_table: *mut GHashTable);

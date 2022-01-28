@@ -55,6 +55,29 @@ impl TlsCertificate {
         }
     }
 
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "g_tls_certificate_new_from_file_with_password")]
+    #[doc(alias = "new_from_file_with_password")]
+    pub fn from_file_with_password(
+        file: impl AsRef<std::path::Path>,
+        password: &str,
+    ) -> Result<TlsCertificate, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_tls_certificate_new_from_file_with_password(
+                file.as_ref().to_glib_none().0,
+                password.to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
     #[doc(alias = "g_tls_certificate_new_from_files")]
     #[doc(alias = "new_from_files")]
     pub fn from_files(
@@ -105,6 +128,28 @@ impl TlsCertificate {
             let ret = ffi::g_tls_certificate_new_from_pkcs11_uris(
                 pkcs11_uri.to_glib_none().0,
                 private_key_pkcs11_uri.to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "g_tls_certificate_new_from_pkcs12")]
+    #[doc(alias = "new_from_pkcs12")]
+    pub fn from_pkcs12(data: &[u8], password: Option<&str>) -> Result<TlsCertificate, glib::Error> {
+        let length = data.len() as usize;
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_tls_certificate_new_from_pkcs12(
+                data.to_glib_none().0,
+                length,
+                password.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
