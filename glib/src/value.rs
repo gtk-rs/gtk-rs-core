@@ -51,7 +51,7 @@ use std::ptr;
 
 use crate::gstring::GString;
 use crate::translate::*;
-use crate::types::{StaticType, Type};
+use crate::types::{Pointer, StaticType, Type};
 
 // rustdoc-stripper-ignore-next
 /// A type that can be stored in `Value`s.
@@ -827,6 +827,60 @@ impl ToValue for bool {
 
     fn value_type(&self) -> Type {
         Self::static_type()
+    }
+}
+
+impl ValueType for Pointer {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for Pointer {
+    type Checker = GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        from_glib(gobject_ffi::g_value_get_pointer(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for Pointer {
+    fn to_value(&self) -> Value {
+        let mut value = Value::for_value_type::<Self>();
+        unsafe {
+            gobject_ffi::g_value_set_pointer(&mut value.inner, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> Type {
+        <<Self as ValueType>::Type as StaticType>::static_type()
+    }
+}
+
+impl ValueType for ptr::NonNull<libc::c_void> {
+    type Type = Pointer;
+}
+
+unsafe impl<'a> FromValue<'a> for ptr::NonNull<libc::c_void> {
+    type Checker = GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        ptr::NonNull::new_unchecked(Pointer::from_value(value))
+    }
+}
+
+impl ToValue for ptr::NonNull<libc::c_void> {
+    fn to_value(&self) -> Value {
+        self.as_ptr().to_value()
+    }
+
+    fn value_type(&self) -> Type {
+        <<Self as ValueType>::Type as StaticType>::static_type()
+    }
+}
+
+impl ToValueOptional for ptr::NonNull<libc::c_void> {
+    fn to_value_optional(p: Option<&Self>) -> Value {
+        unsafe { Pointer::from_glib(p.copied()).to_value() }
     }
 }
 

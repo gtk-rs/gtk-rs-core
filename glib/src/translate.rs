@@ -351,6 +351,28 @@ impl IntoGlib for Option<char> {
     }
 }
 
+impl IntoGlib for crate::Pointer {
+    type GlibType = ffi::gpointer;
+
+    #[inline]
+    fn into_glib(self) -> Self::GlibType {
+        self
+    }
+}
+
+impl IntoGlib for ptr::NonNull<libc::c_void> {
+    type GlibType = ffi::gpointer;
+
+    #[inline]
+    fn into_glib(self) -> Self::GlibType {
+        self.as_ptr()
+    }
+}
+
+impl OptionIntoGlib for ptr::NonNull<libc::c_void> {
+    const GLIB_NONE: Self::GlibType = ptr::null_mut();
+}
+
 impl IntoGlib for Ordering {
     type GlibType = i32;
 
@@ -1226,6 +1248,35 @@ impl FromGlib<ffi::gboolean> for bool {
     #[inline]
     unsafe fn from_glib(val: ffi::gboolean) -> Self {
         val != ffi::GFALSE
+    }
+}
+
+impl FromGlib<ffi::gpointer> for crate::Pointer {
+    #[inline]
+    unsafe fn from_glib(val: ffi::gpointer) -> Self {
+        val
+    }
+}
+
+impl TryFromGlib<ffi::gpointer> for ptr::NonNull<libc::c_void> {
+    type Error = GlibNoneError;
+
+    unsafe fn try_from_glib(val: ffi::gpointer) -> Result<Self, Self::Error> {
+        ptr::NonNull::new(val).ok_or(GlibNoneError)
+    }
+}
+
+impl FromGlib<ptr::NonNull<libc::c_void>> for crate::Pointer {
+    #[inline]
+    unsafe fn from_glib(val: ptr::NonNull<libc::c_void>) -> Self {
+        val.as_ptr()
+    }
+}
+
+impl FromGlib<Option<ptr::NonNull<libc::c_void>>> for crate::Pointer {
+    #[inline]
+    unsafe fn from_glib(val: Option<ptr::NonNull<libc::c_void>>) -> Self {
+        val.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut())
     }
 }
 
