@@ -130,6 +130,8 @@
 //!     }
 //! ```
 
+use crate::types::{Pointee, Pointer};
+
 use libc::{c_char, size_t};
 use std::char;
 use std::cmp::{Eq, Ordering, PartialEq};
@@ -351,7 +353,7 @@ impl IntoGlib for Option<char> {
     }
 }
 
-impl IntoGlib for crate::Pointer {
+impl IntoGlib for Pointer {
     type GlibType = ffi::gpointer;
 
     #[inline]
@@ -360,7 +362,7 @@ impl IntoGlib for crate::Pointer {
     }
 }
 
-impl IntoGlib for ptr::NonNull<libc::c_void> {
+impl IntoGlib for ptr::NonNull<Pointee> {
     type GlibType = ffi::gpointer;
 
     #[inline]
@@ -369,7 +371,7 @@ impl IntoGlib for ptr::NonNull<libc::c_void> {
     }
 }
 
-impl OptionIntoGlib for ptr::NonNull<libc::c_void> {
+impl OptionIntoGlib for ptr::NonNull<Pointee> {
     const GLIB_NONE: Self::GlibType = ptr::null_mut();
 }
 
@@ -1251,14 +1253,14 @@ impl FromGlib<ffi::gboolean> for bool {
     }
 }
 
-impl FromGlib<ffi::gpointer> for crate::Pointer {
+impl FromGlib<ffi::gpointer> for Pointer {
     #[inline]
     unsafe fn from_glib(val: ffi::gpointer) -> Self {
         val
     }
 }
 
-impl TryFromGlib<ffi::gpointer> for ptr::NonNull<libc::c_void> {
+impl TryFromGlib<ffi::gpointer> for ptr::NonNull<Pointee> {
     type Error = GlibNoneError;
 
     unsafe fn try_from_glib(val: ffi::gpointer) -> Result<Self, Self::Error> {
@@ -1266,16 +1268,16 @@ impl TryFromGlib<ffi::gpointer> for ptr::NonNull<libc::c_void> {
     }
 }
 
-impl FromGlib<ptr::NonNull<libc::c_void>> for crate::Pointer {
+impl FromGlib<ptr::NonNull<Pointee>> for Pointer {
     #[inline]
-    unsafe fn from_glib(val: ptr::NonNull<libc::c_void>) -> Self {
+    unsafe fn from_glib(val: ptr::NonNull<Pointee>) -> Self {
         val.as_ptr()
     }
 }
 
-impl FromGlib<Option<ptr::NonNull<libc::c_void>>> for crate::Pointer {
+impl FromGlib<Option<ptr::NonNull<Pointee>>> for Pointer {
     #[inline]
-    unsafe fn from_glib(val: Option<ptr::NonNull<libc::c_void>>) -> Self {
+    unsafe fn from_glib(val: Option<ptr::NonNull<Pointee>>) -> Self {
         val.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut())
     }
 }

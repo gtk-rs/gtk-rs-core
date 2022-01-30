@@ -299,9 +299,26 @@ macro_rules! builtin {
 
 // rustdoc-stripper-ignore-next
 /// A GLib [pointer](ffi::gpointer)
-pub type Pointer = ffi::gpointer;
+pub type Pointer = *mut Pointee;
 
-impl StaticType for ptr::NonNull<libc::c_void> {
+// rustdoc-stripper-ignore-next
+/// The target of a [Pointer]
+///
+/// # Examples
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::types::{Pointee, Pointer};
+/// use std::ptr::NonNull;
+///
+/// let pointer = NonNull::<Pointee>::dangling();
+/// let value = pointer.to_value();
+/// assert!(value.is::<Pointer>());
+/// assert_eq!(value.get(), Ok(pointer.as_ptr()));
+/// ```
+pub type Pointee = libc::c_void;
+
+impl StaticType for ptr::NonNull<Pointee> {
     fn static_type() -> Type {
         Pointer::static_type()
     }
