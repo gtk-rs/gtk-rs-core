@@ -297,6 +297,16 @@ macro_rules! builtin {
     };
 }
 
+// rustdoc-stripper-ignore-next
+/// A GLib [pointer](ffi::gpointer)
+pub type Pointer = ffi::gpointer;
+
+impl StaticType for ptr::NonNull<libc::c_void> {
+    fn static_type() -> Type {
+        Pointer::static_type()
+    }
+}
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ILong(pub libc::c_long);
 
@@ -416,6 +426,7 @@ builtin!(f32, F32);
 builtin!(f64, F64);
 builtin!(str, STRING);
 builtin!(String, STRING);
+builtin!(Pointer, POINTER);
 
 impl<'a> StaticType for [&'a str] {
     fn static_type() -> Type {
