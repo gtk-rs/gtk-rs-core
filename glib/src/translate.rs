@@ -2396,6 +2396,7 @@ mod tests {
     use super::*;
     use crate::GString;
     use std::collections::HashMap;
+    use std::ptr::NonNull;
 
     #[test]
     fn boolean() {
@@ -2404,6 +2405,21 @@ mod tests {
         assert!(unsafe { bool::from_glib(ffi::GTRUE) });
         assert!(!unsafe { bool::from_glib(ffi::GFALSE) });
         assert!(unsafe { bool::from_glib(42) });
+    }
+
+    #[test]
+    fn pointer() {
+        let null: Pointer = ptr::null_mut::<Pointee>();
+        let nonnull: Pointer = NonNull::dangling().as_ptr();
+
+        assert_eq!(null.into_glib(), None::<ptr::NonNull<Pointee>>.into_glib());
+        assert_eq!(
+            nonnull.into_glib(),
+            Some(NonNull::<Pointee>::dangling()).into_glib()
+        );
+
+        assert!(unsafe { Option::<NonNull<Pointee>>::from_glib(null).is_none() });
+        assert!(unsafe { Option::<NonNull<Pointee>>::from_glib(nonnull).is_some() });
     }
 
     #[test]
