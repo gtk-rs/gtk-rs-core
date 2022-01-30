@@ -1268,6 +1268,21 @@ impl TryFromGlib<ffi::gpointer> for ptr::NonNull<Pointee> {
     }
 }
 
+impl FromGlib<ffi::gconstpointer> for Pointer {
+    #[inline]
+    unsafe fn from_glib(val: ffi::gconstpointer) -> Self {
+        val as ffi::gpointer
+    }
+}
+
+impl TryFromGlib<ffi::gconstpointer> for ptr::NonNull<Pointee> {
+    type Error = GlibNoneError;
+
+    unsafe fn try_from_glib(val: ffi::gconstpointer) -> Result<Self, Self::Error> {
+        ptr::NonNull::new(val as ffi::gpointer).ok_or(GlibNoneError)
+    }
+}
+
 impl FromGlib<ptr::NonNull<Pointee>> for Pointer {
     #[inline]
     unsafe fn from_glib(val: ptr::NonNull<Pointee>) -> Self {
