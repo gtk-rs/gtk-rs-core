@@ -5,6 +5,7 @@
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::wrong_self_convention)]
 #![allow(clippy::non_send_fields_in_send_ty)]
+#![doc(html_root_url = "https://gtk-rs.org/gtk-rs-core/git/docs/")]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
