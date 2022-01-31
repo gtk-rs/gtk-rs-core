@@ -190,7 +190,7 @@ impl rs_log::Log for GlibLogger {
                     record.level(),
                     record.file(),
                     record.line(),
-                    None,
+                    record.module_path(),
                     &format!("{}", record.args()),
                 );
             }
