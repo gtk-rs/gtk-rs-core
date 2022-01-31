@@ -369,7 +369,7 @@ impl<O: IsA<File>> FileExtManual for O {
             user_data: glib::ffi::gpointer,
         ) {
             let callback: &(
-                Q,
+                glib::thread_guard::ThreadGuard<Q>,
                 RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
             ) = &*(user_data as *const _);
             (callback
