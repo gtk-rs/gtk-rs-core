@@ -528,6 +528,21 @@ impl Variant {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Extract the value of a maybe Variant.
+    ///
+    /// Returns the child value, or `None` if the value is Nothing.
+    ///
+    /// # Panics
+    ///
+    /// Panics if compiled with `debug_assertions` and the variant is not maybe-typed.
+    #[inline]
+    pub fn as_maybe(&self) -> Option<Variant> {
+        debug_assert!(self.type_().is_maybe());
+
+        unsafe { from_glib_full(ffi::g_variant_get_maybe(self.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Constructs a new serialized-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
@@ -1961,6 +1976,19 @@ mod tests {
         let a = ().to_variant();
         assert_eq!(a.type_().as_str(), "()");
         assert_eq!(a.get::<()>(), Some(()));
+    }
+
+    #[test]
+    fn test_maybe() {
+        assert!(<Option<()>>::static_variant_type().is_maybe());
+        let m1 = Some(()).to_variant();
+        assert_eq!(m1.type_().as_str(), "m()");
+
+        assert_eq!(m1.get::<Option<()>>(), Some(Some(())));
+        assert!(m1.as_maybe().is_some());
+
+        let m2 = None::<()>.to_variant();
+        assert!(m2.as_maybe().is_none());
     }
 
     #[test]
