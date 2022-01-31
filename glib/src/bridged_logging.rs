@@ -140,6 +140,11 @@ impl GlibLogger {
     ) {
         let line_str = line.map(|l| l.to_string());
 
+        let domain = domain.unwrap_or("default");
+        let file = file.unwrap_or("<unknown file>");
+        let line_str = line_str.unwrap_or_else(|| String::from("<unknown line>"));
+        let func = func.unwrap_or("<unknown module path>");
+
         unsafe {
             crate::ffi::g_log_structured_standard(
                 domain.to_glib_none().0,
@@ -190,7 +195,7 @@ impl rs_log::Log for GlibLogger {
                     record.level(),
                     record.file(),
                     record.line(),
-                    None,
+                    record.module_path(),
                     &format!("{}", record.args()),
                 );
             }
