@@ -236,10 +236,20 @@ impl Variant {
     #[inline]
     #[doc(alias = "g_variant_is_of_type")]
     pub fn is<T: StaticVariantType>(&self) -> bool {
+        self.is_type(&T::static_variant_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns `true` if the type of the value corresponds to `type_`.
+    ///
+    /// This is equivalent to [`self.type_().is_subtype_of(type_)`](VariantTy::is_subtype_of).
+    #[inline]
+    #[doc(alias = "g_variant_is_of_type")]
+    pub fn is_type(&self, type_: &VariantTy) -> bool {
         unsafe {
             from_glib(ffi::g_variant_is_of_type(
                 self.to_glib_none().0,
-                T::static_variant_type().to_glib_none().0,
+                type_.to_glib_none().0,
             ))
         }
     }
@@ -415,8 +425,20 @@ impl Variant {
     pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
         children: I,
     ) -> Self {
-        let type_ = T::static_variant_type();
+        Self::array_from_iter_with_type(&T::static_variant_type(), children)
+    }
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new Variant array from children with the specified type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not all variants are of type `type_`.
+    #[doc(alias = "g_variant_new_array")]
+    pub fn array_from_iter_with_type<I: IntoIterator<Item = Variant>>(
+        type_: &VariantTy,
+        children: I,
+    ) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
             ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
@@ -426,7 +448,7 @@ impl Variant {
                     == ffi::GFALSE
                 {
                     ffi::g_variant_builder_clear(&mut builder);
-                    assert!(value.is::<T>());
+                    assert!(value.is_type(type_));
                 }
 
                 ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
@@ -471,18 +493,36 @@ impl Variant {
     #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
         let type_ = T::static_variant_type();
-        let ptr = match child {
+        match child {
             Some(child) => {
                 assert_eq!(type_, child.type_());
 
-                child.to_glib_none().0
+                Self::from_some(child)
             }
-            None => std::ptr::null(),
-        };
+            None => Self::from_none(&type_),
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new maybe Variant from a child.
+    #[doc(alias = "g_variant_new_maybe")]
+    pub fn from_some(child: &Variant) -> Self {
         unsafe {
             from_glib_none(ffi::g_variant_new_maybe(
-                type_.as_ptr() as *const _,
-                ptr as *mut ffi::GVariant,
+                ptr::null(),
+                child.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new maybe Variant with Nothing.
+    #[doc(alias = "g_variant_new_maybe")]
+    pub fn from_none(type_: &VariantTy) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_maybe(
+                type_.to_glib_none().0,
+                ptr::null_mut(),
             ))
         }
     }
