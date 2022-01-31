@@ -130,8 +130,6 @@
 //!     }
 //! ```
 
-use crate::types::{Pointee, Pointer};
-
 use libc::{c_char, size_t};
 use std::char;
 use std::cmp::{Eq, Ordering, PartialEq};
@@ -351,28 +349,6 @@ impl IntoGlib for Option<char> {
     fn into_glib(self) -> u32 {
         self.as_ref().map(|&c| c as u32).unwrap_or(0)
     }
-}
-
-impl IntoGlib for Pointer {
-    type GlibType = ffi::gpointer;
-
-    #[inline]
-    fn into_glib(self) -> Self::GlibType {
-        self
-    }
-}
-
-impl IntoGlib for ptr::NonNull<Pointee> {
-    type GlibType = ffi::gpointer;
-
-    #[inline]
-    fn into_glib(self) -> Self::GlibType {
-        self.as_ptr()
-    }
-}
-
-impl OptionIntoGlib for ptr::NonNull<Pointee> {
-    const GLIB_NONE: Self::GlibType = ptr::null_mut();
 }
 
 impl IntoGlib for Ordering {
@@ -1250,50 +1226,6 @@ impl FromGlib<ffi::gboolean> for bool {
     #[inline]
     unsafe fn from_glib(val: ffi::gboolean) -> Self {
         val != ffi::GFALSE
-    }
-}
-
-impl FromGlib<ffi::gpointer> for Pointer {
-    #[inline]
-    unsafe fn from_glib(val: ffi::gpointer) -> Self {
-        val
-    }
-}
-
-impl TryFromGlib<ffi::gpointer> for ptr::NonNull<Pointee> {
-    type Error = GlibNoneError;
-
-    unsafe fn try_from_glib(val: ffi::gpointer) -> Result<Self, Self::Error> {
-        ptr::NonNull::new(val).ok_or(GlibNoneError)
-    }
-}
-
-impl FromGlib<ffi::gconstpointer> for Pointer {
-    #[inline]
-    unsafe fn from_glib(val: ffi::gconstpointer) -> Self {
-        val as ffi::gpointer
-    }
-}
-
-impl TryFromGlib<ffi::gconstpointer> for ptr::NonNull<Pointee> {
-    type Error = GlibNoneError;
-
-    unsafe fn try_from_glib(val: ffi::gconstpointer) -> Result<Self, Self::Error> {
-        ptr::NonNull::new(val as ffi::gpointer).ok_or(GlibNoneError)
-    }
-}
-
-impl FromGlib<ptr::NonNull<Pointee>> for Pointer {
-    #[inline]
-    unsafe fn from_glib(val: ptr::NonNull<Pointee>) -> Self {
-        val.as_ptr()
-    }
-}
-
-impl FromGlib<Option<ptr::NonNull<Pointee>>> for Pointer {
-    #[inline]
-    unsafe fn from_glib(val: Option<ptr::NonNull<Pointee>>) -> Self {
-        val.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut())
     }
 }
 
@@ -2411,7 +2343,6 @@ mod tests {
     use super::*;
     use crate::GString;
     use std::collections::HashMap;
-    use std::ptr::NonNull;
 
     #[test]
     fn boolean() {
@@ -2420,21 +2351,6 @@ mod tests {
         assert!(unsafe { bool::from_glib(ffi::GTRUE) });
         assert!(!unsafe { bool::from_glib(ffi::GFALSE) });
         assert!(unsafe { bool::from_glib(42) });
-    }
-
-    #[test]
-    fn pointer() {
-        let null: Pointer = ptr::null_mut::<Pointee>();
-        let nonnull: Pointer = NonNull::dangling().as_ptr();
-
-        assert_eq!(null.into_glib(), None::<ptr::NonNull<Pointee>>.into_glib());
-        assert_eq!(
-            nonnull.into_glib(),
-            Some(NonNull::<Pointee>::dangling()).into_glib()
-        );
-
-        assert!(unsafe { Option::<NonNull<Pointee>>::from_glib(null).is_none() });
-        assert!(unsafe { Option::<NonNull<Pointee>>::from_glib(nonnull).is_some() });
     }
 
     #[test]
