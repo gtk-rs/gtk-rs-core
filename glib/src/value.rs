@@ -450,7 +450,15 @@ impl Value {
     /// or is a sub-type of `T`.
     #[inline]
     pub fn is<T: StaticType>(&self) -> bool {
-        self.type_().is_a(T::static_type())
+        self.is_type(T::static_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns `true` if the type of the value corresponds to `type_`
+    /// or is a sub-type of `type_`.
+    #[inline]
+    pub fn is_type(&self, type_: Type) -> bool {
+        self.type_().is_a(type_)
     }
 
     // rustdoc-stripper-ignore-next
@@ -475,8 +483,15 @@ impl Value {
     /// Tries to transform the value into a value of the target type
     #[doc(alias = "g_value_transform")]
     pub fn transform<T: ValueType>(&self) -> Result<Value, crate::BoolError> {
+        self.transform_with_type(T::Type::static_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Tries to transform the value into a value of the target type
+    #[doc(alias = "g_value_transform")]
+    pub fn transform_with_type(&self, type_: Type) -> Result<Value, crate::BoolError> {
         unsafe {
-            let mut dest = Value::for_value_type::<T>();
+            let mut dest = Value::from_type(type_);
             if from_glib(gobject_ffi::g_value_transform(
                 self.to_glib_none().0,
                 dest.to_glib_none_mut().0,
@@ -486,7 +501,7 @@ impl Value {
                 Err(crate::bool_error!(
                     "Can't transform value of type '{}' into '{}'",
                     self.type_(),
-                    T::Type::static_type()
+                    type_
                 ))
             }
         }
