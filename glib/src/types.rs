@@ -298,8 +298,10 @@ macro_rules! builtin {
 }
 
 // rustdoc-stripper-ignore-next
-/// A GLib [pointer](ffi::gpointer)
-pub type Pointer = *mut Pointee;
+/// A GLib pointer
+///
+/// A raw untyped pointer equivalent to [`*mut Pointee`](Pointee).
+pub type Pointer = ffi::gpointer;
 
 // rustdoc-stripper-ignore-next
 /// The target of a [Pointer]
