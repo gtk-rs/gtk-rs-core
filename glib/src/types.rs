@@ -297,6 +297,35 @@ macro_rules! builtin {
     };
 }
 
+// rustdoc-stripper-ignore-next
+/// A GLib pointer
+///
+/// A raw untyped pointer equivalent to [`*mut Pointee`](Pointee).
+pub type Pointer = ffi::gpointer;
+
+// rustdoc-stripper-ignore-next
+/// The target of a [Pointer]
+///
+/// # Examples
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::types::{Pointee, Pointer};
+/// use std::ptr::NonNull;
+///
+/// let pointer = NonNull::<Pointee>::dangling();
+/// let value = pointer.to_value();
+/// assert!(value.is::<Pointer>());
+/// assert_eq!(value.get(), Ok(pointer.as_ptr()));
+/// ```
+pub type Pointee = libc::c_void;
+
+impl StaticType for ptr::NonNull<Pointee> {
+    fn static_type() -> Type {
+        Pointer::static_type()
+    }
+}
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ILong(pub libc::c_long);
 
@@ -416,6 +445,7 @@ builtin!(f32, F32);
 builtin!(f64, F64);
 builtin!(str, STRING);
 builtin!(String, STRING);
+builtin!(Pointer, POINTER);
 
 impl<'a> StaticType for [&'a str] {
     fn static_type() -> Type {
