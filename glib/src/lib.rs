@@ -155,6 +155,9 @@ mod main_context_futures;
 mod source_futures;
 pub use self::source_futures::*;
 
+mod future_with_timeout;
+pub use self::future_with_timeout::*;
+
 mod thread_pool;
 pub use self::thread_pool::ThreadPool;
 
