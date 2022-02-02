@@ -255,7 +255,7 @@ macro_rules! task_impl {
                     Ok(v) => unsafe {
                         ffi::g_task_return_value(
                             self.to_glib_none().0,
-                            v.to_value().to_glib_full() as *mut _,
+                            v.to_value().to_glib_none().0 as *mut _,
                         )
                     },
                     #[cfg(not(feature = "v2_64"))]
