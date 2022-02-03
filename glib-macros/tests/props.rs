@@ -6,12 +6,12 @@ fn props() {
         use glib::subclass::prelude::*;
         use glib_macros::Props;
         use std::cell::RefCell;
-        use std::sync::Mutex;
         use std::marker::PhantomData;
+        use std::sync::Mutex;
 
         #[derive(Default)]
         struct Author {
-            name: String
+            name: String,
         }
 
         mod imp {
@@ -27,7 +27,7 @@ fn props() {
                 fizz: RefCell<String>,
                 author: RefCell<Author>,
                 #[prop(
-                    get = |t: &Self| t.author.borrow().name.to_value(), 
+                    get = |t: &Self| t.author.borrow().name.to_value(),
                     set = Self::set_author_name)]
                 author_name: PhantomData<String>,
             }
