@@ -156,24 +156,19 @@ fn expand_props_descs(struct_ident: syn::Ident, props: &[PropDesc]) -> TokenStre
         let name = &prop.attrs.name;
         let nick = &prop.attrs.nick;
         let blurb = &prop.attrs.blurb;
-        let get = prop.attrs.get.is_some();
-        let set = prop.attrs.get.is_some();
         let default = prop
             .attrs
             .default
             .as_ref()
             .map_or(quote!(None), |x| quote!(Some(#x)));
+        let flags = match (prop.attrs.get.is_some(), prop.attrs.set.is_some()) {
+            (false, false) => quote!(glib::ParamFlags::empty()),
+            (false, true) => quote!(glib::ParamFlags::WRITABLE),
+            (true, false) => quote!(glib::ParamFlags::READABLE),
+            (true, true) => quote!(glib::ParamFlags::READWRITE),
+        };
         quote! {
-            {
-                let mut flags = glib::ParamFlags::empty();
-                if #get {
-                    flags |= glib::ParamFlags::READABLE;
-                }
-                if #set {
-                    flags |= glib::ParamFlags::WRITABLE;
-                }
-                <#ty as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, flags)
-            }
+            <#ty as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
         }
     });
     let expanded = quote! {
