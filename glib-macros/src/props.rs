@@ -1,4 +1,5 @@
 use proc_macro::TokenStream;
+use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
 use syn::parse::Parse;
 use syn::spanned::Spanned;
@@ -130,26 +131,7 @@ impl PropDesc {
     }
 }
 
-fn expand_props_descs(struct_ident: syn::Ident, props: &[PropDesc]) -> TokenStream {
-    let match_branch_get = props.iter().flat_map(|p| {
-        let name = &p.attrs.name;
-        let ident = &p.field.ident;
-        match &p.attrs.get {
-            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self))),
-            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.get())),
-            None => None,
-        }
-    });
-    let match_branch_set = props.iter().flat_map(|p| {
-        let name = &p.attrs.name;
-        let ident = &p.field.ident;
-        match &p.attrs.set {
-            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self, value))),
-            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.set(value))),
-            None => None,
-        }
-    });
-
+fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
     let properties_build_phase = props.iter().map(|prop| {
         let ty = &prop.field.ty;
@@ -171,31 +153,53 @@ fn expand_props_descs(struct_ident: syn::Ident, props: &[PropDesc]) -> TokenStre
             <#ty as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
         }
     });
-    let expanded = quote! {
-        use glib::{ParamStoreRead, ParamStoreWrite};
-        impl ObjectImpl for #struct_ident {
-            fn properties() -> &'static [glib::ParamSpec] {
-                use glib::once_cell::sync::Lazy;
-                static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
-                    #(#properties_build_phase,)*
-                ]);
-                PROPERTIES.as_ref()
-            }
-            fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-                match pspec.name() {
-                    #(#match_branch_get,)*
-                    p => unreachable!("Invalid property {}", p)
-                }
-            }
-            fn set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-                match pspec.name() {
-                    #(#match_branch_set,)*
-                    p => unreachable!("Invalid property {}", p)
-                }
+    quote!(
+        fn properties() -> &'static [glib::ParamSpec] {
+            use glib::once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
+                #(#properties_build_phase,)*
+            ]);
+            PROPERTIES.as_ref()
+        }
+    )
+}
+fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
+    let match_branch_get = props.iter().flat_map(|p| {
+        let name = &p.attrs.name;
+        let ident = &p.field.ident;
+        match &p.attrs.get {
+            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self))),
+            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.get())),
+            None => None,
+        }
+    });
+    quote!(
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                #(#match_branch_get,)*
+                p => unreachable!("Invalid property {}", p)
             }
         }
-    };
-    proc_macro::TokenStream::from(expanded)
+    )
+}
+fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
+    let match_branch_set = props.iter().flat_map(|p| {
+        let name = &p.attrs.name;
+        let ident = &p.field.ident;
+        match &p.attrs.set {
+            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self, value))),
+            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.set(value))),
+            None => None,
+        }
+    });
+    quote!(
+        fn set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            match pspec.name() {
+                #(#match_branch_set,)*
+                p => unreachable!("Invalid property {}", p)
+            }
+        }
+    )
 }
 
 fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
@@ -229,5 +233,17 @@ pub fn impl_derive_props(input: TokenStream) -> TokenStream {
         }
     };
 
-    expand_props_descs(input.ident, &props)
+    let struct_ident = &input.ident;
+    let fn_properties = expand_properties_fn(&props);
+    let fn_property = expand_property_fn(&props);
+    let fn_set_property = expand_set_property_fn(&props);
+    let expanded = quote! {
+        use glib::{ParamStoreRead, ParamStoreWrite};
+        impl ObjectImpl for #struct_ident {
+            #fn_properties
+            #fn_property
+            #fn_set_property
+        }
+    };
+    proc_macro::TokenStream::from(expanded)
 }
