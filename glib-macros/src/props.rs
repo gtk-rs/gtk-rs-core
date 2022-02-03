@@ -69,8 +69,7 @@ impl Parse for PropAttr {
 }
 
 #[derive(Default)]
-struct PropDesc {
-    field: Option<syn::Field>,
+struct ReceivedAttrs {
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     construct: bool,
@@ -81,7 +80,14 @@ struct PropDesc {
     blurb: Option<syn::LitStr>,
     default: Option<syn::Expr>,
 }
-impl PropDesc {
+impl ReceivedAttrs {
+    fn new(attrs: impl Iterator<Item = PropAttr>) -> Self {
+        let mut this = Self::default();
+        for attr in attrs {
+            this.set_from_attr(attr);
+        }
+        this
+    }
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
             PropAttr::Get(Some(expr)) => self.get = Some(MaybeCustomFn::CustomFn(expr)),
@@ -94,53 +100,50 @@ impl PropDesc {
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
         }
     }
-    fn clean(mut self) -> Self {
-        self.name = self.name.or_else(|| {
-            self.field.as_ref().map(|x| {
-                syn::LitStr::new(
-                    &x.ident
-                        .as_ref()
-                        .unwrap()
-                        .to_string()
-                        .trim_matches('_')
-                        .replace("_", "-"),
-                    x.ident.span(),
-                )
-            })
+}
+struct PropDesc {
+    field: syn::Field,
+    attrs: ReceivedAttrs,
+}
+impl PropDesc {
+    fn new(attrs: ReceivedAttrs, field: syn::Field) -> Self {
+        let this = Self { field, attrs };
+        this.fill_unset_attrs()
+    }
+    fn fill_unset_attrs(mut self) -> Self {
+        self.attrs.name = self.attrs.name.or_else(|| {
+            Some(syn::LitStr::new(
+                &self
+                    .field
+                    .ident
+                    .as_ref()
+                    .unwrap()
+                    .to_string()
+                    .trim_matches('_')
+                    .replace("_", "-"),
+                self.field.ident.span(),
+            ))
         });
-        self.nick = self.nick.or_else(|| self.name.clone());
-        self.blurb = self.blurb.or_else(|| self.name.clone());
+        self.attrs.nick = self.attrs.nick.or_else(|| self.attrs.name.clone());
+        self.attrs.blurb = self.attrs.blurb.or_else(|| self.attrs.name.clone());
         self
     }
 }
-impl FromIterator<PropAttr> for PropDesc {
-    fn from_iter<T: IntoIterator<Item = PropAttr>>(iter: T) -> Self {
-        let mut this = PropDesc::default();
-        for attr in iter {
-            this.set_from_attr(attr);
-        }
-        this
-    }
-}
 
-pub fn impl_derive_props(input: TokenStream) -> proc_macro::TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let name = input.ident;
-    let props: Vec<PropDesc> = fields_prop(input.data).collect();
-
+fn expand_props_descs(struct_ident: syn::Ident, props: &[PropDesc]) -> TokenStream {
     let match_branch_get = props.iter().flat_map(|p| {
-        let name = &p.name;
-        let ident = &p.field.as_ref().unwrap().ident;
-        match &p.get {
+        let name = &p.attrs.name;
+        let ident = &p.field.ident;
+        match &p.attrs.get {
             Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self))),
             Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.get())),
             None => None,
         }
     });
     let match_branch_set = props.iter().flat_map(|p| {
-        let name = &p.name;
-        let ident = &p.field.as_ref().unwrap().ident;
-        match &p.set {
+        let name = &p.attrs.name;
+        let ident = &p.field.ident;
+        match &p.attrs.set {
             Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self, value))),
             Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.set(value))),
             None => None,
@@ -149,13 +152,14 @@ pub fn impl_derive_props(input: TokenStream) -> proc_macro::TokenStream {
 
     let n_props = props.len();
     let properties_build_phase = props.iter().map(|prop| {
-        let ty = &prop.field.as_ref().unwrap().ty;
-        let name = &prop.name;
-        let nick = &prop.nick;
-        let blurb = &prop.blurb;
-        let get = prop.get.is_some();
-        let set = prop.get.is_some();
+        let ty = &prop.field.ty;
+        let name = &prop.attrs.name;
+        let nick = &prop.attrs.nick;
+        let blurb = &prop.attrs.blurb;
+        let get = prop.attrs.get.is_some();
+        let set = prop.attrs.get.is_some();
         let default = prop
+            .attrs
             .default
             .as_ref()
             .map_or(quote!(None), |x| quote!(Some(#x)));
@@ -174,7 +178,7 @@ pub fn impl_derive_props(input: TokenStream) -> proc_macro::TokenStream {
     });
     let expanded = quote! {
         use glib::{ParamStoreRead, ParamStoreWrite};
-        impl ObjectImpl for #name {
+        impl ObjectImpl for #struct_ident {
             fn properties() -> &'static [glib::ParamSpec] {
                 use glib::once_cell::sync::Lazy;
                 static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
@@ -199,33 +203,36 @@ pub fn impl_derive_props(input: TokenStream) -> proc_macro::TokenStream {
     proc_macro::TokenStream::from(expanded)
 }
 
-fn fields_prop(data: syn::Data) -> impl Iterator<Item = PropDesc> {
-    match data {
-        syn::Data::Struct(syn::DataStruct { fields, .. }) => {
-            fields.into_iter().filter_map(|field| {
-                let mut prop_attrs = field
-                    .attrs
-                    .iter()
-                    .filter(|a| a.path.is_ident("prop"))
-                    .flat_map(|attrs| {
-                        attrs.parse_args_with(
-                            syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
-                        )
-                    })
-                    .flatten()
-                    .peekable();
-
-                if let None = prop_attrs.peek() {
-                    return None;
-                }
-                let mut prop_desc = PropDesc::from_iter(prop_attrs);
-                prop_desc.field = Some(field);
-
-                Some(prop_desc.clean())
+fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
+    fields.into_iter().filter_map(|field| {
+        let mut prop_attrs = field
+            .attrs
+            .iter()
+            .filter(|a| a.path.is_ident("prop"))
+            .flat_map(|attrs| {
+                attrs.parse_args_with(
+                    syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
+                )
             })
+            .flatten()
+            .peekable();
+
+        if prop_attrs.peek().is_none() {
+            return None;
         }
+        Some(PropDesc::new(ReceivedAttrs::new(prop_attrs), field.clone()))
+    })
+}
+
+pub fn impl_derive_props(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+
+    let props: Vec<PropDesc> = match input.data {
+        syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
         _ => {
             panic!("Can't derive Props on non struct")
         }
-    }
+    };
+
+    expand_props_descs(input.ident, &props)
 }
