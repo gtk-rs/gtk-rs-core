@@ -824,5 +824,6 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 // TODO: Needs cleanup before merge...
 #[proc_macro_derive(Props, attributes(prop))]
 pub fn derive_props(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as props::PropsMacroInput);
     props::impl_derive_props(input)
 }

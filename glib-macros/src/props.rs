@@ -4,7 +4,28 @@ use quote::quote;
 use syn::parse::Parse;
 use syn::spanned::Spanned;
 use syn::Token;
-use syn::{parse_macro_input, DeriveInput};
+
+pub struct PropsMacroInput {
+    ident: syn::Ident,
+    props: Vec<PropDesc>,
+}
+
+impl Parse for PropsMacroInput {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let derive_input: syn::DeriveInput = input.parse()?;
+        let props: Vec<_> = match derive_input.data {
+            syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
+            _ => {
+                Err(syn::Error::new(derive_input.span(), "props can only be derived on structs"))?
+            }
+        };
+        Ok(Self {
+            ident: derive_input.ident,
+            props
+        })
+    }
+}
+
 enum MaybeCustomFn {
     CustomFn(syn::Expr),
     DefaultFn,
@@ -223,20 +244,11 @@ fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
     })
 }
 
-pub fn impl_derive_props(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-
-    let props: Vec<PropDesc> = match input.data {
-        syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
-        _ => {
-            panic!("Can't derive Props on non struct")
-        }
-    };
-
+pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
-    let fn_properties = expand_properties_fn(&props);
-    let fn_property = expand_property_fn(&props);
-    let fn_set_property = expand_set_property_fn(&props);
+    let fn_properties = expand_properties_fn(&input.props);
+    let fn_property = expand_property_fn(&input.props);
+    let fn_set_property = expand_set_property_fn(&input.props);
     let expanded = quote! {
         use glib::{ParamStoreRead, ParamStoreWrite};
         impl ObjectImpl for #struct_ident {
