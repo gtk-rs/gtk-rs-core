@@ -6164,8 +6164,14 @@ extern "C" {
         message: *const c_char,
         unused_data: gpointer,
     );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_log_get_debug_enabled() -> gboolean;
     pub fn g_log_remove_handler(log_domain: *const c_char, handler_id: c_uint);
     pub fn g_log_set_always_fatal(fatal_mask: GLogLevelFlags) -> GLogLevelFlags;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_log_set_debug_enabled(enabled: gboolean);
     pub fn g_log_set_default_handler(log_func: GLogFunc, user_data: gpointer) -> GLogFunc;
     pub fn g_log_set_fatal_mask(
         log_domain: *const c_char,
