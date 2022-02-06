@@ -213,6 +213,10 @@ pub enum CredentialsType {
     NetbsdUnpcbid,
     #[doc(alias = "G_CREDENTIALS_TYPE_APPLE_XUCRED")]
     AppleXucred,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_CREDENTIALS_TYPE_WIN32_PID")]
+    Win32Pid,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -230,6 +234,8 @@ impl fmt::Display for CredentialsType {
                 Self::SolarisUcred => "SolarisUcred",
                 Self::NetbsdUnpcbid => "NetbsdUnpcbid",
                 Self::AppleXucred => "AppleXucred",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::Win32Pid => "Win32Pid",
                 _ => "Unknown",
             }
         )
@@ -249,6 +255,8 @@ impl IntoGlib for CredentialsType {
             Self::SolarisUcred => ffi::G_CREDENTIALS_TYPE_SOLARIS_UCRED,
             Self::NetbsdUnpcbid => ffi::G_CREDENTIALS_TYPE_NETBSD_UNPCBID,
             Self::AppleXucred => ffi::G_CREDENTIALS_TYPE_APPLE_XUCRED,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::Win32Pid => ffi::G_CREDENTIALS_TYPE_WIN32_PID,
             Self::__Unknown(value) => value,
         }
     }
@@ -265,6 +273,8 @@ impl FromGlib<ffi::GCredentialsType> for CredentialsType {
             ffi::G_CREDENTIALS_TYPE_SOLARIS_UCRED => Self::SolarisUcred,
             ffi::G_CREDENTIALS_TYPE_NETBSD_UNPCBID => Self::NetbsdUnpcbid,
             ffi::G_CREDENTIALS_TYPE_APPLE_XUCRED => Self::AppleXucred,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_CREDENTIALS_TYPE_WIN32_PID => Self::Win32Pid,
             value => Self::__Unknown(value),
         }
     }

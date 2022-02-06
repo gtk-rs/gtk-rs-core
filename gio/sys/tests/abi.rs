@@ -785,6 +785,27 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GDebugControllerDBus",
+        Layout {
+            size: size_of::<GDebugControllerDBus>(),
+            alignment: align_of::<GDebugControllerDBus>(),
+        },
+    ),
+    (
+        "GDebugControllerDBusClass",
+        Layout {
+            size: size_of::<GDebugControllerDBusClass>(),
+            alignment: align_of::<GDebugControllerDBusClass>(),
+        },
+    ),
+    (
+        "GDebugControllerInterface",
+        Layout {
+            size: size_of::<GDebugControllerInterface>(),
+            alignment: align_of::<GDebugControllerInterface>(),
+        },
+    ),
+    (
         "GDesktopAppInfoClass",
         Layout {
             size: size_of::<GDesktopAppInfoClass>(),
@@ -2290,6 +2311,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_CREDENTIALS_TYPE_NETBSD_UNPCBID", "5"),
     ("(gint) G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED", "3"),
     ("(gint) G_CREDENTIALS_TYPE_SOLARIS_UCRED", "4"),
+    ("(gint) G_CREDENTIALS_TYPE_WIN32_PID", "7"),
     ("(gint) G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN", "0"),
     ("(gint) G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN", "2"),
     ("(gint) G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN", "1"),
@@ -2439,6 +2461,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
         "1",
     ),
     ("(guint) G_DBUS_SUBTREE_FLAGS_NONE", "0"),
+    (
+        "G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME",
+        "gio-debug-controller",
+    ),
     (
         "G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME",
         "gio-desktop-app-info-lookup",

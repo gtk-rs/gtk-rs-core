@@ -51,7 +51,7 @@ use std::ptr;
 
 use crate::gstring::GString;
 use crate::translate::*;
-use crate::types::{StaticType, Type};
+use crate::types::{Pointee, Pointer, StaticType, Type};
 
 // rustdoc-stripper-ignore-next
 /// A type that can be stored in `Value`s.
@@ -450,7 +450,15 @@ impl Value {
     /// or is a sub-type of `T`.
     #[inline]
     pub fn is<T: StaticType>(&self) -> bool {
-        self.type_().is_a(T::static_type())
+        self.is_type(T::static_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns `true` if the type of the value corresponds to `type_`
+    /// or is a sub-type of `type_`.
+    #[inline]
+    pub fn is_type(&self, type_: Type) -> bool {
+        self.type_().is_a(type_)
     }
 
     // rustdoc-stripper-ignore-next
@@ -475,8 +483,15 @@ impl Value {
     /// Tries to transform the value into a value of the target type
     #[doc(alias = "g_value_transform")]
     pub fn transform<T: ValueType>(&self) -> Result<Value, crate::BoolError> {
+        self.transform_with_type(T::Type::static_type())
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Tries to transform the value into a value of the target type
+    #[doc(alias = "g_value_transform")]
+    pub fn transform_with_type(&self, type_: Type) -> Result<Value, crate::BoolError> {
         unsafe {
-            let mut dest = Value::for_value_type::<T>();
+            let mut dest = Value::from_type(type_);
             if from_glib(gobject_ffi::g_value_transform(
                 self.to_glib_none().0,
                 dest.to_glib_none_mut().0,
@@ -486,7 +501,7 @@ impl Value {
                 Err(crate::bool_error!(
                     "Can't transform value of type '{}' into '{}'",
                     self.type_(),
-                    T::Type::static_type()
+                    type_
                 ))
             }
         }
@@ -827,6 +842,60 @@ impl ToValue for bool {
 
     fn value_type(&self) -> Type {
         Self::static_type()
+    }
+}
+
+impl ValueType for Pointer {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for Pointer {
+    type Checker = GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        gobject_ffi::g_value_get_pointer(value.to_glib_none().0)
+    }
+}
+
+impl ToValue for Pointer {
+    fn to_value(&self) -> Value {
+        let mut value = Value::for_value_type::<Self>();
+        unsafe {
+            gobject_ffi::g_value_set_pointer(&mut value.inner, *self);
+        }
+        value
+    }
+
+    fn value_type(&self) -> Type {
+        <<Self as ValueType>::Type as StaticType>::static_type()
+    }
+}
+
+impl ValueType for ptr::NonNull<Pointee> {
+    type Type = Pointer;
+}
+
+unsafe impl<'a> FromValue<'a> for ptr::NonNull<Pointee> {
+    type Checker = GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        ptr::NonNull::new_unchecked(Pointer::from_value(value))
+    }
+}
+
+impl ToValue for ptr::NonNull<Pointee> {
+    fn to_value(&self) -> Value {
+        self.as_ptr().to_value()
+    }
+
+    fn value_type(&self) -> Type {
+        <<Self as ValueType>::Type as StaticType>::static_type()
+    }
+}
+
+impl ToValueOptional for ptr::NonNull<Pointee> {
+    fn to_value_optional(p: Option<&Self>) -> Value {
+        p.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut()).to_value()
     }
 }
 
