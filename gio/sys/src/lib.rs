@@ -45,6 +45,7 @@ pub const G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED: GCredentialsType = 3;
 pub const G_CREDENTIALS_TYPE_SOLARIS_UCRED: GCredentialsType = 4;
 pub const G_CREDENTIALS_TYPE_NETBSD_UNPCBID: GCredentialsType = 5;
 pub const G_CREDENTIALS_TYPE_APPLE_XUCRED: GCredentialsType = 6;
+pub const G_CREDENTIALS_TYPE_WIN32_PID: GCredentialsType = 7;
 
 pub type GDBusError = c_int;
 pub const G_DBUS_ERROR_FAILED: GDBusError = 0;
@@ -385,6 +386,8 @@ pub const G_ZLIB_COMPRESSOR_FORMAT_RAW: GZlibCompressorFormat = 2;
 // Constants
 pub const G_DBUS_METHOD_INVOCATION_HANDLED: gboolean = glib::GTRUE;
 pub const G_DBUS_METHOD_INVOCATION_UNHANDLED: gboolean = glib::GFALSE;
+pub const G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME: *const c_char =
+    b"gio-debug-controller\0" as *const u8 as *const c_char;
 pub const G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: *const c_char =
     b"gio-desktop-app-info-lookup\0" as *const u8 as *const c_char;
 pub const G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: *const c_char =
@@ -2228,6 +2231,39 @@ impl ::std::fmt::Debug for GDatagramBasedInterface {
             .field("create_source", &self.create_source)
             .field("condition_check", &self.condition_check)
             .field("condition_wait", &self.condition_wait)
+            .finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GDebugControllerDBusClass {
+    pub parent_class: gobject::GObjectClass,
+    pub authorize: Option<
+        unsafe extern "C" fn(*mut GDebugControllerDBus, *mut GDBusMethodInvocation) -> gboolean,
+    >,
+    pub padding: [gpointer; 12],
+}
+
+impl ::std::fmt::Debug for GDebugControllerDBusClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GDebugControllerDBusClass @ {:p}", self))
+            .field("parent_class", &self.parent_class)
+            .field("authorize", &self.authorize)
+            .field("padding", &self.padding)
+            .finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GDebugControllerInterface {
+    pub g_iface: gobject::GTypeInterface,
+}
+
+impl ::std::fmt::Debug for GDebugControllerInterface {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GDebugControllerInterface @ {:p}", self))
             .finish()
     }
 }
@@ -7554,6 +7590,20 @@ impl ::std::fmt::Debug for GDataOutputStream {
     }
 }
 
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GDebugControllerDBus {
+    pub parent_instance: gobject::GObject,
+}
+
+impl ::std::fmt::Debug for GDebugControllerDBus {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GDebugControllerDBus @ {:p}", self))
+            .field("parent_instance", &self.parent_instance)
+            .finish()
+    }
+}
+
 #[repr(C)]
 pub struct GDesktopAppInfo {
     _data: [u8; 0],
@@ -8846,6 +8896,18 @@ pub struct GDatagramBased {
 impl ::std::fmt::Debug for GDatagramBased {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "GDatagramBased @ {:p}", self)
+    }
+}
+
+#[repr(C)]
+pub struct GDebugController {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GDebugController {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "GDebugController @ {:p}", self)
     }
 }
 
@@ -11390,6 +11452,20 @@ extern "C" {
         stream: *mut GDataOutputStream,
         order: GDataStreamByteOrder,
     );
+
+    //=========================================================================
+    // GDebugControllerDBus
+    //=========================================================================
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_dbus_get_type() -> GType;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_dbus_new(
+        connection: *mut GDBusConnection,
+        cancellable: *mut GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut GDebugControllerDBus;
 
     //=========================================================================
     // GDesktopAppInfo
@@ -15030,6 +15106,25 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> c_int;
+
+    //=========================================================================
+    // GDebugController
+    //=========================================================================
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_get_type() -> GType;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_dup_default() -> *mut GDebugController;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_get_debug_enabled(self_: *mut GDebugController) -> gboolean;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_set_debug_enabled(
+        self_: *mut GDebugController,
+        debug_enabled: gboolean,
+    );
 
     //=========================================================================
     // GDesktopAppInfoLookup

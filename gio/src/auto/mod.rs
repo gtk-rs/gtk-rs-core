@@ -539,6 +539,9 @@ pub use self::flags::TlsPasswordFlags;
 pub mod functions;
 
 mod constants;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+pub use self::constants::DEBUG_CONTROLLER_EXTENSION_POINT_NAME;
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
 pub use self::constants::DRIVE_IDENTIFIER_KIND_UNIX_DEVICE;

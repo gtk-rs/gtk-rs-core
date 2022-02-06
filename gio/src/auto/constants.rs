@@ -4,6 +4,15 @@
 
 use std::ffi::CStr;
 
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[doc(alias = "G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME")]
+pub static DEBUG_CONTROLLER_EXTENSION_POINT_NAME: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME)
+            .to_str()
+            .unwrap()
+    });
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
 #[doc(alias = "G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE")]
