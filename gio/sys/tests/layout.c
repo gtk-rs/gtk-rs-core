@@ -89,6 +89,9 @@ int main() {
     printf("%s;%zu;%zu\n", "GDataStreamByteOrder", sizeof(GDataStreamByteOrder), alignof(GDataStreamByteOrder));
     printf("%s;%zu;%zu\n", "GDataStreamNewlineType", sizeof(GDataStreamNewlineType), alignof(GDataStreamNewlineType));
     printf("%s;%zu;%zu\n", "GDatagramBasedInterface", sizeof(GDatagramBasedInterface), alignof(GDatagramBasedInterface));
+    printf("%s;%zu;%zu\n", "GDebugControllerDBus", sizeof(GDebugControllerDBus), alignof(GDebugControllerDBus));
+    printf("%s;%zu;%zu\n", "GDebugControllerDBusClass", sizeof(GDebugControllerDBusClass), alignof(GDebugControllerDBusClass));
+    printf("%s;%zu;%zu\n", "GDebugControllerInterface", sizeof(GDebugControllerInterface), alignof(GDebugControllerInterface));
     printf("%s;%zu;%zu\n", "GDesktopAppInfoClass", sizeof(GDesktopAppInfoClass), alignof(GDesktopAppInfoClass));
     printf("%s;%zu;%zu\n", "GDesktopAppInfoLookupIface", sizeof(GDesktopAppInfoLookupIface), alignof(GDesktopAppInfoLookupIface));
     printf("%s;%zu;%zu\n", "GDriveIface", sizeof(GDriveIface), alignof(GDriveIface));

@@ -675,7 +675,7 @@ pub trait FileExt: 'static {
 
     #[doc(alias = "g_file_resolve_relative_path")]
     #[must_use]
-    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> Option<File>;
+    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File;
 
     //#[doc(alias = "g_file_set_attribute")]
     //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Fundamental: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
@@ -2921,7 +2921,7 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> Option<File> {
+    fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File {
         unsafe {
             from_glib_full(ffi::g_file_resolve_relative_path(
                 self.as_ref().to_glib_none().0,

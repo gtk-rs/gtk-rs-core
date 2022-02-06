@@ -830,6 +830,19 @@ impl ::std::fmt::Debug for GBinding {
     }
 }
 
+#[repr(C)]
+pub struct GBindingGroup {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GBindingGroup {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GBindingGroup @ {:p}", self))
+            .finish()
+    }
+}
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GInitiallyUnowned {
@@ -1305,6 +1318,19 @@ impl ::std::fmt::Debug for GParamSpecVariant {
             .field("parent_instance", &self.parent_instance)
             .field("type_", &self.type_)
             .field("default_value", &self.default_value)
+            .finish()
+    }
+}
+
+#[repr(C)]
+pub struct GSignalGroup {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GSignalGroup {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GSignalGroup @ {:p}", self))
             .finish()
     }
 }
@@ -1870,6 +1896,55 @@ extern "C" {
     pub fn g_binding_unbind(binding: *mut GBinding);
 
     //=========================================================================
+    // GBindingGroup
+    //=========================================================================
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_get_type() -> GType;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_new() -> *mut GBindingGroup;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_bind(
+        self_: *mut GBindingGroup,
+        source_property: *const c_char,
+        target: *mut GObject,
+        target_property: *const c_char,
+        flags: GBindingFlags,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_bind_full(
+        self_: *mut GBindingGroup,
+        source_property: *const c_char,
+        target: *mut GObject,
+        target_property: *const c_char,
+        flags: GBindingFlags,
+        transform_to: GBindingTransformFunc,
+        transform_from: GBindingTransformFunc,
+        user_data: gpointer,
+        user_data_destroy: glib::GDestroyNotify,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_bind_with_closures(
+        self_: *mut GBindingGroup,
+        source_property: *const c_char,
+        target: *mut GObject,
+        target_property: *const c_char,
+        flags: GBindingFlags,
+        transform_to: *mut GClosure,
+        transform_from: *mut GClosure,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_dup_source(self_: *mut GBindingGroup) -> *mut GObject;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_binding_group_set_source(self_: *mut GBindingGroup, source: *mut GObject);
+
+    //=========================================================================
     // GInitiallyUnowned
     //=========================================================================
     pub fn g_initially_unowned_get_type() -> GType;
@@ -2065,6 +2140,71 @@ extern "C" {
     pub fn g_param_spec_sink(pspec: *mut GParamSpec);
     pub fn g_param_spec_steal_qdata(pspec: *mut GParamSpec, quark: glib::GQuark) -> gpointer;
     pub fn g_param_spec_unref(pspec: *mut GParamSpec);
+
+    //=========================================================================
+    // GSignalGroup
+    //=========================================================================
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_get_type() -> GType;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_new(target_type: GType) -> *mut GSignalGroup;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_block(self_: *mut GSignalGroup);
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_connect(
+        self_: *mut GSignalGroup,
+        detailed_signal: *const c_char,
+        c_handler: GCallback,
+        data: gpointer,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_connect_after(
+        self_: *mut GSignalGroup,
+        detailed_signal: *const c_char,
+        c_handler: GCallback,
+        data: gpointer,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_connect_data(
+        self_: *mut GSignalGroup,
+        detailed_signal: *const c_char,
+        c_handler: GCallback,
+        data: gpointer,
+        notify: GClosureNotify,
+        flags: GConnectFlags,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_connect_object(
+        self_: *mut GSignalGroup,
+        detailed_signal: *const c_char,
+        c_handler: GCallback,
+        object: gpointer,
+        flags: GConnectFlags,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_connect_swapped(
+        self_: *mut GSignalGroup,
+        detailed_signal: *const c_char,
+        c_handler: GCallback,
+        data: gpointer,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_dup_target(self_: *mut GSignalGroup) -> *mut GObject;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_set_target(self_: *mut GSignalGroup, target: *mut GObject);
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_signal_group_unblock(self_: *mut GSignalGroup);
 
     //=========================================================================
     // GTypeModule
