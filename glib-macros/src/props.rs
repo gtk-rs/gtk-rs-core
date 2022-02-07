@@ -1,7 +1,6 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
-use quote::ToTokens;
 use syn::ext::IdentExt;
 use syn::parse::Parse;
 use syn::spanned::Spanned;
@@ -17,10 +16,10 @@ impl Parse for PropsMacroInput {
         let derive_input: syn::DeriveInput = input.parse()?;
         let props: Vec<_> = match derive_input.data {
             syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
-            _ => Err(syn::Error::new(
+            _ => return Err(syn::Error::new(
                 derive_input.span(),
                 "props can only be derived on structs",
-            ))?,
+            )),
         };
         Ok(Self {
             ident: derive_input.ident,
@@ -154,13 +153,13 @@ impl PropDesc {
                     .unwrap()
                     .to_string()
                     .trim_matches('_')
-                    .replace("_", "-"),
+                    .replace('_', "-"),
                 self.field.ident.span(),
             ))
         });
         self.attrs.nick = self.attrs.nick.or_else(|| self.attrs.name.clone());
         self.attrs.blurb = self.attrs.blurb.or_else(|| self.attrs.name.clone());
-        self.attrs.ty = Some(self.attrs.ty.unwrap_or(self.field.ty.clone()));
+        self.attrs.ty = Some(self.attrs.ty.unwrap_or_else(|| self.field.ty.clone()));
         self
     }
 }
