@@ -1223,10 +1223,7 @@ pub trait HasParamSpec {
 pub trait ParamStoreRead {
     type Value;
     // TODO! Accept fn as argument to eliminate Clone requirement
-    fn get<R, F: Fn(&Self::Value) -> R>(
-        &self,
-        f: F,
-    ) -> R;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R;
 }
 pub trait ParamStoreWrite {
     type Value;
@@ -1266,10 +1263,7 @@ impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
 }
 impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
     type Value = T;
-    fn get<R, F: Fn(&Self::Value) -> R>(
-        &self,
-        f: F,
-    ) -> R {
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.borrow())
     }
 }
@@ -1285,10 +1279,7 @@ impl<T: HasParamSpec> HasParamSpec for std::sync::Mutex<T> {
 }
 impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
     type Value = T;
-    fn get<R, F: Fn(&Self::Value) -> R>(
-        &self,
-        f: F,
-    ) -> R {
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.lock().unwrap())
     }
 }
@@ -1304,10 +1295,7 @@ impl<T: HasParamSpec> HasParamSpec for std::sync::RwLock<T> {
 }
 impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
     type Value = T;
-    fn get<R, F: Fn(&Self::Value) -> R>(
-        &self,
-        f: F,
-    ) -> R {
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.read().unwrap())
     }
 }
