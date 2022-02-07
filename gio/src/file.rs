@@ -506,11 +506,13 @@ impl<O: IsA<File>> FileExtManual for O {
                 glib::thread_guard::ThreadGuard<Q>,
                 RefCell<glib::thread_guard::ThreadGuard<P>>,
             ) = &*(user_data as *const _);
-            (&mut *callback.1.borrow_mut().get_mut())(slice::from_raw_parts(
-                file_contents as *const u8,
-                file_size as usize,
-            ))
-            .into_glib()
+            let data = if file_size == 0 {
+                &[]
+            } else {
+                slice::from_raw_parts(file_contents as *const u8, file_size as usize)
+            };
+
+            (&mut *callback.1.borrow_mut().get_mut())(data).into_glib()
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;

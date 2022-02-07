@@ -382,7 +382,13 @@ impl<
     > AsRef<[T]> for PtrSlice<T>
 {
     fn as_ref(&self) -> &[T] {
-        unsafe { std::slice::from_raw_parts(self.ptr.as_ptr() as *const T, self.len) }
+        unsafe {
+            if self.len == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(self.ptr.as_ptr() as *const T, self.len)
+            }
+        }
     }
 }
 
@@ -668,7 +674,13 @@ impl<T: 'static> Drop for Slice<T> {
 
 impl<T: 'static> AsRef<[T]> for Slice<T> {
     fn as_ref(&self) -> &[T] {
-        unsafe { std::slice::from_raw_parts(self.ptr.as_ptr(), self.len) }
+        unsafe {
+            if self.len == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(self.ptr.as_ptr() as *const T, self.len)
+            }
+        }
     }
 }
 

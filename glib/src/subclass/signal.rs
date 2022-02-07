@@ -136,6 +136,10 @@ impl SignalQuery {
     // rustdoc-stripper-ignore-next
     /// The parameters for the user callback.
     pub fn param_types(&self) -> &[SignalType] {
+        if self.n_params() == 0 {
+            return &[];
+        }
+
         unsafe {
             std::slice::from_raw_parts(
                 self.0.param_types as *const SignalType,

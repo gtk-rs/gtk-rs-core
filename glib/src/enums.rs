@@ -154,6 +154,9 @@ impl EnumClass {
     #[doc(alias = "get_values")]
     pub fn values(&self) -> &[EnumValue] {
         unsafe {
+            if self.0.as_ref().n_values == 0 {
+                return &[];
+            }
             std::slice::from_raw_parts(
                 self.0.as_ref().values as *const EnumValue,
                 self.0.as_ref().n_values as usize,
@@ -385,6 +388,9 @@ impl FlagsClass {
     #[doc(alias = "get_values")]
     pub fn values(&self) -> &[FlagsValue] {
         unsafe {
+            if self.0.as_ref().n_values == 0 {
+                return &[];
+            }
             std::slice::from_raw_parts(
                 self.0.as_ref().values as *const FlagsValue,
                 self.0.as_ref().n_values as usize,
