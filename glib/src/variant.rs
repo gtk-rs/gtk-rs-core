@@ -372,11 +372,15 @@ impl Variant {
                 "s" | "o" | "g" => {
                     let mut len = 0;
                     let ptr = ffi::g_variant_get_string(self.to_glib_none().0, &mut len);
-                    let ret = str::from_utf8_unchecked(slice::from_raw_parts(
-                        ptr as *const u8,
-                        len as usize,
-                    ));
-                    Some(ret)
+                    if len == 0 {
+                        Some("")
+                    } else {
+                        let ret = str::from_utf8_unchecked(slice::from_raw_parts(
+                            ptr as *const u8,
+                            len as usize,
+                        ));
+                        Some(ret)
+                    }
                 }
                 _ => None,
             }
@@ -699,6 +703,9 @@ impl Variant {
         unsafe {
             let selfv = self.to_glib_none();
             let len = ffi::g_variant_get_size(selfv.0);
+            if len == 0 {
+                return &[];
+            }
             let ptr = ffi::g_variant_get_data(selfv.0);
             slice::from_raw_parts(ptr as *const u8, len as usize)
         }

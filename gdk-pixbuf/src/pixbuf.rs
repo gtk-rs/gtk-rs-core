@@ -313,6 +313,9 @@ impl Pixbuf {
     pub unsafe fn pixels(&self) -> &mut [u8] {
         let mut len = 0;
         let ptr = ffi::gdk_pixbuf_get_pixels_with_length(self.to_glib_none().0, &mut len);
+        if len == 0 {
+            return &mut [];
+        }
         slice::from_raw_parts_mut(ptr, len as usize)
     }
 

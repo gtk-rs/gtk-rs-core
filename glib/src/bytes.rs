@@ -112,8 +112,11 @@ impl Deref for Bytes {
         unsafe {
             let mut len = 0;
             let ptr = ffi::g_bytes_get_data(self.to_glib_none().0, &mut len);
-            debug_assert!(!ptr.is_null() || len == 0);
-            slice::from_raw_parts(ptr as *const u8, len)
+            if ptr.is_null() || len == 0 {
+                &[]
+            } else {
+                slice::from_raw_parts(ptr as *const u8, len)
+            }
         }
     }
 }

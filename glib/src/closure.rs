@@ -223,7 +223,11 @@ impl Closure {
         ) where
             F: Fn(&[Value]) -> Option<Value>,
         {
-            let values = slice::from_raw_parts(param_values as *const _, n_param_values as usize);
+            let values = if n_param_values == 0 {
+                &[]
+            } else {
+                slice::from_raw_parts(param_values as *const _, n_param_values as usize)
+            };
             let callback: &F = &*(marshal_data as *mut _);
             let result = callback(values);
 
