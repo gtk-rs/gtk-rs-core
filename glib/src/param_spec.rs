@@ -1221,11 +1221,15 @@ pub trait HasParamSpec {
     type Spec;
 }
 pub trait ParamStoreRead {
-    fn get(&self) -> crate::Value;
+    type Value;
+    // TODO! Accept fn as argument to eliminate Clone requirement
+    fn get(&self) -> Self::Value;
 }
 pub trait ParamStoreWrite {
-    fn set(&self, value: &crate::Value);
+    type Value;
+    fn set(&self, value: Self::Value);
 }
+
 
 impl HasParamSpec for String {
     type Spec = ParamSpecString;
@@ -1258,45 +1262,48 @@ impl<T: HasParamSpec> HasParamSpec for std::marker::PhantomData<T> {
 impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
     type Spec = T::Spec;
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::cell::RefCell<T> {
-    fn get(&self) -> crate::Value {
-        self.borrow().to_value()
+impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
+    type Value = T;
+    fn get(&self) -> Self::Value {
+        self.borrow().clone()
     }
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::cell::RefCell<T> {
-    fn set(&self, value: &crate::Value) {
-        let v = value.get_owned().expect("Invalid value for property");
-        self.replace(v);
+impl<T: Clone> ParamStoreWrite for std::cell::RefCell<T> {
+    type Value = T;
+    fn set(&self, value: Self::Value) {
+        self.replace(value);
     }
 }
 
 impl<T: HasParamSpec> HasParamSpec for std::sync::Mutex<T> {
     type Spec = T::Spec;
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::sync::Mutex<T> {
-    fn get(&self) -> crate::Value {
-        self.lock().unwrap().to_value()
+impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
+    type Value = T;
+    fn get(&self) -> Self::Value {
+        self.lock().unwrap().clone()
     }
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::Mutex<T> {
-    fn set(&self, value: &crate::Value) {
-        let v = value.get_owned().expect("Invalid value for property");
-        *self.lock().unwrap() = v;
+impl<T: Clone> ParamStoreWrite for std::sync::Mutex<T> {
+    type Value = T;
+    fn set(&self, value: Self::Value) {
+        *self.lock().unwrap() = value;
     }
 }
 
 impl<T: HasParamSpec> HasParamSpec for std::sync::RwLock<T> {
     type Spec = T::Spec;
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreRead for std::sync::RwLock<T> {
-    fn get(&self) -> crate::Value {
-        self.read().unwrap().to_value()
+impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
+    type Value = T;
+    fn get(&self) -> Self::Value {
+        self.read().unwrap().clone()
     }
 }
 impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::RwLock<T> {
-    fn set(&self, value: &crate::Value) {
-        let v = value.get_owned().expect("Invalid value for property");
-        *self.write().unwrap() = v;
+    type Value = T;
+    fn set(&self, value: Self::Value) {
+        *self.write().unwrap() = value;
     }
 }
 

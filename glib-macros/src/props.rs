@@ -1,6 +1,9 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
+use proc_macro_error::emit_warning;
 use quote::quote;
+use quote::ToTokens;
+use syn::ext::IdentExt;
 use syn::parse::Parse;
 use syn::spanned::Spanned;
 use syn::Token;
@@ -15,13 +18,14 @@ impl Parse for PropsMacroInput {
         let derive_input: syn::DeriveInput = input.parse()?;
         let props: Vec<_> = match derive_input.data {
             syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
-            _ => {
-                Err(syn::Error::new(derive_input.span(), "props can only be derived on structs"))?
-            }
+            _ => Err(syn::Error::new(
+                derive_input.span(),
+                "props can only be derived on structs",
+            ))?,
         };
         Ok(Self {
             ident: derive_input.ident,
-            props
+            props,
         })
     }
 }
@@ -38,6 +42,10 @@ enum PropAttr {
 
     // ident = expr
     DefaultVal(syn::Expr),
+    Type(syn::Type),
+
+    // ident = ident
+    Member(syn::Ident),
 
     // ident = "literal"
     Name(syn::LitStr),
@@ -47,8 +55,9 @@ enum PropAttr {
 
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        let name: syn::Ident = input.parse()?;
+        let name = input.call(syn::Ident::parse_any)?;
         let name_str = name.to_string();
+        dbg!(&name_str);
 
         let res = if input.peek(Token![=]) {
             let _assign_token: Token![=] = input.parse()?;
@@ -64,12 +73,13 @@ impl Parse for PropAttr {
                     }
                 }
             } else {
-                // name = expr
-                let expr: syn::Expr = input.parse()?;
+                // name = expr | type | ident
                 match &*name_str {
-                    "default" => PropAttr::DefaultVal(expr),
-                    "get" => PropAttr::Get(Some(expr)),
-                    "set" => PropAttr::Set(Some(expr)),
+                    "default" => PropAttr::DefaultVal(input.parse()?),
+                    "get" => PropAttr::Get(Some(input.parse()?)),
+                    "set" => PropAttr::Set(Some(input.parse()?)),
+                    "type" => PropAttr::Type(input.parse()?),
+                    "member" => PropAttr::Member(input.parse()?),
                     _ => {
                         panic!("Invalid attribute for property")
                     }
@@ -94,6 +104,8 @@ impl Parse for PropAttr {
 struct ReceivedAttrs {
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
+    ty: Option<syn::Type>,
+    member: Option<syn::Ident>,
     construct: bool,
     construct_only: bool,
     // These are not syn::LitStr because `name` may be set by default with `field.ident`
@@ -120,6 +132,8 @@ impl ReceivedAttrs {
             PropAttr::Name(lit) => self.name = Some(lit),
             PropAttr::Nick(lit) => self.nick = Some(lit),
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
+            PropAttr::Type(ty) => self.ty = Some(ty),
+            PropAttr::Member(member) => self.member = Some(member),
         }
     }
 }
@@ -148,6 +162,7 @@ impl PropDesc {
         });
         self.attrs.nick = self.attrs.nick.or_else(|| self.attrs.name.clone());
         self.attrs.blurb = self.attrs.blurb.or_else(|| self.attrs.name.clone());
+        self.attrs.ty = Some(self.attrs.ty.unwrap_or(self.field.ty.clone()));
         self
     }
 }
@@ -155,7 +170,7 @@ impl PropDesc {
 fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
     let properties_build_phase = props.iter().map(|prop| {
-        let ty = &prop.field.ty;
+        let ty = &prop.attrs.ty;
         let name = &prop.attrs.name;
         let nick = &prop.attrs.nick;
         let blurb = &prop.attrs.blurb;
@@ -188,10 +203,15 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let match_branch_get = props.iter().flat_map(|p| {
         let name = &p.attrs.name;
         let ident = &p.field.ident;
-        match &p.attrs.get {
-            Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self))),
-            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.get())),
-            None => None,
+        match (&p.attrs.member, &p.attrs.get) {
+            (None, Some(MaybeCustomFn::CustomFn(expr))) => Some(quote!(#name => (#expr)(&self))),
+            (None, Some(MaybeCustomFn::DefaultFn)) => {
+                Some(quote!(#name => self.#ident.get().to_value()))
+            }
+            (Some(member), Some(MaybeCustomFn::DefaultFn)) => {
+                Some(quote!(#name => self.#ident.get().#member.to_value()))
+            }
+            _ => None,
         }
     });
     quote!(
@@ -209,7 +229,9 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let ident = &p.field.ident;
         match &p.attrs.set {
             Some(MaybeCustomFn::CustomFn(expr)) => Some(quote!(#name => (#expr)(&self, value))),
-            Some(MaybeCustomFn::DefaultFn) => Some(quote!(#name => self.#ident.set(value))),
+            Some(MaybeCustomFn::DefaultFn) => {
+                Some(quote!(#name => self.#ident.set(value.get_owned().expect("Can't convert glib::value to property type"))))
+            }
             None => None,
         }
     });
@@ -257,5 +279,6 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #fn_set_property
         }
     };
+    println!("{}", expanded.to_token_stream().to_string());
     proc_macro::TokenStream::from(expanded)
 }

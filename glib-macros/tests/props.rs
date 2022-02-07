@@ -9,9 +9,10 @@ fn props() {
         use std::marker::PhantomData;
         use std::sync::Mutex;
 
-        #[derive(Default)]
+        #[derive(Default, Clone)]
         struct Author {
             name: String,
+            nick: String,
         }
 
         mod imp {
@@ -25,8 +26,11 @@ fn props() {
                 _buzz: PhantomData<String>,
                 #[prop(get, set = Self::set_fizz, name = "fizz")]
                 fizz: RefCell<String>,
+                #[prop(type = String, member = name, get, name = "author-name")]
+                #[prop(type = String, member = nick, get, name = "author-nick")]
                 author: RefCell<Author>,
                 #[prop(
+                    type = String,
                     get = |t: &Self| t.author.borrow().name.to_value(),
                     set = Self::set_author_name)]
                 author_name: PhantomData<String>,
