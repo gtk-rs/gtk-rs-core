@@ -26,14 +26,14 @@ fn props() {
                 _buzz: PhantomData<String>,
                 #[prop(get, set = Self::set_fizz, name = "fizz")]
                 fizz: RefCell<String>,
-                #[prop(type = String, member = name, get, name = "author-name")]
-                #[prop(type = String, member = nick, get, name = "author-nick")]
+                #[prop(name = "author-name", get, set, type = String, member = name)]
+                #[prop(name = "author-nick", get, set, type = String, member = nick)]
                 author: RefCell<Author>,
                 #[prop(
                     type = String,
                     get = |t: &Self| t.author.borrow().name.to_value(),
                     set = Self::set_author_name)]
-                author_name: PhantomData<String>,
+                fake_field: PhantomData<String>,
             }
 
             #[glib::object_subclass]
@@ -81,8 +81,12 @@ fn props() {
     let fizz: String = myfoo.property("fizz");
     assert_eq!(fizz, "custom set: test".to_string());
 
-    // PhantomData with custom getter/setter to other inner value
+    // Multiple props on the same field
     myfoo.set_property("author-name", "freddy".to_value());
     let author_name: String = myfoo.property("author-name");
     assert_eq!(author_name, "freddy".to_string());
+
+    myfoo.set_property("author-nick", "freddy-nick".to_value());
+    let author_name: String = myfoo.property("author-nick");
+    assert_eq!(author_name, "freddy-nick".to_string());
 }

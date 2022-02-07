@@ -1223,13 +1223,15 @@ pub trait HasParamSpec {
 pub trait ParamStoreRead {
     type Value;
     // TODO! Accept fn as argument to eliminate Clone requirement
-    fn get(&self) -> Self::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(
+        &self,
+        f: F,
+    ) -> R;
 }
 pub trait ParamStoreWrite {
     type Value;
-    fn set(&self, value: Self::Value);
+    fn set<F: Fn(&mut Self::Value)>(&self, f: F);
 }
-
 
 impl HasParamSpec for String {
     type Spec = ParamSpecString;
@@ -1264,14 +1266,17 @@ impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
 }
 impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
     type Value = T;
-    fn get(&self) -> Self::Value {
-        self.borrow().clone()
+    fn get<R, F: Fn(&Self::Value) -> R>(
+        &self,
+        f: F,
+    ) -> R {
+        f(&self.borrow())
     }
 }
 impl<T: Clone> ParamStoreWrite for std::cell::RefCell<T> {
     type Value = T;
-    fn set(&self, value: Self::Value) {
-        self.replace(value);
+    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+        f(&mut self.borrow_mut());
     }
 }
 
@@ -1280,14 +1285,17 @@ impl<T: HasParamSpec> HasParamSpec for std::sync::Mutex<T> {
 }
 impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
     type Value = T;
-    fn get(&self) -> Self::Value {
-        self.lock().unwrap().clone()
+    fn get<R, F: Fn(&Self::Value) -> R>(
+        &self,
+        f: F,
+    ) -> R {
+        f(&self.lock().unwrap())
     }
 }
 impl<T: Clone> ParamStoreWrite for std::sync::Mutex<T> {
     type Value = T;
-    fn set(&self, value: Self::Value) {
-        *self.lock().unwrap() = value;
+    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+        f(&mut self.lock().unwrap());
     }
 }
 
@@ -1296,14 +1304,17 @@ impl<T: HasParamSpec> HasParamSpec for std::sync::RwLock<T> {
 }
 impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
     type Value = T;
-    fn get(&self) -> Self::Value {
-        self.read().unwrap().clone()
+    fn get<R, F: Fn(&Self::Value) -> R>(
+        &self,
+        f: F,
+    ) -> R {
+        f(&self.read().unwrap())
     }
 }
 impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::RwLock<T> {
     type Value = T;
-    fn set(&self, value: Self::Value) {
-        *self.write().unwrap() = value;
+    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+        f(&mut self.write().unwrap());
     }
 }
 
