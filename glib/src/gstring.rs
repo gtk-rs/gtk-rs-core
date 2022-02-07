@@ -38,8 +38,12 @@ impl GString {
                 }
                 Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
             };
-            let slice = slice::from_raw_parts(ptr, len);
-            std::str::from_utf8_unchecked(slice)
+            if len == 0 {
+                ""
+            } else {
+                let slice = slice::from_raw_parts(ptr, len);
+                std::str::from_utf8_unchecked(slice)
+            }
         }
     }
 
@@ -220,6 +224,7 @@ impl From<GString> for String {
     #[inline]
     fn from(mut s: GString) -> Self {
         match s.0 {
+            Inner::Foreign { len, .. } if len == 0 => String::new(),
             Inner::Foreign { ptr, len } => unsafe {
                 // Creates a copy
                 let slice = slice::from_raw_parts(ptr.as_ptr() as *const u8, len);

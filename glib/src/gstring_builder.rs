@@ -89,6 +89,9 @@ impl GStringBuilder {
         unsafe {
             let ptr: *const u8 = (*self.inner).str as _;
             let len: usize = (*self.inner).len;
+            if len == 0 {
+                return "";
+            }
             let slice = slice::from_raw_parts(ptr, len);
             std::str::from_utf8(slice).unwrap()
         }

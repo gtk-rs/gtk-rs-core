@@ -49,7 +49,12 @@ impl PdfSurface {
             let mut num_vers = mem::MaybeUninit::uninit();
             ffi::cairo_pdf_get_versions(&mut vers_ptr, num_vers.as_mut_ptr());
 
-            std::slice::from_raw_parts(vers_ptr, num_vers.assume_init() as _)
+            let num_vers = num_vers.assume_init();
+            if num_vers == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(vers_ptr, num_vers as _)
+            }
         };
         vers_slice.iter().map(|v| PdfVersion::from(*v))
     }

@@ -47,7 +47,12 @@ impl PsSurface {
             let mut num_vers = mem::MaybeUninit::uninit();
             ffi::cairo_ps_get_levels(&mut vers_ptr, num_vers.as_mut_ptr());
 
-            std::slice::from_raw_parts(vers_ptr, num_vers.assume_init() as _)
+            let num_vers = num_vers.assume_init();
+            if num_vers == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(vers_ptr, num_vers as _)
+            }
         };
 
         lvls_slice.iter().map(|v| PsLevel::from(*v))

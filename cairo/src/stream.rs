@@ -224,7 +224,13 @@ extern "C" fn write_callback<W: io::Write + 'static>(
             // with a W parameter consistent with the box that was unsized to `Box<dyn Any>`.
             let stream = unsafe { stream.downcast_mut_unchecked::<W>() };
             // Safety: this is the callback contract from cairo’s API
-            let data = unsafe { std::slice::from_raw_parts(data, length as usize) };
+            let data = unsafe {
+                if data.is_null() || length == 0 {
+                    &[]
+                } else {
+                    std::slice::from_raw_parts(data, length as usize)
+                }
+            };
             // Because `<W as Write>::write_all` is a generic,
             // we must conservatively assume that it can panic.
             let result = std::panic::catch_unwind(AssertUnwindSafe(|| stream.write_all(data)));
