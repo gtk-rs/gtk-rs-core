@@ -36,6 +36,12 @@ enum MaybeCustomFn {
 }
 
 enum PropAttr {
+    // ident
+    Construct,
+    ConstructOnly,
+    Deprecated,
+    ExplicitNotify,
+
     // ident [= expr]
     Get(Option<syn::Expr>),
     Set(Option<syn::Expr>),
@@ -90,6 +96,10 @@ impl Parse for PropAttr {
             match &*name_str {
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
+                "construct" => PropAttr::Construct,
+                "construct_only" => PropAttr::ConstructOnly,
+                "deprecated" => PropAttr::Deprecated,
+                "explicit_notify" => PropAttr::ExplicitNotify,
                 _ => {
                     panic!("Invalid attribute for property")
                 }
@@ -107,6 +117,8 @@ struct ReceivedAttrs {
     member: Option<syn::Ident>,
     construct: bool,
     construct_only: bool,
+    deprecated: bool,
+    explicit_notify: bool,
     // These are not syn::LitStr because `name` may be set by default with `field.ident`
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
@@ -133,6 +145,10 @@ impl ReceivedAttrs {
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
+            PropAttr::Construct => self.construct = true,
+            PropAttr::ConstructOnly => self.construct_only = true,
+            PropAttr::Deprecated => self.deprecated = true,
+            PropAttr::ExplicitNotify => self.explicit_notify = true,
         }
     }
 }
@@ -180,11 +196,23 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             .default
             .as_ref()
             .map_or(quote!(None), |x| quote!(Some(#x)));
-        let flags = match (prop.attrs.get.is_some(), prop.attrs.set.is_some()) {
-            (false, false) => quote!(glib::ParamFlags::empty()),
-            (false, true) => quote!(glib::ParamFlags::WRITABLE),
-            (true, false) => quote!(glib::ParamFlags::READABLE),
-            (true, true) => quote!(glib::ParamFlags::READWRITE),
+
+        let flags = {
+            let write = prop.attrs.set.as_ref().map(|_| quote!(WRITABLE));
+            let read = prop.attrs.get.as_ref().map(|_| quote!(READABLE));
+            let construct = prop.attrs.construct.then(|| quote!(CONSTRUCT));
+            let construct_only = prop.attrs.construct_only.then(|| quote!(CONSTRUCT_ONLY));
+            let deprecated = prop.attrs.deprecated.then(|| quote!(DEPRECATED));
+            let explicit_notify = prop.attrs.explicit_notify.then(|| quote!(EXPLICIT_NOTIFY));
+
+            let mut flags_iter = [write, read, construct, construct_only, deprecated, explicit_notify]
+                .into_iter()
+                .flat_map(|x| x)
+                .peekable();
+            if flags_iter.peek().is_none() {
+                panic!("Property without flags");
+            }
+            quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
         };
         quote! {
             <#ty as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
