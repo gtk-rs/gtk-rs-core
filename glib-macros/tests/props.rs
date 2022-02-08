@@ -34,6 +34,8 @@ fn props() {
                     get = |t: &Self| t.author.borrow().name.to_value(),
                     set = Self::set_author_name)]
                 fake_field: PhantomData<String>,
+                #[prop(get, set, flags(EXPLICIT_NOTIFY, USER_1, DEPRECATED))]
+                manual_flags: RefCell<String>,
             }
 
             #[glib::object_subclass]
