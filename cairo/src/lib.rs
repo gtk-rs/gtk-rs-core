@@ -142,8 +142,6 @@ mod enums;
 mod error;
 mod font;
 mod image_surface;
-#[cfg(any(feature = "png", feature = "dox"))]
-mod image_surface_png;
 mod matrices;
 mod paths;
 mod patterns;
@@ -152,6 +150,8 @@ mod rectangle;
 mod rectangle_int;
 mod region;
 mod surface;
+#[cfg(any(feature = "png", feature = "dox"))]
+mod surface_png;
 #[cfg(any(feature = "xcb", feature = "dox"))]
 mod xcb;
 
