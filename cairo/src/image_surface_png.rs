@@ -9,7 +9,7 @@ use std::slice;
 use libc::{c_uint, c_void};
 
 use crate::error::{Error, IoError};
-use crate::ImageSurface;
+use crate::{ImageSurface, Surface};
 use ffi::cairo_status_t;
 
 struct ReadEnv<'a, R: 'a + Read> {
@@ -112,8 +112,16 @@ impl ImageSurface {
             }
         }
     }
+}
 
+impl Surface {
+    // rustdoc-stripper-ignore-next
+    /// This function writes the surface as a PNG image to the given stream.
+    ///
+    /// If the underlying surface does not support being written as a PNG, this will return
+    /// [`Error::SurfaceTypeMismatch`]
     #[doc(alias = "cairo_surface_write_to_png_stream")]
+    #[doc(alias = "cairo_surface_write_to_png")]
     pub fn write_to_png<W: Write>(&self, stream: &mut W) -> Result<(), IoError> {
         let mut env = WriteEnv {
             writer: stream,
