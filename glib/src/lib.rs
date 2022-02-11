@@ -36,7 +36,7 @@ pub use self::signal::{
 };
 
 pub use self::enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory};
-pub use self::types::{ILong, Pointer, StaticType, Type, ULong};
+pub use self::types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong};
 pub use self::value::{BoxedValue, SendValue, ToSendValue, ToValue, Value};
 pub use self::variant::{
     FixedSizeVariantArray, FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant, Variant,
