@@ -246,6 +246,19 @@ impl StaticType for Type {
     }
 }
 
+pub trait StaticTypeExt {
+    // rustdoc-stripper-ignore-next
+    /// Ensures that the type has been registered with the type system.
+    #[doc(alias = "g_type_ensure")]
+    fn ensure_type();
+}
+
+impl<T: StaticType> StaticTypeExt for T {
+    fn ensure_type() {
+        T::static_type();
+    }
+}
+
 #[doc(hidden)]
 impl crate::value::ValueType for Type {
     type Type = Type;
