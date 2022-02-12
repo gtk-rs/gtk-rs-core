@@ -12,9 +12,13 @@ use crate::{
     Object,
 };
 
+use std::cell::Cell;
+use std::cell::RefCell;
 use std::char::CharTryFromError;
 use std::convert::TryFrom;
 use std::ffi::CStr;
+use std::marker::PhantomData;
+use std::sync::Mutex;
 
 // Can't use get_type here as this is not a boxed type but another fundamental type
 wrapper! {
@@ -1254,13 +1258,28 @@ impl HasParamSpec for u64 {
 impl HasParamSpec for u32 {
     type Spec = ParamSpecUInt;
 }
-impl<T: HasParamSpec> HasParamSpec for std::marker::PhantomData<T> {
-    type Spec = T::Spec;
+
+pub trait PropType {
+    type HasSpecType;
 }
 
-impl<T: HasParamSpec> HasParamSpec for std::cell::RefCell<T> {
-    type Spec = T::Spec;
+impl<T: HasParamSpec> PropType for T {
+    type HasSpecType = T;
 }
+impl<T: HasParamSpec> PropType for PhantomData<T> {
+    type HasSpecType = T;
+}
+impl<T: HasParamSpec> PropType for RefCell<T> {
+    type HasSpecType = T;
+}
+impl<T: HasParamSpec> PropType for Cell<T> {
+    type HasSpecType = T;
+}
+impl<T: HasParamSpec> PropType for Mutex<T> {
+    type HasSpecType = T;
+}
+
+// TODO: relax clone requirement
 impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
@@ -1274,9 +1293,6 @@ impl<T: Clone> ParamStoreWrite for std::cell::RefCell<T> {
     }
 }
 
-impl<T: HasParamSpec> HasParamSpec for std::sync::Mutex<T> {
-    type Spec = T::Spec;
-}
 impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
@@ -1290,9 +1306,6 @@ impl<T: Clone> ParamStoreWrite for std::sync::Mutex<T> {
     }
 }
 
-impl<T: HasParamSpec> HasParamSpec for std::sync::RwLock<T> {
-    type Spec = T::Spec;
-}
 impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {

@@ -1,7 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::str::FromStr;
+
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
+use quote::format_ident;
 use quote::quote;
 use quote::ToTokens;
 use syn::ext::IdentExt;
@@ -210,7 +213,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
         };
         quote! {
-            <#ty as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
+            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
         }
     });
     quote!(
@@ -228,10 +231,13 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let name = &p.attrs.name;
         let ident = &p.field_ident;
         match (&p.attrs.member, &p.attrs.get) {
-            (_, Some(MaybeCustomFn::CustomFn(expr))) => Some(quote!(#name => (#expr)(&self))),
-            (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
+            (_, Some(MaybeCustomFn::CustomFn(expr))) => Some(
+                quote!(#name => (#expr)(&self).to_value())),
+            (None, Some(MaybeCustomFn::DefaultFn)) => Some(
+                quote!(#name => self.#ident
                         .get(|v| v.to_value()))),
-            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
+            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(
+                quote!(#name => self.#ident
                         .get(|v| v.#member.to_value()))),
             _ => None,
         }
@@ -295,11 +301,82 @@ fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
     })
 }
 
+fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
+    let defs = props.iter().map(|p| {
+        let ident = format_ident!("{}", p.attrs.name.as_ref().unwrap().value().replace('-', "_"));
+        let set_ident = format_ident!("set_{}", ident);
+        let ty = &p.attrs.ty;
+        let getter = p
+            .attrs
+            .get
+            .as_ref()
+            .map(|_| quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType;));
+        let setter =
+            p.attrs.set.as_ref().map(
+                |_| quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType);),
+            );
+        quote!(
+            #getter
+        )
+    });
+    quote!(#(#defs)*).into()
+}
+
+fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
+    let defs = props.iter().map(|p| {
+        let ident = format_ident!(
+            "{}",
+            p.attrs.name.as_ref().unwrap().value().replace('-', "_")
+        );
+        let set_ident = format_ident!("set_{}", ident);
+        let field_ident = &p.field_ident;
+        let ty = &p.attrs.ty;
+        let getter = p.attrs.get.as_ref().map(|mfn| {
+            let getter_body = match (p.attrs.member.as_ref(), mfn) {
+                (None, MaybeCustomFn::DefaultFn) => quote!(
+                     self.imp().#field_ident.get(|x| x.to_owned())
+                ),
+                (Some(member), MaybeCustomFn::DefaultFn) => quote!(
+                     self.imp().#field_ident.get(|x| x.#member.to_owned())
+                ),
+                (_, MaybeCustomFn::CustomFn(custom_fn)) => {
+                    // Self in this scope should refer to `imp::Foo`, but the impl is on `Foo`.
+                    // Let's rename `Self`.
+                    let custom_fn = custom_fn
+                        .to_token_stream()
+                        .to_string()
+                        .replace("Self", &imp_type_ident.to_string());
+                    let custom_fn = TokenStream2::from_str(&custom_fn).unwrap();
+                    quote!(
+                        (#custom_fn)(&self.imp())
+                    )
+                }
+            };
+            quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType {
+                #getter_body
+            })
+        });
+        let setter = p
+            .attrs
+            .set
+            .as_ref()
+            .map(|_| quote!(fn #set_ident(&self, value: #ty);));
+        quote!(
+            #getter
+        )
+    });
+    quote!(#(#defs)*)
+}
+
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
+    let struct_ident_ext = format_ident!("{}Ext", &input.ident);
+    let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
+    let getset_properties_def = expand_getset_properties_def(&input.props);
+    let getset_properties_impl = expand_getset_properties_impl(&struct_ident, &input.props);
     let expanded = quote! {
         use glib::{ParamStoreRead, ParamStoreWrite};
         impl ObjectImpl for #struct_ident {
@@ -307,6 +384,15 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #fn_property
             #fn_set_property
         }
+
+        pub trait #struct_ident_ext {
+            #getset_properties_def
+        }
+        impl #struct_ident_ext for #wrapper_type {
+            #getset_properties_impl
+        }
+
     };
+    println!("{}", expanded.to_string());
     proc_macro::TokenStream::from(expanded)
 }

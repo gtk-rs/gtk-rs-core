@@ -17,7 +17,7 @@ fn props() {
             nick: String,
         }
 
-        mod imp {
+        pub mod imp {
             use super::*;
 
             #[derive(Props, Default)]
@@ -33,7 +33,7 @@ fn props() {
                 author: RefCell<Author>,
                 #[prop(
                     type = String,
-                    get = |t: &Self| t.author.borrow().name.to_value(),
+                    get = |t: &Self| t.author.borrow().name.to_owned(),
                     set = Self::set_author_name)]
                 fake_field: PhantomData<String>,
                 #[prop(get, set, flags(EXPLICIT_NOTIFY, USER_1, DEPRECATED))]
@@ -50,8 +50,8 @@ fn props() {
                 fn set_author_name(&self, value: &glib::Value) {
                     self.author.borrow_mut().name = value.get().unwrap();
                 }
-                fn hello_world(&self) -> glib::Value {
-                    "Hello world!".to_value()
+                fn hello_world(&self) -> String {
+                    String::from("Hello world!")
                 }
                 fn set_fizz(&self, value: &glib::Value) {
                     let v: String = value.get().unwrap();
@@ -64,6 +64,8 @@ fn props() {
             pub struct Foo(ObjectSubclass<imp::Foo>);
         }
     }
+
+    use foo::imp::FooExt;
 
     let myfoo: foo::Foo = glib::object::Object::new(&[]).unwrap();
 
@@ -93,4 +95,20 @@ fn props() {
     myfoo.set_property("author-nick", "freddy-nick".to_value());
     let author_name: String = myfoo.property("author-nick");
     assert_eq!(author_name, "freddy-nick".to_string());
+
+
+
+    // Test `FooExt`
+
+    // simple
+    let bar = myfoo.bar();
+    assert_eq!(bar, myfoo.property::<String>("bar"));
+
+    // custom getter
+    let buzz = myfoo.buzz();
+    assert_eq!(buzz, myfoo.property::<String>("buzz"));
+
+    // get member of struct field
+    let author_nick = myfoo.author_nick();
+    assert_eq!(author_nick, myfoo.property::<String>("author-nick"));
 }
