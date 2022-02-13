@@ -251,10 +251,10 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
 fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let match_branch_get = props.iter().flat_map(|p| {
         let PropDesc {
-            ref name,
-            ref field_ident,
-            ref member,
-            ref get,
+            name,
+            field_ident,
+            member,
+            get,
             ..
         } = p;
         match (member, get) {
@@ -282,10 +282,10 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
 fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let match_branch_set = props.iter().flat_map(|p| {
         let PropDesc {
-            ref name,
-            ref field_ident,
-            ref member,
-            ref set,
+            name,
+            field_ident,
+            member,
+            set,
             ..
         } = p;
         match (member, set) {
