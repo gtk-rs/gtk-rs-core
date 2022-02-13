@@ -1,12 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::str::FromStr;
-
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::quote;
 use quote::ToTokens;
+use std::str::FromStr;
 use syn::ext::IdentExt;
 use syn::parse::Parse;
 use syn::punctuated::Punctuated;
@@ -300,12 +299,19 @@ fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
     })
 }
 
+/// Converts a glib property name to a correct rust ident
+fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
+    format_ident!("{}", name.value().replace('-', "_"))
+}
+
+/// Changes `Self` to another concrete type, to make it work in a different scope
+fn change_self_type<T: ToTokens>(source: &T, ident: &str) -> TokenStream2 {
+    TokenStream2::from_str(&source.to_token_stream().to_string().replace("Self", ident)).unwrap()
+}
+
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = format_ident!(
-            "{}",
-            p.attrs.name.as_ref().unwrap().value().replace('-', "_")
-        );
+        let ident = name_to_ident(p.attrs.name.as_ref().unwrap());
         let set_ident = format_ident!("set_{}", ident);
         let ty = &p.attrs.ty;
         let getter = p
@@ -327,23 +333,11 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
 
 fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = format_ident!(
-            "{}",
-            p.attrs.name.as_ref().unwrap().value().replace('-', "_")
-        );
+        let ident = name_to_ident(p.attrs.name.as_ref().unwrap());
         let set_ident = format_ident!("set_{}", ident);
         let field_ident = &p.field_ident;
         let ty = &p.attrs.ty;
 
-        // Self in this scope should refer to `imp::Foo`, but the impl is on `Foo`.
-        // Let's rename `Self`.
-        let adapt_custom_fn_self = |custom_fn: &syn::Expr| {
-            let custom_fn = custom_fn
-                .to_token_stream()
-                .to_string()
-                .replace("Self", &imp_type_ident.to_string());
-            TokenStream2::from_str(&custom_fn).unwrap()
-        };
         let getter = p.attrs.get.as_ref().map(|mfn| {
             let body = match (p.attrs.member.as_ref(), mfn) {
                 (None, MaybeCustomFn::DefaultFn) => quote!(
@@ -353,10 +347,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                      self.imp().#field_ident.get(|x| x.#member.to_owned())
                 ),
                 (_, MaybeCustomFn::CustomFn(custom_fn)) => {
-                    let custom_fn = adapt_custom_fn_self(custom_fn);
-                    quote!(
-                        (#custom_fn)(&self.imp())
-                    )
+                    let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
+                    quote!((#custom_fn)(&self.imp()))
                 }
             };
             quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType {
@@ -365,7 +357,6 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
         });
         let setter = p.attrs.set.as_ref().map(|mfn| {
             let body = match (p.attrs.member.as_ref(), mfn) {
-                // FIXME: Too much cloning involved
                 (None, MaybeCustomFn::DefaultFn) => quote!(
                      self.imp().#field_ident.set(move |x| *x = value)
                 ),
@@ -373,10 +364,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                      self.imp().#field_ident.set(move |x| x.#member = value)
                 ),
                 (_, MaybeCustomFn::CustomFn(custom_fn)) => {
-                    let custom_fn = adapt_custom_fn_self(custom_fn);
-                    quote!(
-                        (#custom_fn)(&self.imp(), value)
-                    )
+                    let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
+                    quote!((#custom_fn)(&self.imp(), value))
                 }
             };
             quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType) {
