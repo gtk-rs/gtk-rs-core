@@ -38,7 +38,7 @@ impl Parse for PropsMacroInput {
 }
 
 enum MaybeCustomFn {
-    CustomFn(syn::Expr),
+    CustomFn(Box<syn::Expr>),
     DefaultFn,
 }
 
@@ -143,9 +143,9 @@ impl ReceivedAttrs {
     }
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
-            PropAttr::Get(Some(expr)) => self.get = Some(MaybeCustomFn::CustomFn(expr)),
+            PropAttr::Get(Some(expr)) => self.get = Some(MaybeCustomFn::CustomFn(Box::new(expr))),
             PropAttr::Get(None) => self.get = Some(MaybeCustomFn::DefaultFn),
-            PropAttr::Set(Some(expr)) => self.set = Some(MaybeCustomFn::CustomFn(expr)),
+            PropAttr::Set(Some(expr)) => self.set = Some(MaybeCustomFn::CustomFn(Box::new(expr))),
             PropAttr::Set(None) => self.set = Some(MaybeCustomFn::DefaultFn),
             PropAttr::DefaultVal(expr) => self.default = Some(expr),
             PropAttr::Name(lit) => self.name = Some(lit),
@@ -322,7 +322,7 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
             #setter
         )
     });
-    quote!(#(#defs)*).into()
+    quote!(#(#defs)*)
 }
 
 fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
@@ -399,7 +399,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
     let getset_properties_def = expand_getset_properties_def(&input.props);
-    let getset_properties_impl = expand_getset_properties_impl(&struct_ident, &input.props);
+    let getset_properties_impl = expand_getset_properties_impl(struct_ident, &input.props);
     let expanded = quote! {
         use glib::{ParamStoreRead, ParamStoreWrite};
         impl ObjectImpl for #struct_ident {
@@ -416,6 +416,6 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
         }
 
     };
-    println!("{}", expanded.to_string());
+    println!("{}", expanded);
     proc_macro::TokenStream::from(expanded)
 }
