@@ -255,13 +255,13 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let ident = &p.field_ident;
         match (&p.attrs.member, &p.attrs.set) {
             (_, Some(MaybeCustomFn::CustomFn(expr))) => {
-                Some(quote!(#name => (#expr)(&self, value.get_owned().unwrap())))
+                Some(quote!(#name => (#expr)(&self, value.get().unwrap())))
             }
             (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name =>
-                        self.#ident.set(move |v| *v = value.get_owned()
+                        self.#ident.set(move |v| *v = value.get()
                             .expect("Can't convert glib::value to property type")))),
             (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => 
-                        self.#ident.set(move |v| v.#member = value.get_owned()
+                        self.#ident.set(move |v| v.#member = value.get()
                             .expect("Can't convert glib::value to property type")))),
             (_, None) => None,
         }
