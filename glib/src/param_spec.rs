@@ -1231,7 +1231,7 @@ pub trait ParamStoreRead {
 }
 pub trait ParamStoreWrite {
     type Value;
-    fn set<F: Fn(&mut Self::Value)>(&self, f: F);
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F);
 }
 
 impl HasParamSpec for String {
@@ -1288,7 +1288,7 @@ impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
 }
 impl<T: Clone> ParamStoreWrite for std::cell::RefCell<T> {
     type Value = T;
-    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.borrow_mut());
     }
 }
@@ -1301,7 +1301,7 @@ impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
 }
 impl<T: Clone> ParamStoreWrite for std::sync::Mutex<T> {
     type Value = T;
-    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.lock().unwrap());
     }
 }
@@ -1314,7 +1314,7 @@ impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
 }
 impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::RwLock<T> {
     type Value = T;
-    fn set<F: Fn(&mut Self::Value)>(&self, f: F) {
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.write().unwrap());
     }
 }

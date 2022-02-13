@@ -231,13 +231,12 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let name = &p.attrs.name;
         let ident = &p.field_ident;
         match (&p.attrs.member, &p.attrs.get) {
-            (_, Some(MaybeCustomFn::CustomFn(expr))) => Some(
-                quote!(#name => (#expr)(&self).to_value())),
-            (None, Some(MaybeCustomFn::DefaultFn)) => Some(
-                quote!(#name => self.#ident
+            (_, Some(MaybeCustomFn::CustomFn(expr))) => {
+                Some(quote!(#name => (#expr)(&self).to_value()))
+            }
+            (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
                         .get(|v| v.to_value()))),
-            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(
-                quote!(#name => self.#ident
+            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
                         .get(|v| v.#member.to_value()))),
             _ => None,
         }
@@ -257,13 +256,13 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         let ident = &p.field_ident;
         match (&p.attrs.member, &p.attrs.set) {
             (_, Some(MaybeCustomFn::CustomFn(expr))) => {
-                Some(quote!(#name => (#expr)(&self, value)))
+                Some(quote!(#name => (#expr)(&self, value.get_owned().unwrap())))
             }
             (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name =>
-                        self.#ident.set(|v| *v = value.get_owned()
+                        self.#ident.set(move |v| *v = value.get_owned()
                             .expect("Can't convert glib::value to property type")))),
             (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => 
-                        self.#ident.set(|v| v.#member = value.get_owned()
+                        self.#ident.set(move |v| v.#member = value.get_owned()
                             .expect("Can't convert glib::value to property type")))),
             (_, None) => None,
         }
@@ -303,7 +302,10 @@ fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
 
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = format_ident!("{}", p.attrs.name.as_ref().unwrap().value().replace('-', "_"));
+        let ident = format_ident!(
+            "{}",
+            p.attrs.name.as_ref().unwrap().value().replace('-', "_")
+        );
         let set_ident = format_ident!("set_{}", ident);
         let ty = &p.attrs.ty;
         let getter = p
@@ -317,6 +319,7 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
             );
         quote!(
             #getter
+            #setter
         )
     });
     quote!(#(#defs)*).into()
@@ -331,8 +334,18 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
         let set_ident = format_ident!("set_{}", ident);
         let field_ident = &p.field_ident;
         let ty = &p.attrs.ty;
+
+        // Self in this scope should refer to `imp::Foo`, but the impl is on `Foo`.
+        // Let's rename `Self`.
+        let adapt_custom_fn_self = |custom_fn: &syn::Expr| {
+            let custom_fn = custom_fn
+                .to_token_stream()
+                .to_string()
+                .replace("Self", &imp_type_ident.to_string());
+            TokenStream2::from_str(&custom_fn).unwrap()
+        };
         let getter = p.attrs.get.as_ref().map(|mfn| {
-            let getter_body = match (p.attrs.member.as_ref(), mfn) {
+            let body = match (p.attrs.member.as_ref(), mfn) {
                 (None, MaybeCustomFn::DefaultFn) => quote!(
                      self.imp().#field_ident.get(|x| x.to_owned())
                 ),
@@ -340,29 +353,39 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                      self.imp().#field_ident.get(|x| x.#member.to_owned())
                 ),
                 (_, MaybeCustomFn::CustomFn(custom_fn)) => {
-                    // Self in this scope should refer to `imp::Foo`, but the impl is on `Foo`.
-                    // Let's rename `Self`.
-                    let custom_fn = custom_fn
-                        .to_token_stream()
-                        .to_string()
-                        .replace("Self", &imp_type_ident.to_string());
-                    let custom_fn = TokenStream2::from_str(&custom_fn).unwrap();
+                    let custom_fn = adapt_custom_fn_self(custom_fn);
                     quote!(
                         (#custom_fn)(&self.imp())
                     )
                 }
             };
             quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType {
-                #getter_body
+                #body
             })
         });
-        let setter = p
-            .attrs
-            .set
-            .as_ref()
-            .map(|_| quote!(fn #set_ident(&self, value: #ty);));
+        let setter = p.attrs.set.as_ref().map(|mfn| {
+            let body = match (p.attrs.member.as_ref(), mfn) {
+                // FIXME: Too much cloning involved
+                (None, MaybeCustomFn::DefaultFn) => quote!(
+                     self.imp().#field_ident.set(move |x| *x = value)
+                ),
+                (Some(member), MaybeCustomFn::DefaultFn) => quote!(
+                     self.imp().#field_ident.set(move |x| x.#member = value)
+                ),
+                (_, MaybeCustomFn::CustomFn(custom_fn)) => {
+                    let custom_fn = adapt_custom_fn_self(custom_fn);
+                    quote!(
+                        (#custom_fn)(&self.imp(), value)
+                    )
+                }
+            };
+            quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType) {
+                #body
+            })
+        });
         quote!(
             #getter
+            #setter
         )
     });
     quote!(#(#defs)*)

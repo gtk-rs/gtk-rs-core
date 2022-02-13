@@ -47,15 +47,14 @@ fn props() {
             }
 
             impl Foo {
-                fn set_author_name(&self, value: &glib::Value) {
-                    self.author.borrow_mut().name = value.get().unwrap();
+                fn set_author_name(&self, value: String) {
+                    self.author.borrow_mut().name = value;
                 }
                 fn hello_world(&self) -> String {
                     String::from("Hello world!")
                 }
-                fn set_fizz(&self, value: &glib::Value) {
-                    let v: String = value.get().unwrap();
-                    *self.fizz.borrow_mut() = format!("custom set: {}", v);
+                fn set_fizz(&self, value: String) {
+                    *self.fizz.borrow_mut() = format!("custom set: {}", value);
                 }
             }
         }
@@ -96,19 +95,43 @@ fn props() {
     let author_name: String = myfoo.property("author-nick");
     assert_eq!(author_name, "freddy-nick".to_string());
 
-
-
     // Test `FooExt`
+    // getters
+    {
+        // simple
+        let bar = myfoo.bar();
+        assert_eq!(bar, myfoo.property::<String>("bar"));
 
-    // simple
-    let bar = myfoo.bar();
-    assert_eq!(bar, myfoo.property::<String>("bar"));
+        // custom
+        let buzz = myfoo.buzz();
+        assert_eq!(buzz, myfoo.property::<String>("buzz"));
 
-    // custom getter
-    let buzz = myfoo.buzz();
-    assert_eq!(buzz, myfoo.property::<String>("buzz"));
+        // member of struct field
+        let author_nick = myfoo.author_nick();
+        assert_eq!(author_nick, myfoo.property::<String>("author-nick"));
+    }
 
-    // get member of struct field
-    let author_nick = myfoo.author_nick();
-    assert_eq!(author_nick, myfoo.property::<String>("author-nick"));
+    // setters
+    {
+        // simple
+        myfoo.set_bar("setter working".to_string());
+        assert_eq!(
+            myfoo.property::<String>("bar"),
+            "setter working".to_string()
+        );
+
+        // custom
+        myfoo.set_fake_field("fake setter".to_string());
+        assert_eq!(
+            myfoo.property::<String>("author-name"),
+            "fake setter".to_string()
+        );
+
+        // member of struct field
+        myfoo.set_author_nick("setter nick".to_string());
+        assert_eq!(
+            myfoo.property::<String>("author-nick"),
+            "setter nick".to_string()
+        );
+    }
 }
