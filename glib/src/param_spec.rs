@@ -12,12 +12,15 @@ use crate::{
     Object,
 };
 
+use once_cell::sync::OnceCell;
 use std::cell::Cell;
 use std::cell::RefCell;
 use std::char::CharTryFromError;
 use std::convert::TryFrom;
 use std::ffi::CStr;
 use std::marker::PhantomData;
+use std::rc::Rc;
+use std::sync::Arc;
 use std::sync::Mutex;
 
 // Can't use get_type here as this is not a boxed type but another fundamental type
@@ -1224,15 +1227,6 @@ define_builder!(
 pub trait HasParamSpec {
     type Spec;
 }
-pub trait ParamStoreRead {
-    type Value;
-    // TODO! Accept fn as argument to eliminate Clone requirement
-    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R;
-}
-pub trait ParamStoreWrite {
-    type Value;
-    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F);
-}
 
 impl HasParamSpec for String {
     type Spec = ParamSpecString;
@@ -1262,7 +1256,6 @@ impl HasParamSpec for u32 {
 pub trait PropType {
     type HasSpecType;
 }
-
 impl<T: HasParamSpec> PropType for T {
     type HasSpecType = T;
 }
@@ -1278,48 +1271,108 @@ impl<T: HasParamSpec> PropType for Cell<T> {
 impl<T: HasParamSpec> PropType for Mutex<T> {
     type HasSpecType = T;
 }
+impl<T: PropType> PropType for Rc<T> {
+    type HasSpecType = T::HasSpecType;
+}
+impl<T: PropType> PropType for Arc<T> {
+    type HasSpecType = T::HasSpecType;
+}
 
-// TODO: relax clone requirement
-impl<T: Clone> ParamStoreRead for std::cell::RefCell<T> {
+pub trait ParamStoreRead {
+    type Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R;
+}
+pub trait ParamStoreWrite {
+    type Value;
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F);
+}
+
+impl<T> ParamStoreRead for std::cell::RefCell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.borrow())
     }
 }
-impl<T: Clone> ParamStoreWrite for std::cell::RefCell<T> {
+impl<T> ParamStoreWrite for std::cell::RefCell<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.borrow_mut());
     }
 }
 
-impl<T: Clone> ParamStoreRead for std::sync::Mutex<T> {
+impl<T> ParamStoreRead for std::sync::Mutex<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.lock().unwrap())
     }
 }
-impl<T: Clone> ParamStoreWrite for std::sync::Mutex<T> {
+impl<T> ParamStoreWrite for std::sync::Mutex<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.lock().unwrap());
     }
 }
 
-impl<T: Clone> ParamStoreRead for std::sync::RwLock<T> {
+impl<T> ParamStoreRead for std::sync::RwLock<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.read().unwrap())
     }
 }
-impl<T: crate::value::ValueType + HasParamSpec> ParamStoreWrite for std::sync::RwLock<T> {
+impl<T> ParamStoreWrite for std::sync::RwLock<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.write().unwrap());
     }
 }
 
-// TODO: impl ParamStoreRead/Write in some way for pointers (Rc,Arc...)
+impl<T: ParamStoreRead> ParamStoreRead for Rc<T> {
+    type Value = T::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        (**self).get(f)
+    }
+}
+impl<T: ParamStoreWrite> ParamStoreWrite for Rc<T> {
+    type Value = T::Value;
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
+        (**self).set(f)
+    }
+}
+
+impl<T: ParamStoreRead> ParamStoreRead for Arc<T> {
+    type Value = T::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        (**self).get(f)
+    }
+}
+impl<T: ParamStoreWrite> ParamStoreWrite for Arc<T> {
+    type Value = T::Value;
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
+        (**self).set(f)
+    }
+}
+
+impl<T: ParamStoreRead> ParamStoreRead for OnceCell<T> {
+    type Value = T::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        self.get().unwrap().get(f)
+    }
+}
+// This last implemenation is a bit of a stretch...
+// `ParamStoreWrite` requires a function taking Self::Value, but OnceCell doesn't have
+// an internal value before being init. Still, I'm implementing it so that the derive `Props`
+// macro can easily work with it
+impl<T: ParamStoreWrite + Default> ParamStoreWrite for OnceCell<T> {
+    type Value = T;
+    fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
+        let mut v = Self::Value::default();
+        f(&mut v);
+        // I can't use `unwrap` because I would have to add a `Debug` bound to _v
+        if let Err(_v) = self.set(v) {
+            panic!("can't set value of OnceCell multiple times")
+        };
+    }
+}
 
 #[cfg(test)]
 mod tests {
