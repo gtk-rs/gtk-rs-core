@@ -37,8 +37,17 @@ impl Parse for PropsMacroInput {
 }
 
 enum MaybeCustomFn {
-    CustomFn(Box<syn::Expr>),
-    DefaultFn,
+    Custom(Box<syn::Expr>),
+    Default,
+}
+
+impl std::convert::From<Option<syn::Expr>> for MaybeCustomFn {
+    fn from(item: Option<syn::Expr>) -> Self {
+        match item {
+            Some(expr) => Self::Custom(Box::new(expr)),
+            None => Self::Default,
+        }
+    }
 }
 
 enum PropAttr {
@@ -126,7 +135,6 @@ struct ReceivedAttrs {
     ty: Option<syn::Type>,
     member: Option<syn::Ident>,
     flags: Punctuated<syn::Ident, Token![,]>,
-    // These are not syn::LitStr because `name` may be set by default with `field.ident`
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
@@ -134,18 +142,15 @@ struct ReceivedAttrs {
 }
 impl ReceivedAttrs {
     fn new(attrs: impl IntoIterator<Item = PropAttr>) -> Self {
-        let mut this = Self::default();
-        for attr in attrs {
+        attrs.into_iter().fold(Self::default(), |mut this, attr| {
             this.set_from_attr(attr);
-        }
-        this
+            this
+        })
     }
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
-            PropAttr::Get(Some(expr)) => self.get = Some(MaybeCustomFn::CustomFn(Box::new(expr))),
-            PropAttr::Get(None) => self.get = Some(MaybeCustomFn::DefaultFn),
-            PropAttr::Set(Some(expr)) => self.set = Some(MaybeCustomFn::CustomFn(Box::new(expr))),
-            PropAttr::Set(None) => self.set = Some(MaybeCustomFn::DefaultFn),
+            PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
+            PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
             PropAttr::DefaultVal(expr) => self.default = Some(expr),
             PropAttr::Name(lit) => self.name = Some(lit),
             PropAttr::Nick(lit) => self.nick = Some(lit),
@@ -158,57 +163,75 @@ impl ReceivedAttrs {
 }
 struct PropDesc {
     field_ident: syn::Ident,
-    field_ty: syn::Type,
-    attrs: ReceivedAttrs,
+    ty: syn::Type,
+    name: syn::LitStr,
+    nick: syn::LitStr,
+    blurb: syn::LitStr,
+    get: Option<MaybeCustomFn>,
+    set: Option<MaybeCustomFn>,
+    member: Option<syn::Ident>,
+    flags: Punctuated<syn::Ident, Token![,]>,
+    default: Option<syn::Expr>,
 }
 impl PropDesc {
     fn new(field_ident: syn::Ident, field_ty: syn::Type, attrs: ReceivedAttrs) -> Self {
-        let this = Self {
-            field_ident,
-            field_ty,
-            attrs,
-        };
-        this.fill_unset_attrs()
-    }
-    fn fill_unset_attrs(mut self) -> Self {
-        self.attrs.name = self.attrs.name.or_else(|| {
-            Some(syn::LitStr::new(
-                &self
-                    .field_ident
-                    .to_string()
-                    .trim_matches('_')
-                    .replace('_', "-"),
-                self.field_ident.span(),
-            ))
+        let ReceivedAttrs {
+            get,
+            set,
+            ty,
+            member,
+            flags,
+            name,
+            nick,
+            blurb,
+            default,
+        } = attrs;
+
+        // Fill needed, but missing, attributes with calculated default values
+        let name = name.unwrap_or_else(|| {
+            syn::LitStr::new(
+                &field_ident.to_string().trim_matches('_').replace('_', "-"),
+                field_ident.span(),
+            )
         });
-        self.attrs.nick = self.attrs.nick.or_else(|| self.attrs.name.clone());
-        self.attrs.blurb = self.attrs.blurb.or_else(|| self.attrs.name.clone());
-        self.attrs.ty = Some(self.attrs.ty.unwrap_or_else(|| self.field_ty.clone()));
-        self
+        let nick = nick.unwrap_or_else(|| name.clone());
+        let blurb = blurb.unwrap_or_else(|| name.clone());
+        let ty = ty.unwrap_or_else(|| field_ty.clone());
+
+        // Now that everything is set and safe, return the final proprety description
+        Self {
+            field_ident,
+            get,
+            set,
+            ty,
+            member,
+            flags,
+            name,
+            nick,
+            blurb,
+            default,
+        }
     }
 }
 
 fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
     let properties_build_phase = props.iter().map(|prop| {
-        let ty = &prop.attrs.ty;
-        let name = &prop.attrs.name;
-        let nick = &prop.attrs.nick;
-        let blurb = &prop.attrs.blurb;
-        let default = prop
-            .attrs
-            .default
+        let PropDesc {
+            ty, name, nick, blurb, default, ..
+        } = prop;
+        let default = default
             .as_ref()
             .map_or(quote!(None), |x| quote!(Some(#x)));
 
         let flags = {
-            let write = prop.attrs.set.as_ref().map(|_| quote!(WRITABLE));
-            let read = prop.attrs.get.as_ref().map(|_| quote!(READABLE));
+            let write = prop.set.as_ref().map(|_| quote!(WRITABLE));
+            let read = prop.get.as_ref().map(|_| quote!(READABLE));
 
             let flags_iter = [write, read]
                 .into_iter()
                 .flatten()
-                .chain(prop.attrs.flags.iter().map(|f| f.to_token_stream()));
+                .chain(prop.flags.iter().map(|f| f.to_token_stream()));
             quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
         };
         quote! {
@@ -227,16 +250,23 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
 }
 fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let match_branch_get = props.iter().flat_map(|p| {
-        let name = &p.attrs.name;
-        let ident = &p.field_ident;
-        match (&p.attrs.member, &p.attrs.get) {
-            (_, Some(MaybeCustomFn::CustomFn(expr))) => {
+        let PropDesc {
+            ref name,
+            ref field_ident,
+            ref member,
+            ref get,
+            ..
+        } = p;
+        match (member, get) {
+            (_, Some(MaybeCustomFn::Custom(expr))) => {
                 Some(quote!(#name => (#expr)(&self).to_value()))
             }
-            (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
-                        .get(|v| v.to_value()))),
-            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => self.#ident
-                        .get(|v| v.#member.to_value()))),
+            (None, Some(MaybeCustomFn::Default)) => Some(quote!(
+                    #name => self.#field_ident.get(|v| v.to_value())
+            )),
+            (Some(member), Some(MaybeCustomFn::Default)) => Some(quote!(
+                    #name => self.#field_ident.get(|v| v.#member.to_value())
+            )),
             _ => None,
         }
     });
@@ -251,18 +281,25 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
 }
 fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let match_branch_set = props.iter().flat_map(|p| {
-        let name = &p.attrs.name;
-        let ident = &p.field_ident;
-        match (&p.attrs.member, &p.attrs.set) {
-            (_, Some(MaybeCustomFn::CustomFn(expr))) => {
+        let PropDesc {
+            ref name,
+            ref field_ident,
+            ref member,
+            ref set,
+            ..
+        } = p;
+        match (member, set) {
+            (_, Some(MaybeCustomFn::Custom(expr))) => {
                 Some(quote!(#name => (#expr)(&self, value.get().unwrap())))
             }
-            (None, Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name =>
-                        self.#ident.set(move |v| *v = value.get()
-                            .expect("Can't convert glib::value to property type")))),
-            (Some(member), Some(MaybeCustomFn::DefaultFn)) => Some(quote!(#name => 
-                        self.#ident.set(move |v| v.#member = value.get()
-                            .expect("Can't convert glib::value to property type")))),
+            (None, Some(MaybeCustomFn::Default)) => Some(quote!(
+                #name => self.#field_ident.set(move |v| *v = value.get()
+                            .expect("Can't convert glib::value to property type"))
+            )),
+            (Some(member), Some(MaybeCustomFn::Default)) => Some(quote!(
+                #name => self.#field_ident.set(move |v| v.#member = value.get()
+                            .expect("Can't convert glib::value to property type"))
+            )),
             (_, None) => None,
         }
     });
@@ -311,18 +348,17 @@ fn change_self_type<T: ToTokens>(source: &T, ident: &str) -> TokenStream2 {
 
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = name_to_ident(p.attrs.name.as_ref().unwrap());
+        let ident = name_to_ident(&p.name);
         let set_ident = format_ident!("set_{}", ident);
-        let ty = &p.attrs.ty;
+        let ty = &p.ty;
         let getter = p
-            .attrs
             .get
-            .as_ref()
-            .map(|_| quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType;));
-        let setter =
-            p.attrs.set.as_ref().map(
-                |_| quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType);),
-            );
+            .is_some()
+            .then(|| quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType;));
+        let setter = p
+            .set
+            .is_some()
+            .then(|| quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType);));
         quote!(
             #getter
             #setter
@@ -333,20 +369,20 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
 
 fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = name_to_ident(p.attrs.name.as_ref().unwrap());
+        let ident = name_to_ident(&p.name);
         let set_ident = format_ident!("set_{}", ident);
         let field_ident = &p.field_ident;
-        let ty = &p.attrs.ty;
+        let ty = &p.ty;
 
-        let getter = p.attrs.get.as_ref().map(|mfn| {
-            let body = match (p.attrs.member.as_ref(), mfn) {
-                (None, MaybeCustomFn::DefaultFn) => quote!(
+        let getter = p.get.as_ref().map(|mfn| {
+            let body = match (p.member.as_ref(), mfn) {
+                (None, MaybeCustomFn::Default) => quote!(
                      self.imp().#field_ident.get(|x| x.to_owned())
                 ),
-                (Some(member), MaybeCustomFn::DefaultFn) => quote!(
+                (Some(member), MaybeCustomFn::Default) => quote!(
                      self.imp().#field_ident.get(|x| x.#member.to_owned())
                 ),
-                (_, MaybeCustomFn::CustomFn(custom_fn)) => {
+                (_, MaybeCustomFn::Custom(custom_fn)) => {
                     let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
                     quote!((#custom_fn)(&self.imp()))
                 }
@@ -355,15 +391,15 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                 #body
             })
         });
-        let setter = p.attrs.set.as_ref().map(|mfn| {
-            let body = match (p.attrs.member.as_ref(), mfn) {
-                (None, MaybeCustomFn::DefaultFn) => quote!(
+        let setter = p.set.as_ref().map(|mfn| {
+            let body = match (p.member.as_ref(), mfn) {
+                (None, MaybeCustomFn::Default) => quote!(
                      self.imp().#field_ident.set(move |x| *x = value)
                 ),
-                (Some(member), MaybeCustomFn::DefaultFn) => quote!(
+                (Some(member), MaybeCustomFn::Default) => quote!(
                      self.imp().#field_ident.set(move |x| x.#member = value)
                 ),
-                (_, MaybeCustomFn::CustomFn(custom_fn)) => {
+                (_, MaybeCustomFn::Custom(custom_fn)) => {
                     let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
                     quote!((#custom_fn)(&self.imp(), value))
                 }
