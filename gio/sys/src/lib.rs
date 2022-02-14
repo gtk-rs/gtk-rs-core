@@ -3186,8 +3186,22 @@ pub struct GFileIface {
             *mut *mut glib::GError,
         ) -> gboolean,
     >,
-    pub _move_async: Option<unsafe extern "C" fn()>,
-    pub _move_finish: Option<unsafe extern "C" fn()>,
+    pub move_async: Option<
+        unsafe extern "C" fn(
+            *mut GFile,
+            *mut GFile,
+            GFileCopyFlags,
+            c_int,
+            *mut GCancellable,
+            GFileProgressCallback,
+            gpointer,
+            GAsyncReadyCallback,
+            gpointer,
+        ),
+    >,
+    pub move_finish: Option<
+        unsafe extern "C" fn(*mut GFile, *mut GAsyncResult, *mut *mut glib::GError) -> gboolean,
+    >,
     pub mount_mountable: Option<
         unsafe extern "C" fn(
             *mut GFile,
@@ -3522,8 +3536,8 @@ impl ::std::fmt::Debug for GFileIface {
             .field("copy_async", &self.copy_async)
             .field("copy_finish", &self.copy_finish)
             .field("move_", &self.move_)
-            .field("_move_async", &self._move_async)
-            .field("_move_finish", &self._move_finish)
+            .field("move_async", &self.move_async)
+            .field("move_finish", &self.move_finish)
             .field("mount_mountable", &self.mount_mountable)
             .field("mount_mountable_finish", &self.mount_mountable_finish)
             .field("unmount_mountable", &self.unmount_mountable)
@@ -15765,6 +15779,26 @@ extern "C" {
         cancellable: *mut GCancellable,
         progress_callback: GFileProgressCallback,
         progress_callback_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_file_move_async(
+        source: *mut GFile,
+        destination: *mut GFile,
+        flags: GFileCopyFlags,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        progress_callback: GFileProgressCallback,
+        progress_callback_data: gpointer,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_file_move_finish(
+        file: *mut GFile,
+        result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_file_open_readwrite(
