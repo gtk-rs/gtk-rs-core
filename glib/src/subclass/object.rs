@@ -11,6 +11,51 @@ use crate::{Cast, Object, ObjectType, ParamSpec, Value};
 use std::mem;
 use std::ptr;
 
+
+pub trait ObjectPropsImpl: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Properties installed for this type.
+    fn properties() -> &'static [ParamSpec];
+
+    // rustdoc-stripper-ignore-next
+    /// Property setter.
+    ///
+    /// This is called whenever the property of this specific subclass with the
+    /// given index is set. The new value is passed as `glib::Value`.
+    fn set_property(&self, _obj: &Self::Type, _id: usize, _value: &Value, _pspec: &ParamSpec);
+
+    // rustdoc-stripper-ignore-next
+    /// Property getter.
+    ///
+    /// This is called whenever the property value of the specific subclass with the
+    /// given index should be returned.
+    #[doc(alias = "get_property")]
+    fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value;
+}
+
+pub trait ObjectSignalsImpl {
+    // rustdoc-stripper-ignore-next
+    /// Signals installed for this type.
+    fn signals() -> &'static [Signal];
+}
+pub trait ObjectConstructImpl: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Constructed.
+    ///
+    /// This is called once construction of the instance is finished.
+    ///
+    /// Should chain up to the parent class' implementation.
+    fn constructed(&self, obj: &Self::Type);
+
+    // rustdoc-stripper-ignore-next
+    /// Disposes of the object.
+    ///
+    /// When `dispose()` ends, the object should not hold any reference to any other member object.
+    /// The object is also expected to be able to answer client method invocations (with possibly an
+    /// error code but no memory violation) until it is dropped. `dispose()` can be executed more
+    /// than once.
+    fn dispose(&self, _obj: &Self::Type);
+}
 // rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.
 ///
@@ -19,12 +64,6 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     // rustdoc-stripper-ignore-next
     /// Properties installed for this type.
     fn properties() -> &'static [ParamSpec] {
-        &[]
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Signals installed for this type.
-    fn signals() -> &'static [Signal] {
         &[]
     }
 
@@ -45,6 +84,11 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     #[doc(alias = "get_property")]
     fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
         unimplemented!()
+    }
+    // rustdoc-stripper-ignore-next
+    /// Signals installed for this type.
+    fn signals() -> &'static [Signal] {
+        &[]
     }
 
     // rustdoc-stripper-ignore-next
@@ -67,6 +111,31 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     fn dispose(&self, _obj: &Self::Type) {}
 }
 
+impl<T: ObjectPropsImpl + ObjectSignalsImpl + ObjectConstructImpl> ObjectImpl for T {
+    fn properties() -> &'static [ParamSpec] {
+        <Self as ObjectPropsImpl>::properties()
+    }
+
+    fn set_property(&self, _obj: &Self::Type, _id: usize, _value: &Value, _pspec: &ParamSpec) {
+        <Self as ObjectPropsImpl>::set_property(self, _obj, _id, _value, _pspec)
+    }
+
+    fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
+        <Self as ObjectPropsImpl>::property(self, _obj, _id, _pspec)
+    }
+
+    fn signals() -> &'static [Signal] {
+        <Self as ObjectSignalsImpl>::signals()
+    }
+
+    fn constructed(&self, obj: &Self::Type) {
+        <Self as ObjectConstructImpl>::constructed(self, obj)
+    }
+
+    fn dispose(&self, _obj: &Self::Type) {
+        <Self as ObjectConstructImpl>::dispose(self, _obj)
+    }
+}
 #[doc(alias = "get_property")]
 unsafe extern "C" fn property<T: ObjectImpl>(
     obj: *mut gobject_ffi::GObject,
