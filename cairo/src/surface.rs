@@ -67,10 +67,10 @@ impl Surface {
         unsafe {
             Self::from_raw_full(ffi::cairo_surface_create_for_rectangle(
                 self.0.as_ptr(),
-                bounds.x,
-                bounds.y,
-                bounds.width,
-                bounds.height,
+                bounds.x(),
+                bounds.y(),
+                bounds.width(),
+                bounds.height(),
             ))
         }
     }

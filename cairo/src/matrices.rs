@@ -2,20 +2,10 @@
 
 use crate::error::Error;
 use crate::utils::status_to_result;
-use libc::c_double;
 
-#[repr(C)]
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Matrix {
-    pub xx: c_double,
-    pub yx: c_double,
-
-    pub xy: c_double,
-    pub yy: c_double,
-
-    pub x0: c_double,
-    pub y0: c_double,
-}
+#[repr(transparent)]
+#[derive(Debug, Clone, PartialEq)]
+pub struct Matrix(ffi::Matrix);
 
 impl Default for Matrix {
     fn default() -> Self {
@@ -33,36 +23,73 @@ impl Matrix {
     }
 
     pub(crate) fn null() -> Self {
-        Self {
+        Self(ffi::Matrix {
             xx: 0.0,
             yx: 0.0,
             xy: 0.0,
             yy: 0.0,
             x0: 0.0,
             y0: 0.0,
-        }
+        })
     }
 
     pub fn identity() -> Self {
-        Self {
+        Self(ffi::Matrix {
             xx: 1.0,
             yx: 0.0,
             xy: 0.0,
             yy: 1.0,
             x0: 0.0,
             y0: 0.0,
-        }
+        })
     }
 
     pub fn new(xx: f64, yx: f64, xy: f64, yy: f64, x0: f64, y0: f64) -> Self {
-        Self {
+        Self(ffi::Matrix {
             xx,
             yx,
             xy,
             yy,
             x0,
             y0,
-        }
+        })
+    }
+
+    pub fn xx(&self) -> f64 {
+        self.0.xx
+    }
+    pub fn set_xx(&mut self, xx: f64) {
+        self.0.xx = xx;
+    }
+    pub fn yx(&self) -> f64 {
+        self.0.yx
+    }
+    pub fn set_yx(&mut self, yx: f64) {
+        self.0.yx = yx;
+    }
+    pub fn xy(&self) -> f64 {
+        self.0.xy
+    }
+    pub fn set_xy(&mut self, xy: f64) {
+        self.0.xy = xy;
+    }
+    pub fn yy(&self) -> f64 {
+        self.0.yy
+    }
+    pub fn set_yy(&mut self, yy: f64) {
+        self.0.yy = yy;
+    }
+    pub fn x0(&self) -> f64 {
+        self.0.x0
+    }
+    pub fn set_x0(&mut self, x0: f64) {
+        self.0.x0 = x0;
+    }
+    pub fn y0(&self) -> f64 {
+        self.0.y0
+    }
+    pub fn set_y0(&mut self, y0: f64) {
+        self.0.y0 = y0;
     }
 
     #[doc(alias = "cairo_matrix_multiply")]
@@ -97,7 +124,7 @@ impl Matrix {
 
     #[doc(alias = "cairo_matrix_invert")]
     pub fn try_invert(&self) -> Result<Matrix, Error> {
-        let mut matrix = *self;
+        let mut matrix = self.clone();
 
         let status = unsafe { ffi::cairo_matrix_invert(matrix.mut_ptr()) };
         status_to_result(status)?;
