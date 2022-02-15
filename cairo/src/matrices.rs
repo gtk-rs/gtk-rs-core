@@ -161,21 +161,27 @@ mod tests {
 
     #[test]
     fn memory_layout_is_ffi_equivalent() {
-        macro_rules! dummy_values {
-            ($Matrix: ident) => {
-                $Matrix {
-                    xx: 1.0,
-                    yx: 2.0,
-                    xy: 3.0,
-                    yy: 4.0,
-                    x0: 5.0,
-                    y0: 6.0,
-                }
-            };
-        }
-        use crate::ffi::Matrix as FfiMatrix;
-        let transmuted: Matrix = unsafe { std::mem::transmute(dummy_values!(FfiMatrix)) };
-        assert_eq!(transmuted, dummy_values!(Matrix));
+        let ffi_matrix = crate::ffi::cairo_matrix_t {
+            xx: 1.0,
+            yx: 2.0,
+            xy: 3.0,
+            yy: 4.0,
+            x0: 5.0,
+            y0: 6.0,
+        };
+
+        let transmuted: Matrix = unsafe { std::mem::transmute(ffi_matrix) };
+        assert_eq!(
+            transmuted,
+            Matrix(crate::ffi::cairo_matrix_t {
+                xx: 1.0,
+                yx: 2.0,
+                xy: 3.0,
+                yy: 4.0,
+                x0: 5.0,
+                y0: 6.0,
+            })
+        );
     }
 
     #[test]
