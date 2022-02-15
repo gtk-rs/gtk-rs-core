@@ -937,6 +937,7 @@ mod tests {
     use crate::enums::Format;
     use crate::image_surface::ImageSurface;
     use crate::patterns::LinearGradient;
+    use float_eq::float_eq;
 
     fn create_ctx() -> Context {
         let surface = ImageSurface::create(Format::ARgb32, 10, 10).unwrap();
@@ -979,10 +980,11 @@ mod tests {
         let rect = ctx
             .copy_clip_rectangle_list()
             .expect("Failed to copy rectangle list");
-        assert_eq!(
-            format!("{:?}", rect),
-            "RectangleList([Rectangle { x: 0.0, y: 0.0, width: 10.0, height: 10.0 }])"
-        );
+        let first_rect = rect[0];
+        assert!(float_eq!(first_rect.x(), 0.0, abs <= 0.000_1));
+        assert!(float_eq!(first_rect.y(), 0.0, abs <= 0.000_1));
+        assert!(float_eq!(first_rect.width(), 10.0, abs <= 0.000_1));
+        assert!(float_eq!(first_rect.height(), 10.0, abs <= 0.000_1));
         assert_eq!(rect.to_string(), "RectangleList");
     }
 }

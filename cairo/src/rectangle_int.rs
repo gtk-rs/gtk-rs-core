@@ -6,7 +6,7 @@ use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::mem;
 
-#[derive(Clone, Debug, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
 #[doc(alias = "cairo_rectangle_int_t")]
 pub struct RectangleInt(ffi::cairo_rectangle_int_t);
@@ -43,6 +43,17 @@ impl RectangleInt {
     }
     pub fn set_height(&mut self, height: i32) {
         self.0.height = height;
+    }
+}
+
+impl fmt::Debug for RectangleInt {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("RectangleInt")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
     }
 }
 

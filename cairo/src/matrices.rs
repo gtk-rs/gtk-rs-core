@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::fmt;
+
 use crate::error::Error;
 use crate::utils::status_to_result;
 
 #[repr(transparent)]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 #[doc(alias = "cairo_matrix_t")]
 pub struct Matrix(ffi::cairo_matrix_t);
 
@@ -125,7 +127,7 @@ impl Matrix {
 
     #[doc(alias = "cairo_matrix_invert")]
     pub fn try_invert(&self) -> Result<Matrix, Error> {
-        let mut matrix = self.clone();
+        let mut matrix = *self;
 
         let status = unsafe { ffi::cairo_matrix_invert(matrix.mut_ptr()) };
         status_to_result(status)?;
@@ -155,34 +157,22 @@ impl Matrix {
     }
 }
 
+impl fmt::Debug for Matrix {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rectangle")
+            .field("xx", &self.xx())
+            .field("yx", &self.yx())
+            .field("xy", &self.xy())
+            .field("yy", &self.yy())
+            .field("x0", &self.x0())
+            .field("y0", &self.y0())
+            .finish()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn memory_layout_is_ffi_equivalent() {
-        let ffi_matrix = crate::ffi::cairo_matrix_t {
-            xx: 1.0,
-            yx: 2.0,
-            xy: 3.0,
-            yy: 4.0,
-            x0: 5.0,
-            y0: 6.0,
-        };
-
-        let transmuted: Matrix = unsafe { std::mem::transmute(ffi_matrix) };
-        assert_eq!(
-            transmuted,
-            Matrix(crate::ffi::cairo_matrix_t {
-                xx: 1.0,
-                yx: 2.0,
-                xy: 3.0,
-                yy: 4.0,
-                x0: 5.0,
-                y0: 6.0,
-            })
-        );
-    }
 
     #[test]
     fn invalid_matrix_does_not_invert() {
