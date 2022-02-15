@@ -22,6 +22,7 @@ use std::marker::PhantomData;
 use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::sync::RwLock;
 
 // Can't use get_type here as this is not a boxed type but another fundamental type
 wrapper! {
@@ -1259,6 +1260,9 @@ pub trait PropType {
 impl<T: HasParamSpec> PropType for T {
     type HasSpecType = T;
 }
+impl<T: HasParamSpec> PropType for Option<T> {
+    type HasSpecType = T;
+}
 impl<T: HasParamSpec> PropType for PhantomData<T> {
     type HasSpecType = T;
 }
@@ -1300,26 +1304,26 @@ impl<T> ParamStoreWrite for std::cell::RefCell<T> {
     }
 }
 
-impl<T> ParamStoreRead for std::sync::Mutex<T> {
+impl<T> ParamStoreRead for Mutex<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.lock().unwrap())
     }
 }
-impl<T> ParamStoreWrite for std::sync::Mutex<T> {
+impl<T> ParamStoreWrite for Mutex<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.lock().unwrap());
     }
 }
 
-impl<T> ParamStoreRead for std::sync::RwLock<T> {
+impl<T> ParamStoreRead for RwLock<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
         f(&self.read().unwrap())
     }
 }
-impl<T> ParamStoreWrite for std::sync::RwLock<T> {
+impl<T> ParamStoreWrite for RwLock<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         f(&mut self.write().unwrap());
