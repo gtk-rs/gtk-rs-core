@@ -123,6 +123,8 @@ mod value_array;
 pub use self::value_array::ValueArray;
 mod param_spec;
 pub use self::param_spec::*;
+mod props;
+pub use self::props::*;
 mod quark;
 pub use self::quark::Quark;
 #[macro_use]

@@ -426,7 +426,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let getset_properties_def = expand_getset_properties_def(&input.props);
     let getset_properties_impl = expand_getset_properties_impl(struct_ident, &input.props);
     let expanded = quote! {
-        use glib::{ParamStoreRead, ParamStoreWrite};
+        use glib::{PropRead, PropWrite};
         impl ObjectImpl for #struct_ident {
             #fn_properties
             #fn_property
