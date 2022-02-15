@@ -5,7 +5,8 @@ use crate::utils::status_to_result;
 
 #[repr(transparent)]
 #[derive(Debug, Clone, PartialEq)]
-pub struct Matrix(ffi::Matrix);
+#[doc(alias = "cairo_matrix_t")]
+pub struct Matrix(ffi::cairo_matrix_t);
 
 impl Default for Matrix {
     fn default() -> Self {
@@ -14,16 +15,16 @@ impl Default for Matrix {
 }
 
 impl Matrix {
-    pub(crate) fn ptr(&self) -> *const ffi::Matrix {
+    pub(crate) fn ptr(&self) -> *const ffi::cairo_matrix_t {
         self as *const Matrix as _
     }
 
-    pub(crate) fn mut_ptr(&mut self) -> *mut ffi::Matrix {
+    pub(crate) fn mut_ptr(&mut self) -> *mut ffi::cairo_matrix_t {
         self as *mut Matrix as _
     }
 
     pub(crate) fn null() -> Self {
-        Self(ffi::Matrix {
+        Self(ffi::cairo_matrix_t {
             xx: 0.0,
             yx: 0.0,
             xy: 0.0,
@@ -34,7 +35,7 @@ impl Matrix {
     }
 
     pub fn identity() -> Self {
-        Self(ffi::Matrix {
+        Self(ffi::cairo_matrix_t {
             xx: 1.0,
             yx: 0.0,
             xy: 0.0,
@@ -45,7 +46,7 @@ impl Matrix {
     }
 
     pub fn new(xx: f64, yx: f64, xy: f64, yy: f64, x0: f64, y0: f64) -> Self {
-        Self(ffi::Matrix {
+        Self(ffi::cairo_matrix_t {
             xx,
             yx,
             xy,
