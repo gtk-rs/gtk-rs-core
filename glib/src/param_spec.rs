@@ -1246,7 +1246,6 @@ impl HasParamSpec for u32 {
     type Spec = ParamSpecUInt;
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
