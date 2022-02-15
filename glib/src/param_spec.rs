@@ -1260,20 +1260,20 @@ pub trait PropType {
 impl<T: HasParamSpec> PropType for T {
     type HasSpecType = T;
 }
-impl<T: HasParamSpec> PropType for Option<T> {
-    type HasSpecType = T;
+impl<T: PropType> PropType for Option<T> {
+    type HasSpecType = T::HasSpecType;
 }
-impl<T: HasParamSpec> PropType for PhantomData<T> {
-    type HasSpecType = T;
+impl<T: PropType> PropType for PhantomData<T> {
+    type HasSpecType = T::HasSpecType;
 }
-impl<T: HasParamSpec> PropType for RefCell<T> {
-    type HasSpecType = T;
+impl<T: PropType> PropType for RefCell<T> {
+    type HasSpecType = T::HasSpecType;
 }
-impl<T: HasParamSpec> PropType for Cell<T> {
-    type HasSpecType = T;
+impl<T: PropType> PropType for Cell<T> {
+    type HasSpecType = T::HasSpecType;
 }
-impl<T: HasParamSpec> PropType for Mutex<T> {
-    type HasSpecType = T;
+impl<T: PropType> PropType for Mutex<T> {
+    type HasSpecType = T::HasSpecType;
 }
 impl<T: PropType> PropType for Rc<T> {
     type HasSpecType = T::HasSpecType;
