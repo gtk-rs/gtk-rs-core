@@ -1,5 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+use crate::FontScale;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
 use crate::Overline;
@@ -7,12 +10,19 @@ use crate::Overline;
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 use crate::ShowFlags;
 use crate::{AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
+
 use glib::translate::*;
 
 define_attribute_struct!(
     AttrInt,
     ffi::PangoAttrInt,
     &[
+        #[cfg(any(feature = "v1_50", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+        AttrType::AbsoluteLineHeight,
+        #[cfg(any(feature = "v1_50", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+        AttrType::FontScale,
         AttrType::AllowBreaks,
         AttrType::BackgroundAlpha,
         AttrType::Fallback,
@@ -34,6 +44,20 @@ define_attribute_struct!(
 );
 
 impl AttrInt {
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_line_height_new_absolute")]
+    pub fn new_line_height_absolute(height: i32) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_line_height_new_absolute(height)) }
+    }
+
+    #[cfg(any(feature = "v1_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[doc(alias = "pango_attr_font_scale_new")]
+    pub fn new_font_scale(scale: FontScale) -> Self {
+        unsafe { from_glib_full(ffi::pango_attr_font_scale_new(scale.into_glib())) }
+    }
+
     #[cfg(any(feature = "v1_44", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_allow_breaks_new")]
