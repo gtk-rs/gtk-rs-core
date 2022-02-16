@@ -159,7 +159,7 @@ impl Matrix {
 
 impl fmt::Debug for Matrix {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Rectangle")
+        f.debug_struct("Matrix")
             .field("xx", &self.xx())
             .field("yx", &self.yx())
             .field("xy", &self.xy())
