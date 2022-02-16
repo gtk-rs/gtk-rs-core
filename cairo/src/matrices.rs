@@ -1,21 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::fmt;
+
 use crate::error::Error;
 use crate::utils::status_to_result;
-use libc::c_double;
 
-#[repr(C)]
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Matrix {
-    pub xx: c_double,
-    pub yx: c_double,
-
-    pub xy: c_double,
-    pub yy: c_double,
-
-    pub x0: c_double,
-    pub y0: c_double,
-}
+#[repr(transparent)]
+#[derive(Clone, Copy, PartialEq)]
+#[doc(alias = "cairo_matrix_t")]
+pub struct Matrix(ffi::cairo_matrix_t);
 
 impl Default for Matrix {
     fn default() -> Self {
@@ -24,45 +17,82 @@ impl Default for Matrix {
 }
 
 impl Matrix {
-    pub(crate) fn ptr(&self) -> *const ffi::Matrix {
+    pub(crate) fn ptr(&self) -> *const ffi::cairo_matrix_t {
         self as *const Matrix as _
     }
 
-    pub(crate) fn mut_ptr(&mut self) -> *mut ffi::Matrix {
+    pub(crate) fn mut_ptr(&mut self) -> *mut ffi::cairo_matrix_t {
         self as *mut Matrix as _
     }
 
     pub(crate) fn null() -> Self {
-        Self {
+        Self(ffi::cairo_matrix_t {
             xx: 0.0,
             yx: 0.0,
             xy: 0.0,
             yy: 0.0,
             x0: 0.0,
             y0: 0.0,
-        }
+        })
     }
 
     pub fn identity() -> Self {
-        Self {
+        Self(ffi::cairo_matrix_t {
             xx: 1.0,
             yx: 0.0,
             xy: 0.0,
             yy: 1.0,
             x0: 0.0,
             y0: 0.0,
-        }
+        })
     }
 
     pub fn new(xx: f64, yx: f64, xy: f64, yy: f64, x0: f64, y0: f64) -> Self {
-        Self {
+        Self(ffi::cairo_matrix_t {
             xx,
             yx,
             xy,
             yy,
             x0,
             y0,
-        }
+        })
+    }
+
+    pub fn xx(&self) -> f64 {
+        self.0.xx
+    }
+    pub fn set_xx(&mut self, xx: f64) {
+        self.0.xx = xx;
+    }
+    pub fn yx(&self) -> f64 {
+        self.0.yx
+    }
+    pub fn set_yx(&mut self, yx: f64) {
+        self.0.yx = yx;
+    }
+    pub fn xy(&self) -> f64 {
+        self.0.xy
+    }
+    pub fn set_xy(&mut self, xy: f64) {
+        self.0.xy = xy;
+    }
+    pub fn yy(&self) -> f64 {
+        self.0.yy
+    }
+    pub fn set_yy(&mut self, yy: f64) {
+        self.0.yy = yy;
+    }
+    pub fn x0(&self) -> f64 {
+        self.0.x0
+    }
+    pub fn set_x0(&mut self, x0: f64) {
+        self.0.x0 = x0;
+    }
+    pub fn y0(&self) -> f64 {
+        self.0.y0
+    }
+    pub fn set_y0(&mut self, y0: f64) {
+        self.0.y0 = y0;
     }
 
     #[doc(alias = "cairo_matrix_multiply")]
@@ -127,28 +157,22 @@ impl Matrix {
     }
 }
 
+impl fmt::Debug for Matrix {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rectangle")
+            .field("xx", &self.xx())
+            .field("yx", &self.yx())
+            .field("xy", &self.xy())
+            .field("yy", &self.yy())
+            .field("x0", &self.x0())
+            .field("y0", &self.y0())
+            .finish()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn memory_layout_is_ffi_equivalent() {
-        macro_rules! dummy_values {
-            ($Matrix: ident) => {
-                $Matrix {
-                    xx: 1.0,
-                    yx: 2.0,
-                    xy: 3.0,
-                    yy: 4.0,
-                    x0: 5.0,
-                    y0: 6.0,
-                }
-            };
-        }
-        use crate::ffi::Matrix as FfiMatrix;
-        let transmuted: Matrix = unsafe { std::mem::transmute(dummy_values!(FfiMatrix)) };
-        assert_eq!(transmuted, dummy_values!(Matrix));
-    }
 
     #[test]
     fn invalid_matrix_does_not_invert() {

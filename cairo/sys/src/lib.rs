@@ -205,7 +205,7 @@ pub struct TextExtents {
 }
 #[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Matrix {
+pub struct cairo_matrix_t {
     pub xx: c_double,
     pub yx: c_double,
 
@@ -216,7 +216,7 @@ pub struct Matrix {
     pub y0: c_double,
 }
 
-impl ::std::fmt::Display for Matrix {
+impl ::std::fmt::Display for cairo_matrix_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "Matrix")
     }
@@ -437,9 +437,9 @@ extern "C" {
     pub fn cairo_translate(cr: *mut cairo_t, tx: c_double, ty: c_double);
     pub fn cairo_scale(cr: *mut cairo_t, sx: c_double, sy: c_double);
     pub fn cairo_rotate(cr: *mut cairo_t, angle: c_double);
-    pub fn cairo_transform(cr: *mut cairo_t, matrix: *const Matrix);
-    pub fn cairo_set_matrix(cr: *mut cairo_t, matrix: *const Matrix);
-    pub fn cairo_get_matrix(cr: *mut cairo_t, matrix: *mut Matrix);
+    pub fn cairo_transform(cr: *mut cairo_t, matrix: *const cairo_matrix_t);
+    pub fn cairo_set_matrix(cr: *mut cairo_t, matrix: *const cairo_matrix_t);
+    pub fn cairo_get_matrix(cr: *mut cairo_t, matrix: *mut cairo_matrix_t);
     pub fn cairo_identity_matrix(cr: *mut cairo_t);
     pub fn cairo_user_to_device(cr: *mut cairo_t, x: *mut c_double, y: *mut c_double);
     pub fn cairo_user_to_device_distance(cr: *mut cairo_t, dx: *mut c_double, dy: *mut c_double);
@@ -594,8 +594,8 @@ extern "C" {
     pub fn cairo_pattern_get_extend(pattern: *mut cairo_pattern_t) -> cairo_extend_t;
     pub fn cairo_pattern_set_filter(pattern: *mut cairo_pattern_t, filter: cairo_filter_t);
     pub fn cairo_pattern_get_filter(pattern: *mut cairo_pattern_t) -> cairo_filter_t;
-    pub fn cairo_pattern_set_matrix(pattern: *mut cairo_pattern_t, matrix: *const Matrix);
-    pub fn cairo_pattern_get_matrix(pattern: *mut cairo_pattern_t, matrix: *mut Matrix);
+    pub fn cairo_pattern_set_matrix(pattern: *mut cairo_pattern_t, matrix: *const cairo_matrix_t);
+    pub fn cairo_pattern_get_matrix(pattern: *mut cairo_pattern_t, matrix: *mut cairo_matrix_t);
     pub fn cairo_pattern_get_type(pattern: *mut cairo_pattern_t) -> cairo_pattern_type_t;
     pub fn cairo_pattern_get_reference_count(pattern: *mut cairo_pattern_t) -> c_uint;
     pub fn cairo_pattern_set_user_data(
@@ -683,8 +683,8 @@ extern "C" {
         weight: cairo_font_weight_t,
     );
     pub fn cairo_set_font_size(cr: *mut cairo_t, size: c_double);
-    pub fn cairo_set_font_matrix(cr: *mut cairo_t, matrix: *const Matrix);
-    pub fn cairo_get_font_matrix(cr: *mut cairo_t, matrix: *mut Matrix);
+    pub fn cairo_set_font_matrix(cr: *mut cairo_t, matrix: *const cairo_matrix_t);
+    pub fn cairo_get_font_matrix(cr: *mut cairo_t, matrix: *mut cairo_matrix_t);
     pub fn cairo_set_font_options(cr: *mut cairo_t, options: *const cairo_font_options_t);
     pub fn cairo_get_font_options(cr: *mut cairo_t, options: *mut cairo_font_options_t);
     pub fn cairo_set_font_face(cr: *mut cairo_t, font_face: *mut cairo_font_face_t);
@@ -802,8 +802,8 @@ extern "C" {
     // CAIRO SCALED FONT
     pub fn cairo_scaled_font_create(
         font_face: *mut cairo_font_face_t,
-        font_matrix: *const Matrix,
-        ctm: *const Matrix,
+        font_matrix: *const cairo_matrix_t,
+        ctm: *const cairo_matrix_t,
         options: *const cairo_font_options_t,
     ) -> *mut cairo_scaled_font_t;
     pub fn cairo_scaled_font_reference(
@@ -847,12 +847,15 @@ extern "C" {
     );
     pub fn cairo_scaled_font_get_font_matrix(
         scaled_font: *mut cairo_scaled_font_t,
-        font_matrix: *mut Matrix,
+        font_matrix: *mut cairo_matrix_t,
     );
-    pub fn cairo_scaled_font_get_ctm(scaled_font: *mut cairo_scaled_font_t, ctm: *mut Matrix);
+    pub fn cairo_scaled_font_get_ctm(
+        scaled_font: *mut cairo_scaled_font_t,
+        ctm: *mut cairo_matrix_t,
+    );
     pub fn cairo_scaled_font_get_scale_matrix(
         scaled_font: *mut cairo_scaled_font_t,
-        scale_matrix: *mut Matrix,
+        scale_matrix: *mut cairo_matrix_t,
     );
     pub fn cairo_scaled_font_get_type(scaled_font: *mut cairo_scaled_font_t) -> cairo_font_type_t;
     pub fn cairo_scaled_font_get_reference_count(font_face: *mut cairo_scaled_font_t) -> c_uint;
@@ -920,9 +923,13 @@ extern "C" {
     );
 
     // CAIRO MATRIX
-    pub fn cairo_matrix_multiply(matrix: *mut Matrix, left: *const Matrix, right: *const Matrix);
+    pub fn cairo_matrix_multiply(
+        matrix: *mut cairo_matrix_t,
+        left: *const cairo_matrix_t,
+        right: *const cairo_matrix_t,
+    );
     pub fn cairo_matrix_init(
-        matrix: *mut Matrix,
+        matrix: *mut cairo_matrix_t,
         xx: f64,
         yx: f64,
         xy: f64,
@@ -930,13 +937,17 @@ extern "C" {
         x0: f64,
         y0: f64,
     );
-    pub fn cairo_matrix_init_identity(matrix: *mut Matrix);
-    pub fn cairo_matrix_translate(matrix: *mut Matrix, tx: f64, ty: f64);
-    pub fn cairo_matrix_scale(matrix: *mut Matrix, sx: f64, sy: f64);
-    pub fn cairo_matrix_rotate(matrix: *mut Matrix, angle: f64);
-    pub fn cairo_matrix_invert(matrix: *mut Matrix) -> cairo_status_t;
-    pub fn cairo_matrix_transform_distance(matrix: *const Matrix, dx: *mut f64, dy: *mut f64);
-    pub fn cairo_matrix_transform_point(matrix: *const Matrix, x: *mut f64, y: *mut f64);
+    pub fn cairo_matrix_init_identity(matrix: *mut cairo_matrix_t);
+    pub fn cairo_matrix_translate(matrix: *mut cairo_matrix_t, tx: f64, ty: f64);
+    pub fn cairo_matrix_scale(matrix: *mut cairo_matrix_t, sx: f64, sy: f64);
+    pub fn cairo_matrix_rotate(matrix: *mut cairo_matrix_t, angle: f64);
+    pub fn cairo_matrix_invert(matrix: *mut cairo_matrix_t) -> cairo_status_t;
+    pub fn cairo_matrix_transform_distance(
+        matrix: *const cairo_matrix_t,
+        dx: *mut f64,
+        dy: *mut f64,
+    );
+    pub fn cairo_matrix_transform_point(matrix: *const cairo_matrix_t, x: *mut f64, y: *mut f64);
 
     // CAIRO SURFACE
     pub fn cairo_surface_destroy(surface: *mut cairo_surface_t);

@@ -6,14 +6,55 @@ use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::mem;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-#[repr(C)]
+#[derive(Clone, Copy, PartialEq)]
+#[repr(transparent)]
 #[doc(alias = "cairo_rectangle_t")]
-pub struct Rectangle {
-    pub x: f64,
-    pub y: f64,
-    pub width: f64,
-    pub height: f64,
+pub struct Rectangle(ffi::cairo_rectangle_t);
+
+impl Rectangle {
+    pub fn new(x: f64, y: f64, width: f64, height: f64) -> Self {
+        Self(ffi::cairo_rectangle_t {
+            x,
+            y,
+            width,
+            height,
+        })
+    }
+    pub fn x(&self) -> f64 {
+        self.0.x
+    }
+    pub fn set_x(&mut self, x: f64) {
+        self.0.x = x;
+    }
+    pub fn y(&self) -> f64 {
+        self.0.x
+    }
+    pub fn set_y(&mut self, y: f64) {
+        self.0.y = y;
+    }
+    pub fn width(&self) -> f64 {
+        self.0.width
+    }
+    pub fn set_width(&mut self, width: f64) {
+        self.0.width = width;
+    }
+    pub fn height(&self) -> f64 {
+        self.0.height
+    }
+    pub fn set_height(&mut self, height: f64) {
+        self.0.height = height;
+    }
+}
+
+impl fmt::Debug for Rectangle {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Rectangle")
+            .field("x", &self.x())
+            .field("y", &self.y())
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .finish()
+    }
 }
 
 #[cfg(feature = "use_glib")]

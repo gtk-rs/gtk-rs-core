@@ -8,13 +8,22 @@ use crate::LayoutLine;
 /// The result of [`LayoutLine::x_to_index`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct HitPosition {
+    index: i32,
+    trailing: i32,
+    is_inside: bool,
+}
+
+impl HitPosition {
     // rustdoc-stripper-ignore-next
     /// The UTF-8 byte offset of the grapheme closest to the position.
     ///
     /// This position is relative to the start of the [`Layout`]'s text.
     ///
     /// [`Layout`]: crate::Layout
-    pub index: i32,
+    pub fn index(self) -> i32 {
+        self.index
+    }
+
     // rustdoc-stripper-ignore-next
     /// The codepoint within the grapheme of the position.
     ///
@@ -22,14 +31,19 @@ pub struct HitPosition {
     /// in the grapheme. This represents whether the user clicked near the start
     /// of the grapheme or near the end; this is important for things like
     /// resolving cursor positions.
-    pub trailing: i32,
+    pub fn trailing(self) -> i32 {
+        self.trailing
+    }
+
     // rustdoc-stripper-ignore-next
     /// Whether or not the position was within the bounds of the line.
     ///
     /// If this is `false`, then `index` and `trailing` will always resolve
     /// to either the very first or the very last position in the line; this
     /// behaviour is dependent on the line's resolved writing direction.
-    pub is_inside: bool,
+    pub fn is_inside(self) -> bool {
+        self.is_inside
+    }
 }
 
 impl LayoutLine {
