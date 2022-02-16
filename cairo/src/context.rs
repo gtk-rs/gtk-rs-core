@@ -743,43 +743,32 @@ impl Context {
 
     #[doc(alias = "cairo_text_extents")]
     pub fn text_extents(&self, text: &str) -> Result<TextExtents, Error> {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         unsafe {
             let text = CString::new(text).unwrap();
-            ffi::cairo_text_extents(self.0.as_ptr(), text.as_ptr(), &mut extents);
+            ffi::cairo_text_extents(
+                self.0.as_ptr(),
+                text.as_ptr(),
+                extents.as_mut_ptr() as *mut _,
+            );
+            self.status().map(|_| extents.assume_init())
         }
-        self.status().map(|_| extents)
     }
 
     #[doc(alias = "cairo_glyph_extents")]
     pub fn glyph_extents(&self, glyphs: &[Glyph]) -> Result<TextExtents, Error> {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         unsafe {
             ffi::cairo_glyph_extents(
                 self.0.as_ptr(),
                 glyphs.as_ptr() as *const _,
                 glyphs.len() as _,
-                &mut extents,
+                extents.as_mut_ptr() as *mut _,
             );
+            self.status().map(|_| extents.assume_init())
         }
-
-        self.status().map(|_| extents)
     }
 
     // paths stuff

@@ -194,7 +194,7 @@ pub struct cairo_text_cluster_t {
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
-pub struct TextExtents {
+pub struct cairo_text_extents_t {
     pub x_bearing: c_double,
     pub y_bearing: c_double,
     pub width: c_double,
@@ -703,12 +703,16 @@ extern "C" {
         cluster_flags: cairo_text_cluster_flags_t,
     );
     pub fn cairo_font_extents(cr: *mut cairo_t, extents: *mut cairo_font_extents_t);
-    pub fn cairo_text_extents(cr: *mut cairo_t, utf8: *const c_char, extents: *mut TextExtents);
+    pub fn cairo_text_extents(
+        cr: *mut cairo_t,
+        utf8: *const c_char,
+        extents: *mut cairo_text_extents_t,
+    );
     pub fn cairo_glyph_extents(
         cr: *mut cairo_t,
         glyphs: *const cairo_glyph_t,
         num_glyphs: c_int,
-        extents: *mut TextExtents,
+        extents: *mut cairo_text_extents_t,
     );
     pub fn cairo_toy_font_face_create(
         family: *const c_char,
@@ -817,13 +821,13 @@ extern "C" {
     pub fn cairo_scaled_font_text_extents(
         scaled_font: *mut cairo_scaled_font_t,
         utf8: *const c_char,
-        extents: *mut TextExtents,
+        extents: *mut cairo_text_extents_t,
     );
     pub fn cairo_scaled_font_glyph_extents(
         scaled_font: *mut cairo_scaled_font_t,
         glyphs: *const cairo_glyph_t,
         num_glyphs: c_int,
-        extents: *mut TextExtents,
+        extents: *mut cairo_text_extents_t,
     );
     pub fn cairo_scaled_font_text_to_glyphs(
         scaled_font: *mut cairo_scaled_font_t,
