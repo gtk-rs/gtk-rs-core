@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+mod font_extents;
 mod font_face;
 mod font_options;
 mod scaled_font;
@@ -9,7 +10,7 @@ pub use crate::enums::{
     TextClusterFlags,
 };
 
-pub use crate::ffi::{FontExtents, Glyph, TextCluster, TextExtents};
+pub use crate::ffi::{Glyph, TextCluster, TextExtents};
 
 /* TODO
  Allocates an array of cairo_glyph_t's. This function is only useful in
@@ -37,6 +38,7 @@ impl TextCluster {
 }
 */
 
+pub use self::font_extents::FontExtents;
 pub use self::font_face::FontFace;
 pub use self::font_options::FontOptions;
 pub use self::scaled_font::ScaledFont;

@@ -15,6 +15,7 @@ use glib::translate::*;
 use libc::c_int;
 use std::ffi::CString;
 use std::fmt;
+use std::mem::MaybeUninit;
 use std::ops;
 use std::ptr;
 use std::slice;
@@ -727,19 +728,12 @@ impl Context {
 
     #[doc(alias = "cairo_font_extents")]
     pub fn font_extents(&self) -> Result<FontExtents, Error> {
-        let mut extents = FontExtents {
-            ascent: 0.0,
-            descent: 0.0,
-            height: 0.0,
-            max_x_advance: 0.0,
-            max_y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<FontExtents>::uninit();
 
         unsafe {
-            ffi::cairo_font_extents(self.0.as_ptr(), &mut extents);
+            ffi::cairo_font_extents(self.0.as_ptr(), extents.as_mut_ptr() as *mut _);
+            self.status().map(|_| extents.assume_init() as _)
         }
-
-        self.status().map(|_| extents)
     }
 
     #[doc(alias = "cairo_text_extents")]

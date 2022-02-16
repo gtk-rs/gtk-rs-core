@@ -173,7 +173,7 @@ opaque!(cairo_font_options_t);
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
-pub struct FontExtents {
+pub struct cairo_font_extents_t {
     pub ascent: c_double,
     pub descent: c_double,
     pub height: c_double,
@@ -703,7 +703,7 @@ extern "C" {
         num_clusters: c_int,
         cluster_flags: cairo_text_cluster_flags_t,
     );
-    pub fn cairo_font_extents(cr: *mut cairo_t, extents: *mut FontExtents);
+    pub fn cairo_font_extents(cr: *mut cairo_t, extents: *mut cairo_font_extents_t);
     pub fn cairo_text_extents(cr: *mut cairo_t, utf8: *const c_char, extents: *mut TextExtents);
     pub fn cairo_glyph_extents(
         cr: *mut cairo_t,
@@ -813,7 +813,7 @@ extern "C" {
     pub fn cairo_scaled_font_status(scaled_font: *mut cairo_scaled_font_t) -> cairo_status_t;
     pub fn cairo_scaled_font_extents(
         scaled_font: *mut cairo_scaled_font_t,
-        extents: *mut FontExtents,
+        extents: *mut cairo_font_extents_t,
     );
     pub fn cairo_scaled_font_text_extents(
         scaled_font: *mut cairo_scaled_font_t,

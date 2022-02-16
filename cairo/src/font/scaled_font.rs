@@ -3,12 +3,13 @@
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 use std::ffi::CString;
+use std::mem::MaybeUninit;
 use std::ptr;
 
-use crate::ffi::{FontExtents, Glyph, TextCluster, TextExtents};
+use crate::ffi::{Glyph, TextCluster, TextExtents};
 use crate::matrices::Matrix;
 use crate::utils::status_to_result;
-use crate::{enums::FontType, Error};
+use crate::{enums::FontType, Error, FontExtents};
 
 use super::{FontFace, FontOptions};
 
@@ -99,17 +100,12 @@ impl ScaledFont {
 
     #[doc(alias = "cairo_scaled_font_extents")]
     pub fn extents(&self) -> FontExtents {
-        let mut extents = FontExtents {
-            ascent: 0.0,
-            descent: 0.0,
-            height: 0.0,
-            max_x_advance: 0.0,
-            max_y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<FontExtents>::uninit();
 
-        unsafe { ffi::cairo_scaled_font_extents(self.to_raw_none(), &mut extents) }
-
-        extents
+        unsafe {
+            ffi::cairo_scaled_font_extents(self.to_raw_none(), extents.as_mut_ptr() as *mut _);
+            extents.assume_init()
+        }
     }
 
     #[doc(alias = "cairo_scaled_font_text_extents")]
