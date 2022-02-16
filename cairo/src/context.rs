@@ -12,7 +12,6 @@ use crate::{
 };
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use libc::c_int;
 use std::ffi::CString;
 use std::fmt;
 use std::mem::MaybeUninit;
@@ -698,7 +697,13 @@ impl Context {
 
     #[doc(alias = "cairo_show_glyphs")]
     pub fn show_glyphs(&self, glyphs: &[Glyph]) -> Result<(), Error> {
-        unsafe { ffi::cairo_show_glyphs(self.0.as_ptr(), glyphs.as_ptr(), glyphs.len() as c_int) };
+        unsafe {
+            ffi::cairo_show_glyphs(
+                self.0.as_ptr(),
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+            )
+        };
         self.status()
     }
 
@@ -716,10 +721,10 @@ impl Context {
                 self.0.as_ptr(),
                 text.as_ptr(),
                 -1_i32, //NULL terminated
-                glyphs.as_ptr(),
-                glyphs.len() as c_int,
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
                 clusters.as_ptr(),
-                clusters.len() as c_int,
+                clusters.len() as _,
                 cluster_flags.into(),
             )
         };
@@ -768,8 +773,8 @@ impl Context {
         unsafe {
             ffi::cairo_glyph_extents(
                 self.0.as_ptr(),
-                glyphs.as_ptr(),
-                glyphs.len() as c_int,
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
                 &mut extents,
             );
         }
@@ -868,7 +873,13 @@ impl Context {
 
     #[doc(alias = "cairo_glyph_path")]
     pub fn glyph_path(&self, glyphs: &[Glyph]) {
-        unsafe { ffi::cairo_glyph_path(self.0.as_ptr(), glyphs.as_ptr(), glyphs.len() as i32) }
+        unsafe {
+            ffi::cairo_glyph_path(
+                self.0.as_ptr(),
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+            )
+        }
     }
 
     #[doc(alias = "cairo_rel_curve_to")]

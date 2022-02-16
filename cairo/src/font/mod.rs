@@ -3,6 +3,7 @@
 mod font_extents;
 mod font_face;
 mod font_options;
+mod glyph;
 mod scaled_font;
 
 pub use crate::enums::{
@@ -10,7 +11,7 @@ pub use crate::enums::{
     TextClusterFlags,
 };
 
-pub use crate::ffi::{Glyph, TextCluster, TextExtents};
+pub use crate::ffi::{TextCluster, TextExtents};
 
 /* TODO
  Allocates an array of cairo_glyph_t's. This function is only useful in
@@ -41,4 +42,5 @@ impl TextCluster {
 pub use self::font_extents::FontExtents;
 pub use self::font_face::FontFace;
 pub use self::font_options::FontOptions;
+pub use self::glyph::Glyph;
 pub use self::scaled_font::ScaledFont;
