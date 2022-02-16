@@ -5,13 +5,14 @@ mod font_face;
 mod font_options;
 mod glyph;
 mod scaled_font;
+mod text_cluster;
 
 pub use crate::enums::{
     Antialias, FontSlant, FontType, FontWeight, HintMetrics, HintStyle, SubpixelOrder,
     TextClusterFlags,
 };
 
-pub use crate::ffi::{TextCluster, TextExtents};
+pub use crate::ffi::TextExtents;
 
 /* TODO
  Allocates an array of cairo_glyph_t's. This function is only useful in
@@ -44,3 +45,4 @@ pub use self::font_face::FontFace;
 pub use self::font_options::FontOptions;
 pub use self::glyph::Glyph;
 pub use self::scaled_font::ScaledFont;
+pub use self::text_cluster::TextCluster;

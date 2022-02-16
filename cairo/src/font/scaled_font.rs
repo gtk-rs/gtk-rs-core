@@ -6,10 +6,10 @@ use std::ffi::CString;
 use std::mem::MaybeUninit;
 use std::ptr;
 
-use crate::ffi::{TextCluster, TextExtents};
+use crate::ffi::TextExtents;
 use crate::matrices::Matrix;
 use crate::utils::status_to_result;
-use crate::{enums::FontType, Error, FontExtents, Glyph};
+use crate::{enums::FontType, Error, FontExtents, Glyph, TextCluster};
 
 use super::{FontFace, FontOptions};
 
@@ -178,7 +178,7 @@ impl ScaledFont {
                 text_length,
                 &mut glyphs_ptr as *mut _ as *mut _,
                 &mut glyph_count,
-                &mut clusters_ptr,
+                &mut clusters_ptr as *mut _ as *mut _,
                 &mut cluster_count,
                 &mut cluster_flags,
             );
@@ -207,7 +207,7 @@ impl ScaledFont {
             };
 
             ffi::cairo_glyph_free(glyphs_ptr as _);
-            ffi::cairo_text_cluster_free(clusters_ptr);
+            ffi::cairo_text_cluster_free(clusters_ptr as _);
 
             Ok((glyphs, clusters))
         }

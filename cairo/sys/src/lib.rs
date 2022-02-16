@@ -188,7 +188,7 @@ pub struct cairo_glyph_t {
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
-pub struct TextCluster {
+pub struct cairo_text_cluster_t {
     pub num_bytes: c_int,
     pub num_glyphs: c_int,
 }
@@ -698,7 +698,7 @@ extern "C" {
         utf8_len: c_int,
         glyphs: *const cairo_glyph_t,
         num_glyphs: c_int,
-        clusters: *const TextCluster,
+        clusters: *const cairo_text_cluster_t,
         num_clusters: c_int,
         cluster_flags: cairo_text_cluster_flags_t,
     );
@@ -721,8 +721,8 @@ extern "C" {
         -> cairo_font_weight_t;
     pub fn cairo_glyph_allocate(num_glyphs: c_int) -> *mut cairo_glyph_t;
     pub fn cairo_glyph_free(glyphs: *mut cairo_glyph_t);
-    pub fn cairo_text_cluster_allocate(num_clusters: c_int) -> *mut TextCluster;
-    pub fn cairo_text_cluster_free(clusters: *mut TextCluster);
+    pub fn cairo_text_cluster_allocate(num_clusters: c_int) -> *mut cairo_text_cluster_t;
+    pub fn cairo_text_cluster_free(clusters: *mut cairo_text_cluster_t);
 
     #[cfg(any(feature = "freetype", feature = "dox"))]
     pub fn cairo_ft_font_face_create_for_ft_face(
@@ -833,7 +833,7 @@ extern "C" {
         utf8_len: c_int,
         glyphs: *mut *mut cairo_glyph_t,
         num_glyphs: *mut c_int,
-        clusters: *mut *mut TextCluster,
+        clusters: *mut *mut cairo_text_cluster_t,
         num_clusters: *mut c_int,
         cluster_flags: *mut cairo_text_cluster_flags_t,
     ) -> cairo_status_t;

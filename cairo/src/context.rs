@@ -723,7 +723,7 @@ impl Context {
                 -1_i32, //NULL terminated
                 glyphs.as_ptr() as *const _,
                 glyphs.len() as _,
-                clusters.as_ptr(),
+                clusters.as_ptr() as *const _,
                 clusters.len() as _,
                 cluster_flags.into(),
             )
