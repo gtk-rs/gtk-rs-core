@@ -984,7 +984,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for $name $(<$($generic),+>)? {
-            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
+            type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
@@ -996,7 +996,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for &'a $name $(<$($generic),+>)? {
-            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
+            type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 assert_eq!(std::mem::size_of::<$name $(<$($generic),+>)?>(), std::mem::size_of::<$crate::ffi::gpointer>());
@@ -4163,6 +4163,64 @@ unsafe impl<'a, T: IsInterface> Sync for InterfaceRef<'a, T> {}
 // rustdoc-stripper-ignore-next
 /// Trait implemented by interface types.
 pub unsafe trait IsInterface: ObjectType {}
+
+// rustdoc-stripper-ignore-next
+/// `Value` type checker for object types.
+pub struct ObjectValueTypeChecker<T>(std::marker::PhantomData<T>);
+
+unsafe impl<T: StaticType> crate::value::ValueTypeChecker for ObjectValueTypeChecker<T> {
+    type Error = crate::value::ValueTypeMismatchOrNoneError;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        // g_type_check_value_holds() only checks for the GType of the GValue. This might be
+        // initialized to a parent type of the expected type and would then fail while it's
+        // still valid to retrieve the value.
+
+        unsafe {
+            let requested_type = T::static_type().into_glib();
+            let type_ = value.inner.g_type;
+
+            // Direct match or value type is a subtype of the requested type.
+            if gobject_ffi::g_type_is_a(type_, requested_type) != ffi::GFALSE {
+                let obj = gobject_ffi::g_value_get_object(&value.inner);
+                if obj.is_null() {
+                    return Err(Self::Error::UnexpectedNone);
+                } else {
+                    return Ok(());
+                }
+            }
+
+            // If the value type is not a GObject or subtype of GObject then there's a mismatch.
+            if gobject_ffi::g_type_is_a(type_, gobject_ffi::G_TYPE_OBJECT) == ffi::GFALSE {
+                return Err(crate::value::ValueTypeMismatchError::new(
+                    Type::from_glib(type_),
+                    T::static_type(),
+                )
+                .into());
+            }
+
+            // Otherwise peek at the actual object and its concrete type.
+            let obj = gobject_ffi::g_value_get_object(&value.inner);
+
+            // Allow any types if the object is NULL.
+            if obj.is_null() {
+                return Err(Self::Error::UnexpectedNone);
+            }
+
+            let type_ = (*(*obj).g_type_instance.g_class).g_type;
+            // Direct match or concrete type is a subtype of the requested type.
+            if gobject_ffi::g_type_is_a(type_, requested_type) != ffi::GFALSE {
+                Ok(())
+            } else {
+                Err(crate::value::ValueTypeMismatchError::new(
+                    Type::from_glib(type_),
+                    T::static_type(),
+                )
+                .into())
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
