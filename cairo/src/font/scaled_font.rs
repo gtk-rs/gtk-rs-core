@@ -163,9 +163,9 @@ impl ScaledFont {
                 y,
                 text.as_ptr(),
                 text_length,
-                &mut glyphs_ptr as *mut _ as *mut _,
+                &mut glyphs_ptr as *mut *mut Glyph as *mut _,
                 &mut glyph_count,
-                &mut clusters_ptr as *mut _ as *mut _,
+                &mut clusters_ptr as *mut *mut TextCluster as *mut _,
                 &mut cluster_count,
                 &mut cluster_flags,
             );
