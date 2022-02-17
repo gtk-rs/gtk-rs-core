@@ -8,7 +8,7 @@ use std::fmt;
 pub struct Glyph(ffi::cairo_glyph_t);
 
 impl Glyph {
-    pub fn index(&self) -> u64 {
+    pub fn index(&self) -> libc::c_ulong {
         self.0.index
     }
 
