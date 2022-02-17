@@ -427,7 +427,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
                 let mut res = Vec::with_capacity(num);
                 for i in 0..num {
-                    res.push($crate::translate::from_glib_full(ptr.add(i)));
+                    res.push(std::ptr::read(ptr.add(i) as *const $name));
                 }
                 $crate::ffi::g_free(ptr as *mut _);
                 res
