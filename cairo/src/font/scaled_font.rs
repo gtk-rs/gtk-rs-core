@@ -3,12 +3,12 @@
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 use std::ffi::CString;
+use std::mem::MaybeUninit;
 use std::ptr;
 
-use crate::ffi::{FontExtents, Glyph, TextCluster, TextExtents};
 use crate::matrices::Matrix;
 use crate::utils::status_to_result;
-use crate::{enums::FontType, Error};
+use crate::{enums::FontType, Error, FontExtents, Glyph, TextCluster, TextExtents};
 
 use super::{FontFace, FontOptions};
 
@@ -99,59 +99,42 @@ impl ScaledFont {
 
     #[doc(alias = "cairo_scaled_font_extents")]
     pub fn extents(&self) -> FontExtents {
-        let mut extents = FontExtents {
-            ascent: 0.0,
-            descent: 0.0,
-            height: 0.0,
-            max_x_advance: 0.0,
-            max_y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<FontExtents>::uninit();
 
-        unsafe { ffi::cairo_scaled_font_extents(self.to_raw_none(), &mut extents) }
-
-        extents
+        unsafe {
+            ffi::cairo_scaled_font_extents(self.to_raw_none(), extents.as_mut_ptr() as *mut _);
+            extents.assume_init()
+        }
     }
 
     #[doc(alias = "cairo_scaled_font_text_extents")]
     pub fn text_extents(&self, text: &str) -> TextExtents {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         let text = CString::new(text).unwrap();
         unsafe {
-            ffi::cairo_scaled_font_text_extents(self.to_raw_none(), text.as_ptr(), &mut extents)
+            ffi::cairo_scaled_font_text_extents(
+                self.to_raw_none(),
+                text.as_ptr(),
+                extents.as_mut_ptr() as *mut _,
+            );
+            extents.assume_init()
         }
-
-        extents
     }
 
     #[doc(alias = "cairo_scaled_font_glyph_extents")]
     pub fn glyph_extents(&self, glyphs: &[Glyph]) -> TextExtents {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         unsafe {
             ffi::cairo_scaled_font_glyph_extents(
                 self.to_raw_none(),
-                glyphs.as_ptr(),
-                glyphs.len() as i32,
-                &mut extents,
-            )
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+                extents.as_mut_ptr() as *mut _,
+            );
+            extents.assume_init()
         }
-
-        extents
     }
 
     #[doc(alias = "cairo_scaled_font_text_to_glyphs")]
@@ -180,9 +163,9 @@ impl ScaledFont {
                 y,
                 text.as_ptr(),
                 text_length,
-                &mut glyphs_ptr,
+                &mut glyphs_ptr as *mut *mut Glyph as *mut _,
                 &mut glyph_count,
-                &mut clusters_ptr,
+                &mut clusters_ptr as *mut *mut TextCluster as *mut _,
                 &mut cluster_count,
                 &mut cluster_flags,
             );
@@ -210,8 +193,8 @@ impl ScaledFont {
                 clusters
             };
 
-            ffi::cairo_glyph_free(glyphs_ptr);
-            ffi::cairo_text_cluster_free(clusters_ptr);
+            ffi::cairo_glyph_free(glyphs_ptr as _);
+            ffi::cairo_text_cluster_free(clusters_ptr as _);
 
             Ok((glyphs, clusters))
         }

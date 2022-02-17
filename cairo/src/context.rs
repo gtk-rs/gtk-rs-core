@@ -12,9 +12,9 @@ use crate::{
 };
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use libc::c_int;
 use std::ffi::CString;
 use std::fmt;
+use std::mem::MaybeUninit;
 use std::ops;
 use std::ptr;
 use std::slice;
@@ -697,7 +697,13 @@ impl Context {
 
     #[doc(alias = "cairo_show_glyphs")]
     pub fn show_glyphs(&self, glyphs: &[Glyph]) -> Result<(), Error> {
-        unsafe { ffi::cairo_show_glyphs(self.0.as_ptr(), glyphs.as_ptr(), glyphs.len() as c_int) };
+        unsafe {
+            ffi::cairo_show_glyphs(
+                self.0.as_ptr(),
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+            )
+        };
         self.status()
     }
 
@@ -715,10 +721,10 @@ impl Context {
                 self.0.as_ptr(),
                 text.as_ptr(),
                 -1_i32, //NULL terminated
-                glyphs.as_ptr(),
-                glyphs.len() as c_int,
-                clusters.as_ptr(),
-                clusters.len() as c_int,
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+                clusters.as_ptr() as *const _,
+                clusters.len() as _,
                 cluster_flags.into(),
             )
         };
@@ -727,60 +733,42 @@ impl Context {
 
     #[doc(alias = "cairo_font_extents")]
     pub fn font_extents(&self) -> Result<FontExtents, Error> {
-        let mut extents = FontExtents {
-            ascent: 0.0,
-            descent: 0.0,
-            height: 0.0,
-            max_x_advance: 0.0,
-            max_y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<FontExtents>::uninit();
 
         unsafe {
-            ffi::cairo_font_extents(self.0.as_ptr(), &mut extents);
+            ffi::cairo_font_extents(self.0.as_ptr(), extents.as_mut_ptr() as *mut _);
+            self.status().map(|_| extents.assume_init() as _)
         }
-
-        self.status().map(|_| extents)
     }
 
     #[doc(alias = "cairo_text_extents")]
     pub fn text_extents(&self, text: &str) -> Result<TextExtents, Error> {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         unsafe {
             let text = CString::new(text).unwrap();
-            ffi::cairo_text_extents(self.0.as_ptr(), text.as_ptr(), &mut extents);
+            ffi::cairo_text_extents(
+                self.0.as_ptr(),
+                text.as_ptr(),
+                extents.as_mut_ptr() as *mut _,
+            );
+            self.status().map(|_| extents.assume_init())
         }
-        self.status().map(|_| extents)
     }
 
     #[doc(alias = "cairo_glyph_extents")]
     pub fn glyph_extents(&self, glyphs: &[Glyph]) -> Result<TextExtents, Error> {
-        let mut extents = TextExtents {
-            x_bearing: 0.0,
-            y_bearing: 0.0,
-            width: 0.0,
-            height: 0.0,
-            x_advance: 0.0,
-            y_advance: 0.0,
-        };
+        let mut extents = MaybeUninit::<TextExtents>::uninit();
 
         unsafe {
             ffi::cairo_glyph_extents(
                 self.0.as_ptr(),
-                glyphs.as_ptr(),
-                glyphs.len() as c_int,
-                &mut extents,
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+                extents.as_mut_ptr() as *mut _,
             );
+            self.status().map(|_| extents.assume_init())
         }
-
-        self.status().map(|_| extents)
     }
 
     // paths stuff
@@ -874,7 +862,13 @@ impl Context {
 
     #[doc(alias = "cairo_glyph_path")]
     pub fn glyph_path(&self, glyphs: &[Glyph]) {
-        unsafe { ffi::cairo_glyph_path(self.0.as_ptr(), glyphs.as_ptr(), glyphs.len() as i32) }
+        unsafe {
+            ffi::cairo_glyph_path(
+                self.0.as_ptr(),
+                glyphs.as_ptr() as *const _,
+                glyphs.len() as _,
+            )
+        }
     }
 
     #[doc(alias = "cairo_rel_curve_to")]
