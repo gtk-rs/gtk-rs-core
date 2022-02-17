@@ -248,9 +248,10 @@ impl Closure {
                         );
                         *return_value = result;
                     }
+                    None if return_value.type_() == Type::INVALID => (),
                     None => {
                         panic!(
-                            "Closure return no value but the caller expected a value of type {}",
+                            "Closure returned no value but the caller expected a value of type {}",
                             return_value.type_()
                         );
                     }
