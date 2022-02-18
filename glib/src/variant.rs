@@ -1605,16 +1605,11 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    let mut builder = crate::GStringBuilder::new("(");
-
-                    $(
-                        let t = $name::static_variant_type();
-                        builder.append(t.as_str());
-                    )+
-
-                    builder.append_c(')');
-
-                    Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
+                    Cow::Owned(VariantType::new_tuple(&[
+                        $(
+                            $name::static_variant_type(),
+                        )+
+                    ]))
                 }
             }
 
