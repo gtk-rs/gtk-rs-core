@@ -86,6 +86,7 @@ impl Deref for VariantType {
     type Target = VariantTy;
     fn deref(&self) -> &VariantTy {
         unsafe {
+            assert!(self.len > 0);
             &*(slice::from_raw_parts(self.ptr as *const u8, self.len) as *const [u8]
                 as *const VariantTy)
         }
@@ -388,6 +389,7 @@ impl VariantTy {
     #[doc(hidden)]
     pub unsafe fn from_ptr<'a>(ptr: *const ffi::GVariantType) -> &'a VariantTy {
         let len = ffi::g_variant_type_get_string_length(ptr) as usize;
+        assert!(len > 0);
         &*(slice::from_raw_parts(ptr as *const u8, len) as *const [u8] as *const VariantTy)
     }
 

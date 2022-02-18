@@ -214,7 +214,11 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
 
     match imp.write(
         wrap.unsafe_cast_ref(),
-        slice::from_raw_parts(buffer as *const u8, count),
+        if count == 0 {
+            &[]
+        } else {
+            slice::from_raw_parts(buffer as *const u8, count)
+        },
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),

@@ -173,7 +173,11 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
 
     match imp.read(
         wrap.unsafe_cast_ref(),
-        slice::from_raw_parts_mut(buffer as *mut u8, count),
+        if count == 0 {
+            &mut []
+        } else {
+            slice::from_raw_parts_mut(buffer as *mut u8, count)
+        },
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),

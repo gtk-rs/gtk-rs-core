@@ -79,7 +79,7 @@ impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {
 
         let path = unsafe {
             let path = ffi::g_unix_socket_address_get_path(self.as_ref().to_glib_none().0);
-            if path.is_null() {
+            if path.is_null() || self.path_len() == 0 {
                 &[]
             } else {
                 slice::from_raw_parts(path as *const u8, self.path_len())

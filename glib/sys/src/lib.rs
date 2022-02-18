@@ -590,6 +590,7 @@ pub const G_UNICODE_SCRIPT_OLD_UYGHUR: GUnicodeScript = 158;
 pub const G_UNICODE_SCRIPT_TANGSA: GUnicodeScript = 159;
 pub const G_UNICODE_SCRIPT_TOTO: GUnicodeScript = 160;
 pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
+pub const G_UNICODE_SCRIPT_MATH: GUnicodeScript = 162;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -5559,6 +5560,16 @@ extern "C" {
     // Other functions
     //=========================================================================
     pub fn g_access(filename: *const c_char, mode: c_int) -> c_int;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_aligned_alloc(n_blocks: size_t, n_block_bytes: size_t, alignment: size_t) -> gpointer;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_aligned_alloc0(n_blocks: size_t, n_block_bytes: size_t, alignment: size_t)
+        -> gpointer;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_aligned_free(mem: gpointer);
     pub fn g_ascii_digit_value(c: c_char) -> c_int;
     pub fn g_ascii_dtostr(buffer: *mut c_char, buf_len: c_int, d: c_double) -> *mut c_char;
     pub fn g_ascii_formatd(

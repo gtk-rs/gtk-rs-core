@@ -119,6 +119,31 @@ pub trait FileExtManual: Sized {
         Pin<Box<dyn std::future::Future<Output = Result<(u64, u64, u64), glib::Error>> + 'static>>,
         Pin<Box<dyn futures_core::stream::Stream<Item = (bool, u64, u64, u64)> + 'static>>,
     );
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "g_file_move_async")]
+    fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
+        &self,
+        destination: &impl IsA<File>,
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
+        callback: Q,
+    );
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    fn move_future(
+        &self,
+        destination: &(impl IsA<File> + Clone + 'static),
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+    ) -> (
+        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
+        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
+    );
 }
 
 impl<O: IsA<File>> FileExtManual for O {
@@ -506,11 +531,13 @@ impl<O: IsA<File>> FileExtManual for O {
                 glib::thread_guard::ThreadGuard<Q>,
                 RefCell<glib::thread_guard::ThreadGuard<P>>,
             ) = &*(user_data as *const _);
-            (&mut *callback.1.borrow_mut().get_mut())(slice::from_raw_parts(
-                file_contents as *const u8,
-                file_size as usize,
-            ))
-            .into_glib()
+            let data = if file_size == 0 {
+                &[]
+            } else {
+                slice::from_raw_parts(file_contents as *const u8, file_size as usize)
+            };
+
+            (&mut *callback.1.borrow_mut().get_mut())(data).into_glib()
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -727,6 +754,131 @@ impl<O: IsA<File>> FileExtManual for O {
                                 sender.unbounded_send((reporting, disk_usage, num_dirs, num_files));
                         },
                     )),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ));
+
+        (fut, Box::pin(receiver))
+    }
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
+        &self,
+        destination: &impl IsA<File>,
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
+        callback: Q,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let progress_trampoline = if progress_callback.is_some() {
+            Some(move_async_progress_trampoline::<Q> as _)
+        } else {
+            None
+        };
+
+        let user_data: Box<(
+            glib::thread_guard::ThreadGuard<Q>,
+            RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+        )> = Box::new((
+            glib::thread_guard::ThreadGuard::new(callback),
+            RefCell::new(progress_callback.map(glib::thread_guard::ThreadGuard::new)),
+        ));
+        unsafe extern "C" fn move_async_trampoline<Q: FnOnce(Result<(), glib::Error>) + 'static>(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            ffi::g_file_move_finish(_source_object as *mut _, res, &mut error);
+            let result = if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box<(
+                glib::thread_guard::ThreadGuard<Q>,
+                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+            )> = Box::from_raw(user_data as *mut _);
+            let callback = callback.0.into_inner();
+            callback(result);
+        }
+        unsafe extern "C" fn move_async_progress_trampoline<
+            Q: FnOnce(Result<(), glib::Error>) + 'static,
+        >(
+            current_num_bytes: i64,
+            total_num_bytes: i64,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let callback: &(
+                glib::thread_guard::ThreadGuard<Q>,
+                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+            ) = &*(user_data as *const _);
+            (callback
+                .1
+                .borrow_mut()
+                .as_mut()
+                .expect("no closure")
+                .get_mut())(current_num_bytes, total_num_bytes);
+        }
+
+        let user_data = Box::into_raw(user_data) as *mut _;
+
+        unsafe {
+            ffi::g_file_move_async(
+                self.as_ref().to_glib_none().0,
+                destination.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                progress_trampoline,
+                user_data,
+                Some(move_async_trampoline::<Q>),
+                user_data,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    fn move_future(
+        &self,
+        destination: &(impl IsA<File> + Clone + 'static),
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+    ) -> (
+        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
+        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
+    ) {
+        let destination = destination.clone();
+
+        let (sender, receiver) = futures_channel::mpsc::unbounded();
+
+        let fut = Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.move_async(
+                    &destination,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    Some(Box::new(move |current_num_bytes, total_num_bytes| {
+                        let _ = sender.unbounded_send((current_num_bytes, total_num_bytes));
+                    })),
                     move |res| {
                         send.resolve(res);
                     },

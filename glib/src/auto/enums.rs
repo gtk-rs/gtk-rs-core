@@ -889,6 +889,10 @@ pub enum UnicodeScript {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_VITHKUQI")]
     Vithkuqi,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_MATH")]
+    Math,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1067,6 +1071,8 @@ impl fmt::Display for UnicodeScript {
                 Self::Toto => "Toto",
                 #[cfg(any(feature = "v2_72", feature = "dox"))]
                 Self::Vithkuqi => "Vithkuqi",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::Math => "Math",
                 _ => "Unknown",
             }
         )
@@ -1247,6 +1253,8 @@ impl IntoGlib for UnicodeScript {
             Self::Toto => ffi::G_UNICODE_SCRIPT_TOTO,
             #[cfg(any(feature = "v2_72", feature = "dox"))]
             Self::Vithkuqi => ffi::G_UNICODE_SCRIPT_VITHKUQI,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::Math => ffi::G_UNICODE_SCRIPT_MATH,
             Self::__Unknown(value) => value,
         }
     }
@@ -1424,6 +1432,8 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_TOTO => Self::Toto,
             #[cfg(any(feature = "v2_72", feature = "dox"))]
             ffi::G_UNICODE_SCRIPT_VITHKUQI => Self::Vithkuqi,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_MATH => Self::Math,
             value => Self::__Unknown(value),
         }
     }

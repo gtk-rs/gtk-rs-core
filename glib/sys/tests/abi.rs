@@ -1638,6 +1638,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_SCRIPT_MANICHAEAN", "112"),
     ("(gint) G_UNICODE_SCRIPT_MARCHEN", "134"),
     ("(gint) G_UNICODE_SCRIPT_MASARAM_GONDI", "138"),
+    ("(gint) G_UNICODE_SCRIPT_MATH", "162"),
     ("(gint) G_UNICODE_SCRIPT_MEDEFAIDRIN", "146"),
     ("(gint) G_UNICODE_SCRIPT_MEETEI_MAYEK", "87"),
     ("(gint) G_UNICODE_SCRIPT_MENDE_KIKAKUI", "113"),

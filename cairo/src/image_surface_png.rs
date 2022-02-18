@@ -30,7 +30,11 @@ unsafe extern "C" fn read_func<R: Read>(
         return Error::ReadError.into();
     }
 
-    let buffer = slice::from_raw_parts_mut(data, len as usize);
+    let buffer = if data.is_null() || len == 0 {
+        &mut []
+    } else {
+        slice::from_raw_parts_mut(data, len as usize)
+    };
     let result = std::panic::catch_unwind(AssertUnwindSafe(|| read_env.reader.read_exact(buffer)));
     match result {
         Ok(Ok(())) => ffi::STATUS_SUCCESS,
@@ -63,7 +67,11 @@ unsafe extern "C" fn write_func<W: Write>(
         return Error::WriteError.into();
     }
 
-    let buffer = slice::from_raw_parts(data, len as usize);
+    let buffer = if data.is_null() || len == 0 {
+        &[]
+    } else {
+        slice::from_raw_parts(data, len as usize)
+    };
     let result = std::panic::catch_unwind(AssertUnwindSafe(|| write_env.writer.write_all(buffer)));
     match result {
         Ok(Ok(())) => ffi::STATUS_SUCCESS,

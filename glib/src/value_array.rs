@@ -108,6 +108,10 @@ impl ops::Deref for ValueArray {
     type Target = [Value];
 
     fn deref(&self) -> &[Value] {
+        if self.is_empty() {
+            return &[];
+        }
+
         unsafe {
             slice::from_raw_parts(
                 (*self.to_glib_none().0).values as *const Value,
@@ -119,6 +123,10 @@ impl ops::Deref for ValueArray {
 
 impl ops::DerefMut for ValueArray {
     fn deref_mut(&mut self) -> &mut [Value] {
+        if self.is_empty() {
+            return &mut [];
+        }
+
         unsafe {
             slice::from_raw_parts_mut(
                 (*self.to_glib_none().0).values as *mut Value,

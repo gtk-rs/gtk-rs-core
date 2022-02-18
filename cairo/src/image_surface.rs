@@ -138,7 +138,12 @@ impl ImageSurface {
                 return Err(BorrowError::from(Error::SurfaceFinished));
             }
             let len = self.height() as usize * self.stride() as usize;
-            f(slice::from_raw_parts(ptr, len));
+            let data = if len == 0 {
+                &[]
+            } else {
+                slice::from_raw_parts(ptr, len)
+            };
+            f(data);
         }
         Ok(())
     }
@@ -186,7 +191,9 @@ impl AsRef<[u8]> for ImageSurfaceDataOwned {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
         unsafe {
             let ptr = ffi::cairo_image_surface_get_data(self.surface.to_raw_none());
-            debug_assert!(!ptr.is_null());
+            if ptr.is_null() || len == 0 {
+                return &[];
+            }
             slice::from_raw_parts(ptr, len)
         }
     }
@@ -197,7 +204,9 @@ impl AsMut<[u8]> for ImageSurfaceDataOwned {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
         unsafe {
             let ptr = ffi::cairo_image_surface_get_data(self.surface.to_raw_none());
-            debug_assert!(!ptr.is_null());
+            if ptr.is_null() || len == 0 {
+                return &mut [];
+            }
             slice::from_raw_parts_mut(ptr, len)
         }
     }
@@ -231,11 +240,14 @@ impl<'a> ImageSurfaceData<'a> {
     fn new(surface: &'a mut ImageSurface) -> ImageSurfaceData<'a> {
         unsafe {
             let ptr = ffi::cairo_image_surface_get_data(surface.to_raw_none());
-            debug_assert!(!ptr.is_null());
             let len = (surface.stride() as usize) * (surface.height() as usize);
             ImageSurfaceData {
                 surface,
-                slice: slice::from_raw_parts_mut(ptr, len),
+                slice: if ptr.is_null() || len == 0 {
+                    &mut []
+                } else {
+                    slice::from_raw_parts_mut(ptr, len)
+                },
                 dirty: false,
             }
         }

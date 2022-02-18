@@ -2202,7 +2202,7 @@ impl FromGlibPtrContainer<*const c_char, *mut ffi::GHashTable> for HashMap<Strin
                 &mut *(hash_map as *mut HashMap<String, String>);
             hash_map.insert(key, value);
         }
-        let mut map = HashMap::new();
+        let mut map = HashMap::with_capacity(ffi::g_hash_table_size(ptr) as usize);
         ffi::g_hash_table_foreach(
             ptr,
             Some(read_string_hash_table),
