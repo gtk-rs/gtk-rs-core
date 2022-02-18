@@ -3168,6 +3168,53 @@ impl<T: ObjectType> ObjectExt for T {
     }
 }
 
+// Helper struct to avoid creating an extra ref on objects inside closure watches. This is safe
+// because `watch_closure` ensures the object has a ref when the closure is called.
+#[doc(hidden)]
+pub struct WatchedObject<T: ObjectType>(ptr::NonNull<T::GlibType>);
+
+#[doc(hidden)]
+unsafe impl<T: ObjectType + Send + Sync> Send for WatchedObject<T> {}
+
+#[doc(hidden)]
+impl<T: ObjectType> WatchedObject<T> {
+    pub fn new(obj: &T) -> Self {
+        Self(unsafe { ptr::NonNull::new_unchecked(obj.as_ptr()) })
+    }
+    pub unsafe fn borrow(&self) -> Borrowed<T>
+    where
+        T: FromGlibPtrBorrow<*mut <T as ObjectType>::GlibType>,
+    {
+        from_glib_borrow(self.0.as_ptr())
+    }
+}
+
+#[doc(hidden)]
+pub trait Watchable<T: ObjectType> {
+    fn watched_object(&self) -> WatchedObject<T>;
+    fn watch_closure(&self, closure: &impl AsRef<Closure>);
+}
+
+#[doc(hidden)]
+impl<T: ObjectType> Watchable<T> for T {
+    fn watched_object(&self) -> WatchedObject<T> {
+        WatchedObject::new(self)
+    }
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        ObjectExt::watch_closure(self, closure)
+    }
+}
+
+#[doc(hidden)]
+impl<T: ObjectType> Watchable<T> for &T {
+    fn watched_object(&self) -> WatchedObject<T> {
+        WatchedObject::new(*self)
+    }
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        ObjectExt::watch_closure(*self, closure)
+    }
+}
+
 // Validate that the given property value has an acceptable type for the given property pspec
 // and if necessary update the value
 fn validate_property_type(
