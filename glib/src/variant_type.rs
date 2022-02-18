@@ -39,6 +39,18 @@ impl VariantType {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a key and value type.
+    #[doc(alias = "g_variant_type_new_dict_entry")]
+    pub fn new_dict_entry(key_type: &VariantTy, value_type: &VariantTy) -> VariantType {
+        unsafe {
+            from_glib_full(ffi::g_variant_type_new_dict_entry(
+                key_type.to_glib_none().0,
+                value_type.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
