@@ -439,7 +439,7 @@ impl Variant {
     ///
     /// This function panics if not all variants are of type `type_`.
     #[doc(alias = "g_variant_new_array")]
-    pub fn array_from_iter_with_type<I: IntoIterator<Item = Variant>>(
+    pub fn array_from_iter_with_type<T: AsRef<Variant>, I: IntoIterator<Item = T>>(
         type_: &VariantTy,
         children: I,
     ) -> Self {
@@ -448,6 +448,7 @@ impl Variant {
             ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
             let mut builder = builder.assume_init();
             for value in children.into_iter() {
+                let value = value.as_ref();
                 if ffi::g_variant_is_of_type(value.to_glib_none().0, type_.to_glib_none().0)
                     == ffi::GFALSE
                 {
@@ -480,13 +481,13 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Creates a new Variant tuple from children.
     #[doc(alias = "g_variant_new_tuple")]
-    pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
+    pub fn tuple_from_iter(children: impl IntoIterator<Item = impl AsRef<Variant>>) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
             ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
             let mut builder = builder.assume_init();
             for value in children.into_iter() {
-                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+                ffi::g_variant_builder_add_value(&mut builder, value.as_ref().to_glib_none().0);
             }
             from_glib_none(ffi::g_variant_builder_end(&mut builder))
         }
@@ -878,6 +879,12 @@ impl Hash for Variant {
     #[doc(alias = "g_variant_hash")]
     fn hash<H: Hasher>(&self, state: &mut H) {
         unsafe { state.write_u32(ffi::g_variant_hash(self.to_glib_none().0 as *const _)) }
+    }
+}
+
+impl AsRef<Variant> for Variant {
+    fn as_ref(&self) -> &Self {
+        self
     }
 }
 
