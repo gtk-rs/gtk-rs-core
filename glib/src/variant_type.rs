@@ -51,6 +51,13 @@ impl VariantType {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from an array element type.
+    #[doc(alias = "g_variant_type_new_array")]
+    pub fn new_array(elem_type: &VariantTy) -> VariantType {
+        unsafe { from_glib_full(ffi::g_variant_type_new_array(elem_type.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -589,10 +596,7 @@ impl VariantTy {
         } else if self == VariantTy::DICT_ENTRY {
             Cow::Borrowed(VariantTy::DICTIONARY)
         } else {
-            unsafe {
-                let ptr = ffi::g_variant_type_new_array(self.to_glib_none().0);
-                Cow::Owned(VariantType::from_glib_full(ptr))
-            }
+            Cow::Owned(VariantType::new_array(self))
         }
     }
 }
