@@ -58,6 +58,13 @@ impl VariantType {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a maybe element type.
+    #[doc(alias = "g_variant_type_new_maybe")]
+    pub fn new_maybe(child_type: &VariantTy) -> VariantType {
+        unsafe { from_glib_full(ffi::g_variant_type_new_maybe(child_type.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
