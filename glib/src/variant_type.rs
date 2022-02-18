@@ -65,6 +65,21 @@ impl VariantType {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a maybe element type.
+    #[doc(alias = "g_variant_type_new_tuple")]
+    pub fn new_tuple<T: AsRef<VariantTy>, I: IntoIterator<Item = T>>(items: I) -> VariantType {
+        let mut builder = crate::GStringBuilder::new("(");
+
+        for ty in items {
+            builder.append(ty.as_ref().as_str());
+        }
+
+        builder.append_c(')');
+
+        VariantType::from_string(builder.into_string()).unwrap()
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -88,6 +103,12 @@ unsafe impl Sync for VariantType {}
 impl Drop for VariantType {
     fn drop(&mut self) {
         unsafe { ffi::g_variant_type_free(self.ptr) }
+    }
+}
+
+impl AsRef<VariantTy> for VariantType {
+    fn as_ref(&self) -> &VariantTy {
+        self
     }
 }
 
@@ -628,6 +649,12 @@ impl fmt::Display for VariantTy {
 impl<'a> From<&'a VariantTy> for Cow<'a, VariantTy> {
     fn from(ty: &'a VariantTy) -> Cow<'a, VariantTy> {
         Cow::Borrowed(ty)
+    }
+}
+
+impl AsRef<VariantTy> for VariantTy {
+    fn as_ref(&self) -> &Self {
+        self
     }
 }
 
