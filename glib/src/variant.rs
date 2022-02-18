@@ -493,6 +493,20 @@ impl Variant {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a new dictionary entry Variant.
+    ///
+    /// [DictEntry] should be preferred over this when the types are known statically.
+    #[doc(alias = "g_variant_new_dict_entry")]
+    pub fn from_dict_entry(key: &Variant, value: &Variant) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_dict_entry(
+                key.to_glib_none().0,
+                value.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Creates a new maybe Variant.
     #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
@@ -1514,12 +1528,7 @@ where
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
-        unsafe {
-            from_glib_none(ffi::g_variant_new_dict_entry(
-                self.key.to_variant().to_glib_none().0,
-                self.value.to_variant().to_glib_none().0,
-            ))
-        }
+        Variant::from_dict_entry(&self.key.to_variant(), &self.value.to_variant())
     }
 }
 
