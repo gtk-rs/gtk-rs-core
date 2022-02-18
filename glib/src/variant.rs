@@ -1546,13 +1546,10 @@ impl FromVariant for Variant {
 
 impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry<K, V> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_dict_entry(
-                K::static_variant_type().to_glib_none().0,
-                V::static_variant_type().to_glib_none().0,
-            );
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_dict_entry(
+            &K::static_variant_type(),
+            &V::static_variant_type(),
+        ))
     }
 }
 
