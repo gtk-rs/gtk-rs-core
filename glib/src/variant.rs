@@ -1239,10 +1239,7 @@ impl ToVariant for std::ffi::OsStr {
 
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_maybe(T::static_variant_type().to_glib_none().0);
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_maybe(&T::static_variant_type()))
     }
 }
 
