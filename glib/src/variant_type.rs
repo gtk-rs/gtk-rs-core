@@ -39,6 +39,47 @@ impl VariantType {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a key and value type.
+    #[doc(alias = "g_variant_type_new_dict_entry")]
+    pub fn new_dict_entry(key_type: &VariantTy, value_type: &VariantTy) -> VariantType {
+        unsafe {
+            from_glib_full(ffi::g_variant_type_new_dict_entry(
+                key_type.to_glib_none().0,
+                value_type.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from an array element type.
+    #[doc(alias = "g_variant_type_new_array")]
+    pub fn new_array(elem_type: &VariantTy) -> VariantType {
+        unsafe { from_glib_full(ffi::g_variant_type_new_array(elem_type.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a maybe element type.
+    #[doc(alias = "g_variant_type_new_maybe")]
+    pub fn new_maybe(child_type: &VariantTy) -> VariantType {
+        unsafe { from_glib_full(ffi::g_variant_type_new_maybe(child_type.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a `VariantType` from a maybe element type.
+    #[doc(alias = "g_variant_type_new_tuple")]
+    pub fn new_tuple<T: AsRef<VariantTy>, I: IntoIterator<Item = T>>(items: I) -> VariantType {
+        let mut builder = crate::GStringBuilder::new("(");
+
+        for ty in items {
+            builder.append(ty.as_ref().as_str());
+        }
+
+        builder.append_c(')');
+
+        VariantType::from_string(builder.into_string()).unwrap()
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to create a `VariantType` from an owned string.
     ///
     /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
@@ -62,6 +103,12 @@ unsafe impl Sync for VariantType {}
 impl Drop for VariantType {
     fn drop(&mut self) {
         unsafe { ffi::g_variant_type_free(self.ptr) }
+    }
+}
+
+impl AsRef<VariantTy> for VariantType {
+    fn as_ref(&self) -> &VariantTy {
+        self
     }
 }
 
@@ -577,10 +624,7 @@ impl VariantTy {
         } else if self == VariantTy::DICT_ENTRY {
             Cow::Borrowed(VariantTy::DICTIONARY)
         } else {
-            unsafe {
-                let ptr = ffi::g_variant_type_new_array(self.to_glib_none().0);
-                Cow::Owned(VariantType::from_glib_full(ptr))
-            }
+            Cow::Owned(VariantType::new_array(self))
         }
     }
 }
@@ -605,6 +649,12 @@ impl fmt::Display for VariantTy {
 impl<'a> From<&'a VariantTy> for Cow<'a, VariantTy> {
     fn from(ty: &'a VariantTy) -> Cow<'a, VariantTy> {
         Cow::Borrowed(ty)
+    }
+}
+
+impl AsRef<VariantTy> for VariantTy {
+    fn as_ref(&self) -> &Self {
+        self
     }
 }
 

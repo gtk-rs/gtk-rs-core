@@ -494,6 +494,20 @@ impl Variant {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates a new dictionary entry Variant.
+    ///
+    /// [DictEntry] should be preferred over this when the types are known statically.
+    #[doc(alias = "g_variant_new_dict_entry")]
+    pub fn from_dict_entry(key: &Variant, value: &Variant) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_dict_entry(
+                key.to_glib_none().0,
+                value.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Creates a new maybe Variant.
     #[doc(alias = "g_variant_new_maybe")]
     pub fn from_maybe<T: StaticVariantType>(child: Option<&Variant>) -> Self {
@@ -1232,10 +1246,7 @@ impl ToVariant for std::ffi::OsStr {
 
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_maybe(T::static_variant_type().to_glib_none().0);
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_maybe(&T::static_variant_type()))
     }
 }
 
@@ -1521,12 +1532,7 @@ where
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
-        unsafe {
-            from_glib_none(ffi::g_variant_new_dict_entry(
-                self.key.to_variant().to_glib_none().0,
-                self.value.to_variant().to_glib_none().0,
-            ))
-        }
+        Variant::from_dict_entry(&self.key.to_variant(), &self.value.to_variant())
     }
 }
 
@@ -1544,13 +1550,10 @@ impl FromVariant for Variant {
 
 impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry<K, V> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_dict_entry(
-                K::static_variant_type().to_glib_none().0,
-                V::static_variant_type().to_glib_none().0,
-            );
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_dict_entry(
+            &K::static_variant_type(),
+            &V::static_variant_type(),
+        ))
     }
 }
 
@@ -1609,16 +1612,11 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    let mut builder = crate::GStringBuilder::new("(");
-
-                    $(
-                        let t = $name::static_variant_type();
-                        builder.append(t.as_str());
-                    )+
-
-                    builder.append_c(')');
-
-                    Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
+                    Cow::Owned(VariantType::new_tuple(&[
+                        $(
+                            $name::static_variant_type(),
+                        )+
+                    ]))
                 }
             }
 
