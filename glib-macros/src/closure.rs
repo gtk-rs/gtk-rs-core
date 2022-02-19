@@ -32,7 +32,10 @@ impl Capture {
         let alias = self.alias();
         let name = &self.name;
         match self.kind {
-            CaptureKind::Watch | CaptureKind::WeakAllowNone => quote! {
+            CaptureKind::Watch => quote! {
+                let #alias = #crate_ident::object::Watchable::watched_object(&#name);
+            },
+            CaptureKind::WeakAllowNone => quote! {
                 let #alias = #crate_ident::clone::Downgrade::downgrade(&#name);
             },
             CaptureKind::Strong => quote! {
@@ -45,7 +48,7 @@ impl Capture {
         let name = &self.name;
         match self.kind {
             CaptureKind::Watch => quote! {
-                #crate_ident::object::Object::watch_closure(&#name, &#closure_ident);
+                #crate_ident::object::Watchable::watch_closure(&#name, &#closure_ident);
             },
             _ => Default::default(),
         }
@@ -55,12 +58,9 @@ impl Capture {
         let alias = self.alias();
         match self.kind {
             CaptureKind::Watch => {
-                let err_msg = format!("failed to upgrade `{}`", alias);
                 quote! {
-                    let #alias = match #crate_ident::clone::Upgrade::upgrade(&#alias) {
-                        Some(val) => val,
-                        None => panic!(#err_msg)
-                    };
+                    let #alias = unsafe { #alias.borrow() };
+                    let #alias = ::core::convert::AsRef::as_ref(&#alias);
                 }
             }
             CaptureKind::WeakAllowNone => quote! {

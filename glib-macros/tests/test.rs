@@ -359,7 +359,7 @@ fn closure() {
         assert_eq!(obj.ref_count(), 1);
         let weak_test = glib::closure_local!(@watch obj => move || obj.ref_count());
         assert_eq!(obj.ref_count(), 1);
-        assert_eq!(weak_test.invoke::<u32>(&[]), 3);
+        assert_eq!(weak_test.invoke::<u32>(&[]), 2);
         assert_eq!(obj.ref_count(), 1);
 
         weak_test
@@ -379,7 +379,7 @@ fn closure() {
         }
 
         let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
-        assert_eq!(obj.ref_count_in_closure(), 3);
+        assert_eq!(obj.ref_count_in_closure(), 2);
     }
 
     {
@@ -398,7 +398,7 @@ fn closure() {
         let a = A {
             obj: glib::Object::new::<glib::Object>(&[]).unwrap(),
         };
-        assert_eq!(a.ref_count_in_closure(), 3);
+        assert_eq!(a.ref_count_in_closure(), 2);
     }
 
     let strong_test = {
@@ -449,5 +449,47 @@ fn closure() {
             a.ref_count()
         });
         assert_eq!(struct_test.invoke::<u32>(&[]), 2);
+    }
+
+    {
+        use glib::prelude::*;
+        use glib::subclass::prelude::*;
+
+        #[derive(Default)]
+        pub struct FooPrivate {}
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for FooPrivate {
+            const NAME: &'static str = "MyFoo2";
+            type Type = Foo;
+        }
+
+        impl ObjectImpl for FooPrivate {}
+
+        glib::wrapper! {
+            pub struct Foo(ObjectSubclass<FooPrivate>);
+        }
+
+        impl Foo {
+            fn my_ref_count(&self) -> u32 {
+                self.ref_count()
+            }
+        }
+
+        let cast_test = {
+            let foo = glib::Object::new::<Foo>(&[]).unwrap();
+
+            assert_eq!(foo.my_ref_count(), 1);
+            let cast_test = glib::closure_local!(@watch foo => move || foo.my_ref_count());
+            assert_eq!(foo.my_ref_count(), 1);
+            assert_eq!(cast_test.invoke::<u32>(&[]), 2);
+            assert_eq!(foo.my_ref_count(), 1);
+
+            let foo_ref = &foo;
+            let _ = glib::closure_local!(@watch foo_ref => move || foo_ref.my_ref_count());
+
+            cast_test
+        };
+        cast_test.invoke::<()>(&[]);
     }
 }
