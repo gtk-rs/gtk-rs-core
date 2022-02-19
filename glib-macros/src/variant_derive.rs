@@ -35,6 +35,7 @@ pub fn derive_variant_for_struct(
                 .collect::<Vec<_>>();
 
             let idents = (0..types.len()).map(syn::Index::from).collect::<Vec<_>>();
+            let idents_len = idents.len();
 
             let static_variant_type = quote! {
                 impl #generics #glib::StaticVariantType for #ident #generics {
@@ -62,7 +63,7 @@ pub fn derive_variant_for_struct(
             let to_variant = quote! {
                 impl #generics #glib::ToVariant for #ident #generics {
                     fn to_variant(&self) -> #glib::Variant {
-                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::new([
+                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::<#glib::Variant, #idents_len>::new([
                             #(
                                 #glib::ToVariant::to_variant(&self.#idents)
                             ),*
