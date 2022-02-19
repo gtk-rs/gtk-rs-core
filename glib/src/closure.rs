@@ -9,11 +9,8 @@ use std::slice;
 use libc::{c_uint, c_void};
 
 use crate::translate::{from_glib_none, mut_override, ToGlibPtr, ToGlibPtrMut, Uninitialized};
-use crate::value::FromValue;
-use crate::StaticType;
-use crate::ToValue;
-use crate::Type;
-use crate::Value;
+use crate::value::{FromValue, ToValue, Value};
+use crate::{StaticType, Type};
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
@@ -392,6 +389,63 @@ impl<T: for<'a> FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue 
 
 unsafe impl Send for Closure {}
 unsafe impl Sync for Closure {}
+
+pub trait SignalClosure<A> {
+    type Output: ToClosureReturnValue;
+
+    fn call(&self, args: &[Value]) -> Option<Value>;
+    fn parameter_types() -> Vec<Type>;
+}
+
+macro_rules! signal_closure_impl ({ $($param:ident)* } => {
+    impl<Func: Fn($($param),*) -> Res, Res: ToClosureReturnValue, $($param: StaticType + for<'a> FromValue<'a>,)*> SignalClosure<($($param,)*)> for Func
+    {
+        type Output = Res;
+
+        #[allow(unused_variables)]
+        #[allow(unused_mut)]
+        #[allow(non_snake_case)]
+        fn call(&self, args: &[Value]) -> Option<Value> {
+            let mut args = args.iter();
+            $(
+                let $param = args.next()
+                    .expect("closure was called with too few arguments")
+                    .get::<$param>().expect("closure was called with wrong argument type");
+            )*
+
+            let res = (self)($($param),*);
+
+            res.to_closure_return_value()
+        }
+
+        fn parameter_types() -> Vec<Type> {
+            vec![
+                $(
+                    $param::static_type()
+                ),*
+            ]
+        }
+    }
+});
+
+signal_closure_impl! {}
+signal_closure_impl! { A }
+signal_closure_impl! { A B }
+signal_closure_impl! { A B C }
+signal_closure_impl! { A B C D }
+signal_closure_impl! { A B C D E }
+signal_closure_impl! { A B C D E F }
+signal_closure_impl! { A B C D E F G }
+signal_closure_impl! { A B C D E F G H }
+signal_closure_impl! { A B C D E F G H I }
+signal_closure_impl! { A B C D E F G H I J }
+signal_closure_impl! { A B C D E F G H I J K }
+signal_closure_impl! { A B C D E F G H I J K L }
+signal_closure_impl! { A B C D E F G H I J K L M }
+signal_closure_impl! { A B C D E F G H I J K L M N }
+signal_closure_impl! { A B C D E F G H I J K L M N O }
+signal_closure_impl! { A B C D E F G H I J K L M N O P }
+signal_closure_impl! { A B C D E F G H I J K L M N O P Q }
 
 #[cfg(test)]
 mod tests {
