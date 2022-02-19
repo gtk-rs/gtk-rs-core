@@ -252,7 +252,7 @@ extern "C" {
 }
 
 macro_rules! define_param_spec {
-    ($rust_type:ident, $ffi_type:path, $mod_name:ident, $rust_type_offset:expr) => {
+    ($rust_type:ident, $ffi_type:path, $rust_type_offset:expr) => {
         // Can't use get_type here as this is not a boxed type but another fundamental type
         wrapper! {
             #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -407,8 +407,8 @@ macro_rules! define_param_spec_min_max {
 }
 
 macro_rules! define_param_spec_numeric {
-    ($rust_type:ident, $ffi_type:path, $value_type:ty, $mod_name:ident, $rust_type_offset:expr, $from_glib:expr) => {
-        define_param_spec!($rust_type, $ffi_type, $mod_name, $rust_type_offset);
+    ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $from_glib:expr) => {
+        define_param_spec!($rust_type, $ffi_type, $rust_type_offset);
         define_param_spec_default!($rust_type, $value_type, $from_glib);
         define_param_spec_min_max!($rust_type, $value_type, $from_glib);
     };
@@ -418,7 +418,6 @@ define_param_spec_numeric!(
     ParamSpecChar,
     gobject_ffi::GParamSpecChar,
     i8,
-    param_spec_char,
     0,
     |x| x
 );
@@ -458,7 +457,6 @@ define_param_spec_numeric!(
     ParamSpecUChar,
     gobject_ffi::GParamSpecUChar,
     u8,
-    param_spec_uchar,
     1,
     |x| x
 );
@@ -497,7 +495,6 @@ impl ParamSpecUChar {
 define_param_spec!(
     ParamSpecBoolean,
     gobject_ffi::GParamSpecBoolean,
-    param_spec_bool,
     2
 );
 
@@ -534,7 +531,6 @@ define_param_spec_numeric!(
     ParamSpecInt,
     gobject_ffi::GParamSpecInt,
     i32,
-    param_spec_int,
     3,
     |x| x
 );
@@ -574,7 +570,6 @@ define_param_spec_numeric!(
     ParamSpecUInt,
     gobject_ffi::GParamSpecUInt,
     u32,
-    param_spec_uint,
     4,
     |x| x
 );
@@ -614,7 +609,6 @@ define_param_spec_numeric!(
     ParamSpecLong,
     gobject_ffi::GParamSpecLong,
     libc::c_long,
-    param_spec_long,
     5,
     |x| x
 );
@@ -654,7 +648,6 @@ define_param_spec_numeric!(
     ParamSpecULong,
     gobject_ffi::GParamSpecULong,
     libc::c_ulong,
-    param_spec_ulong,
     6,
     |x| x
 );
@@ -694,7 +687,6 @@ define_param_spec_numeric!(
     ParamSpecInt64,
     gobject_ffi::GParamSpecInt64,
     i64,
-    param_spec_int64,
     7,
     |x| x
 );
@@ -734,7 +726,6 @@ define_param_spec_numeric!(
     ParamSpecUInt64,
     gobject_ffi::GParamSpecUInt64,
     u64,
-    param_spec_uint64,
     8,
     |x| x
 );
@@ -773,7 +764,6 @@ impl ParamSpecUInt64 {
 define_param_spec!(
     ParamSpecUnichar,
     gobject_ffi::GParamSpecUnichar,
-    param_spec_unichar,
     9
 );
 
@@ -809,7 +799,6 @@ impl ParamSpecUnichar {
 define_param_spec!(
     ParamSpecEnum,
     gobject_ffi::GParamSpecEnum,
-    param_spec_enum,
     10
 );
 
@@ -859,7 +848,6 @@ impl ParamSpecEnum {
 define_param_spec!(
     ParamSpecFlags,
     gobject_ffi::GParamSpecFlags,
-    param_spec_flags,
     11
 );
 
@@ -910,7 +898,6 @@ define_param_spec_numeric!(
     ParamSpecFloat,
     gobject_ffi::GParamSpecFloat,
     f32,
-    param_spec_float,
     12,
     |x| x
 );
@@ -950,7 +937,6 @@ define_param_spec_numeric!(
     ParamSpecDouble,
     gobject_ffi::GParamSpecDouble,
     f64,
-    param_spec_double,
     13,
     |x| x
 );
@@ -989,7 +975,6 @@ impl ParamSpecDouble {
 define_param_spec!(
     ParamSpecString,
     gobject_ffi::GParamSpecString,
-    param_spec_string,
     14
 );
 
@@ -1034,7 +1019,6 @@ impl ParamSpecString {
 define_param_spec!(
     ParamSpecParam,
     gobject_ffi::GParamSpecParam,
-    param_spec_param,
     15
 );
 
@@ -1068,7 +1052,6 @@ impl ParamSpecParam {
 define_param_spec!(
     ParamSpecBoxed,
     gobject_ffi::GParamSpecBoxed,
-    param_spec_boxed,
     16
 );
 
@@ -1102,7 +1085,6 @@ impl ParamSpecBoxed {
 define_param_spec!(
     ParamSpecPointer,
     gobject_ffi::GParamSpecPointer,
-    param_spec_pointer,
     17
 );
 
@@ -1129,7 +1111,6 @@ impl ParamSpecPointer {
 define_param_spec!(
     ParamSpecValueArray,
     gobject_ffi::GParamSpecValueArray,
-    param_spec_value_array,
     18
 );
 
@@ -1181,7 +1162,6 @@ impl ParamSpecValueArray {
 define_param_spec!(
     ParamSpecObject,
     gobject_ffi::GParamSpecObject,
-    param_spec_object,
     19
 );
 
@@ -1215,7 +1195,6 @@ impl ParamSpecObject {
 define_param_spec!(
     ParamSpecOverride,
     gobject_ffi::GParamSpecOverride,
-    param_spec_override,
     20
 );
 
@@ -1314,7 +1293,6 @@ impl ParamSpecOverride {
 define_param_spec!(
     ParamSpecGType,
     gobject_ffi::GParamSpecGType,
-    param_spec_gtype,
     21
 );
 
@@ -1348,7 +1326,6 @@ impl ParamSpecGType {
 define_param_spec!(
     ParamSpecVariant,
     gobject_ffi::GParamSpecVariant,
-    param_spec_variant,
     22
 );
 
