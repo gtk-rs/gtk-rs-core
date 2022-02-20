@@ -439,7 +439,7 @@ impl Variant {
     ///
     /// This function panics if not all variants are of type `type_`.
     #[doc(alias = "g_variant_new_array")]
-    pub fn array_from_iter_with_type<I: IntoIterator<Item = Variant>>(
+    pub fn array_from_iter_with_type<T: AsRef<Variant>, I: IntoIterator<Item = T>>(
         type_: &VariantTy,
         children: I,
     ) -> Self {
@@ -448,6 +448,7 @@ impl Variant {
             ffi::g_variant_builder_init(builder.as_mut_ptr(), type_.as_array().to_glib_none().0);
             let mut builder = builder.assume_init();
             for value in children.into_iter() {
+                let value = value.as_ref();
                 if ffi::g_variant_is_of_type(value.to_glib_none().0, type_.to_glib_none().0)
                     == ffi::GFALSE
                 {
@@ -480,15 +481,29 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Creates a new Variant tuple from children.
     #[doc(alias = "g_variant_new_tuple")]
-    pub fn tuple_from_iter(children: impl IntoIterator<Item = Variant>) -> Self {
+    pub fn tuple_from_iter(children: impl IntoIterator<Item = impl AsRef<Variant>>) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
             ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
             let mut builder = builder.assume_init();
             for value in children.into_iter() {
-                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+                ffi::g_variant_builder_add_value(&mut builder, value.as_ref().to_glib_none().0);
             }
             from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new dictionary entry Variant.
+    ///
+    /// [DictEntry] should be preferred over this when the types are known statically.
+    #[doc(alias = "g_variant_new_dict_entry")]
+    pub fn from_dict_entry(key: &Variant, value: &Variant) -> Self {
+        unsafe {
+            from_glib_none(ffi::g_variant_new_dict_entry(
+                key.to_glib_none().0,
+                value.to_glib_none().0,
+            ))
         }
     }
 
@@ -881,6 +896,12 @@ impl Hash for Variant {
     }
 }
 
+impl AsRef<Variant> for Variant {
+    fn as_ref(&self) -> &Self {
+        self
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Converts to `Variant`.
 pub trait ToVariant {
@@ -1225,10 +1246,7 @@ impl ToVariant for std::ffi::OsStr {
 
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_maybe(T::static_variant_type().to_glib_none().0);
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_maybe(&T::static_variant_type()))
     }
 }
 
@@ -1514,12 +1532,7 @@ where
     V: StaticVariantType + ToVariant,
 {
     fn to_variant(&self) -> Variant {
-        unsafe {
-            from_glib_none(ffi::g_variant_new_dict_entry(
-                self.key.to_variant().to_glib_none().0,
-                self.value.to_variant().to_glib_none().0,
-            ))
-        }
+        Variant::from_dict_entry(&self.key.to_variant(), &self.value.to_variant())
     }
 }
 
@@ -1537,13 +1550,10 @@ impl FromVariant for Variant {
 
 impl<K: StaticVariantType, V: StaticVariantType> StaticVariantType for DictEntry<K, V> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        unsafe {
-            let ptr = ffi::g_variant_type_new_dict_entry(
-                K::static_variant_type().to_glib_none().0,
-                V::static_variant_type().to_glib_none().0,
-            );
-            Cow::Owned(from_glib_full(ptr))
-        }
+        Cow::Owned(VariantType::new_dict_entry(
+            &K::static_variant_type(),
+            &V::static_variant_type(),
+        ))
     }
 }
 
@@ -1602,16 +1612,11 @@ macro_rules! tuple_impls {
                 $($name: StaticVariantType,)+
             {
                 fn static_variant_type() -> Cow<'static, VariantTy> {
-                    let mut builder = crate::GStringBuilder::new("(");
-
-                    $(
-                        let t = $name::static_variant_type();
-                        builder.append(t.as_str());
-                    )+
-
-                    builder.append_c(')');
-
-                    Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
+                    Cow::Owned(VariantType::new_tuple(&[
+                        $(
+                            $name::static_variant_type(),
+                        )+
+                    ]))
                 }
             }
 
