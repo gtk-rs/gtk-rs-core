@@ -44,8 +44,8 @@ use syn::{parse_macro_input, DeriveInput, NestedMeta};
 /// environment variable when running your code (either in the code directly or when running the
 /// binary) to either "all" or [`CLONE_MACRO_LOG_DOMAIN`]:
 ///
-/// [`g_debug`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.g_debug.html
-/// [`CLONE_MACRO_LOG_DOMAIN`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/constant.CLONE_MACRO_LOG_DOMAIN.html
+/// [`g_debug`]: ../glib/macro.g_debug.html
+/// [`CLONE_MACRO_LOG_DOMAIN`]: ../glib/constant.CLONE_MACRO_LOG_DOMAIN.html
 ///
 /// ```rust,ignore
 /// use glib::CLONE_MACRO_LOG_DOMAIN;
@@ -292,16 +292,16 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these
 /// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.
 ///
-/// [`Closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html
-/// [`Closure::new`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new
-/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
-/// [`Closure::invoke`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.invoke
-/// [`Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
-/// [`FromValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.FromValue.html
-/// [`ToValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.ToValue.html
-/// [`Interface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Interface.html
-/// [`Object`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Object.html
-/// [`Object::watch_closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.ObjectExt.html#tymethod.watch_closure
+/// [`Closure`]: ../glib/closure/struct.Closure.html
+/// [`Closure::new`]: ../glib/closure/struct.Closure.html#method.new
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::invoke`]: ../glib/closure/struct.Closure.html#method.invoke
+/// [`Value`]: ../glib/value/struct.Value.html
+/// [`FromValue`]: ../glib/value/trait.FromValue.html
+/// [`ToValue`]: ../glib/value/trait.ToValue.html
+/// [`Interface`]: ../glib/object/struct.Interface.html
+/// [`Object`]: ../glib/object/struct.Object.html
+/// [`Object::watch_closure`]: ../glib/object/trait.ObjectExt.html#tymethod.watch_closure
 /// **⚠️ IMPORTANT ⚠️**
 ///
 /// `glib` needs to be in scope, so unless it's one of the direct crate dependencies, you need to
@@ -411,7 +411,7 @@ pub fn closure(item: TokenStream) -> TokenStream {
 /// This is useful for closures which can't be sent across threads. See the documentation of
 /// [`closure!`](crate::closure!) for details.
 ///
-/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
 #[proc_macro]
 #[proc_macro_error]
 pub fn closure_local(item: TokenStream) -> TokenStream {
@@ -438,7 +438,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
 pub fn enum_derive(input: TokenStream) -> TokenStream {
@@ -476,7 +476,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -503,7 +503,7 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ErrorDomain`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/error/trait.ErrorDomain.html
+/// [`ErrorDomain`]: ../glib/error/trait.ErrorDomain.html
 #[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
 pub fn error_domain_derive(input: TokenStream) -> TokenStream {
@@ -526,8 +526,8 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 /// struct MyBoxed(String);
 /// ```
 ///
-/// [`BoxedType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/boxed/trait.BoxedType.html
-/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+/// [`BoxedType`]: ../glib/subclass/boxed/trait.BoxedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
 #[proc_macro_error]
 pub fn boxed_derive(input: TokenStream) -> TokenStream {
@@ -554,8 +554,8 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 /// struct MyShared(std::sync::Arc<MySharedInner>);
 /// ```
 ///
-/// [`SharedType`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/shared/trait.SharedType.html
-/// [`glib::Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
+/// [`SharedType`]: ../glib/subclass/shared/trait.SharedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
 #[proc_macro_error]
 pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
@@ -592,7 +592,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ObjectSubclass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/types/trait.ObjectSubclass.html
+/// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -617,7 +617,7 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// type Prerequisites = ();
 /// ```
 ///
-/// [`ObjectInterface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/subclass/interface/trait.ObjectInterface.html
+/// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -685,8 +685,8 @@ pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::clone::Downgrade`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/clone/trait.Downgrade.html
-/// [`glib::clone::Upgrade`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/clone/trait.Upgrade.html
+/// [`glib::clone::Downgrade`]: ../glib/clone/trait.Downgrade.html
+/// [`glib::clone::Upgrade`]: ../glib/clone/trait.Upgrade.html
 #[proc_macro_derive(Downgrade)]
 pub fn downgrade(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -793,9 +793,9 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// assert_eq!(var.get::<MyEnum>(), Some(v));
 /// ```
 ///
-/// [`glib::Variant`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/variant/struct.Variant.html
-/// [`EnumClass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/struct.EnumClass.html
-/// [`FlagsClass`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/struct.FlagsClass.html
+/// [`glib::Variant`]: ../glib/variant/struct.Variant.html
+/// [`EnumClass`]: ../glib/struct.EnumClass.html
+/// [`FlagsClass`]: ../glib/struct.FlagsClass.html
 /// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
 #[proc_macro_derive(Variant, attributes(variant_enum))]
 #[proc_macro_error]
