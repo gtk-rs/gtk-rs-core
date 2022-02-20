@@ -235,7 +235,7 @@ extern "C" {
 }
 
 macro_rules! define_param_spec {
-    ($rust_type:ident, $ffi_type:path, $mod_name:ident, $rust_type_offset:expr) => {
+    ($rust_type:ident, $ffi_type:path, $rust_type_offset:expr) => {
         // Can't use get_type here as this is not a boxed type but another fundamental type
         wrapper! {
             #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -357,19 +357,19 @@ macro_rules! define_param_spec_default {
 }
 
 macro_rules! define_param_spec_min_max {
-    ($rust_type:ident, $value_type:ty, $from_glib:expr) => {
+    ($rust_type:ident, $value_type:ty) => {
         impl $rust_type {
             pub fn minimum(&self) -> $value_type {
                 unsafe {
                     let ptr = self.to_glib_none().0;
-                    $from_glib((*ptr).minimum)
+                    (*ptr).minimum
                 }
             }
 
             pub fn maximum(&self) -> $value_type {
                 unsafe {
                     let ptr = self.to_glib_none().0;
-                    $from_glib((*ptr).maximum)
+                    (*ptr).maximum
                 }
             }
         }
@@ -377,99 +377,68 @@ macro_rules! define_param_spec_min_max {
 }
 
 macro_rules! define_param_spec_numeric {
-    ($rust_type:ident, $ffi_type:path, $value_type:ty, $mod_name:ident, $rust_type_offset:expr, $from_glib:expr) => {
-        define_param_spec!($rust_type, $ffi_type, $mod_name, $rust_type_offset);
-        define_param_spec_default!($rust_type, $value_type, $from_glib);
-        define_param_spec_min_max!($rust_type, $value_type, $from_glib);
+    ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $ffi_fun:ident, $alias:literal) => {
+        define_param_spec!($rust_type, $ffi_type, $rust_type_offset);
+        define_param_spec_default!($rust_type, $value_type, |x| x);
+        define_param_spec_min_max!($rust_type, $value_type);
+
+        impl $rust_type {
+            #[allow(clippy::new_ret_no_self)]
+            #[doc(alias = $alias)]
+            pub fn new(
+                name: &str,
+                nick: &str,
+                blurb: &str,
+                minimum: $value_type,
+                maximum: $value_type,
+                default_value: $value_type,
+                flags: ParamFlags,
+            ) -> ParamSpec {
+                assert_param_name(name);
+                unsafe {
+                    from_glib_none(gobject_ffi::$ffi_fun(
+                        name.to_glib_none().0,
+                        nick.to_glib_none().0,
+                        blurb.to_glib_none().0,
+                        minimum,
+                        maximum,
+                        default_value,
+                        flags.into_glib(),
+                    ))
+                }
+            }
+        }
     };
 }
 
+#[track_caller]
+// the default panic formatter will use its caller as the location in its error message
+fn assert_param_name(name: &str) {
+    assert!(
+        is_canonical_pspec_name(name),
+        "{} is not a valid canonical parameter name",
+        name
+    );
+}
 define_param_spec_numeric!(
     ParamSpecChar,
     gobject_ffi::GParamSpecChar,
     i8,
-    param_spec_char,
     0,
-    |x| x
+    g_param_spec_char,
+    "g_param_spec_char"
 );
-
-impl ParamSpecChar {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_char")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: i8,
-        maximum: i8,
-        default_value: i8,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_char(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecUChar,
     gobject_ffi::GParamSpecUChar,
     u8,
-    param_spec_uchar,
     1,
-    |x| x
+    g_param_spec_uchar,
+    "g_param_spec_uchar"
 );
 
-impl ParamSpecUChar {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_uchar")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: u8,
-        maximum: u8,
-        default_value: u8,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_uchar(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
-
-define_param_spec!(
-    ParamSpecBoolean,
-    gobject_ffi::GParamSpecBoolean,
-    param_spec_bool,
-    2
-);
+define_param_spec!(ParamSpecBoolean, gobject_ffi::GParamSpecBoolean, 2);
 
 define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
 
@@ -483,11 +452,7 @@ impl ParamSpecBoolean {
         default_value: bool,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boolean(
                 name.to_glib_none().0,
@@ -504,248 +469,57 @@ define_param_spec_numeric!(
     ParamSpecInt,
     gobject_ffi::GParamSpecInt,
     i32,
-    param_spec_int,
     3,
-    |x| x
+    g_param_spec_int,
+    "g_param_spec_int"
 );
-
-impl ParamSpecInt {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_int")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: i32,
-        maximum: i32,
-        default_value: i32,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_int(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecUInt,
     gobject_ffi::GParamSpecUInt,
     u32,
-    param_spec_uint,
     4,
-    |x| x
+    g_param_spec_uint,
+    "g_param_spec_uint"
 );
-
-impl ParamSpecUInt {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_uint")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: u32,
-        maximum: u32,
-        default_value: u32,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_uint(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecLong,
     gobject_ffi::GParamSpecLong,
     libc::c_long,
-    param_spec_long,
     5,
-    |x| x
+    g_param_spec_long,
+    "g_param_spec_long"
 );
-
-impl ParamSpecLong {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_long")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: libc::c_long,
-        maximum: libc::c_long,
-        default_value: libc::c_long,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_long(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecULong,
     gobject_ffi::GParamSpecULong,
     libc::c_ulong,
-    param_spec_ulong,
     6,
-    |x| x
+    g_param_spec_ulong,
+    "g_param_spec_ulong"
 );
-
-impl ParamSpecULong {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_ulong")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: libc::c_ulong,
-        maximum: libc::c_ulong,
-        default_value: libc::c_ulong,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_ulong(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecInt64,
     gobject_ffi::GParamSpecInt64,
     i64,
-    param_spec_int64,
     7,
-    |x| x
+    g_param_spec_int64,
+    "g_param_spec_int64"
 );
-
-impl ParamSpecInt64 {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_int64")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: i64,
-        maximum: i64,
-        default_value: i64,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_int64(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecUInt64,
     gobject_ffi::GParamSpecUInt64,
     u64,
-    param_spec_uint64,
     8,
-    |x| x
+    g_param_spec_uint64,
+    "g_param_spec_uint64"
 );
 
-impl ParamSpecUInt64 {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_uint64")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: u64,
-        maximum: u64,
-        default_value: u64,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_uint64(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
-
-define_param_spec!(
-    ParamSpecUnichar,
-    gobject_ffi::GParamSpecUnichar,
-    param_spec_unichar,
-    9
-);
+define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
 
 define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
@@ -759,11 +533,7 @@ impl ParamSpecUnichar {
         default_value: char,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_unichar(
                 name.to_glib_none().0,
@@ -776,12 +546,7 @@ impl ParamSpecUnichar {
     }
 }
 
-define_param_spec!(
-    ParamSpecEnum,
-    gobject_ffi::GParamSpecEnum,
-    param_spec_enum,
-    10
-);
+define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
 define_param_spec_default!(ParamSpecEnum, i32, |x| x);
 
@@ -796,11 +561,7 @@ impl ParamSpecEnum {
         default_value: i32,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_enum(
                 name.to_glib_none().0,
@@ -826,12 +587,7 @@ impl ParamSpecEnum {
     }
 }
 
-define_param_spec!(
-    ParamSpecFlags,
-    gobject_ffi::GParamSpecFlags,
-    param_spec_flags,
-    11
-);
+define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 define_param_spec_default!(ParamSpecFlags, u32, |x| x);
 
@@ -846,11 +602,7 @@ impl ParamSpecFlags {
         default_value: u32,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_flags(
                 name.to_glib_none().0,
@@ -880,88 +632,21 @@ define_param_spec_numeric!(
     ParamSpecFloat,
     gobject_ffi::GParamSpecFloat,
     f32,
-    param_spec_float,
     12,
-    |x| x
+    g_param_spec_float,
+    "g_param_spec_float"
 );
-
-impl ParamSpecFloat {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_float")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: f32,
-        maximum: f32,
-        default_value: f32,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_float(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
 
 define_param_spec_numeric!(
     ParamSpecDouble,
     gobject_ffi::GParamSpecDouble,
     f64,
-    param_spec_double,
     13,
-    |x| x
+    g_param_spec_double,
+    "g_param_spec_double"
 );
 
-impl ParamSpecDouble {
-    #[allow(clippy::new_ret_no_self)]
-    #[doc(alias = "g_param_spec_double")]
-    pub fn new(
-        name: &str,
-        nick: &str,
-        blurb: &str,
-        minimum: f64,
-        maximum: f64,
-        default_value: f64,
-        flags: ParamFlags,
-    ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_double(
-                name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
-                minimum,
-                maximum,
-                default_value,
-                flags.into_glib(),
-            ))
-        }
-    }
-}
-
-define_param_spec!(
-    ParamSpecString,
-    gobject_ffi::GParamSpecString,
-    param_spec_string,
-    14
-);
+define_param_spec!(ParamSpecString, gobject_ffi::GParamSpecString, 14);
 
 define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char| {
     use std::ffi::CStr;
@@ -983,11 +668,7 @@ impl ParamSpecString {
         default_value: Option<&str>,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         let default_value = default_value.to_glib_none();
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_string(
@@ -1001,12 +682,7 @@ impl ParamSpecString {
     }
 }
 
-define_param_spec!(
-    ParamSpecParam,
-    gobject_ffi::GParamSpecParam,
-    param_spec_param,
-    15
-);
+define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
 impl ParamSpecParam {
     #[allow(clippy::new_ret_no_self)]
@@ -1018,11 +694,7 @@ impl ParamSpecParam {
         param_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_param(
                 name.to_glib_none().0,
@@ -1035,12 +707,7 @@ impl ParamSpecParam {
     }
 }
 
-define_param_spec!(
-    ParamSpecBoxed,
-    gobject_ffi::GParamSpecBoxed,
-    param_spec_boxed,
-    16
-);
+define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 
 impl ParamSpecBoxed {
     #[allow(clippy::new_ret_no_self)]
@@ -1052,11 +719,7 @@ impl ParamSpecBoxed {
         boxed_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boxed(
                 name.to_glib_none().0,
@@ -1069,22 +732,13 @@ impl ParamSpecBoxed {
     }
 }
 
-define_param_spec!(
-    ParamSpecPointer,
-    gobject_ffi::GParamSpecPointer,
-    param_spec_pointer,
-    17
-);
+define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
     pub fn new(name: &str, nick: &str, blurb: &str, flags: ParamFlags) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_pointer(
                 name.to_glib_none().0,
@@ -1096,12 +750,7 @@ impl ParamSpecPointer {
     }
 }
 
-define_param_spec!(
-    ParamSpecValueArray,
-    gobject_ffi::GParamSpecValueArray,
-    param_spec_value_array,
-    18
-);
+define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 
 impl ParamSpecValueArray {
     #[allow(clippy::new_ret_no_self)]
@@ -1113,11 +762,7 @@ impl ParamSpecValueArray {
         element_spec: &ParamSpec,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_value_array(
                 name.to_glib_none().0,
@@ -1148,12 +793,7 @@ impl ParamSpecValueArray {
     }
 }
 
-define_param_spec!(
-    ParamSpecObject,
-    gobject_ffi::GParamSpecObject,
-    param_spec_object,
-    19
-);
+define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
 impl ParamSpecObject {
     #[allow(clippy::new_ret_no_self)]
@@ -1165,11 +805,7 @@ impl ParamSpecObject {
         object_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_object(
                 name.to_glib_none().0,
@@ -1182,22 +818,13 @@ impl ParamSpecObject {
     }
 }
 
-define_param_spec!(
-    ParamSpecOverride,
-    gobject_ffi::GParamSpecOverride,
-    param_spec_override,
-    20
-);
+define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
     pub fn new(name: &str, overridden: &ParamSpec) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_override(
                 name.to_glib_none().0,
@@ -1221,11 +848,7 @@ impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
     pub fn for_interface<T: IsA<Object> + IsInterface>(name: &str) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         // in case it's an interface
         let interface_ref: InterfaceRef<T> = Interface::from_type(T::static_type()).unwrap();
         let pspec = interface_ref
@@ -1254,11 +877,7 @@ impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
     pub fn for_class<T: IsA<Object> + IsClass>(name: &str) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         let pspec = ObjectClass::from_type(T::static_type())
             .unwrap()
             .find_property(name)
@@ -1281,12 +900,7 @@ impl ParamSpecOverride {
     }
 }
 
-define_param_spec!(
-    ParamSpecGType,
-    gobject_ffi::GParamSpecGType,
-    param_spec_gtype,
-    21
-);
+define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 
 impl ParamSpecGType {
     #[allow(clippy::new_ret_no_self)]
@@ -1298,11 +912,7 @@ impl ParamSpecGType {
         is_a_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_gtype(
                 name.to_glib_none().0,
@@ -1315,12 +925,7 @@ impl ParamSpecGType {
     }
 }
 
-define_param_spec!(
-    ParamSpecVariant,
-    gobject_ffi::GParamSpecVariant,
-    param_spec_variant,
-    22
-);
+define_param_spec!(ParamSpecVariant, gobject_ffi::GParamSpecVariant, 22);
 
 define_param_spec_default!(
     ParamSpecVariant,
@@ -1339,11 +944,7 @@ impl ParamSpecVariant {
         default_value: Option<&crate::Variant>,
         flags: ParamFlags,
     ) -> ParamSpec {
-        assert!(
-            is_canonical_pspec_name(name),
-            "{} is not a valid canonical parameter name",
-            name
-        );
+        assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_variant(
                 name.to_glib_none().0,
