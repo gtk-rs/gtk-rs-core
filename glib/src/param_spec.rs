@@ -387,19 +387,19 @@ macro_rules! define_param_spec_default {
 }
 
 macro_rules! define_param_spec_min_max {
-    ($rust_type:ident, $value_type:ty, $from_glib:expr) => {
+    ($rust_type:ident, $value_type:ty) => {
         impl $rust_type {
             pub fn minimum(&self) -> $value_type {
                 unsafe {
                     let ptr = self.to_glib_none().0;
-                    $from_glib((*ptr).minimum)
+                    (*ptr).minimum
                 }
             }
 
             pub fn maximum(&self) -> $value_type {
                 unsafe {
                     let ptr = self.to_glib_none().0;
-                    $from_glib((*ptr).maximum)
+                    (*ptr).maximum
                 }
             }
         }
@@ -410,7 +410,7 @@ macro_rules! define_param_spec_numeric {
     ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $ffi_fun:ident, $alias:literal) => {
         define_param_spec!($rust_type, $ffi_type, $rust_type_offset);
         define_param_spec_default!($rust_type, $value_type, |x| x);
-        define_param_spec_min_max!($rust_type, $value_type, |x| x);
+        define_param_spec_min_max!($rust_type, $value_type);
 
         impl $rust_type {
             #[allow(clippy::new_ret_no_self)]
