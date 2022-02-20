@@ -441,6 +441,8 @@ macro_rules! define_param_spec_numeric {
     };
 }
 
+#[track_caller]
+// the default panic formatter will use its caller as the location in its error message
 fn assert_param_name(name: &str) {
     assert!(
         is_canonical_pspec_name(name),
