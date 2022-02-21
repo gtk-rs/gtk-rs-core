@@ -597,6 +597,33 @@ impl FlagsClass {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Converts an integer `value` to a string of nicks separated by `|`.
+    pub fn to_nick_string(&self, mut value: u32) -> String {
+        let mut s = String::new();
+        for val in self.values() {
+            let v = val.value();
+            if (value & v) == v {
+                value &= !v;
+                if !s.is_empty() {
+                    s.push('|');
+                }
+                s.push_str(val.nick());
+            }
+        }
+        s
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Converts a string of nicks `s` separated by `|` to an integer value.
+    pub fn from_nick_string(&self, s: &str) -> Result<u32, ParseFlagsError> {
+        s.split('|').try_fold(0u32, |acc, flag| {
+            self.value_by_nick(flag.trim())
+                .map(|v| acc + v.value())
+                .ok_or_else(|| ParseFlagsError(flag.to_owned()))
+        })
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`.
     pub fn builder(&self) -> FlagsBuilder {
@@ -628,6 +655,23 @@ impl Clone for FlagsClass {
         unsafe {
             Self(ptr::NonNull::new(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _).unwrap())
         }
+    }
+}
+
+#[derive(Debug)]
+pub struct ParseFlagsError(String);
+
+impl std::error::Error for ParseFlagsError {}
+
+impl fmt::Display for ParseFlagsError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Unknown flag: '{}'", self.0)
+    }
+}
+
+impl ParseFlagsError {
+    pub fn flag(&self) -> &str {
+        &self.0
     }
 }
 

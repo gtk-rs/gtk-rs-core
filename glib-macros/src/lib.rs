@@ -44,8 +44,8 @@ use syn::{parse_macro_input, DeriveInput, NestedMeta};
 /// environment variable when running your code (either in the code directly or when running the
 /// binary) to either "all" or [`CLONE_MACRO_LOG_DOMAIN`]:
 ///
-/// [`g_debug`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.g_debug.html
-/// [`CLONE_MACRO_LOG_DOMAIN`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/constant.CLONE_MACRO_LOG_DOMAIN.html
+/// [`g_debug`]: ../glib/macro.g_debug.html
+/// [`CLONE_MACRO_LOG_DOMAIN`]: ../glib/constant.CLONE_MACRO_LOG_DOMAIN.html
 ///
 /// ```rust,ignore
 /// use glib::CLONE_MACRO_LOG_DOMAIN;
@@ -292,16 +292,16 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these
 /// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.
 ///
-/// [`Closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html
-/// [`Closure::new`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new
-/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
-/// [`Closure::invoke`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.invoke
-/// [`Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html
-/// [`FromValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.FromValue.html
-/// [`ToValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.ToValue.html
-/// [`Interface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Interface.html
-/// [`Object`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Object.html
-/// [`Object::watch_closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.ObjectExt.html#tymethod.watch_closure
+/// [`Closure`]: ../glib/closure/struct.Closure.html
+/// [`Closure::new`]: ../glib/closure/struct.Closure.html#method.new
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::invoke`]: ../glib/closure/struct.Closure.html#method.invoke
+/// [`Value`]: ../glib/value/struct.Value.html
+/// [`FromValue`]: ../glib/value/trait.FromValue.html
+/// [`ToValue`]: ../glib/value/trait.ToValue.html
+/// [`Interface`]: ../glib/object/struct.Interface.html
+/// [`Object`]: ../glib/object/struct.Object.html
+/// [`Object::watch_closure`]: ../glib/object/trait.ObjectExt.html#tymethod.watch_closure
 /// **⚠️ IMPORTANT ⚠️**
 ///
 /// `glib` needs to be in scope, so unless it's one of the direct crate dependencies, you need to
@@ -411,7 +411,7 @@ pub fn closure(item: TokenStream) -> TokenStream {
 /// This is useful for closures which can't be sent across threads. See the documentation of
 /// [`closure!`](crate::closure!) for details.
 ///
-/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
 #[proc_macro]
 #[proc_macro_error]
 pub fn closure_local(item: TokenStream) -> TokenStream {
@@ -437,6 +437,8 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 ///     ValWithCustomNameAndNick,
 /// }
 /// ```
+///
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
 pub fn enum_derive(input: TokenStream) -> TokenStream {
@@ -474,7 +476,7 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::Value`]: value/struct.Value.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -501,7 +503,7 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ErrorDomain`]: error/trait.ErrorDomain.html
+/// [`ErrorDomain`]: ../glib/error/trait.ErrorDomain.html
 #[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
 pub fn error_domain_derive(input: TokenStream) -> TokenStream {
@@ -524,8 +526,8 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 /// struct MyBoxed(String);
 /// ```
 ///
-/// [`BoxedType`]: subclass/boxed/trait.BoxedType.html
-/// [`glib::Value`]: value/struct.Value.html
+/// [`BoxedType`]: ../glib/subclass/boxed/trait.BoxedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
 #[proc_macro_error]
 pub fn boxed_derive(input: TokenStream) -> TokenStream {
@@ -552,8 +554,8 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 /// struct MyShared(std::sync::Arc<MySharedInner>);
 /// ```
 ///
-/// [`SharedType`]: subclass/shared/trait.SharedType.html
-/// [`glib::Value`]: value/struct.Value.html
+/// [`SharedType`]: ../glib/subclass/shared/trait.SharedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
 #[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
 #[proc_macro_error]
 pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
@@ -590,7 +592,7 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`ObjectSubclass`]: subclass/types/trait.ObjectSubclass.html
+/// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -615,7 +617,7 @@ pub fn object_subclass(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// type Prerequisites = ();
 /// ```
 ///
-/// [`ObjectInterface`]: interface/types/trait.ObjectInterface.html
+/// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -683,15 +685,15 @@ pub fn object_interface(_attr: TokenStream, item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
-/// [`glib::clone::Downgrade`]: clone/trait.Downgrade.html
-/// [`glib::clone::Upgrade`]: clone/trait.Upgrade.html
+/// [`glib::clone::Downgrade`]: ../glib/clone/trait.Downgrade.html
+/// [`glib::clone::Upgrade`]: ../glib/clone/trait.Upgrade.html
 #[proc_macro_derive(Downgrade)]
 pub fn downgrade(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     downgrade_derive::impl_downgrade(input)
 }
 
-/// Derive macro for serializing/deserializing custom structs as [`glib::Variant`]s.
+/// Derive macro for serializing/deserializing custom structs/enums as [`glib::Variant`]s.
 ///
 /// # Example
 ///
@@ -728,8 +730,75 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 /// assert_eq!(var.get::<Foo>(), Some(v));
 /// ```
 ///
-/// [`glib::Variant`]: variant/struct.Variant.html
-#[proc_macro_derive(Variant)]
+/// Enums are serialized as a tuple `(sv)` with the first value as a [kebab case] string for the
+/// enum variant, or just `s` if this is a C-style enum. Some additional attributes are supported
+/// for enums:
+/// - `#[variant_enum(repr)]` to serialize the enum variant as an integer type instead of `s`.  The
+/// `#[repr]` attribute must also be specified on the enum with a sized integer type, and the type
+/// must implement `Copy`.
+/// - `#[variant_enum(enum)]` uses [`EnumClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::Enum`](Enum).
+/// - `#[variant_enum(flags)]` uses [`FlagsClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::flags`](macro@flags).
+/// - `#[variant_enum(enum, repr)]` serializes as `i32`. Meant for use with [`glib::Enum`](Enum).
+/// The type must also implement `Copy`.
+/// - `#[variant_enum(flags, repr)]` serializes as `u32`. Meant for use with
+/// [`glib::flags`](macro@flags).
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
+/// enum Foo {
+///     MyA,
+///     MyB(i32),
+///     MyC { some_int: u32, some_string: String }
+/// }
+///
+/// let v = Foo::MyC { some_int: 1, some_string: String::from("bar") };
+/// let var = v.to_variant();
+/// assert_eq!(var.child_value(0).str(), Some("my-c"));
+/// assert_eq!(var.get::<Foo>(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Variant)]
+/// #[variant_enum(repr)]
+/// #[repr(u8)]
+/// enum Bar {
+///     A,
+///     B = 3,
+///     C = 7
+/// }
+///
+/// let v = Bar::B;
+/// let var = v.to_variant();
+/// assert_eq!(var.get::<u8>(), Some(3));
+/// assert_eq!(var.get::<Bar>(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, glib::Variant)]
+/// #[variant_enum(enum)]
+/// #[enum_type(name = "MyEnum")]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = "My Val")]
+///     ValWithCustomName,
+///     #[enum_value(name = "My Other Val", nick = "other")]
+///     ValWithCustomNameAndNick,
+/// }
+///
+/// let v = MyEnum::ValWithCustomNameAndNick;
+/// let var = v.to_variant();
+/// assert_eq!(var.str(), Some("other"));
+/// assert_eq!(var.get::<MyEnum>(), Some(v));
+/// ```
+///
+/// [`glib::Variant`]: ../glib/variant/struct.Variant.html
+/// [`EnumClass`]: ../glib/struct.EnumClass.html
+/// [`FlagsClass`]: ../glib/struct.FlagsClass.html
+/// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
+#[proc_macro_derive(Variant, attributes(variant_enum))]
+#[proc_macro_error]
 pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     variant_derive::impl_variant(input)

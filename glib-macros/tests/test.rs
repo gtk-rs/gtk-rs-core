@@ -337,6 +337,165 @@ fn derive_variant() {
     let var = v.to_variant();
     assert_eq!(var.type_().as_str(), "()");
     assert_eq!(var.get::<Variant5>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
+    enum Variant6 {
+        Unit,
+        Tuple(i32, Variant1),
+        Struct { id: i64, data: Variant2 },
+    }
+
+    assert_eq!(Variant6::static_variant_type().as_str(), "(sv)");
+    let v = Variant6::Unit;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(sv)");
+    assert_eq!(var.get::<Variant6>(), Some(v));
+    let v = Variant6::Tuple(
+        5,
+        Variant1 {
+            some_string: "abc".into(),
+            some_int: 77,
+        },
+    );
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(sv)");
+    assert_eq!(var.get::<Variant6>(), Some(v));
+    let v = Variant6::Struct {
+        id: 299,
+        data: Variant2 {
+            some_string: Some("abcdef".into()),
+            some_int: 300,
+        },
+    };
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(sv)");
+    assert_eq!(var.get::<Variant6>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
+    #[variant_enum(repr)]
+    #[repr(u32)]
+    enum Variant7 {
+        Unit,
+        Tuple(i32, String),
+        Struct { id: i64, data: Vec<u8> },
+    }
+
+    assert_eq!(Variant7::static_variant_type().as_str(), "(uv)");
+    let v = Variant7::Struct {
+        id: 299,
+        data: vec![55, 56, 57, 58],
+    };
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "(uv)");
+    assert_eq!(var.get::<Variant7>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, Clone, Copy, glib::Variant, glib::Enum)]
+    #[variant_enum(enum)]
+    #[repr(i32)]
+    #[enum_type(name = "Variant8")]
+    enum Variant8 {
+        Goat,
+        #[enum_value(name = "The Dog")]
+        Dog,
+        #[enum_value(name = "The Cat", nick = "chat")]
+        Cat = 5,
+        Badger,
+    }
+
+    assert_eq!(Variant8::static_variant_type().as_str(), "s");
+    let v = Variant8::Cat;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "s");
+    assert_eq!(var.to_string(), "'chat'");
+    assert_eq!(var.get::<Variant8>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, Clone, Copy, glib::Variant, glib::Enum)]
+    #[variant_enum(enum, repr)]
+    #[repr(i32)]
+    #[enum_type(name = "Variant9")]
+    enum Variant9 {
+        Goat,
+        #[enum_value(name = "The Dog")]
+        Dog,
+        #[enum_value(name = "The Cat", nick = "chat")]
+        Cat = 5,
+        Badger,
+    }
+
+    assert_eq!(Variant9::static_variant_type().as_str(), "i");
+    let v = Variant9::Badger;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "i");
+    assert_eq!(var.get::<Variant9>(), Some(v));
+
+    #[derive(glib::Variant)]
+    #[variant_enum(flags)]
+    #[glib::flags(name = "Variant10")]
+    enum Variant10 {
+        #[flags_value(name = "Flag A", nick = "nick-a")]
+        A = 0b00000001,
+        #[flags_value(name = "Flag B")]
+        B = 0b00000010,
+        #[flags_value(skip)]
+        AB = Self::A.bits() | Self::B.bits(),
+        C = 0b00000100,
+    }
+
+    assert_eq!(Variant10::static_variant_type().as_str(), "s");
+    let v = Variant10::AB;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "s");
+    assert_eq!(var.to_string(), "'nick-a|b'");
+    assert_eq!(var.get::<Variant10>(), Some(v));
+
+    #[derive(glib::Variant)]
+    #[variant_enum(flags, repr)]
+    #[glib::flags(name = "Variant11")]
+    enum Variant11 {
+        #[flags_value(name = "Flag A", nick = "nick-a")]
+        A = 0b00000001,
+        #[flags_value(name = "Flag B")]
+        B = 0b00000010,
+        #[flags_value(skip)]
+        AB = Self::A.bits() | Self::B.bits(),
+        C = 0b00000100,
+    }
+
+    assert_eq!(Variant11::static_variant_type().as_str(), "u");
+    let v = Variant11::A | Variant11::C;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "u");
+    assert_eq!(var.get::<Variant11>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, glib::Variant)]
+    enum Variant12 {
+        Goat,
+        Dog,
+        Cat = 5,
+        Badger,
+    }
+
+    assert_eq!(Variant12::static_variant_type().as_str(), "s");
+    let v = Variant12::Dog;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "s");
+    assert_eq!(var.get::<Variant12>(), Some(v));
+
+    #[derive(Debug, PartialEq, Eq, Copy, Clone, glib::Variant)]
+    #[variant_enum(repr)]
+    #[repr(u8)]
+    enum Variant13 {
+        Goat,
+        Dog,
+        Cat = 5,
+        Badger,
+    }
+
+    assert_eq!(Variant13::static_variant_type().as_str(), "y");
+    let v = Variant13::Badger;
+    let var = v.to_variant();
+    assert_eq!(var.type_().as_str(), "y");
+    assert_eq!(var.get::<Variant13>(), Some(v));
 }
 
 #[test]
