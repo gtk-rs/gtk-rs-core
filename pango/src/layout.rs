@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::LayoutLine;
+use crate::{LayoutLine, LayoutRun};
 
 // rustdoc-stripper-ignore-next
 /// The result of [`LayoutLine::x_to_index`].
@@ -52,6 +52,10 @@ impl LayoutLine {
         unsafe { (*self.to_glib_none().0).length }
     }
 
+    #[doc(alias = "pango_layout_line_runs")]
+    pub fn runs(&self) -> Vec<LayoutRun> {
+        unsafe { FromGlibPtrContainer::from_glib_none((*self.to_glib_none().0).runs) }
+    }
     #[doc(alias = "pango_layout_line_x_to_index")]
     pub fn x_to_index(&self, x_pos: i32) -> HitPosition {
         let mut index = 0;
