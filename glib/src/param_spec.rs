@@ -441,6 +441,96 @@ macro_rules! define_param_spec_numeric {
     };
 }
 
+macro_rules! define_builder {
+    (@constructors $rust_type:ident, $builder_type:ident $(($($req_ident:ident: $req_ty:ty,)*))?) => {
+        impl<'a> $builder_type<'a> {
+            fn new(name: &'a str, $($($req_ident: $req_ty)*)?) -> Self {
+                Self {
+                    name,
+                    $($($req_ident: Some($req_ident),)*)?
+                    ..Default::default()
+                }
+            }
+        }
+
+        impl $rust_type {
+            pub fn builder<'a>(name: &'a str, $($($req_ident: $req_ty),*)?) -> $builder_type<'a> {
+                $builder_type::new(name, $($($req_ident),*)?)
+            }
+        }
+    };
+    (
+        $rust_type:ident, $builder_type:ident {
+            $($field_id:ident: $field_ty:ty $(= $field_expr:expr)?,)*
+        }
+        $(requires $required_tt:tt)?
+    ) => {
+        #[derive(Default)]
+        #[must_use]
+        pub struct $builder_type<'a> {
+            name: &'a str,
+            nick: Option<&'a str>,
+            blurb: Option<&'a str>,
+            flags: Option<crate::ParamFlags>, // `ParamFlags` doesn't implement `Default` so I wrap it in `Option`
+            $($field_id: Option<$field_ty>),*
+        }
+        impl<'a> $builder_type<'a> {
+            /// Default: `self.name`
+            pub fn nick(mut self, nick: &'a str) -> Self {
+                self.nick = Some(nick);
+                self
+            }
+            /// Default: `self.name`
+            pub fn blurb(mut self, blurb: &'a str) -> Self {
+                self.blurb = Some(blurb);
+                self
+            }
+
+            /// Default: `glib::ParamFlags::READWRITE`
+            pub fn flags(mut self, flags: crate::ParamFlags) -> Self {
+                self.flags = Some(flags);
+                self
+            }
+
+            $(
+            $(#[doc = concat!("Default: `", stringify!($field_expr), "`")])?
+            pub fn $field_id(mut self, value: $field_ty) -> Self {
+                self.$field_id = Some(value);
+                self
+            }
+            )*
+
+            #[must_use]
+            pub fn build(self) -> ParamSpec {
+                $rust_type::new(
+                    self.name,
+                    self.nick.unwrap_or(self.name),
+                    self.blurb.unwrap_or(self.name),
+                    $(self
+                        .$field_id
+                        $(.or(Some($field_expr)))?
+                        .expect("impossible: missing parameter in ParamSpec*Builder")
+                    ,)*
+                    self.flags.unwrap_or(crate::ParamFlags::READWRITE),
+                )
+            }
+        }
+        define_builder!(@constructors $rust_type, $builder_type $($required_tt)?);
+    }
+}
+macro_rules! define_builder_numeric {
+    ($rust_type:ident, $builder_type:ident, $n_ty:ty) => {
+        define_builder!(
+            $rust_type,
+            $builder_type {
+                minimum: $n_ty = <$n_ty>::MIN,
+                maximum: $n_ty = <$n_ty>::MAX,
+                default_value: $n_ty = <$n_ty as Default>::default(),
+            }
+        );
+    };
+}
+
 #[track_caller]
 // the default panic formatter will use its caller as the location in its error message
 fn assert_param_name(name: &str) {
@@ -459,6 +549,8 @@ define_param_spec_numeric!(
     "g_param_spec_char"
 );
 
+define_builder_numeric!(ParamSpecChar, ParamSpecCharBuilder, i8);
+
 define_param_spec_numeric!(
     ParamSpecUChar,
     gobject_ffi::GParamSpecUChar,
@@ -467,6 +559,8 @@ define_param_spec_numeric!(
     g_param_spec_uchar,
     "g_param_spec_uchar"
 );
+
+define_builder_numeric!(ParamSpecUChar, ParamSpecUCharBuilder, u8);
 
 define_param_spec!(ParamSpecBoolean, gobject_ffi::GParamSpecBoolean, 2);
 
@@ -495,6 +589,13 @@ impl ParamSpecBoolean {
     }
 }
 
+define_builder!(
+    ParamSpecBoolean,
+    ParamSpecBooleanBuilder {
+        default_value: bool = false,
+    }
+);
+
 define_param_spec_numeric!(
     ParamSpecInt,
     gobject_ffi::GParamSpecInt,
@@ -503,6 +604,8 @@ define_param_spec_numeric!(
     g_param_spec_int,
     "g_param_spec_int"
 );
+
+define_builder_numeric!(ParamSpecInt, ParamSpecIntBuilder, i32);
 
 define_param_spec_numeric!(
     ParamSpecUInt,
@@ -513,6 +616,8 @@ define_param_spec_numeric!(
     "g_param_spec_uint"
 );
 
+define_builder_numeric!(ParamSpecUInt, ParamSpecUIntBuilder, u32);
+
 define_param_spec_numeric!(
     ParamSpecLong,
     gobject_ffi::GParamSpecLong,
@@ -521,6 +626,8 @@ define_param_spec_numeric!(
     g_param_spec_long,
     "g_param_spec_long"
 );
+
+define_builder_numeric!(ParamSpecLong, ParamSpecLongBuilder, libc::c_long);
 
 define_param_spec_numeric!(
     ParamSpecULong,
@@ -531,6 +638,8 @@ define_param_spec_numeric!(
     "g_param_spec_ulong"
 );
 
+define_builder_numeric!(ParamSpecULong, ParamSpecULongBuilder, libc::c_ulong);
+
 define_param_spec_numeric!(
     ParamSpecInt64,
     gobject_ffi::GParamSpecInt64,
@@ -539,6 +648,8 @@ define_param_spec_numeric!(
     g_param_spec_int64,
     "g_param_spec_int64"
 );
+
+define_builder_numeric!(ParamSpecInt64, ParamSpecInt64Builder, i64);
 
 define_param_spec_numeric!(
     ParamSpecUInt64,
@@ -549,8 +660,9 @@ define_param_spec_numeric!(
     "g_param_spec_uint64"
 );
 
-define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
+define_builder_numeric!(ParamSpecUInt64, ParamSpecUInt64Builder, u64);
 
+define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
 define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
 impl ParamSpecUnichar {
@@ -575,6 +687,14 @@ impl ParamSpecUnichar {
         }
     }
 }
+
+define_builder!(
+    ParamSpecUnichar,
+    ParamSpecUnicharBuilder {
+        default_value: char,
+    }
+    requires (default_value: char,)
+);
 
 define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
@@ -617,6 +737,14 @@ impl ParamSpecEnum {
     }
 }
 
+define_builder!(
+    ParamSpecEnum,
+    ParamSpecEnumBuilder {
+        enum_type: crate::Type,
+        default_value: i32 = 0i32,
+    }
+    requires (enum_type: crate::Type,)
+);
 define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 define_param_spec_default!(ParamSpecFlags, u32, |x| x);
@@ -658,6 +786,15 @@ impl ParamSpecFlags {
     }
 }
 
+define_builder!(
+    ParamSpecFlags,
+    ParamSpecFlagsBuilder {
+        flags_type: crate::Type,
+        default_value: u32 = 0u32,
+    }
+    requires (flags_type: crate::Type,)
+);
+
 define_param_spec_numeric!(
     ParamSpecFloat,
     gobject_ffi::GParamSpecFloat,
@@ -667,6 +804,8 @@ define_param_spec_numeric!(
     "g_param_spec_float"
 );
 
+define_builder_numeric!(ParamSpecFloat, ParamSpecFloatBuilder, f32);
+
 define_param_spec_numeric!(
     ParamSpecDouble,
     gobject_ffi::GParamSpecDouble,
@@ -675,6 +814,8 @@ define_param_spec_numeric!(
     g_param_spec_double,
     "g_param_spec_double"
 );
+
+define_builder_numeric!(ParamSpecDouble, ParamSpecDoubleBuilder, f64);
 
 define_param_spec!(ParamSpecString, gobject_ffi::GParamSpecString, 14);
 
@@ -712,6 +853,13 @@ impl ParamSpecString {
     }
 }
 
+define_builder!(
+    ParamSpecString,
+    ParamSpecStringBuilder {
+        default_value: Option<&'a str> = None,
+    }
+);
+
 define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
 impl ParamSpecParam {
@@ -736,6 +884,14 @@ impl ParamSpecParam {
         }
     }
 }
+
+define_builder!(
+    ParamSpecParam,
+    ParamSpecParamBuilder {
+        param_type: crate::Type,
+    }
+    requires (param_type: crate::Type,)
+);
 
 define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 
@@ -762,6 +918,14 @@ impl ParamSpecBoxed {
     }
 }
 
+define_builder!(
+    ParamSpecBoxed,
+    ParamSpecBoxedBuilder {
+        boxed_type: crate::Type,
+    }
+    requires (boxed_type: crate::Type,)
+);
+
 define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
 impl ParamSpecPointer {
@@ -779,6 +943,8 @@ impl ParamSpecPointer {
         }
     }
 }
+
+define_builder!(ParamSpecPointer, ParamSpecPointerBuilder {});
 
 define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 
@@ -823,6 +989,14 @@ impl ParamSpecValueArray {
     }
 }
 
+define_builder!(
+    ParamSpecValueArray,
+    ParamSpecValueArrayBuilder {
+        element_spec: &'a ParamSpec,
+    }
+    requires (element_spec: &'a ParamSpec,)
+);
+
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
 impl ParamSpecObject {
@@ -848,6 +1022,13 @@ impl ParamSpecObject {
     }
 }
 
+define_builder!(
+    ParamSpecObject,
+    ParamSpecObjectBuilder {
+        object_type: crate::Type,
+    }
+    requires (object_type: crate::Type,)
+);
 define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {
@@ -928,6 +1109,32 @@ impl ParamSpecOverride {
             from_glib_none((*ptr).overridden)
         }
     }
+
+    pub fn builder<'a>(name: &'a str, overridden: &'a ParamSpec) -> ParamSpecOverrideBuilder<'a> {
+        ParamSpecOverrideBuilder::new(name, overridden)
+    }
+}
+
+// This builder is not autogenerated because it's the only one that doesn't take
+// `nick`, `blurb` and `flags` as parameters.
+#[must_use]
+pub struct ParamSpecOverrideBuilder<'a> {
+    name: &'a str,
+    overridden: &'a ParamSpec,
+}
+
+impl<'a> ParamSpecOverrideBuilder<'a> {
+    fn new(name: &'a str, overridden: &'a ParamSpec) -> Self {
+        Self { name, overridden }
+    }
+    pub fn overridden(mut self, spec: &'a ParamSpec) -> Self {
+        self.overridden = spec;
+        self
+    }
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecOverride::new(self.name, self.overridden)
+    }
 }
 
 define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
@@ -954,6 +1161,13 @@ impl ParamSpecGType {
         }
     }
 }
+
+define_builder!(
+    ParamSpecGType,
+    ParamSpecGTypeBuilder {
+        is_a_type: crate::Type = crate::Type::UNIT,
+    }
+);
 
 define_param_spec!(ParamSpecVariant, gobject_ffi::GParamSpecVariant, 22);
 
@@ -1001,6 +1215,15 @@ impl ParamSpecVariant {
     }
 }
 
+define_builder!(
+    ParamSpecVariant,
+    ParamSpecVariantBuilder {
+        type_: &'a crate::VariantTy,
+        default_value: Option<&'a crate::Variant> = None,
+    }
+    requires (type_: &'a crate::VariantTy,)
+);
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1033,5 +1256,18 @@ mod tests {
             .downcast::<ParamSpecString>()
             .expect("Not a string param spec");
         assert_eq!(pspec.default_value(), Some("default"));
+    }
+
+    #[test]
+    fn test_param_spec_int_builder() {
+        let pspec = ParamSpecInt::builder("name")
+            .blurb("Simple int parameter")
+            .minimum(-2)
+            .build();
+
+        assert_eq!(pspec.name(), "name");
+        assert_eq!(pspec.nick(), "name");
+        assert_eq!(pspec.blurb(), "Simple int parameter");
+        assert_eq!(pspec.flags(), ParamFlags::READWRITE);
     }
 }
