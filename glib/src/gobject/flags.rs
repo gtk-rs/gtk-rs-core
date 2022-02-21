@@ -32,6 +32,12 @@ bitflags::bitflags! {
     }
 }
 
+impl Default for ParamFlags {
+    fn default() -> Self {
+        ParamFlags::READWRITE
+    }
+}
+
 #[doc(hidden)]
 impl IntoGlib for ParamFlags {
     type GlibType = gobject_ffi::GParamFlags;
