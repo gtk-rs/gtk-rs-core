@@ -471,7 +471,7 @@ macro_rules! define_builder {
             name: &'a str,
             nick: Option<&'a str>,
             blurb: Option<&'a str>,
-            flags: Option<crate::ParamFlags>, // `ParamFlags` doesn't implement `Default` so I wrap it in `Option`
+            flags: crate::ParamFlags,
             $($field_id: Option<$field_ty>),*
         }
         impl<'a> $builder_type<'a> {
@@ -488,7 +488,7 @@ macro_rules! define_builder {
 
             /// Default: `glib::ParamFlags::READWRITE`
             pub fn flags(mut self, flags: crate::ParamFlags) -> Self {
-                self.flags = Some(flags);
+                self.flags = flags;
                 self
             }
 
@@ -511,7 +511,7 @@ macro_rules! define_builder {
                         $(.or(Some($field_expr)))?
                         .expect("impossible: missing parameter in ParamSpec*Builder")
                     ,)*
-                    self.flags.unwrap_or(crate::ParamFlags::READWRITE),
+                    self.flags
                 )
             }
         }
