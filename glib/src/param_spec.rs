@@ -1006,12 +1006,13 @@ impl ParamSpecOverride {
     #[doc(alias = "g_param_spec_override")]
     pub fn new(name: &str, overridden: &ParamSpec) -> ParamSpec {
         assert_param_name(name);
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_override(
-                name.to_glib_none().0,
-                overridden.to_glib_none().0,
-            ))
-        }
+        unsafe { Self::new_unchecked(name, overridden) }
+    }
+    unsafe fn new_unchecked(name: &str, overridden: &ParamSpec) -> ParamSpec {
+        from_glib_none(gobject_ffi::g_param_spec_override(
+            name.to_glib_none().0,
+            overridden.to_glib_none().0,
+        ))
     }
 
     // rustdoc-stripper-ignore-next
@@ -1035,12 +1036,8 @@ impl ParamSpecOverride {
         let pspec = interface_ref
             .find_property(name)
             .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_override(
-                name.to_glib_none().0,
-                pspec.to_glib_none().0,
-            ) as *const _)
-        }
+
+        unsafe { Self::new_unchecked(name, &pspec) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -1063,12 +1060,8 @@ impl ParamSpecOverride {
             .unwrap()
             .find_property(name)
             .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
-        unsafe {
-            from_glib_none(gobject_ffi::g_param_spec_override(
-                name.to_glib_none().0,
-                pspec.to_glib_none().0,
-            ) as *const _)
-        }
+
+        unsafe { Self::new_unchecked(name, &pspec) }
     }
 
     #[doc(alias = "get_overridden")]
