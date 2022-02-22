@@ -8,7 +8,6 @@ use quote::ToTokens;
 use std::str::FromStr;
 use syn::ext::IdentExt;
 use syn::parse::Parse;
-use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::Token;
 
@@ -51,8 +50,7 @@ impl std::convert::From<Option<syn::Expr>> for MaybeCustomFn {
 }
 
 enum PropAttr {
-    // flags(ident, ident, ident)
-    Flags(syn::punctuated::Punctuated<syn::Ident, Token![,]>),
+    Flag(&'static str),
 
     // ident [= expr]
     Get(Option<syn::Expr>),
@@ -71,6 +69,24 @@ enum PropAttr {
     Blurb(syn::LitStr),
 }
 
+const FLAGS: [&'static str; 16] = [
+    "READABLE",
+    "WRITABLE",
+    "READWRITE",
+    "CONSTRUCT",
+    "CONSTRUCT_ONLY",
+    "LAX_VALIDATION",
+    "USER_1",
+    "USER_2",
+    "USER_3",
+    "USER_4",
+    "USER_5",
+    "USER_6",
+    "USER_7",
+    "USER_8",
+    "EXPLICIT_NOTIFY",
+    "DEPRECATED",
+];
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let name = input.call(syn::Ident::parse_any)?;
@@ -104,12 +120,10 @@ impl Parse for PropAttr {
             }
         } else if input.peek(syn::token::Paren) {
             match &*name_str {
-                "flags" => {
+                "builder" => {
                     let content;
                     syn::parenthesized!(content in input);
-                    PropAttr::Flags(content.call(
-                        syn::punctuated::Punctuated::<syn::Ident, Token![,]>::parse_terminated,
-                    )?)
+                    unimplemented!("builder");
                 }
                 _ => panic!("Unsupported attribute list {}(...)", name_str),
             }
@@ -119,8 +133,12 @@ impl Parse for PropAttr {
             match &*name_str {
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
-                _ => {
-                    panic!("Invalid attribute for property")
+                name => {
+                    if let Some(flag) = FLAGS.iter().find(|x| *x == &name.to_uppercase()) {
+                        PropAttr::Flag(flag)
+                    } else {
+                        panic!("Invalid attribute for property")
+                    }
                 }
             }
         };
@@ -134,7 +152,7 @@ struct ReceivedAttrs {
     set: Option<MaybeCustomFn>,
     ty: Option<syn::Type>,
     member: Option<syn::Ident>,
-    flags: Punctuated<syn::Ident, Token![,]>,
+    flags: Vec<&'static str>,
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
@@ -157,7 +175,7 @@ impl ReceivedAttrs {
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
-            PropAttr::Flags(flags) => self.flags = flags,
+            PropAttr::Flag(flag) => self.flags.push(flag),
         }
     }
 }
@@ -170,7 +188,7 @@ struct PropDesc {
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
-    flags: Punctuated<syn::Ident, Token![,]>,
+    flags: Vec<&'static str>,
     default: Option<syn::Expr>,
 }
 impl PropDesc {
@@ -231,7 +249,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             let flags_iter = [write, read]
                 .into_iter()
                 .flatten()
-                .chain(prop.flags.iter().map(|f| f.to_token_stream()));
+                .chain(prop.flags.iter().map(|f| TokenStream2::from_str(f).unwrap()));
             quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
         };
         quote! {

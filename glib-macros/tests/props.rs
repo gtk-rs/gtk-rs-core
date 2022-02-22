@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use glib::prelude::*;
+use glib::ParamFlags;
 #[test]
 fn props() {
     mod foo {
@@ -36,8 +37,8 @@ fn props() {
                     get = |t: &Self| t.author.borrow().name.to_owned(),
                     set = Self::set_author_name)]
                 fake_field: PhantomData<String>,
-                #[prop(get, set, flags(EXPLICIT_NOTIFY, USER_1, DEPRECATED))]
-                manual_flags: RefCell<String>,
+                #[prop(get, set, user_1, user_2, lax_validation)]
+                custom_flags: RefCell<String>,
             }
 
             #[glib::object_subclass]
@@ -94,6 +95,15 @@ fn props() {
     myfoo.set_property("author-nick", "freddy-nick".to_value());
     let author_name: String = myfoo.property("author-nick");
     assert_eq!(author_name, "freddy-nick".to_string());
+
+    // custom flags
+    assert_eq!(
+        myfoo.find_property("custom_flags").unwrap().flags(),
+        ParamFlags::USER_1
+            | ParamFlags::USER_2
+            | ParamFlags::READWRITE
+            | ParamFlags::LAX_VALIDATION
+    );
 
     // Test `FooExt`
     // getters
