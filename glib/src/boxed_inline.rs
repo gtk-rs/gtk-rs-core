@@ -13,7 +13,7 @@ macro_rules! glib_boxed_inline_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
-            pub(crate) phantom: std::marker::PhantomData<($($($generic),+)?)>,
+            $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -21,7 +21,7 @@ macro_rules! glib_boxed_inline_wrapper {
             fn clone(&self) -> Self {
                 Self {
                     inner: std::clone::Clone::clone(&self.inner),
-                    phantom: std::marker::PhantomData,
+                    $(phantom: std::marker::PhantomData::<$($generic),+>)?
                 }
             }
         }
@@ -45,7 +45,7 @@ macro_rules! glib_boxed_inline_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
-            pub(crate) phantom: std::marker::PhantomData<($($($generic),+)?)>,
+            $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -53,7 +53,7 @@ macro_rules! glib_boxed_inline_wrapper {
             fn clone(&self) -> Self {
                 Self {
                     inner: std::clone::Clone::clone(&self.inner),
-                    phantom: std::marker::PhantomData,
+                    $(phantom: std::marker::PhantomData::<$($generic),+>)?
                 }
             }
         }
@@ -76,7 +76,7 @@ macro_rules! glib_boxed_inline_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
-            pub(crate) phantom: std::marker::PhantomData<($($($generic),+)?)>,
+            $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -116,7 +116,7 @@ macro_rules! glib_boxed_inline_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             pub(crate) inner: $ffi_name,
-            pub(crate) phantom: std::marker::PhantomData<($($($generic),+)?)>,
+            $(pub(crate) phantom: std::marker::PhantomData<$($generic),+>,)?
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -164,7 +164,7 @@ macro_rules! glib_boxed_inline_wrapper {
                 init(v.as_mut_ptr());
                 Self {
                     inner: v.assume_init(),
-                    phantom: std::marker::PhantomData,
+                    $(phantom: std::marker::PhantomData::<$($generic),+>)?
                 }
             }
         }
@@ -174,7 +174,7 @@ macro_rules! glib_boxed_inline_wrapper {
             unsafe fn unsafe_from(t: $ffi_name) -> Self {
                 Self {
                     inner: t,
-                    phantom: std::marker::PhantomData,
+                    $(phantom: std::marker::PhantomData::<$($generic),+>)?
                 }
             }
         }
@@ -372,7 +372,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
                 $crate::translate::Borrowed::new(Self {
                     inner: std::ptr::read(ptr),
-                    phantom: std::marker::PhantomData,
+                    $(phantom: std::marker::PhantomData::<$($generic),+>)?
                 })
             }
         }
