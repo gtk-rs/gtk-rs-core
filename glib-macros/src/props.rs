@@ -5,9 +5,11 @@ use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::quote;
 use quote::ToTokens;
+use syn::parenthesized;
 use std::str::FromStr;
 use syn::ext::IdentExt;
 use syn::parse::Parse;
+use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::Token;
 
@@ -51,6 +53,11 @@ impl std::convert::From<Option<syn::Expr>> for MaybeCustomFn {
 
 enum PropAttr {
     Flag(&'static str),
+
+    // builder(required_params).parameter(value)
+    // becomes
+    // Builder(Punctuated(required_params), Optionals(TokenStream))
+    Builder(Punctuated<syn::Expr, Token![,]>, TokenStream2),
 
     // ident [= expr]
     Get(Option<syn::Expr>),
@@ -122,8 +129,10 @@ impl Parse for PropAttr {
             match &*name_str {
                 "builder" => {
                     let content;
-                    syn::parenthesized!(content in input);
-                    unimplemented!("builder");
+                    parenthesized!(content in input);
+                    let required = content.parse_terminated(syn::Expr::parse)?;
+                    let rest: TokenStream2 = input.parse()?;
+                    PropAttr::Builder(required, rest)
                 }
                 _ => panic!("Unsupported attribute list {}(...)", name_str),
             }
@@ -157,6 +166,7 @@ struct ReceivedAttrs {
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
     default: Option<syn::Expr>,
+    builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl ReceivedAttrs {
     fn new(attrs: impl IntoIterator<Item = PropAttr>) -> Self {
@@ -176,6 +186,9 @@ impl ReceivedAttrs {
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
             PropAttr::Flag(flag) => self.flags.push(flag),
+            PropAttr::Builder(required_params, optionals) => {
+                self.builder = Some((required_params, optionals))
+            }
         }
     }
 }
@@ -190,6 +203,7 @@ struct PropDesc {
     member: Option<syn::Ident>,
     flags: Vec<&'static str>,
     default: Option<syn::Expr>,
+    builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl PropDesc {
     fn new(field_ident: syn::Ident, field_ty: syn::Type, attrs: ReceivedAttrs) -> Self {
@@ -203,6 +217,7 @@ impl PropDesc {
             nick,
             blurb,
             default,
+            builder,
         } = attrs;
 
         // Fill needed, but missing, attributes with calculated default values
@@ -228,6 +243,7 @@ impl PropDesc {
             nick,
             blurb,
             default,
+            builder,
         }
     }
 }
@@ -236,24 +252,46 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
     let properties_build_phase = props.iter().map(|prop| {
         let PropDesc {
-            ty, name, nick, blurb, default, ..
+            ty,
+            name,
+            nick,
+            blurb,
+            default,
+            builder,
+            ..
         } = prop;
-        let default = default
-            .as_ref()
-            .map_or(quote!(None), |x| quote!(Some(#x)));
+        let default = default.as_ref().map_or(quote!(None), |x| quote!(Some(#x)));
 
         let flags = {
             let write = prop.set.as_ref().map(|_| quote!(WRITABLE));
             let read = prop.get.as_ref().map(|_| quote!(READABLE));
 
-            let flags_iter = [write, read]
-                .into_iter()
-                .flatten()
-                .chain(prop.flags.iter().map(|f| TokenStream2::from_str(f).unwrap()));
+            let flags_iter = [write, read].into_iter().flatten().chain(
+                prop.flags
+                    .iter()
+                    .map(|f| TokenStream2::from_str(f).unwrap()),
+            );
             quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
         };
+
+        let builder_call = builder
+            .as_ref()
+            .cloned()
+            .map(|(mut required_params, opts)| {
+                let name_expr = syn::ExprLit {
+                    attrs: vec![],
+                    lit: syn::Lit::Str(name.to_owned()),
+                };
+                required_params.insert(0, name_expr.into());
+                let required_params = required_params.iter();
+
+                quote!((#(#required_params,)*)#opts)
+            })
+            .unwrap_or(quote!((#name)));
         quote! {
-            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>::Spec::new(#name, #nick, #blurb, #default, #flags)
+            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>::Spec::builder #builder_call
+                .flags(#flags)
+                .build()
         }
     });
     quote!(

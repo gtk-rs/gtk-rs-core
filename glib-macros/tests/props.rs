@@ -39,6 +39,10 @@ fn props() {
                 fake_field: PhantomData<String>,
                 #[prop(get, set, user_1, user_2, lax_validation)]
                 custom_flags: RefCell<String>,
+                #[prop(get, set, builder())]
+                simple_builder: RefCell<u32>,
+                #[prop(get, set, builder().minimum(0).maximum(5))]
+                numeric_builder: RefCell<u32>,
             }
 
             #[glib::object_subclass]
