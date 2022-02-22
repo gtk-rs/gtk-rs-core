@@ -31,7 +31,6 @@ macro_rules! glib_shared_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::shared::Shared<$ffi_name, Self>,
-            phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -39,7 +38,6 @@ macro_rules! glib_shared_wrapper {
             fn clone(&self) -> Self {
                 Self {
                     inner: std::clone::Clone::clone(&self.inner),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -146,7 +144,6 @@ macro_rules! glib_shared_wrapper {
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_none(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -157,7 +154,6 @@ macro_rules! glib_shared_wrapper {
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_none(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -168,7 +164,6 @@ macro_rules! glib_shared_wrapper {
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_full(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -180,7 +175,6 @@ macro_rules! glib_shared_wrapper {
                 $crate::translate::Borrowed::new(
                     Self {
                         inner: $crate::translate::from_glib_borrow::<_, $crate::shared::Shared<_, _>>(ptr).into_inner(),
-                        phantom: std::marker::PhantomData,
                     }
                 )
             }

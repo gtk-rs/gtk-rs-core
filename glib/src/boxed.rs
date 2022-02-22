@@ -33,7 +33,6 @@ macro_rules! glib_boxed_wrapper {
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
             inner: $crate::boxed::Boxed<$ffi_name, Self>,
-            phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
@@ -41,7 +40,6 @@ macro_rules! glib_boxed_wrapper {
             fn clone(&self) -> Self {
                 Self {
                     inner: std::clone::Clone::clone(&self.inner),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -145,7 +143,6 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_none(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -156,7 +153,6 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_none(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -167,7 +163,6 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_full(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -178,7 +173,6 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_glib_full(ptr: *const $ffi_name) -> Self {
                 Self {
                     inner: $crate::translate::from_glib_full(ptr),
-                    phantom: std::marker::PhantomData,
                 }
             }
         }
@@ -190,7 +184,6 @@ macro_rules! glib_boxed_wrapper {
                 $crate::translate::Borrowed::new(
                     Self {
                         inner: $crate::translate::from_glib_borrow::<_, $crate::boxed::Boxed<_, _>>(ptr).into_inner(),
-                        phantom: std::marker::PhantomData,
                     }
                 )
             }
