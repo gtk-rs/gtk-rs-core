@@ -75,7 +75,7 @@ enum PropAttr {
     Blurb(syn::LitStr),
 }
 
-const FLAGS: [&'static str; 16] = [
+const FLAGS: [&str; 16] = [
     "READABLE",
     "WRITABLE",
     "READWRITE",
