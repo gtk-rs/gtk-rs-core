@@ -64,7 +64,6 @@ enum PropAttr {
     Set(Option<syn::Expr>),
 
     // ident = expr
-    DefaultVal(syn::Expr),
     Type(syn::Type),
 
     // ident = ident
@@ -115,7 +114,6 @@ impl Parse for PropAttr {
             } else {
                 // name = expr | type | ident
                 match &*name_str {
-                    "default" => PropAttr::DefaultVal(input.parse()?),
                     "get" => PropAttr::Get(Some(input.parse()?)),
                     "set" => PropAttr::Set(Some(input.parse()?)),
                     "type" => PropAttr::Type(input.parse()?),
@@ -165,7 +163,6 @@ struct ReceivedAttrs {
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
-    default: Option<syn::Expr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl ReceivedAttrs {
@@ -179,7 +176,6 @@ impl ReceivedAttrs {
         match attr {
             PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
             PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
-            PropAttr::DefaultVal(expr) => self.default = Some(expr),
             PropAttr::Name(lit) => self.name = Some(lit),
             PropAttr::Nick(lit) => self.nick = Some(lit),
             PropAttr::Blurb(lit) => self.blurb = Some(lit),
@@ -196,13 +192,12 @@ struct PropDesc {
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
-    nick: syn::LitStr,
-    blurb: syn::LitStr,
+    nick: Option<syn::LitStr>,
+    blurb: Option<syn::LitStr>,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
     flags: Vec<&'static str>,
-    default: Option<syn::Expr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl PropDesc {
@@ -216,7 +211,6 @@ impl PropDesc {
             name,
             nick,
             blurb,
-            default,
             builder,
         } = attrs;
 
@@ -227,8 +221,6 @@ impl PropDesc {
                 field_ident.span(),
             )
         });
-        let nick = nick.unwrap_or_else(|| name.clone());
-        let blurb = blurb.unwrap_or_else(|| name.clone());
         let ty = ty.unwrap_or_else(|| field_ty.clone());
 
         // Now that everything is set and safe, return the final proprety description
@@ -242,7 +234,6 @@ impl PropDesc {
             name,
             nick,
             blurb,
-            default,
             builder,
         }
     }
@@ -256,11 +247,9 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             name,
             nick,
             blurb,
-            default,
             builder,
             ..
         } = prop;
-        let default = default.as_ref().map_or(quote!(None), |x| quote!(Some(#x)));
 
         let flags = {
             let write = prop.set.as_ref().map(|_| quote!(WRITABLE));
@@ -288,8 +277,13 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
                 quote!((#(#required_params,)*)#opts)
             })
             .unwrap_or(quote!((#name)));
+
+        let build_nick = nick.as_ref().map(|x| quote!(.nick(#x)));
+        let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         quote! {
             <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>::Spec::builder #builder_call
+                #build_nick
+                #build_blurb
                 .flags(#flags)
                 .build()
         }
