@@ -43,6 +43,8 @@ fn props() {
                 simple_builder: RefCell<u32>,
                 #[prop(get, set, builder().minimum(0).maximum(5))]
                 numeric_builder: RefCell<u32>,
+                #[prop(get, set, builder('c'))]
+                builder_with_required_param: RefCell<u8>,
             }
 
             #[glib::object_subclass]

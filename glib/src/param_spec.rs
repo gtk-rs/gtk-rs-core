@@ -1224,6 +1224,10 @@ pub trait HasParamSpec {
 impl HasParamSpec for String {
     type Spec = ParamSpecString;
 }
+// FIXME: Temporary. This should be implemented on `char`
+impl HasParamSpec for u8 {
+    type Spec = ParamSpecUnichar;
+}
 impl HasParamSpec for crate::Object {
     type Spec = ParamSpecObject;
 }
