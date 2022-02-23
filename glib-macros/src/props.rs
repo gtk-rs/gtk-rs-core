@@ -281,7 +281,9 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         let build_nick = nick.as_ref().map(|x| quote!(.nick(#x)));
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         quote! {
-            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>::Spec::builder #builder_call
+            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>
+                ::ParamSpec
+                ::builder #builder_call
                 #build_nick
                 #build_blurb
                 .flags(#flags)

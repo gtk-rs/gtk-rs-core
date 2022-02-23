@@ -1218,36 +1218,36 @@ define_builder!(
 );
 
 pub trait HasParamSpec {
-    type Spec;
+    type ParamSpec;
 }
 
 impl HasParamSpec for String {
-    type Spec = ParamSpecString;
+    type ParamSpec = ParamSpecString;
 }
 // FIXME: Temporary. This should be implemented on `char`
 impl HasParamSpec for u8 {
-    type Spec = ParamSpecUnichar;
+    type ParamSpec = ParamSpecUnichar;
 }
 impl HasParamSpec for crate::Object {
-    type Spec = ParamSpecObject;
+    type ParamSpec = ParamSpecObject;
 }
 impl HasParamSpec for f64 {
-    type Spec = ParamSpecDouble;
+    type ParamSpec = ParamSpecDouble;
 }
 impl HasParamSpec for f32 {
-    type Spec = ParamSpecFloat;
+    type ParamSpec = ParamSpecFloat;
 }
 impl HasParamSpec for i64 {
-    type Spec = ParamSpecInt64;
+    type ParamSpec = ParamSpecInt64;
 }
 impl HasParamSpec for i32 {
-    type Spec = ParamSpecInt;
+    type ParamSpec = ParamSpecInt;
 }
 impl HasParamSpec for u64 {
-    type Spec = ParamSpecUInt64;
+    type ParamSpec = ParamSpecUInt64;
 }
 impl HasParamSpec for u32 {
-    type Spec = ParamSpecUInt;
+    type ParamSpec = ParamSpecUInt;
 }
 
 #[cfg(test)]
