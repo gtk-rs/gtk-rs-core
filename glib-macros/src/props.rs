@@ -281,7 +281,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         let build_nick = nick.as_ref().map(|x| quote!(.nick(#x)));
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         quote! {
-            <<#ty as glib::PropType>::HasSpecType as glib::HasParamSpec>
+            <<#ty as glib::Property>::Inner as glib::HasParamSpec>
                 ::ParamSpec
                 ::builder #builder_call
                 #build_nick
@@ -406,11 +406,11 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
         let getter = p
             .get
             .is_some()
-            .then(|| quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType;));
+            .then(|| quote!(fn #ident(&self) -> <#ty as glib::Property>::Inner;));
         let setter = p
             .set
             .is_some()
-            .then(|| quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType);));
+            .then(|| quote!(fn #set_ident(&self, value: <#ty as glib::Property>::Inner);));
         quote!(
             #getter
             #setter
@@ -439,7 +439,7 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp()))
                 }
             };
-            quote!(fn #ident(&self) -> <#ty as glib::PropType>::HasSpecType {
+            quote!(fn #ident(&self) -> <#ty as glib::Property>::Inner {
                 #body
             })
         });
@@ -456,7 +456,7 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp(), value))
                 }
             };
-            quote!(fn #set_ident(&self, value: <#ty as glib::PropType>::HasSpecType) {
+            quote!(fn #set_ident(&self, value: <#ty as glib::Property>::Inner) {
                 #body
             })
         });

@@ -14,40 +14,40 @@ use crate::HasParamSpec;
 // rustdoc-stripper-ignore-next
 /// A type that can be used as a property. It covers every type which have an associated `ParamSpec`
 /// (`HasParamSpec`) and some useful types wrapping `HasParamSpec`.
-/// The definition is recursive, so you can nest many `PropType`s together. The final `ParamSpec` will
+/// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
-pub trait PropType {
-    type HasSpecType;
+pub trait Property {
+    type Inner: HasParamSpec;
 }
-impl<T: HasParamSpec> PropType for T {
-    type HasSpecType = T;
+impl<T: HasParamSpec> Property for T {
+    type Inner = T;
 }
-impl<T: PropType> PropType for Option<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for Option<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for PhantomData<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for PhantomData<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for RefCell<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for RefCell<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for Cell<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for Cell<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for Mutex<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for Mutex<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for RwLock<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for RwLock<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for Rc<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for Rc<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for Arc<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for Arc<T> {
+    type Inner = T::Inner;
 }
-impl<T: PropType> PropType for OnceCell<T> {
-    type HasSpecType = T::HasSpecType;
+impl<T: Property> Property for OnceCell<T> {
+    type Inner = T::Inner;
 }
 
 // rustdoc-stripper-ignore-next
@@ -112,7 +112,7 @@ impl<T> PropRead for OnceCell<T> {
 // `ParamStoreWrite` requires a function taking Self::Value, but OnceCell doesn't have
 // an internal value before being init. Still, I'm implementing it so that the derive `Props`
 // macro can easily work with it
-impl<T: PropType + Default> PropWrite for OnceCell<T> {
+impl<T: Property + Default> PropWrite for OnceCell<T> {
     type Value = T;
     fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
         let mut v = Self::Value::default();
