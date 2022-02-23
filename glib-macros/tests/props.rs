@@ -111,6 +111,17 @@ fn props() {
             | ParamFlags::LAX_VALIDATION
     );
 
+    // numeric builder
+    assert_eq!(
+        myfoo
+            .find_property("numeric_builder")
+            .unwrap()
+            .downcast::<glib::ParamSpecUInt>()
+            .unwrap()
+            .maximum(),
+        5
+    );
+
     // builder with required param
     assert_eq!(
         myfoo
