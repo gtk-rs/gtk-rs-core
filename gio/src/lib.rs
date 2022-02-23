@@ -27,6 +27,9 @@ pub use self::dbus_connection::{
 };
 mod dbus_message;
 mod dbus_method_invocation;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+mod debug_controller_dbus;
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 mod desktop_app_info;
 mod error;

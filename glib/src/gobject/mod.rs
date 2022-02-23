@@ -5,6 +5,9 @@
 
 mod auto;
 mod binding;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+mod binding_group;
 mod flags;
 
 pub use self::auto::*;
