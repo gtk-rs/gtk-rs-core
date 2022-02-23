@@ -484,7 +484,6 @@ macro_rules! glib_boxed_inline_wrapper {
                 $crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
             }
         }
-
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
@@ -499,6 +498,10 @@ macro_rules! glib_boxed_inline_wrapper {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
             }
+        }
+
+        impl $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecBoxed;
         }
     };
 

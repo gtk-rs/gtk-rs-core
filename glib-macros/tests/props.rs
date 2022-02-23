@@ -12,6 +12,10 @@ fn props() {
         use std::marker::PhantomData;
         use std::sync::Mutex;
 
+        #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
+        #[boxed_type(name = "SimpleBoxedString")]
+        pub struct SimpleBoxedString(pub String);
+
         #[derive(Default, Clone)]
         struct Author {
             name: String,
@@ -45,6 +49,8 @@ fn props() {
                 numeric_builder: RefCell<u32>,
                 #[prop(get, set, builder('c'))]
                 builder_with_required_param: RefCell<u8>,
+                #[prop(get, set, builder(SimpleBoxedString::static_type()))]
+                boxed: RefCell<SimpleBoxedString>,
             }
 
             #[glib::object_subclass]
@@ -131,6 +137,12 @@ fn props() {
             .get::<u32>()
             .unwrap(),
         'c' as u32
+    );
+
+    // boxed type
+    assert_eq!(
+        myfoo.property::<foo::SimpleBoxedString>("boxed"),
+        foo::SimpleBoxedString("".into())
     );
 
     // Test `FooExt`

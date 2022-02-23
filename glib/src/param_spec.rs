@@ -1228,9 +1228,6 @@ impl HasParamSpec for String {
 impl HasParamSpec for u8 {
     type ParamSpec = ParamSpecUnichar;
 }
-impl HasParamSpec for crate::Object {
-    type ParamSpec = ParamSpecObject;
-}
 impl HasParamSpec for f64 {
     type ParamSpec = ParamSpecDouble;
 }

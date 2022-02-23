@@ -215,5 +215,9 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
                 ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone())) as *mut _
             }
         }
+
+        impl #crate_ident::HasParamSpec for #name {
+            type ParamSpec = #crate_ident::ParamSpecBoxed;
+        }
     }
 }
