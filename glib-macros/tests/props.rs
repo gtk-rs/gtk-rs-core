@@ -111,6 +111,17 @@ fn props() {
             | ParamFlags::LAX_VALIDATION
     );
 
+    // builder with required param
+    assert_eq!(
+        myfoo
+            .find_property("builder_with_required_param")
+            .unwrap()
+            .default_value()
+            .get::<u32>()
+            .unwrap(),
+        'c' as u32
+    );
+
     // Test `FooExt`
     // getters
     {
