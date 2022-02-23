@@ -11480,6 +11480,9 @@ extern "C" {
         cancellable: *mut GCancellable,
         error: *mut *mut glib::GError,
     ) -> *mut GDebugControllerDBus;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub fn g_debug_controller_dbus_stop(self_: *mut GDebugControllerDBus);
 
     //=========================================================================
     // GDesktopAppInfo
@@ -15127,9 +15130,6 @@ extern "C" {
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_get_type() -> GType;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
-    pub fn g_debug_controller_dup_default() -> *mut GDebugController;
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     pub fn g_debug_controller_get_debug_enabled(self_: *mut GDebugController) -> gboolean;

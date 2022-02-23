@@ -95,6 +95,20 @@ pub use self::data_input_stream::DataInputStream;
 mod data_output_stream;
 pub use self::data_output_stream::DataOutputStream;
 
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+mod debug_controller;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+pub use self::debug_controller::DebugController;
+
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+mod debug_controller_dbus;
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+pub use self::debug_controller_dbus::DebugControllerDBus;
+
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(all(not(windows), not(target_os = "macos")))))]
 mod desktop_app_info;
@@ -686,6 +700,12 @@ pub mod traits {
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
     pub use super::dbus_proxy::DBusProxyExt;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub use super::debug_controller::DebugControllerExt;
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    pub use super::debug_controller_dbus::DebugControllerDBusExt;
     pub use super::drive::DriveExt;
     pub use super::emblemed_icon::EmblemedIconExt;
     pub use super::file::FileExt;
