@@ -17,37 +17,48 @@ use crate::HasParamSpec;
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 pub trait Property {
-    type Inner: HasParamSpec;
+    type Value;
+    type ParamSpec;
 }
 impl<T: HasParamSpec> Property for T {
-    type Inner = T;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Option<T> {
-    type Inner = T::Inner;
+    type Value = Option<T>;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for PhantomData<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for RefCell<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Cell<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Mutex<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for RwLock<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Rc<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Arc<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for OnceCell<T> {
-    type Inner = T::Inner;
+    type Value = T;
+    type ParamSpec = T::ParamSpec;
 }
 
 // rustdoc-stripper-ignore-next

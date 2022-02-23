@@ -51,6 +51,8 @@ fn props() {
                 builder_with_required_param: RefCell<u8>,
                 #[prop(get, set, builder(SimpleBoxedString::static_type()))]
                 boxed: RefCell<SimpleBoxedString>,
+                #[prop(get, set)]
+                optional: RefCell<Option<String>>,
             }
 
             #[glib::object_subclass]
@@ -144,6 +146,9 @@ fn props() {
         myfoo.property::<foo::SimpleBoxedString>("boxed"),
         foo::SimpleBoxedString("".into())
     );
+
+    // optional
+    assert_eq!(myfoo.property::<Option<String>>("optional"), None,);
 
     // Test `FooExt`
     // getters
