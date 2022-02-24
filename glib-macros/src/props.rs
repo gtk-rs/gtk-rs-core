@@ -397,31 +397,30 @@ fn change_self_type<T: ToTokens>(source: &T, ident: &str) -> TokenStream2 {
     TokenStream2::from_str(&source.to_token_stream().to_string().replace("Self", ident)).unwrap()
 }
 
+fn getter_signature(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
+    quote!(fn #ident(&self) -> <#ty as glib::Property>::Value)
+}
+fn setter_signature(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
+    let ident = format_ident!("set_{}", ident);
+    quote!(fn #ident(&self, value: <#ty as glib::Property>::Value))
+}
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
-    let defs = props.iter().map(|p| {
-        let ident = name_to_ident(&p.name);
-        let set_ident = format_ident!("set_{}", ident);
-        let ty = &p.ty;
-        let getter = p
-            .get
-            .is_some()
-            .then(|| quote!(fn #ident(&self) -> <#ty as glib::Property>::Value;));
-        let setter = p
-            .set
-            .is_some()
-            .then(|| quote!(fn #set_ident(&self, value: <#ty as glib::Property>::Value);));
-        quote!(
-            #getter
-            #setter
-        )
-    });
-    quote!(#(#defs)*)
+    let defs = props
+        .iter()
+        .flat_map(|p| {
+            let ident = name_to_ident(&p.name);
+            let ty = &p.ty;
+            let getter = p.get.is_some().then(|| getter_signature(&ident, ty));
+            let setter = p.set.is_some().then(|| setter_signature(&ident, ty));
+            [getter, setter]
+        })
+        .flatten();
+    quote!(#(#defs;)*)
 }
 
 fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
         let ident = name_to_ident(&p.name);
-        let set_ident = format_ident!("set_{}", ident);
         let field_ident = &p.field_ident;
         let ty = &p.ty;
 
@@ -438,9 +437,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp()))
                 }
             };
-            quote!(fn #ident(&self) -> <#ty as glib::Property>::Value {
-                #body
-            })
+            let fn_signature = getter_signature(&ident, ty);
+            quote!(#fn_signature { #body })
         });
         let setter = p.set.as_ref().map(|mfn| {
             let body = match (p.member.as_ref(), mfn) {
@@ -455,9 +453,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp(), value))
                 }
             };
-            quote!(fn #set_ident(&self, value: <#ty as glib::Property>::Value) {
-                #body
-            })
+            let fn_signature = setter_signature(&ident, ty);
+            quote!(#fn_signature { #body })
         });
         quote!(
             #getter
