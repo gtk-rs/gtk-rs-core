@@ -290,7 +290,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     });
     quote!(
-        fn properties() -> &'static [glib::ParamSpec] {
+        fn auto_properties() -> &'static [glib::ParamSpec] {
             use glib::once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
                 #(#properties_build_phase,)*
@@ -322,7 +322,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     });
     quote!(
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn auto_property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 #(#match_branch_get,)*
                 p => unreachable!("Invalid property {}", p)
@@ -355,7 +355,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     });
     quote!(
-        fn set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+        fn auto_set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 #(#match_branch_set,)*
                 p => unreachable!("Invalid property {}", p)
@@ -470,6 +470,7 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}Ext", &input.ident);
+    let struct_ident_props = format_ident!("{}AutoProps", &input.ident);
     let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
@@ -478,7 +479,13 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let getset_properties_impl = expand_getset_properties_impl(struct_ident, &input.props);
     let expanded = quote! {
         use glib::{PropRead, PropWrite};
-        impl ObjectImpl for #struct_ident {
+
+        pub trait #struct_ident_props: ObjectSubclass {
+            fn auto_properties() -> &'static [ParamSpec];
+            fn auto_set_property(&self, _obj: &Self::Type, _id: usize, _value: &glib::Value, _pspec: &glib::ParamSpec);
+            fn auto_property(&self, _obj: &Self::Type, _id: usize, _pspec: &glib::ParamSpec) -> glib::Value;
+        }
+        impl #struct_ident_props for #struct_ident {
             #fn_properties
             #fn_property
             #fn_set_property

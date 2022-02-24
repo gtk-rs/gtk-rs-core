@@ -23,6 +23,7 @@ fn props() {
         }
 
         pub mod imp {
+            use glib::{ParamSpec, Value};
             use std::rc::Rc;
 
             use super::*;
@@ -57,6 +58,24 @@ fn props() {
                 optional: RefCell<Option<String>>,
                 #[prop(get, set)]
                 smart_pointer: Rc<RefCell<String>>,
+            }
+
+            impl ObjectImpl for Foo {
+                fn properties() -> &'static [ParamSpec] {
+                    Self::auto_properties()
+                }
+                fn set_property(
+                    &self,
+                    _obj: &Self::Type,
+                    _id: usize,
+                    _value: &Value,
+                    _pspec: &ParamSpec,
+                ) {
+                    Self::auto_set_property(self, _obj, _id, _value, _pspec)
+                }
+                fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
+                    Self::auto_property(self, _obj, _id, _pspec)
+                }
             }
 
             #[glib::object_subclass]
