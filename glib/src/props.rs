@@ -48,16 +48,17 @@ impl<T: Property> Property for RwLock<T> {
     type Value = T;
     type ParamSpec = T::ParamSpec;
 }
-impl<T: Property> Property for Rc<T> {
+impl<T: Property> Property for OnceCell<T> {
     type Value = T;
+    type ParamSpec = T::ParamSpec;
+}
+// Handle smart pointers trasparently
+impl<T: Property> Property for Rc<T> {
+    type Value = T::Value;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Arc<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
-}
-impl<T: Property> Property for OnceCell<T> {
-    type Value = T;
+    type Value = T::Value;
     type ParamSpec = T::ParamSpec;
 }
 

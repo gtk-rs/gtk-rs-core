@@ -23,6 +23,8 @@ fn props() {
         }
 
         pub mod imp {
+            use std::rc::Rc;
+
             use super::*;
 
             #[derive(Props, Default)]
@@ -53,6 +55,8 @@ fn props() {
                 boxed: RefCell<SimpleBoxedString>,
                 #[prop(get, set)]
                 optional: RefCell<Option<String>>,
+                #[prop(get, set)]
+                smart_pointer: Rc<RefCell<String>>,
             }
 
             #[glib::object_subclass]
