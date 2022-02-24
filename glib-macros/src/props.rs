@@ -308,18 +308,17 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             get,
             ..
         } = p;
-        match (member, get) {
-            (_, Some(MaybeCustomFn::Custom(expr))) => {
-                Some(quote!(#name => (#expr)(&self).to_value()))
+        get.as_ref().map(|get| match (member, get) {
+            (_, MaybeCustomFn::Custom(expr)) => {
+                quote!(#name => (#expr)(&self).to_value())
             }
-            (None, Some(MaybeCustomFn::Default)) => Some(quote!(
-                    #name => self.#field_ident.get(|v| v.to_value())
-            )),
-            (Some(member), Some(MaybeCustomFn::Default)) => Some(quote!(
-                    #name => self.#field_ident.get(|v| v.#member.to_value())
-            )),
-            _ => None,
-        }
+            (None, MaybeCustomFn::Default) => quote!(
+                #name => self.#field_ident.get(|v| v.to_value())
+            ),
+            (Some(member), MaybeCustomFn::Default) => quote!(
+                #name => self.#field_ident.get(|v| v.#member.to_value())
+            ),
+        })
     });
     quote!(
         fn auto_property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
@@ -339,20 +338,19 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             set,
             ..
         } = p;
-        match (member, set) {
-            (_, Some(MaybeCustomFn::Custom(expr))) => {
-                Some(quote!(#name => (#expr)(&self, value.get().unwrap())))
+
+        let expect = quote!(.expect("Can't convert glib::value to property type"));
+        set.as_ref().map(|set| match (member, set) {
+            (_, MaybeCustomFn::Custom(expr)) => {
+                quote!(#name => (#expr)(&self, value.get()#expect))
             }
-            (None, Some(MaybeCustomFn::Default)) => Some(quote!(
-                #name => self.#field_ident.set(move |v| *v = value.get()
-                            .expect("Can't convert glib::value to property type"))
-            )),
-            (Some(member), Some(MaybeCustomFn::Default)) => Some(quote!(
-                #name => self.#field_ident.set(move |v| v.#member = value.get()
-                            .expect("Can't convert glib::value to property type"))
-            )),
-            (_, None) => None,
-        }
+            (None, MaybeCustomFn::Default) => quote!(
+                #name => self.#field_ident.set(move |v| *v = value.get()#expect)
+            ),
+            (Some(member), MaybeCustomFn::Default) => quote!(
+                #name => self.#field_ident.set(move |v| v.#member = value.get()#expect)
+            ),
+        })
     });
     quote!(
         fn auto_set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
@@ -409,9 +407,8 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
         .iter()
         .flat_map(|p| {
             let ident = name_to_ident(&p.name);
-            let ty = &p.ty;
-            let getter = p.get.is_some().then(|| getter_signature(&ident, ty));
-            let setter = p.set.is_some().then(|| setter_signature(&ident, ty));
+            let getter = p.get.is_some().then(|| getter_signature(&ident, &p.ty));
+            let setter = p.set.is_some().then(|| setter_signature(&ident, &p.ty));
             [getter, setter]
         })
         .flatten();
