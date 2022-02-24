@@ -467,6 +467,28 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
     quote!(#(#defs)*)
 }
 
+fn expand_connect_prop_notify(p: &PropDesc) -> TokenStream2 {
+    let name = &p.name;
+    let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
+    quote!(fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId)
+}
+fn expand_connect_prop_notify_def(props: &[PropDesc]) -> TokenStream2 {
+    let connection_fns = props.iter().map(expand_connect_prop_notify);
+    quote!(#(#connection_fns;)*)
+}
+fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
+    let connection_fns = props.iter().map(|p| {
+        let name = &p.name;
+        let fn_signature = expand_connect_prop_notify(p);
+        quote!(#fn_signature {
+            self.connect_notify_local(Some(#name), move |this, _| {
+                f(this)
+            })
+        })
+    });
+    quote!(#(#connection_fns)*)
+}
+
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}Ext", &input.ident);
@@ -477,6 +499,8 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_set_property = expand_set_property_fn(&input.props);
     let getset_properties_def = expand_getset_properties_def(&input.props);
     let getset_properties_impl = expand_getset_properties_impl(struct_ident, &input.props);
+    let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
+    let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
     let expanded = quote! {
         use glib::{PropRead, PropWrite};
 
@@ -493,9 +517,11 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
 
         pub trait #struct_ident_ext {
             #getset_properties_def
+            #connect_prop_notify_def
         }
         impl #struct_ident_ext for #wrapper_type {
             #getset_properties_impl
+            #connect_prop_notify_impl
         }
 
     };

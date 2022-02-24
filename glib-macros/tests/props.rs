@@ -173,6 +173,8 @@ fn props() {
     // optional
     assert_eq!(myfoo.property::<Option<String>>("optional"), None,);
 
+    myfoo.connect_optional_notify(|_| println!("notified"));
+
     // Test `FooExt`
     // getters
     {
