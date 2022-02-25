@@ -395,10 +395,10 @@ fn change_self_type<T: ToTokens>(source: &T, ident: &str) -> TokenStream2 {
     TokenStream2::from_str(&source.to_token_stream().to_string().replace("Self", ident)).unwrap()
 }
 
-fn getter_signature(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
+fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     quote!(fn #ident(&self) -> <#ty as glib::Property>::Value)
 }
-fn setter_signature(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
+fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let ident = format_ident!("set_{}", ident);
     quote!(fn #ident(&self, value: <#ty as glib::Property>::Value))
 }
@@ -407,8 +407,8 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
         .iter()
         .flat_map(|p| {
             let ident = name_to_ident(&p.name);
-            let getter = p.get.is_some().then(|| getter_signature(&ident, &p.ty));
-            let setter = p.set.is_some().then(|| setter_signature(&ident, &p.ty));
+            let getter = p.get.is_some().then(|| getter_prototype(&ident, &p.ty));
+            let setter = p.set.is_some().then(|| setter_prototype(&ident, &p.ty));
             [getter, setter]
         })
         .flatten();
@@ -434,8 +434,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp()))
                 }
             };
-            let fn_signature = getter_signature(&ident, ty);
-            quote!(#fn_signature { #body })
+            let fn_prototype = getter_prototype(&ident, ty);
+            quote!(#fn_prototype { #body })
         });
         let setter = p.set.as_ref().map(|mfn| {
             let body = match (p.member.as_ref(), mfn) {
@@ -450,8 +450,8 @@ fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]
                     quote!((#custom_fn)(&self.imp(), value))
                 }
             };
-            let fn_signature = setter_signature(&ident, ty);
-            quote!(#fn_signature { #body })
+            let fn_prototype = setter_prototype(&ident, ty);
+            quote!(#fn_prototype { #body })
         });
         quote!(
             #getter
@@ -473,8 +473,8 @@ fn expand_connect_prop_notify_def(props: &[PropDesc]) -> TokenStream2 {
 fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_signature = expand_connect_prop_notify(p);
-        quote!(#fn_signature {
+        let fn_prototype = expand_connect_prop_notify(p);
+        quote!(#fn_prototype {
             self.connect_notify_local(Some(#name), move |this, _| {
                 f(this)
             })
