@@ -75,37 +75,13 @@ const TESTS: &[(&str, &str)] = &[
 fn clone_failures() {
     let exe = std::env::current_exe().unwrap();
     let out_dir = exe.parent().unwrap();
-    let t = trybuild::TestCases::new();
-    let test_dir = out_dir.join("clone-tests");
-    std::fs::create_dir_all(&test_dir).unwrap();
+    let t = trybuild2::TestCases::new();
 
     for (index, (expr, err)) in TESTS.iter().enumerate() {
-        let expr = expr.to_string();
-        let file = test_dir.join(format!("failure{}.rs", index));
         let prefix = "fn main() { use glib::clone; let v = std::rc::Rc::new(1); ";
         let suffix = "; }";
         let output = format!("{}{}{}", prefix, expr, suffix);
-        std::fs::write(&file, output.to_string().as_bytes()).unwrap();
 
-        let stderr_file = test_dir.join(format!("failure{}.stderr", index));
-        let stderr = format!(
-            "\
-error: proc macro panicked
- --> {}:1:{}
-  |
-1 | {}
-  | {}{}
-  |
-  = help: message: {}\n",
-            file.to_str().unwrap(),
-            prefix.len() + 1,
-            output,
-            " ".repeat(prefix.len()),
-            "^".repeat(expr.len()),
-            err
-        );
-        std::fs::write(&stderr_file, stderr.to_string().as_bytes()).unwrap();
-
-        t.compile_fail(file);
+        t.compile_fail_inline_check_sub(&format!("test_{}", index), &output, err);
     }
 }
