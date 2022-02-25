@@ -109,14 +109,14 @@ unsafe extern "C" fn trampoline<F: FnMut() -> Continue + Send + 'static>(
     func: gpointer,
 ) -> gboolean {
     let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (&mut *func.borrow_mut())().into_glib()
+    (*func.borrow_mut())().into_glib()
 }
 
 unsafe extern "C" fn trampoline_local<F: FnMut() -> Continue + 'static>(
     func: gpointer,
 ) -> gboolean {
     let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (&mut *func.get_ref().borrow_mut())().into_glib()
+    (*func.get_ref().borrow_mut())().into_glib()
 }
 
 unsafe extern "C" fn destroy_closure<F: FnMut() -> Continue + Send + 'static>(ptr: gpointer) {
@@ -143,7 +143,7 @@ unsafe extern "C" fn trampoline_child_watch<F: FnMut(Pid, i32) + Send + 'static>
     func: gpointer,
 ) {
     let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (&mut *func.borrow_mut())(Pid(pid), status)
+    (*func.borrow_mut())(Pid(pid), status)
 }
 
 unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
@@ -152,7 +152,7 @@ unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
     func: gpointer,
 ) {
     let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (&mut *func.get_ref().borrow_mut())(Pid(pid), status)
+    (*func.get_ref().borrow_mut())(Pid(pid), status)
 }
 
 unsafe extern "C" fn destroy_closure_child_watch<F: FnMut(Pid, i32) + Send + 'static>(
@@ -187,7 +187,7 @@ unsafe extern "C" fn trampoline_unix_fd<
     func: gpointer,
 ) -> gboolean {
     let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (&mut *func.borrow_mut())(fd, from_glib(condition)).into_glib()
+    (*func.borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
 #[cfg(any(unix, feature = "dox"))]
@@ -200,7 +200,7 @@ unsafe extern "C" fn trampoline_unix_fd_local<
     func: gpointer,
 ) -> gboolean {
     let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (&mut *func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
+    (*func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
 #[cfg(any(unix, feature = "dox"))]

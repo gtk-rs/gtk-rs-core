@@ -537,7 +537,7 @@ impl<O: IsA<File>> FileExtManual for O {
                 slice::from_raw_parts(file_contents as *const u8, file_size as usize)
             };
 
-            (&mut *callback.1.borrow_mut().get_mut())(data).into_glib()
+            (*callback.1.borrow_mut().get_mut())(data).into_glib()
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -573,7 +573,7 @@ impl<O: IsA<File>> FileExtManual for O {
             let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
                 &*(user_data as *mut _);
             if let Some(ref callback) = *callback {
-                (&mut *callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
+                (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
             } else {
                 panic!("cannot get closure...")
             };
