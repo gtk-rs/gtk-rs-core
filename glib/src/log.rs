@@ -339,33 +339,7 @@ macro_rules! g_log_inner {
         fn check_log_args(_log_level: LogLevel, _format: &str) {}
 
         check_log_args($log_level, $format);
-
-        // Replace literal percentage signs with two so that they are not interpreted as printf
-        // format specifiers
-        struct GWrite($crate::GStringBuilder);
-
-        impl fmt::Write for GWrite {
-            fn write_str(&mut self, mut s: &str) -> ::std::result::Result<(), fmt::Error> {
-                while let Some((prefix, suffix)) = s.split_once('%') {
-                    self.0.append(prefix);
-                    self.0.append("%%");
-                    s = suffix;
-                }
-                self.0.append(s);
-                Ok(())
-            }
-
-            fn write_char(&mut self, c: char) -> fmt::Result {
-                if c == '%' {
-                    self.0.append("%%");
-                } else {
-                    self.0.append_c(c);
-                }
-                Ok(())
-            }
-        }
-
-        let mut w = GWrite($crate::GStringBuilder::default());
+        let mut w = $crate::GStringBuilder::default();
 
         // Can't really happen but better safe than sorry
         if !std::write!(&mut w, $format, $($arg),*).is_err() {
@@ -373,7 +347,8 @@ macro_rules! g_log_inner {
                 $crate::ffi::g_log(
                     $log_domain,
                     $log_level.into_glib(),
-                    w.0.into_string().to_glib_none().0,
+                    b"%s\0".as_ptr() as *const i8,
+                    ToGlibPtr::<*const i8>::to_glib_none(&w.into_string()).0,
                 );
             }
         }
@@ -666,38 +641,15 @@ macro_rules! g_print_inner {
         fn check_arg(_format: &str) {}
 
         check_arg($format);
-
-        // Replace literal percentage signs with two so that they are not interpreted as printf
-        // format specifiers
-        struct GWrite($crate::GStringBuilder);
-
-        impl fmt::Write for GWrite {
-            fn write_str(&mut self, mut s: &str) -> ::std::result::Result<(), fmt::Error> {
-                while let Some((prefix, suffix)) = s.split_once('%') {
-                    self.0.append(prefix);
-                    self.0.append("%%");
-                    s = suffix;
-                }
-                self.0.append(s);
-                Ok(())
-            }
-
-            fn write_char(&mut self, c: char) -> fmt::Result {
-                if c == '%' {
-                    self.0.append("%%");
-                } else {
-                    self.0.append_c(c);
-                }
-                Ok(())
-            }
-        }
-
-        let mut w = GWrite($crate::GStringBuilder::default());
+        let mut w = $crate::GStringBuilder::default();
 
         // Can't really happen but better safe than sorry
         if !std::write!(&mut w, $format, $($arg),*).is_err() {
             unsafe {
-                $crate::ffi::$func(w.0.into_string().to_glib_none().0);
+                $crate::ffi::$func(
+                    b"%s\0".as_ptr() as *const i8,
+                    ToGlibPtr::<*const i8>::to_glib_none(&w.into_string()).0,
+                );
             }
         }
     }};
