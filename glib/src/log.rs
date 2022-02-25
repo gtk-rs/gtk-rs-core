@@ -383,7 +383,7 @@ macro_rules! g_log_inner {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// Example:
 ///
@@ -436,7 +436,7 @@ macro_rules! g_log {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Error`].
 ///
@@ -473,7 +473,7 @@ macro_rules! g_error {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Critical`].
 ///
@@ -510,7 +510,7 @@ macro_rules! g_critical {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Warning`].
 ///
@@ -547,7 +547,7 @@ macro_rules! g_warning {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Message`].
 ///
@@ -584,7 +584,7 @@ macro_rules! g_message {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Info`].
 ///
@@ -621,7 +621,7 @@ macro_rules! g_info {
 // rustdoc-stripper-ignore-next
 /// Macro used to log using GLib logging system. It uses [g_log].
 ///
-/// [g_log]: https://developer.gnome.org/glib/stable/glib-Message-Logging.html#g-log
+/// [g_log]: https://docs.gtk.org/glib/func.log.html
 ///
 /// It is the same as calling the [`g_log!`] macro with [`LogLevel::Debug`].
 ///
@@ -706,7 +706,7 @@ macro_rules! g_print_inner {
 // rustdoc-stripper-ignore-next
 /// Macro used to print messages. It uses [g_print].
 ///
-/// [g_print]: https://developer.gnome.org/glib/stable/glib-Warnings-and-Assertions.html#g-print
+/// [g_print]: https://docs.gtk.org/glib/func.print.html
 ///
 /// Example:
 ///
@@ -733,7 +733,7 @@ macro_rules! g_print {
 // rustdoc-stripper-ignore-next
 /// Macro used to print error messages. It uses [g_printerr].
 ///
-/// [g_printerr]: https://developer.gnome.org/glib/stable/glib-Warnings-and-Assertions.html#g-printerr
+/// [g_printerr]: https://docs.gtk.org/glib/func.printerr.html
 ///
 /// Example:
 ///

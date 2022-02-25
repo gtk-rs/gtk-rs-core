@@ -97,7 +97,7 @@
 //! which are the only ones properly handled by the Rust bindings.
 //!
 //! For more information about floating references, please refer to the "Floating references" section
-//! of [the gobject reference](https://developer.gnome.org/gobject/stable/gobject-The-Base-Object-Type.html).
+//! of [the gobject reference](https://docs.gtk.org/gobject/floating-refs.html).
 //!
 //! ```ignore
 //!     fn get_title(&self) -> Option<String> {
