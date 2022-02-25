@@ -650,7 +650,7 @@ impl Variant {
         unsafe {
             let data = Box::new(data);
             let (data_ptr, len) = {
-                let data = (&*data).as_ref();
+                let data = (*data).as_ref();
                 (data.as_ptr(), data.len())
             };
 
@@ -685,7 +685,7 @@ impl Variant {
     pub unsafe fn from_data_with_type_trusted<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
         let data = Box::new(data);
         let (data_ptr, len) = {
-            let data = (&*data).as_ref();
+            let data = (*data).as_ref();
             (data.as_ptr(), data.len())
         };
 
@@ -1572,13 +1572,7 @@ where
     }
 
     let mut builder = crate::GStringBuilder::default();
-    write!(
-        &mut builder,
-        "a{{{}{}}}",
-        key_type.as_str(),
-        value_type.as_str()
-    )
-    .unwrap();
+    write!(builder, "a{{{}{}}}", key_type.as_str(), value_type.as_str()).unwrap();
 
     Cow::Owned(VariantType::from_string(builder.into_string()).unwrap())
 }

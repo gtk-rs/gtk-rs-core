@@ -322,7 +322,7 @@ impl fmt::Debug for ObjectRef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let type_ = unsafe {
             let klass = (*self.inner.as_ptr()).g_type_instance.g_class as *const ObjectClass;
-            (&*klass).type_()
+            (*klass).type_()
         };
 
         f.debug_struct("ObjectRef")
