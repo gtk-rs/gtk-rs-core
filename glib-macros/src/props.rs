@@ -22,7 +22,7 @@ impl Parse for PropsMacroInput {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let derive_input: syn::DeriveInput = input.parse()?;
         let props: Vec<_> = match derive_input.data {
-            syn::Data::Struct(struct_data) => parse_fields(struct_data.fields).collect(),
+            syn::Data::Struct(struct_data) => parse_fields(struct_data.fields)?,
             _ => {
                 return Err(syn::Error::new(
                     derive_input.span(),
@@ -362,27 +362,28 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
     )
 }
 
-fn parse_fields(fields: syn::Fields) -> impl Iterator<Item = PropDesc> {
-    fields.into_iter().flat_map(|field| {
-        let syn::Field {
-            ident, attrs, ty, ..
-        } = field;
-        attrs
-            .into_iter()
-            .filter(|a| a.path.is_ident("prop"))
-            .flat_map(|attrs| {
-                attrs.parse_args_with(
-                    syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
-                )
-            })
-            .map(move |attrs| {
-                PropDesc::new(
-                    ident.as_ref().unwrap().clone(),
-                    ty.clone(),
-                    ReceivedAttrs::new(attrs),
-                )
-            })
-    })
+fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
+    fields
+        .into_iter()
+        .flat_map(|field| {
+            let syn::Field {
+                ident, attrs, ty, ..
+            } = field;
+            attrs
+                .into_iter()
+                .filter(|a| a.path.is_ident("prop"))
+                .map(move |attrs| {
+                    let attrs = attrs.parse_args_with(
+                        syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
+                    )?;
+                    Ok(PropDesc::new(
+                        ident.as_ref().unwrap().clone(),
+                        ty.clone(),
+                        ReceivedAttrs::new(attrs),
+                    ))
+                })
+        })
+        .collect::<syn::Result<_>>()
 }
 
 /// Converts a glib property name to a correct rust ident
