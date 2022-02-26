@@ -158,6 +158,51 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeChecker<T> {
     }
 }
 
+pub struct CharTypeChecker();
+unsafe impl ValueTypeChecker for CharTypeChecker {
+    type Error = InvalidCharError;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        let v = value.get::<u32>()?;
+        match char::from_u32(v) {
+            Some(_) => Ok(()),
+            None => Err(InvalidCharError::CharConversionError),
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// An error returned from the [`get`](struct.Value.html#method.get) function
+/// on a [`Value`](struct.Value.html) for char (which are internally u32) types.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub enum InvalidCharError {
+    WrongValueType(ValueTypeMismatchError),
+    CharConversionError,
+}
+impl fmt::Display for InvalidCharError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::WrongValueType(err) => err.fmt(f),
+            Self::CharConversionError => {
+                write!(f, "couldn't convert to char, invalid u32 contents")
+            }
+        }
+    }
+}
+impl error::Error for InvalidCharError {}
+
+impl From<ValueTypeMismatchError> for InvalidCharError {
+    fn from(err: ValueTypeMismatchError) -> Self {
+        Self::WrongValueType(err)
+    }
+}
+
+impl From<Infallible> for InvalidCharError {
+    fn from(e: Infallible) -> Self {
+        match e {}
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// An error returned from the [`get`](struct.Value.html#method.get)
 /// function on a [`Value`](struct.Value.html) for optional types.
@@ -980,6 +1025,34 @@ numeric!(
     gobject_ffi::g_value_set_double
 );
 
+impl ValueType for char {
+    type Type = u32;
+}
+
+unsafe impl<'a> FromValue<'a> for char {
+    type Checker = CharTypeChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        let res: u32 = gobject_ffi::g_value_get_uint(value.to_glib_none().0);
+        // safe because the check is done by `Self::Checker`
+        char::from_u32_unchecked(res)
+    }
+}
+
+impl ToValue for char {
+    fn to_value(&self) -> Value {
+        let mut value = Value::for_value_type::<Self>();
+        unsafe {
+            gobject_ffi::g_value_set_uint(&mut value.inner, *self as u32);
+        }
+        value
+    }
+
+    fn value_type(&self) -> Type {
+        crate::Type::U32
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// A [`Value`] containing another [`Value`].
 pub struct BoxedValue(pub Value);
@@ -1139,6 +1212,15 @@ mod tests {
         assert_eq!(
             none_v.get::<i32>(),
             Err(ValueTypeMismatchError::new(Type::STRING, Type::I32))
+        );
+
+        let c_v = 'c'.to_value();
+        assert_eq!(c_v.get::<char>(), Ok('c'));
+
+        let c_v = 0xFFFFFFFFu32.to_value();
+        assert_eq!(
+            c_v.get::<char>(),
+            Err(InvalidCharError::CharConversionError)
         );
 
         // Check if &T and Option<&T> can be converted and retrieved
