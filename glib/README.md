@@ -1,6 +1,6 @@
 # Rust GLib and GObject bindings
 
-__Rust__ bindings and wrappers for [GLib](https://developer.gnome.org/glib/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
+__Rust__ bindings and wrappers for [GLib](https://docs.gtk.org/glib/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
 GLib __2.48__ is the lowest supported version for the underlying library.
 
@@ -72,7 +72,7 @@ wrappers) and their FFI counterparts.
 
  * [Rust API - Stable](https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/)
  * [Rust API - Development](https://gtk-rs.org/gtk-rs-core/git/docs/glib)
- * [C API](https://developer.gnome.org/glib/stable/)
+ * [C API](https://docs.gtk.org/glib/)
  * [GTK Installation instructions](https://www.gtk.org/docs/installations/)
 
 ## Using
