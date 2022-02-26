@@ -347,8 +347,8 @@ macro_rules! g_log_inner {
                 $crate::ffi::g_log(
                     $log_domain,
                     $log_level.into_glib(),
-                    b"%s\0".as_ptr() as *const i8,
-                    ToGlibPtr::<*const i8>::to_glib_none(&w.into_string()).0,
+                    b"%s\0".as_ptr() as *const _,
+                    ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(&w.into_string()).0,
                 );
             }
         }
@@ -647,8 +647,8 @@ macro_rules! g_print_inner {
         if !std::write!(&mut w, $format, $($arg),*).is_err() {
             unsafe {
                 $crate::ffi::$func(
-                    b"%s\0".as_ptr() as *const i8,
-                    ToGlibPtr::<*const i8>::to_glib_none(&w.into_string()).0,
+                    b"%s\0".as_ptr() as *const _,
+                    ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(&w.into_string()).0,
                 );
             }
         }

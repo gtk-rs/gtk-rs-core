@@ -122,8 +122,8 @@ impl GlibLogger {
             crate::ffi::g_log(
                 domain.to_glib_none().0,
                 GlibLogger::level_to_glib(level),
-                b"%s\0".as_ptr() as *const i8,
-                ToGlibPtr::<*const i8>::to_glib_none(message).0,
+                b"%s\0".as_ptr() as *const _,
+                ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(message).0,
             );
         }
     }
@@ -153,8 +153,8 @@ impl GlibLogger {
                 file.to_glib_none().0,
                 line_str.to_glib_none().0,
                 func.to_glib_none().0,
-                b"%s\0".as_ptr() as *const i8,
-                ToGlibPtr::<*const i8>::to_glib_none(message).0,
+                b"%s\0".as_ptr() as *const _,
+                ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(message).0,
             );
         }
     }
