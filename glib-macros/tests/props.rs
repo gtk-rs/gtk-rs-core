@@ -51,7 +51,7 @@ fn props() {
                 #[prop(get, set, builder().minimum(0).maximum(5))]
                 numeric_builder: RefCell<u32>,
                 #[prop(get, set, builder('c'))]
-                builder_with_required_param: RefCell<u8>,
+                builder_with_required_param: RefCell<char>,
                 #[prop(get, set, builder(SimpleBoxedString::static_type()))]
                 boxed: RefCell<SimpleBoxedString>,
                 #[prop(get, set)]
@@ -159,9 +159,9 @@ fn props() {
             .find_property("builder_with_required_param")
             .unwrap()
             .default_value()
-            .get::<u32>()
+            .get::<char>()
             .unwrap(),
-        'c' as u32
+        'c'
     );
 
     // boxed type
