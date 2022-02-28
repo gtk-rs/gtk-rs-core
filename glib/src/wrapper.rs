@@ -363,7 +363,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [],
@@ -381,7 +381,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [$($extends),+],
@@ -423,7 +423,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @requires [$( $($requires),+ )?]
@@ -436,7 +436,7 @@ macro_rules! wrapper {
         $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, std::os::raw::c_void,
             @ffi_class $iface_name,
             @type_ $crate::translate::IntoGlib::into_glib(<$iface_name as $crate::subclass::interface::ObjectInterfaceType>::type_()),
             @requires [$( $($requires),+ )?]
