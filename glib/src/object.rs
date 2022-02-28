@@ -597,15 +597,97 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
     }
 }
 
+#[repr(transparent)]
+pub struct TypedObjectRef<T> {
+    inner: ObjectRef,
+    phantom: PhantomData<T>,
+}
+
+impl<T> TypedObjectRef<T> {
+    pub unsafe fn new(obj: ObjectRef) -> Self {
+        Self {
+            inner: obj,
+            phantom: PhantomData,
+        }
+    }
+
+    pub fn into_inner(self) -> ObjectRef {
+        self.inner
+    }
+}
+
+impl<T> Clone for TypedObjectRef<T> {
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<T> ops::Deref for TypedObjectRef<T> {
+    type Target = ObjectRef;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
+}
+
+impl<T> fmt::Debug for TypedObjectRef<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let type_ = unsafe {
+            let klass = (*self.inner.inner.as_ptr()).g_type_instance.g_class as *const ObjectClass;
+            (*klass).type_()
+        };
+
+        f.debug_struct("TypedObjectRef")
+            .field("inner", &self.inner.inner)
+            .field("type", &type_)
+            .finish()
+    }
+}
+
+impl<T> PartialOrd for TypedObjectRef<T> {
+    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        self.inner.partial_cmp(&other.inner)
+    }
+}
+
+impl<T> Ord for TypedObjectRef<T> {
+    fn cmp(&self, other: &Self) -> cmp::Ordering {
+        self.inner.cmp(&other.inner)
+    }
+}
+
+impl<T> PartialEq for TypedObjectRef<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.inner == other.inner
+    }
+}
+
+impl<T> Eq for TypedObjectRef<T> {}
+
+impl<T> hash::Hash for TypedObjectRef<T> {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: hash::Hasher,
+    {
+        self.inner.hash(state)
+    }
+}
+
+unsafe impl<T: Send + Sync> Send for TypedObjectRef<T> {}
+unsafe impl<T: Send + Sync> Sync for TypedObjectRef<T> {}
+
 // rustdoc-stripper-ignore-next
 /// ObjectType implementations for Object types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_object_wrapper {
-    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type: ty, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
-            inner: $crate::object::ObjectRef,
+            inner: $crate::object::TypedObjectRef<$inner_type>,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
 
@@ -639,7 +721,7 @@ macro_rules! glib_object_wrapper {
         impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialEq<OT> for $name $(<$($generic),+>)? {
             #[inline]
             fn eq(&self, other: &OT) -> bool {
-                std::cmp::PartialEq::eq(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+                std::cmp::PartialEq::eq(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 
@@ -648,14 +730,14 @@ macro_rules! glib_object_wrapper {
         impl<OT: $crate::object::ObjectType $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> std::cmp::PartialOrd<OT> for $name $(<$($generic),+>)? {
             #[inline]
             fn partial_cmp(&self, other: &OT) -> Option<std::cmp::Ordering> {
-                std::cmp::PartialOrd::partial_cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+                std::cmp::PartialOrd::partial_cmp(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::cmp::Ord for $name $(<$($generic),+>)? {
             #[inline]
             fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-                std::cmp::Ord::cmp(&self.inner, $crate::object::ObjectType::as_object_ref(other))
+                std::cmp::Ord::cmp(&*self.inner, $crate::object::ObjectType::as_object_ref(other))
             }
         }
 
@@ -668,7 +750,7 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::ObjectRef {
             fn from(s: $name $(<$($generic),+>)?) -> $crate::object::ObjectRef {
-                s.inner
+                s.inner.into_inner()
             }
         }
 
@@ -676,7 +758,7 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
                 $name {
-                    inner: t,
+                    inner: $crate::object::TypedObjectRef::new(t),
                     phantom: std::marker::PhantomData,
                 }
             }
@@ -697,7 +779,7 @@ macro_rules! glib_object_wrapper {
             }
 
             fn as_ptr(&self) -> *mut Self::GlibType {
-                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
+                $crate::translate::ToGlibPtr::to_glib_none(&*self.inner).0 as *mut _
             }
         }
 
@@ -733,13 +815,13 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&*self.inner);
                 $crate::translate::Stash(stash.0 as *const _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *const $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *const _
+                $crate::translate::ToGlibPtr::to_glib_full(&*self.inner) as *const _
             }
         }
 
@@ -750,13 +832,13 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
-                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&*self.inner);
                 $crate::translate::Stash(stash.0 as *mut _, stash.1)
             }
 
             #[inline]
             fn to_glib_full(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *mut _
+                $crate::translate::ToGlibPtr::to_glib_full(&*self.inner) as *mut _
             }
         }
 
@@ -828,7 +910,7 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
-                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
             }
@@ -841,7 +923,7 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
-                    inner: $crate::translate::from_glib_none(ptr as *mut _),
+                    inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
             }
@@ -854,7 +936,7 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
-                    inner: $crate::translate::from_glib_full(ptr as *mut _),
+                    inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_full(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
             }
@@ -868,7 +950,7 @@ macro_rules! glib_object_wrapper {
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $crate::translate::Borrowed::new(
                     $name {
-                        inner: $crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner(),
+                        inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_borrow::<_, $crate::object::ObjectRef>(ptr as *mut _).into_inner()),
                         phantom: std::marker::PhantomData,
                     }
                 )
@@ -1100,27 +1182,27 @@ macro_rules! glib_object_wrapper {
 
     // This case is only for glib::Object itself below. All other cases have glib::Object in its
     // parent class list
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr);
 
         #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsClass for $name $(<$($generic),+>)? { }
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, @ffi_class std::os::raw::c_void,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @extends [$($extends)*], @implements [$($implements)*]
         );
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
 
@@ -1146,6 +1228,7 @@ macro_rules! glib_object_wrapper {
      @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
             @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            $subclass,
             <$subclass as $crate::subclass::types::ObjectSubclass>::Instance,
             @ffi_class <$subclass as $crate::subclass::types::ObjectSubclass>::Class,
             @type_ $crate::translate::IntoGlib::into_glib(<$subclass as $crate::subclass::types::ObjectSubclassType>::type_()),
@@ -1157,18 +1240,18 @@ macro_rules! glib_object_wrapper {
         }
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, @ffi_class std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @requires [$($requires)*]
         );
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
         $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($requires)*);
@@ -1190,7 +1273,7 @@ macro_rules! glib_object_wrapper {
 
 glib_object_wrapper!(@object
     [doc = "The base class in the object hierarchy."]
-    pub Object, GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
+    pub Object, *mut std::os::raw::c_void, GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
 );
 pub type ObjectClass = Class<Object>;
 
@@ -3720,11 +3803,11 @@ impl<'a> BindingBuilder<'a> {
 
         unsafe {
             let source = Object {
-                inner: self.source.clone(),
+                inner: TypedObjectRef::new(self.source.clone()),
                 phantom: std::marker::PhantomData,
             };
             let target = Object {
-                inner: self.target.clone(),
+                inner: TypedObjectRef::new(self.target.clone()),
                 phantom: std::marker::PhantomData,
             };
 

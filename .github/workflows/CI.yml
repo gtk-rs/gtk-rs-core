@@ -85,6 +85,10 @@ jobs:
         run: cargo test
         working-directory: ${{ matrix.conf.name }}/sys
         if: matrix.conf.test_sys
+      # GLib compile tests only on stable
+      - name: Compile tests
+        run: cargo test --manifest-path glib/Cargo.toml --features "compiletests,v2_66"
+        if: matrix.rust == 'stable'
 
   build-others:
     runs-on: ubuntu-latest
