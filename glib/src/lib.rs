@@ -21,6 +21,9 @@ pub use glib_macros::{
     Enum, ErrorDomain, SharedBoxed, Variant,
 };
 
+#[doc(hidden)]
+pub use glib_macros::cstr_bytes;
+
 pub use self::byte_array::ByteArray;
 pub use self::bytes::Bytes;
 pub use self::closure::{Closure, RustClosure};
@@ -94,7 +97,7 @@ pub use self::source::*;
 #[macro_use]
 pub mod translate;
 mod gstring;
-pub use self::gstring::GString;
+pub use self::gstring::{GStr, GString};
 mod gstring_builder;
 pub use self::gstring_builder::GStringBuilder;
 pub mod types;

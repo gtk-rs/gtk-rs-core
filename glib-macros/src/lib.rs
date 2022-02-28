@@ -734,3 +734,20 @@ pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     variant_derive::impl_variant(input)
 }
+
+#[proc_macro]
+pub fn cstr_bytes(item: TokenStream) -> TokenStream {
+    syn::parse::Parser::parse2(
+        |stream: syn::parse::ParseStream<'_>| {
+            let literal = stream.parse::<syn::LitStr>()?;
+            stream.parse::<syn::parse::Nothing>()?;
+            let bytes = std::ffi::CString::new(literal.value())
+                .map_err(|e| syn::Error::new_spanned(&literal, format!("{}", e)))?
+                .into_bytes_with_nul();
+            let bytes = proc_macro2::Literal::byte_string(&bytes);
+            Ok(quote::quote! { #bytes }.into())
+        },
+        item.into(),
+    )
+    .unwrap_or_else(|e| e.into_compile_error().into())
+}
