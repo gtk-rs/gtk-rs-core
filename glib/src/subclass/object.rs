@@ -133,6 +133,75 @@ unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     }
 }
 
+#[derive(Debug)]
+pub struct MissingPropertyHandler<'a>(&'a str);
+
+impl<'a> MissingPropertyHandler<'a> {
+    fn name(&self) -> &'a str {
+        self.0
+    }
+}
+impl<'a> From<&'a ParamSpec> for MissingPropertyHandler<'a> {
+    fn from(p: &'a ParamSpec) -> Self {
+        Self(p.name())
+    }
+}
+
+impl<'a> std::fmt::Display for MissingPropertyHandler<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "missing handler for property {}", self.name())
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait containing only the property related functions of `ObjectImpl`.
+/// Implemented by the `Props` macro.
+/// When implementing `ObjectImpl` you may want to delegate the function calls to this trait.
+/// Some functions have a different return type from `ObjectImpl` to handle possible errors caused by missing
+/// properties.
+pub trait DerivedObjectProperties: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Properties installed for this type.
+    fn derived_properties() -> &'static [ParamSpec] {
+        &[]
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but returns a `Result`.
+    fn derived_set_property<'a>(
+        &self,
+        _obj: &Self::Type,
+        _id: usize,
+        _value: &Value,
+        _pspec: &'a ParamSpec,
+    ) -> Result<(), MissingPropertyHandler<'a>> {
+        Err(MissingPropertyHandler(_pspec.name()))
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but returns a `Result`.
+    fn derived_property<'a>(
+        &self,
+        _obj: &Self::Type,
+        _id: usize,
+        _pspec: &'a ParamSpec,
+    ) -> Result<Value, MissingPropertyHandler<'a>> {
+        Err(MissingPropertyHandler(_pspec.name()))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait containing only the signals related functions of `ObjectImpl`.
+/// Implemented by the `Signals` macro.
+/// When implementing `ObjectImpl` you may want to delegate the function calls to this trait.
+pub trait DerivedObjectSignals: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Signals installed for this type.
+    fn signals() -> &'static [Signal] {
+        &[]
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Extension trait for `glib::Object`'s class struct.
 ///
