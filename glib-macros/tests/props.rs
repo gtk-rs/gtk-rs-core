@@ -62,7 +62,7 @@ fn props() {
 
             impl ObjectImpl for Foo {
                 fn properties() -> &'static [ParamSpec] {
-                    Self::auto_properties()
+                    Self::derived_properties()
                 }
                 fn set_property(
                     &self,
@@ -71,10 +71,10 @@ fn props() {
                     _value: &Value,
                     _pspec: &ParamSpec,
                 ) {
-                    Self::auto_set_property(self, _obj, _id, _value, _pspec)
+                    Self::derived_set_property(self, _obj, _id, _value, _pspec).unwrap()
                 }
                 fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
-                    Self::auto_property(self, _obj, _id, _pspec)
+                    Self::derived_property(self, _obj, _id, _pspec).unwrap()
                 }
             }
 

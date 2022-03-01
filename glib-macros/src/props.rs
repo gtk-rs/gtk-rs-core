@@ -290,7 +290,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     });
     quote!(
-        fn auto_properties() -> &'static [glib::ParamSpec] {
+        fn derived_properties() -> &'static [glib::ParamSpec] {
             use glib::once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
                 #(#properties_build_phase,)*
@@ -309,22 +309,22 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ..
         } = p;
         get.as_ref().map(|get| match (member, get) {
-            (_, MaybeCustomFn::Custom(expr)) => {
-                quote!(#name => (#expr)(&self).to_value())
-            }
+            (_, MaybeCustomFn::Custom(expr)) => quote!(
+                #name => Ok((#expr)(&self).to_value())
+            ),
             (None, MaybeCustomFn::Default) => quote!(
-                #name => self.#field_ident.get(|v| v.to_value())
+                #name => Ok(self.#field_ident.get(|v| v.to_value()))
             ),
             (Some(member), MaybeCustomFn::Default) => quote!(
-                #name => self.#field_ident.get(|v| v.#member.to_value())
+                #name => Ok(self.#field_ident.get(|v| v.#member.to_value()))
             ),
         })
     });
     quote!(
-        fn auto_property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn derived_property<'a>(&self, _obj: &Self::Type, _id: usize, pspec: &'a glib::ParamSpec) -> Result<glib::Value, glib::subclass::object::MissingPropertyHandler<'a>> {
             match pspec.name() {
                 #(#match_branch_get,)*
-                p => unreachable!("Invalid property {}", p)
+                p => Err(pspec.into())
             }
         }
     )
@@ -341,22 +341,31 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
 
         let expect = quote!(.expect("Can't convert glib::value to property type"));
         set.as_ref().map(|set| match (member, set) {
-            (_, MaybeCustomFn::Custom(expr)) => {
-                quote!(#name => (#expr)(&self, value.get()#expect))
-            }
+            (_, MaybeCustomFn::Custom(expr)) => quote!(
+                #name => {
+                    (#expr)(&self, value.get()#expect);
+                    Ok(())
+                }
+            ),
             (None, MaybeCustomFn::Default) => quote!(
-                #name => self.#field_ident.set(move |v| *v = value.get()#expect)
+                #name => {
+                    self.#field_ident.set(move |v| *v = value.get()#expect);
+                    Ok(())
+                }
             ),
             (Some(member), MaybeCustomFn::Default) => quote!(
-                #name => self.#field_ident.set(move |v| v.#member = value.get()#expect)
+                #name => {
+                    self.#field_ident.set(move |v| v.#member = value.get()#expect);
+                    Ok(())
+                }
             ),
         })
     });
     quote!(
-        fn auto_set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+        fn derived_set_property<'a>(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &'a glib::ParamSpec) -> Result<(), glib::subclass::object::MissingPropertyHandler<'a>> {
             match pspec.name() {
                 #(#match_branch_set,)*
-                p => unreachable!("Invalid property {}", p)
+                p => Err(pspec.into())
             }
         }
     )
@@ -487,7 +496,6 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}Ext", &input.ident);
-    let struct_ident_props = format_ident!("{}AutoProps", &input.ident);
     let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
@@ -499,12 +507,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let expanded = quote! {
         use glib::{PropRead, PropWrite};
 
-        pub trait #struct_ident_props: ObjectSubclass {
-            fn auto_properties() -> &'static [ParamSpec];
-            fn auto_set_property(&self, _obj: &Self::Type, _id: usize, _value: &glib::Value, _pspec: &glib::ParamSpec);
-            fn auto_property(&self, _obj: &Self::Type, _id: usize, _pspec: &glib::ParamSpec) -> glib::Value;
-        }
-        impl #struct_ident_props for #struct_ident {
+        impl glib::subclass::object::DerivedObjectProperties for #struct_ident {
             #fn_properties
             #fn_property
             #fn_set_property
