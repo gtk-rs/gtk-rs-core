@@ -500,7 +500,7 @@ macro_rules! glib_boxed_inline_wrapper {
             }
         }
 
-        impl $crate::HasParamSpec for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecBoxed;
         }
     };

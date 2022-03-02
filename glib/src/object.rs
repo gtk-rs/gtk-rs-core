@@ -1147,7 +1147,7 @@ macro_rules! glib_object_wrapper {
 
         $crate::glib_object_wrapper!(@weak_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?);
 
-        impl $crate::HasParamSpec for $name $(<$($generic),+>)? {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecObject;
         }
     };
