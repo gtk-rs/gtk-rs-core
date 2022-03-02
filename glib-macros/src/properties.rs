@@ -523,6 +523,5 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
         }
 
     };
-    println!("{}", expanded);
     proc_macro::TokenStream::from(expanded)
 }
