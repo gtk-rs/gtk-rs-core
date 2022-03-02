@@ -821,6 +821,91 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
     .unwrap_or_else(|e| e.into_compile_error().into())
 }
 
+/// # Example
+/// ```
+/// use std::cell::RefCell;
+/// use std::marker::PhantomData;
+/// use std::sync::Mutex;
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+/// use glib_macros::Properties;
+///
+/// #[derive(Default, Clone)]
+/// struct Author {
+///     name: String,
+///     nick: String,
+/// }
+///
+/// pub mod imp {
+///     use glib::{ParamSpec, Value};
+///     use std::rc::Rc;
+///
+///     use super::*;
+///
+///     #[derive(Properties, Default)]
+///     pub struct Foo {
+///         #[prop(get, set = Self::set_fizz)]
+///         fizz: RefCell<String>,
+///         #[prop(name = "author-name", get, set, type = String, member = name)]
+///         #[prop(name = "author-nick", get, set, type = String, member = nick)]
+///         author: RefCell<Author>,
+///         #[prop(get, set, user_1, user_2, lax_validation)]
+///         custom_flags: RefCell<String>,
+///         #[prop(get, set, builder().minimum(0).maximum(5))]
+///         numeric_builder: RefCell<u32>,
+///         #[prop(get, set, builder('c'))]
+///         builder_with_required_param: RefCell<char>,
+///         #[prop(get, set)]
+///         optional: RefCell<Option<String>>,
+///         #[prop(get, set)]
+///         smart_pointer: Rc<RefCell<String>>,
+///     }
+///
+///     impl ObjectImpl for Foo {
+///         fn properties() -> &'static [ParamSpec] {
+///             Self::derived_properties()
+///         }
+///         fn set_property(
+///             &self,
+///             _obj: &Self::Type,
+///             _id: usize,
+///             _value: &Value,
+///             _pspec: &ParamSpec,
+///         ) {
+///             Self::derived_set_property(self, _obj, _id, _value, _pspec).unwrap()
+///         }
+///         fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
+///             Self::derived_property(self, _obj, _id, _pspec).unwrap()
+///         }
+///     }
+///
+///     #[glib::object_subclass]
+///     impl ObjectSubclass for Foo {
+///         const NAME: &'static str = "MyFoo";
+///         type Type = super::Foo;
+///     }
+///
+///     impl Foo {
+///         fn set_fizz(&self, value: String) {
+///             *self.fizz.borrow_mut() = format!("custom set: {}", value);
+///         }
+///     }
+/// }
+///
+/// glib::wrapper! {
+///     pub struct Foo(ObjectSubclass<imp::Foo>);
+/// }
+///
+/// use imp::FooExt;
+///
+/// fn main() {
+///   let myfoo: Foo = glib::object::Object::new(&[]).unwrap();
+///
+///   myfoo.set_fizz("test value".to_string());
+///   assert_eq!(myfoo.fizz(), "custom set: test value".to_string());
+/// }
+/// ```
+#[allow(clippy::needless_doctest_main)]
 #[proc_macro_derive(Properties, attributes(prop))]
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
