@@ -505,7 +505,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
     let expanded = quote! {
-        use glib::{PropRead, PropWrite};
+        use glib::{PropertyRead, PropertyWrite};
 
         impl glib::subclass::object::DerivedObjectProperties for #struct_ident {
             #fn_properties

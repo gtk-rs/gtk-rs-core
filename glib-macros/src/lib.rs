@@ -9,7 +9,7 @@ mod error_domain_derive;
 mod flags_attribute;
 mod object_interface_attribute;
 mod object_subclass_attribute;
-mod props;
+mod properties;
 mod shared_boxed_derive;
 mod variant_derive;
 
@@ -821,8 +821,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
     .unwrap_or_else(|e| e.into_compile_error().into())
 }
 
-#[proc_macro_derive(Props, attributes(prop))]
+#[proc_macro_derive(Properties, attributes(prop))]
 pub fn derive_props(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as props::PropsMacroInput);
-    props::impl_derive_props(input)
+    let input = parse_macro_input!(input as properties::PropsMacroInput);
+    properties::impl_derive_props(input)
 }

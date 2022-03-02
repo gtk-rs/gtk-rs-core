@@ -7,7 +7,7 @@ fn props() {
     mod foo {
         use glib::prelude::*;
         use glib::subclass::prelude::*;
-        use glib_macros::Props;
+        use glib_macros::Properties;
         use std::cell::RefCell;
         use std::marker::PhantomData;
         use std::sync::Mutex;
@@ -28,7 +28,7 @@ fn props() {
 
             use super::*;
 
-            #[derive(Props, Default)]
+            #[derive(Properties, Default)]
             pub struct Foo {
                 #[prop(get, set)]
                 bar: Mutex<String>,
