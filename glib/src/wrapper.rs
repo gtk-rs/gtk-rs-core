@@ -363,7 +363,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, (), $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [],
@@ -381,7 +381,7 @@ macro_rules! wrapper {
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, (), $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
             @extends [$($extends),+],
