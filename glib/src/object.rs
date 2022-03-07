@@ -598,16 +598,18 @@ impl FromGlibPtrArrayContainerAsVec<*mut GObject, *const *mut GObject> for Objec
 }
 
 #[repr(transparent)]
-pub struct TypedObjectRef<T> {
+pub struct TypedObjectRef<T, P> {
     inner: ObjectRef,
-    phantom: PhantomData<T>,
+    imp: PhantomData<T>,
+    parent: PhantomData<P>,
 }
 
-impl<T> TypedObjectRef<T> {
+impl<T, P> TypedObjectRef<T, P> {
     pub unsafe fn new(obj: ObjectRef) -> Self {
         Self {
             inner: obj,
-            phantom: PhantomData,
+            imp: PhantomData,
+            parent: PhantomData,
         }
     }
 
@@ -616,16 +618,17 @@ impl<T> TypedObjectRef<T> {
     }
 }
 
-impl<T> Clone for TypedObjectRef<T> {
+impl<T, P> Clone for TypedObjectRef<T, P> {
     fn clone(&self) -> Self {
         Self {
             inner: self.inner.clone(),
-            phantom: PhantomData,
+            imp: PhantomData,
+            parent: PhantomData,
         }
     }
 }
 
-impl<T> ops::Deref for TypedObjectRef<T> {
+impl<T, P> ops::Deref for TypedObjectRef<T, P> {
     type Target = ObjectRef;
 
     fn deref(&self) -> &Self::Target {
@@ -633,7 +636,7 @@ impl<T> ops::Deref for TypedObjectRef<T> {
     }
 }
 
-impl<T> fmt::Debug for TypedObjectRef<T> {
+impl<T, P> fmt::Debug for TypedObjectRef<T, P> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let type_ = unsafe {
             let klass = (*self.inner.inner.as_ptr()).g_type_instance.g_class as *const ObjectClass;
@@ -647,27 +650,27 @@ impl<T> fmt::Debug for TypedObjectRef<T> {
     }
 }
 
-impl<T> PartialOrd for TypedObjectRef<T> {
+impl<T, P> PartialOrd for TypedObjectRef<T, P> {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
-impl<T> Ord for TypedObjectRef<T> {
+impl<T, P> Ord for TypedObjectRef<T, P> {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
-impl<T> PartialEq for TypedObjectRef<T> {
+impl<T, P> PartialEq for TypedObjectRef<T, P> {
     fn eq(&self, other: &Self) -> bool {
         self.inner == other.inner
     }
 }
 
-impl<T> Eq for TypedObjectRef<T> {}
+impl<T, P> Eq for TypedObjectRef<T, P> {}
 
-impl<T> hash::Hash for TypedObjectRef<T> {
+impl<T, P> hash::Hash for TypedObjectRef<T, P> {
     fn hash<H>(&self, state: &mut H)
     where
         H: hash::Hasher,
@@ -676,18 +679,18 @@ impl<T> hash::Hash for TypedObjectRef<T> {
     }
 }
 
-unsafe impl<T: Send + Sync> Send for TypedObjectRef<T> {}
-unsafe impl<T: Send + Sync> Sync for TypedObjectRef<T> {}
+unsafe impl<T: Send + Sync, P: Send + Sync> Send for TypedObjectRef<T, P> {}
+unsafe impl<T: Send + Sync, P: Send + Sync> Sync for TypedObjectRef<T, P> {}
 
 // rustdoc-stripper-ignore-next
 /// ObjectType implementations for Object types. See `wrapper!`.
 #[macro_export]
 macro_rules! glib_object_wrapper {
-    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type: ty, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@generic_impl [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $parent_type:ty, $ffi_name:ty, $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $(#[$attr])*
         #[repr(transparent)]
         $visibility struct $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? {
-            inner: $crate::object::TypedObjectRef<$inner_type>,
+            inner: $crate::object::TypedObjectRef<$impl_type, $parent_type>,
             phantom: std::marker::PhantomData<($($($generic),+)?)>,
         }
 
@@ -1182,27 +1185,27 @@ macro_rules! glib_object_wrapper {
 
     // This case is only for glib::Object itself below. All other cases have glib::Object in its
     // parent class list
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $parent_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty, @type_ $get_type_expr:expr) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $impl_type, $parent_type, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr);
 
         #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsClass for $name $(<$($generic),+>)? { }
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $parent_type:ty, $ffi_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, @ffi_class std::os::raw::c_void,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $impl_type, $parent_type, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @extends [$($extends)*], @implements [$($implements)*]
         );
     };
 
-    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@object [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $parent_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $impl_type, $parent_type, $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
 
@@ -1224,11 +1227,29 @@ macro_rules! glib_object_wrapper {
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsClass for $name $(<$($generic),+>)? { }
     };
 
+    // FIXME: Workaround for `glib::Object` not being `Send+Sync` but subclasses of it being both
+    // if the impl struct is.
     (@object_subclass [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $subclass:ty,
-     @extends [$($extends:tt)*], @implements [$($implements:tt)*]) => {
+     @extends [], @implements [$($implements:tt)*]) => {
         $crate::glib_object_wrapper!(
             @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
-            $subclass,
+            $subclass, (),
+            <$subclass as $crate::subclass::types::ObjectSubclass>::Instance,
+            @ffi_class <$subclass as $crate::subclass::types::ObjectSubclass>::Class,
+            @type_ $crate::translate::IntoGlib::into_glib(<$subclass as $crate::subclass::types::ObjectSubclassType>::type_()),
+            @extends [], @implements [$($implements)*]
+        );
+
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ObjectSubclassIs for $name $(<$($generic),+>)? {
+            type Subclass = $subclass;
+        }
+    };
+
+    (@object_subclass [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $subclass:ty,
+     @extends [$($extends:tt)+], @implements [$($implements:tt)*]) => {
+        $crate::glib_object_wrapper!(
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            $subclass, <$subclass as $crate::subclass::types::ObjectSubclass>::ParentType,
             <$subclass as $crate::subclass::types::ObjectSubclass>::Instance,
             @ffi_class <$subclass as $crate::subclass::types::ObjectSubclass>::Class,
             @type_ $crate::translate::IntoGlib::into_glib(<$subclass as $crate::subclass::types::ObjectSubclassType>::type_()),
@@ -1240,18 +1261,18 @@ macro_rules! glib_object_wrapper {
         }
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $ffi_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, @ffi_class std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $impl_type, $ffi_name, @ffi_class std::os::raw::c_void,
             @type_ $get_type_expr, @requires [$($requires)*]
         );
     };
 
-    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $inner_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
+    (@interface [$($attr:meta)*] $visibility:vis $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $impl_type:ty, $ffi_name:ty, @ffi_class $ffi_class_name:ty,
      @type_ $get_type_expr:expr, @requires [$($requires:tt)*]) => {
         $crate::glib_object_wrapper!(
-            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $inner_type, $ffi_name, $ffi_class_name,
+            @generic_impl [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $impl_type, (), $ffi_name, $ffi_class_name,
             @type_ $get_type_expr
         );
         $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $($requires)*);
@@ -1273,7 +1294,7 @@ macro_rules! glib_object_wrapper {
 
 glib_object_wrapper!(@object
     [doc = "The base class in the object hierarchy."]
-    pub Object, *mut std::os::raw::c_void, GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
+    pub Object, *mut std::os::raw::c_void, (), GObject, @ffi_class GObjectClass, @type_ gobject_ffi::g_object_get_type()
 );
 pub type ObjectClass = Class<Object>;
 

@@ -12,7 +12,7 @@ mod imp {
         type Type = super::TestObject;
     }
 
-    impl ObjectImpl for TestObject { }
+    impl ObjectImpl for TestObject {}
 }
 
 glib::wrapper! {
