@@ -4300,7 +4300,7 @@ pub unsafe trait IsInterface: ObjectType {}
 pub struct ObjectValueTypeChecker<T>(std::marker::PhantomData<T>);
 
 unsafe impl<T: StaticType> crate::value::ValueTypeChecker for ObjectValueTypeChecker<T> {
-    type Error = crate::value::ValueTypeMismatchOrNoneError;
+    type Error = crate::value::ValueTypeMismatchOrNoneError<crate::value::ValueTypeMismatchError>;
 
     fn check(value: &Value) -> Result<(), Self::Error> {
         // g_type_check_value_holds() only checks for the GType of the GValue. This might be

@@ -74,10 +74,11 @@ pub trait ValueTypeOptional:
 {
 }
 
-impl<T, C> ValueType for Option<T>
+impl<T, C, E> ValueType for Option<T>
 where
     T: for<'a> FromValue<'a, Checker = C> + ValueTypeOptional + StaticType + 'static,
-    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError>,
+    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
+    E: error::Error,
 {
     type Type = T::Type;
 }
@@ -85,7 +86,7 @@ where
 // rustdoc-stripper-ignore-next
 /// Trait for `Value` type checkers.
 pub unsafe trait ValueTypeChecker {
-    type Error: std::error::Error + Send + Sized + 'static;
+    type Error: error::Error + Send + Sized + 'static;
 
     fn check(value: &Value) -> Result<(), Self::Error>;
 }
@@ -207,31 +208,25 @@ impl From<Infallible> for InvalidCharError {
 /// An error returned from the [`get`](struct.Value.html#method.get)
 /// function on a [`Value`](struct.Value.html) for optional types.
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub enum ValueTypeMismatchOrNoneError {
-    WrongValueType(ValueTypeMismatchError),
+pub enum ValueTypeMismatchOrNoneError<E: error::Error> {
+    WrongValueType(E),
     UnexpectedNone,
 }
 
-impl fmt::Display for ValueTypeMismatchOrNoneError {
+impl<E: error::Error> fmt::Display for ValueTypeMismatchOrNoneError<E> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Self::WrongValueType(err) => err.fmt(f),
+            Self::WrongValueType(err) => <E as fmt::Display>::fmt(err, f),
             Self::UnexpectedNone => write!(f, "Unexpected None",),
         }
     }
 }
 
-impl error::Error for ValueTypeMismatchOrNoneError {}
+impl<E: error::Error> error::Error for ValueTypeMismatchOrNoneError<E> {}
 
-impl From<ValueTypeMismatchError> for ValueTypeMismatchOrNoneError {
-    fn from(err: ValueTypeMismatchError) -> Self {
+impl<E: error::Error> From<E> for ValueTypeMismatchOrNoneError<E> {
+    fn from(err: E) -> Self {
         Self::WrongValueType(err)
-    }
-}
-
-impl From<Infallible> for ValueTypeMismatchOrNoneError {
-    fn from(e: Infallible) -> Self {
-        match e {}
     }
 }
 
@@ -240,7 +235,7 @@ impl From<Infallible> for ValueTypeMismatchOrNoneError {
 pub struct GenericValueTypeOrNoneChecker<T>(std::marker::PhantomData<T>);
 
 unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeOrNoneChecker<T> {
-    type Error = ValueTypeMismatchOrNoneError;
+    type Error = ValueTypeMismatchOrNoneError<ValueTypeMismatchError>;
 
     fn check(value: &Value) -> Result<(), Self::Error> {
         GenericValueTypeChecker::<T>::check(value)?;
@@ -281,30 +276,33 @@ pub unsafe trait FromValue<'a>: Sized {
 /// This trait is auto-implemented for the appropriate types and is sealed.
 pub trait FromValueOptional<'a>: private::FromValueOptionalSealed<'a> {}
 
-impl<'a, T, C> FromValueOptional<'a> for T
+impl<'a, T, C, E> FromValueOptional<'a> for T
 where
     T: FromValue<'a, Checker = C>,
-    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError>,
+    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
+    E: error::Error,
 {
 }
 
 mod private {
     pub trait FromValueOptionalSealed<'a> {}
 
-    impl<'a, T, C> FromValueOptionalSealed<'a> for T
+    impl<'a, T, C, E> FromValueOptionalSealed<'a> for T
     where
         T: super::FromValue<'a, Checker = C>,
-        C: super::ValueTypeChecker<Error = super::ValueTypeMismatchOrNoneError>,
+        C: super::ValueTypeChecker<Error = super::ValueTypeMismatchOrNoneError<E>>,
+        E: super::error::Error,
     {
     }
 }
 
 // rustdoc-stripper-ignore-next
 /// Blanket implementation for all optional types.
-unsafe impl<'a, T, C> FromValue<'a> for Option<T>
+unsafe impl<'a, T, C, E> FromValue<'a> for Option<T>
 where
     T: FromValue<'a, Checker = C> + StaticType,
-    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError>,
+    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
+    E: error::Error,
 {
     type Checker = GenericValueTypeChecker<T>;
 
