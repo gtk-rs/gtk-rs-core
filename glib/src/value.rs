@@ -78,7 +78,7 @@ impl<T, C, E> ValueType for Option<T>
 where
     T: for<'a> FromValue<'a, Checker = C> + ValueTypeOptional + StaticType + 'static,
     C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
-    E: error::Error,
+    E: error::Error + Send + Sized + 'static,
 {
     type Type = T::Type;
 }
@@ -280,7 +280,7 @@ impl<'a, T, C, E> FromValueOptional<'a> for T
 where
     T: FromValue<'a, Checker = C>,
     C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
-    E: error::Error,
+    E: error::Error + Send + Sized + 'static,
 {
 }
 
@@ -291,8 +291,29 @@ mod private {
     where
         T: super::FromValue<'a, Checker = C>,
         C: super::ValueTypeChecker<Error = super::ValueTypeMismatchOrNoneError<E>>,
-        E: super::error::Error,
+        E: super::error::Error + Send + Sized + 'static,
     {
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Wrapped `Value` type checker for optional types.
+pub struct ValueTypeOrNoneChecker<T, C, E>(std::marker::PhantomData<(T, C, E)>);
+
+unsafe impl<'a, T, C, E> ValueTypeChecker for ValueTypeOrNoneChecker<T, C, E>
+where
+    T: FromValue<'a, Checker = C> + StaticType,
+    C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
+    E: error::Error + Send + Sized + 'static,
+{
+    type Error = E;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        match T::Checker::check(value) {
+            Err(ValueTypeMismatchOrNoneError::UnexpectedNone) => Ok(()),
+            Err(ValueTypeMismatchOrNoneError::WrongValueType(err)) => Err(err),
+            Ok(_) => Ok(()),
+        }
     }
 }
 
@@ -302,15 +323,18 @@ unsafe impl<'a, T, C, E> FromValue<'a> for Option<T>
 where
     T: FromValue<'a, Checker = C> + StaticType,
     C: ValueTypeChecker<Error = ValueTypeMismatchOrNoneError<E>>,
-    E: error::Error,
+    E: error::Error + Send + Sized + 'static,
 {
-    type Checker = GenericValueTypeChecker<T>;
+    type Checker = ValueTypeOrNoneChecker<T, C, E>;
 
     unsafe fn from_value(value: &'a Value) -> Self {
-        if let Err(ValueTypeMismatchOrNoneError::UnexpectedNone) = T::Checker::check(value) {
-            None
-        } else {
-            Some(T::from_value(value))
+        match T::Checker::check(value) {
+            Err(ValueTypeMismatchOrNoneError::UnexpectedNone) => None,
+            Err(ValueTypeMismatchOrNoneError::WrongValueType(_err)) => {
+                // This should've been caught by the caller already.
+                unreachable!();
+            }
+            Ok(_) => Some(T::from_value(value)),
         }
     }
 }
