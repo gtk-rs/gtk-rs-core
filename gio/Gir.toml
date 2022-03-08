@@ -328,13 +328,26 @@ generate_builder = true
 name = "Gio.Cancellable"
 status = "generate"
 concurrency = "send+sync"
+manual_traits = ["CancellableExtManual"]
+    [[object.function]]
+    name = "connect"
+    # Needs manual bindings for closures
+    ignore = true
+    [[object.function]]
+    name = "disconnect"
+    # Needs manual bindings for CancelledHandlerId
+    ignore = true
     [[object.function]]
     name = "reset"
     #undefined behaviour
     ignore = true
     [[object.function]]
     name = "source_new"
-    # Needs manual bindings for setting callback, etc
+    # Only for use with other souce implementations
+    ignore = true
+    [[object.signal]]
+    name = "cancelled"
+    # Racy, use 'connect' and 'disconnect' instead
     ignore = true
 
 [[object]]
