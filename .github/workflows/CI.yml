@@ -56,6 +56,9 @@ jobs:
       - run: cargo run --release -- --no-manual-traits ../glib-macros
         working-directory: checker
         if: matrix.rust == 'nightly' && matrix.conf.name == 'glib'
+      - run: cargo run --release -- --no-manual-traits ../gio-macros
+        working-directory: checker
+        if: matrix.rust == 'nightly' && matrix.conf.name == 'gio'
       - name: Check doc aliases
         run: |
           python3 doc_aliases.py ../${{matrix.conf.name}}
@@ -120,6 +123,9 @@ jobs:
       - name: Check two levels glib dependent
         run: cargo check
         working-directory: tests/two-levels-glib-dependent
+      # gio-macros
+      - name: "gio-macros: build"
+        run: cargo build --manifest-path gio-macros/Cargo.toml
       # examples
       - name: "examples"
         run: cargo build --manifest-path examples/Cargo.toml --bins --examples --all-features
