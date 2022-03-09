@@ -19,8 +19,9 @@ pub enum GlibLoggerFormat {
     LineAndFile,
     // rustdoc-stripper-ignore-next
     /// A logger using glib structured logging. Structured logging is available
-    /// only on features `v2_56` and later.
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
+    /// only on features `v2_50` and later.
+    #[cfg(any(feature = "v2_50", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     Structured,
 }
 
@@ -104,15 +105,15 @@ impl GlibLogger {
         Self { format, domain }
     }
 
-    fn level_to_glib(level: rs_log::Level) -> crate::ffi::GLogLevelFlags {
+    fn level_to_glib(level: rs_log::Level) -> crate::LogLevel {
         match level {
             // Errors are mapped to critical to avoid automatic termination
-            rs_log::Level::Error => crate::ffi::G_LOG_LEVEL_CRITICAL,
-            rs_log::Level::Warn => crate::ffi::G_LOG_LEVEL_WARNING,
-            rs_log::Level::Info => crate::ffi::G_LOG_LEVEL_INFO,
-            rs_log::Level::Debug => crate::ffi::G_LOG_LEVEL_DEBUG,
+            rs_log::Level::Error => crate::LogLevel::Critical,
+            rs_log::Level::Warn => crate::LogLevel::Warning,
+            rs_log::Level::Info => crate::LogLevel::Info,
+            rs_log::Level::Debug => crate::LogLevel::Debug,
             // There is no equivalent to trace level in glib
-            rs_log::Level::Trace => crate::ffi::G_LOG_LEVEL_DEBUG,
+            rs_log::Level::Trace => crate::LogLevel::Debug,
         }
     }
 
@@ -121,16 +122,14 @@ impl GlibLogger {
         unsafe {
             crate::ffi::g_log(
                 domain.to_glib_none().0,
-                GlibLogger::level_to_glib(level),
+                GlibLogger::level_to_glib(level).into_glib(),
                 b"%s\0".as_ptr() as *const _,
                 ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(message).0,
             );
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
-    #[doc(alias = "g_log_structured_standard")]
+    #[cfg(any(feature = "v2_50", feature = "dox"))]
     fn write_log_structured(
         domain: Option<&str>,
         level: rs_log::Level,
@@ -139,24 +138,19 @@ impl GlibLogger {
         func: Option<&str>,
         message: &str,
     ) {
-        let line_str = line.map(|l| l.to_string());
+        let line = line.map(|l| l.to_string());
+        let line = line.as_ref().map(|s| s.as_str());
 
-        let domain = domain.unwrap_or("default");
-        let file = file.unwrap_or("<unknown file>");
-        let line_str = line_str.unwrap_or_else(|| String::from("<unknown line>"));
-        let func = func.unwrap_or("<unknown module path>");
-
-        unsafe {
-            crate::ffi::g_log_structured_standard(
-                domain.to_glib_none().0,
-                GlibLogger::level_to_glib(level),
-                file.to_glib_none().0,
-                line_str.to_glib_none().0,
-                func.to_glib_none().0,
-                b"%s\0".as_ptr() as *const _,
-                ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(message).0,
-            );
-        }
+        crate::log_structured!(
+            domain.unwrap_or("default"),
+            GlibLogger::level_to_glib(level),
+            {
+                "CODE_FILE" => file.unwrap_or("<unknown file>");
+                "CODE_LINE" => line.unwrap_or("<unknown line>");
+                "CODE_FUNC" => func.unwrap_or("<unknown module path>");
+                "MESSAGE" => message;
+            }
+        );
     }
 }
 
@@ -178,28 +172,55 @@ impl rs_log::Log for GlibLogger {
 
         match self.format {
             GlibLoggerFormat::Plain => {
-                let s = format!("{}", record.args());
-                GlibLogger::write_log(domain, record.level(), &s)
+                let args = record.args();
+                if let Some(s) = args.as_str() {
+                    GlibLogger::write_log(domain, record.level(), s);
+                } else {
+                    GlibLogger::write_log(domain, record.level(), &args.to_string());
+                }
             }
             GlibLoggerFormat::LineAndFile => {
-                let s = match (record.file(), record.line()) {
-                    (Some(file), Some(line)) => format!("{}:{}: {}", file, line, record.args()),
-                    (Some(file), None) => format!("{}: {}", file, record.args()),
-                    _ => format!("{}", record.args()),
+                match (record.file(), record.line()) {
+                    (Some(file), Some(line)) => {
+                        let s = format!("{}:{}: {}", file, line, record.args());
+                        GlibLogger::write_log(domain, record.level(), &s);
+                    }
+                    (Some(file), None) => {
+                        let s = format!("{}: {}", file, record.args());
+                        GlibLogger::write_log(domain, record.level(), &s);
+                    }
+                    _ => {
+                        let args = record.args();
+                        if let Some(s) = args.as_str() {
+                            GlibLogger::write_log(domain, record.level(), s);
+                        } else {
+                            GlibLogger::write_log(domain, record.level(), &args.to_string());
+                        }
+                    }
                 };
-
-                GlibLogger::write_log(domain, record.level(), &s);
             }
-            #[cfg(any(feature = "v2_56", feature = "dox"))]
+            #[cfg(any(feature = "v2_50", feature = "dox"))]
             GlibLoggerFormat::Structured => {
-                GlibLogger::write_log_structured(
-                    domain,
-                    record.level(),
-                    record.file(),
-                    record.line(),
-                    record.module_path(),
-                    &format!("{}", record.args()),
-                );
+                let args = record.args();
+                if let Some(s) = args.as_str() {
+                    GlibLogger::write_log_structured(
+                        domain,
+                        record.level(),
+                        record.file(),
+                        record.line(),
+                        record.module_path(),
+                        s,
+                    );
+                } else {
+                    GlibLogger::write_log_structured(
+                        domain,
+                        record.level(),
+                        record.file(),
+                        record.line(),
+                        record.module_path(),
+                        &args.to_string(),
+                    );
+                }
             }
         };
     }
