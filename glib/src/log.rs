@@ -463,23 +463,20 @@ pub fn log_set_writer_func<
 #[doc(hidden)]
 macro_rules! g_log_inner {
     ($log_domain:expr, $log_level:expr, $format:literal $(,$arg:expr)* $(,)?) => {{
-        use $crate::translate::{IntoGlib, ToGlibPtr};
-        use $crate::LogLevel;
-        use std::fmt::{self, Write};
-
-        fn check_log_args(_log_level: LogLevel, _format: &str) {}
-
-        check_log_args($log_level, $format);
         let mut w = $crate::GStringBuilder::default();
 
         // Can't really happen but better safe than sorry
-        if !std::write!(&mut w, $format, $($arg),*).is_err() {
+        if !std::fmt::Write::write_fmt(&mut w, std::format_args!($format, $($arg),*)).is_err() {
             unsafe {
                 $crate::ffi::g_log(
-                    $log_domain,
-                    $log_level.into_glib(),
+                    $crate::translate::ToGlibPtr::to_glib_none(&$log_domain).0,
+                    <$crate::LogLevel as $crate::translate::IntoGlib>::into_glib(
+                        $log_level
+                    ),
                     b"%s\0".as_ptr() as *const _,
-                    ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(&w.into_string()).0,
+                    $crate::translate::ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(
+                        &w.into_string()
+                    ).0,
                 );
             }
         }
@@ -529,13 +526,11 @@ macro_rules! g_log_inner {
 #[macro_export]
 macro_rules! g_log {
     ($log_level:expr, $format:literal $(,$arg:expr)* $(,)?) => {{
-        $crate::g_log_inner!(std::ptr::null(), $log_level, $format, $($arg),*);
+        $crate::g_log_inner!(None::<&str>, $log_level, $format, $($arg),*);
     }};
     ($log_domain:expr, $log_level:expr, $format:literal $(,$arg:expr)* $(,)?) => {{
-        use $crate::translate::{IntoGlib, ToGlibPtr};
-
-        let log_domain: Option<&str> = $log_domain.into();
-        $crate::g_log_inner!(log_domain.to_glib_none().0, $log_level, $format, $($arg),*);
+        let log_domain = <Option<&str> as std::convert::From<_>>::from($log_domain);
+        $crate::g_log_inner!(log_domain, $log_level, $format, $($arg),*);
     }};
 }
 
@@ -765,21 +760,16 @@ macro_rules! g_debug {
 #[macro_export]
 macro_rules! g_print_inner {
     ($func:ident, $format:expr $(, $arg:expr)* $(,)?) => {{
-        use $crate::translate::{IntoGlib, ToGlibPtr};
-        use $crate::LogLevel;
-        use std::fmt::{self, Write};
-
-        fn check_arg(_format: &str) {}
-
-        check_arg($format);
         let mut w = $crate::GStringBuilder::default();
 
         // Can't really happen but better safe than sorry
-        if !std::write!(&mut w, $format, $($arg),*).is_err() {
+        if !std::fmt::Write::write_fmt(&mut w, std::format_args!($format, $($arg),*)).is_err() {
             unsafe {
                 $crate::ffi::$func(
                     b"%s\0".as_ptr() as *const _,
-                    ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(&w.into_string()).0,
+                    $crate::translate::ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(
+                        &w.into_string()
+                    ).0,
                 );
             }
         }
