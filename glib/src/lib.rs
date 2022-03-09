@@ -129,13 +129,23 @@ pub use self::quark::Quark;
 mod log;
 pub use self::log::log_set_handler;
 
-// #[cfg(any(feature = "v2_50", feature = "dox"))]
-// pub use log::log_variant;
 pub use self::log::{
     log_default_handler, log_remove_handler, log_set_always_fatal, log_set_default_handler,
     log_set_fatal_mask, log_unset_default_handler, set_print_handler, set_printerr_handler,
     unset_print_handler, unset_printerr_handler, LogHandlerId, LogLevel, LogLevels,
 };
+
+#[cfg(any(feature = "v2_50", feature = "dox"))]
+pub use self::log::{
+    log_set_writer_func, log_structured_array, log_variant, log_writer_default,
+    log_writer_format_fields, log_writer_journald, log_writer_standard_streams, LogField,
+};
+
+#[cfg(any(all(unix, feature = "v2_50"), feature = "dox"))]
+pub use self::log::{log_writer_is_journald, log_writer_supports_color};
+
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+pub use self::log::{log_writer_default_set_use_stderr, log_writer_default_would_drop};
 
 #[doc(hidden)]
 #[cfg(any(feature = "dox", feature = "log_macros"))]

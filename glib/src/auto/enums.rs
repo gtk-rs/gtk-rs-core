@@ -354,6 +354,64 @@ impl ErrorDomain for KeyFileError {
     }
 }
 
+#[cfg(any(feature = "v2_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GLogWriterOutput")]
+pub enum LogWriterOutput {
+    #[doc(alias = "G_LOG_WRITER_HANDLED")]
+    Handled,
+    #[doc(alias = "G_LOG_WRITER_UNHANDLED")]
+    Unhandled,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v2_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
+impl fmt::Display for LogWriterOutput {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "LogWriterOutput::{}",
+            match *self {
+                Self::Handled => "Handled",
+                Self::Unhandled => "Unhandled",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v2_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
+#[doc(hidden)]
+impl IntoGlib for LogWriterOutput {
+    type GlibType = ffi::GLogWriterOutput;
+
+    fn into_glib(self) -> ffi::GLogWriterOutput {
+        match self {
+            Self::Handled => ffi::G_LOG_WRITER_HANDLED,
+            Self::Unhandled => ffi::G_LOG_WRITER_UNHANDLED,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GLogWriterOutput> for LogWriterOutput {
+    unsafe fn from_glib(value: ffi::GLogWriterOutput) -> Self {
+        match value {
+            ffi::G_LOG_WRITER_HANDLED => Self::Handled,
+            ffi::G_LOG_WRITER_UNHANDLED => Self::Unhandled,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GOptionArg")]
