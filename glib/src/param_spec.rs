@@ -54,6 +54,23 @@ unsafe impl<'a> crate::value::FromValue<'a> for ParamSpec {
 }
 
 #[doc(hidden)]
+unsafe impl<'a> crate::value::FromValue<'a> for &'a ParamSpec {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        assert_eq!(
+            std::mem::size_of::<Self>(),
+            std::mem::size_of::<crate::ffi::gpointer>()
+        );
+        let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
+        let ptr = &value.data[0].v_pointer as *const crate::ffi::gpointer
+            as *const *const gobject_ffi::GParamSpec;
+        assert!(!(*ptr).is_null());
+        &*(ptr as *const ParamSpec)
+    }
+}
+
+#[doc(hidden)]
 impl crate::value::ToValue for ParamSpec {
     fn to_value(&self) -> crate::Value {
         unsafe {
@@ -271,6 +288,19 @@ macro_rules! define_param_spec {
                 let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
                 assert!(!ptr.is_null());
                 from_glib_full(ptr as *mut $ffi_type)
+            }
+        }
+
+        #[doc(hidden)]
+        unsafe impl<'a> crate::value::FromValue<'a> for &'a $rust_type {
+            type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a crate::Value) -> Self {
+                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<crate::ffi::gpointer>());
+                let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
+                let ptr = &value.data[0].v_pointer as *const crate::ffi::gpointer as *const *const gobject_ffi::GParamSpec;
+                assert!(!(*ptr).is_null());
+                &*(ptr as *const $rust_type)
             }
         }
 
