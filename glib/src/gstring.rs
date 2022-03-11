@@ -14,6 +14,337 @@ use std::ptr;
 use std::slice;
 use std::string::String;
 
+// rustdoc-stripper-ignore-next
+/// Representaion of a borrowed [`GString`].
+///
+/// This type is very similar to [`std::ffi::CStr`], but with one added constraint: the string
+/// must also be valid UTF-8.
+#[derive(Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[repr(transparent)]
+pub struct GStr(str);
+
+impl GStr {
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a string slice. The string slice must be terminated with
+    /// a nul byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
+    /// that the string slice is nul-terminated and does not contain any interior nul bytes.
+    pub fn from_str_with_nul(s: &str) -> Result<&Self, std::ffi::FromBytesWithNulError> {
+        let bytes = s.as_bytes();
+        CStr::from_bytes_with_nul(bytes)?;
+        Ok(unsafe { Self::from_bytes_with_nul_unchecked(bytes) })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Unsafely creates a GLib string wrapper from a byte slice.
+    ///
+    /// This function will cast the provided `bytes` to a `GStr` wrapper without performing any
+    /// sanity checks. The provided slice **must** be valid UTF-8, nul-terminated and not contain
+    /// any interior nul bytes.
+    #[inline]
+    pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &Self {
+        debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
+        mem::transmute(bytes)
+    }
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// valid UTF-8 and nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also
+    /// apply here.
+    #[inline]
+    pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a Self {
+        let cstr = CStr::from_ptr(ptr);
+        Self::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a byte slice containing the trailing 0 byte.
+    ///
+    /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
+    /// trailing nul terminator instead of chopping it off.
+    #[inline]
+    pub fn to_bytes_with_nul(&self) -> &[u8] {
+        self.0.as_bytes()
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a byte slice.
+    ///
+    /// The returned slice will **not** contain the trailing nul terminator that this GLib
+    /// string has.
+    #[inline]
+    pub fn to_bytes(&self) -> &[u8] {
+        self.as_str().as_bytes()
+    }
+    // rustdoc-stripper-ignore-next
+    /// Returns the inner pointer to this GLib string.
+    ///
+    /// The returned pointer will be valid for as long as `self` is, and points to a contiguous
+    /// region of memory terminated with a 0 byte to represent the end of the string.
+    ///
+    /// **WARNING**
+    ///
+    /// The returned pointer is read-only; writing to it (including passing it to C code that
+    /// writes to it) causes undefined behavior. It is your responsibility to make
+    /// sure that the underlying memory is not freed too early.
+    #[inline]
+    pub fn as_ptr(&self) -> *const c_char {
+        self.0.as_ptr() as *const _
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a string slice.
+    #[inline]
+    pub fn as_str(&self) -> &str {
+        // Clip off the nul byte
+        &self.0[0..self.0.len() - 1]
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a C string slice.
+    #[inline]
+    pub fn as_c_str(&self) -> &CStr {
+        unsafe { CStr::from_bytes_with_nul_unchecked(self.to_bytes_with_nul()) }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Converts a static string literal into a static nul-terminated string.
+///
+/// The expanded expression has type [`&'static GStr`]. This macro will panic if the
+/// string literal contains any interior nul bytes.
+///
+/// # Examples
+///
+/// ```
+/// # fn main() {
+/// use glib::{gstr, GStr, GString};
+///
+/// const MY_STRING: &GStr = gstr!("Hello");
+/// assert_eq!(MY_STRING.to_bytes_with_nul()[5], 0u8);
+/// let owned: GString = MY_STRING.to_owned();
+/// assert_eq!(MY_STRING, owned);
+/// # }
+/// ```
+///
+/// [`&'static GStr`]: crate::GStr
+#[macro_export]
+macro_rules! gstr {
+    ($s:literal) => {
+        unsafe { $crate::GStr::from_bytes_with_nul_unchecked($crate::cstr_bytes!($s)) }
+    };
+}
+
+impl Default for &GStr {
+    fn default() -> Self {
+        const SLICE: &[c_char] = &[0];
+        unsafe { GStr::from_ptr(SLICE.as_ptr()) }
+    }
+}
+
+impl<'a> TryFrom<&'a CStr> for &'a GStr {
+    type Error = std::str::Utf8Error;
+    #[inline]
+    fn try_from(s: &'a CStr) -> Result<Self, Self::Error> {
+        s.to_str()?;
+        Ok(unsafe { GStr::from_bytes_with_nul_unchecked(s.to_bytes_with_nul()) })
+    }
+}
+
+impl PartialEq<GStr> for String {
+    fn eq(&self, other: &GStr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<str> for GStr {
+    fn eq(&self, other: &str) -> bool {
+        self.as_str() == other
+    }
+}
+
+impl<'a> PartialEq<&'a str> for GStr {
+    fn eq(&self, other: &&'a str) -> bool {
+        self.as_str() == *other
+    }
+}
+
+impl<'a> PartialEq<GStr> for &'a str {
+    fn eq(&self, other: &GStr) -> bool {
+        *self == other.as_str()
+    }
+}
+
+impl PartialEq<String> for GStr {
+    fn eq(&self, other: &String) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GStr> for str {
+    fn eq(&self, other: &GStr) -> bool {
+        self == other.as_str()
+    }
+}
+
+impl PartialOrd<GStr> for String {
+    fn partial_cmp(&self, other: &GStr) -> Option<Ordering> {
+        Some(self.cmp(&String::from(other.as_str())))
+    }
+}
+
+impl PartialOrd<String> for GStr {
+    fn partial_cmp(&self, other: &String) -> Option<Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GStr> for str {
+    fn partial_cmp(&self, other: &GStr) -> Option<Ordering> {
+        Some(self.cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<str> for GStr {
+    fn partial_cmp(&self, other: &str) -> Option<Ordering> {
+        Some(self.as_str().cmp(other))
+    }
+}
+
+impl AsRef<GStr> for GStr {
+    fn as_ref(&self) -> &GStr {
+        self
+    }
+}
+
+impl AsRef<str> for GStr {
+    fn as_ref(&self) -> &str {
+        self.as_str()
+    }
+}
+
+impl AsRef<CStr> for GStr {
+    fn as_ref(&self) -> &CStr {
+        self.as_c_str()
+    }
+}
+
+impl AsRef<OsStr> for GStr {
+    fn as_ref(&self) -> &OsStr {
+        OsStr::new(self.as_str())
+    }
+}
+
+impl AsRef<[u8]> for GStr {
+    fn as_ref(&self) -> &[u8] {
+        self.to_bytes()
+    }
+}
+
+impl Deref for GStr {
+    type Target = str;
+
+    fn deref(&self) -> &str {
+        self.as_str()
+    }
+}
+
+impl ToOwned for GStr {
+    type Owned = GString;
+
+    #[inline]
+    fn to_owned(&self) -> Self::Owned {
+        GString(Inner::Native(Some(self.as_c_str().to_owned())))
+    }
+}
+
+impl GlibPtrDefault for GStr {
+    type GlibType = *mut c_char;
+}
+
+impl StaticType for GStr {
+    fn static_type() -> Type {
+        str::static_type()
+    }
+}
+
+unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
+        let cstr = CStr::from_ptr(ptr);
+        assert!(cstr.to_str().is_ok());
+        GStr::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+    }
+}
+
+impl crate::value::ToValue for GStr {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        self.as_str().to_value()
+    }
+
+    #[inline]
+    fn value_type(&self) -> Type {
+        str::static_type()
+    }
+}
+
+impl crate::value::ToValue for &GStr {
+    #[inline]
+    fn to_value(&self) -> crate::Value {
+        (*self).to_value()
+    }
+
+    #[inline]
+    fn value_type(&self) -> Type {
+        str::static_type()
+    }
+}
+
+impl crate::value::ToValueOptional for GStr {
+    #[inline]
+    fn to_value_optional(s: Option<&Self>) -> crate::Value {
+        crate::value::ToValueOptional::to_value_optional(s.map(|s| s.as_str()))
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *const c_char> for GStr {
+    type Storage = GString;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const c_char, Self> {
+        let tmp = self.to_owned();
+        Stash(self.as_ptr(), tmp)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *const c_char {
+        self.as_str().to_glib_full()
+    }
+}
+
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
+    type Storage = GString;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
+        let tmp = self.to_owned();
+        Stash(tmp.as_ptr() as *mut c_char, tmp)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        self.as_str().to_glib_full()
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// A type representing an owned, C-compatible, nul-terminated UTF-8 string.
+///
+/// `GString` is to <code>&[GStr]</code> as [`String`] is to <code>&[str]</code>: the former in
+/// each pair are owned strings; the latter are borrowed references.
+///
+/// This type is very similar to [`std::ffi::CString`], but with one added constraint: the string
+/// must also be valid UTF-8.
 pub struct GString(Inner);
 enum Inner {
     Native(Option<CString>),
@@ -45,6 +376,19 @@ impl GString {
                 std::str::from_utf8_unchecked(slice)
             }
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Extracts the [`GStr`] containing the entire string.
+    pub fn as_gstr(&self) -> &GStr {
+        let bytes = match self.0 {
+            Inner::Native(ref cstr) => cstr.as_ref().unwrap().to_bytes_with_nul(),
+            Inner::Foreign { len, .. } if len == 0 => &[0],
+            Inner::Foreign { ptr, len } => unsafe {
+                slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
+            },
+        };
+        unsafe { GStr::from_bytes_with_nul_unchecked(bytes) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -114,6 +458,12 @@ impl hash::Hash for GString {
     }
 }
 
+impl Borrow<GStr> for GString {
+    fn borrow(&self) -> &GStr {
+        self.as_gstr()
+    }
+}
+
 impl Borrow<str> for GString {
     fn borrow(&self) -> &str {
         self.as_str()
@@ -144,19 +494,37 @@ impl PartialEq<GString> for String {
     }
 }
 
+impl PartialEq<GStr> for GString {
+    fn eq(&self, other: &GStr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<&GStr> for GString {
+    fn eq(&self, other: &&GStr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
 impl PartialEq<str> for GString {
     fn eq(&self, other: &str) -> bool {
         self.as_str() == other
     }
 }
 
-impl<'a> PartialEq<&'a str> for GString {
-    fn eq(&self, other: &&'a str) -> bool {
+impl PartialEq<&str> for GString {
+    fn eq(&self, other: &&str) -> bool {
         self.as_str() == *other
     }
 }
 
-impl<'a> PartialEq<GString> for &'a str {
+impl PartialEq<GString> for &GStr {
+    fn eq(&self, other: &GString) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GString> for &str {
     fn eq(&self, other: &GString) -> bool {
         *self == other.as_str()
     }
@@ -174,6 +542,12 @@ impl PartialEq<GString> for str {
     }
 }
 
+impl PartialEq<GString> for GStr {
+    fn eq(&self, other: &GString) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
 impl PartialOrd<GString> for String {
     fn partial_cmp(&self, other: &GString) -> Option<Ordering> {
         Some(self.cmp(&String::from(other.as_str())))
@@ -182,6 +556,18 @@ impl PartialOrd<GString> for String {
 
 impl PartialOrd<String> for GString {
     fn partial_cmp(&self, other: &String) -> Option<Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GString> for GStr {
+    fn partial_cmp(&self, other: &GString) -> Option<Ordering> {
+        Some(self.as_str().cmp(other))
+    }
+}
+
+impl PartialOrd<GStr> for GString {
+    fn partial_cmp(&self, other: &GStr) -> Option<Ordering> {
         Some(self.as_str().cmp(other.as_str()))
     }
 }
@@ -200,15 +586,33 @@ impl PartialOrd<str> for GString {
 
 impl Eq for GString {}
 
+impl AsRef<GStr> for GString {
+    fn as_ref(&self) -> &GStr {
+        self.as_gstr()
+    }
+}
+
 impl AsRef<str> for GString {
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
 
+impl AsRef<CStr> for GString {
+    fn as_ref(&self) -> &CStr {
+        self.as_gstr().as_c_str()
+    }
+}
+
 impl AsRef<OsStr> for GString {
     fn as_ref(&self) -> &OsStr {
         OsStr::new(self.as_str())
+    }
+}
+
+impl AsRef<[u8]> for GString {
+    fn as_ref(&self) -> &[u8] {
+        self.as_str().as_bytes()
     }
 }
 
@@ -267,9 +671,16 @@ impl From<Box<str>> for GString {
     }
 }
 
-impl<'a> From<&'a str> for GString {
+impl From<&GStr> for GString {
     #[inline]
-    fn from(s: &'a str) -> Self {
+    fn from(s: &GStr) -> GString {
+        s.to_owned()
+    }
+}
+
+impl From<&str> for GString {
+    #[inline]
+    fn from(s: &str) -> Self {
         // Allocates with the GLib allocator
         unsafe {
             // No check for valid UTF-8 here
@@ -305,9 +716,9 @@ impl From<CString> for GString {
     }
 }
 
-impl<'a> From<&'a CStr> for GString {
+impl From<&CStr> for GString {
     #[inline]
-    fn from(c: &'a CStr) -> Self {
+    fn from(c: &CStr) -> Self {
         // Creates a copy with the GLib allocator
         // Also check if it's valid UTF-8
         c.to_str().unwrap().into()
