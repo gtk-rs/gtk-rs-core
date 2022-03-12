@@ -2,6 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::AsyncInitable;
 use crate::AsyncResult;
 use crate::BusType;
 use crate::Cancellable;
@@ -29,7 +30,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GDBusProxy")]
-    pub struct DBusProxy(Object<ffi::GDBusProxy, ffi::GDBusProxyClass>) @implements DBusInterface, Initable;
+    pub struct DBusProxy(Object<ffi::GDBusProxy, ffi::GDBusProxyClass>) @implements AsyncInitable, DBusInterface, Initable;
 
     match fn {
         type_ => || ffi::g_dbus_proxy_get_type(),

@@ -14,6 +14,7 @@ pub use glib;
 
 mod app_info;
 mod application;
+mod async_initable;
 mod cancellable;
 mod converter;
 mod data_input_stream;
