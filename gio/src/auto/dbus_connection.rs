@@ -2,6 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+use crate::AsyncInitable;
 use crate::AsyncResult;
 use crate::Cancellable;
 use crate::Credentials;
@@ -31,7 +32,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GDBusConnection")]
-    pub struct DBusConnection(Object<ffi::GDBusConnection>) @implements Initable;
+    pub struct DBusConnection(Object<ffi::GDBusConnection>) @implements AsyncInitable, Initable;
 
     match fn {
         type_ => || ffi::g_dbus_connection_get_type(),
