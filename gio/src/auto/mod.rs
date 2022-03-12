@@ -26,6 +26,9 @@ pub use self::application::Application;
 mod application_command_line;
 pub use self::application_command_line::ApplicationCommandLine;
 
+mod async_initable;
+pub use self::async_initable::AsyncInitable;
+
 mod async_result;
 pub use self::async_result::AsyncResult;
 
@@ -687,6 +690,7 @@ pub mod traits {
     pub use super::app_launch_context::AppLaunchContextExt;
     pub use super::application::ApplicationExt;
     pub use super::application_command_line::ApplicationCommandLineExt;
+    pub use super::async_initable::AsyncInitableExt;
     pub use super::async_result::AsyncResultExt;
     pub use super::buffered_input_stream::BufferedInputStreamExt;
     pub use super::buffered_output_stream::BufferedOutputStreamExt;
