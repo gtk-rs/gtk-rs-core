@@ -11,6 +11,7 @@ use std::hash::{Hash, Hasher};
 use std::ops::Deref;
 use std::ptr;
 use std::slice;
+use std::str::FromStr;
 
 // rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
@@ -149,6 +150,14 @@ impl fmt::Debug for VariantType {
 impl fmt::Display for VariantType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(self.as_str())
+    }
+}
+
+impl FromStr for VariantType {
+    type Err = BoolError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::new(s)
     }
 }
 
