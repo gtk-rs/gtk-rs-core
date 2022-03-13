@@ -48,3 +48,6 @@ impl PartialEq for Attribute {
 }
 
 impl Eq for Attribute {}
+
+unsafe impl Send for Attribute {}
+unsafe impl Sync for Attribute {}

@@ -7,6 +7,9 @@ use glib::GString;
 #[doc(alias = "PangoLanguage")]
 pub struct Language(*mut ffi::PangoLanguage);
 
+unsafe impl Send for Language {}
+unsafe impl Sync for Language {}
+
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::PangoLanguage> for &'a Language {
     type Storage = &'a Language;
