@@ -435,7 +435,7 @@ impl GString {
 
 impl Clone for GString {
     fn clone(&self) -> GString {
-        self.as_str().into()
+        self.as_gstr().to_owned()
     }
 }
 
@@ -445,9 +445,9 @@ impl fmt::Debug for GString {
     }
 }
 
-impl Drop for GString {
+impl Drop for Inner {
     fn drop(&mut self) {
-        if let Inner::Foreign { ptr, .. } = self.0 {
+        if let Inner::Foreign { ptr, .. } = self {
             unsafe {
                 ffi::g_free(ptr.as_ptr() as *mut _);
             }
@@ -660,23 +660,23 @@ impl From<GString> for Box<str> {
     }
 }
 
-impl From<String> for GString {
+impl TryFrom<String> for GString {
+    type Error = std::ffi::NulError;
     #[inline]
-    fn from(s: String) -> Self {
+    fn try_from(s: String) -> Result<Self, Self::Error> {
         // Moves the content of the String
-        unsafe {
-            // No check for valid UTF-8 here
-            let cstr = CString::from_vec_unchecked(s.into_bytes());
-            GString(Inner::Native(Some(cstr)))
-        }
+        // Check for interior nul bytes
+        let cstr = CString::new(s.into_bytes())?;
+        Ok(GString(Inner::Native(Some(cstr))))
     }
 }
 
-impl From<Box<str>> for GString {
+impl TryFrom<Box<str>> for GString {
+    type Error = std::ffi::NulError;
     #[inline]
-    fn from(s: Box<str>) -> Self {
+    fn try_from(s: Box<str>) -> Result<Self, Self::Error> {
         // Moves the content of the String
-        s.into_string().into()
+        s.into_string().try_into()
     }
 }
 
@@ -687,9 +687,10 @@ impl From<&GStr> for GString {
     }
 }
 
-impl From<&str> for GString {
+impl TryFrom<&str> for GString {
+    type Error = std::ffi::FromBytesWithNulError;
     #[inline]
-    fn from(s: &str) -> Self {
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         // Allocates with the GLib allocator
         unsafe {
             // No check for valid UTF-8 here
@@ -697,40 +698,57 @@ impl From<&str> for GString {
             ptr::copy_nonoverlapping(s.as_ptr() as *const c_char, copy, s.len() + 1);
             ptr::write(copy.add(s.len()), 0);
 
-            GString(Inner::Foreign {
+            let inner = Inner::Foreign {
                 ptr: ptr::NonNull::new_unchecked(copy),
                 len: s.len(),
-            })
+            };
+
+            // Check for interior nul bytes
+            std::ffi::CStr::from_bytes_with_nul(std::slice::from_raw_parts(
+                copy as *const _,
+                s.len() + 1,
+            ))?;
+
+            Ok(GString(inner))
         }
     }
 }
 
-impl From<Vec<u8>> for GString {
+#[derive(thiserror::Error, Debug)]
+pub enum GStringError {
+    #[error("invalid UTF-8")]
+    Utf8(#[from] std::str::Utf8Error),
+    #[error("interior nul bytes")]
+    Nul(#[from] std::ffi::NulError),
+}
+
+impl TryFrom<Vec<u8>> for GString {
+    type Error = GStringError;
     #[inline]
-    fn from(s: Vec<u8>) -> Self {
+    fn try_from(s: Vec<u8>) -> Result<Self, Self::Error> {
         // Moves the content of the Vec
-        // Also check if it's valid UTF-8
-        let cstring = CString::new(s).expect("CString::new failed");
-        cstring.into()
+        // Also check if it's valid UTF-8 and has no interior nuls
+        let cstring = CString::new(s)?;
+        Ok(cstring.try_into()?)
     }
 }
 
-impl From<CString> for GString {
-    #[inline]
-    fn from(s: CString) -> Self {
+impl TryFrom<CString> for GString {
+    type Error = std::str::Utf8Error;
+    fn try_from(s: CString) -> Result<Self, Self::Error> {
         // Moves the content of the CString
         // Also check if it's valid UTF-8
-        assert!(s.to_str().is_ok());
-        Self(Inner::Native(Some(s)))
+        s.to_str()?;
+        Ok(Self(Inner::Native(Some(s))))
     }
 }
 
-impl From<&CStr> for GString {
+impl TryFrom<&CStr> for GString {
+    type Error = std::str::Utf8Error;
     #[inline]
-    fn from(c: &CStr) -> Self {
-        // Creates a copy with the GLib allocator
-        // Also check if it's valid UTF-8
-        c.to_str().unwrap().into()
+    fn try_from(c: &CStr) -> Result<Self, Self::Error> {
+        let g: &GStr = c.try_into()?;
+        Ok(g.to_owned())
     }
 }
 
@@ -781,7 +799,7 @@ impl FromGlibPtrNone<*const u8> for GString {
         assert!(!ptr.is_null());
         let cstr = CStr::from_ptr(ptr as *const _);
         // Also check if it's valid UTF-8
-        cstr.to_str().unwrap().into()
+        cstr.try_into().unwrap()
     }
 }
 
@@ -913,16 +931,16 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
     unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::try_from("").unwrap();
         }
         let slice = slice::from_raw_parts(ptr as *const u8, num);
         // Also check if it's valid UTF-8
-        std::str::from_utf8(slice).unwrap().into()
+        std::str::from_utf8(slice).unwrap().try_into().unwrap()
     }
 
     unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::try_from("").unwrap();
         }
 
         // Check if it's valid UTF-8
@@ -937,7 +955,7 @@ impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
 
     unsafe fn from_glib_full_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::try_from("").unwrap();
         }
 
         // Check if it's valid UTF-8
@@ -1016,7 +1034,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for GString {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        Self::from(<&str>::from_value(value))
+        Self::try_from(<&str>::from_value(value)).unwrap()
     }
 }
 
@@ -1106,7 +1124,7 @@ mod tests {
 
     #[test]
     fn test_gstring_from_str() {
-        let gstring: GString = "foo".into();
+        let gstring: GString = "foo".try_into().unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let foo: Box<str> = gstring.into();
         assert_eq!(foo.as_ref(), "foo");
@@ -1114,7 +1132,7 @@ mod tests {
 
     #[test]
     fn test_string_from_gstring() {
-        let gstring = GString::from("foo");
+        let gstring = GString::try_from("foo").unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let s = String::from(gstring);
         assert_eq!(s, "foo");
@@ -1123,7 +1141,7 @@ mod tests {
     #[test]
     fn test_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
-        let gstring = GString::from(cstr);
+        let gstring = GString::try_from(cstr).unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let foo: Box<str> = gstring.into();
         assert_eq!(foo.as_ref(), "foo");
@@ -1132,7 +1150,7 @@ mod tests {
     #[test]
     fn test_string_from_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
-        let gstring = GString::from(cstr);
+        let gstring = GString::try_from(cstr).unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let s = String::from(gstring);
         assert_eq!(s, "foo");
@@ -1141,7 +1159,7 @@ mod tests {
     #[test]
     fn test_vec_u8_to_gstring() {
         let v: &[u8] = b"foo";
-        let s: GString = Vec::from(v).into();
+        let s: GString = Vec::from(v).try_into().unwrap();
         assert_eq!(s.as_str(), "foo");
     }
 
@@ -1174,11 +1192,11 @@ mod tests {
     fn test_hashmap() {
         use std::collections::HashMap;
 
-        let gstring = GString::from("foo");
+        let gstring = GString::try_from("foo").unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let mut h: HashMap<GString, i32> = HashMap::new();
         h.insert(gstring, 42);
-        let gstring: GString = "foo".into();
+        let gstring: GString = "foo".try_into().unwrap();
         assert!(h.contains_key(&gstring));
     }
 }

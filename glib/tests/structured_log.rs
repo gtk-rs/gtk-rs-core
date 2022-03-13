@@ -35,6 +35,7 @@ fn structured_log() {
         }
     );
 
+    let my_meta3 = GString::try_from("MY_META3").unwrap();
     log_structured!(
         None,
         LogLevel::Message,
@@ -43,7 +44,7 @@ fn structured_log() {
             "MESSAGE" => "formatted with meta: {} {}", 123, 456.0;
             "MY_META2" => "def{}", "ghi";
             "EMPTY" => b"";
-            GString::from("MY_META3") => b"bstring".to_owned();
+            my_meta3 => b"bstring".to_owned();
         }
     );
     log_structured_array(
