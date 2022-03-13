@@ -368,6 +368,12 @@ unsafe impl Sync for GString {}
 
 impl GString {
     // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a byte vector, without checking for UTF-8 or interior 0
+    /// bytes. Trailing 0 byte will be appended by this function.
+    pub unsafe fn from_utf8_unchecked(v: Vec<u8>) -> Self {
+        GString(Inner::Native(Some(CString::from_vec_unchecked(v))))
+    }
+    // rustdoc-stripper-ignore-next
     /// Return the `GString` as string slice.
     pub fn as_str(&self) -> &str {
         unsafe {
