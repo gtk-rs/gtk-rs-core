@@ -433,6 +433,12 @@ impl GString {
     }
 }
 
+impl Default for GString {
+    fn default() -> Self {
+        unsafe { GStr::from_bytes_with_nul_unchecked(b"\0") }.to_owned()
+    }
+}
+
 impl Clone for GString {
     fn clone(&self) -> GString {
         self.as_gstr().to_owned()
@@ -931,7 +937,7 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
     unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::try_from("").unwrap();
+            return Self::default();
         }
         let slice = slice::from_raw_parts(ptr as *const u8, num);
         // Also check if it's valid UTF-8
@@ -940,7 +946,7 @@ impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
 
     unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::try_from("").unwrap();
+            return Self::default();
         }
 
         // Check if it's valid UTF-8
@@ -955,7 +961,7 @@ impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
 
     unsafe fn from_glib_full_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::try_from("").unwrap();
+            return Self::default();
         }
 
         // Check if it's valid UTF-8
