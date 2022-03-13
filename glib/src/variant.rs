@@ -109,7 +109,6 @@
 //! ```
 
 use crate::bytes::Bytes;
-use crate::gstring::GString;
 use crate::translate::*;
 use crate::StaticType;
 use crate::Type;
@@ -562,6 +561,43 @@ impl Variant {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Pretty-print the contents of this variant in a human-readable form.
+    ///
+    /// A variant can be recreated from this output via [`Variant::parse`].
+    #[doc(alias = "g_variant_print")]
+    pub fn print(&self, type_annotate: bool) -> crate::GString {
+        unsafe {
+            from_glib_full(ffi::g_variant_print(
+                self.to_glib_none().0,
+                type_annotate.into_glib(),
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Parses a GVariant from the text representation produced by [`print()`](Self::print).
+    #[doc(alias = "g_variant_parse")]
+    pub fn parse(type_: Option<&VariantTy>, text: &str) -> Result<Self, crate::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let text = text.as_bytes().as_ptr_range();
+            let variant = ffi::g_variant_parse(
+                type_.to_glib_none().0,
+                text.start as *const _,
+                text.end as *const _,
+                ptr::null_mut(),
+                &mut error,
+            );
+            if variant.is_null() {
+                assert!(!error.is_null());
+                Err(from_glib_full(error))
+            } else {
+                Ok(from_glib_full(variant))
+            }
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Constructs a new serialized-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_bytes")]
     pub fn from_bytes<T: StaticVariantType>(bytes: &Bytes) -> Self {
@@ -842,13 +878,15 @@ impl fmt::Debug for Variant {
 
 impl fmt::Display for Variant {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let serialized: GString = unsafe {
-            from_glib_full(ffi::g_variant_print(
-                self.to_glib_none().0,
-                false.into_glib(),
-            ))
-        };
-        f.write_str(&serialized)
+        f.write_str(&self.print(true))
+    }
+}
+
+impl str::FromStr for Variant {
+    type Err = crate::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::parse(None, s)
     }
 }
 
@@ -2077,6 +2115,17 @@ mod tests {
 
         let c = Variant::from_bytes::<(String, u8, u32)>(&bytes);
         assert_eq!(a, c);
+    }
+
+    #[test]
+    fn test_print_parse() {
+        let a = ("test", 1u8, 2u32).to_variant();
+
+        let a2 = Variant::parse(Some(a.type_()), &a.print(false)).unwrap();
+        assert_eq!(a, a2);
+
+        let a3: Variant = a.to_string().parse().unwrap();
+        assert_eq!(a, a3);
     }
 
     #[cfg(any(unix, windows))]
