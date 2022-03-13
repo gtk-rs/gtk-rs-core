@@ -542,7 +542,7 @@ impl VariantTy {
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an array or dictionary type.
+    /// This function panics if not called with a tuple or dictionary entry type.
     #[doc(alias = "g_variant_type_first")]
     pub fn first(&self) -> Option<&VariantTy> {
         assert!(self.as_str().starts_with('(') || self.as_str().starts_with('{'));
@@ -583,7 +583,7 @@ impl VariantTy {
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an dictionary type.
+    /// This function panics if not called with a dictionary entry type.
     #[doc(alias = "g_variant_type_key")]
     pub fn key(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
@@ -599,7 +599,7 @@ impl VariantTy {
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an dictionary type.
+    /// This function panics if not called with a dictionary entry type.
     #[doc(alias = "g_variant_type_value")]
     pub fn value(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
