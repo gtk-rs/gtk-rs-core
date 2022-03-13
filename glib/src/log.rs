@@ -846,6 +846,8 @@ macro_rules! g_printerr {
 /// Example:
 ///
 /// ```no_run
+/// # #[cfg(feature = "v2_50")]
+/// # {
 /// use glib::{GString, LogLevel, log_structured};
 /// use std::ffi::CString;
 ///
@@ -865,6 +867,7 @@ macro_rules! g_printerr {
 ///         "MESSAGE" => "test: {} {}", 1, 2, ;
 ///     }
 /// );
+/// # }
 /// ```
 #[macro_export]
 macro_rules! log_structured {
