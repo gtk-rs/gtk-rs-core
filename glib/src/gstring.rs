@@ -249,7 +249,16 @@ impl ToOwned for GStr {
 
     #[inline]
     fn to_owned(&self) -> Self::Owned {
-        GString(Inner::Native(Some(self.as_c_str().to_owned())))
+        let b = self.to_bytes_with_nul();
+        let inner = unsafe {
+            let copy = ffi::g_malloc(b.len()) as *mut c_char;
+            ptr::copy_nonoverlapping(b.as_ptr() as *const c_char, copy, b.len());
+            Inner::Foreign {
+                ptr: ptr::NonNull::new_unchecked(copy),
+                len: b.len() - 1,
+            }
+        };
+        GString(inner)
     }
 }
 
