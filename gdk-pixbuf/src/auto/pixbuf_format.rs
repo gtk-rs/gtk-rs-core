@@ -112,3 +112,6 @@ impl PixbufFormat {
         }
     }
 }
+
+unsafe impl Send for PixbufFormat {}
+unsafe impl Sync for PixbufFormat {}

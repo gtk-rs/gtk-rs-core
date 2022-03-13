@@ -313,3 +313,6 @@ impl hash::Hash for FontDescription {
         hash::Hash::hash(&self.hash(), state)
     }
 }
+
+unsafe impl Send for FontDescription {}
+unsafe impl Sync for FontDescription {}

@@ -141,3 +141,6 @@ impl Default for GlyphString {
         Self::new()
     }
 }
+
+unsafe impl Send for GlyphString {}
+unsafe impl Sync for GlyphString {}

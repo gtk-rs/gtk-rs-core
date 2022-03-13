@@ -172,3 +172,6 @@ impl Ord for UnixMountPoint {
         self.compare(other).cmp(&0)
     }
 }
+
+unsafe impl Send for UnixMountPoint {}
+unsafe impl Sync for UnixMountPoint {}
