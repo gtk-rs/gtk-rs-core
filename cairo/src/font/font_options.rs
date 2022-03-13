@@ -41,6 +41,9 @@ glib::wrapper! {
 #[doc(alias = "cairo_font_options_t")]
 pub struct FontOptions(ptr::NonNull<ffi::cairo_font_options_t>);
 
+unsafe impl Send for FontOptions {}
+unsafe impl Sync for FontOptions {}
+
 impl FontOptions {
     #[doc(alias = "cairo_font_options_create")]
     pub fn new() -> Result<FontOptions, Error> {

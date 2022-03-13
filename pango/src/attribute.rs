@@ -90,6 +90,9 @@ macro_rules! define_attribute_struct {
             }
         }
 
+        unsafe impl Send for $rust_type {}
+        unsafe impl Sync for $rust_type {}
+
         #[cfg(not(any(feature = "v1_44", feature = "dox")))]
         glib::wrapper! {
             #[derive(Debug)]

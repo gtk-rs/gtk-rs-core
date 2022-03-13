@@ -175,3 +175,6 @@ impl fmt::Display for TabArray {
         f.write_str(&self.to_str())
     }
 }
+
+unsafe impl Send for TabArray {}
+unsafe impl Sync for TabArray {}

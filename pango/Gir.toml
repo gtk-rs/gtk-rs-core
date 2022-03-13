@@ -29,7 +29,6 @@ generate = [
     "Pango.FontsetSimple",
     "Pango.Glyph",
     "Pango.GlyphItem",
-    "Pango.GlyphString",
     "Pango.GlyphUnit",
     "Pango.Gravity",
     "Pango.GravityHint",
@@ -123,6 +122,7 @@ status = "generate"
 [[object]]
 name = "Pango.Attribute"
 status = "generate"
+concurrency = "send+sync"
     [[object.function]]
     name = "init"
     # irrelevant with all the constructors and unusable like this
@@ -256,6 +256,7 @@ status = "generate"
 [[object]]
 name = "Pango.FontDescription"
 status = "generate"
+concurrency = "send+sync"
     [[object.function]]
     name = "from_string"
         [object.function.return]
@@ -289,6 +290,11 @@ status = "generate"
     pattern = "init.*"
     # converted to proper constructors
     manual = true
+
+[[object]]
+name = "Pango.GlyphString"
+status = "generate"
+concurrency = "send+sync"
 
 [[object]]
 name = "Pango.Layout"
@@ -341,6 +347,7 @@ status = "generate"
 [[object]]
 name = "Pango.TabArray"
 status = "generate"
+concurrency = "send+sync"
     [[object.function]]
     pattern = "(to_string|get_decimal_point|get_positions_in_pixels|get_tab)"
         [[object.function.parameter]]
