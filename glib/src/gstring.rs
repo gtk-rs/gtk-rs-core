@@ -33,7 +33,7 @@ impl GStr {
     pub fn from_str_with_nul(s: &str) -> Result<&Self, std::ffi::FromBytesWithNulError> {
         let bytes = s.as_bytes();
         CStr::from_bytes_with_nul(bytes)?;
-        Ok(unsafe { Self::from_bytes_with_nul_unchecked(bytes) })
+        Ok(unsafe { Self::from_utf8_with_nul_unchecked(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a byte slice.
@@ -42,7 +42,7 @@ impl GStr {
     /// sanity checks. The provided slice **must** be valid UTF-8, nul-terminated and not contain
     /// any interior nul bytes.
     #[inline]
-    pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &Self {
+    pub const unsafe fn from_utf8_with_nul_unchecked(bytes: &[u8]) -> &Self {
         debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
         mem::transmute(bytes)
     }
@@ -53,7 +53,7 @@ impl GStr {
     #[inline]
     pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a Self {
         let cstr = CStr::from_ptr(ptr);
-        Self::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+        Self::from_utf8_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
     // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a byte slice containing the trailing 0 byte.
@@ -126,7 +126,7 @@ impl GStr {
 #[macro_export]
 macro_rules! gstr {
     ($s:literal) => {
-        unsafe { $crate::GStr::from_bytes_with_nul_unchecked($crate::cstr_bytes!($s)) }
+        unsafe { $crate::GStr::from_utf8_with_nul_unchecked($crate::cstr_bytes!($s)) }
     };
 }
 
@@ -142,7 +142,7 @@ impl<'a> TryFrom<&'a CStr> for &'a GStr {
     #[inline]
     fn try_from(s: &'a CStr) -> Result<Self, Self::Error> {
         s.to_str()?;
-        Ok(unsafe { GStr::from_bytes_with_nul_unchecked(s.to_bytes_with_nul()) })
+        Ok(unsafe { GStr::from_utf8_with_nul_unchecked(s.to_bytes_with_nul()) })
     }
 }
 
@@ -279,7 +279,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         let cstr = CStr::from_ptr(ptr);
         assert!(cstr.to_str().is_ok());
-        GStr::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+        GStr::from_utf8_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
 }
 
@@ -397,7 +397,7 @@ impl GString {
                 slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
             },
         };
-        unsafe { GStr::from_bytes_with_nul_unchecked(bytes) }
+        unsafe { GStr::from_utf8_with_nul_unchecked(bytes) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -435,7 +435,7 @@ impl GString {
 
 impl Default for GString {
     fn default() -> Self {
-        unsafe { GStr::from_bytes_with_nul_unchecked(b"\0") }.to_owned()
+        unsafe { GStr::from_utf8_with_nul_unchecked(b"\0") }.to_owned()
     }
 }
 
