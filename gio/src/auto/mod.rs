@@ -179,12 +179,6 @@ pub use self::initable::Initable;
 mod input_stream;
 pub use self::input_stream::InputStream;
 
-mod list_model;
-pub use self::list_model::ListModel;
-
-mod list_store;
-pub use self::list_store::ListStore;
-
 mod loadable_icon;
 pub use self::loadable_icon::LoadableIcon;
 
@@ -723,7 +717,6 @@ pub mod traits {
     pub use super::initable::InitableExt;
     pub use super::input_stream::InputStreamExt;
     pub use super::io_stream::IOStreamExt;
-    pub use super::list_model::ListModelExt;
     pub use super::loadable_icon::LoadableIconExt;
     pub use super::memory_input_stream::MemoryInputStreamExt;
     #[cfg(any(feature = "v2_64", feature = "dox"))]
@@ -799,5 +792,4 @@ pub mod builders {
     pub use super::converter_output_stream::ConverterOutputStreamBuilder;
     pub use super::data_input_stream::DataInputStreamBuilder;
     pub use super::data_output_stream::DataOutputStreamBuilder;
-    pub use super::list_store::ListStoreBuilder;
 }

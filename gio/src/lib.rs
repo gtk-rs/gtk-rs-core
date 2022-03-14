@@ -50,7 +50,9 @@ mod initable;
 mod input_stream;
 pub use crate::input_stream::{InputStreamAsyncBufRead, InputStreamRead};
 mod list_model;
+pub use list_model::ListModel;
 mod list_store;
+pub use list_store::ListStore;
 #[cfg(test)]
 mod memory_input_stream;
 #[cfg(test)]
