@@ -46,7 +46,7 @@ pub use self::variant::{
 };
 pub use self::variant_dict::VariantDict;
 pub use self::variant_iter::{VariantIter, VariantStrIter};
-pub use self::variant_type::{VariantTy, VariantType};
+pub use self::variant_type::{VariantTy, VariantTyIterator, VariantType};
 
 pub mod clone;
 #[macro_use]
