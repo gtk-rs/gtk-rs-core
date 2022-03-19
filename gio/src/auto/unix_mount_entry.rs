@@ -12,3 +12,6 @@ glib::wrapper! {
         type_ => || ffi::g_unix_mount_entry_get_type(),
     }
 }
+
+unsafe impl Send for UnixMountEntry {}
+unsafe impl Sync for UnixMountEntry {}

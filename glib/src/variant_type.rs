@@ -8,9 +8,11 @@ use std::borrow::{Borrow, Cow, ToOwned};
 use std::cmp::{Eq, PartialEq};
 use std::fmt;
 use std::hash::{Hash, Hasher};
+use std::iter;
 use std::ops::Deref;
 use std::ptr;
 use std::slice;
+use std::str::FromStr;
 
 // rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
@@ -149,6 +151,14 @@ impl fmt::Debug for VariantType {
 impl fmt::Display for VariantType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(self.as_str())
+    }
+}
+
+impl FromStr for VariantType {
+    type Err = BoolError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::new(s)
     }
 }
 
@@ -538,11 +548,21 @@ impl VariantTy {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Iterate over the types of this variant type.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if not called with a tuple or dictionary entry type.
+    pub fn tuple_types(&self) -> VariantTyIterator {
+        VariantTyIterator::new(self).expect("VariantTy does not represent a tuple")
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Return the first type of this variant type.
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an array or dictionary type.
+    /// This function panics if not called with a tuple or dictionary entry type.
     #[doc(alias = "g_variant_type_first")]
     pub fn first(&self) -> Option<&VariantTy> {
         assert!(self.as_str().starts_with('(') || self.as_str().starts_with('{'));
@@ -583,7 +603,7 @@ impl VariantTy {
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an dictionary type.
+    /// This function panics if not called with a dictionary entry type.
     #[doc(alias = "g_variant_type_key")]
     pub fn key(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
@@ -599,7 +619,7 @@ impl VariantTy {
     ///
     /// # Panics
     ///
-    /// This function panics if not called with an dictionary type.
+    /// This function panics if not called with a dictionary entry type.
     #[doc(alias = "g_variant_type_value")]
     pub fn value(&self) -> &VariantTy {
         assert!(self.as_str().starts_with('{'));
@@ -847,6 +867,45 @@ impl_str_eq!(VariantType, String);
 
 impl Eq for VariantType {}
 
+// rustdoc-stripper-ignore-next
+/// An iterator over the individual components of a tuple [VariantTy].
+///
+/// This can be conveniently constructed using [VariantTy::tuple_types].
+#[derive(Debug, Copy, Clone)]
+pub struct VariantTyIterator<'a> {
+    elem: Option<&'a VariantTy>,
+}
+
+impl<'a> VariantTyIterator<'a> {
+    // rustdoc-stripper-ignore-next
+    /// Creates a new iterator over the types of the specified [VariantTy].
+    ///
+    /// Returns `Ok` if the type is a definite tuple or dictionary entry type,
+    /// `Err` otherwise.
+    pub fn new(ty: &'a VariantTy) -> Result<Self, BoolError> {
+        if (ty.is_tuple() && ty != VariantTy::TUPLE) || ty.is_dict_entry() {
+            Ok(Self { elem: ty.first() })
+        } else {
+            Err(bool_error!(
+                "Expected a definite tuple or dictionary entry type"
+            ))
+        }
+    }
+}
+
+impl<'a> Iterator for VariantTyIterator<'a> {
+    type Item = &'a VariantTy;
+
+    #[doc(alias = "g_variant_type_next")]
+    fn next(&mut self) -> Option<Self::Item> {
+        let elem = self.elem?;
+        self.elem = elem.next();
+        Some(elem)
+    }
+}
+
+impl<'a> iter::FusedIterator for VariantTyIterator<'a> {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -950,5 +1009,12 @@ mod tests {
     #[test]
     fn type_() {
         assert_eq!(VariantTy::static_type(), VariantType::static_type())
+    }
+
+    #[test]
+    fn tuple_iter() {
+        let ty = VariantTy::new("((iii)s)").unwrap();
+        let types: Vec<_> = ty.tuple_types().map(|t| t.as_str()).collect();
+        assert_eq!(&types, &["(iii)", "s"]);
     }
 }
