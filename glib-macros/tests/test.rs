@@ -636,16 +636,16 @@ fn closure() {
         }
 
         let cast_test = {
-            let foo = glib::Object::new::<Foo>(&[]).unwrap();
+            let f = glib::Object::new::<Foo>(&[]).unwrap();
 
-            assert_eq!(foo.my_ref_count(), 1);
-            let cast_test = glib::closure_local!(@watch foo => move || foo.my_ref_count());
-            assert_eq!(foo.my_ref_count(), 1);
+            assert_eq!(f.my_ref_count(), 1);
+            let cast_test = glib::closure_local!(@watch f => move || f.my_ref_count());
+            assert_eq!(f.my_ref_count(), 1);
             assert_eq!(cast_test.invoke::<u32>(&[]), 2);
-            assert_eq!(foo.my_ref_count(), 1);
+            assert_eq!(f.my_ref_count(), 1);
 
-            let foo_ref = &foo;
-            let _ = glib::closure_local!(@watch foo_ref => move || foo_ref.my_ref_count());
+            let f_ref = &f;
+            let _ = glib::closure_local!(@watch f_ref => move || f_ref.my_ref_count());
 
             cast_test
         };
