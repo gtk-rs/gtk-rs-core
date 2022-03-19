@@ -11,6 +11,8 @@ use std::ptr;
 use std::sync::Mutex;
 use std::{fmt, num::NonZeroU32};
 
+type SignalClassHandler = Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>;
+
 // rustdoc-stripper-ignore-next
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
@@ -20,12 +22,10 @@ pub struct SignalBuilder<'a> {
     flags: SignalFlags,
     param_types: &'a [SignalType],
     return_type: SignalType,
-    class_handler: Option<
-        Box<dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static>,
-    >,
     accumulator: Option<
         Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
     >,
+    class_handler: Option<SignalClassHandler>,
 }
 
 // rustdoc-stripper-ignore-next
@@ -362,14 +362,10 @@ impl FromGlibContainerAsVec<Type, *const ffi::GType> for SignalType {
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
-        class_handler: Option<
-            Box<
-                dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-            >,
-        >,
         accumulator: Option<
             Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
         >,
+        class_handler: Option<SignalClassHandler>,
     },
     Registered {
         type_: Type,
@@ -455,12 +451,10 @@ impl<'a> SignalBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
-    pub fn class_handler<
-        F: Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-    >(
-        mut self,
-        func: F,
-    ) -> Self {
+    pub fn class_handler<F>(mut self, func: F) -> Self
+    where
+        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
+    {
         self.class_handler = Some(Box::new(func));
         self
     }
@@ -592,9 +586,8 @@ impl Signal {
         let return_type = self.return_type;
 
         let class_handler = class_handler.map(|class_handler| {
-            Closure::new(move |values| unsafe {
-                let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-                let res = class_handler(&SignalClassHandlerToken(instance as *mut _, return_type.into(), values.as_ptr()), values);
+            Closure::new(move |values| {
+                let res = class_handler(values);
 
                 if return_type == Type::UNIT {
                     if let Some(ref v) = res {

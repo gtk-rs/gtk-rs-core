@@ -329,7 +329,7 @@ mod test {
                             String::static_type().into(),
                         )
                         .action()
-                        .class_handler(|_, args| {
+                        .class_handler(|args| {
                             let obj = args[0]
                                 .get::<super::SimpleObject>()
                                 .expect("Failed to get Object from args[0]");
