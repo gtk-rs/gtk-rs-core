@@ -465,6 +465,10 @@ impl<'a> SignalBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
+    ///
+    /// This can be used with the [`class_handler`](crate::class_handler) macro to perform
+    /// automatic conversion to and from the [`Value`](crate::Value) arguments and return value.
+    /// See the documentation of that macro for more information.
     pub fn class_handler<F>(mut self, func: F) -> Self
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,

@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 mod boxed_derive;
+mod class_handler;
 mod clone;
 mod closure;
 mod downgrade_derive;
@@ -416,6 +417,190 @@ pub fn closure(item: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn closure_local(item: TokenStream) -> TokenStream {
     closure::closure_inner(item, "new_local")
+}
+
+/// Macro for creating signal class handlers.
+///
+/// This is only meant to be used with [`SignalBuilder::class_handler`] for automatic conversion of
+/// its types to and from [`Value`]s. This macro takes a closure expression with any number of
+/// arguments, and returns a closure that returns `Option<Value>` and takes a single `&[Value]`
+/// argument.
+///
+/// Similar to [`closure!`], the returned function takes [`Value`] objects as inputs and output and
+/// automatically converts the inputs to Rust types when invoking its callback, and then will
+/// convert the output back to a `Value`. All inputs must implement the [`FromValue`] trait, and
+/// outputs must either implement the [`ToValue`] trait or be the unit type `()`. Type-checking of
+/// inputs is done at run-time; if the argument types do not match the type of the signal handler
+/// then the closure will panic. Note that when passing input types derived from [`Object`] or
+/// [`Interface`], you must take care to upcast to the exact object or interface type that is being
+/// received.
+///
+/// [`SignalBuilder::class_handler`]: ../glib/subclass/signal/struct.SignalBuilder.html#method.class_handler
+/// [`Value`]: ../glib/value/struct.Value.html
+/// [`FromValue`]: ../glib/value/trait.FromValue.html
+/// [`ToValue`]: ../glib/value/trait.ToValue.html
+/// [`Interface`]: ../glib/object/struct.Interface.html
+/// [`Object`]: ../glib/object/struct.Object.html
+/// ```no_run
+/// # use glib;
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+/// use glib::class_handler;
+/// # use glib::once_cell;
+/// #
+/// # glib::wrapper! {
+/// #     pub struct MyObject(ObjectSubclass<imp::MyObject>);
+/// # }
+/// # mod imp {
+/// # use super::*;
+/// #
+/// # #[derive(Default)]
+/// # pub struct MyObject;
+/// #
+/// # #[glib::object_subclass]
+/// # impl ObjectSubclass for MyObject {
+/// #     const NAME: &'static str = "MyObject";
+/// #     type Type = super::MyObject;
+/// # }
+///
+/// impl ObjectImpl for MyObject {
+///     fn signals() -> &'static [glib::subclass::Signal] {
+///         use once_cell::sync::Lazy;
+///         use glib::subclass::Signal;
+///         static SIGNALS: Lazy<Vec<glib::subclass::Signal>> = Lazy::new(|| {
+///             vec![
+///                 Signal::builder(
+///                     "my-signal",
+///                     &[u32::static_type().into()],
+///                     String::static_type().into(),
+///                 )
+///                 .class_handler(class_handler!(
+///                 |_this: &super::MyObject, num: u32| -> String {
+///                     format!("{}", num)
+///                 }))
+///                 .build(),
+///             ]
+///         });
+///         SIGNALS.as_ref()
+///     }
+/// }
+/// # }
+/// # fn main() {}
+/// ```
+#[proc_macro]
+#[proc_macro_error]
+pub fn class_handler(item: TokenStream) -> TokenStream {
+    class_handler::class_handler_inner(item, false)
+}
+
+/// Macro for creating overridden signal class handlers.
+///
+/// This is only meant to be used with [`ObjectClassSubclassExt::override_signal_class_handler`]
+/// for automatic conversion of its types to and from [`Value`]s. This macro takes a closure
+/// expression with any number of arguments and returns a closure that returns `Option<Value>` and
+/// takes two arguments: a [`SignalClassOverrideToken`] as the first and `&[Value]` as the second.
+/// If any arguments are provided to the input closure, the `SignalClassOverrideToken` will always
+/// be passed as the first argument.
+///
+/// Similar to [`closure!`], the returned function takes [`Value`] objects as inputs and output and
+/// automatically converts the inputs to Rust types when invoking its callback, and then will
+/// convert the output back to a `Value`. All inputs must implement the [`FromValue`] trait, and
+/// outputs must either implement the [`ToValue`] trait or be the unit type `()`. Type-checking of
+/// inputs is done at run-time; if the argument types do not match the type of the signal handler
+/// then the closure will panic. Note that when passing input types derived from [`Object`] or
+/// [`Interface`], you must take care to upcast to the exact object or interface type that is being
+/// received.
+///
+/// [`ObjectClassSubclassExt::override_signal_class_handler`]: ../glib/subclass/object/trait.ObjectClassSubclassExt.html#method.override_signal_class_handler
+/// [`SignalClassOverrideToken`]: ../glib/subclass/object/struct.SignalClassOverrideToken.html
+/// [`Value`]: ../glib/value/struct.Value.html
+/// [`FromValue`]: ../glib/value/trait.FromValue.html
+/// [`ToValue`]: ../glib/value/trait.ToValue.html
+/// [`Interface`]: ../glib/object/struct.Interface.html
+/// [`Object`]: ../glib/object/struct.Object.html
+/// ```no_run
+/// # use glib;
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+/// use glib::subclass::SignalClassOverrideToken;
+/// use glib::{class_handler, override_handler};
+/// # use glib::once_cell;
+/// #
+/// # glib::wrapper! {
+/// #     pub struct MyBase(ObjectSubclass<imp::MyBase>);
+/// # }
+/// # unsafe impl<T: imp::MyBaseImpl> IsSubclassable<T> for MyBase {}
+/// # glib::wrapper! {
+/// #     pub struct MyDerived(ObjectSubclass<imp::MyDerived>) @extends MyBase;
+/// # }
+/// # mod imp {
+/// # use super::*;
+/// #
+/// # #[derive(Default)]
+/// # pub struct MyBase;
+/// #
+/// # #[glib::object_subclass]
+/// # impl ObjectSubclass for MyBase {
+/// #     const NAME: &'static str = "MyBase";
+/// #     type Type = super::MyBase;
+/// # }
+///
+/// impl ObjectImpl for MyBase {
+///     fn signals() -> &'static [glib::subclass::Signal] {
+///         use once_cell::sync::Lazy;
+///         use glib::subclass::Signal;
+///         static SIGNALS: Lazy<Vec<glib::subclass::Signal>> = Lazy::new(|| {
+///             vec![
+///                 Signal::builder(
+///                     "my-signal",
+///                     &[String::static_type().into(), u32::static_type().into()],
+///                     String::static_type().into(),
+///                 )
+///                 .class_handler(class_handler!(
+///                 |this: &super::MyBase, myarg1: Option<&str>, myarg2: u32| -> String {
+///                     format!("len: {}", myarg1.unwrap_or_default().len() + myarg2 as usize)
+///                 }))
+///                 .build(),
+///             ]
+///         });
+///         SIGNALS.as_ref()
+///     }
+/// }
+/// #
+/// # pub trait MyBaseImpl: ObjectImpl {}
+/// #
+/// # #[derive(Default)]
+/// # pub struct MyDerived;
+///
+/// #[glib::object_subclass]
+/// impl ObjectSubclass for MyDerived {
+///     const NAME: &'static str = "MyDerived";
+///     type Type = super::MyDerived;
+///     type ParentType = super::MyBase;
+///     fn class_init(class: &mut Self::Class) {
+///         class.override_signal_class_handler(
+///             "my-signal",
+///             override_handler!(|token: SignalClassOverrideToken,
+///                                this: &super::MyDerived,
+///                                myarg1: Option<&str>,
+///                                myarg2: u32|
+///              -> String {
+///                 let s = format!("str: {} num: {}", myarg1.unwrap_or("nothing"), myarg2);
+///                 let ret: String = token.chain(&[&this, &Some(&s), &myarg2]);
+///                 format!("ret: {}", ret)
+///             })
+///         );
+///     }
+/// }
+/// # impl ObjectImpl for MyDerived {}
+/// # impl MyBaseImpl for MyDerived {}
+/// # }
+/// # fn main() {}
+/// ```
+#[proc_macro]
+#[proc_macro_error]
+pub fn override_handler(item: TokenStream) -> TokenStream {
+    class_handler::class_handler_inner(item, true)
 }
 
 /// Derive macro for register a rust enum in the glib type system and derive the

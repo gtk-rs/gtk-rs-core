@@ -252,7 +252,10 @@ pub unsafe trait ObjectClassSubclassExt: Sized + 'static {
     // rustdoc-stripper-ignore-next
     /// Overrides the class handler for a signal. The signal `name` must be installed on the parent
     /// class or this method will panic. The parent class handler can be invoked by calling one of
-    /// the `chain` methods on the [`SignalClassOverrideToken`].
+    /// the `chain` methods on the [`SignalClassOverrideToken`]. This can be used with the
+    /// [`override_handler`](crate::override_handler) macro to perform automatic conversion to and
+    /// from the [`Value`](crate::Value) arguments and return value. See the documentation of that
+    /// macro for more information.
     fn override_signal_class_handler<F>(&mut self, name: &str, class_handler: F)
     where
         F: Fn(SignalClassOverrideToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
@@ -485,6 +488,18 @@ mod test {
                             ChildObject::type_().into(),
                         )
                         .build(),
+                        super::Signal::builder(
+                            "print-hex",
+                            &[u32::static_type().into()],
+                            String::static_type().into(),
+                        )
+                        .run_first()
+                        .class_handler(glib::class_handler!(|_: &super::SimpleObject,
+                                                             n: u32|
+                         -> String {
+                            format!("0x{:x}", n)
+                        }))
+                        .build(),
                     ]
                 });
 
@@ -574,6 +589,22 @@ mod test {
             })
         );
 
+        derive_simple!(
+            DerivedObject2,
+            super::DerivedObject2,
+            class,
+            class.override_signal_class_handler(
+                "change-name",
+                glib::override_handler!(|token: SignalClassOverrideToken,
+                                         this: &super::DerivedObject2,
+                                         name: Option<&str>|
+                 -> Option<String> {
+                    let name = name.map(|n| format!("{}-closure", n));
+                    token.chain(&[&this, &name])
+                })
+            )
+        );
+
         #[derive(Clone, Copy)]
         #[repr(C)]
         pub struct DummyInterface {
@@ -598,6 +629,10 @@ mod test {
 
     wrapper! {
         pub struct DerivedObject(ObjectSubclass<imp::DerivedObject>) @extends SimpleObject;
+    }
+
+    wrapper! {
+        pub struct DerivedObject2(ObjectSubclass<imp::DerivedObject2>) @extends SimpleObject;
     }
 
     wrapper! {
@@ -813,6 +848,21 @@ mod test {
     }
 
     #[test]
+    fn test_signal_class_handler() {
+        let obj = Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
+
+        let value = obj.emit_by_name::<String>("print-hex", &[&55u32]);
+        assert_eq!(value, "0x37");
+        obj.connect_closure(
+            "print-hex",
+            false,
+            glib::closure_local!(|_: &SimpleObject, n: u32| -> String { format!("0x{:08x}", n) }),
+        );
+        let value = obj.emit_by_name::<String>("print-hex", &[&56u32]);
+        assert_eq!(value, "0x00000038");
+    }
+
+    #[test]
     fn test_signal_override_chain_values() {
         let obj = Object::with_type(DerivedObject::static_type(), &[]).expect("Object::new failed");
         obj.emit_by_name::<Option<String>>("change-name", &[&"old-name"]);
@@ -831,5 +881,27 @@ mod test {
             "old-name-return"
         );
         assert_eq!(*current_name.borrow(), "new-name");
+    }
+
+    #[test]
+    fn test_signal_override_chain() {
+        let obj =
+            Object::with_type(DerivedObject2::static_type(), &[]).expect("Object::new failed");
+        obj.emit_by_name::<Option<String>>("change-name", &[&"old-name"]);
+
+        let current_name = Rc::new(RefCell::new(String::new()));
+        let current_name_clone = current_name.clone();
+
+        obj.connect_local("name-changed", false, move |args| {
+            let name = args[1].get::<String>().expect("Failed to get args[1]");
+            current_name_clone.replace(name);
+            None
+        });
+        assert_eq!(
+            obj.emit_by_name::<Option<String>>("change-name", &[&"new-name"])
+                .unwrap(),
+            "old-name-closure"
+        );
+        assert_eq!(*current_name.borrow(), "new-name-closure");
     }
 }
