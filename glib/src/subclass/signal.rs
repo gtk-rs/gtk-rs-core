@@ -2,17 +2,23 @@
 
 use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
+use crate::value::FromValue;
 use crate::Closure;
 use crate::SignalFlags;
+use crate::StaticType;
+use crate::ToValue;
 use crate::Type;
 use crate::Value;
 
+use std::ops::ControlFlow;
 use std::ptr;
 use std::sync::Mutex;
 use std::{fmt, num::NonZeroU32};
 
 type SignalClassHandler = Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>;
 
+type SignalAccumulator =
+    Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>;
 // rustdoc-stripper-ignore-next
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
@@ -22,10 +28,8 @@ pub struct SignalBuilder<'a> {
     flags: SignalFlags,
     param_types: &'a [SignalType],
     return_type: SignalType,
-    accumulator: Option<
-        Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
-    >,
     class_handler: Option<SignalClassHandler>,
+    accumulator: Option<SignalAccumulator>,
 }
 
 // rustdoc-stripper-ignore-next
@@ -362,10 +366,8 @@ impl FromGlibContainerAsVec<Type, *const ffi::GType> for SignalType {
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
-        accumulator: Option<
-            Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
-        >,
         class_handler: Option<SignalClassHandler>,
+        accumulator: Option<SignalAccumulator>,
     },
     Registered {
         type_: Type,
@@ -463,8 +465,51 @@ impl<'a> SignalBuilder<'a> {
     /// Accumulator for the return values of the signal.
     ///
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
-    /// return values into a single value.
+    /// return values into a single value. Panics if `T` and `R` do not return the same `Type` from
+    /// [`crate::StaticType::static_type`]. The first `T` is the currently accumulated value and
+    /// the second `T` is the return value from the current signal emission. If a `Some` value is
+    /// returned then that value will be used to replace the current accumulator. Retuning
+    /// `ControlFlow::Break` will abort the current signal emission.
+    ///
+    /// Either call this or [`Self::accumulator_with_values`], but not both.
     pub fn accumulator<
+        T: for<'v> FromValue<'v> + StaticType,
+        R: ToValue + StaticType,
+        F: Fn(&SignalInvocationHint, T, T) -> ControlFlow<Option<R>, Option<R>>
+            + Send
+            + Sync
+            + 'static,
+    >(
+        mut self,
+        func: F,
+    ) -> Self {
+        assert_eq!(T::static_type(), R::static_type());
+        self.accumulator = Some(Box::new(move |hint, accu, value| {
+            let curr_accu = accu.get::<T>().unwrap();
+            let value = value.get::<T>().unwrap();
+            let (next, ret) = match func(hint, curr_accu, value) {
+                ControlFlow::Continue(next) => (next, true),
+                ControlFlow::Break(next) => (next, false),
+            };
+            if let Some(next) = next {
+                *accu = ToValue::to_value(&next);
+            }
+            ret
+        }));
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Accumulator for the return values of the signal.
+    ///
+    /// This is called if multiple signal handlers are connected to the signal for accumulating the
+    /// return values into a single value.. The first [`Value`] is the currently accumulated value and
+    /// the second [`Value`] is the return value from the current signal emission. If a `Some`
+    /// value is returned then that value will be used to replace the current accumulator. Retuning
+    /// `false` will abort the current signal emission.
+    ///
+    /// Either call this or [`Self::accumulator`], but not both.
+    pub fn accumulator_with_values<
         F: Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static,
     >(
         mut self,
