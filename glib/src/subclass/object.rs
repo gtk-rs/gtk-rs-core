@@ -6,8 +6,10 @@
 
 use super::prelude::*;
 use super::Signal;
+use super::SignalQuery;
+use crate::closure::TryFromClosureReturnValue;
 use crate::translate::*;
-use crate::{Cast, Object, ObjectType, ParamSpec, Value};
+use crate::{Cast, Closure, Object, ParamSpec, ToValue, Type, Value};
 use std::mem;
 use std::ptr;
 
@@ -134,19 +136,169 @@ unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
 }
 
 // rustdoc-stripper-ignore-next
+/// A token representing a single invocation of an overridden class handler. Used for chaining to
+/// the original class handler.
+///
+/// The token can only be used to chain up to the parent handler once, and is consumed by calling
+/// any of its `chain` methods.
+///
+/// # Thread-safety
+///
+/// Consuming the token is thread-safe, but can result in logic errors if multiple signals are
+/// emitting concurrently on the same object across threads. If your object is `Send+Sync` and
+/// consumes any `SignalClassOverrideToken`s in any override handlers, you must wrap every signal
+/// emission on that object with a mutex lock. Note this restriction applies to **all** signal
+/// emissions on that object, not just overridden signals. A lock such as [`ReentrantMutex`] can be
+/// used to prevent deadlocks in the case of recursive signal emissions.
+///
+/// [`ReentrantMutex`]: https://docs.rs/lock_api/latest/lock_api/struct.ReentrantMutex.html
+pub struct SignalClassOverrideToken<'a> {
+    values: &'a [Value],
+    query: &'a SignalQuery,
+}
+
+impl<'a> SignalClassOverrideToken<'a> {
+    // rustdoc-stripper-ignore-next
+    /// Queries more information about the currently emitted signal.
+    pub fn query(&self) -> &'a SignalQuery {
+        self.query
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Calls the original class handler of a signal with `values`, converting each to a `Value`
+    /// and consuming the token. The first value must be the `Object` instance the signal was
+    /// emitted on. Calling this function with the wrong `Object` instance or an incorrect number
+    /// of values or incorrect types for the values will panic.
+    #[doc(alias = "g_signal_chain_from_overridden")]
+    pub fn chain<R: TryFromClosureReturnValue>(self, values: &[&dyn ToValue]) -> R {
+        let values = values
+            .iter()
+            .copied()
+            .map(ToValue::to_value)
+            .collect::<smallvec::SmallVec<[_; 10]>>();
+        let ret = self.chain_values(&values);
+        R::try_from_closure_return_value(ret).expect("Invalid return value")
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Calls the original class handler of a signal with `values`, consuming the token. The first
+    /// value must be the `Object` instance the signal was emitted on. Calling this function with
+    /// the wrong `Object` instance or an incorrect number of values or incorrect types for the
+    /// values will panic.
+    ///
+    /// This function can avoid type checking if the original
+    #[doc(alias = "g_signal_chain_from_overridden")]
+    pub fn chain_values(self, values: &[Value]) -> Option<Value> {
+        // Optimize out the type checks if this is the same slice as the original
+        if values.as_ptr() != self.values.as_ptr() {
+            assert_eq!(values[0].get::<&Object>(), self.values[0].get::<&Object>());
+
+            let n_args = self.query.n_params() as usize + 1;
+            if n_args != values.len() {
+                panic!(
+                    "Expected {} values when chaining signal `{}`, got {}",
+                    n_args,
+                    self.query.signal_name(),
+                    values.len(),
+                );
+            }
+            for (index, arg_type) in self.query.param_types().iter().enumerate() {
+                let arg_type = arg_type.type_();
+                let index = index + 1;
+                let value = &values[index];
+                if !value.is_type(arg_type) {
+                    panic!(
+                        "Wrong type for argument {} when chaining signal `{}`: Actual {:?}, requested {:?}",
+                        index,
+                        self.query.signal_name(),
+                        value.type_(),
+                        arg_type,
+                    );
+                }
+            }
+        }
+
+        unsafe { self.chain_values_unsafe(values) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Calls the original class handler of a signal with `values`. The first value must be the
+    /// `Object` instance the signal was emitted on.
+    ///
+    /// # Safety
+    ///
+    /// The types and number of argument values are not checked, and `return_type` must match the
+    /// return type of the signal. It is undefined behavior to call this function with types that do
+    /// not match the type of the currently running class closure, or with the incorrect object as
+    /// the first argument.
+    #[doc(alias = "g_signal_chain_from_overridden")]
+    pub unsafe fn chain_values_unsafe(self, values: &[Value]) -> Option<Value> {
+        debug_assert_eq!(values[0].get::<&Object>(), self.values[0].get::<&Object>());
+        let return_type = self.query.return_type().type_();
+        let mut result = Value::from_type(return_type);
+        gobject_ffi::g_signal_chain_from_overridden(
+            values.as_ptr() as *mut Value as *mut gobject_ffi::GValue,
+            result.to_glib_none_mut().0,
+        );
+        Some(result).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT)
+    }
+}
+
+// rustdoc-stripper-ignore-next
 /// Extension trait for `glib::Object`'s class struct.
 ///
 /// This contains various class methods and allows subclasses to override signal class handlers.
 pub unsafe trait ObjectClassSubclassExt: Sized + 'static {
+    // rustdoc-stripper-ignore-next
+    /// Overrides the class handler for a signal. The signal `name` must be installed on the parent
+    /// class or this method will panic. The parent class handler can be invoked by calling one of
+    /// the `chain` methods on the [`SignalClassOverrideToken`].
     fn override_signal_class_handler<F>(&mut self, name: &str, class_handler: F)
     where
-        F: Fn(&super::SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
+        F: Fn(SignalClassOverrideToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
     {
+        let type_ = unsafe { from_glib(*(self as *mut _ as *mut ffi::GType)) };
+        let (signal_id, _) = super::SignalId::parse_name(name, type_, false)
+            .unwrap_or_else(|| panic!("Signal '{}' not found", name));
+        let query = signal_id.query();
+        let return_type = query.return_type().type_();
+        let closure = Closure::new(move |values| {
+            let token = SignalClassOverrideToken {
+                values,
+                query: &query,
+            };
+            let res = class_handler(token, values);
+
+            if return_type == Type::UNIT {
+                if let Some(ref v) = res {
+                    panic!(
+                        "Signal has no return value but class handler returned a value of type {}",
+                        v.type_()
+                    );
+                }
+            } else {
+                match res {
+                    None => {
+                        panic!("Signal has a return value but class handler returned none");
+                    }
+                    Some(ref v) => {
+                        assert!(
+                            v.type_().is_a(return_type),
+                            "Signal has a return type of {} but class handler returned {}",
+                            return_type,
+                            v.type_()
+                        );
+                    }
+                }
+            }
+
+            res
+        });
         unsafe {
-            super::types::signal_override_class_handler(
-                name,
-                *(self as *mut _ as *mut ffi::GType),
-                class_handler,
+            gobject_ffi::g_signal_override_class_closure(
+                signal_id.into_glib(),
+                type_.into_glib(),
+                closure.to_glib_none().0,
             );
         }
     }
@@ -195,14 +347,6 @@ pub trait ObjectImplExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
     fn parent_constructed(&self, obj: &Self::Type);
-
-    // rustdoc-stripper-ignore-next
-    /// Chain up to parent class signal handler.
-    fn signal_chain_from_overridden(
-        &self,
-        token: &super::SignalClassHandlerToken,
-        values: &[Value],
-    ) -> Option<Value>;
 }
 
 impl<T: ObjectImpl> ObjectImplExt for T {
@@ -216,34 +360,21 @@ impl<T: ObjectImpl> ObjectImplExt for T {
             }
         }
     }
-
-    fn signal_chain_from_overridden(
-        &self,
-        token: &super::SignalClassHandlerToken,
-        values: &[Value],
-    ) -> Option<Value> {
-        unsafe {
-            super::types::signal_chain_from_overridden(
-                self.instance().as_ptr() as *mut _,
-                token,
-                values,
-            )
-        }
-    }
 }
 
 #[cfg(test)]
 mod test {
     use super::super::super::object::ObjectExt;
-    use super::super::super::value::{ToValue, Value};
     use super::*;
     // We rename the current crate as glib, since the macros in glib-macros
     // generate the glib namespace through the crate_ident_new utility,
     // and that returns `glib` (and not `crate`) when called inside the glib crate
     use crate as glib;
+    use crate::ObjectType;
     use crate::StaticType;
 
     use std::cell::RefCell;
+    use std::rc::Rc;
 
     mod imp {
         use super::*;
@@ -407,6 +538,42 @@ mod test {
             }
         }
 
+        pub trait SimpleObjectImpl: ObjectImpl {}
+
+        macro_rules! derive_simple {
+            ($name:ident, $wrapper:ty, $class:ident, $class_init:expr) => {
+                #[derive(Default)]
+                pub struct $name;
+
+                #[glib::object_subclass]
+                impl ObjectSubclass for $name {
+                    const NAME: &'static str = stringify!($name);
+                    type Type = $wrapper;
+                    type ParentType = super::SimpleObject;
+                    fn class_init($class: &mut Self::Class) {
+                        $class_init;
+                    }
+                }
+
+                impl ObjectImpl for $name {}
+                impl SimpleObjectImpl for $name {}
+            };
+        }
+
+        derive_simple!(
+            DerivedObject,
+            super::DerivedObject,
+            class,
+            class.override_signal_class_handler("change-name", |token, values| {
+                let name = token.chain_values(values).unwrap();
+                let name = name
+                    .get::<Option<&str>>()
+                    .unwrap()
+                    .map(|n| format!("{}-return", n));
+                Some(name.to_value())
+            })
+        );
+
         #[derive(Clone, Copy)]
         #[repr(C)]
         pub struct DummyInterface {
@@ -425,6 +592,12 @@ mod test {
 
     wrapper! {
         pub struct SimpleObject(ObjectSubclass<imp::SimpleObject>);
+    }
+
+    unsafe impl<T: imp::SimpleObjectImpl> IsSubclassable<T> for SimpleObject {}
+
+    wrapper! {
+        pub struct DerivedObject(ObjectSubclass<imp::DerivedObject>) @extends SimpleObject;
     }
 
     wrapper! {
@@ -637,5 +810,26 @@ mod test {
         });
         let value: glib::Object = obj.emit_by_name("create-child-object", &[]);
         assert!(value.type_().is_a(ChildObject::static_type()));
+    }
+
+    #[test]
+    fn test_signal_override_chain_values() {
+        let obj = Object::with_type(DerivedObject::static_type(), &[]).expect("Object::new failed");
+        obj.emit_by_name::<Option<String>>("change-name", &[&"old-name"]);
+
+        let current_name = Rc::new(RefCell::new(String::new()));
+        let current_name_clone = current_name.clone();
+
+        obj.connect_local("name-changed", false, move |args| {
+            let name = args[1].get::<String>().expect("Failed to get args[1]");
+            current_name_clone.replace(name);
+            None
+        });
+        assert_eq!(
+            obj.emit_by_name::<Option<String>>("change-name", &[&"new-name"])
+                .unwrap(),
+            "old-name-return"
+        );
+        assert_eq!(*current_name.borrow(), "new-name");
     }
 }

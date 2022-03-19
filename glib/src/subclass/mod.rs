@@ -276,7 +276,6 @@ pub mod prelude {
 
 pub use self::boxed::register_boxed_type;
 pub use self::interface::register_interface;
-pub use self::signal::{
-    Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
-};
+pub use self::object::SignalClassOverrideToken;
+pub use self::signal::{Signal, SignalId, SignalInvocationHint, SignalQuery, SignalType};
 pub use self::types::{register_type, InitializingObject, InitializingType, TypeData};

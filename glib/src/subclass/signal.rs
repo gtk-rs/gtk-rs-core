@@ -21,6 +21,7 @@ type SignalClassHandler = Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 
 
 type SignalAccumulator =
     Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>;
+
 // rustdoc-stripper-ignore-next
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
@@ -42,30 +43,6 @@ pub struct Signal {
     param_types: Vec<SignalType>,
     return_type: SignalType,
     registration: Mutex<SignalRegistration>,
-}
-
-// rustdoc-stripper-ignore-next
-/// Token passed to signal class handlers.
-pub struct SignalClassHandlerToken(
-    // rustdoc-stripper-ignore-next
-    /// Instance for which the signal is emitted.
-    pub(super) *mut gobject_ffi::GTypeInstance,
-    // rustdoc-stripper-ignore-next
-    /// Return type.
-    pub(super) Type,
-    // rustdoc-stripper-ignore-next
-    /// Arguments value array.
-    pub(super) *const Value,
-);
-
-impl fmt::Debug for SignalClassHandlerToken {
-    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        f.debug_struct("SignalClassHandlerToken")
-            .field("type", &unsafe {
-                crate::Object::from_glib_borrow(self.0 as *mut gobject_ffi::GObject)
-            })
-            .finish()
-    }
 }
 
 // rustdoc-stripper-ignore-next
