@@ -4,6 +4,8 @@ use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
 use crate::value::FromValue;
 use crate::Closure;
+use crate::IsA;
+use crate::Object;
 use crate::SignalFlags;
 use crate::StaticType;
 use crate::ToValue;
@@ -72,12 +74,45 @@ impl fmt::Debug for SignalClassHandlerToken {
 pub struct SignalInvocationHint(gobject_ffi::GSignalInvocationHint);
 
 impl SignalInvocationHint {
+    // rustdoc-stripper-ignore-next
+    /// Gets the hint of the innermost signal emitting on `instance`. Returns `None` if no signal
+    /// is being emitted.
+    ///
+    /// # Thread-safety
+    ///
+    /// This section only applies when `instance` implements `Send+Sync`. Retreiving the hint is
+    /// thread-safe, but can result in logic errors if multiple signals are emitting concurrently on
+    /// the same object across threads. If you call this function on an object that is `Send+Sync`,
+    /// you must wrap every signal emission on that object with a mutex lock. Note this restriction
+    /// applies to **all** signal emissions on that object, not just overridden signals. A lock
+    /// such as [`ReentrantMutex`] can be used to prevent deadlocks in the case of recursive signal
+    /// emissions.
+    ///
+    /// [`ReentrantMutex`]: https://docs.rs/lock_api/latest/lock_api/struct.ReentrantMutex.html
+    #[doc(alias = "g_signal_get_invocation_hint")]
+    pub fn for_object<T: IsA<Object>>(instance: &T) -> Option<Self> {
+        unsafe {
+            from_glib_none(gobject_ffi::g_signal_get_invocation_hint(
+                instance.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+    pub fn signal_id(&self) -> SignalId {
+        unsafe { from_glib(self.0.signal_id) }
+    }
     pub fn detail(&self) -> Option<crate::Quark> {
         unsafe { try_from_glib(self.0.detail).ok() }
     }
 
     pub fn run_type(&self) -> SignalFlags {
         unsafe { from_glib(self.0.run_type) }
+    }
+}
+
+impl FromGlibPtrNone<*mut gobject_ffi::GSignalInvocationHint> for SignalInvocationHint {
+    unsafe fn from_glib_none(hint: *mut gobject_ffi::GSignalInvocationHint) -> Self {
+        assert!(!hint.is_null());
+        Self(*hint)
     }
 }
 
@@ -680,8 +715,8 @@ impl Signal {
                 handler_return.type_()
             );
 
-            let res = (accumulator.1)(&SignalInvocationHint(*ihint), return_accu, handler_return)
-                .into_glib();
+            let res =
+                (accumulator.1)(&from_glib_none(ihint), return_accu, handler_return).into_glib();
 
             assert!(
                 return_accu.type_().is_a(return_type.into()),
