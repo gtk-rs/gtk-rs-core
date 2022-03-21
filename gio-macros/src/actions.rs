@@ -37,7 +37,7 @@ impl ActionHandlerInfo {
         if let Some(ref name) = self.attrs.name {
             name.clone()
         } else {
-            self.sig.ident.to_string()
+            self.sig.ident.to_string().replace('_', "-")
         }
     }
 }
@@ -255,8 +255,8 @@ fn get_parameter(info: &ActionInfo, arg: &FnArg) -> Result<TokenStream2, Error> 
     Ok(quote_spanned! { arg.span() =>
         #[allow(clippy::redundant_closure)]
         match parameter.as_ref().and_then(|variant| <#parameter_type as glib::variant::FromVariant>::from_variant(variant)) {
-            Some(parameter) => parameter,
-            None => {
+            ::std::option::Option::Some(parameter) => parameter,
+            ::std::option::Option::None => {
                 glib::g_critical!("actions", "Action {} expects a parameter of type {} but received `{:?}`.", #action_name, stringify!(#parameter_type), parameter);
                 return;
             },
@@ -269,8 +269,8 @@ fn get_state(info: &ActionInfo, arg: &FnArg) -> Result<TokenStream2, Error> {
     let state_type = argument_type(arg)?;
     Ok(quote_spanned! { arg.span() =>
         match action.state().and_then(|variant| variant.get::<#state_type>()) {
-            Some(value) => value,
-            None => {
+            ::std::option::Option::Some(value) => value,
+            ::std::option::Option::None => {
                 glib::g_critical!("actions", "Action {} expects a state of type {} but has `{:?}`.", #action_name, stringify!(#state_type), action.state());
                 return;
             }
@@ -281,8 +281,8 @@ fn get_state(info: &ActionInfo, arg: &FnArg) -> Result<TokenStream2, Error> {
 fn change_state(span: Span, expression: &TokenStream2, state_type: &Type) -> TokenStream2 {
     quote_spanned! { span => {
         #[allow(clippy::useless_conversion)]
-        let new_state_opt: Option<#state_type> = (#expression).into();
-        if let Some(ref new_state) = new_state_opt {
+        let new_state_opt = <::std::option::Option<#state_type> as ::std::convert::From<_>>::from(#expression);
+        if let ::std::option::Option::Some(ref new_state) = new_state_opt {
             action.change_state(&<#state_type as glib::variant::ToVariant>::to_variant(new_state));
         }
     }}
@@ -328,8 +328,8 @@ fn generate_activate_handler(
 
     if is_async {
         invoke = quote! {
-            let action = action.clone();
-            let parameter: Option<glib::variant::Variant> = parameter.cloned();
+            let action = ::std::clone::Clone::clone(&action);
+            let parameter: ::std::option::Option<glib::variant::Variant> = parameter.cloned();
             glib::MainContext::default().spawn_local(async move { #invoke });
         };
     }
@@ -354,21 +354,21 @@ fn generate_change_state_handler(
     let state_type = handler.state_type()?;
     let mut invoke = quote_spanned! { handler.sig.span() =>
         let new_state: #state_type = match new_state_opt.and_then(|state| state.get()) {
-            Some(value) => value,
-            None => {
+            ::std::option::Option::Some(value) => value,
+            ::std::option::Option::None => {
                 glib::g_critical!("actions", "State of type {} is expected in action {} but it is None.", stringify!(#state_type), #action_name);
                 return;
             }
         };
-        let result: Option<#state_type> = this.#method(new_state) #maybe_await .into();
-        if let Some(ref new_state) = result {
+        let result = <::std::option::Option<#state_type> as ::std::convert::From<_>>::from(this.#method(new_state) #maybe_await );
+        if let ::std::option::Option::Some(ref new_state) = result {
             action.set_state(&<#state_type as glib::variant::ToVariant>::to_variant(new_state));
         }
     };
     if is_async {
         invoke = quote! {
-            let action = action.clone();
-            let new_state_opt: Option<glib::variant::Variant> = new_state_opt.cloned();
+            let action = ::std::clone::Clone::clone(&action);
+            let new_state_opt: ::std::option::Option<glib::variant::Variant> = new_state_opt.cloned();
             glib::MainContext::default().spawn_local(async move { #invoke });
         };
     }
@@ -385,22 +385,26 @@ fn generate_action(info: &ActionInfo) -> Result<TokenStream2, Error> {
 
     let parameter = if let Some(parameter_type) = info.parameter_type()? {
         quote_spanned! { parameter_type.span() =>
-            Some(<#parameter_type as glib::variant::StaticVariantType>::static_variant_type().as_ref())
+            ::std::option::Option::Some(
+                ::std::convert::AsRef::<glib::VariantTy>::as_ref(
+                    &<#parameter_type as glib::variant::StaticVariantType>::static_variant_type()
+                )
+            )
         }
     } else {
         quote! {
-            None
+            ::std::option::Option::None
         }
     };
 
     let create = if let Some(state_type) = info.state_type()? {
         let initial_state_expr = if let Some(ref value) = info.initial_state {
             quote_spanned! { value.span() =>
-                <#state_type as std::convert::From<_>>::from(#value)
+                <#state_type as ::std::convert::From<_>>::from(#value)
             }
         } else {
             quote_spanned! { state_type.span() =>
-                <#state_type as std::default::Default>::default()
+                <#state_type as ::std::default::Default>::default()
             }
         };
         quote! {
@@ -493,7 +497,7 @@ fn generate_register_method(
         #[allow(clippy)]
         fn #register_fn<AM: glib::object::IsA<gio::ActionMap>>(&self, map: &AM) {
             #(
-                map.add_action(& #actions );
+                gio::prelude::ActionMapExt::add_action(&map, & #actions );
             )*
         }
     };
