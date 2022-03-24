@@ -10,6 +10,10 @@ mod binding;
 mod binding_group;
 mod flags;
 
+#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+pub use binding_group::BindingGroupBuilder;
+
 pub use self::auto::*;
 pub use self::flags::*;
 //pub use self::auto::functions::*;
