@@ -356,12 +356,12 @@ impl<'a> LogField<'a> {
     // rustdoc-stripper-ignore-next
     /// Creates a field from a borrowed key and value.
     pub fn new(key: &'a GStr, value: &[u8]) -> Self {
-        let (value, length) = if value.len() > 0 {
-            (value, value.len().try_into().unwrap())
-        } else {
+        let (value, length) = if value.is_empty() {
             // Use an empty C string to represent empty data, since length: 0 is reserved for user
             // data fields.
             (&[0u8] as &[u8], -1isize)
+        } else {
+            (value, value.len().try_into().unwrap())
         };
         Self(
             ffi::GLogField {
@@ -402,14 +402,14 @@ impl<'a> LogField<'a> {
     /// Retrieves a byte array of the field value. Returns `None` if the field was created with
     /// [`Self::new_user_data`].
     pub fn value_bytes(&self) -> Option<&[u8]> {
-        if self.0.length == 0 {
-            None
-        } else if self.0.length < 0 {
-            Some(unsafe { std::ffi::CStr::from_ptr(self.0.value as *const _) }.to_bytes())
-        } else {
-            Some(unsafe {
+        match self.0.length {
+            0 => None,
+            n if n < 0 => {
+                Some(unsafe { std::ffi::CStr::from_ptr(self.0.value as *const _) }.to_bytes())
+            }
+            _ => Some(unsafe {
                 std::slice::from_raw_parts(self.0.value as *const u8, self.0.length as usize)
-            })
+            }),
         }
     }
     // rustdoc-stripper-ignore-next

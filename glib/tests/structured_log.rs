@@ -1,3 +1,6 @@
+#![allow(clippy::unnecessary_to_owned)]
+#![allow(clippy::unnecessary_cast)]
+
 #[cfg(feature = "v2_50")]
 #[test]
 fn structured_log() {

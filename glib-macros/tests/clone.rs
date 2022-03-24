@@ -73,8 +73,6 @@ const TESTS: &[(&str, &str)] = &[
 
 #[test]
 fn clone_failures() {
-    let exe = std::env::current_exe().unwrap();
-    let out_dir = exe.parent().unwrap();
     let t = trybuild2::TestCases::new();
 
     for (index, (expr, err)) in TESTS.iter().enumerate() {
