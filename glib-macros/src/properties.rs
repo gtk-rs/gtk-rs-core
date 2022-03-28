@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::utils::crate_ident_new;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::quote;
-use quote::ToTokens;
 use std::str::FromStr;
 use syn::ext::IdentExt;
 use syn::parenthesized;
@@ -400,11 +400,6 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
     format_ident!("{}", name.value().replace('-', "_"))
 }
 
-/// Changes `Self` to another concrete type, to make it work in a different scope
-fn change_self_type<T: ToTokens>(source: &T, ident: &str) -> TokenStream2 {
-    TokenStream2::from_str(&source.to_token_stream().to_string().replace("Self", ident)).unwrap()
-}
-
 fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     quote!(fn #ident(&self) -> <#ty as glib::Property>::Value)
 }
@@ -425,41 +420,19 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#defs;)*)
 }
 
-fn expand_getset_properties_impl(imp_type_ident: &syn::Ident, props: &[PropDesc]) -> TokenStream2 {
+fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
     let defs = props.iter().map(|p| {
-        let ident = name_to_ident(&p.name);
-        let field_ident = &p.field_ident;
+        let name = &p.name;
+        let ident = name_to_ident(name);
         let ty = &p.ty;
 
-        let getter = p.get.as_ref().map(|mfn| {
-            let body = match (p.member.as_ref(), mfn) {
-                (None, MaybeCustomFn::Default) => quote!(
-                     self.imp().#field_ident.get(|x| x.to_owned())
-                ),
-                (Some(member), MaybeCustomFn::Default) => quote!(
-                     self.imp().#field_ident.get(|x| x.#member.to_owned())
-                ),
-                (_, MaybeCustomFn::Custom(custom_fn)) => {
-                    let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
-                    quote!((#custom_fn)(&self.imp()))
-                }
-            };
+        let getter = p.get.as_ref().map(|_| {
+            let body = quote!(self.property::<<#ty as glib::Property>::Value>(#name));
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
-        let setter = p.set.as_ref().map(|mfn| {
-            let body = match (p.member.as_ref(), mfn) {
-                (None, MaybeCustomFn::Default) => quote!(
-                     self.imp().#field_ident.set(move |x| *x = value)
-                ),
-                (Some(member), MaybeCustomFn::Default) => quote!(
-                     self.imp().#field_ident.set(move |x| x.#member = value)
-                ),
-                (_, MaybeCustomFn::Custom(custom_fn)) => {
-                    let custom_fn = change_self_type(custom_fn, &imp_type_ident.to_string());
-                    quote!((#custom_fn)(&self.imp(), value))
-                }
-            };
+        let setter = p.set.as_ref().map(|_| {
+            let body = quote!(self.set_property::<<#ty as glib::Property>::Value>(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
@@ -496,12 +469,13 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}Ext", &input.ident);
+    let crate_ident = crate_ident_new();
     let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
     let getset_properties_def = expand_getset_properties_def(&input.props);
-    let getset_properties_impl = expand_getset_properties_impl(struct_ident, &input.props);
+    let getset_properties_impl = expand_getset_properties_impl(&input.props);
     let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
     let expanded = quote! {
@@ -517,7 +491,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #getset_properties_def
             #connect_prop_notify_def
         }
-        impl #struct_ident_ext for #wrapper_type {
+        impl<T: #crate_ident::IsA<#wrapper_type>> #struct_ident_ext for T {
             #getset_properties_impl
             #connect_prop_notify_impl
         }
