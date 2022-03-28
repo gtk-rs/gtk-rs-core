@@ -426,12 +426,12 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
         let ident = name_to_ident(name);
         let ty = &p.ty;
 
-        let getter = p.get.as_ref().map(|_| {
+        let getter = p.get.is_some().then(|| {
             let body = quote!(self.property::<<#ty as glib::Property>::Value>(#name));
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
-        let setter = p.set.as_ref().map(|_| {
+        let setter = p.set.is_some().then(|| {
             let body = quote!(self.set_property::<<#ty as glib::Property>::Value>(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
