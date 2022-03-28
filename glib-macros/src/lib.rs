@@ -896,7 +896,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     pub struct Foo(ObjectSubclass<imp::Foo>);
 /// }
 ///
-/// use imp::FooExt;
+/// use imp::FooPropertiesExt;
 ///
 /// fn main() {
 ///   let myfoo: Foo = glib::object::Object::new(&[]).unwrap();

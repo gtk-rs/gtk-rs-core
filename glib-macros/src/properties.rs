@@ -468,7 +468,7 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
 
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
-    let struct_ident_ext = format_ident!("{}Ext", &input.ident);
+    let struct_ident_ext = format_ident!("{}PropertiesExt", &input.ident);
     let crate_ident = crate_ident_new();
     let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);

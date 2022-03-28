@@ -102,7 +102,7 @@ fn props() {
         }
     }
 
-    use foo::imp::FooExt;
+    use foo::imp::FooPropertiesExt;
 
     let myfoo: foo::Foo = glib::object::Object::new(&[]).unwrap();
 
@@ -175,7 +175,7 @@ fn props() {
 
     myfoo.connect_optional_notify(|_| println!("notified"));
 
-    // Test `FooExt`
+    // Test `FooPropertiesExt`
     // getters
     {
         // simple
