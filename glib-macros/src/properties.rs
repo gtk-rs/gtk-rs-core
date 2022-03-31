@@ -4,7 +4,7 @@ use crate::utils::crate_ident_new;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
-use quote::quote;
+use quote::{quote, quote_spanned};
 use std::str::FromStr;
 use syn::ext::IdentExt;
 use syn::parenthesized;
@@ -189,6 +189,7 @@ impl ReceivedAttrs {
     }
 }
 struct PropDesc {
+    attrs_span: proc_macro2::Span,
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
@@ -201,7 +202,12 @@ struct PropDesc {
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl PropDesc {
-    fn new(field_ident: syn::Ident, field_ty: syn::Type, attrs: ReceivedAttrs) -> Self {
+    fn new(
+        attrs_span: proc_macro2::Span,
+        field_ident: syn::Ident,
+        field_ty: syn::Type,
+        attrs: ReceivedAttrs,
+    ) -> Self {
         let ReceivedAttrs {
             get,
             set,
@@ -225,6 +231,7 @@ impl PropDesc {
 
         // Now that everything is set and safe, return the final proprety description
         Self {
+            attrs_span,
             field_ident,
             get,
             set,
@@ -280,7 +287,8 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
 
         let build_nick = nick.as_ref().map(|x| quote!(.nick(#x)));
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
-        quote! {
+        let span = prop.attrs_span;
+        quote_spanned! {span=>
             <<#ty as glib::Property>::ParamSpec>
                 ::builder #builder_call
                 #build_nick
@@ -308,16 +316,20 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             get,
             ..
         } = p;
-        get.as_ref().map(|get| match (member, get) {
-            (_, MaybeCustomFn::Custom(expr)) => quote!(
-                #name => Ok((#expr)(&self).to_value())
-            ),
-            (None, MaybeCustomFn::Default) => quote!(
-                #name => Ok(self.#field_ident.get(|v| v.to_value()))
-            ),
-            (Some(member), MaybeCustomFn::Default) => quote!(
-                #name => Ok(self.#field_ident.get(|v| v.#member.to_value()))
-            ),
+        let span = p.attrs_span;
+        get.as_ref().map(|get| {
+            let body = match (member, get) {
+                (_, MaybeCustomFn::Custom(expr)) => quote!(
+                    #name => Ok((#expr)(&self).to_value())
+                ),
+                (None, MaybeCustomFn::Default) => quote!(
+                    #name => Ok(self.#field_ident.get(|v| v.to_value()))
+                ),
+                (Some(member), MaybeCustomFn::Default) => quote!(
+                    #name => Ok(self.#field_ident.get(|v| v.#member.to_value()))
+                ),
+            };
+            quote_spanned!(span=> #body)
         })
     });
     quote!(
@@ -339,26 +351,30 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ..
         } = p;
 
+        let span = p.attrs_span;
         let expect = quote!(.expect("Can't convert glib::value to property type"));
-        set.as_ref().map(|set| match (member, set) {
-            (_, MaybeCustomFn::Custom(expr)) => quote!(
-                #name => {
-                    (#expr)(&self, value.get()#expect);
-                    Ok(())
-                }
-            ),
-            (None, MaybeCustomFn::Default) => quote!(
-                #name => {
-                    self.#field_ident.set(move |v| *v = value.get()#expect);
-                    Ok(())
-                }
-            ),
-            (Some(member), MaybeCustomFn::Default) => quote!(
-                #name => {
-                    self.#field_ident.set(move |v| v.#member = value.get()#expect);
-                    Ok(())
-                }
-            ),
+        set.as_ref().map(|set| {
+            let body = match (member, set) {
+                (_, MaybeCustomFn::Custom(expr)) => quote!(
+                    #name => {
+                        (#expr)(&self, value.get()#expect);
+                        Ok(())
+                    }
+                ),
+                (None, MaybeCustomFn::Default) => quote!(
+                    #name => {
+                        self.#field_ident.set(move |v| *v = value.get()#expect);
+                        Ok(())
+                    }
+                ),
+                (Some(member), MaybeCustomFn::Default) => quote!(
+                    #name => {
+                        self.#field_ident.set(move |v| v.#member = value.get()#expect);
+                        Ok(())
+                    }
+                ),
+            };
+            quote_spanned!(span=> #body)
         })
     });
     quote!(
@@ -382,10 +398,12 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
                 .into_iter()
                 .filter(|a| a.path.is_ident("prop"))
                 .map(move |attrs| {
+                    let span = attrs.span();
                     let attrs = attrs.parse_args_with(
                         syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
                     )?;
                     Ok(PropDesc::new(
+                        span,
                         ident.as_ref().unwrap().clone(),
                         ty.clone(),
                         ReceivedAttrs::new(attrs),
@@ -436,7 +454,8 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
-        quote!(
+        let span = p.attrs_span;
+        quote_spanned!(span=>
             #getter
             #setter
         )
@@ -457,7 +476,8 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
         let fn_prototype = connect_prop_notify_prototype(p);
-        quote!(#fn_prototype {
+        let span = p.attrs_span;
+        quote_spanned!(span=> #fn_prototype {
             self.connect_notify_local(Some(#name), move |this, _| {
                 f(this)
             })
@@ -479,7 +499,8 @@ fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
     let emit_fns = props.iter().map(|p| {
         let name = &p.name;
         let fn_prototype = emit_prototype(p);
-        quote!(#fn_prototype {
+        let span = p.attrs_span;
+        quote_spanned!(span=> #fn_prototype {
             self.notify(#name);
         })
     });
