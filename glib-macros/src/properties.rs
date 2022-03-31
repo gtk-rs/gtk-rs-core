@@ -466,24 +466,24 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#connection_fns)*)
 }
 
-fn notify_prototype(p: &PropDesc) -> TokenStream2 {
+fn emit_prototype(p: &PropDesc) -> TokenStream2 {
     let name = &p.name;
-    let fn_ident = format_ident!("notify_{}", name_to_ident(name));
+    let fn_ident = format_ident!("emit_{}", name_to_ident(name));
     quote!(fn #fn_ident(&self))
 }
-fn expand_notify_def(props: &[PropDesc]) -> TokenStream2 {
-    let notify_fns = props.iter().map(notify_prototype);
-    quote!(#(#notify_fns;)*)
+fn expand_emit_def(props: &[PropDesc]) -> TokenStream2 {
+    let emit_fns = props.iter().map(emit_prototype);
+    quote!(#(#emit_fns;)*)
 }
-fn expand_notify_impl(props: &[PropDesc]) -> TokenStream2 {
-    let notify_fns = props.iter().map(|p| {
+fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
+    let emit_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = notify_prototype(p);
+        let fn_prototype = emit_prototype(p);
         quote!(#fn_prototype {
             self.notify(#name);
         })
     });
-    quote!(#(#notify_fns)*)
+    quote!(#(#emit_fns)*)
 }
 
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
@@ -498,8 +498,8 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let getset_properties_impl = expand_getset_properties_impl(&input.props);
     let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
-    let notify_def = expand_notify_def(&input.props);
-    let notify_impl = expand_notify_impl(&input.props);
+    let emit_def = expand_emit_def(&input.props);
+    let emit_impl = expand_emit_impl(&input.props);
     let expanded = quote! {
         use glib::{PropertyRead, PropertyWrite};
 
@@ -512,12 +512,12 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
         pub trait #struct_ident_ext {
             #getset_properties_def
             #connect_prop_notify_def
-            #notify_def
+            #emit_def
         }
         impl<T: #crate_ident::IsA<#wrapper_type>> #struct_ident_ext for T {
             #getset_properties_impl
             #connect_prop_notify_impl
-            #notify_impl
+            #emit_impl
         }
 
     };
