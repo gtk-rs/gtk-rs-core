@@ -1239,11 +1239,20 @@ impl HasParamSpec for i64 {
 impl HasParamSpec for i32 {
     type ParamSpec = ParamSpecInt;
 }
+impl HasParamSpec for i8 {
+    type ParamSpec = ParamSpecChar;
+}
 impl HasParamSpec for u64 {
     type ParamSpec = ParamSpecUInt64;
 }
 impl HasParamSpec for u32 {
     type ParamSpec = ParamSpecUInt;
+}
+impl HasParamSpec for u8 {
+    type ParamSpec = ParamSpecUChar;
+}
+impl HasParamSpec for bool {
+    type ParamSpec = ParamSpecBoolean;
 }
 
 #[cfg(test)]
