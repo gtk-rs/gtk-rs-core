@@ -4,10 +4,10 @@ use std::cell::Cell;
 use std::cell::RefCell;
 use std::marker::PhantomData;
 use std::rc::Rc;
+use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::RwLock;
-use std::sync::atomic::Ordering;
 
 use crate::HasParamSpec;
 
@@ -208,7 +208,7 @@ macro_rules! impl_atomic {
                 self.store(tmp, Ordering::Release);
             }
         }
-    }
+    };
 }
 
 impl_atomic!(std::sync::atomic::AtomicBool, bool);

@@ -486,7 +486,6 @@ fn expand_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#notify_fns)*)
 }
 
-
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}PropertiesExt", &input.ident);
@@ -524,4 +523,3 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     };
     proc_macro::TokenStream::from(expanded)
 }
-
