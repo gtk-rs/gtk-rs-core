@@ -466,6 +466,27 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#connection_fns)*)
 }
 
+fn expand_notify(p: &PropDesc) -> TokenStream2 {
+    let name = &p.name;
+    let fn_ident = format_ident!("notify_{}", name_to_ident(name));
+    quote!(fn #fn_ident(&self))
+}
+fn expand_notify_def(props: &[PropDesc]) -> TokenStream2 {
+    let notify_fns = props.iter().map(expand_notify);
+    quote!(#(#notify_fns;)*)
+}
+fn expand_notify_impl(props: &[PropDesc]) -> TokenStream2 {
+    let notify_fns = props.iter().map(|p| {
+        let name = &p.name;
+        let fn_prototype = expand_notify(p);
+        quote!(#fn_prototype {
+            self.notify(#name);
+        })
+    });
+    quote!(#(#notify_fns)*)
+}
+
+
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}PropertiesExt", &input.ident);
@@ -478,6 +499,8 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let getset_properties_impl = expand_getset_properties_impl(&input.props);
     let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
+    let notify_def = expand_notify_def(&input.props);
+    let notify_impl = expand_notify_impl(&input.props);
     let expanded = quote! {
         use glib::{PropertyRead, PropertyWrite};
 
@@ -490,12 +513,15 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
         pub trait #struct_ident_ext {
             #getset_properties_def
             #connect_prop_notify_def
+            #notify_def
         }
         impl<T: #crate_ident::IsA<#wrapper_type>> #struct_ident_ext for T {
             #getset_properties_impl
             #connect_prop_notify_impl
+            #notify_impl
         }
 
     };
     proc_macro::TokenStream::from(expanded)
 }
+
