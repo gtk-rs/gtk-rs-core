@@ -444,19 +444,19 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#defs)*)
 }
 
-fn expand_connect_prop_notify(p: &PropDesc) -> TokenStream2 {
+fn connect_prop_notify_prototype(p: &PropDesc) -> TokenStream2 {
     let name = &p.name;
     let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
     quote!(fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId)
 }
 fn expand_connect_prop_notify_def(props: &[PropDesc]) -> TokenStream2 {
-    let connection_fns = props.iter().map(expand_connect_prop_notify);
+    let connection_fns = props.iter().map(connect_prop_notify_prototype);
     quote!(#(#connection_fns;)*)
 }
 fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = expand_connect_prop_notify(p);
+        let fn_prototype = connect_prop_notify_prototype(p);
         quote!(#fn_prototype {
             self.connect_notify_local(Some(#name), move |this, _| {
                 f(this)
@@ -466,19 +466,19 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#connection_fns)*)
 }
 
-fn expand_notify(p: &PropDesc) -> TokenStream2 {
+fn notify_prototype(p: &PropDesc) -> TokenStream2 {
     let name = &p.name;
     let fn_ident = format_ident!("notify_{}", name_to_ident(name));
     quote!(fn #fn_ident(&self))
 }
 fn expand_notify_def(props: &[PropDesc]) -> TokenStream2 {
-    let notify_fns = props.iter().map(expand_notify);
+    let notify_fns = props.iter().map(notify_prototype);
     quote!(#(#notify_fns;)*)
 }
 fn expand_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     let notify_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = expand_notify(p);
+        let fn_prototype = notify_prototype(p);
         quote!(#fn_prototype {
             self.notify(#name);
         })
