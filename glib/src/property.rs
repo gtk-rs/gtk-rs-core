@@ -92,7 +92,6 @@ impl<T: PropertyWriteNested> PropertyWrite for T {
     }
 }
 
-
 impl<T> PropertyRead for RefCell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
