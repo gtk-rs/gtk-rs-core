@@ -143,7 +143,7 @@ impl<T> PropertyRead for once_cell::unsync::OnceCell<T> {
         f(self.get().unwrap())
     }
 }
-impl<T: Property> PropertyWrite for once_cell::sync::OnceCell<T> {
+impl<T> PropertyWrite for once_cell::sync::OnceCell<T> {
     type SetValue = T;
     fn set(&self, v: Self::SetValue) {
         // I can't use `unwrap` because I would have to add a `Debug` bound to _v
@@ -152,7 +152,7 @@ impl<T: Property> PropertyWrite for once_cell::sync::OnceCell<T> {
         };
     }
 }
-impl<T: Property> PropertyWrite for once_cell::unsync::OnceCell<T> {
+impl<T> PropertyWrite for once_cell::unsync::OnceCell<T> {
     type SetValue = T;
     fn set(&self, v: Self::SetValue) {
         // I can't use `unwrap` because I would have to add a `Debug` bound to _v
