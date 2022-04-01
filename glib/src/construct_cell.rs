@@ -45,4 +45,4 @@ macro_rules! define_construct {
 define_construct!(ConstructRefCell, RefCell, Option<T>, |v| RefCell::new(Some(v)), RefCell::new(None));
 define_construct!(ConstructMutex, Mutex, Option<T>, |v| Mutex::new(Some(v)), Mutex::new(None));
 define_construct!(ConstructRwLock, Mutex, Option<T>, |v| Mutex::new(Some(v)), Mutex::new(None));
-// FIXME: define Construct for OnceCells. Needs some Property API redesign
+// FIXME: define Construct for OnceCells. Needs manual PropertyWriteNested impl
