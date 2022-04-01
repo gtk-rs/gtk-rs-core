@@ -12,6 +12,8 @@ fn props() {
         use std::marker::PhantomData;
         use std::sync::Mutex;
 
+        use once_cell::sync::OnceCell;
+
         #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
         #[boxed_type(name = "SimpleBoxedString")]
         pub struct SimpleBoxedString(pub String);
@@ -58,6 +60,8 @@ fn props() {
                 optional: RefCell<Option<String>>,
                 #[prop(get, set)]
                 smart_pointer: Rc<RefCell<String>>,
+                #[prop(get, set)]
+                once_cell: OnceCell<u8>,
             }
 
             impl ObjectImpl for Foo {

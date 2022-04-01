@@ -1,4 +1,4 @@
-use crate::{Property, PropertyRead, PropertyWrite};
+use crate::{Property, PropertyRead, PropertyWriteNested};
 use std::cell::RefCell;
 use std::sync::Mutex;
 
@@ -32,11 +32,11 @@ macro_rules! define_construct {
                 PropertyRead::get(&self.0, |v| f(v.as_ref().unwrap()))
             }
         }
-        impl<T> PropertyWrite for $name<T>
+        impl<T> PropertyWriteNested for $name<T>
         {
-            type Value = T;
-            fn set<F: FnOnce(&mut Self::Value)>(&self, f: F) {
-                PropertyWrite::set(&self.0, |v| f(&mut v.as_mut().unwrap()))
+            type SetNestedValue = T;
+            fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
+                PropertyWriteNested::set_nested(&self.0, |v| f(&mut v.as_mut().unwrap()))
             }
         }
     }

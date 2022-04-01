@@ -316,6 +316,8 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             get,
             ..
         } = p;
+
+        let crate_ident = crate_ident_new();
         let span = p.attrs_span;
         get.as_ref().map(|get| {
             let body = match (member, get) {
@@ -323,10 +325,14 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
                     #name => Ok((#expr)(&self).to_value())
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
-                    #name => Ok(self.#field_ident.get(|v| v.to_value()))
+                    #name => Ok(
+                        #crate_ident::PropertyRead::get(&self.#field_ident, |v| v.to_value())
+                    )
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
-                    #name => Ok(self.#field_ident.get(|v| v.#member.to_value()))
+                    #name => Ok(
+                        #crate_ident::PropertyRead::get(&self.#field_ident, |v| v.#member.to_value())
+                    )
                 ),
             };
             quote_spanned!(span=> #body)
@@ -351,25 +357,32 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ..
         } = p;
 
+        let crate_ident = crate_ident_new();
         let span = p.attrs_span;
         let expect = quote!(.expect("Can't convert glib::value to property type"));
         set.as_ref().map(|set| {
             let body = match (member, set) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
                     #name => {
-                        (#expr)(&self, value.get()#expect);
+                        (#expr)(&self, #crate_ident::Value::get(value)#expect);
                         Ok(())
                     }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     #name => {
-                        self.#field_ident.set(move |v| *v = value.get()#expect);
+                        #crate_ident::PropertyWrite::set(
+                            &self.#field_ident,
+                            #crate_ident::Value::get(value)#expect
+                        );
                         Ok(())
                     }
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     #name => {
-                        self.#field_ident.set(move |v| v.#member = value.get()#expect);
+                        #crate_ident::PropertyWriteNested::set_nested(
+                            &self.#field_ident,
+                            move |v| v.#member = #crate_ident::Value::get(value)#expect
+                        );
                         Ok(())
                     }
                 ),
