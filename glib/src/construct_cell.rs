@@ -1,6 +1,7 @@
 use crate::{Property, PropertyRead, PropertyWriteNested};
 use std::cell::RefCell;
 use std::sync::Mutex;
+use std::sync::RwLock;
 
 macro_rules! define_construct {
     ($name:ident, $container:ident, $inner:ty, $init:expr, $init_empty:expr) => {
@@ -55,9 +56,9 @@ define_construct!(
 );
 define_construct!(
     ConstructRwLock,
-    Mutex,
+    RwLock,
     Option<T>,
-    |v| Mutex::new(Some(v)),
-    Mutex::new(None)
+    |v| RwLock::new(Some(v)),
+    RwLock::new(None)
 );
 // FIXME: define Construct for OnceCells. Needs manual PropertyWriteNested impl
