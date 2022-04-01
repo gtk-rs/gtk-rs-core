@@ -83,6 +83,8 @@ mod byte_array;
 mod bytes;
 pub mod char;
 pub use self::char::*;
+mod construct_cell;
+pub use construct_cell::*;
 mod checksum;
 pub mod closure;
 mod enums;
