@@ -29,6 +29,8 @@ macro_rules! gvalue_impl {
             type Type = Self;
         }
 
+        impl glib::value::ValueTypeOptional for $name {}
+
         unsafe impl<'a> glib::value::FromValue<'a> for $name {
             type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
 
