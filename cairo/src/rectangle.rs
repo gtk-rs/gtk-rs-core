@@ -115,7 +115,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_rectangle_t> for Rectangle {
 }
 
 #[cfg(feature = "use_glib")]
-gvalue_impl!(
+gvalue_impl_inline!(
     Rectangle,
     ffi::cairo_rectangle_t,
     ffi::gobject::cairo_gobject_rectangle_get_type
@@ -131,5 +131,34 @@ impl Rectangle {
 impl fmt::Display for Rectangle {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Rectangle")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[cfg(feature = "use_glib")]
+    #[test]
+    fn rectangle_gvalues() {
+        use glib::ToValue;
+        let rect = Rectangle::new(1., 2., 3., 4.);
+        let value = rect.to_value();
+        assert_eq!(value.get::<Rectangle>().unwrap().width(), 3.);
+        let _ = (&rect).to_value();
+        let rect = Some(rect);
+        let value = rect.to_value();
+        assert_eq!(
+            value.get::<Option<Rectangle>>().unwrap().map(|s| s.width()),
+            Some(3.)
+        );
+        let _ = rect.as_ref().to_value();
+        assert_eq!(
+            value
+                .get::<Option<&Rectangle>>()
+                .unwrap()
+                .map(|s| s.width()),
+            Some(3.)
+        );
     }
 }
