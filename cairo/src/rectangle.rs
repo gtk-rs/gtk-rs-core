@@ -74,7 +74,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_rectangle_t> for Rectangle {
 }
 
 #[cfg(feature = "use_glib")]
-gvalue_impl!(
+gvalue_impl_inline!(
     Rectangle,
     ffi::cairo_rectangle_t,
     ffi::gobject::cairo_gobject_rectangle_get_type
