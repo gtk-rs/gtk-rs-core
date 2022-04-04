@@ -500,6 +500,9 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ValueTypeOptional for $name $(<$($generic),+>)? { }
+
+        #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::FromValue<'_> for $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
