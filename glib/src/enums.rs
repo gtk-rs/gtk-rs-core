@@ -602,7 +602,7 @@ impl FlagsClass {
         let mut s = String::new();
         for val in self.values() {
             let v = val.value();
-            if (value & v) == v {
+            if v != 0 && (value & v) == v {
                 value &= !v;
                 if !s.is_empty() {
                     s.push('|');

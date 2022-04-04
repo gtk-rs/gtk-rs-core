@@ -432,6 +432,7 @@ fn derive_variant() {
     #[variant_enum(flags)]
     #[glib::flags(name = "Variant10")]
     enum Variant10 {
+        EMPTY = 0,
         #[flags_value(name = "Flag A", nick = "nick-a")]
         A = 0b00000001,
         #[flags_value(name = "Flag B")]
