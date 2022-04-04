@@ -14,13 +14,6 @@
 //! a full list of supported types. You may also implement [`ToVariant`] and [`FromVariant`]
 //! manually, or derive them using the [`Variant`](derive@crate::Variant) derive macro.
 //!
-//! ## Portability Warning
-//!
-//! Variant conversion traits are also implemented for certain platform-specific data types from
-//! the standard library like [`PathBuf`](std::path::PathBuf) and [`OsString`](std::ffi::OsString).
-//! These types will be serialized to their platform-specific representation and **should not** be
-//! deserialized on a different machine from where they were serialized.
-//!
 //! # Examples
 //!
 //! ```
@@ -1158,151 +1151,71 @@ impl ToVariant for str {
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl StaticVariantType for std::path::PathBuf {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        std::ffi::OsStr::static_variant_type()
+        std::path::Path::static_variant_type()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl ToVariant for std::path::PathBuf {
     fn to_variant(&self) -> Variant {
-        self.as_os_str().to_variant()
+        self.as_path().to_variant()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl FromVariant for std::path::PathBuf {
     fn from_variant(variant: &Variant) -> Option<Self> {
-        Some(std::ffi::OsString::from_variant(variant)?.into())
+        unsafe {
+            let ptr = ffi::g_variant_get_bytestring(variant.to_glib_none().0);
+            Some(crate::translate::c_to_path_buf(ptr as *const _))
+        }
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl StaticVariantType for std::path::Path {
     fn static_variant_type() -> Cow<'static, VariantTy> {
-        std::ffi::OsStr::static_variant_type()
+        <&[u8]>::static_variant_type()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl ToVariant for std::path::Path {
     fn to_variant(&self) -> Variant {
-        self.as_os_str().to_variant()
+        let tmp = crate::translate::path_to_c(self);
+        unsafe { from_glib_none(ffi::g_variant_new_bytestring(tmp.as_ptr() as *const u8)) }
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl StaticVariantType for std::ffi::OsString {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         std::ffi::OsStr::static_variant_type()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(any(unix, windows))]
 impl ToVariant for std::ffi::OsString {
     fn to_variant(&self) -> Variant {
         self.as_os_str().to_variant()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(unix)]
 impl FromVariant for std::ffi::OsString {
     fn from_variant(variant: &Variant) -> Option<Self> {
-        let bytes = <_>::from_variant(variant)?;
-        Some(std::os::unix::ffi::OsStringExt::from_vec(bytes))
+        unsafe {
+            let ptr = ffi::g_variant_get_bytestring(variant.to_glib_none().0);
+            Some(crate::translate::c_to_os_string(ptr as *const _))
+        }
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(windows)]
-impl FromVariant for std::ffi::OsString {
-    fn from_variant(variant: &Variant) -> Option<Self> {
-        let wide = <Vec<u16>>::from_variant(variant)?;
-        Some(std::os::windows::ffi::OsStringExt::from_wide(&wide))
-    }
-}
-
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(unix)]
 impl StaticVariantType for std::ffi::OsStr {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         <&[u8]>::static_variant_type()
     }
 }
 
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(unix)]
 impl ToVariant for std::ffi::OsStr {
     fn to_variant(&self) -> Variant {
-        use std::os::unix::ffi::OsStrExt;
-        self.as_bytes().to_variant()
-    }
-}
-
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(windows)]
-impl StaticVariantType for std::ffi::OsStr {
-    fn static_variant_type() -> Cow<'static, VariantTy> {
-        <&[u16]>::static_variant_type()
-    }
-}
-
-/// ## Portability Warning
-///
-/// This impl is for a platform-specific type. Any variants serialized from this type should be
-/// deserialized on the same machine.
-#[cfg(windows)]
-impl ToVariant for std::ffi::OsStr {
-    fn to_variant(&self) -> Variant {
-        use std::os::windows::ffi::OsStrExt;
-        let wide = self.encode_wide().collect::<Vec<u16>>();
-        wide.to_variant()
+        let tmp = crate::translate::os_str_to_c(self);
+        unsafe { from_glib_none(ffi::g_variant_new_bytestring(tmp.as_ptr() as *const u8)) }
     }
 }
 
