@@ -92,3 +92,34 @@ impl fmt::Display for Rectangle {
         write!(f, "Rectangle")
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[cfg(feature = "use_glib")]
+    #[test]
+    fn rectangle_gvalues() {
+        use glib::ToValue;
+        let rect = Rectangle {
+            x: 1.,
+            y: 2.,
+            width: 3.,
+            height: 4.,
+        };
+        let value = rect.to_value();
+        assert_eq!(value.get::<Rectangle>().unwrap().width, 3.);
+        let _ = (&rect).to_value();
+        let rect = Some(rect);
+        let value = rect.to_value();
+        assert_eq!(
+            value.get::<Option<Rectangle>>().unwrap().map(|s| s.width),
+            Some(3.)
+        );
+        let _ = rect.as_ref().to_value();
+        assert_eq!(
+            value.get::<Option<&Rectangle>>().unwrap().map(|s| s.width),
+            Some(3.)
+        );
+    }
+}

@@ -334,4 +334,31 @@ mod tests {
         let second = ImageSurface::create_for_data(data, Format::ARgb32, 10, 10, stride);
         assert!(second.is_ok())
     }
+
+    #[cfg(feature = "use_glib")]
+    #[test]
+    fn surface_gvalues() {
+        use glib::ToValue;
+        let surface = ImageSurface::create(Format::ARgb32, 10, 10).unwrap();
+        let value = surface.to_value();
+        assert_eq!(value.get::<ImageSurface>().unwrap().width(), 10);
+        let _ = (&surface).to_value();
+        let surface = Some(surface);
+        let value = surface.to_value();
+        assert_eq!(
+            value
+                .get::<Option<ImageSurface>>()
+                .unwrap()
+                .map(|s| s.width()),
+            Some(10)
+        );
+        let _ = surface.as_ref().to_value();
+        assert_eq!(
+            value
+                .get::<Option<&ImageSurface>>()
+                .unwrap()
+                .map(|s| s.width()),
+            Some(10)
+        );
+    }
 }

@@ -68,6 +68,7 @@ impl fmt::Display for RectangleList {
 }
 
 #[derive(Debug)]
+#[repr(transparent)]
 pub struct Context(ptr::NonNull<cairo_t>);
 
 #[cfg(feature = "use_glib")]
