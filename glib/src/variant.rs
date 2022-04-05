@@ -152,6 +152,9 @@ impl crate::value::ValueType for Variant {
 }
 
 #[doc(hidden)]
+impl crate::value::ValueTypeOptional for Variant {}
+
+#[doc(hidden)]
 unsafe impl<'a> crate::value::FromValue<'a> for Variant {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
