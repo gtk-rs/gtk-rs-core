@@ -3,7 +3,7 @@
 use crate::ListModel;
 use glib::subclass::prelude::*;
 use glib::translate::*;
-use glib::{Cast, IsA, ObjectExt};
+use glib::{Cast, IsA, Object, ObjectExt};
 use once_cell::sync::Lazy;
 
 pub trait ListModelImpl: ObjectImpl {
@@ -12,26 +12,31 @@ pub trait ListModelImpl: ObjectImpl {
     #[doc(alias = "get_n_items")]
     fn n_items(&self, list_model: &Self::Type) -> u32;
     #[doc(alias = "get_item")]
-    fn item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object>;
+    fn item(&self, list_model: &Self::Type, position: u32) -> Option<Object>;
 }
 
 pub trait ListModelImplExt: ObjectSubclass {
     fn parent_item_type(&self, list_model: &Self::Type) -> glib::Type;
     fn parent_n_items(&self, list_model: &Self::Type) -> u32;
-    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object>;
+    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<Object>;
 }
 
 impl<T: ListModelImpl> ListModelImplExt for T {
     fn parent_item_type(&self, list_model: &Self::Type) -> glib::Type {
         unsafe {
             let type_data = Self::type_data();
-            let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
+            let parent_iface = type_data.as_ref().parent_interface::<ListModel<Object>>()
                 as *const ffi::GListModelInterface;
 
             let func = (*parent_iface)
                 .get_item_type
                 .expect("no parent \"item_type\" implementation");
-            let ret = func(list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0);
+            let ret = func(
+                list_model
+                    .unsafe_cast_ref::<ListModel<Object>>()
+                    .to_glib_none()
+                    .0,
+            );
             from_glib(ret)
         }
     }
@@ -39,27 +44,35 @@ impl<T: ListModelImpl> ListModelImplExt for T {
     fn parent_n_items(&self, list_model: &Self::Type) -> u32 {
         unsafe {
             let type_data = Self::type_data();
-            let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
+            let parent_iface = type_data.as_ref().parent_interface::<ListModel<Object>>()
                 as *const ffi::GListModelInterface;
 
             let func = (*parent_iface)
                 .get_n_items
                 .expect("no parent \"n_items\" implementation");
-            func(list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0)
+            func(
+                list_model
+                    .unsafe_cast_ref::<ListModel<Object>>()
+                    .to_glib_none()
+                    .0,
+            )
         }
     }
 
-    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<Object> {
         unsafe {
             let type_data = Self::type_data();
-            let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
+            let parent_iface = type_data.as_ref().parent_interface::<ListModel<Object>>()
                 as *const ffi::GListModelInterface;
 
             let func = (*parent_iface)
                 .get_item
                 .expect("no parent \"get_item\" implementation");
             let ret = func(
-                list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0,
+                list_model
+                    .unsafe_cast_ref::<ListModel<Object>>()
+                    .to_glib_none()
+                    .0,
                 position,
             );
             from_glib_full(ret)
@@ -67,9 +80,9 @@ impl<T: ListModelImpl> ListModelImplExt for T {
     }
 }
 
-unsafe impl<T: ListModelImpl> IsImplementable<T> for ListModel
+unsafe impl<T: ListModelImpl, U: IsA<Object>> IsImplementable<T> for ListModel<U>
 where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Object>,
 {
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
@@ -87,11 +100,11 @@ unsafe extern "C" fn list_model_get_item_type<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> glib::ffi::GType
 where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
-    let wrap = from_glib_borrow::<_, ListModel>(list_model);
+    let wrap = from_glib_borrow::<_, ListModel<Object>>(list_model);
 
     let type_ = imp.item_type(wrap.unsafe_cast_ref()).into_glib();
 
@@ -115,12 +128,12 @@ unsafe extern "C" fn list_model_get_n_items<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> u32
 where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.n_items(from_glib_borrow::<_, ListModel>(list_model).unsafe_cast_ref())
+    imp.n_items(from_glib_borrow::<_, ListModel<Object>>(list_model).unsafe_cast_ref())
 }
 
 unsafe extern "C" fn list_model_get_item<T: ListModelImpl>(
@@ -128,11 +141,11 @@ unsafe extern "C" fn list_model_get_item<T: ListModelImpl>(
     position: u32,
 ) -> *mut glib::gobject_ffi::GObject
 where
-    <T as ObjectSubclass>::Type: IsA<glib::Object>,
+    <T as ObjectSubclass>::Type: IsA<Object>,
 {
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
-    let wrap = from_glib_borrow::<_, ListModel>(list_model);
+    let wrap = from_glib_borrow::<_, ListModel<Object>>(list_model);
 
     let item = imp.item(wrap.unsafe_cast_ref(), position);
 

@@ -356,46 +356,66 @@ macro_rules! wrapper {
     // Object, no parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?
+        (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>)
+            $(@implements $($implements:path),+)?
+            $(, @implements_generic $(<$($impl_generic:ident $(: $impl_bound:tt $(+ $impl_bound2:tt)*)?),+> $impl_trait:ident $(<$($trait_generic:ident $(: $trait_bound:tt $(+ $trait_bound2:tt)*)?),+>)? for $impl_type:ident $(<$($type_generic:ident $(: $type_bound:tt $(+ $type_bound2:tt)*)?),+>)?),+)?
+            $(, @default_casts $default_casts:ident
+              , @checkers $cast_checker:ty, $value_checker:ty $(,)?)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, (), $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            *mut std::os::raw::c_void, (), $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
+            $( @default_casts $default_casts,
+               @checkers $cast_checker, $value_checker, )?
             @extends [],
-            @implements [$($($implements),+)?]
+            @implements [$($($implements),+)?],
+            @implements_generic [$($(<$($impl_generic $(: $impl_bound $(+ $impl_bound2)*)?),+> $impl_trait $(<$($trait_generic $(: $trait_bound $(+ $trait_bound2)*)?),+>)? for $impl_type $(<$($type_generic $(: $type_bound $(+ $type_bound2)*)?),+>)?),+)?]
         );
     };
 
     // Object, parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Object<$ffi_name:ty $(, $ffi_class_name:ty)?>)
+            @extends $($extends:path),+
+            $(, @implements $($implements:path),+)?
+            $(, @implements_generic $(<$($impl_generic:ident $(: $impl_bound:tt $(+ $impl_bound2:tt)*)?),+> $impl_trait:ident $(<$($trait_generic:ident $(: $trait_bound:tt $(+ $trait_bound2:tt)*)?),+>)? for $impl_type:ident $(<$($type_generic:ident $(: $type_bound:tt $(+ $type_bound2:tt)*)?),+>)?),+)?
+            $(, @default_casts $default_casts:ident
+              , @checkers $cast_checker:ty, $value_checker:ty $(,)?)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, (), $ffi_name,
+            @object [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            *mut std::os::raw::c_void, (), $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
+            $( @default_casts $default_casts,
+               @checkers $cast_checker, $value_checker, )?
             @extends [$($extends),+],
-            @implements [$($($implements),+)?]
+            @implements [$($($implements),+)?],
+            @implements_generic [$($(<$($impl_generic $(: $impl_bound $(+ $impl_bound2)*)?),+> $impl_trait $(<$($trait_generic $(: $trait_bound $(+ $trait_bound2)*)?),+>)? for $impl_type $(<$($type_generic $(: $type_bound $(+ $type_bound2)*)?),+>)?),+)?]
         );
     };
 
     // ObjectSubclass, no parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>) $(@implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>)
+            $(@implements $($implements:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $subclass,
+            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            $subclass,
             @extends [],
             @implements [$($($implements),+)?]
         );
@@ -404,10 +424,13 @@ macro_rules! wrapper {
     // ObjectSubclass, parents
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>) @extends $($extends:path),+ $(, @implements $($implements:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectSubclass<$subclass:ty>)
+            @extends $($extends:path),+
+            $(, @implements $($implements:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $subclass,
+            @object_subclass [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            $subclass,
             @extends [$($extends),+],
             @implements [$($($implements),+)?]
         );
@@ -416,30 +439,41 @@ macro_rules! wrapper {
     // Interface
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Interface<$ffi_name:ty $(, $ffi_class_name:ty)?>) $(@requires $($requires:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (Interface<$ffi_name:ty $(, $ffi_class_name:ty)?>)
+            $(@requires $($requires:path),+)?
+            $(, @requires_generic $(<$($requires_generic:ident $(: $requires_bound:tt $(+ $requires_bound2:tt)*)?),+> $requires_trait:ident $(<$($trait_generic:ident $(: $trait_bound:tt $(+ $trait_bound2:tt)*)?),+>)? for $requires_type:ident $(<$($type_generic:ident $(: $type_bound:tt $(+ $type_bound2:tt)*)?),+>)?),+)?
+            $(, @default_casts $default_casts:ident
+              , @checkers $cast_checker:ty, $value_checker:ty $(,)?)?;
 
         match fn {
             type_ => || $get_type_expr:expr,
         }
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, $ffi_name,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            *mut std::os::raw::c_void, $ffi_name,
             $( @ffi_class $ffi_class_name ,)?
             @type_ $get_type_expr,
-            @requires [$( $($requires),+ )?]
+            $( @default_casts $default_casts,
+               @checkers $cast_checker, $value_checker, )?
+            @requires [$( $($requires),+ )?],
+            @requires_generic [$($(<$($requires_generic $(: $requires_bound $(+ $requires_bound2)*)?),+> $requires_trait $(<$($trait_generic $(: $trait_bound $(+ $trait_bound2)*)?),+>)? for $requires_type $(<$($type_generic $(: $type_bound $(+ $type_bound2)*)?),+>)?),+)?]
         );
     };
 
     // ObjectInterface
     (
         $(#[$attr:meta])*
-        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectInterface<$iface_name:ty>) $(@requires $($requires:path),+)?;
+        $visibility:vis struct $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)? (ObjectInterface<$iface_name:ty>)
+            $(@requires $($requires:path),+)?;
     ) => {
         $crate::glib_object_wrapper!(
-            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, *mut std::os::raw::c_void, std::os::raw::c_void,
+            @interface [$($attr)*] $visibility $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?,
+            *mut std::os::raw::c_void, std::os::raw::c_void,
             @ffi_class $iface_name,
             @type_ $crate::translate::IntoGlib::into_glib(<$iface_name as $crate::subclass::interface::ObjectInterfaceType>::type_()),
-            @requires [$( $($requires),+ )?]
+            @requires [$( $($requires),+ )?],
+            @requires_generic []
         );
     };
 }
