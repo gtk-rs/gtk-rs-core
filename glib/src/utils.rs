@@ -203,7 +203,52 @@ pub fn mkstemp<P: AsRef<std::path::Path>>(tmpl: P) -> i32 {
     #[cfg(windows)]
     use ffi::g_mkstemp_utf8 as g_mkstemp;
 
-    unsafe { g_mkstemp(tmpl.as_ref().to_glib_none().0) }
+    unsafe {
+        // NOTE: This modifies the string in place, which is fine here because
+        // to_glib_none() will create a temporary, NUL-terminated copy of the string.
+        g_mkstemp(tmpl.as_ref().to_glib_none().0)
+    }
+}
+
+#[doc(alias = "g_mkstemp_full")]
+pub fn mkstemp_full(tmpl: impl AsRef<std::path::Path>, flags: i32, mode: i32) -> i32 {
+    unsafe {
+        // NOTE: This modifies the string in place, which is fine here because
+        // to_glib_none() will create a temporary, NUL-terminated copy of the string.
+        ffi::g_mkstemp_full(tmpl.as_ref().to_glib_none().0, flags, mode)
+    }
+}
+
+#[doc(alias = "g_mkdtemp")]
+pub fn mkdtemp(tmpl: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
+    unsafe {
+        // NOTE: This modifies the string in place and returns it but does not free it
+        // if it returns NULL.
+        let tmpl = tmpl.as_ref().to_glib_full();
+        let res = ffi::g_mkdtemp(tmpl);
+        if res.is_null() {
+            ffi::g_free(tmpl as ffi::gpointer);
+            None
+        } else {
+            from_glib_full(res)
+        }
+    }
+}
+
+#[doc(alias = "g_mkdtemp_full")]
+pub fn mkdtemp_full(tmpl: impl AsRef<std::path::Path>, mode: i32) -> Option<std::path::PathBuf> {
+    unsafe {
+        // NOTE: This modifies the string in place and returns it but does not free it
+        // if it returns NULL.
+        let tmpl = tmpl.as_ref().to_glib_full();
+        let res = ffi::g_mkdtemp_full(tmpl, mode);
+        if res.is_null() {
+            ffi::g_free(tmpl as ffi::gpointer);
+            None
+        } else {
+            from_glib_full(res)
+        }
+    }
 }
 
 #[doc(alias = "g_file_get_contents")]
