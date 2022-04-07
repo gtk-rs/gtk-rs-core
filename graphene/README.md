@@ -2,7 +2,7 @@
 
 __Rust__ bindings and wrappers for [__Graphene__](https://github.com/ebassi/graphene), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
-Graphene __2.44__ is the lowest supported version for the underlying library.
+Graphene __1.10__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
