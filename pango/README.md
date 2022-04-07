@@ -2,7 +2,7 @@
 
 __Rust__ bindings and wrappers for [Pango](https://docs.gtk.org/Pango/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
-Pango __1.38__ is the lowest supported version for the underlying library.
+Pango __1.40__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
