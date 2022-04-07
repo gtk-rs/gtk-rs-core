@@ -859,10 +859,31 @@ impl Variant {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Variant has a container type.
+    /// Return whether this Variant is a container type.
     #[doc(alias = "g_variant_is_container")]
     pub fn is_container(&self) -> bool {
-        unsafe { ffi::g_variant_is_container(self.to_glib_none().0) != ffi::GFALSE }
+        unsafe { from_glib(ffi::g_variant_is_container(self.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return whether this Variant is in normal form.
+    #[doc(alias = "g_variant_is_normal_form")]
+    pub fn is_normal_form(&self) -> bool {
+        unsafe { from_glib(ffi::g_variant_is_normal_form(self.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return whether input string is a valid `VariantClass::ObjectPath`.
+    #[doc(alias = "g_variant_is_object_path")]
+    pub fn is_object_path(string: &str) -> bool {
+        unsafe { from_glib(ffi::g_variant_is_object_path(string.to_glib_none().0)) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return whether input string is a valid `VariantClass::Signature`.
+    #[doc(alias = "g_variant_is_signature")]
+    pub fn is_signature(string: &str) -> bool {
+        unsafe { from_glib(ffi::g_variant_is_signature(string.to_glib_none().0)) }
     }
 }
 
