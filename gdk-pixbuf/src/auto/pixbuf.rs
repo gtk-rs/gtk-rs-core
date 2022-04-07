@@ -322,8 +322,6 @@ impl Pixbuf {
         }
     }
 
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     #[doc(alias = "gdk_pixbuf_copy_options")]
     pub fn copy_options(&self, dest_pixbuf: &Pixbuf) -> bool {
         unsafe {
@@ -436,8 +434,6 @@ impl Pixbuf {
         unsafe { from_glib_full(ffi::gdk_pixbuf_read_pixel_bytes(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     #[doc(alias = "gdk_pixbuf_remove_option")]
     pub fn remove_option(&self, key: &str) -> bool {
         unsafe {
@@ -584,8 +580,6 @@ impl Pixbuf {
         glib::ObjectExt::property(self, "pixel-bytes")
     }
 
-    #[cfg(any(feature = "v2_36_8", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36_8")))]
     #[doc(alias = "gdk_pixbuf_calculate_rowstride")]
     pub fn calculate_rowstride(
         colorspace: Colorspace,

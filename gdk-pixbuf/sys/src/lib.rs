@@ -425,8 +425,6 @@ extern "C" {
     pub fn gdk_pixbuf_format_get_mime_types(format: *mut GdkPixbufFormat) -> *mut *mut c_char;
     pub fn gdk_pixbuf_format_get_name(format: *mut GdkPixbufFormat) -> *mut c_char;
     pub fn gdk_pixbuf_format_is_disabled(format: *mut GdkPixbufFormat) -> gboolean;
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn gdk_pixbuf_format_is_save_option_supported(
         format: *mut GdkPixbufFormat,
         option_key: *const c_char,
@@ -541,8 +539,6 @@ extern "C" {
         error: *mut *mut glib::GError,
     ) -> *mut GdkPixbuf;
     pub fn gdk_pixbuf_new_from_xpm_data(data: *mut *const c_char) -> *mut GdkPixbuf;
-    #[cfg(any(feature = "v2_36_8", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36_8")))]
     pub fn gdk_pixbuf_calculate_rowstride(
         colorspace: GdkColorspace,
         has_alpha: gboolean,
@@ -652,8 +648,6 @@ extern "C" {
         dest_x: c_int,
         dest_y: c_int,
     );
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn gdk_pixbuf_copy_options(
         src_pixbuf: *mut GdkPixbuf,
         dest_pixbuf: *mut GdkPixbuf,
@@ -685,8 +679,6 @@ extern "C" {
     pub fn gdk_pixbuf_read_pixel_bytes(pixbuf: *const GdkPixbuf) -> *mut glib::GBytes;
     pub fn gdk_pixbuf_read_pixels(pixbuf: *const GdkPixbuf) -> *const u8;
     pub fn gdk_pixbuf_ref(pixbuf: *mut GdkPixbuf) -> *mut GdkPixbuf;
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn gdk_pixbuf_remove_option(pixbuf: *mut GdkPixbuf, key: *const c_char) -> gboolean;
     pub fn gdk_pixbuf_rotate_simple(
         src: *const GdkPixbuf,
@@ -765,8 +757,6 @@ extern "C" {
         user_data: gpointer,
         ...
     );
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn gdk_pixbuf_save_to_streamv(
         pixbuf: *mut GdkPixbuf,
         stream: *mut gio::GOutputStream,
@@ -776,8 +766,6 @@ extern "C" {
         cancellable: *mut gio::GCancellable,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn gdk_pixbuf_save_to_streamv_async(
         pixbuf: *mut GdkPixbuf,
         stream: *mut gio::GOutputStream,
