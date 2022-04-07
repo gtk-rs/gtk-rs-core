@@ -19,8 +19,6 @@ pub enum ChecksumType {
     Sha256,
     #[doc(alias = "G_CHECKSUM_SHA512")]
     Sha512,
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     #[doc(alias = "G_CHECKSUM_SHA384")]
     Sha384,
     #[doc(hidden)]
@@ -37,7 +35,6 @@ impl fmt::Display for ChecksumType {
                 Self::Sha1 => "Sha1",
                 Self::Sha256 => "Sha256",
                 Self::Sha512 => "Sha512",
-                #[cfg(any(feature = "v2_52", feature = "dox"))]
                 Self::Sha384 => "Sha384",
                 _ => "Unknown",
             }
@@ -55,7 +52,6 @@ impl IntoGlib for ChecksumType {
             Self::Sha1 => ffi::G_CHECKSUM_SHA1,
             Self::Sha256 => ffi::G_CHECKSUM_SHA256,
             Self::Sha512 => ffi::G_CHECKSUM_SHA512,
-            #[cfg(any(feature = "v2_52", feature = "dox"))]
             Self::Sha384 => ffi::G_CHECKSUM_SHA384,
             Self::__Unknown(value) => value,
         }
@@ -70,7 +66,6 @@ impl FromGlib<ffi::GChecksumType> for ChecksumType {
             ffi::G_CHECKSUM_SHA1 => Self::Sha1,
             ffi::G_CHECKSUM_SHA256 => Self::Sha256,
             ffi::G_CHECKSUM_SHA512 => Self::Sha512,
-            #[cfg(any(feature = "v2_52", feature = "dox"))]
             ffi::G_CHECKSUM_SHA384 => Self::Sha384,
             value => Self::__Unknown(value),
         }
@@ -354,8 +349,6 @@ impl ErrorDomain for KeyFileError {
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GLogWriterOutput")]
@@ -368,8 +361,6 @@ pub enum LogWriterOutput {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 impl fmt::Display for LogWriterOutput {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -384,8 +375,6 @@ impl fmt::Display for LogWriterOutput {
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(hidden)]
 impl IntoGlib for LogWriterOutput {
     type GlibType = ffi::GLogWriterOutput;
@@ -399,8 +388,6 @@ impl IntoGlib for LogWriterOutput {
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GLogWriterOutput> for LogWriterOutput {
     unsafe fn from_glib(value: ffi::GLogWriterOutput) -> Self {

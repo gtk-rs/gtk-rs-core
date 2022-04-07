@@ -4,22 +4,14 @@
 
 use crate::AppInfoCreateFlags;
 use crate::AppLaunchContext;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 use crate::AsyncResult;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 use crate::Cancellable;
 use crate::File;
 use crate::Icon;
 use glib::object::IsA;
 use glib::translate::*;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 use std::boxed::Box as Box_;
 use std::fmt;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 use std::pin::Pin;
 use std::ptr;
 
@@ -135,8 +127,6 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_app_info_launch_default_for_uri_async")]
     pub fn launch_default_for_uri_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         uri: &str,
@@ -187,8 +177,6 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn launch_default_for_uri_future(
         uri: &str,
         context: Option<&(impl IsA<AppLaunchContext> + Clone + 'static)>,

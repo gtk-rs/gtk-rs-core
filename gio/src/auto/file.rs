@@ -42,8 +42,6 @@ glib::wrapper! {
 impl File {
     pub const NONE: Option<&'static File> = None;
 
-    //#[cfg(any(feature = "v2_56", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     //#[doc(alias = "g_file_new_build_filename")]
     //pub fn new_build_filename(first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> File {
     //    unsafe { TODO: call ffi:g_file_new_build_filename() }
@@ -310,16 +308,12 @@ pub trait FileExt: 'static {
     #[doc(alias = "g_file_is_native")]
     fn is_native(&self) -> bool;
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_file_load_bytes")]
     fn load_bytes(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(glib::Bytes, Option<glib::GString>), glib::Error>;
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_file_load_bytes_async")]
     fn load_bytes_async<
         P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + 'static,
@@ -329,8 +323,6 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn load_bytes_future(
         &self,
     ) -> Pin<
@@ -477,8 +469,6 @@ pub trait FileExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileIOStream, glib::Error>> + 'static>>;
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_file_peek_path")]
     fn peek_path(&self) -> Option<std::path::PathBuf>;
 
@@ -1506,8 +1496,6 @@ impl<O: IsA<File>> FileExt for O {
         unsafe { from_glib(ffi::g_file_is_native(self.as_ref().to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn load_bytes(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -1529,8 +1517,6 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn load_bytes_async<
         P: FnOnce(Result<(glib::Bytes, Option<glib::GString>), glib::Error>) + 'static,
     >(
@@ -1586,8 +1572,6 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn load_bytes_future(
         &self,
     ) -> Pin<
@@ -2182,8 +2166,6 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn peek_path(&self) -> Option<std::path::PathBuf> {
         unsafe { from_glib_none(ffi::g_file_peek_path(self.as_ref().to_glib_none().0)) }
     }

@@ -10041,22 +10041,16 @@ extern "C" {
     //=========================================================================
     // GUnixMountEntry
     //=========================================================================
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_unix_mount_entry_get_type() -> GType;
 
     //=========================================================================
     // GUnixMountPoint
     //=========================================================================
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_unix_mount_point_get_type() -> GType;
     pub fn g_unix_mount_point_compare(
         mount1: *mut GUnixMountPoint,
         mount2: *mut GUnixMountPoint,
     ) -> c_int;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_unix_mount_point_copy(mount_point: *mut GUnixMountPoint) -> *mut GUnixMountPoint;
     pub fn g_unix_mount_point_free(mount_point: *mut GUnixMountPoint);
     pub fn g_unix_mount_point_get_device_path(mount_point: *mut GUnixMountPoint) -> *const c_char;
@@ -10195,20 +10189,14 @@ extern "C" {
         application: *mut GApplication,
         inactivity_timeout: c_uint,
     );
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_application_set_option_context_description(
         application: *mut GApplication,
         description: *const c_char,
     );
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_application_set_option_context_parameter_string(
         application: *mut GApplication,
         parameter_string: *const c_char,
     );
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_application_set_option_context_summary(
         application: *mut GApplication,
         summary: *const c_char,
@@ -11509,8 +11497,6 @@ extern "C" {
     pub fn g_desktop_app_info_get_generic_name(info: *mut GDesktopAppInfo) -> *const c_char;
     pub fn g_desktop_app_info_get_is_hidden(info: *mut GDesktopAppInfo) -> gboolean;
     pub fn g_desktop_app_info_get_keywords(info: *mut GDesktopAppInfo) -> *const *const c_char;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_desktop_app_info_get_locale_string(
         info: *mut GDesktopAppInfo,
         key: *const c_char,
@@ -13038,8 +13024,6 @@ extern "C" {
     pub fn g_settings_get_flags(settings: *mut GSettings, key: *const c_char) -> c_uint;
     pub fn g_settings_get_has_unapplied(settings: *mut GSettings) -> gboolean;
     pub fn g_settings_get_int(settings: *mut GSettings, key: *const c_char) -> c_int;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_settings_get_int64(settings: *mut GSettings, key: *const c_char) -> i64;
     pub fn g_settings_get_mapped(
         settings: *mut GSettings,
@@ -13054,8 +13038,6 @@ extern "C" {
     pub fn g_settings_get_string(settings: *mut GSettings, key: *const c_char) -> *mut c_char;
     pub fn g_settings_get_strv(settings: *mut GSettings, key: *const c_char) -> *mut *mut c_char;
     pub fn g_settings_get_uint(settings: *mut GSettings, key: *const c_char) -> c_uint;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_settings_get_uint64(settings: *mut GSettings, key: *const c_char) -> u64;
     pub fn g_settings_get_user_value(
         settings: *mut GSettings,
@@ -13106,8 +13088,6 @@ extern "C" {
         key: *const c_char,
         value: c_int,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_settings_set_int64(
         settings: *mut GSettings,
         key: *const c_char,
@@ -13128,8 +13108,6 @@ extern "C" {
         key: *const c_char,
         value: c_uint,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_settings_set_uint64(
         settings: *mut GSettings,
         key: *const c_char,
@@ -13446,8 +13424,6 @@ extern "C" {
         iface: *const c_char,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_socket_join_multicast_group_ssm(
         socket: *mut GSocket,
         group: *mut GInetAddress,
@@ -13462,8 +13438,6 @@ extern "C" {
         iface: *const c_char,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_socket_leave_multicast_group_ssm(
         socket: *mut GSocket,
         group: *mut GInetAddress,
@@ -14703,8 +14677,6 @@ extern "C" {
     pub fn g_vfs_get_supported_uri_schemes(vfs: *mut GVfs) -> *const *const c_char;
     pub fn g_vfs_is_active(vfs: *mut GVfs) -> gboolean;
     pub fn g_vfs_parse_name(vfs: *mut GVfs, parse_name: *const c_char) -> *mut GFile;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_vfs_register_uri_scheme(
         vfs: *mut GVfs,
         scheme: *const c_char,
@@ -14715,8 +14687,6 @@ extern "C" {
         parse_name_data: gpointer,
         parse_name_destroy: glib::GDestroyNotify,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_vfs_unregister_uri_scheme(vfs: *mut GVfs, scheme: *const c_char) -> gboolean;
 
     //=========================================================================
@@ -14891,8 +14861,6 @@ extern "C" {
         context: *mut GAppLaunchContext,
         error: *mut *mut glib::GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_app_info_launch_default_for_uri_async(
         uri: *const c_char,
         context: *mut GAppLaunchContext,
@@ -14900,8 +14868,6 @@ extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_app_info_launch_default_for_uri_finish(
         result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
@@ -15195,8 +15161,6 @@ extern "C" {
     pub fn g_drive_has_volumes(drive: *mut GDrive) -> gboolean;
     pub fn g_drive_is_media_check_automatic(drive: *mut GDrive) -> gboolean;
     pub fn g_drive_is_media_removable(drive: *mut GDrive) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_drive_is_removable(drive: *mut GDrive) -> gboolean;
     pub fn g_drive_poll_for_media(
         drive: *mut GDrive,
@@ -15397,8 +15361,6 @@ extern "C" {
     // GFile
     //=========================================================================
     pub fn g_file_get_type() -> GType;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_file_new_build_filename(first_element: *const c_char, ...) -> *mut GFile;
     pub fn g_file_new_for_commandline_arg(arg: *const c_char) -> *mut GFile;
     pub fn g_file_new_for_commandline_arg_and_cwd(
@@ -15610,24 +15572,18 @@ extern "C" {
     pub fn g_file_has_uri_scheme(file: *mut GFile, uri_scheme: *const c_char) -> gboolean;
     pub fn g_file_hash(file: gconstpointer) -> c_uint;
     pub fn g_file_is_native(file: *mut GFile) -> gboolean;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_file_load_bytes(
         file: *mut GFile,
         cancellable: *mut GCancellable,
         etag_out: *mut *mut c_char,
         error: *mut *mut glib::GError,
     ) -> *mut glib::GBytes;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_file_load_bytes_async(
         file: *mut GFile,
         cancellable: *mut GCancellable,
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_file_load_bytes_finish(
         file: *mut GFile,
         result: *mut GAsyncResult,
@@ -15818,8 +15774,6 @@ extern "C" {
         res: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> *mut GFileIOStream;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_file_peek_path(file: *mut GFile) -> *const c_char;
     pub fn g_file_poll_mountable(
         file: *mut GFile,
@@ -16806,8 +16760,6 @@ extern "C" {
     ) -> *mut c_char;
     pub fn g_content_type_guess_for_tree(root: *mut GFile) -> *mut *mut c_char;
     pub fn g_content_type_is_a(type_: *const c_char, supertype: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     pub fn g_content_type_is_mime_type(type_: *const c_char, mime_type: *const c_char) -> gboolean;
     pub fn g_content_type_is_unknown(type_: *const c_char) -> gboolean;
     #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -16970,22 +16922,14 @@ extern "C" {
         error: *mut glib::GError,
     );
     pub fn g_unix_is_mount_path_system_internal(mount_path: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_unix_is_system_device_path(device_path: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_unix_is_system_fs_type(fs_type: *const c_char) -> gboolean;
     pub fn g_unix_mount_at(mount_path: *const c_char, time_read: *mut u64) -> *mut GUnixMountEntry;
     pub fn g_unix_mount_compare(
         mount1: *mut GUnixMountEntry,
         mount2: *mut GUnixMountEntry,
     ) -> c_int;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_unix_mount_copy(mount_entry: *mut GUnixMountEntry) -> *mut GUnixMountEntry;
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     pub fn g_unix_mount_for(file_path: *const c_char, time_read: *mut u64) -> *mut GUnixMountEntry;
     pub fn g_unix_mount_free(mount_entry: *mut GUnixMountEntry);
     pub fn g_unix_mount_get_device_path(mount_entry: *mut GUnixMountEntry) -> *const c_char;

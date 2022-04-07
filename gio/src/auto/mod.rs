@@ -448,24 +448,16 @@ pub use self::srv_target::SrvTarget;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
 mod unix_mount_entry;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
 pub use self::unix_mount_entry::UnixMountEntry;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
 mod unix_mount_point;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
 pub use self::unix_mount_point::UnixMountPoint;
 
 mod enums;
@@ -603,8 +595,6 @@ pub use self::constants::FILE_ATTRIBUTE_OWNER_GROUP;
 pub use self::constants::FILE_ATTRIBUTE_OWNER_USER;
 pub use self::constants::FILE_ATTRIBUTE_OWNER_USER_REAL;
 pub use self::constants::FILE_ATTRIBUTE_PREVIEW_ICON;
-#[cfg(any(feature = "v2_52", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
 pub use self::constants::FILE_ATTRIBUTE_RECENT_MODIFIED;
 pub use self::constants::FILE_ATTRIBUTE_SELINUX_CONTEXT;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE;

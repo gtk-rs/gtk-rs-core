@@ -46,8 +46,6 @@ impl DateTime {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_date_time_new_from_iso8601")]
     #[doc(alias = "new_from_iso8601")]
     pub fn from_iso8601(text: &str, default_tz: Option<&TimeZone>) -> Result<DateTime, BoolError> {

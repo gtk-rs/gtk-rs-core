@@ -2933,8 +2933,6 @@ extern "C" {
     pub fn g_date_clamp(date: *mut GDate, min_date: *const GDate, max_date: *const GDate);
     pub fn g_date_clear(date: *mut GDate, n_dates: c_uint);
     pub fn g_date_compare(lhs: *const GDate, rhs: *const GDate) -> c_int;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_date_copy(date: *const GDate) -> *mut GDate;
     pub fn g_date_days_between(date1: *const GDate, date2: *const GDate) -> c_int;
     pub fn g_date_free(date: *mut GDate);
@@ -2994,8 +2992,6 @@ extern "C" {
         minute: c_int,
         seconds: c_double,
     ) -> *mut GDateTime;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_date_time_new_from_iso8601(
         text: *const c_char,
         default_tz: *mut GTimeZone,
@@ -3483,8 +3479,6 @@ extern "C" {
         length: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut *mut c_char;
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_key_file_get_locale_for_key(
         key_file: *mut GKeyFile,
         group_name: *const c_char,
@@ -3539,8 +3533,6 @@ extern "C" {
         key: *const c_char,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_key_file_load_from_bytes(
         key_file: *mut GKeyFile,
         bytes: *mut GBytes,
@@ -4144,15 +4136,11 @@ extern "C" {
     #[cfg(any(feature = "v2_62", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
     pub fn g_ptr_array_extend_and_steal(array_to_extend: *mut GPtrArray, array: *mut GPtrArray);
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_ptr_array_find(
         haystack: *mut GPtrArray,
         needle: gconstpointer,
         index_: *mut c_uint,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_ptr_array_find_with_equal_func(
         haystack: *mut GPtrArray,
         needle: gconstpointer,
@@ -5580,8 +5568,6 @@ extern "C" {
     ) -> *mut c_char;
     pub fn g_ascii_strcasecmp(s1: *const c_char, s2: *const c_char) -> c_int;
     pub fn g_ascii_strdown(str: *const c_char, len: ssize_t) -> *mut c_char;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_ascii_string_to_signed(
         str: *const c_char,
         base: c_uint,
@@ -5590,8 +5576,6 @@ extern "C" {
         out_num: *mut i64,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_ascii_string_to_unsigned(
         str: *const c_char,
         base: c_uint,
@@ -5751,8 +5735,6 @@ extern "C" {
     pub fn g_bit_trylock(address: *mut c_int, lock_bit: c_int) -> gboolean;
     pub fn g_bit_unlock(address: *mut c_int, lock_bit: c_int);
     pub fn g_build_filename(first_element: *const c_char, ...) -> *mut c_char;
-    //#[cfg(any(feature = "v2_56", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     //pub fn g_build_filename_valist(first_element: *const c_char, args: /*Unimplemented*/*mut va_list) -> *mut c_char;
     pub fn g_build_filenamev(args: *mut *mut c_char) -> *mut c_char;
     pub fn g_build_path(separator: *const c_char, first_element: *const c_char, ...)
@@ -5780,8 +5762,6 @@ extern "C" {
     ) -> c_uint;
     pub fn g_child_watch_source_new(pid: GPid) -> *mut GSource;
     pub fn g_clear_error(error: *mut *mut GError);
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     pub fn g_clear_handle_id(tag_ptr: *mut c_uint, clear_func: GClearHandleFunc);
     #[cfg(any(feature = "v2_64", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
@@ -5805,8 +5785,6 @@ extern "C" {
         str: *const c_char,
         length: ssize_t,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_compute_hmac_for_bytes(
         digest_type: GChecksumType,
         key: *mut GBytes,
@@ -6201,18 +6179,12 @@ extern "C" {
         user_data: gpointer,
         destroy: GDestroyNotify,
     ) -> c_uint;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_set_writer_func(
         func: GLogWriterFunc,
         user_data: gpointer,
         user_data_free: GDestroyNotify,
     );
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_structured(log_domain: *const c_char, log_level: GLogLevelFlags, ...);
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_structured_array(
         log_level: GLogLevelFlags,
         fields: *const GLogField,
@@ -6227,15 +6199,11 @@ extern "C" {
         message_format: *const c_char,
         ...
     );
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_variant(
         log_domain: *const c_char,
         log_level: GLogLevelFlags,
         fields: *mut GVariant,
     );
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_default(
         log_level: GLogLevelFlags,
         fields: *const GLogField,
@@ -6251,35 +6219,25 @@ extern "C" {
         log_level: GLogLevelFlags,
         log_domain: *const c_char,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_format_fields(
         log_level: GLogLevelFlags,
         fields: *const GLogField,
         n_fields: size_t,
         use_color: gboolean,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_is_journald(output_fd: c_int) -> gboolean;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_journald(
         log_level: GLogLevelFlags,
         fields: *const GLogField,
         n_fields: size_t,
         user_data: gpointer,
     ) -> GLogWriterOutput;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_standard_streams(
         log_level: GLogLevelFlags,
         fields: *const GLogField,
         n_fields: size_t,
         user_data: gpointer,
     ) -> GLogWriterOutput;
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     pub fn g_log_writer_supports_color(output_fd: c_int) -> gboolean;
     //pub fn g_logv(log_domain: *const c_char, log_level: GLogLevelFlags, format: *const c_char, args: /*Unimplemented*/va_list);
     pub fn g_main_current_source() -> *mut GSource;
@@ -7007,8 +6965,6 @@ extern "C" {
     pub fn g_utf8_find_prev_char(str: *const c_char, p: *const c_char) -> *mut c_char;
     pub fn g_utf8_get_char(p: *const c_char) -> u32;
     pub fn g_utf8_get_char_validated(p: *const c_char, max_len: ssize_t) -> u32;
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     pub fn g_utf8_make_valid(str: *const c_char, len: ssize_t) -> *mut c_char;
     pub fn g_utf8_normalize(str: *const c_char, len: ssize_t, mode: GNormalizeMode) -> *mut c_char;
     pub fn g_utf8_offset_to_pointer(str: *const c_char, offset: c_long) -> *mut c_char;
@@ -7049,11 +7005,7 @@ extern "C" {
         max_len: size_t,
         end: *mut *const c_char,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     pub fn g_uuid_string_is_valid(str: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     pub fn g_uuid_string_random() -> *mut c_char;
     pub fn g_variant_get_gtype() -> GType;
     //pub fn g_vasprintf(string: *mut *mut c_char, format: *const c_char, args: /*Unimplemented*/va_list) -> c_int;

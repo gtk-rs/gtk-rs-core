@@ -478,8 +478,6 @@ impl Pixbuf {
         }
     }
 
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     #[doc(alias = "gdk_pixbuf_save_to_streamv")]
     pub fn save_to_streamv<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(
         &self,
@@ -510,8 +508,6 @@ impl Pixbuf {
         }
     }
 
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     #[doc(alias = "gdk_pixbuf_save_to_streamv_async")]
     pub fn save_to_streamv_async<
         P: IsA<gio::OutputStream>,
@@ -574,8 +570,6 @@ impl Pixbuf {
         }
     }
 
-    #[cfg(any(feature = "v2_36", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_36")))]
     pub fn save_to_streamv_future<P: IsA<gio::OutputStream> + Clone + 'static>(
         &self,
         stream: &P,

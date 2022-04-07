@@ -108,8 +108,6 @@ pub trait DriveExt: 'static {
     #[doc(alias = "g_drive_is_media_removable")]
     fn is_media_removable(&self) -> bool;
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_drive_is_removable")]
     fn is_removable(&self) -> bool;
 
@@ -346,8 +344,6 @@ impl<O: IsA<Drive>> DriveExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     fn is_removable(&self) -> bool {
         unsafe { from_glib(ffi::g_drive_is_removable(self.as_ref().to_glib_none().0)) }
     }

@@ -2,7 +2,7 @@
 
 __Rust__ bindings and wrappers for [GIO](https://docs.gtk.org/gio/), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
-GIO __2.48__ is the lowest supported version for the underlying library.
+GIO __2.56__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 

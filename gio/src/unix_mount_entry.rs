@@ -24,8 +24,6 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(any(feature = "v2_52", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
     #[doc(alias = "g_unix_mount_for")]
     #[doc(alias = "new_for")]
     pub fn for_file_path<P: AsRef<std::path::Path>>(file_path: P) -> (Option<UnixMountEntry>, u64) {

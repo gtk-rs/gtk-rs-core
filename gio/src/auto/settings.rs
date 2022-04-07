@@ -155,8 +155,6 @@ pub trait SettingsExt: 'static {
     #[doc(alias = "get_int")]
     fn int(&self, key: &str) -> i32;
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_settings_get_int64")]
     #[doc(alias = "get_int64")]
     fn int64(&self, key: &str) -> i64;
@@ -177,8 +175,6 @@ pub trait SettingsExt: 'static {
     #[doc(alias = "get_uint")]
     fn uint(&self, key: &str) -> u32;
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_settings_get_uint64")]
     #[doc(alias = "get_uint64")]
     fn uint64(&self, key: &str) -> u64;
@@ -221,8 +217,6 @@ pub trait SettingsExt: 'static {
     #[doc(alias = "g_settings_set_int")]
     fn set_int(&self, key: &str, value: i32) -> Result<(), glib::error::BoolError>;
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_settings_set_int64")]
     fn set_int64(&self, key: &str, value: i64) -> Result<(), glib::error::BoolError>;
 
@@ -235,8 +229,6 @@ pub trait SettingsExt: 'static {
     #[doc(alias = "g_settings_set_uint")]
     fn set_uint(&self, key: &str, value: u32) -> Result<(), glib::error::BoolError>;
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_settings_set_uint64")]
     fn set_uint64(&self, key: &str, value: u64) -> Result<(), glib::error::BoolError>;
 
@@ -381,8 +373,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         unsafe { ffi::g_settings_get_int(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     fn int64(&self, key: &str) -> i64 {
         unsafe { ffi::g_settings_get_int64(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
@@ -413,8 +403,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         unsafe { ffi::g_settings_get_uint(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     fn uint64(&self, key: &str) -> u64 {
         unsafe { ffi::g_settings_get_uint64(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
@@ -535,8 +523,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     fn set_int64(&self, key: &str, value: i64) -> Result<(), glib::error::BoolError> {
         unsafe {
             glib::result_from_gboolean!(
@@ -589,8 +575,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     fn set_uint64(&self, key: &str, value: u64) -> Result<(), glib::error::BoolError> {
         unsafe {
             glib::result_from_gboolean!(

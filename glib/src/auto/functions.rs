@@ -106,8 +106,6 @@ pub fn compute_checksum_for_data(
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_compute_hmac_for_bytes")]
 pub fn compute_hmac_for_bytes(
     digest_type: ChecksumType,
@@ -774,15 +772,11 @@ pub fn usleep(microseconds: libc::c_ulong) {
     }
 }
 
-#[cfg(any(feature = "v2_52", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
 #[doc(alias = "g_uuid_string_is_valid")]
 pub fn uuid_string_is_valid(str: &str) -> bool {
     unsafe { from_glib(ffi::g_uuid_string_is_valid(str.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_52", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
 #[doc(alias = "g_uuid_string_random")]
 pub fn uuid_string_random() -> crate::GString {
     unsafe { from_glib_full(ffi::g_uuid_string_random()) }

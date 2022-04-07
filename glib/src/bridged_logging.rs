@@ -18,10 +18,7 @@ pub enum GlibLoggerFormat {
     /// A simple format, writing file, line and message on output.
     LineAndFile,
     // rustdoc-stripper-ignore-next
-    /// A logger using glib structured logging. Structured logging is available
-    /// only on features `v2_50` and later.
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
+    /// A logger using glib structured logging.
     Structured,
 }
 
@@ -129,7 +126,6 @@ impl GlibLogger {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
     fn write_log_structured(
         domain: Option<&str>,
         level: rs_log::Level,
@@ -199,7 +195,6 @@ impl rs_log::Log for GlibLogger {
                     }
                 };
             }
-            #[cfg(any(feature = "v2_50", feature = "dox"))]
             GlibLoggerFormat::Structured => {
                 let args = record.args();
                 if let Some(s) = args.as_str() {

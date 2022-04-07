@@ -2,7 +2,7 @@
 
 __Rust__ bindings and wrappers for [GDK-Pixbuf](https://docs.gtk.org/gdk-pixbuf), part of [gtk-rs-core](https://github.com/gtk-rs/gtk-rs-core).
 
-GDK-PixBuf __2.32__ is the lowest supported version for the underlying library.
+GDK-PixBuf __2.36.8__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 

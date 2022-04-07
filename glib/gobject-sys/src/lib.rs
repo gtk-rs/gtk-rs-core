@@ -1959,8 +1959,6 @@ extern "C" {
         ...
     ) -> *mut GObject;
     //pub fn g_object_new_valist(object_type: GType, first_property_name: *const c_char, var_args: /*Unimplemented*/va_list) -> *mut GObject;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_object_new_with_properties(
         object_type: GType,
         n_properties: c_uint,
@@ -2036,8 +2034,6 @@ extern "C" {
     );
     pub fn g_object_get_qdata(object: *mut GObject, quark: glib::GQuark) -> gpointer;
     //pub fn g_object_get_valist(object: *mut GObject, first_property_name: *const c_char, var_args: /*Unimplemented*/va_list);
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_object_getv(
         object: *mut GObject,
         n_properties: c_uint,
@@ -2089,8 +2085,6 @@ extern "C" {
         destroy: glib::GDestroyNotify,
     );
     //pub fn g_object_set_valist(object: *mut GObject, first_property_name: *const c_char, var_args: /*Unimplemented*/va_list);
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_object_setv(
         object: *mut GObject,
         n_properties: c_uint,
@@ -2288,8 +2282,6 @@ extern "C" {
         name: *const c_char,
         const_static_values: *const GEnumValue,
     ) -> GType;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_enum_to_string(g_enum_type: GType, value: c_int) -> *mut c_char;
     pub fn g_flags_complete_type_info(
         g_flags_type: GType,
@@ -2312,8 +2304,6 @@ extern "C" {
         name: *const c_char,
         const_static_values: *const GFlagsValue,
     ) -> GType;
-    #[cfg(any(feature = "v2_54", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_54")))]
     pub fn g_flags_to_string(flags_type: GType, value: c_uint) -> *mut c_char;
     pub fn g_gtype_get_type() -> GType;
     pub fn g_param_spec_boolean(

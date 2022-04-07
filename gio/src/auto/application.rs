@@ -239,18 +239,12 @@ pub trait ApplicationExt: 'static {
     #[doc(alias = "g_application_set_inactivity_timeout")]
     fn set_inactivity_timeout(&self, inactivity_timeout: u32);
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_application_set_option_context_description")]
     fn set_option_context_description(&self, description: Option<&str>);
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_application_set_option_context_parameter_string")]
     fn set_option_context_parameter_string(&self, parameter_string: Option<&str>);
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_application_set_option_context_summary")]
     fn set_option_context_summary(&self, summary: Option<&str>);
 
@@ -524,8 +518,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn set_option_context_description(&self, description: Option<&str>) {
         unsafe {
             ffi::g_application_set_option_context_description(
@@ -535,8 +527,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn set_option_context_parameter_string(&self, parameter_string: Option<&str>) {
         unsafe {
             ffi::g_application_set_option_context_parameter_string(
@@ -546,8 +536,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     fn set_option_context_summary(&self, summary: Option<&str>) {
         unsafe {
             ffi::g_application_set_option_context_summary(
