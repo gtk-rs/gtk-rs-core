@@ -482,21 +482,6 @@ pub fn mkdir_with_parents(pathname: impl AsRef<std::path::Path>, mode: i32) -> i
     unsafe { ffi::g_mkdir_with_parents(pathname.as_ref().to_glib_none().0, mode) }
 }
 
-#[doc(alias = "g_mkdtemp")]
-pub fn mkdtemp(tmpl: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
-    unsafe { from_glib_full(ffi::g_mkdtemp(tmpl.as_ref().to_glib_none().0)) }
-}
-
-#[doc(alias = "g_mkdtemp_full")]
-pub fn mkdtemp_full(tmpl: impl AsRef<std::path::Path>, mode: i32) -> Option<std::path::PathBuf> {
-    unsafe { from_glib_full(ffi::g_mkdtemp_full(tmpl.as_ref().to_glib_none().0, mode)) }
-}
-
-#[doc(alias = "g_mkstemp_full")]
-pub fn mkstemp_full(tmpl: impl AsRef<std::path::Path>, flags: i32, mode: i32) -> i32 {
-    unsafe { ffi::g_mkstemp_full(tmpl.as_ref().to_glib_none().0, flags, mode) }
-}
-
 #[doc(alias = "g_on_error_query")]
 pub fn on_error_query(prg_name: &str) {
     unsafe {
