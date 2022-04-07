@@ -61,11 +61,6 @@ pub trait TlsClientConnectionExt: 'static {
     #[doc(alias = "get_server_identity")]
     fn server_identity(&self) -> Option<SocketConnectable>;
 
-    #[cfg_attr(feature = "v2_56", deprecated = "Since 2.56")]
-    #[doc(alias = "g_tls_client_connection_get_use_ssl3")]
-    #[doc(alias = "get_use_ssl3")]
-    fn uses_ssl3(&self) -> bool;
-
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_tls_client_connection_get_validation_flags")]
     #[doc(alias = "get_validation_flags")]
@@ -73,10 +68,6 @@ pub trait TlsClientConnectionExt: 'static {
 
     #[doc(alias = "g_tls_client_connection_set_server_identity")]
     fn set_server_identity(&self, identity: &impl IsA<SocketConnectable>);
-
-    #[cfg_attr(feature = "v2_56", deprecated = "Since 2.56")]
-    #[doc(alias = "g_tls_client_connection_set_use_ssl3")]
-    fn set_use_ssl3(&self, use_ssl3: bool);
 
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "g_tls_client_connection_set_validation_flags")]
@@ -87,10 +78,6 @@ pub trait TlsClientConnectionExt: 'static {
 
     #[doc(alias = "server-identity")]
     fn connect_server_identity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-
-    #[cfg_attr(feature = "v2_56", deprecated = "Since 2.56")]
-    #[doc(alias = "use-ssl3")]
-    fn connect_use_ssl3_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     #[cfg_attr(feature = "v2_72", deprecated = "Since 2.72")]
     #[doc(alias = "validation-flags")]
@@ -123,14 +110,6 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
-    fn uses_ssl3(&self) -> bool {
-        unsafe {
-            from_glib(ffi::g_tls_client_connection_get_use_ssl3(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-
     fn validation_flags(&self) -> TlsCertificateFlags {
         unsafe {
             from_glib(ffi::g_tls_client_connection_get_validation_flags(
@@ -144,15 +123,6 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
             ffi::g_tls_client_connection_set_server_identity(
                 self.as_ref().to_glib_none().0,
                 identity.as_ref().to_glib_none().0,
-            );
-        }
-    }
-
-    fn set_use_ssl3(&self, use_ssl3: bool) {
-        unsafe {
-            ffi::g_tls_client_connection_set_use_ssl3(
-                self.as_ref().to_glib_none().0,
-                use_ssl3.into_glib(),
             );
         }
     }
@@ -210,31 +180,6 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
                 b"notify::server-identity\0".as_ptr() as *const _,
                 Some(transmute::<_, unsafe extern "C" fn()>(
                     notify_server_identity_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    fn connect_use_ssl3_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_use_ssl3_trampoline<
-            P: IsA<TlsClientConnection>,
-            F: Fn(&P) + 'static,
-        >(
-            this: *mut ffi::GTlsClientConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
-        ) {
-            let f: &F = &*(f as *const F);
-            f(TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                b"notify::use-ssl3\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
-                    notify_use_ssl3_trampoline::<Self, F> as *const (),
                 )),
                 Box_::into_raw(f),
             )

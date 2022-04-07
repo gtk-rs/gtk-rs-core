@@ -76,10 +76,8 @@ mod unix_fd_list;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_input_stream;
 #[cfg(any(unix, feature = "dox"))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
 mod unix_mount_entry;
 #[cfg(any(unix, feature = "dox"))]
-#[cfg(any(feature = "v2_54", feature = "dox"))]
 mod unix_mount_point;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_output_stream;

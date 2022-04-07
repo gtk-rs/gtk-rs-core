@@ -2,13 +2,12 @@
 
 use crate::translate::*;
 use crate::GString;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
 use crate::{GStr, LogWriterOutput};
 use once_cell::sync::Lazy;
 use std::boxed::Box as Box_;
 use std::sync::{Arc, Mutex};
 
-#[cfg(any(all(unix, feature = "v2_50"), feature = "dox"))]
+#[cfg(any(unix, feature = "dox"))]
 use std::os::unix::io::AsRawFd;
 
 #[derive(Debug)]
@@ -343,15 +342,11 @@ pub fn log_default_handler(log_domain: Option<&str>, log_level: LogLevel, messag
 /// embedded nul bytes, or arbitrary pointers.
 ///
 /// [gls]: https://docs.gtk.org/glib/func.log_structured.html
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[repr(transparent)]
 #[derive(Debug)]
 #[doc(alias = "GLogField")]
 pub struct LogField<'a>(ffi::GLogField, std::marker::PhantomData<&'a GStr>);
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 impl<'a> LogField<'a> {
     // rustdoc-stripper-ignore-next
     /// Creates a field from a borrowed key and value.
@@ -426,15 +421,11 @@ impl<'a> LogField<'a> {
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
 type WriterCallback = dyn Fn(LogLevel, &[LogField<'_>]) -> LogWriterOutput + Send + Sync + 'static;
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
 static WRITER_FUNC: once_cell::sync::OnceCell<Box<WriterCallback>> =
     once_cell::sync::OnceCell::new();
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_set_writer_func")]
 pub fn log_set_writer_func<
     P: Fn(LogLevel, &[LogField<'_>]) -> LogWriterOutput + Send + Sync + 'static,
@@ -846,8 +837,6 @@ macro_rules! g_printerr {
 /// Example:
 ///
 /// ```no_run
-/// # #[cfg(feature = "v2_50")]
-/// # {
 /// use glib::{GString, LogLevel, log_structured};
 /// use std::ffi::CString;
 ///
@@ -867,7 +856,6 @@ macro_rules! g_printerr {
 ///         "MESSAGE" => "test: {} {}", 1, 2, ;
 ///     }
 /// );
-/// # }
 /// ```
 #[macro_export]
 macro_rules! log_structured {
@@ -921,8 +909,6 @@ macro_rules! log_structured_inner {
     };
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_structured_array")]
 #[inline]
 pub fn log_structured_array(log_level: LogLevel, fields: &[LogField<'_>]) {
@@ -935,8 +921,6 @@ pub fn log_structured_array(log_level: LogLevel, fields: &[LogField<'_>]) {
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_variant")]
 #[inline]
 pub fn log_variant(log_domain: Option<&str>, log_level: LogLevel, fields: &crate::Variant) {
@@ -949,24 +933,18 @@ pub fn log_variant(log_domain: Option<&str>, log_level: LogLevel, fields: &crate
     }
 }
 
-#[cfg(any(all(unix, feature = "v2_50"), feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(all(unix, feature = "v2_50"))))]
 #[doc(alias = "g_log_writer_supports_color")]
 #[inline]
 pub fn log_writer_supports_color<T: AsRawFd>(output_fd: T) -> bool {
     unsafe { from_glib(ffi::g_log_writer_supports_color(output_fd.as_raw_fd())) }
 }
 
-#[cfg(any(all(unix, feature = "v2_50"), feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(all(unix, feature = "v2_50"))))]
 #[doc(alias = "g_log_writer_is_journald")]
 #[inline]
 pub fn log_writer_is_journald<T: AsRawFd>(output_fd: T) -> bool {
     unsafe { from_glib(ffi::g_log_writer_is_journald(output_fd.as_raw_fd())) }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_writer_format_fields")]
 #[inline]
 pub fn log_writer_format_fields(
@@ -984,8 +962,6 @@ pub fn log_writer_format_fields(
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_writer_journald")]
 #[inline]
 pub fn log_writer_journald(log_level: LogLevel, fields: &[LogField<'_>]) -> LogWriterOutput {
@@ -999,8 +975,6 @@ pub fn log_writer_journald(log_level: LogLevel, fields: &[LogField<'_>]) -> LogW
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_writer_standard_streams")]
 #[inline]
 pub fn log_writer_standard_streams(
@@ -1017,8 +991,6 @@ pub fn log_writer_standard_streams(
     }
 }
 
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 #[doc(alias = "g_log_writer_default")]
 #[inline]
 pub fn log_writer_default(log_level: LogLevel, fields: &[LogField<'_>]) -> LogWriterOutput {

@@ -3,8 +3,6 @@
 // DO NOT EDIT
 
 use crate::translate::*;
-#[cfg(any(feature = "v2_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
 use crate::Bytes;
 use crate::Error;
 use crate::KeyFileFlags;
@@ -191,8 +189,6 @@ impl KeyFile {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_key_file_get_locale_for_key")]
     #[doc(alias = "get_locale_for_key")]
     pub fn locale_for_key(
@@ -265,8 +261,6 @@ impl KeyFile {
         }
     }
 
-    #[cfg(any(feature = "v2_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_50")))]
     #[doc(alias = "g_key_file_load_from_bytes")]
     pub fn load_from_bytes(&self, bytes: &Bytes, flags: KeyFileFlags) -> Result<(), crate::Error> {
         unsafe {

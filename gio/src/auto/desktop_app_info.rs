@@ -112,8 +112,6 @@ impl DesktopAppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_56", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
     #[doc(alias = "g_desktop_app_info_get_locale_string")]
     #[doc(alias = "get_locale_string")]
     pub fn locale_string(&self, key: &str) -> Option<glib::GString> {

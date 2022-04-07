@@ -285,8 +285,6 @@ pub static FILE_ATTRIBUTE_PREVIEW_ICON: once_cell::sync::Lazy<&'static str> =
             .to_str()
             .unwrap()
     });
-#[cfg(any(feature = "v2_52", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_RECENT_MODIFIED")]
 pub static FILE_ATTRIBUTE_RECENT_MODIFIED: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {

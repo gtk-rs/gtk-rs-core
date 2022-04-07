@@ -228,8 +228,6 @@ pub fn content_type_is_a(type_: &str, supertype: &str) -> bool {
     }
 }
 
-#[cfg(any(feature = "v2_52", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_52")))]
 #[doc(alias = "g_content_type_is_mime_type")]
 pub fn content_type_is_mime_type(type_: &str, mime_type: &str) -> bool {
     unsafe {
@@ -631,8 +629,6 @@ pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_56", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
 #[doc(alias = "g_unix_is_system_device_path")]
 pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> bool {
     unsafe {
@@ -644,8 +640,6 @@ pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> b
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-#[cfg(any(feature = "v2_56", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_56")))]
 #[doc(alias = "g_unix_is_system_fs_type")]
 pub fn unix_is_system_fs_type(fs_type: &str) -> bool {
     unsafe { from_glib(ffi::g_unix_is_system_fs_type(fs_type.to_glib_none().0)) }
