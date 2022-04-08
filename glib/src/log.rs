@@ -933,12 +933,14 @@ pub fn log_variant(log_domain: Option<&str>, log_level: LogLevel, fields: &crate
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 #[doc(alias = "g_log_writer_supports_color")]
 #[inline]
 pub fn log_writer_supports_color<T: AsRawFd>(output_fd: T) -> bool {
     unsafe { from_glib(ffi::g_log_writer_supports_color(output_fd.as_raw_fd())) }
 }
 
+#[cfg(any(unix, feature = "dox"))]
 #[doc(alias = "g_log_writer_is_journald")]
 #[inline]
 pub fn log_writer_is_journald<T: AsRawFd>(output_fd: T) -> bool {
