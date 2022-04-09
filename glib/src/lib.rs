@@ -154,9 +154,6 @@ mod bridged_logging;
 #[cfg(any(feature = "log", feature = "dox"))]
 pub use self::bridged_logging::{rust_log_handler, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
 
-pub mod send_unique;
-pub use self::send_unique::{SendUnique, SendUniqueCell};
-
 #[macro_use]
 pub mod subclass;
 
