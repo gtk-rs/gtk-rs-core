@@ -2163,8 +2163,8 @@ extern "C" {
         c_handler: GCallback,
         data: gpointer,
     );
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
     pub fn g_signal_group_connect_closure(
         self_: *mut GSignalGroup,
         detailed_signal: *const c_char,
