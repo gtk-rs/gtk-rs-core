@@ -65,6 +65,46 @@ impl ListStore {
     pub fn extend_from_slice(&self, additions: &[impl IsA<glib::Object>]) {
         self.splice(self.n_items() - 1, 0, additions)
     }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_list_store_find_with_equal_func_full")]
+    #[doc(alias = "g_list_store_find_with_equal_func")]
+    pub fn find_with_equal_func<F: FnMut(&glib::Object) -> bool>(
+        &self,
+        equal_func: F,
+    ) -> Option<u32> {
+        unsafe extern "C" fn equal_func_trampoline(
+            a: glib::ffi::gconstpointer,
+            _b: glib::ffi::gconstpointer,
+            func: glib::ffi::gpointer,
+        ) -> glib::ffi::gboolean {
+            let func = func as *mut &mut (dyn FnMut(&Object) -> bool);
+
+            let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
+
+            (*func)(&a).into_glib()
+        }
+
+        unsafe {
+            let mut func = equal_func;
+            let func_obj: &mut (dyn FnMut(&Object) -> bool) = &mut func;
+            let func_ptr =
+                &func_obj as *const &mut (dyn FnMut(&Object) -> bool) as glib::ffi::gpointer;
+
+            let mut position = std::mem::MaybeUninit::uninit();
+
+            let found = bool::from_glib(ffi::g_list_store_find_with_equal_func_full(
+                self.to_glib_none().0,
+                std::ptr::null_mut(),
+                Some(equal_func_trampoline),
+                func_ptr,
+                position.as_mut_ptr(),
+            ));
+
+            found.then(|| position.assume_init())
+        }
+    }
 }
 
 unsafe extern "C" fn compare_func_trampoline(
