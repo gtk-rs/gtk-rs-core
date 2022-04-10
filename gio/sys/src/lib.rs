@@ -12195,6 +12195,8 @@ extern "C" {
         equal_func: glib::GEqualFunc,
         position: *mut c_uint,
     ) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
     pub fn g_list_store_find_with_equal_func_full(
         store: *mut GListStore,
         item: gpointer,
