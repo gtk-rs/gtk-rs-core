@@ -63,6 +63,11 @@ impl ListStore {
         }
     }
 
+    //#[doc(alias = "g_list_store_find_with_equal_func_full")]
+    //pub fn find_with_equal_func_full(&self, item: /*Unimplemented*/Option<Fundamental: Pointer>, equal_func: /*Unimplemented*/Fn(/*Unimplemented*/Option<Fundamental: Pointer>, /*Unimplemented*/Option<Fundamental: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>, position: u32) -> bool {
+    //    unsafe { TODO: call ffi:g_list_store_find_with_equal_func_full() }
+    //}
+
     #[doc(alias = "g_list_store_insert")]
     pub fn insert(&self, position: u32, item: &impl IsA<glib::Object>) {
         unsafe {

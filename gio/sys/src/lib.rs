@@ -12195,6 +12195,13 @@ extern "C" {
         equal_func: glib::GEqualFunc,
         position: *mut c_uint,
     ) -> gboolean;
+    pub fn g_list_store_find_with_equal_func_full(
+        store: *mut GListStore,
+        item: gpointer,
+        equal_func: glib::GEqualFuncFull,
+        user_data: gpointer,
+        position: *mut c_uint,
+    ) -> gboolean;
     pub fn g_list_store_insert(
         store: *mut GListStore,
         position: c_uint,

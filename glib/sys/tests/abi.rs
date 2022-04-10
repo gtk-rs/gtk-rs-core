@@ -1103,6 +1103,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_FORMAT_SIZE_DEFAULT", "0"),
     ("(guint) G_FORMAT_SIZE_IEC_UNITS", "2"),
     ("(guint) G_FORMAT_SIZE_LONG_FORMAT", "1"),
+    ("(guint) G_FORMAT_SIZE_ONLY_UNIT", "16"),
+    ("(guint) G_FORMAT_SIZE_ONLY_VALUE", "8"),
     ("(guint) G_HOOK_FLAG_ACTIVE", "1"),
     ("(guint) G_HOOK_FLAG_IN_CALL", "2"),
     ("(guint) G_HOOK_FLAG_MASK", "15"),
