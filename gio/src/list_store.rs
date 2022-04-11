@@ -63,7 +63,7 @@ impl ListStore {
     // rustdoc-stripper-ignore-next
     /// Appends all elements in a slice to the `ListStore`.
     pub fn extend_from_slice(&self, additions: &[impl IsA<glib::Object>]) {
-        self.splice(self.n_items() - 1, 0, additions)
+        self.splice(self.n_items(), 0, additions)
     }
 }
 
@@ -116,5 +116,9 @@ mod tests {
         list.extend(&[item0.clone(), item1.clone()]);
         assert_eq!(list.item(2).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(3).as_ref(), Some(item1.upcast_ref()));
+
+        let list_from_slice = ListStore::new(ListStore::static_type());
+        list_from_slice.extend_from_slice(&[item0, item1.clone()]);
+        assert_eq!(list_from_slice.item(1).as_ref(), Some(item1.upcast_ref()));
     }
 }
