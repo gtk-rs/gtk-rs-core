@@ -821,6 +821,8 @@ pub const G_FORMAT_SIZE_DEFAULT: GFormatSizeFlags = 0;
 pub const G_FORMAT_SIZE_LONG_FORMAT: GFormatSizeFlags = 1;
 pub const G_FORMAT_SIZE_IEC_UNITS: GFormatSizeFlags = 2;
 pub const G_FORMAT_SIZE_BITS: GFormatSizeFlags = 4;
+pub const G_FORMAT_SIZE_ONLY_VALUE: GFormatSizeFlags = 8;
+pub const G_FORMAT_SIZE_ONLY_UNIT: GFormatSizeFlags = 16;
 
 pub type GHookFlagMask = c_uint;
 pub const G_HOOK_FLAG_ACTIVE: GHookFlagMask = 1;
@@ -1102,6 +1104,8 @@ pub type GDataForeachFunc = Option<unsafe extern "C" fn(GQuark, gpointer, gpoint
 pub type GDestroyNotify = Option<unsafe extern "C" fn(gpointer)>;
 pub type GDuplicateFunc = Option<unsafe extern "C" fn(gpointer, gpointer) -> gpointer>;
 pub type GEqualFunc = Option<unsafe extern "C" fn(gconstpointer, gconstpointer) -> gboolean>;
+pub type GEqualFuncFull =
+    Option<unsafe extern "C" fn(gconstpointer, gconstpointer, gpointer) -> gboolean>;
 pub type GErrorClearFunc = Option<unsafe extern "C" fn(*mut GError)>;
 pub type GErrorCopyFunc = Option<unsafe extern "C" fn(*const GError, *mut GError)>;
 pub type GErrorInitFunc = Option<unsafe extern "C" fn(*mut GError)>;

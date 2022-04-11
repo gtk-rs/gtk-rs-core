@@ -103,6 +103,14 @@ bitflags! {
         const IEC_UNITS = ffi::G_FORMAT_SIZE_IEC_UNITS as u32;
         #[doc(alias = "G_FORMAT_SIZE_BITS")]
         const BITS = ffi::G_FORMAT_SIZE_BITS as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_FORMAT_SIZE_ONLY_VALUE")]
+        const ONLY_VALUE = ffi::G_FORMAT_SIZE_ONLY_VALUE as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_FORMAT_SIZE_ONLY_UNIT")]
+        const ONLY_UNIT = ffi::G_FORMAT_SIZE_ONLY_UNIT as u32;
     }
 }
 
