@@ -19,9 +19,7 @@ glib::wrapper! {
             copy
         },
         free => |ptr| {
-            if !(*ptr).name.is_null() {
-                glib::ffi::g_free((*ptr).name as *mut _);
-            }
+            glib::ffi::g_free((*ptr).name as *mut _);
             glib::ffi::g_free(ptr as *mut _);
         },
         init => |ptr| {
@@ -34,9 +32,7 @@ glib::wrapper! {
             }
         },
         clear => |ptr| {
-            if !(*ptr).name.is_null() {
-                glib::ffi::g_free((*ptr).name as *mut _);
-            }
+            glib::ffi::g_free((*ptr).name as *mut _);
         },
     }
 }
