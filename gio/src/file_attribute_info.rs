@@ -13,9 +13,7 @@ glib::wrapper! {
     match fn {
         copy => |ptr| {
             let copy = glib::ffi::g_malloc0(mem::size_of::<ffi::GFileAttributeInfo>()) as *mut ffi::GFileAttributeInfo;
-            if !(*ptr).name.is_null() {
-                (*copy).name = glib::ffi::g_strdup((*ptr).name);
-            }
+            (*copy).name = glib::ffi::g_strdup((*ptr).name);
             copy
         },
         free => |ptr| {
@@ -27,9 +25,7 @@ glib::wrapper! {
         },
         copy_into => |dest, src| {
             ptr::copy_nonoverlapping(src, dest, 1);
-            if !(*dest).name.is_null() {
-                (*dest).name = glib::ffi::g_strdup((*dest).name);
-            }
+            (*dest).name = glib::ffi::g_strdup((*dest).name);
         },
         clear => |ptr| {
             glib::ffi::g_free((*ptr).name as *mut _);
