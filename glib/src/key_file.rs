@@ -165,9 +165,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(from_glib_full(ret))
             } else {
-                if !ret.is_null() {
-                    ffi::g_free(ret as *mut _);
-                }
+                ffi::g_free(ret as *mut _);
                 Err(from_glib_full(error))
             }
         }
@@ -192,9 +190,7 @@ impl KeyFile {
                     length.assume_init() as usize,
                 ))
             } else {
-                if !ret.is_null() {
-                    ffi::g_strfreev(ret);
-                }
+                ffi::g_strfreev(ret);
                 Err(from_glib_full(error))
             }
         }
@@ -220,9 +216,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(from_glib_full(ret))
             } else {
-                if !ret.is_null() {
-                    ffi::g_free(ret as *mut _);
-                }
+                ffi::g_free(ret as *mut _);
                 Err(from_glib_full(error))
             }
         }
@@ -253,9 +247,7 @@ impl KeyFile {
                     length.assume_init() as usize,
                 ))
             } else {
-                if !ret.is_null() {
-                    ffi::g_strfreev(ret);
-                }
+                ffi::g_strfreev(ret);
                 Err(from_glib_full(error))
             }
         }
