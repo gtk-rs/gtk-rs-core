@@ -12,6 +12,13 @@ mod binding_group;
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 pub use self::binding_group::BindingGroup;
 
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+mod signal_group;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub use self::signal_group::SignalGroup;
+
 mod flags;
 pub use self::flags::BindingFlags;
 pub use self::flags::SignalFlags;

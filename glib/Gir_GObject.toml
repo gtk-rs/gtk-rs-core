@@ -104,5 +104,43 @@ concurrency = "send+sync"
     generate = ["notify"]
 
 [[object]]
+name = "GObject.SignalGroup"
+status = "generate"
+final_type = true
+concurrency = "send+sync"
+version = "2.74"
+    [[object.function]]
+    name = "connect"
+    manual = true
+    [[object.function]]
+    name = "connect_after"
+    ignore = true
+    [[object.function]]
+    name = "connect_data"
+    ignore = true
+    [[object.function]]
+    name = "connect_object"
+    ignore = true
+    [[object.function]]
+    name = "connect_swapped"
+    ignore = true
+    [[object.function]]
+    name = "connect_closure"
+    manual = true
+    [[object.function]]
+    name = "dup_target"
+    rename = "target"
+    [[object.property]]
+    name = "target"
+    # notify signal is racy, use connect_bind/connect_unbind instead
+    generate = []
+    [[object.signal]]
+    name = "bind"
+    manual = true
+    [[object.signal]]
+    name = "unbind"
+    manual = true
+
+[[object]]
 name = "GObject.*"
 status = "ignore"
