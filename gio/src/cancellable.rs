@@ -55,6 +55,13 @@ pub trait CancellableExtManual {
         callback: F,
     ) -> Option<CancelledHandlerId>;
     // rustdoc-stripper-ignore-next
+    /// Local variant of [`Self::connect_cancelled`].
+    #[doc(alias = "g_cancellable_connect")]
+    fn connect_cancelled_local<F: FnOnce(&Self) + 'static>(
+        &self,
+        callback: F,
+    ) -> Option<CancelledHandlerId>;
+    // rustdoc-stripper-ignore-next
     /// Disconnects a handler from a cancellable instance. Additionally, in the event that a signal
     /// handler is currently running, this call will block until the handler has finished. Calling
     /// this function from a callback registered with [`Self::connect_cancelled`] will therefore
@@ -103,6 +110,15 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
             ))
         }
     }
+    #[doc(alias = "g_cancellable_connect")]
+    fn connect_cancelled_local<F: FnOnce(&Self) + 'static>(
+        &self,
+        callback: F,
+    ) -> Option<CancelledHandlerId> {
+        let callback = glib::thread_guard::ThreadGuard::new(callback);
+
+        self.connect_cancelled(move |obj| (callback.into_inner())(obj))
+    }
     #[doc(alias = "g_cancellable_disconnect")]
     fn disconnect_cancelled(&self, id: CancelledHandlerId) {
         unsafe { ffi::g_cancellable_disconnect(self.as_ptr() as *mut _, id.as_raw()) };
@@ -130,6 +146,14 @@ mod tests {
     fn cancellable_callback() {
         let c = Cancellable::new();
         let id = c.connect_cancelled(|_| {});
+        c.cancel(); // if it doesn't crash at this point, then we're good to go!
+        c.disconnect_cancelled(id.unwrap());
+    }
+
+    #[test]
+    fn cancellable_callback_local() {
+        let c = Cancellable::new();
+        let id = c.connect_cancelled_local(|_| {});
         c.cancel(); // if it doesn't crash at this point, then we're good to go!
         c.disconnect_cancelled(id.unwrap());
     }
