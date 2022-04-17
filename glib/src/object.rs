@@ -3177,6 +3177,9 @@ pub struct WatchedObject<T: ObjectType>(ptr::NonNull<T::GlibType>);
 unsafe impl<T: ObjectType + Send + Sync> Send for WatchedObject<T> {}
 
 #[doc(hidden)]
+unsafe impl<T: ObjectType + Send + Sync> Sync for WatchedObject<T> {}
+
+#[doc(hidden)]
 impl<T: ObjectType> WatchedObject<T> {
     pub fn new(obj: &T) -> Self {
         Self(unsafe { ptr::NonNull::new_unchecked(obj.as_ptr()) })

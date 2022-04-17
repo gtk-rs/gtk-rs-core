@@ -492,4 +492,52 @@ fn closure() {
         };
         cast_test.invoke::<()>(&[]);
     }
+
+    {
+        use glib::subclass::prelude::*;
+
+        #[derive(Default)]
+        pub struct SendObjectPrivate {
+            value: std::sync::Mutex<i32>,
+        }
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for SendObjectPrivate {
+            const NAME: &'static str = "SendObject";
+            type Type = SendObject;
+        }
+
+        impl ObjectImpl for SendObjectPrivate {}
+
+        glib::wrapper! {
+            pub struct SendObject(ObjectSubclass<SendObjectPrivate>);
+        }
+
+        unsafe impl Send for SendObject {}
+        unsafe impl Sync for SendObject {}
+
+        impl SendObject {
+            fn value(&self) -> i32 {
+                *self.imp().value.lock().unwrap()
+            }
+            fn set_value(&self, v: i32) {
+                *self.imp().value.lock().unwrap() = v;
+            }
+        }
+
+        let inc_by = {
+            let obj = glib::Object::new::<SendObject>(&[]).unwrap();
+            let inc_by = glib::closure!(@watch obj => move |x: i32| {
+                let old = obj.value();
+                obj.set_value(x + old);
+                old
+            });
+            obj.set_value(42);
+            assert_eq!(obj.value(), 42);
+            assert_eq!(inc_by.invoke::<i32>(&[&24i32]), 42);
+            assert_eq!(obj.value(), 66);
+            inc_by
+        };
+        inc_by.invoke::<()>(&[]);
+    }
 }
