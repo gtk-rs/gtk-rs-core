@@ -528,7 +528,7 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 ///
 /// [`BoxedType`]: ../glib/subclass/boxed/trait.BoxedType.html
 /// [`glib::Value`]: ../glib/value/struct.Value.html
-#[proc_macro_derive(Boxed, attributes(boxed_nullable, boxed_type))]
+#[proc_macro_derive(Boxed, attributes(boxed_type))]
 #[proc_macro_error]
 pub fn boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -556,7 +556,7 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 ///
 /// [`SharedType`]: ../glib/subclass/shared/trait.SharedType.html
 /// [`glib::Value`]: ../glib/value/struct.Value.html
-#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_nullable, shared_boxed_type))]
+#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_type))]
 #[proc_macro_error]
 pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
