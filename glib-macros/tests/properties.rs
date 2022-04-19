@@ -34,9 +34,13 @@ fn props() {
             pub struct Foo {
                 #[prop(get, set)]
                 bar: Mutex<String>,
+                // The following property doesn't store any data. The value of the property is calculated
+                // when the value is accessed.
                 #[prop(get = Self::hello_world)]
                 _buzz: PhantomData<String>,
-                #[prop(get, set = Self::set_fizz, name = "fizz")]
+                #[prop(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
+                    blurb = "short description stored in the GLib type system"
+                )]
                 fizz: RefCell<String>,
                 #[prop(name = "author-name", get, set, type = String, member = name)]
                 #[prop(name = "author-nick", get, set, type = String, member = nick)]
