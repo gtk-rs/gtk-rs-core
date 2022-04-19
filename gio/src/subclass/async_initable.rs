@@ -321,6 +321,22 @@ mod tests {
     }
 
     #[test]
+    fn test_async_initable_with_async_initable_with_values() {
+        glib::MainContext::new().block_on(async {
+            let test = AsyncInitable::with_values_future(
+                AsyncInitableTestType::static_type(),
+                &[],
+                glib::PRIORITY_DEFAULT,
+            )
+            .await
+            .expect("Failed creation/initialization of AsyncInitableTestType object from values")
+            .downcast::<AsyncInitableTestType>()
+            .expect("Failed downcast of AsyncInitableTestType object");
+            assert_eq!(0x123456789abcdef, test.value());
+        });
+    }
+
+    #[test]
     fn test_async_initable_through_ffi() {
         use futures_channel::oneshot;
 

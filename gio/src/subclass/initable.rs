@@ -209,6 +209,19 @@ mod tests {
     }
 
     #[test]
+    fn test_initable_with_initable_with_values() {
+        let test = Initable::with_values(
+            InitableTestType::static_type(),
+            &[],
+            Option::<&Cancellable>::None,
+        )
+        .expect("Failed creation/initialization of InitableTestType object from values")
+        .downcast::<InitableTestType>()
+        .expect("Failed downcast of InitableTestType object");
+        assert_eq!(0x123456789abcdef, test.value());
+    }
+
+    #[test]
     fn test_initable_through_ffi() {
         unsafe {
             let test = InitableTestType::new_uninit();

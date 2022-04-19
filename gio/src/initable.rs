@@ -44,6 +44,27 @@ impl Initable {
         unsafe { object.unsafe_cast_ref::<Self>().init(cancellable)? };
         Ok(object)
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Create a new instance of an initable object of the given type with the given properties.
+    ///
+    /// Similar to [`Object::with_values`] but can fail either because the object
+    /// creation failed or because `Initable::init` failed.
+    pub fn with_values(
+        type_: Type,
+        properties: &[(&str, glib::Value)],
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<Object, InitableError> {
+        if !type_.is_a(Initable::static_type()) {
+            return Err(InitableError::NewObjectFailed(glib::bool_error!(
+                "Type '{}' is not initable",
+                type_
+            )));
+        }
+        let object = Object::with_values(type_, properties)?;
+        unsafe { object.unsafe_cast_ref::<Self>().init(cancellable)? };
+        Ok(object)
+    }
 }
 
 #[derive(thiserror::Error, Debug)]
