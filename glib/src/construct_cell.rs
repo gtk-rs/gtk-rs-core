@@ -19,6 +19,13 @@ macro_rules! define_construct {
             type Value = T;
             type ParamSpec = T::ParamSpec;
         }
+
+        impl<T> ::std::ops::Deref for $ident<T> {
+            type Target = $container<$inner>;
+                fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
     };
     (@with_option_type $ident:ident, $container:ident) => {
         define_construct!(@common $ident, $container, Option<T>);
