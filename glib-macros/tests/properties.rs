@@ -32,39 +32,39 @@ fn props() {
 
             #[derive(Properties, Default)]
             pub struct Foo {
-                #[prop(get, set)]
+                #[property(get, set)]
                 bar: Mutex<String>,
                 // The following property doesn't store any data. The value of the property is calculated
                 // when the value is accessed.
-                #[prop(get = Self::hello_world)]
+                #[property(get = Self::hello_world)]
                 _buzz: PhantomData<String>,
-                #[prop(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
+                #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
                     blurb = "short description stored in the GLib type system"
                 )]
                 fizz: RefCell<String>,
-                #[prop(name = "author-name", get, set, type = String, member = name)]
-                #[prop(name = "author-nick", get, set, type = String, member = nick)]
+                #[property(name = "author-name", get, set, type = String, member = name)]
+                #[property(name = "author-nick", get, set, type = String, member = nick)]
                 author: RefCell<Author>,
-                #[prop(
+                #[property(
                     type = String,
                     get = |t: &Self| t.author.borrow().name.to_owned(),
                     set = Self::set_author_name)]
                 fake_field: PhantomData<String>,
-                #[prop(get, set, user_1, user_2, lax_validation)]
+                #[property(get, set, user_1, user_2, lax_validation)]
                 custom_flags: RefCell<String>,
-                #[prop(get, set, builder())]
+                #[property(get, set, builder())]
                 simple_builder: RefCell<u32>,
-                #[prop(get, set, builder().minimum(0).maximum(5))]
+                #[property(get, set, builder().minimum(0).maximum(5))]
                 numeric_builder: RefCell<u32>,
-                #[prop(get, set, builder('c'))]
+                #[property(get, set, builder('c'))]
                 builder_with_required_param: RefCell<char>,
-                #[prop(get, set, builder(SimpleBoxedString::static_type()))]
+                #[property(get, set, builder(SimpleBoxedString::static_type()))]
                 boxed: RefCell<SimpleBoxedString>,
-                #[prop(get, set)]
+                #[property(get, set)]
                 optional: RefCell<Option<String>>,
-                #[prop(get, set)]
+                #[property(get, set)]
                 smart_pointer: Rc<RefCell<String>>,
-                #[prop(get, set)]
+                #[property(get, set)]
                 once_cell: OnceCell<u8>,
             }
 

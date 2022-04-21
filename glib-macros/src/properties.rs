@@ -409,7 +409,7 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
             } = field;
             attrs
                 .into_iter()
-                .filter(|a| a.path.is_ident("prop"))
+                .filter(|a| a.path.is_ident("property"))
                 .map(move |attrs| {
                     let span = attrs.span();
                     let attrs = attrs.parse_args_with(

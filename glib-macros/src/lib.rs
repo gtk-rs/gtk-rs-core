@@ -844,20 +844,20 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 ///     #[derive(Properties, Default)]
 ///     pub struct Foo {
-///         #[prop(get, set = Self::set_fizz)]
+///         #[property(get, set = Self::set_fizz)]
 ///         fizz: RefCell<String>,
-///         #[prop(name = "author-name", get, set, type = String, member = name)]
-///         #[prop(name = "author-nick", get, set, type = String, member = nick)]
+///         #[property(name = "author-name", get, set, type = String, member = name)]
+///         #[property(name = "author-nick", get, set, type = String, member = nick)]
 ///         author: RefCell<Author>,
-///         #[prop(get, set, user_1, user_2, lax_validation)]
+///         #[property(get, set, user_1, user_2, lax_validation)]
 ///         custom_flags: RefCell<String>,
-///         #[prop(get, set, builder().minimum(0).maximum(5))]
+///         #[property(get, set, builder().minimum(0).maximum(5))]
 ///         numeric_builder: RefCell<u32>,
-///         #[prop(get, set, builder('c'))]
+///         #[property(get, set, builder('c'))]
 ///         builder_with_required_param: RefCell<char>,
-///         #[prop(get, set)]
+///         #[property(get, set)]
 ///         optional: RefCell<Option<String>>,
-///         #[prop(get, set)]
+///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
 ///     }
 ///
@@ -906,7 +906,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 #[allow(clippy::needless_doctest_main)]
-#[proc_macro_derive(Properties, attributes(prop))]
+#[proc_macro_derive(Properties, attributes(property))]
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
     properties::impl_derive_props(input)
