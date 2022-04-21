@@ -52,6 +52,12 @@ impl Error {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Returns the error domain quark
+    pub fn domain(&self) -> Quark {
+        unsafe { from_glib(self.inner.domain) }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Checks if the error matches the specified domain and error code.
     #[doc(alias = "g_error_matches")]
     pub fn matches<T: ErrorDomain>(&self, err: T) -> bool {
