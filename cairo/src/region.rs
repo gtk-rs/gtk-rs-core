@@ -12,6 +12,7 @@ use std::ptr;
 use crate::ffi::cairo_region_t;
 
 #[derive(Debug)]
+#[repr(transparent)]
 pub struct Region(ptr::NonNull<cairo_region_t>);
 
 #[cfg(feature = "use_glib")]

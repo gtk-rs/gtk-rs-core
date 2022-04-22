@@ -477,19 +477,67 @@ fn closure() {
         }
 
         let cast_test = {
-            let foo = glib::Object::new::<Foo>(&[]).unwrap();
+            let f = glib::Object::new::<Foo>(&[]).unwrap();
 
-            assert_eq!(foo.my_ref_count(), 1);
-            let cast_test = glib::closure_local!(@watch foo => move || foo.my_ref_count());
-            assert_eq!(foo.my_ref_count(), 1);
+            assert_eq!(f.my_ref_count(), 1);
+            let cast_test = glib::closure_local!(@watch f => move || f.my_ref_count());
+            assert_eq!(f.my_ref_count(), 1);
             assert_eq!(cast_test.invoke::<u32>(&[]), 2);
-            assert_eq!(foo.my_ref_count(), 1);
+            assert_eq!(f.my_ref_count(), 1);
 
-            let foo_ref = &foo;
-            let _ = glib::closure_local!(@watch foo_ref => move || foo_ref.my_ref_count());
+            let f_ref = &f;
+            let _ = glib::closure_local!(@watch f_ref => move || f_ref.my_ref_count());
 
             cast_test
         };
         cast_test.invoke::<()>(&[]);
+    }
+
+    {
+        use glib::subclass::prelude::*;
+
+        #[derive(Default)]
+        pub struct SendObjectPrivate {
+            value: std::sync::Mutex<i32>,
+        }
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for SendObjectPrivate {
+            const NAME: &'static str = "SendObject";
+            type Type = SendObject;
+        }
+
+        impl ObjectImpl for SendObjectPrivate {}
+
+        glib::wrapper! {
+            pub struct SendObject(ObjectSubclass<SendObjectPrivate>);
+        }
+
+        unsafe impl Send for SendObject {}
+        unsafe impl Sync for SendObject {}
+
+        impl SendObject {
+            fn value(&self) -> i32 {
+                *self.imp().value.lock().unwrap()
+            }
+            fn set_value(&self, v: i32) {
+                *self.imp().value.lock().unwrap() = v;
+            }
+        }
+
+        let inc_by = {
+            let obj = glib::Object::new::<SendObject>(&[]).unwrap();
+            let inc_by = glib::closure!(@watch obj => move |x: i32| {
+                let old = obj.value();
+                obj.set_value(x + old);
+                old
+            });
+            obj.set_value(42);
+            assert_eq!(obj.value(), 42);
+            assert_eq!(inc_by.invoke::<i32>(&[&24i32]), 42);
+            assert_eq!(obj.value(), 66);
+            inc_by
+        };
+        inc_by.invoke::<()>(&[]);
     }
 }

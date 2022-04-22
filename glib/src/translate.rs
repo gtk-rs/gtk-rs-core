@@ -579,7 +579,7 @@ impl GlibPtrDefault for String {
 }
 
 #[cfg(not(windows))]
-fn path_to_c(path: &Path) -> CString {
+pub(crate) fn path_to_c(path: &Path) -> CString {
     // GLib paths on UNIX are always in the local encoding, just like in Rust
     //
     // Paths on UNIX must not contain NUL bytes, in which case the conversion
@@ -589,7 +589,7 @@ fn path_to_c(path: &Path) -> CString {
 }
 
 #[cfg(windows)]
-fn path_to_c(path: &Path) -> CString {
+pub(crate) fn path_to_c(path: &Path) -> CString {
     // GLib paths are always UTF-8 strings on Windows, while in Rust they are
     // WTF-8. As such, we need to convert to a UTF-8 string. This conversion can
     // fail, see https://simonsapin.github.io/wtf-8/#converting-wtf-8-utf-8
@@ -617,7 +617,7 @@ fn path_to_c(path: &Path) -> CString {
 }
 
 #[cfg(not(windows))]
-fn os_str_to_c(s: &OsStr) -> CString {
+pub(crate) fn os_str_to_c(s: &OsStr) -> CString {
     // GLib OS string (environment strings) on UNIX are always in the local encoding,
     // just like in Rust
     //
@@ -628,7 +628,7 @@ fn os_str_to_c(s: &OsStr) -> CString {
 }
 
 #[cfg(windows)]
-fn os_str_to_c(s: &OsStr) -> CString {
+pub(crate) fn os_str_to_c(s: &OsStr) -> CString {
     // GLib OS string (environment strings) are always UTF-8 strings on Windows,
     // while in Rust they are WTF-8. As such, we need to convert to a UTF-8 string.
     // This conversion can fail, see https://simonsapin.github.io/wtf-8/#converting-wtf-8-utf-8
@@ -663,6 +663,12 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for Path {
         let tmp = path_to_c(self);
         Stash(tmp.as_ptr() as *mut c_char, tmp)
     }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        let tmp = path_to_c(self);
+        unsafe { ffi::g_strdup(tmp.as_ptr()) }
+    }
 }
 
 impl<'a> ToGlibPtr<'a, *const c_char> for PathBuf {
@@ -682,6 +688,12 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for PathBuf {
     fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
         let tmp = path_to_c(self);
         Stash(tmp.as_ptr() as *mut c_char, tmp)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        let tmp = path_to_c(self);
+        unsafe { ffi::g_strdup(tmp.as_ptr()) }
     }
 }
 
@@ -711,6 +723,12 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for OsStr {
         let tmp = os_str_to_c(self);
         Stash(tmp.as_ptr() as *mut c_char, tmp)
     }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        let tmp = os_str_to_c(self);
+        unsafe { ffi::g_strdup(tmp.as_ptr()) }
+    }
 }
 
 impl<'a> ToGlibPtr<'a, *const c_char> for OsString {
@@ -730,6 +748,12 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for OsString {
     fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
         let tmp = os_str_to_c(self);
         Stash(tmp.as_ptr() as *mut c_char, tmp)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        let tmp = os_str_to_c(self);
+        unsafe { ffi::g_strdup(tmp.as_ptr()) }
     }
 }
 
@@ -1516,7 +1540,7 @@ impl FromGlibPtrFull<*mut c_char> for String {
 }
 
 #[cfg(not(windows))]
-unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
+pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
     assert!(!ptr.is_null());
 
     // GLib paths on UNIX are always in the local encoding, which can be
@@ -1526,7 +1550,7 @@ unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 }
 
 #[cfg(windows)]
-unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
+pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
     assert!(!ptr.is_null());
 
     // GLib paths on Windows are always UTF-8, as such we can convert to a String
@@ -1539,7 +1563,7 @@ unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 }
 
 #[cfg(not(windows))]
-unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
+pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
     assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on UNIX are always in the local encoding,
@@ -1549,7 +1573,7 @@ unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 }
 
 #[cfg(windows)]
-unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
+pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
     assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on Windows are always UTF-8,

@@ -1069,6 +1069,8 @@ impl ValueType for BoxedValue {
     type Type = BoxedValue;
 }
 
+impl ValueTypeOptional for BoxedValue {}
+
 unsafe impl<'a> FromValue<'a> for BoxedValue {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 

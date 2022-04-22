@@ -34,6 +34,7 @@ impl<'a> Drop for DeviceAcquireGuard<'a> {
 
 #[derive(Debug)]
 #[doc(alias = "cairo_device_t")]
+#[repr(transparent)]
 pub struct Device(ptr::NonNull<ffi::cairo_device_t>);
 
 impl Device {

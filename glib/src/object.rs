@@ -3177,10 +3177,18 @@ pub struct WatchedObject<T: ObjectType>(ptr::NonNull<T::GlibType>);
 unsafe impl<T: ObjectType + Send + Sync> Send for WatchedObject<T> {}
 
 #[doc(hidden)]
+unsafe impl<T: ObjectType + Send + Sync> Sync for WatchedObject<T> {}
+
+#[doc(hidden)]
 impl<T: ObjectType> WatchedObject<T> {
     pub fn new(obj: &T) -> Self {
         Self(unsafe { ptr::NonNull::new_unchecked(obj.as_ptr()) })
     }
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// This should only be called from within a closure that was previously attached to `T` using
+    /// `Watchable::watch_closure`.
     pub unsafe fn borrow(&self) -> Borrowed<T>
     where
         T: FromGlibPtrBorrow<*mut <T as ObjectType>::GlibType>,

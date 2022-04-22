@@ -261,6 +261,9 @@ pub mod shared;
 
 pub mod signal;
 
+mod object_impl_ref;
+pub use object_impl_ref::{ObjectImplRef, ObjectImplWeakRef};
+
 pub mod prelude {
     // rustdoc-stripper-ignore-next
     //! Prelude that re-exports all important traits from this crate.

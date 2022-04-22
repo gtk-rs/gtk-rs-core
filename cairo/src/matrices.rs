@@ -4,6 +4,7 @@ use crate::error::Error;
 use crate::utils::status_to_result;
 use libc::c_double;
 
+// checker-ignore-item
 #[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Matrix {
@@ -126,6 +127,70 @@ impl Matrix {
         (x, y)
     }
 }
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl Uninitialized for Matrix {
+    #[inline]
+    unsafe fn uninitialized() -> Self {
+        std::mem::zeroed()
+    }
+}
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl<'a> ToGlibPtr<'a, *const ffi::Matrix> for Matrix {
+    type Storage = &'a Self;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const ffi::Matrix, Self> {
+        let ptr: *const Matrix = &*self;
+        Stash(ptr as *const ffi::Matrix, self)
+    }
+}
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl<'a> ToGlibPtrMut<'a, *mut ffi::Matrix> for Matrix {
+    type Storage = &'a mut Self;
+
+    #[inline]
+    fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::Matrix, Self> {
+        let ptr: *mut Matrix = &mut *self;
+        StashMut(ptr as *mut ffi::Matrix, self)
+    }
+}
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl FromGlibPtrNone<*const ffi::Matrix> for Matrix {
+    unsafe fn from_glib_none(ptr: *const ffi::Matrix) -> Self {
+        *(ptr as *const Matrix)
+    }
+}
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl FromGlibPtrBorrow<*mut ffi::Matrix> for Matrix {
+    unsafe fn from_glib_borrow(ptr: *mut ffi::Matrix) -> crate::Borrowed<Self> {
+        crate::Borrowed::new(*(ptr as *mut Matrix))
+    }
+}
+
+#[cfg(feature = "use_glib")]
+#[doc(hidden)]
+impl FromGlibPtrNone<*mut ffi::Matrix> for Matrix {
+    unsafe fn from_glib_none(ptr: *mut ffi::Matrix) -> Self {
+        *(ptr as *mut Matrix)
+    }
+}
+
+#[cfg(feature = "use_glib")]
+gvalue_impl_inline!(
+    Matrix,
+    ffi::Matrix,
+    ffi::gobject::cairo_gobject_matrix_get_type
+);
 
 #[cfg(test)]
 mod tests {

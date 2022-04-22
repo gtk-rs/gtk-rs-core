@@ -306,6 +306,19 @@ impl Pixbuf {
         }))
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Returns a mutable slice to the pixbuf's pixel data.
+    ///
+    /// This function will cause an implicit copy if the pixbuf was created from read-only data.
+    ///
+    /// Please see the section on [image data](#image-data) for information about how the pixel
+    /// data is stored in memory.
+    ///
+    /// # Safety
+    /// No other reference to this pixbuf's data must exist when this method is called.
+    ///
+    /// Until you drop the returned reference, you must not call any methods on the pixbuf which may read
+    /// or write to the data.
     #[allow(clippy::mut_from_ref)]
     #[allow(clippy::missing_safety_doc)]
     #[doc(alias = "gdk_pixbuf_get_pixels_with_length")]

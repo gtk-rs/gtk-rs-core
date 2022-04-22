@@ -202,9 +202,7 @@ impl<
 
         PtrSlice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -234,9 +232,7 @@ impl<
 
         PtrSlice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -260,9 +256,7 @@ impl<
 
         PtrSlice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -546,9 +540,7 @@ impl<T: 'static> Slice<T> {
 
         Slice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -568,9 +560,7 @@ impl<T: 'static> Slice<T> {
 
         Slice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -596,9 +586,7 @@ impl<T: 'static> Slice<T> {
 
         Slice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -618,9 +606,7 @@ impl<T: 'static> Slice<T> {
 
         Slice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)
@@ -637,9 +623,7 @@ impl<T: 'static> Slice<T> {
 
         Slice {
             ptr: if len == 0 {
-                if !ptr.is_null() {
-                    ffi::g_free(ptr as ffi::gpointer);
-                }
+                ffi::g_free(ptr as ffi::gpointer);
                 ptr::NonNull::dangling()
             } else {
                 ptr::NonNull::new_unchecked(ptr)

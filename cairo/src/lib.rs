@@ -12,9 +12,9 @@ pub use freetype_crate as freetype;
 #[cfg(feature = "use_glib")]
 pub use glib;
 
-// Helper macro for our GValue related trait impls
+// Helper macros for our GValue related trait impls
 #[cfg(feature = "use_glib")]
-macro_rules! gvalue_impl {
+macro_rules! gvalue_impl_inner {
     ($name:ty, $ffi_name:ty, $get_type:expr) => {
         #[allow(unused_imports)]
         use glib::translate::*;
@@ -29,6 +29,84 @@ macro_rules! gvalue_impl {
             type Type = Self;
         }
 
+        impl glib::value::ValueTypeOptional for $name {}
+    };
+}
+
+#[cfg(feature = "use_glib")]
+macro_rules! gvalue_impl {
+    ($name:ty, $ffi_name:ty, $get_type:expr) => {
+        gvalue_impl_inner!($name, $ffi_name, $get_type);
+
+        unsafe impl<'a> glib::value::FromValue<'a> for $name {
+            type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a glib::Value) -> Self {
+                let ptr = glib::gobject_ffi::g_value_dup_boxed(
+                    glib::translate::ToGlibPtr::to_glib_none(value).0,
+                );
+                assert!(!ptr.is_null());
+                <$name as glib::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(
+                    ptr as *mut $ffi_name,
+                )
+            }
+        }
+
+        unsafe impl<'a> glib::value::FromValue<'a> for &'a $name {
+            type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a glib::Value) -> Self {
+                assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<glib::ffi::gpointer>()
+                );
+                let value = &*(value as *const glib::Value as *const glib::gobject_ffi::GValue);
+                let ptr = &value.data[0].v_pointer as *const glib::ffi::gpointer
+                    as *const *const $ffi_name;
+                assert!(!(*ptr).is_null());
+                &*(ptr as *const $name)
+            }
+        }
+
+        impl glib::value::ToValue for $name {
+            fn to_value(&self) -> glib::Value {
+                unsafe {
+                    let mut value =
+                        glib::Value::from_type(<$name as glib::StaticType>::static_type());
+                    glib::gobject_ffi::g_value_take_boxed(
+                        value.to_glib_none_mut().0,
+                        self.to_glib_full() as *mut _,
+                    );
+                    value
+                }
+            }
+
+            fn value_type(&self) -> glib::Type {
+                <$name as glib::StaticType>::static_type()
+            }
+        }
+
+        impl glib::value::ToValueOptional for $name {
+            fn to_value_optional(s: Option<&Self>) -> glib::Value {
+                let mut value = glib::Value::for_value_type::<Self>();
+                unsafe {
+                    glib::gobject_ffi::g_value_take_boxed(
+                        value.to_glib_none_mut().0,
+                        glib::translate::ToGlibPtr::to_glib_full(&s) as *mut _,
+                    );
+                }
+
+                value
+            }
+        }
+    };
+}
+
+#[cfg(feature = "use_glib")]
+macro_rules! gvalue_impl_inline {
+    ($name:ty, $ffi_name:ty, $get_type:expr) => {
+        gvalue_impl_inner!($name, $ffi_name, $get_type);
+
         unsafe impl<'a> glib::value::FromValue<'a> for $name {
             type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
 
@@ -40,6 +118,18 @@ macro_rules! gvalue_impl {
                 <$name as glib::translate::FromGlibPtrNone<*mut $ffi_name>>::from_glib_none(
                     ptr as *mut $ffi_name,
                 )
+            }
+        }
+
+        unsafe impl<'a> glib::value::FromValue<'a> for &'a $name {
+            type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
+
+            unsafe fn from_value(value: &'a glib::Value) -> Self {
+                let ptr = glib::gobject_ffi::g_value_get_boxed(
+                    glib::translate::ToGlibPtr::to_glib_none(value).0,
+                );
+                assert!(!ptr.is_null());
+                &*(ptr as *mut $name)
             }
         }
 
@@ -65,9 +155,9 @@ macro_rules! gvalue_impl {
             fn to_value_optional(s: Option<&Self>) -> glib::Value {
                 let mut value = glib::Value::for_value_type::<Self>();
                 unsafe {
-                    glib::gobject_ffi::g_value_take_boxed(
+                    glib::gobject_ffi::g_value_set_boxed(
                         value.to_glib_none_mut().0,
-                        glib::translate::ToGlibPtr::to_glib_full(&s) as *mut _,
+                        s.to_glib_none().0 as *mut _,
                     );
                 }
 

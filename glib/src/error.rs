@@ -52,6 +52,19 @@ impl Error {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Returns the error domain quark
+    pub fn domain(&self) -> Quark {
+        unsafe { from_glib(self.inner.domain) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Checks if the error matches the specified domain and error code.
+    #[doc(alias = "g_error_matches")]
+    pub fn matches<T: ErrorDomain>(&self, err: T) -> bool {
+        self.is::<T>() && self.inner.code == err.code()
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Tries to convert to a specific error enum.
     ///
     /// Returns `Some` if the error belongs to the enum's error domain and
@@ -235,6 +248,14 @@ mod tests {
     use super::*;
     use crate::ToValue;
     use std::ffi::CString;
+
+    #[test]
+    fn test_error_matches() {
+        let e = Error::new(crate::FileError::Failed, "Failed");
+        assert!(e.matches(crate::FileError::Failed));
+        assert!(!e.matches(crate::FileError::Again));
+        assert!(!e.matches(crate::KeyFileError::NotFound));
+    }
 
     #[test]
     fn test_error_kind() {

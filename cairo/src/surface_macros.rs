@@ -4,6 +4,7 @@
 macro_rules! declare_surface {
     ($surf_name:ident, $surf_type:expr) => {
         #[derive(Debug)]
+        #[repr(transparent)]
         pub struct $surf_name(Surface);
 
         impl TryFrom<Surface> for $surf_name {
