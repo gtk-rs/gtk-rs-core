@@ -18,7 +18,7 @@ pub use once_cell;
 
 pub use glib_macros::{
     clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, ErrorDomain, SharedBoxed, Variant,
+    Enum, ErrorDomain, Properties, SharedBoxed, Variant,
 };
 
 #[doc(hidden)]
