@@ -19,6 +19,18 @@ fn props() {
         #[boxed_type(name = "SimpleBoxedString")]
         pub struct SimpleBoxedString(pub String);
 
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, glib::Enum)]
+        #[enum_type(name = "SimpleEnum")]
+        pub enum SimpleEnum {
+            One,
+        }
+
+        impl Default for SimpleEnum {
+            fn default() -> Self {
+                SimpleEnum::One
+            }
+        }
+
         #[derive(Default, Clone)]
         struct Author {
             name: String,
@@ -61,6 +73,8 @@ fn props() {
                 builder_with_required_param: RefCell<char>,
                 #[property(get, set, builder(SimpleBoxedString::static_type()))]
                 boxed: RefCell<SimpleBoxedString>,
+                #[property(get, set, builder(SimpleEnum::static_type()))]
+                fenum: RefCell<SimpleEnum>,
                 #[property(get, set)]
                 optional: RefCell<Option<String>>,
                 #[property(get, set)]
