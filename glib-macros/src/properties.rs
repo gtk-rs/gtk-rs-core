@@ -248,6 +248,7 @@ impl PropDesc {
 
 fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
+    let crate_ident = crate_ident_new();
     let properties_build_phase = props.iter().map(|prop| {
         let PropDesc {
             ty,
@@ -267,7 +268,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
                     .iter()
                     .map(|f| TokenStream2::from_str(f).unwrap()),
             );
-            quote!(glib::ParamFlags::empty() #(| glib::ParamFlags::#flags_iter)*)
+            quote!(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)*)
         };
 
         let builder_call = builder
@@ -289,7 +290,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         let span = prop.attrs_span;
         quote_spanned! {span=>
-            <<#ty as glib::Property>::ParamSpec>
+            <<#ty as #crate_ident::Property>::ParamSpec>
                 ::builder #builder_call
                 #build_nick
                 #build_blurb
@@ -298,9 +299,9 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     });
     quote!(
-        fn derived_properties() -> &'static [glib::ParamSpec] {
-            use glib::once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[glib::ParamSpec; #n_props]> = Lazy::new(|| [
+        fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
+            use #crate_ident::once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
                 #(#properties_build_phase,)*
             ]);
             PROPERTIES.as_ref()
@@ -308,6 +309,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     )
 }
 fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let match_branch_get = props.iter().flat_map(|p| {
         let PropDesc {
             name,
@@ -317,7 +319,6 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ..
         } = p;
 
-        let crate_ident = crate_ident_new();
         let span = p.attrs_span;
         get.as_ref().map(|get| {
             let body = match (member, get) {
@@ -339,7 +340,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_property<'a>(&self, _obj: &Self::Type, _id: usize, pspec: &'a glib::ParamSpec) -> Result<glib::Value, glib::subclass::object::MissingPropertyHandler<'a>> {
+        fn derived_property<'a>(&self, _obj: &Self::Type, _id: usize, pspec: &'a #crate_ident::ParamSpec) -> Result<#crate_ident::Value, #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
             match pspec.name() {
                 #(#match_branch_get,)*
                 p => Err(pspec.into())
@@ -348,6 +349,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
     )
 }
 fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let match_branch_set = props.iter().flat_map(|p| {
         let PropDesc {
             name,
@@ -391,7 +393,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_set_property<'a>(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &'a glib::ParamSpec) -> Result<(), glib::subclass::object::MissingPropertyHandler<'a>> {
+        fn derived_set_property<'a>(&self, _obj: &Self::Type, _id: usize, value: &#crate_ident::Value, pspec: &'a #crate_ident::ParamSpec) -> Result<(), #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
             match pspec.name() {
                 #(#match_branch_set,)*
                 p => Err(pspec.into())
@@ -432,11 +434,13 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
 }
 
 fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
-    quote!(fn #ident(&self) -> <#ty as glib::Property>::Value)
+    let crate_ident = crate_ident_new();
+    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Value)
 }
 fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let ident = format_ident!("set_{}", ident);
-    quote!(fn #ident(&self, value: <#ty as glib::Property>::Value))
+    quote!(fn #ident(&self, value: <#ty as #crate_ident::Property>::Value))
 }
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props
@@ -452,18 +456,20 @@ fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
 }
 
 fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let defs = props.iter().map(|p| {
         let name = &p.name;
         let ident = name_to_ident(name);
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
-            let body = quote!(self.property::<<#ty as glib::Property>::Value>(#name));
+            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Value>(#name));
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
         let setter = p.set.is_some().then(|| {
-            let body = quote!(self.set_property::<<#ty as glib::Property>::Value>(#name, value));
+            let body =
+                quote!(self.set_property::<<#ty as #crate_ident::Property>::Value>(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
@@ -478,8 +484,9 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
 
 fn connect_prop_notify_prototype(p: &PropDesc) -> TokenStream2 {
     let name = &p.name;
+    let crate_ident = crate_ident_new();
     let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
-    quote!(fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId)
+    quote!(fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId)
 }
 fn expand_connect_prop_notify_def(props: &[PropDesc]) -> TokenStream2 {
     let connection_fns = props.iter().map(connect_prop_notify_prototype);
@@ -524,7 +531,8 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
     let struct_ident_ext = format_ident!("{}PropertiesExt", &input.ident);
     let crate_ident = crate_ident_new();
-    let wrapper_type = quote!(<#struct_ident as glib::subclass::types::ObjectSubclass>::Type);
+    let wrapper_type =
+        quote!(<#struct_ident as #crate_ident::subclass::types::ObjectSubclass>::Type);
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
@@ -535,9 +543,9 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let emit_def = expand_emit_def(&input.props);
     let emit_impl = expand_emit_impl(&input.props);
     let expanded = quote! {
-        use glib::{PropertyRead, PropertyWrite};
+        use #crate_ident::{PropertyRead, PropertyWrite, ToValue};
 
-        impl glib::subclass::object::DerivedObjectProperties for #struct_ident {
+        impl #crate_ident::subclass::object::DerivedObjectProperties for #struct_ident {
             #fn_properties
             #fn_property
             #fn_set_property
