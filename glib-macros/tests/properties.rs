@@ -8,6 +8,7 @@ fn props() {
         use glib::prelude::*;
         use glib::subclass::prelude::*;
         use glib_macros::Properties;
+        use std::cell::Cell;
         use std::cell::RefCell;
         use std::marker::PhantomData;
         use std::sync::Mutex;
@@ -66,6 +67,8 @@ fn props() {
                 smart_pointer: Rc<RefCell<String>>,
                 #[property(get, set)]
                 once_cell: OnceCell<u8>,
+                #[property(get, set)]
+                cell: Cell<u8>,
             }
 
             impl ObjectImpl for Foo {

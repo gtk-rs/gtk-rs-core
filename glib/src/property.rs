@@ -92,6 +92,18 @@ impl<T: PropertyWriteNested> PropertyWrite for T {
     }
 }
 
+impl<T: Copy> PropertyRead for Cell<T> {
+    type Value = T;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(&Cell::get(self))
+    }
+}
+impl<T> PropertyWrite for Cell<T> {
+    type SetValue = T;
+    fn set(&self, v: Self::SetValue) {
+        self.set(v);
+    }
+}
 impl<T> PropertyRead for RefCell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
