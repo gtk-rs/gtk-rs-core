@@ -2746,27 +2746,15 @@ impl<T: ObjectType> ObjectExt for T {
                 // actual typed of the contained object is compatible and if so create
                 // a properly typed Value. This can happen if the type field in the
                 // Value is set to a more generic type than the contained value
-                let opt_obj = ret.get::<Option<Object>>().unwrap_or_else(|_| {
+                if let Err(got) = coerce_object_type(&mut ret, return_type) {
                     panic!(
                         "Signal '{}' of type '{}' required return value of type '{}' but got '{}'",
                         signal_name,
                         type_,
                         return_type,
-                        ret.type_()
+                        got
                     );
-                });
-
-                let actual_type = opt_obj.map_or_else(|| ret.type_(), |obj| obj.type_());
-                assert!(actual_type.is_a(return_type),
-                    "Signal '{}' of type '{}' required return value of type '{}' but got '{}' (actual '{}')",
-                    signal_name,
-                    type_,
-                    return_type,
-                    ret.type_(),
-                    actual_type
-                );
-
-                ret.inner.g_type = return_type.into_glib();
+                };
                 Some(ret)
             })
         };
@@ -3352,37 +3340,16 @@ fn validate_property_type(
         // actual type of the contained object is compatible and if so create
         // a properly typed Value. This can happen if the type field in the
         // Value is set to a more generic type than the contained value
-        if !valid_type && property_value.type_().is_a(Object::static_type()) {
-            match property_value.get::<Option<Object>>() {
-                Ok(Some(obj)) => {
-                    if obj.type_().is_a(pspec.value_type()) {
-                        property_value.inner.g_type = pspec.value_type().into_glib();
-                    } else {
-                        return Err(
-                            bool_error!(
-                                "property '{}' of type '{}' can't be set from the given object type (expected: '{}', got: '{}')",
-                                pspec.name(),
-                                type_,
-                                pspec.value_type(),
-                                obj.type_(),
-                            )
-                        );
-                    }
-                }
-                Ok(None) => {
-                    // If the value is None then the type is compatible too
-                    property_value.inner.g_type = pspec.value_type().into_glib();
-                }
-                Err(_) => unreachable!("property_value type conformity already checked"),
-            }
-        } else if !valid_type {
-            return Err(bool_error!(format!(
-                "property '{}' of type '{}' can't be set from the given type (expected: '{}', got: '{}')",
-                pspec.name(),
-                type_,
-                pspec.value_type(),
-                property_value.type_(),
-            )));
+        if !valid_type {
+            coerce_object_type(property_value, pspec.value_type())
+                .map_err(|got| {
+                    bool_error!(
+                        "property '{}' of type '{}' can't be set from the given type (expected: '{}', got: '{}')",
+                        pspec.name(),
+                        type_,
+                        pspec.value_type(),
+                        got
+                )})?;
         }
 
         let changed: bool = from_glib(gobject_ffi::g_param_value_validate(
@@ -3400,6 +3367,21 @@ fn validate_property_type(
     }
 
     Ok(())
+}
+
+fn coerce_object_type(
+    property_value: &mut Value,
+    type_: Type,
+) -> Result<(), Type> {
+    // return early if type coercion is not possible
+    match property_value.get::<Option<Object>>() {
+        Ok(Some(obj)) if !(obj.type_().is_a(type_)) => Err(obj.type_()),
+        Ok(_) => {
+            property_value.inner.g_type = type_.into_glib();
+            Ok(())
+        }
+        Err(_) => Err(property_value.type_()),
+    }
 }
 
 fn validate_signal_arguments(
@@ -3423,41 +3405,17 @@ fn validate_signal_arguments(
 
     for (i, (arg, param_type)) in param_types.enumerate() {
         let param_type: Type = (*param_type).into();
-        if arg.type_().is_a(Object::static_type()) {
-            match arg.get::<Option<Object>>() {
-                Ok(Some(obj)) => {
-                    if obj.type_().is_a(param_type) {
-                        arg.inner.g_type = param_type.into_glib();
-                    } else {
-                        return Err(
-                            bool_error!(
-                                "Incompatible argument type in argument {} for signal '{}' of type '{}' (expected {}, got {})",
-                                i,
-                                signal_name,
-                                type_,
-                                param_type,
-                                arg.type_(),
-                            )
-                        );
-                    }
-                }
-                Ok(None) => {
-                    // If the value is None then the type is compatible too
-                    arg.inner.g_type = param_type.into_glib();
-                }
-                Err(_) => unreachable!("property_value type conformity already checked"),
-            }
-        } else if param_type != arg.type_() {
-            return Err(
+        if param_type != arg.type_() {
+            coerce_object_type(arg, param_type).map_err(|got| 
                 bool_error!(
                     "Incompatible argument type in argument {} for signal '{}' of type '{}' (expected {}, got {})",
                     i,
                     signal_name,
                     type_,
                     param_type,
-                    arg.type_(),
+                    got
                 )
-            );
+            )?;
         }
     }
 

@@ -552,7 +552,7 @@ mod test {
                 .err()
                 .expect("Failed to set 'child' property")
                 .to_string(),
-            "property 'child' of type 'SimpleObject' can't be set from the given object type (expected: 'ChildObject', got: 'SimpleObject')",
+            "property 'child' of type 'SimpleObject' can't be set from the given type (expected: 'ChildObject', got: 'SimpleObject')",
         );
 
         let child = Object::with_type(ChildObject::static_type(), &[]).expect("Object::new failed");
