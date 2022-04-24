@@ -327,12 +327,12 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     #name => Ok(
-                        #crate_ident::PropertyRead::get(&self.#field_ident, |v| v.to_value())
+                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| v.to_value())
                     )
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     #name => Ok(
-                        #crate_ident::PropertyRead::get(&self.#field_ident, |v| v.#member.to_value())
+                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| v.#member.to_value())
                     )
                 ),
             };
@@ -372,7 +372,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     #name => {
-                        #crate_ident::PropertyWrite::set(
+                        #crate_ident::PropertySet::set(
                             &self.#field_ident,
                             #crate_ident::Value::get(value)#expect
                         );
@@ -381,7 +381,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     #name => {
-                        #crate_ident::PropertyWriteNested::set_nested(
+                        #crate_ident::PropertySetNested::set_nested(
                             &self.#field_ident,
                             move |v| v.#member = #crate_ident::Value::get(value)#expect
                         );
@@ -435,12 +435,12 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
 
 fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let crate_ident = crate_ident_new();
-    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Value)
+    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Param)
 }
 fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let ident = format_ident!("set_{}", ident);
-    quote!(fn #ident(&self, value: <#ty as #crate_ident::Property>::Value))
+    quote!(fn #ident(&self, value: <#ty as #crate_ident::Property>::Param))
 }
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props
@@ -463,13 +463,13 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
-            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Value>(#name));
+            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Param>(#name));
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
         let setter = p.set.is_some().then(|| {
             let body =
-                quote!(self.set_property::<<#ty as #crate_ident::Property>::Value>(#name, value));
+                quote!(self.set_property::<<#ty as #crate_ident::Property>::Param>(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
@@ -543,7 +543,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let emit_def = expand_emit_def(&input.props);
     let emit_impl = expand_emit_impl(&input.props);
     let expanded = quote! {
-        use #crate_ident::{PropertyRead, PropertyWrite, ToValue};
+        use #crate_ident::{PropertyGet, PropertySet, ToValue};
 
         impl #crate_ident::subclass::object::DerivedObjectProperties for #struct_ident {
             #fn_properties

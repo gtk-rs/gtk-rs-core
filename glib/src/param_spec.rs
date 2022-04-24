@@ -1221,6 +1221,9 @@ pub trait HasParamSpec {
     type ParamSpec;
 }
 
+impl HasParamSpec for crate::GString {
+    type ParamSpec = ParamSpecString;
+}
 impl HasParamSpec for String {
     type ParamSpec = ParamSpecString;
 }

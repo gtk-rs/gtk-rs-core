@@ -1,4 +1,4 @@
-use crate::{Property, PropertyRead, PropertyWrite, PropertyWriteNested};
+use crate::{Property, PropertyGet, PropertySet, PropertySetNested};
 
 use once_cell::sync::OnceCell as SyncOnceCell;
 use once_cell::unsync::OnceCell;
@@ -16,7 +16,7 @@ macro_rules! define_construct {
             }
         }
         impl<T: Property> Property for $ident<T> {
-            type Value = T;
+            type Param = T;
             type ParamSpec = T::ParamSpec;
         }
 
@@ -38,16 +38,16 @@ macro_rules! define_construct {
             }
         }
 
-        impl<T> PropertyWriteNested for $ident<T> {
+        impl<T> PropertySetNested for $ident<T> {
             type SetNestedValue = T;
             fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
-                PropertyWriteNested::set_nested(&self.0, |v| f(&mut v.as_mut().unwrap()))
+                PropertySetNested::set_nested(&self.0, |v| f(&mut v.as_mut().unwrap()))
             }
         }
-        impl<T> PropertyRead for $ident<T> {
+        impl<T> PropertyGet for $ident<T> {
             type Value = T;
             fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
-                PropertyRead::get(&self.0, |v| f(v.as_ref().unwrap()))
+                PropertyGet::get(&self.0, |v| f(v.as_ref().unwrap()))
             }
         }
     };
@@ -64,16 +64,16 @@ macro_rules! define_construct {
         }
 
         define_construct!(@common $ident, $container, $inner);
-        impl<T> PropertyWrite for $ident<T> {
+        impl<T> PropertySet for $ident<T> {
             type SetValue = T;
             fn set(&self, v: T) {
-                PropertyWrite::set(&self.0, v)
+                PropertySet::set(&self.0, v)
             }
         }
-        impl<T> PropertyRead for $ident<T> {
+        impl<T> PropertyGet for $ident<T> {
             type Value = T;
             fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
-                PropertyRead::get(&self.0, |v| f(v))
+                PropertyGet::get(&self.0, |v| f(v))
             }
         }
     }
