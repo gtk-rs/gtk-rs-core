@@ -2263,16 +2263,13 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     fn try_set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError> {
-        let pspec = match self.find_property(property_name) {
-            Some(pspec) => pspec,
-            None => {
-                return Err(bool_error!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
-                    self.type_()
-                ));
-            }
-        };
+        let pspec = self.find_property(property_name).ok_or_else(|| {
+            bool_error!(
+                "property '{}' of type '{}' not found",
+                property_name,
+                self.type_()
+            )
+        })?;
 
         let mut property_value = value.to_value();
         validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
@@ -2413,16 +2410,13 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     fn try_property_value(&self, property_name: &str) -> Result<Value, BoolError> {
-        let pspec = match self.find_property(property_name) {
-            Some(pspec) => pspec,
-            None => {
-                return Err(bool_error!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
-                    self.type_()
-                ));
-            }
-        };
+        let pspec = self.find_property(property_name).ok_or_else(|| {
+            bool_error!(
+                "property '{}' of type '{}' not found",
+                property_name,
+                self.type_()
+            )
+        })?;
 
         if !pspec.flags().contains(crate::ParamFlags::READABLE) {
             return Err(bool_error!(
