@@ -2739,10 +2739,7 @@ impl<T: ObjectType> ObjectExt for T {
                 if let Err(got) = coerce_object_type(&mut ret, return_type) {
                     panic!(
                         "Signal '{}' of type '{}' required return value of type '{}' but got '{}'",
-                        signal_name,
-                        type_,
-                        return_type,
-                        got
+                        signal_name, type_, return_type, got
                     );
                 };
                 Some(ret)
@@ -3360,10 +3357,7 @@ fn validate_property_type(
 // a properly typed Value (by mutating the existing Value).
 // This can happen if the type field in the Value is set to a more
 // generic type than the contained value.
-fn coerce_object_type(
-    property_value: &mut Value,
-    type_: Type,
-) -> Result<(), Type> {
+fn coerce_object_type(property_value: &mut Value, type_: Type) -> Result<(), Type> {
     // return early if type coercion is not possible
     match property_value.get::<Option<Object>>() {
         Ok(Some(obj)) if !(obj.type_().is_a(type_)) => Err(obj.type_()),
@@ -3397,7 +3391,7 @@ fn validate_signal_arguments(
     for (i, (arg, param_type)) in param_types.enumerate() {
         let param_type: Type = (*param_type).into();
         if param_type != arg.type_() {
-            coerce_object_type(arg, param_type).map_err(|got| 
+            coerce_object_type(arg, param_type).map_err(|got|
                 bool_error!(
                     "Incompatible argument type in argument {} for signal '{}' of type '{}' (expected {}, got {})",
                     i,
