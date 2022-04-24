@@ -2736,10 +2736,6 @@ impl<T: ObjectType> ObjectExt for T {
                     return Some(ret);
                 }
 
-                // If it's not directly a valid type but an object type, we check if the
-                // actual typed of the contained object is compatible and if so create
-                // a properly typed Value. This can happen if the type field in the
-                // Value is set to a more generic type than the contained value
                 if let Err(got) = coerce_object_type(&mut ret, return_type) {
                     panic!(
                         "Signal '{}' of type '{}' required return value of type '{}' but got '{}'",
@@ -3330,10 +3326,6 @@ fn validate_property_type(
             pspec.value_type().into_glib(),
         ));
 
-        // If it's not directly a valid type but an object type, we check if the
-        // actual type of the contained object is compatible and if so create
-        // a properly typed Value. This can happen if the type field in the
-        // Value is set to a more generic type than the contained value
         if !valid_type {
             coerce_object_type(property_value, pspec.value_type())
                 .map_err(|got| {
@@ -3363,6 +3355,11 @@ fn validate_property_type(
     Ok(())
 }
 
+// If it's not directly a valid type but an object type, we check if the
+// actual type of the contained object is compatible and if so create
+// a properly typed Value (by mutating the existing Value).
+// This can happen if the type field in the Value is set to a more
+// generic type than the contained value.
 fn coerce_object_type(
     property_value: &mut Value,
     type_: Type,
