@@ -10,6 +10,7 @@
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
+pub use gio_macros::actions;
 pub use glib;
 
 mod app_info;
