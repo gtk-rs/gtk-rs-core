@@ -11,6 +11,7 @@ pub use crate::auto::traits::*;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 pub use crate::app_info::AppInfoExtManual;
 pub use crate::application::*;
+pub use crate::cancellable::*;
 pub use crate::converter::*;
 pub use crate::data_input_stream::DataInputStreamExtManual;
 pub use crate::dbus_proxy::DBusProxyExtManual;

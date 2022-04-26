@@ -2,14 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use glib::object::Cast;
 use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
 use glib::translate::*;
-use std::boxed::Box as Box_;
 use std::fmt;
-use std::mem::transmute;
 use std::ptr;
 
 glib::wrapper! {
@@ -49,12 +44,6 @@ pub trait CancellableExt: 'static {
     #[doc(alias = "g_cancellable_cancel")]
     fn cancel(&self);
 
-    //#[doc(alias = "g_cancellable_connect")]
-    //fn connect<P: Fn() + Send + Sync + 'static>(&self, callback: P, data: /*Unimplemented*/Option<Fundamental: Pointer>) -> libc::c_ulong;
-
-    #[doc(alias = "g_cancellable_disconnect")]
-    fn disconnect(&self, handler_id: libc::c_ulong);
-
     #[doc(alias = "g_cancellable_get_fd")]
     #[doc(alias = "get_fd")]
     fn fd(&self) -> i32;
@@ -76,25 +65,12 @@ pub trait CancellableExt: 'static {
 
     #[doc(alias = "g_cancellable_set_error_if_cancelled")]
     fn set_error_if_cancelled(&self) -> Result<(), glib::Error>;
-
-    #[doc(alias = "cancelled")]
-    fn connect_cancelled<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: IsA<Cancellable>> CancellableExt for O {
     fn cancel(&self) {
         unsafe {
             ffi::g_cancellable_cancel(self.as_ref().to_glib_none().0);
-        }
-    }
-
-    //fn connect<P: Fn() + Send + Sync + 'static>(&self, callback: P, data: /*Unimplemented*/Option<Fundamental: Pointer>) -> libc::c_ulong {
-    //    unsafe { TODO: call ffi:g_cancellable_connect() }
-    //}
-
-    fn disconnect(&self, handler_id: libc::c_ulong) {
-        unsafe {
-            ffi::g_cancellable_disconnect(self.as_ref().to_glib_none().0, handler_id);
         }
     }
 
@@ -145,30 +121,6 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
             } else {
                 Err(from_glib_full(error))
             }
-        }
-    }
-
-    fn connect_cancelled<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn cancelled_trampoline<
-            P: IsA<Cancellable>,
-            F: Fn(&P) + Send + Sync + 'static,
-        >(
-            this: *mut ffi::GCancellable,
-            f: glib::ffi::gpointer,
-        ) {
-            let f: &F = &*(f as *const F);
-            f(Cancellable::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                b"cancelled\0".as_ptr() as *const _,
-                Some(transmute::<_, unsafe extern "C" fn()>(
-                    cancelled_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
         }
     }
 }

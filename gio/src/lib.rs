@@ -15,7 +15,6 @@ pub use glib;
 mod app_info;
 mod application;
 mod async_initable;
-#[cfg(test)]
 mod cancellable;
 mod converter;
 mod data_input_stream;
