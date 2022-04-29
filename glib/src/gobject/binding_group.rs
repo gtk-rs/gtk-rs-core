@@ -170,7 +170,7 @@ impl<'a> BindingGroupBuilder<'a> {
         }
 
         unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
-            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, ParamSpec, ParamSpec));
+            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
         }
 
         let source_property = if let Some(source) = self.group.source() {
@@ -246,7 +246,7 @@ impl<'a> BindingGroupBuilder<'a> {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Similar to `try_build` but fails instead of panicking.
+    /// Similar to `try_build` but panics instead of failing.
     pub fn build(self) {
         self.try_build().unwrap()
     }
