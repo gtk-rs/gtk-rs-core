@@ -111,7 +111,7 @@ impl<'a> BindingGroupBuilder<'a> {
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
             let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, ParamSpec, ParamSpec));
+                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
 
             match (transform_data.0.as_ref().unwrap())(
                 &from_glib_borrow(binding),
@@ -140,19 +140,26 @@ impl<'a> BindingGroupBuilder<'a> {
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
             let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, ParamSpec, ParamSpec));
+                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
+            let binding = from_glib_borrow(binding);
 
             match (transform_data.1.as_ref().unwrap())(
-                &from_glib_borrow(binding),
+                &binding,
                 &*(from_value as *const Value),
             ) {
                 None => false,
                 Some(res) => {
+                    let pspec_name = transform_data.2.clone();
+                    let source = binding.source().unwrap();
+                    let pspec = source.find_property(&pspec_name);
+                    assert!(pspec.is_some(), "Source object does not have a property {}", pspec_name);
+                    let pspec = pspec.unwrap();
+
                     assert!(
-                        res.type_().is_a(transform_data.2.value_type()),
+                        res.type_().is_a(pspec.value_type()),
                         "Source property {} expected type {} but transform_from function returned {}",
-                        transform_data.2.name(),
-                        transform_data.2.value_type(),
+                        pspec_name,
+                        pspec.value_type(),
                         res.type_()
                     );
                     *to_value = res.into_raw();
@@ -166,13 +173,7 @@ impl<'a> BindingGroupBuilder<'a> {
             let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, ParamSpec, ParamSpec));
         }
 
-        let source = self
-            .group
-            .source()
-            .ok_or_else(|| bool_error!("Binding group does not have a source set"))?;
-        unsafe {
-            let target: Object = from_glib_none(self.target.clone().to_glib_none().0);
-
+        let source_property = if let Some(source) = self.group.source() {
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(
                     "Source property {} on type {} not found",
@@ -180,6 +181,19 @@ impl<'a> BindingGroupBuilder<'a> {
                     source.type_()
                 )
             })?;
+            Some(source_property)
+        } else {
+            None
+        };
+        let source_property_name = source_property
+            .as_ref()
+            .map(crate::ParamSpec::name)
+            .unwrap_or_else(|| self.source_property)
+            .as_ptr();
+
+        unsafe {
+            let target: Object = from_glib_none(self.target.clone().to_glib_none().0);
+
             let target_property = target.find_property(self.target_property).ok_or_else(|| {
                 bool_error!(
                     "Target property {} on type {} not found",
@@ -188,7 +202,6 @@ impl<'a> BindingGroupBuilder<'a> {
                 )
             })?;
 
-            let source_property_name = source_property.name().as_ptr();
             let target_property_name = target_property.name().as_ptr();
 
             let have_transform_to = self.transform_to.is_some();
@@ -197,7 +210,7 @@ impl<'a> BindingGroupBuilder<'a> {
                 Box::into_raw(Box::new((
                     self.transform_to,
                     self.transform_from,
-                    source_property,
+                    source_property_name,
                     target_property,
                 )))
             } else {
