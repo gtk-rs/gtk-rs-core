@@ -65,6 +65,8 @@ fn props() {
                 fake_field: PhantomData<String>,
                 #[property(get, set, user_1, user_2, lax_validation)]
                 custom_flags: RefCell<String>,
+                #[property(get, set, user_1, glib::ParamFlags::USER_2)]
+                custom_flags_by_path: RefCell<String>,
                 #[property(get, set, builder())]
                 simple_builder: RefCell<u32>,
                 #[property(get, set, builder().minimum(0).maximum(5))]
@@ -165,6 +167,11 @@ fn props() {
             | ParamFlags::USER_2
             | ParamFlags::READWRITE
             | ParamFlags::LAX_VALIDATION
+    );
+    // custom flags
+    assert_eq!(
+        myfoo.find_property("custom_flags_by_path").unwrap().flags(),
+        ParamFlags::READWRITE | ParamFlags::USER_1 | ParamFlags::USER_2
     );
 
     // numeric builder

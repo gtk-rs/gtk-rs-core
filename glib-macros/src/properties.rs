@@ -52,7 +52,11 @@ impl std::convert::From<Option<syn::Expr>> for MaybeCustomFn {
 }
 
 enum PropAttr {
+    // ident
     Flag(&'static str),
+
+    // path
+    FlagPath(syn::Path),
 
     // builder(required_params).parameter(value)
     // becomes
@@ -134,6 +138,16 @@ impl Parse for PropAttr {
                 }
                 _ => panic!("Unsupported attribute list {}(...)", name_str),
             }
+        } else if input.peek(Token![::]) {
+            let mut p: syn::Path = input.parse()?;
+            p.segments.insert(
+                0,
+                syn::PathSegment {
+                    ident: format_ident!("{}", name),
+                    arguments: syn::PathArguments::None,
+                },
+            );
+            PropAttr::FlagPath(p)
         } else {
             // attributes with only the identifier
             // name
@@ -160,6 +174,7 @@ struct ReceivedAttrs {
     ty: Option<syn::Type>,
     member: Option<syn::Ident>,
     flags: Vec<&'static str>,
+    flags_paths: Vec<syn::Path>,
     name: Option<syn::LitStr>,
     nick: Option<syn::LitStr>,
     blurb: Option<syn::LitStr>,
@@ -182,6 +197,7 @@ impl ReceivedAttrs {
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
             PropAttr::Flag(flag) => self.flags.push(flag),
+            PropAttr::FlagPath(flag) => self.flags_paths.push(flag),
             PropAttr::Builder(required_params, optionals) => {
                 self.builder = Some((required_params, optionals))
             }
@@ -199,6 +215,7 @@ struct PropDesc {
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
     flags: Vec<&'static str>,
+    flags_paths: Vec<syn::Path>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
 }
 impl PropDesc {
@@ -218,6 +235,7 @@ impl PropDesc {
             nick,
             blurb,
             builder,
+            flags_paths,
         } = attrs;
 
         // Fill needed, but missing, attributes with calculated default values
@@ -242,6 +260,7 @@ impl PropDesc {
             nick,
             blurb,
             builder,
+            flags_paths,
         }
     }
 }
@@ -256,6 +275,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             nick,
             blurb,
             builder,
+            flags_paths,
             ..
         } = prop;
 
@@ -268,7 +288,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
                     .iter()
                     .map(|f| TokenStream2::from_str(f).unwrap()),
             );
-            quote!(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)*)
+            quote!(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)* #(| #flags_paths)*)
         };
 
         let builder_call = builder
