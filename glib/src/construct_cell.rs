@@ -16,7 +16,7 @@ macro_rules! define_construct {
             }
         }
         impl<T: Property> Property for $ident<T> {
-            type Param = T;
+            type Value = T;
             type ParamSpec = T::ParamSpec;
         }
 

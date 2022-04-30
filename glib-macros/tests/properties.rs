@@ -226,21 +226,21 @@ fn props() {
     // setters
     {
         // simple
-        myfoo.set_bar("setter working".to_string());
+        myfoo.set_bar("setter working");
         assert_eq!(
             myfoo.property::<String>("bar"),
             "setter working".to_string()
         );
 
         // custom
-        myfoo.set_fake_field("fake setter".to_string());
+        myfoo.set_fake_field("fake setter");
         assert_eq!(
             myfoo.property::<String>("author-name"),
             "fake setter".to_string()
         );
 
         // member of struct field
-        myfoo.set_author_nick("setter nick".to_string());
+        myfoo.set_author_nick("setter nick");
         assert_eq!(
             myfoo.property::<String>("author-nick"),
             "setter nick".to_string()

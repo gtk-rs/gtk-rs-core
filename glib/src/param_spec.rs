@@ -1221,7 +1221,13 @@ pub trait HasParamSpec {
     type ParamSpec;
 }
 
+impl<T: HasParamSpec + ?Sized> HasParamSpec for &T {
+    type ParamSpec = T::ParamSpec;
+}
 impl HasParamSpec for crate::GString {
+    type ParamSpec = ParamSpecString;
+}
+impl HasParamSpec for str {
     type ParamSpec = ParamSpecString;
 }
 impl HasParamSpec for String {

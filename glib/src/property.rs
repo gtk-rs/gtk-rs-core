@@ -17,52 +17,52 @@ use crate::HasParamSpec;
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 pub trait Property {
-    type Param;
+    type Value;
     type ParamSpec;
 }
 impl<T: HasParamSpec> Property for T {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Option<T> {
-    type Param = Option<T>;
+    type Value = Option<T>;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for PhantomData<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for RefCell<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Cell<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Mutex<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for RwLock<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for once_cell::sync::OnceCell<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for once_cell::unsync::OnceCell<T> {
-    type Param = T;
+    type Value = T;
     type ParamSpec = T::ParamSpec;
 }
 // Handle smart pointers trasparently
 impl<T: Property> Property for Rc<T> {
-    type Param = T::Param;
+    type Value = T::Value;
     type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Arc<T> {
-    type Param = T::Param;
+    type Value = T::Value;
     type ParamSpec = T::ParamSpec;
 }
 
@@ -207,7 +207,7 @@ impl<T: PropertySetNested> PropertySetNested for Arc<T> {
 macro_rules! impl_atomic {
     ($atomic:ty, $valuety:ty) => {
         impl Property for $atomic {
-            type Param = $valuety;
+            type Value = $valuety;
             type ParamSpec = <$valuety as HasParamSpec>::ParamSpec;
         }
         impl PropertyGet for $atomic {

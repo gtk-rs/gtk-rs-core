@@ -456,12 +456,12 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
 
 fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let crate_ident = crate_ident_new();
-    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Param)
+    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Value)
 }
 fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let ident = format_ident!("set_{}", ident);
-    quote!(fn #ident(&self, value: <#ty as #crate_ident::Property>::Param))
+    quote!(fn #ident<P: #crate_ident::HasParamSpec<ParamSpec = <#ty as #crate_ident::Property>::ParamSpec> + #crate_ident::ToValue>(&self, value: P))
 }
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props
@@ -484,13 +484,12 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
-            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Param>(#name));
+            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Value>(#name));
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
         let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
-            let body =
-                quote!(self.set_property::<<#ty as #crate_ident::Property>::Param>(#name, value));
+            let body = quote!(self.set_property(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
