@@ -1,3 +1,5 @@
+// Take a look at the license at the top of the repository in the LICENSE file.
+
 use crate::{Property, PropertyGet, PropertySet, PropertySetNested};
 
 use once_cell::sync::OnceCell as SyncOnceCell;
