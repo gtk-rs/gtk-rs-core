@@ -2210,7 +2210,7 @@ pub trait ObjectExt: ObjectType {
     // rustdoc-stripper-ignore-next
     /// Add a callback to be notified when the Object is disposed.
     ///
-    /// This is like [`add_weak_ref_notify`][`crate::OBjectExt::add_weak_ref_notify`] but doesn't require the closure to be [`Send`] and [`Sync`].
+    /// This is like [`add_weak_ref_notify`][`ObjectExt::add_weak_ref_notify`] but doesn't require the closure to be [`Send`] and [`Sync`].
     /// Object dispose will panic if the object is disposed from the wrong thread.
     #[doc(alias = "g_object_weak_ref")]
     #[doc(alias = "connect_drop")]
