@@ -488,7 +488,7 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
             let fn_prototype = getter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
-        let setter = p.set.is_some().then(|| {
+        let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
             let body =
                 quote!(self.set_property::<<#ty as #crate_ident::Property>::Param>(#name, value));
             let fn_prototype = setter_prototype(&ident, ty);
