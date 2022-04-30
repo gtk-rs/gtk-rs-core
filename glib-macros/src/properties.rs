@@ -80,22 +80,22 @@ enum PropAttr {
 }
 
 const FLAGS: [&str; 16] = [
-    "READABLE",
-    "WRITABLE",
-    "READWRITE",
-    "CONSTRUCT",
-    "CONSTRUCT_ONLY",
-    "LAX_VALIDATION",
-    "USER_1",
-    "USER_2",
-    "USER_3",
-    "USER_4",
-    "USER_5",
-    "USER_6",
-    "USER_7",
-    "USER_8",
-    "EXPLICIT_NOTIFY",
-    "DEPRECATED",
+    "readable",
+    "writable",
+    "readwrite",
+    "construct",
+    "construct_only",
+    "lax_validation",
+    "user_1",
+    "user_2",
+    "user_3",
+    "user_4",
+    "user_5",
+    "user_6",
+    "user_7",
+    "user_8",
+    "explicit_notify",
+    "deprecated",
 ];
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
@@ -155,7 +155,7 @@ impl Parse for PropAttr {
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
                 name => {
-                    if let Some(flag) = FLAGS.iter().find(|x| *x == &name.to_uppercase()) {
+                    if let Some(flag) = FLAGS.iter().find(|x| *x == &name) {
                         PropAttr::Flag(flag)
                     } else {
                         panic!("Invalid attribute for property")
@@ -286,7 +286,8 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             let flags_iter = [write, read].into_iter().flatten().chain(
                 prop.flags
                     .iter()
-                    .map(|f| TokenStream2::from_str(f).unwrap()),
+                    .map(|x| str::to_uppercase(x))
+                    .map(|f| TokenStream2::from_str(&f).unwrap()),
             );
             quote!(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)* #(| #flags_paths)*)
         };
