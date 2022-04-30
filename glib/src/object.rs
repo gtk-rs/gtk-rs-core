@@ -2203,15 +2203,17 @@ pub trait ObjectExt: ObjectType {
     // rustdoc-stripper-ignore-next
     /// Add a callback to be notified when the Object is disposed.
     #[doc(alias = "g_object_weak_ref")]
+    #[doc(alias = "connect_drop")]
     fn add_weak_ref_notify<F: FnOnce() + Send + Sync + 'static>(&self, f: F)
         -> WeakRefNotify<Self>;
 
     // rustdoc-stripper-ignore-next
     /// Add a callback to be notified when the Object is disposed.
     ///
-    /// This is like [`add_weak_ref_notify`][`crate::OBjectExt::add_weak_ref_notify`]  but doesn't require a `Send+Sync` closure.
+    /// This is like [`add_weak_ref_notify`][`crate::OBjectExt::add_weak_ref_notify`] but doesn't require the closure to be [`Send`] and [`Sync`].
     /// Object dispose will panic if the object is disposed from the wrong thread.
     #[doc(alias = "g_object_weak_ref")]
+    #[doc(alias = "connect_drop")]
     fn add_weak_ref_notify_local<F: FnOnce() + 'static>(&self, f: F) -> WeakRefNotify<Self>;
 
     // rustdoc-stripper-ignore-next
@@ -3504,7 +3506,11 @@ wrapper! {
     }
 }
 
-type WeakRefNotifyData = ManuallyDrop<Pin<Box<Option<Box<dyn FnOnce() + 'static>>>>>;
+// ManuallyDrop -> The lifetime of the data isn't bound to a Rust value but a GObject. Drop could free data too early.
+// Pin          -> Make sure the pointer Box(1) passed to FFI is always valid and never reallocates.
+// Box(1)       -> Pointer to Box(2), 64 bits large and compatible with FFI.
+// Box(2)       -> Pointer to dyn FnOnce(), 128 bits large and incompatible with FFI (so Box(1) is passed instead).
+type WeakRefNotifyData = ManuallyDrop<Pin<Box<Box<dyn FnOnce() + 'static>>>>;
 
 // rustdoc-stripper-ignore-next
 /// A handle to disconnect a weak ref notify closure.
@@ -3514,29 +3520,33 @@ pub struct WeakRefNotify<T: ObjectType> {
 }
 
 unsafe extern "C" fn notify_func(data: ffi::gpointer, _obj: *mut gobject_ffi::GObject) {
-    let callback: Box<Option<Box<dyn FnOnce()>>> = Box::from_raw(data as *mut _);
+    // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
+    //         ManuallyDrop and Pin are elided because the pointer only points to Box<Box<dyn FnOnce()>>.
+    let callback: Box<Box<dyn FnOnce()>> = Box::from_raw(data as *mut _);
 
-    let callback = (*callback).expect("cannot get closure...");
-    callback()
+    // SAFETY: Function must have type FnOnce() due type checks in WeakRefNotify::new.
+    //         This callback can only be called once when the object is disposed, to the data can be dropped.
+    (*callback)()
 }
 
 impl<T: ObjectType> WeakRefNotify<T> {
     fn new<F: FnOnce() + 'static>(obj: &T, f: F) -> WeakRefNotify<T> {
-        unsafe {
-            let data: WeakRefNotifyData = ManuallyDrop::new(Box::pin(Some(Box::new(f))));
+        let data: WeakRefNotifyData = ManuallyDrop::new(Box::pin(Box::new(f)));
+        let data_ptr: *const Box<dyn FnOnce()> = Pin::as_ref(&data).get_ref();
 
-            let data_ptr: *const Option<Box<dyn FnOnce()>> = Pin::as_ref(&data).get_ref();
+        let object = unsafe {
+            // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
             gobject_ffi::g_object_weak_ref(
                 obj.as_ptr() as *mut GObject,
                 Some(notify_func),
                 data_ptr as *mut _,
             );
 
-            WeakRefNotify {
-                object: obj.unsafe_cast_ref::<T>().downgrade(),
-                data,
-            }
-        }
+            // SAFETY: Object has type &T so we don't need runtime checks in release builds.
+            obj.unsafe_cast_ref::<T>().downgrade()
+        };
+
+        WeakRefNotify { object, data }
     }
 
     // rustdoc-stripper-ignore-next
@@ -3549,14 +3559,21 @@ impl<T: ObjectType> WeakRefNotify<T> {
 
     #[doc(alias = "g_object_weak_unref")]
     pub fn disconnect(mut self) {
-        unsafe {
-            if let Some(obj) = self.object.upgrade() {
-                let data_ptr: *const Option<Box<dyn FnOnce()>> = Pin::as_ref(&self.data).get_ref();
+        // Upgrade the object to make sure it's alive and the callback can't be called while it's disconnected.
+        if let Some(obj) = self.object.upgrade() {
+            let data_ptr: *const Box<dyn FnOnce()> = Pin::as_ref(&self.data).get_ref();
+
+            unsafe {
+                // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
                 gobject_ffi::g_object_weak_unref(
                     obj.as_ptr() as *mut GObject,
                     Some(notify_func),
                     data_ptr as *mut _,
                 );
+
+                // SAFETY: The data can be dropped because references to GObject have been dropped too.
+                //         The callback can't be called before or after because it's disconnected and the object is still alive.
+                //         This function can't be called anymore either because it consumes self.
                 ManuallyDrop::drop(&mut self.data);
             }
         }
