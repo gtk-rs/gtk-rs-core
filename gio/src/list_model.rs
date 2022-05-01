@@ -17,7 +17,8 @@ pub trait ListModelExtManual: Sized {
     fn snapshot(&self) -> Vec<glib::Object>;
 
     // rustdoc-stripper-ignore-next
-    /// Returns an iterator over the ListModel elements.
+    /// If `T::static_type() == self.item_type()` then it returns an iterator over the `ListModel` elements,
+    /// else the types are not compatible and returns `Err(&Self)`.
     fn iter<T: IsA<glib::Object>>(&self) -> Result<ListModelIter<T>, &Self>;
 }
 
