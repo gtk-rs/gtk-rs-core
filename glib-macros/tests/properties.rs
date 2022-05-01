@@ -44,6 +44,7 @@ fn props() {
             use super::*;
 
             #[derive(Properties, Default)]
+            #[properties(wrapper_type = super::Foo)]
             pub struct Foo {
                 #[property(get, set)]
                 bar: Mutex<String>,
@@ -128,8 +129,6 @@ fn props() {
             pub struct Foo(ObjectSubclass<imp::Foo>);
         }
     }
-
-    use foo::imp::FooPropertiesExt;
 
     let myfoo: foo::Foo = glib::object::Object::new(&[]).unwrap();
 

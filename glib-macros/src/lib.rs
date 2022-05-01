@@ -843,6 +843,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     use super::*;
 ///
 ///     #[derive(Properties, Default)]
+///     #[properties(wrapper_type = super::Foo)]
 ///     pub struct Foo {
 ///         #[property(get, set = Self::set_fizz)]
 ///         fizz: RefCell<String>,
@@ -896,8 +897,6 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///     pub struct Foo(ObjectSubclass<imp::Foo>);
 /// }
 ///
-/// use imp::FooPropertiesExt;
-///
 /// fn main() {
 ///   let myfoo: Foo = glib::object::Object::new(&[]).unwrap();
 ///
@@ -906,7 +905,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 #[allow(clippy::needless_doctest_main)]
-#[proc_macro_derive(Properties, attributes(property))]
+#[proc_macro_derive(Properties, attributes(properties, property))]
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
     properties::impl_derive_props(input)

@@ -14,13 +14,36 @@ use syn::spanned::Spanned;
 use syn::Token;
 
 pub struct PropsMacroInput {
+    wrapper_ty: syn::Path,
     ident: syn::Ident,
     props: Vec<PropDesc>,
+}
+
+pub struct PropertiesAttr {
+    _wrapper_ty_token: syn::Ident,
+    _eq: Token![=],
+    wrapper_ty: syn::Path,
+}
+
+impl Parse for PropertiesAttr {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        Ok(Self {
+            _wrapper_ty_token: input.parse()?,
+            _eq: input.parse()?,
+            wrapper_ty: input.parse()?,
+        })
+    }
 }
 
 impl Parse for PropsMacroInput {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let derive_input: syn::DeriveInput = input.parse()?;
+        let wrapper_ty = derive_input
+            .attrs
+            .iter()
+            .find(|x| x.path.is_ident("properties"))
+            .expect("missing #[properties(wrapper_type = ...)]");
+        let wrapper_ty: PropertiesAttr = wrapper_ty.parse_args()?;
         let props: Vec<_> = match derive_input.data {
             syn::Data::Struct(struct_data) => parse_fields(struct_data.fields)?,
             _ => {
@@ -31,6 +54,7 @@ impl Parse for PropsMacroInput {
             }
         };
         Ok(Self {
+            wrapper_ty: wrapper_ty.wrapper_ty,
             ident: derive_input.ident,
             props,
         })
@@ -454,28 +478,6 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
     format_ident!("{}", name.value().replace('-', "_"))
 }
 
-fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
-    let crate_ident = crate_ident_new();
-    quote!(fn #ident(&self) -> <#ty as #crate_ident::Property>::Value)
-}
-fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
-    let crate_ident = crate_ident_new();
-    let ident = format_ident!("set_{}", ident);
-    quote!(fn #ident(&self, value: &<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue))
-}
-fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
-    let defs = props
-        .iter()
-        .flat_map(|p| {
-            let ident = name_to_ident(&p.name);
-            let getter = p.get.is_some().then(|| getter_prototype(&ident, &p.ty));
-            let setter = p.set.is_some().then(|| setter_prototype(&ident, &p.ty));
-            [getter, setter]
-        })
-        .flatten();
-    quote!(#(#defs;)*)
-}
-
 fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let defs = props.iter().map(|p| {
@@ -485,12 +487,16 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
 
         let getter = p.get.is_some().then(|| {
             let body = quote!(self.property::<<#ty as #crate_ident::Property>::Value>(#name));
-            let fn_prototype = getter_prototype(&ident, ty);
+            let fn_prototype =
+                { quote!(pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value) };
             quote!(#fn_prototype { #body })
         });
         let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
             let body = quote!(self.set_property_from_value(#name, &value.to_value()));
-            let fn_prototype = setter_prototype(&ident, ty);
+            let fn_prototype = {
+                let ident = format_ident!("set_{}", ident);
+                quote!(pub fn #ident(&self, value: &<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue))
+            };
             quote!(#fn_prototype { #body })
         });
         let span = p.attrs_span;
@@ -502,20 +508,14 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#defs)*)
 }
 
-fn connect_prop_notify_prototype(p: &PropDesc) -> TokenStream2 {
-    let name = &p.name;
-    let crate_ident = crate_ident_new();
-    let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
-    quote!(fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId)
-}
-fn expand_connect_prop_notify_def(props: &[PropDesc]) -> TokenStream2 {
-    let connection_fns = props.iter().map(connect_prop_notify_prototype);
-    quote!(#(#connection_fns;)*)
-}
 fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = connect_prop_notify_prototype(p);
+        let fn_prototype = {
+            let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
+            quote!(pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId)
+        };
         let span = p.attrs_span;
         quote_spanned!(span=> #fn_prototype {
             self.connect_notify_local(Some(#name), move |this, _| {
@@ -526,19 +526,13 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#connection_fns)*)
 }
 
-fn emit_prototype(p: &PropDesc) -> TokenStream2 {
-    let name = &p.name;
-    let fn_ident = format_ident!("emit_{}", name_to_ident(name));
-    quote!(fn #fn_ident(&self))
-}
-fn expand_emit_def(props: &[PropDesc]) -> TokenStream2 {
-    let emit_fns = props.iter().map(emit_prototype);
-    quote!(#(#emit_fns;)*)
-}
 fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
     let emit_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = emit_prototype(p);
+        let fn_prototype = {
+            let fn_ident = format_ident!("emit_{}", name_to_ident(name));
+            quote!(fn #fn_ident(&self))
+        };
         let span = p.attrs_span;
         quote_spanned!(span=> #fn_prototype {
             self.notify(#name);
@@ -549,18 +543,13 @@ fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
 
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let struct_ident = &input.ident;
-    let struct_ident_ext = format_ident!("{}PropertiesExt", &input.ident);
     let crate_ident = crate_ident_new();
-    let wrapper_type =
-        quote!(<#struct_ident as #crate_ident::subclass::types::ObjectSubclass>::Type);
+    let wrapper_type = input.wrapper_ty;
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
-    let getset_properties_def = expand_getset_properties_def(&input.props);
     let getset_properties_impl = expand_getset_properties_impl(&input.props);
-    let connect_prop_notify_def = expand_connect_prop_notify_def(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
-    let emit_def = expand_emit_def(&input.props);
     let emit_impl = expand_emit_impl(&input.props);
     let expanded = quote! {
         use #crate_ident::{PropertyGet, PropertySet, ToValue};
@@ -571,12 +560,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #fn_set_property
         }
 
-        pub trait #struct_ident_ext {
-            #getset_properties_def
-            #connect_prop_notify_def
-            #emit_def
-        }
-        impl<T: #crate_ident::IsA<#wrapper_type>> #struct_ident_ext for T {
+        impl #wrapper_type {
             #getset_properties_impl
             #connect_prop_notify_impl
             #emit_impl
