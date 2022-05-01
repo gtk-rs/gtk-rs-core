@@ -901,7 +901,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// fn main() {
 ///   let myfoo: Foo = glib::object::Object::new(&[]).unwrap();
 ///
-///   myfoo.set_fizz("test value".to_string());
+///   myfoo.set_fizz("test value");
 ///   assert_eq!(myfoo.fizz(), "custom set: test value".to_string());
 /// }
 /// ```

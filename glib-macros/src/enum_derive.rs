@@ -177,6 +177,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
 
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecEnum;
+            type SetValue = Self;
         }
     }
 }

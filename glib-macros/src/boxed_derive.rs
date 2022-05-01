@@ -218,6 +218,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecBoxed;
+            type SetValue = Self;
         }
     }
 }

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{Property, PropertyGet, PropertySet, PropertySetNested};
+use crate::{HasParamSpec, Property, PropertyGet, PropertySet, PropertySetNested};
 
 use once_cell::sync::OnceCell as SyncOnceCell;
 use once_cell::unsync::OnceCell;
@@ -17,9 +17,8 @@ macro_rules! define_construct {
                 Self::new_empty()
             }
         }
-        impl<T: Property> Property for $ident<T> {
+        impl<T: Property + HasParamSpec> Property for $ident<T> {
             type Value = T;
-            type ParamSpec = T::ParamSpec;
         }
 
         impl<T> ::std::ops::Deref for $ident<T> {

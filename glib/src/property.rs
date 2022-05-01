@@ -17,53 +17,38 @@ use crate::HasParamSpec;
 /// The definition is recursive, so you can nest many `Property`s together. The final `ParamSpec` will
 /// be the one of the innermost type
 pub trait Property {
-    type Value;
-    type ParamSpec;
+    type Value: HasParamSpec;
 }
 impl<T: HasParamSpec> Property for T {
     type Value = T;
-    type ParamSpec = T::ParamSpec;
-}
-impl<T: Property> Property for Option<T> {
-    type Value = Option<T>;
-    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for PhantomData<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for RefCell<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for Cell<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for Mutex<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for RwLock<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for once_cell::sync::OnceCell<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 impl<T: Property> Property for once_cell::unsync::OnceCell<T> {
-    type Value = T;
-    type ParamSpec = T::ParamSpec;
+    type Value = T::Value;
 }
 // Handle smart pointers trasparently
 impl<T: Property> Property for Rc<T> {
     type Value = T::Value;
-    type ParamSpec = T::ParamSpec;
 }
 impl<T: Property> Property for Arc<T> {
     type Value = T::Value;
-    type ParamSpec = T::ParamSpec;
 }
 
 // rustdoc-stripper-ignore-next
@@ -208,7 +193,6 @@ macro_rules! impl_atomic {
     ($atomic:ty, $valuety:ty) => {
         impl Property for $atomic {
             type Value = $valuety;
-            type ParamSpec = <$valuety as HasParamSpec>::ParamSpec;
         }
         impl PropertyGet for $atomic {
             type Value = $valuety;

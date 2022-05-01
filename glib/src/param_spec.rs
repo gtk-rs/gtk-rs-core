@@ -1219,49 +1219,71 @@ define_builder!(
 
 pub trait HasParamSpec {
     type ParamSpec;
+
+    // rustdoc-stripper-ignore-next
+    /// Preferred value to be used as setter for the associated ParamSpec.
+    type SetValue: ?Sized;
 }
 
+impl<T: crate::value::ToValueOptional + HasParamSpec> HasParamSpec for Option<T> {
+    type ParamSpec = T::ParamSpec;
+    type SetValue = T::SetValue;
+}
 impl<T: HasParamSpec + ?Sized> HasParamSpec for &T {
     type ParamSpec = T::ParamSpec;
+    type SetValue = T::SetValue;
 }
 impl HasParamSpec for crate::GString {
     type ParamSpec = ParamSpecString;
+    type SetValue = str;
 }
 impl HasParamSpec for str {
     type ParamSpec = ParamSpecString;
+    type SetValue = str;
 }
 impl HasParamSpec for String {
     type ParamSpec = ParamSpecString;
+    type SetValue = str;
 }
 impl HasParamSpec for char {
     type ParamSpec = ParamSpecUnichar;
+    type SetValue = Self;
 }
 impl HasParamSpec for f64 {
     type ParamSpec = ParamSpecDouble;
+    type SetValue = Self;
 }
 impl HasParamSpec for f32 {
     type ParamSpec = ParamSpecFloat;
+    type SetValue = Self;
 }
 impl HasParamSpec for i64 {
     type ParamSpec = ParamSpecInt64;
+    type SetValue = Self;
 }
 impl HasParamSpec for i32 {
     type ParamSpec = ParamSpecInt;
+    type SetValue = Self;
 }
 impl HasParamSpec for i8 {
     type ParamSpec = ParamSpecChar;
+    type SetValue = Self;
 }
 impl HasParamSpec for u64 {
     type ParamSpec = ParamSpecUInt64;
+    type SetValue = Self;
 }
 impl HasParamSpec for u32 {
     type ParamSpec = ParamSpecUInt;
+    type SetValue = Self;
 }
 impl HasParamSpec for u8 {
     type ParamSpec = ParamSpecUChar;
+    type SetValue = Self;
 }
 impl HasParamSpec for bool {
     type ParamSpec = ParamSpecBoolean;
+    type SetValue = Self;
 }
 
 #[cfg(test)]

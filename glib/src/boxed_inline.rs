@@ -502,6 +502,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecBoxed;
+            type SetValue = Self;
         }
     };
 

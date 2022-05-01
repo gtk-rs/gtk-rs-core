@@ -311,7 +311,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         let span = prop.attrs_span;
         quote_spanned! {span=>
-            <<#ty as #crate_ident::Property>::ParamSpec>
+            <<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::ParamSpec>
                 ::builder #builder_call
                 #build_nick
                 #build_blurb
@@ -461,7 +461,7 @@ fn getter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
 fn setter_prototype(ident: &syn::Ident, ty: &syn::Type) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let ident = format_ident!("set_{}", ident);
-    quote!(fn #ident<P: #crate_ident::HasParamSpec<ParamSpec = <#ty as #crate_ident::Property>::ParamSpec> + #crate_ident::ToValue>(&self, value: P))
+    quote!(fn #ident(&self, value: &<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue))
 }
 fn expand_getset_properties_def(props: &[PropDesc]) -> TokenStream2 {
     let defs = props
@@ -489,7 +489,7 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
             quote!(#fn_prototype { #body })
         });
         let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
-            let body = quote!(self.set_property(#name, value));
+            let body = quote!(self.set_property_from_value(#name, &value.to_value()));
             let fn_prototype = setter_prototype(&ident, ty);
             quote!(#fn_prototype { #body })
         });
