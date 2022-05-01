@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::auto::traits::ListModelExt;
+use crate::ListModel;
 use crate::ListStore;
 use glib::translate::*;
+use glib::Cast;
 use glib::{IsA, Object};
 use std::cmp::Ordering;
 
@@ -104,6 +106,15 @@ impl ListStore {
 
             found.then(|| position.assume_init())
         }
+    }
+}
+
+impl std::iter::IntoIterator for ListStore {
+    type Item = <ListModel as IntoIterator>::Item;
+    type IntoIter = <ListModel as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.upcast::<ListModel>().into_iter()
     }
 }
 
