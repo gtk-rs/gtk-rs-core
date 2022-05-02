@@ -45,13 +45,10 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
             rcc.replace(true);
         })));
 
-        let len = self.n_items();
-
         Ok(ListModelIter {
             ty: Default::default(),
             i: 0,
-            reverse_pos: len,
-            len,
+            reverse_pos: self.n_items(),
             model: self.clone().upcast(),
             changed: rc,
             signal_id,
@@ -73,7 +70,6 @@ pub struct ListModelIter<T: IsA<glib::Object>> {
     i: u32,
     // it's > i when valid
     reverse_pos: u32,
-    len: u32,
     model: ListModel,
     changed: Rc<Cell<bool>>,
     signal_id: Cell<Option<SignalHandlerId>>,
@@ -81,7 +77,8 @@ pub struct ListModelIter<T: IsA<glib::Object>> {
 impl<T: IsA<glib::Object>> Iterator for ListModelIter<T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
     fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.len as usize, Some(self.len as usize))
+        let n = (self.reverse_pos - self.i) as usize;
+        (n as usize, Some(n))
     }
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -144,8 +141,11 @@ fn list_model_iter_ok() {
     list.append(&m3);
 
     let mut iter = list.iter::<crate::Menu>().unwrap();
+
+    assert_eq!(iter.len(), 3);
     assert_eq!(iter.next(), Some(Ok(m1)));
     assert_eq!(iter.next_back(), Some(Ok(m3)));
+    assert_eq!(iter.len(), 1);
     assert_eq!(iter.next_back(), Some(Ok(m2)));
     assert_eq!(iter.next(), None);
     assert_eq!(iter.next_back(), None);
