@@ -44,7 +44,8 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
 
         let changed_clone = changed.clone();
         let signal_id = Cell::new(Some(self.connect_items_changed(move |_, pos, _, _| {
-            changed_clone.replace(pos < len);
+            let old = changed_clone.get();
+            changed_clone.replace(old || pos < len);
         })));
 
         Ok(ListModelIter {
@@ -164,14 +165,26 @@ fn list_model_iter_err() {
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
+    let m4 = crate::Menu::new();
 
     list.append(&m1);
     list.append(&m2);
     list.append(&m3);
+    list.append(&m4);
 
     let mut iter = list.iter::<crate::Menu>().unwrap();
-    assert_eq!(iter.next_back(), Some(Ok(m3)));
-    list.remove_all();
+    assert_eq!(iter.next_back(), Some(Ok(m4)));
+
+    // These two don't affect the iter
+    list.append(&m2);
+    list.append(&m2);
+
+    assert_eq!(iter.next(), Some(Ok(m1)));
+
+    // Does affect the iter
+    list.remove(2);
+    // Doesn't affect the iter, but the iter should stay tainted.
+    list.remove(4);
     assert_eq!(iter.next(), Some(Err(ListModelMutatedDuringIter)));
     assert_eq!(iter.next(), Some(Err(ListModelMutatedDuringIter)));
     // Returned n items
