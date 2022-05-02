@@ -40,10 +40,10 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         let changed = Rc::new(Cell::new(false));
 
         let changed_clone = changed.clone();
-        let signal_id = Cell::new(Some(self.connect_items_changed(move |_, pos, _, _| {
+        let signal_id = Some(self.connect_items_changed(move |_, pos, _, _| {
             let old = changed_clone.get();
             changed_clone.replace(old || pos < len);
-        })));
+        }));
 
         Ok(ListModelIter {
             ty: Default::default(),
@@ -74,7 +74,7 @@ pub struct ListModelIter<'a, T: IsA<glib::Object>> {
     reverse_pos: u32,
     model: &'a ListModel,
     changed: Rc<Cell<bool>>,
-    signal_id: Cell<Option<SignalHandlerId>>,
+    signal_id: Option<SignalHandlerId>,
 }
 impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
