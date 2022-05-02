@@ -62,6 +62,7 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
 #[error("the list model was mutated during iteration")]
 pub struct ListModelMutatedDuringIter;
 
+// rustdoc-stripper-ignore-next
 /// Iterator of `ListModel`'s items.
 /// This iterator will always give `n = initial_model.n_items()` items, even if the `ListModel`
 /// is mutated during iteration.
