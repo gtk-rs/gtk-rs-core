@@ -38,19 +38,21 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         if !self.item_type().is_a(LT::static_type()) {
             return Err(self);
         }
-        let rc = Rc::new(Cell::new(false));
 
-        let rcc = rc.clone();
-        let signal_id = Cell::new(Some(self.connect_items_changed(move |_, _, _, _| {
-            rcc.replace(true);
+        let len = self.n_items();
+        let changed = Rc::new(Cell::new(false));
+
+        let changed_clone = changed.clone();
+        let signal_id = Cell::new(Some(self.connect_items_changed(move |_, pos, _, _| {
+            changed_clone.replace(pos < len);
         })));
 
         Ok(ListModelIter {
             ty: Default::default(),
             i: 0,
-            reverse_pos: self.n_items(),
+            reverse_pos: len,
             model: self.clone().upcast(),
-            changed: rc,
+            changed,
             signal_id,
         })
     }
@@ -61,10 +63,11 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
 pub struct ListModelMutatedDuringIter;
 
 /// Iterator of `ListModel`'s items.
-/// This iterator will always give (n = initial_model.n_items()) items, even if the `ListModel`
+/// This iterator will always give `n = initial_model.n_items()` items, even if the `ListModel`
 /// is mutated during iteration.
 /// If the internal `ListModel` gets mutated, the iterator
 /// will return `Some(Err(...))` for the remaining items.
+/// Mutations to the `ListModel` in position >= `initial_model.n_items()` are allowed.
 pub struct ListModelIter<T: IsA<glib::Object>> {
     ty: PhantomData<T>,
     i: u32,
@@ -135,6 +138,7 @@ fn list_model_iter_ok() {
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
+    let m4 = crate::Menu::new();
 
     list.append(&m1);
     list.append(&m2);
@@ -144,6 +148,9 @@ fn list_model_iter_ok() {
 
     assert_eq!(iter.len(), 3);
     assert_eq!(iter.next(), Some(Ok(m1)));
+    // Appending items at the end of the `ListModel` can't affect the items
+    // we are iterating over.
+    list.append(&m4);
     assert_eq!(iter.next_back(), Some(Ok(m3)));
     assert_eq!(iter.len(), 1);
     assert_eq!(iter.next_back(), Some(Ok(m2)));
