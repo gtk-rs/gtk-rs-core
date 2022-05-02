@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::cell::Cell;
+use std::iter::FusedIterator;
 use std::marker::PhantomData;
 use std::rc::Rc;
 
@@ -17,7 +18,7 @@ pub trait ListModelExtManual: Sized {
     fn snapshot(&self) -> Vec<glib::Object>;
 
     // rustdoc-stripper-ignore-next
-    /// If `T::static_type() == self.item_type()` then it returns an iterator over the `ListModel` elements,
+    /// If `T::static_type().is_a(self.item_type())` then it returns an iterator over the `ListModel` elements,
     /// else the types are not compatible and returns `Err(&Self)`.
     fn iter<T: IsA<glib::Object>>(&self) -> Result<ListModelIter<T>, &Self>;
 }
@@ -34,7 +35,7 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
     where
         Self: Sized + Clone,
     {
-        if self.item_type() != LT::static_type() {
+        if !self.item_type().is_a(LT::static_type()) {
             return Err(self);
         }
         let rc = Rc::new(Cell::new(false));
@@ -44,9 +45,13 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
             rcc.replace(true);
         })));
 
+        let len = self.n_items();
+
         Ok(ListModelIter {
             ty: Default::default(),
             i: 0,
+            reverse_pos: len,
+            len,
             model: self.clone().upcast(),
             changed: rc,
             signal_id,
@@ -58,26 +63,57 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
 #[error("the list model was mutated during iteration")]
 pub struct ListModelMutatedDuringIter;
 
+/// Iterator of `ListModel`'s items.
+/// This iterator will always give (n = initial_model.n_items()) items, even if the `ListModel`
+/// is mutated during iteration.
+/// If the internal `ListModel` gets mutated, the iterator
+/// will return `Some(Err(...))` for the remaining items.
 pub struct ListModelIter<T: IsA<glib::Object>> {
     ty: PhantomData<T>,
     i: u32,
+    // it's > i when valid
+    reverse_pos: u32,
+    len: u32,
     model: ListModel,
     changed: Rc<Cell<bool>>,
     signal_id: Cell<Option<SignalHandlerId>>,
 }
 impl<T: IsA<glib::Object>> Iterator for ListModelIter<T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        (self.len as usize, Some(self.len as usize))
+    }
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.i >= self.reverse_pos {
+            return None;
+        }
         let res = match self.changed.get() {
-            true => Some(Err(ListModelMutatedDuringIter)),
-            false => self
-                .model
-                .item(self.i)
-                .map(|x| Ok(x.downcast::<T>().unwrap())),
+            true => Err(ListModelMutatedDuringIter),
+            false => Ok(self.model.item(self.i).unwrap().downcast::<T>().unwrap()),
         };
         self.i += 1;
-        res
+        Some(res)
+    }
+}
+impl<T: IsA<glib::Object>> FusedIterator for ListModelIter<T> {}
+impl<T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<T> {}
+impl<T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<T> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        if self.reverse_pos == self.i {
+            return None;
+        }
+        self.reverse_pos -= 1;
+        let res = match self.changed.get() {
+            true => Err(ListModelMutatedDuringIter),
+            false => Ok(self
+                .model
+                .item(self.reverse_pos)
+                .unwrap()
+                .downcast::<T>()
+                .unwrap()),
+        };
+        Some(res)
     }
 }
 impl<T: IsA<glib::Object>> Drop for ListModelIter<T> {
@@ -86,7 +122,7 @@ impl<T: IsA<glib::Object>> Drop for ListModelIter<T> {
     }
 }
 
-impl std::iter::IntoIterator for ListModel {
+impl std::iter::IntoIterator for &ListModel {
     type Item = Result<glib::Object, ListModelMutatedDuringIter>;
     type IntoIter = ListModelIter<glib::Object>;
 
@@ -97,7 +133,7 @@ impl std::iter::IntoIterator for ListModel {
 }
 
 #[test]
-fn list_model_iter() {
+fn list_model_iter_ok() {
     let list = crate::ListStore::new(crate::Menu::static_type());
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
@@ -109,7 +145,27 @@ fn list_model_iter() {
 
     let mut iter = list.iter::<crate::Menu>().unwrap();
     assert_eq!(iter.next(), Some(Ok(m1)));
-    assert_eq!(iter.next(), Some(Ok(m2)));
+    assert_eq!(iter.next_back(), Some(Ok(m3)));
+    assert_eq!(iter.next_back(), Some(Ok(m2)));
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.next_back(), None);
+}
+#[test]
+fn list_model_iter_err() {
+    let list = crate::ListStore::new(crate::Menu::static_type());
+    let m1 = crate::Menu::new();
+    let m2 = crate::Menu::new();
+    let m3 = crate::Menu::new();
+
+    list.append(&m1);
+    list.append(&m2);
+    list.append(&m3);
+
+    let mut iter = list.iter::<crate::Menu>().unwrap();
+    assert_eq!(iter.next_back(), Some(Ok(m3)));
     list.remove_all();
     assert_eq!(iter.next(), Some(Err(ListModelMutatedDuringIter)));
+    assert_eq!(iter.next(), Some(Err(ListModelMutatedDuringIter)));
+    // Returned n items
+    assert_eq!(iter.next(), None);
 }

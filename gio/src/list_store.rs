@@ -109,12 +109,12 @@ impl ListStore {
     }
 }
 
-impl std::iter::IntoIterator for ListStore {
-    type Item = <ListModel as IntoIterator>::Item;
-    type IntoIter = <ListModel as IntoIterator>::IntoIter;
+impl<'a> std::iter::IntoIterator for &'a ListStore {
+    type Item = <&'a ListModel as IntoIterator>::Item;
+    type IntoIter = <&'a ListModel as IntoIterator>::IntoIter;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.upcast::<ListModel>().into_iter()
+        self.clone().upcast::<ListModel>().into_iter()
     }
 }
 
