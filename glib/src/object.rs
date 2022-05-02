@@ -2204,8 +2204,7 @@ pub trait ObjectExt: ObjectType {
     /// Add a callback to be notified when the Object is disposed.
     #[doc(alias = "g_object_weak_ref")]
     #[doc(alias = "connect_drop")]
-    fn add_weak_ref_notify<F: FnOnce() + Send + 'static>(&self, f: F)
-        -> WeakRefNotify<Self>;
+    fn add_weak_ref_notify<F: FnOnce() + Send + 'static>(&self, f: F) -> WeakRefNotify<Self>;
 
     // rustdoc-stripper-ignore-next
     /// Add a callback to be notified when the Object is disposed.
