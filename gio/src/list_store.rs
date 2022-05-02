@@ -114,7 +114,7 @@ impl<'a> std::iter::IntoIterator for &'a ListStore {
     type IntoIter = <&'a ListModel as IntoIterator>::IntoIter;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.clone().upcast::<ListModel>().into_iter()
+        self.upcast_ref::<ListModel>().into_iter()
     }
 }
 

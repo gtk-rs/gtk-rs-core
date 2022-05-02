@@ -31,10 +31,7 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         }
         res
     }
-    fn iter<LT: IsA<glib::Object>>(&self) -> Result<ListModelIter<LT>, &Self>
-    where
-        Self: Sized + Clone,
-    {
+    fn iter<LT: IsA<glib::Object>>(&self) -> Result<ListModelIter<LT>, &Self> {
         if !self.item_type().is_a(LT::static_type()) {
             return Err(self);
         }
@@ -52,7 +49,7 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
             ty: Default::default(),
             i: 0,
             reverse_pos: len,
-            model: self.clone().upcast(),
+            model: self.upcast_ref(),
             changed,
             signal_id,
         })
@@ -70,16 +67,16 @@ pub struct ListModelMutatedDuringIter;
 /// If the internal `ListModel` gets mutated, the iterator
 /// will return `Some(Err(...))` for the remaining items.
 /// Mutations to the `ListModel` in position >= `initial_model.n_items()` are allowed.
-pub struct ListModelIter<T: IsA<glib::Object>> {
+pub struct ListModelIter<'a, T: IsA<glib::Object>> {
     ty: PhantomData<T>,
     i: u32,
     // it's > i when valid
     reverse_pos: u32,
-    model: ListModel,
+    model: &'a ListModel,
     changed: Rc<Cell<bool>>,
     signal_id: Cell<Option<SignalHandlerId>>,
 }
-impl<T: IsA<glib::Object>> Iterator for ListModelIter<T> {
+impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
     fn size_hint(&self) -> (usize, Option<usize>) {
         let n = (self.reverse_pos - self.i) as usize;
@@ -98,9 +95,9 @@ impl<T: IsA<glib::Object>> Iterator for ListModelIter<T> {
         Some(res)
     }
 }
-impl<T: IsA<glib::Object>> FusedIterator for ListModelIter<T> {}
-impl<T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<T> {}
-impl<T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<T> {
+impl<'a, T: IsA<glib::Object>> FusedIterator for ListModelIter<'a, T> {}
+impl<'a, T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<'a, T> {}
+impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.reverse_pos == self.i {
             return None;
@@ -118,15 +115,15 @@ impl<T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<T> {
         Some(res)
     }
 }
-impl<T: IsA<glib::Object>> Drop for ListModelIter<T> {
+impl<'a, T: IsA<glib::Object>> Drop for ListModelIter<'a, T> {
     fn drop(&mut self) {
         self.model.disconnect(self.signal_id.take().unwrap());
     }
 }
 
-impl std::iter::IntoIterator for &ListModel {
+impl<'a> std::iter::IntoIterator for &'a ListModel {
     type Item = Result<glib::Object, ListModelMutatedDuringIter>;
-    type IntoIter = ListModelIter<glib::Object>;
+    type IntoIter = ListModelIter<'a, glib::Object>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
