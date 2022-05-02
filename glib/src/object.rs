@@ -2204,13 +2204,13 @@ pub trait ObjectExt: ObjectType {
     /// Add a callback to be notified when the Object is disposed.
     #[doc(alias = "g_object_weak_ref")]
     #[doc(alias = "connect_drop")]
-    fn add_weak_ref_notify<F: FnOnce() + Send + Sync + 'static>(&self, f: F)
+    fn add_weak_ref_notify<F: FnOnce() + Send + 'static>(&self, f: F)
         -> WeakRefNotify<Self>;
 
     // rustdoc-stripper-ignore-next
     /// Add a callback to be notified when the Object is disposed.
     ///
-    /// This is like [`add_weak_ref_notify`][`ObjectExt::add_weak_ref_notify`] but doesn't require the closure to be [`Send`] and [`Sync`].
+    /// This is like [`add_weak_ref_notify`][`ObjectExt::add_weak_ref_notify`] but doesn't require the closure to be [`Send`].
     /// Object dispose will panic if the object is disposed from the wrong thread.
     #[doc(alias = "g_object_weak_ref")]
     #[doc(alias = "connect_drop")]
@@ -3248,7 +3248,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn add_weak_ref_notify<F: FnOnce() + Send + Sync + 'static>(&self, f: F) -> WeakRefNotify<T> {
+    fn add_weak_ref_notify<F: FnOnce() + Send + 'static>(&self, f: F) -> WeakRefNotify<T> {
         WeakRefNotify::new(self, f)
     }
 
@@ -3534,17 +3534,16 @@ impl<T: ObjectType> WeakRefNotify<T> {
         let data: WeakRefNotifyData = ManuallyDrop::new(Box::pin(Box::new(f)));
         let data_ptr: *const Box<dyn FnOnce()> = Pin::as_ref(&data).get_ref();
 
-        let object = unsafe {
+        unsafe {
             // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
             gobject_ffi::g_object_weak_ref(
                 obj.as_ptr() as *mut GObject,
                 Some(notify_func),
                 data_ptr as *mut _,
             );
+        }
 
-            // SAFETY: Object has type &T so we don't need runtime checks in release builds.
-            obj.unsafe_cast_ref::<T>().downgrade()
-        };
+        let object = obj.downgrade();
 
         WeakRefNotify { object, data }
     }
