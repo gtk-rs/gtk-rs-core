@@ -10,6 +10,13 @@ use glib::SignalHandlerId;
 use crate::prelude::*;
 use crate::ListModel;
 
+#[derive(thiserror::Error, Debug, PartialEq)]
+#[error("can't downcast ListModel's items (`{actual}`) to the requested type `{requested}`")]
+pub struct ListModelItemsTypeErr {
+    actual: glib::Type,
+    requested: glib::Type,
+}
+
 pub trait ListModelExtManual: Sized {
     // rustdoc-stripper-ignore-next
     /// Get an immutable snapshot of the container inside the `ListModel`.
@@ -19,8 +26,8 @@ pub trait ListModelExtManual: Sized {
 
     // rustdoc-stripper-ignore-next
     /// If `T::static_type().is_a(self.item_type())` then it returns an iterator over the `ListModel` elements,
-    /// else the types are not compatible and returns `Err(&Self)`.
-    fn iter<T: IsA<glib::Object>>(&self) -> Result<ListModelIter<T>, &Self>;
+    /// else the types are not compatible and returns an `Err(...)`.
+    fn iter<T: IsA<glib::Object>>(&self) -> Result<ListModelIter<T>, ListModelItemsTypeErr>;
 }
 
 impl<T: IsA<ListModel>> ListModelExtManual for T {
@@ -31,9 +38,12 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         }
         res
     }
-    fn iter<LT: IsA<glib::Object>>(&self) -> Result<ListModelIter<LT>, &Self> {
+    fn iter<LT: IsA<glib::Object>>(&self) -> Result<ListModelIter<LT>, ListModelItemsTypeErr> {
         if !self.item_type().is_a(LT::static_type()) {
-            return Err(self);
+            return Err(ListModelItemsTypeErr {
+                actual: self.item_type(),
+                requested: LT::static_type(),
+            });
         }
 
         let len = self.n_items();
