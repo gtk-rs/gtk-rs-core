@@ -51,8 +51,9 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
 
         let changed_clone = changed.clone();
         let signal_id = Some(self.connect_items_changed(move |_, pos, _, _| {
-            let old = changed_clone.get();
-            changed_clone.replace(old || pos < len);
+            if pos < len {
+                changed_clone.set(true);
+            }
         }));
 
         Ok(ListModelIter {
