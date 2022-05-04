@@ -1032,6 +1032,16 @@ pub fn log_writer_default(log_level: LogLevel, fields: &[LogField<'_>]) -> LogWr
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Sets whether GLib log functions output to stderr or stdout.
+///
+/// By default, log messages of level [`LogLevel::Info`] and [`LogLevel::Debug`] are sent to stdout,
+/// and other log messages are sent to stderr. Passing `true` will send all messages to stderr.
+///
+/// # Safety
+///
+/// This function sets global state and is not thread-aware, as such it should be called before any
+/// threads may try to use GLib logging.
 #[cfg(any(feature = "v2_68", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
 #[doc(alias = "g_log_writer_default_set_use_stderr")]
