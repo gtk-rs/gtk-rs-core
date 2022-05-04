@@ -2,10 +2,7 @@
 
 use crate::{resources_register, Resource};
 use glib::translate::*;
-use std::env;
 use std::mem;
-use std::path::Path;
-use std::process::Command;
 use std::ptr;
 
 impl Resource {
@@ -32,50 +29,6 @@ impl Resource {
     }
 }
 
-// rustdoc-stripper-ignore-next
-/// Call from build script to run `glib-compile-resources` to generate compiled gresources to embed
-/// in binary with [resources_register_include]. `target` is relative to `OUT_DIR`.
-///
-/// ```no_run
-/// gio::compile_resources(
-///     "resources",
-///     "resources/resources.gresource.xml",
-///     "compiled.gresource",
-/// );
-/// ```
-pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target: &str) {
-    let out_dir = env::var("OUT_DIR").unwrap();
-
-    let status = Command::new("glib-compile-resources")
-        .arg("--sourcedir")
-        .arg(source_dir.as_ref())
-        .arg("--target")
-        .arg(&format!("{}/{}", out_dir, target))
-        .arg(gresource)
-        .status()
-        .unwrap();
-
-    assert!(
-        status.success(),
-        "glib-compile-resources failed with exit status {}",
-        status
-    );
-
-    println!("cargo:rerun-if-changed={}", gresource);
-    let output = Command::new("glib-compile-resources")
-        .arg("--sourcedir")
-        .arg(source_dir.as_ref())
-        .arg("--generate-dependencies")
-        .arg(gresource)
-        .output()
-        .unwrap()
-        .stdout;
-    let output = String::from_utf8(output).unwrap();
-    for dep in output.split_whitespace() {
-        println!("cargo:rerun-if-changed={}", dep);
-    }
-}
-
 #[doc(hidden)]
 pub fn resources_register_include_impl(bytes: &'static [u8]) -> Result<(), glib::Error> {
     let bytes = glib::Bytes::from_static(bytes);
@@ -85,7 +38,7 @@ pub fn resources_register_include_impl(bytes: &'static [u8]) -> Result<(), glib:
 }
 
 // rustdoc-stripper-ignore-next
-/// Include gresources generated with [compile_resources] and register with glib. `path` is
+/// Include gresources generated with `glib_build_tools::compile_resources` and register with glib. `path` is
 /// relative to `OUTDIR`.
 ///
 /// ```ignore
