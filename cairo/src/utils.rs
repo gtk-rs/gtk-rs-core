@@ -4,6 +4,15 @@ use crate::error::Error;
 use std::ffi::CStr;
 use std::fmt;
 
+// rustdoc-stripper-ignore-next
+/// Resets all static data within cairo to its original state (i.e. identical to the state at program
+/// invocation). For example, all caches within cairo will be flushed empty.
+///
+/// # Safety
+/// It is only safe to call this function when there are no active cairo objects remaining (all
+/// cairo objects have been dropped).
+///
+/// This function is thread safe.
 #[doc(alias = "cairo_debug_reset_static_data")]
 pub unsafe fn debug_reset_static_data() {
     ffi::cairo_debug_reset_static_data()
