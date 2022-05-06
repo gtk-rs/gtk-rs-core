@@ -40,8 +40,14 @@ impl fmt::Display for Win32OutputStream {
 impl Win32OutputStream {
     pub const NONE: Option<&'static Win32OutputStream> = None;
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new [`Self`] that takes ownership of the passed in handle.
+    ///
+    /// # Safety
+    /// You must not close the handle unless you've previously called [`Win32OutputStreamExtManual::set_close_handle`]
+    /// with `true` on this stream. At which point you may only do so when all references to this
+    /// stream have been dropped.
     #[doc(alias = "g_win32_output_stream_new")]
-    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn take_handle<T: IntoRawHandle>(handle: T) -> Win32OutputStream {
         let handle = handle.into_raw_handle();
         let close_handle = true.into_glib();
@@ -49,8 +55,12 @@ impl Win32OutputStream {
             .unsafe_cast()
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Creates a new [`Self`] that does not take ownership of the passed in handle.
+    ///
+    /// # Safety
+    /// You may only close the handle if all references to this stream have been dropped.
     #[doc(alias = "g_win32_output_stream_new")]
-    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn with_handle<T: AsRawHandle>(handle: T) -> Win32OutputStream {
         let handle = handle.as_raw_handle();
         let close_handle = false.into_glib();
@@ -70,8 +80,13 @@ pub trait Win32OutputStreamExtManual: Sized {
     #[doc(alias = "get_handle")]
     fn handle<T: FromRawHandle>(&self) -> T;
 
+    // rustdoc-stripper-ignore-next
+    /// Sets whether the handle of this stream will be closed when the stream is closed.
+    ///
+    /// # Safety
+    /// If you pass in `false` as the parameter, you may only close the handle if the all references
+    /// to the stream have been dropped. If you pass in `true`, you must never call close.
     #[doc(alias = "g_win32_output_stream_set_close_handle")]
-    #[allow(clippy::missing_safety_doc)]
     unsafe fn set_close_handle(&self, close_handle: bool);
 }
 

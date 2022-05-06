@@ -55,7 +55,13 @@ impl FontFace {
         Ok(font_face)
     }
 
-    // Safety: the FT_Face must be valid and not be freed until the `FontFace` is dropped.
+    // rustdoc-stripper-ignore-next
+    /// Creates a new font face for the FreeType backend from an already opened FreeType face.
+    ///
+    /// # Safety
+    ///
+    /// The`FT_Face` must be valid and not be freed until the last reference to the
+    /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub unsafe fn create_from_ft(
@@ -71,7 +77,14 @@ impl FontFace {
         Ok(font_face)
     }
 
-    // Safety: the FT_Face must be valid and not be freed until the `FontFace` is dropped.
+    // rustdoc-stripper-ignore-next
+    /// Creates a new font face for the FreeType backend from an already opened FreeType face,
+    /// additionally allowing you to pass flags to the underlying C API.
+    ///
+    /// # Safety
+    ///
+    /// The `FT_Face` must be valid and not be freed until the last reference to the
+    /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub unsafe fn create_from_ft_with_flags(
