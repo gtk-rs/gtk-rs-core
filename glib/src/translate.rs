@@ -570,6 +570,15 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for String {
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Translate to a pointer.
+pub trait IntoGlibPtr<P: Ptr> {
+    // rustdoc-stripper-ignore-next
+    /// Transfer: full.
+    #[allow(clippy::wrong_self_convention)]
+    unsafe fn into_glib_ptr(self) -> P;
+}
+
 impl GlibPtrDefault for str {
     type GlibType = *mut c_char;
 }

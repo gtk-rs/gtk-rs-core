@@ -1127,6 +1127,22 @@ macro_rules! glib_object_wrapper {
             }
         }
 
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
+                let s = std::mem::ManuallyDrop::new(self);
+                $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn into_glib_ptr(self) -> *const $ffi_name {
+                let s = std::mem::ManuallyDrop::new(self);
+                $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
+            }
+        }
+
         $crate::glib_object_wrapper!(@weak_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?);
     };
 
