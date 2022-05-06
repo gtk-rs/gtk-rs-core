@@ -74,7 +74,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_finish(
         Ok(v) => v,
         Err(e) => {
             if !error.is_null() {
-                *error = e.into_raw();
+                *error = e.into_glib_ptr();
             }
             0
         }

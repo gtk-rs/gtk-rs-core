@@ -10,7 +10,6 @@ use std::convert::Infallible;
 use std::error;
 use std::ffi::CStr;
 use std::fmt;
-use std::mem;
 use std::str;
 
 wrapper! {
@@ -100,13 +99,6 @@ impl Error {
             str::from_utf8(bytes)
                 .unwrap_or_else(|err| str::from_utf8(&bytes[..err.valid_up_to()]).unwrap())
         }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Consumes the `Error` and returns the corresponding `GError` pointer.
-    pub fn into_raw(self) -> *mut ffi::GError {
-        let mut e = mem::ManuallyDrop::new(self);
-        e.to_glib_none_mut().0
     }
 }
 
@@ -266,8 +258,9 @@ mod tests {
 
     #[test]
     fn test_into_raw() {
-        let e = Error::new(crate::FileError::Failed, "Failed").into_raw();
         unsafe {
+            let e: *mut ffi::GError =
+                Error::new(crate::FileError::Failed, "Failed").into_glib_ptr();
             assert_eq!((*e).domain, ffi::g_file_error_quark());
             assert_eq!((*e).code, ffi::G_FILE_ERROR_FAILED);
             assert_eq!(

@@ -90,12 +90,14 @@ impl VariantType {
         VariantTy::new(&type_string)?;
 
         let len = type_string.len();
-        let ptr = type_string.into_raw();
+        unsafe {
+            let ptr = type_string.into_glib_ptr();
 
-        Ok(VariantType {
-            ptr: ptr as *mut ffi::GVariantType,
-            len,
-        })
+            Ok(VariantType {
+                ptr: ptr as *mut ffi::GVariantType,
+                len,
+            })
+        }
     }
 }
 

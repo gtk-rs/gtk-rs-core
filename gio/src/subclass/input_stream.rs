@@ -189,7 +189,7 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
         }
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             -1
         }
@@ -214,7 +214,7 @@ unsafe extern "C" fn stream_close<T: InputStreamImpl>(
         Ok(_) => glib::ffi::GTRUE,
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             glib::ffi::GFALSE
         }
@@ -249,7 +249,7 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
         }
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             -1
         }
