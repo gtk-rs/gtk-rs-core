@@ -207,7 +207,7 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
         Ok(()) => glib::ffi::GTRUE,
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             glib::ffi::GFALSE
         }
@@ -243,7 +243,7 @@ unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
         Ok(()) => glib::ffi::GTRUE,
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             glib::ffi::GFALSE
         }

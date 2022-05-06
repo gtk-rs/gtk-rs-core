@@ -399,12 +399,14 @@ impl GString {
             Inner::Foreign { ptr, .. } => ptr.as_ptr(),
         }
     }
+}
 
+impl IntoGlibPtr<*mut c_char> for GString {
     // rustdoc-stripper-ignore-next
     /// Transform into a `NUL`-terminated raw C string pointer.
-    pub fn into_raw(self) -> *mut c_char {
+    unsafe fn into_glib_ptr(self) -> *mut c_char {
         match self.0 {
-            Inner::Native(ref cstr) => unsafe {
+            Inner::Native(ref cstr) => {
                 let cstr = cstr.as_ref().unwrap();
 
                 let ptr = cstr.as_ptr();
@@ -415,7 +417,7 @@ impl GString {
                 ptr::write(copy.add(len), 0);
 
                 copy
-            },
+            }
             Inner::Foreign { ptr, .. } => {
                 let _s = mem::ManuallyDrop::new(self);
                 ptr.as_ptr()
@@ -851,7 +853,7 @@ impl<'a> ToGlibPtr<'a, *const u8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *const u8 {
-        self.clone().into_raw() as *const u8
+        unsafe { self.clone().into_glib_ptr() as *const u8 }
     }
 }
 
@@ -866,7 +868,7 @@ impl<'a> ToGlibPtr<'a, *const i8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *const i8 {
-        self.clone().into_raw() as *const i8
+        unsafe { self.clone().into_glib_ptr() as *const i8 }
     }
 }
 
@@ -881,7 +883,7 @@ impl<'a> ToGlibPtr<'a, *mut u8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *mut u8 {
-        self.clone().into_raw() as *mut u8
+        unsafe { self.clone().into_glib_ptr() as *mut u8 }
     }
 }
 
@@ -896,7 +898,7 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 
     #[inline]
     fn to_glib_full(&self) -> *mut i8 {
-        self.clone().into_raw() as *mut i8
+        unsafe { self.clone().into_glib_ptr() as *mut i8 }
     }
 }
 

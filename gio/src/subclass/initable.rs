@@ -78,7 +78,7 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
         Ok(()) => glib::ffi::GTRUE,
         Err(e) => {
             if !error.is_null() {
-                *error = e.into_raw();
+                *error = e.into_glib_ptr();
             }
             glib::ffi::GFALSE
         }

@@ -168,7 +168,7 @@ unsafe extern "C" fn stream_close<T: IOStreamImpl>(
         Ok(_) => glib::ffi::GTRUE,
         Err(e) => {
             if !err.is_null() {
-                *err = e.into_raw();
+                *err = e.into_glib_ptr();
             }
             glib::ffi::GFALSE
         }
