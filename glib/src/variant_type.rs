@@ -25,7 +25,7 @@ use std::str::FromStr;
 pub struct VariantType {
     // GVariantType* essentially is a char*, that always is valid UTF-8 but
     // isn't NUL-terminated.
-    ptr: *mut ffi::GVariantType,
+    ptr: ptr::NonNull<ffi::GVariantType>,
     // We query the length on creation assuming it's cheap (because type strings
     // are short) and likely to happen anyway.
     len: usize,
@@ -94,7 +94,7 @@ impl VariantType {
             let ptr = type_string.into_glib_ptr();
 
             Ok(VariantType {
-                ptr: ptr as *mut ffi::GVariantType,
+                ptr: ptr::NonNull::new_unchecked(ptr as *mut ffi::GVariantType),
                 len,
             })
         }
@@ -106,7 +106,7 @@ unsafe impl Sync for VariantType {}
 
 impl Drop for VariantType {
     fn drop(&mut self) {
-        unsafe { ffi::g_variant_type_free(self.ptr) }
+        unsafe { ffi::g_variant_type_free(self.ptr.as_ptr()) }
     }
 }
 
@@ -126,7 +126,7 @@ impl Clone for VariantType {
     fn clone(&self) -> VariantType {
         unsafe {
             VariantType {
-                ptr: ffi::g_variant_type_copy(self.ptr),
+                ptr: ptr::NonNull::new_unchecked(ffi::g_variant_type_copy(self.ptr.as_ptr())),
                 len: self.len,
             }
         }
@@ -137,8 +137,7 @@ impl Deref for VariantType {
     type Target = VariantTy;
     fn deref(&self) -> &VariantTy {
         unsafe {
-            assert!(self.len > 0);
-            &*(slice::from_raw_parts(self.ptr as *const u8, self.len) as *const [u8]
+            &*(slice::from_raw_parts(self.ptr.as_ptr() as *const u8, self.len) as *const [u8]
                 as *const VariantTy)
         }
     }
@@ -181,11 +180,11 @@ impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantType {
     type Storage = &'a Self;
 
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::GVariantType, Self> {
-        Stash(self.ptr, self)
+        Stash(self.ptr.as_ptr(), self)
     }
 
     fn to_glib_full(&self) -> *const ffi::GVariantType {
-        unsafe { ffi::g_variant_type_copy(self.ptr) }
+        unsafe { ffi::g_variant_type_copy(self.ptr.as_ptr()) }
     }
 }
 
@@ -194,11 +193,11 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GVariantType> for VariantType {
     type Storage = &'a Self;
 
     fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::GVariantType, Self> {
-        Stash(self.ptr, self)
+        Stash(self.ptr.as_ptr(), self)
     }
 
     fn to_glib_full(&self) -> *mut ffi::GVariantType {
-        unsafe { ffi::g_variant_type_copy(self.ptr) }
+        unsafe { ffi::g_variant_type_copy(self.ptr.as_ptr()) }
     }
 }
 
@@ -207,7 +206,7 @@ impl<'a> ToGlibPtrMut<'a, *mut ffi::GVariantType> for VariantType {
     type Storage = &'a mut Self;
 
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::GVariantType, Self> {
-        StashMut(self.ptr, self)
+        StashMut(self.ptr.as_ptr(), self)
     }
 }
 
@@ -230,8 +229,12 @@ impl FromGlibPtrFull<*const ffi::GVariantType> for VariantType {
 #[doc(hidden)]
 impl FromGlibPtrFull<*mut ffi::GVariantType> for VariantType {
     unsafe fn from_glib_full(ptr: *mut ffi::GVariantType) -> VariantType {
+        assert!(!ptr.is_null());
         let len = ffi::g_variant_type_get_string_length(ptr) as usize;
-        VariantType { ptr, len }
+        VariantType {
+            ptr: ptr::NonNull::new_unchecked(ptr),
+            len,
+        }
     }
 }
 
@@ -447,6 +450,7 @@ impl VariantTy {
     /// pointer.
     #[doc(hidden)]
     pub unsafe fn from_ptr<'a>(ptr: *const ffi::GVariantType) -> &'a VariantTy {
+        assert!(!ptr.is_null());
         let len = ffi::g_variant_type_get_string_length(ptr) as usize;
         assert!(len > 0);
         &*(slice::from_raw_parts(ptr as *const u8, len) as *const [u8] as *const VariantTy)
@@ -686,7 +690,7 @@ impl ToOwned for VariantTy {
     fn to_owned(&self) -> VariantType {
         unsafe {
             VariantType {
-                ptr: ffi::g_variant_type_copy(self.as_ptr()),
+                ptr: ptr::NonNull::new_unchecked(ffi::g_variant_type_copy(self.as_ptr())),
                 len: self.inner.len(),
             }
         }
