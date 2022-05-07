@@ -258,7 +258,6 @@ pub type FT_Face = *mut c_void;
 #[cfg(any(feature = "freetype", feature = "dox"))]
 pub type FcPattern = c_void;
 
-#[cfg(any(feature = "user_fonts", feature = "dox"))]
 pub type cairo_user_scaled_font_init_func_t = Option<
     unsafe extern "C" fn(
         scaled_font: *mut cairo_scaled_font_t,
@@ -266,7 +265,6 @@ pub type cairo_user_scaled_font_init_func_t = Option<
         extents: *mut cairo_font_extents_t,
     ) -> cairo_status_t,
 >;
-#[cfg(any(feature = "user_fonts", feature = "dox"))]
 pub type cairo_user_scaled_font_render_glyph_func_t = Option<
     unsafe extern "C" fn(
         scaled_font: *mut cairo_scaled_font_t,
@@ -275,7 +273,6 @@ pub type cairo_user_scaled_font_render_glyph_func_t = Option<
         extents: *mut cairo_text_extents_t,
     ) -> cairo_status_t,
 >;
-#[cfg(any(feature = "user_fonts", feature = "dox"))]
 pub type cairo_user_scaled_font_text_to_glyphs_func_t = Option<
     unsafe extern "C" fn(
         scaled_font: *mut cairo_scaled_font_t,
@@ -288,7 +285,6 @@ pub type cairo_user_scaled_font_text_to_glyphs_func_t = Option<
         cluster_flags: *mut cairo_text_cluster_flags_t,
     ) -> cairo_status_t,
 >;
-#[cfg(any(feature = "user_fonts", feature = "dox"))]
 pub type cairo_user_scaled_font_unicode_to_glyph_func_t = Option<
     unsafe extern "C" fn(
         scaled_font: *mut cairo_scaled_font_t,
@@ -1481,41 +1477,39 @@ extern "C" {
         closure: *mut c_void,
     ) -> cairo_status_t;
 
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_create() -> *mut cairo_font_face_t;
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_set_init_func(
         font_face: *mut cairo_font_face_t,
         init_func: cairo_user_scaled_font_init_func_t,
     );
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_get_init_func(
         font_face: *mut cairo_font_face_t,
     ) -> cairo_user_scaled_font_init_func_t;
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_set_render_glyph_func(
         font_face: *mut cairo_font_face_t,
         render_glyph_func: cairo_user_scaled_font_render_glyph_func_t,
     );
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_get_render_glyph_func(
         font_face: *mut cairo_font_face_t,
     ) -> cairo_user_scaled_font_render_glyph_func_t;
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
+    pub fn cairo_user_font_face_set_render_color_glyph_func(
+        font_face: *mut cairo_font_face_t,
+        render_glyph_func: cairo_user_scaled_font_render_glyph_func_t,
+    );
+    pub fn cairo_user_font_face_get_render_color_glyph_func(
+        font_face: *mut cairo_font_face_t,
+    ) -> cairo_user_scaled_font_render_glyph_func_t;
     pub fn cairo_user_font_face_set_unicode_to_glyph_func(
         font_face: *mut cairo_font_face_t,
         unicode_to_glyph_func: cairo_user_scaled_font_unicode_to_glyph_func_t,
     );
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_get_unicode_to_glyph_func(
         font_face: *mut cairo_font_face_t,
     ) -> cairo_user_scaled_font_unicode_to_glyph_func_t;
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_set_text_to_glyphs_func(
         font_face: *mut cairo_font_face_t,
         text_to_glyphs_func: cairo_user_scaled_font_text_to_glyphs_func_t,
     );
-    #[cfg(any(feature = "user_fonts", feature = "dox"))]
     pub fn cairo_user_font_face_get_text_to_glyphs_func(
         font_face: *mut cairo_font_face_t,
     ) -> cairo_user_scaled_font_text_to_glyphs_func_t;

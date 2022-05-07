@@ -7,6 +7,7 @@ mod glyph;
 mod scaled_font;
 mod text_cluster;
 mod text_extents;
+mod user_fonts;
 
 pub use crate::enums::{
     Antialias, FontSlant, FontType, FontWeight, HintMetrics, HintStyle, SubpixelOrder,
@@ -46,3 +47,4 @@ pub use self::glyph::Glyph;
 pub use self::scaled_font::ScaledFont;
 pub use self::text_cluster::TextCluster;
 pub use self::text_extents::TextExtents;
+pub use self::user_fonts::UserFontFace;

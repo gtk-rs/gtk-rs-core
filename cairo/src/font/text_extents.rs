@@ -45,3 +45,17 @@ impl fmt::Debug for TextExtents {
             .finish()
     }
 }
+
+#[doc(hidden)]
+impl From<TextExtents> for ffi::cairo_text_extents_t {
+    fn from(val: TextExtents) -> ffi::cairo_text_extents_t {
+        val.0
+    }
+}
+
+#[doc(hidden)]
+impl From<ffi::cairo_text_extents_t> for TextExtents {
+    fn from(value: ffi::cairo_text_extents_t) -> Self {
+        Self(value)
+    }
+}

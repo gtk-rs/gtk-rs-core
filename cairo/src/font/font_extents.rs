@@ -40,3 +40,17 @@ impl fmt::Debug for FontExtents {
             .finish()
     }
 }
+
+#[doc(hidden)]
+impl From<FontExtents> for ffi::cairo_font_extents_t {
+    fn from(val: FontExtents) -> ffi::cairo_font_extents_t {
+        val.0
+    }
+}
+
+#[doc(hidden)]
+impl From<ffi::cairo_font_extents_t> for FontExtents {
+    fn from(value: ffi::cairo_font_extents_t) -> Self {
+        Self(value)
+    }
+}
