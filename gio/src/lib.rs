@@ -63,7 +63,7 @@ pub use crate::pollable_input_stream::InputStreamAsyncRead;
 mod pollable_output_stream;
 pub use crate::pollable_output_stream::OutputStreamAsyncWrite;
 mod resource;
-pub use crate::resource::{compile_resources, resources_register_include_impl};
+pub use crate::resource::resources_register_include_impl;
 mod settings;
 pub use crate::settings::BindingBuilder;
 mod simple_proxy_resolver;

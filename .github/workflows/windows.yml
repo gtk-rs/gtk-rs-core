@@ -74,6 +74,7 @@ jobs:
           - { name: "gdk-pixbuf", test: true, args: "--features v2_40" }
           - { name: "gio", test: true, args: "--features v2_66" }
           - { name: "glib", test: true, args: "--features v2_66" }
+          - { name: "glib-build-tools", test: false, args: "--features dox" }
           - { name: "graphene", test: false, args: "" }
           - { name: "pango", test: true, args: "--features v1_46" }
           - { name: "pangocairo", test: true, args: "" }
@@ -117,7 +118,7 @@ jobs:
         with:
           command: test
           args: --manifest-path ${{ matrix.conf.name }}/sys/Cargo.toml ${{ matrix.conf.args }}
-        if: matrix.conf.name != 'examples'
+        if: matrix.conf.name != 'examples' && matrix.conf.name != 'glib-build-tools'
 
       - name: build
         uses: actions-rs/cargo@v1
