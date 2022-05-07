@@ -12,7 +12,9 @@ use crate::Cancellable;
 use crate::Initable;
 
 pub trait InitableImpl: ObjectImpl {
-    fn init(&self, initable: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error>;
+    fn init(&self, initable: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error> {
+        self.parent_init(initable, cancellable)
+    }
 }
 
 pub trait InitableImplExt: ObjectSubclass {
