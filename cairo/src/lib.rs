@@ -197,7 +197,7 @@ pub use crate::patterns::{
 
 pub use crate::font::{
     FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph, ScaledFont,
-    TextCluster, TextExtents,
+    TextCluster, TextExtents, UserFontFace,
 };
 
 pub use crate::matrices::Matrix;
