@@ -268,7 +268,10 @@ mod test {
         let target = TestObject::default();
 
         assert!(source.find_property("name").is_some());
-        binding_group.bind("name", &target, "name").build();
+        binding_group
+            .bind("name", &target, "name")
+            .flags(crate::BindingFlags::BIDIRECTIONAL)
+            .build();
 
         binding_group.set_source(Some(&source));
 
