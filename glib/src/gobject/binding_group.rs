@@ -173,7 +173,8 @@ impl<'a> BindingGroupBuilder<'a> {
             let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
         }
 
-        let source_property = if let Some(source) = self.group.source() {
+        let mut _source_propery_name_cstr = None;
+        let source_property_name = if let Some(source) = self.group.source() {
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(
                     "Source property {} on type {} not found",
@@ -181,15 +182,17 @@ impl<'a> BindingGroupBuilder<'a> {
                     source.type_()
                 )
             })?;
-            Some(source_property)
+
+            // This is NUL-termianted from the C side
+            source_property.name().as_ptr()
         } else {
-            None
+            // This is a Rust &str and needs to be NUL-terminated first
+            let source_propery_name = std::ffi::CString::new(self.source_property).unwrap();
+            let source_property_name_ptr = source_propery_name.as_ptr() as *const u8;
+            _source_propery_name_cstr = Some(source_propery_name);
+
+            source_property_name_ptr
         };
-        let source_property_name = source_property
-            .as_ref()
-            .map(crate::ParamSpec::name)
-            .unwrap_or_else(|| self.source_property)
-            .as_ptr();
 
         unsafe {
             let target: Object = from_glib_none(self.target.clone().to_glib_none().0);
