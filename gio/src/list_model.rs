@@ -89,10 +89,6 @@ pub struct ListModelIter<'a, T: IsA<glib::Object>> {
 }
 impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
     type Item = Result<T, ListModelMutatedDuringIter>;
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        let n = (self.reverse_pos - self.i) as usize;
-        (n as usize, Some(n))
-    }
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.i >= self.reverse_pos {
@@ -105,9 +101,55 @@ impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
         self.i += 1;
         Some(res)
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let n = (self.reverse_pos - self.i) as usize;
+        (n as usize, Some(n))
+    }
+
+    fn count(self) -> usize {
+        (self.reverse_pos - self.i) as usize
+    }
+
+    fn nth(&mut self, n: usize) -> Option<Self::Item> {
+        let (end, overflow) = (self.i as usize).overflowing_add(n);
+        if end >= self.reverse_pos as usize || overflow {
+            self.i = self.reverse_pos;
+            None
+        } else {
+            let end = end as u32;
+            self.i = end + 1;
+
+            let res = match self.changed.get() {
+                true => Err(ListModelMutatedDuringIter),
+                false => Ok(self.model.item(end).unwrap().downcast::<T>().unwrap()),
+            };
+            Some(res)
+        }
+    }
+
+    fn last(self) -> Option<Self::Item> {
+        if self.i == self.reverse_pos {
+            None
+        } else {
+            let res = match self.changed.get() {
+                true => Err(ListModelMutatedDuringIter),
+                false => Ok(self
+                    .model
+                    .item(self.reverse_pos - 1)
+                    .unwrap()
+                    .downcast::<T>()
+                    .unwrap()),
+            };
+            Some(res)
+        }
+    }
 }
+
 impl<'a, T: IsA<glib::Object>> FusedIterator for ListModelIter<'a, T> {}
+
 impl<'a, T: IsA<glib::Object>> ExactSizeIterator for ListModelIter<'a, T> {}
+
 impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.reverse_pos == self.i {
@@ -124,6 +166,23 @@ impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
                 .unwrap()),
         };
         Some(res)
+    }
+
+    fn nth_back(&mut self, n: usize) -> Option<Self::Item> {
+        let (end, overflow) = (self.reverse_pos as usize).overflowing_sub(n);
+        if end <= self.i as usize || overflow {
+            self.i = self.reverse_pos;
+            None
+        } else {
+            let end = end as u32;
+            self.reverse_pos = end - 1;
+
+            let res = match self.changed.get() {
+                true => Err(ListModelMutatedDuringIter),
+                false => Ok(self.model.item(end - 1).unwrap().downcast::<T>().unwrap()),
+            };
+            Some(res)
+        }
     }
 }
 impl<'a, T: IsA<glib::Object>> Drop for ListModelIter<'a, T> {
