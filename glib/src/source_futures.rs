@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use futures_channel::{mpsc, oneshot};
-use futures_core::future::Future;
-use futures_core::stream::Stream;
+use futures_core::future::{FusedFuture, Future};
+use futures_core::stream::{FusedStream, Stream};
 use futures_core::task;
 use futures_core::task::Poll;
 use std::marker::Unpin;
@@ -92,6 +92,19 @@ where
             }
             Poll::Pending => Poll::Pending,
         }
+    }
+}
+
+impl<F, T> FusedFuture for SourceFuture<F, T>
+where
+    F: FnOnce(oneshot::Sender<T>) -> Source + 'static,
+{
+    fn is_terminated(&self) -> bool {
+        self.create_source.is_none()
+            && self
+                .source
+                .as_ref()
+                .map_or(true, |(_, receiver)| receiver.is_terminated())
     }
 }
 
@@ -291,6 +304,19 @@ where
             }
             Poll::Pending => Poll::Pending,
         }
+    }
+}
+
+impl<F, T> FusedStream for SourceStream<F, T>
+where
+    F: FnOnce(mpsc::UnboundedSender<T>) -> Source + 'static,
+{
+    fn is_terminated(&self) -> bool {
+        self.create_source.is_none()
+            && self
+                .source
+                .as_ref()
+                .map_or(true, |(_, receiver)| receiver.is_terminated())
     }
 }
 
