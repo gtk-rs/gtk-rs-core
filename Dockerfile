@@ -1,13 +1,33 @@
-FROM ubuntu:20.10
+FROM fedora:rawhide
 
-RUN apt update -y
-RUN apt install -y \
-    libgtk-3-dev \
-    libglib2.0-dev \
-    libgraphene-1.0-dev \
-    git \
-    xvfb \
-    curl \
-    libcairo-gobject2 \
-    libcairo2-dev \
-    wget
+RUN dnf update -y && \
+    dnf install wget git meson cmake gcc gcc-c++ \
+    libpng-devel turbojpeg-devel libXext-devel libXrender-devel -y && \
+    dnf clean all -y
+
+RUN git clone https://gitlab.gnome.org/GNOME/glib.git --depth=1 && \
+    (cd /glib && \
+        meson setup builddir --prefix=/usr --buildtype release -Dtests=false && \
+        meson install -C builddir) && \
+    git clone https://gitlab.freedesktop.org/cairo/cairo.git --depth=1 && \
+    (cd /cairo && \
+        meson setup builddir --prefix=/usr --buildtype release -Dglib=enabled -Dtests=disabled && \
+        meson install -C builddir) && \
+    git clone https://github.com/harfbuzz/harfbuzz.git --depth=1 && \
+    (cd /harfbuzz && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dtests=disabled -Ddocs=disabled && \
+        meson install -C builddir) && \
+    git clone https://gitlab.gnome.org/GNOME/pango.git --depth=1 && \
+    (cd /pango && \
+        meson setup builddir --prefix=/usr --buildtype release -Dfreetype=enabled -Dintrospection=disabled -Dxft=disabled && \
+        meson install -C builddir) && \
+    git clone https://gitlab.gnome.org/GNOME/gdk-pixbuf.git --depth=1 && \
+    (cd /gdk-pixbuf && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dinstalled_tests=false -Dgio_sniffing=false && \
+        meson install -C builddir) && \
+    git clone https://github.com/ebassi/graphene.git --depth=1 && \
+    (cd /graphene && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dtests=false -Dinstalled_tests=false && \
+        meson install -C builddir) && \
+    rm -rf /glib /cairo /harfbuzz /pango /gdk-pixbuf /graphene
+
