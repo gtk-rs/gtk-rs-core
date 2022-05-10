@@ -4,7 +4,7 @@
 // introduce a heap allocation and doesn't provide a way to determine how
 // many items are left in the iterator.
 
-use std::iter::{DoubleEndedIterator, ExactSizeIterator, Iterator};
+use std::iter::{DoubleEndedIterator, ExactSizeIterator, FusedIterator};
 
 use crate::translate::*;
 use crate::variant::Variant;
@@ -60,6 +60,8 @@ impl DoubleEndedIterator for VariantIter {
 }
 
 impl ExactSizeIterator for VariantIter {}
+
+impl FusedIterator for VariantIter {}
 
 // rustdoc-stripper-ignore-next
 /// Iterator over items in a variant of type `as`.
@@ -128,6 +130,8 @@ impl<'a> DoubleEndedIterator for VariantStrIter<'a> {
 }
 
 impl<'a> ExactSizeIterator for VariantStrIter<'a> {}
+
+impl<'a> FusedIterator for VariantStrIter<'a> {}
 
 #[cfg(test)]
 mod tests {

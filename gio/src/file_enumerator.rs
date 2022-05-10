@@ -3,7 +3,7 @@
 use crate::prelude::*;
 use crate::FileEnumerator;
 use crate::FileInfo;
-use std::iter::Iterator;
+use std::iter::FusedIterator;
 
 impl Iterator for FileEnumerator {
     type Item = Result<FileInfo, glib::Error>;
@@ -15,3 +15,5 @@ impl Iterator for FileEnumerator {
         }
     }
 }
+
+impl FusedIterator for FileEnumerator {}

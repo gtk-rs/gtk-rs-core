@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::translate::*;
+use std::iter::FusedIterator;
 use std::marker::PhantomData;
 use std::{fmt, mem, ptr};
 
@@ -839,6 +840,14 @@ impl<
         T: GlibPtrDefault
             + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
             + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > FusedIterator for List<T>
+{
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
     > FromGlibContainer<<T as GlibPtrDefault>::GlibType, *mut ffi::GList> for List<T>
 {
     unsafe fn from_glib_none_num(_ptr: *mut ffi::GList, _num: usize) -> Self {
@@ -926,6 +935,15 @@ impl<
             },
         }
     }
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > FusedIterator for ListIter<'a, T>
+{
 }
 
 // rustdoc-stripper-ignore-next
@@ -1078,6 +1096,14 @@ impl<
         T: GlibPtrDefault
             + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
             + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > FusedIterator for SList<T>
+{
+}
+
+impl<
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
     > FromGlibContainer<<T as GlibPtrDefault>::GlibType, *mut ffi::GSList> for SList<T>
 {
     unsafe fn from_glib_none_num(_ptr: *mut ffi::GSList, _num: usize) -> Self {
@@ -1165,6 +1191,15 @@ impl<
             },
         }
     }
+}
+
+impl<
+        'a,
+        T: GlibPtrDefault
+            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
+            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
+    > FusedIterator for SListIter<'a, T>
+{
 }
 
 #[cfg(test)]

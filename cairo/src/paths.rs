@@ -3,7 +3,7 @@
 use crate::enums::PathDataType;
 use crate::ffi::cairo_path_t;
 use std::fmt;
-use std::iter::Iterator;
+use std::iter::FusedIterator;
 use std::ptr;
 
 #[derive(Debug)]
@@ -111,6 +111,8 @@ impl<'a> Iterator for PathSegments<'a> {
         }
     }
 }
+
+impl<'a> FusedIterator for PathSegments<'a> {}
 
 impl<'a> fmt::Display for PathSegments<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

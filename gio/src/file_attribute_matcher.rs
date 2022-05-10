@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 use glib::GString;
-use std::iter::{IntoIterator, Iterator};
+use std::iter::{FusedIterator, IntoIterator};
 
 pub struct FileAttributematcherIter(crate::FileAttributeMatcher);
 
@@ -18,6 +18,8 @@ impl Iterator for FileAttributematcherIter {
         }
     }
 }
+
+impl FusedIterator for FileAttributematcherIter {}
 
 impl IntoIterator for crate::FileAttributeMatcher {
     type Item = GString;
