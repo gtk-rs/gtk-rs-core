@@ -1,7 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use futures_channel::oneshot;
-use futures_core::task::{Context, Poll};
+use futures_core::{
+    task::{Context, Poll},
+    FusedFuture,
+};
 use std::future::Future;
 use std::pin::{self, Pin};
 
@@ -97,6 +100,20 @@ where
                 Poll::Ready(v)
             }
         }
+    }
+}
+
+impl<F, O, T, E> FusedFuture for GioFuture<F, O, T, E>
+where
+    O: Clone + 'static,
+    F: FnOnce(&O, &Cancellable, GioFutureResult<T, E>) + 'static,
+{
+    fn is_terminated(&self) -> bool {
+        self.schedule_operation.is_none()
+            && self
+                .receiver
+                .as_ref()
+                .map_or(true, |receiver| receiver.is_terminated())
     }
 }
 
