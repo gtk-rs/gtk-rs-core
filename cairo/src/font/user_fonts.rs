@@ -4,9 +4,13 @@ use super::{FontExtents, FontFace, ScaledFont, TextCluster, TextClusterFlags, Te
 use crate::utils::status_to_result;
 use crate::{Context, Error, Glyph};
 
-type BoxInitFunc = Box<dyn Fn(&ScaledFont, &Context) -> Result<FontExtents, Error> + Send + Sync>;
-type BoxRenderGlyphFunc =
-    Box<dyn Fn(&ScaledFont, libc::c_ulong, &Context) -> Result<TextExtents, Error> + Send + Sync>;
+type BoxInitFunc =
+    Box<dyn Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync>;
+type BoxRenderGlyphFunc = Box<
+    dyn Fn(&ScaledFont, libc::c_ulong, &Context, &mut TextExtents) -> Result<(), Error>
+        + Send
+        + Sync,
+>;
 type BoxUnicodeToGlyphFunc =
     Box<dyn Fn(&ScaledFont, libc::c_ulong) -> Result<libc::c_ulong, Error> + Send + Sync>;
 type BoxTextToGlyphsFunc = Box<
@@ -29,7 +33,7 @@ impl UserFontFace {
     #[doc(alias = "cairo_user_font_face_set_init_func")]
     pub fn set_init_func<F>(&self, func: F)
     where
-        F: Fn(&ScaledFont, &Context) -> Result<FontExtents, Error> + Send + Sync + 'static,
+        F: Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync + 'static,
     {
         static INIT_FUNC: once_cell::sync::OnceCell<BoxInitFunc> = once_cell::sync::OnceCell::new();
         if INIT_FUNC.set(Box::new(func)).is_err() {
@@ -40,16 +44,16 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_font_extents_t,
         ) -> ffi::cairo_status_t {
+            let font_extents = &mut *(extents as *mut FontExtents);
             let init_func = INIT_FUNC.get().unwrap();
-            match init_func(
+            if let Err(err) = init_func(
                 &ScaledFont::from_raw_none(scaled_font),
                 &Context::from_raw_none(cr),
+                font_extents,
             ) {
-                Err(err) => err.into(),
-                Ok(font_extents) => {
-                    *extents = font_extents.into();
-                    ffi::STATUS_SUCCESS
-                }
+                err.into()
+            } else {
+                ffi::STATUS_SUCCESS
             }
         }
         unsafe {
@@ -60,7 +64,7 @@ impl UserFontFace {
     #[doc(alias = "cairo_user_font_face_set_render_glyph_func")]
     pub fn set_render_glyph_func<F>(&self, func: F)
     where
-        F: Fn(&ScaledFont, libc::c_ulong, &Context) -> Result<TextExtents, Error>
+        F: Fn(&ScaledFont, libc::c_ulong, &Context, &mut TextExtents) -> Result<(), Error>
             + Send
             + Sync
             + 'static,
@@ -76,17 +80,17 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_text_extents_t,
         ) -> ffi::cairo_status_t {
+            let text_extents = &mut *(extents as *mut TextExtents);
             let render_glyph_func = RENDER_GLYPH_FUNC.get().unwrap();
-            match render_glyph_func(
+            if let Err(err) = render_glyph_func(
                 &ScaledFont::from_raw_none(scaled_font),
                 glyph,
                 &Context::from_raw_none(cr),
+                text_extents,
             ) {
-                Err(err) => err.into(),
-                Ok(text_extents) => {
-                    *extents = text_extents.into();
-                    ffi::STATUS_SUCCESS
-                }
+                err.into()
+            } else {
+                ffi::STATUS_SUCCESS
             }
         }
         unsafe {
@@ -100,7 +104,7 @@ impl UserFontFace {
     #[doc(alias = "cairo_user_font_face_set_render_color_glyph_func")]
     pub fn set_render_color_glyph_func<F>(&self, func: F)
     where
-        F: Fn(&ScaledFont, libc::c_ulong, &Context) -> Result<TextExtents, Error>
+        F: Fn(&ScaledFont, libc::c_ulong, &Context, &mut TextExtents) -> Result<(), Error>
             + Send
             + Sync
             + 'static,
@@ -116,17 +120,17 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_text_extents_t,
         ) -> ffi::cairo_status_t {
+            let text_extents = &mut *(extents as *mut TextExtents);
             let render_glyph_func = RENDER_COLOR_GLYPH_FUNC.get().unwrap();
-            match render_glyph_func(
+            if let Err(err) = render_glyph_func(
                 &ScaledFont::from_raw_none(scaled_font),
                 glyph,
                 &Context::from_raw_none(cr),
+                text_extents,
             ) {
-                Err(err) => err.into(),
-                Ok(text_extents) => {
-                    *extents = text_extents.into();
-                    ffi::STATUS_SUCCESS
-                }
+                err.into()
+            } else {
+                ffi::STATUS_SUCCESS
             }
         }
         unsafe {
