@@ -31,6 +31,30 @@ impl TextExtents {
     pub fn y_advance(&self) -> f64 {
         self.0.y_advance
     }
+
+    pub fn set_x_bearing(&mut self, x_bearing: f64) {
+        self.0.x_bearing = x_bearing;
+    }
+
+    pub fn set_y_bearing(&mut self, y_bearing: f64) {
+        self.0.y_bearing = y_bearing;
+    }
+
+    pub fn set_width(&mut self, width: f64) {
+        self.0.width = width;
+    }
+
+    pub fn set_height(&mut self, height: f64) {
+        self.0.height = height;
+    }
+
+    pub fn set_x_advance(&mut self, x_advance: f64) {
+        self.0.x_advance = x_advance;
+    }
+
+    pub fn set_y_advance(&mut self, y_advance: f64) {
+        self.0.y_advance = y_advance;
+    }
 }
 
 impl fmt::Debug for TextExtents {

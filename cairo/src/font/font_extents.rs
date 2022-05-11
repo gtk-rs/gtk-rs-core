@@ -27,6 +27,26 @@ impl FontExtents {
     pub fn max_y_advance(&self) -> f64 {
         self.0.max_y_advance
     }
+
+    pub fn set_ascent(&mut self, ascent: f64) {
+        self.0.ascent = ascent;
+    }
+
+    pub fn set_descent(&mut self, descent: f64) {
+        self.0.descent = descent;
+    }
+
+    pub fn set_height(&mut self, height: f64) {
+        self.0.height = height;
+    }
+
+    pub fn set_max_x_advance(&mut self, max_x_advance: f64) {
+        self.0.max_x_advance = max_x_advance;
+    }
+
+    pub fn set_max_y_advance(&mut self, max_y_advance: f64) {
+        self.0.max_y_advance = max_y_advance;
+    }
 }
 
 impl fmt::Debug for FontExtents {
