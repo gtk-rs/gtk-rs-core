@@ -226,6 +226,7 @@ fn list_model_iter_ok() {
     assert_eq!(iter.next(), None);
     assert_eq!(iter.next_back(), None);
 }
+
 #[test]
 fn list_model_iter_err() {
     let list = crate::ListStore::new(crate::Menu::static_type());
@@ -256,4 +257,67 @@ fn list_model_iter_err() {
     assert_eq!(iter.next(), Some(Err(ListModelMutatedDuringIter)));
     // Returned n items
     assert_eq!(iter.next(), None);
+}
+
+#[test]
+fn list_model_iter_nth() {
+    let list = crate::ListStore::new(crate::Menu::static_type());
+    let m1 = crate::Menu::new();
+    let m2 = crate::Menu::new();
+    let m3 = crate::Menu::new();
+    let m4 = crate::Menu::new();
+    let m5 = crate::Menu::new();
+    let m6 = crate::Menu::new();
+
+    list.append(&m1);
+    list.append(&m2);
+    list.append(&m3);
+    list.append(&m4);
+    list.append(&m5);
+    list.append(&m6);
+
+    let mut iter = list.iter::<crate::Menu>().unwrap();
+
+    assert_eq!(iter.len(), 6);
+    assert_eq!(iter.nth(1), Some(Ok(m2)));
+    assert_eq!(iter.len(), 4);
+    assert_eq!(iter.next(), Some(Ok(m3)));
+    assert_eq!(iter.nth_back(2), Some(Ok(m4)));
+    assert_eq!(iter.len(), 0);
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.next_back(), None);
+}
+
+#[test]
+fn list_model_iter_last() {
+    let list = crate::ListStore::new(crate::Menu::static_type());
+    let m1 = crate::Menu::new();
+    let m2 = crate::Menu::new();
+    let m3 = crate::Menu::new();
+
+    list.append(&m1);
+    list.append(&m2);
+    list.append(&m3);
+
+    let iter = list.iter::<crate::Menu>().unwrap();
+
+    assert_eq!(iter.len(), 3);
+    assert_eq!(iter.last(), Some(Ok(m3)));
+}
+
+#[test]
+fn list_model_iter_count() {
+    let list = crate::ListStore::new(crate::Menu::static_type());
+    let m1 = crate::Menu::new();
+    let m2 = crate::Menu::new();
+    let m3 = crate::Menu::new();
+
+    list.append(&m1);
+    list.append(&m2);
+    list.append(&m3);
+
+    let iter = list.iter::<crate::Menu>().unwrap();
+
+    assert_eq!(iter.len(), 3);
+    assert_eq!(iter.count(), 3);
 }
