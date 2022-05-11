@@ -4,7 +4,7 @@
 // introduce a heap allocation and doesn't provide a way to determine how
 // many items are left in the iterator.
 
-use std::iter::{DoubleEndedIterator, ExactSizeIterator, Iterator};
+use std::iter::{DoubleEndedIterator, ExactSizeIterator, FusedIterator};
 
 use crate::translate::*;
 use crate::variant::Variant;
@@ -46,6 +46,29 @@ impl Iterator for VariantIter {
         let size = self.tail - self.head;
         (size, Some(size))
     }
+
+    fn count(self) -> usize {
+        self.tail - self.head
+    }
+
+    fn nth(&mut self, n: usize) -> Option<Variant> {
+        let (end, overflow) = self.head.overflowing_add(n);
+        if end >= self.tail || overflow {
+            self.head = self.tail;
+            None
+        } else {
+            self.head = end + 1;
+            Some(self.variant.child_value(end))
+        }
+    }
+
+    fn last(self) -> Option<Variant> {
+        if self.head == self.tail {
+            None
+        } else {
+            Some(self.variant.child_value(self.tail - 1))
+        }
+    }
 }
 
 impl DoubleEndedIterator for VariantIter {
@@ -57,9 +80,22 @@ impl DoubleEndedIterator for VariantIter {
             Some(self.variant.child_value(self.tail))
         }
     }
+
+    fn nth_back(&mut self, n: usize) -> Option<Variant> {
+        let (end, overflow) = self.tail.overflowing_sub(n);
+        if end <= self.head || overflow {
+            self.head = self.tail;
+            None
+        } else {
+            self.tail = end - 1;
+            Some(self.variant.child_value(end - 1))
+        }
+    }
 }
 
 impl ExactSizeIterator for VariantIter {}
+
+impl FusedIterator for VariantIter {}
 
 // rustdoc-stripper-ignore-next
 /// Iterator over items in a variant of type `as`.
@@ -114,6 +150,29 @@ impl<'a> Iterator for VariantStrIter<'a> {
         let size = self.tail - self.head;
         (size, Some(size))
     }
+
+    fn count(self) -> usize {
+        self.tail - self.head
+    }
+
+    fn nth(&mut self, n: usize) -> Option<&'a str> {
+        let (end, overflow) = self.head.overflowing_add(n);
+        if end >= self.tail || overflow {
+            self.head = self.tail;
+            None
+        } else {
+            self.head = end + 1;
+            Some(self.impl_get(end))
+        }
+    }
+
+    fn last(self) -> Option<&'a str> {
+        if self.head == self.tail {
+            None
+        } else {
+            Some(self.impl_get(self.tail - 1))
+        }
+    }
 }
 
 impl<'a> DoubleEndedIterator for VariantStrIter<'a> {
@@ -125,9 +184,22 @@ impl<'a> DoubleEndedIterator for VariantStrIter<'a> {
             Some(self.impl_get(self.tail))
         }
     }
+
+    fn nth_back(&mut self, n: usize) -> Option<&'a str> {
+        let (end, overflow) = self.tail.overflowing_sub(n);
+        if end <= self.head || overflow {
+            self.head = self.tail;
+            None
+        } else {
+            self.tail = end - 1;
+            Some(self.impl_get(end - 1))
+        }
+    }
 }
 
 impl<'a> ExactSizeIterator for VariantStrIter<'a> {}
+
+impl<'a> FusedIterator for VariantStrIter<'a> {}
 
 #[cfg(test)]
 mod tests {
