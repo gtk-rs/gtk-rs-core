@@ -3,6 +3,7 @@
 mod action_group;
 mod action_map;
 mod application;
+mod async_initable;
 mod initable;
 mod input_stream;
 mod io_stream;
@@ -19,6 +20,7 @@ pub mod prelude {
     pub use super::action_group::{ActionGroupImpl, ActionGroupImplExt};
     pub use super::action_map::{ActionMapImpl, ActionMapImplExt};
     pub use super::application::{ApplicationImpl, ApplicationImplExt};
+    pub use super::async_initable::{AsyncInitableImpl, AsyncInitableImplExt};
     pub use super::initable::{InitableImpl, InitableImplExt};
     pub use super::input_stream::{InputStreamImpl, InputStreamImplExt};
     pub use super::io_stream::{IOStreamImpl, IOStreamImplExt};

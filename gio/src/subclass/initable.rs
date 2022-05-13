@@ -12,7 +12,9 @@ use crate::Cancellable;
 use crate::Initable;
 
 pub trait InitableImpl: ObjectImpl {
-    fn init(&self, initable: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error>;
+    fn init(&self, initable: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error> {
+        self.parent_init(initable, cancellable)
+    }
 }
 
 pub trait InitableImplExt: ObjectSubclass {
@@ -129,12 +131,6 @@ mod tests {
         use super::*;
         pub type InitableTestType = <imp::InitableTestType as ObjectSubclass>::Instance;
 
-        #[no_mangle]
-        pub unsafe extern "C" fn initable_test_type_get_type() -> glib::ffi::GType {
-            imp::InitableTestType::type_().into_glib()
-        }
-
-        #[no_mangle]
         pub unsafe extern "C" fn initable_test_type_get_value(this: *mut InitableTestType) -> u64 {
             let this = super::InitableTestType::from_glib_borrow(this);
             this.imp().0.get()
@@ -203,6 +199,19 @@ mod tests {
             Option::<&Cancellable>::None,
         )
         .expect("Failed creation/initialization of InitableTestType object from type")
+        .downcast::<InitableTestType>()
+        .expect("Failed downcast of InitableTestType object");
+        assert_eq!(0x123456789abcdef, test.value());
+    }
+
+    #[test]
+    fn test_initable_with_initable_with_values() {
+        let test = Initable::with_values(
+            InitableTestType::static_type(),
+            &[],
+            Option::<&Cancellable>::None,
+        )
+        .expect("Failed creation/initialization of InitableTestType object from values")
         .downcast::<InitableTestType>()
         .expect("Failed downcast of InitableTestType object");
         assert_eq!(0x123456789abcdef, test.value());
