@@ -206,12 +206,6 @@ pub trait ApplicationExt: 'static {
     #[doc(alias = "get_resource_base_path")]
     fn resource_base_path(&self) -> Option<glib::GString>;
 
-    #[doc(alias = "g_application_hold")]
-    fn hold(&self);
-
-    #[doc(alias = "g_application_mark_busy")]
-    fn mark_busy(&self);
-
     #[doc(alias = "g_application_open")]
     fn open(&self, files: &[File], hint: &str);
 
@@ -220,9 +214,6 @@ pub trait ApplicationExt: 'static {
 
     #[doc(alias = "g_application_register")]
     fn register(&self, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
-
-    #[doc(alias = "g_application_release")]
-    fn release(&self);
 
     #[doc(alias = "g_application_send_notification")]
     fn send_notification(&self, id: Option<&str>, notification: &Notification);
@@ -253,9 +244,6 @@ pub trait ApplicationExt: 'static {
 
     #[doc(alias = "g_application_unbind_busy_property")]
     fn unbind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str);
-
-    #[doc(alias = "g_application_unmark_busy")]
-    fn unmark_busy(&self);
 
     #[doc(alias = "g_application_withdraw_notification")]
     fn withdraw_notification(&self, id: &str);
@@ -425,18 +413,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    fn hold(&self) {
-        unsafe {
-            ffi::g_application_hold(self.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn mark_busy(&self) {
-        unsafe {
-            ffi::g_application_mark_busy(self.as_ref().to_glib_none().0);
-        }
-    }
-
     fn open(&self, files: &[File], hint: &str) {
         let n_files = files.len() as i32;
         unsafe {
@@ -469,12 +445,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
             } else {
                 Err(from_glib_full(error))
             }
-        }
-    }
-
-    fn release(&self) {
-        unsafe {
-            ffi::g_application_release(self.as_ref().to_glib_none().0);
         }
     }
 
@@ -561,12 +531,6 @@ impl<O: IsA<Application>> ApplicationExt for O {
                 object.as_ref().to_glib_none().0,
                 property.to_glib_none().0,
             );
-        }
-    }
-
-    fn unmark_busy(&self) {
-        unsafe {
-            ffi::g_application_unmark_busy(self.as_ref().to_glib_none().0);
         }
     }
 
