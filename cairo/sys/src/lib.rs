@@ -993,6 +993,7 @@ extern "C" {
     pub fn cairo_surface_finish(surface: *mut cairo_surface_t);
     pub fn cairo_surface_status(surface: *mut cairo_surface_t) -> cairo_status_t;
     pub fn cairo_surface_get_type(surface: *mut cairo_surface_t) -> cairo_surface_type_t;
+    pub fn cairo_surface_get_content(surface: *mut cairo_surface_t) -> cairo_content_t;
     pub fn cairo_surface_reference(surface: *mut cairo_surface_t) -> *mut cairo_surface_t;
     pub fn cairo_surface_get_user_data(
         surface: *mut cairo_surface_t,
