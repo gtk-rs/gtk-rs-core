@@ -2,8 +2,7 @@
 
 use crate::Application;
 use crate::File;
-use glib::object::Cast;
-use glib::object::IsA;
+use glib::prelude::*;
 use glib::signal::{connect_raw, SignalHandlerId};
 use glib::translate::*;
 use glib::GString;
@@ -16,6 +15,12 @@ pub trait ApplicationExtManual {
     #[doc(alias = "g_application_run")]
     fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> i32;
     fn connect_open<F: Fn(&Self, &[File], &str) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[doc(alias = "g_application_hold")]
+    fn hold(&self) -> ApplicationHoldGuard;
+
+    #[doc(alias = "g_application_mark_busy")]
+    fn mark_busy(&self) -> ApplicationBusyGuard;
 }
 
 impl<O: IsA<Application>> ApplicationExtManual for O {
@@ -59,6 +64,46 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
                 )),
                 Box_::into_raw(f),
             )
+        }
+    }
+
+    fn hold(&self) -> ApplicationHoldGuard {
+        unsafe {
+            ffi::g_application_hold(self.as_ref().to_glib_none().0);
+        }
+        ApplicationHoldGuard(self.as_ref().downgrade())
+    }
+
+    fn mark_busy(&self) -> ApplicationBusyGuard {
+        unsafe {
+            ffi::g_application_mark_busy(self.as_ref().to_glib_none().0);
+        }
+        ApplicationBusyGuard(self.as_ref().downgrade())
+    }
+}
+
+#[derive(Debug)]
+pub struct ApplicationHoldGuard(glib::WeakRef<Application>);
+
+impl Drop for ApplicationHoldGuard {
+    fn drop(&mut self) {
+        if let Some(application) = self.0.upgrade() {
+            unsafe {
+                ffi::g_application_release(application.to_glib_none().0);
+            }
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct ApplicationBusyGuard(glib::WeakRef<Application>);
+
+impl Drop for ApplicationBusyGuard {
+    fn drop(&mut self) {
+        if let Some(application) = self.0.upgrade() {
+            unsafe {
+                ffi::g_application_unmark_busy(application.to_glib_none().0);
+            }
         }
     }
 }

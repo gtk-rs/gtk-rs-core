@@ -14,6 +14,7 @@ pub use glib;
 
 mod app_info;
 mod application;
+pub use application::{ApplicationBusyGuard, ApplicationHoldGuard};
 mod async_initable;
 mod cancellable;
 mod converter;
