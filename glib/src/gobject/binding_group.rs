@@ -213,7 +213,7 @@ impl<'a> BindingGroupBuilder<'a> {
                 Box::into_raw(Box::new((
                     self.transform_to,
                     self.transform_from,
-                    source_property_name,
+                    String::from_glib_none(source_property_name as *const _),
                     target_property,
                 )))
             } else {
