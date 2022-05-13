@@ -309,15 +309,13 @@ mod test {
             .bind("name", &target, "name")
             .flags(crate::BindingFlags::SYNC_CREATE)
             .transform_to(|_binding, value| {
-                let prev_name = value.get::<String>().unwrap();
-                assert_eq!(prev_name, "Hello");
-
-                Some("World".to_value())
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
             })
             .build();
 
         source.set_name("Hello");
-        assert_eq!(target.name(), "World");
+        assert_eq!(target.name(), "Hello World");
     }
 
     #[test]
@@ -331,11 +329,14 @@ mod test {
         binding_group
             .bind("name", &target, "name")
             .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
-            .transform_from(|_binding, _value| Some("World".to_value()))
+            .transform_from(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
+            })
             .build();
 
         target.set_name("Hello");
-        assert_eq!(source.name(), "World");
+        assert_eq!(source.name(), "Hello World");
     }
 
     mod imp {
