@@ -59,7 +59,7 @@ jobs:
       - name: Check doc aliases
         run: |
           python3 doc_aliases.py ../${{matrix.conf.name}}
-          cd .. && git diff --exit-code
+          cd .. && git config --global --add safe.directory `pwd` && git diff --exit-code
         working-directory: checker
         if: matrix.rust == 'nightly'
       # tests run
