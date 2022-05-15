@@ -3,6 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! GObject bindings
 
+#[allow(unused_imports)]
 mod auto;
 mod binding;
 #[cfg(any(feature = "v2_72", feature = "dox"))]
