@@ -89,6 +89,21 @@ impl PdfSurface {
         self.status()
     }
 
+    #[cfg(any(all(feature = "pdf", feature = "v1_18"), feature = "dox"))]
+    #[doc(alias = "cairo_pdf_surface_set_custom_metadata")]
+    pub fn set_custom_metadata(&self, name: &str, value: &str) -> Result<(), Error> {
+        let name = CString::new(name).unwrap();
+        let value = CString::new(value).unwrap();
+        unsafe {
+            ffi::cairo_pdf_surface_set_custom_metadata(
+                self.0.to_raw_none(),
+                name.as_ptr(),
+                value.as_ptr(),
+            );
+        }
+        self.status()
+    }
+
     #[cfg(any(all(feature = "pdf", feature = "v1_16"), feature = "dox"))]
     #[doc(alias = "cairo_pdf_surface_set_page_label")]
     pub fn set_page_label(&self, label: &str) -> Result<(), Error> {

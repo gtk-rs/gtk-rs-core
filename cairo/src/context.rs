@@ -347,6 +347,19 @@ impl Context {
         unsafe { ffi::cairo_get_line_width(self.0.as_ptr()) }
     }
 
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[doc(alias = "cairo_set_hairline")]
+    pub fn set_hairline(&self, set_hairline: bool) {
+        unsafe { ffi::cairo_set_hairline(self.0.as_ptr(), set_hairline.into()) }
+    }
+
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[doc(alias = "get_hairline")]
+    #[doc(alias = "cairo_get_hairline")]
+    pub fn hairline(&self) -> bool {
+        unsafe { ffi::cairo_get_hairline(self.0.as_ptr()) }.as_bool()
+    }
+
     #[doc(alias = "cairo_set_miter_limit")]
     pub fn set_miter_limit(&self, arg: f64) {
         unsafe { ffi::cairo_set_miter_limit(self.0.as_ptr(), arg) }
