@@ -979,6 +979,10 @@ pub enum FontType {
     FontTypeQuartz,
     #[doc(alias = "FONT_TYPE_FONT_TYPE_USER")]
     FontTypeUser,
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_18")))]
+    #[doc(alias = "FONT_TYPE_FONT_TYPE_DWRITE")]
+    FontTypeDwrite,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -992,6 +996,8 @@ impl From<FontType> for ffi::cairo_font_type_t {
             FontType::FontTypeWin32 => ffi::FONT_TYPE_FONT_TYPE_WIN32,
             FontType::FontTypeQuartz => ffi::FONT_TYPE_FONT_TYPE_QUARTZ,
             FontType::FontTypeUser => ffi::FONT_TYPE_FONT_TYPE_USER,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            FontType::FontTypeDwrite => ffi::FONT_TYPE_FONT_TYPE_DWRITE,
             FontType::__Unknown(value) => value,
         }
     }
@@ -1006,6 +1012,8 @@ impl From<ffi::cairo_font_type_t> for FontType {
             ffi::FONT_TYPE_FONT_TYPE_WIN32 => Self::FontTypeWin32,
             ffi::FONT_TYPE_FONT_TYPE_QUARTZ => Self::FontTypeQuartz,
             ffi::FONT_TYPE_FONT_TYPE_USER => Self::FontTypeUser,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            ffi::FONT_TYPE_FONT_TYPE_DWRITE => Self::FontTypeDwrite,
             value => Self::__Unknown(value),
         }
     }
@@ -1022,6 +1030,8 @@ impl fmt::Display for FontType {
                 Self::FontTypeWin32 => "FontTypeWin32",
                 Self::FontTypeQuartz => "FontTypeQuartz",
                 Self::FontTypeUser => "FontTypeUser",
+                #[cfg(any(feature = "v1_18", feature = "dox"))]
+                Self::FontTypeDwrite => "FontTypeDwrite",
                 _ => "Unknown",
             }
         )
@@ -1733,6 +1743,14 @@ pub enum PdfVersion {
     _1_4,
     #[doc(alias = "PDF_VERSION__1_5")]
     _1_5,
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_18")))]
+    #[doc(alias = "PDF_VERSION__1_6")]
+    _1_6,
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_18")))]
+    #[doc(alias = "PDF_VERSION__1_7")]
+    _1_7,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1744,6 +1762,10 @@ impl From<PdfVersion> for ffi::cairo_pdf_version_t {
         match val {
             PdfVersion::_1_4 => ffi::PDF_VERSION__1_4,
             PdfVersion::_1_5 => ffi::PDF_VERSION__1_5,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            PdfVersion::_1_6 => ffi::PDF_VERSION__1_6,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            PdfVersion::_1_7 => ffi::PDF_VERSION__1_7,
             PdfVersion::__Unknown(value) => value,
         }
     }
@@ -1756,6 +1778,10 @@ impl From<ffi::cairo_pdf_version_t> for PdfVersion {
         match value {
             ffi::PDF_VERSION__1_4 => Self::_1_4,
             ffi::PDF_VERSION__1_5 => Self::_1_5,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            ffi::PDF_VERSION__1_6 => Self::_1_6,
+            #[cfg(any(feature = "v1_18", feature = "dox"))]
+            ffi::PDF_VERSION__1_7 => Self::_1_7,
             value => Self::__Unknown(value),
         }
     }
@@ -1770,6 +1796,10 @@ impl fmt::Display for PdfVersion {
             match *self {
                 Self::_1_4 => "1_4",
                 Self::_1_5 => "1_5",
+                #[cfg(any(feature = "v1_18", feature = "dox"))]
+                Self::_1_6 => "1_6",
+                #[cfg(any(feature = "v1_18", feature = "dox"))]
+                Self::_1_7 => "1_7",
                 _ => "Unknown",
             }
         )

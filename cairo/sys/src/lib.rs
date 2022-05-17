@@ -340,6 +340,10 @@ extern "C" {
     pub fn cairo_get_line_join(cr: *mut cairo_t) -> cairo_line_join_t;
     pub fn cairo_set_line_width(cr: *mut cairo_t, width: c_double);
     pub fn cairo_get_line_width(cr: *mut cairo_t) -> c_double;
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    pub fn cairo_set_hairline(cr: *mut cairo_t, set_hairline: cairo_bool_t);
+    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    pub fn cairo_get_hairline(cr: *mut cairo_t) -> cairo_bool_t;
     pub fn cairo_set_miter_limit(cr: *mut cairo_t, limit: c_double);
     pub fn cairo_get_miter_limit(cr: *mut cairo_t) -> c_double;
     pub fn cairo_set_operator(cr: *mut cairo_t, op: cairo_operator_t);
@@ -1180,6 +1184,12 @@ extern "C" {
         metadata: cairo_pdf_metadata_t,
         utf8: *const c_char,
     );
+    #[cfg(any(all(feature = "pdf", feature = "v1_18"), feature = "dox"))]
+    pub fn cairo_pdf_surface_set_custom_metadata(
+        surface: *mut cairo_surface_t,
+        name: *const c_char,
+        value: *const c_char,
+    );
     #[cfg(any(all(feature = "pdf", feature = "v1_16"), feature = "dox"))]
     pub fn cairo_pdf_surface_set_page_label(surface: *mut cairo_surface_t, utf8: *const c_char);
     #[cfg(any(all(feature = "pdf", feature = "v1_16"), feature = "dox"))]
@@ -1561,7 +1571,9 @@ pub const STATUS_J_BIG2_GLOBAL_MISSING: i32 = 38;
 pub const STATUS_PNG_ERROR: i32 = 39;
 pub const STATUS_FREETYPE_ERROR: i32 = 40;
 pub const STATUS_WIN32_GDI_ERROR: i32 = 41;
-pub const STATUS_LAST_STATUS: i32 = 42;
+pub const STATUS_TAG_ERROR: i32 = 42;
+pub const STATUS_DWRITE_ERROR: i32 = 43;
+pub const STATUS_LAST_STATUS: i32 = 44;
 pub const ANTIALIAS_DEFAULT: i32 = 0;
 pub const ANTIALIAS_NONE: i32 = 1;
 pub const ANTIALIAS_GRAY: i32 = 2;
@@ -1641,6 +1653,7 @@ pub const FONT_TYPE_FONT_TYPE_FT: i32 = 1;
 pub const FONT_TYPE_FONT_TYPE_WIN32: i32 = 2;
 pub const FONT_TYPE_FONT_TYPE_QUARTZ: i32 = 3;
 pub const FONT_TYPE_FONT_TYPE_USER: i32 = 4;
+pub const FONT_TYPE_FONT_TYPE_DWRITE: i32 = 5;
 pub const SUBPIXEL_ORDER_DEFAULT: i32 = 0;
 pub const SUBPIXEL_ORDER_RGB: i32 = 1;
 pub const SUBPIXEL_ORDER_BGR: i32 = 2;
@@ -1711,6 +1724,8 @@ pub const PDF_METADATA_CREATE_DATE: i32 = 5;
 pub const PDF_METADATA_MOD_DATE: i32 = 6;
 pub const PDF_VERSION__1_4: i32 = 0;
 pub const PDF_VERSION__1_5: i32 = 1;
+pub const PDF_VERSION__1_6: i32 = 2;
+pub const PDF_VERSION__1_7: i32 = 3;
 pub const SVG_VERSION__1_1: i32 = 0;
 pub const SVG_VERSION__1_2: i32 = 1;
 pub const PS_LEVEL__2: i32 = 0;
