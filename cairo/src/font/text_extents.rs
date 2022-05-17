@@ -8,6 +8,24 @@ use std::fmt;
 pub struct TextExtents(ffi::cairo_text_extents_t);
 
 impl TextExtents {
+    pub fn new(
+        x_bearing: f64,
+        y_bearing: f64,
+        width: f64,
+        height: f64,
+        x_advance: f64,
+        y_advance: f64,
+    ) -> Self {
+        Self(ffi::cairo_text_extents_t {
+            x_bearing,
+            y_bearing,
+            width,
+            height,
+            x_advance,
+            y_advance,
+        })
+    }
+
     pub fn x_bearing(&self) -> f64 {
         self.0.x_bearing
     }
