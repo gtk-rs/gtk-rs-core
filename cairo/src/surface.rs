@@ -173,6 +173,11 @@ impl Surface {
         }
     }
 
+    #[doc(alias = "cairo_surface_get_content")]
+    pub fn content(&self) -> Content {
+        unsafe { ffi::cairo_surface_get_content(self.to_raw_none()) }.into()
+    }
+
     #[doc(alias = "cairo_surface_set_device_offset")]
     pub fn set_device_offset(&self, x_offset: f64, y_offset: f64) {
         unsafe { ffi::cairo_surface_set_device_offset(self.to_raw_none(), x_offset, y_offset) }
