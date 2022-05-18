@@ -34,7 +34,6 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
       - uses: actions/checkout@v3
-        set-safe-directory: false # avoid overwriting the parent directory
         with:
           repository: gtk-rs/checker
           ref: master
@@ -60,7 +59,7 @@ jobs:
       - name: Check doc aliases
         run: |
           python3 doc_aliases.py ../${{matrix.conf.name}}
-          cd .. && git diff --exit-code
+          cd .. && git config --global --add safe.directory `pwd` && git diff --exit-code
         working-directory: checker
         if: matrix.rust == 'nightly'
       # tests run
