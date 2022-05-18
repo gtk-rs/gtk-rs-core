@@ -5,6 +5,8 @@ use glib::translate::*;
 use std::ffi::{CStr, CString};
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
+#[cfg(any(feature = "freetype", feature = "dox"))]
+use std::rc::Rc;
 
 use crate::{
     enums::{FontSlant, FontType, FontWeight},
@@ -15,6 +17,9 @@ use crate::{
 use crate::enums::FtSynthesize;
 
 use crate::utils::status_to_result;
+
+#[cfg(any(feature = "freetype", feature = "dox"))]
+static FT_FACE_KEY: crate::UserDataKey<freetype::face::Face> = crate::UserDataKey::new();
 
 #[cfg(feature = "use_glib")]
 glib::wrapper! {
@@ -64,14 +69,16 @@ impl FontFace {
     /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
-    pub unsafe fn create_from_ft(
-        face: freetype_crate::freetype::FT_Face,
-    ) -> Result<FontFace, Error> {
-        let font_face = FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
-            face as *mut _,
-            0,
-        ));
-        let status = ffi::cairo_font_face_status(font_face.to_raw_none());
+    pub fn create_from_ft(face: &freetype::face::Face) -> Result<FontFace, Error> {
+        let mut face = face.clone();
+        let font_face = unsafe {
+            FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
+                face.raw_mut() as freetype::ffi::FT_Face as *mut _,
+                0,
+            ))
+        };
+        font_face.set_user_data(&FT_FACE_KEY, Rc::new(face))?;
+        let status = unsafe { ffi::cairo_font_face_status(font_face.to_raw_none()) };
         status_to_result(status)?;
 
         Ok(font_face)
@@ -87,15 +94,19 @@ impl FontFace {
     /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
-    pub unsafe fn create_from_ft_with_flags(
-        face: freetype_crate::freetype::FT_Face,
+    pub fn create_from_ft_with_flags(
+        face: &freetype::face::Face,
         load_flags: libc::c_int,
     ) -> Result<FontFace, Error> {
-        let font_face = FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
-            face as *mut _,
-            load_flags,
-        ));
-        let status = ffi::cairo_font_face_status(font_face.to_raw_none());
+        let mut face = face.clone();
+        let font_face = unsafe {
+            FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
+                face.raw_mut() as freetype::ffi::FT_Face as *mut _,
+                load_flags,
+            ))
+        };
+        font_face.set_user_data(&FT_FACE_KEY, Rc::new(face))?;
+        let status = unsafe { ffi::cairo_font_face_status(font_face.to_raw_none()) };
         status_to_result(status)?;
 
         Ok(font_face)
