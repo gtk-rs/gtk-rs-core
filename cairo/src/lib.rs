@@ -8,7 +8,7 @@
 
 pub use ffi;
 #[cfg(feature = "freetype")]
-pub use freetype_crate as freetype;
+pub use freetype;
 #[cfg(feature = "use_glib")]
 pub use glib;
 
