@@ -62,15 +62,14 @@ impl FontFace {
 
     // rustdoc-stripper-ignore-next
     /// Creates a new font face for the FreeType backend from an already opened FreeType face.
-    ///
-    /// # Safety
-    ///
-    /// The`FT_Face` must be valid and not be freed until the last reference to the
-    /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub fn create_from_ft(face: &freetype::face::Face) -> Result<FontFace, Error> {
+        // Increase reference count of `FT_Face`.
         let mut face = face.clone();
+
+        // SAFETY: The user data entry keeps `freetype::face::Face` alive
+        // until the FontFace is dropped.
         let font_face = unsafe {
             FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
                 face.raw_mut() as freetype::ffi::FT_Face as *mut _,
@@ -87,18 +86,17 @@ impl FontFace {
     // rustdoc-stripper-ignore-next
     /// Creates a new font face for the FreeType backend from an already opened FreeType face,
     /// additionally allowing you to pass flags to the underlying C API.
-    ///
-    /// # Safety
-    ///
-    /// The `FT_Face` must be valid and not be freed until the last reference to the
-    /// `FontFace` is dropped.
     #[cfg(any(feature = "freetype", feature = "dox"))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub fn create_from_ft_with_flags(
         face: &freetype::face::Face,
         load_flags: libc::c_int,
     ) -> Result<FontFace, Error> {
+        // Increase reference count of `FT_Face`.
         let mut face = face.clone();
+
+        // SAFETY: The user data entry keeps `freetype::face::Face` alive
+        // until the FontFace is dropped.
         let font_face = unsafe {
             FontFace::from_raw_full(ffi::cairo_ft_font_face_create_for_ft_face(
                 face.raw_mut() as freetype::ffi::FT_Face as *mut _,
