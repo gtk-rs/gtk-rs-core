@@ -96,7 +96,6 @@ pub mod prelude;
 
 #[allow(clippy::wrong_self_convention)]
 #[allow(clippy::new_ret_no_self)]
-#[allow(clippy::let_and_return)]
 #[allow(unused_imports)]
 mod auto;
 
