@@ -111,7 +111,7 @@ impl<'a> BindingGroupBuilder<'a> {
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
             let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, ParamSpec, ParamSpec));
+                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
 
             match (transform_data.0.as_ref().unwrap())(
                 &from_glib_borrow(binding),
@@ -140,19 +140,26 @@ impl<'a> BindingGroupBuilder<'a> {
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
             let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, ParamSpec, ParamSpec));
+                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
+            let binding = from_glib_borrow(binding);
 
             match (transform_data.1.as_ref().unwrap())(
-                &from_glib_borrow(binding),
+                &binding,
                 &*(from_value as *const Value),
             ) {
                 None => false,
                 Some(res) => {
+                    let pspec_name = transform_data.2.clone();
+                    let source = binding.source().unwrap();
+                    let pspec = source.find_property(&pspec_name);
+                    assert!(pspec.is_some(), "Source object does not have a property {}", pspec_name);
+                    let pspec = pspec.unwrap();
+
                     assert!(
-                        res.type_().is_a(transform_data.2.value_type()),
+                        res.type_().is_a(pspec.value_type()),
                         "Source property {} expected type {} but transform_from function returned {}",
-                        transform_data.2.name(),
-                        transform_data.2.value_type(),
+                        pspec_name,
+                        pspec.value_type(),
                         res.type_()
                     );
                     *to_value = res.into_raw();
@@ -163,16 +170,11 @@ impl<'a> BindingGroupBuilder<'a> {
         }
 
         unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
-            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, ParamSpec, ParamSpec));
+            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
         }
 
-        let source = self
-            .group
-            .source()
-            .ok_or_else(|| bool_error!("Binding group does not have a source set"))?;
-        unsafe {
-            let target: Object = from_glib_none(self.target.clone().to_glib_none().0);
-
+        let mut _source_propery_name_cstr = None;
+        let source_property_name = if let Some(source) = self.group.source() {
             let source_property = source.find_property(self.source_property).ok_or_else(|| {
                 bool_error!(
                     "Source property {} on type {} not found",
@@ -180,6 +182,21 @@ impl<'a> BindingGroupBuilder<'a> {
                     source.type_()
                 )
             })?;
+
+            // This is NUL-termianted from the C side
+            source_property.name().as_ptr()
+        } else {
+            // This is a Rust &str and needs to be NUL-terminated first
+            let source_propery_name = std::ffi::CString::new(self.source_property).unwrap();
+            let source_property_name_ptr = source_propery_name.as_ptr() as *const u8;
+            _source_propery_name_cstr = Some(source_propery_name);
+
+            source_property_name_ptr
+        };
+
+        unsafe {
+            let target: Object = from_glib_none(self.target.clone().to_glib_none().0);
+
             let target_property = target.find_property(self.target_property).ok_or_else(|| {
                 bool_error!(
                     "Target property {} on type {} not found",
@@ -188,7 +205,6 @@ impl<'a> BindingGroupBuilder<'a> {
                 )
             })?;
 
-            let source_property_name = source_property.name().as_ptr();
             let target_property_name = target_property.name().as_ptr();
 
             let have_transform_to = self.transform_to.is_some();
@@ -197,7 +213,7 @@ impl<'a> BindingGroupBuilder<'a> {
                 Box::into_raw(Box::new((
                     self.transform_to,
                     self.transform_from,
-                    source_property,
+                    String::from_glib_none(source_property_name as *const _),
                     target_property,
                 )))
             } else {
@@ -233,8 +249,197 @@ impl<'a> BindingGroupBuilder<'a> {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Similar to `try_build` but fails instead of panicking.
+    /// Similar to `try_build` but panics instead of failing.
     pub fn build(self) {
         self.try_build().unwrap()
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::prelude::*;
+    use crate::subclass::prelude::*;
+
+    #[test]
+    fn binding_without_source() {
+        let binding_group = crate::BindingGroup::new();
+
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        assert!(source.find_property("name").is_some());
+        binding_group
+            .bind("name", &target, "name")
+            .flags(crate::BindingFlags::BIDIRECTIONAL)
+            .build();
+
+        binding_group.set_source(Some(&source));
+
+        source.set_name("test_source_name");
+        assert_eq!(source.name(), target.name());
+
+        target.set_name("test_target_name");
+        assert_eq!(source.name(), target.name());
+    }
+
+    #[test]
+    fn binding_with_source() {
+        let binding_group = crate::BindingGroup::new();
+
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        binding_group.set_source(Some(&source));
+
+        binding_group.bind("name", &target, "name").build();
+
+        source.set_name("test_source_name");
+        assert_eq!(source.name(), target.name());
+    }
+
+    #[test]
+    fn binding_to_transform() {
+        let binding_group = crate::BindingGroup::new();
+
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        binding_group.set_source(Some(&source));
+        binding_group
+            .bind("name", &target, "name")
+            .flags(crate::BindingFlags::SYNC_CREATE)
+            .transform_to(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
+            })
+            .build();
+
+        source.set_name("Hello");
+        assert_eq!(target.name(), "Hello World");
+    }
+
+    #[test]
+    fn binding_from_transform() {
+        let binding_group = crate::BindingGroup::new();
+
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        binding_group.set_source(Some(&source));
+        binding_group
+            .bind("name", &target, "name")
+            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .transform_from(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
+            })
+            .build();
+
+        target.set_name("Hello");
+        assert_eq!(source.name(), "Hello World");
+    }
+
+    mod imp {
+        use super::*;
+
+        use once_cell::sync::Lazy;
+        use std::cell::RefCell;
+
+        use crate as glib;
+
+        #[derive(Debug, Default)]
+        pub struct TestObject {
+            pub name: RefCell<String>,
+            pub enabled: RefCell<bool>,
+        }
+
+        #[crate::object_subclass]
+        impl ObjectSubclass for TestObject {
+            const NAME: &'static str = "Test";
+            type Type = super::TestObject;
+        }
+
+        impl ObjectImpl for TestObject {
+            fn properties() -> &'static [crate::ParamSpec] {
+                static PROPERTIES: Lazy<Vec<crate::ParamSpec>> = Lazy::new(|| {
+                    vec![
+                        crate::ParamSpecString::new(
+                            "name",
+                            "name",
+                            "name",
+                            None,
+                            crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
+                        ),
+                        crate::ParamSpecBoolean::new(
+                            "enabled",
+                            "enabled",
+                            "enabled",
+                            false,
+                            crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
+                        ),
+                    ]
+                });
+                PROPERTIES.as_ref()
+            }
+
+            fn property(
+                &self,
+                obj: &Self::Type,
+                _id: usize,
+                pspec: &crate::ParamSpec,
+            ) -> crate::Value {
+                match pspec.name() {
+                    "name" => obj.name().to_value(),
+                    "enabled" => obj.enabled().to_value(),
+                    _ => unimplemented!(),
+                }
+            }
+
+            fn set_property(
+                &self,
+                obj: &Self::Type,
+                _id: usize,
+                value: &crate::Value,
+                pspec: &crate::ParamSpec,
+            ) {
+                match pspec.name() {
+                    "name" => obj.set_name(value.get().unwrap()),
+                    "enabled" => obj.set_enabled(value.get().unwrap()),
+                    _ => unimplemented!(),
+                };
+            }
+        }
+    }
+
+    crate::wrapper! {
+        pub struct TestObject(ObjectSubclass<imp::TestObject>);
+    }
+
+    impl Default for TestObject {
+        fn default() -> Self {
+            crate::Object::new(&[]).unwrap()
+        }
+    }
+
+    impl TestObject {
+        fn name(&self) -> String {
+            self.imp().name.borrow().clone()
+        }
+
+        fn set_name(&self, name: &str) {
+            if name != self.imp().name.replace(name.to_string()).as_str() {
+                self.notify("name");
+            }
+        }
+
+        fn enabled(&self) -> bool {
+            *self.imp().enabled.borrow()
+        }
+
+        fn set_enabled(&self, enabled: bool) {
+            if enabled != self.imp().enabled.replace(enabled) {
+                self.notify("enabled");
+            }
+        }
     }
 }
