@@ -677,10 +677,9 @@ impl DBusConnection {
                 out_serial.as_mut_ptr(),
                 &mut error,
             );
-            let out_serial = out_serial.assume_init();
             assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
-                Ok(out_serial)
+                Ok(out_serial.assume_init())
             } else {
                 Err(from_glib_full(error))
             }
@@ -744,8 +743,7 @@ impl DBusConnection {
                 Some(callback),
                 Box_::into_raw(user_data) as *mut _,
             );
-            let out_serial = out_serial.assume_init();
-            out_serial
+            out_serial.assume_init()
         }
     }
 
@@ -793,9 +791,8 @@ impl DBusConnection {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            let out_serial = out_serial.assume_init();
             if error.is_null() {
-                Ok((from_glib_full(ret), out_serial))
+                Ok((from_glib_full(ret), out_serial.assume_init()))
             } else {
                 Err(from_glib_full(error))
             }

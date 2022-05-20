@@ -54,9 +54,8 @@ impl ListStore {
                 item.as_ref().to_glib_none().0,
                 position.as_mut_ptr(),
             ));
-            let position = position.assume_init();
             if ret {
-                Some(position)
+                Some(position.assume_init())
             } else {
                 None
             }

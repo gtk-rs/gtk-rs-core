@@ -28,9 +28,7 @@ impl Point {
                 d_x.as_mut_ptr(),
                 d_y.as_mut_ptr(),
             );
-            let d_x = d_x.assume_init();
-            let d_y = d_y.assume_init();
-            (ret, d_x, d_y)
+            (ret, d_x.assume_init(), d_y.assume_init())
         }
     }
 

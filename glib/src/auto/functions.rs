@@ -649,10 +649,9 @@ pub fn spawn_async(
             child_pid.as_mut_ptr(),
             &mut error,
         );
-        let child_pid = from_glib(child_pid.assume_init());
         assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
         if error.is_null() {
-            Ok(child_pid)
+            Ok(from_glib(child_pid.assume_init()))
         } else {
             Err(from_glib_full(error))
         }

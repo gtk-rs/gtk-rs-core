@@ -101,8 +101,7 @@ impl Ray {
                 b.to_glib_none().0,
                 t_out.as_mut_ptr(),
             ));
-            let t_out = t_out.assume_init();
-            (ret, t_out)
+            (ret, t_out.assume_init())
         }
     }
 
@@ -115,8 +114,7 @@ impl Ray {
                 s.to_glib_none().0,
                 t_out.as_mut_ptr(),
             ));
-            let t_out = t_out.assume_init();
-            (ret, t_out)
+            (ret, t_out.assume_init())
         }
     }
 
@@ -129,8 +127,7 @@ impl Ray {
                 t.to_glib_none().0,
                 t_out.as_mut_ptr(),
             ));
-            let t_out = t_out.assume_init();
-            (ret, t_out)
+            (ret, t_out.assume_init())
         }
     }
 

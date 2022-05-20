@@ -101,8 +101,7 @@ impl KeyFile {
                 self.to_glib_none().0,
                 length.as_mut_ptr(),
             ));
-            let length = length.assume_init();
-            (ret, length)
+            (ret, length.assume_init())
         }
     }
 
@@ -180,9 +179,11 @@ impl KeyFile {
                 length.as_mut_ptr(),
                 &mut error,
             );
-            let length = length.assume_init();
             if error.is_null() {
-                Ok((FromGlibPtrContainer::from_glib_full(ret), length))
+                Ok((
+                    FromGlibPtrContainer::from_glib_full(ret),
+                    length.assume_init(),
+                ))
             } else {
                 Err(from_glib_full(error))
             }

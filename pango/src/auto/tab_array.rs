@@ -79,9 +79,7 @@ impl TabArray {
                 alignment.as_mut_ptr(),
                 location.as_mut_ptr(),
             );
-            let alignment = alignment.assume_init();
-            let location = location.assume_init();
-            (from_glib(alignment), location)
+            (from_glib(alignment.assume_init()), location.assume_init())
         }
     }
 
