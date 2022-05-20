@@ -59,8 +59,7 @@ async fn read_file(file: gio::File) -> Result<(), String> {
     }
 
     // Asynchronously close the stream in the end.
-    let _ = strm
-        .close_future(glib::PRIORITY_DEFAULT)
+    strm.close_future(glib::PRIORITY_DEFAULT)
         .map_err(|err| format!("Failed to close stream: {}", err))
         .await?;
 
