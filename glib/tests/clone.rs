@@ -470,6 +470,7 @@ fn test_clone_macro_typed_args() {
             assert_eq!(3, *w.lock().unwrap());
             assert_eq!(2, *check.lock().unwrap());
 
+            #[allow(unused_macro_rules)]
             macro_rules! inner {
                 (strong) => {{}};
                 (weak) => {{
@@ -515,6 +516,7 @@ fn test_clone_macro_typed_args() {
             assert_eq!(3, *w.borrow());
             assert_eq!(2, *check.borrow());
 
+            #[allow(unused_macro_rules)]
             macro_rules! inner {
                 (strong) => {{}};
                 (weak) => {{
@@ -530,9 +532,6 @@ fn test_clone_macro_typed_args() {
 
             inner!($kind);
         }};
-        ($kind:tt, $($t:tt)+) => {{
-
-        }}
     }
 
     test_closure!(weak, panic);
