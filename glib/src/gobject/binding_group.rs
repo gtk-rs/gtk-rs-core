@@ -418,7 +418,7 @@ mod test {
 
         #[crate::object_subclass]
         impl ObjectSubclass for TestObject {
-            const NAME: &'static str = "Test";
+            const NAME: &'static str = "TestBindingGroup";
             type Type = super::TestObject;
         }
 
