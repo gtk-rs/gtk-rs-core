@@ -95,8 +95,7 @@ impl GlyphString {
                 trailing.into_glib(),
                 x_pos.as_mut_ptr(),
             );
-            let x_pos = x_pos.assume_init();
-            x_pos
+            x_pos.assume_init()
         }
     }
 
@@ -129,9 +128,7 @@ impl GlyphString {
                 index_.as_mut_ptr(),
                 trailing.as_mut_ptr(),
             );
-            let index_ = index_.assume_init();
-            let trailing = trailing.assume_init();
-            (index_, trailing)
+            (index_.assume_init(), trailing.assume_init())
         }
     }
 }

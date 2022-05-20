@@ -45,8 +45,7 @@ impl LayoutLine {
         unsafe {
             let mut height = mem::MaybeUninit::uninit();
             ffi::pango_layout_line_get_height(self.to_glib_none().0, height.as_mut_ptr());
-            let height = height.assume_init();
-            height
+            height.assume_init()
         }
     }
 
@@ -120,8 +119,7 @@ impl LayoutLine {
                 trailing.into_glib(),
                 x_pos.as_mut_ptr(),
             );
-            let x_pos = x_pos.assume_init();
-            x_pos
+            x_pos.assume_init()
         }
     }
 

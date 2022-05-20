@@ -58,9 +58,10 @@ pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
             paragraph_delimiter_index.as_mut_ptr(),
             next_paragraph_start.as_mut_ptr(),
         );
-        let paragraph_delimiter_index = paragraph_delimiter_index.assume_init();
-        let next_paragraph_start = next_paragraph_start.assume_init();
-        (paragraph_delimiter_index, next_paragraph_start)
+        (
+            paragraph_delimiter_index.assume_init(),
+            next_paragraph_start.assume_init(),
+        )
     }
 }
 
@@ -149,13 +150,12 @@ pub fn parse_markup(
             accel_char.as_mut_ptr(),
             &mut error,
         );
-        let accel_char = accel_char.assume_init();
         assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok((
                 from_glib_full(attr_list),
                 from_glib_full(text),
-                std::convert::TryFrom::try_from(accel_char)
+                std::convert::TryFrom::try_from(accel_char.assume_init())
                     .expect("conversion from an invalid Unicode value attempted"),
             ))
         } else {
@@ -173,9 +173,8 @@ pub fn parse_stretch(str: &str, warn: bool) -> Option<Stretch> {
             stretch.as_mut_ptr(),
             warn.into_glib(),
         ));
-        let stretch = stretch.assume_init();
         if ret {
-            Some(from_glib(stretch))
+            Some(from_glib(stretch.assume_init()))
         } else {
             None
         }
@@ -191,9 +190,8 @@ pub fn parse_style(str: &str, warn: bool) -> Option<Style> {
             style.as_mut_ptr(),
             warn.into_glib(),
         ));
-        let style = style.assume_init();
         if ret {
-            Some(from_glib(style))
+            Some(from_glib(style.assume_init()))
         } else {
             None
         }
@@ -209,9 +207,8 @@ pub fn parse_variant(str: &str, warn: bool) -> Option<Variant> {
             variant.as_mut_ptr(),
             warn.into_glib(),
         ));
-        let variant = variant.assume_init();
         if ret {
-            Some(from_glib(variant))
+            Some(from_glib(variant.assume_init()))
         } else {
             None
         }
@@ -227,9 +224,8 @@ pub fn parse_weight(str: &str, warn: bool) -> Option<Weight> {
             weight.as_mut_ptr(),
             warn.into_glib(),
         ));
-        let weight = weight.assume_init();
         if ret {
-            Some(from_glib(weight))
+            Some(from_glib(weight.assume_init()))
         } else {
             None
         }

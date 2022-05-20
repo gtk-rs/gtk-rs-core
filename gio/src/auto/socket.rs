@@ -494,10 +494,9 @@ impl<O: IsA<Socket>> SocketExt for O {
                 value.as_mut_ptr(),
                 &mut error,
             );
-            let value = value.assume_init();
             assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
-                Ok(value)
+                Ok(value.assume_init())
             } else {
                 Err(from_glib_full(error))
             }

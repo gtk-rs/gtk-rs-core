@@ -61,11 +61,9 @@ impl Resource {
                 flags.as_mut_ptr(),
                 &mut error,
             );
-            let size = size.assume_init();
-            let flags = flags.assume_init();
             assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
-                Ok((size, flags))
+                Ok((size.assume_init(), flags.assume_init()))
             } else {
                 Err(from_glib_full(error))
             }

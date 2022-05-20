@@ -204,8 +204,7 @@ pub fn content_type_guess(
             data_size,
             result_uncertain.as_mut_ptr(),
         ));
-        let result_uncertain = result_uncertain.assume_init();
-        (ret, from_glib(result_uncertain))
+        (ret, from_glib(result_uncertain.assume_init()))
     }
 }
 
@@ -551,11 +550,9 @@ pub fn resources_get_info(
             flags.as_mut_ptr(),
             &mut error,
         );
-        let size = size.assume_init();
-        let flags = flags.assume_init();
         assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
-            Ok((size, flags))
+            Ok((size.assume_init(), flags.assume_init()))
         } else {
             Err(from_glib_full(error))
         }

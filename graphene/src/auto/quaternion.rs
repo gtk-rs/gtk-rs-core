@@ -112,8 +112,7 @@ impl Quaternion {
                 angle.as_mut_ptr(),
                 axis.to_glib_none_mut().0,
             );
-            let angle = angle.assume_init();
-            (angle, axis)
+            (angle.assume_init(), axis)
         }
     }
 
@@ -129,10 +128,11 @@ impl Quaternion {
                 deg_y.as_mut_ptr(),
                 deg_z.as_mut_ptr(),
             );
-            let deg_x = deg_x.assume_init();
-            let deg_y = deg_y.assume_init();
-            let deg_z = deg_z.assume_init();
-            (deg_x, deg_y, deg_z)
+            (
+                deg_x.assume_init(),
+                deg_y.assume_init(),
+                deg_z.assume_init(),
+            )
         }
     }
 
@@ -157,10 +157,11 @@ impl Quaternion {
                 rad_y.as_mut_ptr(),
                 rad_z.as_mut_ptr(),
             );
-            let rad_x = rad_x.assume_init();
-            let rad_y = rad_y.assume_init();
-            let rad_z = rad_z.assume_init();
-            (rad_x, rad_y, rad_z)
+            (
+                rad_x.assume_init(),
+                rad_y.assume_init(),
+                rad_z.assume_init(),
+            )
         }
     }
 

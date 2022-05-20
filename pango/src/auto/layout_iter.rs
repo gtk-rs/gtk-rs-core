@@ -133,9 +133,7 @@ impl LayoutIter {
                 y0_.as_mut_ptr(),
                 y1_.as_mut_ptr(),
             );
-            let y0_ = y0_.assume_init();
-            let y1_ = y1_.assume_init();
-            (y0_, y1_)
+            (y0_.assume_init(), y1_.assume_init())
         }
     }
 

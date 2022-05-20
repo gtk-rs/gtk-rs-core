@@ -40,9 +40,7 @@ impl Matrix {
                 xscale.as_mut_ptr(),
                 yscale.as_mut_ptr(),
             );
-            let xscale = xscale.assume_init();
-            let yscale = yscale.assume_init();
-            (xscale, yscale)
+            (xscale.assume_init(), yscale.assume_init())
         }
     }
 

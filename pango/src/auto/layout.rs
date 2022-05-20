@@ -290,9 +290,7 @@ impl Layout {
                 width.as_mut_ptr(),
                 height.as_mut_ptr(),
             );
-            let width = width.assume_init();
-            let height = height.assume_init();
-            (width, height)
+            (width.assume_init(), height.assume_init())
         }
     }
 
@@ -323,9 +321,7 @@ impl Layout {
                 width.as_mut_ptr(),
                 height.as_mut_ptr(),
             );
-            let width = width.assume_init();
-            let height = height.assume_init();
-            (width, height)
+            (width.assume_init(), height.assume_init())
         }
     }
 
@@ -377,9 +373,7 @@ impl Layout {
                 line.as_mut_ptr(),
                 x_pos.as_mut_ptr(),
             );
-            let line = line.assume_init();
-            let x_pos = x_pos.assume_init();
-            (line, x_pos)
+            (line.assume_init(), x_pos.assume_init())
         }
     }
 
@@ -422,9 +416,7 @@ impl Layout {
                 new_index.as_mut_ptr(),
                 new_trailing.as_mut_ptr(),
             );
-            let new_index = new_index.assume_init();
-            let new_trailing = new_trailing.assume_init();
-            (new_index, new_trailing)
+            (new_index.assume_init(), new_trailing.assume_init())
         }
     }
 
@@ -534,8 +526,7 @@ impl Layout {
                 accel_marker.into_glib(),
                 accel_char.as_mut_ptr(),
             );
-            let accel_char = accel_char.assume_init();
-            std::convert::TryFrom::try_from(accel_char)
+            std::convert::TryFrom::try_from(accel_char.assume_init())
                 .expect("conversion from an invalid Unicode value attempted")
         }
     }
@@ -620,9 +611,7 @@ impl Layout {
                 index_.as_mut_ptr(),
                 trailing.as_mut_ptr(),
             ));
-            let index_ = index_.assume_init();
-            let trailing = trailing.assume_init();
-            (ret, index_, trailing)
+            (ret, index_.assume_init(), trailing.assume_init())
         }
     }
 }

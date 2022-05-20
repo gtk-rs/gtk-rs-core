@@ -67,9 +67,7 @@ impl AttrIterator {
                 start.as_mut_ptr(),
                 end.as_mut_ptr(),
             );
-            let start = start.assume_init();
-            let end = end.assume_init();
-            (start, end)
+            (start.assume_init(), end.assume_init())
         }
     }
 }

@@ -144,8 +144,7 @@ impl UnixMountPoint {
                 mount_path.as_ref().to_glib_none().0,
                 time_read.as_mut_ptr(),
             ));
-            let time_read = time_read.assume_init();
-            (ret, time_read)
+            (ret, time_read.assume_init())
         }
     }
 }

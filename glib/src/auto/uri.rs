@@ -369,14 +369,13 @@ impl Uri {
                 &mut fragment,
                 &mut error,
             );
-            let port = port.assume_init();
             assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),
                     from_glib_full(userinfo),
                     from_glib_full(host),
-                    port,
+                    port.assume_init(),
                     from_glib_full(path),
                     from_glib_full(query),
                     from_glib_full(fragment),
@@ -405,10 +404,13 @@ impl Uri {
                 port.as_mut_ptr(),
                 &mut error,
             );
-            let port = port.assume_init();
             assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
-                Ok((from_glib_full(scheme), from_glib_full(host), port))
+                Ok((
+                    from_glib_full(scheme),
+                    from_glib_full(host),
+                    port.assume_init(),
+                ))
             } else {
                 Err(from_glib_full(error))
             }
@@ -458,7 +460,6 @@ impl Uri {
                 &mut fragment,
                 &mut error,
             );
-            let port = port.assume_init();
             assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
@@ -467,7 +468,7 @@ impl Uri {
                     from_glib_full(password),
                     from_glib_full(auth_params),
                     from_glib_full(host),
-                    port,
+                    port.assume_init(),
                     from_glib_full(path),
                     from_glib_full(query),
                     from_glib_full(fragment),

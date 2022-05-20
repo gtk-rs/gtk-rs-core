@@ -343,14 +343,15 @@ impl Matrix {
                 x_0.as_mut_ptr(),
                 y_0.as_mut_ptr(),
             );
-            let xx = xx.assume_init();
-            let yx = yx.assume_init();
-            let xy = xy.assume_init();
-            let yy = yy.assume_init();
-            let x_0 = x_0.assume_init();
-            let y_0 = y_0.assume_init();
             if ret {
-                Some((xx, yx, xy, yy, x_0, y_0))
+                Some((
+                    xx.assume_init(),
+                    yx.assume_init(),
+                    xy.assume_init(),
+                    yy.assume_init(),
+                    x_0.assume_init(),
+                    y_0.assume_init(),
+                ))
             } else {
                 None
             }
