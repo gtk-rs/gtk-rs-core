@@ -338,8 +338,7 @@ mod test {
                                 .expect("Failed to get Object from args[1]");
                             let imp = obj.imp();
 
-                            let old_name = imp.name.borrow_mut().take();
-                            *imp.name.borrow_mut() = Some(new_name);
+                            let old_name = imp.name.replace(Some(new_name));
 
                             obj.emit_by_name::<()>("name-changed", &[&*imp.name.borrow()]);
 

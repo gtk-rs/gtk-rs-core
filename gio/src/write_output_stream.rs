@@ -65,7 +65,7 @@ mod imp {
             _stream: &Self::Type,
             _cancellable: Option<&crate::Cancellable>,
         ) -> Result<(), glib::Error> {
-            let _ = self.write.borrow_mut().take();
+            let _ = self.write.take();
             Ok(())
         }
 
@@ -194,7 +194,7 @@ impl WriteOutputStream {
     }
 
     pub fn close_and_take(&self) -> Box<dyn Any + Send + 'static> {
-        let inner = self.imp().write.borrow_mut().take();
+        let inner = self.imp().write.take();
 
         let ret = match inner {
             None => {
