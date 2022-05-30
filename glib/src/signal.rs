@@ -40,7 +40,7 @@ use std::num::NonZeroU64;
 ///     }
 ///
 ///     fn disconnect(&self) {
-///         if let Some(id) = self.clicked_handler_id.borrow_mut().take() {
+///         if let Some(id) = self.clicked_handler_id.take() {
 ///             self.widget.disconnect(id)
 ///         }
 ///     }
