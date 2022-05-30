@@ -531,7 +531,7 @@ fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
         let name = &p.name;
         let fn_prototype = {
             let fn_ident = format_ident!("emit_{}", name_to_ident(name));
-            quote!(fn #fn_ident(&self))
+            quote!(pub fn #fn_ident(&self))
         };
         let span = p.attrs_span;
         quote_spanned!(span=> #fn_prototype {
