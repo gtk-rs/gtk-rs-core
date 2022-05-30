@@ -364,19 +364,20 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ..
         } = p;
 
+        let enum_ident = name_to_enum_ident(name.value());
         let span = p.attrs_span;
         get.as_ref().map(|get| {
             let body = match (member, get) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
-                    #name => Ok((#expr)(&self).to_value())
+                    DerivedPropertiesEnum::#enum_ident => Ok((#expr)(&self).to_value())
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
-                    #name => Ok(
+                    DerivedPropertiesEnum::#enum_ident => Ok(
                         #crate_ident::PropertyGet::get(&self.#field_ident, |v| v.to_value())
                     )
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
-                    #name => Ok(
+                    DerivedPropertiesEnum::#enum_ident => Ok(
                         #crate_ident::PropertyGet::get(&self.#field_ident, |v| v.#member.to_value())
                     )
                 ),
@@ -385,10 +386,12 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_property<'a>(&self, _obj: &Self::Type, _id: usize, pspec: &'a #crate_ident::ParamSpec) -> Result<#crate_ident::Value, #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
-            match pspec.name() {
+        fn derived_property<'a>(&self, _obj: &Self::Type, id: usize, pspec: &'a #crate_ident::ParamSpec) -> Result<#crate_ident::Value, #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
+            let prop = DerivedPropertiesEnum::try_from(id-1)
+                .map_err(|_| #crate_ident::subclass::object::MissingPropertyHandler::<'a>::from(pspec))?;
+            match prop {
                 #(#match_branch_get,)*
-                p => Err(pspec.into())
+                _ => Err(pspec.into())
             }
         }
     )
@@ -405,18 +408,19 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         } = p;
 
         let crate_ident = crate_ident_new();
+        let enum_ident = name_to_enum_ident(name.value());
         let span = p.attrs_span;
         let expect = quote!(.expect("Can't convert glib::value to property type"));
         set.as_ref().map(|set| {
             let body = match (member, set) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
-                    #name => {
+                    DerivedPropertiesEnum::#enum_ident => {
                         (#expr)(&self, #crate_ident::Value::get(value)#expect);
                         Ok(())
                     }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
-                    #name => {
+                    DerivedPropertiesEnum::#enum_ident => {
                         #crate_ident::PropertySet::set(
                             &self.#field_ident,
                             #crate_ident::Value::get(value)#expect
@@ -425,7 +429,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
                     }
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
-                    #name => {
+                    DerivedPropertiesEnum::#enum_ident => {
                         #crate_ident::PropertySetNested::set_nested(
                             &self.#field_ident,
                             move |v| v.#member = #crate_ident::Value::get(value)#expect
@@ -438,10 +442,12 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_set_property<'a>(&self, _obj: &Self::Type, _id: usize, value: &#crate_ident::Value, pspec: &'a #crate_ident::ParamSpec) -> Result<(), #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
-            match pspec.name() {
+        fn derived_set_property<'a>(&self, _obj: &Self::Type, id: usize, value: &#crate_ident::Value, pspec: &'a #crate_ident::ParamSpec) -> Result<(), #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
+            let prop = DerivedPropertiesEnum::try_from(id-1)
+                .map_err(|_| #crate_ident::subclass::object::MissingPropertyHandler::<'a>::from(pspec))?;
+            match prop {
                 #(#match_branch_set,)*
-                p => Err(pspec.into())
+                _ => Err(pspec.into())
             }
         }
     )
@@ -527,6 +533,7 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
 }
 
 fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
     let emit_fns = props.iter().map(|p| {
         let name = &p.name;
         let fn_prototype = {
@@ -534,11 +541,61 @@ fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
             quote!(pub fn #fn_ident(&self))
         };
         let span = p.attrs_span;
+        let enum_ident = name_to_enum_ident(name.value());
         quote_spanned!(span=> #fn_prototype {
-            self.notify(#name);
+            self.notify_by_pspec(
+                &<<Self as #crate_ident::object::ObjectSubclassIs>::Subclass
+                    as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
+                [DerivedPropertiesEnum::#enum_ident as usize]
+            );
         })
     });
     quote!(#(#emit_fns)*)
+}
+
+fn name_to_enum_ident(mut name: String) -> syn::Ident {
+    let mut slice = name.as_mut_str();
+    while let Some(i) = slice.find('-') {
+        let (head, tail) = slice.split_at_mut(i);
+        if let Some(c) = head.get_mut(0..1) {
+            c.make_ascii_uppercase();
+        }
+        slice = &mut tail[1..];
+    }
+    if let Some(c) = slice.get_mut(0..1) {
+        c.make_ascii_uppercase();
+    }
+    let enum_member: String = name.split('-').collect();
+    format_ident!("{}", enum_member)
+}
+
+fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
+    let properties: Vec<syn::Ident> = props
+        .iter()
+        .map(|p| {
+            let name: String = p.name.value();
+            name_to_enum_ident(name)
+        })
+        .collect();
+    let props = properties.iter();
+    let indices = 0..properties.len();
+    quote! {
+        #[repr(usize)]
+        #[derive(Debug, Copy, Clone)]
+        enum DerivedPropertiesEnum {
+            #(#props,)*
+        }
+        impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
+            type Error = usize;
+
+            fn try_from(item: usize) -> Result<Self, Self::Error> {
+                match item {
+                    #(#indices => Ok(Self::#properties),)*
+                    _ => Err(item)
+                }
+            }
+        }
+    }
 }
 
 pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
@@ -551,8 +608,12 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let getset_properties_impl = expand_getset_properties_impl(&input.props);
     let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
     let emit_impl = expand_emit_impl(&input.props);
+    let properties_enum = expand_properties_enum(&input.props);
+
     let expanded = quote! {
         use #crate_ident::{PropertyGet, PropertySet, ToValue};
+
+        #properties_enum
 
         impl #crate_ident::subclass::object::DerivedObjectProperties for #struct_ident {
             #fn_properties
