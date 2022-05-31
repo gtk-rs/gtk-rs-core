@@ -116,7 +116,6 @@ generate = [
     "Gio.SettingsSchemaSource",
     "Gio.SimpleActionGroup",
     "Gio.SimplePermission",
-    "Gio.SocketAddressEnumerator",
     "Gio.SocketClient",
     "Gio.SocketClientEvent",
     "Gio.SocketConnectable",
@@ -1121,6 +1120,24 @@ manual_traits = ["SocketExtManual"]
 name = "Gio.SocketAddress"
 status = "generate"
 concurrency = "send+sync"
+
+[[object]]
+name = "Gio.SocketAddressEnumerator"
+status = "generate"
+    [[object.function]]
+    name = "next"
+        # enforce nullable return value, since a NULL
+        # return value is used to indicate the end of stream.
+        # Glib MR: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2701
+        [object.function.return]
+        nullable = true
+    [[object.function]]
+    name = "next_async"
+        # enforce nullable return value, since a NULL
+        # return value is used to indicate the end of stream.
+        # Glib MR: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2701
+        [object.function.return]
+        nullable = true
 
 [[object]]
 name = "Gio.Subprocess"
