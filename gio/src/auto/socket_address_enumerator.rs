@@ -30,10 +30,10 @@ pub trait SocketAddressEnumeratorExt: 'static {
     fn next(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<SocketAddress, glib::Error>;
+    ) -> Result<Option<SocketAddress>, glib::Error>;
 
     #[doc(alias = "g_socket_address_enumerator_next_async")]
-    fn next_async<P: FnOnce(Result<SocketAddress, glib::Error>) + 'static>(
+    fn next_async<P: FnOnce(Result<Option<SocketAddress>, glib::Error>) + 'static>(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
@@ -41,14 +41,18 @@ pub trait SocketAddressEnumeratorExt: 'static {
 
     fn next_future(
         &self,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketAddress, glib::Error>> + 'static>>;
+    ) -> Pin<
+        Box_<
+            dyn std::future::Future<Output = Result<Option<SocketAddress>, glib::Error>> + 'static,
+        >,
+    >;
 }
 
 impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
     fn next(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<SocketAddress, glib::Error> {
+    ) -> Result<Option<SocketAddress>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_socket_address_enumerator_next(
@@ -64,7 +68,7 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         }
     }
 
-    fn next_async<P: FnOnce(Result<SocketAddress, glib::Error>) + 'static>(
+    fn next_async<P: FnOnce(Result<Option<SocketAddress>, glib::Error>) + 'static>(
         &self,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
@@ -82,7 +86,7 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
         let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn next_async_trampoline<
-            P: FnOnce(Result<SocketAddress, glib::Error>) + 'static,
+            P: FnOnce(Result<Option<SocketAddress>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -117,8 +121,11 @@ impl<O: IsA<SocketAddressEnumerator>> SocketAddressEnumeratorExt for O {
 
     fn next_future(
         &self,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<SocketAddress, glib::Error>> + 'static>>
-    {
+    ) -> Pin<
+        Box_<
+            dyn std::future::Future<Output = Result<Option<SocketAddress>, glib::Error>> + 'static,
+        >,
+    > {
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
