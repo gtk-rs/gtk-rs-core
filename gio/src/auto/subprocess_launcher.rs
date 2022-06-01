@@ -26,6 +26,8 @@ impl SubprocessLauncher {
         unsafe { from_glib_full(ffi::g_subprocess_launcher_new(flags.into_glib())) }
     }
 
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[cfg(any(feature = "v2_68", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_subprocess_launcher_close")]
