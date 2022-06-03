@@ -210,6 +210,7 @@ macro_rules! glib_shared_wrapper {
 
             unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
+                    $crate::ffi::g_free(ptr as *mut _);
                     return Vec::new();
                 }
 
