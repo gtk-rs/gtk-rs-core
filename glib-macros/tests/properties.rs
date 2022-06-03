@@ -78,6 +78,8 @@ fn props() {
                 boxed: RefCell<SimpleBoxedString>,
                 #[property(get, set, builder(SimpleEnum::static_type()))]
                 fenum: RefCell<SimpleEnum>,
+                #[property(get, set, builder(glib::Object::static_type()))]
+                object: RefCell<Option<glib::Object>>,
                 #[property(get, set)]
                 optional: RefCell<Option<String>>,
                 #[property(get, set)]
@@ -230,6 +232,17 @@ fn props() {
             myfoo.property::<String>("bar"),
             "setter working".to_string()
         );
+
+        // simple with various String types
+        myfoo.set_bar(String::from("setter working"));
+        myfoo.set_bar(glib::GString::from("setter working"));
+        assert_eq!(
+            myfoo.property::<String>("bar"),
+            "setter working".to_string()
+        );
+
+        // object subclass
+        myfoo.set_object(glib::BoxedAnyObject::new(""));
 
         // custom
         myfoo.set_fake_field("fake setter");

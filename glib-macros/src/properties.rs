@@ -498,10 +498,10 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
             quote!(#fn_prototype { #body })
         });
         let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
-            let body = quote!(self.set_property_from_value(#name, &value.to_value()));
+            let body = quote!(self.set_property_from_value(#name, &value.as_ref().to_value()));
             let fn_prototype = {
                 let ident = format_ident!("set_{}", ident);
-                quote!(pub fn #ident(&self, value: &<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue))
+                quote!(pub fn #ident<'a>(&self, value: impl AsRef<<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue>))
             };
             quote!(#fn_prototype { #body })
         });
