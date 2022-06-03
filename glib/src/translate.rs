@@ -1857,6 +1857,7 @@ macro_rules! impl_from_glib_container_as_vec_string {
 
             unsafe fn from_glib_full_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
+                    ffi::g_free(ptr as *mut _);
                     return Vec::new();
                 }
 
@@ -2286,7 +2287,11 @@ where
     }
 
     unsafe fn from_glib_full_num_as_vec(ptr: *mut ffi::GPtrArray, num: usize) -> Vec<T> {
-        if num == 0 || ptr.is_null() {
+        if ptr.is_null() {
+            return Vec::new();
+        }
+        if num == 0 {
+            ffi::g_ptr_array_unref(ptr);
             return Vec::new();
         }
         let pdata = (*ptr).pdata;
