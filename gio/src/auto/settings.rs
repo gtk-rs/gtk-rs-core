@@ -120,7 +120,7 @@ pub trait SettingsExt: 'static {
     fn delay(&self);
 
     //#[doc(alias = "g_settings_get")]
-    //fn get(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
+    //fn get(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs);
 
     #[doc(alias = "g_settings_get_boolean")]
     #[doc(alias = "get_boolean")]
@@ -161,7 +161,7 @@ pub trait SettingsExt: 'static {
 
     //#[doc(alias = "g_settings_get_mapped")]
     //#[doc(alias = "get_mapped")]
-    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Fundamental: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Unimplemented*/Option<Fundamental: Pointer>;
+    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer>;
 
     #[doc(alias = "g_settings_get_string")]
     #[doc(alias = "get_string")]
@@ -200,7 +200,7 @@ pub trait SettingsExt: 'static {
     fn revert(&self);
 
     //#[doc(alias = "g_settings_set")]
-    //fn set(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool;
+    //fn set(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool;
 
     #[doc(alias = "g_settings_set_boolean")]
     fn set_boolean(&self, key: &str, value: bool) -> Result<(), glib::error::BoolError>;
@@ -318,7 +318,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    //fn get(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //fn get(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_settings_get() }
     //}
 
@@ -377,7 +377,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         unsafe { ffi::g_settings_get_int64(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
 
-    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Fundamental: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Unimplemented*/Option<Fundamental: Pointer> {
+    //fn mapped(&self, key: &str, mapping: /*Unimplemented*/FnMut(&glib::Variant, /*Unimplemented*/Option<Basic: Pointer>) -> bool, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_settings_get_mapped() }
     //}
 
@@ -454,7 +454,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    //fn set(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //fn set(&self, key: &str, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:g_settings_set() }
     //}
 

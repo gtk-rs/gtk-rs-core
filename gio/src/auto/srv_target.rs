@@ -53,7 +53,7 @@ impl SrvTarget {
     }
 
     //#[doc(alias = "g_srv_target_list_sort")]
-    //pub fn list_sort(targets: /*Unimplemented*/&[&Fundamental: Pointer]) -> /*Unimplemented*/Vec<Fundamental: Pointer> {
+    //pub fn list_sort(targets: /*Unimplemented*/&[&Basic: Pointer]) -> /*Unimplemented*/Vec<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_srv_target_list_sort() }
     //}
 }

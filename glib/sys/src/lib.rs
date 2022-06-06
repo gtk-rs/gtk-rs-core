@@ -3084,19 +3084,9 @@ extern "C" {
     // GDir
     //=========================================================================
     pub fn g_dir_close(dir: *mut GDir);
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_dir_read_name_utf8(dir: *mut GDir) -> *const c_char;
     pub fn g_dir_read_name(dir: *mut GDir) -> *const c_char;
     pub fn g_dir_rewind(dir: *mut GDir);
     pub fn g_dir_make_tmp(tmpl: *const c_char, error: *mut *mut GError) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_dir_open_utf8(
-        path: *const c_char,
-        flags: c_uint,
-        error: *mut *mut GError,
-    ) -> *mut GDir;
     pub fn g_dir_open(path: *const c_char, flags: c_uint, error: *mut *mut GError) -> *mut GDir;
 
     //=========================================================================
@@ -3302,13 +3292,6 @@ extern "C" {
     // GIOChannel
     //=========================================================================
     pub fn g_io_channel_get_type() -> GType;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_io_channel_new_file_utf8(
-        filename: *const c_char,
-        mode: *const c_char,
-        error: *mut *mut GError,
-    ) -> *mut GIOChannel;
     pub fn g_io_channel_new_file(
         filename: *const c_char,
         mode: *const c_char,
@@ -5922,27 +5905,12 @@ extern "C" {
     pub fn g_environ_unsetenv(envp: *mut *mut c_char, variable: *const c_char) -> *mut *mut c_char;
     pub fn g_file_error_from_errno(err_no: c_int) -> GFileError;
     pub fn g_file_error_quark() -> GQuark;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_file_get_contents_utf8(
-        filename: *const c_char,
-        contents: *mut *mut u8,
-        length: *mut size_t,
-        error: *mut *mut GError,
-    ) -> gboolean;
     pub fn g_file_get_contents(
         filename: *const c_char,
         contents: *mut *mut u8,
         length: *mut size_t,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_file_open_tmp_utf8(
-        tmpl: *const c_char,
-        name_used: *mut *mut c_char,
-        error: *mut *mut GError,
-    ) -> c_int;
     pub fn g_file_open_tmp(
         tmpl: *const c_char,
         name_used: *mut *mut c_char,
@@ -5965,31 +5933,12 @@ extern "C" {
         mode: c_int,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_file_test_utf8(filename: *const c_char, test: GFileTest) -> gboolean;
     pub fn g_file_test(filename: *const c_char, test: GFileTest) -> gboolean;
     pub fn g_filename_display_basename(filename: *const c_char) -> *mut c_char;
     pub fn g_filename_display_name(filename: *const c_char) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_filename_from_uri_utf8(
-        uri: *const c_char,
-        hostname: *mut *mut c_char,
-        error: *mut *mut GError,
-    ) -> *mut c_char;
     pub fn g_filename_from_uri(
         uri: *const c_char,
         hostname: *mut *mut c_char,
-        error: *mut *mut GError,
-    ) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_filename_from_utf8_utf8(
-        utf8string: *const c_char,
-        len: ssize_t,
-        bytes_read: *mut size_t,
-        bytes_written: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut c_char;
     pub fn g_filename_from_utf8(
@@ -5999,25 +5948,9 @@ extern "C" {
         bytes_written: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_filename_to_uri_utf8(
-        filename: *const c_char,
-        hostname: *const c_char,
-        error: *mut *mut GError,
-    ) -> *mut c_char;
     pub fn g_filename_to_uri(
         filename: *const c_char,
         hostname: *const c_char,
-        error: *mut *mut GError,
-    ) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_filename_to_utf8_utf8(
-        opsysstring: *const c_char,
-        len: ssize_t,
-        bytes_read: *mut size_t,
-        bytes_written: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut c_char;
     pub fn g_filename_to_utf8(
@@ -6027,9 +5960,6 @@ extern "C" {
         bytes_written: *mut size_t,
         error: *mut *mut GError,
     ) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_find_program_in_path_utf8(program: *const c_char) -> *mut c_char;
     pub fn g_find_program_in_path(program: *const c_char) -> *mut c_char;
     pub fn g_format_size(size: u64) -> *mut c_char;
     pub fn g_format_size_for_display(size: i64) -> *mut c_char;
@@ -6042,16 +5972,10 @@ extern "C" {
     #[cfg(any(feature = "v2_62", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
     pub fn g_get_console_charset(charset: *mut *const c_char) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_get_current_dir_utf8() -> *mut c_char;
     pub fn g_get_current_dir() -> *mut c_char;
     pub fn g_get_current_time(result: *mut GTimeVal);
     pub fn g_get_environ() -> *mut *mut c_char;
     pub fn g_get_filename_charsets(filename_charsets: *mut *mut *const c_char) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_get_home_dir_utf8() -> *const c_char;
     pub fn g_get_home_dir() -> *const c_char;
     pub fn g_get_host_name() -> *const c_char;
     pub fn g_get_language_names() -> *const *const c_char;
@@ -6066,32 +5990,20 @@ extern "C" {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
     pub fn g_get_os_info(key_name: *const c_char) -> *mut c_char;
     pub fn g_get_prgname() -> *const c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_get_real_name_utf8() -> *const c_char;
     pub fn g_get_real_name() -> *const c_char;
     pub fn g_get_real_time() -> i64;
     pub fn g_get_system_config_dirs() -> *const *const c_char;
     pub fn g_get_system_data_dirs() -> *const *const c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_get_tmp_dir_utf8() -> *const c_char;
     pub fn g_get_tmp_dir() -> *const c_char;
     pub fn g_get_user_cache_dir() -> *const c_char;
     pub fn g_get_user_config_dir() -> *const c_char;
     pub fn g_get_user_data_dir() -> *const c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_get_user_name_utf8() -> *const c_char;
     pub fn g_get_user_name() -> *const c_char;
     pub fn g_get_user_runtime_dir() -> *const c_char;
     pub fn g_get_user_special_dir(directory: GUserDirectory) -> *const c_char;
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     pub fn g_get_user_state_dir() -> *const c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_getenv_utf8(variable: *const c_char) -> *const c_char;
     pub fn g_getenv(variable: *const c_char) -> *const c_char;
     pub fn g_hostname_is_ascii_encoded(hostname: *const c_char) -> gboolean;
     pub fn g_hostname_is_ip_address(hostname: *const c_char) -> gboolean;
@@ -6273,9 +6185,6 @@ extern "C" {
     pub fn g_mkdir_with_parents(pathname: *const c_char, mode: c_int) -> c_int;
     pub fn g_mkdtemp(tmpl: *mut c_char) -> *mut c_char;
     pub fn g_mkdtemp_full(tmpl: *mut c_char, mode: c_int) -> *mut c_char;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_mkstemp_utf8(tmpl: *mut c_char) -> c_int;
     pub fn g_mkstemp(tmpl: *mut c_char) -> c_int;
     pub fn g_mkstemp_full(tmpl: *mut c_char, flags: c_int, mode: c_int) -> c_int;
     pub fn g_nullify_pointer(nullify_location: *mut gpointer);
@@ -6412,13 +6321,6 @@ extern "C" {
     pub fn g_set_prgname(prgname: *const c_char);
     pub fn g_set_print_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_set_printerr_handler(func: GPrintFunc) -> GPrintFunc;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_setenv_utf8(
-        variable: *const c_char,
-        value: *const c_char,
-        overwrite: gboolean,
-    ) -> gboolean;
     pub fn g_setenv(variable: *const c_char, value: *const c_char, overwrite: gboolean)
         -> gboolean;
     pub fn g_shell_error_quark() -> GQuark;
@@ -6448,18 +6350,6 @@ extern "C" {
     pub fn g_slice_set_config(ckey: GSliceConfig, value: i64);
     pub fn g_snprintf(string: *mut c_char, n: c_ulong, format: *const c_char, ...) -> c_int;
     pub fn g_spaced_primes_closest(num: c_uint) -> c_uint;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_async_utf8(
-        working_directory: *const c_char,
-        argv: *mut *mut c_char,
-        envp: *mut *mut c_char,
-        flags: GSpawnFlags,
-        child_setup: GSpawnChildSetupFunc,
-        user_data: gpointer,
-        child_pid: *mut GPid,
-        error: *mut *mut GError,
-    ) -> gboolean;
     pub fn g_spawn_async(
         working_directory: *const c_char,
         argv: *mut *mut c_char,
@@ -6468,23 +6358,6 @@ extern "C" {
         child_setup: GSpawnChildSetupFunc,
         user_data: gpointer,
         child_pid: *mut GPid,
-        error: *mut *mut GError,
-    ) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_async_with_fds_utf8(
-        working_directory: *const c_char,
-        argv: *mut *mut c_char,
-        envp: *mut *mut c_char,
-        flags: GSpawnFlags,
-        child_setup: GSpawnChildSetupFunc,
-        user_data: gpointer,
-        child_pid: *mut GPid,
-        stdin_fd: c_int,
-        stdout_fd: c_int,
-        stderr_fd: c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(any(feature = "v2_58", feature = "dox"))]
@@ -6502,21 +6375,6 @@ extern "C" {
         stderr_fd: c_int,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_async_with_pipes_utf8(
-        working_directory: *const c_char,
-        argv: *mut *mut c_char,
-        envp: *mut *mut c_char,
-        flags: GSpawnFlags,
-        child_setup: GSpawnChildSetupFunc,
-        user_data: gpointer,
-        child_pid: *mut GPid,
-        standard_input: *mut c_int,
-        standard_output: *mut c_int,
-        standard_error: *mut c_int,
-        error: *mut *mut GError,
-    ) -> gboolean;
     pub fn g_spawn_async_with_pipes(
         working_directory: *const c_char,
         argv: *mut *mut c_char,
@@ -6528,29 +6386,6 @@ extern "C" {
         standard_input: *mut c_int,
         standard_output: *mut c_int,
         standard_error: *mut c_int,
-        error: *mut *mut GError,
-    ) -> gboolean;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_async_with_pipes_and_fds_utf8(
-        working_directory: *const c_char,
-        argv: *const *const c_char,
-        envp: *const *const c_char,
-        flags: GSpawnFlags,
-        child_setup: GSpawnChildSetupFunc,
-        user_data: gpointer,
-        stdin_fd: c_int,
-        stdout_fd: c_int,
-        stderr_fd: c_int,
-        source_fds: *const c_int,
-        target_fds: *const c_int,
-        n_fds: size_t,
-        child_pid_out: *mut GPid,
-        stdin_pipe_out: *mut c_int,
-        stdout_pipe_out: *mut c_int,
-        stderr_pipe_out: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     #[cfg(any(feature = "v2_68", feature = "dox"))]
@@ -6579,23 +6414,8 @@ extern "C" {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
     pub fn g_spawn_check_wait_status(wait_status: c_int, error: *mut *mut GError) -> gboolean;
     pub fn g_spawn_close_pid(pid: GPid);
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_command_line_async_utf8(
-        command_line: *const c_char,
-        error: *mut *mut GError,
-    ) -> gboolean;
     pub fn g_spawn_command_line_async(
         command_line: *const c_char,
-        error: *mut *mut GError,
-    ) -> gboolean;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_command_line_sync_utf8(
-        command_line: *const c_char,
-        standard_output: *mut *mut u8,
-        standard_error: *mut *mut u8,
-        wait_status: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_spawn_command_line_sync(
@@ -6607,20 +6427,6 @@ extern "C" {
     ) -> gboolean;
     pub fn g_spawn_error_quark() -> GQuark;
     pub fn g_spawn_exit_error_quark() -> GQuark;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_spawn_sync_utf8(
-        working_directory: *const c_char,
-        argv: *mut *mut c_char,
-        envp: *mut *mut c_char,
-        flags: GSpawnFlags,
-        child_setup: GSpawnChildSetupFunc,
-        user_data: gpointer,
-        standard_output: *mut *mut u8,
-        standard_error: *mut *mut u8,
-        wait_status: *mut c_int,
-        error: *mut *mut GError,
-    ) -> gboolean;
     pub fn g_spawn_sync(
         working_directory: *const c_char,
         argv: *mut *mut c_char,
@@ -6942,9 +6748,6 @@ extern "C" {
     ) -> c_uint;
     pub fn g_unix_signal_source_new(signum: c_int) -> *mut GSource;
     pub fn g_unlink(filename: *const c_char) -> c_int;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn g_unsetenv_utf8(variable: *const c_char);
     pub fn g_unsetenv(variable: *const c_char);
     pub fn g_usleep(microseconds: c_ulong);
     pub fn g_utf16_to_ucs4(

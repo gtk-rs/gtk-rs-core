@@ -23,7 +23,7 @@ impl Credentials {
 
     //#[doc(alias = "g_credentials_get_native")]
     //#[doc(alias = "get_native")]
-    //pub fn native(&self, native_type: CredentialsType) -> /*Unimplemented*/Option<Fundamental: Pointer> {
+    //pub fn native(&self, native_type: CredentialsType) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_credentials_get_native() }
     //}
 
@@ -78,7 +78,7 @@ impl Credentials {
     }
 
     //#[doc(alias = "g_credentials_set_native")]
-    //pub fn set_native(&self, native_type: CredentialsType, native: /*Unimplemented*/Fundamental: Pointer) {
+    //pub fn set_native(&self, native_type: CredentialsType, native: /*Unimplemented*/Basic: Pointer) {
     //    unsafe { TODO: call ffi:g_credentials_set_native() }
     //}
 

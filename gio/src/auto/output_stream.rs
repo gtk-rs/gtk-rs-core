@@ -73,7 +73,7 @@ pub trait OutputStreamExt: 'static {
     fn is_closing(&self) -> bool;
 
     //#[doc(alias = "g_output_stream_printf")]
-    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize>;
+    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<usize>;
 
     #[doc(alias = "g_output_stream_set_pending")]
     fn set_pending(&self) -> Result<(), glib::Error>;
@@ -357,7 +357,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         }
     }
 
-    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<usize> {
+    //fn printf(&self, cancellable: Option<&impl IsA<Cancellable>>, error: &mut glib::Error, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<usize> {
     //    unsafe { TODO: call ffi:g_output_stream_printf() }
     //}
 

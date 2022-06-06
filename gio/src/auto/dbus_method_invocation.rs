@@ -117,7 +117,7 @@ impl DBusMethodInvocation {
 
     //#[doc(alias = "g_dbus_method_invocation_get_user_data")]
     //#[doc(alias = "get_user_data")]
-    //pub fn user_data(&self) -> /*Unimplemented*/Option<Fundamental: Pointer> {
+    //pub fn user_data(&self) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_get_user_data() }
     //}
 
@@ -133,7 +133,7 @@ impl DBusMethodInvocation {
     }
 
     //#[doc(alias = "g_dbus_method_invocation_return_error")]
-    //pub fn return_error(&self, domain: glib::Quark, code: i32, format: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn return_error(&self, domain: glib::Quark, code: i32, format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error() }
     //}
 

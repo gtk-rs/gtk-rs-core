@@ -50,12 +50,12 @@ impl MainContext {
     }
 
     //#[doc(alias = "g_main_context_find_source_by_funcs_user_data")]
-    //pub fn find_source_by_funcs_user_data(&self, funcs: /*Ignored*/&mut SourceFuncs, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> Source {
+    //pub fn find_source_by_funcs_user_data(&self, funcs: /*Ignored*/&mut SourceFuncs, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> Source {
     //    unsafe { TODO: call ffi:g_main_context_find_source_by_funcs_user_data() }
     //}
 
     //#[doc(alias = "g_main_context_find_source_by_user_data")]
-    //pub fn find_source_by_user_data(&self, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> Source {
+    //pub fn find_source_by_user_data(&self, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> Source {
     //    unsafe { TODO: call ffi:g_main_context_find_source_by_user_data() }
     //}
 

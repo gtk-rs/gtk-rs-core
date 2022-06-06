@@ -78,7 +78,7 @@ pub trait FontExt: 'static {
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     //#[doc(alias = "pango_font_get_features")]
     //#[doc(alias = "get_features")]
-    //fn features(&self, features: /*Unimplemented*/&mut Fundamental: Pointer, num_features: &mut u32) -> u32;
+    //fn features(&self, features: /*Unimplemented*/&mut Basic: Pointer, num_features: &mut u32) -> u32;
 
     #[doc(alias = "pango_font_get_font_map")]
     #[doc(alias = "get_font_map")]
@@ -139,7 +139,7 @@ impl<O: IsA<Font>> FontExt for O {
 
     //#[cfg(any(feature = "v1_44", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
-    //fn features(&self, features: /*Unimplemented*/&mut Fundamental: Pointer, num_features: &mut u32) -> u32 {
+    //fn features(&self, features: /*Unimplemented*/&mut Basic: Pointer, num_features: &mut u32) -> u32 {
     //    unsafe { TODO: call ffi:pango_font_get_features() }
     //}
 

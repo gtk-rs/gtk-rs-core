@@ -72,6 +72,68 @@ impl Pixbuf {
     //    unsafe { TODO: call ffi:gdk_pixbuf_new_from_data() }
     //}
 
+    #[doc(alias = "gdk_pixbuf_new_from_file")]
+    #[doc(alias = "new_from_file")]
+    pub fn from_file(filename: impl AsRef<std::path::Path>) -> Result<Pixbuf, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::gdk_pixbuf_new_from_file(filename.as_ref().to_glib_none().0, &mut error);
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
+    #[doc(alias = "gdk_pixbuf_new_from_file_at_scale")]
+    #[doc(alias = "new_from_file_at_scale")]
+    pub fn from_file_at_scale(
+        filename: impl AsRef<std::path::Path>,
+        width: i32,
+        height: i32,
+        preserve_aspect_ratio: bool,
+    ) -> Result<Pixbuf, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::gdk_pixbuf_new_from_file_at_scale(
+                filename.as_ref().to_glib_none().0,
+                width,
+                height,
+                preserve_aspect_ratio.into_glib(),
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
+    #[doc(alias = "gdk_pixbuf_new_from_file_at_size")]
+    #[doc(alias = "new_from_file_at_size")]
+    pub fn from_file_at_size(
+        filename: impl AsRef<std::path::Path>,
+        width: i32,
+        height: i32,
+    ) -> Result<Pixbuf, glib::Error> {
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::gdk_pixbuf_new_from_file_at_size(
+                filename.as_ref().to_glib_none().0,
+                width,
+                height,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
     #[doc(alias = "gdk_pixbuf_new_from_resource")]
     #[doc(alias = "new_from_resource")]
     pub fn from_resource(resource_path: &str) -> Result<Pixbuf, glib::Error> {
@@ -468,17 +530,17 @@ impl Pixbuf {
     }
 
     //#[doc(alias = "gdk_pixbuf_save")]
-    //pub fn save(&self, filename: impl AsRef<std::path::Path>, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //pub fn save(&self, filename: impl AsRef<std::path::Path>, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save() }
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_buffer")]
-    //pub fn save_to_buffer(&self, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Option<Vec<u8>> {
+    //pub fn save_to_buffer(&self, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<Vec<u8>> {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_buffer() }
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_callback")]
-    //pub fn save_to_callback<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool>(&self, save_func: P, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //pub fn save_to_callback<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool>(&self, save_func: P, type_: &str, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_callback() }
     //}
 
@@ -488,17 +550,17 @@ impl Pixbuf {
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_stream")]
-    //pub fn save_to_stream(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //pub fn save_to_stream(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, error: Option<&mut glib::Error>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_stream() }
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_stream_async")]
-    //pub fn save_to_stream_async<P: FnOnce(Result<(), glib::Error>) + 'static>(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, callback: P, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn save_to_stream_async<P: FnOnce(Result<(), glib::Error>) + 'static>(&self, stream: &impl IsA<gio::OutputStream>, type_: &str, cancellable: Option<&impl IsA<gio::Cancellable>>, callback: P, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_stream_async() }
     //}
 
     //
-    //pub fn save_to_stream_future(&self, stream: &(impl IsA<gio::OutputStream> + Clone + 'static), type_: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
+    //pub fn save_to_stream_future(&self, stream: &(impl IsA<gio::OutputStream> + Clone + 'static), type_: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
 
     //let stream = stream.clone();
     //let type_ = String::from(type_);

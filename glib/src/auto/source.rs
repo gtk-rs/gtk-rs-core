@@ -35,7 +35,7 @@ impl Source {
     //}
 
     //#[doc(alias = "g_source_add_unix_fd")]
-    //pub fn add_unix_fd(&self, fd: i32, events: IOCondition) -> /*Unimplemented*/Fundamental: Pointer {
+    //pub fn add_unix_fd(&self, fd: i32, events: IOCondition) -> /*Unimplemented*/Basic: Pointer {
     //    unsafe { TODO: call ffi:g_source_add_unix_fd() }
     //}
 
@@ -88,12 +88,12 @@ impl Source {
     }
 
     //#[doc(alias = "g_source_modify_unix_fd")]
-    //pub fn modify_unix_fd(&self, tag: /*Unimplemented*/Fundamental: Pointer, new_events: IOCondition) {
+    //pub fn modify_unix_fd(&self, tag: /*Unimplemented*/Basic: Pointer, new_events: IOCondition) {
     //    unsafe { TODO: call ffi:g_source_modify_unix_fd() }
     //}
 
     //#[doc(alias = "g_source_query_unix_fd")]
-    //pub fn query_unix_fd(&self, tag: /*Unimplemented*/Fundamental: Pointer) -> IOCondition {
+    //pub fn query_unix_fd(&self, tag: /*Unimplemented*/Basic: Pointer) -> IOCondition {
     //    unsafe { TODO: call ffi:g_source_query_unix_fd() }
     //}
 
@@ -110,17 +110,17 @@ impl Source {
     //}
 
     //#[doc(alias = "g_source_remove_unix_fd")]
-    //pub fn remove_unix_fd(&self, tag: /*Unimplemented*/Fundamental: Pointer) {
+    //pub fn remove_unix_fd(&self, tag: /*Unimplemented*/Basic: Pointer) {
     //    unsafe { TODO: call ffi:g_source_remove_unix_fd() }
     //}
 
     //#[doc(alias = "g_source_remove_by_funcs_user_data")]
-    //pub fn remove_by_funcs_user_data(funcs: /*Ignored*/&mut SourceFuncs, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
+    //pub fn remove_by_funcs_user_data(funcs: /*Ignored*/&mut SourceFuncs, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> bool {
     //    unsafe { TODO: call ffi:g_source_remove_by_funcs_user_data() }
     //}
 
     //#[doc(alias = "g_source_remove_by_user_data")]
-    //pub fn remove_by_user_data(user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
+    //pub fn remove_by_user_data(user_data: /*Unimplemented*/Option<Basic: Pointer>) -> bool {
     //    unsafe { TODO: call ffi:g_source_remove_by_user_data() }
     //}
 }

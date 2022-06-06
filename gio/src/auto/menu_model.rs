@@ -29,7 +29,7 @@ impl MenuModel {
 pub trait MenuModelExt: 'static {
     //#[doc(alias = "g_menu_model_get_item_attribute")]
     //#[doc(alias = "get_item_attribute")]
-    //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool;
+    //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool;
 
     #[doc(alias = "g_menu_model_get_item_attribute_value")]
     #[doc(alias = "get_item_attribute_value")]
@@ -67,7 +67,7 @@ pub trait MenuModelExt: 'static {
 }
 
 impl<O: IsA<MenuModel>> MenuModelExt for O {
-    //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> bool {
+    //fn is_item_attribute(&self, item_index: i32, attribute: &str, format_string: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> bool {
     //    unsafe { TODO: call ffi:g_menu_model_get_item_attribute() }
     //}
 
