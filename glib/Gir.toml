@@ -178,10 +178,6 @@ status = "generate"
     #Pid
     ignore = true
     [[object.function]]
-    name = "get_current_dir"
-    #manual
-    ignore = true
-    [[object.function]]
     pattern = "[gs]et_prgname"
     #manual pathbuf
     ignore = true
@@ -191,47 +187,41 @@ status = "generate"
     ignore = true
     [[object.function]]
     name = "get_user_name"
-    #manual pathbuf is_windows_utf8
-    manual = true
-    [[object.function]]
-    pattern = "[gs]etenv"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "unsetenv"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "file_get_contents"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "filename_to_uri"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "filename_from_uri"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "find_program_in_path"
-    #manual is_windows_utf8
-    manual = true
-    [[object.function]]
-    name = "get_home_dir"
-    #manual is_windows_utf8
-    manual = true
+        [object.function.return]
+        string_type = "os_string"
     [[object.function]]
     name = "get_real_name"
-    #manual pathbuf? is_windows_utf8
-    manual = true
+        [object.function.return]
+        string_type = "os_string"
     [[object.function]]
-    name = "get_tmp_dir"
-    #manual is_windows_utf8
+    pattern = "setenv"
+        [[object.function.parameter]]
+        name = "variable"
+        string_type = "os_string"
+        [[object.function.parameter]]
+        name = "value"
+        string_type = "os_string"
+        [object.function.return]
+        bool_return_is_error = "Failed to set environment variable"
+    [[object.function]]
+    pattern = "getenv"
+        [[object.function.parameter]]
+        name = "variable"
+        string_type = "os_string"
+        [object.function.return]
+        string_type = "os_string"
+    [[object.function]]
+    name = "unsetenv"
+        [[object.function.parameter]]
+        name = "variable"
+        string_type = "os_string"
+    [[object.function]]
+    name = "file_get_contents"
+    # Use glib::Slice<u8> as return value
     manual = true
     [[object.function]]
     name = "mkstemp"
-    #manual is_windows_utf8 and also modifies the string passed in
+    # modifies the string passed in
     manual = true
     [[object.function]]
     name = "mkstemp_full"
