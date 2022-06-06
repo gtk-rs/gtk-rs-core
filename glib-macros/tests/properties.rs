@@ -48,6 +48,8 @@ fn props() {
             pub struct Foo {
                 #[property(get, set)]
                 bar: Mutex<String>,
+                #[property(get, set)]
+                double: RefCell<f64>,
                 // The following property doesn't store any data. The value of the property is calculated
                 // when the value is accessed.
                 #[property(get = Self::hello_world)]
@@ -232,6 +234,9 @@ fn props() {
             myfoo.property::<String>("bar"),
             "setter working".to_string()
         );
+
+        myfoo.set_double(0.1);
+        assert_eq!(myfoo.property::<f64>("double"), 0.1);
 
         // simple with various String types
         myfoo.set_bar(String::from("setter working"));
