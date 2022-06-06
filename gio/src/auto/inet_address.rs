@@ -107,7 +107,7 @@ pub trait InetAddressExt: 'static {
     #[doc(alias = "to_string")]
     fn to_str(&self) -> glib::GString;
 
-    //fn bytes(&self) -> /*Unimplemented*/Fundamental: Pointer;
+    //fn bytes(&self) -> /*Unimplemented*/Basic: Pointer;
 
     #[doc(alias = "is-any")]
     fn connect_is_any_notify<F: Fn(&Self) + Send + Sync + 'static>(&self, f: F) -> SignalHandlerId;
@@ -277,7 +277,7 @@ impl<O: IsA<InetAddress>> InetAddressExt for O {
         }
     }
 
-    //fn bytes(&self) -> /*Unimplemented*/Fundamental: Pointer {
+    //fn bytes(&self) -> /*Unimplemented*/Basic: Pointer {
     //    glib::ObjectExt::property(self.as_ref(), "bytes")
     //}
 

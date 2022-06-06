@@ -89,7 +89,7 @@ impl FileInfo {
 
     //#[doc(alias = "g_file_info_get_attribute_data")]
     //#[doc(alias = "get_attribute_data")]
-    //pub fn attribute_data(&self, attribute: &str, value_pp: /*Unimplemented*/&mut Fundamental: Pointer) -> Option<(FileAttributeType, FileAttributeStatus)> {
+    //pub fn attribute_data(&self, attribute: &str, value_pp: /*Unimplemented*/&mut Basic: Pointer) -> Option<(FileAttributeType, FileAttributeStatus)> {
     //    unsafe { TODO: call ffi:g_file_info_get_attribute_data() }
     //}
 
@@ -341,7 +341,7 @@ impl FileInfo {
     }
 
     //#[doc(alias = "g_file_info_set_attribute")]
-    //pub fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Fundamental: Pointer) {
+    //pub fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Basic: Pointer) {
     //    unsafe { TODO: call ffi:g_file_info_set_attribute() }
     //}
 

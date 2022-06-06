@@ -657,7 +657,7 @@ impl DBusConnection {
     }
 
     //#[doc(alias = "g_dbus_connection_register_object")]
-    //pub fn register_object(&self, object_path: &str, interface_info: &DBusInterfaceInfo, vtable: /*Ignored*/Option<&DBusInterfaceVTable>, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) -> Result<(), glib::Error> {
+    //pub fn register_object(&self, object_path: &str, interface_info: &DBusInterfaceInfo, vtable: /*Ignored*/Option<&DBusInterfaceVTable>, user_data: /*Unimplemented*/Option<Basic: Pointer>) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:g_dbus_connection_register_object() }
     //}
 

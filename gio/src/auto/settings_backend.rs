@@ -32,16 +32,16 @@ impl SettingsBackend {
 
 pub trait SettingsBackendExt: 'static {
     //#[doc(alias = "g_settings_backend_changed")]
-    //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>);
 
     //#[doc(alias = "g_settings_backend_changed_tree")]
-    //fn changed_tree(&self, tree: /*Ignored*/&glib::Tree, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn changed_tree(&self, tree: /*Ignored*/&glib::Tree, origin_tag: /*Unimplemented*/Option<Basic: Pointer>);
 
     //#[doc(alias = "g_settings_backend_keys_changed")]
-    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Basic: Pointer>);
 
     //#[doc(alias = "g_settings_backend_path_changed")]
-    //fn path_changed(&self, path: &str, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>);
+    //fn path_changed(&self, path: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>);
 
     #[doc(alias = "g_settings_backend_path_writable_changed")]
     fn path_writable_changed(&self, path: &str);
@@ -51,19 +51,19 @@ pub trait SettingsBackendExt: 'static {
 }
 
 impl<O: IsA<SettingsBackend>> SettingsBackendExt for O {
-    //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn changed(&self, key: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_changed() }
     //}
 
-    //fn changed_tree(&self, tree: /*Ignored*/&glib::Tree, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn changed_tree(&self, tree: /*Ignored*/&glib::Tree, origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_changed_tree() }
     //}
 
-    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn keys_changed(&self, path: &str, items: &[&str], origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_keys_changed() }
     //}
 
-    //fn path_changed(&self, path: &str, origin_tag: /*Unimplemented*/Option<Fundamental: Pointer>) {
+    //fn path_changed(&self, path: &str, origin_tag: /*Unimplemented*/Option<Basic: Pointer>) {
     //    unsafe { TODO: call ffi:g_settings_backend_path_changed() }
     //}
 

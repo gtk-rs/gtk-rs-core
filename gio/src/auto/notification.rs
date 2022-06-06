@@ -35,7 +35,7 @@ impl Notification {
     }
 
     //#[doc(alias = "g_notification_add_button_with_target")]
-    //pub fn add_button_with_target(&self, label: &str, action: &str, target_format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn add_button_with_target(&self, label: &str, action: &str, target_format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_notification_add_button_with_target() }
     //}
 
@@ -83,7 +83,7 @@ impl Notification {
     }
 
     //#[doc(alias = "g_notification_set_default_action_and_target")]
-    //pub fn set_default_action_and_target(&self, action: &str, target_format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //pub fn set_default_action_and_target(&self, action: &str, target_format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:g_notification_set_default_action_and_target() }
     //}
 

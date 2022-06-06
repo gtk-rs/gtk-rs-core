@@ -277,6 +277,51 @@ pub fn filename_display_name(filename: impl AsRef<std::path::Path>) -> crate::GS
     }
 }
 
+#[doc(alias = "g_filename_from_uri")]
+pub fn filename_from_uri(
+    uri: &str,
+) -> Result<(std::path::PathBuf, Option<crate::GString>), crate::Error> {
+    unsafe {
+        let mut hostname = ptr::null_mut();
+        let mut error = ptr::null_mut();
+        let ret = ffi::g_filename_from_uri(uri.to_glib_none().0, &mut hostname, &mut error);
+        if error.is_null() {
+            Ok((from_glib_full(ret), from_glib_full(hostname)))
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
+}
+
+#[doc(alias = "g_filename_to_uri")]
+pub fn filename_to_uri(
+    filename: impl AsRef<std::path::Path>,
+    hostname: Option<&str>,
+) -> Result<crate::GString, crate::Error> {
+    unsafe {
+        let mut error = ptr::null_mut();
+        let ret = ffi::g_filename_to_uri(
+            filename.as_ref().to_glib_none().0,
+            hostname.to_glib_none().0,
+            &mut error,
+        );
+        if error.is_null() {
+            Ok(from_glib_full(ret))
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
+}
+
+#[doc(alias = "g_find_program_in_path")]
+pub fn find_program_in_path(program: impl AsRef<std::path::Path>) -> Option<std::path::PathBuf> {
+    unsafe {
+        from_glib_full(ffi::g_find_program_in_path(
+            program.as_ref().to_glib_none().0,
+        ))
+    }
+}
+
 #[doc(alias = "g_format_size")]
 pub fn format_size(size: u64) -> crate::GString {
     unsafe { from_glib_full(ffi::g_format_size(size)) }
@@ -315,10 +360,22 @@ pub fn console_charset() -> Option<crate::GString> {
     }
 }
 
+#[doc(alias = "g_get_current_dir")]
+#[doc(alias = "get_current_dir")]
+pub fn current_dir() -> std::path::PathBuf {
+    unsafe { from_glib_full(ffi::g_get_current_dir()) }
+}
+
 #[doc(alias = "g_get_environ")]
 #[doc(alias = "get_environ")]
 pub fn environ() -> Vec<std::ffi::OsString> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_get_environ()) }
+}
+
+#[doc(alias = "g_get_home_dir")]
+#[doc(alias = "get_home_dir")]
+pub fn home_dir() -> std::path::PathBuf {
+    unsafe { from_glib_none(ffi::g_get_home_dir()) }
 }
 
 #[doc(alias = "g_get_host_name")]
@@ -373,6 +430,12 @@ pub fn os_info(key_name: &str) -> Option<crate::GString> {
     unsafe { from_glib_full(ffi::g_get_os_info(key_name.to_glib_none().0)) }
 }
 
+#[doc(alias = "g_get_real_name")]
+#[doc(alias = "get_real_name")]
+pub fn real_name() -> std::ffi::OsString {
+    unsafe { from_glib_none(ffi::g_get_real_name()) }
+}
+
 #[doc(alias = "g_get_real_time")]
 #[doc(alias = "get_real_time")]
 pub fn real_time() -> i64 {
@@ -389,6 +452,12 @@ pub fn system_config_dirs() -> Vec<std::path::PathBuf> {
 #[doc(alias = "get_system_data_dirs")]
 pub fn system_data_dirs() -> Vec<std::path::PathBuf> {
     unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_get_system_data_dirs()) }
+}
+
+#[doc(alias = "g_get_tmp_dir")]
+#[doc(alias = "get_tmp_dir")]
+pub fn tmp_dir() -> std::path::PathBuf {
+    unsafe { from_glib_none(ffi::g_get_tmp_dir()) }
 }
 
 #[doc(alias = "g_get_user_cache_dir")]
@@ -409,6 +478,12 @@ pub fn user_data_dir() -> std::path::PathBuf {
     unsafe { from_glib_none(ffi::g_get_user_data_dir()) }
 }
 
+#[doc(alias = "g_get_user_name")]
+#[doc(alias = "get_user_name")]
+pub fn user_name() -> std::ffi::OsString {
+    unsafe { from_glib_none(ffi::g_get_user_name()) }
+}
+
 #[doc(alias = "g_get_user_runtime_dir")]
 #[doc(alias = "get_user_runtime_dir")]
 pub fn user_runtime_dir() -> std::path::PathBuf {
@@ -427,6 +502,11 @@ pub fn user_special_dir(directory: UserDirectory) -> Option<std::path::PathBuf> 
 #[doc(alias = "get_user_state_dir")]
 pub fn user_state_dir() -> std::path::PathBuf {
     unsafe { from_glib_none(ffi::g_get_user_state_dir()) }
+}
+
+#[doc(alias = "g_getenv")]
+pub fn getenv(variable: impl AsRef<std::ffi::OsStr>) -> Option<std::ffi::OsString> {
+    unsafe { from_glib_none(ffi::g_getenv(variable.as_ref().to_glib_none().0)) }
 }
 
 #[doc(alias = "g_hostname_is_ascii_encoded")]
@@ -553,6 +633,24 @@ pub fn reload_user_special_dirs_cache() {
 pub fn set_application_name(application_name: &str) {
     unsafe {
         ffi::g_set_application_name(application_name.to_glib_none().0);
+    }
+}
+
+#[doc(alias = "g_setenv")]
+pub fn setenv(
+    variable: impl AsRef<std::ffi::OsStr>,
+    value: impl AsRef<std::ffi::OsStr>,
+    overwrite: bool,
+) -> Result<(), crate::error::BoolError> {
+    unsafe {
+        crate::result_from_gboolean!(
+            ffi::g_setenv(
+                variable.as_ref().to_glib_none().0,
+                value.as_ref().to_glib_none().0,
+                overwrite.into_glib()
+            ),
+            "Failed to set environment variable"
+        )
     }
 }
 
@@ -740,13 +838,20 @@ pub fn unicode_script_to_iso15924(script: UnicodeScript) -> u32 {
 //#[cfg(any(feature = "v2_64", feature = "dox"))]
 //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
 //#[doc(alias = "g_unix_get_passwd_entry")]
-//pub fn unix_get_passwd_entry(user_name: &str) -> Result</*Unimplemented*/Option<Fundamental: Pointer>, crate::Error> {
+//pub fn unix_get_passwd_entry(user_name: &str) -> Result</*Unimplemented*/Option<Basic: Pointer>, crate::Error> {
 //    unsafe { TODO: call ffi:g_unix_get_passwd_entry() }
 //}
 
 #[doc(alias = "g_unlink")]
 pub fn unlink(filename: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_unlink(filename.as_ref().to_glib_none().0) }
+}
+
+#[doc(alias = "g_unsetenv")]
+pub fn unsetenv(variable: impl AsRef<std::ffi::OsStr>) {
+    unsafe {
+        ffi::g_unsetenv(variable.as_ref().to_glib_none().0);
+    }
 }
 
 #[doc(alias = "g_usleep")]

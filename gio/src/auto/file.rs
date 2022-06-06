@@ -43,7 +43,7 @@ impl File {
     pub const NONE: Option<&'static File> = None;
 
     //#[doc(alias = "g_file_new_build_filename")]
-    //pub fn new_build_filename(first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> File {
+    //pub fn new_build_filename(first_element: impl AsRef<std::path::Path>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> File {
     //    unsafe { TODO: call ffi:g_file_new_build_filename() }
     //}
 
@@ -668,7 +668,7 @@ pub trait FileExt: 'static {
     fn resolve_relative_path(&self, relative_path: impl AsRef<std::path::Path>) -> File;
 
     //#[doc(alias = "g_file_set_attribute")]
-    //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Fundamental: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
+    //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Basic: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_file_set_attribute_byte_string")]
     fn set_attribute_byte_string(
@@ -2912,7 +2912,7 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Fundamental: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
+    //fn set_attribute(&self, attribute: &str, type_: FileAttributeType, value_p: /*Unimplemented*/Option<Basic: Pointer>, flags: FileQueryInfoFlags, cancellable: Option<&impl IsA<Cancellable>>) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:g_file_set_attribute() }
     //}
 

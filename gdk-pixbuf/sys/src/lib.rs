@@ -464,23 +464,8 @@ extern "C" {
         destroy_fn: GdkPixbufDestroyNotify,
         destroy_fn_data: gpointer,
     ) -> *mut GdkPixbuf;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_new_from_file_utf8(
-        filename: *const c_char,
-        error: *mut *mut glib::GError,
-    ) -> *mut GdkPixbuf;
     pub fn gdk_pixbuf_new_from_file(
         filename: *const c_char,
-        error: *mut *mut glib::GError,
-    ) -> *mut GdkPixbuf;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_new_from_file_at_scale_utf8(
-        filename: *const c_char,
-        width: c_int,
-        height: c_int,
-        preserve_aspect_ratio: gboolean,
         error: *mut *mut glib::GError,
     ) -> *mut GdkPixbuf;
     pub fn gdk_pixbuf_new_from_file_at_scale(
@@ -488,14 +473,6 @@ extern "C" {
         width: c_int,
         height: c_int,
         preserve_aspect_ratio: gboolean,
-        error: *mut *mut glib::GError,
-    ) -> *mut GdkPixbuf;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_new_from_file_at_size_utf8(
-        filename: *const c_char,
-        width: c_int,
-        height: c_int,
         error: *mut *mut glib::GError,
     ) -> *mut GdkPixbuf;
     pub fn gdk_pixbuf_new_from_file_at_size(
@@ -690,15 +667,6 @@ extern "C" {
         saturation: c_float,
         pixelate: gboolean,
     );
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_save_utf8(
-        pixbuf: *mut GdkPixbuf,
-        filename: *const c_char,
-        type_: *const c_char,
-        error: *mut *mut glib::GError,
-        ...
-    ) -> gboolean;
     pub fn gdk_pixbuf_save(
         pixbuf: *mut GdkPixbuf,
         filename: *const c_char,
@@ -776,16 +744,6 @@ extern "C" {
         callback: gio::GAsyncReadyCallback,
         user_data: gpointer,
     );
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_savev_utf8(
-        pixbuf: *mut GdkPixbuf,
-        filename: *const c_char,
-        type_: *const c_char,
-        option_keys: *mut *mut c_char,
-        option_values: *mut *mut c_char,
-        error: *mut *mut glib::GError,
-    ) -> gboolean;
     pub fn gdk_pixbuf_savev(
         pixbuf: *mut GdkPixbuf,
         filename: *const c_char,
@@ -824,12 +782,6 @@ extern "C" {
     // GdkPixbufAnimation
     //=========================================================================
     pub fn gdk_pixbuf_animation_get_type() -> GType;
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
-    pub fn gdk_pixbuf_animation_new_from_file_utf8(
-        filename: *const c_char,
-        error: *mut *mut glib::GError,
-    ) -> *mut GdkPixbufAnimation;
     pub fn gdk_pixbuf_animation_new_from_file(
         filename: *const c_char,
         error: *mut *mut glib::GError,

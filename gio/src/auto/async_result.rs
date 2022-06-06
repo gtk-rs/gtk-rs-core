@@ -27,10 +27,10 @@ pub trait AsyncResultExt: 'static {
 
     //#[doc(alias = "g_async_result_get_user_data")]
     //#[doc(alias = "get_user_data")]
-    //fn user_data(&self) -> /*Unimplemented*/Option<Fundamental: Pointer>;
+    //fn user_data(&self) -> /*Unimplemented*/Option<Basic: Pointer>;
 
     //#[doc(alias = "g_async_result_is_tagged")]
-    //fn is_tagged(&self, source_tag: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool;
+    //fn is_tagged(&self, source_tag: /*Unimplemented*/Option<Basic: Pointer>) -> bool;
 
     #[doc(alias = "g_async_result_legacy_propagate_error")]
     fn legacy_propagate_error(&self) -> Result<(), glib::Error>;
@@ -45,11 +45,11 @@ impl<O: IsA<AsyncResult>> AsyncResultExt for O {
         }
     }
 
-    //fn user_data(&self) -> /*Unimplemented*/Option<Fundamental: Pointer> {
+    //fn user_data(&self) -> /*Unimplemented*/Option<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_async_result_get_user_data() }
     //}
 
-    //fn is_tagged(&self, source_tag: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
+    //fn is_tagged(&self, source_tag: /*Unimplemented*/Option<Basic: Pointer>) -> bool {
     //    unsafe { TODO: call ffi:g_async_result_is_tagged() }
     //}
 

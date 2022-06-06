@@ -34,12 +34,12 @@ impl Resolver {
     pub const NONE: Option<&'static Resolver> = None;
 
     //#[doc(alias = "g_resolver_free_addresses")]
-    //pub fn free_addresses(addresses: /*Unimplemented*/&[&Fundamental: Pointer]) {
+    //pub fn free_addresses(addresses: /*Unimplemented*/&[&Basic: Pointer]) {
     //    unsafe { TODO: call ffi:g_resolver_free_addresses() }
     //}
 
     //#[doc(alias = "g_resolver_free_targets")]
-    //pub fn free_targets(targets: /*Unimplemented*/&[&Fundamental: Pointer]) {
+    //pub fn free_targets(targets: /*Unimplemented*/&[&Basic: Pointer]) {
     //    unsafe { TODO: call ffi:g_resolver_free_targets() }
     //}
 
