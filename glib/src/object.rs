@@ -745,6 +745,7 @@ macro_rules! glib_object_wrapper {
             }
         }
 
+
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::fmt::Debug for $name $(<$($generic),+>)? {
             fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
                 f.debug_struct(stringify!($name)).field("inner", &self.inner).finish()
@@ -1168,6 +1169,13 @@ macro_rules! glib_object_wrapper {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$super_name> for $name $(<$($generic),+>)? {
+            fn borrow(&self) -> &$super_name {
+                $crate::object::Cast::upcast_ref(self)
+            }
+        }
     };
 
     (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path, $($implements:tt)*) => {
@@ -1233,6 +1241,13 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::Object {
+                $crate::object::Cast::upcast_ref(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
+            fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
@@ -4534,5 +4549,16 @@ mod tests {
         let obj2 = v.get::<&Object>().unwrap();
 
         assert_eq!(obj1.as_ptr(), obj2.as_ptr());
+    }
+
+    #[test]
+    fn test_borrow_hashing() {
+        let mut m = std::collections::HashSet::new();
+        let boxed_object = crate::BoxedAnyObject::new("");
+
+        m.insert(boxed_object.clone());
+
+        let object: &Object = std::borrow::Borrow::borrow(&boxed_object);
+        assert_eq!(m.get(object), Some(&boxed_object));
     }
 }
