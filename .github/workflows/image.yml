@@ -2,6 +2,11 @@ name: github packages
 
 on:
   push:
+    branches:
+      - "master"
+    paths:
+      - "Dockerfile"
+  pull_request:
     paths:
       - "Dockerfile"
   workflow_dispatch:
@@ -10,13 +15,14 @@ jobs:
   docker:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          push: true
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
-          repository: ${{ github.repository }}/core
-          tags: latest
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v3
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/${{ github.repository }}/core:latest

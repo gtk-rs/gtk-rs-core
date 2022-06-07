@@ -116,7 +116,6 @@ generate = [
     "Gio.SettingsSchemaSource",
     "Gio.SimpleActionGroup",
     "Gio.SimplePermission",
-    "Gio.SocketAddressEnumerator",
     "Gio.SocketClient",
     "Gio.SocketClientEvent",
     "Gio.SocketConnectable",
@@ -1086,6 +1085,24 @@ status = "generate"
 concurrency = "send+sync"
 
 [[object]]
+name = "Gio.SocketAddressEnumerator"
+status = "generate"
+    [[object.function]]
+    name = "next"
+        # enforce nullable return value, since a NULL
+        # return value is used to indicate the end of stream.
+        # Glib MR: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2701
+        [object.function.return]
+        nullable = true
+    [[object.function]]
+    name = "next_async"
+        # enforce nullable return value, since a NULL
+        # return value is used to indicate the end of stream.
+        # Glib MR: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2701
+        [object.function.return]
+        nullable = true
+
+[[object]]
 name = "Gio.Subprocess"
 status = "generate"
     [[object.function]]
@@ -1151,6 +1168,9 @@ status = "generate"
     cfg_condition = "unix"
     [[object.function]]
     name = "set_child_setup"
+    cfg_condition = "unix"
+    [[object.function]]
+    name = "close"
     cfg_condition = "unix"
 
 [[object]]
@@ -1241,12 +1261,14 @@ manual_traits = ["UnixInputStreamExtManual"]
     name = "new"
     # has to use RawFd
     manual = true
+    generate_doc = false
 
     [[object.function]]
     name = "set_close_fd"
     # Can cause file descriptor leaks
     manual = true
     doc_trait_name = "UnixInputStreamExtManual"
+    generate_doc = false
 
     [[object.function]]
     name = "get_fd"
@@ -1310,12 +1332,14 @@ manual_traits = ["UnixOutputStreamExtManual"]
     name = "new"
     # has to use RawFd
     manual = true
+    generate_doc = false
 
     [[object.function]]
     name = "set_close_fd"
     # Can cause file descriptor leaks
     manual = true
     doc_trait_name = "UnixOutputStreamExtManual"
+    generate_doc = false
 
     [[object.function]]
     name = "get_fd"

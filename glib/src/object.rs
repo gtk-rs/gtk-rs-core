@@ -532,6 +532,7 @@ impl FromGlibContainerAsVec<*mut GObject, *mut *mut GObject> for ObjectRef {
 
     unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut GObject, num: usize) -> Vec<Self> {
         if num == 0 || ptr.is_null() {
+            ffi::g_free(ptr as *mut _);
             return Vec::new();
         }
 
@@ -906,6 +907,7 @@ macro_rules! glib_object_wrapper {
 
             unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
+                    $crate::ffi::g_free(ptr as *mut _);
                     return Vec::new();
                 }
 
@@ -1978,6 +1980,56 @@ pub trait ObjectExt: ObjectType {
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value>;
 
     // rustdoc-stripper-ignore-next
+    /// Similar to [`Self::emit_by_name_with_details`] but fails instead of panicking.
+    fn try_emit_by_name_with_details<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[&dyn ToValue],
+    ) -> Result<R, BoolError>;
+
+    // rustdoc-stripper-ignore-next
+    /// Emit signal by its name with details.
+    ///
+    /// If the signal has a return value then this is returned here.
+    ///
+    /// # Panics
+    ///
+    /// If the wrong number of arguments is provided, or arguments of the wrong types
+    /// were provided.
+    fn emit_by_name_with_details<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[&dyn ToValue],
+    ) -> R;
+
+    // rustdoc-stripper-ignore-next
+    /// Similar to [`Self::emit_by_name_with_details_and_values`] but fails instead of panicking.
+    fn try_emit_by_name_with_details_and_values(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[Value],
+    ) -> Result<Option<Value>, BoolError>;
+
+    // rustdoc-stripper-ignore-next
+    /// Emit signal by its name with details.
+    ///
+    /// If the signal has a return value then this is returned here.
+    ///
+    /// # Panics
+    ///
+    /// If the wrong number of arguments is provided, or arguments of the wrong types
+    /// were provided.
+    fn emit_by_name_with_details_and_values(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[Value],
+    ) -> Option<Value>;
+
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::emit_with_details`] but fails instead of panicking.
     fn try_emit_with_details<R: TryFromClosureReturnValue>(
         &self,
@@ -2929,6 +2981,50 @@ impl<T: ObjectType> ObjectExt for T {
 
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value> {
         self.try_emit_by_name_with_values(signal_name, args)
+            .unwrap()
+    }
+
+    fn try_emit_by_name_with_details<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[&dyn ToValue],
+    ) -> Result<R, BoolError> {
+        let type_ = self.type_();
+        let signal_id = SignalId::lookup(signal_name, type_)
+            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
+        self.try_emit_with_details(signal_id, details, args)
+    }
+
+    fn emit_by_name_with_details<R: TryFromClosureReturnValue>(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[&dyn ToValue],
+    ) -> R {
+        self.try_emit_by_name_with_details(signal_name, details, args)
+            .unwrap()
+    }
+
+    fn try_emit_by_name_with_details_and_values(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[Value],
+    ) -> Result<Option<Value>, BoolError> {
+        let type_ = self.type_();
+        let signal_id = SignalId::lookup(signal_name, type_)
+            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
+        self.try_emit_with_details_and_values(signal_id, details, args)
+    }
+
+    fn emit_by_name_with_details_and_values(
+        &self,
+        signal_name: &str,
+        details: Quark,
+        args: &[Value],
+    ) -> Option<Value> {
+        self.try_emit_by_name_with_details_and_values(signal_name, details, args)
             .unwrap()
     }
 

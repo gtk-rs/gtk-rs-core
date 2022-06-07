@@ -13,8 +13,8 @@ jobs:
     runs-on: windows-2019
 
     env:
-      # git revision of gvsbuild we use for to build GTK and the other dependencies
       gvsbuildref: 861244f84a04da49172c23646d9e23885094cab4
+      # git revision of gvsbuild we use for to build GLib and the other dependencies
 
       # bump this number if you want to force a rebuild of gvsbuild with the same revision
       gvsbuildupdate: 1
@@ -28,7 +28,7 @@ jobs:
         run: mkdir C:\gtk-build\gtk\x64\release
 
       - name: (GTK binaries) get from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         with:
           path: C:\gtk-build\gtk\x64\release\**
@@ -36,7 +36,7 @@ jobs:
 
       - name: (GTK binaries) checkout gvsbuild
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: wingtk/gvsbuild
           ref: ${{ env.gvsbuildref }}
@@ -51,7 +51,7 @@ jobs:
       - name: (GTK binaries) run gvsbuild
         if: steps.cache.outputs.cache-hit != 'true'
         working-directory: gvsbuild
-        run: python .\build.py build -p=x64 --vs-ver=16 --msys-dir=C:\msys64 gtk3 graphene
+        run: python .\build.py build -p=x64 --vs-ver=16 --msys-dir=C:\msys64 glib cairo pango gdk-pixbuf graphene
 
       - name: (GTK binaries) restore git binary
         if: steps.cache.outputs.cache-hit != 'true'
@@ -69,16 +69,15 @@ jobs:
 
     strategy:
       matrix:
-        # FIXME: for now we turn off almost all sys tests, since they fail the ABI check
         conf:
-          - { name: "cairo", test: true, test-sys: true, args: "--features png,pdf,svg,ps,use_glib,v1_16,freetype,script,win32-surface" }
-          - { name: "gdk-pixbuf", test: true, test-sys: false, args: "--features v2_40" }
-          - { name: "gio", test: true, test-sys: false, args: "--features v2_66" }
-          - { name: "glib", test: true, test-sys: false, args: "--features v2_66" }
-          - { name: "graphene", test: false, test-sys: false, args: "" }
-          - { name: "pango", test: true, test-sys: false, args: "--features v1_46" }
-          - { name: "pangocairo", test: true, test-sys: false, args: "" }
-          - { name: "examples", test: false, test-sys: false, args: "--bins --examples --all-features" }
+          - { name: "cairo", test: true, args: "--features png,pdf,svg,ps,use_glib,v1_16,freetype,script,win32-surface" }
+          - { name: "gdk-pixbuf", test: true, args: "--features v2_40" }
+          - { name: "gio", test: true, args: "--features v2_66" }
+          - { name: "glib", test: true, args: "--features v2_66" }
+          - { name: "graphene", test: false, args: "" }
+          - { name: "pango", test: true, args: "--features v1_46" }
+          - { name: "pangocairo", test: true, args: "" }
+          - { name: "examples", test: false, args: "--bins --examples --all-features" }
 
     steps:
 
@@ -87,7 +86,7 @@ jobs:
         run: mkdir C:\gtk-build\gtk\x64\release
 
       - name: Get GTK binaries from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         with:
           path: C:\gtk-build\gtk\x64\release\**
@@ -99,7 +98,7 @@ jobs:
           echo "C:\gtk-build\gtk\x64\release\bin" >> $GITHUB_PATH
         shell: bash
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions-rs/toolchain@v1
         with:
@@ -118,7 +117,7 @@ jobs:
         with:
           command: test
           args: --manifest-path ${{ matrix.conf.name }}/sys/Cargo.toml ${{ matrix.conf.args }}
-        if: matrix.conf.test-sys
+        if: matrix.conf.name != 'examples'
 
       - name: build
         uses: actions-rs/cargo@v1

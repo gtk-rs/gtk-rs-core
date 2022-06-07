@@ -10,6 +10,7 @@ use std::hash;
 use std::mem;
 use std::ops::Deref;
 use std::os::raw::{c_char, c_void};
+use std::path::Path;
 use std::ptr;
 use std::slice;
 use std::string::String;
@@ -226,6 +227,12 @@ impl AsRef<CStr> for GStr {
 impl AsRef<OsStr> for GStr {
     fn as_ref(&self) -> &OsStr {
         OsStr::new(self.as_str())
+    }
+}
+
+impl AsRef<Path> for GStr {
+    fn as_ref(&self) -> &Path {
+        Path::new(self.as_str())
     }
 }
 
@@ -609,6 +616,12 @@ impl AsRef<OsStr> for GString {
     }
 }
 
+impl AsRef<Path> for GString {
+    fn as_ref(&self) -> &Path {
+        Path::new(self.as_str())
+    }
+}
+
 impl AsRef<[u8]> for GString {
     fn as_ref(&self) -> &[u8] {
         self.as_str().as_bytes()
@@ -900,7 +913,7 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 }
 
 #[doc(hidden)]
-impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
+impl FromGlibContainer<*const c_char, *const i8> for GString {
     unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
             return Self::from("");
@@ -942,7 +955,7 @@ impl<'a> FromGlibContainer<*const c_char, *const i8> for GString {
 }
 
 #[doc(hidden)]
-impl<'a> FromGlibContainer<*const c_char, *mut i8> for GString {
+impl FromGlibContainer<*const c_char, *mut i8> for GString {
     unsafe fn from_glib_none_num(ptr: *mut i8, num: usize) -> Self {
         FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
     }
@@ -957,7 +970,7 @@ impl<'a> FromGlibContainer<*const c_char, *mut i8> for GString {
 }
 
 #[doc(hidden)]
-impl<'a> FromGlibContainer<*const c_char, *const u8> for GString {
+impl FromGlibContainer<*const c_char, *const u8> for GString {
     unsafe fn from_glib_none_num(ptr: *const u8, num: usize) -> Self {
         FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
     }
@@ -972,7 +985,7 @@ impl<'a> FromGlibContainer<*const c_char, *const u8> for GString {
 }
 
 #[doc(hidden)]
-impl<'a> FromGlibContainer<*const c_char, *mut u8> for GString {
+impl FromGlibContainer<*const c_char, *mut u8> for GString {
     unsafe fn from_glib_none_num(ptr: *mut u8, num: usize) -> Self {
         FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
     }
@@ -1133,6 +1146,15 @@ mod tests {
         let v: &[u8] = b"foo";
         let s: GString = Vec::from(v).into();
         assert_eq!(s.as_str(), "foo");
+    }
+
+    #[test]
+    fn test_as_ref_path() {
+        fn foo<P: AsRef<Path>>(_path: P) {}
+        let gstring: GString = "/my/path/".into();
+        let gstr: &GStr = gstring.as_gstr();
+        foo(gstr);
+        foo(gstring);
     }
 
     #[test]

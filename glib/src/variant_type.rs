@@ -819,6 +819,7 @@ impl PartialEq for VariantType {
 
 macro_rules! impl_eq {
     ($lhs:ty, $rhs: ty) => {
+        #[allow(clippy::extra_unused_lifetimes)]
         impl<'a, 'b> PartialEq<$rhs> for $lhs {
             #[inline]
             fn eq(&self, other: &$rhs) -> bool {
@@ -826,6 +827,7 @@ macro_rules! impl_eq {
             }
         }
 
+        #[allow(clippy::extra_unused_lifetimes)]
         impl<'a, 'b> PartialEq<$lhs> for $rhs {
             #[inline]
             fn eq(&self, other: &$lhs) -> bool {
@@ -843,6 +845,7 @@ impl_eq!(&'a VariantTy, Cow<'b, VariantTy>);
 macro_rules! impl_str_eq {
     ($lhs:ty, $rhs: ty) => {
         #[allow(clippy::redundant_slicing)]
+        #[allow(clippy::extra_unused_lifetimes)]
         impl<'a, 'b> PartialEq<$rhs> for $lhs {
             #[inline]
             fn eq(&self, other: &$rhs) -> bool {
@@ -850,6 +853,7 @@ macro_rules! impl_str_eq {
             }
         }
 
+        #[allow(clippy::extra_unused_lifetimes)]
         impl<'a, 'b> PartialEq<$lhs> for $rhs {
             #[inline]
             fn eq(&self, other: &$lhs) -> bool {

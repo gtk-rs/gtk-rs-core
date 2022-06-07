@@ -338,8 +338,7 @@ mod test {
                                 .expect("Failed to get Object from args[1]");
                             let imp = obj.imp();
 
-                            let old_name = imp.name.borrow_mut().take();
-                            *imp.name.borrow_mut() = Some(new_name);
+                            let old_name = imp.name.replace(Some(new_name));
 
                             obj.emit_by_name::<()>("name-changed", &[&*imp.name.borrow()]);
 
@@ -508,8 +507,7 @@ mod test {
         );
         assert_eq!(
             obj.try_set_property("construct-name", &"test")
-                .err()
-                .expect("Failed to set 'construct-name' property")
+                .expect_err("Failed to set 'construct-name' property")
                 .to_string(),
             "property 'construct-name' of type 'SimpleObject' is not writable",
         );
@@ -523,24 +521,21 @@ mod test {
 
         assert_eq!(
             obj.try_set_property("test", &true)
-                .err()
-                .expect("set_property failed")
+                .expect_err("set_property failed")
                 .to_string(),
             "property 'test' of type 'SimpleObject' not found",
         );
 
         assert_eq!(
             obj.try_set_property("constructed", &false)
-                .err()
-                .expect("Failed to set 'constructed' property")
+                .expect_err("Failed to set 'constructed' property")
                 .to_string(),
             "property 'constructed' of type 'SimpleObject' is not writable",
         );
 
         assert_eq!(
             obj.try_set_property("name", &false)
-                .err()
-                .expect("Failed to set 'name' property")
+                .expect_err("Failed to set 'name' property")
                 .to_string(),
             "property 'name' of type 'SimpleObject' can't be set from the given type (expected: 'gchararray', got: 'gboolean')",
         );
@@ -549,8 +544,7 @@ mod test {
             Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
         assert_eq!(
             obj.try_set_property("child", &other_obj)
-                .err()
-                .expect("Failed to set 'child' property")
+                .expect_err("Failed to set 'child' property")
                 .to_string(),
             "property 'child' of type 'SimpleObject' can't be set from the given object type (expected: 'ChildObject', got: 'SimpleObject')",
         );

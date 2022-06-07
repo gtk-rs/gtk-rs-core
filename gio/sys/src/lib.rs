@@ -13995,11 +13995,15 @@ extern "C" {
     pub fn g_subprocess_launcher_new(flags: GSubprocessFlags) -> *mut GSubprocessLauncher;
     #[cfg(any(feature = "v2_68", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_close(self_: *mut GSubprocessLauncher);
     pub fn g_subprocess_launcher_getenv(
         self_: *mut GSubprocessLauncher,
         variable: *const c_char,
     ) -> *const c_char;
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_child_setup(
         self_: *mut GSubprocessLauncher,
         child_setup: glib::GSpawnChildSetupFunc,
@@ -14015,14 +14019,20 @@ extern "C" {
         self_: *mut GSubprocessLauncher,
         flags: GSubprocessFlags,
     );
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stderr_file_path(
         self_: *mut GSubprocessLauncher,
         path: *const c_char,
     );
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stdin_file_path(
         self_: *mut GSubprocessLauncher,
         path: *const c_char,
     );
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_set_stdout_file_path(
         self_: *mut GSubprocessLauncher,
         path: *const c_char,
@@ -14044,13 +14054,21 @@ extern "C" {
         argv: *const *const c_char,
         error: *mut *mut glib::GError,
     ) -> *mut GSubprocess;
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_fd(
         self_: *mut GSubprocessLauncher,
         source_fd: c_int,
         target_fd: c_int,
     );
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stderr_fd(self_: *mut GSubprocessLauncher, fd: c_int);
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stdin_fd(self_: *mut GSubprocessLauncher, fd: c_int);
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub fn g_subprocess_launcher_take_stdout_fd(self_: *mut GSubprocessLauncher, fd: c_int);
     pub fn g_subprocess_launcher_unsetenv(self_: *mut GSubprocessLauncher, variable: *const c_char);
 
