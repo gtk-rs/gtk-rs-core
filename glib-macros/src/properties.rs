@@ -386,7 +386,12 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_property<'a>(&self, _obj: &Self::Type, id: usize, pspec: &'a #crate_ident::ParamSpec) -> Result<#crate_ident::Value, #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
+        fn derived_property<'a>(
+            &self,
+            _obj: &Self::Type,
+            id: usize,
+            pspec: &'a #crate_ident::ParamSpec
+        ) -> Result<#crate_ident::Value, #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
             let prop = DerivedPropertiesEnum::try_from(id-1)
                 .map_err(|_| #crate_ident::subclass::object::MissingPropertyHandler::<'a>::from(pspec))?;
             match prop {
@@ -442,7 +447,12 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
         })
     });
     quote!(
-        fn derived_set_property<'a>(&self, _obj: &Self::Type, id: usize, value: &#crate_ident::Value, pspec: &'a #crate_ident::ParamSpec) -> Result<(), #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
+        fn derived_set_property<'a>(&self,
+            _obj: &Self::Type,
+            id: usize,
+            value: &#crate_ident::Value,
+            pspec: &'a #crate_ident::ParamSpec
+        ) -> Result<(), #crate_ident::subclass::object::MissingPropertyHandler<'a>> {
             let prop = DerivedPropertiesEnum::try_from(id-1)
                 .map_err(|_| #crate_ident::subclass::object::MissingPropertyHandler::<'a>::from(pspec))?;
             match prop {
@@ -492,18 +502,15 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
-            let body = quote!(self.property::<<#ty as #crate_ident::Property>::Value>(#name));
-            let fn_prototype =
-                { quote!(pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value) };
-            quote!(#fn_prototype { #body })
+            quote!(pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
+                 self.property::<<#ty as #crate_ident::Property>::Value>(#name)
+            })
         });
         let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
-            let body = quote!(self.set_property_from_value(#name, &std::borrow::Borrow::borrow(&value).to_value()));
-            let fn_prototype = {
-                let ident = format_ident!("set_{}", ident);
-                quote!(pub fn #ident<'a>(&self, value: impl std::borrow::Borrow<<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue>))
-            };
-            quote!(#fn_prototype { #body })
+            let ident = format_ident!("set_{}", ident);
+            quote!(pub fn #ident<'a>(&self, value: impl std::borrow::Borrow<<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue>) {
+                self.set_property_from_value(#name, &std::borrow::Borrow::borrow(&value).to_value())
+            })
         });
         let span = p.attrs_span;
         quote_spanned!(span=>
@@ -518,12 +525,9 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = {
-            let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
-            quote!(pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId)
-        };
+        let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
-        quote_spanned!(span=> #fn_prototype {
+        quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
             self.connect_notify_local(Some(#name), move |this, _| {
                 f(this)
             })
@@ -536,13 +540,10 @@ fn expand_emit_impl(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let emit_fns = props.iter().map(|p| {
         let name = &p.name;
-        let fn_prototype = {
-            let fn_ident = format_ident!("emit_{}", name_to_ident(name));
-            quote!(pub fn #fn_ident(&self))
-        };
+        let fn_ident = format_ident!("emit_{}", name_to_ident(name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
-        quote_spanned!(span=> #fn_prototype {
+        quote_spanned!(span=> pub fn #fn_ident(&self) {
             self.notify_by_pspec(
                 &<<Self as #crate_ident::object::ObjectSubclassIs>::Subclass
                     as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()
