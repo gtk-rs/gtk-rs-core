@@ -7,7 +7,7 @@ fn props() {
     mod foo {
         use glib::prelude::*;
         use glib::subclass::prelude::*;
-        use glib::ConstructRefCell;
+        use glib::{ConstructCell, ConstructRefCell};
         use glib_macros::Properties;
         use std::cell::Cell;
         use std::cell::RefCell;
@@ -92,6 +92,8 @@ fn props() {
                 #[property(get, set)]
                 cell: Cell<u8>,
                 #[property(get, set)]
+                construct_cell: ConstructCell<u8>,
+                #[property(get, set)]
                 construct_ref_cell: ConstructRefCell<u8>,
             }
 
@@ -110,6 +112,10 @@ fn props() {
                 }
                 fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
                     Self::derived_property(self, _obj, _id, _pspec).unwrap()
+                }
+                fn constructed(&self, _obj: &Self::Type) {
+                    self.construct_cell.replace(Some(1));
+                    self.construct_ref_cell.replace(Some(2));
                 }
             }
 
@@ -227,6 +233,13 @@ fn props() {
         // member of struct field
         let author_nick = myfoo.author_nick();
         assert_eq!(author_nick, myfoo.property::<String>("author-nick"));
+
+        // construct_cell
+        let n = myfoo.construct_cell();
+        assert_eq!(n, myfoo.property::<u8>("construct-cell"));
+
+        let n = myfoo.construct_ref_cell();
+        assert_eq!(n, myfoo.property::<u8>("construct-ref-cell"));
     }
 
     // setters
