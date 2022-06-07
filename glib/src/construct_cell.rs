@@ -10,6 +10,9 @@ use std::sync::RwLock;
 
 macro_rules! define_construct {
     (@common $ident:ident, $container:ident, $inner:ty) => {
+        // rustdoc-stripper-ignore-next
+        /// Wrapper around a container type to be used for custom glib properties which get set during
+        /// the construct phase. This is especially useful when used alongside the Properties macro.
         #[derive(Debug)]
         pub struct $ident<T>($container<$inner>);
         impl<T> Default for $ident<T> {
