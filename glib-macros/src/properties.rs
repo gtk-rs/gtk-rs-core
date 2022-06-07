@@ -335,8 +335,8 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
         let span = prop.attrs_span;
         quote_spanned! {span=>
-            <<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::ParamSpec>
-                ::builder #builder_call
+            <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
+                ::param_spec_builder() #builder_call
                 #build_nick
                 #build_blurb
                 .flags(#flags)

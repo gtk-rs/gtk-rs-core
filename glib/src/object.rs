@@ -1151,6 +1151,11 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecObject;
             type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecObjectBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name, <Self as $crate::types::StaticType>::static_type())
+            }
         }
     };
 

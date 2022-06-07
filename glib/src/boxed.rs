@@ -262,13 +262,19 @@ macro_rules! glib_boxed_wrapper {
             }
         }
 
+    };
+
+    (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
             type ParamSpec = $crate::ParamSpecBoxed;
             type SetValue = Self;
-        }
-    };
+            type BuilderFn = fn(&str, $crate::types::Type) -> $crate::ParamSpecBoxedBuilder;
 
-    (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => { };
+            fn param_spec_builder() -> Self::BuilderFn {
+                Self::ParamSpec::builder
+            }
+        }
+     };
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
@@ -340,6 +346,16 @@ macro_rules! glib_boxed_wrapper {
                 }
 
                 value
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecBoxed;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecBoxedBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name, <Self as $crate::types::StaticType>::static_type())
             }
         }
     };

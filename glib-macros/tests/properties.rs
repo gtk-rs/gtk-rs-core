@@ -76,11 +76,11 @@ fn props() {
                 numeric_builder: RefCell<u32>,
                 #[property(get, set, builder('c'))]
                 builder_with_required_param: RefCell<char>,
-                #[property(get, set, builder(SimpleBoxedString::static_type()))]
+                #[property(get, set)]
                 boxed: RefCell<SimpleBoxedString>,
-                #[property(get, set, builder(SimpleEnum::static_type()))]
+                #[property(get, set)]
                 fenum: RefCell<SimpleEnum>,
-                #[property(get, set, builder(glib::Object::static_type()))]
+                #[property(get, set)]
                 object: RefCell<Option<glib::Object>>,
                 #[property(get, set)]
                 optional: RefCell<Option<String>>,
