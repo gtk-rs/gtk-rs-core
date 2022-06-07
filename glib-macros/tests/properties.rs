@@ -7,6 +7,7 @@ fn props() {
     mod foo {
         use glib::prelude::*;
         use glib::subclass::prelude::*;
+        use glib::ConstructRefCell;
         use glib_macros::Properties;
         use std::cell::Cell;
         use std::cell::RefCell;
@@ -90,6 +91,8 @@ fn props() {
                 once_cell: OnceCell<u8>,
                 #[property(get, set)]
                 cell: Cell<u8>,
+                #[property(get, set)]
+                construct_ref_cell: ConstructRefCell<u8>,
             }
 
             impl ObjectImpl for Foo {
