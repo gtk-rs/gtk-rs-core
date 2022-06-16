@@ -28,7 +28,7 @@ impl SimpleProxyResolver {
 
 pub trait SimpleProxyResolverExt: 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_default_proxy")]
-    fn set_default_proxy(&self, default_proxy: &str);
+    fn set_default_proxy(&self, default_proxy: Option<&str>);
 
     #[doc(alias = "g_simple_proxy_resolver_set_uri_proxy")]
     fn set_uri_proxy(&self, uri_scheme: &str, proxy: &str);
@@ -47,7 +47,7 @@ pub trait SimpleProxyResolverExt: 'static {
 }
 
 impl<O: IsA<SimpleProxyResolver>> SimpleProxyResolverExt for O {
-    fn set_default_proxy(&self, default_proxy: &str) {
+    fn set_default_proxy(&self, default_proxy: Option<&str>) {
         unsafe {
             ffi::g_simple_proxy_resolver_set_default_proxy(
                 self.as_ref().to_glib_none().0,

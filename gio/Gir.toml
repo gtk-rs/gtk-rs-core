@@ -75,7 +75,6 @@ generate = [
     "Gio.FileQueryInfoFlags",
     "Gio.FileType",
     "Gio.FilterInputStream",
-    "Gio.IOErrorEnum",
     "Gio.IOStreamSpliceFlags",
     "Gio.LoadableIcon",
     "Gio.MemoryMonitor",
@@ -131,7 +130,6 @@ generate = [
     "Gio.TlsAuthenticationMode",
     "Gio.TlsBackend",
     "Gio.TlsCertificate",
-    "Gio.TlsCertificateFlags",
     "Gio.TlsCertificateRequestFlags",
     "Gio.TlsChannelBindingType",
     "Gio.TlsClientConnection",
@@ -191,6 +189,9 @@ status = "generate"
     [[object.function]]
     pattern = "io_scheduler_.*"
     ignore = true # Deprecated & dangerous
+    [[object.function]]
+    name = "io_error_from_file_error" # manually implemented against IOErrorEnum
+    manual = true
     [[object.function]]
     pattern = "unix_.+"
     cfg_condition = "unix"
@@ -701,6 +702,21 @@ manual_traits = ["FileExtManual"]
     # Multiple callbacks
     manual = true
     doc_trait_name = "FileExtManual"
+    # bugged gen https://github.com/gtk-rs/gtk-rs-core/issues/731
+    [[object.function]]
+    name = "make_symbolic_link_async"
+    manual = true
+    doc_trait_name = "FileExtManual"
+    # bugged gen https://github.com/gtk-rs/gtk-rs-core/issues/731
+    [[object.function]]
+    name = "new_tmp_async"
+    manual = true
+    doc_trait_name = "FileExtManual"
+    # bugged gen https://github.com/gtk-rs/gtk-rs-core/issues/731
+    [[object.function]]
+    name = "new_tmp_dir_async"
+    manual = true
+    doc_trait_name = "FileExtManual"
 
 [[object]]
 name = "Gio.FileAttributeInfoList"
@@ -808,6 +824,13 @@ manual_traits = ["InputStreamExtManual"]
     doc_trait_name = "InputStreamExtManual"
 
 [[object]]
+name = "Gio.IOErrorEnum"
+status = "generate"
+    [[object.member]]
+    name = "no_such_device"
+    version = "2.72"
+
+[[object]]
 name = "Gio.IOStream"
 status = "generate"
 manual_traits = ["IOStreamExtManual"]
@@ -858,6 +881,9 @@ generate_builder = true
     name = "find_with_equal_func_full"
     # see above
     ignore = true
+    [[object.property]]
+    name = "n-items"
+    generate = [] # disable generated getter/notify, use the ones from GListModel iface
 
 [[object]]
 name = "Gio.MemoryInputStream"
@@ -1225,6 +1251,13 @@ status = "generate"
     name = "new"
     # Better to provide None than -1 when you don't want to specify the number of threads
     manual = true
+
+[[object]]
+name = "Gio.TlsCertificateFlags"
+status = "generate"
+    [[object.member]]
+    name = "flags_none"
+    ignore = true
 
 [[object]]
 name = "Gio.TlsConnection"

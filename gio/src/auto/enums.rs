@@ -1522,6 +1522,10 @@ pub enum IOErrorEnum {
     NotConnected,
     #[doc(alias = "G_IO_ERROR_MESSAGE_TOO_LARGE")]
     MessageTooLarge,
+    #[cfg(any(feature = "v2_72", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "G_IO_ERROR_NO_SUCH_DEVICE")]
+    NoSuchDevice,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1579,6 +1583,8 @@ impl fmt::Display for IOErrorEnum {
                 Self::BrokenPipe => "BrokenPipe",
                 Self::NotConnected => "NotConnected",
                 Self::MessageTooLarge => "MessageTooLarge",
+                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                Self::NoSuchDevice => "NoSuchDevice",
                 _ => "Unknown",
             }
         )
@@ -1638,6 +1644,8 @@ impl IntoGlib for IOErrorEnum {
             Self::BrokenPipe => ffi::G_IO_ERROR_BROKEN_PIPE,
             Self::NotConnected => ffi::G_IO_ERROR_NOT_CONNECTED,
             Self::MessageTooLarge => ffi::G_IO_ERROR_MESSAGE_TOO_LARGE,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            Self::NoSuchDevice => ffi::G_IO_ERROR_NO_SUCH_DEVICE,
             Self::__Unknown(value) => value,
         }
     }
@@ -1694,6 +1702,8 @@ impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
             ffi::G_IO_ERROR_BROKEN_PIPE => Self::BrokenPipe,
             ffi::G_IO_ERROR_NOT_CONNECTED => Self::NotConnected,
             ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Self::MessageTooLarge,
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_IO_ERROR_NO_SUCH_DEVICE => Self::NoSuchDevice,
             value => Self::__Unknown(value),
         }
     }
@@ -1757,6 +1767,8 @@ impl ErrorDomain for IOErrorEnum {
             ffi::G_IO_ERROR_BROKEN_PIPE => Some(Self::BrokenPipe),
             ffi::G_IO_ERROR_NOT_CONNECTED => Some(Self::NotConnected),
             ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Some(Self::MessageTooLarge),
+            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            ffi::G_IO_ERROR_NO_SUCH_DEVICE => Some(Self::NoSuchDevice),
             _ => Some(Self::Failed),
         }
     }

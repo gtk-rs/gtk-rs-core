@@ -12,6 +12,166 @@ use std::mem;
 use std::pin::Pin;
 use std::ptr;
 
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+use crate::FileIOStream;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+use std::boxed::Box as Box_;
+
+impl File {
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_file_new_tmp_async")]
+    pub fn new_tmp_async<P: FnOnce(Result<(File, FileIOStream), glib::Error>) + 'static>(
+        tmpl: Option<impl AsRef<std::path::Path>>,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn new_tmp_async_trampoline<
+            P: FnOnce(Result<(File, FileIOStream), glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            let mut iostream = ptr::null_mut();
+            let ret = ffi::g_file_new_tmp_finish(res, &mut iostream, &mut error);
+            let result = if error.is_null() {
+                Ok((from_glib_full(ret), from_glib_full(iostream)))
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
+            callback(result);
+        }
+        let callback = new_tmp_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_new_tmp_async(
+                tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn new_tmp_future(
+        tmpl: Option<impl AsRef<std::path::Path>>,
+        io_priority: glib::Priority,
+    ) -> Pin<
+        Box_<dyn std::future::Future<Output = Result<(File, FileIOStream), glib::Error>> + 'static>,
+    > {
+        let tmpl = tmpl.map(|tmpl| tmpl.as_ref().to_owned());
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::new_tmp_async(
+                    tmpl.as_ref()
+                        .map(<std::path::PathBuf as std::borrow::Borrow<std::path::Path>>::borrow),
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_file_new_tmp_dir_async")]
+    pub fn new_tmp_dir_async<P: FnOnce(Result<File, glib::Error>) + 'static>(
+        tmpl: Option<impl AsRef<std::path::Path>>,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn new_tmp_dir_async_trampoline<
+            P: FnOnce(Result<File, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_file_new_tmp_dir_finish(res, &mut error);
+            let result = if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
+            callback(result);
+        }
+        let callback = new_tmp_dir_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_new_tmp_dir_async(
+                tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn new_tmp_dir_future(
+        tmpl: Option<impl AsRef<std::path::Path>>,
+        io_priority: glib::Priority,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<File, glib::Error>> + 'static>> {
+        let tmpl = tmpl.map(|tmpl| tmpl.as_ref().to_owned());
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::new_tmp_dir_async(
+                    tmpl.as_ref()
+                        .map(<std::path::PathBuf as std::borrow::Borrow<std::path::Path>>::borrow),
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
+    }
+}
+
 pub trait FileExtManual: Sized {
     #[doc(alias = "g_file_replace_contents_async")]
     fn replace_contents_async<
@@ -132,6 +292,25 @@ pub trait FileExtManual: Sized {
         progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
         callback: Q,
     );
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_file_make_symbolic_link_async")]
+    fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+        &self,
+        symlink_value: impl AsRef<std::path::Path>,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    );
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    fn make_symbolic_link_future(
+        &self,
+        symlink_value: impl AsRef<std::path::Path>,
+        io_priority: glib::Priority,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
@@ -887,5 +1066,82 @@ impl<O: IsA<File>> FileExtManual for O {
         ));
 
         (fut, Box::pin(receiver))
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
+        &self,
+        symlink_value: impl AsRef<std::path::Path>,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn make_symbolic_link_async_trampoline<
+            P: FnOnce(Result<(), glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            let _ =
+                ffi::g_file_make_symbolic_link_finish(_source_object as *mut _, res, &mut error);
+            let result = if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
+            callback(result);
+        }
+        let callback = make_symbolic_link_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_make_symbolic_link_async(
+                self.as_ref().to_glib_none().0,
+                symlink_value.as_ref().to_glib_none().0,
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    fn make_symbolic_link_future(
+        &self,
+        symlink_value: impl AsRef<std::path::Path>,
+        io_priority: glib::Priority,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
+        let symlink_value = symlink_value.as_ref().to_owned();
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.make_symbolic_link_async(
+                    &symlink_value,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 }

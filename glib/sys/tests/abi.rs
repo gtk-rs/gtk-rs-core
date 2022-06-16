@@ -115,13 +115,8 @@ fn cross_validate_constants_with_c() {
     let mut c_constants: Vec<(String, String)> = Vec::new();
 
     for l in get_c_output("constant").unwrap().lines() {
-        let mut words = l.trim().split(';');
-        let name = words.next().expect("Failed to parse name").to_owned();
-        let value = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse value");
-        c_constants.push((name, value));
+        let (name, value) = l.split_once(';').expect("Missing ';' separator");
+        c_constants.push((name.to_owned(), value.to_owned()));
     }
 
     let mut results = Results::default();
@@ -156,17 +151,11 @@ fn cross_validate_layout_with_c() {
     let mut c_layouts = Vec::new();
 
     for l in get_c_output("layout").unwrap().lines() {
-        let mut words = l.trim().split(';');
-        let name = words.next().expect("Failed to parse name").to_owned();
-        let size = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse size");
-        let alignment = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse alignment");
-        c_layouts.push((name, Layout { size, alignment }));
+        let (name, value) = l.split_once(';').expect("Missing first ';' separator");
+        let (size, alignment) = value.split_once(';').expect("Missing second ';' separator");
+        let size = size.parse().expect("Failed to parse size");
+        let alignment = alignment.parse().expect("Failed to parse alignment");
+        c_layouts.push((name.to_owned(), Layout { size, alignment }));
     }
 
     let mut results = Results::default();
@@ -1134,6 +1123,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_IO_FLAG_IS_WRITEABLE", "8"),
     ("(guint) G_IO_FLAG_MASK", "31"),
     ("(guint) G_IO_FLAG_NONBLOCK", "2"),
+    ("(guint) G_IO_FLAG_NONE", "0"),
     ("(guint) G_IO_FLAG_SET_MASK", "3"),
     ("(guint) G_IO_HUP", "16"),
     ("(guint) G_IO_IN", "1"),
@@ -1214,6 +1204,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE", "4"),
     ("(gint) G_MARKUP_ERROR_UNKNOWN_ELEMENT", "3"),
     ("(guint) G_MARKUP_IGNORE_QUALIFIED", "8"),
+    ("(guint) G_MARKUP_PARSE_FLAGS_NONE", "0"),
     ("(guint) G_MARKUP_PREFIX_ERROR_POSITION", "4"),
     ("(guint) G_MARKUP_TREAT_CDATA_AS_TEXT", "2"),
     ("(gint) G_NORMALIZE_ALL", "2"),
@@ -1264,6 +1255,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_REGEX_ANCHORED", "16"),
     ("(guint) G_REGEX_BSR_ANYCRLF", "8388608"),
     ("(guint) G_REGEX_CASELESS", "1"),
+    ("(guint) G_REGEX_DEFAULT", "0"),
     ("(guint) G_REGEX_DOLLAR_ENDONLY", "32"),
     ("(guint) G_REGEX_DOTALL", "4"),
     ("(guint) G_REGEX_DUPNAMES", "524288"),
@@ -1357,6 +1349,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_REGEX_MATCH_ANCHORED", "16"),
     ("(guint) G_REGEX_MATCH_BSR_ANY", "16777216"),
     ("(guint) G_REGEX_MATCH_BSR_ANYCRLF", "8388608"),
+    ("(guint) G_REGEX_MATCH_DEFAULT", "0"),
     ("(guint) G_REGEX_MATCH_NEWLINE_ANY", "4194304"),
     ("(guint) G_REGEX_MATCH_NEWLINE_ANYCRLF", "5242880"),
     ("(guint) G_REGEX_MATCH_NEWLINE_CR", "1048576"),
@@ -1392,7 +1385,9 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_SLICE_CONFIG_WORKING_SET_MSECS", "3"),
     ("G_SOURCE_CONTINUE", "1"),
     ("G_SOURCE_REMOVE", "0"),
+    ("(guint) G_SPAWN_CHILD_INHERITS_STDERR", "1024"),
     ("(guint) G_SPAWN_CHILD_INHERITS_STDIN", "32"),
+    ("(guint) G_SPAWN_CHILD_INHERITS_STDOUT", "512"),
     ("(guint) G_SPAWN_CLOEXEC_PIPES", "256"),
     ("(guint) G_SPAWN_DEFAULT", "0"),
     ("(guint) G_SPAWN_DO_NOT_REAP_CHILD", "2"),
@@ -1422,6 +1417,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_SPAWN_SEARCH_PATH", "4"),
     ("(guint) G_SPAWN_SEARCH_PATH_FROM_ENVP", "128"),
     ("(guint) G_SPAWN_STDERR_TO_DEV_NULL", "16"),
+    ("(guint) G_SPAWN_STDIN_FROM_DEV_NULL", "2048"),
     ("(guint) G_SPAWN_STDOUT_TO_DEV_NULL", "8"),
     ("G_SQRT2", "1.414214"),
     ("G_STR_DELIMITERS", "_-|> <."),
@@ -1444,9 +1440,11 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_TEST_RUN_INCOMPLETE", "3"),
     ("(gint) G_TEST_RUN_SKIPPED", "1"),
     ("(gint) G_TEST_RUN_SUCCESS", "0"),
+    ("(guint) G_TEST_SUBPROCESS_DEFAULT", "0"),
     ("(guint) G_TEST_SUBPROCESS_INHERIT_STDERR", "4"),
     ("(guint) G_TEST_SUBPROCESS_INHERIT_STDIN", "1"),
     ("(guint) G_TEST_SUBPROCESS_INHERIT_STDOUT", "2"),
+    ("(guint) G_TEST_TRAP_DEFAULT", "0"),
     ("(guint) G_TEST_TRAP_INHERIT_STDIN", "512"),
     ("(guint) G_TEST_TRAP_SILENCE_STDERR", "256"),
     ("(guint) G_TEST_TRAP_SILENCE_STDOUT", "128"),

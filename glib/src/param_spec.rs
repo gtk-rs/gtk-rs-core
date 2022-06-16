@@ -144,6 +144,18 @@ impl ParamSpec {
         unsafe { from_glib((*self.to_glib_none().0).value_type) }
     }
 
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_param_value_is_valid")]
+    pub fn value_is_valid(&self, value: &Value) -> bool {
+        unsafe {
+            from_glib(gobject_ffi::g_param_value_is_valid(
+                self.to_glib_none().0,
+                value.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "get_owner_type")]
     pub fn owner_type(&self) -> crate::Type {
         unsafe { from_glib((*self.to_glib_none().0).owner_type) }
