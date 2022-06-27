@@ -697,7 +697,7 @@ impl From<&str> for GString {
         unsafe {
             // No check for valid UTF-8 here
             let copy = ffi::g_malloc(s.len() + 1) as *mut c_char;
-            ptr::copy_nonoverlapping(s.as_ptr() as *const c_char, copy, s.len() + 1);
+            ptr::copy_nonoverlapping(s.as_ptr() as *const c_char, copy, s.len());
             ptr::write(copy.add(s.len()), 0);
 
             GString(Inner::Foreign {
@@ -1161,7 +1161,7 @@ mod tests {
     fn test_from_glib_container() {
         unsafe {
             let test_a: GString = FromGlibContainer::from_glib_container_num(
-                ffi::g_strdup("hello_world".as_ptr() as *const _),
+                ffi::g_strdup("hello_world\0".as_ptr() as *const _),
                 5,
             );
             assert_eq!("hello", test_a.as_str());
