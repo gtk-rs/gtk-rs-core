@@ -49,7 +49,7 @@ impl Deref for ByteArray {
 
 impl AsRef<[u8]> for ByteArray {
     fn as_ref(&self) -> &[u8] {
-        &*self
+        self
     }
 }
 
