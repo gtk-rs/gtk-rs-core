@@ -73,7 +73,7 @@ impl<'a> ToGlibPtr<'a, *const ffi::cairo_rectangle_int_t> for RectangleInt {
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::cairo_rectangle_int_t, Self> {
-        let ptr: *const RectangleInt = &*self;
+        let ptr: *const RectangleInt = self;
         Stash(ptr as *const ffi::cairo_rectangle_int_t, self)
     }
 }
@@ -123,7 +123,7 @@ gvalue_impl_inline!(
 
 impl RectangleInt {
     pub fn to_raw_none(&self) -> *mut ffi::cairo_rectangle_int_t {
-        let ptr = &*self as *const RectangleInt as usize;
+        let ptr = self as *const RectangleInt as usize;
         ptr as *mut ffi::cairo_rectangle_int_t
     }
 }

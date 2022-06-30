@@ -101,7 +101,7 @@ impl fmt::Debug for Bytes {
 
 impl AsRef<[u8]> for Bytes {
     fn as_ref(&self) -> &[u8] {
-        &*self
+        self
     }
 }
 

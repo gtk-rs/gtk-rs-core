@@ -186,7 +186,7 @@ impl<'a> ToGlibPtr<'a, *const ffi::cairo_matrix_t> for Matrix {
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::cairo_matrix_t, Self> {
-        let ptr: *const Matrix = &*self;
+        let ptr: *const Matrix = self;
         Stash(ptr as *const ffi::cairo_matrix_t, self)
     }
 }

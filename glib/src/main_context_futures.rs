@@ -270,7 +270,7 @@ impl MainContext {
     ) -> SourceId {
         let f = FutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::Send(f));
-        source.attach(Some(&*self))
+        source.attach(Some(self))
     }
 
     // rustdoc-stripper-ignore-next
@@ -291,7 +291,7 @@ impl MainContext {
             .expect("Spawning local futures only allowed on the thread owning the MainContext");
         let f = LocalFutureObj::new(Box::new(f));
         let source = TaskSource::new(priority, FutureWrapper::NonSend(ThreadGuard::new(f)));
-        source.attach(Some(&*self))
+        source.attach(Some(self))
     }
 
     // rustdoc-stripper-ignore-next
@@ -305,7 +305,7 @@ impl MainContext {
     #[allow(clippy::transmute_ptr_to_ptr)]
     pub fn block_on<F: Future>(&self, f: F) -> F::Output {
         let mut res = None;
-        let l = MainLoop::new(Some(&*self), false);
+        let l = MainLoop::new(Some(self), false);
         let l_clone = l.clone();
 
         let f = async {
@@ -322,7 +322,7 @@ impl MainContext {
                 crate::PRIORITY_DEFAULT,
                 FutureWrapper::NonSend(ThreadGuard::new(f)),
             );
-            source.attach(Some(&*self));
+            source.attach(Some(self));
         }
 
         l.run();
@@ -334,7 +334,7 @@ impl MainContext {
 impl Spawn for MainContext {
     fn spawn_obj(&self, f: FutureObj<'static, ()>) -> Result<(), SpawnError> {
         let source = TaskSource::new(crate::PRIORITY_DEFAULT, FutureWrapper::Send(f));
-        source.attach(Some(&*self));
+        source.attach(Some(self));
         Ok(())
     }
 }
@@ -345,7 +345,7 @@ impl LocalSpawn for MainContext {
             crate::PRIORITY_DEFAULT,
             FutureWrapper::NonSend(ThreadGuard::new(f)),
         );
-        source.attach(Some(&*self));
+        source.attach(Some(self));
         Ok(())
     }
 }

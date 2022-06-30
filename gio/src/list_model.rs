@@ -10,7 +10,7 @@ use glib::SignalHandlerId;
 use crate::prelude::*;
 use crate::ListModel;
 
-#[derive(thiserror::Error, Debug, PartialEq)]
+#[derive(thiserror::Error, Debug, PartialEq, Eq)]
 #[error("can't downcast ListModel's items (`{actual}`) to the requested type `{requested}`")]
 pub struct ListModelItemsTypeErr {
     actual: glib::Type,
@@ -67,7 +67,7 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
     }
 }
 
-#[derive(thiserror::Error, Debug, PartialEq)]
+#[derive(thiserror::Error, Debug, PartialEq, Eq)]
 #[error("the list model was mutated during iteration")]
 pub struct ListModelMutatedDuringIter;
 
