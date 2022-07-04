@@ -196,6 +196,8 @@ impl ParamSpec {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Returns the nickname of this `ParamSpec`. `self.name()` is returned if the nickname is not set.
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
