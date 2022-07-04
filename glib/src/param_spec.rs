@@ -156,11 +156,14 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_blurb")]
     #[doc(alias = "get_blurb")]
-    pub fn blurb(&self) -> &str {
+    pub fn blurb(&self) -> Option<&str> {
         unsafe {
-            CStr::from_ptr(gobject_ffi::g_param_spec_get_blurb(self.to_glib_none().0))
-                .to_str()
-                .unwrap()
+            let ptr = gobject_ffi::g_param_spec_get_blurb(self.to_glib_none().0);
+            if ptr.is_null() {
+                None
+            } else {
+                CStr::from_ptr(ptr).to_str().ok()
+            }
         }
     }
 
@@ -175,7 +178,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_name")]
     #[doc(alias = "get_name")]
-    pub fn name<'a>(&self) -> &'a str {
+    pub fn name(&self) -> &str {
         unsafe {
             CStr::from_ptr(gobject_ffi::g_param_spec_get_name(self.to_glib_none().0))
                 .to_str()
@@ -195,11 +198,14 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
-    pub fn nick(&self) -> &str {
+    pub fn nick(&self) -> Option<&str> {
         unsafe {
-            CStr::from_ptr(gobject_ffi::g_param_spec_get_nick(self.to_glib_none().0))
-                .to_str()
-                .unwrap()
+            let ptr = gobject_ffi::g_param_spec_get_nick(self.to_glib_none().0);
+            if ptr.is_null() {
+                None
+            } else {
+                CStr::from_ptr(ptr).to_str().ok()
+            }
         }
     }
 
@@ -417,8 +423,8 @@ macro_rules! define_param_spec_numeric {
             #[doc(alias = $alias)]
             pub fn new(
                 name: &str,
-                nick: &str,
-                blurb: &str,
+                nick: Option<&str>,
+                blurb: Option<&str>,
                 minimum: $value_type,
                 maximum: $value_type,
                 default_value: $value_type,
@@ -475,14 +481,14 @@ macro_rules! define_builder {
             $($field_id: Option<$field_ty>),*
         }
         impl<'a> $builder_type<'a> {
-            /// Default: `self.name`
-            pub fn nick(mut self, nick: &'a str) -> Self {
-                self.nick = Some(nick);
+            /// Default: `None`
+            pub fn nick(mut self, nick: Option<&'a str>) -> Self {
+                self.nick = nick;
                 self
             }
-            /// Default: `self.name`
-            pub fn blurb(mut self, blurb: &'a str) -> Self {
-                self.blurb = Some(blurb);
+            /// Default: `None`
+            pub fn blurb(mut self, blurb: Option<&'a str>) -> Self {
+                self.blurb = blurb;
                 self
             }
 
@@ -504,8 +510,8 @@ macro_rules! define_builder {
             pub fn build(self) -> ParamSpec {
                 $rust_type::new(
                     self.name,
-                    self.nick.unwrap_or(self.name),
-                    self.blurb.unwrap_or(self.name),
+                    self.nick,
+                    self.blurb,
                     $(self
                         .$field_id
                         $(.or(Some($field_expr)))?
@@ -571,8 +577,8 @@ impl ParamSpecBoolean {
     #[doc(alias = "g_param_spec_boolean")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         default_value: bool,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -670,8 +676,8 @@ impl ParamSpecUnichar {
     #[doc(alias = "g_param_spec_unichar")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         default_value: char,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -705,8 +711,8 @@ impl ParamSpecEnum {
     #[doc(alias = "g_param_spec_enum")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         enum_type: crate::Type,
         default_value: i32,
         flags: ParamFlags,
@@ -754,8 +760,8 @@ impl ParamSpecFlags {
     #[doc(alias = "g_param_spec_flags")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         flags_type: crate::Type,
         default_value: u32,
         flags: ParamFlags,
@@ -834,8 +840,8 @@ impl ParamSpecString {
     #[doc(alias = "g_param_spec_string")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         default_value: Option<&str>,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -867,8 +873,8 @@ impl ParamSpecParam {
     #[doc(alias = "g_param_spec_param")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         param_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -900,8 +906,8 @@ impl ParamSpecBoxed {
     #[doc(alias = "g_param_spec_boxed")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         boxed_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -931,7 +937,12 @@ define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
-    pub fn new(name: &str, nick: &str, blurb: &str, flags: ParamFlags) -> ParamSpec {
+    pub fn new(
+        name: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
+        flags: ParamFlags,
+    ) -> ParamSpec {
         assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_pointer(
@@ -953,8 +964,8 @@ impl ParamSpecValueArray {
     #[doc(alias = "g_param_spec_value_array")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         element_spec: &ParamSpec,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1004,8 +1015,8 @@ impl ParamSpecObject {
     #[doc(alias = "g_param_spec_object")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         object_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1137,8 +1148,8 @@ impl ParamSpecGType {
     #[doc(alias = "g_param_spec_gtype")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         is_a_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1175,8 +1186,8 @@ impl ParamSpecVariant {
     #[doc(alias = "g_param_spec_variant")]
     pub fn new(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: Option<&str>,
+        blurb: Option<&str>,
         type_: &crate::VariantTy,
         default_value: Option<&crate::Variant>,
         flags: ParamFlags,
@@ -1225,15 +1236,15 @@ mod tests {
     fn test_param_spec_string() {
         let pspec = ParamSpecString::new(
             "name",
-            "nick",
-            "blurb",
+            None,
+            Some("blurb"),
             Some("default"),
             ParamFlags::READWRITE,
         );
 
         assert_eq!(pspec.name(), "name");
-        assert_eq!(pspec.nick(), "nick");
-        assert_eq!(pspec.blurb(), "blurb");
+        assert_eq!(pspec.nick(), None);
+        assert_eq!(pspec.blurb(), Some("blurb"));
         let default_value = pspec.default_value();
         assert_eq!(default_value.get::<&str>().unwrap(), "default");
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
@@ -1254,13 +1265,13 @@ mod tests {
     #[test]
     fn test_param_spec_int_builder() {
         let pspec = ParamSpecInt::builder("name")
-            .blurb("Simple int parameter")
+            .blurb(Some("Simple int parameter"))
             .minimum(-2)
             .build();
 
         assert_eq!(pspec.name(), "name");
-        assert_eq!(pspec.nick(), "name");
-        assert_eq!(pspec.blurb(), "Simple int parameter");
+        assert_eq!(pspec.nick(), Some("name"));
+        assert_eq!(pspec.blurb(), Some("Simple int parameter"));
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
     }
 }
