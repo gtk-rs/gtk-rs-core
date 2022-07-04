@@ -198,14 +198,11 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
-    pub fn nick(&self) -> Option<&str> {
+    pub fn nick(&self) -> &str {
         unsafe {
-            let ptr = gobject_ffi::g_param_spec_get_nick(self.to_glib_none().0);
-            if ptr.is_null() {
-                None
-            } else {
-                CStr::from_ptr(ptr).to_str().ok()
-            }
+            CStr::from_ptr(gobject_ffi::g_param_spec_get_nick(self.to_glib_none().0))
+                .to_str()
+                .unwrap()
         }
     }
 
@@ -482,13 +479,13 @@ macro_rules! define_builder {
         }
         impl<'a> $builder_type<'a> {
             /// Default: `None`
-            pub fn nick(mut self, nick: Option<&'a str>) -> Self {
-                self.nick = nick;
+            pub fn nick(mut self, nick: &'a str) -> Self {
+                self.nick = Some(nick);
                 self
             }
             /// Default: `None`
-            pub fn blurb(mut self, blurb: Option<&'a str>) -> Self {
-                self.blurb = blurb;
+            pub fn blurb(mut self, blurb: &'a str) -> Self {
+                self.blurb = Some(blurb);
                 self
             }
 
@@ -1234,17 +1231,12 @@ mod tests {
 
     #[test]
     fn test_param_spec_string() {
-        let pspec = ParamSpecString::new(
-            "name",
-            None,
-            Some("blurb"),
-            Some("default"),
-            ParamFlags::READWRITE,
-        );
+        let pspec =
+            ParamSpecString::new("name", None, None, Some("default"), ParamFlags::READWRITE);
 
         assert_eq!(pspec.name(), "name");
-        assert_eq!(pspec.nick(), None);
-        assert_eq!(pspec.blurb(), Some("blurb"));
+        assert_eq!(pspec.nick(), "name");
+        assert_eq!(pspec.blurb(), None);
         let default_value = pspec.default_value();
         assert_eq!(default_value.get::<&str>().unwrap(), "default");
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
@@ -1265,12 +1257,12 @@ mod tests {
     #[test]
     fn test_param_spec_int_builder() {
         let pspec = ParamSpecInt::builder("name")
-            .blurb(Some("Simple int parameter"))
+            .blurb("Simple int parameter")
             .minimum(-2)
             .build();
 
         assert_eq!(pspec.name(), "name");
-        assert_eq!(pspec.nick(), Some("name"));
+        assert_eq!(pspec.nick(), "name");
         assert_eq!(pspec.blurb(), Some("Simple int parameter"));
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
     }
