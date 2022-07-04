@@ -428,15 +428,15 @@ mod test {
                     vec![
                         crate::ParamSpecString::new(
                             "name",
-                            "name",
-                            "name",
+                            None,
+                            None,
                             None,
                             crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
                         ),
                         crate::ParamSpecBoolean::new(
                             "enabled",
-                            "enabled",
-                            "enabled",
+                            None,
+                            None,
                             false,
                             crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
                         ),
