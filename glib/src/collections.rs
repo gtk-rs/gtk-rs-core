@@ -787,6 +787,12 @@ impl<
     pub fn iter(&self) -> ListIter<T> {
         ListIter::new(self)
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Check if the list is empty.
+    pub fn is_empty(&self) -> bool {
+        self.ptr.is_none()
+    }
 }
 
 impl<
@@ -1046,6 +1052,12 @@ impl<
     pub fn iter(&self) -> SListIter<T> {
         SListIter::new(self)
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Check if the list is empty.
+    pub fn is_empty(&self) -> bool {
+        self.ptr.is_none()
+    }
 }
 
 impl<
@@ -1273,12 +1285,16 @@ mod test {
             list = ffi::g_list_append(list, items[3].to_glib_full() as ffi::gpointer);
             List::<crate::DateTime>::from_glib_full(list)
         };
+        assert!(!list.is_empty());
 
         let list_items = list.iter().cloned().collect::<Vec<_>>();
         assert_eq!(&items[..], &list_items);
 
         let list_items = list.collect::<Vec<_>>();
         assert_eq!(&items[..], &list_items);
+
+        let list = unsafe { List::<crate::DateTime>::from_glib_full(ptr::null_mut()) };
+        assert!(list.is_empty());
     }
 
     #[test]
@@ -1313,11 +1329,15 @@ mod test {
             );
             SList::<crate::Object>::from_glib_full(list)
         };
+        assert!(!list.is_empty());
 
         let list_items = list.iter().cloned().collect::<Vec<_>>();
         assert_eq!(&items[..], &list_items);
 
         let list_items = list.collect::<Vec<_>>();
         assert_eq!(&items[..], &list_items);
+
+        let list = unsafe { SList::<crate::Object>::from_glib_full(ptr::null_mut()) };
+        assert!(list.is_empty());
     }
 }
