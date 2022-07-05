@@ -197,7 +197,10 @@ impl ParamSpec {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Returns the nickname of this `ParamSpec`. `self.name()` is returned if the nickname is not set.
+    /// Returns the nickname of this `ParamSpec`.
+    ///
+    /// If this `ParamSpec` does not have a nickname, the nickname of its redirect target is returned if it has one.
+    /// Otherwise, `self.name()` is returned.
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
@@ -480,7 +483,8 @@ macro_rules! define_builder {
             $($field_id: Option<$field_ty>),*
         }
         impl<'a> $builder_type<'a> {
-            /// Default: `None`
+            /// By default, the nickname of its redirect target will be used if it has one.
+            /// Otherwise, `self.name` will be used.
             pub fn nick(mut self, nick: &'a str) -> Self {
                 self.nick = Some(nick);
                 self
