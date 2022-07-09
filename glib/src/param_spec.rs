@@ -156,11 +156,14 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_blurb")]
     #[doc(alias = "get_blurb")]
-    pub fn blurb(&self) -> &str {
+    pub fn blurb(&self) -> Option<&str> {
         unsafe {
-            CStr::from_ptr(gobject_ffi::g_param_spec_get_blurb(self.to_glib_none().0))
-                .to_str()
-                .unwrap()
+            let ptr = gobject_ffi::g_param_spec_get_blurb(self.to_glib_none().0);
+            if ptr.is_null() {
+                None
+            } else {
+                CStr::from_ptr(ptr).to_str().ok()
+            }
         }
     }
 
@@ -175,7 +178,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_name")]
     #[doc(alias = "get_name")]
-    pub fn name<'a>(&self) -> &'a str {
+    pub fn name(&self) -> &str {
         unsafe {
             CStr::from_ptr(gobject_ffi::g_param_spec_get_name(self.to_glib_none().0))
                 .to_str()
@@ -193,6 +196,11 @@ impl ParamSpec {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Returns the nickname of this `ParamSpec`.
+    ///
+    /// If this `ParamSpec` does not have a nickname, the nickname of its redirect target is returned if it has one.
+    /// Otherwise, `self.name()` is returned.
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
     pub fn nick(&self) -> &str {
@@ -415,10 +423,10 @@ macro_rules! define_param_spec_numeric {
         impl $rust_type {
             #[allow(clippy::new_ret_no_self)]
             #[doc(alias = $alias)]
-            pub fn new(
+            pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
                 name: &str,
-                nick: &str,
-                blurb: &str,
+                nick: S,
+                blurb: T,
                 minimum: $value_type,
                 maximum: $value_type,
                 default_value: $value_type,
@@ -428,8 +436,8 @@ macro_rules! define_param_spec_numeric {
                 unsafe {
                     from_glib_none(gobject_ffi::$ffi_fun(
                         name.to_glib_none().0,
-                        nick.to_glib_none().0,
-                        blurb.to_glib_none().0,
+                        nick.into().to_glib_none().0,
+                        blurb.into().to_glib_none().0,
                         minimum,
                         maximum,
                         default_value,
@@ -475,12 +483,13 @@ macro_rules! define_builder {
             $($field_id: Option<$field_ty>),*
         }
         impl<'a> $builder_type<'a> {
-            /// Default: `self.name`
+            /// By default, the nickname of its redirect target will be used if it has one.
+            /// Otherwise, `self.name` will be used.
             pub fn nick(mut self, nick: &'a str) -> Self {
                 self.nick = Some(nick);
                 self
             }
-            /// Default: `self.name`
+            /// Default: `None`
             pub fn blurb(mut self, blurb: &'a str) -> Self {
                 self.blurb = Some(blurb);
                 self
@@ -504,8 +513,8 @@ macro_rules! define_builder {
             pub fn build(self) -> ParamSpec {
                 $rust_type::new(
                     self.name,
-                    self.nick.unwrap_or(self.name),
-                    self.blurb.unwrap_or(self.name),
+                    self.nick,
+                    self.blurb,
                     $(self
                         .$field_id
                         $(.or(Some($field_expr)))?
@@ -569,10 +578,10 @@ define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
 impl ParamSpecBoolean {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boolean")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         default_value: bool,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -580,8 +589,8 @@ impl ParamSpecBoolean {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boolean(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 default_value.into_glib(),
                 flags.into_glib(),
             ))
@@ -668,10 +677,10 @@ define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, Try
 impl ParamSpecUnichar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_unichar")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         default_value: char,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -679,8 +688,8 @@ impl ParamSpecUnichar {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_unichar(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 default_value.into_glib(),
                 flags.into_glib(),
             ))
@@ -703,10 +712,10 @@ define_param_spec_default!(ParamSpecEnum, i32, |x| x);
 impl ParamSpecEnum {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_enum")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         enum_type: crate::Type,
         default_value: i32,
         flags: ParamFlags,
@@ -715,8 +724,8 @@ impl ParamSpecEnum {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_enum(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 enum_type.into_glib(),
                 default_value,
                 flags.into_glib(),
@@ -752,10 +761,10 @@ define_param_spec_default!(ParamSpecFlags, u32, |x| x);
 impl ParamSpecFlags {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_flags")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         flags_type: crate::Type,
         default_value: u32,
         flags: ParamFlags,
@@ -764,8 +773,8 @@ impl ParamSpecFlags {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_flags(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 flags_type.into_glib(),
                 default_value,
                 flags.into_glib(),
@@ -832,10 +841,10 @@ define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char|
 impl ParamSpecString {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_string")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         default_value: Option<&str>,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -844,8 +853,8 @@ impl ParamSpecString {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_string(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 default_value.0,
                 flags.into_glib(),
             ))
@@ -865,10 +874,10 @@ define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 impl ParamSpecParam {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_param")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         param_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -876,8 +885,8 @@ impl ParamSpecParam {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_param(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 param_type.into_glib(),
                 flags.into_glib(),
             ))
@@ -898,10 +907,10 @@ define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 impl ParamSpecBoxed {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boxed")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         boxed_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -909,8 +918,8 @@ impl ParamSpecBoxed {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boxed(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 boxed_type.into_glib(),
                 flags.into_glib(),
             ))
@@ -931,13 +940,18 @@ define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
-    pub fn new(name: &str, nick: &str, blurb: &str, flags: ParamFlags) -> ParamSpec {
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+        name: &str,
+        nick: S,
+        blurb: T,
+        flags: ParamFlags,
+    ) -> ParamSpec {
         assert_param_name(name);
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_pointer(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 flags.into_glib(),
             ))
         }
@@ -951,10 +965,10 @@ define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 impl ParamSpecValueArray {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_value_array")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         element_spec: &ParamSpec,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -962,8 +976,8 @@ impl ParamSpecValueArray {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_value_array(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 element_spec.to_glib_none().0,
                 flags.into_glib(),
             ))
@@ -1002,10 +1016,10 @@ define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 impl ParamSpecObject {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_object")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         object_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1013,8 +1027,8 @@ impl ParamSpecObject {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_object(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 object_type.into_glib(),
                 flags.into_glib(),
             ))
@@ -1135,10 +1149,10 @@ define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 impl ParamSpecGType {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_gtype")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         is_a_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1146,8 +1160,8 @@ impl ParamSpecGType {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_gtype(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 is_a_type.into_glib(),
                 flags.into_glib(),
             ))
@@ -1173,10 +1187,10 @@ define_param_spec_default!(
 impl ParamSpecVariant {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_variant")]
-    pub fn new(
+    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
         name: &str,
-        nick: &str,
-        blurb: &str,
+        nick: S,
+        blurb: T,
         type_: &crate::VariantTy,
         default_value: Option<&crate::Variant>,
         flags: ParamFlags,
@@ -1185,8 +1199,8 @@ impl ParamSpecVariant {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_variant(
                 name.to_glib_none().0,
-                nick.to_glib_none().0,
-                blurb.to_glib_none().0,
+                nick.into().to_glib_none().0,
+                blurb.into().to_glib_none().0,
                 type_.to_glib_none().0,
                 default_value.to_glib_none().0,
                 flags.into_glib(),
@@ -1223,17 +1237,12 @@ mod tests {
 
     #[test]
     fn test_param_spec_string() {
-        let pspec = ParamSpecString::new(
-            "name",
-            "nick",
-            "blurb",
-            Some("default"),
-            ParamFlags::READWRITE,
-        );
+        let pspec =
+            ParamSpecString::new("name", None, None, Some("default"), ParamFlags::READWRITE);
 
         assert_eq!(pspec.name(), "name");
-        assert_eq!(pspec.nick(), "nick");
-        assert_eq!(pspec.blurb(), "blurb");
+        assert_eq!(pspec.nick(), "name");
+        assert_eq!(pspec.blurb(), None);
         let default_value = pspec.default_value();
         assert_eq!(default_value.get::<&str>().unwrap(), "default");
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
@@ -1260,7 +1269,7 @@ mod tests {
 
         assert_eq!(pspec.name(), "name");
         assert_eq!(pspec.nick(), "name");
-        assert_eq!(pspec.blurb(), "Simple int parameter");
+        assert_eq!(pspec.blurb(), Some("Simple int parameter"));
         assert_eq!(pspec.flags(), ParamFlags::READWRITE);
     }
 }
