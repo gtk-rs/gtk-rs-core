@@ -178,7 +178,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_name")]
     #[doc(alias = "get_name")]
-    pub fn name(&self) -> &str {
+    pub fn name<'a>(&self) -> &'a str {
         unsafe {
             CStr::from_ptr(gobject_ffi::g_param_spec_get_name(self.to_glib_none().0))
                 .to_str()
