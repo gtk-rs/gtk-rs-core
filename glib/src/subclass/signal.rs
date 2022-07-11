@@ -2,14 +2,25 @@
 
 use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
+use crate::value::FromValue;
 use crate::Closure;
+use crate::IsA;
+use crate::Object;
 use crate::SignalFlags;
+use crate::StaticType;
+use crate::ToValue;
 use crate::Type;
 use crate::Value;
 
+use std::ops::ControlFlow;
 use std::ptr;
 use std::sync::Mutex;
 use std::{fmt, num::NonZeroU32};
+
+type SignalClassHandler = Box<dyn Fn(&[Value]) -> Option<Value> + Send + Sync + 'static>;
+
+type SignalAccumulator =
+    Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>;
 
 // rustdoc-stripper-ignore-next
 /// Builder for signals.
@@ -20,12 +31,8 @@ pub struct SignalBuilder<'a> {
     flags: SignalFlags,
     param_types: &'a [SignalType],
     return_type: SignalType,
-    class_handler: Option<
-        Box<dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static>,
-    >,
-    accumulator: Option<
-        Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
-    >,
+    class_handler: Option<SignalClassHandler>,
+    accumulator: Option<SignalAccumulator>,
 }
 
 // rustdoc-stripper-ignore-next
@@ -39,41 +46,50 @@ pub struct Signal {
 }
 
 // rustdoc-stripper-ignore-next
-/// Token passed to signal class handlers.
-pub struct SignalClassHandlerToken(
-    // rustdoc-stripper-ignore-next
-    /// Instance for which the signal is emitted.
-    pub(super) *mut gobject_ffi::GTypeInstance,
-    // rustdoc-stripper-ignore-next
-    /// Return type.
-    pub(super) Type,
-    // rustdoc-stripper-ignore-next
-    /// Arguments value array.
-    pub(super) *const Value,
-);
-
-impl fmt::Debug for SignalClassHandlerToken {
-    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        f.debug_struct("SignalClassHandlerToken")
-            .field("type", &unsafe {
-                crate::Object::from_glib_borrow(self.0 as *mut gobject_ffi::GObject)
-            })
-            .finish()
-    }
-}
-
-// rustdoc-stripper-ignore-next
 /// Signal invocation hint passed to signal accumulators.
 #[repr(transparent)]
 pub struct SignalInvocationHint(gobject_ffi::GSignalInvocationHint);
 
 impl SignalInvocationHint {
+    // rustdoc-stripper-ignore-next
+    /// Gets the hint of the innermost signal emitting on `instance`. Returns `None` if no signal
+    /// is being emitted.
+    ///
+    /// # Thread-safety
+    ///
+    /// This section only applies when `instance` implements `Send+Sync`. Retreiving the hint is
+    /// thread-safe, but can result in logic errors if multiple signals are emitting concurrently on
+    /// the same object across threads. If you call this function on an object that is `Send+Sync`,
+    /// you must wrap every signal emission on that object with a mutex lock. Note this restriction
+    /// applies to **all** signal emissions on that object, not just overridden signals. A lock
+    /// such as [`ReentrantMutex`] can be used to prevent deadlocks in the case of recursive signal
+    /// emissions.
+    ///
+    /// [`ReentrantMutex`]: https://docs.rs/lock_api/latest/lock_api/struct.ReentrantMutex.html
+    #[doc(alias = "g_signal_get_invocation_hint")]
+    pub fn for_object<T: IsA<Object>>(instance: &T) -> Option<Self> {
+        unsafe {
+            from_glib_none(gobject_ffi::g_signal_get_invocation_hint(
+                instance.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+    pub fn signal_id(&self) -> SignalId {
+        unsafe { from_glib(self.0.signal_id) }
+    }
     pub fn detail(&self) -> Option<crate::Quark> {
         unsafe { try_from_glib(self.0.detail).ok() }
     }
 
     pub fn run_type(&self) -> SignalFlags {
         unsafe { from_glib(self.0.run_type) }
+    }
+}
+
+impl FromGlibPtrNone<*mut gobject_ffi::GSignalInvocationHint> for SignalInvocationHint {
+    unsafe fn from_glib_none(hint: *mut gobject_ffi::GSignalInvocationHint) -> Self {
+        assert!(!hint.is_null());
+        Self(*hint)
     }
 }
 
@@ -362,14 +378,8 @@ impl FromGlibContainerAsVec<Type, *const ffi::GType> for SignalType {
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
-        class_handler: Option<
-            Box<
-                dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-            >,
-        >,
-        accumulator: Option<
-            Box<dyn Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static>,
-        >,
+        class_handler: Option<SignalClassHandler>,
+        accumulator: Option<SignalAccumulator>,
     },
     Registered {
         type_: Type,
@@ -455,12 +465,14 @@ impl<'a> SignalBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Class handler for this signal.
-    pub fn class_handler<
-        F: Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
-    >(
-        mut self,
-        func: F,
-    ) -> Self {
+    ///
+    /// This can be used with the [`class_handler`](crate::class_handler) macro to perform
+    /// automatic conversion to and from the [`Value`](crate::Value) arguments and return value.
+    /// See the documentation of that macro for more information.
+    pub fn class_handler<F>(mut self, func: F) -> Self
+    where
+        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
+    {
         self.class_handler = Some(Box::new(func));
         self
     }
@@ -469,8 +481,51 @@ impl<'a> SignalBuilder<'a> {
     /// Accumulator for the return values of the signal.
     ///
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
-    /// return values into a single value.
+    /// return values into a single value. Panics if `T` and `R` do not return the same `Type` from
+    /// [`crate::StaticType::static_type`]. The first `T` is the currently accumulated value and
+    /// the second `T` is the return value from the current signal emission. If a `Some` value is
+    /// returned then that value will be used to replace the current accumulator. Retuning
+    /// `ControlFlow::Break` will abort the current signal emission.
+    ///
+    /// Either call this or [`Self::accumulator_with_values`], but not both.
     pub fn accumulator<
+        T: for<'v> FromValue<'v> + StaticType,
+        R: ToValue + StaticType,
+        F: Fn(&SignalInvocationHint, T, T) -> ControlFlow<Option<R>, Option<R>>
+            + Send
+            + Sync
+            + 'static,
+    >(
+        mut self,
+        func: F,
+    ) -> Self {
+        assert_eq!(T::static_type(), R::static_type());
+        self.accumulator = Some(Box::new(move |hint, accu, value| {
+            let curr_accu = accu.get::<T>().unwrap();
+            let value = value.get::<T>().unwrap();
+            let (next, ret) = match func(hint, curr_accu, value) {
+                ControlFlow::Continue(next) => (next, true),
+                ControlFlow::Break(next) => (next, false),
+            };
+            if let Some(next) = next {
+                *accu = ToValue::to_value(&next);
+            }
+            ret
+        }));
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Accumulator for the return values of the signal.
+    ///
+    /// This is called if multiple signal handlers are connected to the signal for accumulating the
+    /// return values into a single value.. The first [`Value`] is the currently accumulated value and
+    /// the second [`Value`] is the return value from the current signal emission. If a `Some`
+    /// value is returned then that value will be used to replace the current accumulator. Retuning
+    /// `false` will abort the current signal emission.
+    ///
+    /// Either call this or [`Self::accumulator`], but not both.
+    pub fn accumulator_with_values<
         F: Fn(&SignalInvocationHint, &mut Value, &Value) -> bool + Send + Sync + 'static,
     >(
         mut self,
@@ -592,9 +647,8 @@ impl Signal {
         let return_type = self.return_type;
 
         let class_handler = class_handler.map(|class_handler| {
-            Closure::new(move |values| unsafe {
-                let instance = gobject_ffi::g_value_get_object(values[0].to_glib_none().0);
-                let res = class_handler(&SignalClassHandlerToken(instance as *mut _, return_type.into(), values.as_ptr()), values);
+            Closure::new(move |values| {
+                let res = class_handler(values);
 
                 if return_type == Type::UNIT {
                     if let Some(ref v) = res {
@@ -642,8 +696,8 @@ impl Signal {
                 handler_return.type_()
             );
 
-            let res = (accumulator.1)(&SignalInvocationHint(*ihint), return_accu, handler_return)
-                .into_glib();
+            let res =
+                (accumulator.1)(&from_glib_none(ihint), return_accu, handler_return).into_glib();
 
             assert!(
                 return_accu.type_().is_a(return_type.into()),

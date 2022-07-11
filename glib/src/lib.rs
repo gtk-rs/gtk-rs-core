@@ -17,8 +17,8 @@ pub use bitflags;
 pub use once_cell;
 
 pub use glib_macros::{
-    clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, ErrorDomain, SharedBoxed, Variant,
+    class_handler, clone, closure, closure_local, flags, object_interface, object_subclass,
+    override_handler, Boxed, Downgrade, Enum, ErrorDomain, SharedBoxed, Variant,
 };
 
 #[doc(hidden)]
