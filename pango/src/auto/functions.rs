@@ -9,7 +9,6 @@ use crate::Context;
 use crate::Direction;
 use crate::GlyphString;
 use crate::Item;
-use crate::Rectangle;
 use crate::Stretch;
 use crate::Style;
 use crate::Variant;
@@ -29,16 +28,6 @@ use std::ptr;
 //pub fn default_break(text: &str, analysis: Option<&mut Analysis>, attrs: /*Ignored*/&mut LogAttr, attrs_len: i32) {
 //    unsafe { TODO: call ffi:pango_default_break() }
 //}
-
-#[doc(alias = "pango_extents_to_pixels")]
-pub fn extents_to_pixels(inclusive: Option<&Rectangle>, nearest: Option<&Rectangle>) {
-    unsafe {
-        ffi::pango_extents_to_pixels(
-            mut_override(inclusive.to_glib_none().0),
-            mut_override(nearest.to_glib_none().0),
-        );
-    }
-}
 
 #[doc(alias = "pango_find_base_dir")]
 pub fn find_base_dir(text: &str) -> Direction {
