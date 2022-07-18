@@ -74,3 +74,13 @@ pub fn shape_with_flags(
         );
     }
 }
+
+#[doc(alias = "pango_extents_to_pixels")]
+pub fn extents_to_pixels(
+    mut inclusive: Option<&mut crate::Rectangle>,
+    mut nearest: Option<&mut crate::Rectangle>,
+) {
+    unsafe {
+        ffi::pango_extents_to_pixels(inclusive.to_glib_none_mut().0, nearest.to_glib_none_mut().0);
+    }
+}
