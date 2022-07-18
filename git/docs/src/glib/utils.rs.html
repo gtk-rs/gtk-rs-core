@@ -336,74 +336,6 @@
 <span id="257">257</span>
 <span id="258">258</span>
 <span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
 </pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::translate</span>::<span class="kw-2">*</span>;
@@ -467,29 +399,6 @@
     }
 }
 
-<span class="doccomment">/// Creates a temporary directory. See the `mkdtemp()` documentation</span>
-<span class="doccomment">/// on most UNIX-like systems.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The parameter is a string that should follow the rules for</span>
-<span class="doccomment">/// `mkdtemp()` templates, i.e. contain the string &quot;XXXXXX&quot;.</span>
-<span class="doccomment">/// [`mkdtemp()`][crate::mkdtemp()] is slightly more flexible than `mkdtemp()` in that the</span>
-<span class="doccomment">/// sequence does not have to occur at the very end of the template.</span>
-<span class="doccomment">/// The X string will be modified to form the name of a directory that</span>
-<span class="doccomment">/// didn&#39;t exist.</span>
-<span class="doccomment">/// The string should be in the GLib file name encoding. Most importantly,</span>
-<span class="doccomment">/// on Windows it should be in UTF-8.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If you are going to be creating a temporary directory inside the</span>
-<span class="doccomment">/// directory returned by [`tmp_dir()`][crate::tmp_dir()], you might want to use</span>
-<span class="doccomment">/// `g_dir_make_tmp()` instead.</span>
-<span class="doccomment">/// ## `tmpl`</span>
-<span class="doccomment">/// template directory name</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A pointer to `tmpl`, which has been</span>
-<span class="doccomment">///  modified to hold the directory name. In case of errors, [`None`] is</span>
-<span class="doccomment">///  returned and `errno` will be set.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_mkdtemp&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdtemp</span>(<span class="ident">tmpl</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::path::PathBuf</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> {
@@ -506,31 +415,6 @@
     }
 }
 
-<span class="doccomment">/// Creates a temporary directory. See the `mkdtemp()` documentation</span>
-<span class="doccomment">/// on most UNIX-like systems.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The parameter is a string that should follow the rules for</span>
-<span class="doccomment">/// `mkdtemp()` templates, i.e. contain the string &quot;XXXXXX&quot;.</span>
-<span class="doccomment">/// [`mkdtemp_full()`][crate::mkdtemp_full()] is slightly more flexible than `mkdtemp()` in that the</span>
-<span class="doccomment">/// sequence does not have to occur at the very end of the template</span>
-<span class="doccomment">/// and you can pass a `mode`. The X string will be modified to form</span>
-<span class="doccomment">/// the name of a directory that didn&#39;t exist. The string should be</span>
-<span class="doccomment">/// in the GLib file name encoding. Most importantly, on Windows it</span>
-<span class="doccomment">/// should be in UTF-8.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If you are going to be creating a temporary directory inside the</span>
-<span class="doccomment">/// directory returned by [`tmp_dir()`][crate::tmp_dir()], you might want to use</span>
-<span class="doccomment">/// `g_dir_make_tmp()` instead.</span>
-<span class="doccomment">/// ## `tmpl`</span>
-<span class="doccomment">/// template directory name</span>
-<span class="doccomment">/// ## `mode`</span>
-<span class="doccomment">/// permissions to create the temporary directory with</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A pointer to `tmpl`, which has been</span>
-<span class="doccomment">///  modified to hold the directory name. In case of errors, [`None`] is</span>
-<span class="doccomment">///  returned, and `errno` will be set.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_mkdtemp_full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdtemp_full</span>(<span class="ident">tmpl</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>, <span class="ident">mode</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::path::PathBuf</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> {
@@ -547,26 +431,6 @@
     }
 }
 
-<span class="doccomment">/// Reads an entire file into allocated memory, with good error</span>
-<span class="doccomment">/// checking.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If the call was successful, it returns [`true`] and sets `contents` to the file</span>
-<span class="doccomment">/// contents and `length` to the length of the file contents in bytes. The string</span>
-<span class="doccomment">/// stored in `contents` will be nul-terminated, so for text files you can pass</span>
-<span class="doccomment">/// [`None`] for the `length` argument. If the call was not successful, it returns</span>
-<span class="doccomment">/// [`false`] and sets `error`. The error domain is `G_FILE_ERROR`. Possible error</span>
-<span class="doccomment">/// codes are those in the `GFileError` enumeration. In the error case,</span>
-<span class="doccomment">/// `contents` is set to [`None`] and `length` is set to zero.</span>
-<span class="doccomment">/// ## `filename`</span>
-<span class="doccomment">/// name of a file to read contents from, in the GLib file name encoding</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`true`] on success, [`false`] if an error occurred</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## `contents`</span>
-<span class="doccomment">/// location to store an allocated string, use `g_free()` to free</span>
-<span class="doccomment">///  the returned string</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_file_get_contents&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_get_contents</span>(
     <span class="ident">filename</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
@@ -732,5 +596,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c396bb3b8 2022-07-10)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (263edd43c 2022-07-17)" ></div>
 </body></html>

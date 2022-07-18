@@ -358,20 +358,6 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
 </pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
@@ -599,6 +585,22 @@
     }
 }
 
+<span class="doccomment">/// Similar to the UNIX `pipe()` call, but on modern systems like Linux</span>
+<span class="doccomment">/// uses the `pipe2()` system call, which atomically creates a pipe with</span>
+<span class="doccomment">/// the configured flags. The only supported flag currently is</span>
+<span class="doccomment">/// `FD_CLOEXEC`. If for example you want to configure `O_NONBLOCK`, that</span>
+<span class="doccomment">/// must still be done separately with `fcntl()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function does not take `O_CLOEXEC`, it takes `FD_CLOEXEC` as if</span>
+<span class="doccomment">/// for `fcntl()`; these are different on Linux/glibc.</span>
+<span class="doccomment">/// ## `fds`</span>
+<span class="doccomment">/// Array of two integers</span>
+<span class="doccomment">/// ## `flags`</span>
+<span class="doccomment">/// Bitfield of file descriptor flags, as for `fcntl()`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Returns</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`true`] on success, [`false`] if not (and errno will be set).</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_open_pipe&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unix_open_pipe</span>(<span class="ident">flags</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">RawFd</span>, <span class="ident">RawFd</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
@@ -617,36 +619,6 @@
     }
 }
 
-<span class="doccomment">/// Opens a file for writing in the preferred directory for temporary</span>
-<span class="doccomment">/// files (as returned by [`tmp_dir()`][crate::tmp_dir()]).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `tmpl` should be a string in the GLib file name encoding containing</span>
-<span class="doccomment">/// a sequence of six &#39;X&#39; characters, as the parameter to [`mkstemp()`][crate::mkstemp()].</span>
-<span class="doccomment">/// However, unlike these functions, the template should only be a</span>
-<span class="doccomment">/// basename, no directory components are allowed. If template is</span>
-<span class="doccomment">/// [`None`], a default template is used.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that in contrast to [`mkstemp()`][crate::mkstemp()] (and `mkstemp()`) `tmpl` is not</span>
-<span class="doccomment">/// modified, and might thus be a read-only literal string.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Upon success, and if `name_used` is non-[`None`], the actual name used</span>
-<span class="doccomment">/// is returned in `name_used`. This string should be freed with `g_free()`</span>
-<span class="doccomment">/// when not needed any longer. The returned name is in the GLib file</span>
-<span class="doccomment">/// name encoding.</span>
-<span class="doccomment">/// ## `tmpl`</span>
-<span class="doccomment">/// Template for file name, as in</span>
-<span class="doccomment">///  [`mkstemp()`][crate::mkstemp()], basename only, or [`None`] for a default template</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A file handle (as from `open()`) to the file opened for</span>
-<span class="doccomment">///  reading and writing. The file is opened in binary mode on platforms</span>
-<span class="doccomment">///  where there is a difference. The file handle should be closed with</span>
-<span class="doccomment">///  `close()`. In case of errors, -1 is returned and `error` will be set.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## `name_used`</span>
-<span class="doccomment">/// location to store actual name used,</span>
-<span class="doccomment">///  or [`None`]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_file_open_tmp&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_open_tmp</span>(
@@ -668,5 +640,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c396bb3b8 2022-07-10)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (263edd43c 2022-07-17)" ></div>
 </body></html>
