@@ -4,6 +4,7 @@ use crate::translate::*;
 use crate::utils::is_canonical_pspec_name;
 use crate::Closure;
 use crate::SignalFlags;
+use crate::StaticType;
 use crate::Type;
 use crate::Value;
 
@@ -15,10 +16,10 @@ use std::{fmt, num::NonZeroU32};
 /// Builder for signals.
 #[allow(clippy::type_complexity)]
 #[must_use = "The builder must be built to be used"]
-pub struct SignalBuilder<'a> {
-    name: &'a str,
+pub struct SignalBuilder {
+    name: String,
     flags: SignalFlags,
-    param_types: &'a [SignalType],
+    param_types: Vec<SignalType>,
     return_type: SignalType,
     class_handler: Option<
         Box<dyn Fn(&SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static>,
@@ -377,7 +378,24 @@ enum SignalRegistration {
     },
 }
 
-impl<'a> SignalBuilder<'a> {
+impl SignalBuilder {
+    // rustdoc-stripper-ignore-next
+    /// The signal parameters.
+    pub fn param_types(mut self, param_types: &[Type]) -> Self {
+        self.param_types = param_types
+            .iter()
+            .map(|t| SignalType::from(*t))
+            .collect::<Vec<_>>();
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// The signal is returned value type.
+    pub fn return_type<T: StaticType>(mut self) -> Self {
+        self.return_type = T::static_type().into();
+        self
+    }
+
     // rustdoc-stripper-ignore-next
     /// Run the signal class handler in the first emission stage.
     pub fn run_first(mut self) -> Self {
@@ -497,7 +515,7 @@ impl<'a> SignalBuilder<'a> {
         };
 
         Signal {
-            name: String::from(self.name),
+            name: self.name,
             flags,
             param_types: self.param_types.to_vec(),
             return_type: self.return_type,
@@ -512,20 +530,16 @@ impl<'a> SignalBuilder<'a> {
 impl Signal {
     // rustdoc-stripper-ignore-next
     /// Create a new builder for a signal.
-    pub fn builder<'a>(
-        name: &'a str,
-        param_types: &'a [SignalType],
-        return_type: SignalType,
-    ) -> SignalBuilder<'a> {
+    pub fn builder(name: &str) -> SignalBuilder {
         assert!(
             is_canonical_pspec_name(name),
             "{} is not a valid canonical signal name",
             name
         );
         SignalBuilder {
-            name,
-            param_types,
-            return_type,
+            name: name.to_owned(),
+            param_types: Vec::default(),
+            return_type: <()>::static_type().into(),
             flags: SignalFlags::empty(),
             class_handler: None,
             accumulator: None,
