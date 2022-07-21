@@ -153,13 +153,12 @@ mod tests {
                 use once_cell::sync::Lazy;
                 static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                     vec![
-                        Signal::builder(
-                            "sig-with-args",
-                            &[u32::static_type().into(), String::static_type().into()],
-                            crate::Type::UNIT.into(),
-                        )
-                        .build(),
-                        Signal::builder("sig-with-ret", &[], String::static_type().into()).build(),
+                        Signal::builder("sig-with-args")
+                            .param_types(&[u32::static_type(), String::static_type()])
+                            .build(),
+                        Signal::builder("sig-with-ret")
+                            .return_type::<String>()
+                            .build(),
                     ]
                 });
                 SIGNALS.as_ref()

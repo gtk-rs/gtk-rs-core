@@ -317,42 +317,35 @@ mod test {
                 use once_cell::sync::Lazy;
                 static SIGNALS: Lazy<Vec<super::Signal>> = Lazy::new(|| {
                     vec![
-                        super::Signal::builder(
-                            "name-changed",
-                            &[String::static_type().into()],
-                            crate::Type::UNIT.into(),
-                        )
-                        .build(),
-                        super::Signal::builder(
-                            "change-name",
-                            &[String::static_type().into()],
-                            String::static_type().into(),
-                        )
-                        .action()
-                        .class_handler(|_, args| {
-                            let obj = args[0]
-                                .get::<super::SimpleObject>()
-                                .expect("Failed to get Object from args[0]");
-                            let new_name = args[1]
-                                .get::<String>()
-                                .expect("Failed to get Object from args[1]");
-                            let imp = obj.imp();
-
-                            let old_name = imp.name.replace(Some(new_name));
-
-                            obj.emit_by_name::<()>("name-changed", &[&*imp.name.borrow()]);
-
-                            Some(old_name.to_value())
-                        })
-                        .build(),
-                        super::Signal::builder("create-string", &[], String::static_type().into())
+                        super::Signal::builder("name-changed")
+                            .param_types(&[String::static_type()])
                             .build(),
-                        super::Signal::builder(
-                            "create-child-object",
-                            &[],
-                            ChildObject::type_().into(),
-                        )
-                        .build(),
+                        super::Signal::builder("change-name")
+                            .param_types(&[String::static_type()])
+                            .return_type::<String>()
+                            .action()
+                            .class_handler(|_, args| {
+                                let obj = args[0]
+                                    .get::<super::SimpleObject>()
+                                    .expect("Failed to get Object from args[0]");
+                                let new_name = args[1]
+                                    .get::<String>()
+                                    .expect("Failed to get Object from args[1]");
+                                let imp = obj.imp();
+
+                                let old_name = imp.name.replace(Some(new_name));
+
+                                obj.emit_by_name::<()>("name-changed", &[&*imp.name.borrow()]);
+
+                                Some(old_name.to_value())
+                            })
+                            .build(),
+                        super::Signal::builder("create-string")
+                            .return_type::<String>()
+                            .build(),
+                        super::Signal::builder("create-child-object")
+                            .return_type::<super::ChildObject>()
+                            .build(),
                     ]
                 });
 
