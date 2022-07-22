@@ -607,7 +607,7 @@
     <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fds</span> <span class="op">=</span> [<span class="number">0</span>, <span class="number">2</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_unix_open_pipe</span>(<span class="ident">fds</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">flags</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_unix_open_pipe</span>(<span class="kw-2">&amp;mut</span> <span class="ident">fds</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
         <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Ok</span>((
                 <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">fds</span>[<span class="number">0</span>]),

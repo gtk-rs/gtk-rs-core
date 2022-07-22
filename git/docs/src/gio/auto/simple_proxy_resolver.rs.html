@@ -344,7 +344,7 @@
     <span class="doccomment">/// ## `default_proxy`</span>
     <span class="doccomment">/// the default proxy to use</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_simple_proxy_resolver_set_default_proxy&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">set_default_proxy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">default_proxy</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>);
+    <span class="kw">fn</span> <span class="ident">set_default_proxy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">default_proxy</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Adds a URI-scheme-specific proxy to `self`; URIs whose scheme</span>
     <span class="doccomment">/// matches `uri_scheme` (and which don&#39;t match</span>
@@ -416,7 +416,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SimpleProxyResolver</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">SimpleProxyResolverExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">set_default_proxy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">default_proxy</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+    <span class="kw">fn</span> <span class="ident">set_default_proxy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">default_proxy</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) {
         <span class="kw">unsafe</span> {
             <span class="ident">ffi::g_simple_proxy_resolver_set_default_proxy</span>(
                 <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
