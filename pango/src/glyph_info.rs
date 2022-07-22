@@ -13,6 +13,10 @@ impl GlyphInfo {
         self.inner.glyph
     }
 
+    pub fn set_glyph(&mut self, glyph: u32) {
+        self.inner.glyph = glyph
+    }
+
     pub fn geometry(&self) -> &GlyphGeometry {
         unsafe { &*(&self.inner.geometry as *const _ as *const GlyphGeometry) }
     }
