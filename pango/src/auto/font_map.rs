@@ -16,7 +16,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "PangoFontMap")]
-    pub struct FontMap(Object<ffi::PangoFontMap, ffi::PangoFontMapClass>);
+    pub struct FontMap(Object<ffi::PangoFontMap, ffi::PangoFontMapClass>) @implements gio::ListModel;
 
     match fn {
         type_ => || ffi::pango_font_map_get_type(),

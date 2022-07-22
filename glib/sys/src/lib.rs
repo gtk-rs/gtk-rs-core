@@ -838,6 +838,7 @@ pub const G_IO_HUP: GIOCondition = 16;
 pub const G_IO_NVAL: GIOCondition = 32;
 
 pub type GIOFlags = c_uint;
+pub const G_IO_FLAG_NONE: GIOFlags = 0;
 pub const G_IO_FLAG_APPEND: GIOFlags = 1;
 pub const G_IO_FLAG_NONBLOCK: GIOFlags = 2;
 pub const G_IO_FLAG_IS_READABLE: GIOFlags = 4;
@@ -877,6 +878,7 @@ pub const G_MARKUP_COLLECT_TRISTATE: GMarkupCollectType = 4;
 pub const G_MARKUP_COLLECT_OPTIONAL: GMarkupCollectType = 65536;
 
 pub type GMarkupParseFlags = c_uint;
+pub const G_MARKUP_PARSE_FLAGS_NONE: GMarkupParseFlags = 0;
 pub const G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: GMarkupParseFlags = 1;
 pub const G_MARKUP_TREAT_CDATA_AS_TEXT: GMarkupParseFlags = 2;
 pub const G_MARKUP_PREFIX_ERROR_POSITION: GMarkupParseFlags = 4;
@@ -893,6 +895,7 @@ pub const G_OPTION_FLAG_OPTIONAL_ARG: GOptionFlags = 32;
 pub const G_OPTION_FLAG_NOALIAS: GOptionFlags = 64;
 
 pub type GRegexCompileFlags = c_uint;
+pub const G_REGEX_DEFAULT: GRegexCompileFlags = 0;
 pub const G_REGEX_CASELESS: GRegexCompileFlags = 1;
 pub const G_REGEX_MULTILINE: GRegexCompileFlags = 2;
 pub const G_REGEX_DOTALL: GRegexCompileFlags = 4;
@@ -913,6 +916,7 @@ pub const G_REGEX_BSR_ANYCRLF: GRegexCompileFlags = 8388608;
 pub const G_REGEX_JAVASCRIPT_COMPAT: GRegexCompileFlags = 33554432;
 
 pub type GRegexMatchFlags = c_uint;
+pub const G_REGEX_MATCH_DEFAULT: GRegexMatchFlags = 0;
 pub const G_REGEX_MATCH_ANCHORED: GRegexMatchFlags = 16;
 pub const G_REGEX_MATCH_NOTBOL: GRegexMatchFlags = 128;
 pub const G_REGEX_MATCH_NOTEOL: GRegexMatchFlags = 256;
@@ -940,13 +944,24 @@ pub const G_SPAWN_CHILD_INHERITS_STDIN: GSpawnFlags = 32;
 pub const G_SPAWN_FILE_AND_ARGV_ZERO: GSpawnFlags = 64;
 pub const G_SPAWN_SEARCH_PATH_FROM_ENVP: GSpawnFlags = 128;
 pub const G_SPAWN_CLOEXEC_PIPES: GSpawnFlags = 256;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub const G_SPAWN_CHILD_INHERITS_STDOUT: GSpawnFlags = 512;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub const G_SPAWN_CHILD_INHERITS_STDERR: GSpawnFlags = 1024;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub const G_SPAWN_STDIN_FROM_DEV_NULL: GSpawnFlags = 2048;
 
 pub type GTestSubprocessFlags = c_uint;
+pub const G_TEST_SUBPROCESS_DEFAULT: GTestSubprocessFlags = 0;
 pub const G_TEST_SUBPROCESS_INHERIT_STDIN: GTestSubprocessFlags = 1;
 pub const G_TEST_SUBPROCESS_INHERIT_STDOUT: GTestSubprocessFlags = 2;
 pub const G_TEST_SUBPROCESS_INHERIT_STDERR: GTestSubprocessFlags = 4;
 
 pub type GTestTrapFlags = c_uint;
+pub const G_TEST_TRAP_DEFAULT: GTestTrapFlags = 0;
 pub const G_TEST_TRAP_SILENCE_STDOUT: GTestTrapFlags = 128;
 pub const G_TEST_TRAP_SILENCE_STDERR: GTestTrapFlags = 256;
 pub const G_TEST_TRAP_INHERIT_STDIN: GTestTrapFlags = 512;
@@ -1154,6 +1169,7 @@ pub type GSequenceIterCompareFunc =
 pub type GSourceDisposeFunc = Option<unsafe extern "C" fn(*mut GSource)>;
 pub type GSourceDummyMarshal = Option<unsafe extern "C" fn()>;
 pub type GSourceFunc = Option<unsafe extern "C" fn(gpointer) -> gboolean>;
+pub type GSourceOnceFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GSpawnChildSetupFunc = Option<unsafe extern "C" fn(gpointer)>;
 pub type GTestDataFunc = Option<unsafe extern "C" fn(gconstpointer)>;
 pub type GTestFixtureFunc = Option<unsafe extern "C" fn(gpointer, gconstpointer)>;
@@ -4137,10 +4153,20 @@ extern "C" {
     pub fn g_ptr_array_foreach(array: *mut GPtrArray, func: GFunc, user_data: gpointer);
     pub fn g_ptr_array_free(array: *mut GPtrArray, free_seg: gboolean) -> *mut gpointer;
     pub fn g_ptr_array_insert(array: *mut GPtrArray, index_: c_int, data: gpointer);
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_ptr_array_is_null_terminated(array: *mut GPtrArray) -> gboolean;
     pub fn g_ptr_array_new() -> *mut GPtrArray;
     pub fn g_ptr_array_new_full(
         reserved_size: c_uint,
         element_free_func: GDestroyNotify,
+    ) -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_ptr_array_new_null_terminated(
+        reserved_size: c_uint,
+        element_free_func: GDestroyNotify,
+        null_terminated: gboolean,
     ) -> *mut GPtrArray;
     pub fn g_ptr_array_new_with_free_func(element_free_func: GDestroyNotify) -> *mut GPtrArray;
     pub fn g_ptr_array_ref(array: *mut GPtrArray) -> *mut GPtrArray;
@@ -5639,7 +5665,18 @@ extern "C" {
         oldval: c_int,
         newval: c_int,
     ) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_atomic_int_compare_and_exchange_full(
+        atomic: *mut c_int,
+        oldval: c_int,
+        newval: c_int,
+        preval: *mut c_int,
+    ) -> gboolean;
     pub fn g_atomic_int_dec_and_test(atomic: *mut c_int) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_atomic_int_exchange(atomic: *mut c_int, newval: c_int) -> c_int;
     pub fn g_atomic_int_exchange_and_add(atomic: *mut c_int, val: c_int) -> c_int;
     pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
     pub fn g_atomic_int_inc(atomic: *mut c_int);
@@ -5653,6 +5690,17 @@ extern "C" {
         oldval: gpointer,
         newval: gpointer,
     ) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_atomic_pointer_compare_and_exchange_full(
+        atomic: *mut c_void,
+        oldval: gpointer,
+        newval: gpointer,
+        preval: *mut c_void,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_atomic_pointer_exchange(atomic: *mut c_void, newval: gpointer) -> gpointer;
     pub fn g_atomic_pointer_get(atomic: *mut c_void) -> gpointer;
     pub fn g_atomic_pointer_or(atomic: *mut c_void, val: size_t) -> size_t;
     pub fn g_atomic_pointer_set(atomic: *mut c_void, newval: gpointer);
@@ -5834,6 +5882,13 @@ extern "C" {
         user_data: gpointer,
     ) -> gpointer;
     pub fn g_datalist_id_get_data(datalist: *mut *mut GData, key_id: GQuark) -> gpointer;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_datalist_id_remove_multiple(
+        datalist: *mut *mut GData,
+        keys: *mut GQuark,
+        n_keys: size_t,
+    );
     pub fn g_datalist_id_remove_no_notify(datalist: *mut *mut GData, key_id: GQuark) -> gpointer;
     pub fn g_datalist_id_replace_data(
         datalist: *mut *mut GData,
@@ -6024,6 +6079,9 @@ extern "C" {
         data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_idle_add_once(function: GSourceOnceFunc, data: gpointer) -> c_uint;
     pub fn g_idle_remove_by_data(data: gpointer) -> gboolean;
     pub fn g_idle_source_new() -> *mut GSource;
     pub fn g_int64_equal(v1: gconstpointer, v2: gconstpointer) -> gboolean;
@@ -6636,6 +6694,13 @@ extern "C" {
         data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_timeout_add_once(
+        interval: c_uint,
+        function: GSourceOnceFunc,
+        data: gpointer,
+    ) -> c_uint;
     pub fn g_timeout_add_seconds(interval: c_uint, function: GSourceFunc, data: gpointer)
         -> c_uint;
     pub fn g_timeout_add_seconds_full(
@@ -6732,7 +6797,11 @@ extern "C" {
         user_name: *const c_char,
         error: *mut *mut GError,
     ) -> *mut passwd;
-    pub fn g_unix_open_pipe(fds: *mut c_int, flags: c_int, error: *mut *mut GError) -> gboolean;
+    pub fn g_unix_open_pipe(
+        fds: *mut [c_int; 2],
+        flags: c_int,
+        error: *mut *mut GError,
+    ) -> gboolean;
     pub fn g_unix_set_fd_nonblocking(
         fd: c_int,
         nonblock: gboolean,

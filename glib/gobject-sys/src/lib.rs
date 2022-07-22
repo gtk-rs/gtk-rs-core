@@ -71,6 +71,7 @@ pub const G_BINDING_SYNC_CREATE: GBindingFlags = 2;
 pub const G_BINDING_INVERT_BOOLEAN: GBindingFlags = 4;
 
 pub type GConnectFlags = c_uint;
+pub const G_CONNECT_DEFAULT: GConnectFlags = 0;
 pub const G_CONNECT_AFTER: GConnectFlags = 1;
 pub const G_CONNECT_SWAPPED: GConnectFlags = 2;
 
@@ -116,6 +117,7 @@ pub const G_TYPE_DEBUG_INSTANCE_COUNT: GTypeDebugFlags = 4;
 pub const G_TYPE_DEBUG_MASK: GTypeDebugFlags = 7;
 
 pub type GTypeFlags = c_uint;
+pub const G_TYPE_FLAG_NONE: GTypeFlags = 0;
 pub const G_TYPE_FLAG_ABSTRACT: GTypeFlags = 16;
 pub const G_TYPE_FLAG_VALUE_ABSTRACT: GTypeFlags = 32;
 pub const G_TYPE_FLAG_FINAL: GTypeFlags = 64;
@@ -368,7 +370,10 @@ pub struct GInitiallyUnownedClass {
     pub notify: Option<unsafe extern "C" fn(*mut GObject, *mut GParamSpec)>,
     pub constructed: Option<unsafe extern "C" fn(*mut GObject)>,
     pub flags: size_t,
-    pub pdummy: [gpointer; 6],
+    pub n_construct_properties: size_t,
+    pub pspecs: gpointer,
+    pub n_pspecs: size_t,
+    pub pdummy: [gpointer; 3],
 }
 
 impl ::std::fmt::Debug for GInitiallyUnownedClass {
@@ -426,7 +431,10 @@ pub struct GObjectClass {
     pub notify: Option<unsafe extern "C" fn(*mut GObject, *mut GParamSpec)>,
     pub constructed: Option<unsafe extern "C" fn(*mut GObject)>,
     pub flags: size_t,
-    pub pdummy: [gpointer; 6],
+    pub n_construct_properties: size_t,
+    pub pspecs: gpointer,
+    pub n_pspecs: size_t,
+    pub pdummy: [gpointer; 3],
 }
 
 impl ::std::fmt::Debug for GObjectClass {
@@ -474,7 +482,8 @@ pub struct GParamSpecClass {
     pub value_validate: Option<unsafe extern "C" fn(*mut GParamSpec, *mut GValue) -> gboolean>,
     pub values_cmp:
         Option<unsafe extern "C" fn(*mut GParamSpec, *const GValue, *const GValue) -> c_int>,
-    pub dummy: [gpointer; 4],
+    pub value_is_valid: Option<unsafe extern "C" fn(*mut GParamSpec, *mut GValue) -> gboolean>,
+    pub dummy: [gpointer; 3],
 }
 
 impl ::std::fmt::Debug for GParamSpecClass {
@@ -486,6 +495,7 @@ impl ::std::fmt::Debug for GParamSpecClass {
             .field("value_set_default", &self.value_set_default)
             .field("value_validate", &self.value_validate)
             .field("values_cmp", &self.values_cmp)
+            .field("value_is_valid", &self.value_is_valid)
             .finish()
     }
 }
@@ -2505,6 +2515,9 @@ extern "C" {
         strict_validation: gboolean,
     ) -> gboolean;
     pub fn g_param_value_defaults(pspec: *mut GParamSpec, value: *const GValue) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_param_value_is_valid(pspec: *mut GParamSpec, value: *const GValue) -> gboolean;
     pub fn g_param_value_set_default(pspec: *mut GParamSpec, value: *mut GValue);
     pub fn g_param_value_validate(pspec: *mut GParamSpec, value: *mut GValue) -> gboolean;
     pub fn g_param_values_cmp(

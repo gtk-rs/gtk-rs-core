@@ -313,6 +313,7 @@ where
 /// In comparison to `idle_add()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
 #[doc(alias = "g_idle_add_full")]
+#[doc(alias = "g_idle_add_once")]
 pub fn idle_add_once<F>(func: F) -> SourceId
 where
     F: FnOnce() + Send + 'static,
@@ -418,6 +419,7 @@ where
 /// In comparison to `timeout_add()`, this only requires `func` to be
 /// `FnOnce`, and will automatically return `Continue(false)`.
 #[doc(alias = "g_timeout_add_full")]
+#[doc(alias = "g_timeout_add_once")]
 pub fn timeout_add_once<F>(interval: Duration, func: F) -> SourceId
 where
     F: FnOnce() + Send + 'static,

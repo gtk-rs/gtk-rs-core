@@ -231,7 +231,7 @@ pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
     unsafe {
         let mut fds = [0, 2];
         let mut error = ptr::null_mut();
-        let _ = ffi::g_unix_open_pipe(fds.as_mut_ptr(), flags, &mut error);
+        let _ = ffi::g_unix_open_pipe(&mut fds, flags, &mut error);
         if error.is_null() {
             Ok((
                 FromRawFd::from_raw_fd(fds[0]),

@@ -76,6 +76,81 @@ impl AppInfo {
         }
     }
 
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_app_info_get_default_for_type_async")]
+    #[doc(alias = "get_default_for_type_async")]
+    pub fn default_for_type_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
+        content_type: &str,
+        must_support_uris: bool,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn default_for_type_async_trampoline<
+            P: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_app_info_get_default_for_type_finish(res, &mut error);
+            let result = if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
+            callback(result);
+        }
+        let callback = default_for_type_async_trampoline::<P>;
+        unsafe {
+            ffi::g_app_info_get_default_for_type_async(
+                content_type.to_glib_none().0,
+                must_support_uris.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn default_for_type_future(
+        content_type: &str,
+        must_support_uris: bool,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<AppInfo, glib::Error>> + 'static>> {
+        let content_type = String::from(content_type);
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::default_for_type_async(
+                    &content_type,
+                    must_support_uris,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
+    }
+
     #[doc(alias = "g_app_info_get_default_for_uri_scheme")]
     #[doc(alias = "get_default_for_uri_scheme")]
     pub fn default_for_uri_scheme(uri_scheme: &str) -> Option<AppInfo> {
@@ -84,6 +159,73 @@ impl AppInfo {
                 uri_scheme.to_glib_none().0,
             ))
         }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_app_info_get_default_for_uri_scheme_async")]
+    #[doc(alias = "get_default_for_uri_scheme_async")]
+    pub fn default_for_uri_scheme_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
+        uri_scheme: &str,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn default_for_uri_scheme_async_trampoline<
+            P: FnOnce(Result<AppInfo, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_app_info_get_default_for_uri_scheme_finish(res, &mut error);
+            let result = if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            };
+            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback: P = callback.into_inner();
+            callback(result);
+        }
+        let callback = default_for_uri_scheme_async_trampoline::<P>;
+        unsafe {
+            ffi::g_app_info_get_default_for_uri_scheme_async(
+                uri_scheme.to_glib_none().0,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn default_for_uri_scheme_future(
+        uri_scheme: &str,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<AppInfo, glib::Error>> + 'static>> {
+        let uri_scheme = String::from(uri_scheme);
+        Box_::pin(crate::GioFuture::new(
+            &(),
+            move |_obj, cancellable, send| {
+                Self::default_for_uri_scheme_async(&uri_scheme, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[doc(alias = "g_app_info_get_fallback_for_type")]

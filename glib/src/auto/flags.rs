@@ -397,6 +397,18 @@ bitflags! {
         const SEARCH_PATH_FROM_ENVP = ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP as u32;
         #[doc(alias = "G_SPAWN_CLOEXEC_PIPES")]
         const CLOEXEC_PIPES = ffi::G_SPAWN_CLOEXEC_PIPES as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDOUT")]
+        const CHILD_INHERITS_STDOUT = ffi::G_SPAWN_CHILD_INHERITS_STDOUT as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDERR")]
+        const CHILD_INHERITS_STDERR = ffi::G_SPAWN_CHILD_INHERITS_STDERR as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_SPAWN_STDIN_FROM_DEV_NULL")]
+        const STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL as u32;
     }
 }
 

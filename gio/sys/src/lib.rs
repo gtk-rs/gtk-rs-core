@@ -234,6 +234,7 @@ pub const G_IO_ERROR_BROKEN_PIPE: GIOErrorEnum = 44;
 pub const G_IO_ERROR_CONNECTION_CLOSED: GIOErrorEnum = 44;
 pub const G_IO_ERROR_NOT_CONNECTED: GIOErrorEnum = 45;
 pub const G_IO_ERROR_MESSAGE_TOO_LARGE: GIOErrorEnum = 46;
+pub const G_IO_ERROR_NO_SUCH_DEVICE: GIOErrorEnum = 47;
 
 pub type GIOModuleScopeFlags = c_int;
 pub const G_IO_MODULE_SCOPE_NONE: GIOModuleScopeFlags = 0;
@@ -517,18 +518,26 @@ pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH: *const c_char =
     b"thumbnail::path\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_ACCESS: *const c_char =
     b"time::access\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC: *const c_char =
+    b"time::access-nsec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_ACCESS_USEC: *const c_char =
     b"time::access-usec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_CHANGED: *const c_char =
     b"time::changed\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC: *const c_char =
+    b"time::changed-nsec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_CHANGED_USEC: *const c_char =
     b"time::changed-usec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_CREATED: *const c_char =
     b"time::created\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_TIME_CREATED_NSEC: *const c_char =
+    b"time::created-nsec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_CREATED_USEC: *const c_char =
     b"time::created-usec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_MODIFIED: *const c_char =
     b"time::modified\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC: *const c_char =
+    b"time::modified-nsec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC: *const c_char =
     b"time::modified-usec\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TRASH_DELETION_DATE: *const c_char =
@@ -796,6 +805,7 @@ pub type GTestDBusFlags = c_uint;
 pub const G_TEST_DBUS_NONE: GTestDBusFlags = 0;
 
 pub type GTlsCertificateFlags = c_uint;
+pub const G_TLS_CERTIFICATE_FLAGS_NONE: GTlsCertificateFlags = 0;
 pub const G_TLS_CERTIFICATE_UNKNOWN_CA: GTlsCertificateFlags = 1;
 pub const G_TLS_CERTIFICATE_BAD_IDENTITY: GTlsCertificateFlags = 2;
 pub const G_TLS_CERTIFICATE_NOT_ACTIVATED: GTlsCertificateFlags = 4;
@@ -3146,8 +3156,19 @@ pub struct GFileIface {
             *mut *mut glib::GError,
         ) -> gboolean,
     >,
-    pub _make_symbolic_link_async: Option<unsafe extern "C" fn()>,
-    pub _make_symbolic_link_finish: Option<unsafe extern "C" fn()>,
+    pub make_symbolic_link_async: Option<
+        unsafe extern "C" fn(
+            *mut GFile,
+            *const c_char,
+            c_int,
+            *mut GCancellable,
+            GAsyncReadyCallback,
+            gpointer,
+        ),
+    >,
+    pub make_symbolic_link_finish: Option<
+        unsafe extern "C" fn(*mut GFile, *mut GAsyncResult, *mut *mut glib::GError) -> gboolean,
+    >,
     pub copy: Option<
         unsafe extern "C" fn(
             *mut GFile,
@@ -3527,11 +3548,8 @@ impl ::std::fmt::Debug for GFileIface {
             .field("make_directory_async", &self.make_directory_async)
             .field("make_directory_finish", &self.make_directory_finish)
             .field("make_symbolic_link", &self.make_symbolic_link)
-            .field("_make_symbolic_link_async", &self._make_symbolic_link_async)
-            .field(
-                "_make_symbolic_link_finish",
-                &self._make_symbolic_link_finish,
-            )
+            .field("make_symbolic_link_async", &self.make_symbolic_link_async)
+            .field("make_symbolic_link_finish", &self.make_symbolic_link_finish)
             .field("copy", &self.copy)
             .field("copy_async", &self.copy_async)
             .field("copy_finish", &self.copy_finish)
@@ -14880,7 +14898,36 @@ extern "C" {
         content_type: *const c_char,
         must_support_uris: gboolean,
     ) -> *mut GAppInfo;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_app_info_get_default_for_type_async(
+        content_type: *const c_char,
+        must_support_uris: gboolean,
+        cancellable: *mut GCancellable,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_app_info_get_default_for_type_finish(
+        result: *mut GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut GAppInfo;
     pub fn g_app_info_get_default_for_uri_scheme(uri_scheme: *const c_char) -> *mut GAppInfo;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_app_info_get_default_for_uri_scheme_async(
+        uri_scheme: *const c_char,
+        cancellable: *mut GCancellable,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_app_info_get_default_for_uri_scheme_finish(
+        result: *mut GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut GAppInfo;
     pub fn g_app_info_get_fallback_for_type(content_type: *const c_char) -> *mut glib::GList;
     pub fn g_app_info_get_recommended_for_type(content_type: *const c_char) -> *mut glib::GList;
     pub fn g_app_info_launch_default_for_uri(
@@ -15401,6 +15448,37 @@ extern "C" {
         iostream: *mut *mut GFileIOStream,
         error: *mut *mut glib::GError,
     ) -> *mut GFile;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_new_tmp_async(
+        tmpl: *const c_char,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_new_tmp_dir_async(
+        tmpl: *const c_char,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_new_tmp_dir_finish(
+        result: *mut GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut GFile;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_new_tmp_finish(
+        result: *mut GAsyncResult,
+        iostream: *mut *mut GFileIOStream,
+        error: *mut *mut glib::GError,
+    ) -> *mut GFile;
     pub fn g_file_parse_name(parse_name: *const c_char) -> *mut GFile;
     pub fn g_file_append_to(
         file: *mut GFile,
@@ -15680,6 +15758,23 @@ extern "C" {
         file: *mut GFile,
         symlink_value: *const c_char,
         cancellable: *mut GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_make_symbolic_link_async(
+        file: *mut GFile,
+        symlink_value: *const c_char,
+        io_priority: c_int,
+        cancellable: *mut GCancellable,
+        callback: GAsyncReadyCallback,
+        user_data: gpointer,
+    );
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_file_make_symbolic_link_finish(
+        file: *mut GFile,
+        result: *mut GAsyncResult,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_file_measure_disk_usage(
@@ -16845,6 +16940,9 @@ extern "C" {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
     pub fn g_dbus_unescape_object_path(s: *const c_char) -> *mut u8;
     pub fn g_io_error_from_errno(err_no: c_int) -> GIOErrorEnum;
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    pub fn g_io_error_from_file_error(file_error: glib::GFileError) -> GIOErrorEnum;
     pub fn g_io_error_quark() -> glib::GQuark;
     pub fn g_io_modules_load_all_in_directory(dirname: *const c_char) -> *mut glib::GList;
     pub fn g_io_modules_load_all_in_directory_with_scope(

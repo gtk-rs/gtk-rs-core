@@ -621,12 +621,24 @@ pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CHANGED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_CREATED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED;
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED_NSEC;
 pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TRASH_DELETION_DATE;
 pub use self::constants::FILE_ATTRIBUTE_TRASH_ITEM_COUNT;

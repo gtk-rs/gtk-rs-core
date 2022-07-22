@@ -259,6 +259,212 @@ impl FromGlib<ffi::GDateWeekday> for DateWeekday {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GFileError")]
+pub enum FileError {
+    #[doc(alias = "G_FILE_ERROR_EXIST")]
+    Exist,
+    #[doc(alias = "G_FILE_ERROR_ISDIR")]
+    Isdir,
+    #[doc(alias = "G_FILE_ERROR_ACCES")]
+    Acces,
+    #[doc(alias = "G_FILE_ERROR_NAMETOOLONG")]
+    Nametoolong,
+    #[doc(alias = "G_FILE_ERROR_NOENT")]
+    Noent,
+    #[doc(alias = "G_FILE_ERROR_NOTDIR")]
+    Notdir,
+    #[doc(alias = "G_FILE_ERROR_NXIO")]
+    Nxio,
+    #[doc(alias = "G_FILE_ERROR_NODEV")]
+    Nodev,
+    #[doc(alias = "G_FILE_ERROR_ROFS")]
+    Rofs,
+    #[doc(alias = "G_FILE_ERROR_TXTBSY")]
+    Txtbsy,
+    #[doc(alias = "G_FILE_ERROR_FAULT")]
+    Fault,
+    #[doc(alias = "G_FILE_ERROR_LOOP")]
+    Loop,
+    #[doc(alias = "G_FILE_ERROR_NOSPC")]
+    Nospc,
+    #[doc(alias = "G_FILE_ERROR_NOMEM")]
+    Nomem,
+    #[doc(alias = "G_FILE_ERROR_MFILE")]
+    Mfile,
+    #[doc(alias = "G_FILE_ERROR_NFILE")]
+    Nfile,
+    #[doc(alias = "G_FILE_ERROR_BADF")]
+    Badf,
+    #[doc(alias = "G_FILE_ERROR_INVAL")]
+    Inval,
+    #[doc(alias = "G_FILE_ERROR_PIPE")]
+    Pipe,
+    #[doc(alias = "G_FILE_ERROR_AGAIN")]
+    Again,
+    #[doc(alias = "G_FILE_ERROR_INTR")]
+    Intr,
+    #[doc(alias = "G_FILE_ERROR_IO")]
+    Io,
+    #[doc(alias = "G_FILE_ERROR_PERM")]
+    Perm,
+    #[doc(alias = "G_FILE_ERROR_NOSYS")]
+    Nosys,
+    #[doc(alias = "G_FILE_ERROR_FAILED")]
+    Failed,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for FileError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "FileError::{}",
+            match *self {
+                Self::Exist => "Exist",
+                Self::Isdir => "Isdir",
+                Self::Acces => "Acces",
+                Self::Nametoolong => "Nametoolong",
+                Self::Noent => "Noent",
+                Self::Notdir => "Notdir",
+                Self::Nxio => "Nxio",
+                Self::Nodev => "Nodev",
+                Self::Rofs => "Rofs",
+                Self::Txtbsy => "Txtbsy",
+                Self::Fault => "Fault",
+                Self::Loop => "Loop",
+                Self::Nospc => "Nospc",
+                Self::Nomem => "Nomem",
+                Self::Mfile => "Mfile",
+                Self::Nfile => "Nfile",
+                Self::Badf => "Badf",
+                Self::Inval => "Inval",
+                Self::Pipe => "Pipe",
+                Self::Again => "Again",
+                Self::Intr => "Intr",
+                Self::Io => "Io",
+                Self::Perm => "Perm",
+                Self::Nosys => "Nosys",
+                Self::Failed => "Failed",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for FileError {
+    type GlibType = ffi::GFileError;
+
+    fn into_glib(self) -> ffi::GFileError {
+        match self {
+            Self::Exist => ffi::G_FILE_ERROR_EXIST,
+            Self::Isdir => ffi::G_FILE_ERROR_ISDIR,
+            Self::Acces => ffi::G_FILE_ERROR_ACCES,
+            Self::Nametoolong => ffi::G_FILE_ERROR_NAMETOOLONG,
+            Self::Noent => ffi::G_FILE_ERROR_NOENT,
+            Self::Notdir => ffi::G_FILE_ERROR_NOTDIR,
+            Self::Nxio => ffi::G_FILE_ERROR_NXIO,
+            Self::Nodev => ffi::G_FILE_ERROR_NODEV,
+            Self::Rofs => ffi::G_FILE_ERROR_ROFS,
+            Self::Txtbsy => ffi::G_FILE_ERROR_TXTBSY,
+            Self::Fault => ffi::G_FILE_ERROR_FAULT,
+            Self::Loop => ffi::G_FILE_ERROR_LOOP,
+            Self::Nospc => ffi::G_FILE_ERROR_NOSPC,
+            Self::Nomem => ffi::G_FILE_ERROR_NOMEM,
+            Self::Mfile => ffi::G_FILE_ERROR_MFILE,
+            Self::Nfile => ffi::G_FILE_ERROR_NFILE,
+            Self::Badf => ffi::G_FILE_ERROR_BADF,
+            Self::Inval => ffi::G_FILE_ERROR_INVAL,
+            Self::Pipe => ffi::G_FILE_ERROR_PIPE,
+            Self::Again => ffi::G_FILE_ERROR_AGAIN,
+            Self::Intr => ffi::G_FILE_ERROR_INTR,
+            Self::Io => ffi::G_FILE_ERROR_IO,
+            Self::Perm => ffi::G_FILE_ERROR_PERM,
+            Self::Nosys => ffi::G_FILE_ERROR_NOSYS,
+            Self::Failed => ffi::G_FILE_ERROR_FAILED,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GFileError> for FileError {
+    unsafe fn from_glib(value: ffi::GFileError) -> Self {
+        match value {
+            ffi::G_FILE_ERROR_EXIST => Self::Exist,
+            ffi::G_FILE_ERROR_ISDIR => Self::Isdir,
+            ffi::G_FILE_ERROR_ACCES => Self::Acces,
+            ffi::G_FILE_ERROR_NAMETOOLONG => Self::Nametoolong,
+            ffi::G_FILE_ERROR_NOENT => Self::Noent,
+            ffi::G_FILE_ERROR_NOTDIR => Self::Notdir,
+            ffi::G_FILE_ERROR_NXIO => Self::Nxio,
+            ffi::G_FILE_ERROR_NODEV => Self::Nodev,
+            ffi::G_FILE_ERROR_ROFS => Self::Rofs,
+            ffi::G_FILE_ERROR_TXTBSY => Self::Txtbsy,
+            ffi::G_FILE_ERROR_FAULT => Self::Fault,
+            ffi::G_FILE_ERROR_LOOP => Self::Loop,
+            ffi::G_FILE_ERROR_NOSPC => Self::Nospc,
+            ffi::G_FILE_ERROR_NOMEM => Self::Nomem,
+            ffi::G_FILE_ERROR_MFILE => Self::Mfile,
+            ffi::G_FILE_ERROR_NFILE => Self::Nfile,
+            ffi::G_FILE_ERROR_BADF => Self::Badf,
+            ffi::G_FILE_ERROR_INVAL => Self::Inval,
+            ffi::G_FILE_ERROR_PIPE => Self::Pipe,
+            ffi::G_FILE_ERROR_AGAIN => Self::Again,
+            ffi::G_FILE_ERROR_INTR => Self::Intr,
+            ffi::G_FILE_ERROR_IO => Self::Io,
+            ffi::G_FILE_ERROR_PERM => Self::Perm,
+            ffi::G_FILE_ERROR_NOSYS => Self::Nosys,
+            ffi::G_FILE_ERROR_FAILED => Self::Failed,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl ErrorDomain for FileError {
+    fn domain() -> Quark {
+        unsafe { from_glib(ffi::g_file_error_quark()) }
+    }
+
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    fn from(code: i32) -> Option<Self> {
+        match code {
+            ffi::G_FILE_ERROR_EXIST => Some(Self::Exist),
+            ffi::G_FILE_ERROR_ISDIR => Some(Self::Isdir),
+            ffi::G_FILE_ERROR_ACCES => Some(Self::Acces),
+            ffi::G_FILE_ERROR_NAMETOOLONG => Some(Self::Nametoolong),
+            ffi::G_FILE_ERROR_NOENT => Some(Self::Noent),
+            ffi::G_FILE_ERROR_NOTDIR => Some(Self::Notdir),
+            ffi::G_FILE_ERROR_NXIO => Some(Self::Nxio),
+            ffi::G_FILE_ERROR_NODEV => Some(Self::Nodev),
+            ffi::G_FILE_ERROR_ROFS => Some(Self::Rofs),
+            ffi::G_FILE_ERROR_TXTBSY => Some(Self::Txtbsy),
+            ffi::G_FILE_ERROR_FAULT => Some(Self::Fault),
+            ffi::G_FILE_ERROR_LOOP => Some(Self::Loop),
+            ffi::G_FILE_ERROR_NOSPC => Some(Self::Nospc),
+            ffi::G_FILE_ERROR_NOMEM => Some(Self::Nomem),
+            ffi::G_FILE_ERROR_MFILE => Some(Self::Mfile),
+            ffi::G_FILE_ERROR_NFILE => Some(Self::Nfile),
+            ffi::G_FILE_ERROR_BADF => Some(Self::Badf),
+            ffi::G_FILE_ERROR_INVAL => Some(Self::Inval),
+            ffi::G_FILE_ERROR_PIPE => Some(Self::Pipe),
+            ffi::G_FILE_ERROR_AGAIN => Some(Self::Again),
+            ffi::G_FILE_ERROR_INTR => Some(Self::Intr),
+            ffi::G_FILE_ERROR_IO => Some(Self::Io),
+            ffi::G_FILE_ERROR_PERM => Some(Self::Perm),
+            ffi::G_FILE_ERROR_NOSYS => Some(Self::Nosys),
+            ffi::G_FILE_ERROR_FAILED => Some(Self::Failed),
+            _ => Some(Self::Failed),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GKeyFileError")]
 pub enum KeyFileError {
     #[doc(alias = "G_KEY_FILE_ERROR_UNKNOWN_ENCODING")]

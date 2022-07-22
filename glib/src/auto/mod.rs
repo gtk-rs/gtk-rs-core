@@ -34,6 +34,7 @@ mod enums;
 pub use self::enums::ChecksumType;
 pub use self::enums::DateMonth;
 pub use self::enums::DateWeekday;
+pub use self::enums::FileError;
 pub use self::enums::KeyFileError;
 pub use self::enums::LogWriterOutput;
 pub use self::enums::OptionArg;

@@ -28,7 +28,6 @@ pub use self::byte_array::ByteArray;
 pub use self::bytes::Bytes;
 pub use self::closure::{Closure, RustClosure};
 pub use self::error::{BoolError, Error};
-pub use self::file_error::FileError;
 pub use self::object::{
     Cast, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt, ObjectType, SendWeakRef,
     WeakRef,
@@ -37,6 +36,7 @@ pub use self::signal::{
     signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
     signal_stop_emission_by_name, SignalHandlerId,
 };
+pub use self::FileError;
 
 pub use self::enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory};
 pub use self::types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong};
@@ -86,7 +86,6 @@ pub use self::char::*;
 mod checksum;
 pub mod closure;
 mod enums;
-mod file_error;
 mod functions;
 pub use self::functions::*;
 mod key_file;

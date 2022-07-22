@@ -115,13 +115,8 @@ fn cross_validate_constants_with_c() {
     let mut c_constants: Vec<(String, String)> = Vec::new();
 
     for l in get_c_output("constant").unwrap().lines() {
-        let mut words = l.trim().split(';');
-        let name = words.next().expect("Failed to parse name").to_owned();
-        let value = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse value");
-        c_constants.push((name, value));
+        let (name, value) = l.split_once(';').expect("Missing ';' separator");
+        c_constants.push((name.to_owned(), value.to_owned()));
     }
 
     let mut results = Results::default();
@@ -156,17 +151,11 @@ fn cross_validate_layout_with_c() {
     let mut c_layouts = Vec::new();
 
     for l in get_c_output("layout").unwrap().lines() {
-        let mut words = l.trim().split(';');
-        let name = words.next().expect("Failed to parse name").to_owned();
-        let size = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse size");
-        let alignment = words
-            .next()
-            .and_then(|s| s.parse().ok())
-            .expect("Failed to parse alignment");
-        c_layouts.push((name, Layout { size, alignment }));
+        let (name, value) = l.split_once(';').expect("Missing first ';' separator");
+        let (size, alignment) = value.split_once(';').expect("Missing second ';' separator");
+        let size = size.parse().expect("Failed to parse size");
+        let alignment = alignment.parse().expect("Failed to parse alignment");
+        c_layouts.push((name.to_owned(), Layout { size, alignment }));
     }
 
     let mut results = Results::default();
@@ -2626,12 +2615,16 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID", "thumbnail::is-valid"),
     ("G_FILE_ATTRIBUTE_THUMBNAIL_PATH", "thumbnail::path"),
     ("G_FILE_ATTRIBUTE_TIME_ACCESS", "time::access"),
+    ("G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC", "time::access-nsec"),
     ("G_FILE_ATTRIBUTE_TIME_ACCESS_USEC", "time::access-usec"),
     ("G_FILE_ATTRIBUTE_TIME_CHANGED", "time::changed"),
+    ("G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC", "time::changed-nsec"),
     ("G_FILE_ATTRIBUTE_TIME_CHANGED_USEC", "time::changed-usec"),
     ("G_FILE_ATTRIBUTE_TIME_CREATED", "time::created"),
+    ("G_FILE_ATTRIBUTE_TIME_CREATED_NSEC", "time::created-nsec"),
     ("G_FILE_ATTRIBUTE_TIME_CREATED_USEC", "time::created-usec"),
     ("G_FILE_ATTRIBUTE_TIME_MODIFIED", "time::modified"),
+    ("G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC", "time::modified-nsec"),
     ("G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC", "time::modified-usec"),
     (
         "G_FILE_ATTRIBUTE_TRASH_DELETION_DATE",
@@ -2731,6 +2724,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_IO_ERROR_NOT_SUPPORTED", "15"),
     ("(gint) G_IO_ERROR_NOT_SYMBOLIC_LINK", "7"),
     ("(gint) G_IO_ERROR_NO_SPACE", "12"),
+    ("(gint) G_IO_ERROR_NO_SUCH_DEVICE", "47"),
     ("(gint) G_IO_ERROR_PARTIAL_INPUT", "34"),
     ("(gint) G_IO_ERROR_PENDING", "20"),
     ("(gint) G_IO_ERROR_PERMISSION_DENIED", "14"),
@@ -2879,6 +2873,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_TLS_BACKEND_EXTENSION_POINT_NAME", "gio-tls-backend"),
     ("(guint) G_TLS_CERTIFICATE_BAD_IDENTITY", "2"),
     ("(guint) G_TLS_CERTIFICATE_EXPIRED", "8"),
+    ("(guint) G_TLS_CERTIFICATE_FLAGS_NONE", "0"),
     ("(guint) G_TLS_CERTIFICATE_GENERIC_ERROR", "64"),
     ("(guint) G_TLS_CERTIFICATE_INSECURE", "32"),
     ("(guint) G_TLS_CERTIFICATE_NOT_ACTIVATED", "4"),

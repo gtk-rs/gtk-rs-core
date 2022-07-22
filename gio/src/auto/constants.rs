@@ -467,6 +467,15 @@ pub static FILE_ATTRIBUTE_TIME_ACCESS: once_cell::sync::Lazy<&'static str> =
             .to_str()
             .unwrap()
     });
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC")]
+pub static FILE_ATTRIBUTE_TIME_ACCESS_NSEC: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC)
+            .to_str()
+            .unwrap()
+    });
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_ACCESS_USEC")]
 pub static FILE_ATTRIBUTE_TIME_ACCESS_USEC: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
@@ -478,6 +487,15 @@ pub static FILE_ATTRIBUTE_TIME_ACCESS_USEC: once_cell::sync::Lazy<&'static str> 
 pub static FILE_ATTRIBUTE_TIME_CHANGED: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
         CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_CHANGED)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC")]
+pub static FILE_ATTRIBUTE_TIME_CHANGED_NSEC: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC)
             .to_str()
             .unwrap()
     });
@@ -495,6 +513,15 @@ pub static FILE_ATTRIBUTE_TIME_CREATED: once_cell::sync::Lazy<&'static str> =
             .to_str()
             .unwrap()
     });
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_TIME_CREATED_NSEC")]
+pub static FILE_ATTRIBUTE_TIME_CREATED_NSEC: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_CREATED_NSEC)
+            .to_str()
+            .unwrap()
+    });
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_CREATED_USEC")]
 pub static FILE_ATTRIBUTE_TIME_CREATED_USEC: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
@@ -506,6 +533,15 @@ pub static FILE_ATTRIBUTE_TIME_CREATED_USEC: once_cell::sync::Lazy<&'static str>
 pub static FILE_ATTRIBUTE_TIME_MODIFIED: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
         CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_MODIFIED)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC")]
+pub static FILE_ATTRIBUTE_TIME_MODIFIED_NSEC: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC)
             .to_str()
             .unwrap()
     });

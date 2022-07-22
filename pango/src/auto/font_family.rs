@@ -11,7 +11,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "PangoFontFamily")]
-    pub struct FontFamily(Object<ffi::PangoFontFamily, ffi::PangoFontFamilyClass>);
+    pub struct FontFamily(Object<ffi::PangoFontFamily, ffi::PangoFontFamilyClass>) @implements gio::ListModel;
 
     match fn {
         type_ => || ffi::pango_font_family_get_type(),
