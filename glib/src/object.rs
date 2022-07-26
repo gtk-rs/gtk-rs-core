@@ -4142,6 +4142,7 @@ impl<T: IsClass> Class<T> {
     /// Gets the class struct for `Self` of `type_`.
     ///
     /// This will return `None` if `type_` is not a subclass of `Self`.
+    #[doc(alias = "g_type_class_ref")]
     pub fn from_type(type_: Type) -> Option<ClassRef<'static, T>> {
         if !type_.is_a(T::static_type()) {
             return None;
