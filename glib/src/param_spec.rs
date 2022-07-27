@@ -513,6 +513,36 @@ macro_rules! define_builder {
                 self
             }
 
+            /// Mark the property as construct
+            pub fn construct(mut self) -> Self {
+                self.flags |= crate::ParamFlags::CONSTRUCT;
+                self
+            }
+
+            /// Mark the property as construct only
+            pub fn construct_only(mut self) -> Self {
+                self.flags |= crate::ParamFlags::CONSTRUCT_ONLY;
+                self
+            }
+
+            /// Mark the property as lax validation
+            pub fn lax_validation(mut self) -> Self {
+                self.flags |= crate::ParamFlags::LAX_VALIDATION;
+                self
+            }
+
+            /// Mark the property as explicit notify
+            pub fn explicit_notify(mut self) -> Self {
+                self.flags |= crate::ParamFlags::EXPLICIT_NOTIFY;
+                self
+            }
+
+            /// Mark the property as deprecated
+            pub fn deprecated(mut self) -> Self {
+                self.flags |= crate::ParamFlags::DEPRECATED;
+                self
+            }
+
             $(
             $(#[doc = concat!("Default: `", stringify!($field_expr), "`")])?
             pub fn $field_id(mut self, value: $field_ty) -> Self {
@@ -1277,11 +1307,15 @@ mod tests {
         let pspec = ParamSpecInt::builder("name")
             .blurb("Simple int parameter")
             .minimum(-2)
+            .explicit_notify()
             .build();
 
         assert_eq!(pspec.name(), "name");
         assert_eq!(pspec.nick(), "name");
         assert_eq!(pspec.blurb(), Some("Simple int parameter"));
-        assert_eq!(pspec.flags(), ParamFlags::READWRITE);
+        assert_eq!(
+            pspec.flags(),
+            ParamFlags::READWRITE | ParamFlags::EXPLICIT_NOTIFY
+        );
     }
 }
