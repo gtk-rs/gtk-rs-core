@@ -74,6 +74,110 @@ impl FromGlib<ffi::GChecksumType> for ChecksumType {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GConvertError")]
+pub enum ConvertError {
+    #[doc(alias = "G_CONVERT_ERROR_NO_CONVERSION")]
+    NoConversion,
+    #[doc(alias = "G_CONVERT_ERROR_ILLEGAL_SEQUENCE")]
+    IllegalSequence,
+    #[doc(alias = "G_CONVERT_ERROR_FAILED")]
+    Failed,
+    #[doc(alias = "G_CONVERT_ERROR_PARTIAL_INPUT")]
+    PartialInput,
+    #[doc(alias = "G_CONVERT_ERROR_BAD_URI")]
+    BadUri,
+    #[doc(alias = "G_CONVERT_ERROR_NOT_ABSOLUTE_PATH")]
+    NotAbsolutePath,
+    #[doc(alias = "G_CONVERT_ERROR_NO_MEMORY")]
+    NoMemory,
+    #[doc(alias = "G_CONVERT_ERROR_EMBEDDED_NUL")]
+    EmbeddedNul,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for ConvertError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "ConvertError::{}",
+            match *self {
+                Self::NoConversion => "NoConversion",
+                Self::IllegalSequence => "IllegalSequence",
+                Self::Failed => "Failed",
+                Self::PartialInput => "PartialInput",
+                Self::BadUri => "BadUri",
+                Self::NotAbsolutePath => "NotAbsolutePath",
+                Self::NoMemory => "NoMemory",
+                Self::EmbeddedNul => "EmbeddedNul",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for ConvertError {
+    type GlibType = ffi::GConvertError;
+
+    fn into_glib(self) -> ffi::GConvertError {
+        match self {
+            Self::NoConversion => ffi::G_CONVERT_ERROR_NO_CONVERSION,
+            Self::IllegalSequence => ffi::G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+            Self::Failed => ffi::G_CONVERT_ERROR_FAILED,
+            Self::PartialInput => ffi::G_CONVERT_ERROR_PARTIAL_INPUT,
+            Self::BadUri => ffi::G_CONVERT_ERROR_BAD_URI,
+            Self::NotAbsolutePath => ffi::G_CONVERT_ERROR_NOT_ABSOLUTE_PATH,
+            Self::NoMemory => ffi::G_CONVERT_ERROR_NO_MEMORY,
+            Self::EmbeddedNul => ffi::G_CONVERT_ERROR_EMBEDDED_NUL,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GConvertError> for ConvertError {
+    unsafe fn from_glib(value: ffi::GConvertError) -> Self {
+        match value {
+            ffi::G_CONVERT_ERROR_NO_CONVERSION => Self::NoConversion,
+            ffi::G_CONVERT_ERROR_ILLEGAL_SEQUENCE => Self::IllegalSequence,
+            ffi::G_CONVERT_ERROR_FAILED => Self::Failed,
+            ffi::G_CONVERT_ERROR_PARTIAL_INPUT => Self::PartialInput,
+            ffi::G_CONVERT_ERROR_BAD_URI => Self::BadUri,
+            ffi::G_CONVERT_ERROR_NOT_ABSOLUTE_PATH => Self::NotAbsolutePath,
+            ffi::G_CONVERT_ERROR_NO_MEMORY => Self::NoMemory,
+            ffi::G_CONVERT_ERROR_EMBEDDED_NUL => Self::EmbeddedNul,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl ErrorDomain for ConvertError {
+    fn domain() -> Quark {
+        unsafe { from_glib(ffi::g_convert_error_quark()) }
+    }
+
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    fn from(code: i32) -> Option<Self> {
+        match code {
+            ffi::G_CONVERT_ERROR_NO_CONVERSION => Some(Self::NoConversion),
+            ffi::G_CONVERT_ERROR_ILLEGAL_SEQUENCE => Some(Self::IllegalSequence),
+            ffi::G_CONVERT_ERROR_FAILED => Some(Self::Failed),
+            ffi::G_CONVERT_ERROR_PARTIAL_INPUT => Some(Self::PartialInput),
+            ffi::G_CONVERT_ERROR_BAD_URI => Some(Self::BadUri),
+            ffi::G_CONVERT_ERROR_NOT_ABSOLUTE_PATH => Some(Self::NotAbsolutePath),
+            ffi::G_CONVERT_ERROR_NO_MEMORY => Some(Self::NoMemory),
+            ffi::G_CONVERT_ERROR_EMBEDDED_NUL => Some(Self::EmbeddedNul),
+            _ => Some(Self::Failed),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GDateMonth")]
 pub enum DateMonth {
     #[doc(alias = "G_DATE_BAD_MONTH")]

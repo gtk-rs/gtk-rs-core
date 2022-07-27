@@ -32,6 +32,7 @@ pub use self::uri::Uri;
 
 mod enums;
 pub use self::enums::ChecksumType;
+pub use self::enums::ConvertError;
 pub use self::enums::DateMonth;
 pub use self::enums::DateWeekday;
 pub use self::enums::FileError;
