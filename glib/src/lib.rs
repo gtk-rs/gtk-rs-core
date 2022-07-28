@@ -85,6 +85,8 @@ pub mod char;
 pub use self::char::*;
 mod checksum;
 pub mod closure;
+mod convert;
+pub use self::convert::*;
 mod enums;
 mod functions;
 pub use self::functions::*;

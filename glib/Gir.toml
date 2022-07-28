@@ -10,6 +10,7 @@ deprecate_by_min_version = true
 trust_return_value_nullability = true
 
 generate = [
+    "GLib.ConvertError",
     "GLib.DateDay",
     "GLib.DateMonth",
     "GLib.DateWeekday",
@@ -91,8 +92,14 @@ status = "generate"
     pattern = "(idle_remove_by_data|qsort_with_data)"
     ignore = true # Unsafe functions
     [[object.function]]
-    pattern = "(iconv|convert_with_iconv)"
-    ignore = true # not usable
+    pattern = "iconv"
+    doc_struct_name = "IConv"
+    manual = true
+    [[object.function]]
+    pattern = "convert_with_iconv"
+    doc_struct_name = "IConv"
+    manual = true
+    rename = "convert"
     [[object.function]]
     pattern = "pointer_.*"
     ignore = true # Not usable, uses raw pointers
@@ -122,8 +129,7 @@ status = "generate"
     ignore = true # Deprecated
     [[object.function]]
     name = "get_filename_charsets"
-    #string
-    ignore = true
+    manual = true
     [[object.function]]
     pattern = "str.+v"
     #string
@@ -181,10 +187,6 @@ status = "generate"
     [[object.function]]
     pattern = "[gs]et_prgname"
     #manual pathbuf
-    ignore = true
-    [[object.function]]
-    name = "filename_from_utf8"
-    #not in 64bit lib for Windows
     ignore = true
     [[object.function]]
     name = "get_user_name"
@@ -251,8 +253,7 @@ status = "generate"
     manual = true
     [[object.function]]
     name = "convert_with_fallback"
-    #out param not in .gir
-    ignore = true
+    manual = true
     [[object.function]]
     name = "unicode_canonical_decomposition"
     #out param not in .gir
@@ -263,20 +264,19 @@ status = "generate"
     ignore = true
     [[object.function]]
     name = "convert"
-    #unusable
-    ignore = true
+    manual = true
+    [[object.function]]
+    name = "filename_from_utf8"
+    manual = true
     [[object.function]]
     name = "filename_to_utf8"
-    #unusable
-    ignore = true
+    manual = true
     [[object.function]]
     name = "locale_from_utf8"
-    #unusable
-    ignore = true
+    manual = true
     [[object.function]]
     name = "locale_to_utf8"
-    #unusable
-    ignore = true
+    manual = true
     [[object.function]]
     name = "child_watch_source_new"
     # Need manual bindings to be useful
@@ -567,6 +567,15 @@ status = "generate"
     [[object.member]]
     name = "only_unit"
     version = "2.74"
+
+[[object]]
+name = "GLib.IConv"
+status = "manual"
+concurrency = "send"
+    [[object.function]]
+    name = "open"
+    rename = "new"
+    constructor = true
 
 [[object]]
 name = "GLib.KeyFile"

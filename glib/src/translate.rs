@@ -1629,6 +1629,85 @@ impl FromGlibPtrFull<*mut c_char> for PathBuf {
     }
 }
 
+#[cfg(not(windows))]
+pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
+    assert!(!ptr.is_null());
+    let slice = std::slice::from_raw_parts(ptr as *const u8, num);
+    OsString::from_vec(slice.to_vec()).into()
+}
+
+#[cfg(windows)]
+pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
+    assert!(!ptr.is_null());
+    let slice = std::slice::from_raw_parts(ptr as *const u8, num);
+    String::from_utf8(slice.into())
+        .expect("Invalid, non-UTF8 path")
+        .into()
+}
+
+#[doc(hidden)]
+impl FromGlibContainer<*const c_char, *const i8> for PathBuf {
+    #[inline]
+    unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
+        c_to_path_buf_num(ptr as *const _, num)
+    }
+
+    unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
+        c_to_path_buf_num(ptr as *const _, num)
+    }
+
+    unsafe fn from_glib_full_num(ptr: *const i8, num: usize) -> Self {
+        let res = c_to_path_buf_num(ptr as *const _, num);
+        ffi::g_free(ptr as *mut _);
+        res
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibContainer<*const c_char, *mut i8> for PathBuf {
+    unsafe fn from_glib_none_num(ptr: *mut i8, num: usize) -> Self {
+        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_container_num(ptr: *mut i8, num: usize) -> Self {
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_full_num(ptr: *mut i8, num: usize) -> Self {
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibContainer<*const c_char, *const u8> for PathBuf {
+    unsafe fn from_glib_none_num(ptr: *const u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_container_num(ptr: *const u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_full_num(ptr: *const u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibContainer<*const c_char, *mut u8> for PathBuf {
+    unsafe fn from_glib_none_num(ptr: *mut u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_none_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_container_num(ptr: *mut u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_container_num(ptr as *const i8, num)
+    }
+
+    unsafe fn from_glib_full_num(ptr: *mut u8, num: usize) -> Self {
+        FromGlibContainer::from_glib_full_num(ptr as *const i8, num)
+    }
+}
+
 impl FromGlibPtrNone<*const c_char> for OsString {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
