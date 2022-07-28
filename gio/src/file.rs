@@ -416,7 +416,7 @@ impl<O: IsA<File>> FileExtManual for O {
                 + 'static,
         >,
     > {
-        let etag = etag.map(glib::GString::from);
+        let etag = etag.map(|e| glib::GString::try_from(e).unwrap());
         Box::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {

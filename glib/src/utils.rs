@@ -218,7 +218,7 @@ mod tests {
     fn test_filename_from_uri() {
         use crate::GString;
         use std::path::PathBuf;
-        let uri: GString = "file:///foo/bar.txt".into();
+        let uri: GString = "file:///foo/bar.txt".try_into().unwrap();
         if let Ok((filename, hostname)) = crate::filename_from_uri(&uri) {
             assert_eq!(filename, PathBuf::from(r"/foo/bar.txt"));
             assert_eq!(hostname, None);
@@ -226,10 +226,10 @@ mod tests {
             unreachable!();
         }
 
-        let uri: GString = "file://host/foo/bar.txt".into();
+        let uri: GString = "file://host/foo/bar.txt".try_into().unwrap();
         if let Ok((filename, hostname)) = crate::filename_from_uri(&uri) {
             assert_eq!(filename, PathBuf::from(r"/foo/bar.txt"));
-            assert_eq!(hostname, Some(GString::from("host")));
+            assert_eq!(hostname, Some(GString::try_from("host").unwrap()));
         } else {
             unreachable!();
         }
@@ -240,19 +240,19 @@ mod tests {
         use crate::GString;
         assert_eq!(
             crate::uri_parse_scheme("foo://bar"),
-            Some(GString::from("foo"))
+            Some(GString::try_from("foo").unwrap())
         );
         assert_eq!(crate::uri_parse_scheme("foo"), None);
 
         let escaped = crate::uri_escape_string("&foo", None, true);
-        assert_eq!(escaped, GString::from("%26foo"));
+        assert_eq!(escaped, GString::try_from("%26foo").unwrap());
 
         let unescaped = crate::uri_unescape_string(escaped.as_str(), None);
-        assert_eq!(unescaped, Some(GString::from("&foo")));
+        assert_eq!(unescaped, Some(GString::try_from("&foo").unwrap()));
 
         assert_eq!(
             crate::uri_unescape_segment(Some("/foo"), None, None),
-            Some(GString::from("/foo"))
+            Some(GString::try_from("/foo").unwrap())
         );
         assert_eq!(crate::uri_unescape_segment(Some("/foo%"), None, None), None);
     }

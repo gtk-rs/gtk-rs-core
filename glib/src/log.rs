@@ -850,8 +850,8 @@ macro_rules! g_printerr {
 ///         "MY_FIELD2" => "abc {}", "def";
 ///         // single argument can be a &str or a &[u8] or anything else satsfying AsRef<[u8]>
 ///         "MY_FIELD3" => CString::new("my string").unwrap().to_bytes();
-///         // field names can also be dynamic
-///         GString::from("MY_FIELD4") => b"a binary string".to_owned();
+///         // field names can also be dynamic, satisfying AsRef<GStr>
+///         GString::try_from("MY_FIELD4").unwrap() => b"a binary string".to_owned();
 ///         // the main log message goes in the MESSAGE field
 ///         "MESSAGE" => "test: {} {}", 1, 2, ;
 ///     }

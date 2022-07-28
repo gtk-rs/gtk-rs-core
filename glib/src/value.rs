@@ -1154,13 +1154,19 @@ mod tests {
         let v = vec!["123", "456"].to_value();
         assert_eq!(
             v.get::<Vec<GString>>(),
-            Ok(vec![GString::from("123"), GString::from("456")])
+            Ok(vec![
+                GString::try_from("123").unwrap(),
+                GString::try_from("456").unwrap()
+            ])
         );
 
         let v = vec![String::from("123"), String::from("456")].to_value();
         assert_eq!(
             v.get::<Vec<GString>>(),
-            Ok(vec![GString::from("123"), GString::from("456")])
+            Ok(vec![
+                GString::try_from("123").unwrap(),
+                GString::try_from("456").unwrap()
+            ])
         );
     }
 
