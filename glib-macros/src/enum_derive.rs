@@ -174,5 +174,15 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                 }
             }
         }
+
+        impl #crate_ident::HasParamSpec for #name {
+            type ParamSpec = #crate_ident::ParamSpecEnum;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> #crate_ident::ParamSpecEnumBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name, <Self as #crate_ident::types::StaticType>::static_type())
+            }
+        }
     }
 }

@@ -246,7 +246,6 @@ macro_rules! glib_boxed_wrapper {
                 $crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
             }
         }
-
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
@@ -262,9 +261,20 @@ macro_rules! glib_boxed_wrapper {
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
             }
         }
+
     };
 
-    (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => { };
+    (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty) => {
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecBoxed;
+            type SetValue = Self;
+            type BuilderFn = fn(&str, $crate::types::Type) -> $crate::ParamSpecBoxedBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                Self::ParamSpec::builder
+            }
+        }
+     };
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
@@ -336,6 +346,16 @@ macro_rules! glib_boxed_wrapper {
                 }
 
                 value
+            }
+        }
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecBoxed;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecBoxedBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name, <Self as $crate::types::StaticType>::static_type())
             }
         }
     };

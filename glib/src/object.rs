@@ -746,6 +746,7 @@ macro_rules! glib_object_wrapper {
             }
         }
 
+
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::fmt::Debug for $name $(<$($generic),+>)? {
             fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
                 f.debug_struct(stringify!($name)).field("inner", &self.inner).finish()
@@ -1146,6 +1147,16 @@ macro_rules! glib_object_wrapper {
         }
 
         $crate::glib_object_wrapper!(@weak_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?);
+
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::HasParamSpec for $name $(<$($generic),+>)? {
+            type ParamSpec = $crate::ParamSpecObject;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> $crate::ParamSpecObjectBuilder;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name, <Self as $crate::types::StaticType>::static_type())
+            }
+        }
     };
 
     (@weak_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?) => {
@@ -1167,6 +1178,13 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$super_name> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$super_name {
+                $crate::object::Cast::upcast_ref(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$super_name> for $name $(<$($generic),+>)? {
+            fn borrow(&self) -> &$super_name {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
@@ -1235,6 +1253,13 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::Object {
+                $crate::object::Cast::upcast_ref(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
+            fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
@@ -4631,5 +4656,16 @@ mod tests {
         let obj2 = v.get::<&Object>().unwrap();
 
         assert_eq!(obj1.as_ptr(), obj2.as_ptr());
+    }
+
+    #[test]
+    fn test_borrow_hashing() {
+        let mut m = std::collections::HashSet::new();
+        let boxed_object = crate::BoxedAnyObject::new("");
+
+        m.insert(boxed_object.clone());
+
+        let object: &Object = std::borrow::Borrow::borrow(&boxed_object);
+        assert_eq!(m.get(object), Some(&boxed_object));
     }
 }
