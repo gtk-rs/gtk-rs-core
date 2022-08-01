@@ -449,6 +449,90 @@ macro_rules! define_param_spec_numeric {
     };
 }
 
+/// A trait implemented by the various [`ParamSpec`] builder types.
+///
+/// It is useful for providing a builder pattern for [`ParamSpec`] defined
+/// outside of GLib like in GStreamer or GTK 4.
+pub trait ParamSpecBuilderExt<'a>: Sized {
+    /// Implementation detail.
+    fn set_nick(&mut self, nick: Option<&'a str>);
+    /// Implementation detail.
+    fn set_blurb(&mut self, blurb: Option<&'a str>);
+    /// Implementation detail.
+    fn set_flags(&mut self, flags: crate::ParamFlags);
+    /// Implementation detail.
+    fn current_flags(&self) -> crate::ParamFlags;
+
+    /// By default, the nickname of its redirect target will be used if it has one.
+    /// Otherwise, `self.name` will be used.
+    fn nick(mut self, nick: &'a str) -> Self {
+        self.set_nick(Some(nick));
+        self
+    }
+
+    /// Default: `None`
+    fn blurb(mut self, blurb: &'a str) -> Self {
+        self.set_blurb(Some(blurb));
+        self
+    }
+
+    /// Default: `glib::ParamFlags::READWRITE`
+    fn flags(mut self, flags: crate::ParamFlags) -> Self {
+        self.set_flags(flags);
+        self
+    }
+
+    /// Mark the property as read only and drops the READWRITE flag set by default.
+    fn read_only(self) -> Self {
+        let flags =
+            (self.current_flags() - crate::ParamFlags::WRITABLE) | crate::ParamFlags::READABLE;
+        self.flags(flags)
+    }
+
+    /// Mark the property as write only and drops the READWRITE flag set by default.
+    fn write_only(self) -> Self {
+        let flags =
+            (self.current_flags() - crate::ParamFlags::READABLE) | crate::ParamFlags::WRITABLE;
+        self.flags(flags)
+    }
+
+    /// Mark the property as readwrite, it is the default value.
+    fn readwrite(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::READWRITE;
+        self.flags(flags)
+    }
+
+    /// Mark the property as construct
+    fn construct(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::CONSTRUCT;
+        self.flags(flags)
+    }
+
+    /// Mark the property as construct only
+    fn construct_only(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::CONSTRUCT_ONLY;
+        self.flags(flags)
+    }
+
+    /// Mark the property as lax validation
+    fn lax_validation(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::LAX_VALIDATION;
+        self.flags(flags)
+    }
+
+    /// Mark the property as explicit notify
+    fn explicit_notify(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::EXPLICIT_NOTIFY;
+        self.flags(flags)
+    }
+
+    /// Mark the property as deprecated
+    fn deprecated(self) -> Self {
+        let flags = self.current_flags() | crate::ParamFlags::DEPRECATED;
+        self.flags(flags)
+    }
+}
+
 macro_rules! define_builder {
     (@constructors $rust_type:ident, $builder_type:ident $(($($req_ident:ident: $req_ty:ty,)*))?) => {
         impl<'a> $builder_type<'a> {
@@ -464,6 +548,22 @@ macro_rules! define_builder {
         impl $rust_type {
             pub fn builder<'a>(name: &'a str, $($($req_ident: $req_ty),*)?) -> $builder_type<'a> {
                 $builder_type::new(name, $($($req_ident),*)?)
+            }
+        }
+
+        impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for $builder_type<'a> {
+            fn set_nick(&mut self, nick: Option<&'a str>) {
+                self.nick = nick;
+            }
+            fn set_blurb(&mut self, blurb: Option<&'a str>) {
+                self.blurb = blurb;
+            }
+            fn set_flags(&mut self, flags: crate::ParamFlags) {
+                self.flags = flags;
+            }
+            fn current_flags(&self) -> crate::ParamFlags {
+                dbg!(self.flags);
+                self.flags
             }
         }
     };
@@ -483,73 +583,7 @@ macro_rules! define_builder {
             $($field_id: Option<$field_ty>),*
         }
         impl<'a> $builder_type<'a> {
-            /// By default, the nickname of its redirect target will be used if it has one.
-            /// Otherwise, `self.name` will be used.
-            pub fn nick(mut self, nick: &'a str) -> Self {
-                self.nick = Some(nick);
-                self
-            }
-            /// Default: `None`
-            pub fn blurb(mut self, blurb: &'a str) -> Self {
-                self.blurb = Some(blurb);
-                self
-            }
 
-            /// Default: `glib::ParamFlags::READWRITE`
-            pub fn flags(mut self, flags: crate::ParamFlags) -> Self {
-                self.flags = flags;
-                self
-            }
-
-            /// Mark the property as read only and drops the READWRITE flag set by default.
-            pub fn read_only(mut self) -> Self {
-                self.flags -= crate::ParamFlags::default();
-                self.flags |= crate::ParamFlags::READABLE;
-                self
-            }
-
-            /// Mark the property as write only and drops the READWRITE flag set by default.
-            pub fn write_only(mut self) -> Self {
-                self.flags -= crate::ParamFlags::default();
-                self.flags |= crate::ParamFlags::WRITABLE;
-                self
-            }
-
-            /// Mark the property as readwrite, it is the default value.
-            pub fn readwrite(mut self) -> Self {
-                self.flags |= crate::ParamFlags::READWRITE;
-                self
-            }
-
-            /// Mark the property as construct
-            pub fn construct(mut self) -> Self {
-                self.flags |= crate::ParamFlags::CONSTRUCT;
-                self
-            }
-
-            /// Mark the property as construct only
-            pub fn construct_only(mut self) -> Self {
-                self.flags |= crate::ParamFlags::CONSTRUCT_ONLY;
-                self
-            }
-
-            /// Mark the property as lax validation
-            pub fn lax_validation(mut self) -> Self {
-                self.flags |= crate::ParamFlags::LAX_VALIDATION;
-                self
-            }
-
-            /// Mark the property as explicit notify
-            pub fn explicit_notify(mut self) -> Self {
-                self.flags |= crate::ParamFlags::EXPLICIT_NOTIFY;
-                self
-            }
-
-            /// Mark the property as deprecated
-            pub fn deprecated(mut self) -> Self {
-                self.flags |= crate::ParamFlags::DEPRECATED;
-                self
-            }
 
             $(
             $(#[doc = concat!("Default: `", stringify!($field_expr), "`")])?
