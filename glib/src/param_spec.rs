@@ -574,7 +574,6 @@ macro_rules! define_builder {
                 self.flags = flags;
             }
             fn current_flags(&self) -> crate::ParamFlags {
-                dbg!(self.flags);
                 self.flags
             }
         }
