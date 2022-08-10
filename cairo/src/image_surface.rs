@@ -342,7 +342,7 @@ mod tests {
         let surface = ImageSurface::create(Format::ARgb32, 10, 10).unwrap();
         let value = surface.to_value();
         assert_eq!(value.get::<ImageSurface>().unwrap().width(), 10);
-        let _ = (&surface).to_value();
+        let _ = surface.to_value();
         let surface = Some(surface);
         let value = surface.to_value();
         assert_eq!(

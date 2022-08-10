@@ -127,7 +127,7 @@ impl MainContext {
             ffi::G_SOURCE_REMOVE
         }
         unsafe extern "C" fn destroy_closure<F: FnOnce() + 'static>(ptr: gpointer) {
-            Box::<Option<F>>::from_raw(ptr as *mut _);
+            let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
         }
         let func = Box::into_raw(Box::new(Some(func)));
         ffi::g_main_context_invoke_full(

@@ -788,7 +788,7 @@ unsafe extern "C" fn class_init<T: ObjectSubclass>(
     // being initialized.
     let mut private_offset = data.as_ref().private_offset as i32;
     gobject_ffi::g_type_class_adjust_private_offset(klass, &mut private_offset);
-    (*data.as_mut()).private_offset = private_offset as isize;
+    data.as_mut().private_offset = private_offset as isize;
 
     // Set trampolines for the basic GObject virtual methods.
     {
@@ -806,7 +806,7 @@ unsafe extern "C" fn class_init<T: ObjectSubclass>(
             as *mut <T::ParentType as ObjectType>::GlibClassType;
         assert!(!parent_class.is_null());
 
-        (*data.as_mut()).parent_class = parent_class as ffi::gpointer;
+        data.as_mut().parent_class = parent_class as ffi::gpointer;
 
         klass.class_init();
         T::class_init(klass);
@@ -820,7 +820,7 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
     // Get offset to the storage of our private struct, create it
     // and actually store it in that place.
     let mut data = T::type_data();
-    let private_offset = (*data.as_mut()).private_offset;
+    let private_offset = data.as_mut().private_offset;
     let ptr = obj as *mut u8;
     let priv_ptr = ptr.offset(private_offset);
 
@@ -860,7 +860,7 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
 unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject) {
     // Retrieve the private struct and drop it for freeing all associated memory.
     let mut data = T::type_data();
-    let private_offset = (*data.as_mut()).private_offset;
+    let private_offset = data.as_mut().private_offset;
     let ptr = obj as *mut u8;
     let priv_ptr = ptr.offset(private_offset);
     let priv_storage = &mut *(priv_ptr as *mut PrivateStruct<T>);
@@ -921,17 +921,17 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
         ));
 
         let mut data = T::type_data();
-        (*data.as_mut()).type_ = type_;
+        data.as_mut().type_ = type_;
 
         let private_offset = gobject_ffi::g_type_add_instance_private(
             type_.into_glib(),
             mem::size_of::<PrivateStruct<T>>(),
         );
-        (*data.as_mut()).private_offset = private_offset as isize;
+        data.as_mut().private_offset = private_offset as isize;
 
         // Get the offset from PrivateStruct<T> to the imp field in it. This has to go through
         // some hoops because Rust doesn't have an offsetof operator yet.
-        (*data.as_mut()).private_imp_offset = {
+        data.as_mut().private_imp_offset = {
             // Must not be a dangling pointer so let's create some uninitialized memory
             let priv_ = std::mem::MaybeUninit::<PrivateStruct<T>>::uninit();
             let ptr = priv_.as_ptr();

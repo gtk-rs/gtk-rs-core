@@ -95,7 +95,7 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
         }
 
         unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
-            Box::<Option<F>>::from_raw(ptr as *mut _);
+            let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
         }
 
         let callback: Box<Option<F>> = Box::new(Some(callback));
