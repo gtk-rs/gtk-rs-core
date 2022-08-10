@@ -145,7 +145,7 @@ mod tests {
         let rect = Rectangle::new(1., 2., 3., 4.);
         let value = rect.to_value();
         assert_eq!(value.get::<Rectangle>().unwrap().width(), 3.);
-        let _ = (&rect).to_value();
+        let _ = rect.to_value();
         let rect = Some(rect);
         let value = rect.to_value();
         assert_eq!(

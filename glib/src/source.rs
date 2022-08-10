@@ -120,11 +120,11 @@ unsafe extern "C" fn trampoline_local<F: FnMut() -> Continue + 'static>(
 }
 
 unsafe extern "C" fn destroy_closure<F: FnMut() -> Continue + Send + 'static>(ptr: gpointer) {
-    Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
 unsafe extern "C" fn destroy_closure_local<F: FnMut() -> Continue + 'static>(ptr: gpointer) {
-    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
 }
 
 fn into_raw<F: FnMut() -> Continue + Send + 'static>(func: F) -> gpointer {
@@ -158,13 +158,13 @@ unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
 unsafe extern "C" fn destroy_closure_child_watch<F: FnMut(Pid, i32) + Send + 'static>(
     ptr: gpointer,
 ) {
-    Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
 unsafe extern "C" fn destroy_closure_child_watch_local<F: FnMut(Pid, i32) + 'static>(
     ptr: gpointer,
 ) {
-    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
 }
 
 fn into_raw_child_watch<F: FnMut(Pid, i32) + Send + 'static>(func: F) -> gpointer {
@@ -210,7 +210,7 @@ unsafe extern "C" fn destroy_closure_unix_fd<
 >(
     ptr: gpointer,
 ) {
-    Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
 #[cfg(any(unix, feature = "dox"))]
@@ -220,7 +220,7 @@ unsafe extern "C" fn destroy_closure_unix_fd_local<
 >(
     ptr: gpointer,
 ) {
-    Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
 }
 
 #[cfg(any(unix, feature = "dox"))]

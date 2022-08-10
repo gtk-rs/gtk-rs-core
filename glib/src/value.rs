@@ -1248,7 +1248,7 @@ mod tests {
         );
 
         // Check if &T and Option<&T> can be converted and retrieved
-        let v_str = (&String::from("test")).to_value();
+        let v_str = String::from("test").to_value();
         assert_eq!(v_str.get::<String>(), Ok(String::from("test")));
         assert_eq!(
             v_str.get::<Option<String>>(),

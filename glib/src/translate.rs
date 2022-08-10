@@ -287,7 +287,7 @@ impl<T> Borrowed<T> {
 
 impl<T> AsRef<T> for Borrowed<T> {
     fn as_ref(&self) -> &T {
-        &*self.0
+        &self.0
     }
 }
 
@@ -295,7 +295,7 @@ impl<T> std::ops::Deref for Borrowed<T> {
     type Target = T;
 
     fn deref(&self) -> &T {
-        &*self.0
+        &self.0
     }
 }
 

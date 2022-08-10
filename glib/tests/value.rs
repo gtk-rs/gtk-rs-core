@@ -9,7 +9,7 @@ use std::ops::Deref;
 pub fn to_value_invariants() {
     // Inverse
     assert_eq!(0i32, 0i32.to_value().get::<i32>().unwrap());
-    assert_eq!(0i32, (&0i32.to_value()).get::<i32>().unwrap());
+    assert_eq!(0i32, 0i32.to_value().get::<i32>().unwrap());
 
     // Idempotence
     assert_eq!(
@@ -27,7 +27,7 @@ pub fn to_value_invariants() {
     );
     assert_eq!(
         0i32,
-        (&0i32.to_value())
+        0i32.to_value()
             .get::<Value>()
             .unwrap()
             .get::<i32>()

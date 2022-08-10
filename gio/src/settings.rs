@@ -55,7 +55,7 @@ impl<'a> BindingBuilder<'a> {
             let user_data = &*(user_data as *const Mappings);
             let f = user_data.0.as_ref().unwrap();
             let value = &mut *(value as *mut glib::Value);
-            if let Some(v) = f(&*from_glib_borrow(variant), value.type_()) {
+            if let Some(v) = f(&from_glib_borrow(variant), value.type_()) {
                 *value = v;
                 true
             } else {
@@ -74,7 +74,7 @@ impl<'a> BindingBuilder<'a> {
             f(value, from_glib_none(variant_type)).to_glib_full()
         }
         unsafe extern "C" fn destroy_closure(ptr: *mut libc::c_void) {
-            Box::<Mappings>::from_raw(ptr as *mut _);
+            let _ = Box::<Mappings>::from_raw(ptr as *mut _);
         }
 
         if self.get_mapping.is_none() && self.set_mapping.is_none() {
