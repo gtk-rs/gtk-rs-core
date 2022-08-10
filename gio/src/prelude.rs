@@ -8,6 +8,7 @@ pub use glib::prelude::*;
 
 pub use crate::auto::traits::*;
 
+pub use crate::action_map::ActionMapExtManual;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 pub use crate::app_info::AppInfoExtManual;
 pub use crate::application::*;
