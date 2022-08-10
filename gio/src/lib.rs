@@ -12,8 +12,11 @@
 pub use ffi;
 pub use glib;
 
+mod action_entry;
+mod action_map;
 mod app_info;
 mod application;
+pub use action_entry::{ActionEntry, ActionEntryBuilder};
 pub use application::{ApplicationBusyGuard, ApplicationHoldGuard};
 mod async_initable;
 mod cancellable;
