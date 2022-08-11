@@ -17,7 +17,7 @@ pub unsafe trait RefCounted: Clone + Sized + 'static {
 
     // rustdoc-stripper-ignore-next
     /// Provides access to a raw pointer to InnerType
-    unsafe fn as_ptr(&self) -> *const Self::InnerType;
+    fn as_ptr(&self) -> *const Self::InnerType;
 
     // rustdoc-stripper-ignore-next
     /// Converts the RefCounted object to a raw pointer to InnerType
@@ -39,7 +39,7 @@ where
         this
     }
 
-    unsafe fn as_ptr(&self) -> *const Self::InnerType {
+    fn as_ptr(&self) -> *const Self::InnerType {
         std::sync::Arc::as_ptr(self)
     }
 
@@ -64,7 +64,7 @@ where
         std::rc::Rc::into_raw(ManuallyDrop::take(&mut this_rc.clone()))
     }
 
-    unsafe fn as_ptr(&self) -> *const Self::InnerType {
+    fn as_ptr(&self) -> *const Self::InnerType {
         std::rc::Rc::as_ptr(self)
     }
 
