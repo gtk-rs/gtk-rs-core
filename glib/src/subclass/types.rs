@@ -738,7 +738,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
     /// The returned object has not been completely initialized at this point. Use of the object
     /// should be restricted to methods that are explicitly documented to be safe to call during
     /// `instance_init()`.
-    pub unsafe fn as_ptr(&self) -> *mut T::Type {
+    pub fn as_ptr(&self) -> *mut T::Type {
         self.0.as_ptr() as *const T::Type as *mut T::Type
     }
 
