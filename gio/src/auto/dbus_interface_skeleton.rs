@@ -4,6 +4,7 @@
 
 use crate::DBusConnection;
 use crate::DBusInterface;
+use crate::DBusInterfaceInfo;
 use crate::DBusInterfaceSkeletonFlags;
 use crate::DBusMethodInvocation;
 use glib::object::Cast;
@@ -49,6 +50,10 @@ pub trait DBusInterfaceSkeletonExt: 'static {
     #[doc(alias = "g_dbus_interface_skeleton_get_flags")]
     #[doc(alias = "get_flags")]
     fn flags(&self) -> DBusInterfaceSkeletonFlags;
+
+    #[doc(alias = "g_dbus_interface_skeleton_get_info")]
+    #[doc(alias = "get_info")]
+    fn info(&self) -> DBusInterfaceInfo;
 
     #[doc(alias = "g_dbus_interface_skeleton_get_object_path")]
     #[doc(alias = "get_object_path")]
@@ -134,6 +139,14 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
     fn flags(&self) -> DBusInterfaceSkeletonFlags {
         unsafe {
             from_glib(ffi::g_dbus_interface_skeleton_get_flags(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn info(&self) -> DBusInterfaceInfo {
+        unsafe {
+            from_glib_none(ffi::g_dbus_interface_skeleton_get_info(
                 self.as_ref().to_glib_none().0,
             ))
         }
