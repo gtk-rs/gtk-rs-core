@@ -380,19 +380,29 @@ enum SignalRegistration {
 
 impl SignalBuilder {
     // rustdoc-stripper-ignore-next
-    /// The signal parameters.
-    pub fn param_types(mut self, param_types: &[Type]) -> Self {
+    /// The signal's parameters.
+    pub fn param_types(
+        mut self,
+        param_types: impl IntoIterator<Item = impl Into<SignalType>>,
+    ) -> Self {
         self.param_types = param_types
-            .iter()
-            .map(|t| SignalType::from(*t))
+            .into_iter()
+            .map(|t| t.into())
             .collect::<Vec<_>>();
         self
     }
 
     // rustdoc-stripper-ignore-next
-    /// The signal is returned value type.
+    /// The signal's returned value type.
     pub fn return_type<T: StaticType>(mut self) -> Self {
         self.return_type = T::static_type().into();
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// The signal's returned value type.
+    pub fn return_type_from(mut self, type_: impl Into<SignalType>) -> Self {
+        self.return_type = type_.into();
         self
     }
 

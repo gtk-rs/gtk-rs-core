@@ -318,10 +318,10 @@ mod test {
                 static SIGNALS: Lazy<Vec<super::Signal>> = Lazy::new(|| {
                     vec![
                         super::Signal::builder("name-changed")
-                            .param_types(&[String::static_type()])
+                            .param_types([String::static_type()])
                             .build(),
                         super::Signal::builder("change-name")
-                            .param_types(&[String::static_type()])
+                            .param_types([String::static_type()])
                             .return_type::<String>()
                             .action()
                             .class_handler(|_, args| {
