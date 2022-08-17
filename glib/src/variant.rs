@@ -1797,6 +1797,148 @@ impl FromVariant for Handle {
     }
 }
 
+/// A wrapper type around `Variant` object paths.
+///
+/// Values of these type are guaranteed to be valid object paths.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct ObjectPath(String);
+
+impl ObjectPath {
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl std::ops::Deref for ObjectPath {
+    type Target = str;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl TryFrom<String> for ObjectPath {
+    type Error = crate::BoolError;
+
+    fn try_from(v: String) -> Result<Self, Self::Error> {
+        if !Variant::is_object_path(&v) {
+            return Err(bool_error!("Invalid object path"));
+        }
+
+        Ok(ObjectPath(v))
+    }
+}
+
+impl<'a> TryFrom<&'a str> for ObjectPath {
+    type Error = crate::BoolError;
+
+    fn try_from(v: &'a str) -> Result<Self, Self::Error> {
+        ObjectPath::try_from(String::from(v))
+    }
+}
+
+impl From<ObjectPath> for String {
+    fn from(v: ObjectPath) -> Self {
+        v.0
+    }
+}
+
+impl StaticVariantType for ObjectPath {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        Cow::Borrowed(VariantTy::OBJECT_PATH)
+    }
+}
+
+impl ToVariant for ObjectPath {
+    fn to_variant(&self) -> Variant {
+        unsafe { from_glib_none(ffi::g_variant_new_object_path(self.0.to_glib_none().0)) }
+    }
+}
+
+impl FromVariant for ObjectPath {
+    #[allow(unused_unsafe)]
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        unsafe {
+            if variant.is::<Self>() {
+                Some(ObjectPath(String::from(variant.str().unwrap())))
+            } else {
+                None
+            }
+        }
+    }
+}
+
+/// A wrapper type around `Variant` signatures.
+///
+/// Values of these type are guaranteed to be valid signatures.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Signature(String);
+
+impl Signature {
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl std::ops::Deref for Signature {
+    type Target = str;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl TryFrom<String> for Signature {
+    type Error = crate::BoolError;
+
+    fn try_from(v: String) -> Result<Self, Self::Error> {
+        if !Variant::is_signature(&v) {
+            return Err(bool_error!("Invalid signature"));
+        }
+
+        Ok(Signature(v))
+    }
+}
+
+impl<'a> TryFrom<&'a str> for Signature {
+    type Error = crate::BoolError;
+
+    fn try_from(v: &'a str) -> Result<Self, Self::Error> {
+        Signature::try_from(String::from(v))
+    }
+}
+
+impl From<Signature> for String {
+    fn from(v: Signature) -> Self {
+        v.0
+    }
+}
+
+impl StaticVariantType for Signature {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        Cow::Borrowed(VariantTy::SIGNATURE)
+    }
+}
+
+impl ToVariant for Signature {
+    fn to_variant(&self) -> Variant {
+        unsafe { from_glib_none(ffi::g_variant_new_signature(self.0.to_glib_none().0)) }
+    }
+}
+
+impl FromVariant for Signature {
+    #[allow(unused_unsafe)]
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        unsafe {
+            if variant.is::<Self>() {
+                Some(Signature(String::from(variant.str().unwrap())))
+            } else {
+                None
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
