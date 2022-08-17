@@ -1757,6 +1757,46 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> ToVariant for FixedSizeVariantArray
     }
 }
 
+/// A wrapper type around `Variant` handles.
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Handle(pub i32);
+
+impl From<i32> for Handle {
+    fn from(v: i32) -> Self {
+        Handle(v)
+    }
+}
+
+impl From<Handle> for i32 {
+    fn from(v: Handle) -> Self {
+        v.0
+    }
+}
+
+impl StaticVariantType for Handle {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        Cow::Borrowed(VariantTy::HANDLE)
+    }
+}
+
+impl ToVariant for Handle {
+    fn to_variant(&self) -> Variant {
+        unsafe { from_glib_none(ffi::g_variant_new_handle(self.0)) }
+    }
+}
+
+impl FromVariant for Handle {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        unsafe {
+            if variant.is::<Self>() {
+                Some(Handle(ffi::g_variant_get_handle(variant.to_glib_none().0)))
+            } else {
+                None
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
