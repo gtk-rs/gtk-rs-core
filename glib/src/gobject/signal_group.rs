@@ -154,7 +154,7 @@ mod tests {
                 static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                     vec![
                         Signal::builder("sig-with-args")
-                            .param_types(&[u32::static_type(), String::static_type()])
+                            .param_types([u32::static_type(), String::static_type()])
                             .build(),
                         Signal::builder("sig-with-ret")
                             .return_type::<String>()
