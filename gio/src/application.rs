@@ -83,6 +83,7 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
 }
 
 #[derive(Debug)]
+#[must_use = "if unused the Application will immediately be released"]
 pub struct ApplicationHoldGuard(glib::WeakRef<Application>);
 
 impl Drop for ApplicationHoldGuard {
@@ -96,6 +97,7 @@ impl Drop for ApplicationHoldGuard {
 }
 
 #[derive(Debug)]
+#[must_use = "if unused the Application will immediately be unmarked busy"]
 pub struct ApplicationBusyGuard(glib::WeakRef<Application>);
 
 impl Drop for ApplicationBusyGuard {
