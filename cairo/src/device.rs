@@ -24,6 +24,7 @@ use std::ffi::CString;
 use std::path::Path;
 
 #[derive(Debug)]
+#[must_use = "if unused the Device will immediately be released"]
 pub struct DeviceAcquireGuard<'a>(&'a Device);
 
 impl<'a> Drop for DeviceAcquireGuard<'a> {
