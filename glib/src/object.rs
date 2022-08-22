@@ -261,6 +261,7 @@ pub trait Cast: ObjectType {
     ///
     /// If not running with `debug_assertions` enabled, the caller is responsible
     /// for ensuring that the instance implements `T`
+    #[track_caller]
     unsafe fn unsafe_cast<T: ObjectType>(self) -> T {
         debug_assert!(self.is::<T>());
         T::unsafe_from(self.into())
@@ -277,6 +278,7 @@ pub trait Cast: ObjectType {
     ///
     /// If not running with `debug_assertions` enabled, the caller is responsible
     /// for ensuring that the instance implements `T`
+    #[track_caller]
     unsafe fn unsafe_cast_ref<T: ObjectType>(&self) -> &T {
         debug_assert!(self.is::<T>());
         // This cast is safe because all our wrapper types have the
@@ -2368,6 +2370,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
+    #[track_caller]
     fn set_property<V: ToValue>(&self, property_name: &str, value: V) {
         self.try_set_property(property_name, value).unwrap()
     }
@@ -2401,6 +2404,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
+    #[track_caller]
     fn set_property_from_value(&self, property_name: &str, value: &Value) {
         self.try_set_property_from_value(property_name, value)
             .unwrap()
@@ -2438,6 +2442,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
+    #[track_caller]
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) {
         self.try_set_properties(property_values).unwrap()
     }
@@ -2474,6 +2479,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(())
     }
 
+    #[track_caller]
     fn set_properties_from_value(&self, property_values: &[(&str, Value)]) {
         self.try_set_properties_from_value(property_values).unwrap()
     }
@@ -2489,6 +2495,7 @@ impl<T: ObjectType> ObjectExt for T {
         Ok(v)
     }
 
+    #[track_caller]
     fn property<V: for<'b> FromValue<'b> + 'static>(&self, property_name: &str) -> V {
         self.try_property(property_name).unwrap()
     }
@@ -2529,6 +2536,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn property_value(&self, property_name: &str) -> Value {
         self.try_property_value(property_name).unwrap()
     }
@@ -2651,6 +2659,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe { self.try_connect_unsafe(signal_name, after, callback) }
     }
 
+    #[track_caller]
     fn connect<F>(&self, signal_name: &str, after: bool, callback: F) -> SignalHandlerId
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
@@ -2671,6 +2680,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe { self.try_connect_unsafe_id(signal_id, details, after, callback) }
     }
 
+    #[track_caller]
     fn connect_id<F>(
         &self,
         signal_id: SignalId,
@@ -2703,6 +2713,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn connect_local<F>(&self, signal_name: &str, after: bool, callback: F) -> SignalHandlerId
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
@@ -2730,6 +2741,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn connect_local_id<F>(
         &self,
         signal_id: SignalId,
@@ -2759,6 +2771,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_connect_unsafe_id(signal_id, details, after, callback)
     }
 
+    #[track_caller]
     unsafe fn connect_unsafe<F>(
         &self,
         signal_name: &str,
@@ -2772,6 +2785,7 @@ impl<T: ObjectType> ObjectExt for T {
             .unwrap()
     }
 
+    #[track_caller]
     unsafe fn try_connect_unsafe_id<F>(
         &self,
         signal_id: SignalId,
@@ -2869,6 +2883,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_connect_closure_id(signal_id, details, after, closure)
     }
 
+    #[track_caller]
     fn connect_closure(
         &self,
         signal_name: &str,
@@ -2920,6 +2935,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn connect_closure_id(
         &self,
         signal_id: SignalId,
@@ -2941,6 +2957,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     unsafe fn connect_unsafe_id<F>(
         &self,
         signal_id: SignalId,
@@ -3006,6 +3023,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R {
         self.try_emit(signal_id, args).unwrap()
     }
@@ -3057,6 +3075,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn emit_with_values(&self, signal_id: SignalId, args: &[Value]) -> Option<Value> {
         self.try_emit_with_values(signal_id, args).unwrap()
     }
@@ -3072,6 +3091,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit(signal_id, args)
     }
 
+    #[track_caller]
     fn emit_by_name<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
@@ -3091,6 +3111,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit_with_values(signal_id, args)
     }
 
+    #[track_caller]
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value> {
         self.try_emit_by_name_with_values(signal_name, args)
             .unwrap()
@@ -3108,6 +3129,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit_with_details(signal_id, details, args)
     }
 
+    #[track_caller]
     fn emit_by_name_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_name: &str,
@@ -3130,6 +3152,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.try_emit_with_details_and_values(signal_id, details, args)
     }
 
+    #[track_caller]
     fn emit_by_name_with_details_and_values(
         &self,
         signal_name: &str,
@@ -3194,6 +3217,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
@@ -3253,6 +3277,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[track_caller]
     fn emit_with_details_and_values(
         &self,
         signal_id: SignalId,
@@ -3919,6 +3944,7 @@ impl<'a> BindingBuilder<'a> {
     /// Establish the property binding.
     ///
     /// This fails if the provided properties do not exist.
+    #[track_caller]
     pub fn try_build(self) -> Result<crate::Binding, crate::BoolError> {
         unsafe extern "C" fn transform_to_trampoline(
             binding: *mut gobject_ffi::GBinding,
@@ -4054,6 +4080,7 @@ impl<'a> BindingBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Similar to `try_build` but fails instead of panicking.
+    #[track_caller]
     pub fn build(self) -> crate::Binding {
         self.try_build().unwrap()
     }
