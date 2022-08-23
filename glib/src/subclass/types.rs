@@ -6,10 +6,11 @@
 use crate::object::{Cast, IsClass, IsInterface, ObjectSubclassIs, ObjectType, ParentClassIs};
 use crate::translate::*;
 use crate::{Closure, Object, StaticType, Type, Value};
+use rustc_hash::FxHashMap as HashMap;
+use std::any::Any;
 use std::marker;
 use std::mem;
 use std::ptr;
-use std::{any::Any, collections::HashMap};
 
 use super::SignalId;
 
@@ -244,7 +245,7 @@ unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
 
     let mut data = T::type_data();
     if data.as_ref().parent_ifaces.is_none() {
-        data.as_mut().parent_ifaces = Some(HashMap::new());
+        data.as_mut().parent_ifaces = Some(HashMap::default());
     }
     {
         let copy = Box::new(*iface.as_ref());
@@ -451,7 +452,7 @@ impl TypeData {
     /// If the class_data already contains a data for the specified `type_`.
     pub unsafe fn set_class_data<T: Any + Send + Sync + 'static>(&mut self, type_: Type, data: T) {
         if self.class_data.is_none() {
-            self.class_data = Some(HashMap::new());
+            self.class_data = Some(HashMap::default());
         }
 
         if let Some(ref mut class_data) = self.class_data {
@@ -762,7 +763,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
             let priv_ = &mut *ptr;
 
             if priv_.instance_data.is_none() {
-                priv_.instance_data = Some(HashMap::new());
+                priv_.instance_data = Some(HashMap::default());
             }
 
             if let Some(ref mut instance_data) = priv_.instance_data {
