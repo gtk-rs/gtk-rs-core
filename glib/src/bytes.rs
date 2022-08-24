@@ -93,7 +93,7 @@ impl<'a, T: ?Sized + Borrow<[u8]> + 'a> From<&'a T> for Bytes {
 impl fmt::Debug for Bytes {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Bytes")
-            .field("ptr", &self.to_glib_none().0)
+            .field("ptr", &ToGlibPtr::<*const _>::to_glib_none(self).0)
             .field("data", &&self[..])
             .finish()
     }
@@ -126,8 +126,8 @@ impl PartialEq for Bytes {
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_bytes_equal(
-                self.to_glib_none().0 as *const _,
-                other.to_glib_none().0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
             ))
         }
     }
@@ -139,8 +139,8 @@ impl PartialOrd for Bytes {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         unsafe {
             let ret = ffi::g_bytes_compare(
-                self.to_glib_none().0 as *const _,
-                other.to_glib_none().0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
             );
             ret.partial_cmp(&0)
         }
@@ -151,8 +151,8 @@ impl Ord for Bytes {
     fn cmp(&self, other: &Self) -> Ordering {
         unsafe {
             let ret = ffi::g_bytes_compare(
-                self.to_glib_none().0 as *const _,
-                other.to_glib_none().0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
             );
             ret.cmp(&0)
         }

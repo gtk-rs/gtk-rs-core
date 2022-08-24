@@ -33,6 +33,12 @@ macro_rules! glib_shared_wrapper {
             inner: $crate::shared::Shared<$ffi_name, Self>,
         }
 
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
+            pub fn as_ptr(&self) -> *mut $ffi_name {
+                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
+            }
+        }
+
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             #[inline]
             fn clone(&self) -> Self {
@@ -74,6 +80,22 @@ macro_rules! glib_shared_wrapper {
             #[inline]
             fn to_glib_full(&self) -> *mut $ffi_name {
                 $crate::translate::ToGlibPtr::to_glib_full(&self.inner)
+            }
+        }
+
+        #[doc(hidden)]
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
+            type Storage = &'a $crate::shared::Shared<$ffi_name, Self>;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
+                $crate::translate::Stash(stash.0 as *const _, stash.1)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *const $ffi_name {
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *const _
             }
         }
 
@@ -269,6 +291,22 @@ macro_rules! glib_shared_wrapper {
             unsafe fn from_glib_full_as_vec(_: *const *mut $ffi_name) -> Vec<Self> {
                 // Can't free a *const
                 unimplemented!()
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
+                let s = std::mem::ManuallyDrop::new(self);
+                $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn into_glib_ptr(self) -> *const $ffi_name {
+                let s = std::mem::ManuallyDrop::new(self);
+                $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
             }
         }
     };

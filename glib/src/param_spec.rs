@@ -75,10 +75,7 @@ impl crate::value::ToValue for ParamSpec {
     fn to_value(&self) -> crate::Value {
         unsafe {
             let mut value = crate::Value::from_type(ParamSpec::static_type());
-            gobject_ffi::g_value_take_param(
-                value.to_glib_none_mut().0,
-                self.to_glib_full() as *mut _,
-            );
+            gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, self.to_glib_full());
             value
         }
     }
@@ -93,7 +90,7 @@ impl crate::value::ToValueOptional for ParamSpec {
     fn to_value_optional(s: Option<&Self>) -> crate::Value {
         let mut value = crate::Value::for_value_type::<Self>();
         unsafe {
-            gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.to_glib_full() as *mut _);
+            gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.to_glib_full());
         }
 
         value
@@ -133,15 +130,18 @@ impl ParamSpec {
     #[doc(alias = "get_type")]
     pub fn type_(&self) -> Type {
         unsafe {
-            let ptr = self.to_glib_none().0;
-
-            from_glib((*(*ptr).g_type_instance.g_class).g_type)
+            from_glib(
+                (*(*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0))
+                    .g_type_instance
+                    .g_class)
+                    .g_type,
+            )
         }
     }
 
     #[doc(alias = "get_value_type")]
     pub fn value_type(&self) -> crate::Type {
-        unsafe { from_glib((*self.to_glib_none().0).value_type) }
+        unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).value_type) }
     }
 
     #[cfg(any(feature = "v2_74", feature = "dox"))]
@@ -158,12 +158,12 @@ impl ParamSpec {
 
     #[doc(alias = "get_owner_type")]
     pub fn owner_type(&self) -> crate::Type {
-        unsafe { from_glib((*self.to_glib_none().0).owner_type) }
+        unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).owner_type) }
     }
 
     #[doc(alias = "get_flags")]
     pub fn flags(&self) -> ParamFlags {
-        unsafe { from_glib((*self.to_glib_none().0).flags) }
+        unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).flags) }
     }
 
     #[doc(alias = "g_param_spec_get_blurb")]
@@ -329,7 +329,7 @@ macro_rules! define_param_spec {
             fn to_value(&self) -> crate::Value {
                 unsafe {
                     let mut value = crate::Value::from_type($rust_type::static_type());
-                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, self.to_glib_full() as *mut _);
+                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_full(self) as *mut _);
                     value
                 }
             }
@@ -344,7 +344,7 @@ macro_rules! define_param_spec {
             fn to_value_optional(s: Option<&Self>) -> crate::Value {
                 let mut value = crate::Value::for_value_type::<Self>();
                 unsafe {
-                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.to_glib_full() as *mut _);
+                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_full(&s) as *mut _);
                 }
 
                 value
@@ -367,6 +367,84 @@ macro_rules! define_param_spec {
         unsafe impl ParamSpecType for $rust_type {}
 
         #[doc(hidden)]
+        impl<'a> ToGlibPtr<'a, *const gobject_ffi::GParamSpec> for $rust_type {
+            type Storage = &'a $crate::shared::Shared<$ffi_type, $rust_type>;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const gobject_ffi::GParamSpec, Self> {
+                let stash = $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_none(self);
+                $crate::translate::Stash(stash.0 as *const _, stash.1)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *const gobject_ffi::GParamSpec {
+                $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_full(self) as *const _
+            }
+        }
+
+        #[doc(hidden)]
+        impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GParamSpec> for $rust_type {
+            type Storage = &'a $crate::shared::Shared<$ffi_type, $rust_type>;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut gobject_ffi::GParamSpec, Self> {
+                let stash = $crate::translate::ToGlibPtr::<*mut $ffi_type>::to_glib_none(self);
+                $crate::translate::Stash(stash.0 as *mut _, stash.1)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *mut gobject_ffi::GParamSpec {
+                $crate::translate::ToGlibPtr::<*mut $ffi_type>::to_glib_full(self) as *mut _
+            }
+        }
+
+        #[doc(hidden)]
+        impl IntoGlibPtr<*mut gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
+            unsafe fn into_glib_ptr(self) -> *mut gobject_ffi::GParamSpec {
+                let s = std::mem::ManuallyDrop::new(self);
+                s.to_glib_none().0
+            }
+        }
+
+        #[doc(hidden)]
+        impl IntoGlibPtr<*const gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
+            unsafe fn into_glib_ptr(self) -> *const gobject_ffi::GParamSpec {
+                let s = std::mem::ManuallyDrop::new(self);
+                s.to_glib_none().0
+            }
+        }
+
+        #[doc(hidden)]
+        impl FromGlibPtrNone<*const gobject_ffi::GParamSpec> for $rust_type {
+            unsafe fn from_glib_none(ptr: *const gobject_ffi::GParamSpec) -> Self {
+                from_glib_none(ptr as *const $ffi_type)
+            }
+        }
+
+        #[doc(hidden)]
+        impl FromGlibPtrNone<*mut gobject_ffi::GParamSpec> for $rust_type {
+            unsafe fn from_glib_none(ptr: *mut gobject_ffi::GParamSpec) -> Self {
+                from_glib_none(ptr as *mut $ffi_type)
+            }
+        }
+
+        #[doc(hidden)]
+        impl FromGlibPtrBorrow<*const gobject_ffi::GParamSpec> for $rust_type {
+            unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GParamSpec) -> Borrowed<Self> {
+                from_glib_borrow(ptr as *const $ffi_type)
+            }
+        }
+
+        #[doc(hidden)]
+        impl FromGlibPtrBorrow<*mut gobject_ffi::GParamSpec> for $rust_type {
+            unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GParamSpec) -> Borrowed<Self> {
+                from_glib_borrow(ptr as *mut $ffi_type)
+            }
+        }
+
+        #[doc(hidden)]
         impl FromGlibPtrFull<*mut gobject_ffi::GParamSpec> for $rust_type {
             unsafe fn from_glib_full(ptr: *mut gobject_ffi::GParamSpec) -> Self {
                 from_glib_full(ptr as *mut $ffi_type)
@@ -376,7 +454,7 @@ macro_rules! define_param_spec {
         impl $rust_type {
             pub fn upcast(self) -> ParamSpec {
                 unsafe {
-                    from_glib_full(self.to_glib_full() as *mut gobject_ffi::GParamSpec)
+                    from_glib_full(ToGlibPtr::<*const $ffi_type>::to_glib_full(&self) as *mut gobject_ffi::GParamSpec)
                 }
             }
 
@@ -394,11 +472,12 @@ macro_rules! define_param_spec {
 }
 
 macro_rules! define_param_spec_default {
-    ($rust_type:ident, $value_type:ty, $from_glib:expr) => {
+    ($rust_type:ident, $ffi_type:path, $value_type:ty, $from_glib:expr) => {
         impl $rust_type {
             pub fn default_value(&self) -> $value_type {
                 unsafe {
-                    let ptr = self.to_glib_none().0;
+                    let ptr =
+                        $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_none(self).0;
                     $from_glib((*ptr).default_value)
                 }
             }
@@ -407,18 +486,20 @@ macro_rules! define_param_spec_default {
 }
 
 macro_rules! define_param_spec_min_max {
-    ($rust_type:ident, $value_type:ty) => {
+    ($rust_type:ident, $ffi_type:path, $value_type:ty) => {
         impl $rust_type {
             pub fn minimum(&self) -> $value_type {
                 unsafe {
-                    let ptr = self.to_glib_none().0;
+                    let ptr =
+                        $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_none(self).0;
                     (*ptr).minimum
                 }
             }
 
             pub fn maximum(&self) -> $value_type {
                 unsafe {
-                    let ptr = self.to_glib_none().0;
+                    let ptr =
+                        $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_none(self).0;
                     (*ptr).maximum
                 }
             }
@@ -429,8 +510,8 @@ macro_rules! define_param_spec_min_max {
 macro_rules! define_param_spec_numeric {
     ($rust_type:ident, $ffi_type:path, $value_type:ty, $rust_type_offset:expr, $ffi_fun:ident, $alias:literal) => {
         define_param_spec!($rust_type, $ffi_type, $rust_type_offset);
-        define_param_spec_default!($rust_type, $value_type, |x| x);
-        define_param_spec_min_max!($rust_type, $value_type);
+        define_param_spec_default!($rust_type, $ffi_type, $value_type, |x| x);
+        define_param_spec_min_max!($rust_type, $ffi_type, $value_type);
 
         impl $rust_type {
             #[allow(clippy::new_ret_no_self)]
@@ -668,7 +749,12 @@ define_builder_numeric!(ParamSpecUChar, ParamSpecUCharBuilder, u8);
 
 define_param_spec!(ParamSpecBoolean, gobject_ffi::GParamSpecBoolean, 2);
 
-define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
+define_param_spec_default!(
+    ParamSpecBoolean,
+    gobject_ffi::GParamSpecBoolean,
+    bool,
+    |x| from_glib(x)
+);
 
 impl ParamSpecBoolean {
     #[allow(clippy::new_ret_no_self)]
@@ -767,7 +853,7 @@ define_param_spec_numeric!(
 define_builder_numeric!(ParamSpecUInt64, ParamSpecUInt64Builder, u64);
 
 define_param_spec!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, 9);
-define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
+define_param_spec_default!(ParamSpecUnichar, gobject_ffi::GParamSpecUnichar, Result<char, CharTryFromError>, TryFrom::try_from);
 
 impl ParamSpecUnichar {
     #[allow(clippy::new_ret_no_self)]
@@ -830,7 +916,7 @@ impl ParamSpecEnum {
     #[doc(alias = "get_enum_class")]
     pub fn enum_class(&self) -> crate::EnumClass {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecEnum>::to_glib_none(self).0;
 
             assert!(!(*ptr).enum_class.is_null());
 
@@ -854,7 +940,7 @@ impl ParamSpecEnum {
 
     pub fn default_value_as_i32(&self) -> i32 {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecEnum>::to_glib_none(self).0;
             (*ptr).default_value
         }
     }
@@ -947,7 +1033,7 @@ impl ParamSpecFlags {
     #[doc(alias = "get_flags_class")]
     pub fn flags_class(&self) -> crate::FlagsClass {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecFlags>::to_glib_none(self).0;
 
             assert!(!(*ptr).flags_class.is_null());
 
@@ -971,7 +1057,7 @@ impl ParamSpecFlags {
 
     pub fn default_value_as_u32(&self) -> u32 {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecFlags>::to_glib_none(self).0;
             (*ptr).default_value
         }
     }
@@ -1065,15 +1151,20 @@ define_builder_numeric!(ParamSpecDouble, ParamSpecDoubleBuilder, f64);
 
 define_param_spec!(ParamSpecString, gobject_ffi::GParamSpecString, 14);
 
-define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char| {
-    use std::ffi::CStr;
+define_param_spec_default!(
+    ParamSpecString,
+    gobject_ffi::GParamSpecString,
+    Option<&str>,
+    |x: *mut libc::c_char| {
+        use std::ffi::CStr;
 
-    if x.is_null() {
-        None
-    } else {
-        Some(CStr::from_ptr(x).to_str().unwrap())
+        if x.is_null() {
+            None
+        } else {
+            Some(CStr::from_ptr(x).to_str().unwrap())
+        }
     }
-});
+);
 
 impl ParamSpecString {
     #[allow(clippy::new_ret_no_self)]
@@ -1319,7 +1410,7 @@ impl ParamSpecValueArray {
     #[doc(alias = "get_element_spec")]
     pub fn element_spec(&self) -> Option<ParamSpec> {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecValueArray>::to_glib_none(self).0;
 
             from_glib_none((*ptr).element_spec)
         }
@@ -1328,7 +1419,7 @@ impl ParamSpecValueArray {
     #[doc(alias = "get_fixed_n_elements")]
     pub fn fixed_n_elements(&self) -> u32 {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecValueArray>::to_glib_none(self).0;
 
             (*ptr).fixed_n_elements
         }
@@ -1537,7 +1628,7 @@ impl ParamSpecOverride {
     #[doc(alias = "get_overridden")]
     pub fn overridden(&self) -> ParamSpec {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecOverride>::to_glib_none(self).0;
 
             from_glib_none((*ptr).overridden)
         }
@@ -1606,6 +1697,7 @@ define_param_spec!(ParamSpecVariant, gobject_ffi::GParamSpecVariant, 22);
 
 define_param_spec_default!(
     ParamSpecVariant,
+    gobject_ffi::GParamSpecVariant,
     Option<crate::Variant>,
     |x: *mut ffi::GVariant| from_glib_none(x)
 );
@@ -1637,7 +1729,7 @@ impl ParamSpecVariant {
     #[doc(alias = "get_type")]
     pub fn type_(&self) -> Option<&crate::VariantTy> {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecVariant>::to_glib_none(self).0;
 
             if (*ptr).type_.is_null() {
                 None

@@ -163,10 +163,7 @@ impl crate::value::ToValue for Variant {
     fn to_value(&self) -> crate::Value {
         unsafe {
             let mut value = crate::Value::from_type(Variant::static_type());
-            gobject_ffi::g_value_take_variant(
-                value.to_glib_none_mut().0,
-                self.to_glib_full() as *mut _,
-            );
+            gobject_ffi::g_value_take_variant(value.to_glib_none_mut().0, self.to_glib_full());
             value
         }
     }
@@ -181,10 +178,7 @@ impl crate::value::ToValueOptional for Variant {
     fn to_value_optional(s: Option<&Self>) -> crate::Value {
         let mut value = crate::Value::for_value_type::<Self>();
         unsafe {
-            gobject_ffi::g_value_take_variant(
-                value.to_glib_none_mut().0,
-                s.to_glib_full() as *mut _,
-            );
+            gobject_ffi::g_value_take_variant(value.to_glib_none_mut().0, s.to_glib_full());
         }
 
         value
@@ -886,7 +880,7 @@ unsafe impl Sync for Variant {}
 impl fmt::Debug for Variant {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Variant")
-            .field("ptr", &self.to_glib_none().0)
+            .field("ptr", &ToGlibPtr::<*const _>::to_glib_none(self).0)
             .field("type", &self.type_())
             .field("value", &self.to_string())
             .finish()
@@ -912,8 +906,8 @@ impl PartialEq for Variant {
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_variant_equal(
-                self.to_glib_none().0 as *const _,
-                other.to_glib_none().0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
             ))
         }
     }
@@ -935,8 +929,8 @@ impl PartialOrd for Variant {
             }
 
             let res = ffi::g_variant_compare(
-                self.to_glib_none().0 as *const _,
-                other.to_glib_none().0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+                ToGlibPtr::<*const _>::to_glib_none(other).0 as *const _,
             );
 
             Some(res.cmp(&0))
@@ -947,7 +941,11 @@ impl PartialOrd for Variant {
 impl Hash for Variant {
     #[doc(alias = "g_variant_hash")]
     fn hash<H: Hasher>(&self, state: &mut H) {
-        unsafe { state.write_u32(ffi::g_variant_hash(self.to_glib_none().0 as *const _)) }
+        unsafe {
+            state.write_u32(ffi::g_variant_hash(
+                ToGlibPtr::<*const _>::to_glib_none(self).0 as *const _,
+            ))
+        }
     }
 }
 

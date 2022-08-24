@@ -150,6 +150,12 @@ macro_rules! glib_boxed_inline_wrapper {
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr,
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
 
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
+            pub fn as_ptr(&self) -> *mut $ffi_name {
+                &self.inner as *const $ffi_name as *mut _
+            }
+        }
+
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::GlibPtrDefault for $name $(<$($generic),+>)? {
             type GlibType = *mut $ffi_name;

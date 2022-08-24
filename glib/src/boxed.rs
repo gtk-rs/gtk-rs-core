@@ -35,6 +35,12 @@ macro_rules! glib_boxed_wrapper {
             inner: $crate::boxed::Boxed<$ffi_name, Self>,
         }
 
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
+            pub fn as_ptr(&self) -> *mut $ffi_name {
+                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
+            }
+        }
+
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::clone::Clone for $name $(<$($generic),+>)? {
             #[inline]
             fn clone(&self) -> Self {

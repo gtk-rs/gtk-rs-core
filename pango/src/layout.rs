@@ -55,7 +55,7 @@ impl LayoutLine {
     #[cfg(not(any(feature = "v1_50", feature = "dox")))]
     #[cfg_attr(feature = "dox", doc(not(cfg(feature = "v1_50"))))]
     pub fn start_index(&self) -> i32 {
-        unsafe { (*self.to_glib_none().0).start_index }
+        unsafe { (*self.as_ptr()).start_index }
     }
 
     // rustdoc-stripper-ignore-next
@@ -63,12 +63,12 @@ impl LayoutLine {
     #[cfg(not(any(feature = "v1_50", feature = "dox")))]
     #[cfg_attr(feature = "dox", doc(not(cfg(feature = "v1_50"))))]
     pub fn length(&self) -> i32 {
-        unsafe { (*self.to_glib_none().0).length }
+        unsafe { (*self.as_ptr()).length }
     }
 
     #[doc(alias = "pango_layout_line_runs")]
     pub fn runs(&self) -> Vec<LayoutRun> {
-        unsafe { FromGlibPtrContainer::from_glib_none((*self.to_glib_none().0).runs) }
+        unsafe { FromGlibPtrContainer::from_glib_none((*self.as_ptr()).runs) }
     }
     #[doc(alias = "pango_layout_line_x_to_index")]
     pub fn x_to_index(&self, x_pos: i32) -> HitPosition {
