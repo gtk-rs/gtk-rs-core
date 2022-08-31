@@ -575,6 +575,10 @@ bitflags! {
         const DELAY_MESSAGE_PROCESSING = ffi::G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING as u32;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER")]
         const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as u32;
+        #[cfg(any(feature = "v2_74", feature = "dox"))]
+        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[doc(alias = "G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE")]
+        const CROSS_NAMESPACE = ffi::G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE as u32;
     }
 }
 

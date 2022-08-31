@@ -3234,6 +3234,10 @@ pub enum TlsChannelBindingType {
     Unique,
     #[doc(alias = "G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT")]
     ServerEndPoint,
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "G_TLS_CHANNEL_BINDING_TLS_EXPORTER")]
+    Exporter,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -3248,6 +3252,8 @@ impl fmt::Display for TlsChannelBindingType {
             match *self {
                 Self::Unique => "Unique",
                 Self::ServerEndPoint => "ServerEndPoint",
+                #[cfg(any(feature = "v2_74", feature = "dox"))]
+                Self::Exporter => "Exporter",
                 _ => "Unknown",
             }
         )
@@ -3264,6 +3270,8 @@ impl IntoGlib for TlsChannelBindingType {
         match self {
             Self::Unique => ffi::G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
             Self::ServerEndPoint => ffi::G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            Self::Exporter => ffi::G_TLS_CHANNEL_BINDING_TLS_EXPORTER,
             Self::__Unknown(value) => value,
         }
     }
@@ -3277,6 +3285,8 @@ impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
         match value {
             ffi::G_TLS_CHANNEL_BINDING_TLS_UNIQUE => Self::Unique,
             ffi::G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT => Self::ServerEndPoint,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            ffi::G_TLS_CHANNEL_BINDING_TLS_EXPORTER => Self::Exporter,
             value => Self::__Unknown(value),
         }
     }
