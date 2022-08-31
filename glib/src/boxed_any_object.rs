@@ -75,7 +75,7 @@ wrapper! {
     ///
     /// // The boxed data can be stored as a `glib::object::Object`
     /// let list = ListStore::new(BoxedAnyObject::static_type());
-    /// list.append(boxed.upcast());
+    /// list.append(&boxed);
     /// ```
     pub struct BoxedAnyObject(ObjectSubclass<imp::BoxedAnyObject>);
 }
