@@ -878,7 +878,7 @@ pub const G_MARKUP_COLLECT_TRISTATE: GMarkupCollectType = 4;
 pub const G_MARKUP_COLLECT_OPTIONAL: GMarkupCollectType = 65536;
 
 pub type GMarkupParseFlags = c_uint;
-pub const G_MARKUP_PARSE_FLAGS_NONE: GMarkupParseFlags = 0;
+pub const G_MARKUP_DEFAULT_FLAGS: GMarkupParseFlags = 0;
 pub const G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: GMarkupParseFlags = 1;
 pub const G_MARKUP_TREAT_CDATA_AS_TEXT: GMarkupParseFlags = 2;
 pub const G_MARKUP_PREFIX_ERROR_POSITION: GMarkupParseFlags = 4;
