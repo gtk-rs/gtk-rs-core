@@ -1097,14 +1097,64 @@ impl ParamSpecString {
             ))
         }
     }
+
+    pub fn builder<'a>(name: &'a str) -> ParamSpecStringBuilder<'a> {
+        ParamSpecStringBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecString,
-    ParamSpecStringBuilder {
-        default_value: Option<&'a str> = None,
+#[must_use]
+pub struct ParamSpecStringBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: Option<&'a str>,
+}
+
+impl<'a> ParamSpecStringBuilder<'a> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            default_value: None,
+        }
     }
-);
+
+    #[doc = "Default: None`"]
+    pub fn default_value(mut self, value: impl Into<Option<&'a str>>) -> Self {
+        self.default_value = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecString::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.default_value,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecStringBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
@@ -1283,14 +1333,64 @@ impl ParamSpecValueArray {
             (*ptr).fixed_n_elements
         }
     }
+
+    pub fn builder(name: &str) -> ParamSpecValueArrayBuilder {
+        ParamSpecValueArrayBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecValueArray,
-    ParamSpecValueArrayBuilder {
-        element_spec: Option<&'a ParamSpec> = None,
+#[must_use]
+pub struct ParamSpecValueArrayBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    element_spec: Option<&'a ParamSpec>,
+}
+
+impl<'a> ParamSpecValueArrayBuilder<'a> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            element_spec: None,
+        }
     }
-);
+
+    #[doc = "Default: None`"]
+    pub fn element_spec(mut self, value: impl Into<Option<&'a ParamSpec>>) -> Self {
+        self.element_spec = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecValueArray::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.element_spec,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecValueArrayBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
@@ -1546,16 +1646,67 @@ impl ParamSpecVariant {
             }
         }
     }
+
+    pub fn builder<'a>(name: &'a str, type_: &'a crate::VariantTy) -> ParamSpecVariantBuilder<'a> {
+        ParamSpecVariantBuilder::new(name, type_)
+    }
 }
 
-define_builder!(
-    ParamSpecVariant,
-    ParamSpecVariantBuilder {
-        type_: &'a crate::VariantTy,
-        default_value: Option<&'a crate::Variant> = None,
+#[must_use]
+pub struct ParamSpecVariantBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    type_: &'a crate::VariantTy,
+    default_value: Option<&'a crate::Variant>,
+}
+
+impl<'a> ParamSpecVariantBuilder<'a> {
+    fn new(name: &'a str, type_: &'a crate::VariantTy) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            type_,
+            default_value: None,
+        }
     }
-    requires (type_: &'a crate::VariantTy,)
-);
+
+    #[doc = "Default: None`"]
+    pub fn default_value(mut self, value: impl Into<Option<&'a crate::Variant>>) -> Self {
+        self.default_value = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecVariant::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.type_,
+            self.default_value,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecVariantBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 #[cfg(test)]
 mod tests {
