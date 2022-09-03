@@ -859,10 +859,10 @@ impl ParamSpecEnum {
         }
     }
 
-    pub fn builder<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
-        name: &'a str,
+    pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
+        name: &str,
         default_value: T,
-    ) -> ParamSpecEnumBuilder<'a, T> {
+    ) -> ParamSpecEnumBuilder<T> {
         ParamSpecEnumBuilder::new(name, default_value)
     }
 }
@@ -976,9 +976,9 @@ impl ParamSpecFlags {
         }
     }
 
-    pub fn builder<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
-        name: &'a str,
-    ) -> ParamSpecFlagsBuilder<'a, T> {
+    pub fn builder<T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
+        name: &str,
+    ) -> ParamSpecFlagsBuilder<T> {
         ParamSpecFlagsBuilder::new(name)
     }
 }
@@ -1098,7 +1098,7 @@ impl ParamSpecString {
         }
     }
 
-    pub fn builder<'a>(name: &'a str) -> ParamSpecStringBuilder<'a> {
+    pub fn builder(name: &str) -> ParamSpecStringBuilder {
         ParamSpecStringBuilder::new(name)
     }
 }
@@ -1215,7 +1215,7 @@ impl ParamSpecBoxed {
         }
     }
 
-    pub fn builder<'a, T: StaticType>(name: &'a str) -> ParamSpecBoxedBuilder<'a, T> {
+    pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<T> {
         ParamSpecBoxedBuilder::new(name)
     }
 }
@@ -1417,7 +1417,7 @@ impl ParamSpecObject {
         }
     }
 
-    pub fn builder<'a, T: StaticType>(name: &'a str) -> ParamSpecObjectBuilder<'a, T> {
+    pub fn builder<T: StaticType>(name: &str) -> ParamSpecObjectBuilder<T> {
         ParamSpecObjectBuilder::new(name)
     }
 }
