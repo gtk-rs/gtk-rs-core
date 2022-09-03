@@ -426,20 +426,12 @@ mod test {
             fn properties() -> &'static [crate::ParamSpec] {
                 static PROPERTIES: Lazy<Vec<crate::ParamSpec>> = Lazy::new(|| {
                     vec![
-                        crate::ParamSpecString::new(
-                            "name",
-                            None,
-                            None,
-                            None,
-                            crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
-                        ),
-                        crate::ParamSpecBoolean::new(
-                            "enabled",
-                            None,
-                            None,
-                            false,
-                            crate::ParamFlags::READWRITE | crate::ParamFlags::EXPLICIT_NOTIFY,
-                        ),
+                        crate::ParamSpecString::builder("name")
+                            .explicit_notify()
+                            .build(),
+                        crate::ParamSpecBoolean::builder("enabled")
+                            .explicit_notify()
+                            .build(),
                     ]
                 });
                 PROPERTIES.as_ref()

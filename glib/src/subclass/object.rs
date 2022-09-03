@@ -241,6 +241,7 @@ mod test {
     // generate the glib namespace through the crate_ident_new utility,
     // and that returns `glib` (and not `crate`) when called inside the glib crate
     use crate as glib;
+    use crate::ParamSpecBuilderExt;
     use crate::StaticType;
 
     use std::cell::RefCell;
@@ -279,34 +280,15 @@ mod test {
                 use once_cell::sync::Lazy;
                 static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
                     vec![
-                        crate::ParamSpecString::new(
-                            "name",
-                            None,
-                            None,
-                            None,
-                            crate::ParamFlags::READWRITE,
-                        ),
-                        crate::ParamSpecString::new(
-                            "construct-name",
-                            None,
-                            None,
-                            None,
-                            crate::ParamFlags::READWRITE | crate::ParamFlags::CONSTRUCT_ONLY,
-                        ),
-                        crate::ParamSpecBoolean::new(
-                            "constructed",
-                            Some("Constructed"),
-                            Some("True if the constructed() virtual method was called"),
-                            false,
-                            crate::ParamFlags::READABLE,
-                        ),
-                        crate::ParamSpecObject::new(
-                            "child",
-                            Some("Child"),
-                            Some("Child object"),
-                            super::ChildObject::static_type(),
-                            crate::ParamFlags::READWRITE,
-                        ),
+                        crate::ParamSpecString::builder("name").build(),
+                        crate::ParamSpecString::builder("construct-name")
+                            .construct_only()
+                            .build(),
+                        crate::ParamSpecBoolean::builder("constructed")
+                            .read_only()
+                            .build(),
+                        crate::ParamSpecObject::builder("child", super::ChildObject::static_type())
+                            .build(),
                     ]
                 });
 
