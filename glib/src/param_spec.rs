@@ -858,16 +858,65 @@ impl ParamSpecEnum {
             (*ptr).default_value
         }
     }
+
+    pub fn builder<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
+        name: &'a str,
+        default_value: T,
+    ) -> ParamSpecEnumBuilder<'a, T> {
+        ParamSpecEnumBuilder::new(name, default_value)
+    }
 }
 
-define_builder!(
-    ParamSpecEnum,
-    ParamSpecEnumBuilder {
-        enum_type: crate::Type,
-        default_value: i32 = 0i32,
+#[must_use]
+pub struct ParamSpecEnumBuilder<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: T,
+}
+
+impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>> ParamSpecEnumBuilder<'a, T> {
+    fn new(name: &'a str, default_value: T) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            default_value,
+        }
     }
-    requires (enum_type: crate::Type,)
-);
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecEnum::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.default_value.into_glib(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>
+    crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecEnumBuilder<'a, T>
+{
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
+
 define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 impl ParamSpecFlags {
@@ -926,16 +975,71 @@ impl ParamSpecFlags {
             (*ptr).default_value
         }
     }
+
+    pub fn builder<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
+        name: &'a str,
+    ) -> ParamSpecFlagsBuilder<'a, T> {
+        ParamSpecFlagsBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecFlags,
-    ParamSpecFlagsBuilder {
-        flags_type: crate::Type,
-        default_value: u32 = 0u32,
+#[must_use]
+pub struct ParamSpecFlagsBuilder<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: T,
+}
+
+impl<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>> ParamSpecFlagsBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        unsafe {
+            Self {
+                name,
+                nick: None,
+                blurb: None,
+                flags: crate::ParamFlags::default(),
+                default_value: from_glib(0),
+            }
+        }
     }
-    requires (flags_type: crate::Type,)
-);
+
+    #[doc = "Default: 0`"]
+    pub fn default_value(mut self, value: T) -> Self {
+        self.default_value = value;
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecFlags::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.default_value.into_glib(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>
+    crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecFlagsBuilder<'a, T>
+{
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec_numeric!(
     ParamSpecFloat,
