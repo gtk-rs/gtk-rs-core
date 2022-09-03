@@ -802,8 +802,6 @@ define_builder!(
 
 define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
-define_param_spec_default!(ParamSpecEnum, i32, |x| x);
-
 impl ParamSpecEnum {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_enum")]
@@ -840,6 +838,26 @@ impl ParamSpecEnum {
                 .expect("Invalid enum class")
         }
     }
+
+    pub fn default_value<T: StaticType + FromGlib<i32>>(&self) -> Result<T, crate::BoolError> {
+        unsafe {
+            if !self.enum_class().type_().is_a(T::static_type()) {
+                return Err(bool_error!(
+                    "Wrong type -- expected {} got {}",
+                    self.enum_class().type_(),
+                    T::static_type()
+                ));
+            }
+            Ok(from_glib(self.default_value_as_i32()))
+        }
+    }
+
+    pub fn default_value_as_i32(&self) -> i32 {
+        unsafe {
+            let ptr = self.to_glib_none().0;
+            (*ptr).default_value
+        }
+    }
 }
 
 define_builder!(
@@ -851,8 +869,6 @@ define_builder!(
     requires (enum_type: crate::Type,)
 );
 define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
-
-define_param_spec_default!(ParamSpecFlags, u32, |x| x);
 
 impl ParamSpecFlags {
     #[allow(clippy::new_ret_no_self)]
@@ -888,6 +904,26 @@ impl ParamSpecFlags {
 
             crate::FlagsClass::new(from_glib((*(*ptr).flags_class).g_type_class.g_type))
                 .expect("Invalid flags class")
+        }
+    }
+
+    pub fn default_value<T: StaticType + FromGlib<u32>>(&self) -> Result<T, crate::BoolError> {
+        unsafe {
+            if !self.flags_class().type_().is_a(T::static_type()) {
+                return Err(bool_error!(
+                    "Wrong type -- expected {} got {}",
+                    self.flags_class().type_(),
+                    T::static_type()
+                ));
+            }
+            Ok(from_glib(self.default_value_as_u32()))
+        }
+    }
+
+    pub fn default_value_as_u32(&self) -> u32 {
+        unsafe {
+            let ptr = self.to_glib_none().0;
+            (*ptr).default_value
         }
     }
 }
