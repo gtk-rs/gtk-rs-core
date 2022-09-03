@@ -816,6 +816,7 @@ impl ParamSpecEnum {
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(enum_type.is_a(Type::ENUM));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_enum(
                 name.to_glib_none().0,
@@ -865,6 +866,7 @@ impl ParamSpecFlags {
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(flags_type.is_a(Type::FLAGS));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_flags(
                 name.to_glib_none().0,
@@ -977,6 +979,7 @@ impl ParamSpecParam {
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(param_type.is_a(crate::Type::PARAM_SPEC));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_param(
                 name.to_glib_none().0,
@@ -1010,6 +1013,7 @@ impl ParamSpecBoxed {
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(boxed_type.is_a(Type::BOXED));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boxed(
                 name.to_glib_none().0,
@@ -1119,6 +1123,7 @@ impl ParamSpecObject {
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(object_type.is_a(Type::OBJECT));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_object(
                 name.to_glib_none().0,
