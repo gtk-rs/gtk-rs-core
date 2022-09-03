@@ -435,10 +435,10 @@ macro_rules! define_param_spec_numeric {
         impl $rust_type {
             #[allow(clippy::new_ret_no_self)]
             #[doc(alias = $alias)]
-            pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+            pub fn new<'a>(
                 name: &str,
-                nick: S,
-                blurb: T,
+                nick: impl Into<Option<&'a str>>,
+                blurb: impl Into<Option<&'a str>>,
                 minimum: $value_type,
                 maximum: $value_type,
                 default_value: $value_type,
@@ -673,10 +673,10 @@ define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
 impl ParamSpecBoolean {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boolean")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: bool,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -772,10 +772,10 @@ define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, Try
 impl ParamSpecUnichar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_unichar")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: char,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -807,10 +807,10 @@ define_param_spec_default!(ParamSpecEnum, i32, |x| x);
 impl ParamSpecEnum {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_enum")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         enum_type: crate::Type,
         default_value: i32,
         flags: ParamFlags,
@@ -856,10 +856,10 @@ define_param_spec_default!(ParamSpecFlags, u32, |x| x);
 impl ParamSpecFlags {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_flags")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         flags_type: crate::Type,
         default_value: u32,
         flags: ParamFlags,
@@ -936,10 +936,10 @@ define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char|
 impl ParamSpecString {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_string")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: Option<&str>,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -969,10 +969,10 @@ define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 impl ParamSpecParam {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_param")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         param_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1002,10 +1002,10 @@ define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 impl ParamSpecBoxed {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boxed")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         boxed_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1035,10 +1035,10 @@ define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
@@ -1060,10 +1060,10 @@ define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 impl ParamSpecValueArray {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_value_array")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         element_spec: &ParamSpec,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1111,10 +1111,10 @@ define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 impl ParamSpecObject {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_object")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         object_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1244,10 +1244,10 @@ define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 impl ParamSpecGType {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_gtype")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         is_a_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1282,10 +1282,10 @@ define_param_spec_default!(
 impl ParamSpecVariant {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_variant")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         type_: &crate::VariantTy,
         default_value: Option<&crate::Variant>,
         flags: ParamFlags,
