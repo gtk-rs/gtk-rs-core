@@ -1208,7 +1208,7 @@ impl ParamSpecValueArray {
         name: &str,
         nick: impl Into<Option<&'a str>>,
         blurb: impl Into<Option<&'a str>>,
-        element_spec: &ParamSpec,
+        element_spec: Option<&ParamSpec>,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
@@ -1245,9 +1245,8 @@ impl ParamSpecValueArray {
 define_builder!(
     ParamSpecValueArray,
     ParamSpecValueArrayBuilder {
-        element_spec: &'a ParamSpec,
+        element_spec: Option<&'a ParamSpec> = None,
     }
-    requires (element_spec: &'a ParamSpec,)
 );
 
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
