@@ -1164,15 +1164,58 @@ impl ParamSpecBoxed {
             ))
         }
     }
+
+    pub fn builder<'a, T: StaticType>(name: &'a str) -> ParamSpecBoxedBuilder<'a, T> {
+        ParamSpecBoxedBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecBoxed,
-    ParamSpecBoxedBuilder {
-        boxed_type: crate::Type,
+#[must_use]
+pub struct ParamSpecBoxedBuilder<'a, T: StaticType> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    phantom: std::marker::PhantomData<T>,
+}
+
+impl<'a, T: StaticType> ParamSpecBoxedBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            phantom: Default::default(),
+        }
     }
-    requires (boxed_type: crate::Type,)
-);
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecBoxed::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecBoxedBuilder<'a, T> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
@@ -1273,15 +1316,59 @@ impl ParamSpecObject {
             ))
         }
     }
+
+    pub fn builder<'a, T: StaticType>(name: &'a str) -> ParamSpecObjectBuilder<'a, T> {
+        ParamSpecObjectBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecObject,
-    ParamSpecObjectBuilder {
-        object_type: crate::Type,
+#[must_use]
+pub struct ParamSpecObjectBuilder<'a, T: StaticType> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    phantom: std::marker::PhantomData<T>,
+}
+
+impl<'a, T: StaticType> ParamSpecObjectBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            phantom: Default::default(),
+        }
     }
-    requires (object_type: crate::Type,)
-);
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecObject::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecObjectBuilder<'a, T> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
+
 define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {

@@ -287,8 +287,7 @@ mod test {
                         crate::ParamSpecBoolean::builder("constructed")
                             .read_only()
                             .build(),
-                        crate::ParamSpecObject::builder("child", super::ChildObject::static_type())
-                            .build(),
+                        crate::ParamSpecObject::builder::<super::ChildObject>("child").build(),
                     ]
                 });
 
