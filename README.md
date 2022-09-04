@@ -36,11 +36,16 @@ crates like `glib-rs`.
 
 ## Regenerating
 
-To regenerate crates using [gir], please use the `generator.py`
-file as follows:
+To regenerate crates using [gir], please use the `generator.py` file as follows:
 
 ```bash
 $ python3 generator.py
+```
+
+If you didn't do so yet, please check out all the submodules before via
+
+```bash
+$ git submodule update --checkout
 ```
 
 ## Development
