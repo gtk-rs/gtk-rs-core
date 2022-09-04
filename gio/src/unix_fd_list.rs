@@ -13,11 +13,7 @@ use socket::{AsRawFd, IntoRawFd, RawFd};
 
 impl UnixFDList {
     #[doc(alias = "g_unix_fd_list_new_from_array")]
-    pub fn from_array<T>(fds: T) -> UnixFDList
-    where
-        T: IntoIterator,
-        T::Item: IntoRawFd,
-    {
+    pub fn from_array(fds: impl IntoIterator<Item = impl IntoRawFd>) -> UnixFDList {
         let fds = fds.into_iter().map(|t| t.into_raw_fd()).collect::<Vec<_>>();
         unsafe {
             from_glib_full(ffi::g_unix_fd_list_new_from_array(

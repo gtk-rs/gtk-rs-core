@@ -20,7 +20,7 @@ impl UnixOutputStream {
     /// on this stream. At which point you may only do so when all references to this stream have
     /// been dropped.
     #[doc(alias = "g_unix_output_stream_new")]
-    pub unsafe fn take_fd<T: IntoRawFd>(fd: T) -> UnixOutputStream {
+    pub unsafe fn take_fd(fd: impl IntoRawFd) -> UnixOutputStream {
         let fd = fd.into_raw_fd();
         let close_fd = true.into_glib();
         OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()

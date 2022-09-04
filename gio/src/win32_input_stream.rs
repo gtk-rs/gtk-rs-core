@@ -48,7 +48,7 @@ impl Win32InputStream {
     /// with `true` on this stream. At which point you may only do so when all references to this
     /// stream have been dropped.
     #[doc(alias = "g_win32_input_stream_new")]
-    pub unsafe fn take_handle<T: IntoRawHandle>(handle: T) -> Win32InputStream {
+    pub unsafe fn take_handle(handle: impl IntoRawHandle) -> Win32InputStream {
         let handle = handle.into_raw_handle();
         let close_handle = true.into_glib();
         InputStream::from_glib_full(ffi::g_win32_input_stream_new(handle, close_handle))

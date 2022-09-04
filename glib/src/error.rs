@@ -199,8 +199,8 @@ pub struct BoolError {
 }
 
 impl BoolError {
-    pub fn new<Msg: Into<Cow<'static, str>>>(
-        message: Msg,
+    pub fn new(
+        message: impl Into<Cow<'static, str>>,
         filename: &'static str,
         function: &'static str,
         line: u32,
@@ -213,9 +213,9 @@ impl BoolError {
         }
     }
 
-    pub fn from_glib<Msg: Into<Cow<'static, str>>>(
+    pub fn from_glib(
         b: ffi::gboolean,
-        message: Msg,
+        message: impl Into<Cow<'static, str>>,
         filename: &'static str,
         function: &'static str,
         line: u32,

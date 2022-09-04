@@ -24,7 +24,7 @@ use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket}
 
 impl Socket {
     #[cfg(any(unix, feature = "dox"))]
-    pub unsafe fn from_fd<T: IntoRawFd>(fd: T) -> Result<Socket, glib::Error> {
+    pub unsafe fn from_fd(fd: impl IntoRawFd) -> Result<Socket, glib::Error> {
         let fd = fd.into_raw_fd();
         let mut error = ptr::null_mut();
         let ret = ffi::g_socket_new_from_fd(fd, &mut error);
@@ -35,7 +35,7 @@ impl Socket {
         }
     }
     #[cfg(any(windows, feature = "dox"))]
-    pub unsafe fn from_socket<T: IntoRawSocket>(socket: T) -> Result<Socket, glib::Error> {
+    pub unsafe fn from_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
         let mut error = ptr::null_mut();
         let ret = ffi::g_socket_new_from_fd(socket as i32, &mut error);

@@ -20,7 +20,7 @@ impl UnixInputStream {
     /// with `true` on this stream. At which point you may only do so when all references to this
     /// stream have been dropped.
     #[doc(alias = "g_unix_input_stream_new")]
-    pub unsafe fn take_fd<T: IntoRawFd>(fd: T) -> UnixInputStream {
+    pub unsafe fn take_fd(fd: impl IntoRawFd) -> UnixInputStream {
         let fd = fd.into_raw_fd();
         let close_fd = true.into_glib();
         InputStream::from_glib_full(ffi::g_unix_input_stream_new(fd, close_fd)).unsafe_cast()
