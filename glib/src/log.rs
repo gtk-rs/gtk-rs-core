@@ -417,7 +417,7 @@ impl<'a> LogField<'a> {
     /// Retrieves the the user data value from a field created with [`Self::new_user_data`].
     /// Returns `None` if the field was created with [`Self::new`].
     pub fn user_data(&self) -> Option<usize> {
-        (self.0.length == 0).then(|| self.0.value as usize)
+        (self.0.length == 0).then_some(self.0.value as usize)
     }
 }
 

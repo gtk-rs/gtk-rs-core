@@ -115,6 +115,7 @@ unsafe impl Send for IConv {}
 
 impl IConv {
     #[doc(alias = "g_iconv_open")]
+    #[allow(clippy::unnecessary_lazy_evaluations)]
     pub fn new(to_codeset: &str, from_codeset: &str) -> Option<Self> {
         let iconv = unsafe {
             ffi::g_iconv_open(to_codeset.to_glib_none().0, from_codeset.to_glib_none().0)

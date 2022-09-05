@@ -69,7 +69,7 @@ impl VariantType {
     // rustdoc-stripper-ignore-next
     /// Creates a `VariantType` from a maybe element type.
     #[doc(alias = "g_variant_type_new_tuple")]
-    pub fn new_tuple<T: AsRef<VariantTy>, I: IntoIterator<Item = T>>(items: I) -> VariantType {
+    pub fn new_tuple(items: impl IntoIterator<Item = impl AsRef<VariantTy>>) -> VariantType {
         let mut builder = crate::GStringBuilder::new("(");
 
         for ty in items {

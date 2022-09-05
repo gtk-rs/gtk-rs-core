@@ -421,8 +421,8 @@ impl Variant {
     ///
     /// This function panics if not all variants are of type `T`.
     #[doc(alias = "g_variant_new_array")]
-    pub fn array_from_iter<T: StaticVariantType, I: IntoIterator<Item = Variant>>(
-        children: I,
+    pub fn array_from_iter<T: StaticVariantType>(
+        children: impl IntoIterator<Item = Variant>,
     ) -> Self {
         Self::array_from_iter_with_type(&T::static_variant_type(), children)
     }
@@ -434,9 +434,9 @@ impl Variant {
     ///
     /// This function panics if not all variants are of type `type_`.
     #[doc(alias = "g_variant_new_array")]
-    pub fn array_from_iter_with_type<T: AsRef<Variant>, I: IntoIterator<Item = T>>(
+    pub fn array_from_iter_with_type(
         type_: &VariantTy,
-        children: I,
+        children: impl IntoIterator<Item = impl AsRef<Variant>>,
     ) -> Self {
         unsafe {
             let mut builder = mem::MaybeUninit::uninit();
@@ -1653,7 +1653,7 @@ tuple_impls! {
 
 impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
-        Variant::array_from_iter::<T, _>(iter.into_iter().map(|v| v.to_variant()))
+        Variant::array_from_iter::<T>(iter.into_iter().map(|v| v.to_variant()))
     }
 }
 
@@ -2085,7 +2085,7 @@ mod tests {
 
     #[test]
     fn test_array_from_iter() {
-        let a = Variant::array_from_iter::<String, _>(
+        let a = Variant::array_from_iter::<String>(
             ["foo", "bar", "baz"].into_iter().map(|s| s.to_variant()),
         );
         assert_eq!(a.type_().as_str(), "as");

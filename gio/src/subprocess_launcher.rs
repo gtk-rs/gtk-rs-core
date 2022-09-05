@@ -18,7 +18,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_fd")]
-    pub fn take_fd<F: IntoRawFd, G: IntoRawFd>(&self, source_fd: F, target_fd: G) {
+    pub fn take_fd(&self, source_fd: impl IntoRawFd, target_fd: impl IntoRawFd) {
         unsafe {
             ffi::g_subprocess_launcher_take_fd(
                 self.to_glib_none().0,
@@ -31,7 +31,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stderr_fd")]
-    pub fn take_stderr_fd<F: IntoRawFd>(&self, fd: F) {
+    pub fn take_stderr_fd(&self, fd: impl IntoRawFd) {
         unsafe {
             ffi::g_subprocess_launcher_take_stderr_fd(self.to_glib_none().0, fd.into_raw_fd());
         }
@@ -40,7 +40,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stdin_fd")]
-    pub fn take_stdin_fd<F: IntoRawFd>(&self, fd: F) {
+    pub fn take_stdin_fd(&self, fd: impl IntoRawFd) {
         unsafe {
             ffi::g_subprocess_launcher_take_stdin_fd(self.to_glib_none().0, fd.into_raw_fd());
         }
@@ -49,7 +49,7 @@ impl SubprocessLauncher {
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_take_stdout_fd")]
-    pub fn take_stdout_fd<F: IntoRawFd>(&self, fd: F) {
+    pub fn take_stdout_fd(&self, fd: impl IntoRawFd) {
         unsafe {
             ffi::g_subprocess_launcher_take_stdout_fd(self.to_glib_none().0, fd.into_raw_fd());
         }

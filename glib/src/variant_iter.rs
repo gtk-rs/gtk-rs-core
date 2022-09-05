@@ -216,7 +216,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_array() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "foo".to_string().to_variant(),
             "bar".to_string().to_variant(),
         ]);
@@ -255,7 +255,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_nth() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
@@ -287,7 +287,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_count() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
@@ -301,7 +301,7 @@ mod tests {
 
     #[test]
     fn test_variant_iter_last() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
@@ -318,7 +318,7 @@ mod tests {
 
     #[test]
     fn test_variant_str_iter_nth() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
@@ -341,7 +341,7 @@ mod tests {
 
     #[test]
     fn test_variant_str_iter_count() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
@@ -355,7 +355,7 @@ mod tests {
 
     #[test]
     fn test_variant_str_iter_last() {
-        let v = Variant::array_from_iter::<String, _>([
+        let v = Variant::array_from_iter::<String>([
             "0".to_string().to_variant(),
             "1".to_string().to_variant(),
             "2".to_string().to_variant(),
