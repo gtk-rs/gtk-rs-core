@@ -98,37 +98,15 @@
 //!             use once_cell::sync::Lazy;
 //!             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
 //!                 vec![
-//!                     glib::ParamSpecString::new(
-//!                         "name",
-//!                         Some("Name"),
-//!                         Some("Name of this object"),
-//!                         None,
-//!                         glib::ParamFlags::READWRITE,
-//!                     ),
-//!                     glib::ParamSpecEnum::new(
-//!                         "animal",
-//!                         Some("Animal"),
-//!                         Some("Animal"),
-//!                         Animal::static_type(),
-//!                         Animal::default() as i32,
-//!                         glib::ParamFlags::READWRITE,
-//!                     ),
-//!                     glib::ParamSpecFlags::new(
-//!                         "flags",
-//!                         Some("Flags"),
-//!                         Some("Flags"),
-//!                         MyFlags::static_type(),
-//!                         MyFlags::default().bits(),
-//!                         glib::ParamFlags::READWRITE,
-//!                     ),
-//!                     glib::ParamSpecVariant::new(
-//!                         "variant",
-//!                         Some("Variant"),
-//!                         Some("Variant"),
-//!                         glib::VariantTy::ANY,
-//!                         None,
-//!                         glib::ParamFlags::READWRITE,
-//!                    ),
+//!                     glib::ParamSpecString::builder("name")
+//!                         .build(),
+//!                     glib::ParamSpecEnum::builder::<Animal>("animal", Animal::default())
+//!                         .build(),
+//!                     glib::ParamSpecFlags::builder::<MyFlags>("flags")
+//!                         .default_value(MyFlags::default())
+//!                         .build(),
+//!                     glib::ParamSpecVariant::builder("variant", glib::VariantTy::ANY)
+//!                         .build(),
 //!                 ]
 //!             });
 //!

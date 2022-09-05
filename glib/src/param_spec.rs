@@ -435,10 +435,10 @@ macro_rules! define_param_spec_numeric {
         impl $rust_type {
             #[allow(clippy::new_ret_no_self)]
             #[doc(alias = $alias)]
-            pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+            pub fn new<'a>(
                 name: &str,
-                nick: S,
-                blurb: T,
+                nick: impl Into<Option<&'a str>>,
+                blurb: impl Into<Option<&'a str>>,
                 minimum: $value_type,
                 maximum: $value_type,
                 default_value: $value_type,
@@ -673,10 +673,10 @@ define_param_spec_default!(ParamSpecBoolean, bool, |x| from_glib(x));
 impl ParamSpecBoolean {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boolean")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: bool,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -772,10 +772,10 @@ define_param_spec_default!(ParamSpecUnichar, Result<char, CharTryFromError>, Try
 impl ParamSpecUnichar {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_unichar")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: char,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -802,20 +802,19 @@ define_builder!(
 
 define_param_spec!(ParamSpecEnum, gobject_ffi::GParamSpecEnum, 10);
 
-define_param_spec_default!(ParamSpecEnum, i32, |x| x);
-
 impl ParamSpecEnum {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_enum")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         enum_type: crate::Type,
         default_value: i32,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(enum_type.is_a(Type::ENUM));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_enum(
                 name.to_glib_none().0,
@@ -839,32 +838,100 @@ impl ParamSpecEnum {
                 .expect("Invalid enum class")
         }
     }
+
+    pub fn default_value<T: StaticType + FromGlib<i32>>(&self) -> Result<T, crate::BoolError> {
+        unsafe {
+            if !self.enum_class().type_().is_a(T::static_type()) {
+                return Err(bool_error!(
+                    "Wrong type -- expected {} got {}",
+                    self.enum_class().type_(),
+                    T::static_type()
+                ));
+            }
+            Ok(from_glib(self.default_value_as_i32()))
+        }
+    }
+
+    pub fn default_value_as_i32(&self) -> i32 {
+        unsafe {
+            let ptr = self.to_glib_none().0;
+            (*ptr).default_value
+        }
+    }
+
+    pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
+        name: &str,
+        default_value: T,
+    ) -> ParamSpecEnumBuilder<T> {
+        ParamSpecEnumBuilder::new(name, default_value)
+    }
 }
 
-define_builder!(
-    ParamSpecEnum,
-    ParamSpecEnumBuilder {
-        enum_type: crate::Type,
-        default_value: i32 = 0i32,
-    }
-    requires (enum_type: crate::Type,)
-);
-define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
+#[must_use]
+pub struct ParamSpecEnumBuilder<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: T,
+}
 
-define_param_spec_default!(ParamSpecFlags, u32, |x| x);
+impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>> ParamSpecEnumBuilder<'a, T> {
+    fn new(name: &'a str, default_value: T) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            default_value,
+        }
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecEnum::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.default_value.into_glib(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>
+    crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecEnumBuilder<'a, T>
+{
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
+
+define_param_spec!(ParamSpecFlags, gobject_ffi::GParamSpecFlags, 11);
 
 impl ParamSpecFlags {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_flags")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         flags_type: crate::Type,
         default_value: u32,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(flags_type.is_a(Type::FLAGS));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_flags(
                 name.to_glib_none().0,
@@ -888,16 +955,91 @@ impl ParamSpecFlags {
                 .expect("Invalid flags class")
         }
     }
+
+    pub fn default_value<T: StaticType + FromGlib<u32>>(&self) -> Result<T, crate::BoolError> {
+        unsafe {
+            if !self.flags_class().type_().is_a(T::static_type()) {
+                return Err(bool_error!(
+                    "Wrong type -- expected {} got {}",
+                    self.flags_class().type_(),
+                    T::static_type()
+                ));
+            }
+            Ok(from_glib(self.default_value_as_u32()))
+        }
+    }
+
+    pub fn default_value_as_u32(&self) -> u32 {
+        unsafe {
+            let ptr = self.to_glib_none().0;
+            (*ptr).default_value
+        }
+    }
+
+    pub fn builder<T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>(
+        name: &str,
+    ) -> ParamSpecFlagsBuilder<T> {
+        ParamSpecFlagsBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecFlags,
-    ParamSpecFlagsBuilder {
-        flags_type: crate::Type,
-        default_value: u32 = 0u32,
+#[must_use]
+pub struct ParamSpecFlagsBuilder<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: T,
+}
+
+impl<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>> ParamSpecFlagsBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        unsafe {
+            Self {
+                name,
+                nick: None,
+                blurb: None,
+                flags: crate::ParamFlags::default(),
+                default_value: from_glib(0),
+            }
+        }
     }
-    requires (flags_type: crate::Type,)
-);
+
+    #[doc = "Default: 0`"]
+    pub fn default_value(mut self, value: T) -> Self {
+        self.default_value = value;
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecFlags::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.default_value.into_glib(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType + FromGlib<u32> + IntoGlib<GlibType = u32>>
+    crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecFlagsBuilder<'a, T>
+{
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec_numeric!(
     ParamSpecFloat,
@@ -936,10 +1078,10 @@ define_param_spec_default!(ParamSpecString, Option<&str>, |x: *mut libc::c_char|
 impl ParamSpecString {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_string")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         default_value: Option<&str>,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -955,28 +1097,79 @@ impl ParamSpecString {
             ))
         }
     }
+
+    pub fn builder(name: &str) -> ParamSpecStringBuilder {
+        ParamSpecStringBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecString,
-    ParamSpecStringBuilder {
-        default_value: Option<&'a str> = None,
+#[must_use]
+pub struct ParamSpecStringBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    default_value: Option<&'a str>,
+}
+
+impl<'a> ParamSpecStringBuilder<'a> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            default_value: None,
+        }
     }
-);
+
+    #[doc = "Default: None`"]
+    pub fn default_value(mut self, value: impl Into<Option<&'a str>>) -> Self {
+        self.default_value = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecString::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.default_value,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecStringBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecParam, gobject_ffi::GParamSpecParam, 15);
 
 impl ParamSpecParam {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_param")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         param_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(param_type.is_a(crate::Type::PARAM_SPEC));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_param(
                 name.to_glib_none().0,
@@ -1002,14 +1195,15 @@ define_param_spec!(ParamSpecBoxed, gobject_ffi::GParamSpecBoxed, 16);
 impl ParamSpecBoxed {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_boxed")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         boxed_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(boxed_type.is_a(Type::BOXED));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_boxed(
                 name.to_glib_none().0,
@@ -1020,25 +1214,68 @@ impl ParamSpecBoxed {
             ))
         }
     }
+
+    pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<T> {
+        ParamSpecBoxedBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecBoxed,
-    ParamSpecBoxedBuilder {
-        boxed_type: crate::Type,
+#[must_use]
+pub struct ParamSpecBoxedBuilder<'a, T: StaticType> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    phantom: std::marker::PhantomData<T>,
+}
+
+impl<'a, T: StaticType> ParamSpecBoxedBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            phantom: Default::default(),
+        }
     }
-    requires (boxed_type: crate::Type,)
-);
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecBoxed::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecBoxedBuilder<'a, T> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecPointer, gobject_ffi::GParamSpecPointer, 17);
 
 impl ParamSpecPointer {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_pointer")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
@@ -1060,11 +1297,11 @@ define_param_spec!(ParamSpecValueArray, gobject_ffi::GParamSpecValueArray, 18);
 impl ParamSpecValueArray {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_value_array")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
-        element_spec: &ParamSpec,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
+        element_spec: Option<&ParamSpec>,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
@@ -1096,29 +1333,79 @@ impl ParamSpecValueArray {
             (*ptr).fixed_n_elements
         }
     }
+
+    pub fn builder(name: &str) -> ParamSpecValueArrayBuilder {
+        ParamSpecValueArrayBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecValueArray,
-    ParamSpecValueArrayBuilder {
-        element_spec: &'a ParamSpec,
+#[must_use]
+pub struct ParamSpecValueArrayBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    element_spec: Option<&'a ParamSpec>,
+}
+
+impl<'a> ParamSpecValueArrayBuilder<'a> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            element_spec: None,
+        }
     }
-    requires (element_spec: &'a ParamSpec,)
-);
+
+    #[doc = "Default: None`"]
+    pub fn element_spec(mut self, value: impl Into<Option<&'a ParamSpec>>) -> Self {
+        self.element_spec = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecValueArray::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.element_spec,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecValueArrayBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 define_param_spec!(ParamSpecObject, gobject_ffi::GParamSpecObject, 19);
 
 impl ParamSpecObject {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_object")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         object_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
+        assert!(object_type.is_a(Type::OBJECT));
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_object(
                 name.to_glib_none().0,
@@ -1129,15 +1416,59 @@ impl ParamSpecObject {
             ))
         }
     }
+
+    pub fn builder<T: StaticType>(name: &str) -> ParamSpecObjectBuilder<T> {
+        ParamSpecObjectBuilder::new(name)
+    }
 }
 
-define_builder!(
-    ParamSpecObject,
-    ParamSpecObjectBuilder {
-        object_type: crate::Type,
+#[must_use]
+pub struct ParamSpecObjectBuilder<'a, T: StaticType> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    phantom: std::marker::PhantomData<T>,
+}
+
+impl<'a, T: StaticType> ParamSpecObjectBuilder<'a, T> {
+    fn new(name: &'a str) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            phantom: Default::default(),
+        }
     }
-    requires (object_type: crate::Type,)
-);
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecObject::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            T::static_type(),
+            self.flags,
+        )
+    }
+}
+
+impl<'a, T: StaticType> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecObjectBuilder<'a, T> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
+
 define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 
 impl ParamSpecOverride {
@@ -1244,10 +1575,10 @@ define_param_spec!(ParamSpecGType, gobject_ffi::GParamSpecGType, 21);
 impl ParamSpecGType {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_gtype")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         is_a_type: crate::Type,
         flags: ParamFlags,
     ) -> ParamSpec {
@@ -1282,10 +1613,10 @@ define_param_spec_default!(
 impl ParamSpecVariant {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_variant")]
-    pub fn new<'a, S: Into<Option<&'a str>>, T: Into<Option<&'a str>>>(
+    pub fn new<'a>(
         name: &str,
-        nick: S,
-        blurb: T,
+        nick: impl Into<Option<&'a str>>,
+        blurb: impl Into<Option<&'a str>>,
         type_: &crate::VariantTy,
         default_value: Option<&crate::Variant>,
         flags: ParamFlags,
@@ -1315,16 +1646,67 @@ impl ParamSpecVariant {
             }
         }
     }
+
+    pub fn builder<'a>(name: &'a str, type_: &'a crate::VariantTy) -> ParamSpecVariantBuilder<'a> {
+        ParamSpecVariantBuilder::new(name, type_)
+    }
 }
 
-define_builder!(
-    ParamSpecVariant,
-    ParamSpecVariantBuilder {
-        type_: &'a crate::VariantTy,
-        default_value: Option<&'a crate::Variant> = None,
+#[must_use]
+pub struct ParamSpecVariantBuilder<'a> {
+    name: &'a str,
+    nick: Option<&'a str>,
+    blurb: Option<&'a str>,
+    flags: crate::ParamFlags,
+    type_: &'a crate::VariantTy,
+    default_value: Option<&'a crate::Variant>,
+}
+
+impl<'a> ParamSpecVariantBuilder<'a> {
+    fn new(name: &'a str, type_: &'a crate::VariantTy) -> Self {
+        Self {
+            name,
+            nick: None,
+            blurb: None,
+            flags: crate::ParamFlags::default(),
+            type_,
+            default_value: None,
+        }
     }
-    requires (type_: &'a crate::VariantTy,)
-);
+
+    #[doc = "Default: None`"]
+    pub fn default_value(mut self, value: impl Into<Option<&'a crate::Variant>>) -> Self {
+        self.default_value = value.into();
+        self
+    }
+
+    #[must_use]
+    pub fn build(self) -> ParamSpec {
+        ParamSpecVariant::new(
+            self.name,
+            self.nick,
+            self.blurb,
+            self.type_,
+            self.default_value,
+            self.flags,
+        )
+    }
+}
+
+impl<'a> crate::prelude::ParamSpecBuilderExt<'a> for ParamSpecVariantBuilder<'a> {
+    fn set_nick(&mut self, nick: Option<&'a str>) {
+        self.nick = nick;
+    }
+    fn set_blurb(&mut self, blurb: Option<&'a str>) {
+        self.blurb = blurb;
+    }
+    fn set_flags(&mut self, flags: crate::ParamFlags) {
+        self.flags = flags;
+    }
+    fn current_flags(&self) -> crate::ParamFlags {
+        self.flags
+    }
+}
 
 #[cfg(test)]
 mod tests {
