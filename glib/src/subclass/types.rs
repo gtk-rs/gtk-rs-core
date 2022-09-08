@@ -6,8 +6,8 @@
 use crate::object::{Cast, IsClass, IsInterface, ObjectSubclassIs, ObjectType, ParentClassIs};
 use crate::translate::*;
 use crate::{Closure, Object, StaticType, Type, Value};
-use rustc_hash::FxHashMap as HashMap;
 use std::any::Any;
+use std::collections::BTreeMap;
 use std::marker;
 use std::mem;
 use std::ptr;
@@ -33,7 +33,7 @@ impl<T> IntoGlib for InitializingType<T> {
 /// Struct used for the instance private data of the GObject.
 struct PrivateStruct<T: ObjectSubclass> {
     imp: T,
-    instance_data: Option<HashMap<Type, Box<dyn Any + Send + Sync>>>,
+    instance_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
 }
 
 // rustdoc-stripper-ignore-next
@@ -245,7 +245,7 @@ unsafe extern "C" fn interface_init<T: ObjectSubclass, A: IsImplementable<T>>(
 
     let mut data = T::type_data();
     if data.as_ref().parent_ifaces.is_none() {
-        data.as_mut().parent_ifaces = Some(HashMap::default());
+        data.as_mut().parent_ifaces = Some(BTreeMap::default());
     }
     {
         let copy = Box::new(*iface.as_ref());
@@ -360,9 +360,9 @@ pub struct TypeData {
     #[doc(hidden)]
     pub parent_class: ffi::gpointer,
     #[doc(hidden)]
-    pub parent_ifaces: Option<HashMap<Type, ffi::gpointer>>,
+    pub parent_ifaces: Option<BTreeMap<Type, ffi::gpointer>>,
     #[doc(hidden)]
-    pub class_data: Option<HashMap<Type, Box<dyn Any + Send + Sync>>>,
+    pub class_data: Option<BTreeMap<Type, Box<dyn Any + Send + Sync>>>,
     #[doc(hidden)]
     pub private_offset: isize,
     #[doc(hidden)]
@@ -452,7 +452,7 @@ impl TypeData {
     /// If the class_data already contains a data for the specified `type_`.
     pub unsafe fn set_class_data<T: Any + Send + Sync + 'static>(&mut self, type_: Type, data: T) {
         if self.class_data.is_none() {
-            self.class_data = Some(HashMap::default());
+            self.class_data = Some(BTreeMap::default());
         }
 
         if let Some(ref mut class_data) = self.class_data {
@@ -763,7 +763,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
             let priv_ = &mut *ptr;
 
             if priv_.instance_data.is_none() {
-                priv_.instance_data = Some(HashMap::default());
+                priv_.instance_data = Some(BTreeMap::default());
             }
 
             if let Some(ref mut instance_data) = priv_.instance_data {
