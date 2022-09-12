@@ -368,17 +368,17 @@ impl GString {
     // rustdoc-stripper-ignore-next
     /// Return the `GString` as string slice.
     pub fn as_str(&self) -> &str {
-        unsafe {
-            let (ptr, len) = match self.0 {
-                Inner::Native(ref cstr) => {
-                    let cstr = cstr.as_ref().unwrap();
-                    (cstr.as_ptr() as *const u8, cstr.to_bytes().len())
-                }
-                Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
-            };
-            if len == 0 {
-                ""
-            } else {
+        let (ptr, len) = match self.0 {
+            Inner::Native(ref cstr) => {
+                let cstr = cstr.as_ref().unwrap();
+                (cstr.as_ptr() as *const u8, cstr.to_bytes().len())
+            }
+            Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
+        };
+        if len == 0 {
+            ""
+        } else {
+            unsafe {
                 let slice = slice::from_raw_parts(ptr, len);
                 std::str::from_utf8_unchecked(slice)
             }
@@ -442,6 +442,12 @@ impl Clone for GString {
 impl fmt::Debug for GString {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         <&str as fmt::Debug>::fmt(&self.as_str(), f)
+    }
+}
+
+impl Default for GString {
+    fn default() -> Self {
+        Self(Inner::Native(Some(CString::default())))
     }
 }
 
@@ -1183,6 +1189,11 @@ mod tests {
                 FromGlibContainer::from_glib_container_num(ffi::g_strdup(std::ptr::null()), 0);
             assert_eq!("", test_e.as_str());
         }
+    }
+
+    #[test]
+    fn test_default() {
+        assert_eq!(GString::from(""), GString::default());
     }
 
     #[test]
