@@ -107,7 +107,7 @@ macro_rules! task_impl {
 
             #[doc(alias = "g_task_get_cancellable")]
             #[doc(alias = "get_cancellable")]
-            pub fn cancellable(&self) -> Cancellable {
+            pub fn cancellable(&self) -> Option<Cancellable> {
                 unsafe { from_glib_none(ffi::g_task_get_cancellable(self.to_glib_none().0)) }
             }
 
