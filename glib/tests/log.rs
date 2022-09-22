@@ -38,11 +38,11 @@ fn check_log_handlers() {
     let count = Arc::new(Mutex::new(Counters::default()));
     log_set_default_handler(clone!(@weak count => move |_, level, _| {
         match level {
-            LogLevel::Critical => { (*count.lock().expect("failed to lock 3")).criticals += 1; }
-            LogLevel::Warning => { (*count.lock().expect("failed to lock 4")).warnings += 1; }
-            LogLevel::Message => { (*count.lock().expect("failed to lock 5")).messages += 1; }
-            LogLevel::Info => { (*count.lock().expect("failed to lock 6")).infos += 1; }
-            LogLevel::Debug => { (*count.lock().expect("failed to lock 7")).debugs += 1; }
+            LogLevel::Critical => { count.lock().expect("failed to lock 3").criticals += 1; }
+            LogLevel::Warning => { count.lock().expect("failed to lock 4").warnings += 1; }
+            LogLevel::Message => { count.lock().expect("failed to lock 5").messages += 1; }
+            LogLevel::Info => { count.lock().expect("failed to lock 6").infos += 1; }
+            LogLevel::Debug => { count.lock().expect("failed to lock 7").debugs += 1; }
             _ => unreachable!(),
         }
     }));
@@ -76,8 +76,8 @@ fn check_log_handlers() {
         false,
         clone!(@weak count => move |_, level, _| {
             match level {
-                LogLevel::Warning => { (*count.lock().expect("failed to lock 4")).warnings += 1; }
-                LogLevel::Debug => { (*count.lock().expect("failed to lock 7")).debugs += 1; }
+                LogLevel::Warning => { count.lock().expect("failed to lock 4").warnings += 1; }
+                LogLevel::Debug => { count.lock().expect("failed to lock 7").debugs += 1; }
                 _ => unreachable!(),
             }
         }),
