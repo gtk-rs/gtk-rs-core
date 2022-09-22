@@ -180,7 +180,7 @@ mod test {
     fn set_env() {
         INIT.call_once(|| {
             let output = Command::new("glib-compile-schemas")
-                .args(&[
+                .args([
                     &format!("{}/tests", env!("CARGO_MANIFEST_DIR")),
                     "--targetdir",
                     env!("OUT_DIR"),

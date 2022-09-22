@@ -161,10 +161,10 @@ mod tests {
         let item0 = ListStore::new(ListStore::static_type());
         let item1 = ListStore::new(ListStore::static_type());
         let mut list = ListStore::new(ListStore::static_type());
-        list.extend(&[&item0, &item1]);
+        list.extend([&item0, &item1]);
         assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(1).as_ref(), Some(item1.upcast_ref()));
-        list.extend(&[item0.clone(), item1.clone()]);
+        list.extend([item0.clone(), item1.clone()]);
         assert_eq!(list.item(2).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(3).as_ref(), Some(item1.upcast_ref()));
 

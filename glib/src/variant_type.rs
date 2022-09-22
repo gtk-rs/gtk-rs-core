@@ -135,6 +135,8 @@ impl Clone for VariantType {
 
 impl Deref for VariantType {
     type Target = VariantTy;
+
+    #[allow(clippy::cast_slice_from_raw_parts)]
     fn deref(&self) -> &VariantTy {
         unsafe {
             &*(slice::from_raw_parts(self.ptr.as_ptr() as *const u8, self.len) as *const [u8]
@@ -449,6 +451,7 @@ impl VariantTy {
     /// Creates `&VariantTy` with a wildcard lifetime from a `GVariantType`
     /// pointer.
     #[doc(hidden)]
+    #[allow(clippy::cast_slice_from_raw_parts)]
     pub unsafe fn from_ptr<'a>(ptr: *const ffi::GVariantType) -> &'a VariantTy {
         assert!(!ptr.is_null());
         let len = ffi::g_variant_type_get_string_length(ptr) as usize;
