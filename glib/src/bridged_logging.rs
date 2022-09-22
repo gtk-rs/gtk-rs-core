@@ -115,13 +115,21 @@ impl GlibLogger {
     }
 
     #[doc(alias = "g_log")]
-    fn write_log(domain: Option<&str>, level: rs_log::Level, message: &str) {
+    fn write_log(domain: Option<&str>, level: rs_log::Level, message: &std::fmt::Arguments<'_>) {
         unsafe {
+            use std::fmt::Write;
+
+            let mut message_builder = crate::GStringBuilder::default();
+            if write!(&mut message_builder, "{}", message).is_err() {
+                return;
+            }
+            let message = message_builder.into_string();
+
             crate::ffi::g_log(
                 domain.to_glib_none().0,
                 GlibLogger::level_to_glib(level).into_glib(),
                 b"%s\0".as_ptr() as *const _,
-                ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(message).0,
+                ToGlibPtr::<*const std::os::raw::c_char>::to_glib_none(&message).0,
             );
         }
     }
@@ -168,30 +176,26 @@ impl rs_log::Log for GlibLogger {
 
         match self.format {
             GlibLoggerFormat::Plain => {
-                let args = record.args();
-                if let Some(s) = args.as_str() {
-                    GlibLogger::write_log(domain, record.level(), s);
-                } else {
-                    GlibLogger::write_log(domain, record.level(), &args.to_string());
-                }
+                GlibLogger::write_log(domain, record.level(), record.args());
             }
             GlibLoggerFormat::LineAndFile => {
                 match (record.file(), record.line()) {
                     (Some(file), Some(line)) => {
-                        let s = format!("{}:{}: {}", file, line, record.args());
-                        GlibLogger::write_log(domain, record.level(), &s);
+                        GlibLogger::write_log(
+                            domain,
+                            record.level(),
+                            &format_args!("{}:{}: {}", file, line, record.args()),
+                        );
                     }
                     (Some(file), None) => {
-                        let s = format!("{}: {}", file, record.args());
-                        GlibLogger::write_log(domain, record.level(), &s);
+                        GlibLogger::write_log(
+                            domain,
+                            record.level(),
+                            &format_args!("{}: {}", file, record.args()),
+                        );
                     }
                     _ => {
-                        let args = record.args();
-                        if let Some(s) = args.as_str() {
-                            GlibLogger::write_log(domain, record.level(), s);
-                        } else {
-                            GlibLogger::write_log(domain, record.level(), &args.to_string());
-                        }
+                        GlibLogger::write_log(domain, record.level(), record.args());
                     }
                 };
             }
