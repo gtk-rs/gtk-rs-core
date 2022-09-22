@@ -240,7 +240,7 @@ impl cairo_bool_t {
 
 impl From<bool> for cairo_bool_t {
     fn from(b: bool) -> cairo_bool_t {
-        let value = if b { 1 } else { 0 };
+        let value = c_int::from(b);
         cairo_bool_t { value }
     }
 }
