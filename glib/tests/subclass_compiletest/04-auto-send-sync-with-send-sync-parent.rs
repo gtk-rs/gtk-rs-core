@@ -25,7 +25,7 @@ unsafe impl<T: TestParentImpl> glib::subclass::prelude::IsSubclassable<T> for Te
 
 impl Default for TestParent {
     fn default() -> Self {
-        glib::Object::new(&[]).unwrap()
+        glib::Object::new(&[])
     }
 }
 
@@ -54,7 +54,7 @@ glib::wrapper! {
 
 impl Default for TestObject {
     fn default() -> Self {
-        glib::Object::new(&[]).unwrap()
+        glib::Object::new(&[])
     }
 }
 

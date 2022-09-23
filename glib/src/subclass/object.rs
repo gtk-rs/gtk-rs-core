@@ -409,7 +409,7 @@ mod test {
     #[test]
     fn test_create() {
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[]).expect("Object::new failed");
+        let obj = Object::with_type(type_, &[]);
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
@@ -432,7 +432,7 @@ mod test {
     #[test]
     fn test_properties() {
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[]).expect("Object::new failed");
+        let obj = Object::with_type(type_, &[]);
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
@@ -446,7 +446,7 @@ mod test {
 
     #[test]
     fn test_create_child_object() {
-        let obj: ChildObject = Object::new(&[]).expect("Object::new failed");
+        let obj: ChildObject = Object::new(&[]);
 
         assert_eq!(obj, obj.imp().instance());
     }
@@ -456,8 +456,7 @@ mod test {
         let obj = Object::builder::<SimpleObject>()
             .property("construct-name", "meh")
             .property("name", "initial")
-            .build()
-            .expect("Object::new failed");
+            .build();
 
         assert_eq!(
             obj.property::<String>("construct-name"),
@@ -468,75 +467,93 @@ mod test {
     }
 
     #[test]
-    fn test_set_properties() {
+    fn test_set_property() {
         let obj = Object::with_type(
             SimpleObject::static_type(),
             &[("construct-name", &"meh"), ("name", &"initial")],
-        )
-        .expect("Object::new failed");
+        );
 
         assert_eq!(
             obj.property::<String>("construct-name"),
             String::from("meh")
         );
-        assert_eq!(
-            obj.try_set_property("construct-name", &"test")
-                .expect_err("Failed to set 'construct-name' property")
-                .to_string(),
-            "property 'construct-name' of type 'SimpleObject' is not writable",
-        );
+
         assert_eq!(
             obj.property::<String>("construct-name"),
             String::from("meh")
         );
+
         assert_eq!(obj.property::<String>("name"), String::from("initial"));
-        assert!(obj.try_set_property("name", &"test").is_ok());
+        obj.set_property("name", &"test");
         assert_eq!(obj.property::<String>("name"), String::from("test"));
 
-        assert_eq!(
-            obj.try_set_property("test", &true)
-                .expect_err("set_property failed")
-                .to_string(),
-            "property 'test' of type 'SimpleObject' not found",
-        );
-
-        assert_eq!(
-            obj.try_set_property("constructed", &false)
-                .expect_err("Failed to set 'constructed' property")
-                .to_string(),
-            "property 'constructed' of type 'SimpleObject' is not writable",
-        );
-
-        assert_eq!(
-            obj.try_set_property("name", &false)
-                .expect_err("Failed to set 'name' property")
-                .to_string(),
-            "property 'name' of type 'SimpleObject' can't be set from the given type (expected: 'gchararray', got: 'gboolean')",
-        );
-
-        let other_obj =
-            Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
-        assert_eq!(
-            obj.try_set_property("child", &other_obj)
-                .expect_err("Failed to set 'child' property")
-                .to_string(),
-            "property 'child' of type 'SimpleObject' can't be set from the given type (expected: 'ChildObject', got: 'SimpleObject')",
-        );
-
-        let child = Object::with_type(ChildObject::static_type(), &[]).expect("Object::new failed");
-        assert!(obj.try_set_property("child", &child).is_ok());
+        let child = Object::with_type(ChildObject::static_type(), &[]);
+        obj.set_property("child", &child);
     }
 
     #[test]
+    #[should_panic = "property 'construct-name' of type 'SimpleObject' is not writable"]
+    fn test_set_property_non_writable() {
+        let obj = Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("name", &"initial")],
+        );
+
+        obj.set_property("construct-name", &"test");
+    }
+
+    #[test]
+    #[should_panic = "property 'test' of type 'SimpleObject' not found"]
+    fn test_set_property_not_found() {
+        let obj = Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("name", &"initial")],
+        );
+
+        obj.set_property("test", &true);
+    }
+
+    #[test]
+    #[should_panic = "property 'constructed' of type 'SimpleObject' is not writable"]
+    fn test_set_property_not_writable() {
+        let obj = Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("name", &"initial")],
+        );
+
+        obj.set_property("constructed", &false);
+    }
+
+    #[test]
+    #[should_panic = "property 'name' of type 'SimpleObject' can't be set from the given type (expected: 'gchararray', got: 'gboolean')"]
+    fn test_set_property_wrong_type() {
+        let obj = Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("name", &"initial")],
+        );
+
+        obj.set_property("name", &false);
+    }
+
+    #[test]
+    #[should_panic = "property 'child' of type 'SimpleObject' can't be set from the given type (expected: 'ChildObject', got: 'SimpleObject')"]
+    fn test_set_property_wrong_type_2() {
+        let obj = Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("name", &"initial")],
+        );
+
+        let other_obj = Object::with_type(SimpleObject::static_type(), &[]);
+
+        obj.set_property("child", &other_obj);
+    }
+
+    #[test]
+    #[should_panic = "Can't set construct property 'construct-name' for type 'SimpleObject' twice"]
     fn test_construct_property_set_twice() {
-        assert_eq!(
-            Object::with_type(
-                SimpleObject::static_type(),
-                &[("construct-name", &"meh"), ("construct-name", &"meh2")],
-            )
-            .expect_err("Can't set construct property twice")
-            .to_string(),
-            "Can't set construct property 'construct-name' for type 'SimpleObject' twice",
+        Object::with_type(
+            SimpleObject::static_type(),
+            &[("construct-name", &"meh"), ("construct-name", &"meh2")],
         );
     }
 
@@ -546,7 +563,7 @@ mod test {
         use std::sync::Arc;
 
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[("name", &"old-name")]).expect("Object::new failed");
+        let obj = Object::with_type(type_, &[("name", &"old-name")]);
 
         let name_changed_triggered = Arc::new(AtomicBool::new(false));
         let name_changed_clone = name_changed_triggered.clone();
@@ -572,7 +589,7 @@ mod test {
 
     #[test]
     fn test_signal_return_expected_type() {
-        let obj = Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
+        let obj = Object::with_type(SimpleObject::static_type(), &[]);
 
         obj.connect("create-string", false, move |_args| {
             Some("return value".to_value())
@@ -590,7 +607,7 @@ mod test {
         use std::sync::Arc;
 
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[("name", &"old-name")]).expect("Object::new failed");
+        let obj = Object::with_type(type_, &[("name", &"old-name")]);
 
         let name_changed_triggered = Arc::new(AtomicBool::new(false));
         let name_changed_clone = name_changed_triggered.clone();
@@ -607,14 +624,10 @@ mod test {
 
     #[test]
     fn test_signal_return_expected_object_type() {
-        let obj = Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
+        let obj = Object::with_type(SimpleObject::static_type(), &[]);
 
         obj.connect("create-child-object", false, move |_args| {
-            Some(
-                Object::with_type(ChildObject::static_type(), &[])
-                    .expect("Object::new failed")
-                    .to_value(),
-            )
+            Some(Object::with_type(ChildObject::static_type(), &[]).to_value())
         });
         let value: glib::Object = obj.emit_by_name("create-child-object", &[]);
         assert!(value.type_().is_a(ChildObject::static_type()));

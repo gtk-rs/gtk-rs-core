@@ -254,11 +254,13 @@ mod tests {
                 .expect("Failed creation/initialization of AsyncInitableTestType object")
         }
 
-        pub fn new_uninit() -> Self {
+        pub unsafe fn new_uninit() -> Self {
             // This creates an uninitialized AsyncInitableTestType object, for testing
             // purposes. In real code, using AsyncInitable::new_future (like the new() method
             // does) is recommended.
-            glib::Object::new(&[]).expect("Failed creation of AsyncInitableTestType object")
+            glib::Object::new_internal(Self::static_type(), &mut [])
+                .downcast()
+                .unwrap()
         }
 
         pub fn value(&self) -> u64 {
@@ -269,12 +271,15 @@ mod tests {
     #[test]
     fn test_async_initable_with_init() {
         glib::MainContext::new().block_on(async {
-            let test = AsyncInitableTestType::new_uninit();
+            let res = unsafe {
+                let test = AsyncInitableTestType::new_uninit();
 
-            assert_ne!(0x123456789abcdef, test.value());
+                assert_ne!(0x123456789abcdef, test.value());
 
-            let result = unsafe { test.init_future(glib::PRIORITY_DEFAULT) }.await;
-            assert!(result.is_ok());
+                test.init_future(glib::PRIORITY_DEFAULT).await.map(|_| test)
+            };
+            assert!(res.is_ok());
+            let test = res.unwrap();
 
             assert_eq!(0x123456789abcdef, test.value());
         });
@@ -289,18 +294,16 @@ mod tests {
     }
 
     #[test]
+    #[should_panic = ""]
     fn test_async_initable_new_failure() {
         glib::MainContext::new().block_on(async {
             let value: u32 = 2;
-            match AsyncInitable::new_future::<AsyncInitableTestType>(
+            let _ = AsyncInitable::new_future::<AsyncInitableTestType>(
                 &[("invalid-property", &value)],
                 glib::PRIORITY_DEFAULT,
             )
-            .await
-            {
-                Err(InitableError::NewObjectFailed(_)) => (),
-                v => panic!("expected InitableError::NewObjectFailed, got {:?}", v),
-            }
+            .await;
+            unreachable!();
         });
     }
 

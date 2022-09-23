@@ -33,6 +33,7 @@ glib-macros = { path = "../glib-macros" }
 rs-log = { package = "log", version = "0.4", optional = true }
 smallvec = "1.0"
 thiserror = "1"
+gio_ffi = { package = "gio-sys", path = "../gio/sys", optional = true }
 
 [dev-dependencies]
 tempfile = "3"
@@ -40,6 +41,7 @@ gir-format-check = "^0.1"
 trybuild2 = "1"
 
 [features]
+default = ["gio"]
 v2_58 = ["ffi/v2_58", "gobject_ffi/v2_58"]
 v2_60 = ["v2_58", "ffi/v2_60"]
 v2_62 = ["v2_60", "ffi/v2_62", "gobject_ffi/v2_62"]
@@ -53,6 +55,7 @@ log = ["rs-log"]
 log_macros = ["log"]
 dox = ["ffi/dox", "gobject_ffi/dox", "log_macros"]
 compiletests = []
+gio = ["gio_ffi"]
 
 [package.metadata.docs.rs]
 features = ["dox"]

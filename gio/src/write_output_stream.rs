@@ -179,14 +179,14 @@ glib::wrapper! {
 
 impl WriteOutputStream {
     pub fn new<W: Write + Send + Any + 'static>(write: W) -> WriteOutputStream {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create write input stream");
+        let obj: Self = glib::Object::new(&[]);
 
         *obj.imp().write.borrow_mut() = Some(imp::Writer::Write(AnyWriter::new(write)));
         obj
     }
 
     pub fn new_seekable<W: Write + Seek + Send + Any + 'static>(write: W) -> WriteOutputStream {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create write input stream");
+        let obj: Self = glib::Object::new(&[]);
 
         *obj.imp().write.borrow_mut() =
             Some(imp::Writer::WriteSeek(AnyWriter::new_seekable(write)));

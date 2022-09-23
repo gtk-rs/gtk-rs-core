@@ -149,11 +149,13 @@ mod tests {
                 .expect("Failed creation/initialization of InitableTestType object")
         }
 
-        pub fn new_uninit() -> Self {
+        pub unsafe fn new_uninit() -> Self {
             // This creates an uninitialized InitableTestType object, for testing
             // purposes. In real code, using Initable::new (like the new() method
             // does) is recommended.
-            glib::Object::new(&[]).expect("Failed creation of InitableTestType object")
+            glib::Object::new_internal(Self::static_type(), &mut [])
+                .downcast()
+                .unwrap()
         }
 
         pub fn value(&self) -> u64 {
@@ -163,12 +165,15 @@ mod tests {
 
     #[test]
     fn test_initable_with_init() {
-        let test = InitableTestType::new_uninit();
+        let res = unsafe {
+            let test = InitableTestType::new_uninit();
 
-        assert_ne!(0x123456789abcdef, test.value());
+            assert_ne!(0x123456789abcdef, test.value());
 
-        let result = unsafe { test.init(Option::<&Cancellable>::None) };
-        assert!(result.is_ok());
+            test.init(Option::<&Cancellable>::None).map(|_| test)
+        };
+        assert!(res.is_ok());
+        let test = res.unwrap();
 
         assert_eq!(0x123456789abcdef, test.value());
     }
@@ -180,15 +185,14 @@ mod tests {
     }
 
     #[test]
+    #[should_panic = ""]
     fn test_initable_new_failure() {
         let value: u32 = 2;
-        match Initable::new::<InitableTestType, Cancellable>(
+        let _ = Initable::new::<InitableTestType, Cancellable>(
             &[("invalid-property", &value)],
             Option::<&Cancellable>::None,
-        ) {
-            Err(InitableError::NewObjectFailed(_)) => (),
-            v => panic!("expected InitableError::NewObjectFailed, got {:?}", v),
-        }
+        );
+        unreachable!();
     }
 
     #[test]

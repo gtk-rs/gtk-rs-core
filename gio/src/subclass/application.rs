@@ -552,7 +552,6 @@ mod tests {
             ("application-id", &"org.gtk-rs.SimpleApplication"),
             ("flags", &crate::ApplicationFlags::empty()),
         ])
-        .unwrap()
         .upcast::<crate::Application>();
 
         app.set_inactivity_timeout(10000);

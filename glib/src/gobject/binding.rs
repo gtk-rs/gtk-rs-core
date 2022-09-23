@@ -202,7 +202,7 @@ mod test {
 
     impl Default for TestObject {
         fn default() -> Self {
-            crate::Object::new(&[]).unwrap()
+            crate::Object::new(&[])
         }
     }
 

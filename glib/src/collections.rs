@@ -1301,10 +1301,10 @@ mod test {
     // checker-ignore-item
     fn slist() {
         let items = [
-            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
-            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
-            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
-            crate::Object::with_type(crate::Type::OBJECT, &[]).unwrap(),
+            crate::Object::with_type(crate::Type::OBJECT, &[]),
+            crate::Object::with_type(crate::Type::OBJECT, &[]),
+            crate::Object::with_type(crate::Type::OBJECT, &[]),
+            crate::Object::with_type(crate::Type::OBJECT, &[]),
         ];
         let list = unsafe {
             let mut list = ffi::g_slist_append(

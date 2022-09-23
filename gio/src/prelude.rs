@@ -24,7 +24,6 @@ pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
 pub use crate::desktop_app_info::DesktopAppInfoExtManual;
 pub use crate::file::FileExtManual;
 pub use crate::inet_address::InetAddressExtManual;
-pub use crate::initable::InitableError;
 pub use crate::input_stream::InputStreamExtManual;
 pub use crate::io_stream::IOStreamExtManual;
 pub use crate::list_model::ListModelExtManual;
