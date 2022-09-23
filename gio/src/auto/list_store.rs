@@ -91,7 +91,6 @@ impl ListStore {
 impl Default for ListStore {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct ListStore object with default parameters")
     }
 }
 
@@ -121,7 +120,6 @@ impl ListStoreBuilder {
             properties.push(("item-type", item_type));
         }
         glib::Object::new::<ListStore>(&properties)
-            .expect("Failed to create an instance of ListStore")
     }
 
     pub fn item_type(mut self, item_type: glib::types::Type) -> Self {

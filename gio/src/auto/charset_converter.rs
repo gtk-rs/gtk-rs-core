@@ -114,7 +114,6 @@ impl CharsetConverter {
 impl Default for CharsetConverter {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct CharsetConverter object with default parameters")
     }
 }
 
@@ -152,7 +151,6 @@ impl CharsetConverterBuilder {
             properties.push(("use-fallback", use_fallback));
         }
         glib::Object::new::<CharsetConverter>(&properties)
-            .expect("Failed to create an instance of CharsetConverter")
     }
 
     pub fn from_charset(mut self, from_charset: &str) -> Self {

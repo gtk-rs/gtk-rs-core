@@ -71,7 +71,6 @@ impl Application {
 impl Default for Application {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct Application object with default parameters")
     }
 }
 
@@ -117,7 +116,6 @@ impl ApplicationBuilder {
             properties.push(("resource-base-path", resource_base_path));
         }
         glib::Object::new::<Application>(&properties)
-            .expect("Failed to create an instance of Application")
     }
 
     pub fn action_group(mut self, action_group: &impl IsA<ActionGroup>) -> Self {

@@ -51,7 +51,6 @@ impl ConverterInputStream {
 impl Default for ConverterInputStream {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct ConverterInputStream object with default parameters")
     }
 }
 
@@ -89,7 +88,6 @@ impl ConverterInputStreamBuilder {
             properties.push(("close-base-stream", close_base_stream));
         }
         glib::Object::new::<ConverterInputStream>(&properties)
-            .expect("Failed to create an instance of ConverterInputStream")
     }
 
     pub fn converter(mut self, converter: &impl IsA<Converter>) -> Self {
