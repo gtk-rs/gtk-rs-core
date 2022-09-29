@@ -1365,18 +1365,33 @@ impl Object {
                 .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
             let pspecs = klass.list_properties();
 
-            properties
-                .iter()
-                .map(|(name, value)| {
-                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                    })?;
+            let mut validated_properties =
+                smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+            for (idx, (name, value)) in properties.iter().enumerate() {
+                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                })?;
 
-                    let mut value = value.to_value();
-                    validate_property_type(type_, true, pspec, &mut value)?;
-                    Ok((pspec.name().as_ptr(), value))
-                })
-                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
+                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
+                    && properties[0..idx]
+                        .iter()
+                        .any(|(other_name, _)| name == other_name)
+                {
+                    return Err(bool_error!(
+                        "Can't set construct property '{}' for type '{}' twice",
+                        name,
+                        type_
+                    ));
+                }
+
+                let mut value = value.to_value();
+                validate_property_type(type_, true, pspec, &mut value)?;
+
+                validated_properties.push((pspec.name().as_ptr(), value));
+            }
+
+            validated_properties
         } else {
             smallvec::SmallVec::new()
         };
@@ -1395,18 +1410,33 @@ impl Object {
                 .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
             let pspecs = klass.list_properties();
 
-            properties
-                .iter()
-                .map(|(name, value)| {
-                    let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                        bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                    })?;
+            let mut validated_properties =
+                smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+            for (idx, (name, value)) in properties.iter().enumerate() {
+                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
+                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
+                })?;
 
-                    let mut value = value.clone();
-                    validate_property_type(type_, true, pspec, &mut value)?;
-                    Ok((pspec.name().as_ptr(), value))
-                })
-                .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?
+                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
+                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
+                    && properties[0..idx]
+                        .iter()
+                        .any(|(other_name, _)| name == other_name)
+                {
+                    return Err(bool_error!(
+                        "Can't set construct property '{}' for type '{}' twice",
+                        name,
+                        type_
+                    ));
+                }
+
+                let mut value = value.clone();
+                validate_property_type(type_, true, pspec, &mut value)?;
+
+                validated_properties.push((pspec.name().as_ptr(), value));
+            }
+
+            validated_properties
         } else {
             smallvec::SmallVec::new()
         };
