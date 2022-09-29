@@ -528,6 +528,19 @@ mod test {
     }
 
     #[test]
+    fn test_construct_property_set_twice() {
+        assert_eq!(
+            Object::with_type(
+                SimpleObject::static_type(),
+                &[("construct-name", &"meh"), ("construct-name", &"meh2")],
+            )
+            .expect_err("Can't set construct property twice")
+            .to_string(),
+            "Can't set construct property 'construct-name' for type 'SimpleObject' twice",
+        );
+    }
+
+    #[test]
     fn test_signals() {
         use std::sync::atomic::{AtomicBool, Ordering};
         use std::sync::Arc;
