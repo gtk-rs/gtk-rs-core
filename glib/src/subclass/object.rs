@@ -550,14 +550,9 @@ mod test {
 
         let name_changed_triggered = Arc::new(AtomicBool::new(false));
         let name_changed_clone = name_changed_triggered.clone();
-        obj.connect("name-changed", false, move |args| {
-            let _obj = args[0].get::<Object>().expect("Failed to get args[0]");
-            let name = args[1].get::<&str>().expect("Failed to get args[1]");
-
+        obj.connect_static("name-changed", false, move |_obj: Object, name: String| {
             assert_eq!(name, "new-name");
             name_changed_clone.store(true, Ordering::Relaxed);
-
-            None
         });
 
         assert_eq!(obj.property::<String>("name"), String::from("old-name"));
@@ -574,9 +569,7 @@ mod test {
     fn test_signal_return_expected_type() {
         let obj = Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
 
-        obj.connect("create-string", false, move |_args| {
-            Some("return value".to_value())
-        });
+        obj.connect_static("create-string", false, || "return value");
 
         let signal_id = imp::SimpleObject::signals()[2].signal_id();
 
@@ -609,12 +602,8 @@ mod test {
     fn test_signal_return_expected_object_type() {
         let obj = Object::with_type(SimpleObject::static_type(), &[]).expect("Object::new failed");
 
-        obj.connect("create-child-object", false, move |_args| {
-            Some(
-                Object::with_type(ChildObject::static_type(), &[])
-                    .expect("Object::new failed")
-                    .to_value(),
-            )
+        obj.connect_static("create-child-object", false, move || {
+            Object::with_type(ChildObject::static_type(), &[]).expect("Object::new failed")
         });
         let value: glib::Object = obj.emit_by_name("create-child-object", &[]);
         assert!(value.type_().is_a(ChildObject::static_type()));

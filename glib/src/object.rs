@@ -17,7 +17,7 @@ use std::ops;
 use std::pin::Pin;
 use std::ptr;
 
-use crate::closure::TryFromClosureReturnValue;
+use crate::closure::{SignalClosure, TryFromClosureReturnValue};
 use crate::subclass::{prelude::ObjectSubclass, SignalId};
 use crate::value::ToValue;
 use crate::BoolError;
@@ -1833,6 +1833,23 @@ pub trait ObjectExt: ObjectType {
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
     // rustdoc-stripper-ignore-next
+    /// Connect to the signal `signal_name` on this object.
+    ///
+    /// If `after` is set to `true` then the callback will be called after the default class
+    /// handler of the signal is emitted, otherwise before.
+    ///
+    /// # Panics
+    ///
+    /// If the signal does not exist.
+    // FIXME: Add all the other variants, rename this to connect(), rename existing connect() to connect_values()
+    fn connect_static<F: SignalClosure<A> + Send + Sync + 'static, A>(
+        &self,
+        signal_name: &str,
+        after: bool,
+        callback: F,
+    ) -> SignalHandlerId;
+
+    // rustdoc-stripper-ignore-next
     /// Similar to [`Self::connect_id`] but fails instead of panicking.
     fn try_connect_id<F>(
         &self,
@@ -2710,6 +2727,16 @@ impl<T: ObjectType> ObjectExt for T {
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
     {
         self.try_connect(signal_name, after, callback).unwrap()
+    }
+
+    fn connect_static<F: SignalClosure<A> + Send + Sync + 'static, A>(
+        &self,
+        signal_name: &str,
+        after: bool,
+        callback: F,
+    ) -> SignalHandlerId {
+        // FIXME: Check parameter/return types during connection
+        self.connect(signal_name, after, move |args| callback.call(args))
     }
 
     fn try_connect_id<F>(
