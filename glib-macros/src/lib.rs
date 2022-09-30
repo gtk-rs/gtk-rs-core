@@ -10,12 +10,14 @@ mod flags_attribute;
 mod object_interface_attribute;
 mod object_subclass_attribute;
 mod shared_boxed_derive;
+mod thread_local_object;
 mod variant_derive;
 
 mod utils;
 
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
+use quote::ToTokens;
 use syn::{parse_macro_input, DeriveInput, NestedMeta};
 
 /// Macro for passing variables as strong or weak references into a closure.
@@ -819,4 +821,76 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
         item.into(),
     )
     .unwrap_or_else(|e| e.into_compile_error().into())
+}
+
+/// Creates a static object that is globally accessible
+/// as a thread local variable.
+///
+/// # Examples
+///
+/// ```
+/// # // Create a module so `use super::*` will work properly.
+/// # mod test_wrapper_mod {
+/// #     use glib_macros::thread_local_object;
+/// #
+/// #     // Imitate a GObject.
+/// #     #[derive(Default, Clone)]
+/// #     pub struct MyGObject;
+/// #
+/// #     impl MyGObject {
+/// #         fn with_label(_: &str) -> Self {
+/// #             Self
+/// #         }
+/// #     }
+/// // Specify the name of the function and the type.
+/// thread_local_object!(my_object, MyGObject);
+///
+/// // If your object doesn't have a [`Default`] implementation
+/// // or you want to specify a constructor, you can use the
+/// // third argument of the macro.
+/// thread_local_object!(my_object2, MyGObject, MyGObject::with_label("placeholder"));
+/// # }
+/// # use test_wrapper_mod::*;
+///
+/// // Get the thread local object
+/// let my_obj = my_object();
+/// let my_obj2 = my_object2();
+/// ```
+///
+/// # Panics
+///
+/// This macro uses [`thread_local`] internally.
+/// This means each thread will see its own object without
+/// any synchronization between the threads.
+/// However, some GObjects such as GTK widgets can only be
+/// used from a single thread and might cause a panic when
+/// retrieved from a thread where GTK wasn't initialized.
+///
+/// ```
+/// # // Create a module so `use super::*` will work properly.
+/// # mod test_wrapper_mod {
+/// #     use glib_macros::thread_local_object;
+/// #
+/// #     // Imitate a GObject.
+/// #     #[derive(Default, Clone)]
+/// #     pub struct MyGObject;
+/// #
+/// thread_local_object!(my_object, MyGObject);
+/// # }
+/// # use test_wrapper_mod::*;
+///
+/// let my_obj = my_object();
+///
+/// # let join_handle =
+/// std::thread::spawn(|| {
+///     // Don't do this with GTK widgets!
+///     let my_obj = my_object();
+/// });
+/// # join_handle.join().unwrap();
+/// ```
+#[proc_macro]
+pub fn thread_local_object(input: TokenStream) -> TokenStream {
+    let thread_local_object_tokens =
+        parse_macro_input!(input as thread_local_object::ThreadLocalObjectTokens);
+    thread_local_object_tokens.to_token_stream().into()
 }
