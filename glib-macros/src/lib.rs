@@ -16,6 +16,7 @@ mod utils;
 
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
+use quote::ToTokens;
 use syn::{parse_macro_input, DeriveInput, NestedMeta};
 
 /// Macro for passing variables as strong or weak references into a closure.
@@ -819,4 +820,63 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
         item.into(),
     )
     .unwrap_or_else(|e| e.into_compile_error().into())
+}
+
+/// Marks an async main with a default main context.
+///
+/// # Examples
+///
+/// ```
+/// #[glib::main]
+/// async fn main() {
+///     glib::timeout_future_seconds(1).await;
+/// }
+/// ```
+#[proc_macro_attribute]
+pub fn main(_args: TokenStream, mut item: TokenStream) -> TokenStream {
+    let mut item_fn: syn::ItemFn = match syn::parse(item.clone()) {
+        Ok(it) => it,
+        Err(e) => {
+            item.extend(TokenStream::from(e.into_compile_error()));
+            return item;
+        }
+    };
+
+    if item_fn.sig.ident != "main" {
+        item.extend(TokenStream::from(
+            syn::Error::new_spanned(
+                item_fn.sig.ident,
+                "The main-macro can only be applied to 'main' function",
+            )
+            .into_compile_error(),
+        ));
+
+        return item;
+    }
+
+    if item_fn.sig.asyncness.is_none() {
+        item.extend(TokenStream::from(
+            syn::Error::new_spanned(
+                item_fn.sig.ident,
+                "The 'async' keyword is missing from the function declaration",
+            )
+            .into_compile_error(),
+        ));
+
+        return item;
+    }
+
+    item_fn.sig.asyncness = None;
+
+    let body = &item_fn.block;
+
+    item_fn.block = syn::parse2(quote::quote! {
+        {
+            let main_ctx = glib::MainContext::default();
+            main_ctx.block_on(async #body)
+        }
+    })
+    .expect("Body parsing failure");
+
+    TokenStream::from(item_fn.into_token_stream())
 }

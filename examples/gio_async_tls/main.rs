@@ -7,13 +7,8 @@ use std::pin::Pin;
 
 use std::error::Error;
 
-fn main() -> Result<(), Box<dyn Error>> {
-    // Get the default main context and run our async function on it
-    let main_context = glib::MainContext::default();
-    main_context.block_on(run())
-}
-
-async fn run() -> Result<(), Box<dyn Error>> {
+#[glib::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     // Connect to https://www.rust-lang.org
     let client = gio::SocketClient::new();
     let connectable = gio::NetworkAddress::new("www.rust-lang.org", 443);
