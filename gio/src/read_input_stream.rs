@@ -152,7 +152,7 @@ glib::wrapper! {
 
 impl ReadInputStream {
     pub fn new<R: Read + Send + 'static>(read: R) -> ReadInputStream {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create read input stream");
+        let obj: Self = glib::Object::new(&[]);
 
         *obj.imp().read.borrow_mut() = Some(imp::Reader::Read(AnyReader::new(read)));
 
@@ -160,7 +160,7 @@ impl ReadInputStream {
     }
 
     pub fn new_seekable<R: Read + Seek + Send + 'static>(read: R) -> ReadInputStream {
-        let obj: Self = glib::Object::new(&[]).expect("Failed to create read input stream");
+        let obj: Self = glib::Object::new(&[]);
 
         *obj.imp().read.borrow_mut() = Some(imp::Reader::ReadSeek(AnyReader::new_seekable(read)));
 

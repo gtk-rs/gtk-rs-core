@@ -436,7 +436,7 @@ mod test {
 
         impl MySimpleObject {
             pub fn new() -> Self {
-                glib::Object::new(&[]).expect("Failed to create MySimpleObject")
+                glib::Object::new(&[])
             }
 
             #[doc(alias = "get_size")]

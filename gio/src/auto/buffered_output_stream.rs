@@ -61,7 +61,6 @@ impl BufferedOutputStream {
 impl Default for BufferedOutputStream {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct BufferedOutputStream object with default parameters")
     }
 }
 
@@ -103,7 +102,6 @@ impl BufferedOutputStreamBuilder {
             properties.push(("close-base-stream", close_base_stream));
         }
         glib::Object::new::<BufferedOutputStream>(&properties)
-            .expect("Failed to create an instance of BufferedOutputStream")
     }
 
     pub fn auto_grow(mut self, auto_grow: bool) -> Self {

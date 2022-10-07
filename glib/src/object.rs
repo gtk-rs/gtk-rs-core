@@ -20,7 +20,6 @@ use std::ptr;
 use crate::closure::TryFromClosureReturnValue;
 use crate::subclass::{prelude::ObjectSubclass, SignalId};
 use crate::value::ToValue;
-use crate::BoolError;
 use crate::SignalHandlerId;
 use crate::Type;
 use crate::Value;
@@ -1340,119 +1339,92 @@ impl Object {
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object with the given properties.
     ///
-    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     #[allow(clippy::new_ret_no_self)]
-    pub fn new<T: IsA<Object> + IsClass>(
-        properties: &[(&str, &dyn ToValue)],
-    ) -> Result<T, BoolError> {
-        Ok(Object::with_type(T::static_type(), properties)?
+    #[track_caller]
+    pub fn new<T: IsA<Object> + IsClass>(properties: &[(&str, &dyn ToValue)]) -> T {
+        Object::with_type(T::static_type(), properties)
             .downcast()
-            .unwrap())
+            .unwrap()
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
-    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
-    pub fn with_type(
-        type_: Type,
-        properties: &[(&str, &dyn ToValue)],
-    ) -> Result<Object, BoolError> {
-        let params = if !properties.is_empty() {
-            let klass = ObjectClass::from_type(type_)
-                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-            let pspecs = klass.list_properties();
-
-            let mut validated_properties =
-                smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-            for (idx, (name, value)) in properties.iter().enumerate() {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
-
-                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
-                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
-                    && properties[0..idx]
-                        .iter()
-                        .any(|(other_name, _)| name == other_name)
-                {
-                    return Err(bool_error!(
-                        "Can't set construct property '{}' for type '{}' twice",
-                        name,
-                        type_
-                    ));
-                }
-
-                let mut value = value.to_value();
-                validate_property_type(type_, true, pspec, &mut value)?;
-
-                validated_properties.push((pspec.name().as_ptr(), value));
+    #[track_caller]
+    pub fn with_type(type_: Type, properties: &[(&str, &dyn ToValue)]) -> Object {
+        #[cfg(feature = "gio")]
+        unsafe {
+            let iface_type = from_glib(gio_ffi::g_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{}' implementing `gio::Initable`. Use `gio::Initable::new()`", type_);
             }
+            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`", type_);
+            }
+        }
 
-            validated_properties
-        } else {
-            smallvec::SmallVec::new()
-        };
+        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+        for (name, value) in properties {
+            property_values.push((*name, value.to_value()));
+        }
 
-        unsafe { Object::new_internal(type_, &params) }
+        unsafe { Object::new_internal(type_, &mut property_values) }
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
-    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
-    pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Result<Object, BoolError> {
-        let params = if !properties.is_empty() {
-            let klass = ObjectClass::from_type(type_)
-                .ok_or_else(|| bool_error!("Can't retrieve class for type '{}'", type_))?;
-            let pspecs = klass.list_properties();
-
-            let mut validated_properties =
-                smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-            for (idx, (name, value)) in properties.iter().enumerate() {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, type_)
-                })?;
-
-                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
-                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
-                    && properties[0..idx]
-                        .iter()
-                        .any(|(other_name, _)| name == other_name)
-                {
-                    return Err(bool_error!(
-                        "Can't set construct property '{}' for type '{}' twice",
-                        name,
-                        type_
-                    ));
-                }
-
-                let mut value = value.clone();
-                validate_property_type(type_, true, pspec, &mut value)?;
-
-                validated_properties.push((pspec.name().as_ptr(), value));
+    #[track_caller]
+    pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Object {
+        #[cfg(feature = "gio")]
+        unsafe {
+            let iface_type = from_glib(gio_ffi::g_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{}' implementing `gio::Initable`. Use `gio::Initable::new()`", type_);
             }
+            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`", type_);
+            }
+        }
 
-            validated_properties
-        } else {
-            smallvec::SmallVec::new()
-        };
+        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+        for (name, value) in properties {
+            // FIXME> This cloning can be avoided with GLib 2.74, see below.
+            property_values.push((*name, value.clone()));
+        }
 
-        unsafe { Object::new_internal(type_, &params) }
+        unsafe { Object::new_internal(type_, &mut property_values) }
     }
 
-    unsafe fn new_internal(
-        type_: Type,
-        params: &[(*const u8, Value)],
-    ) -> Result<Object, BoolError> {
+    // rustdoc-stripper-ignore-next
+    /// Create a new instance of an object of the given type with the given properties.
+    ///
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
+    ///
+    /// Unlike the other constructors this does not panic if the object is implementing
+    /// `gio::Initable` or `gio::AsyncInitable` and it might be unsafe to use the returned object
+    /// without using the API of those interfaces first.
+    #[track_caller]
+    pub unsafe fn new_internal(type_: Type, properties: &mut [(&str, Value)]) -> Object {
         if !type_.is_a(Object::static_type()) {
-            return Err(bool_error!(
-                "Can't instantiate non-GObject type '{}'",
-                type_
-            ));
+            panic!("Can't instantiate non-GObject type '{}'", type_);
         }
 
         if gobject_ffi::g_type_test_flags(
@@ -1460,35 +1432,67 @@ impl Object {
             gobject_ffi::G_TYPE_FLAG_INSTANTIATABLE,
         ) == ffi::GFALSE
         {
-            return Err(bool_error!("Can't instantiate type '{}'", type_));
+            panic!("Can't instantiate type '{}'", type_);
         }
 
         if gobject_ffi::g_type_test_flags(type_.into_glib(), gobject_ffi::G_TYPE_FLAG_ABSTRACT)
             != ffi::GFALSE
         {
-            return Err(bool_error!("Can't instantiate abstract type '{}'", type_));
+            panic!("Can't instantiate abstract type '{}'", type_);
         }
 
-        let params_c = params
-            .iter()
-            .map(|&(name, ref value)| gobject_ffi::GParameter {
-                name: name as *const _,
-                value: *value.to_glib_none().0,
-            })
-            .collect::<smallvec::SmallVec<[_; 10]>>();
+        let mut property_names = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
 
-        let ptr = gobject_ffi::g_object_newv(
+        if !properties.is_empty() {
+            let klass = ObjectClass::from_type(type_)
+                .unwrap_or_else(|| panic!("Can't retrieve class for type '{}'", type_));
+            let pspecs = klass.list_properties();
+
+            for (idx, (name, value)) in properties.iter_mut().enumerate() {
+                let pspec = pspecs
+                    .iter()
+                    .find(|p| p.name() == *name)
+                    .unwrap_or_else(|| {
+                        panic!("Can't find property '{}' for type '{}'", name, type_)
+                    });
+
+                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
+                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
+                    && property_names[0..idx]
+                        .iter()
+                        .any(|other_name| pspec.name().as_ptr() == *other_name)
+                {
+                    panic!(
+                        "Can't set construct property '{}' for type '{}' twice",
+                        name, type_
+                    );
+                }
+
+                // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
+                // not require mutable values here except for when LAX_VALIDATION is provided and a
+                // change is needed, or a GObject value needs it's GType changed.
+                validate_property_type(type_, true, pspec, value);
+
+                property_names.push(pspec.name().as_ptr());
+                property_values.push(*value.to_glib_none().0);
+            }
+        }
+
+        let ptr = gobject_ffi::g_object_new_with_properties(
             type_.into_glib(),
-            params_c.len() as u32,
-            mut_override(params_c.as_ptr()),
+            properties.len() as u32,
+            mut_override(property_names.as_ptr() as *const *const _),
+            property_values.as_ptr(),
         );
+
         if ptr.is_null() {
-            Err(bool_error!("Can't instantiate object for type '{}'", type_))
+            panic!("Can't instantiate object for type '{}'", type_);
         } else if type_.is_a(InitiallyUnowned::static_type()) {
             // Attention: This takes ownership of the floating reference
-            Ok(from_glib_none(ptr))
+            from_glib_none(ptr)
         } else {
-            Ok(from_glib_full(ptr))
+            from_glib_full(ptr)
         }
     }
 
@@ -1541,10 +1545,14 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
     // rustdoc-stripper-ignore-next
     /// Build the object with the provided properties.
     ///
-    /// This fails if the object is not instantiable, doesn't have all the given properties or
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
-    pub fn build(self) -> Result<O, BoolError> {
-        Object::with_values(self.type_, &self.properties).map(|o| unsafe { o.unsafe_cast::<O>() })
+    #[track_caller]
+    pub fn build(self) -> O {
+        let object = Object::with_values(self.type_, &self.properties);
+        unsafe { object.unsafe_cast::<O>() }
     }
 }
 
@@ -1596,11 +1604,6 @@ pub trait ObjectExt: ObjectType {
     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::set_property`] but fails instead of panicking.
-    #[doc(alias = "g_object_set_property")]
-    fn try_set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
     ///
     /// # Panics
@@ -1609,15 +1612,6 @@ pub trait ObjectExt: ObjectType {
     /// the provided value, or if the property is not writable.
     #[doc(alias = "g_object_set_property")]
     fn set_property<V: ToValue>(&self, property_name: &str, value: V);
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::set_property`] but fails instead of panicking.
-    #[doc(alias = "g_object_set_property")]
-    fn try_set_property_from_value(
-        &self,
-        property_name: &str,
-        value: &Value,
-    ) -> Result<(), BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
@@ -1630,12 +1624,6 @@ pub trait ObjectExt: ObjectType {
     fn set_property_from_value(&self, property_name: &str, value: &Value);
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::set_properties`] but fails instead of panicking.
-    #[doc(alias = "g_object_set")]
-    fn try_set_properties(&self, property_values: &[(&str, &dyn ToValue)])
-        -> Result<(), BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Sets multiple properties of the object at once.
     ///
     /// # Panics
@@ -1644,14 +1632,6 @@ pub trait ObjectExt: ObjectType {
     /// type are provided, or if any of the properties is not writable.
     #[doc(alias = "g_object_set")]
     fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]);
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::set_properties_from_value`] but fails instead of panicking.
-    #[doc(alias = "g_object_set")]
-    fn try_set_properties_from_value(
-        &self,
-        property_values: &[(&str, Value)],
-    ) -> Result<(), BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Sets multiple properties of the object at once.
@@ -1664,15 +1644,6 @@ pub trait ObjectExt: ObjectType {
     fn set_properties_from_value(&self, property_values: &[(&str, Value)]);
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::property`] but fails instead of panicking.
-    #[doc(alias = "get_property")]
-    #[doc(alias = "g_object_get_property")]
-    fn try_property<V: for<'b> FromValue<'b> + 'static>(
-        &self,
-        property_name: &str,
-    ) -> Result<V, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Gets the property `property_name` of the object and cast it to the type V.
     ///
     /// # Panics
@@ -1681,12 +1652,6 @@ pub trait ObjectExt: ObjectType {
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
     fn property<V: for<'b> FromValue<'b> + 'static>(&self, property_name: &str) -> V;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::property_value`] but fails instead of panicking.
-    #[doc(alias = "get_property")]
-    #[doc(alias = "g_object_get_property")]
-    fn try_property_value(&self, property_name: &str) -> Result<Value, BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Gets the property `property_name` of the object.
@@ -1809,17 +1774,6 @@ pub trait ObjectExt: ObjectType {
     fn stop_signal_emission_by_name(&self, signal_name: &str);
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect`] but fails instead of panicking.
-    fn try_connect<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
-
-    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1829,18 +1783,6 @@ pub trait ObjectExt: ObjectType {
     ///
     /// If the signal does not exist.
     fn connect<F>(&self, signal_name: &str, after: bool, callback: F) -> SignalHandlerId
-    where
-        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect_id`] but fails instead of panicking.
-    fn try_connect_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
@@ -1866,17 +1808,6 @@ pub trait ObjectExt: ObjectType {
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect_local`] but fails instead of panicking.
-    fn try_connect_local<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + 'static;
-
-    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1889,17 +1820,6 @@ pub trait ObjectExt: ObjectType {
     ///
     /// If the signal does not exist.
     fn connect_local<F>(&self, signal_name: &str, after: bool, callback: F) -> SignalHandlerId
-    where
-        F: Fn(&[Value]) -> Option<Value> + 'static;
-
-    /// Similar to [`Self::connect_local_id`] but fails instead of panicking.
-    fn try_connect_local_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
     where
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
@@ -1926,17 +1846,6 @@ pub trait ObjectExt: ObjectType {
         F: Fn(&[Value]) -> Option<Value> + 'static;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect_unsafe`] but fails instead of panicking.
-    unsafe fn try_connect_unsafe<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value>;
-
-    // rustdoc-stripper-ignore-next
     /// Connect to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -1959,18 +1868,6 @@ pub trait ObjectExt: ObjectType {
         after: bool,
         callback: F,
     ) -> SignalHandlerId
-    where
-        F: Fn(&[Value]) -> Option<Value>;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect_unsafe_id`] but fails instead of panicking.
-    unsafe fn try_connect_unsafe_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
     where
         F: Fn(&[Value]) -> Option<Value>;
 
@@ -2003,15 +1900,6 @@ pub trait ObjectExt: ObjectType {
         F: Fn(&[Value]) -> Option<Value>;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::connect_closure`] but fails instead of panicking.
-    fn try_connect_closure(
-        &self,
-        signal_name: &str,
-        after: bool,
-        closure: RustClosure,
-    ) -> Result<SignalHandlerId, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Connect a closure to the signal `signal_name` on this object.
     ///
     /// If `after` is set to `true` then the callback will be called after the default class
@@ -2033,15 +1921,6 @@ pub trait ObjectExt: ObjectType {
         after: bool,
         closure: RustClosure,
     ) -> SignalHandlerId;
-
-    /// Similar to [`Self::connect_closure_id`] but fails instead of panicking.
-    fn try_connect_closure_id(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        closure: RustClosure,
-    ) -> Result<SignalHandlerId, BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Connect a closure to the signal `signal_id` on this object.
@@ -2072,15 +1951,6 @@ pub trait ObjectExt: ObjectType {
     fn watch_closure(&self, closure: &impl AsRef<Closure>);
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit`] but fails instead of panicking.
-    #[doc(alias = "g_signal_emitv")]
-    fn try_emit<R: TryFromClosureReturnValue>(
-        &self,
-        signal_id: SignalId,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Emit signal by signal id.
     ///
     /// If the signal has a return value then this is returned here.
@@ -2093,25 +1963,8 @@ pub trait ObjectExt: ObjectType {
     fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_with_values`] but fails instead of panicking.
-    fn try_emit_with_values(
-        &self,
-        signal_id: SignalId,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Same as [`Self::emit`] but takes `Value` for the arguments.
     fn emit_with_values(&self, signal_id: SignalId, args: &[Value]) -> Option<Value>;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_by_name`] but fails instead of panicking.
-    #[doc(alias = "g_signal_emit_by_name")]
-    fn try_emit_by_name<R: TryFromClosureReturnValue>(
-        &self,
-        signal_name: &str,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Emit signal by its name.
@@ -2130,14 +1983,6 @@ pub trait ObjectExt: ObjectType {
     ) -> R;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_by_name_with_values`] but fails instead of panicking.
-    fn try_emit_by_name_with_values(
-        &self,
-        signal_name: &str,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Emit signal by its name.
     ///
     /// If the signal has a return value then this is returned here.
@@ -2147,15 +1992,6 @@ pub trait ObjectExt: ObjectType {
     /// If the signal does not exist, the wrong number of arguments is provided, or
     /// arguments of the wrong types were provided.
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value>;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_by_name_with_details`] but fails instead of panicking.
-    fn try_emit_by_name_with_details<R: TryFromClosureReturnValue>(
-        &self,
-        signal_name: &str,
-        details: Quark,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Emit signal by its name with details.
@@ -2174,15 +2010,6 @@ pub trait ObjectExt: ObjectType {
     ) -> R;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_by_name_with_details_and_values`] but fails instead of panicking.
-    fn try_emit_by_name_with_details_and_values(
-        &self,
-        signal_name: &str,
-        details: Quark,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Emit signal by its name with details.
     ///
     /// If the signal has a return value then this is returned here.
@@ -2199,15 +2026,6 @@ pub trait ObjectExt: ObjectType {
     ) -> Option<Value>;
 
     // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_with_details`] but fails instead of panicking.
-    fn try_emit_with_details<R: TryFromClosureReturnValue>(
-        &self,
-        signal_id: SignalId,
-        details: Quark,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError>;
-
-    // rustdoc-stripper-ignore-next
     /// Emit signal by signal id with details.
     ///
     /// If the signal has a return value then this is returned here.
@@ -2222,15 +2040,6 @@ pub trait ObjectExt: ObjectType {
         details: Quark,
         args: &[&dyn ToValue],
     ) -> R;
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to [`Self::emit_with_details_and_values`] but fails instead of panicking.
-    fn try_emit_with_details_and_values(
-        &self,
-        signal_id: SignalId,
-        details: Quark,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError>;
 
     // rustdoc-stripper-ignore-next
     /// Emit signal by signal id with details.
@@ -2393,17 +2202,18 @@ impl<T: ObjectType> ObjectExt for T {
         Interface::from_class(self.object_class())
     }
 
-    fn try_set_property<V: ToValue>(&self, property_name: &str, value: V) -> Result<(), BoolError> {
-        let pspec = self.find_property(property_name).ok_or_else(|| {
-            bool_error!(
+    #[track_caller]
+    fn set_property<V: ToValue>(&self, property_name: &str, value: V) {
+        let pspec = self.find_property(property_name).unwrap_or_else(|| {
+            panic!(
                 "property '{}' of type '{}' not found",
                 property_name,
                 self.type_()
             )
-        })?;
+        });
 
         let mut property_value = value.to_value();
-        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
+        validate_property_type(self.type_(), false, &pspec, &mut property_value);
         unsafe {
             gobject_ffi::g_object_set_property(
                 self.as_object_ref().to_glib_none().0,
@@ -2411,68 +2221,51 @@ impl<T: ObjectType> ObjectExt for T {
                 property_value.to_glib_none().0,
             );
         }
-
-        Ok(())
-    }
-
-    #[track_caller]
-    fn set_property<V: ToValue>(&self, property_name: &str, value: V) {
-        self.try_set_property(property_name, value).unwrap()
-    }
-
-    fn try_set_property_from_value(
-        &self,
-        property_name: &str,
-        value: &Value,
-    ) -> Result<(), BoolError> {
-        let pspec = match self.find_property(property_name) {
-            Some(pspec) => pspec,
-            None => {
-                return Err(bool_error!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
-                    self.type_()
-                ));
-            }
-        };
-
-        let mut property_value = value.clone();
-        validate_property_type(self.type_(), false, &pspec, &mut property_value)?;
-        unsafe {
-            gobject_ffi::g_object_set_property(
-                self.as_object_ref().to_glib_none().0,
-                pspec.name().as_ptr() as *const _,
-                property_value.to_glib_none().0,
-            );
-        }
-
-        Ok(())
     }
 
     #[track_caller]
     fn set_property_from_value(&self, property_name: &str, value: &Value) {
-        self.try_set_property_from_value(property_name, value)
-            .unwrap()
+        let pspec = match self.find_property(property_name) {
+            Some(pspec) => pspec,
+            None => {
+                panic!(
+                    "property '{}' of type '{}' not found",
+                    property_name,
+                    self.type_()
+                );
+            }
+        };
+
+        // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
+        // not require mutable values here except for when LAX_VALIDATION is provided and a
+        // change is needed, or a GObject value needs it's GType changed.
+        let mut property_value = value.clone();
+        validate_property_type(self.type_(), false, &pspec, &mut property_value);
+        unsafe {
+            gobject_ffi::g_object_set_property(
+                self.as_object_ref().to_glib_none().0,
+                pspec.name().as_ptr() as *const _,
+                property_value.to_glib_none().0,
+            );
+        }
     }
 
-    fn try_set_properties(
-        &self,
-        property_values: &[(&str, &dyn ToValue)],
-    ) -> Result<(), BoolError> {
+    #[track_caller]
+    fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) {
         let pspecs = self.list_properties();
 
         let params = property_values
             .iter()
             .map(|&(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, self.type_())
-                })?;
+                let pspec = pspecs.iter().find(|p| p.name() == name).unwrap_or_else(|| {
+                    panic!("Can't find property '{}' for type '{}'", name, self.type_());
+                });
 
                 let mut value = value.to_value();
-                validate_property_type(self.type_(), false, pspec, &mut value)?;
-                Ok((pspec.name().as_ptr(), value))
+                validate_property_type(self.type_(), false, pspec, &mut value);
+                (pspec.name().as_ptr(), value)
             })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+            .collect::<smallvec::SmallVec<[_; 10]>>();
 
         for (name, value) in params {
             unsafe {
@@ -2483,33 +2276,27 @@ impl<T: ObjectType> ObjectExt for T {
                 );
             }
         }
-
-        Ok(())
     }
 
     #[track_caller]
-    fn set_properties(&self, property_values: &[(&str, &dyn ToValue)]) {
-        self.try_set_properties(property_values).unwrap()
-    }
-
-    fn try_set_properties_from_value(
-        &self,
-        property_values: &[(&str, Value)],
-    ) -> Result<(), BoolError> {
+    fn set_properties_from_value(&self, property_values: &[(&str, Value)]) {
         let pspecs = self.list_properties();
 
         let params = property_values
             .iter()
             .map(|(name, value)| {
-                let pspec = pspecs.iter().find(|p| p.name() == *name).ok_or_else(|| {
-                    bool_error!("Can't find property '{}' for type '{}'", name, self.type_())
-                })?;
+                let pspec = pspecs
+                    .iter()
+                    .find(|p| p.name() == *name)
+                    .unwrap_or_else(|| {
+                        panic!("Can't find property '{}' for type '{}'", name, self.type_());
+                    });
 
                 let mut value = value.clone();
-                validate_property_type(self.type_(), false, pspec, &mut value)?;
-                Ok((pspec.name().as_ptr(), value))
+                validate_property_type(self.type_(), false, pspec, &mut value);
+                (pspec.name().as_ptr(), value)
             })
-            .collect::<Result<smallvec::SmallVec<[_; 10]>, _>>()?;
+            .collect::<smallvec::SmallVec<[_; 10]>>();
 
         for (name, value) in params {
             unsafe {
@@ -2520,46 +2307,34 @@ impl<T: ObjectType> ObjectExt for T {
                 );
             }
         }
-
-        Ok(())
-    }
-
-    #[track_caller]
-    fn set_properties_from_value(&self, property_values: &[(&str, Value)]) {
-        self.try_set_properties_from_value(property_values).unwrap()
-    }
-
-    fn try_property<V: for<'b> FromValue<'b> + 'static>(
-        &self,
-        property_name: &str,
-    ) -> Result<V, BoolError> {
-        let prop = self.try_property_value(property_name)?;
-        let v = prop.get_owned::<V>().map_err(|e| {
-            crate::bool_error!("Failed to get cast value to a different type {}", e)
-        })?;
-        Ok(v)
     }
 
     #[track_caller]
     fn property<V: for<'b> FromValue<'b> + 'static>(&self, property_name: &str) -> V {
-        self.try_property(property_name).unwrap()
+        let prop = self.property_value(property_name);
+        let v = prop
+            .get_owned::<V>()
+            .unwrap_or_else(|e| panic!("Failed to get cast value to a different type {}", e));
+
+        v
     }
 
-    fn try_property_value(&self, property_name: &str) -> Result<Value, BoolError> {
-        let pspec = self.find_property(property_name).ok_or_else(|| {
-            bool_error!(
+    #[track_caller]
+    fn property_value(&self, property_name: &str) -> Value {
+        let pspec = self.find_property(property_name).unwrap_or_else(|| {
+            panic!(
                 "property '{}' of type '{}' not found",
                 property_name,
                 self.type_()
             )
-        })?;
+        });
 
         if !pspec.flags().contains(crate::ParamFlags::READABLE) {
-            return Err(bool_error!(
+            panic!(
                 "property '{}' of type '{}' is not readable",
                 property_name,
                 self.type_()
-            ));
+            );
         }
 
         unsafe {
@@ -2571,19 +2346,16 @@ impl<T: ObjectType> ObjectExt for T {
             );
 
             // This can't really happen unless something goes wrong inside GObject
-            Some(value).filter(|v| v.type_().is_valid()).ok_or_else(|| {
-                bool_error!(
+            if !value.type_().is_valid() {
+                panic!(
                     "Failed to get property value for property '{}' of type '{}'",
                     property_name,
                     self.type_()
                 )
-            })
-        }
-    }
+            }
 
-    #[track_caller]
-    fn property_value(&self, property_name: &str) -> Value {
-        self.try_property_value(property_name).unwrap()
+            value
+        }
     }
 
     fn has_property(&self, property_name: &str, type_: Option<Type>) -> bool {
@@ -2692,37 +2464,12 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
-    fn try_connect<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
-    {
-        unsafe { self.try_connect_unsafe(signal_name, after, callback) }
-    }
-
     #[track_caller]
     fn connect<F>(&self, signal_name: &str, after: bool, callback: F) -> SignalHandlerId
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
     {
-        self.try_connect(signal_name, after, callback).unwrap()
-    }
-
-    fn try_connect_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
-    {
-        unsafe { self.try_connect_unsafe_id(signal_id, details, after, callback) }
+        unsafe { self.connect_unsafe(signal_name, after, callback) }
     }
 
     #[track_caller]
@@ -2736,26 +2483,7 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + Send + Sync + 'static,
     {
-        self.try_connect_id(signal_id, details, after, callback)
-            .unwrap()
-    }
-
-    fn try_connect_local<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + 'static,
-    {
-        let callback = crate::thread_guard::ThreadGuard::new(callback);
-
-        unsafe {
-            self.try_connect_unsafe(signal_name, after, move |values| {
-                (callback.get_ref())(values)
-            })
-        }
+        unsafe { self.connect_unsafe_id(signal_id, details, after, callback) }
     }
 
     #[track_caller]
@@ -2763,24 +2491,10 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        self.try_connect_local(signal_name, after, callback)
-            .unwrap()
-    }
-
-    fn try_connect_local_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value> + 'static,
-    {
         let callback = crate::thread_guard::ThreadGuard::new(callback);
 
         unsafe {
-            self.try_connect_unsafe_id(signal_id, details, after, move |values| {
+            self.connect_unsafe(signal_name, after, move |values| {
                 (callback.get_ref())(values)
             })
         }
@@ -2797,23 +2511,13 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value> + 'static,
     {
-        self.try_connect_local_id(signal_id, details, after, callback)
-            .unwrap()
-    }
+        let callback = crate::thread_guard::ThreadGuard::new(callback);
 
-    unsafe fn try_connect_unsafe<F>(
-        &self,
-        signal_name: &str,
-        after: bool,
-        callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
-    where
-        F: Fn(&[Value]) -> Option<Value>,
-    {
-        let type_ = self.type_();
-        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_unsafe_id(signal_id, details, after, callback)
+        unsafe {
+            self.connect_unsafe_id(signal_id, details, after, move |values| {
+                (callback.get_ref())(values)
+            })
+        }
     }
 
     #[track_caller]
@@ -2826,18 +2530,20 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value>,
     {
-        self.try_connect_unsafe(signal_name, after, callback)
-            .unwrap()
+        let type_ = self.type_();
+        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
+            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+        self.connect_unsafe_id(signal_id, details, after, callback)
     }
 
     #[track_caller]
-    unsafe fn try_connect_unsafe_id<F>(
+    unsafe fn connect_unsafe_id<F>(
         &self,
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
         callback: F,
-    ) -> Result<SignalHandlerId, BoolError>
+    ) -> SignalHandlerId
     where
         F: Fn(&[Value]) -> Option<Value>,
     {
@@ -2906,26 +2612,13 @@ impl<T: ObjectType> ObjectExt for T {
         );
 
         if handler == 0 {
-            Err(bool_error!(
+            panic!(
                 "Failed to connect to signal '{}' of type '{}'",
-                signal_name,
-                type_
-            ))
-        } else {
-            Ok(from_glib(handler))
+                signal_name, type_
+            );
         }
-    }
 
-    fn try_connect_closure(
-        &self,
-        signal_name: &str,
-        after: bool,
-        closure: RustClosure,
-    ) -> Result<SignalHandlerId, BoolError> {
-        let type_ = self.type_();
-        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_connect_closure_id(signal_id, details, after, closure)
+        from_glib(handler)
     }
 
     #[track_caller]
@@ -2935,17 +2628,20 @@ impl<T: ObjectType> ObjectExt for T {
         after: bool,
         closure: RustClosure,
     ) -> SignalHandlerId {
-        self.try_connect_closure(signal_name, after, closure)
-            .unwrap()
+        let type_ = self.type_();
+        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
+            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+        self.connect_closure_id(signal_id, details, after, closure)
     }
 
-    fn try_connect_closure_id(
+    #[track_caller]
+    fn connect_closure_id(
         &self,
         signal_id: SignalId,
         details: Option<Quark>,
         after: bool,
         closure: RustClosure,
-    ) -> Result<SignalHandlerId, BoolError> {
+    ) -> SignalHandlerId {
         let signal_query = signal_id.query();
         let type_ = self.type_();
         let signal_name = signal_id.name();
@@ -2969,27 +2665,14 @@ impl<T: ObjectType> ObjectExt for T {
             );
 
             if handler == 0 {
-                Err(bool_error!(
+                panic!(
                     "Failed to connect to signal '{}' of type '{}'",
-                    signal_name,
-                    type_
-                ))
-            } else {
-                Ok(from_glib(handler))
+                    signal_name, type_
+                );
             }
-        }
-    }
 
-    #[track_caller]
-    fn connect_closure_id(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        closure: RustClosure,
-    ) -> SignalHandlerId {
-        self.try_connect_closure_id(signal_id, details, after, closure)
-            .unwrap()
+            from_glib(handler)
+        }
     }
 
     fn watch_closure(&self, closure: &impl AsRef<Closure>) {
@@ -3003,25 +2686,7 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     #[track_caller]
-    unsafe fn connect_unsafe_id<F>(
-        &self,
-        signal_id: SignalId,
-        details: Option<Quark>,
-        after: bool,
-        callback: F,
-    ) -> SignalHandlerId
-    where
-        F: Fn(&[Value]) -> Option<Value>,
-    {
-        self.try_connect_unsafe_id(signal_id, details, after, callback)
-            .unwrap()
-    }
-
-    fn try_emit<R: TryFromClosureReturnValue>(
-        &self,
-        signal_id: SignalId,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError> {
+    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R {
         let signal_query = signal_id.query();
         unsafe {
             let type_ = self.type_();
@@ -3042,7 +2707,7 @@ impl<T: ObjectType> ObjectExt for T {
             )
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
@@ -3065,19 +2730,12 @@ impl<T: ObjectType> ObjectExt for T {
             R::try_from_closure_return_value(
                 Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
             )
+            .unwrap()
         }
     }
 
     #[track_caller]
-    fn emit<R: TryFromClosureReturnValue>(&self, signal_id: SignalId, args: &[&dyn ToValue]) -> R {
-        self.try_emit(signal_id, args).unwrap()
-    }
-
-    fn try_emit_with_values(
-        &self,
-        signal_id: SignalId,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
+    fn emit_with_values(&self, signal_id: SignalId, args: &[Value]) -> Option<Value> {
         unsafe {
             let type_ = self.type_();
 
@@ -3096,7 +2754,7 @@ impl<T: ObjectType> ObjectExt for T {
             let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
                 .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
@@ -3116,24 +2774,8 @@ impl<T: ObjectType> ObjectExt for T {
                 return_value_ptr,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT)
         }
-    }
-
-    #[track_caller]
-    fn emit_with_values(&self, signal_id: SignalId, args: &[Value]) -> Option<Value> {
-        self.try_emit_with_values(signal_id, args).unwrap()
-    }
-
-    fn try_emit_by_name<R: TryFromClosureReturnValue>(
-        &self,
-        signal_name: &str,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError> {
-        let type_ = self.type_();
-        let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_emit(signal_id, args)
     }
 
     #[track_caller]
@@ -3142,36 +2784,20 @@ impl<T: ObjectType> ObjectExt for T {
         signal_name: &str,
         args: &[&dyn ToValue],
     ) -> R {
-        self.try_emit_by_name(signal_name, args).unwrap()
-    }
-
-    fn try_emit_by_name_with_values(
-        &self,
-        signal_name: &str,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
         let type_ = self.type_();
-        let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_emit_with_values(signal_id, args)
+        let signal_id = SignalId::lookup(signal_name, type_).unwrap_or_else(|| {
+            panic!("Signal '{}' of type '{}' not found", signal_name, type_);
+        });
+        self.emit(signal_id, args)
     }
 
     #[track_caller]
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value> {
-        self.try_emit_by_name_with_values(signal_name, args)
-            .unwrap()
-    }
-
-    fn try_emit_by_name_with_details<R: TryFromClosureReturnValue>(
-        &self,
-        signal_name: &str,
-        details: Quark,
-        args: &[&dyn ToValue],
-    ) -> Result<R, BoolError> {
         let type_ = self.type_();
-        let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_emit_with_details(signal_id, details, args)
+        let signal_id = SignalId::lookup(signal_name, type_).unwrap_or_else(|| {
+            panic!("Signal '{}' of type '{}' not found", signal_name, type_);
+        });
+        self.emit_with_values(signal_id, args)
     }
 
     #[track_caller]
@@ -3181,20 +2807,10 @@ impl<T: ObjectType> ObjectExt for T {
         details: Quark,
         args: &[&dyn ToValue],
     ) -> R {
-        self.try_emit_by_name_with_details(signal_name, details, args)
-            .unwrap()
-    }
-
-    fn try_emit_by_name_with_details_and_values(
-        &self,
-        signal_name: &str,
-        details: Quark,
-        args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
-            .ok_or_else(|| bool_error!("Signal '{}' of type '{}' not found", signal_name, type_))?;
-        self.try_emit_with_details_and_values(signal_id, details, args)
+            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+        self.emit_with_details(signal_id, details, args)
     }
 
     #[track_caller]
@@ -3204,16 +2820,19 @@ impl<T: ObjectType> ObjectExt for T {
         details: Quark,
         args: &[Value],
     ) -> Option<Value> {
-        self.try_emit_by_name_with_details_and_values(signal_name, details, args)
-            .unwrap()
+        let type_ = self.type_();
+        let signal_id = SignalId::lookup(signal_name, type_)
+            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+        self.emit_with_details_and_values(signal_id, details, args)
     }
 
-    fn try_emit_with_details<R: TryFromClosureReturnValue>(
+    #[track_caller]
+    fn emit_with_details<R: TryFromClosureReturnValue>(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[&dyn ToValue],
-    ) -> Result<R, BoolError> {
+    ) -> R {
         let signal_query = signal_id.query();
         assert!(signal_query.flags().contains(crate::SignalFlags::DETAILED));
 
@@ -3236,7 +2855,7 @@ impl<T: ObjectType> ObjectExt for T {
             )
             .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
@@ -3259,26 +2878,17 @@ impl<T: ObjectType> ObjectExt for T {
             R::try_from_closure_return_value(
                 Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT),
             )
+            .unwrap()
         }
     }
 
     #[track_caller]
-    fn emit_with_details<R: TryFromClosureReturnValue>(
-        &self,
-        signal_id: SignalId,
-        details: Quark,
-        args: &[&dyn ToValue],
-    ) -> R {
-        self.try_emit_with_details(signal_id, details, args)
-            .unwrap()
-    }
-
-    fn try_emit_with_details_and_values(
+    fn emit_with_details_and_values(
         &self,
         signal_id: SignalId,
         details: Quark,
         args: &[Value],
-    ) -> Result<Option<Value>, BoolError> {
+    ) -> Option<Value> {
         let signal_query = signal_id.query();
         assert!(signal_query.flags().contains(crate::SignalFlags::DETAILED));
 
@@ -3298,7 +2908,7 @@ impl<T: ObjectType> ObjectExt for T {
             let mut args = Iterator::chain(std::iter::once(self_v), args.iter().cloned())
                 .collect::<smallvec::SmallVec<[_; 10]>>();
 
-            validate_signal_arguments(type_, &signal_query, &mut args[1..])?;
+            validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
                 Value::from_type(signal_query.return_type().into())
@@ -3318,19 +2928,8 @@ impl<T: ObjectType> ObjectExt for T {
                 return_value_ptr,
             );
 
-            Ok(Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT))
+            Some(return_value).filter(|r| r.type_().is_valid() && r.type_() != Type::UNIT)
         }
-    }
-
-    #[track_caller]
-    fn emit_with_details_and_values(
-        &self,
-        signal_id: SignalId,
-        details: Quark,
-        args: &[Value],
-    ) -> Option<Value> {
-        self.try_emit_with_details_and_values(signal_id, details, args)
-            .unwrap()
     }
 
     fn disconnect(&self, handler_id: SignalHandlerId) {
@@ -3513,20 +3112,21 @@ impl<T: ObjectType> Watchable<T> for &T {
 
 // Validate that the given property value has an acceptable type for the given property pspec
 // and if necessary update the value
+#[track_caller]
 fn validate_property_type(
     type_: Type,
     allow_construct_only: bool,
     pspec: &crate::ParamSpec,
     property_value: &mut Value,
-) -> Result<(), BoolError> {
+) {
     if !pspec.flags().contains(crate::ParamFlags::WRITABLE)
         || (!allow_construct_only && pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
     {
-        return Err(bool_error!(
+        panic!(
             "property '{}' of type '{}' is not writable",
             pspec.name(),
             type_
-        ));
+        );
     }
 
     unsafe {
@@ -3540,15 +3140,15 @@ fn validate_property_type(
         ));
 
         if !valid_type {
-            coerce_object_type(property_value, pspec.value_type())
-                .map_err(|got| {
-                    bool_error!(
+            if let Err(got) = coerce_object_type(property_value, pspec.value_type()) {
+                panic!(
                         "property '{}' of type '{}' can't be set from the given type (expected: '{}', got: '{}')",
                         pspec.name(),
                         type_,
                         pspec.value_type(),
                         got
-                )})?;
+                    );
+            }
         }
 
         let changed: bool = from_glib(gobject_ffi::g_param_value_validate(
@@ -3557,15 +3157,13 @@ fn validate_property_type(
         ));
         let change_allowed = pspec.flags().contains(crate::ParamFlags::LAX_VALIDATION);
         if changed && !change_allowed {
-            return Err(bool_error!(
+            panic!(
                 "property '{}' of type '{}' can't be set from given value, it is invalid or out of range",
                 pspec.name(),
                 type_,
-            ));
+            );
         }
     }
-
-    Ok(())
 }
 
 // If it's not directly a valid type but an object type, we check if the
@@ -3585,21 +3183,18 @@ fn coerce_object_type(property_value: &mut Value, type_: Type) -> Result<(), Typ
     }
 }
 
-fn validate_signal_arguments(
-    type_: Type,
-    signal_query: &SignalQuery,
-    args: &mut [Value],
-) -> Result<(), BoolError> {
+#[track_caller]
+fn validate_signal_arguments(type_: Type, signal_query: &SignalQuery, args: &mut [Value]) {
     let signal_name = signal_query.signal_name();
 
     if signal_query.n_params() != args.len() as u32 {
-        return Err(bool_error!(
+        panic!(
             "Incompatible number of arguments for signal '{}' of type '{}' (expected {}, got {})",
             signal_name,
             type_,
             signal_query.n_params(),
             args.len(),
-        ));
+        );
     }
 
     let param_types = Iterator::zip(args.iter_mut(), signal_query.param_types());
@@ -3607,8 +3202,8 @@ fn validate_signal_arguments(
     for (i, (arg, param_type)) in param_types.enumerate() {
         let param_type: Type = (*param_type).into();
         if param_type != arg.type_() {
-            coerce_object_type(arg, param_type).map_err(|got|
-                bool_error!(
+            coerce_object_type(arg, param_type).unwrap_or_else(|got|
+                panic!(
                     "Incompatible argument type in argument {} for signal '{}' of type '{}' (expected {}, got {})",
                     i,
                     signal_name,
@@ -3616,11 +3211,9 @@ fn validate_signal_arguments(
                     param_type,
                     got
                 )
-            )?;
+            );
         }
     }
-
-    Ok(())
 }
 
 impl ObjectClass {
@@ -3988,9 +3581,10 @@ impl<'a> BindingBuilder<'a> {
     // rustdoc-stripper-ignore-next
     /// Establish the property binding.
     ///
-    /// This fails if the provided properties do not exist.
+    /// # Panics
+    /// This panics if the provided properties do not exist.
     #[track_caller]
-    pub fn try_build(self) -> Result<crate::Binding, crate::BoolError> {
+    pub fn build(self) -> crate::Binding {
         unsafe extern "C" fn transform_to_trampoline(
             binding: *mut gobject_ffi::GBinding,
             from_value: *const gobject_ffi::GValue,
@@ -4065,20 +3659,24 @@ impl<'a> BindingBuilder<'a> {
                 phantom: std::marker::PhantomData,
             };
 
-            let source_property = source.find_property(self.source_property).ok_or_else(|| {
-                bool_error!(
-                    "Source property {} on type {} not found",
-                    self.source_property,
-                    source.type_()
-                )
-            })?;
-            let target_property = target.find_property(self.target_property).ok_or_else(|| {
-                bool_error!(
-                    "Target property {} on type {} not found",
-                    self.target_property,
-                    target.type_()
-                )
-            })?;
+            let source_property = source
+                .find_property(self.source_property)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "Source property {} on type {} not found",
+                        self.source_property,
+                        source.type_()
+                    );
+                });
+            let target_property = target
+                .find_property(self.target_property)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "Target property {} on type {} not found",
+                        self.target_property,
+                        target.type_()
+                    );
+                });
 
             let source_property_name = source_property.name().as_ptr();
             let target_property_name = target_property.name().as_ptr();
@@ -4096,7 +3694,7 @@ impl<'a> BindingBuilder<'a> {
                 ptr::null_mut()
             };
 
-            Option::<_>::from_glib_none(gobject_ffi::g_object_bind_property_full(
+            from_glib_none(gobject_ffi::g_object_bind_property_full(
                 source.to_glib_none().0,
                 source_property_name as *const _,
                 target.to_glib_none().0,
@@ -4119,15 +3717,7 @@ impl<'a> BindingBuilder<'a> {
                     Some(free_transform_data)
                 },
             ))
-            .ok_or_else(|| bool_error!("Failed to create property bindings"))
         }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Similar to `try_build` but fails instead of panicking.
-    #[track_caller]
-    pub fn build(self) -> crate::Binding {
-        self.try_build().unwrap()
     }
 }
 
@@ -4619,13 +4209,13 @@ mod tests {
 
     #[test]
     fn new() {
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
         drop(obj);
     }
 
     #[test]
     fn data() {
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
         unsafe {
             obj.set_data::<String>("foo", "hello".into());
             let data = obj.data::<String>("foo").unwrap();
@@ -4637,7 +4227,7 @@ mod tests {
 
     #[test]
     fn weak_ref() {
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
 
         let weakref: WeakRef<Object> = WeakRef::new();
         weakref.set(Some(&obj));
@@ -4655,7 +4245,7 @@ mod tests {
 
     #[test]
     fn weak_ref_notify() {
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
 
         let handle = obj.add_weak_ref_notify(|| {
             unreachable!();
@@ -4673,7 +4263,7 @@ mod tests {
         assert!(called.load(Ordering::SeqCst));
         handle.disconnect();
 
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
 
         let called = Arc::new(AtomicBool::new(false));
         let called_weak = Arc::downgrade(&called);
@@ -4684,7 +4274,7 @@ mod tests {
         drop(obj);
         assert!(called.load(Ordering::SeqCst));
 
-        let obj: Object = Object::new(&[]).unwrap();
+        let obj: Object = Object::new(&[]);
 
         let called = Rc::new(Cell::new(false));
         let called_weak = Rc::downgrade(&called);
@@ -4698,7 +4288,7 @@ mod tests {
 
     #[test]
     fn test_value() {
-        let obj1: Object = Object::new(&[]).unwrap();
+        let obj1: Object = Object::new(&[]);
         let v = obj1.to_value();
         let obj2 = v.get::<&Object>().unwrap();
 

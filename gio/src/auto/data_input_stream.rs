@@ -56,7 +56,6 @@ impl DataInputStream {
 impl Default for DataInputStream {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct DataInputStream object with default parameters")
     }
 }
 
@@ -102,7 +101,6 @@ impl DataInputStreamBuilder {
             properties.push(("close-base-stream", close_base_stream));
         }
         glib::Object::new::<DataInputStream>(&properties)
-            .expect("Failed to create an instance of DataInputStream")
     }
 
     pub fn byte_order(mut self, byte_order: DataStreamByteOrder) -> Self {

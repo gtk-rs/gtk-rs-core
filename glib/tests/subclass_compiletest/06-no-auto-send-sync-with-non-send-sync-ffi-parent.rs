@@ -9,7 +9,10 @@ glib::wrapper! {
 
 pub trait InitiallyUnownedImpl: glib::subclass::prelude::ObjectImpl {}
 
-unsafe impl<T: InitiallyUnownedImpl> glib::subclass::prelude::IsSubclassable<T> for InitiallyUnowned {}
+unsafe impl<T: InitiallyUnownedImpl> glib::subclass::prelude::IsSubclassable<T>
+    for InitiallyUnowned
+{
+}
 
 mod imp_object {
     use glib::subclass::prelude::*;
@@ -36,7 +39,7 @@ glib::wrapper! {
 
 impl Default for TestObject {
     fn default() -> Self {
-        glib::Object::new(&[]).unwrap()
+        glib::Object::new(&[])
     }
 }
 

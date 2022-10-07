@@ -84,7 +84,7 @@ impl BoxedAnyObject {
     // rustdoc-stripper-ignore-next
     /// Creates a new `BoxedAnyObject` containing `value`
     pub fn new<T: 'static>(value: T) -> Self {
-        let obj: Self = Object::new(&[]).expect("Failed to create BoxedAnyObject");
+        let obj: Self = Object::new(&[]);
         obj.replace(value);
         obj
     }

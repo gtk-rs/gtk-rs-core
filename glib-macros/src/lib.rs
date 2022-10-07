@@ -332,7 +332,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib_macros::closure_local;
 ///
-/// let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+/// let obj = glib::Object::new::<glib::Object>(&[]);
 /// obj.connect_closure(
 ///     "notify", false,
 ///     closure_local!(|_obj: glib::Object, pspec: glib::ParamSpec| {
@@ -348,7 +348,7 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// use glib_macros::closure_local;
 ///
 /// let closure = {
-///     let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+///     let obj = glib::Object::new::<glib::Object>(&[]);
 ///     let closure = closure_local!(@watch obj => move || {
 ///         obj.type_().name()
 ///     });
@@ -366,9 +366,9 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// use glib::prelude::*;
 /// use glib_macros::closure_local;
 ///
-/// let obj = glib::Object::new::<glib::Object>(&[]).unwrap();
+/// let obj = glib::Object::new::<glib::Object>(&[]);
 /// {
-///     let other = glib::Object::new::<glib::Object>(&[]).unwrap();
+///     let other = glib::Object::new::<glib::Object>(&[]);
 ///     obj.connect_closure(
 ///         "notify", false,
 ///         closure_local!(@watch other as b => move |a: glib::Object, pspec: glib::ParamSpec| {

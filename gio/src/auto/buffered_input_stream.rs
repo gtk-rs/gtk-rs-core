@@ -66,7 +66,6 @@ impl BufferedInputStream {
 impl Default for BufferedInputStream {
     fn default() -> Self {
         glib::object::Object::new::<Self>(&[])
-            .expect("Can't construct BufferedInputStream object with default parameters")
     }
 }
 
@@ -104,7 +103,6 @@ impl BufferedInputStreamBuilder {
             properties.push(("close-base-stream", close_base_stream));
         }
         glib::Object::new::<BufferedInputStream>(&properties)
-            .expect("Failed to create an instance of BufferedInputStream")
     }
 
     pub fn buffer_size(mut self, buffer_size: u32) -> Self {
