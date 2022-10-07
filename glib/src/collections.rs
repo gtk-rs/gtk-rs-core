@@ -145,6 +145,18 @@ impl<
 {
     // rustdoc-stripper-ignore-next
     /// Borrows a static C array.
+    pub unsafe fn from_glib_borrow<'a>(ptr: *const <T as GlibPtrDefault>::GlibType) -> &'a [T] {
+        let mut len = 0;
+        if !ptr.is_null() {
+            while !(*ptr.add(len)).is_null() {
+                len += 1;
+            }
+        }
+        Self::from_glib_borrow_num(ptr, len)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Borrows a static C array.
     pub unsafe fn from_glib_borrow_num<'a>(
         ptr: *const <T as GlibPtrDefault>::GlibType,
         len: usize,
