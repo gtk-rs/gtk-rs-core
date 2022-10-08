@@ -53,31 +53,6 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     type Type: ObjectSubclass;
 
     // rustdoc-stripper-ignore-next
-    /// Returns the implementation for from this instance struct, that
-    /// is the implementor of [`ObjectImpl`] or subtraits.
-    ///
-    /// [`ObjectImpl`]: ../object/trait.ObjectImpl.html
-    #[doc(alias = "get_impl")]
-    fn imp(&self) -> &Self::Type {
-        unsafe {
-            let data = Self::Type::type_data();
-            let private_offset = data.as_ref().impl_offset();
-            let ptr: *const u8 = self as *const _ as *const u8;
-            let imp_ptr = ptr.offset(private_offset);
-            let imp = imp_ptr as *const Self::Type;
-
-            &*imp
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Returns the class struct for this specific instance.
-    #[doc(alias = "get_class")]
-    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
-        unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
-    }
-
-    // rustdoc-stripper-ignore-next
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
@@ -92,6 +67,41 @@ pub unsafe trait InstanceStruct: Sized + 'static {
                 &mut obj,
             );
         }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait implemented by any type implementing `InstanceStruct` to return the implementation, private Rust struct.
+pub unsafe trait InstanceStructExt: InstanceStruct {
+    // rustdoc-stripper-ignore-next
+    /// Returns the implementation for from this instance struct, that
+    /// is the implementor of [`ObjectImpl`] or subtraits.
+    ///
+    /// [`ObjectImpl`]: ../object/trait.ObjectImpl.html
+    #[doc(alias = "get_impl")]
+    fn imp(&self) -> &Self::Type;
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the class struct for this specific instance.
+    #[doc(alias = "get_class")]
+    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class;
+}
+
+unsafe impl<T: InstanceStruct> InstanceStructExt for T {
+    fn imp(&self) -> &Self::Type {
+        unsafe {
+            let data = Self::Type::type_data();
+            let private_offset = data.as_ref().impl_offset();
+            let ptr: *const u8 = self as *const _ as *const u8;
+            let imp_ptr = ptr.offset(private_offset);
+            let imp = imp_ptr as *const Self::Type;
+
+            &*imp
+        }
+    }
+
+    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
+        unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
     }
 }
 
