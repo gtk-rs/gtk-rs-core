@@ -35,8 +35,9 @@ impl Deref for ByteArray {
 
     fn deref(&self) -> &[u8] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).data;
-            let len = (*self.to_glib_none().0).len as usize;
+            let self_ptr: *const ffi::GByteArray = self.to_glib_none().0;
+            let ptr = (*self_ptr).data;
+            let len = (*self_ptr).len as usize;
             debug_assert!(!ptr.is_null() || len == 0);
             if ptr.is_null() {
                 &[]

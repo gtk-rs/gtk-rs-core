@@ -2,7 +2,6 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::translate::*;
     use crate::DateTime;
     use crate::ToValue;
 
@@ -12,6 +11,6 @@ mod tests {
         let v = dt1.to_value();
         let dt2 = v.get::<&DateTime>().unwrap();
 
-        assert_eq!(dt1.to_glib_none().0, dt2.to_glib_none().0);
+        assert_eq!(dt1.as_ptr(), dt2.as_ptr());
     }
 }

@@ -314,7 +314,7 @@ impl Closure {
         };
 
         gobject_ffi::g_closure_invoke(
-            self.to_glib_none().0 as *mut _,
+            self.to_glib_none().0,
             result_ptr,
             values.len() as u32,
             mut_override(values.as_ptr()) as *mut gobject_ffi::GValue,

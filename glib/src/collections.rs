@@ -1290,11 +1290,22 @@ mod test {
             crate::DateTime::from_utc(2021, 11, 20, 23, 41, 15.0).unwrap(),
         ];
         let list = unsafe {
-            let mut list =
-                ffi::g_list_append(ptr::null_mut(), items[0].to_glib_full() as ffi::gpointer);
-            list = ffi::g_list_append(list, items[1].to_glib_full() as ffi::gpointer);
-            list = ffi::g_list_append(list, items[2].to_glib_full() as ffi::gpointer);
-            list = ffi::g_list_append(list, items[3].to_glib_full() as ffi::gpointer);
+            let mut list = ffi::g_list_append(
+                ptr::null_mut(),
+                ToGlibPtr::<*mut ffi::GDateTime>::to_glib_full(&items[0]) as ffi::gpointer,
+            );
+            list = ffi::g_list_append(
+                list,
+                ToGlibPtr::<*mut ffi::GDateTime>::to_glib_full(&items[1]) as ffi::gpointer,
+            );
+            list = ffi::g_list_append(
+                list,
+                ToGlibPtr::<*mut ffi::GDateTime>::to_glib_full(&items[2]) as ffi::gpointer,
+            );
+            list = ffi::g_list_append(
+                list,
+                ToGlibPtr::<*mut ffi::GDateTime>::to_glib_full(&items[3]) as ffi::gpointer,
+            );
             List::<crate::DateTime>::from_glib_full(list)
         };
         assert!(!list.is_empty());

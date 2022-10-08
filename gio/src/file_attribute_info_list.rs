@@ -23,7 +23,7 @@ impl FileAttributeInfoList {
 
     pub fn attributes(&self) -> Vec<FileAttributeInfo> {
         unsafe {
-            let ptr = self.to_glib_none().0;
+            let ptr: *const _ = self.to_glib_none().0;
             FromGlibContainer::from_glib_none_num((*ptr).infos, (*ptr).n_infos as usize)
         }
     }

@@ -2,14 +2,12 @@
 
 use std::ffi::CStr;
 
-use glib::translate::ToGlibPtr;
-
 use crate::{DBusInterfaceInfo, DBusNodeInfo};
 
 impl DBusNodeInfo {
     pub fn path(&self) -> Option<&str> {
-        let c_obj = self.to_glib_none().0;
         unsafe {
+            let c_obj = self.as_ptr();
             let path = (*c_obj).path;
             if path.is_null() {
                 return None;
@@ -20,8 +18,8 @@ impl DBusNodeInfo {
     }
 
     pub fn interfaces(&self) -> &[DBusInterfaceInfo] {
-        let c_obj = self.to_glib_none().0;
         unsafe {
+            let c_obj = self.as_ptr();
             let c_ii = (*c_obj).interfaces;
             if c_ii.is_null() {
                 return &[];
@@ -32,8 +30,8 @@ impl DBusNodeInfo {
     }
 
     pub fn nodes(&self) -> &[DBusNodeInfo] {
-        let c_obj = self.to_glib_none().0;
         unsafe {
+            let c_obj = self.as_ptr();
             let c_ni = (*c_obj).nodes;
             if c_ni.is_null() {
                 return &[];
