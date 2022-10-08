@@ -34,6 +34,7 @@ pub use self::dbus_connection::{
 };
 mod dbus_message;
 mod dbus_method_invocation;
+mod dbus_node_info;
 #[cfg(any(feature = "v2_72", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 mod debug_controller_dbus;
