@@ -11,55 +11,34 @@ use crate::InputStream;
 use std::ptr;
 
 pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
-    fn read(
-        &self,
-        stream: &Self::Type,
-        buffer: &mut [u8],
-        cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error> {
-        self.parent_read(stream, buffer, cancellable)
+    fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
+        self.parent_read(buffer, cancellable)
     }
 
-    fn close(&self, stream: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error> {
-        self.parent_close(stream, cancellable)
+    fn close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
+        self.parent_close(cancellable)
     }
 
-    fn skip(
-        &self,
-        stream: &Self::Type,
-        count: usize,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error> {
-        self.parent_skip(stream, count, cancellable)
+    fn skip(&self, count: usize, cancellable: Option<&Cancellable>) -> Result<usize, Error> {
+        self.parent_skip(count, cancellable)
     }
 }
 
 pub trait InputStreamImplExt: ObjectSubclass {
     fn parent_read(
         &self,
-        stream: &Self::Type,
         buffer: &mut [u8],
         cancellable: Option<&Cancellable>,
     ) -> Result<usize, Error>;
 
-    fn parent_close(
-        &self,
-        stream: &Self::Type,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error>;
+    fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 
-    fn parent_skip(
-        &self,
-        stream: &Self::Type,
-        count: usize,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error>;
+    fn parent_skip(&self, count: usize, cancellable: Option<&Cancellable>) -> Result<usize, Error>;
 }
 
 impl<T: InputStreamImpl> InputStreamImplExt for T {
     fn parent_read(
         &self,
-        stream: &Self::Type,
         buffer: &mut [u8],
         cancellable: Option<&Cancellable>,
     ) -> Result<usize, Error> {
@@ -71,7 +50,10 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
                 .expect("No parent class implementation for \"read\"");
             let mut err = ptr::null_mut();
             let res = f(
-                stream.unsafe_cast_ref::<InputStream>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<InputStream>()
+                    .to_glib_none()
+                    .0,
                 buffer.as_mut_ptr() as glib::ffi::gpointer,
                 buffer.len(),
                 cancellable.to_glib_none().0,
@@ -88,18 +70,17 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
         }
     }
 
-    fn parent_close(
-        &self,
-        stream: &Self::Type,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error> {
+    fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GInputStreamClass;
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
                 if from_glib(f(
-                    stream.unsafe_cast_ref::<InputStream>().to_glib_none().0,
+                    self.instance()
+                        .unsafe_cast_ref::<InputStream>()
+                        .to_glib_none()
+                        .0,
                     cancellable.to_glib_none().0,
                     &mut err,
                 )) {
@@ -113,12 +94,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
         }
     }
 
-    fn parent_skip(
-        &self,
-        stream: &Self::Type,
-        count: usize,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error> {
+    fn parent_skip(&self, count: usize, cancellable: Option<&Cancellable>) -> Result<usize, Error> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GInputStreamClass;
@@ -127,7 +103,10 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
                 .skip
                 .expect("No parent class implementation for \"skip\"");
             let res = f(
-                stream.unsafe_cast_ref::<InputStream>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<InputStream>()
+                    .to_glib_none()
+                    .0,
                 count,
                 cancellable.to_glib_none().0,
                 &mut err,
@@ -169,10 +148,8 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
 
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
-    let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.read(
-        wrap.unsafe_cast_ref(),
         if count == 0 {
             &mut []
         } else {
@@ -203,10 +180,8 @@ unsafe extern "C" fn stream_close<T: InputStreamImpl>(
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
-    let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.close(
-        wrap.unsafe_cast_ref(),
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),
@@ -233,10 +208,8 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
 
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
-    let wrap: Borrowed<InputStream> = from_glib_borrow(ptr);
 
     match imp.skip(
-        wrap.unsafe_cast_ref(),
         count,
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
@@ -284,7 +257,6 @@ mod tests {
         impl InputStreamImpl for SimpleInputStream {
             fn read(
                 &self,
-                _stream: &Self::Type,
                 buffer: &mut [u8],
                 _cancellable: Option<&Cancellable>,
             ) -> Result<usize, Error> {
@@ -298,17 +270,16 @@ mod tests {
         }
 
         impl SeekableImpl for SimpleInputStream {
-            fn tell(&self, _seekable: &Self::Type) -> i64 {
+            fn tell(&self) -> i64 {
                 *self.pos.borrow() as i64
             }
 
-            fn can_seek(&self, _seekable: &Self::Type) -> bool {
+            fn can_seek(&self) -> bool {
                 true
             }
 
             fn seek(
                 &self,
-                _seekable: &Self::Type,
                 offset: i64,
                 type_: glib::SeekType,
                 _cancellable: Option<&Cancellable>,
@@ -336,12 +307,11 @@ mod tests {
                 }
             }
 
-            fn can_truncate(&self, _seekable: &Self::Type) -> bool {
+            fn can_truncate(&self) -> bool {
                 false
             }
             fn truncate(
                 &self,
-                _seekable: &Self::Type,
                 _offset: i64,
                 _cancellable: Option<&Cancellable>,
             ) -> Result<(), Error> {

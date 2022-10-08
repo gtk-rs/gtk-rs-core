@@ -12,25 +12,17 @@ use crate::Cancellable;
 use crate::Initable;
 
 pub trait InitableImpl: ObjectImpl {
-    fn init(&self, initable: &Self::Type, cancellable: Option<&Cancellable>) -> Result<(), Error> {
-        self.parent_init(initable, cancellable)
+    fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
+        self.parent_init(cancellable)
     }
 }
 
 pub trait InitableImplExt: ObjectSubclass {
-    fn parent_init(
-        &self,
-        initable: &Self::Type,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error>;
+    fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
 impl<T: InitableImpl> InitableImplExt for T {
-    fn parent_init(
-        &self,
-        initable: &Self::Type,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error> {
+    fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface =
@@ -42,7 +34,10 @@ impl<T: InitableImpl> InitableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                initable.unsafe_cast_ref::<Initable>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<Initable>()
+                    .to_glib_none()
+                    .0,
                 cancellable.to_glib_none().0,
                 &mut err,
             );
@@ -72,7 +67,6 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
     let imp = instance.imp();
 
     match imp.init(
-        from_glib_borrow::<_, Initable>(initable).unsafe_cast_ref(),
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()
             .as_ref(),
@@ -114,11 +108,7 @@ mod tests {
         }
 
         impl InitableImpl for InitableTestType {
-            fn init(
-                &self,
-                _initable: &Self::Type,
-                _cancellable: Option<&Cancellable>,
-            ) -> Result<(), glib::Error> {
+            fn init(&self, _cancellable: Option<&Cancellable>) -> Result<(), glib::Error> {
                 self.0.set(0x123456789abcdef);
                 Ok(())
             }

@@ -22,17 +22,15 @@ use std::{future::Future, pin::Pin};
 pub trait AsyncInitableImpl: ObjectImpl {
     fn init_future(
         &self,
-        initable: &Self::Type,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + 'static>> {
-        self.parent_init_future(initable, io_priority)
+        self.parent_init_future(io_priority)
     }
 }
 
 pub trait AsyncInitableImplExt: ObjectSubclass {
     fn parent_init_future(
         &self,
-        initable: &Self::Type,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + 'static>>;
 }
@@ -40,7 +38,6 @@ pub trait AsyncInitableImplExt: ObjectSubclass {
 impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
     fn parent_init_future(
         &self,
-        initable: &Self::Type,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + 'static>> {
         unsafe {
@@ -81,7 +78,7 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
             }
 
             Box::pin(crate::GioFuture::new(
-                initable,
+                &*self.instance(),
                 move |obj, cancellable, res| {
                     let user_data: Box<ThreadGuard<GioFutureResult<(), Error>>> =
                         Box::new(ThreadGuard::new(res));
@@ -116,12 +113,11 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
 ) {
     let instance = &*(initable as *mut T::Instance);
     let imp = instance.imp();
-    let initable = from_glib_borrow::<_, AsyncInitable>(initable);
     let cancellable = from_glib_borrow::<_, Option<Cancellable>>(cancellable);
 
     let task = callback.map(|callback| {
         let task = LocalTask::new(
-            Some(initable.upcast_ref::<glib::Object>()),
+            Some(imp.instance().unsafe_cast_ref::<glib::Object>()),
             cancellable.as_ref().as_ref(),
             move |task, obj| {
                 let result: *mut crate::ffi::GAsyncResult =
@@ -136,11 +132,10 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
     });
 
     glib::MainContext::ref_thread_default().spawn_local(async move {
-        let initable = initable.unsafe_cast_ref();
         let io_priority = from_glib(io_priority);
         let res = if let Some(cancellable) = cancellable.as_ref() {
             futures_util::future::select(
-                imp.init_future(initable, io_priority),
+                imp.init_future(io_priority),
                 Box::pin(async {
                     cancellable.future().await;
                     cancellable.set_error_if_cancelled()
@@ -150,7 +145,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
             .factor_first()
             .0
         } else {
-            imp.init_future(initable, io_priority).await
+            imp.init_future(io_priority).await
         };
         if let Some(task) = task {
             task.return_result(res.map(|_t| true));
@@ -163,13 +158,15 @@ unsafe extern "C" fn async_initable_init_finish<T: AsyncInitableImpl>(
     res: *mut ffi::GAsyncResult,
     error: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let initable = from_glib_borrow::<_, AsyncInitable>(initable);
     let res = from_glib_none::<_, AsyncResult>(res);
 
     let task = res
         .downcast::<LocalTask<bool>>()
         .expect("GAsyncResult is not a GTask");
-    if !LocalTask::<bool>::is_valid(&task, Some(initable.as_ref())) {
+    if !LocalTask::<bool>::is_valid(
+        &task,
+        Some(from_glib_borrow::<_, AsyncInitable>(initable).as_ref()),
+    ) {
         panic!("Task is not valid for source object");
     }
 
@@ -214,13 +211,12 @@ mod tests {
         impl AsyncInitableImpl for AsyncInitableTestType {
             fn init_future(
                 &self,
-                initable: &Self::Type,
                 _io_priority: glib::Priority,
             ) -> Pin<Box<dyn Future<Output = Result<(), Error>> + 'static>> {
-                let initable = initable.clone();
+                let imp = glib::subclass::ObjectImplRef::new(self);
                 Box::pin(async move {
                     glib::timeout_future_seconds(0).await;
-                    initable.imp().0.set(0x123456789abcdef);
+                    imp.0.set(0x123456789abcdef);
                     Ok(())
                 })
             }

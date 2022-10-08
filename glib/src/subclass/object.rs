@@ -33,7 +33,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     ///
     /// This is called whenever the property of this specific subclass with the
     /// given index is set. The new value is passed as `glib::Value`.
-    fn set_property(&self, _obj: &Self::Type, _id: usize, _value: &Value, _pspec: &ParamSpec) {
+    fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
         unimplemented!()
     }
 
@@ -43,7 +43,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     /// This is called whenever the property value of the specific subclass with the
     /// given index should be returned.
     #[doc(alias = "get_property")]
-    fn property(&self, _obj: &Self::Type, _id: usize, _pspec: &ParamSpec) -> Value {
+    fn property(&self, _id: usize, _pspec: &ParamSpec) -> Value {
         unimplemented!()
     }
 
@@ -53,8 +53,8 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     /// This is called once construction of the instance is finished.
     ///
     /// Should chain up to the parent class' implementation.
-    fn constructed(&self, obj: &Self::Type) {
-        self.parent_constructed(obj);
+    fn constructed(&self) {
+        self.parent_constructed();
     }
 
     // rustdoc-stripper-ignore-next
@@ -64,7 +64,7 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     /// The object is also expected to be able to answer client method invocations (with possibly an
     /// error code but no memory violation) until it is dropped. `dispose()` can be executed more
     /// than once.
-    fn dispose(&self, _obj: &Self::Type) {}
+    fn dispose(&self) {}
 }
 
 #[doc(alias = "get_property")]
@@ -77,11 +77,7 @@ unsafe extern "C" fn property<T: ObjectImpl>(
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
-    let v = imp.property(
-        from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
-        id as usize,
-        &from_glib_borrow(pspec),
-    );
+    let v = imp.property(id as usize, &from_glib_borrow(pspec));
 
     // We first unset the value we get passed in, in case it contained
     // any previous data. Then we directly overwrite it with our new
@@ -105,7 +101,6 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
     imp.set_property(
-        from_glib_borrow::<_, Object>(obj).unsafe_cast_ref(),
         id as usize,
         &*(value as *mut Value),
         &from_glib_borrow(pspec),
@@ -116,14 +111,14 @@ unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) 
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.constructed(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
+    imp.constructed();
 }
 
 unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
     let instance = &*(obj as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.dispose(from_glib_borrow::<_, Object>(obj).unsafe_cast_ref());
+    imp.dispose();
 
     // Chain up to the parent's dispose.
     let data = T::type_data();
@@ -194,7 +189,7 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
 pub trait ObjectImplExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Chain up to the parent class' implementation of `glib::Object::constructed()`.
-    fn parent_constructed(&self, obj: &Self::Type);
+    fn parent_constructed(&self);
 
     // rustdoc-stripper-ignore-next
     /// Chain up to parent class signal handler.
@@ -206,13 +201,13 @@ pub trait ObjectImplExt: ObjectSubclass {
 }
 
 impl<T: ObjectImpl> ObjectImplExt for T {
-    fn parent_constructed(&self, obj: &Self::Type) {
+    fn parent_constructed(&self) {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
 
             if let Some(ref func) = (*parent_class).constructed {
-                func(obj.unsafe_cast_ref::<Object>().to_glib_none().0);
+                func(self.instance().unsafe_cast_ref::<Object>().to_glib_none().0);
             }
         }
     }
@@ -333,20 +328,15 @@ mod test {
                 SIGNALS.as_ref()
             }
 
-            fn set_property(
-                &self,
-                obj: &Self::Type,
-                _id: usize,
-                value: &Value,
-                pspec: &crate::ParamSpec,
-            ) {
+            fn set_property(&self, _id: usize, value: &Value, pspec: &crate::ParamSpec) {
                 match pspec.name() {
                     "name" => {
                         let name = value
                             .get()
                             .expect("type conformity checked by 'Object::set_property'");
                         self.name.replace(name);
-                        obj.emit_by_name::<()>("name-changed", &[&*self.name.borrow()]);
+                        self.instance()
+                            .emit_by_name::<()>("name-changed", &[&*self.name.borrow()]);
                     }
                     "construct-name" => {
                         let name = value
@@ -361,7 +351,7 @@ mod test {
                 }
             }
 
-            fn property(&self, _obj: &Self::Type, _id: usize, pspec: &crate::ParamSpec) -> Value {
+            fn property(&self, _id: usize, pspec: &crate::ParamSpec) -> Value {
                 match pspec.name() {
                     "name" => self.name.borrow().to_value(),
                     "construct-name" => self.construct_name.borrow().to_value(),
@@ -370,11 +360,10 @@ mod test {
                 }
             }
 
-            fn constructed(&self, obj: &Self::Type) {
-                self.parent_constructed(obj);
+            fn constructed(&self) {
+                self.parent_constructed();
 
-                assert_eq!(obj, self.instance().as_ref());
-                assert_eq!(self as *const _, obj.imp() as *const _);
+                assert_eq!(self as *const _, self.instance().imp() as *const _);
 
                 *self.constructed.borrow_mut() = true;
             }
