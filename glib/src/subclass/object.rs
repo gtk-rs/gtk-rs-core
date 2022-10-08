@@ -373,7 +373,7 @@ mod test {
             fn constructed(&self, obj: &Self::Type) {
                 self.parent_constructed(obj);
 
-                assert_eq!(obj, &self.instance());
+                assert_eq!(obj, self.instance().as_ref());
                 assert_eq!(self as *const _, obj.imp() as *const _);
 
                 *self.constructed.borrow_mut() = true;
@@ -448,7 +448,7 @@ mod test {
     fn test_create_child_object() {
         let obj: ChildObject = Object::new(&[]);
 
-        assert_eq!(obj, obj.imp().instance());
+        assert_eq!(&obj, obj.imp().instance().as_ref());
     }
 
     #[test]

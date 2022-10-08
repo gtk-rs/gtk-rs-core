@@ -633,7 +633,7 @@ pub trait ObjectSubclassExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding object instance.
     #[doc(alias = "get_instance")]
-    fn instance(&self) -> Self::Type;
+    fn instance(&self) -> crate::BorrowedObject<Self::Type>;
 
     // rustdoc-stripper-ignore-next
     /// Returns the implementation from an instance.
@@ -648,7 +648,7 @@ pub trait ObjectSubclassExt: ObjectSubclass {
 }
 
 impl<T: ObjectSubclass> ObjectSubclassExt for T {
-    fn instance(&self) -> Self::Type {
+    fn instance(&self) -> crate::BorrowedObject<Self::Type> {
         unsafe {
             let data = Self::type_data();
             let type_ = data.as_ref().type_();
@@ -665,10 +665,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             // of Self.
             assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
 
-            // Don't steal floating reference here via from_glib_none() but
-            // preserve it if needed by reffing manually.
-            gobject_ffi::g_object_ref(ptr as *mut gobject_ffi::GObject);
-            from_glib_full(ptr)
+            crate::BorrowedObject::new(ptr)
         }
     }
 
