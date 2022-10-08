@@ -40,21 +40,75 @@ mod test {
     }
 
     #[test]
-    fn binding_to_transform() {
+    fn binding_to_transform_with_values() {
         let source = TestObject::default();
         let target = TestObject::default();
 
         source
             .bind_property("name", &target, "name")
             .flags(crate::BindingFlags::SYNC_CREATE)
-            .transform_to(|_binding, value| {
+            .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
             })
-            .transform_from(|_binding, value| {
+            .transform_from_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
             })
+            .build();
+
+        source.set_name("Hello");
+        assert_eq!(target.name(), "Hello World");
+    }
+
+    #[test]
+    fn binding_from_transform_with_values() {
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        source
+            .bind_property("name", &target, "name")
+            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .transform_to_with_values(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
+            })
+            .transform_from_with_values(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some(format!("{} World", value).to_value())
+            })
+            .build();
+
+        target.set_name("Hello");
+        assert_eq!(source.name(), "Hello World");
+    }
+
+    #[test]
+    fn binding_to_transform_ref() {
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        source
+            .bind_property("name", &target, "name")
+            .flags(crate::BindingFlags::SYNC_CREATE)
+            .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
+            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
+            .build();
+
+        source.set_name("Hello");
+        assert_eq!(target.name(), "Hello World");
+    }
+
+    #[test]
+    fn binding_to_transform_owned_ref() {
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        source
+            .bind_property("name", &target, "name")
+            .flags(crate::BindingFlags::SYNC_CREATE)
+            .transform_to(|_binding, value: String| Some(format!("{} World", value)))
+            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
             .build();
 
         source.set_name("Hello");
@@ -69,18 +123,61 @@ mod test {
         source
             .bind_property("name", &target, "name")
             .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
-            .transform_to(|_binding, value| {
-                let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
-            })
-            .transform_from(|_binding, value| {
-                let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
-            })
+            .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
+            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
             .build();
 
         target.set_name("Hello");
         assert_eq!(source.name(), "Hello World");
+    }
+
+    #[test]
+    fn binding_to_transform_with_values_change_type() {
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        source
+            .bind_property("name", &target, "enabled")
+            .flags(crate::BindingFlags::SYNC_CREATE)
+            .transform_to_with_values(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some((value == "Hello").to_value())
+            })
+            .transform_from_with_values(|_binding, value| {
+                let value = value.get::<bool>().unwrap();
+                Some((if value { "Hello" } else { "World" }).to_value())
+            })
+            .build();
+
+        source.set_name("Hello");
+        assert!(target.enabled());
+
+        source.set_name("Hello World");
+        assert!(!target.enabled());
+    }
+
+    #[test]
+    fn binding_from_transform_values_change_type() {
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        source
+            .bind_property("name", &target, "enabled")
+            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .transform_to_with_values(|_binding, value| {
+                let value = value.get::<&str>().unwrap();
+                Some((value == "Hello").to_value())
+            })
+            .transform_from_with_values(|_binding, value| {
+                let value = value.get::<bool>().unwrap();
+                Some((if value { "Hello" } else { "World" }).to_value())
+            })
+            .build();
+
+        target.set_enabled(true);
+        assert_eq!(source.name(), "Hello");
+        target.set_enabled(false);
+        assert_eq!(source.name(), "World");
     }
 
     #[test]
@@ -91,14 +188,8 @@ mod test {
         source
             .bind_property("name", &target, "enabled")
             .flags(crate::BindingFlags::SYNC_CREATE)
-            .transform_to(|_binding, value| {
-                let value = value.get::<&str>().unwrap();
-                Some((value == "Hello").to_value())
-            })
-            .transform_from(|_binding, value| {
-                let value = value.get::<bool>().unwrap();
-                Some((if value { "Hello" } else { "World" }).to_value())
-            })
+            .transform_to(|_binding, value: &str| Some(value == "Hello"))
+            .transform_from(|_binding, value: bool| Some(if value { "Hello" } else { "World" }))
             .build();
 
         source.set_name("Hello");
@@ -116,14 +207,8 @@ mod test {
         source
             .bind_property("name", &target, "enabled")
             .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
-            .transform_to(|_binding, value| {
-                let value = value.get::<&str>().unwrap();
-                Some((value == "Hello").to_value())
-            })
-            .transform_from(|_binding, value| {
-                let value = value.get::<bool>().unwrap();
-                Some((if value { "Hello" } else { "World" }).to_value())
-            })
+            .transform_to(|_binding, value: &str| Some(value == "Hello"))
+            .transform_from(|_binding, value: bool| Some(if value { "Hello" } else { "World" }))
             .build();
 
         target.set_enabled(true);

@@ -2146,12 +2146,12 @@ pub trait ObjectExt: ObjectType {
     ///
     /// The binding can be unidirectional or bidirectional and optionally it is possible to
     /// transform the property values before they're passed to the other object.
-    fn bind_property<'a, O: ObjectType>(
+    fn bind_property<'a, 'f, 't, O: ObjectType>(
         &'a self,
         source_property: &'a str,
         target: &'a O,
         target_property: &'a str,
-    ) -> BindingBuilder<'a>;
+    ) -> BindingBuilder<'a, 'f, 't>;
 
     // rustdoc-stripper-ignore-next
     /// Returns the strong reference count of this object.
@@ -3038,12 +3038,12 @@ impl<T: ObjectType> ObjectExt for T {
         WeakRefNotify::new(self, move || callback.into_inner()())
     }
 
-    fn bind_property<'a, O: ObjectType>(
+    fn bind_property<'a, 'f, 't, O: ObjectType>(
         &'a self,
         source_property: &'a str,
         target: &'a O,
         target_property: &'a str,
-    ) -> BindingBuilder<'a> {
+    ) -> BindingBuilder<'a, 'f, 't> {
         BindingBuilder::new(self, source_property, target, target_property)
     }
 
@@ -3500,23 +3500,23 @@ impl<T: ObjectType> From<WeakRef<T>> for SendWeakRef<T> {
 unsafe impl<T: ObjectType> Sync for SendWeakRef<T> {}
 unsafe impl<T: ObjectType> Send for SendWeakRef<T> {}
 
-type TransformFn =
-    Option<Box<dyn Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>>;
+type TransformFn<'b> =
+    Option<Box<dyn Fn(&'b crate::Binding, &'b Value) -> Option<Value> + Send + Sync + 'static>>;
 
 // rustdoc-stripper-ignore-next
 /// Builder for object property bindings.
 #[must_use = "The builder must be built to be used"]
-pub struct BindingBuilder<'a> {
+pub struct BindingBuilder<'a, 'f, 't> {
     source: &'a ObjectRef,
     source_property: &'a str,
     target: &'a ObjectRef,
     target_property: &'a str,
     flags: crate::BindingFlags,
-    transform_to: TransformFn,
-    transform_from: TransformFn,
+    transform_from: TransformFn<'f>,
+    transform_to: TransformFn<'t>,
 }
 
-impl<'a> fmt::Debug for BindingBuilder<'a> {
+impl<'a, 'f, 't> fmt::Debug for BindingBuilder<'a, 'f, 't> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("BindingBuilder")
             .field("source", &self.source)
@@ -3528,7 +3528,7 @@ impl<'a> fmt::Debug for BindingBuilder<'a> {
     }
 }
 
-impl<'a> BindingBuilder<'a> {
+impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     fn new(
         source: &'a impl ObjectType,
         source_property: &'a str,
@@ -3548,7 +3548,10 @@ impl<'a> BindingBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Transform changed property values from the target object to the source object with the given closure.
-    pub fn transform_from<
+    ///
+    /// This function operates on `glib::Value`s.
+    /// See [`Self::transform_from`] for a version which operates on concrete argument and return types.
+    pub fn transform_from_with_values<
         F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
     >(
         self,
@@ -3561,13 +3564,62 @@ impl<'a> BindingBuilder<'a> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Transform changed property values from the target object to the source object with the given closure.
+    ///
+    /// This function operates on concrete argument and return types.
+    /// See [`Self::transform_from_with_values`] for a version which operates on `glib::Value`s.
+    pub fn transform_from<
+        S: FromValue<'f>,
+        T: ToValue,
+        F: Fn(&'f crate::Binding, S) -> Option<T> + Send + Sync + 'static,
+    >(
+        self,
+        func: F,
+    ) -> Self {
+        Self {
+            transform_from: Some(Box::new(move |binding, from_value| {
+                let from_value = from_value.get().expect("Wrong value type");
+                func(binding, from_value).map(|r| r.to_value())
+            })),
+            ..self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Transform changed property values from the source object to the target object with the given closure.
-    pub fn transform_to<F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static>(
+    ///
+    /// This function operates on `glib::Value`s.
+    /// See [`Self::transform_to`] for a version which operates on concrete argument and return types.
+    pub fn transform_to_with_values<
+        F: Fn(&crate::Binding, &Value) -> Option<Value> + Send + Sync + 'static,
+    >(
         self,
         func: F,
     ) -> Self {
         Self {
             transform_to: Some(Box::new(func)),
+            ..self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Transform changed property values from the source object to the target object with the given closure.
+    ///
+    /// This function operates on concrete argument and return types.
+    /// See [`Self::transform_to_with_values`] for a version which operates on `glib::Value`s.
+    pub fn transform_to<
+        S: FromValue<'t>,
+        T: ToValue,
+        F: Fn(&'t crate::Binding, S) -> Option<T> + Send + Sync + 'static,
+    >(
+        self,
+        func: F,
+    ) -> Self {
+        Self {
+            transform_to: Some(Box::new(move |binding, from_value| {
+                let from_value = from_value.get().expect("Wrong value type");
+                func(binding, from_value).map(|r| r.to_value())
+            })),
             ..self
         }
     }
