@@ -349,6 +349,12 @@ impl Drop for Surface {
     }
 }
 
+impl AsRef<Surface> for Surface {
+    fn as_ref(&self) -> &Surface {
+        self
+    }
+}
+
 impl fmt::Display for Surface {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Surface")
@@ -387,6 +393,12 @@ impl Deref for MappedImageSurface {
     type Target = ImageSurface;
 
     fn deref(&self) -> &ImageSurface {
+        &self.image_surface
+    }
+}
+
+impl AsRef<ImageSurface> for MappedImageSurface {
+    fn as_ref(&self) -> &ImageSurface {
         &self.image_surface
     }
 }

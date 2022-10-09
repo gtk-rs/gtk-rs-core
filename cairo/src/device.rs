@@ -117,7 +117,8 @@ impl Device {
 
     #[cfg(any(feature = "script", feature = "dox"))]
     #[doc(alias = "cairo_script_surface_create_for_target")]
-    pub fn surface_create_for_target(&self, target: &Surface) -> Result<Surface, Error> {
+    pub fn surface_create_for_target(&self, target: impl AsRef<Surface>) -> Result<Surface, Error> {
+        let target = target.as_ref();
         target.status()?;
         unsafe {
             Surface::from_raw_full(ffi::cairo_script_surface_create_for_target(
