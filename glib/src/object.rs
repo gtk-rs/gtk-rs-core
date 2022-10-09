@@ -4223,6 +4223,15 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
             phantom: PhantomData,
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Downgrade to a weak reference.
+    pub fn downgrade(&self) -> <Self as crate::clone::Downgrade>::Weak
+    where
+        T: crate::clone::Downgrade,
+    {
+        <T as crate::clone::Downgrade>::downgrade(self)
+    }
 }
 
 impl<'a, T> ops::Deref for BorrowedObject<'a, T> {

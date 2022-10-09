@@ -132,6 +132,12 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
             }
         }
 
+        impl #self_ty {
+            pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
+                #crate_ident::clone::Downgrade::downgrade(self)
+            }
+        }
+
         #[doc(hidden)]
         impl ::std::borrow::ToOwned for #self_ty {
             type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
