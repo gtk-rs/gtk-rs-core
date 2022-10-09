@@ -96,6 +96,12 @@ macro_rules! declare_surface {
             }
         }
 
+        impl AsRef<Surface> for $surf_name {
+            fn as_ref(&self) -> &Surface {
+                &self.0
+            }
+        }
+
         impl Clone for $surf_name {
             fn clone(&self) -> $surf_name {
                 $surf_name(self.0.clone())

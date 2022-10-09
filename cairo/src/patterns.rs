@@ -113,6 +113,12 @@ impl Drop for Pattern {
     }
 }
 
+impl AsRef<Pattern> for Pattern {
+    fn as_ref(&self) -> &Pattern {
+        self
+    }
+}
+
 macro_rules! convert {
     ($source: ident => $dest: ident = $( $variant: ident )|+ $( ($intermediate: ident) )*) => {
         impl TryFrom<$source> for $dest {
@@ -144,6 +150,12 @@ macro_rules! pattern_type(
             type Target = Pattern;
 
             fn deref(&self) -> &Pattern {
+                &self.0
+            }
+        }
+
+        impl AsRef<Pattern> for $pattern_type {
+            fn as_ref(&self) -> &Pattern {
                 &self.0
             }
         }
@@ -270,6 +282,18 @@ macro_rules! gradient_type {
             }
         }
 
+        impl AsRef<Gradient> for $gradient_type {
+            fn as_ref(&self) -> &Gradient {
+                &self.0
+            }
+        }
+
+        impl AsRef<Pattern> for $gradient_type {
+            fn as_ref(&self) -> &Pattern {
+                &self.0
+            }
+        }
+
         impl fmt::Display for $gradient_type {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 write!(f, stringify!($gradient_type))
@@ -357,10 +381,10 @@ pattern_type!(SurfacePattern = Surface);
 
 impl SurfacePattern {
     #[doc(alias = "cairo_pattern_create_for_surface")]
-    pub fn create(surface: &Surface) -> Self {
+    pub fn create(surface: impl AsRef<Surface>) -> Self {
         unsafe {
             Self(Pattern::from_raw_full(
-                ffi::cairo_pattern_create_for_surface(surface.to_raw_none()),
+                ffi::cairo_pattern_create_for_surface(surface.as_ref().to_raw_none()),
             ))
         }
     }

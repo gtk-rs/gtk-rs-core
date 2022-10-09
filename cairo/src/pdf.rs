@@ -180,7 +180,7 @@ mod test {
         let buffer: Vec<u8> = vec![];
 
         let surface = PdfSurface::for_stream(100., 100., buffer).unwrap();
-        surface.restrict(PdfVersion::_1_5);
+        surface.restrict(PdfVersion::_1_5).unwrap();
         draw(&surface);
         *surface.finish_output_stream().unwrap().downcast().unwrap()
     }

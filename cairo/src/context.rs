@@ -161,8 +161,8 @@ impl Context {
         status_to_result(status)
     }
 
-    pub fn new(target: &Surface) -> Result<Context, Error> {
-        let ctx = unsafe { Self::from_raw_full(ffi::cairo_create(target.to_raw_none())) };
+    pub fn new(target: impl AsRef<Surface>) -> Result<Context, Error> {
+        let ctx = unsafe { Self::from_raw_full(ffi::cairo_create(target.as_ref().to_raw_none())) };
         ctx.status().map(|_| ctx)
     }
 
@@ -223,7 +223,8 @@ impl Context {
     }
 
     #[doc(alias = "cairo_set_source")]
-    pub fn set_source(&self, source: &Pattern) -> Result<(), Error> {
+    pub fn set_source(&self, source: impl AsRef<Pattern>) -> Result<(), Error> {
+        let source = source.as_ref();
         source.status()?;
         unsafe {
             ffi::cairo_set_source(self.0.as_ptr(), source.to_raw_none());
@@ -238,7 +239,13 @@ impl Context {
     }
 
     #[doc(alias = "cairo_set_source_surface")]
-    pub fn set_source_surface(&self, surface: &Surface, x: f64, y: f64) -> Result<(), Error> {
+    pub fn set_source_surface(
+        &self,
+        surface: impl AsRef<Surface>,
+        x: f64,
+        y: f64,
+    ) -> Result<(), Error> {
+        let surface = surface.as_ref();
         surface.status()?;
         unsafe {
             ffi::cairo_set_source_surface(self.0.as_ptr(), surface.to_raw_none(), x, y);
@@ -474,14 +481,16 @@ impl Context {
     }
 
     #[doc(alias = "cairo_mask")]
-    pub fn mask(&self, pattern: &Pattern) -> Result<(), Error> {
+    pub fn mask(&self, pattern: impl AsRef<Pattern>) -> Result<(), Error> {
+        let pattern = pattern.as_ref();
         pattern.status()?;
         unsafe { ffi::cairo_mask(self.0.as_ptr(), pattern.to_raw_none()) };
         self.status()
     }
 
     #[doc(alias = "cairo_mask_surface")]
-    pub fn mask_surface(&self, surface: &Surface, x: f64, y: f64) -> Result<(), Error> {
+    pub fn mask_surface(&self, surface: impl AsRef<Surface>, x: f64, y: f64) -> Result<(), Error> {
+        let surface = surface.as_ref();
         surface.status()?;
         unsafe {
             ffi::cairo_mask_surface(self.0.as_ptr(), surface.to_raw_none(), x, y);
