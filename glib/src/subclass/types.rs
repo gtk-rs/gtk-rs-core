@@ -650,6 +650,10 @@ pub trait ObjectSubclassExt: ObjectSubclass {
     fn from_instance(obj: &Self::Type) -> &Self;
 
     // rustdoc-stripper-ignore-next
+    /// Returns a new reference-counted wrapper around `self`.
+    fn ref_counted(&self) -> super::ObjectImplRef<Self>;
+
+    // rustdoc-stripper-ignore-next
     /// Returns a pointer to the instance implementation specific data.
     ///
     /// This is used for the subclassing infrastructure to store additional instance data.
@@ -686,10 +690,10 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         }
     }
 
-    // rustdoc-stripper-ignore-next
-    /// Returns a pointer to the instance implementation specific data.
-    ///
-    /// This is used for the subclassing infrastructure to store additional instance data.
+    fn ref_counted(&self) -> super::ObjectImplRef<Self> {
+        super::ObjectImplRef::new(self)
+    }
+
     fn instance_data<U: Any + Send + Sync + 'static>(&self, type_: Type) -> Option<&U> {
         unsafe {
             let type_data = Self::type_data();
