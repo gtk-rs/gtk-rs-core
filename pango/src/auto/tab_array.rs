@@ -63,8 +63,8 @@ impl TabArray {
 
     #[doc(alias = "pango_tab_array_get_size")]
     #[doc(alias = "get_size")]
-    pub fn size(&mut self) -> i32 {
-        unsafe { ffi::pango_tab_array_get_size(self.to_glib_none_mut().0) }
+    pub fn size(&self) -> i32 {
+        unsafe { ffi::pango_tab_array_get_size(mut_override(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_tab_array_get_tab")]
@@ -82,12 +82,6 @@ impl TabArray {
             (from_glib(alignment.assume_init()), location.assume_init())
         }
     }
-
-    //#[doc(alias = "pango_tab_array_get_tabs")]
-    //#[doc(alias = "get_tabs")]
-    //pub fn tabs(&mut self, locations: Vec<i32>) -> TabAlign {
-    //    unsafe { TODO: call ffi:pango_tab_array_get_tabs() }
-    //}
 
     #[doc(alias = "pango_tab_array_resize")]
     pub fn resize(&mut self, new_size: i32) {
