@@ -115,4 +115,6 @@ pub use layout::HitPosition;
 mod matrix;
 mod rectangle;
 pub use rectangle::Rectangle;
+mod script_iter;
+pub use script_iter::{ScriptIntoIter, ScriptIter};
 mod tab_array;
