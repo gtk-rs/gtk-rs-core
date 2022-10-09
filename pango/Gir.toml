@@ -26,7 +26,6 @@ generate = [
     "Pango.Fontset",
     "Pango.FontsetSimple",
     "Pango.Glyph",
-    "Pango.GlyphItem",
     "Pango.GlyphUnit",
     "Pango.Gravity",
     "Pango.GravityHint",
@@ -294,6 +293,13 @@ status = "generate"
         const = true
 
 [[object]]
+name = "Pango.GlyphItem"
+status = "generate"
+    [[object.function]]
+    name = "get_logical_widths"
+    manual = true
+
+[[object]]
 name = "Pango.GlyphItemIter"
 status = "manual"
     [[object.function]]
@@ -308,7 +314,10 @@ name = "Pango.GlyphString"
 status = "generate"
 concurrency = "send+sync"
     [[object.function]]
-    pattern = "(get_logical_widths|get_width|index_to_x|x_to_index)"
+    name = "get_logical_widths"
+    manual = true
+    [[object.function]]
+    pattern = "(get_width|index_to_x|x_to_index)"
         [[object.function.parameter]]
         name = "glyphs"
         const = true

@@ -28,12 +28,6 @@ impl GlyphItem {
         }
     }
 
-    //#[doc(alias = "pango_glyph_item_get_logical_widths")]
-    //#[doc(alias = "get_logical_widths")]
-    //pub fn logical_widths(&mut self, text: &str, logical_widths: &[i32]) {
-    //    unsafe { TODO: call ffi:pango_glyph_item_get_logical_widths() }
-    //}
-
     //#[doc(alias = "pango_glyph_item_letter_space")]
     //pub fn letter_space(&mut self, text: &str, log_attrs: /*Ignored*/&[LogAttr], letter_spacing: i32) {
     //    unsafe { TODO: call ffi:pango_glyph_item_letter_space() }
