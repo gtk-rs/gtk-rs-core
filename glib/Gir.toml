@@ -23,6 +23,7 @@ generate = [
     "GLib.LogLevelFlags",
     "GLib.LogWriterOutput",
     "GLib.MainContextFlags",
+    "GLib.MarkupError",
     "GLib.OptionArg",
     "GLib.OptionFlags",
     "GLib.SeekType",
@@ -111,7 +112,7 @@ status = "generate"
     ignore = true # use the ones from the std
     [[object.function]]
     pattern = "(markup_collect_attributes|markup_printf_escaped|markup_vprintf_escaped)"
-    ignore = true # they are supposed to be used with MarkupParser, which doesn't have safe bindings
+    ignore = true # varargs functions are unbindable
     [[object.function]]
     pattern = "io_.*"
     ignore = true # they are supposed to be used with IOChannel, which doesn't have safe bindings
@@ -688,6 +689,13 @@ concurrency = "send+sync"
 name = "GLib.MainLoop"
 status = "generate"
 concurrency = "send+sync"
+
+[[object]]
+name = "GLib.MarkupParseContext"
+status = "generate"
+    [[object.function]]
+    name = "get_user_data"
+    ignore = true # unsafe pointer
 
 [[object]]
 name = "GLib.Source"

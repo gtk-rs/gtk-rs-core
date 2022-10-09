@@ -711,6 +711,104 @@ impl FromGlib<ffi::GLogWriterOutput> for LogWriterOutput {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GMarkupError")]
+pub enum MarkupError {
+    #[doc(alias = "G_MARKUP_ERROR_BAD_UTF8")]
+    BadUtf8,
+    #[doc(alias = "G_MARKUP_ERROR_EMPTY")]
+    Empty,
+    #[doc(alias = "G_MARKUP_ERROR_PARSE")]
+    Parse,
+    #[doc(alias = "G_MARKUP_ERROR_UNKNOWN_ELEMENT")]
+    UnknownElement,
+    #[doc(alias = "G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE")]
+    UnknownAttribute,
+    #[doc(alias = "G_MARKUP_ERROR_INVALID_CONTENT")]
+    InvalidContent,
+    #[doc(alias = "G_MARKUP_ERROR_MISSING_ATTRIBUTE")]
+    MissingAttribute,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for MarkupError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "MarkupError::{}",
+            match *self {
+                Self::BadUtf8 => "BadUtf8",
+                Self::Empty => "Empty",
+                Self::Parse => "Parse",
+                Self::UnknownElement => "UnknownElement",
+                Self::UnknownAttribute => "UnknownAttribute",
+                Self::InvalidContent => "InvalidContent",
+                Self::MissingAttribute => "MissingAttribute",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for MarkupError {
+    type GlibType = ffi::GMarkupError;
+
+    fn into_glib(self) -> ffi::GMarkupError {
+        match self {
+            Self::BadUtf8 => ffi::G_MARKUP_ERROR_BAD_UTF8,
+            Self::Empty => ffi::G_MARKUP_ERROR_EMPTY,
+            Self::Parse => ffi::G_MARKUP_ERROR_PARSE,
+            Self::UnknownElement => ffi::G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+            Self::UnknownAttribute => ffi::G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+            Self::InvalidContent => ffi::G_MARKUP_ERROR_INVALID_CONTENT,
+            Self::MissingAttribute => ffi::G_MARKUP_ERROR_MISSING_ATTRIBUTE,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GMarkupError> for MarkupError {
+    unsafe fn from_glib(value: ffi::GMarkupError) -> Self {
+        match value {
+            ffi::G_MARKUP_ERROR_BAD_UTF8 => Self::BadUtf8,
+            ffi::G_MARKUP_ERROR_EMPTY => Self::Empty,
+            ffi::G_MARKUP_ERROR_PARSE => Self::Parse,
+            ffi::G_MARKUP_ERROR_UNKNOWN_ELEMENT => Self::UnknownElement,
+            ffi::G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE => Self::UnknownAttribute,
+            ffi::G_MARKUP_ERROR_INVALID_CONTENT => Self::InvalidContent,
+            ffi::G_MARKUP_ERROR_MISSING_ATTRIBUTE => Self::MissingAttribute,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+impl ErrorDomain for MarkupError {
+    fn domain() -> Quark {
+        unsafe { from_glib(ffi::g_markup_error_quark()) }
+    }
+
+    fn code(self) -> i32 {
+        self.into_glib()
+    }
+
+    fn from(code: i32) -> Option<Self> {
+        match code {
+            ffi::G_MARKUP_ERROR_BAD_UTF8 => Some(Self::BadUtf8),
+            ffi::G_MARKUP_ERROR_EMPTY => Some(Self::Empty),
+            ffi::G_MARKUP_ERROR_PARSE => Some(Self::Parse),
+            ffi::G_MARKUP_ERROR_UNKNOWN_ELEMENT => Some(Self::UnknownElement),
+            ffi::G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE => Some(Self::UnknownAttribute),
+            ffi::G_MARKUP_ERROR_INVALID_CONTENT => Some(Self::InvalidContent),
+            ffi::G_MARKUP_ERROR_MISSING_ATTRIBUTE => Some(Self::MissingAttribute),
+            value => Some(Self::__Unknown(value)),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GOptionArg")]
 pub enum OptionArg {
     #[doc(alias = "G_OPTION_ARG_NONE")]
