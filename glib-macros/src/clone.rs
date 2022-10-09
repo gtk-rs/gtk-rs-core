@@ -10,6 +10,7 @@ enum BorrowKind {
     Weak,
     WeakAllowNone,
     Strong,
+    ToOwned,
 }
 
 impl BorrowKind {
@@ -18,6 +19,7 @@ impl BorrowKind {
             Self::Weak => "@weak",
             Self::WeakAllowNone => "@weak-allow-none",
             Self::Strong => "@strong",
+            Self::ToOwned => "@to-owned",
         }
     }
 }
@@ -65,6 +67,15 @@ impl ElemToClone {
             ),
             BorrowKind::Strong => format!(
                 "let {} = {}.clone();",
+                if let Some(ref a) = self.alias {
+                    a
+                } else {
+                    &self.name
+                },
+                self.name,
+            ),
+            BorrowKind::ToOwned => format!(
+                "let {} = ::std::borrow::ToOwned::to_owned(&*{});",
                 if let Some(ref a) = self.alias {
                     a
                 } else {
@@ -285,10 +296,11 @@ fn parse_ident(parts: &mut Peekable<ProcIter>, elements: &mut Vec<ElemToClone>) 
         "strong" => BorrowKind::Strong,
         "weak" => BorrowKind::Weak,
         "weak-allow-none" => BorrowKind::WeakAllowNone,
+        "to-owned" => BorrowKind::ToOwned,
         "default-return" => panic!("`@default-return` should be after `=>`"),
         "default-panic" => panic!("`@default-panic` should be after `=>`"),
         k => panic!(
-            "Unknown keyword `{}`, only `weak`, `weak-allow-none` and `strong` are allowed",
+            "Unknown keyword `{}`, only `weak`, `weak-allow-none`, `to-owned` and `strong` are allowed",
             k,
         ),
     };

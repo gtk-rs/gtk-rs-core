@@ -114,6 +114,21 @@ use syn::{parse_macro_input, DeriveInput, NestedMeta};
 /// assert_eq!(closure(3), true);
 /// ```
 ///
+/// ### Creating owned values from references (`ToOwned`)
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+///
+/// let v = "123";
+/// let closure = clone!(@to-owned v => move |x| {
+///     // v is passed as `String` here
+///     println!("v: {}, x: {}", v, x);
+/// });
+///
+/// closure(2);
+/// ```
+///
 /// ### Renaming variables
 ///
 /// ```
@@ -391,15 +406,16 @@ pub fn clone(item: TokenStream) -> TokenStream {
 /// let closure = {
 ///     let a = Arc::new(String::from("Hello"));
 ///     let b = Arc::new(String::from("World"));
-///     let closure = closure!(@strong a, @weak-allow-none b => move || {
-///         // `a` is Arc<String>, `b` is Option<Arc<String>>
-///         format!("{} {}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"))
+///     let c = "!";
+///     let closure = closure!(@strong a, @weak-allow-none b, @to-owned c => move || {
+///         // `a` is Arc<String>, `b` is Option<Arc<String>>, `c` is a `String`
+///         format!("{} {}{}", a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| "Moon"), c)
 ///     });
-///     assert_eq!(closure.invoke::<String>(&[]), "Hello World");
+///     assert_eq!(closure.invoke::<String>(&[]), "Hello World!");
 ///     closure
 /// };
-/// // `a` still kept alive, `b` is dropped
-/// assert_eq!(closure.invoke::<String>(&[]), "Hello Moon");
+/// // `a`, `c` still kept alive, `b` is dropped
+/// assert_eq!(closure.invoke::<String>(&[]), "Hello Moon!");
 /// ```
 #[proc_macro]
 #[proc_macro_error]
