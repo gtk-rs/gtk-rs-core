@@ -1392,7 +1392,7 @@ impl ParamSpecValueArray {
         name: &str,
         nick: impl Into<Option<&'a str>>,
         blurb: impl Into<Option<&'a str>>,
-        element_spec: Option<&ParamSpec>,
+        element_spec: Option<impl AsRef<ParamSpec>>,
         flags: ParamFlags,
     ) -> ParamSpec {
         assert_param_name(name);
@@ -1401,7 +1401,7 @@ impl ParamSpecValueArray {
                 name.to_glib_none().0,
                 nick.into().to_glib_none().0,
                 blurb.into().to_glib_none().0,
-                element_spec.to_glib_none().0,
+                element_spec.as_ref().map(|p| p.as_ref()).to_glib_none().0,
                 flags.into_glib(),
             ))
         }
@@ -1565,14 +1565,15 @@ define_param_spec!(ParamSpecOverride, gobject_ffi::GParamSpecOverride, 20);
 impl ParamSpecOverride {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_param_spec_override")]
-    pub fn new(name: &str, overridden: &ParamSpec) -> ParamSpec {
+    pub fn new(name: &str, overridden: impl AsRef<ParamSpec>) -> ParamSpec {
         assert_param_name(name);
         unsafe { Self::new_unchecked(name, overridden) }
     }
-    unsafe fn new_unchecked(name: &str, overridden: &ParamSpec) -> ParamSpec {
+
+    unsafe fn new_unchecked(name: &str, overridden: impl AsRef<ParamSpec>) -> ParamSpec {
         from_glib_none(gobject_ffi::g_param_spec_override(
             name.to_glib_none().0,
-            overridden.to_glib_none().0,
+            overridden.as_ref().to_glib_none().0,
         ))
     }
 
