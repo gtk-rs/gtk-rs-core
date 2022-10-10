@@ -246,7 +246,13 @@ impl ToTokens for Closure {
                 let #closure_ident = {
                     #(#outer_before)*
                     #crate_ident::closure::RustClosure::#constructor(move |#values_ident| {
-                        assert_eq!(#values_ident.len(), #args_len);
+                        assert_eq!(
+                            #values_ident.len(),
+                            #args_len,
+                            "Expected {} arguments but got {}",
+                            #args_len,
+                            #values_ident.len(),
+                        );
                         #(#inner_before)*
                         #(#arg_values)*
                         #crate_ident::closure::ToClosureReturnValue::to_closure_return_value(
