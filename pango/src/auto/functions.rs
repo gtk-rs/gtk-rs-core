@@ -109,15 +109,40 @@ pub fn itemize_with_base_dir(
     }
 }
 
-//#[doc(alias = "pango_markup_parser_finish")]
-//pub fn markup_parser_finish(context: /*Ignored*/&glib::MarkupParseContext) -> Result<(AttrList, glib::GString, char), glib::Error> {
-//    unsafe { TODO: call ffi:pango_markup_parser_finish() }
-//}
+#[doc(alias = "pango_markup_parser_finish")]
+pub fn markup_parser_finish(
+    context: &glib::MarkupParseContext,
+) -> Result<(AttrList, glib::GString, char), glib::Error> {
+    unsafe {
+        let mut attr_list = ptr::null_mut();
+        let mut text = ptr::null_mut();
+        let mut accel_char = mem::MaybeUninit::uninit();
+        let mut error = ptr::null_mut();
+        let is_ok = ffi::pango_markup_parser_finish(
+            context.to_glib_none().0,
+            &mut attr_list,
+            &mut text,
+            accel_char.as_mut_ptr(),
+            &mut error,
+        );
+        assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+        if error.is_null() {
+            Ok((
+                from_glib_full(attr_list),
+                from_glib_full(text),
+                std::convert::TryFrom::try_from(accel_char.assume_init())
+                    .expect("conversion from an invalid Unicode value attempted"),
+            ))
+        } else {
+            Err(from_glib_full(error))
+        }
+    }
+}
 
-//#[doc(alias = "pango_markup_parser_new")]
-//pub fn markup_parser_new(accel_marker: char) -> /*Ignored*/Option<glib::MarkupParseContext> {
-//    unsafe { TODO: call ffi:pango_markup_parser_new() }
-//}
+#[doc(alias = "pango_markup_parser_new")]
+pub fn markup_parser_new(accel_marker: char) -> glib::MarkupParseContext {
+    unsafe { from_glib_none(ffi::pango_markup_parser_new(accel_marker.into_glib())) }
+}
 
 #[doc(alias = "pango_parse_markup")]
 pub fn parse_markup(

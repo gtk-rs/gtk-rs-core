@@ -13,7 +13,6 @@ deprecate_by_min_version = true
 generate = [
     # "Pango.GlyphVisAttr",
     # "Pango.LogAttr",
-    # "Pango.ScriptIter",
     "Pango.Alignment",
     "Pango.BaselineShift",
     "Pango.BidiType",
@@ -27,7 +26,6 @@ generate = [
     "Pango.Fontset",
     "Pango.FontsetSimple",
     "Pango.Glyph",
-    "Pango.GlyphItem",
     "Pango.GlyphUnit",
     "Pango.Gravity",
     "Pango.GravityHint",
@@ -54,6 +52,7 @@ manual = [
     "Gio.ListModel",
     "GLib.Bytes",
     "GLib.Error",
+    "GLib.MarkupParseContext",
     "GLib.Quark",
     "Pango.Analysis",
     "Pango.AttrClass",
@@ -105,6 +104,10 @@ status = "generate"
         [[object.function.parameter]]
         name = "cached_iter"
         const = true
+    [[object.function]]
+    name = "markup_parser_new"
+        [object.function.return]
+        nullable = false
     [[object.function]]
     name = "reorder_items"
     ignore = true
@@ -295,6 +298,13 @@ status = "generate"
         const = true
 
 [[object]]
+name = "Pango.GlyphItem"
+status = "generate"
+    [[object.function]]
+    name = "get_logical_widths"
+    manual = true
+
+[[object]]
 name = "Pango.GlyphItemIter"
 status = "manual"
     [[object.function]]
@@ -309,7 +319,10 @@ name = "Pango.GlyphString"
 status = "generate"
 concurrency = "send+sync"
     [[object.function]]
-    pattern = "(get_logical_widths|get_width|index_to_x|x_to_index)"
+    name = "get_logical_widths"
+    manual = true
+    [[object.function]]
+    pattern = "(get_width|index_to_x|x_to_index)"
         [[object.function.parameter]]
         name = "glyphs"
         const = true
@@ -350,6 +363,13 @@ boxed_inline = true
     manual = true
 
 [[object]]
+name = "Pango.ScriptIter"
+status = "manual"
+    [[object.function]]
+    name = "next"
+    rename = "next_range"
+
+[[object]]
 name = "Pango.TabAlign"
 status = "generate"
     [[object.member]]
@@ -367,10 +387,13 @@ name = "Pango.TabArray"
 status = "generate"
 concurrency = "send+sync"
     [[object.function]]
-    pattern = "(to_string|get_decimal_point|get_positions_in_pixels|get_tab)"
+    pattern = "(to_string|get_decimal_point|get_positions_in_pixels|get_size|get_tab)"
         [[object.function.parameter]]
         pattern = "*" # because we can't target self
         const = true
+    [[object.function]]
+    name = "get_tabs"
+    manual = true
     [[object.function]]
     name = "from_string"
         [object.function.return]

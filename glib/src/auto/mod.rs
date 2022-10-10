@@ -17,6 +17,9 @@ pub use self::main_context::MainContext;
 mod main_loop;
 pub use self::main_loop::MainLoop;
 
+mod markup_parse_context;
+pub use self::markup_parse_context::MarkupParseContext;
+
 mod source;
 pub use self::source::Source;
 
@@ -38,6 +41,7 @@ pub use self::enums::DateWeekday;
 pub use self::enums::FileError;
 pub use self::enums::KeyFileError;
 pub use self::enums::LogWriterOutput;
+pub use self::enums::MarkupError;
 pub use self::enums::OptionArg;
 pub use self::enums::SeekType;
 pub use self::enums::TimeType;

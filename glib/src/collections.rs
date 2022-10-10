@@ -516,6 +516,7 @@ impl<T: PartialEq + 'static> PartialEq<Slice<T>> for [T] {
 impl<T: 'static> Slice<T> {
     // rustdoc-stripper-ignore-next
     /// Borrows a static C array.
+    #[inline]
     pub unsafe fn from_glib_borrow_num<'a>(ptr: *const T, len: usize) -> &'a [T] {
         assert!(!ptr.is_null() || len == 0);
 
@@ -523,6 +524,19 @@ impl<T: 'static> Slice<T> {
             &[]
         } else {
             std::slice::from_raw_parts(ptr, len)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Borrows a static mutable C array.
+    #[inline]
+    pub unsafe fn from_glib_borrow_num_mut<'a>(ptr: *mut T, len: usize) -> &'a mut [T] {
+        assert!(!ptr.is_null() || len == 0);
+
+        if len == 0 {
+            &mut []
+        } else {
+            std::slice::from_raw_parts_mut(ptr, len)
         }
     }
 
