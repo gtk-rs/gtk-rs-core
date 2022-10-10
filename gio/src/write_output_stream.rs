@@ -36,7 +36,6 @@ mod imp {
     impl OutputStreamImpl for WriteOutputStream {
         fn write(
             &self,
-            _stream: &Self::Type,
             buffer: &[u8],
             _cancellable: Option<&crate::Cancellable>,
         ) -> Result<usize, glib::Error> {
@@ -60,20 +59,12 @@ mod imp {
             }
         }
 
-        fn close(
-            &self,
-            _stream: &Self::Type,
-            _cancellable: Option<&crate::Cancellable>,
-        ) -> Result<(), glib::Error> {
+        fn close(&self, _cancellable: Option<&crate::Cancellable>) -> Result<(), glib::Error> {
             let _ = self.write.take();
             Ok(())
         }
 
-        fn flush(
-            &self,
-            _stream: &Self::Type,
-            _cancellable: Option<&crate::Cancellable>,
-        ) -> Result<(), glib::Error> {
+        fn flush(&self, _cancellable: Option<&crate::Cancellable>) -> Result<(), glib::Error> {
             let mut write = self.write.borrow_mut();
             let write = match *write {
                 None => {
@@ -96,7 +87,7 @@ mod imp {
     }
 
     impl SeekableImpl for WriteOutputStream {
-        fn tell(&self, _seekable: &Self::Type) -> i64 {
+        fn tell(&self) -> i64 {
             // XXX: stream_position is not stable yet
             // let mut write = self.write.borrow_mut();
             // match *write {
@@ -108,14 +99,13 @@ mod imp {
             -1
         }
 
-        fn can_seek(&self, _seekable: &Self::Type) -> bool {
+        fn can_seek(&self) -> bool {
             let write = self.write.borrow();
             matches!(*write, Some(Writer::WriteSeek(_)))
         }
 
         fn seek(
             &self,
-            _seekable: &Self::Type,
             offset: i64,
             type_: glib::SeekType,
             _cancellable: Option<&crate::Cancellable>,
@@ -155,13 +145,12 @@ mod imp {
             }
         }
 
-        fn can_truncate(&self, _seekable: &Self::Type) -> bool {
+        fn can_truncate(&self) -> bool {
             false
         }
 
         fn truncate(
             &self,
-            _seekable: &Self::Type,
             _offset: i64,
             _cancellable: Option<&crate::Cancellable>,
         ) -> Result<(), glib::Error> {

@@ -121,5 +121,37 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
                 <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_instance(obj)
             }
         }
+
+        #[doc(hidden)]
+        impl #crate_ident::clone::Downgrade for #self_ty {
+            type Weak = #crate_ident::subclass::ObjectImplWeakRef<#self_ty>;
+
+            fn downgrade(&self) -> Self::Weak {
+                let ref_counted = #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self);
+                #crate_ident::clone::Downgrade::downgrade(&ref_counted)
+            }
+        }
+
+        impl #self_ty {
+            pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
+                #crate_ident::clone::Downgrade::downgrade(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl ::std::borrow::ToOwned for #self_ty {
+            type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
+
+            fn to_owned(&self) -> Self::Owned {
+                #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
+            fn borrow(&self) -> &#self_ty {
+                self
+            }
+        }
     }
 }

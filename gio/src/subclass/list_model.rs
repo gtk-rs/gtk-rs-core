@@ -8,21 +8,21 @@ use once_cell::sync::Lazy;
 
 pub trait ListModelImpl: ObjectImpl {
     #[doc(alias = "get_item_type")]
-    fn item_type(&self, list_model: &Self::Type) -> glib::Type;
+    fn item_type(&self) -> glib::Type;
     #[doc(alias = "get_n_items")]
-    fn n_items(&self, list_model: &Self::Type) -> u32;
+    fn n_items(&self) -> u32;
     #[doc(alias = "get_item")]
-    fn item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object>;
+    fn item(&self, position: u32) -> Option<glib::Object>;
 }
 
 pub trait ListModelImplExt: ObjectSubclass {
-    fn parent_item_type(&self, list_model: &Self::Type) -> glib::Type;
-    fn parent_n_items(&self, list_model: &Self::Type) -> u32;
-    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object>;
+    fn parent_item_type(&self) -> glib::Type;
+    fn parent_n_items(&self) -> u32;
+    fn parent_item(&self, position: u32) -> Option<glib::Object>;
 }
 
 impl<T: ListModelImpl> ListModelImplExt for T {
-    fn parent_item_type(&self, list_model: &Self::Type) -> glib::Type {
+    fn parent_item_type(&self) -> glib::Type {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
@@ -31,12 +31,17 @@ impl<T: ListModelImpl> ListModelImplExt for T {
             let func = (*parent_iface)
                 .get_item_type
                 .expect("no parent \"item_type\" implementation");
-            let ret = func(list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0);
+            let ret = func(
+                self.instance()
+                    .unsafe_cast_ref::<ListModel>()
+                    .to_glib_none()
+                    .0,
+            );
             from_glib(ret)
         }
     }
 
-    fn parent_n_items(&self, list_model: &Self::Type) -> u32 {
+    fn parent_n_items(&self) -> u32 {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
@@ -45,11 +50,16 @@ impl<T: ListModelImpl> ListModelImplExt for T {
             let func = (*parent_iface)
                 .get_n_items
                 .expect("no parent \"n_items\" implementation");
-            func(list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0)
+            func(
+                self.instance()
+                    .unsafe_cast_ref::<ListModel>()
+                    .to_glib_none()
+                    .0,
+            )
         }
     }
 
-    fn parent_item(&self, list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+    fn parent_item(&self, position: u32) -> Option<glib::Object> {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface = type_data.as_ref().parent_interface::<ListModel>()
@@ -59,7 +69,10 @@ impl<T: ListModelImpl> ListModelImplExt for T {
                 .get_item
                 .expect("no parent \"get_item\" implementation");
             let ret = func(
-                list_model.unsafe_cast_ref::<ListModel>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<ListModel>()
+                    .to_glib_none()
+                    .0,
                 position,
             );
             from_glib_full(ret)
@@ -91,12 +104,12 @@ where
 {
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
-    let wrap = from_glib_borrow::<_, ListModel>(list_model);
 
-    let type_ = imp.item_type(wrap.unsafe_cast_ref()).into_glib();
+    let type_ = imp.item_type().into_glib();
 
     // Store the type so we can enforce that it doesn't change.
-    match wrap.qdata(*LIST_ITEM_TYPE_QUARK) {
+    let instance = imp.instance();
+    match instance.qdata(*LIST_ITEM_TYPE_QUARK) {
         Some(old_type) => {
             assert_eq!(
                 type_,
@@ -105,7 +118,7 @@ where
             );
         }
         None => {
-            wrap.set_qdata(*LIST_ITEM_TYPE_QUARK, type_);
+            instance.set_qdata(*LIST_ITEM_TYPE_QUARK, type_);
         }
     }
     type_
@@ -120,7 +133,7 @@ where
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.n_items(from_glib_borrow::<_, ListModel>(list_model).unsafe_cast_ref())
+    imp.n_items()
 }
 
 unsafe extern "C" fn list_model_get_item<T: ListModelImpl>(
@@ -132,12 +145,11 @@ where
 {
     let instance = &*(list_model as *mut T::Instance);
     let imp = instance.imp();
-    let wrap = from_glib_borrow::<_, ListModel>(list_model);
 
-    let item = imp.item(wrap.unsafe_cast_ref(), position);
+    let item = imp.item(position);
 
     if let Some(ref i) = item {
-        let type_ = imp.item_type(wrap.unsafe_cast_ref());
+        let type_ = imp.item_type();
         assert!(
             i.type_().is_a(type_),
             "All ListModel items need to be of type {} or a subtype of it",

@@ -18,7 +18,7 @@ impl<T: ObjectSubclass> ObjectImplRef<T> {
     // rustdoc-stripper-ignore-next
     /// Create a new reference-counting wrapper around `imp`.
     pub fn new(imp: &T) -> Self {
-        Self(imp.instance())
+        Self(imp.instance().clone())
     }
 
     // rustdoc-stripper-ignore-next

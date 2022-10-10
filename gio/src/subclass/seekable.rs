@@ -13,45 +13,33 @@ use crate::Cancellable;
 use crate::Seekable;
 
 pub trait SeekableImpl: ObjectImpl + Send {
-    fn tell(&self, seekable: &Self::Type) -> i64;
-    fn can_seek(&self, seekable: &Self::Type) -> bool;
+    fn tell(&self) -> i64;
+    fn can_seek(&self) -> bool;
     fn seek(
         &self,
-        seekable: &Self::Type,
         offset: i64,
         type_: SeekType,
         cancellable: Option<&Cancellable>,
     ) -> Result<(), Error>;
-    fn can_truncate(&self, seekable: &Self::Type) -> bool;
-    fn truncate(
-        &self,
-        seekable: &Self::Type,
-        offset: i64,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error>;
+    fn can_truncate(&self) -> bool;
+    fn truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
 pub trait SeekableImplExt: ObjectSubclass {
-    fn parent_tell(&self, seekable: &Self::Type) -> i64;
-    fn parent_can_seek(&self, seekable: &Self::Type) -> bool;
+    fn parent_tell(&self) -> i64;
+    fn parent_can_seek(&self) -> bool;
     fn parent_seek(
         &self,
-        seekable: &Self::Type,
         offset: i64,
         type_: SeekType,
         cancellable: Option<&Cancellable>,
     ) -> Result<(), Error>;
-    fn parent_can_truncate(&self, seekable: &Self::Type) -> bool;
-    fn parent_truncate(
-        &self,
-        seekable: &Self::Type,
-        offset: i64,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error>;
+    fn parent_can_truncate(&self) -> bool;
+    fn parent_truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
 }
 
 impl<T: SeekableImpl> SeekableImplExt for T {
-    fn parent_tell(&self, seekable: &Self::Type) -> i64 {
+    fn parent_tell(&self) -> i64 {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface =
@@ -60,11 +48,16 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .tell
                 .expect("no parent \"tell\" implementation");
-            func(seekable.unsafe_cast_ref::<Seekable>().to_glib_none().0)
+            func(
+                self.instance()
+                    .unsafe_cast_ref::<Seekable>()
+                    .to_glib_none()
+                    .0,
+            )
         }
     }
 
-    fn parent_can_seek(&self, seekable: &Self::Type) -> bool {
+    fn parent_can_seek(&self) -> bool {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface =
@@ -73,14 +66,18 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .can_seek
                 .expect("no parent \"can_seek\" implementation");
-            let ret = func(seekable.unsafe_cast_ref::<Seekable>().to_glib_none().0);
+            let ret = func(
+                self.instance()
+                    .unsafe_cast_ref::<Seekable>()
+                    .to_glib_none()
+                    .0,
+            );
             from_glib(ret)
         }
     }
 
     fn parent_seek(
         &self,
-        seekable: &Self::Type,
         offset: i64,
         type_: SeekType,
         cancellable: Option<&Cancellable>,
@@ -96,7 +93,10 @@ impl<T: SeekableImpl> SeekableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                seekable.unsafe_cast_ref::<Seekable>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<Seekable>()
+                    .to_glib_none()
+                    .0,
                 offset,
                 type_.into_glib(),
                 cancellable.to_glib_none().0,
@@ -111,7 +111,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
         }
     }
 
-    fn parent_can_truncate(&self, seekable: &Self::Type) -> bool {
+    fn parent_can_truncate(&self) -> bool {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface =
@@ -120,17 +120,17 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .can_truncate
                 .expect("no parent \"can_truncate\" implementation");
-            let ret = func(seekable.unsafe_cast_ref::<Seekable>().to_glib_none().0);
+            let ret = func(
+                self.instance()
+                    .unsafe_cast_ref::<Seekable>()
+                    .to_glib_none()
+                    .0,
+            );
             from_glib(ret)
         }
     }
 
-    fn parent_truncate(
-        &self,
-        seekable: &Self::Type,
-        offset: i64,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error> {
+    fn parent_truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();
             let parent_iface =
@@ -142,7 +142,10 @@ impl<T: SeekableImpl> SeekableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                seekable.unsafe_cast_ref::<Seekable>().to_glib_none().0,
+                self.instance()
+                    .unsafe_cast_ref::<Seekable>()
+                    .to_glib_none()
+                    .0,
                 offset,
                 cancellable.to_glib_none().0,
                 &mut err,
@@ -173,7 +176,7 @@ unsafe extern "C" fn seekable_tell<T: SeekableImpl>(seekable: *mut ffi::GSeekabl
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.tell(from_glib_borrow::<_, Seekable>(seekable).unsafe_cast_ref())
+    imp.tell()
 }
 
 unsafe extern "C" fn seekable_can_seek<T: SeekableImpl>(
@@ -182,8 +185,7 @@ unsafe extern "C" fn seekable_can_seek<T: SeekableImpl>(
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.can_seek(from_glib_borrow::<_, Seekable>(seekable).unsafe_cast_ref())
-        .into_glib()
+    imp.can_seek().into_glib()
 }
 
 unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
@@ -197,7 +199,6 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
     let imp = instance.imp();
 
     match imp.seek(
-        from_glib_borrow::<_, Seekable>(seekable).unsafe_cast_ref(),
         offset,
         from_glib(type_),
         Option::<Cancellable>::from_glib_borrow(cancellable)
@@ -220,8 +221,7 @@ unsafe extern "C" fn seekable_can_truncate<T: SeekableImpl>(
     let instance = &*(seekable as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.can_truncate(from_glib_borrow::<_, Seekable>(seekable).unsafe_cast_ref())
-        .into_glib()
+    imp.can_truncate().into_glib()
 }
 
 unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
@@ -234,7 +234,6 @@ unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
     let imp = instance.imp();
 
     match imp.truncate(
-        from_glib_borrow::<_, Seekable>(seekable).unsafe_cast_ref(),
         offset,
         Option::<Cancellable>::from_glib_borrow(cancellable)
             .as_ref()

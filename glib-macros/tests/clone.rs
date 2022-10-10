@@ -7,6 +7,12 @@ use std::rc::Rc;
 fn clone() {
     let v = Rc::new(1);
     let _ = clone!(@strong v => @default-return None::<i32>, move || {println!("foo"); 1});
+
+    let v = Rc::new(1);
+    let _ = clone!(@weak v => @default-return None::<i32>, move || {println!("foo"); Some(1)});
+
+    let v = "123";
+    let _ = clone!(@to-owned v => @default-return None::<i32>, move || {println!("foo"); 1});
 }
 
 const TESTS: &[(&str, &str)] = &[
@@ -49,7 +55,7 @@ const TESTS: &[(&str, &str)] = &[
     ("clone!(@weak v => @default-return false move || {})",
      "Expected `,` after `@default-return false`, found `,`"),
     ("clone!(@yolo v => move || {})",
-     "Unknown keyword `yolo`, only `weak`, `weak-allow-none` and `strong` are allowed"),
+     "Unknown keyword `yolo`, only `weak`, `weak-allow-none`, `to-owned` and `strong` are allowed"),
     ("clone!(v => move || {})",
      "Unexpected ident `v`: you need to specify if this is a weak or a strong clone."),
     ("clone!(@strong v => {println!(\"foo\");})",

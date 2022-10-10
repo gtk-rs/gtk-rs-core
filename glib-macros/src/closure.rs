@@ -11,6 +11,7 @@ enum CaptureKind {
     Watch,
     WeakAllowNone,
     Strong,
+    ToOwned,
 }
 
 struct Capture {
@@ -40,6 +41,9 @@ impl Capture {
             },
             CaptureKind::Strong => quote! {
                 let #alias = #name.clone();
+            },
+            CaptureKind::ToOwned => quote! {
+                let #alias = ::std::borrow::ToOwned::to_owned(&*#name);
             },
         }
     }
@@ -90,9 +94,10 @@ impl syn::parse::Parse for CaptureKind {
             "strong" => CaptureKind::Strong,
             "watch" => CaptureKind::Watch,
             "weak-allow-none" => CaptureKind::WeakAllowNone,
+            "to-owned" => CaptureKind::ToOwned,
             k => abort!(
                 idents,
-                "Unknown keyword `{}`, only `watch`, `weak-allow-none` and `strong` are allowed",
+                "Unknown keyword `{}`, only `watch`, `weak-allow-none`, `to-owned` and `strong` are allowed",
                 k,
             ),
         })

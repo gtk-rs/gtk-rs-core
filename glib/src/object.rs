@@ -4251,6 +4251,77 @@ unsafe impl<T: StaticType> crate::value::ValueTypeChecker for ObjectValueTypeChe
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Borrowed reference to an object of type `T`.
+///
+/// This dereferences into `&T`.
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct BorrowedObject<'a, T> {
+    ptr: ptr::NonNull<gobject_ffi::GObject>,
+    phantom: PhantomData<&'a T>,
+}
+
+impl<'a, T: ObjectType> BorrowedObject<'a, T> {
+    // rustdoc-stripper-ignore-next
+    /// Creates a new borrowed object reference.
+    ///
+    /// # SAFETY:
+    ///
+    /// The pointer needs to be valid for at least the lifetime `'a`.
+    pub unsafe fn new(ptr: *mut T::GlibType) -> BorrowedObject<'a, T> {
+        BorrowedObject {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            phantom: PhantomData,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Downgrade to a weak reference.
+    pub fn downgrade(&self) -> <Self as crate::clone::Downgrade>::Weak
+    where
+        T: crate::clone::Downgrade,
+    {
+        <T as crate::clone::Downgrade>::downgrade(self)
+    }
+}
+
+impl<'a, T> ops::Deref for BorrowedObject<'a, T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        unsafe { &*(&self.ptr as *const _ as *const T) }
+    }
+}
+
+impl<'a, T> AsRef<T> for BorrowedObject<'a, T> {
+    fn as_ref(&self) -> &T {
+        unsafe { &*(&self.ptr as *const _ as *const T) }
+    }
+}
+
+impl<'a, T: PartialEq> PartialEq<T> for BorrowedObject<'a, T> {
+    fn eq(&self, other: &T) -> bool {
+        <T as PartialEq>::eq(self, other)
+    }
+}
+
+impl<'a, T: PartialOrd> PartialOrd<T> for BorrowedObject<'a, T> {
+    fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
+        <T as PartialOrd>::partial_cmp(self, other)
+    }
+}
+
+impl<'a, T: crate::clone::Downgrade + ObjectType> crate::clone::Downgrade
+    for BorrowedObject<'a, T>
+{
+    type Weak = <T as crate::clone::Downgrade>::Weak;
+
+    fn downgrade(&self) -> Self::Weak {
+        <T as crate::clone::Downgrade>::downgrade(self)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

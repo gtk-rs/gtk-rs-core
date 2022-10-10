@@ -115,7 +115,7 @@
 //!
 //!         // Called whenever a property is set on this instance. The id
 //!         // is the same as the index of the property in the PROPERTIES array.
-//!         fn set_property(&self, _obj: &Self::Type, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+//!         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
 //!             match pspec.name() {
 //!                 "name" => {
 //!                     let name = value
@@ -147,7 +147,7 @@
 //!
 //!         // Called whenever a property is retrieved from this instance. The id
 //!         // is the same as the index of the property in the PROPERTIES array.
-//!         fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+//!         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
 //!             match pspec.name() {
 //!                 "name" => self.name.borrow().to_value(),
 //!                 "animal" => self.animal.get().to_value(),
@@ -158,10 +158,10 @@
 //!         }
 //!
 //!         // Called right after construction of the instance.
-//!         fn constructed(&self, obj: &Self::Type) {
+//!         fn constructed(&self) {
 //!             // Chain up to the parent type's implementation of this virtual
 //!             // method.
-//!             self.parent_constructed(obj);
+//!             self.parent_constructed();
 //!
 //!             // And here we could do our own initialization.
 //!         }
@@ -250,8 +250,9 @@ pub mod prelude {
     pub use super::object::{ObjectClassSubclassExt, ObjectImpl, ObjectImplExt};
     pub use super::shared::{RefCounted, SharedType};
     pub use super::types::{
-        ClassStruct, InstanceStruct, IsImplementable, IsSubclassable, IsSubclassableExt,
-        ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, ObjectSubclassType,
+        ClassStruct, InstanceStruct, InstanceStructExt, IsImplementable, IsSubclassable,
+        IsSubclassableExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt,
+        ObjectSubclassType,
     };
 }
 

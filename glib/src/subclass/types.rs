@@ -53,31 +53,6 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     type Type: ObjectSubclass;
 
     // rustdoc-stripper-ignore-next
-    /// Returns the implementation for from this instance struct, that
-    /// is the implementor of [`ObjectImpl`] or subtraits.
-    ///
-    /// [`ObjectImpl`]: ../object/trait.ObjectImpl.html
-    #[doc(alias = "get_impl")]
-    fn imp(&self) -> &Self::Type {
-        unsafe {
-            let data = Self::Type::type_data();
-            let private_offset = data.as_ref().impl_offset();
-            let ptr: *const u8 = self as *const _ as *const u8;
-            let imp_ptr = ptr.offset(private_offset);
-            let imp = imp_ptr as *const Self::Type;
-
-            &*imp
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Returns the class struct for this specific instance.
-    #[doc(alias = "get_class")]
-    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
-        unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
-    }
-
-    // rustdoc-stripper-ignore-next
     /// Instance specific initialization.
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
@@ -92,6 +67,41 @@ pub unsafe trait InstanceStruct: Sized + 'static {
                 &mut obj,
             );
         }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Trait implemented by any type implementing `InstanceStruct` to return the implementation, private Rust struct.
+pub unsafe trait InstanceStructExt: InstanceStruct {
+    // rustdoc-stripper-ignore-next
+    /// Returns the implementation for from this instance struct, that
+    /// is the implementor of [`ObjectImpl`] or subtraits.
+    ///
+    /// [`ObjectImpl`]: ../object/trait.ObjectImpl.html
+    #[doc(alias = "get_impl")]
+    fn imp(&self) -> &Self::Type;
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the class struct for this specific instance.
+    #[doc(alias = "get_class")]
+    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class;
+}
+
+unsafe impl<T: InstanceStruct> InstanceStructExt for T {
+    fn imp(&self) -> &Self::Type {
+        unsafe {
+            let data = Self::Type::type_data();
+            let private_offset = data.as_ref().impl_offset();
+            let ptr: *const u8 = self as *const _ as *const u8;
+            let imp_ptr = ptr.offset(private_offset);
+            let imp = imp_ptr as *const Self::Type;
+
+            &*imp
+        }
+    }
+
+    fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
+        unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
     }
 }
 
@@ -633,11 +643,15 @@ pub trait ObjectSubclassExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding object instance.
     #[doc(alias = "get_instance")]
-    fn instance(&self) -> Self::Type;
+    fn instance(&self) -> crate::BorrowedObject<Self::Type>;
 
     // rustdoc-stripper-ignore-next
     /// Returns the implementation from an instance.
     fn from_instance(obj: &Self::Type) -> &Self;
+
+    // rustdoc-stripper-ignore-next
+    /// Returns a new reference-counted wrapper around `self`.
+    fn ref_counted(&self) -> super::ObjectImplRef<Self>;
 
     // rustdoc-stripper-ignore-next
     /// Returns a pointer to the instance implementation specific data.
@@ -648,7 +662,7 @@ pub trait ObjectSubclassExt: ObjectSubclass {
 }
 
 impl<T: ObjectSubclass> ObjectSubclassExt for T {
-    fn instance(&self) -> Self::Type {
+    fn instance(&self) -> crate::BorrowedObject<Self::Type> {
         unsafe {
             let data = Self::type_data();
             let type_ = data.as_ref().type_();
@@ -665,10 +679,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             // of Self.
             assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
 
-            // Don't steal floating reference here via from_glib_none() but
-            // preserve it if needed by reffing manually.
-            gobject_ffi::g_object_ref(ptr as *mut gobject_ffi::GObject);
-            from_glib_full(ptr)
+            crate::BorrowedObject::new(ptr)
         }
     }
 
@@ -679,10 +690,10 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         }
     }
 
-    // rustdoc-stripper-ignore-next
-    /// Returns a pointer to the instance implementation specific data.
-    ///
-    /// This is used for the subclassing infrastructure to store additional instance data.
+    fn ref_counted(&self) -> super::ObjectImplRef<Self> {
+        super::ObjectImplRef::new(self)
+    }
+
     fn instance_data<U: Any + Send + Sync + 'static>(&self, type_: Type) -> Option<&U> {
         unsafe {
             let type_data = Self::type_data();
