@@ -29,9 +29,6 @@ pub use self::layout::Layout;
 mod renderer;
 pub use self::renderer::Renderer;
 
-mod attr_iterator;
-pub use self::attr_iterator::AttrIterator;
-
 mod attr_list;
 pub use self::attr_list::AttrList;
 
@@ -49,9 +46,6 @@ pub use self::font_metrics::FontMetrics;
 
 mod glyph_item;
 pub use self::glyph_item::GlyphItem;
-
-mod glyph_item_iter;
-pub use self::glyph_item_iter::GlyphItemIter;
 
 mod glyph_string;
 pub use self::glyph_string::GlyphString;
