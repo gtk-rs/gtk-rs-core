@@ -51,6 +51,7 @@ pub unsafe trait ObjectType:
     + crate::value::ToValueOptional
     + crate::value::FromValueOptional<'static>
     + for<'a> ToGlibPtr<'a, *mut <Self as ObjectType>::GlibType>
+    + IntoGlibPtr<*mut <Self as ObjectType>::GlibType>
     + 'static
 {
     // rustdoc-stripper-ignore-next
@@ -76,7 +77,7 @@ pub unsafe trait ObjectType:
 ///
 /// The trait can only be implemented if the appropriate `ToGlibPtr`
 /// implementations exist.
-pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> + 'static {}
+pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> {}
 
 // rustdoc-stripper-ignore-next
 /// Upcasting and downcasting support.
