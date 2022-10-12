@@ -71,7 +71,10 @@ pub unsafe trait ObjectType:
 ///
 /// The trait can only be implemented if the appropriate `ToGlibPtr`
 /// implementations exist.
-pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> + std::borrow::Borrow<T> {}
+pub unsafe trait IsA<T: ObjectType>:
+    ObjectType + Into<T> + AsRef<T> + std::borrow::Borrow<T>
+{
+}
 
 // rustdoc-stripper-ignore-next
 /// Upcasting and downcasting support.
@@ -1202,6 +1205,13 @@ macro_rules! glib_object_wrapper {
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$super_name> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $super_name {
+            fn from(v: $name $(<$($generic),+>)?) -> Self {
+                <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
+            }
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$super_name> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$super_name {
                 $crate::object::Cast::upcast_ref(self)
@@ -1291,6 +1301,13 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::Object {
+            fn from(v: $name $(<$($generic),+>)?) -> Self {
+                <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
+            }
+        }
+
+        #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::IsA<$crate::object::Object> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
@@ -1358,6 +1375,13 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::Object {
+            fn from(v: $name $(<$($generic),+>)?) -> Self {
+                <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
             }
         }
 
