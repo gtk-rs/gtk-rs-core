@@ -71,7 +71,7 @@ pub unsafe trait ObjectType:
 ///
 /// The trait can only be implemented if the appropriate `ToGlibPtr`
 /// implementations exist.
-pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> {}
+pub unsafe trait IsA<T: ObjectType>: ObjectType + AsRef<T> + std::borrow::Borrow<T> {}
 
 // rustdoc-stripper-ignore-next
 /// Upcasting and downcasting support.
@@ -1350,6 +1350,13 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
             fn as_ref(&self) -> &$crate::object::Object {
+                $crate::object::Cast::upcast_ref(self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
+            fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
         }
