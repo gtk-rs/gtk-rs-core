@@ -122,7 +122,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
             move |task, obj| {
                 let result: *mut crate::ffi::GAsyncResult =
                     task.upcast_ref::<AsyncResult>().to_glib_none().0;
-                let obj: *mut glib::object::GObject = obj.to_glib_none().0;
+                let obj: *mut glib::gobject_ffi::GObject = obj.to_glib_none().0;
                 callback(obj, result, user_data);
             },
         );

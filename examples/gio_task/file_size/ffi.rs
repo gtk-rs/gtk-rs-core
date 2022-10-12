@@ -23,7 +23,7 @@ pub unsafe extern "C" fn my_file_size_get_file_size_async(
     let closure = move |task: gio::LocalTask<i64>, source_object: Option<&glib::Object>| {
         let result: *mut gio::ffi::GAsyncResult =
             task.upcast_ref::<gio::AsyncResult>().to_glib_none().0;
-        let source_object: *mut glib::object::GObject = source_object.to_glib_none().0;
+        let source_object: *mut glib::gobject_ffi::GObject = source_object.to_glib_none().0;
         callback.unwrap()(source_object, result, user_data)
     };
 

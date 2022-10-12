@@ -43,7 +43,7 @@ fn run_unsafe(send: oneshot::Sender<()>) {
 
     // The callback to be passed to my_file_size_get_file_size_async
     unsafe extern "C" fn c_callback(
-        source_object: *mut glib::object::GObject,
+        source_object: *mut glib::gobject_ffi::GObject,
         result: *mut gio::ffi::GAsyncResult,
         user_data: glib::ffi::gpointer,
     ) {
