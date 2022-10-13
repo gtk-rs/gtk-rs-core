@@ -14,6 +14,9 @@ use std::{cmp, fmt, hash};
 /// from the implementation type to the instance type and back.
 pub struct ObjectImplRef<T: ObjectSubclass>(T::Type);
 
+unsafe impl<T: ObjectSubclass + Send + Sync> Send for ObjectImplRef<T> {}
+unsafe impl<T: ObjectSubclass + Send + Sync> Sync for ObjectImplRef<T> {}
+
 impl<T: ObjectSubclass> ObjectImplRef<T> {
     // rustdoc-stripper-ignore-next
     /// Create a new reference-counting wrapper around `imp`.
@@ -108,6 +111,9 @@ impl<T: ObjectSubclass> hash::Hash for ObjectImplRef<T> {
 // rustdoc-stripper-ignore-next
 /// Weak reference to an [`ObjectSubclass`] reference.
 pub struct ObjectImplWeakRef<T: ObjectSubclass>(WeakRef<T::Type>);
+
+unsafe impl<T: ObjectSubclass + Send + Sync> Send for ObjectImplWeakRef<T> {}
+unsafe impl<T: ObjectSubclass + Send + Sync> Sync for ObjectImplWeakRef<T> {}
 
 impl<T: ObjectSubclass> ObjectImplWeakRef<T> {
     // rustdoc-stripper-ignore-next
