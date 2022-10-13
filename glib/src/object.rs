@@ -4328,6 +4328,9 @@ pub struct BorrowedObject<'a, T> {
     phantom: PhantomData<&'a T>,
 }
 
+unsafe impl<'a, T: Send + Sync> Send for BorrowedObject<'a, T> {}
+unsafe impl<'a, T: Send + Sync> Sync for BorrowedObject<'a, T> {}
+
 impl<'a, T: ObjectType> BorrowedObject<'a, T> {
     // rustdoc-stripper-ignore-next
     /// Creates a new borrowed object reference.
