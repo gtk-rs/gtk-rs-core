@@ -30,7 +30,7 @@ impl FontMap {
     }
 
     #[doc(alias = "pango_cairo_font_map_set_default")]
-    pub fn set_default(font_map: Option<Self>) {
+    pub fn set_default(font_map: Option<&Self>) {
         unsafe {
             ffi::pango_cairo_font_map_set_default(font_map.as_ref().to_glib_none().0);
         }
