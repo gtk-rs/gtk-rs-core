@@ -25,12 +25,12 @@ impl FontMap {
 
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "pango_cairo_font_map_new")]
-    pub fn new() -> Option<pango::FontMap> {
+    pub fn new() -> pango::FontMap {
         unsafe { from_glib_full(ffi::pango_cairo_font_map_new()) }
     }
 
     #[doc(alias = "pango_cairo_font_map_set_default")]
-    pub fn set_default(font_map: Option<Self>) {
+    pub fn set_default(font_map: Option<&Self>) {
         unsafe {
             ffi::pango_cairo_font_map_set_default(font_map.as_ref().to_glib_none().0);
         }
