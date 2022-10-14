@@ -38,7 +38,7 @@ pub fn context_set_resolution(context: &pango::Context, dpi: f64) {
 //}
 
 #[doc(alias = "pango_cairo_create_context")]
-pub fn create_context(cr: &cairo::Context) -> Option<pango::Context> {
+pub fn create_context(cr: &cairo::Context) -> pango::Context {
     unsafe {
         from_glib_full(ffi::pango_cairo_create_context(mut_override(
             cr.to_glib_none().0,
@@ -47,7 +47,7 @@ pub fn create_context(cr: &cairo::Context) -> Option<pango::Context> {
 }
 
 #[doc(alias = "pango_cairo_create_layout")]
-pub fn create_layout(cr: &cairo::Context) -> Option<pango::Layout> {
+pub fn create_layout(cr: &cairo::Context) -> pango::Layout {
     unsafe {
         from_glib_full(ffi::pango_cairo_create_layout(mut_override(
             cr.to_glib_none().0,
