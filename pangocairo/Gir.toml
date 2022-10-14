@@ -106,15 +106,21 @@ name = "PangoCairo.FontMap"
 status = "generate"
 manual_traits = ["FontMapExtManual"]
     [[object.function]]
+    # Needed because cairo types don't implement `.into_glib()`.
     name = "get_font_type"
     manual = true
     doc_trait_name = "FontMapExtManual"
     [[object.function]]
+    # Needed because cairo types don't implement `.into_glib()`.
     name = "new_for_font_type"
     manual = true
     [[object.function]]
+    # Needed because GIR generates `pango::FontMap` as return type
+    # and not `pangocairo::FontMap`.
     name = "new"
     manual = true
     [[object.function]]
+    # Needed because it must remain an associated method because
+    # "self" is a `Option<&Self>`.
     name = "set_default"
     manual = true
