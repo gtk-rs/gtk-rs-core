@@ -20,7 +20,7 @@ impl FontMap {
 
     #[doc(alias = "pango_cairo_font_map_get_default")]
     #[doc(alias = "get_default")]
-    pub fn default() -> Option<pango::FontMap> {
+    pub fn default() -> pango::FontMap {
         unsafe { from_glib_none(ffi::pango_cairo_font_map_get_default()) }
     }
 }
