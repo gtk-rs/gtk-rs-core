@@ -25,7 +25,7 @@ impl FontMap {
 
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "pango_cairo_font_map_new")]
-    pub fn new() -> Option<pango::FontMap> {
+    pub fn new() -> pango::FontMap {
         unsafe { from_glib_full(ffi::pango_cairo_font_map_new()) }
     }
 
