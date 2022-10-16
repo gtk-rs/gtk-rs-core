@@ -188,7 +188,7 @@ mod tests {
         attributes.insert(crate::AttrColor::new_foreground(0x2000, 0x2000, 0x2000));
         attributes.insert(crate::AttrSize::new(10 * crate::SCALE));
         attributes.insert(crate::AttrLanguage::new(&default_lang));
-        let iter = attributes.iterator().unwrap();
+        let iter = attributes.iterator();
         {
             let mut iter = iter.clone();
             loop {

@@ -9,12 +9,12 @@ const TEXT: &GStr = glib::gstr!("AAAA BBBB CCCC DDDD EEEE FFFF gggg hhhh iiii jj
 fn glyph_item_iter() {
     let item = {
         let map = pangocairo::FontMap::default();
-        let pc = map.create_context().unwrap();
+        let pc = map.create_context();
         let layout = pango::Layout::new(&pc);
         layout.set_width(256 * pango::SCALE);
         layout.set_height(256 * pango::SCALE);
         layout.set_text(TEXT);
-        let mut layout_iter = layout.iter().unwrap();
+        let mut layout_iter = layout.iter();
         layout_iter.run().unwrap()
     };
     let iter = pango::GlyphItemIter::new_start(&item, TEXT).unwrap();
