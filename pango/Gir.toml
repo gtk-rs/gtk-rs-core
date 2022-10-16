@@ -9,6 +9,7 @@ min_cfg_version = "1.40"
 use_gi_docgen = true
 single_version_file = true
 deprecate_by_min_version = true
+trust_return_value_nullability = true
 
 generate = [
     # "Pango.GlyphVisAttr",
@@ -104,10 +105,6 @@ status = "generate"
         [[object.function.parameter]]
         name = "cached_iter"
         const = true
-    [[object.function]]
-    name = "markup_parser_new"
-        [object.function.return]
-        nullable = false
     [[object.function]]
     name = "reorder_items"
     ignore = true
@@ -206,10 +203,26 @@ boxed_inline = true
 name = "Pango.Context"
 status = "generate"
     [[object.function]]
+    name = "new"
+        # Can be removed once https://gitlab.gnome.org/GNOME/pango/-/merge_requests/651
+        # has been merged.
+        [object.function.return]
+        nullable = false
+    [[object.function]]
+    name = "get_language"
+        # Can be removed once https://gitlab.gnome.org/GNOME/pango/-/issues/709
+        # has been fixed.
+        [object.function.return]
+        nullable = true
+    [[object.function]]
     name = "get_metrics"
         [[object.function.parameter]]
         name = "language"
         const = true
+        # Can be removed once https://gitlab.gnome.org/GNOME/pango/-/merge_requests/651
+        # has been merged.
+        [object.function.return]
+        nullable = false
     [[object.function]]
     name = "load_fontset"
         [[object.function.parameter]]
@@ -246,19 +259,11 @@ status = "generate"
     name = "get_languages"
     # TODO: requires FromGlibPtrArrayContainerAsVec implementation
     ignore = true
-    [[object.function]]
-    pattern = "serialize"
-        [object.function.return]
-        nullable = false
 
 [[object]]
 name = "Pango.FontDescription"
 status = "generate"
 concurrency = "send+sync"
-    [[object.function]]
-    name = "from_string"
-        [object.function.return]
-        nullable = false
     [[object.function]]
     name = "set_family_static"
     ignore = true
@@ -339,10 +344,6 @@ status = "generate"
         [[object.function.parameter]]
         name = "tabs"
         const = true
-    [[object.function]]
-    name = "serialize"
-        [object.function.return]
-        nullable = false
 
 [[object]]
 name = "Pango.LayoutLine"

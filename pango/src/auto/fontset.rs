@@ -27,11 +27,11 @@ pub trait FontsetExt: 'static {
 
     #[doc(alias = "pango_fontset_get_font")]
     #[doc(alias = "get_font")]
-    fn font(&self, wc: u32) -> Option<Font>;
+    fn font(&self, wc: u32) -> Font;
 
     #[doc(alias = "pango_fontset_get_metrics")]
     #[doc(alias = "get_metrics")]
-    fn metrics(&self) -> Option<FontMetrics>;
+    fn metrics(&self) -> FontMetrics;
 }
 
 impl<O: IsA<Fontset>> FontsetExt for O {
@@ -59,7 +59,7 @@ impl<O: IsA<Fontset>> FontsetExt for O {
         }
     }
 
-    fn font(&self, wc: u32) -> Option<Font> {
+    fn font(&self, wc: u32) -> Font {
         unsafe {
             from_glib_full(ffi::pango_fontset_get_font(
                 self.as_ref().to_glib_none().0,
@@ -68,7 +68,7 @@ impl<O: IsA<Fontset>> FontsetExt for O {
         }
     }
 
-    fn metrics(&self) -> Option<FontMetrics> {
+    fn metrics(&self) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_fontset_get_metrics(
                 self.as_ref().to_glib_none().0,

@@ -59,20 +59,20 @@ impl Font {
 
 pub trait FontExt: 'static {
     #[doc(alias = "pango_font_describe")]
-    fn describe(&self) -> Option<FontDescription>;
+    fn describe(&self) -> FontDescription;
 
     #[doc(alias = "pango_font_describe_with_absolute_size")]
-    fn describe_with_absolute_size(&self) -> Option<FontDescription>;
+    fn describe_with_absolute_size(&self) -> FontDescription;
 
     #[doc(alias = "pango_font_get_coverage")]
     #[doc(alias = "get_coverage")]
-    fn coverage(&self, language: &Language) -> Option<Coverage>;
+    fn coverage(&self, language: &Language) -> Coverage;
 
     #[cfg(any(feature = "v1_46", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_get_face")]
     #[doc(alias = "get_face")]
-    fn face(&self) -> Option<FontFace>;
+    fn face(&self) -> FontFace;
 
     //#[cfg(any(feature = "v1_44", feature = "dox"))]
     //#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
@@ -96,7 +96,7 @@ pub trait FontExt: 'static {
 
     #[doc(alias = "pango_font_get_metrics")]
     #[doc(alias = "get_metrics")]
-    fn metrics(&self, language: Option<&Language>) -> Option<FontMetrics>;
+    fn metrics(&self, language: Option<&Language>) -> FontMetrics;
 
     #[cfg(any(feature = "v1_44", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
@@ -110,11 +110,11 @@ pub trait FontExt: 'static {
 }
 
 impl<O: IsA<Font>> FontExt for O {
-    fn describe(&self) -> Option<FontDescription> {
+    fn describe(&self) -> FontDescription {
         unsafe { from_glib_full(ffi::pango_font_describe(self.as_ref().to_glib_none().0)) }
     }
 
-    fn describe_with_absolute_size(&self) -> Option<FontDescription> {
+    fn describe_with_absolute_size(&self) -> FontDescription {
         unsafe {
             from_glib_full(ffi::pango_font_describe_with_absolute_size(
                 self.as_ref().to_glib_none().0,
@@ -122,7 +122,7 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 
-    fn coverage(&self, language: &Language) -> Option<Coverage> {
+    fn coverage(&self, language: &Language) -> Coverage {
         unsafe {
             from_glib_full(ffi::pango_font_get_coverage(
                 self.as_ref().to_glib_none().0,
@@ -133,7 +133,7 @@ impl<O: IsA<Font>> FontExt for O {
 
     #[cfg(any(feature = "v1_46", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
-    fn face(&self) -> Option<FontFace> {
+    fn face(&self) -> FontFace {
         unsafe { from_glib_none(ffi::pango_font_get_face(self.as_ref().to_glib_none().0)) }
     }
 
@@ -167,7 +167,7 @@ impl<O: IsA<Font>> FontExt for O {
     //    unsafe { TODO: call ffi:pango_font_get_hb_font() }
     //}
 
-    fn metrics(&self, language: Option<&Language>) -> Option<FontMetrics> {
+    fn metrics(&self, language: Option<&Language>) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_font_get_metrics(
                 self.as_ref().to_glib_none().0,

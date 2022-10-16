@@ -84,7 +84,7 @@ impl Context {
     #[doc(alias = "pango_context_get_language")]
     #[doc(alias = "get_language")]
     pub fn language(&self) -> Option<Language> {
-        unsafe { from_glib_full(ffi::pango_context_get_language(self.to_glib_none().0)) }
+        unsafe { from_glib_none(ffi::pango_context_get_language(self.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_context_get_matrix")]
@@ -99,7 +99,7 @@ impl Context {
         &self,
         desc: Option<&FontDescription>,
         language: Option<&Language>,
-    ) -> Option<FontMetrics> {
+    ) -> FontMetrics {
         unsafe {
             from_glib_full(ffi::pango_context_get_metrics(
                 self.to_glib_none().0,
@@ -177,18 +177,18 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_font_description")]
-    pub fn set_font_description(&self, desc: &FontDescription) {
+    pub fn set_font_description(&self, desc: Option<&FontDescription>) {
         unsafe {
             ffi::pango_context_set_font_description(self.to_glib_none().0, desc.to_glib_none().0);
         }
     }
 
     #[doc(alias = "pango_context_set_font_map")]
-    pub fn set_font_map(&self, font_map: &impl IsA<FontMap>) {
+    pub fn set_font_map(&self, font_map: Option<&impl IsA<FontMap>>) {
         unsafe {
             ffi::pango_context_set_font_map(
                 self.to_glib_none().0,
-                font_map.as_ref().to_glib_none().0,
+                font_map.map(|p| p.as_ref()).to_glib_none().0,
             );
         }
     }
@@ -201,7 +201,7 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_language")]
-    pub fn set_language(&self, language: &Language) {
+    pub fn set_language(&self, language: Option<&Language>) {
         unsafe {
             ffi::pango_context_set_language(
                 self.to_glib_none().0,

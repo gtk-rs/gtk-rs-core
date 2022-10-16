@@ -49,7 +49,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_copy")]
     #[must_use]
-    pub fn copy(&self) -> Option<Layout> {
+    pub fn copy(&self) -> Layout {
         unsafe { from_glib_full(ffi::pango_layout_copy(self.to_glib_none().0)) }
     }
 
@@ -103,7 +103,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_get_context")]
     #[doc(alias = "get_context")]
-    pub fn context(&self) -> Option<Context> {
+    pub fn context(&self) -> Context {
         unsafe { from_glib_none(ffi::pango_layout_get_context(self.to_glib_none().0)) }
     }
 
@@ -181,7 +181,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_get_iter")]
     #[doc(alias = "get_iter")]
-    pub fn iter(&self) -> Option<LayoutIter> {
+    pub fn iter(&self) -> LayoutIter {
         unsafe { from_glib_full(ffi::pango_layout_get_iter(self.to_glib_none().0)) }
     }
 
@@ -339,7 +339,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_get_text")]
     #[doc(alias = "get_text")]
-    pub fn text(&self) -> Option<glib::GString> {
+    pub fn text(&self) -> glib::GString {
         unsafe { from_glib_none(ffi::pango_layout_get_text(self.to_glib_none().0)) }
     }
 

@@ -22,6 +22,13 @@ impl FontFamily {
     pub const NONE: Option<&'static FontFamily> = None;
 }
 
+impl fmt::Display for FontFamily {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(&FontFamilyExt::name(self))
+    }
+}
+
 pub trait FontFamilyExt: 'static {
     #[cfg(any(feature = "v1_46", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
@@ -31,7 +38,7 @@ pub trait FontFamilyExt: 'static {
 
     #[doc(alias = "pango_font_family_get_name")]
     #[doc(alias = "get_name")]
-    fn name(&self) -> Option<glib::GString>;
+    fn name(&self) -> glib::GString;
 
     #[doc(alias = "pango_font_family_is_monospace")]
     fn is_monospace(&self) -> bool;
@@ -57,7 +64,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
-    fn name(&self) -> Option<glib::GString> {
+    fn name(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::pango_font_family_get_name(
                 self.as_ref().to_glib_none().0,
@@ -94,11 +101,5 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
             );
             FromGlibContainer::from_glib_container_num(faces, n_faces.assume_init() as usize)
         }
-    }
-}
-
-impl fmt::Display for FontFamily {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("FontFamily")
     }
 }
