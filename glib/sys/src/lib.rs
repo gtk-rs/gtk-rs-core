@@ -591,6 +591,8 @@ pub const G_UNICODE_SCRIPT_TANGSA: GUnicodeScript = 159;
 pub const G_UNICODE_SCRIPT_TOTO: GUnicodeScript = 160;
 pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
 pub const G_UNICODE_SCRIPT_MATH: GUnicodeScript = 162;
+pub const G_UNICODE_SCRIPT_KAWI: GUnicodeScript = 163;
+pub const G_UNICODE_SCRIPT_NAG_MUNDARI: GUnicodeScript = 164;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;

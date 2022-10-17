@@ -1346,6 +1346,14 @@ pub enum UnicodeScript {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_MATH")]
     Math,
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_KAWI")]
+    Kawi,
+    #[cfg(any(feature = "v2_74", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "G_UNICODE_SCRIPT_NAG_MUNDARI")]
+    NagMundari,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1526,6 +1534,10 @@ impl fmt::Display for UnicodeScript {
                 Self::Vithkuqi => "Vithkuqi",
                 #[cfg(any(feature = "v2_72", feature = "dox"))]
                 Self::Math => "Math",
+                #[cfg(any(feature = "v2_74", feature = "dox"))]
+                Self::Kawi => "Kawi",
+                #[cfg(any(feature = "v2_74", feature = "dox"))]
+                Self::NagMundari => "NagMundari",
                 _ => "Unknown",
             }
         )
@@ -1708,6 +1720,10 @@ impl IntoGlib for UnicodeScript {
             Self::Vithkuqi => ffi::G_UNICODE_SCRIPT_VITHKUQI,
             #[cfg(any(feature = "v2_72", feature = "dox"))]
             Self::Math => ffi::G_UNICODE_SCRIPT_MATH,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            Self::Kawi => ffi::G_UNICODE_SCRIPT_KAWI,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            Self::NagMundari => ffi::G_UNICODE_SCRIPT_NAG_MUNDARI,
             Self::__Unknown(value) => value,
         }
     }
@@ -1887,6 +1903,10 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_VITHKUQI => Self::Vithkuqi,
             #[cfg(any(feature = "v2_72", feature = "dox"))]
             ffi::G_UNICODE_SCRIPT_MATH => Self::Math,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
+            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
             value => Self::__Unknown(value),
         }
     }
