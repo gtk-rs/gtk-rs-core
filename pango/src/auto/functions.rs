@@ -316,6 +316,6 @@ pub fn version_check(
 }
 
 #[doc(alias = "pango_version_string")]
-pub fn version_string() -> Option<glib::GString> {
+pub fn version_string() -> glib::GString {
     unsafe { from_glib_none(ffi::pango_version_string()) }
 }

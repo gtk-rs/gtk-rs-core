@@ -70,7 +70,7 @@ impl AttrList {
 
     #[doc(alias = "pango_attr_list_get_iterator")]
     #[doc(alias = "get_iterator")]
-    pub fn iterator(&self) -> Option<AttrIterator> {
+    pub fn iterator(&self) -> AttrIterator {
         unsafe { from_glib_full(ffi::pango_attr_list_get_iterator(self.to_glib_none().0)) }
     }
 

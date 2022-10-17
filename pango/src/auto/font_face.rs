@@ -27,17 +27,17 @@ impl FontFace {
 
 pub trait FontFaceExt: 'static {
     #[doc(alias = "pango_font_face_describe")]
-    fn describe(&self) -> Option<FontDescription>;
+    fn describe(&self) -> FontDescription;
 
     #[doc(alias = "pango_font_face_get_face_name")]
     #[doc(alias = "get_face_name")]
-    fn face_name(&self) -> Option<glib::GString>;
+    fn face_name(&self) -> glib::GString;
 
     #[cfg(any(feature = "v1_46", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_face_get_family")]
     #[doc(alias = "get_family")]
-    fn family(&self) -> Option<FontFamily>;
+    fn family(&self) -> FontFamily;
 
     #[doc(alias = "pango_font_face_is_synthesized")]
     fn is_synthesized(&self) -> bool;
@@ -47,7 +47,7 @@ pub trait FontFaceExt: 'static {
 }
 
 impl<O: IsA<FontFace>> FontFaceExt for O {
-    fn describe(&self) -> Option<FontDescription> {
+    fn describe(&self) -> FontDescription {
         unsafe {
             from_glib_full(ffi::pango_font_face_describe(
                 self.as_ref().to_glib_none().0,
@@ -55,7 +55,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
-    fn face_name(&self) -> Option<glib::GString> {
+    fn face_name(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::pango_font_face_get_face_name(
                 self.as_ref().to_glib_none().0,
@@ -65,7 +65,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
 
     #[cfg(any(feature = "v1_46", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
-    fn family(&self) -> Option<FontFamily> {
+    fn family(&self) -> FontFamily {
         unsafe {
             from_glib_none(ffi::pango_font_face_get_family(
                 self.as_ref().to_glib_none().0,
