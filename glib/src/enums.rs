@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::translate::*;
-use crate::value::Value;
+use crate::value::{FromValue, Value, ValueTypeChecker};
 use crate::Type;
 use std::ffi::CStr;
 use std::{cmp, fmt, ptr};
@@ -281,6 +281,44 @@ impl Ord for EnumValue {
         self.value().cmp(&other.value())
     }
 }
+
+unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
+    type Checker = EnumTypeChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        let (_, v) = EnumValue::from_value(value).unwrap();
+        // SAFETY: The enum class and its values live forever
+        std::mem::transmute(v)
+    }
+}
+
+pub struct EnumTypeChecker();
+unsafe impl ValueTypeChecker for EnumTypeChecker {
+    type Error = InvalidEnumError;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        let t = value.type_();
+        if t.is_a(Type::ENUM) {
+            Ok(())
+        } else {
+            Err(InvalidEnumError)
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// An error returned from the [`get`](struct.Value.html#method.get) function
+/// on a [`Value`](struct.Value.html) for enum types.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct InvalidEnumError;
+
+impl fmt::Display for InvalidEnumError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Value is not an enum")
+    }
+}
+
+impl std::error::Error for InvalidEnumError {}
 
 // rustdoc-stripper-ignore-next
 /// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
