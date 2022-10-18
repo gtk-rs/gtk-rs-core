@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::translate::*;
-use crate::value::Value;
+use crate::value::{FromValue, Value, ValueTypeChecker};
 use crate::Type;
 use std::ffi::CStr;
 use std::{cmp, fmt, ptr};
@@ -281,6 +281,44 @@ impl Ord for EnumValue {
         self.value().cmp(&other.value())
     }
 }
+
+unsafe impl<'a, 'b> FromValue<'a> for &'b EnumValue {
+    type Checker = EnumTypeChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        let (_, v) = EnumValue::from_value(value).unwrap();
+        // SAFETY: The enum class and its values live forever
+        std::mem::transmute(v)
+    }
+}
+
+pub struct EnumTypeChecker();
+unsafe impl ValueTypeChecker for EnumTypeChecker {
+    type Error = InvalidEnumError;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        let t = value.type_();
+        if t.is_a(Type::ENUM) {
+            Ok(())
+        } else {
+            Err(InvalidEnumError)
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// An error returned from the [`get`](struct.Value.html#method.get) function
+/// on a [`Value`](struct.Value.html) for enum types.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct InvalidEnumError;
+
+impl fmt::Display for InvalidEnumError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Value is not an enum")
+    }
+}
+
+impl std::error::Error for InvalidEnumError {}
 
 // rustdoc-stripper-ignore-next
 /// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
@@ -849,6 +887,44 @@ impl<'a> FlagsBuilder<'a> {
     }
 }
 
+unsafe impl<'a, 'b> FromValue<'a> for Vec<&'b FlagsValue> {
+    type Checker = FlagsTypeChecker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        let (_, v) = FlagsValue::from_value(value).unwrap();
+        // SAFETY: The enum class and its values live forever
+        std::mem::transmute(v)
+    }
+}
+
+pub struct FlagsTypeChecker();
+unsafe impl ValueTypeChecker for FlagsTypeChecker {
+    type Error = InvalidFlagsError;
+
+    fn check(value: &Value) -> Result<(), Self::Error> {
+        let t = value.type_();
+        if t.is_a(Type::FLAGS) {
+            Ok(())
+        } else {
+            Err(InvalidFlagsError)
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// An error returned from the [`get`](struct.Value.html#method.get) function
+/// on a [`Value`](struct.Value.html) for flags types.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct InvalidFlagsError;
+
+impl fmt::Display for InvalidFlagsError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Value is not a flags")
+    }
+}
+
+impl std::error::Error for InvalidFlagsError {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -865,6 +941,10 @@ mod tests {
             .unwrap();
         let def2 = flags.value_by_name("G_BINDING_DEFAULT").unwrap();
         assert!(ptr::eq(def1, def2));
+
+        let value = flags.to_value(0).unwrap();
+        let values = value.get::<Vec<&FlagsValue>>().unwrap();
+        assert_eq!(values.len(), 0);
 
         assert_eq!(def1.value(), crate::BindingFlags::DEFAULT.bits());
     }
