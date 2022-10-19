@@ -169,7 +169,7 @@ fn derive_boxed_nullable() {
     assert_eq!(b, v.get::<Option<MyNullableBoxed>>().unwrap().unwrap());
 
     let b = Some(MyNullableBoxed(String::from("def")));
-    let v = (&b).to_value();
+    let v = b.to_value();
     let b = b.unwrap();
     assert_eq!(&b, v.get::<Option<&MyNullableBoxed>>().unwrap().unwrap());
     assert_eq!(b, v.get::<Option<MyNullableBoxed>>().unwrap().unwrap());

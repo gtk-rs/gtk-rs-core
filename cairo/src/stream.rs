@@ -101,7 +101,7 @@ impl Surface {
     ///
     /// This calls [`Surface::finish`], to make sure pending writes are done.
     ///
-    /// This is relevant for surfaces created for example with [`PdfSurface::for_stream`].
+    /// This is relevant for surfaces created for example with [`crate::PdfSurface::for_stream`].
     ///
     /// Use [`Box::downcast`] to recover the concrete stream type.
     ///
