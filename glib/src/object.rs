@@ -1592,6 +1592,12 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Gets the type of this builder.
+    pub fn type_(&self) -> Type {
+        self.type_
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Set property `name` to the given value `value`.
     pub fn property<T: ToValue + 'a>(self, name: &'a str, value: T) -> Self {
         let ObjectBuilder {
