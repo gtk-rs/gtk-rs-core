@@ -27,7 +27,7 @@ impl Rectangle {
         self.0.x = x;
     }
     pub fn y(&self) -> f64 {
-        self.0.x
+        self.0.y
     }
     pub fn set_y(&mut self, y: f64) {
         self.0.y = y;
