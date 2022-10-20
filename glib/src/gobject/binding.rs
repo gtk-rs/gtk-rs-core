@@ -29,7 +29,7 @@ mod test {
         assert!(source.find_property("name").is_some());
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::BIDIRECTIONAL)
+            .bidirectional()
             .build();
 
         source.set_name("test_source_name");
@@ -46,7 +46,7 @@ mod test {
 
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
@@ -68,7 +68,8 @@ mod test {
 
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
@@ -90,7 +91,7 @@ mod test {
 
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
             .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
             .build();
@@ -106,7 +107,7 @@ mod test {
 
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to(|_binding, value: String| Some(format!("{} World", value)))
             .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
             .build();
@@ -122,7 +123,8 @@ mod test {
 
         source
             .bind_property("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
             .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
             .build();
@@ -138,7 +140,7 @@ mod test {
 
         source
             .bind_property("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
@@ -163,7 +165,8 @@ mod test {
 
         source
             .bind_property("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
@@ -187,7 +190,7 @@ mod test {
 
         source
             .bind_property("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to(|_binding, value: &str| Some(value == "Hello"))
             .transform_from(|_binding, value: bool| Some(if value { "Hello" } else { "World" }))
             .build();
@@ -206,7 +209,8 @@ mod test {
 
         source
             .bind_property("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to(|_binding, value: &str| Some(value == "Hello"))
             .transform_from(|_binding, value: bool| Some(if value { "Hello" } else { "World" }))
             .build();

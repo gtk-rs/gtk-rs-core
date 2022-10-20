@@ -3703,6 +3703,27 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`BIDIRECTIONAL`)[crate::BindingFlags::BIDIRECTIONAL].
+    pub fn bidirectional(mut self) -> Self {
+        self.flags |= crate::BindingFlags::BIDIRECTIONAL;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`SYNC_CREATE`)[crate::BindingFlags::SYNC_CREATE].
+    pub fn sync_create(mut self) -> Self {
+        self.flags |= crate::BindingFlags::SYNC_CREATE;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`INVERT_BOOLEAN`)[crate::BindingFlags::INVERT_BOOLEAN].
+    pub fn invert_boolean(mut self) -> Self {
+        self.flags |= crate::BindingFlags::INVERT_BOOLEAN;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Establish the property binding.
     ///
     /// # Panics
