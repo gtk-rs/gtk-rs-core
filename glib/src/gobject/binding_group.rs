@@ -100,6 +100,27 @@ impl<'a> BindingGroupBuilder<'a> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`BIDIRECTIONAL`)[crate::BindingFlags::BIDIRECTIONAL].
+    pub fn bidirectional(mut self) -> Self {
+        self.flags |= crate::BindingFlags::BIDIRECTIONAL;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`SYNC_CREATE`)[crate::BindingFlags::SYNC_CREATE].
+    pub fn sync_create(mut self) -> Self {
+        self.flags |= crate::BindingFlags::SYNC_CREATE;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`INVERT_BOOLEAN`)[crate::BindingFlags::INVERT_BOOLEAN].
+    pub fn invert_boolean(mut self) -> Self {
+        self.flags |= crate::BindingFlags::INVERT_BOOLEAN;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Establish the property binding.
     ///
     /// This fails if the provided properties do not exist.
@@ -270,7 +291,7 @@ mod test {
         assert!(source.find_property("name").is_some());
         binding_group
             .bind("name", &target, "name")
-            .flags(crate::BindingFlags::BIDIRECTIONAL)
+            .bidirectional()
             .build();
 
         binding_group.set_source(Some(&source));
@@ -307,7 +328,7 @@ mod test {
         binding_group.set_source(Some(&source));
         binding_group
             .bind("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
@@ -332,7 +353,8 @@ mod test {
         binding_group.set_source(Some(&source));
         binding_group
             .bind("name", &target, "name")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{} World", value).to_value())
@@ -357,7 +379,7 @@ mod test {
         binding_group.set_source(Some(&source));
         binding_group
             .bind("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE)
+            .sync_create()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
@@ -385,7 +407,8 @@ mod test {
         binding_group.set_source(Some(&source));
         binding_group
             .bind("name", &target, "enabled")
-            .flags(crate::BindingFlags::SYNC_CREATE | crate::BindingFlags::BIDIRECTIONAL)
+            .sync_create()
+            .bidirectional()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
