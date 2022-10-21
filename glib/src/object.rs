@@ -1592,6 +1592,12 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Gets the type of this builder.
+    pub fn type_(&self) -> Type {
+        self.type_
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Set property `name` to the given value `value`.
     pub fn property<T: ToValue + 'a>(self, name: &'a str, value: T) -> Self {
         let ObjectBuilder {
@@ -3694,6 +3700,27 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     /// Bind the properties with the given flags.
     pub fn flags(self, flags: crate::BindingFlags) -> Self {
         Self { flags, ..self }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`BIDIRECTIONAL`)[crate::BindingFlags::BIDIRECTIONAL].
+    pub fn bidirectional(mut self) -> Self {
+        self.flags |= crate::BindingFlags::BIDIRECTIONAL;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`SYNC_CREATE`)[crate::BindingFlags::SYNC_CREATE].
+    pub fn sync_create(mut self) -> Self {
+        self.flags |= crate::BindingFlags::SYNC_CREATE;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to (`INVERT_BOOLEAN`)[crate::BindingFlags::INVERT_BOOLEAN].
+    pub fn invert_boolean(mut self) -> Self {
+        self.flags |= crate::BindingFlags::INVERT_BOOLEAN;
+        self
     }
 
     // rustdoc-stripper-ignore-next
