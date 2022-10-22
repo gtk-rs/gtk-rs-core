@@ -593,8 +593,8 @@ pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
 /// necessary for types that implement interfaces.
 ///
 /// ```ignore
-/// type Instance = glib::subclass::simple::InstanceStruct<Self>;
-/// type Class = glib::subclass::simple::ClassStruct<Self>;
+/// type Instance = glib::subclass::basic::InstanceStruct<Self>;
+/// type Class = glib::subclass::basic::ClassStruct<Self>;
 /// type Interfaces = ();
 /// ```
 ///
