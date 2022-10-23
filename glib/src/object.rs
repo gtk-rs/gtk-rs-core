@@ -2228,6 +2228,20 @@ pub trait ObjectExt: ObjectType {
     // rustdoc-stripper-ignore-next
     /// Returns the strong reference count of this object.
     fn ref_count(&self) -> u32;
+
+    // rustdoc-stripper-ignore-next
+    /// Runs the dispose mechanism of the object.
+    ///
+    /// This will dispose of any references the object has to other objects, and among other things
+    /// will disconnect all signal handlers.
+    ///
+    /// # Safety
+    ///
+    /// Theoretically this is safe to run and afterwards the object is simply in a non-functional
+    /// state, however many object implementations in C end up with memory safety issues if the
+    /// object is used after disposal.
+    #[doc(alias = "g_object_run_dispose")]
+    unsafe fn run_dispose(&self);
 }
 
 impl<T: ObjectType> ObjectExt for T {
@@ -3125,6 +3139,10 @@ impl<T: ObjectType> ObjectExt for T {
 
         unsafe { ffi::g_atomic_int_get(&(*ptr).ref_count as *const u32 as *const i32) as u32 }
     }
+
+    unsafe fn run_dispose(&self) {
+        gobject_ffi::g_object_run_dispose(self.as_ptr() as *mut _);
+    }
 }
 
 // Helper struct to avoid creating an extra ref on objects inside closure watches. This is safe
@@ -3703,21 +3721,21 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Set the binding flags to (`BIDIRECTIONAL`)[crate::BindingFlags::BIDIRECTIONAL].
+    /// Set the binding flags to [`BIDIRECTIONAL`][crate::BindingFlags::BIDIRECTIONAL].
     pub fn bidirectional(mut self) -> Self {
         self.flags |= crate::BindingFlags::BIDIRECTIONAL;
         self
     }
 
     // rustdoc-stripper-ignore-next
-    /// Set the binding flags to (`SYNC_CREATE`)[crate::BindingFlags::SYNC_CREATE].
+    /// Set the binding flags to [`SYNC_CREATE`][crate::BindingFlags::SYNC_CREATE].
     pub fn sync_create(mut self) -> Self {
         self.flags |= crate::BindingFlags::SYNC_CREATE;
         self
     }
 
     // rustdoc-stripper-ignore-next
-    /// Set the binding flags to (`INVERT_BOOLEAN`)[crate::BindingFlags::INVERT_BOOLEAN].
+    /// Set the binding flags to [`INVERT_BOOLEAN`][crate::BindingFlags::INVERT_BOOLEAN].
     pub fn invert_boolean(mut self) -> Self {
         self.flags |= crate::BindingFlags::INVERT_BOOLEAN;
         self

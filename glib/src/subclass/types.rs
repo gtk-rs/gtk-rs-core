@@ -650,6 +650,19 @@ pub trait ObjectSubclassExt: ObjectSubclass {
     fn from_instance(obj: &Self::Type) -> &Self;
 
     // rustdoc-stripper-ignore-next
+    /// Returns the corresponding object instance.
+    ///
+    /// Shorter alias for `instance()`.
+    #[doc(alias = "get_instance")]
+    fn obj(&self) -> crate::BorrowedObject<Self::Type>;
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the implementation from an instance.
+    ///
+    /// Shorter alias for `from_instance()`.
+    fn from_obj(obj: &Self::Type) -> &Self;
+
+    // rustdoc-stripper-ignore-next
     /// Returns a new reference-counted wrapper around `self`.
     fn ref_counted(&self) -> super::ObjectImplRef<Self>;
 
@@ -688,6 +701,14 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             let ptr = obj.as_ptr() as *const Self::Instance;
             (*ptr).imp()
         }
+    }
+
+    fn obj(&self) -> crate::BorrowedObject<Self::Type> {
+        self.instance()
+    }
+
+    fn from_obj(obj: &Self::Type) -> &Self {
+        Self::from_instance(obj)
     }
 
     fn ref_counted(&self) -> super::ObjectImplRef<Self> {
