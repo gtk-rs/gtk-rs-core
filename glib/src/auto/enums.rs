@@ -807,6 +807,66 @@ impl ErrorDomain for MarkupError {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
+#[doc(alias = "GNormalizeMode")]
+pub enum NormalizeMode {
+    #[doc(alias = "G_NORMALIZE_DEFAULT")]
+    Default,
+    #[doc(alias = "G_NORMALIZE_DEFAULT_COMPOSE")]
+    DefaultCompose,
+    #[doc(alias = "G_NORMALIZE_ALL")]
+    All,
+    #[doc(alias = "G_NORMALIZE_ALL_COMPOSE")]
+    AllCompose,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+impl fmt::Display for NormalizeMode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "NormalizeMode::{}",
+            match *self {
+                Self::Default => "Default",
+                Self::DefaultCompose => "DefaultCompose",
+                Self::All => "All",
+                Self::AllCompose => "AllCompose",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for NormalizeMode {
+    type GlibType = ffi::GNormalizeMode;
+
+    fn into_glib(self) -> ffi::GNormalizeMode {
+        match self {
+            Self::Default => ffi::G_NORMALIZE_DEFAULT,
+            Self::DefaultCompose => ffi::G_NORMALIZE_DEFAULT_COMPOSE,
+            Self::All => ffi::G_NORMALIZE_ALL,
+            Self::AllCompose => ffi::G_NORMALIZE_ALL_COMPOSE,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GNormalizeMode> for NormalizeMode {
+    unsafe fn from_glib(value: ffi::GNormalizeMode) -> Self {
+        match value {
+            ffi::G_NORMALIZE_DEFAULT => Self::Default,
+            ffi::G_NORMALIZE_DEFAULT_COMPOSE => Self::DefaultCompose,
+            ffi::G_NORMALIZE_ALL => Self::All,
+            ffi::G_NORMALIZE_ALL_COMPOSE => Self::AllCompose,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
 #[doc(alias = "GOptionArg")]
 pub enum OptionArg {
     #[doc(alias = "G_OPTION_ARG_NONE")]

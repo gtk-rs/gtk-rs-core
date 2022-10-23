@@ -42,6 +42,7 @@ pub use self::enums::FileError;
 pub use self::enums::KeyFileError;
 pub use self::enums::LogWriterOutput;
 pub use self::enums::MarkupError;
+pub use self::enums::NormalizeMode;
 pub use self::enums::OptionArg;
 pub use self::enums::SeekType;
 pub use self::enums::TimeType;
