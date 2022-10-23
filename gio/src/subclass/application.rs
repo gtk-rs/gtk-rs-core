@@ -138,11 +138,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let f = (*parent_class)
                 .activate
                 .expect("No parent class implementation for \"activate\"");
-            f(self
-                .instance()
-                .unsafe_cast_ref::<Application>()
-                .to_glib_none()
-                .0)
+            f(self.obj().unsafe_cast_ref::<Application>().to_glib_none().0)
         }
     }
 
@@ -154,10 +150,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                 .after_emit
                 .expect("No parent class implementation for \"after_emit\"");
             f(
-                self.instance()
-                    .unsafe_cast_ref::<Application>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 platform_data.to_glib_none().0,
             )
         }
@@ -171,10 +164,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                 .before_emit
                 .expect("No parent class implementation for \"before_emit\"");
             f(
-                self.instance()
-                    .unsafe_cast_ref::<Application>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 platform_data.to_glib_none().0,
             )
         }
@@ -188,10 +178,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                 .command_line
                 .expect("No parent class implementation for \"command_line\"");
             f(
-                self.instance()
-                    .unsafe_cast_ref::<Application>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 command_line.to_glib_none().0,
             )
         }
@@ -207,10 +194,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
             let mut exit_status = 0;
             let res = f(
-                self.instance()
-                    .unsafe_cast_ref::<Application>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 arguments.ptr,
                 &mut exit_status,
             );
@@ -231,10 +215,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                 .open
                 .expect("No parent class implementation for \"open\"");
             f(
-                self.instance()
-                    .unsafe_cast_ref::<Application>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 files.to_glib_none().0,
                 files.len() as i32,
                 hint.to_glib_none().0,
@@ -249,11 +230,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let f = (*parent_class)
                 .quit_mainloop
                 .expect("No parent class implementation for \"quit_mainloop\"");
-            f(self
-                .instance()
-                .unsafe_cast_ref::<Application>()
-                .to_glib_none()
-                .0)
+            f(self.obj().unsafe_cast_ref::<Application>().to_glib_none().0)
         }
     }
 
@@ -264,11 +241,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let f = (*parent_class)
                 .run_mainloop
                 .expect("No parent class implementation for \"run_mainloop\"");
-            f(self
-                .instance()
-                .unsafe_cast_ref::<Application>()
-                .to_glib_none()
-                .0)
+            f(self.obj().unsafe_cast_ref::<Application>().to_glib_none().0)
         }
     }
 
@@ -279,11 +252,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let f = (*parent_class)
                 .shutdown
                 .expect("No parent class implementation for \"shutdown\"");
-            f(self
-                .instance()
-                .unsafe_cast_ref::<Application>()
-                .to_glib_none()
-                .0)
+            f(self.obj().unsafe_cast_ref::<Application>().to_glib_none().0)
         }
     }
 
@@ -294,11 +263,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let f = (*parent_class)
                 .startup
                 .expect("No parent class implementation for \"startup\"");
-            f(self
-                .instance()
-                .unsafe_cast_ref::<Application>()
-                .to_glib_none()
-                .0)
+            f(self.obj().unsafe_cast_ref::<Application>().to_glib_none().0)
         }
     }
 
@@ -308,10 +273,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
             if let Some(f) = (*parent_class).handle_local_options {
                 f(
-                    self.instance()
-                        .unsafe_cast_ref::<Application>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                     options.to_glib_none().0,
                 )
             } else {

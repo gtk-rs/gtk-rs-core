@@ -31,12 +31,7 @@ impl<T: ListModelImpl> ListModelImplExt for T {
             let func = (*parent_iface)
                 .get_item_type
                 .expect("no parent \"item_type\" implementation");
-            let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ListModel>()
-                    .to_glib_none()
-                    .0,
-            );
+            let ret = func(self.obj().unsafe_cast_ref::<ListModel>().to_glib_none().0);
             from_glib(ret)
         }
     }
@@ -50,12 +45,7 @@ impl<T: ListModelImpl> ListModelImplExt for T {
             let func = (*parent_iface)
                 .get_n_items
                 .expect("no parent \"n_items\" implementation");
-            func(
-                self.instance()
-                    .unsafe_cast_ref::<ListModel>()
-                    .to_glib_none()
-                    .0,
-            )
+            func(self.obj().unsafe_cast_ref::<ListModel>().to_glib_none().0)
         }
     }
 
@@ -69,10 +59,7 @@ impl<T: ListModelImpl> ListModelImplExt for T {
                 .get_item
                 .expect("no parent \"get_item\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ListModel>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ListModel>().to_glib_none().0,
                 position,
             );
             from_glib_full(ret)
@@ -108,7 +95,7 @@ where
     let type_ = imp.item_type().into_glib();
 
     // Store the type so we can enforce that it doesn't change.
-    let instance = imp.instance();
+    let instance = imp.obj();
     match instance.qdata(*LIST_ITEM_TYPE_QUARK) {
         Some(old_type) => {
             assert_eq!(

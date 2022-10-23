@@ -48,12 +48,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .tell
                 .expect("no parent \"tell\" implementation");
-            func(
-                self.instance()
-                    .unsafe_cast_ref::<Seekable>()
-                    .to_glib_none()
-                    .0,
-            )
+            func(self.obj().unsafe_cast_ref::<Seekable>().to_glib_none().0)
         }
     }
 
@@ -66,12 +61,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .can_seek
                 .expect("no parent \"can_seek\" implementation");
-            let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<Seekable>()
-                    .to_glib_none()
-                    .0,
-            );
+            let ret = func(self.obj().unsafe_cast_ref::<Seekable>().to_glib_none().0);
             from_glib(ret)
         }
     }
@@ -93,10 +83,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                self.instance()
-                    .unsafe_cast_ref::<Seekable>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Seekable>().to_glib_none().0,
                 offset,
                 type_.into_glib(),
                 cancellable.to_glib_none().0,
@@ -120,12 +107,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
             let func = (*parent_iface)
                 .can_truncate
                 .expect("no parent \"can_truncate\" implementation");
-            let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<Seekable>()
-                    .to_glib_none()
-                    .0,
-            );
+            let ret = func(self.obj().unsafe_cast_ref::<Seekable>().to_glib_none().0);
             from_glib(ret)
         }
     }
@@ -142,10 +124,7 @@ impl<T: SeekableImpl> SeekableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                self.instance()
-                    .unsafe_cast_ref::<Seekable>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Seekable>().to_glib_none().0,
                 offset,
                 cancellable.to_glib_none().0,
                 &mut err,

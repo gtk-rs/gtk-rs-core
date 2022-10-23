@@ -68,7 +68,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
                 .expect("No parent class implementation for \"write\"");
             let mut err = ptr::null_mut();
             let res = f(
-                self.instance()
+                self.obj()
                     .unsafe_cast_ref::<OutputStream>()
                     .to_glib_none()
                     .0,
@@ -95,7 +95,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
                 if from_glib(f(
-                    self.instance()
+                    self.obj()
                         .unsafe_cast_ref::<OutputStream>()
                         .to_glib_none()
                         .0,
@@ -119,7 +119,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).flush {
                 if from_glib(f(
-                    self.instance()
+                    self.obj()
                         .unsafe_cast_ref::<OutputStream>()
                         .to_glib_none()
                         .0,
@@ -150,7 +150,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
                 .splice
                 .expect("No parent class implementation for \"splice\"");
             let res = f(
-                self.instance()
+                self.obj()
                     .unsafe_cast_ref::<OutputStream>()
                     .to_glib_none()
                     .0,
