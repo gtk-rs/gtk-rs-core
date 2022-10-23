@@ -38,6 +38,20 @@ impl<'a> BindingBuilder<'a> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Unsets the default [`GET`][crate::SettingsBindFlags::GET] flag.
+    pub fn set_only(mut self) -> Self {
+        self.flags = (self.flags - SettingsBindFlags::GET) | SettingsBindFlags::SET;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Unsets the default [`SET`][crate::SettingsBindFlags::SET] flag.
+    pub fn get_only(mut self) -> Self {
+        self.flags = (self.flags - SettingsBindFlags::SET) | SettingsBindFlags::GET;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Set the binding flags to [`NO_SENSITIVITY`][crate::SettingsBindFlags::NO_SENSITIVITY].
     pub fn no_sensitivity(mut self) -> Self {
         self.flags |= SettingsBindFlags::NO_SENSITIVITY;
