@@ -676,6 +676,14 @@ pub trait ObjectSubclassExt: ObjectSubclass {
 
 impl<T: ObjectSubclass> ObjectSubclassExt for T {
     fn instance(&self) -> crate::BorrowedObject<Self::Type> {
+        self.obj()
+    }
+
+    fn from_instance(obj: &Self::Type) -> &Self {
+        Self::from_obj(obj)
+    }
+
+    fn obj(&self) -> crate::BorrowedObject<Self::Type> {
         unsafe {
             let data = Self::type_data();
             let type_ = data.as_ref().type_();
@@ -696,19 +704,11 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         }
     }
 
-    fn from_instance(obj: &Self::Type) -> &Self {
+    fn from_obj(obj: &Self::Type) -> &Self {
         unsafe {
             let ptr = obj.as_ptr() as *const Self::Instance;
             (*ptr).imp()
         }
-    }
-
-    fn obj(&self) -> crate::BorrowedObject<Self::Type> {
-        self.instance()
-    }
-
-    fn from_obj(obj: &Self::Type) -> &Self {
-        Self::from_instance(obj)
     }
 
     fn ref_counted(&self) -> super::ObjectImplRef<Self> {

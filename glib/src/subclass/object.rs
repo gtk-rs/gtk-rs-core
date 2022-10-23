@@ -207,7 +207,7 @@ impl<T: ObjectImpl> ObjectImplExt for T {
             let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
 
             if let Some(ref func) = (*parent_class).constructed {
-                func(self.instance().unsafe_cast_ref::<Object>().to_glib_none().0);
+                func(self.obj().unsafe_cast_ref::<Object>().to_glib_none().0);
             }
         }
     }
@@ -218,11 +218,7 @@ impl<T: ObjectImpl> ObjectImplExt for T {
         values: &[Value],
     ) -> Option<Value> {
         unsafe {
-            super::types::signal_chain_from_overridden(
-                self.instance().as_ptr() as *mut _,
-                token,
-                values,
-            )
+            super::types::signal_chain_from_overridden(self.obj().as_ptr() as *mut _, token, values)
         }
     }
 }
@@ -335,7 +331,7 @@ mod test {
                             .get()
                             .expect("type conformity checked by 'Object::set_property'");
                         self.name.replace(name);
-                        self.instance()
+                        self.obj()
                             .emit_by_name::<()>("name-changed", &[&*self.name.borrow()]);
                     }
                     "construct-name" => {
@@ -363,7 +359,7 @@ mod test {
             fn constructed(&self) {
                 self.parent_constructed();
 
-                assert_eq!(self as *const _, self.instance().imp() as *const _);
+                assert_eq!(self as *const _, self.obj().imp() as *const _);
 
                 *self.constructed.borrow_mut() = true;
             }
@@ -437,7 +433,7 @@ mod test {
     fn test_create_child_object() {
         let obj: ChildObject = Object::new(&[]);
 
-        assert_eq!(&obj, obj.imp().instance().as_ref());
+        assert_eq!(&obj, obj.imp().obj().as_ref());
     }
 
     #[test]

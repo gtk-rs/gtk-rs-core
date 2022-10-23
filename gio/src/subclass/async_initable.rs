@@ -78,7 +78,7 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
             }
 
             Box::pin(crate::GioFuture::new(
-                &*self.instance(),
+                &*self.obj(),
                 move |obj, cancellable, res| {
                     let user_data: Box<ThreadGuard<GioFutureResult<(), Error>>> =
                         Box::new(ThreadGuard::new(res));
@@ -117,7 +117,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
 
     let task = callback.map(|callback| {
         let task = LocalTask::new(
-            Some(imp.instance().unsafe_cast_ref::<glib::Object>()),
+            Some(imp.obj().unsafe_cast_ref::<glib::Object>()),
             cancellable.as_ref().as_ref(),
             move |task, obj| {
                 let result: *mut crate::ffi::GAsyncResult =

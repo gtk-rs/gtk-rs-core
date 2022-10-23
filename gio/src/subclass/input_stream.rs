@@ -50,10 +50,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
                 .expect("No parent class implementation for \"read\"");
             let mut err = ptr::null_mut();
             let res = f(
-                self.instance()
-                    .unsafe_cast_ref::<InputStream>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<InputStream>().to_glib_none().0,
                 buffer.as_mut_ptr() as glib::ffi::gpointer,
                 buffer.len(),
                 cancellable.to_glib_none().0,
@@ -77,10 +74,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
                 if from_glib(f(
-                    self.instance()
-                        .unsafe_cast_ref::<InputStream>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<InputStream>().to_glib_none().0,
                     cancellable.to_glib_none().0,
                     &mut err,
                 )) {
@@ -103,10 +97,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
                 .skip
                 .expect("No parent class implementation for \"skip\"");
             let res = f(
-                self.instance()
-                    .unsafe_cast_ref::<InputStream>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<InputStream>().to_glib_none().0,
                 count,
                 cancellable.to_glib_none().0,
                 &mut err,

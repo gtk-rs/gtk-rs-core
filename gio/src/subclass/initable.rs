@@ -34,10 +34,7 @@ impl<T: InitableImpl> InitableImplExt for T {
 
             let mut err = ptr::null_mut();
             func(
-                self.instance()
-                    .unsafe_cast_ref::<Initable>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<Initable>().to_glib_none().0,
                 cancellable.to_glib_none().0,
                 &mut err,
             );
