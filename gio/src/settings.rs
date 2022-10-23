@@ -23,6 +23,41 @@ impl<'a> BindingBuilder<'a> {
         self
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to [`GET`][crate::SettingsBindFlags::GET].
+    pub fn get(mut self) -> Self {
+        self.flags |= SettingsBindFlags::GET;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to [`SET`][crate::SettingsBindFlags::SET].
+    pub fn set(mut self) -> Self {
+        self.flags |= SettingsBindFlags::SET;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to [`NO_SENSITIVITY`][crate::SettingsBindFlags::NO_SENSITIVITY].
+    pub fn no_sensitivity(mut self) -> Self {
+        self.flags |= SettingsBindFlags::NO_SENSITIVITY;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to [`GET_NO_CHANGES`][crate::SettingsBindFlags::GET_NO_CHANGES].
+    pub fn get_no_changes(mut self) -> Self {
+        self.flags |= SettingsBindFlags::GET_NO_CHANGES;
+        self
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Set the binding flags to [`INVERT_BOOLEAN`][crate::SettingsBindFlags::INVERT_BOOLEAN].
+    pub fn invert_boolean(mut self) -> Self {
+        self.flags |= SettingsBindFlags::INVERT_BOOLEAN;
+        self
+    }
+
     #[doc(alias = "get_mapping")]
     pub fn mapping<F: Fn(&glib::Variant, glib::Type) -> Option<glib::Value> + 'static>(
         mut self,
