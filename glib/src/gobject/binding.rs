@@ -257,7 +257,7 @@ mod test {
             }
 
             fn property(&self, _id: usize, pspec: &crate::ParamSpec) -> crate::Value {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.name().to_value(),
                     "enabled" => obj.enabled().to_value(),
@@ -266,7 +266,7 @@ mod test {
             }
 
             fn set_property(&self, _id: usize, value: &crate::Value, pspec: &crate::ParamSpec) {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.set_name(value.get().unwrap()),
                     "enabled" => obj.set_enabled(value.get().unwrap()),
