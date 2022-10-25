@@ -102,7 +102,7 @@ impl TlsCertificate {
     #[doc(alias = "g_tls_certificate_new_from_pem")]
     #[doc(alias = "new_from_pem")]
     pub fn from_pem(data: &str) -> Result<TlsCertificate, glib::Error> {
-        let length = data.len() as isize;
+        let length = data.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret =
@@ -143,7 +143,7 @@ impl TlsCertificate {
     #[doc(alias = "g_tls_certificate_new_from_pkcs12")]
     #[doc(alias = "new_from_pkcs12")]
     pub fn from_pkcs12(data: &[u8], password: Option<&str>) -> Result<TlsCertificate, glib::Error> {
-        let length = data.len() as usize;
+        let length = data.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_tls_certificate_new_from_pkcs12(

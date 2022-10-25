@@ -77,7 +77,7 @@ impl GlyphString {
         index_: i32,
         trailing: bool,
     ) -> i32 {
-        let length = text.len() as i32;
+        let length = text.len() as _;
         unsafe {
             let mut x_pos = mem::MaybeUninit::uninit();
             ffi::pango_glyph_string_index_to_x(
@@ -109,7 +109,7 @@ impl GlyphString {
 
     #[doc(alias = "pango_glyph_string_x_to_index")]
     pub fn x_to_index(&self, text: &str, analysis: &mut Analysis, x_pos: i32) -> (i32, i32) {
-        let length = text.len() as i32;
+        let length = text.len() as _;
         unsafe {
             let mut index_ = mem::MaybeUninit::uninit();
             let mut trailing = mem::MaybeUninit::uninit();

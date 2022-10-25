@@ -30,7 +30,7 @@ impl ThemedIcon {
     #[doc(alias = "g_themed_icon_new_from_names")]
     #[doc(alias = "new_from_names")]
     pub fn from_names(iconnames: &[&str]) -> ThemedIcon {
-        let len = iconnames.len() as i32;
+        let len = iconnames.len() as _;
         unsafe {
             from_glib_full(ffi::g_themed_icon_new_from_names(
                 iconnames.to_glib_none().0,

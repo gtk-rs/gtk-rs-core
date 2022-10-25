@@ -99,7 +99,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
                 &mut faces,
                 n_faces.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_container_num(faces, n_faces.assume_init() as usize)
+            FromGlibContainer::from_glib_container_num(faces, n_faces.assume_init() as _)
         }
     }
 }

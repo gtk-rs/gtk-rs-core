@@ -477,7 +477,7 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
         buffer: &[u8],
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<isize, glib::Error> {
-        let count = buffer.len() as usize;
+        let count = buffer.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_output_stream_write(

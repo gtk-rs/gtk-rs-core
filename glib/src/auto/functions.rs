@@ -31,7 +31,7 @@ pub fn base64_decode(text: &str) -> Vec<u8> {
         let mut out_len = mem::MaybeUninit::uninit();
         let ret = FromGlibContainer::from_glib_full_num(
             ffi::g_base64_decode(text.to_glib_none().0, out_len.as_mut_ptr()),
-            out_len.assume_init() as usize,
+            out_len.assume_init() as _,
         );
         ret
     }
@@ -49,7 +49,7 @@ pub fn base64_decode(text: &str) -> Vec<u8> {
 
 #[doc(alias = "g_base64_encode")]
 pub fn base64_encode(data: &[u8]) -> crate::GString {
-    let len = data.len() as usize;
+    let len = data.len() as _;
     unsafe { from_glib_full(ffi::g_base64_encode(data.to_glib_none().0, len)) }
 }
 
@@ -96,7 +96,7 @@ pub fn compute_checksum_for_data(
     checksum_type: ChecksumType,
     data: &[u8],
 ) -> Option<crate::GString> {
-    let length = data.len() as usize;
+    let length = data.len() as _;
     unsafe {
         from_glib_full(ffi::g_compute_checksum_for_data(
             checksum_type.into_glib(),
@@ -123,8 +123,8 @@ pub fn compute_hmac_for_bytes(
 
 #[doc(alias = "g_compute_hmac_for_data")]
 pub fn compute_hmac_for_data(digest_type: ChecksumType, key: &[u8], data: &[u8]) -> crate::GString {
-    let key_len = key.len() as usize;
-    let length = data.len() as usize;
+    let key_len = key.len() as _;
+    let length = data.len() as _;
     unsafe {
         from_glib_full(ffi::g_compute_hmac_for_data(
             digest_type.into_glib(),
@@ -201,7 +201,7 @@ pub fn file_set_contents(
     filename: impl AsRef<std::path::Path>,
     contents: &[u8],
 ) -> Result<(), crate::Error> {
-    let length = contents.len() as isize;
+    let length = contents.len() as _;
     unsafe {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_file_set_contents(
@@ -228,7 +228,7 @@ pub fn file_set_contents_full(
     flags: FileSetContentsFlags,
     mode: i32,
 ) -> Result<(), crate::Error> {
-    let length = contents.len() as isize;
+    let length = contents.len() as _;
     unsafe {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_file_set_contents_full(
@@ -551,7 +551,7 @@ pub fn main_depth() -> i32 {
 
 #[doc(alias = "g_markup_escape_text")]
 pub fn markup_escape_text(text: &str) -> crate::GString {
-    let length = text.len() as isize;
+    let length = text.len() as _;
     unsafe { from_glib_full(ffi::g_markup_escape_text(text.to_glib_none().0, length)) }
 }
 
@@ -672,7 +672,7 @@ pub fn shell_parse_argv(
         if error.is_null() {
             Ok(FromGlibContainer::from_glib_full_num(
                 argvp,
-                argcp.assume_init() as usize,
+                argcp.assume_init() as _,
             ))
         } else {
             Err(from_glib_full(error))
