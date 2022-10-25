@@ -315,7 +315,7 @@ pub(crate) fn std_error_to_gio_error<T>(
                 ))),
                 ErrorKind::WriteZero | _ => Some(Err(glib::Error::new(
                     crate::IOErrorEnum::Failed,
-                    format!("Unknown error: {:?}", err).as_str(),
+                    format!("Unknown error: {err:?}").as_str(),
                 ))),
             }
         }

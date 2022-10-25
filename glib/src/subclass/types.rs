@@ -993,7 +993,7 @@ pub(crate) unsafe fn signal_override_class_handler<F>(
     F: Fn(&super::SignalClassHandlerToken, &[Value]) -> Option<Value> + Send + Sync + 'static,
 {
     let (signal_id, _) = SignalId::parse_name(name, from_glib(type_), false)
-        .unwrap_or_else(|| panic!("Signal '{}' not found", name));
+        .unwrap_or_else(|| panic!("Signal '{name}' not found"));
 
     let query = signal_id.query();
     let return_type = query.return_type();

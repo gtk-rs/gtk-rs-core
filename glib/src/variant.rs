@@ -366,7 +366,7 @@ impl Variant {
                     } else {
                         let ret = str::from_utf8_unchecked(slice::from_raw_parts(
                             ptr as *const u8,
-                            len as usize,
+                            len as _,
                         ));
                         Some(ret)
                     }
@@ -748,7 +748,7 @@ impl Variant {
                 return &[];
             }
             let ptr = ffi::g_variant_get_data(selfv.0);
-            slice::from_raw_parts(ptr as *const u8, len as usize)
+            slice::from_raw_parts(ptr as *const _, len as _)
         }
     }
 
@@ -2162,7 +2162,7 @@ mod tests {
         let mut m = BTreeMap::new();
         let total = 20;
         for n in 0..total {
-            let k = format!("v{:04}", n);
+            let k = format!("v{n:04}");
             m.insert(k, n as u32);
         }
         let v = m.to_variant();

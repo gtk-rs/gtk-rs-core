@@ -61,7 +61,7 @@ impl FromGlib<c_ulong> for SignalHandlerId {
     #[inline]
     unsafe fn from_glib(val: c_ulong) -> Self {
         assert_ne!(val, 0);
-        Self(NonZeroU64::new_unchecked(val as u64))
+        Self(NonZeroU64::new_unchecked(val as _))
     }
 }
 

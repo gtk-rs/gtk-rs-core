@@ -148,7 +148,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
     ) -> Result<(usize, Option<glib::Error>), glib::Error> {
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let count = buffer.len() as usize;
+        let count = buffer.len();
         unsafe {
             let mut bytes_written = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();

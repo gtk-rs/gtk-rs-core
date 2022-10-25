@@ -12,7 +12,7 @@ impl Checksum {
         unsafe {
             //Don't forget update when `ChecksumType` contains type bigger that Sha512.
             let mut digest_len: size_t = 512 / 8;
-            let mut vec = Vec::with_capacity(digest_len as usize);
+            let mut vec = Vec::with_capacity(digest_len as _);
 
             ffi::g_checksum_get_digest(
                 mut_override(self.to_glib_none().0),

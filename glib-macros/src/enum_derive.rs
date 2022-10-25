@@ -45,8 +45,8 @@ fn gen_enum_values(
             }
         );
 
-        let value_name = format!("{}\0", value_name);
-        let value_nick = format!("{}\0", value_nick);
+        let value_name = format!("{value_name}\0");
+        let value_nick = format!("{value_nick}\0");
 
         n += 1;
         quote_spanned! {v.span()=>

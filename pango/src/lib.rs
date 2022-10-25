@@ -8,7 +8,6 @@ pub use ffi;
 pub use glib;
 
 #[allow(clippy::too_many_arguments)]
-#[allow(clippy::should_implement_trait)]
 #[allow(clippy::derive_hash_xor_eq)]
 #[allow(unused_imports)]
 mod auto;
