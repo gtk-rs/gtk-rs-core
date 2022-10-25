@@ -14,13 +14,13 @@ bitflags! {
     #[doc(alias = "GBindingFlags")]
     pub struct BindingFlags: u32 {
         #[doc(alias = "G_BINDING_DEFAULT")]
-        const DEFAULT = gobject_ffi::G_BINDING_DEFAULT as u32;
+        const DEFAULT = gobject_ffi::G_BINDING_DEFAULT as _;
         #[doc(alias = "G_BINDING_BIDIRECTIONAL")]
-        const BIDIRECTIONAL = gobject_ffi::G_BINDING_BIDIRECTIONAL as u32;
+        const BIDIRECTIONAL = gobject_ffi::G_BINDING_BIDIRECTIONAL as _;
         #[doc(alias = "G_BINDING_SYNC_CREATE")]
-        const SYNC_CREATE = gobject_ffi::G_BINDING_SYNC_CREATE as u32;
+        const SYNC_CREATE = gobject_ffi::G_BINDING_SYNC_CREATE as _;
         #[doc(alias = "G_BINDING_INVERT_BOOLEAN")]
-        const INVERT_BOOLEAN = gobject_ffi::G_BINDING_INVERT_BOOLEAN as u32;
+        const INVERT_BOOLEAN = gobject_ffi::G_BINDING_INVERT_BOOLEAN as _;
     }
 }
 
@@ -84,25 +84,25 @@ bitflags! {
     #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
         #[doc(alias = "G_SIGNAL_RUN_FIRST")]
-        const RUN_FIRST = gobject_ffi::G_SIGNAL_RUN_FIRST as u32;
+        const RUN_FIRST = gobject_ffi::G_SIGNAL_RUN_FIRST as _;
         #[doc(alias = "G_SIGNAL_RUN_LAST")]
-        const RUN_LAST = gobject_ffi::G_SIGNAL_RUN_LAST as u32;
+        const RUN_LAST = gobject_ffi::G_SIGNAL_RUN_LAST as _;
         #[doc(alias = "G_SIGNAL_RUN_CLEANUP")]
-        const RUN_CLEANUP = gobject_ffi::G_SIGNAL_RUN_CLEANUP as u32;
+        const RUN_CLEANUP = gobject_ffi::G_SIGNAL_RUN_CLEANUP as _;
         #[doc(alias = "G_SIGNAL_NO_RECURSE")]
-        const NO_RECURSE = gobject_ffi::G_SIGNAL_NO_RECURSE as u32;
+        const NO_RECURSE = gobject_ffi::G_SIGNAL_NO_RECURSE as _;
         #[doc(alias = "G_SIGNAL_DETAILED")]
-        const DETAILED = gobject_ffi::G_SIGNAL_DETAILED as u32;
+        const DETAILED = gobject_ffi::G_SIGNAL_DETAILED as _;
         #[doc(alias = "G_SIGNAL_ACTION")]
-        const ACTION = gobject_ffi::G_SIGNAL_ACTION as u32;
+        const ACTION = gobject_ffi::G_SIGNAL_ACTION as _;
         #[doc(alias = "G_SIGNAL_NO_HOOKS")]
-        const NO_HOOKS = gobject_ffi::G_SIGNAL_NO_HOOKS as u32;
+        const NO_HOOKS = gobject_ffi::G_SIGNAL_NO_HOOKS as _;
         #[doc(alias = "G_SIGNAL_MUST_COLLECT")]
-        const MUST_COLLECT = gobject_ffi::G_SIGNAL_MUST_COLLECT as u32;
+        const MUST_COLLECT = gobject_ffi::G_SIGNAL_MUST_COLLECT as _;
         #[doc(alias = "G_SIGNAL_DEPRECATED")]
-        const DEPRECATED = gobject_ffi::G_SIGNAL_DEPRECATED as u32;
+        const DEPRECATED = gobject_ffi::G_SIGNAL_DEPRECATED as _;
         #[doc(alias = "G_SIGNAL_ACCUMULATOR_FIRST_RUN")]
-        const ACCUMULATOR_FIRST_RUN = gobject_ffi::G_SIGNAL_ACCUMULATOR_FIRST_RUN as u32;
+        const ACCUMULATOR_FIRST_RUN = gobject_ffi::G_SIGNAL_ACCUMULATOR_FIRST_RUN as _;
     }
 }
 

@@ -77,7 +77,7 @@ impl FromGlib<u32> for LogLevel {
         } else if value & ffi::G_LOG_LEVEL_DEBUG != 0 {
             Self::Debug
         } else {
-            panic!("Unknown log level: {}", value)
+            panic!("Unknown log level: {value}")
         }
     }
 }

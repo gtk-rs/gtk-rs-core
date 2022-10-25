@@ -146,7 +146,7 @@ impl KeyFile {
             }
             Ok(FromGlibContainer::from_glib_container_num(
                 ret,
-                length.assume_init() as usize,
+                length.assume_init() as _,
             ))
         }
     }
@@ -187,7 +187,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_full_num(
                     ret,
-                    length.assume_init() as usize,
+                    length.assume_init() as _,
                 ))
             } else {
                 ffi::g_strfreev(ret);
@@ -244,7 +244,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_full_num(
                     ret,
-                    length.assume_init() as usize,
+                    length.assume_init() as _,
                 ))
             } else {
                 ffi::g_strfreev(ret);

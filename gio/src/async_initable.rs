@@ -57,7 +57,7 @@ impl AsyncInitable {
         callback: Q,
     ) {
         if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{}' is not async initable", type_);
+            panic!("Type '{type_}' is not async initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
@@ -85,7 +85,7 @@ impl AsyncInitable {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Object, glib::Error>> + 'static>> {
         if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{}' is not async initable", type_);
+            panic!("Type '{type_}' is not async initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
@@ -121,7 +121,7 @@ impl AsyncInitable {
         callback: Q,
     ) {
         if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{}' is not async initable", type_);
+            panic!("Type '{type_}' is not async initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
@@ -149,7 +149,7 @@ impl AsyncInitable {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Object, glib::Error>> + 'static>> {
         if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{}' is not async initable", type_);
+            panic!("Type '{type_}' is not async initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());

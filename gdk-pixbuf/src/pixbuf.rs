@@ -50,7 +50,7 @@ impl Pixbuf {
         let ptr = {
             let data: &mut [u8] = (*data).as_mut();
             assert!(
-                data.len() >= ((height - 1) * row_stride + last_row_len) as usize,
+                data.len() >= ((height - 1) * row_stride + last_row_len),
                 "data.len() must fit the width, height, and row_stride"
             );
             data.as_mut_ptr()
@@ -406,7 +406,7 @@ impl Pixbuf {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_full_num(
                     buffer,
-                    buffer_size.assume_init() as usize,
+                    buffer_size.assume_init() as _,
                 ))
             } else {
                 Err(from_glib_full(error))

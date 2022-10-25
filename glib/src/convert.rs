@@ -56,7 +56,7 @@ pub fn convert(
     if result.is_null() {
         Err(CvtError::new(unsafe { from_glib_full(error) }, bytes_read))
     } else {
-        let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as usize) };
+        let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as _) };
         Ok((slice, bytes_read))
     }
 }
@@ -87,7 +87,7 @@ pub fn convert_with_fallback(
     if result.is_null() {
         Err(CvtError::new(unsafe { from_glib_full(error) }, bytes_read))
     } else {
-        let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as usize) };
+        let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as _) };
         Ok((slice, bytes_read))
     }
 }
@@ -141,7 +141,7 @@ impl IConv {
         if result.is_null() {
             Err(CvtError::new(unsafe { from_glib_full(error) }, bytes_read))
         } else {
-            let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as usize) };
+            let slice = unsafe { Slice::from_glib_full_num(result, bytes_written as _) };
             Ok((slice, bytes_read))
         }
     }

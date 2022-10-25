@@ -347,7 +347,7 @@ impl Date {
 
     #[doc(alias = "g_date_strftime")]
     pub fn strftime(s: &str, format: &str, date: &Date) -> usize {
-        let slen = s.len() as usize;
+        let slen = s.len() as _;
         unsafe {
             ffi::g_date_strftime(
                 s.to_glib_none().0,

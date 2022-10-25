@@ -27,7 +27,7 @@ fn main() {
         let cancellable_task = gio::CancellableFuture::new(a_very_long_task(), cancellable.clone())
             .map(move |res| {
                 if let Err(error) = res {
-                    println!("{:?}", error);
+                    println!("{error:?}");
                 }
 
                 main_loop.quit();

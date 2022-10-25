@@ -1597,7 +1597,7 @@ impl ParamSpecOverride {
         let interface_ref: InterfaceRef<T> = Interface::from_type(T::static_type()).unwrap();
         let pspec = interface_ref
             .find_property(name)
-            .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
+            .unwrap_or_else(|| panic!("Couldn't find a property named `{name}` to override"));
 
         unsafe { Self::new_unchecked(name, &pspec) }
     }
@@ -1621,7 +1621,7 @@ impl ParamSpecOverride {
         let pspec = ObjectClass::from_type(T::static_type())
             .unwrap()
             .find_property(name)
-            .unwrap_or_else(|| panic!("Couldn't find a property named `{}` to override", name));
+            .unwrap_or_else(|| panic!("Couldn't find a property named `{name}` to override"));
 
         unsafe { Self::new_unchecked(name, &pspec) }
     }

@@ -103,8 +103,8 @@ impl<'a, T: IsA<glib::Object>> Iterator for ListModelIter<'a, T> {
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        let n = (self.reverse_pos - self.i) as usize;
-        (n as usize, Some(n))
+        let n: usize = (self.reverse_pos - self.i) as _;
+        (n, Some(n))
     }
 
     fn count(self) -> usize {

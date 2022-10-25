@@ -95,7 +95,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExtManual for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name = detail.map(|name| format!("g-signal::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("g-signal::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"g-signal\0"[..], |n| n.as_bytes());

@@ -127,7 +127,7 @@ pub struct GdkPixbufAnimationClass {
 
 impl ::std::fmt::Debug for GdkPixbufAnimationClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufAnimationClass @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufAnimationClass @ {self:p}"))
             .field("parent_class", &self.parent_class)
             .field("is_static_image", &self.is_static_image)
             .field("get_static_image", &self.get_static_image)
@@ -152,7 +152,7 @@ pub struct GdkPixbufAnimationIterClass {
 
 impl ::std::fmt::Debug for GdkPixbufAnimationIterClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufAnimationIterClass @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufAnimationIterClass @ {self:p}"))
             .field("parent_class", &self.parent_class)
             .field("get_delay_time", &self.get_delay_time)
             .field("get_pixbuf", &self.get_pixbuf)
@@ -181,7 +181,7 @@ pub struct GdkPixbufFormat {
 
 impl ::std::fmt::Debug for GdkPixbufFormat {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufFormat @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufFormat @ {self:p}"))
             .field("name", &self.name)
             .field("signature", &self.signature)
             .field("domain", &self.domain)
@@ -208,7 +208,7 @@ pub struct GdkPixbufLoaderClass {
 
 impl ::std::fmt::Debug for GdkPixbufLoaderClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufLoaderClass @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufLoaderClass @ {self:p}"))
             .field("parent_class", &self.parent_class)
             .field("size_prepared", &self.size_prepared)
             .field("area_prepared", &self.area_prepared)
@@ -242,7 +242,7 @@ pub struct GdkPixbufModule {
 
 impl ::std::fmt::Debug for GdkPixbufModule {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufModule @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufModule @ {self:p}"))
             .field("module_name", &self.module_name)
             .field("module_path", &self.module_path)
             .field("module", &self.module)
@@ -274,7 +274,7 @@ pub struct GdkPixbufModulePattern {
 
 impl ::std::fmt::Debug for GdkPixbufModulePattern {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufModulePattern @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufModulePattern @ {self:p}"))
             .field("prefix", &self.prefix)
             .field("mask", &self.mask)
             .field("relevance", &self.relevance)
@@ -299,7 +299,7 @@ pub struct GdkPixbuf {
 
 impl ::std::fmt::Debug for GdkPixbuf {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbuf @ {:p}", self)).finish()
+        f.debug_struct(&format!("GdkPixbuf @ {self:p}")).finish()
     }
 }
 
@@ -311,7 +311,7 @@ pub struct GdkPixbufAnimation {
 
 impl ::std::fmt::Debug for GdkPixbufAnimation {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufAnimation @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufAnimation @ {self:p}"))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -325,7 +325,7 @@ pub struct GdkPixbufAnimationIter {
 
 impl ::std::fmt::Debug for GdkPixbufAnimationIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufAnimationIter @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufAnimationIter @ {self:p}"))
             .field("parent_instance", &self.parent_instance)
             .finish()
     }
@@ -340,7 +340,7 @@ pub struct GdkPixbufLoader {
 
 impl ::std::fmt::Debug for GdkPixbufLoader {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufLoader @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufLoader @ {self:p}"))
             .finish()
     }
 }
@@ -353,7 +353,7 @@ pub struct GdkPixbufNonAnim {
 
 impl ::std::fmt::Debug for GdkPixbufNonAnim {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufNonAnim @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufNonAnim @ {self:p}"))
             .finish()
     }
 }
@@ -366,7 +366,7 @@ pub struct GdkPixbufSimpleAnim {
 
 impl ::std::fmt::Debug for GdkPixbufSimpleAnim {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufSimpleAnim @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufSimpleAnim @ {self:p}"))
             .finish()
     }
 }
@@ -379,7 +379,7 @@ pub struct GdkPixbufSimpleAnimIter {
 
 impl ::std::fmt::Debug for GdkPixbufSimpleAnimIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GdkPixbufSimpleAnimIter @ {:p}", self))
+        f.debug_struct(&format!("GdkPixbufSimpleAnimIter @ {self:p}"))
             .finish()
     }
 }
