@@ -22,6 +22,7 @@ impl Vfs {
 
     #[doc(alias = "g_vfs_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> Vfs {
         unsafe { from_glib_none(ffi::g_vfs_get_default()) }
     }

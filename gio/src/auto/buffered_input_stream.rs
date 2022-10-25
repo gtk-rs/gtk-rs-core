@@ -270,7 +270,7 @@ impl<O: IsA<BufferedInputStream>> BufferedInputStreamExt for O {
                     self.as_ref().to_glib_none().0,
                     count.as_mut_ptr(),
                 ),
-                count.assume_init() as usize,
+                count.assume_init() as _,
             );
             ret
         }

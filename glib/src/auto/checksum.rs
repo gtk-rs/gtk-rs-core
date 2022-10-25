@@ -31,7 +31,7 @@ impl Checksum {
 
     #[doc(alias = "g_checksum_update")]
     pub fn update(&mut self, data: &[u8]) {
-        let length = data.len() as isize;
+        let length = data.len() as _;
         unsafe {
             ffi::g_checksum_update(self.to_glib_none_mut().0, data.to_glib_none().0, length);
         }

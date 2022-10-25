@@ -98,7 +98,7 @@ impl<O: IsA<FontMap>> FontMapExt for O {
                 &mut families,
                 n_families.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_container_num(families, n_families.assume_init() as usize)
+            FromGlibContainer::from_glib_container_num(families, n_families.assume_init() as _)
         }
     }
 

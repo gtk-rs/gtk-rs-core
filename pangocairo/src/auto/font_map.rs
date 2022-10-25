@@ -20,6 +20,7 @@ impl FontMap {
 
     #[doc(alias = "pango_cairo_font_map_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> pango::FontMap {
         unsafe { from_glib_none(ffi::pango_cairo_font_map_get_default()) }
     }

@@ -54,6 +54,7 @@ impl Application {
 
     #[doc(alias = "g_application_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> Option<Application> {
         unsafe { from_glib_none(ffi::g_application_get_default()) }
     }
@@ -412,7 +413,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
     }
 
     fn open(&self, files: &[File], hint: &str) {
-        let n_files = files.len() as i32;
+        let n_files = files.len() as _;
         unsafe {
             ffi::g_application_open(
                 self.as_ref().to_glib_none().0,

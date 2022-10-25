@@ -90,7 +90,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
                 &mut sizes,
                 n_sizes.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_full_num(sizes, n_sizes.assume_init() as usize)
+            FromGlibContainer::from_glib_full_num(sizes, n_sizes.assume_init() as _)
         }
     }
 }

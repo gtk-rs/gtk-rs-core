@@ -97,7 +97,7 @@ impl<O: IsA<ApplicationCommandLine>> ApplicationCommandLineExt for O {
                     self.as_ref().to_glib_none().0,
                     argc.as_mut_ptr(),
                 ),
-                argc.assume_init() as usize,
+                argc.assume_init() as _,
             );
             ret
         }

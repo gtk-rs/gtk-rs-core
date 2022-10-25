@@ -154,7 +154,7 @@ impl<O: IsA<PixbufLoader>> PixbufLoaderExt for O {
     }
 
     fn write(&self, buf: &[u8]) -> Result<(), glib::Error> {
-        let count = buf.len() as usize;
+        let count = buf.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_loader_write(

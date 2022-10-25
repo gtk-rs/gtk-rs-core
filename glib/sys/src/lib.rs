@@ -1011,7 +1011,7 @@ pub struct GDoubleIEEE754 {
 
 impl ::std::fmt::Debug for GDoubleIEEE754 {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDoubleIEEE754 @ {:p}", self))
+        f.debug_struct(&format!("GDoubleIEEE754 @ {self:p}"))
             .finish()
     }
 }
@@ -1024,7 +1024,7 @@ pub struct GFloatIEEE754 {
 
 impl ::std::fmt::Debug for GFloatIEEE754 {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFloatIEEE754 @ {:p}", self))
+        f.debug_struct(&format!("GFloatIEEE754 @ {self:p}"))
             .finish()
     }
 }
@@ -1038,7 +1038,7 @@ pub union GMutex {
 
 impl ::std::fmt::Debug for GMutex {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMutex @ {:p}", self)).finish()
+        f.debug_struct(&format!("GMutex @ {self:p}")).finish()
     }
 }
 
@@ -1061,7 +1061,7 @@ pub union GTokenValue {
 
 impl ::std::fmt::Debug for GTokenValue {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTokenValue @ {:p}", self))
+        f.debug_struct(&format!("GTokenValue @ {self:p}"))
             .field("v_symbol", unsafe { &self.v_symbol })
             .field("v_identifier", unsafe { &self.v_identifier })
             .field("v_binary", unsafe { &self.v_binary })
@@ -1087,7 +1087,7 @@ pub union GVariantBuilder_u {
 
 impl ::std::fmt::Debug for GVariantBuilder_u {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantBuilder_u @ {:p}", self))
+        f.debug_struct(&format!("GVariantBuilder_u @ {self:p}"))
             .field("s", unsafe { &self.s })
             .field("x", unsafe { &self.x })
             .finish()
@@ -1103,7 +1103,7 @@ pub union GVariantDict_u {
 
 impl ::std::fmt::Debug for GVariantDict_u {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantDict_u @ {:p}", self))
+        f.debug_struct(&format!("GVariantDict_u @ {self:p}"))
             .field("s", unsafe { &self.s })
             .field("x", unsafe { &self.x })
             .finish()
@@ -1197,7 +1197,7 @@ pub struct GArray {
 
 impl ::std::fmt::Debug for GArray {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GArray @ {:p}", self))
+        f.debug_struct(&format!("GArray @ {self:p}"))
             .field("data", &self.data)
             .field("len", &self.len)
             .finish()
@@ -1229,7 +1229,7 @@ pub struct GByteArray {
 
 impl ::std::fmt::Debug for GByteArray {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GByteArray @ {:p}", self))
+        f.debug_struct(&format!("GByteArray @ {self:p}"))
             .field("data", &self.data)
             .field("len", &self.len)
             .finish()
@@ -1244,7 +1244,7 @@ pub struct GBytes {
 
 impl ::std::fmt::Debug for GBytes {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GBytes @ {:p}", self)).finish()
+        f.debug_struct(&format!("GBytes @ {self:p}")).finish()
     }
 }
 
@@ -1256,7 +1256,7 @@ pub struct GChecksum {
 
 impl ::std::fmt::Debug for GChecksum {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GChecksum @ {:p}", self)).finish()
+        f.debug_struct(&format!("GChecksum @ {self:p}")).finish()
     }
 }
 
@@ -1269,7 +1269,7 @@ pub struct GCond {
 
 impl ::std::fmt::Debug for GCond {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GCond @ {:p}", self)).finish()
+        f.debug_struct(&format!("GCond @ {self:p}")).finish()
     }
 }
 
@@ -1290,7 +1290,7 @@ pub struct GDate {
 
 impl ::std::fmt::Debug for GDate {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDate @ {:p}", self))
+        f.debug_struct(&format!("GDate @ {self:p}"))
             .field("julian_days", &self.julian_days)
             .field("flags_dmy", &self.flags_dmy)
             .finish()
@@ -1305,7 +1305,7 @@ pub struct GDateTime {
 
 impl ::std::fmt::Debug for GDateTime {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDateTime @ {:p}", self)).finish()
+        f.debug_struct(&format!("GDateTime @ {self:p}")).finish()
     }
 }
 
@@ -1318,7 +1318,7 @@ pub struct GDebugKey {
 
 impl ::std::fmt::Debug for GDebugKey {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDebugKey @ {:p}", self))
+        f.debug_struct(&format!("GDebugKey @ {self:p}"))
             .field("key", &self.key)
             .field("value", &self.value)
             .finish()
@@ -1342,7 +1342,7 @@ pub struct GDoubleIEEE754_mpn {
 
 impl ::std::fmt::Debug for GDoubleIEEE754_mpn {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GDoubleIEEE754_mpn @ {:p}", self))
+        f.debug_struct(&format!("GDoubleIEEE754_mpn @ {self:p}"))
             .field("mantissa_low", &self.mantissa_low)
             .finish()
     }
@@ -1358,7 +1358,7 @@ pub struct GError {
 
 impl ::std::fmt::Debug for GError {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GError @ {:p}", self))
+        f.debug_struct(&format!("GError @ {self:p}"))
             .field("domain", &self.domain)
             .field("code", &self.code)
             .field("message", &self.message)
@@ -1375,7 +1375,7 @@ pub struct GFloatIEEE754_mpn {
 
 impl ::std::fmt::Debug for GFloatIEEE754_mpn {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GFloatIEEE754_mpn @ {:p}", self))
+        f.debug_struct(&format!("GFloatIEEE754_mpn @ {self:p}"))
             .field("mantissa", &self.mantissa)
             .finish()
     }
@@ -1389,7 +1389,7 @@ pub struct GHashTable {
 
 impl ::std::fmt::Debug for GHashTable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GHashTable @ {:p}", self)).finish()
+        f.debug_struct(&format!("GHashTable @ {self:p}")).finish()
     }
 }
 
@@ -1406,7 +1406,7 @@ pub struct GHashTableIter {
 
 impl ::std::fmt::Debug for GHashTableIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GHashTableIter @ {:p}", self))
+        f.debug_struct(&format!("GHashTableIter @ {self:p}"))
             .finish()
     }
 }
@@ -1434,7 +1434,7 @@ pub struct GHook {
 
 impl ::std::fmt::Debug for GHook {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GHook @ {:p}", self))
+        f.debug_struct(&format!("GHook @ {self:p}"))
             .field("data", &self.data)
             .field("next", &self.next)
             .field("prev", &self.prev)
@@ -1463,7 +1463,7 @@ pub struct GHookList {
 
 impl ::std::fmt::Debug for GHookList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "GHookList @ {:p}", self)
+        write!(f, "GHookList @ {self:p}")
     }
 }
 
@@ -1496,7 +1496,7 @@ pub struct GIOChannel {
 
 impl ::std::fmt::Debug for GIOChannel {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIOChannel @ {:p}", self)).finish()
+        f.debug_struct(&format!("GIOChannel @ {self:p}")).finish()
     }
 }
 
@@ -1535,7 +1535,7 @@ pub struct GIOFuncs {
 
 impl ::std::fmt::Debug for GIOFuncs {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GIOFuncs @ {:p}", self))
+        f.debug_struct(&format!("GIOFuncs @ {self:p}"))
             .field("io_read", &self.io_read)
             .field("io_write", &self.io_write)
             .field("io_seek", &self.io_seek)
@@ -1556,7 +1556,7 @@ pub struct GKeyFile {
 
 impl ::std::fmt::Debug for GKeyFile {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GKeyFile @ {:p}", self)).finish()
+        f.debug_struct(&format!("GKeyFile @ {self:p}")).finish()
     }
 }
 
@@ -1570,7 +1570,7 @@ pub struct GList {
 
 impl ::std::fmt::Debug for GList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GList @ {:p}", self))
+        f.debug_struct(&format!("GList @ {self:p}"))
             .field("data", &self.data)
             .field("next", &self.next)
             .field("prev", &self.prev)
@@ -1588,7 +1588,7 @@ pub struct GLogField {
 
 impl ::std::fmt::Debug for GLogField {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GLogField @ {:p}", self))
+        f.debug_struct(&format!("GLogField @ {self:p}"))
             .field("key", &self.key)
             .field("value", &self.value)
             .field("length", &self.length)
@@ -1604,8 +1604,7 @@ pub struct GMainContext {
 
 impl ::std::fmt::Debug for GMainContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMainContext @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GMainContext @ {self:p}")).finish()
     }
 }
 
@@ -1617,7 +1616,7 @@ pub struct GMainLoop {
 
 impl ::std::fmt::Debug for GMainLoop {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMainLoop @ {:p}", self)).finish()
+        f.debug_struct(&format!("GMainLoop @ {self:p}")).finish()
     }
 }
 
@@ -1629,8 +1628,7 @@ pub struct GMappedFile {
 
 impl ::std::fmt::Debug for GMappedFile {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMappedFile @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GMappedFile @ {self:p}")).finish()
     }
 }
 
@@ -1642,7 +1640,7 @@ pub struct GMarkupParseContext {
 
 impl ::std::fmt::Debug for GMarkupParseContext {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMarkupParseContext @ {:p}", self))
+        f.debug_struct(&format!("GMarkupParseContext @ {self:p}"))
             .finish()
     }
 }
@@ -1686,7 +1684,7 @@ pub struct GMarkupParser {
 
 impl ::std::fmt::Debug for GMarkupParser {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMarkupParser @ {:p}", self))
+        f.debug_struct(&format!("GMarkupParser @ {self:p}"))
             .field("start_element", &self.start_element)
             .field("end_element", &self.end_element)
             .field("text", &self.text)
@@ -1704,7 +1702,7 @@ pub struct GMatchInfo {
 
 impl ::std::fmt::Debug for GMatchInfo {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMatchInfo @ {:p}", self)).finish()
+        f.debug_struct(&format!("GMatchInfo @ {self:p}")).finish()
     }
 }
 
@@ -1721,7 +1719,7 @@ pub struct GMemVTable {
 
 impl ::std::fmt::Debug for GMemVTable {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GMemVTable @ {:p}", self))
+        f.debug_struct(&format!("GMemVTable @ {self:p}"))
             .field("malloc", &self.malloc)
             .field("realloc", &self.realloc)
             .field("free", &self.free)
@@ -1744,7 +1742,7 @@ pub struct GNode {
 
 impl ::std::fmt::Debug for GNode {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GNode @ {:p}", self))
+        f.debug_struct(&format!("GNode @ {self:p}"))
             .field("data", &self.data)
             .field("next", &self.next)
             .field("prev", &self.prev)
@@ -1763,7 +1761,7 @@ pub struct GOnce {
 
 impl ::std::fmt::Debug for GOnce {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOnce @ {:p}", self)).finish()
+        f.debug_struct(&format!("GOnce @ {self:p}")).finish()
     }
 }
 
@@ -1789,7 +1787,7 @@ pub struct GOptionEntry {
 
 impl ::std::fmt::Debug for GOptionEntry {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOptionEntry @ {:p}", self))
+        f.debug_struct(&format!("GOptionEntry @ {self:p}"))
             .field("long_name", &self.long_name)
             .field("short_name", &self.short_name)
             .field("flags", &self.flags)
@@ -1809,8 +1807,7 @@ pub struct GOptionGroup {
 
 impl ::std::fmt::Debug for GOptionGroup {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GOptionGroup @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GOptionGroup @ {self:p}")).finish()
     }
 }
 
@@ -1822,8 +1819,7 @@ pub struct GPatternSpec {
 
 impl ::std::fmt::Debug for GPatternSpec {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPatternSpec @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GPatternSpec @ {self:p}")).finish()
     }
 }
 
@@ -1837,7 +1833,7 @@ pub struct GPrivate {
 
 impl ::std::fmt::Debug for GPrivate {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPrivate @ {:p}", self)).finish()
+        f.debug_struct(&format!("GPrivate @ {self:p}")).finish()
     }
 }
 
@@ -1850,7 +1846,7 @@ pub struct GPtrArray {
 
 impl ::std::fmt::Debug for GPtrArray {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GPtrArray @ {:p}", self))
+        f.debug_struct(&format!("GPtrArray @ {self:p}"))
             .field("pdata", &self.pdata)
             .field("len", &self.len)
             .finish()
@@ -1867,7 +1863,7 @@ pub struct GQueue {
 
 impl ::std::fmt::Debug for GQueue {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GQueue @ {:p}", self))
+        f.debug_struct(&format!("GQueue @ {self:p}"))
             .field("head", &self.head)
             .field("tail", &self.tail)
             .field("length", &self.length)
@@ -1884,7 +1880,7 @@ pub struct GRWLock {
 
 impl ::std::fmt::Debug for GRWLock {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GRWLock @ {:p}", self)).finish()
+        f.debug_struct(&format!("GRWLock @ {self:p}")).finish()
     }
 }
 
@@ -1905,7 +1901,7 @@ pub struct GRecMutex {
 
 impl ::std::fmt::Debug for GRecMutex {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GRecMutex @ {:p}", self)).finish()
+        f.debug_struct(&format!("GRecMutex @ {self:p}")).finish()
     }
 }
 
@@ -1917,7 +1913,7 @@ pub struct GRegex {
 
 impl ::std::fmt::Debug for GRegex {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GRegex @ {:p}", self)).finish()
+        f.debug_struct(&format!("GRegex @ {self:p}")).finish()
     }
 }
 
@@ -1930,7 +1926,7 @@ pub struct GSList {
 
 impl ::std::fmt::Debug for GSList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSList @ {:p}", self))
+        f.debug_struct(&format!("GSList @ {self:p}"))
             .field("data", &self.data)
             .field("next", &self.next)
             .finish()
@@ -1965,7 +1961,7 @@ pub struct GScanner {
 
 impl ::std::fmt::Debug for GScanner {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GScanner @ {:p}", self))
+        f.debug_struct(&format!("GScanner @ {self:p}"))
             .field("user_data", &self.user_data)
             .field("max_parse_errors", &self.max_parse_errors)
             .field("parse_errors", &self.parse_errors)
@@ -1998,7 +1994,7 @@ pub struct GScannerConfig {
 
 impl ::std::fmt::Debug for GScannerConfig {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GScannerConfig @ {:p}", self))
+        f.debug_struct(&format!("GScannerConfig @ {self:p}"))
             .field("cset_skip_characters", &self.cset_skip_characters)
             .field("cset_identifier_first", &self.cset_identifier_first)
             .field("cset_identifier_nth", &self.cset_identifier_nth)
@@ -2044,7 +2040,7 @@ pub struct GSource {
 
 impl ::std::fmt::Debug for GSource {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSource @ {:p}", self)).finish()
+        f.debug_struct(&format!("GSource @ {self:p}")).finish()
     }
 }
 
@@ -2058,7 +2054,7 @@ pub struct GSourceCallbackFuncs {
 
 impl ::std::fmt::Debug for GSourceCallbackFuncs {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSourceCallbackFuncs @ {:p}", self))
+        f.debug_struct(&format!("GSourceCallbackFuncs @ {self:p}"))
             .field("ref_", &self.ref_)
             .field("unref", &self.unref)
             .field("get", &self.get)
@@ -2079,7 +2075,7 @@ pub struct GSourceFuncs {
 
 impl ::std::fmt::Debug for GSourceFuncs {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GSourceFuncs @ {:p}", self))
+        f.debug_struct(&format!("GSourceFuncs @ {self:p}"))
             .field("prepare", &self.prepare)
             .field("check", &self.check)
             .field("dispatch", &self.dispatch)
@@ -2114,7 +2110,7 @@ pub struct GString {
 
 impl ::std::fmt::Debug for GString {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GString @ {:p}", self))
+        f.debug_struct(&format!("GString @ {self:p}"))
             .field("str", &self.str)
             .field("len", &self.len)
             .field("allocated_len", &self.allocated_len)
@@ -2159,7 +2155,7 @@ pub struct GTestConfig {
 
 impl ::std::fmt::Debug for GTestConfig {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTestConfig @ {:p}", self))
+        f.debug_struct(&format!("GTestConfig @ {self:p}"))
             .field("test_initialized", &self.test_initialized)
             .field("test_quick", &self.test_quick)
             .field("test_perf", &self.test_perf)
@@ -2179,7 +2175,7 @@ pub struct GTestLogBuffer {
 
 impl ::std::fmt::Debug for GTestLogBuffer {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTestLogBuffer @ {:p}", self))
+        f.debug_struct(&format!("GTestLogBuffer @ {self:p}"))
             .finish()
     }
 }
@@ -2196,7 +2192,7 @@ pub struct GTestLogMsg {
 
 impl ::std::fmt::Debug for GTestLogMsg {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTestLogMsg @ {:p}", self))
+        f.debug_struct(&format!("GTestLogMsg @ {self:p}"))
             .field("log_type", &self.log_type)
             .field("n_strings", &self.n_strings)
             .field("strings", &self.strings)
@@ -2221,7 +2217,7 @@ pub struct GThread {
 
 impl ::std::fmt::Debug for GThread {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GThread @ {:p}", self)).finish()
+        f.debug_struct(&format!("GThread @ {self:p}")).finish()
     }
 }
 
@@ -2235,7 +2231,7 @@ pub struct GThreadPool {
 
 impl ::std::fmt::Debug for GThreadPool {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GThreadPool @ {:p}", self))
+        f.debug_struct(&format!("GThreadPool @ {self:p}"))
             .field("func", &self.func)
             .field("user_data", &self.user_data)
             .field("exclusive", &self.exclusive)
@@ -2252,7 +2248,7 @@ pub struct GTimeVal {
 
 impl ::std::fmt::Debug for GTimeVal {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTimeVal @ {:p}", self))
+        f.debug_struct(&format!("GTimeVal @ {self:p}"))
             .field("tv_sec", &self.tv_sec)
             .field("tv_usec", &self.tv_usec)
             .finish()
@@ -2267,7 +2263,7 @@ pub struct GTimeZone {
 
 impl ::std::fmt::Debug for GTimeZone {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTimeZone @ {:p}", self)).finish()
+        f.debug_struct(&format!("GTimeZone @ {self:p}")).finish()
     }
 }
 
@@ -2287,7 +2283,7 @@ pub struct GTrashStack {
 
 impl ::std::fmt::Debug for GTrashStack {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTrashStack @ {:p}", self))
+        f.debug_struct(&format!("GTrashStack @ {self:p}"))
             .field("next", &self.next)
             .finish()
     }
@@ -2301,7 +2297,7 @@ pub struct GTree {
 
 impl ::std::fmt::Debug for GTree {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTree @ {:p}", self)).finish()
+        f.debug_struct(&format!("GTree @ {self:p}")).finish()
     }
 }
 
@@ -2321,7 +2317,7 @@ pub struct GUri {
 
 impl ::std::fmt::Debug for GUri {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUri @ {:p}", self)).finish()
+        f.debug_struct(&format!("GUri @ {self:p}")).finish()
     }
 }
 
@@ -2336,7 +2332,7 @@ pub struct GUriParamsIter {
 
 impl ::std::fmt::Debug for GUriParamsIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUriParamsIter @ {:p}", self))
+        f.debug_struct(&format!("GUriParamsIter @ {self:p}"))
             .finish()
     }
 }
@@ -2349,7 +2345,7 @@ pub struct GVariant {
 
 impl ::std::fmt::Debug for GVariant {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariant @ {:p}", self)).finish()
+        f.debug_struct(&format!("GVariant @ {self:p}")).finish()
     }
 }
 
@@ -2361,7 +2357,7 @@ pub struct GVariantBuilder {
 
 impl ::std::fmt::Debug for GVariantBuilder {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantBuilder @ {:p}", self))
+        f.debug_struct(&format!("GVariantBuilder @ {self:p}"))
             .field("u", &self.u)
             .finish()
     }
@@ -2377,7 +2373,7 @@ pub struct GVariantBuilder_u_s {
 
 impl ::std::fmt::Debug for GVariantBuilder_u_s {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantBuilder_u_s @ {:p}", self))
+        f.debug_struct(&format!("GVariantBuilder_u_s @ {self:p}"))
             .field("partial_magic", &self.partial_magic)
             .field("type_", &self.type_)
             .field("y", &self.y)
@@ -2393,7 +2389,7 @@ pub struct GVariantDict {
 
 impl ::std::fmt::Debug for GVariantDict {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantDict @ {:p}", self))
+        f.debug_struct(&format!("GVariantDict @ {self:p}"))
             .field("u", &self.u)
             .finish()
     }
@@ -2409,7 +2405,7 @@ pub struct GVariantDict_u_s {
 
 impl ::std::fmt::Debug for GVariantDict_u_s {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantDict_u_s @ {:p}", self))
+        f.debug_struct(&format!("GVariantDict_u_s @ {self:p}"))
             .field("asv", &self.asv)
             .field("partial_magic", &self.partial_magic)
             .field("y", &self.y)
@@ -2425,8 +2421,7 @@ pub struct GVariantIter {
 
 impl ::std::fmt::Debug for GVariantIter {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantIter @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GVariantIter @ {self:p}")).finish()
     }
 }
 
@@ -2438,8 +2433,7 @@ pub struct GVariantType {
 
 impl ::std::fmt::Debug for GVariantType {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GVariantType @ {:p}", self))
-            .finish()
+        f.debug_struct(&format!("GVariantType @ {self:p}")).finish()
     }
 }
 

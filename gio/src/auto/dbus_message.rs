@@ -43,7 +43,7 @@ impl DBusMessage {
         blob: &[u8],
         capabilities: DBusCapabilityFlags,
     ) -> Result<DBusMessage, glib::Error> {
-        let blob_len = blob.len() as usize;
+        let blob_len = blob.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_dbus_message_new_from_blob(
@@ -397,7 +397,7 @@ impl DBusMessage {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_full_num(
                     ret,
-                    out_size.assume_init() as usize,
+                    out_size.assume_init() as _,
                 ))
             } else {
                 Err(from_glib_full(error))
@@ -421,7 +421,7 @@ impl DBusMessage {
 
     #[doc(alias = "g_dbus_message_bytes_needed")]
     pub fn bytes_needed(blob: &[u8]) -> Result<isize, glib::Error> {
-        let blob_len = blob.len() as usize;
+        let blob_len = blob.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_dbus_message_bytes_needed(blob.to_glib_none().0, blob_len, &mut error);
