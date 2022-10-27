@@ -72,6 +72,7 @@ impl SettingsSchemaSource {
 
     #[doc(alias = "g_settings_schema_source_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> Option<SettingsSchemaSource> {
         unsafe { from_glib_none(ffi::g_settings_schema_source_get_default()) }
     }

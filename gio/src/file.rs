@@ -683,7 +683,7 @@ impl<O: IsA<File>> FileExtManual for O {
             );
             let result = if error.is_null() {
                 Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as usize),
+                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
                     from_glib_full(etag_out),
                 ))
             } else {

@@ -111,10 +111,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
 
             if let Some(func) = (*parent_iface).action_added {
                 func(
-                    self.instance()
-                        .unsafe_cast_ref::<ActionGroup>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                     action_name.to_glib_none().0,
                 );
             }
@@ -129,10 +126,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
 
             if let Some(func) = (*parent_iface).action_enabled_changed {
                 func(
-                    self.instance()
-                        .unsafe_cast_ref::<ActionGroup>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                     action_name.to_glib_none().0,
                     enabled.into_glib(),
                 );
@@ -148,10 +142,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
 
             if let Some(func) = (*parent_iface).action_removed {
                 func(
-                    self.instance()
-                        .unsafe_cast_ref::<ActionGroup>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                     action_name.to_glib_none().0,
                 );
             }
@@ -166,10 +157,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
 
             if let Some(func) = (*parent_iface).action_state_changed {
                 func(
-                    self.instance()
-                        .unsafe_cast_ref::<ActionGroup>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                     action_name.to_glib_none().0,
                     state.to_glib_none().0,
                 );
@@ -187,10 +175,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .activate_action
                 .expect("no parent \"activate_action\" implementation");
             func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
                 parameter.to_glib_none().0,
             );
@@ -207,10 +192,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .change_action_state
                 .expect("no parent \"change_action_state\" implementation");
             func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
                 value.to_glib_none().0,
             );
@@ -227,10 +209,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .get_action_enabled
                 .expect("no parent \"action_is_enabled\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib(ret)
@@ -247,10 +226,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .get_action_parameter_type
                 .expect("no parent \"get_action_parameter_type\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib_none(ret)
@@ -267,10 +243,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .get_action_state
                 .expect("no parent \"get_action_state\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib_none(ret)
@@ -287,10 +260,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .get_action_state_hint
                 .expect("no parent \"get_action_state_hint\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib_none(ret)
@@ -307,10 +277,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .get_action_state_type
                 .expect("no parent \"get_action_state_type\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib_none(ret)
@@ -327,10 +294,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
                 .has_action
                 .expect("no parent \"has_action\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
             from_glib(ret)
@@ -346,12 +310,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
             let func = (*parent_iface)
                 .list_actions
                 .expect("no parent \"list_actions\" implementation");
-            let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
-            );
+            let ret = func(self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0);
             FromGlibPtrContainer::from_glib_none(ret)
         }
     }
@@ -382,10 +341,7 @@ impl<T: ActionGroupImpl> ActionGroupImplExt for T {
             let mut state = ptr::null_mut();
 
             let ret: bool = from_glib(func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionGroup>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionGroup>().to_glib_none().0,
                 action_name.to_glib_none().0,
                 enabled.as_mut_ptr(),
                 &mut parameter_type,
@@ -502,7 +458,7 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
     let ret = imp.action_state_type(&action_name);
 
     if let Some(state_type) = ret {
-        let instance = imp.instance();
+        let instance = imp.obj();
         let state_type = state_type.to_glib_full();
         instance.set_qdata(
             *ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK,
@@ -527,7 +483,7 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
 
     let ret = imp.action_state_hint(&action_name);
     if let Some(state_hint) = ret {
-        let instance = imp.instance();
+        let instance = imp.obj();
         let state_hint_ptr = state_hint.to_glib_full();
         instance.set_qdata(
             *ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK,
@@ -551,7 +507,7 @@ unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
 
     let ret = imp.action_state(&action_name);
     if let Some(state) = ret {
-        let instance = imp.instance();
+        let instance = imp.obj();
         let state_ptr = state.to_glib_full();
         instance.set_qdata(
             *ACTION_GROUP_GET_ACTION_STATE_QUARK,
@@ -648,7 +604,7 @@ unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
     let actions = imp.list_actions();
 
     {
-        let instance = imp.instance();
+        let instance = imp.obj();
         let actionsptr = actions.to_glib_full();
         instance.set_qdata(*ACTION_GROUP_LIST_ACTIONS_QUARK, actionsptr);
         actionsptr
@@ -682,7 +638,7 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
 
     let ret = imp.query_action(&action_name);
     if let Some((rs_enabled, rs_parameter_type, rs_state_type, rs_state_hint, rs_state)) = ret {
-        let instance = imp.instance();
+        let instance = imp.obj();
 
         if !enabled.is_null() {
             *enabled = rs_enabled.into_glib();

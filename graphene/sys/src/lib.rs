@@ -74,7 +74,7 @@ pub struct graphene_box_t {
 
 impl ::std::fmt::Debug for graphene_box_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_box_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_box_t @ {self:p}"))
             .finish()
     }
 }
@@ -88,7 +88,7 @@ pub struct graphene_euler_t {
 
 impl ::std::fmt::Debug for graphene_euler_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_euler_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_euler_t @ {self:p}"))
             .finish()
     }
 }
@@ -101,7 +101,7 @@ pub struct graphene_frustum_t {
 
 impl ::std::fmt::Debug for graphene_frustum_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_frustum_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_frustum_t @ {self:p}"))
             .finish()
     }
 }
@@ -115,7 +115,7 @@ pub struct graphene_matrix_t {
 
 impl ::std::fmt::Debug for graphene_matrix_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_matrix_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_matrix_t @ {self:p}"))
             .finish()
     }
 }
@@ -129,7 +129,7 @@ pub struct graphene_plane_t {
 
 impl ::std::fmt::Debug for graphene_plane_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_plane_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_plane_t @ {self:p}"))
             .finish()
     }
 }
@@ -144,7 +144,7 @@ pub struct graphene_point3d_t {
 
 impl ::std::fmt::Debug for graphene_point3d_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_point3d_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_point3d_t @ {self:p}"))
             .field("x", &self.x)
             .field("y", &self.y)
             .field("z", &self.z)
@@ -161,7 +161,7 @@ pub struct graphene_point_t {
 
 impl ::std::fmt::Debug for graphene_point_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_point_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_point_t @ {self:p}"))
             .field("x", &self.x)
             .field("y", &self.y)
             .finish()
@@ -176,7 +176,7 @@ pub struct graphene_quad_t {
 
 impl ::std::fmt::Debug for graphene_quad_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_quad_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_quad_t @ {self:p}"))
             .finish()
     }
 }
@@ -192,7 +192,7 @@ pub struct graphene_quaternion_t {
 
 impl ::std::fmt::Debug for graphene_quaternion_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_quaternion_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_quaternion_t @ {self:p}"))
             .finish()
     }
 }
@@ -206,7 +206,7 @@ pub struct graphene_ray_t {
 
 impl ::std::fmt::Debug for graphene_ray_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_ray_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_ray_t @ {self:p}"))
             .finish()
     }
 }
@@ -220,7 +220,7 @@ pub struct graphene_rect_t {
 
 impl ::std::fmt::Debug for graphene_rect_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_rect_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_rect_t @ {self:p}"))
             .field("origin", &self.origin)
             .field("size", &self.size)
             .finish()
@@ -239,7 +239,7 @@ pub struct graphene_simd4f_t {
 
 impl ::std::fmt::Debug for graphene_simd4f_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_simd4f_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_simd4f_t @ {self:p}"))
             .finish()
     }
 }
@@ -256,7 +256,7 @@ pub struct graphene_simd4x4f_t {
 
 impl ::std::fmt::Debug for graphene_simd4x4f_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_simd4x4f_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_simd4x4f_t @ {self:p}"))
             .finish()
     }
 }
@@ -270,7 +270,7 @@ pub struct graphene_size_t {
 
 impl ::std::fmt::Debug for graphene_size_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_size_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_size_t @ {self:p}"))
             .field("width", &self.width)
             .field("height", &self.height)
             .finish()
@@ -286,7 +286,7 @@ pub struct graphene_sphere_t {
 
 impl ::std::fmt::Debug for graphene_sphere_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_sphere_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_sphere_t @ {self:p}"))
             .finish()
     }
 }
@@ -301,7 +301,7 @@ pub struct graphene_triangle_t {
 
 impl ::std::fmt::Debug for graphene_triangle_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_triangle_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_triangle_t @ {self:p}"))
             .finish()
     }
 }
@@ -315,7 +315,7 @@ pub struct graphene_vec2_t {
 
 impl ::std::fmt::Debug for graphene_vec2_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_vec2_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_vec2_t @ {self:p}"))
             .finish()
     }
 }
@@ -329,7 +329,7 @@ pub struct graphene_vec3_t {
 
 impl ::std::fmt::Debug for graphene_vec3_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_vec3_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_vec3_t @ {self:p}"))
             .finish()
     }
 }
@@ -343,7 +343,7 @@ pub struct graphene_vec4_t {
 
 impl ::std::fmt::Debug for graphene_vec4_t {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("graphene_vec4_t @ {:p}", self))
+        f.debug_struct(&format!("graphene_vec4_t @ {self:p}"))
             .finish()
     }
 }

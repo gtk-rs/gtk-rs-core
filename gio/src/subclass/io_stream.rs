@@ -43,11 +43,7 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
             let f = (*parent_class)
                 .get_input_stream
                 .expect("No parent class implementation for \"input_stream\"");
-            from_glib_none(f(self
-                .instance()
-                .unsafe_cast_ref::<IOStream>()
-                .to_glib_none()
-                .0))
+            from_glib_none(f(self.obj().unsafe_cast_ref::<IOStream>().to_glib_none().0))
         }
     }
 
@@ -58,11 +54,7 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
             let f = (*parent_class)
                 .get_output_stream
                 .expect("No parent class implementation for \"output_stream\"");
-            from_glib_none(f(self
-                .instance()
-                .unsafe_cast_ref::<IOStream>()
-                .to_glib_none()
-                .0))
+            from_glib_none(f(self.obj().unsafe_cast_ref::<IOStream>().to_glib_none().0))
         }
     }
 
@@ -73,10 +65,7 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
                 if from_glib(f(
-                    self.instance()
-                        .unsafe_cast_ref::<IOStream>()
-                        .to_glib_none()
-                        .0,
+                    self.obj().unsafe_cast_ref::<IOStream>().to_glib_none().0,
                     cancellable.to_glib_none().0,
                     &mut err,
                 )) {
@@ -115,7 +104,7 @@ unsafe extern "C" fn stream_get_input_stream<T: IOStreamImpl>(
 
     let ret = imp.input_stream();
 
-    let instance = imp.instance();
+    let instance = imp.obj();
     // Ensure that a) the stream stays alive as long as the IO stream instance and
     // b) that the same stream is returned every time. This is a requirement by the
     // IO stream API.
@@ -138,7 +127,7 @@ unsafe extern "C" fn stream_get_output_stream<T: IOStreamImpl>(
 
     let ret = imp.output_stream();
 
-    let instance = imp.instance();
+    let instance = imp.obj();
     // Ensure that a) the stream stays alive as long as the IO stream instance and
     // b) that the same stream is returned every time. This is a requirement by the
     // IO stream API.

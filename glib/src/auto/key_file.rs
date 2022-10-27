@@ -84,7 +84,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_container_num(
                     ret,
-                    length.assume_init() as usize,
+                    length.assume_init() as _,
                 ))
             } else {
                 Err(from_glib_full(error))
@@ -159,7 +159,7 @@ impl KeyFile {
             if error.is_null() {
                 Ok(FromGlibContainer::from_glib_container_num(
                     ret,
-                    length.assume_init() as usize,
+                    length.assume_init() as _,
                 ))
             } else {
                 Err(from_glib_full(error))
@@ -283,7 +283,7 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_load_from_data")]
     pub fn load_from_data(&self, data: &str, flags: KeyFileFlags) -> Result<(), crate::Error> {
-        let length = data.len() as usize;
+        let length = data.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let is_ok = ffi::g_key_file_load_from_data(

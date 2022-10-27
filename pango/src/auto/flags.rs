@@ -14,21 +14,21 @@ bitflags! {
     #[doc(alias = "PangoFontMask")]
     pub struct FontMask: u32 {
         #[doc(alias = "PANGO_FONT_MASK_FAMILY")]
-        const FAMILY = ffi::PANGO_FONT_MASK_FAMILY as u32;
+        const FAMILY = ffi::PANGO_FONT_MASK_FAMILY as _;
         #[doc(alias = "PANGO_FONT_MASK_STYLE")]
-        const STYLE = ffi::PANGO_FONT_MASK_STYLE as u32;
+        const STYLE = ffi::PANGO_FONT_MASK_STYLE as _;
         #[doc(alias = "PANGO_FONT_MASK_VARIANT")]
-        const VARIANT = ffi::PANGO_FONT_MASK_VARIANT as u32;
+        const VARIANT = ffi::PANGO_FONT_MASK_VARIANT as _;
         #[doc(alias = "PANGO_FONT_MASK_WEIGHT")]
-        const WEIGHT = ffi::PANGO_FONT_MASK_WEIGHT as u32;
+        const WEIGHT = ffi::PANGO_FONT_MASK_WEIGHT as _;
         #[doc(alias = "PANGO_FONT_MASK_STRETCH")]
-        const STRETCH = ffi::PANGO_FONT_MASK_STRETCH as u32;
+        const STRETCH = ffi::PANGO_FONT_MASK_STRETCH as _;
         #[doc(alias = "PANGO_FONT_MASK_SIZE")]
-        const SIZE = ffi::PANGO_FONT_MASK_SIZE as u32;
+        const SIZE = ffi::PANGO_FONT_MASK_SIZE as _;
         #[doc(alias = "PANGO_FONT_MASK_GRAVITY")]
-        const GRAVITY = ffi::PANGO_FONT_MASK_GRAVITY as u32;
+        const GRAVITY = ffi::PANGO_FONT_MASK_GRAVITY as _;
         #[doc(alias = "PANGO_FONT_MASK_VARIATIONS")]
-        const VARIATIONS = ffi::PANGO_FONT_MASK_VARIATIONS as u32;
+        const VARIATIONS = ffi::PANGO_FONT_MASK_VARIATIONS as _;
     }
 }
 
@@ -92,9 +92,9 @@ bitflags! {
     #[doc(alias = "PangoLayoutDeserializeFlags")]
     pub struct LayoutDeserializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_DEFAULT")]
-        const DEFAULT = ffi::PANGO_LAYOUT_DESERIALIZE_DEFAULT as u32;
+        const DEFAULT = ffi::PANGO_LAYOUT_DESERIALIZE_DEFAULT as _;
         #[doc(alias = "PANGO_LAYOUT_DESERIALIZE_CONTEXT")]
-        const CONTEXT = ffi::PANGO_LAYOUT_DESERIALIZE_CONTEXT as u32;
+        const CONTEXT = ffi::PANGO_LAYOUT_DESERIALIZE_CONTEXT as _;
     }
 }
 
@@ -172,11 +172,11 @@ bitflags! {
     #[doc(alias = "PangoLayoutSerializeFlags")]
     pub struct LayoutSerializeFlags: u32 {
         #[doc(alias = "PANGO_LAYOUT_SERIALIZE_DEFAULT")]
-        const DEFAULT = ffi::PANGO_LAYOUT_SERIALIZE_DEFAULT as u32;
+        const DEFAULT = ffi::PANGO_LAYOUT_SERIALIZE_DEFAULT as _;
         #[doc(alias = "PANGO_LAYOUT_SERIALIZE_CONTEXT")]
-        const CONTEXT = ffi::PANGO_LAYOUT_SERIALIZE_CONTEXT as u32;
+        const CONTEXT = ffi::PANGO_LAYOUT_SERIALIZE_CONTEXT as _;
         #[doc(alias = "PANGO_LAYOUT_SERIALIZE_OUTPUT")]
-        const OUTPUT = ffi::PANGO_LAYOUT_SERIALIZE_OUTPUT as u32;
+        const OUTPUT = ffi::PANGO_LAYOUT_SERIALIZE_OUTPUT as _;
     }
 }
 
@@ -254,9 +254,9 @@ bitflags! {
     #[doc(alias = "PangoShapeFlags")]
     pub struct ShapeFlags: u32 {
         #[doc(alias = "PANGO_SHAPE_NONE")]
-        const NONE = ffi::PANGO_SHAPE_NONE as u32;
+        const NONE = ffi::PANGO_SHAPE_NONE as _;
         #[doc(alias = "PANGO_SHAPE_ROUND_POSITIONS")]
-        const ROUND_POSITIONS = ffi::PANGO_SHAPE_ROUND_POSITIONS as u32;
+        const ROUND_POSITIONS = ffi::PANGO_SHAPE_ROUND_POSITIONS as _;
     }
 }
 
@@ -334,13 +334,13 @@ bitflags! {
     #[doc(alias = "PangoShowFlags")]
     pub struct ShowFlags: u32 {
         #[doc(alias = "PANGO_SHOW_NONE")]
-        const NONE = ffi::PANGO_SHOW_NONE as u32;
+        const NONE = ffi::PANGO_SHOW_NONE as _;
         #[doc(alias = "PANGO_SHOW_SPACES")]
-        const SPACES = ffi::PANGO_SHOW_SPACES as u32;
+        const SPACES = ffi::PANGO_SHOW_SPACES as _;
         #[doc(alias = "PANGO_SHOW_LINE_BREAKS")]
-        const LINE_BREAKS = ffi::PANGO_SHOW_LINE_BREAKS as u32;
+        const LINE_BREAKS = ffi::PANGO_SHOW_LINE_BREAKS as _;
         #[doc(alias = "PANGO_SHOW_IGNORABLES")]
-        const IGNORABLES = ffi::PANGO_SHOW_IGNORABLES as u32;
+        const IGNORABLES = ffi::PANGO_SHOW_IGNORABLES as _;
     }
 }
 

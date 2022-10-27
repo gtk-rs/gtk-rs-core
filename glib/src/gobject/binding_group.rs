@@ -173,13 +173,12 @@ impl<'a> BindingGroupBuilder<'a> {
                     let pspec_name = transform_data.2.clone();
                     let source = binding.source().unwrap();
                     let pspec = source.find_property(&pspec_name);
-                    assert!(pspec.is_some(), "Source object does not have a property {}", pspec_name);
+                    assert!(pspec.is_some(), "Source object does not have a property {pspec_name}");
                     let pspec = pspec.unwrap();
 
                     assert!(
                         res.type_().is_a(pspec.value_type()),
-                        "Source property {} expected type {} but transform_from function returned {}",
-                        pspec_name,
+                        "Source property {pspec_name} expected type {} but transform_from function returned {}",
                         pspec.value_type(),
                         res.type_()
                     );
@@ -331,11 +330,11 @@ mod test {
             .sync_create()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .transform_from(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .build();
 
@@ -357,11 +356,11 @@ mod test {
             .bidirectional()
             .transform_to(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .transform_from(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .build();
 
@@ -461,7 +460,7 @@ mod test {
             }
 
             fn property(&self, _id: usize, pspec: &crate::ParamSpec) -> crate::Value {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.name().to_value(),
                     "enabled" => obj.enabled().to_value(),
@@ -470,7 +469,7 @@ mod test {
             }
 
             fn set_property(&self, _id: usize, value: &crate::Value, pspec: &crate::ParamSpec) {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.set_name(value.get().unwrap()),
                     "enabled" => obj.set_enabled(value.get().unwrap()),

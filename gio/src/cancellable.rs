@@ -26,7 +26,7 @@ impl TryFromGlib<libc::c_ulong> for CancelledHandlerId {
     type Error = GlibNoneError;
     #[inline]
     unsafe fn try_from_glib(val: libc::c_ulong) -> Result<Self, GlibNoneError> {
-        NonZeroU64::new(val as u64).map(Self).ok_or(GlibNoneError)
+        NonZeroU64::new(val as _).map(Self).ok_or(GlibNoneError)
     }
 }
 

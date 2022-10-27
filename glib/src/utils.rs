@@ -110,7 +110,7 @@ pub fn file_get_contents(
         if error.is_null() {
             Ok(crate::Slice::from_glib_full_num_copy(
                 contents,
-                length.assume_init() as usize,
+                length.assume_init() as _,
             ))
         } else {
             Err(from_glib_full(error))

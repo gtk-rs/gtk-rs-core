@@ -16,13 +16,13 @@ bitflags! {
     #[doc(alias = "GFileSetContentsFlags")]
     pub struct FileSetContentsFlags: u32 {
         #[doc(alias = "G_FILE_SET_CONTENTS_NONE")]
-        const NONE = ffi::G_FILE_SET_CONTENTS_NONE as u32;
+        const NONE = ffi::G_FILE_SET_CONTENTS_NONE as _;
         #[doc(alias = "G_FILE_SET_CONTENTS_CONSISTENT")]
-        const CONSISTENT = ffi::G_FILE_SET_CONTENTS_CONSISTENT as u32;
+        const CONSISTENT = ffi::G_FILE_SET_CONTENTS_CONSISTENT as _;
         #[doc(alias = "G_FILE_SET_CONTENTS_DURABLE")]
-        const DURABLE = ffi::G_FILE_SET_CONTENTS_DURABLE as u32;
+        const DURABLE = ffi::G_FILE_SET_CONTENTS_DURABLE as _;
         #[doc(alias = "G_FILE_SET_CONTENTS_ONLY_EXISTING")]
-        const ONLY_EXISTING = ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING as u32;
+        const ONLY_EXISTING = ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING as _;
     }
 }
 
@@ -58,15 +58,15 @@ bitflags! {
     #[doc(alias = "GFileTest")]
     pub(crate) struct FileTest: u32 {
         #[doc(alias = "G_FILE_TEST_IS_REGULAR")]
-        const IS_REGULAR = ffi::G_FILE_TEST_IS_REGULAR as u32;
+        const IS_REGULAR = ffi::G_FILE_TEST_IS_REGULAR as _;
         #[doc(alias = "G_FILE_TEST_IS_SYMLINK")]
-        const IS_SYMLINK = ffi::G_FILE_TEST_IS_SYMLINK as u32;
+        const IS_SYMLINK = ffi::G_FILE_TEST_IS_SYMLINK as _;
         #[doc(alias = "G_FILE_TEST_IS_DIR")]
-        const IS_DIR = ffi::G_FILE_TEST_IS_DIR as u32;
+        const IS_DIR = ffi::G_FILE_TEST_IS_DIR as _;
         #[doc(alias = "G_FILE_TEST_IS_EXECUTABLE")]
-        const IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE as u32;
+        const IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE as _;
         #[doc(alias = "G_FILE_TEST_EXISTS")]
-        const EXISTS = ffi::G_FILE_TEST_EXISTS as u32;
+        const EXISTS = ffi::G_FILE_TEST_EXISTS as _;
     }
 }
 
@@ -96,21 +96,21 @@ bitflags! {
     #[doc(alias = "GFormatSizeFlags")]
     pub struct FormatSizeFlags: u32 {
         #[doc(alias = "G_FORMAT_SIZE_DEFAULT")]
-        const DEFAULT = ffi::G_FORMAT_SIZE_DEFAULT as u32;
+        const DEFAULT = ffi::G_FORMAT_SIZE_DEFAULT as _;
         #[doc(alias = "G_FORMAT_SIZE_LONG_FORMAT")]
-        const LONG_FORMAT = ffi::G_FORMAT_SIZE_LONG_FORMAT as u32;
+        const LONG_FORMAT = ffi::G_FORMAT_SIZE_LONG_FORMAT as _;
         #[doc(alias = "G_FORMAT_SIZE_IEC_UNITS")]
-        const IEC_UNITS = ffi::G_FORMAT_SIZE_IEC_UNITS as u32;
+        const IEC_UNITS = ffi::G_FORMAT_SIZE_IEC_UNITS as _;
         #[doc(alias = "G_FORMAT_SIZE_BITS")]
-        const BITS = ffi::G_FORMAT_SIZE_BITS as u32;
+        const BITS = ffi::G_FORMAT_SIZE_BITS as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_FORMAT_SIZE_ONLY_VALUE")]
-        const ONLY_VALUE = ffi::G_FORMAT_SIZE_ONLY_VALUE as u32;
+        const ONLY_VALUE = ffi::G_FORMAT_SIZE_ONLY_VALUE as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_FORMAT_SIZE_ONLY_UNIT")]
-        const ONLY_UNIT = ffi::G_FORMAT_SIZE_ONLY_UNIT as u32;
+        const ONLY_UNIT = ffi::G_FORMAT_SIZE_ONLY_UNIT as _;
     }
 }
 
@@ -140,17 +140,17 @@ bitflags! {
     #[doc(alias = "GIOCondition")]
     pub struct IOCondition: u32 {
         #[doc(alias = "G_IO_IN")]
-        const IN = ffi::G_IO_IN as u32;
+        const IN = ffi::G_IO_IN as _;
         #[doc(alias = "G_IO_OUT")]
-        const OUT = ffi::G_IO_OUT as u32;
+        const OUT = ffi::G_IO_OUT as _;
         #[doc(alias = "G_IO_PRI")]
-        const PRI = ffi::G_IO_PRI as u32;
+        const PRI = ffi::G_IO_PRI as _;
         #[doc(alias = "G_IO_ERR")]
-        const ERR = ffi::G_IO_ERR as u32;
+        const ERR = ffi::G_IO_ERR as _;
         #[doc(alias = "G_IO_HUP")]
-        const HUP = ffi::G_IO_HUP as u32;
+        const HUP = ffi::G_IO_HUP as _;
         #[doc(alias = "G_IO_NVAL")]
-        const NVAL = ffi::G_IO_NVAL as u32;
+        const NVAL = ffi::G_IO_NVAL as _;
     }
 }
 
@@ -214,11 +214,11 @@ bitflags! {
     #[doc(alias = "GKeyFileFlags")]
     pub struct KeyFileFlags: u32 {
         #[doc(alias = "G_KEY_FILE_NONE")]
-        const NONE = ffi::G_KEY_FILE_NONE as u32;
+        const NONE = ffi::G_KEY_FILE_NONE as _;
         #[doc(alias = "G_KEY_FILE_KEEP_COMMENTS")]
-        const KEEP_COMMENTS = ffi::G_KEY_FILE_KEEP_COMMENTS as u32;
+        const KEEP_COMMENTS = ffi::G_KEY_FILE_KEEP_COMMENTS as _;
         #[doc(alias = "G_KEY_FILE_KEEP_TRANSLATIONS")]
-        const KEEP_TRANSLATIONS = ffi::G_KEY_FILE_KEEP_TRANSLATIONS as u32;
+        const KEEP_TRANSLATIONS = ffi::G_KEY_FILE_KEEP_TRANSLATIONS as _;
     }
 }
 
@@ -248,23 +248,23 @@ bitflags! {
     #[doc(alias = "GLogLevelFlags")]
     pub struct LogLevelFlags: u32 {
         #[doc(alias = "G_LOG_FLAG_RECURSION")]
-        const FLAG_RECURSION = ffi::G_LOG_FLAG_RECURSION as u32;
+        const FLAG_RECURSION = ffi::G_LOG_FLAG_RECURSION as _;
         #[doc(alias = "G_LOG_FLAG_FATAL")]
-        const FLAG_FATAL = ffi::G_LOG_FLAG_FATAL as u32;
+        const FLAG_FATAL = ffi::G_LOG_FLAG_FATAL as _;
         #[doc(alias = "G_LOG_LEVEL_ERROR")]
-        const LEVEL_ERROR = ffi::G_LOG_LEVEL_ERROR as u32;
+        const LEVEL_ERROR = ffi::G_LOG_LEVEL_ERROR as _;
         #[doc(alias = "G_LOG_LEVEL_CRITICAL")]
-        const LEVEL_CRITICAL = ffi::G_LOG_LEVEL_CRITICAL as u32;
+        const LEVEL_CRITICAL = ffi::G_LOG_LEVEL_CRITICAL as _;
         #[doc(alias = "G_LOG_LEVEL_WARNING")]
-        const LEVEL_WARNING = ffi::G_LOG_LEVEL_WARNING as u32;
+        const LEVEL_WARNING = ffi::G_LOG_LEVEL_WARNING as _;
         #[doc(alias = "G_LOG_LEVEL_MESSAGE")]
-        const LEVEL_MESSAGE = ffi::G_LOG_LEVEL_MESSAGE as u32;
+        const LEVEL_MESSAGE = ffi::G_LOG_LEVEL_MESSAGE as _;
         #[doc(alias = "G_LOG_LEVEL_INFO")]
-        const LEVEL_INFO = ffi::G_LOG_LEVEL_INFO as u32;
+        const LEVEL_INFO = ffi::G_LOG_LEVEL_INFO as _;
         #[doc(alias = "G_LOG_LEVEL_DEBUG")]
-        const LEVEL_DEBUG = ffi::G_LOG_LEVEL_DEBUG as u32;
+        const LEVEL_DEBUG = ffi::G_LOG_LEVEL_DEBUG as _;
         #[doc(alias = "G_LOG_LEVEL_MASK")]
-        const LEVEL_MASK = ffi::G_LOG_LEVEL_MASK as u32;
+        const LEVEL_MASK = ffi::G_LOG_LEVEL_MASK as _;
     }
 }
 
@@ -296,9 +296,9 @@ bitflags! {
     #[doc(alias = "GMainContextFlags")]
     pub struct MainContextFlags: u32 {
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_NONE")]
-        const NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE as u32;
+        const NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE as _;
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING")]
-        const OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING as u32;
+        const OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING as _;
     }
 }
 
@@ -334,21 +334,21 @@ bitflags! {
     #[doc(alias = "GOptionFlags")]
     pub struct OptionFlags: u32 {
         #[doc(alias = "G_OPTION_FLAG_NONE")]
-        const NONE = ffi::G_OPTION_FLAG_NONE as u32;
+        const NONE = ffi::G_OPTION_FLAG_NONE as _;
         #[doc(alias = "G_OPTION_FLAG_HIDDEN")]
-        const HIDDEN = ffi::G_OPTION_FLAG_HIDDEN as u32;
+        const HIDDEN = ffi::G_OPTION_FLAG_HIDDEN as _;
         #[doc(alias = "G_OPTION_FLAG_IN_MAIN")]
-        const IN_MAIN = ffi::G_OPTION_FLAG_IN_MAIN as u32;
+        const IN_MAIN = ffi::G_OPTION_FLAG_IN_MAIN as _;
         #[doc(alias = "G_OPTION_FLAG_REVERSE")]
-        const REVERSE = ffi::G_OPTION_FLAG_REVERSE as u32;
+        const REVERSE = ffi::G_OPTION_FLAG_REVERSE as _;
         #[doc(alias = "G_OPTION_FLAG_NO_ARG")]
-        const NO_ARG = ffi::G_OPTION_FLAG_NO_ARG as u32;
+        const NO_ARG = ffi::G_OPTION_FLAG_NO_ARG as _;
         #[doc(alias = "G_OPTION_FLAG_FILENAME")]
-        const FILENAME = ffi::G_OPTION_FLAG_FILENAME as u32;
+        const FILENAME = ffi::G_OPTION_FLAG_FILENAME as _;
         #[doc(alias = "G_OPTION_FLAG_OPTIONAL_ARG")]
-        const OPTIONAL_ARG = ffi::G_OPTION_FLAG_OPTIONAL_ARG as u32;
+        const OPTIONAL_ARG = ffi::G_OPTION_FLAG_OPTIONAL_ARG as _;
         #[doc(alias = "G_OPTION_FLAG_NOALIAS")]
-        const NOALIAS = ffi::G_OPTION_FLAG_NOALIAS as u32;
+        const NOALIAS = ffi::G_OPTION_FLAG_NOALIAS as _;
     }
 }
 
@@ -378,37 +378,37 @@ bitflags! {
     #[doc(alias = "GSpawnFlags")]
     pub struct SpawnFlags: u32 {
         #[doc(alias = "G_SPAWN_DEFAULT")]
-        const DEFAULT = ffi::G_SPAWN_DEFAULT as u32;
+        const DEFAULT = ffi::G_SPAWN_DEFAULT as _;
         #[doc(alias = "G_SPAWN_LEAVE_DESCRIPTORS_OPEN")]
-        const LEAVE_DESCRIPTORS_OPEN = ffi::G_SPAWN_LEAVE_DESCRIPTORS_OPEN as u32;
+        const LEAVE_DESCRIPTORS_OPEN = ffi::G_SPAWN_LEAVE_DESCRIPTORS_OPEN as _;
         #[doc(alias = "G_SPAWN_DO_NOT_REAP_CHILD")]
-        const DO_NOT_REAP_CHILD = ffi::G_SPAWN_DO_NOT_REAP_CHILD as u32;
+        const DO_NOT_REAP_CHILD = ffi::G_SPAWN_DO_NOT_REAP_CHILD as _;
         #[doc(alias = "G_SPAWN_SEARCH_PATH")]
-        const SEARCH_PATH = ffi::G_SPAWN_SEARCH_PATH as u32;
+        const SEARCH_PATH = ffi::G_SPAWN_SEARCH_PATH as _;
         #[doc(alias = "G_SPAWN_STDOUT_TO_DEV_NULL")]
-        const STDOUT_TO_DEV_NULL = ffi::G_SPAWN_STDOUT_TO_DEV_NULL as u32;
+        const STDOUT_TO_DEV_NULL = ffi::G_SPAWN_STDOUT_TO_DEV_NULL as _;
         #[doc(alias = "G_SPAWN_STDERR_TO_DEV_NULL")]
-        const STDERR_TO_DEV_NULL = ffi::G_SPAWN_STDERR_TO_DEV_NULL as u32;
+        const STDERR_TO_DEV_NULL = ffi::G_SPAWN_STDERR_TO_DEV_NULL as _;
         #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDIN")]
-        const CHILD_INHERITS_STDIN = ffi::G_SPAWN_CHILD_INHERITS_STDIN as u32;
+        const CHILD_INHERITS_STDIN = ffi::G_SPAWN_CHILD_INHERITS_STDIN as _;
         #[doc(alias = "G_SPAWN_FILE_AND_ARGV_ZERO")]
-        const FILE_AND_ARGV_ZERO = ffi::G_SPAWN_FILE_AND_ARGV_ZERO as u32;
+        const FILE_AND_ARGV_ZERO = ffi::G_SPAWN_FILE_AND_ARGV_ZERO as _;
         #[doc(alias = "G_SPAWN_SEARCH_PATH_FROM_ENVP")]
-        const SEARCH_PATH_FROM_ENVP = ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP as u32;
+        const SEARCH_PATH_FROM_ENVP = ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP as _;
         #[doc(alias = "G_SPAWN_CLOEXEC_PIPES")]
-        const CLOEXEC_PIPES = ffi::G_SPAWN_CLOEXEC_PIPES as u32;
+        const CLOEXEC_PIPES = ffi::G_SPAWN_CLOEXEC_PIPES as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDOUT")]
-        const CHILD_INHERITS_STDOUT = ffi::G_SPAWN_CHILD_INHERITS_STDOUT as u32;
+        const CHILD_INHERITS_STDOUT = ffi::G_SPAWN_CHILD_INHERITS_STDOUT as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDERR")]
-        const CHILD_INHERITS_STDERR = ffi::G_SPAWN_CHILD_INHERITS_STDERR as u32;
+        const CHILD_INHERITS_STDERR = ffi::G_SPAWN_CHILD_INHERITS_STDERR as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_STDIN_FROM_DEV_NULL")]
-        const STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL as u32;
+        const STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL as _;
     }
 }
 
@@ -440,25 +440,25 @@ bitflags! {
     #[doc(alias = "GUriFlags")]
     pub struct UriFlags: u32 {
         #[doc(alias = "G_URI_FLAGS_NONE")]
-        const NONE = ffi::G_URI_FLAGS_NONE as u32;
+        const NONE = ffi::G_URI_FLAGS_NONE as _;
         #[doc(alias = "G_URI_FLAGS_PARSE_RELAXED")]
-        const PARSE_RELAXED = ffi::G_URI_FLAGS_PARSE_RELAXED as u32;
+        const PARSE_RELAXED = ffi::G_URI_FLAGS_PARSE_RELAXED as _;
         #[doc(alias = "G_URI_FLAGS_HAS_PASSWORD")]
-        const HAS_PASSWORD = ffi::G_URI_FLAGS_HAS_PASSWORD as u32;
+        const HAS_PASSWORD = ffi::G_URI_FLAGS_HAS_PASSWORD as _;
         #[doc(alias = "G_URI_FLAGS_HAS_AUTH_PARAMS")]
-        const HAS_AUTH_PARAMS = ffi::G_URI_FLAGS_HAS_AUTH_PARAMS as u32;
+        const HAS_AUTH_PARAMS = ffi::G_URI_FLAGS_HAS_AUTH_PARAMS as _;
         #[doc(alias = "G_URI_FLAGS_ENCODED")]
-        const ENCODED = ffi::G_URI_FLAGS_ENCODED as u32;
+        const ENCODED = ffi::G_URI_FLAGS_ENCODED as _;
         #[doc(alias = "G_URI_FLAGS_NON_DNS")]
-        const NON_DNS = ffi::G_URI_FLAGS_NON_DNS as u32;
+        const NON_DNS = ffi::G_URI_FLAGS_NON_DNS as _;
         #[doc(alias = "G_URI_FLAGS_ENCODED_QUERY")]
-        const ENCODED_QUERY = ffi::G_URI_FLAGS_ENCODED_QUERY as u32;
+        const ENCODED_QUERY = ffi::G_URI_FLAGS_ENCODED_QUERY as _;
         #[doc(alias = "G_URI_FLAGS_ENCODED_PATH")]
-        const ENCODED_PATH = ffi::G_URI_FLAGS_ENCODED_PATH as u32;
+        const ENCODED_PATH = ffi::G_URI_FLAGS_ENCODED_PATH as _;
         #[doc(alias = "G_URI_FLAGS_ENCODED_FRAGMENT")]
-        const ENCODED_FRAGMENT = ffi::G_URI_FLAGS_ENCODED_FRAGMENT as u32;
+        const ENCODED_FRAGMENT = ffi::G_URI_FLAGS_ENCODED_FRAGMENT as _;
         #[doc(alias = "G_URI_FLAGS_SCHEME_NORMALIZE")]
-        const SCHEME_NORMALIZE = ffi::G_URI_FLAGS_SCHEME_NORMALIZE as u32;
+        const SCHEME_NORMALIZE = ffi::G_URI_FLAGS_SCHEME_NORMALIZE as _;
     }
 }
 
@@ -496,17 +496,17 @@ bitflags! {
     #[doc(alias = "GUriHideFlags")]
     pub struct UriHideFlags: u32 {
         #[doc(alias = "G_URI_HIDE_NONE")]
-        const NONE = ffi::G_URI_HIDE_NONE as u32;
+        const NONE = ffi::G_URI_HIDE_NONE as _;
         #[doc(alias = "G_URI_HIDE_USERINFO")]
-        const USERINFO = ffi::G_URI_HIDE_USERINFO as u32;
+        const USERINFO = ffi::G_URI_HIDE_USERINFO as _;
         #[doc(alias = "G_URI_HIDE_PASSWORD")]
-        const PASSWORD = ffi::G_URI_HIDE_PASSWORD as u32;
+        const PASSWORD = ffi::G_URI_HIDE_PASSWORD as _;
         #[doc(alias = "G_URI_HIDE_AUTH_PARAMS")]
-        const AUTH_PARAMS = ffi::G_URI_HIDE_AUTH_PARAMS as u32;
+        const AUTH_PARAMS = ffi::G_URI_HIDE_AUTH_PARAMS as _;
         #[doc(alias = "G_URI_HIDE_QUERY")]
-        const QUERY = ffi::G_URI_HIDE_QUERY as u32;
+        const QUERY = ffi::G_URI_HIDE_QUERY as _;
         #[doc(alias = "G_URI_HIDE_FRAGMENT")]
-        const FRAGMENT = ffi::G_URI_HIDE_FRAGMENT as u32;
+        const FRAGMENT = ffi::G_URI_HIDE_FRAGMENT as _;
     }
 }
 
@@ -544,13 +544,13 @@ bitflags! {
     #[doc(alias = "GUriParamsFlags")]
     pub struct UriParamsFlags: u32 {
         #[doc(alias = "G_URI_PARAMS_NONE")]
-        const NONE = ffi::G_URI_PARAMS_NONE as u32;
+        const NONE = ffi::G_URI_PARAMS_NONE as _;
         #[doc(alias = "G_URI_PARAMS_CASE_INSENSITIVE")]
-        const CASE_INSENSITIVE = ffi::G_URI_PARAMS_CASE_INSENSITIVE as u32;
+        const CASE_INSENSITIVE = ffi::G_URI_PARAMS_CASE_INSENSITIVE as _;
         #[doc(alias = "G_URI_PARAMS_WWW_FORM")]
-        const WWW_FORM = ffi::G_URI_PARAMS_WWW_FORM as u32;
+        const WWW_FORM = ffi::G_URI_PARAMS_WWW_FORM as _;
         #[doc(alias = "G_URI_PARAMS_PARSE_RELAXED")]
-        const PARSE_RELAXED = ffi::G_URI_PARAMS_PARSE_RELAXED as u32;
+        const PARSE_RELAXED = ffi::G_URI_PARAMS_PARSE_RELAXED as _;
     }
 }
 

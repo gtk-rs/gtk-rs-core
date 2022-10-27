@@ -36,7 +36,7 @@ impl Initable {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Object, glib::Error> {
         if !type_.is_a(Initable::static_type()) {
-            panic!("Type '{}' is not initable", type_);
+            panic!("Type '{type_}' is not initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
@@ -63,7 +63,7 @@ impl Initable {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Object, glib::Error> {
         if !type_.is_a(Initable::static_type()) {
-            panic!("Type '{}' is not initable", type_);
+            panic!("Type '{type_}' is not initable");
         }
 
         let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());

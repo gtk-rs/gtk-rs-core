@@ -30,10 +30,7 @@ impl<T: ActionMapImpl> ActionMapImplExt for T {
                 .lookup_action
                 .expect("no parent \"lookup_action\" implementation");
             let ret = func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionMap>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionMap>().to_glib_none().0,
                 name.to_glib_none().0,
             );
             from_glib_none(ret)
@@ -50,10 +47,7 @@ impl<T: ActionMapImpl> ActionMapImplExt for T {
                 .add_action
                 .expect("no parent \"add_action\" implementation");
             func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionMap>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionMap>().to_glib_none().0,
                 action.to_glib_none().0,
             );
         }
@@ -69,10 +63,7 @@ impl<T: ActionMapImpl> ActionMapImplExt for T {
                 .remove_action
                 .expect("no parent \"remove_action\" implementation");
             func(
-                self.instance()
-                    .unsafe_cast_ref::<ActionMap>()
-                    .to_glib_none()
-                    .0,
+                self.obj().unsafe_cast_ref::<ActionMap>().to_glib_none().0,
                 action_name.to_glib_none().0,
             );
         }
@@ -105,7 +96,7 @@ unsafe extern "C" fn action_map_lookup_action<T: ActionMapImpl>(
 
     let ret = imp.lookup_action(&action_name);
     if let Some(action) = ret {
-        let instance = imp.instance();
+        let instance = imp.obj();
         let actionptr = action.to_glib_none().0;
 
         let mut map = instance

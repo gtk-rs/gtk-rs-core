@@ -179,7 +179,7 @@ impl Uri {
 
     #[doc(alias = "g_uri_escape_bytes")]
     pub fn escape_bytes(unescaped: &[u8], reserved_chars_allowed: Option<&str>) -> crate::GString {
-        let length = unescaped.len() as usize;
+        let length = unescaped.len() as _;
         unsafe {
             from_glib_full(ffi::g_uri_escape_bytes(
                 unescaped.to_glib_none().0,
@@ -484,7 +484,7 @@ impl Uri {
         escaped_string: &str,
         illegal_characters: Option<&str>,
     ) -> Result<Bytes, crate::Error> {
-        let length = escaped_string.len() as isize;
+        let length = escaped_string.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_uri_unescape_bytes(

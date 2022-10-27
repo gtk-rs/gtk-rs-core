@@ -24,18 +24,17 @@ pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target:
         .arg("--sourcedir")
         .arg(source_dir.as_ref())
         .arg("--target")
-        .arg(&format!("{}/{}", out_dir, target))
+        .arg(&format!("{out_dir}/{target}"))
         .arg(gresource)
         .status()
         .unwrap();
 
     assert!(
         status.success(),
-        "glib-compile-resources failed with exit status {}",
-        status
+        "glib-compile-resources failed with exit status {status}",
     );
 
-    println!("cargo:rerun-if-changed={}", gresource);
+    println!("cargo:rerun-if-changed={gresource}");
     let output = Command::new("glib-compile-resources")
         .arg("--sourcedir")
         .arg(source_dir.as_ref())
@@ -46,6 +45,6 @@ pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target:
         .stdout;
     let output = String::from_utf8(output).unwrap();
     for dep in output.split_whitespace() {
-        println!("cargo:rerun-if-changed={}", dep);
+        println!("cargo:rerun-if-changed={dep}");
     }
 }

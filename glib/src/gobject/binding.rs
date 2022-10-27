@@ -49,11 +49,11 @@ mod test {
             .sync_create()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .transform_from_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .build();
 
@@ -72,11 +72,11 @@ mod test {
             .bidirectional()
             .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .transform_from_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
-                Some(format!("{} World", value).to_value())
+                Some(format!("{value} World").to_value())
             })
             .build();
 
@@ -92,8 +92,8 @@ mod test {
         source
             .bind_property("name", &target, "name")
             .sync_create()
-            .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
-            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
+            .transform_to(|_binding, value: &str| Some(format!("{value} World")))
+            .transform_from(|_binding, value: &str| Some(format!("{value} World")))
             .build();
 
         source.set_name("Hello");
@@ -108,8 +108,8 @@ mod test {
         source
             .bind_property("name", &target, "name")
             .sync_create()
-            .transform_to(|_binding, value: String| Some(format!("{} World", value)))
-            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
+            .transform_to(|_binding, value: String| Some(format!("{value} World")))
+            .transform_from(|_binding, value: &str| Some(format!("{value} World")))
             .build();
 
         source.set_name("Hello");
@@ -125,8 +125,8 @@ mod test {
             .bind_property("name", &target, "name")
             .sync_create()
             .bidirectional()
-            .transform_to(|_binding, value: &str| Some(format!("{} World", value)))
-            .transform_from(|_binding, value: &str| Some(format!("{} World", value)))
+            .transform_to(|_binding, value: &str| Some(format!("{value} World")))
+            .transform_from(|_binding, value: &str| Some(format!("{value} World")))
             .build();
 
         target.set_name("Hello");
@@ -257,7 +257,7 @@ mod test {
             }
 
             fn property(&self, _id: usize, pspec: &crate::ParamSpec) -> crate::Value {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.name().to_value(),
                     "enabled" => obj.enabled().to_value(),
@@ -266,7 +266,7 @@ mod test {
             }
 
             fn set_property(&self, _id: usize, value: &crate::Value, pspec: &crate::ParamSpec) {
-                let obj = self.instance();
+                let obj = self.obj();
                 match pspec.name() {
                     "name" => obj.set_name(value.get().unwrap()),
                     "enabled" => obj.set_enabled(value.get().unwrap()),

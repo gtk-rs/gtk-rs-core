@@ -1430,11 +1430,11 @@ impl Object {
         unsafe {
             let iface_type = from_glib(gio_ffi::g_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{}' implementing `gio::Initable`. Use `gio::Initable::new()`", type_);
+                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
             }
             let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`", type_);
+                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
             }
         }
 
@@ -1459,11 +1459,11 @@ impl Object {
         unsafe {
             let iface_type = from_glib(gio_ffi::g_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{}' implementing `gio::Initable`. Use `gio::Initable::new()`", type_);
+                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
             }
             let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`", type_);
+                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
             }
         }
 
@@ -1490,7 +1490,7 @@ impl Object {
     #[track_caller]
     pub unsafe fn new_internal(type_: Type, properties: &mut [(&str, Value)]) -> Object {
         if !type_.is_a(Object::static_type()) {
-            panic!("Can't instantiate non-GObject type '{}'", type_);
+            panic!("Can't instantiate non-GObject type '{type_}'");
         }
 
         if gobject_ffi::g_type_test_flags(
@@ -1498,13 +1498,13 @@ impl Object {
             gobject_ffi::G_TYPE_FLAG_INSTANTIATABLE,
         ) == ffi::GFALSE
         {
-            panic!("Can't instantiate type '{}'", type_);
+            panic!("Can't instantiate type '{type_}'");
         }
 
         if gobject_ffi::g_type_test_flags(type_.into_glib(), gobject_ffi::G_TYPE_FLAG_ABSTRACT)
             != ffi::GFALSE
         {
-            panic!("Can't instantiate abstract type '{}'", type_);
+            panic!("Can't instantiate abstract type '{type_}'");
         }
 
         let mut property_names = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
@@ -1512,16 +1512,14 @@ impl Object {
 
         if !properties.is_empty() {
             let klass = ObjectClass::from_type(type_)
-                .unwrap_or_else(|| panic!("Can't retrieve class for type '{}'", type_));
+                .unwrap_or_else(|| panic!("Can't retrieve class for type '{type_}'"));
             let pspecs = klass.list_properties();
 
             for (idx, (name, value)) in properties.iter_mut().enumerate() {
                 let pspec = pspecs
                     .iter()
                     .find(|p| p.name() == *name)
-                    .unwrap_or_else(|| {
-                        panic!("Can't find property '{}' for type '{}'", name, type_)
-                    });
+                    .unwrap_or_else(|| panic!("Can't find property '{name}' for type '{type_}'"));
 
                 if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
                     || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
@@ -1529,10 +1527,7 @@ impl Object {
                         .iter()
                         .any(|other_name| pspec.name().as_ptr() == *other_name)
                 {
-                    panic!(
-                        "Can't set construct property '{}' for type '{}' twice",
-                        name, type_
-                    );
+                    panic!("Can't set construct property '{name}' for type '{type_}' twice");
                 }
 
                 // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
@@ -1553,7 +1548,7 @@ impl Object {
         );
 
         if ptr.is_null() {
-            panic!("Can't instantiate object for type '{}'", type_);
+            panic!("Can't instantiate object for type '{type_}'");
         } else if type_.is_a(InitiallyUnowned::static_type()) {
             // Attention: This takes ownership of the floating reference
             from_glib_none(ptr)
@@ -2292,8 +2287,7 @@ impl<T: ObjectType> ObjectExt for T {
     fn set_property<V: ToValue>(&self, property_name: &str, value: V) {
         let pspec = self.find_property(property_name).unwrap_or_else(|| {
             panic!(
-                "property '{}' of type '{}' not found",
-                property_name,
+                "property '{property_name}' of type '{}' not found",
                 self.type_()
             )
         });
@@ -2315,8 +2309,7 @@ impl<T: ObjectType> ObjectExt for T {
             Some(pspec) => pspec,
             None => {
                 panic!(
-                    "property '{}' of type '{}' not found",
-                    property_name,
+                    "property '{property_name}' of type '{}' not found",
                     self.type_()
                 );
             }
@@ -2344,7 +2337,7 @@ impl<T: ObjectType> ObjectExt for T {
             .iter()
             .map(|&(name, value)| {
                 let pspec = pspecs.iter().find(|p| p.name() == name).unwrap_or_else(|| {
-                    panic!("Can't find property '{}' for type '{}'", name, self.type_());
+                    panic!("Can't find property '{name}' for type '{}'", self.type_());
                 });
 
                 let mut value = value.to_value();
@@ -2375,7 +2368,7 @@ impl<T: ObjectType> ObjectExt for T {
                     .iter()
                     .find(|p| p.name() == *name)
                     .unwrap_or_else(|| {
-                        panic!("Can't find property '{}' for type '{}'", name, self.type_());
+                        panic!("Can't find property '{name}' for type '{}'", self.type_());
                     });
 
                 let mut value = value.clone();
@@ -2400,7 +2393,7 @@ impl<T: ObjectType> ObjectExt for T {
         let prop = self.property_value(property_name);
         let v = prop
             .get_owned::<V>()
-            .unwrap_or_else(|e| panic!("Failed to get cast value to a different type {}", e));
+            .unwrap_or_else(|e| panic!("Failed to get cast value to a different type {e}"));
 
         v
     }
@@ -2409,16 +2402,14 @@ impl<T: ObjectType> ObjectExt for T {
     fn property_value(&self, property_name: &str) -> Value {
         let pspec = self.find_property(property_name).unwrap_or_else(|| {
             panic!(
-                "property '{}' of type '{}' not found",
-                property_name,
+                "property '{property_name}' of type '{}' not found",
                 self.type_()
             )
         });
 
         if !pspec.flags().contains(crate::ParamFlags::READABLE) {
             panic!(
-                "property '{}' of type '{}' is not readable",
-                property_name,
+                "property '{property_name}' of type '{}' is not readable",
                 self.type_()
             );
         }
@@ -2434,8 +2425,7 @@ impl<T: ObjectType> ObjectExt for T {
             // This can't really happen unless something goes wrong inside GObject
             if !value.type_().is_valid() {
                 panic!(
-                    "Failed to get property value for property '{}' of type '{}'",
-                    property_name,
+                    "Failed to get property value for property '{property_name}' of type '{}'",
                     self.type_()
                 )
             }
@@ -2618,7 +2608,7 @@ impl<T: ObjectType> ObjectExt for T {
     {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
-            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+            .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
         self.connect_unsafe_id(signal_id, details, after, callback)
     }
 
@@ -2644,9 +2634,7 @@ impl<T: ObjectType> ObjectExt for T {
                 let ret = callback(values);
                 if let Some(ret) = ret {
                     panic!(
-                        "Signal '{}' of type '{}' required no return value but got value of type '{}'",
-                        signal_name,
-                        type_,
+                        "Signal '{signal_name}' of type '{type_}' required no return value but got value of type '{}'",
                         ret.type_()
                     );
                 }
@@ -2656,9 +2644,7 @@ impl<T: ObjectType> ObjectExt for T {
             Closure::new_unsafe(move |values| {
                 let mut ret = callback(values).unwrap_or_else(|| {
                     panic!(
-                        "Signal '{}' of type '{}' required return value of type '{}' but got None",
-                        signal_name,
-                        type_,
+                        "Signal '{signal_name}' of type '{type_}' required return value of type '{}' but got None",
                         return_type.name()
                     );
                 });
@@ -2673,8 +2659,7 @@ impl<T: ObjectType> ObjectExt for T {
 
                 if let Err(got) = coerce_object_type(&mut ret, return_type) {
                     panic!(
-                        "Signal '{}' of type '{}' required return value of type '{}' but got '{}'",
-                        signal_name, type_, return_type, got
+                        "Signal '{signal_name}' of type '{type_}' required return value of type '{return_type}' but got '{got}'",
                     );
                 };
                 Some(ret)
@@ -2698,10 +2683,7 @@ impl<T: ObjectType> ObjectExt for T {
         );
 
         if handler == 0 {
-            panic!(
-                "Failed to connect to signal '{}' of type '{}'",
-                signal_name, type_
-            );
+            panic!("Failed to connect to signal '{signal_name}' of type '{type_}'",);
         }
 
         from_glib(handler)
@@ -2716,7 +2698,7 @@ impl<T: ObjectType> ObjectExt for T {
     ) -> SignalHandlerId {
         let type_ = self.type_();
         let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
-            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+            .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
         self.connect_closure_id(signal_id, details, after, closure)
     }
 
@@ -2751,10 +2733,7 @@ impl<T: ObjectType> ObjectExt for T {
             );
 
             if handler == 0 {
-                panic!(
-                    "Failed to connect to signal '{}' of type '{}'",
-                    signal_name, type_
-                );
+                panic!("Failed to connect to signal '{signal_name}' of type '{type_}'",);
             }
 
             from_glib(handler)
@@ -2872,7 +2851,7 @@ impl<T: ObjectType> ObjectExt for T {
     ) -> R {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_).unwrap_or_else(|| {
-            panic!("Signal '{}' of type '{}' not found", signal_name, type_);
+            panic!("Signal '{signal_name}' of type '{type_}' not found");
         });
         self.emit(signal_id, args)
     }
@@ -2881,7 +2860,7 @@ impl<T: ObjectType> ObjectExt for T {
     fn emit_by_name_with_values(&self, signal_name: &str, args: &[Value]) -> Option<Value> {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_).unwrap_or_else(|| {
-            panic!("Signal '{}' of type '{}' not found", signal_name, type_);
+            panic!("Signal '{signal_name}' of type '{type_}' not found");
         });
         self.emit_with_values(signal_id, args)
     }
@@ -2895,7 +2874,7 @@ impl<T: ObjectType> ObjectExt for T {
     ) -> R {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
-            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+            .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
         self.emit_with_details(signal_id, details, args)
     }
 
@@ -2908,7 +2887,7 @@ impl<T: ObjectType> ObjectExt for T {
     ) -> Option<Value> {
         let type_ = self.type_();
         let signal_id = SignalId::lookup(signal_name, type_)
-            .unwrap_or_else(|| panic!("Signal '{}' of type '{}' not found", signal_name, type_));
+            .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
         self.emit_with_details_and_values(signal_id, details, args)
     }
 
@@ -3069,7 +3048,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
 
         let signal_name = if let Some(name) = name {
-            format!("notify::{}\0", name)
+            format!("notify::{name}\0")
         } else {
             "notify\0".into()
         };
@@ -3213,9 +3192,8 @@ fn validate_property_type(
         || (!allow_construct_only && pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
     {
         panic!(
-            "property '{}' of type '{}' is not writable",
+            "property '{}' of type '{type_}' is not writable",
             pspec.name(),
-            type_
         );
     }
 
@@ -3232,11 +3210,9 @@ fn validate_property_type(
         if !valid_type {
             if let Err(got) = coerce_object_type(property_value, pspec.value_type()) {
                 panic!(
-                        "property '{}' of type '{}' can't be set from the given type (expected: '{}', got: '{}')",
+                        "property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')",
                         pspec.name(),
-                        type_,
                         pspec.value_type(),
-                        got
                     );
             }
         }
@@ -3248,9 +3224,8 @@ fn validate_property_type(
         let change_allowed = pspec.flags().contains(crate::ParamFlags::LAX_VALIDATION);
         if changed && !change_allowed {
             panic!(
-                "property '{}' of type '{}' can't be set from given value, it is invalid or out of range",
+                "property '{}' of type '{type_}' can't be set from given value, it is invalid or out of range",
                 pspec.name(),
-                type_,
             );
         }
     }
@@ -3279,9 +3254,7 @@ fn validate_signal_arguments(type_: Type, signal_query: &SignalQuery, args: &mut
 
     if signal_query.n_params() != args.len() as u32 {
         panic!(
-            "Incompatible number of arguments for signal '{}' of type '{}' (expected {}, got {})",
-            signal_name,
-            type_,
+            "Incompatible number of arguments for signal '{signal_name}' of type '{type_}' (expected {}, got {})",
             signal_query.n_params(),
             args.len(),
         );
@@ -3294,12 +3267,7 @@ fn validate_signal_arguments(type_: Type, signal_query: &SignalQuery, args: &mut
         if param_type != arg.type_() {
             coerce_object_type(arg, param_type).unwrap_or_else(|got|
                 panic!(
-                    "Incompatible argument type in argument {} for signal '{}' of type '{}' (expected {}, got {})",
-                    i,
-                    signal_name,
-                    type_,
-                    param_type,
-                    got
+                    "Incompatible argument type in argument {i} for signal '{signal_name}' of type '{type_}' (expected {param_type}, got {got})",
                 )
             );
         }
@@ -4168,6 +4136,7 @@ impl<T: IsInterface> Interface<T> {
     // rustdoc-stripper-ignore-next
     /// Gets the default interface struct for `Self`.
     #[doc(alias = "g_type_default_interface_ref")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> InterfaceRef<'static, T> {
         unsafe {
             let ptr = gobject_ffi::g_type_default_interface_ref(T::static_type().into_glib());

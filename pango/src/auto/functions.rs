@@ -31,13 +31,13 @@ use std::ptr;
 
 #[doc(alias = "pango_find_base_dir")]
 pub fn find_base_dir(text: &str) -> Direction {
-    let length = text.len() as i32;
+    let length = text.len() as _;
     unsafe { from_glib(ffi::pango_find_base_dir(text.to_glib_none().0, length)) }
 }
 
 #[doc(alias = "pango_find_paragraph_boundary")]
 pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
-    let length = text.len() as i32;
+    let length = text.len() as _;
     unsafe {
         let mut paragraph_delimiter_index = mem::MaybeUninit::uninit();
         let mut next_paragraph_start = mem::MaybeUninit::uninit();
@@ -149,7 +149,7 @@ pub fn parse_markup(
     markup_text: &str,
     accel_marker: char,
 ) -> Result<(AttrList, glib::GString, char), glib::Error> {
-    let length = markup_text.len() as i32;
+    let length = markup_text.len() as _;
     unsafe {
         let mut attr_list = ptr::null_mut();
         let mut text = ptr::null_mut();
@@ -255,7 +255,7 @@ pub fn quantize_line_geometry(thickness: &mut i32, position: &mut i32) {
 
 #[doc(alias = "pango_shape")]
 pub fn shape(text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
-    let length = text.len() as i32;
+    let length = text.len() as _;
     unsafe {
         ffi::pango_shape(
             text.to_glib_none().0,

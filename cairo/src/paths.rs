@@ -102,7 +102,7 @@ impl<'a> Iterator for PathSegments<'a> {
                     to_tuple(&self.data[self.i + 3].point),
                 ),
                 PathDataType::ClosePath => PathSegment::ClosePath,
-                PathDataType::__Unknown(x) => panic!("Unknown value: {}", x),
+                PathDataType::__Unknown(x) => panic!("Unknown value: {x}"),
             };
 
             self.i += self.data[self.i].header.length as usize;

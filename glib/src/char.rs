@@ -136,20 +136,20 @@ impl TryFrom<char> for UChar {
 
 impl From<UChar> for char {
     fn from(c: UChar) -> char {
-        c.0 as char
+        c.0 as _
     }
 }
 
 impl From<u8> for UChar {
     #[allow(clippy::unnecessary_cast)]
     fn from(c: u8) -> UChar {
-        UChar(c as c_uchar)
+        UChar(c as _)
     }
 }
 
 impl From<UChar> for u8 {
     fn from(c: UChar) -> u8 {
-        c.0 as u8
+        c.0 as _
     }
 }
 

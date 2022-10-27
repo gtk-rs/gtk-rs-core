@@ -21,6 +21,7 @@ impl TlsBackend {
 
     #[doc(alias = "g_tls_backend_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> TlsBackend {
         unsafe { from_glib_none(ffi::g_tls_backend_get_default()) }
     }
