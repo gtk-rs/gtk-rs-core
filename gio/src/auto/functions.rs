@@ -195,7 +195,7 @@ pub fn content_type_guess(
     filename: Option<impl AsRef<std::path::Path>>,
     data: &[u8],
 ) -> (glib::GString, bool) {
-    let data_size = data.len() as usize;
+    let data_size = data.len() as _;
     unsafe {
         let mut result_uncertain = mem::MaybeUninit::uninit();
         let ret = from_glib_full(ffi::g_content_type_guess(

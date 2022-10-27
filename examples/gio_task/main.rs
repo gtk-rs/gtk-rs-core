@@ -58,7 +58,7 @@ fn run_unsafe(send: oneshot::Sender<()>) {
             return;
         }
 
-        println!("Unsafe callback - Returned value from task: {}", ret);
+        println!("Unsafe callback - Returned value from task: {ret}");
         println!(
             "Unsafe callback - FileSize::size: {}",
             file_size::ffi::my_file_size_get_retrieved_size(
@@ -89,7 +89,7 @@ fn run_safe(send: oneshot::Sender<()>) {
     let cancellable = gio::Cancellable::new();
 
     let closure = move |value: i64, source_object: &FileSize| {
-        println!("Safe callback - Returned value from task: {}", value);
+        println!("Safe callback - Returned value from task: {value}");
         println!(
             "Safe callback - FileSize::size: {}",
             source_object.retrieved_size().unwrap()

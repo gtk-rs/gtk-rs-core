@@ -232,7 +232,7 @@ impl FromGlibPtrFull<*const ffi::GVariantType> for VariantType {
 impl FromGlibPtrFull<*mut ffi::GVariantType> for VariantType {
     unsafe fn from_glib_full(ptr: *mut ffi::GVariantType) -> VariantType {
         assert!(!ptr.is_null());
-        let len = ffi::g_variant_type_get_string_length(ptr) as usize;
+        let len: usize = ffi::g_variant_type_get_string_length(ptr) as _;
         VariantType {
             ptr: ptr::NonNull::new_unchecked(ptr),
             len,
@@ -454,7 +454,7 @@ impl VariantTy {
     #[allow(clippy::cast_slice_from_raw_parts)]
     pub unsafe fn from_ptr<'a>(ptr: *const ffi::GVariantType) -> &'a VariantTy {
         assert!(!ptr.is_null());
-        let len = ffi::g_variant_type_get_string_length(ptr) as usize;
+        let len: usize = ffi::g_variant_type_get_string_length(ptr) as _;
         assert!(len > 0);
         &*(slice::from_raw_parts(ptr as *const u8, len) as *const [u8] as *const VariantTy)
     }

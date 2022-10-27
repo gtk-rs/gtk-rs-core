@@ -14,13 +14,13 @@ bitflags! {
     #[doc(alias = "GAppInfoCreateFlags")]
     pub struct AppInfoCreateFlags: u32 {
         #[doc(alias = "G_APP_INFO_CREATE_NONE")]
-        const NONE = ffi::G_APP_INFO_CREATE_NONE as u32;
+        const NONE = ffi::G_APP_INFO_CREATE_NONE as _;
         #[doc(alias = "G_APP_INFO_CREATE_NEEDS_TERMINAL")]
-        const NEEDS_TERMINAL = ffi::G_APP_INFO_CREATE_NEEDS_TERMINAL as u32;
+        const NEEDS_TERMINAL = ffi::G_APP_INFO_CREATE_NEEDS_TERMINAL as _;
         #[doc(alias = "G_APP_INFO_CREATE_SUPPORTS_URIS")]
-        const SUPPORTS_URIS = ffi::G_APP_INFO_CREATE_SUPPORTS_URIS as u32;
+        const SUPPORTS_URIS = ffi::G_APP_INFO_CREATE_SUPPORTS_URIS as _;
         #[doc(alias = "G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION")]
-        const SUPPORTS_STARTUP_NOTIFICATION = ffi::G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION as u32;
+        const SUPPORTS_STARTUP_NOTIFICATION = ffi::G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION as _;
     }
 }
 
@@ -82,25 +82,25 @@ bitflags! {
     #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
         #[doc(alias = "G_APPLICATION_FLAGS_NONE")]
-        const FLAGS_NONE = ffi::G_APPLICATION_FLAGS_NONE as u32;
+        const FLAGS_NONE = ffi::G_APPLICATION_FLAGS_NONE as _;
         #[doc(alias = "G_APPLICATION_IS_SERVICE")]
-        const IS_SERVICE = ffi::G_APPLICATION_IS_SERVICE as u32;
+        const IS_SERVICE = ffi::G_APPLICATION_IS_SERVICE as _;
         #[doc(alias = "G_APPLICATION_IS_LAUNCHER")]
-        const IS_LAUNCHER = ffi::G_APPLICATION_IS_LAUNCHER as u32;
+        const IS_LAUNCHER = ffi::G_APPLICATION_IS_LAUNCHER as _;
         #[doc(alias = "G_APPLICATION_HANDLES_OPEN")]
-        const HANDLES_OPEN = ffi::G_APPLICATION_HANDLES_OPEN as u32;
+        const HANDLES_OPEN = ffi::G_APPLICATION_HANDLES_OPEN as _;
         #[doc(alias = "G_APPLICATION_HANDLES_COMMAND_LINE")]
-        const HANDLES_COMMAND_LINE = ffi::G_APPLICATION_HANDLES_COMMAND_LINE as u32;
+        const HANDLES_COMMAND_LINE = ffi::G_APPLICATION_HANDLES_COMMAND_LINE as _;
         #[doc(alias = "G_APPLICATION_SEND_ENVIRONMENT")]
-        const SEND_ENVIRONMENT = ffi::G_APPLICATION_SEND_ENVIRONMENT as u32;
+        const SEND_ENVIRONMENT = ffi::G_APPLICATION_SEND_ENVIRONMENT as _;
         #[doc(alias = "G_APPLICATION_NON_UNIQUE")]
-        const NON_UNIQUE = ffi::G_APPLICATION_NON_UNIQUE as u32;
+        const NON_UNIQUE = ffi::G_APPLICATION_NON_UNIQUE as _;
         #[doc(alias = "G_APPLICATION_CAN_OVERRIDE_APP_ID")]
-        const CAN_OVERRIDE_APP_ID = ffi::G_APPLICATION_CAN_OVERRIDE_APP_ID as u32;
+        const CAN_OVERRIDE_APP_ID = ffi::G_APPLICATION_CAN_OVERRIDE_APP_ID as _;
         #[doc(alias = "G_APPLICATION_ALLOW_REPLACEMENT")]
-        const ALLOW_REPLACEMENT = ffi::G_APPLICATION_ALLOW_REPLACEMENT as u32;
+        const ALLOW_REPLACEMENT = ffi::G_APPLICATION_ALLOW_REPLACEMENT as _;
         #[doc(alias = "G_APPLICATION_REPLACE")]
-        const REPLACE = ffi::G_APPLICATION_REPLACE as u32;
+        const REPLACE = ffi::G_APPLICATION_REPLACE as _;
     }
 }
 
@@ -162,17 +162,17 @@ bitflags! {
     #[doc(alias = "GAskPasswordFlags")]
     pub struct AskPasswordFlags: u32 {
         #[doc(alias = "G_ASK_PASSWORD_NEED_PASSWORD")]
-        const NEED_PASSWORD = ffi::G_ASK_PASSWORD_NEED_PASSWORD as u32;
+        const NEED_PASSWORD = ffi::G_ASK_PASSWORD_NEED_PASSWORD as _;
         #[doc(alias = "G_ASK_PASSWORD_NEED_USERNAME")]
-        const NEED_USERNAME = ffi::G_ASK_PASSWORD_NEED_USERNAME as u32;
+        const NEED_USERNAME = ffi::G_ASK_PASSWORD_NEED_USERNAME as _;
         #[doc(alias = "G_ASK_PASSWORD_NEED_DOMAIN")]
-        const NEED_DOMAIN = ffi::G_ASK_PASSWORD_NEED_DOMAIN as u32;
+        const NEED_DOMAIN = ffi::G_ASK_PASSWORD_NEED_DOMAIN as _;
         #[doc(alias = "G_ASK_PASSWORD_SAVING_SUPPORTED")]
-        const SAVING_SUPPORTED = ffi::G_ASK_PASSWORD_SAVING_SUPPORTED as u32;
+        const SAVING_SUPPORTED = ffi::G_ASK_PASSWORD_SAVING_SUPPORTED as _;
         #[doc(alias = "G_ASK_PASSWORD_ANONYMOUS_SUPPORTED")]
-        const ANONYMOUS_SUPPORTED = ffi::G_ASK_PASSWORD_ANONYMOUS_SUPPORTED as u32;
+        const ANONYMOUS_SUPPORTED = ffi::G_ASK_PASSWORD_ANONYMOUS_SUPPORTED as _;
         #[doc(alias = "G_ASK_PASSWORD_TCRYPT")]
-        const TCRYPT = ffi::G_ASK_PASSWORD_TCRYPT as u32;
+        const TCRYPT = ffi::G_ASK_PASSWORD_TCRYPT as _;
     }
 }
 
@@ -234,13 +234,13 @@ bitflags! {
     #[doc(alias = "GBusNameOwnerFlags")]
     pub struct BusNameOwnerFlags: u32 {
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_NONE")]
-        const NONE = ffi::G_BUS_NAME_OWNER_FLAGS_NONE as u32;
+        const NONE = ffi::G_BUS_NAME_OWNER_FLAGS_NONE as _;
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT")]
-        const ALLOW_REPLACEMENT = ffi::G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT as u32;
+        const ALLOW_REPLACEMENT = ffi::G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT as _;
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_REPLACE")]
-        const REPLACE = ffi::G_BUS_NAME_OWNER_FLAGS_REPLACE as u32;
+        const REPLACE = ffi::G_BUS_NAME_OWNER_FLAGS_REPLACE as _;
         #[doc(alias = "G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE")]
-        const DO_NOT_QUEUE = ffi::G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE as u32;
+        const DO_NOT_QUEUE = ffi::G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE as _;
     }
 }
 
@@ -302,9 +302,9 @@ bitflags! {
     #[doc(alias = "GBusNameWatcherFlags")]
     pub struct BusNameWatcherFlags: u32 {
         #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_NONE")]
-        const NONE = ffi::G_BUS_NAME_WATCHER_FLAGS_NONE as u32;
+        const NONE = ffi::G_BUS_NAME_WATCHER_FLAGS_NONE as _;
         #[doc(alias = "G_BUS_NAME_WATCHER_FLAGS_AUTO_START")]
-        const AUTO_START = ffi::G_BUS_NAME_WATCHER_FLAGS_AUTO_START as u32;
+        const AUTO_START = ffi::G_BUS_NAME_WATCHER_FLAGS_AUTO_START as _;
     }
 }
 
@@ -366,11 +366,11 @@ bitflags! {
     #[doc(alias = "GConverterFlags")]
     pub struct ConverterFlags: u32 {
         #[doc(alias = "G_CONVERTER_NO_FLAGS")]
-        const NONE = ffi::G_CONVERTER_NO_FLAGS as u32;
+        const NONE = ffi::G_CONVERTER_NO_FLAGS as _;
         #[doc(alias = "G_CONVERTER_INPUT_AT_END")]
-        const INPUT_AT_END = ffi::G_CONVERTER_INPUT_AT_END as u32;
+        const INPUT_AT_END = ffi::G_CONVERTER_INPUT_AT_END as _;
         #[doc(alias = "G_CONVERTER_FLUSH")]
-        const FLUSH = ffi::G_CONVERTER_FLUSH as u32;
+        const FLUSH = ffi::G_CONVERTER_FLUSH as _;
     }
 }
 
@@ -432,11 +432,11 @@ bitflags! {
     #[doc(alias = "GDBusCallFlags")]
     pub struct DBusCallFlags: u32 {
         #[doc(alias = "G_DBUS_CALL_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_CALL_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_CALL_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_CALL_FLAGS_NO_AUTO_START")]
-        const NO_AUTO_START = ffi::G_DBUS_CALL_FLAGS_NO_AUTO_START as u32;
+        const NO_AUTO_START = ffi::G_DBUS_CALL_FLAGS_NO_AUTO_START as _;
         #[doc(alias = "G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION")]
-        const ALLOW_INTERACTIVE_AUTHORIZATION = ffi::G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION as u32;
+        const ALLOW_INTERACTIVE_AUTHORIZATION = ffi::G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION as _;
     }
 }
 
@@ -498,9 +498,9 @@ bitflags! {
     #[doc(alias = "GDBusCapabilityFlags")]
     pub struct DBusCapabilityFlags: u32 {
         #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_CAPABILITY_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_CAPABILITY_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING")]
-        const UNIX_FD_PASSING = ffi::G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING as u32;
+        const UNIX_FD_PASSING = ffi::G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING as _;
     }
 }
 
@@ -562,23 +562,23 @@ bitflags! {
     #[doc(alias = "GDBusConnectionFlags")]
     pub struct DBusConnectionFlags: u32 {
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_CONNECTION_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_CONNECTION_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT")]
-        const AUTHENTICATION_CLIENT = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT as u32;
+        const AUTHENTICATION_CLIENT = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER")]
-        const AUTHENTICATION_SERVER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER as u32;
+        const AUTHENTICATION_SERVER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS")]
-        const AUTHENTICATION_ALLOW_ANONYMOUS = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS as u32;
+        const AUTHENTICATION_ALLOW_ANONYMOUS = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION")]
-        const MESSAGE_BUS_CONNECTION = ffi::G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION as u32;
+        const MESSAGE_BUS_CONNECTION = ffi::G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING")]
-        const DELAY_MESSAGE_PROCESSING = ffi::G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING as u32;
+        const DELAY_MESSAGE_PROCESSING = ffi::G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER")]
-        const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as u32;
+        const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as _;
         #[cfg(any(feature = "v2_74", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE")]
-        const CROSS_NAMESPACE = ffi::G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE as u32;
+        const CROSS_NAMESPACE = ffi::G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE as _;
     }
 }
 
@@ -640,9 +640,9 @@ bitflags! {
     #[doc(alias = "GDBusInterfaceSkeletonFlags")]
     pub struct DBusInterfaceSkeletonFlags: u32 {
         #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_INTERFACE_SKELETON_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_INTERFACE_SKELETON_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD")]
-        const HANDLE_METHOD_INVOCATIONS_IN_THREAD = ffi::G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD as u32;
+        const HANDLE_METHOD_INVOCATIONS_IN_THREAD = ffi::G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD as _;
     }
 }
 
@@ -704,13 +704,13 @@ bitflags! {
     #[doc(alias = "GDBusMessageFlags")]
     pub struct DBusMessageFlags: u32 {
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_MESSAGE_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_MESSAGE_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED")]
-        const NO_REPLY_EXPECTED = ffi::G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED as u32;
+        const NO_REPLY_EXPECTED = ffi::G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED as _;
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_NO_AUTO_START")]
-        const NO_AUTO_START = ffi::G_DBUS_MESSAGE_FLAGS_NO_AUTO_START as u32;
+        const NO_AUTO_START = ffi::G_DBUS_MESSAGE_FLAGS_NO_AUTO_START as _;
         #[doc(alias = "G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION")]
-        const ALLOW_INTERACTIVE_AUTHORIZATION = ffi::G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION as u32;
+        const ALLOW_INTERACTIVE_AUTHORIZATION = ffi::G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION as _;
     }
 }
 
@@ -772,21 +772,21 @@ bitflags! {
     #[doc(alias = "GDBusProxyFlags")]
     pub struct DBusProxyFlags: u32 {
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_PROXY_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_PROXY_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES")]
-        const DO_NOT_LOAD_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES as u32;
+        const DO_NOT_LOAD_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS")]
-        const DO_NOT_CONNECT_SIGNALS = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS as u32;
+        const DO_NOT_CONNECT_SIGNALS = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START")]
-        const DO_NOT_AUTO_START = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START as u32;
+        const DO_NOT_AUTO_START = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES")]
-        const GET_INVALIDATED_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES as u32;
+        const GET_INVALIDATED_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION")]
-        const DO_NOT_AUTO_START_AT_CONSTRUCTION = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION as u32;
+        const DO_NOT_AUTO_START_AT_CONSTRUCTION = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION as _;
         #[cfg(any(feature = "v2_70", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NO_MATCH_RULE")]
-        const NO_MATCH_RULE = ffi::G_DBUS_PROXY_FLAGS_NO_MATCH_RULE as u32;
+        const NO_MATCH_RULE = ffi::G_DBUS_PROXY_FLAGS_NO_MATCH_RULE as _;
     }
 }
 
@@ -848,9 +848,9 @@ bitflags! {
     #[doc(alias = "GDBusSendMessageFlags")]
     pub struct DBusSendMessageFlags: u32 {
         #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_SEND_MESSAGE_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_SEND_MESSAGE_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL")]
-        const PRESERVE_SERIAL = ffi::G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL as u32;
+        const PRESERVE_SERIAL = ffi::G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL as _;
     }
 }
 
@@ -912,13 +912,13 @@ bitflags! {
     #[doc(alias = "GDBusServerFlags")]
     pub struct DBusServerFlags: u32 {
         #[doc(alias = "G_DBUS_SERVER_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_SERVER_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_SERVER_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_SERVER_FLAGS_RUN_IN_THREAD")]
-        const RUN_IN_THREAD = ffi::G_DBUS_SERVER_FLAGS_RUN_IN_THREAD as u32;
+        const RUN_IN_THREAD = ffi::G_DBUS_SERVER_FLAGS_RUN_IN_THREAD as _;
         #[doc(alias = "G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS")]
-        const AUTHENTICATION_ALLOW_ANONYMOUS = ffi::G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS as u32;
+        const AUTHENTICATION_ALLOW_ANONYMOUS = ffi::G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS as _;
         #[doc(alias = "G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER")]
-        const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as u32;
+        const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as _;
     }
 }
 
@@ -980,13 +980,13 @@ bitflags! {
     #[doc(alias = "GDBusSignalFlags")]
     pub struct DBusSignalFlags: u32 {
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NONE")]
-        const NONE = ffi::G_DBUS_SIGNAL_FLAGS_NONE as u32;
+        const NONE = ffi::G_DBUS_SIGNAL_FLAGS_NONE as _;
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE")]
-        const NO_MATCH_RULE = ffi::G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE as u32;
+        const NO_MATCH_RULE = ffi::G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE as _;
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE")]
-        const MATCH_ARG0_NAMESPACE = ffi::G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE as u32;
+        const MATCH_ARG0_NAMESPACE = ffi::G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE as _;
         #[doc(alias = "G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH")]
-        const MATCH_ARG0_PATH = ffi::G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH as u32;
+        const MATCH_ARG0_PATH = ffi::G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH as _;
     }
 }
 
@@ -1048,7 +1048,7 @@ bitflags! {
     #[doc(alias = "GDriveStartFlags")]
     pub struct DriveStartFlags: u32 {
         #[doc(alias = "G_DRIVE_START_NONE")]
-        const NONE = ffi::G_DRIVE_START_NONE as u32;
+        const NONE = ffi::G_DRIVE_START_NONE as _;
     }
 }
 
@@ -1110,11 +1110,11 @@ bitflags! {
     #[doc(alias = "GFileAttributeInfoFlags")]
     pub struct FileAttributeInfoFlags: u32 {
         #[doc(alias = "G_FILE_ATTRIBUTE_INFO_NONE")]
-        const NONE = ffi::G_FILE_ATTRIBUTE_INFO_NONE as u32;
+        const NONE = ffi::G_FILE_ATTRIBUTE_INFO_NONE as _;
         #[doc(alias = "G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE")]
-        const COPY_WITH_FILE = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE as u32;
+        const COPY_WITH_FILE = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE as _;
         #[doc(alias = "G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED")]
-        const COPY_WHEN_MOVED = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED as u32;
+        const COPY_WHEN_MOVED = ffi::G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED as _;
     }
 }
 
@@ -1176,19 +1176,19 @@ bitflags! {
     #[doc(alias = "GFileCopyFlags")]
     pub struct FileCopyFlags: u32 {
         #[doc(alias = "G_FILE_COPY_NONE")]
-        const NONE = ffi::G_FILE_COPY_NONE as u32;
+        const NONE = ffi::G_FILE_COPY_NONE as _;
         #[doc(alias = "G_FILE_COPY_OVERWRITE")]
-        const OVERWRITE = ffi::G_FILE_COPY_OVERWRITE as u32;
+        const OVERWRITE = ffi::G_FILE_COPY_OVERWRITE as _;
         #[doc(alias = "G_FILE_COPY_BACKUP")]
-        const BACKUP = ffi::G_FILE_COPY_BACKUP as u32;
+        const BACKUP = ffi::G_FILE_COPY_BACKUP as _;
         #[doc(alias = "G_FILE_COPY_NOFOLLOW_SYMLINKS")]
-        const NOFOLLOW_SYMLINKS = ffi::G_FILE_COPY_NOFOLLOW_SYMLINKS as u32;
+        const NOFOLLOW_SYMLINKS = ffi::G_FILE_COPY_NOFOLLOW_SYMLINKS as _;
         #[doc(alias = "G_FILE_COPY_ALL_METADATA")]
-        const ALL_METADATA = ffi::G_FILE_COPY_ALL_METADATA as u32;
+        const ALL_METADATA = ffi::G_FILE_COPY_ALL_METADATA as _;
         #[doc(alias = "G_FILE_COPY_NO_FALLBACK_FOR_MOVE")]
-        const NO_FALLBACK_FOR_MOVE = ffi::G_FILE_COPY_NO_FALLBACK_FOR_MOVE as u32;
+        const NO_FALLBACK_FOR_MOVE = ffi::G_FILE_COPY_NO_FALLBACK_FOR_MOVE as _;
         #[doc(alias = "G_FILE_COPY_TARGET_DEFAULT_PERMS")]
-        const TARGET_DEFAULT_PERMS = ffi::G_FILE_COPY_TARGET_DEFAULT_PERMS as u32;
+        const TARGET_DEFAULT_PERMS = ffi::G_FILE_COPY_TARGET_DEFAULT_PERMS as _;
     }
 }
 
@@ -1250,11 +1250,11 @@ bitflags! {
     #[doc(alias = "GFileCreateFlags")]
     pub struct FileCreateFlags: u32 {
         #[doc(alias = "G_FILE_CREATE_NONE")]
-        const NONE = ffi::G_FILE_CREATE_NONE as u32;
+        const NONE = ffi::G_FILE_CREATE_NONE as _;
         #[doc(alias = "G_FILE_CREATE_PRIVATE")]
-        const PRIVATE = ffi::G_FILE_CREATE_PRIVATE as u32;
+        const PRIVATE = ffi::G_FILE_CREATE_PRIVATE as _;
         #[doc(alias = "G_FILE_CREATE_REPLACE_DESTINATION")]
-        const REPLACE_DESTINATION = ffi::G_FILE_CREATE_REPLACE_DESTINATION as u32;
+        const REPLACE_DESTINATION = ffi::G_FILE_CREATE_REPLACE_DESTINATION as _;
     }
 }
 
@@ -1316,13 +1316,13 @@ bitflags! {
     #[doc(alias = "GFileMeasureFlags")]
     pub struct FileMeasureFlags: u32 {
         #[doc(alias = "G_FILE_MEASURE_NONE")]
-        const NONE = ffi::G_FILE_MEASURE_NONE as u32;
+        const NONE = ffi::G_FILE_MEASURE_NONE as _;
         #[doc(alias = "G_FILE_MEASURE_REPORT_ANY_ERROR")]
-        const REPORT_ANY_ERROR = ffi::G_FILE_MEASURE_REPORT_ANY_ERROR as u32;
+        const REPORT_ANY_ERROR = ffi::G_FILE_MEASURE_REPORT_ANY_ERROR as _;
         #[doc(alias = "G_FILE_MEASURE_APPARENT_SIZE")]
-        const APPARENT_SIZE = ffi::G_FILE_MEASURE_APPARENT_SIZE as u32;
+        const APPARENT_SIZE = ffi::G_FILE_MEASURE_APPARENT_SIZE as _;
         #[doc(alias = "G_FILE_MEASURE_NO_XDEV")]
-        const NO_XDEV = ffi::G_FILE_MEASURE_NO_XDEV as u32;
+        const NO_XDEV = ffi::G_FILE_MEASURE_NO_XDEV as _;
     }
 }
 
@@ -1384,15 +1384,15 @@ bitflags! {
     #[doc(alias = "GFileMonitorFlags")]
     pub struct FileMonitorFlags: u32 {
         #[doc(alias = "G_FILE_MONITOR_NONE")]
-        const NONE = ffi::G_FILE_MONITOR_NONE as u32;
+        const NONE = ffi::G_FILE_MONITOR_NONE as _;
         #[doc(alias = "G_FILE_MONITOR_WATCH_MOUNTS")]
-        const WATCH_MOUNTS = ffi::G_FILE_MONITOR_WATCH_MOUNTS as u32;
+        const WATCH_MOUNTS = ffi::G_FILE_MONITOR_WATCH_MOUNTS as _;
         #[doc(alias = "G_FILE_MONITOR_SEND_MOVED")]
-        const SEND_MOVED = ffi::G_FILE_MONITOR_SEND_MOVED as u32;
+        const SEND_MOVED = ffi::G_FILE_MONITOR_SEND_MOVED as _;
         #[doc(alias = "G_FILE_MONITOR_WATCH_HARD_LINKS")]
-        const WATCH_HARD_LINKS = ffi::G_FILE_MONITOR_WATCH_HARD_LINKS as u32;
+        const WATCH_HARD_LINKS = ffi::G_FILE_MONITOR_WATCH_HARD_LINKS as _;
         #[doc(alias = "G_FILE_MONITOR_WATCH_MOVES")]
-        const WATCH_MOVES = ffi::G_FILE_MONITOR_WATCH_MOVES as u32;
+        const WATCH_MOVES = ffi::G_FILE_MONITOR_WATCH_MOVES as _;
     }
 }
 
@@ -1454,9 +1454,9 @@ bitflags! {
     #[doc(alias = "GFileQueryInfoFlags")]
     pub struct FileQueryInfoFlags: u32 {
         #[doc(alias = "G_FILE_QUERY_INFO_NONE")]
-        const NONE = ffi::G_FILE_QUERY_INFO_NONE as u32;
+        const NONE = ffi::G_FILE_QUERY_INFO_NONE as _;
         #[doc(alias = "G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS")]
-        const NOFOLLOW_SYMLINKS = ffi::G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS as u32;
+        const NOFOLLOW_SYMLINKS = ffi::G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS as _;
     }
 }
 
@@ -1518,13 +1518,13 @@ bitflags! {
     #[doc(alias = "GIOStreamSpliceFlags")]
     pub struct IOStreamSpliceFlags: u32 {
         #[doc(alias = "G_IO_STREAM_SPLICE_NONE")]
-        const NONE = ffi::G_IO_STREAM_SPLICE_NONE as u32;
+        const NONE = ffi::G_IO_STREAM_SPLICE_NONE as _;
         #[doc(alias = "G_IO_STREAM_SPLICE_CLOSE_STREAM1")]
-        const CLOSE_STREAM1 = ffi::G_IO_STREAM_SPLICE_CLOSE_STREAM1 as u32;
+        const CLOSE_STREAM1 = ffi::G_IO_STREAM_SPLICE_CLOSE_STREAM1 as _;
         #[doc(alias = "G_IO_STREAM_SPLICE_CLOSE_STREAM2")]
-        const CLOSE_STREAM2 = ffi::G_IO_STREAM_SPLICE_CLOSE_STREAM2 as u32;
+        const CLOSE_STREAM2 = ffi::G_IO_STREAM_SPLICE_CLOSE_STREAM2 as _;
         #[doc(alias = "G_IO_STREAM_SPLICE_WAIT_FOR_BOTH")]
-        const WAIT_FOR_BOTH = ffi::G_IO_STREAM_SPLICE_WAIT_FOR_BOTH as u32;
+        const WAIT_FOR_BOTH = ffi::G_IO_STREAM_SPLICE_WAIT_FOR_BOTH as _;
     }
 }
 
@@ -1586,7 +1586,7 @@ bitflags! {
     #[doc(alias = "GMountMountFlags")]
     pub struct MountMountFlags: u32 {
         #[doc(alias = "G_MOUNT_MOUNT_NONE")]
-        const NONE = ffi::G_MOUNT_MOUNT_NONE as u32;
+        const NONE = ffi::G_MOUNT_MOUNT_NONE as _;
     }
 }
 
@@ -1648,9 +1648,9 @@ bitflags! {
     #[doc(alias = "GMountUnmountFlags")]
     pub struct MountUnmountFlags: u32 {
         #[doc(alias = "G_MOUNT_UNMOUNT_NONE")]
-        const NONE = ffi::G_MOUNT_UNMOUNT_NONE as u32;
+        const NONE = ffi::G_MOUNT_UNMOUNT_NONE as _;
         #[doc(alias = "G_MOUNT_UNMOUNT_FORCE")]
-        const FORCE = ffi::G_MOUNT_UNMOUNT_FORCE as u32;
+        const FORCE = ffi::G_MOUNT_UNMOUNT_FORCE as _;
     }
 }
 
@@ -1712,11 +1712,11 @@ bitflags! {
     #[doc(alias = "GOutputStreamSpliceFlags")]
     pub struct OutputStreamSpliceFlags: u32 {
         #[doc(alias = "G_OUTPUT_STREAM_SPLICE_NONE")]
-        const NONE = ffi::G_OUTPUT_STREAM_SPLICE_NONE as u32;
+        const NONE = ffi::G_OUTPUT_STREAM_SPLICE_NONE as _;
         #[doc(alias = "G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE")]
-        const CLOSE_SOURCE = ffi::G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE as u32;
+        const CLOSE_SOURCE = ffi::G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE as _;
         #[doc(alias = "G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET")]
-        const CLOSE_TARGET = ffi::G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET as u32;
+        const CLOSE_TARGET = ffi::G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET as _;
     }
 }
 
@@ -1780,11 +1780,11 @@ bitflags! {
     #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]
-        const DEFAULT = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT as u32;
+        const DEFAULT = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT as _;
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY")]
-        const IPV4_ONLY = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY as u32;
+        const IPV4_ONLY = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY as _;
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY")]
-        const IPV6_ONLY = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY as u32;
+        const IPV6_ONLY = ffi::G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY as _;
     }
 }
 
@@ -1860,7 +1860,7 @@ bitflags! {
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
         #[doc(alias = "G_RESOURCE_LOOKUP_FLAGS_NONE")]
-        const NONE = ffi::G_RESOURCE_LOOKUP_FLAGS_NONE as u32;
+        const NONE = ffi::G_RESOURCE_LOOKUP_FLAGS_NONE as _;
     }
 }
 
@@ -1922,17 +1922,17 @@ bitflags! {
     #[doc(alias = "GSettingsBindFlags")]
     pub struct SettingsBindFlags: u32 {
         #[doc(alias = "G_SETTINGS_BIND_DEFAULT")]
-        const DEFAULT = ffi::G_SETTINGS_BIND_DEFAULT as u32;
+        const DEFAULT = ffi::G_SETTINGS_BIND_DEFAULT as _;
         #[doc(alias = "G_SETTINGS_BIND_GET")]
-        const GET = ffi::G_SETTINGS_BIND_GET as u32;
+        const GET = ffi::G_SETTINGS_BIND_GET as _;
         #[doc(alias = "G_SETTINGS_BIND_SET")]
-        const SET = ffi::G_SETTINGS_BIND_SET as u32;
+        const SET = ffi::G_SETTINGS_BIND_SET as _;
         #[doc(alias = "G_SETTINGS_BIND_NO_SENSITIVITY")]
-        const NO_SENSITIVITY = ffi::G_SETTINGS_BIND_NO_SENSITIVITY as u32;
+        const NO_SENSITIVITY = ffi::G_SETTINGS_BIND_NO_SENSITIVITY as _;
         #[doc(alias = "G_SETTINGS_BIND_GET_NO_CHANGES")]
-        const GET_NO_CHANGES = ffi::G_SETTINGS_BIND_GET_NO_CHANGES as u32;
+        const GET_NO_CHANGES = ffi::G_SETTINGS_BIND_GET_NO_CHANGES as _;
         #[doc(alias = "G_SETTINGS_BIND_INVERT_BOOLEAN")]
-        const INVERT_BOOLEAN = ffi::G_SETTINGS_BIND_INVERT_BOOLEAN as u32;
+        const INVERT_BOOLEAN = ffi::G_SETTINGS_BIND_INVERT_BOOLEAN as _;
     }
 }
 
@@ -1994,27 +1994,27 @@ bitflags! {
     #[doc(alias = "GSubprocessFlags")]
     pub struct SubprocessFlags: u32 {
         #[doc(alias = "G_SUBPROCESS_FLAGS_NONE")]
-        const NONE = ffi::G_SUBPROCESS_FLAGS_NONE as u32;
+        const NONE = ffi::G_SUBPROCESS_FLAGS_NONE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDIN_PIPE")]
-        const STDIN_PIPE = ffi::G_SUBPROCESS_FLAGS_STDIN_PIPE as u32;
+        const STDIN_PIPE = ffi::G_SUBPROCESS_FLAGS_STDIN_PIPE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDIN_INHERIT")]
-        const STDIN_INHERIT = ffi::G_SUBPROCESS_FLAGS_STDIN_INHERIT as u32;
+        const STDIN_INHERIT = ffi::G_SUBPROCESS_FLAGS_STDIN_INHERIT as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDOUT_PIPE")]
-        const STDOUT_PIPE = ffi::G_SUBPROCESS_FLAGS_STDOUT_PIPE as u32;
+        const STDOUT_PIPE = ffi::G_SUBPROCESS_FLAGS_STDOUT_PIPE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDOUT_SILENCE")]
-        const STDOUT_SILENCE = ffi::G_SUBPROCESS_FLAGS_STDOUT_SILENCE as u32;
+        const STDOUT_SILENCE = ffi::G_SUBPROCESS_FLAGS_STDOUT_SILENCE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_PIPE")]
-        const STDERR_PIPE = ffi::G_SUBPROCESS_FLAGS_STDERR_PIPE as u32;
+        const STDERR_PIPE = ffi::G_SUBPROCESS_FLAGS_STDERR_PIPE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_SILENCE")]
-        const STDERR_SILENCE = ffi::G_SUBPROCESS_FLAGS_STDERR_SILENCE as u32;
+        const STDERR_SILENCE = ffi::G_SUBPROCESS_FLAGS_STDERR_SILENCE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_STDERR_MERGE")]
-        const STDERR_MERGE = ffi::G_SUBPROCESS_FLAGS_STDERR_MERGE as u32;
+        const STDERR_MERGE = ffi::G_SUBPROCESS_FLAGS_STDERR_MERGE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_INHERIT_FDS")]
-        const INHERIT_FDS = ffi::G_SUBPROCESS_FLAGS_INHERIT_FDS as u32;
+        const INHERIT_FDS = ffi::G_SUBPROCESS_FLAGS_INHERIT_FDS as _;
         #[cfg(any(feature = "v2_72", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
         #[doc(alias = "G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP")]
-        const SEARCH_PATH_FROM_ENVP = ffi::G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP as u32;
+        const SEARCH_PATH_FROM_ENVP = ffi::G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP as _;
     }
 }
 
@@ -2076,21 +2076,21 @@ bitflags! {
     #[doc(alias = "GTlsCertificateFlags")]
     pub struct TlsCertificateFlags: u32 {
         #[doc(alias = "G_TLS_CERTIFICATE_UNKNOWN_CA")]
-        const UNKNOWN_CA = ffi::G_TLS_CERTIFICATE_UNKNOWN_CA as u32;
+        const UNKNOWN_CA = ffi::G_TLS_CERTIFICATE_UNKNOWN_CA as _;
         #[doc(alias = "G_TLS_CERTIFICATE_BAD_IDENTITY")]
-        const BAD_IDENTITY = ffi::G_TLS_CERTIFICATE_BAD_IDENTITY as u32;
+        const BAD_IDENTITY = ffi::G_TLS_CERTIFICATE_BAD_IDENTITY as _;
         #[doc(alias = "G_TLS_CERTIFICATE_NOT_ACTIVATED")]
-        const NOT_ACTIVATED = ffi::G_TLS_CERTIFICATE_NOT_ACTIVATED as u32;
+        const NOT_ACTIVATED = ffi::G_TLS_CERTIFICATE_NOT_ACTIVATED as _;
         #[doc(alias = "G_TLS_CERTIFICATE_EXPIRED")]
-        const EXPIRED = ffi::G_TLS_CERTIFICATE_EXPIRED as u32;
+        const EXPIRED = ffi::G_TLS_CERTIFICATE_EXPIRED as _;
         #[doc(alias = "G_TLS_CERTIFICATE_REVOKED")]
-        const REVOKED = ffi::G_TLS_CERTIFICATE_REVOKED as u32;
+        const REVOKED = ffi::G_TLS_CERTIFICATE_REVOKED as _;
         #[doc(alias = "G_TLS_CERTIFICATE_INSECURE")]
-        const INSECURE = ffi::G_TLS_CERTIFICATE_INSECURE as u32;
+        const INSECURE = ffi::G_TLS_CERTIFICATE_INSECURE as _;
         #[doc(alias = "G_TLS_CERTIFICATE_GENERIC_ERROR")]
-        const GENERIC_ERROR = ffi::G_TLS_CERTIFICATE_GENERIC_ERROR as u32;
+        const GENERIC_ERROR = ffi::G_TLS_CERTIFICATE_GENERIC_ERROR as _;
         #[doc(alias = "G_TLS_CERTIFICATE_VALIDATE_ALL")]
-        const VALIDATE_ALL = ffi::G_TLS_CERTIFICATE_VALIDATE_ALL as u32;
+        const VALIDATE_ALL = ffi::G_TLS_CERTIFICATE_VALIDATE_ALL as _;
     }
 }
 
@@ -2152,7 +2152,7 @@ bitflags! {
     #[doc(alias = "GTlsDatabaseVerifyFlags")]
     pub struct TlsDatabaseVerifyFlags: u32 {
         #[doc(alias = "G_TLS_DATABASE_VERIFY_NONE")]
-        const NONE = ffi::G_TLS_DATABASE_VERIFY_NONE as u32;
+        const NONE = ffi::G_TLS_DATABASE_VERIFY_NONE as _;
     }
 }
 
@@ -2214,19 +2214,19 @@ bitflags! {
     #[doc(alias = "GTlsPasswordFlags")]
     pub struct TlsPasswordFlags: u32 {
         #[doc(alias = "G_TLS_PASSWORD_NONE")]
-        const NONE = ffi::G_TLS_PASSWORD_NONE as u32;
+        const NONE = ffi::G_TLS_PASSWORD_NONE as _;
         #[doc(alias = "G_TLS_PASSWORD_RETRY")]
-        const RETRY = ffi::G_TLS_PASSWORD_RETRY as u32;
+        const RETRY = ffi::G_TLS_PASSWORD_RETRY as _;
         #[doc(alias = "G_TLS_PASSWORD_MANY_TRIES")]
-        const MANY_TRIES = ffi::G_TLS_PASSWORD_MANY_TRIES as u32;
+        const MANY_TRIES = ffi::G_TLS_PASSWORD_MANY_TRIES as _;
         #[doc(alias = "G_TLS_PASSWORD_FINAL_TRY")]
-        const FINAL_TRY = ffi::G_TLS_PASSWORD_FINAL_TRY as u32;
+        const FINAL_TRY = ffi::G_TLS_PASSWORD_FINAL_TRY as _;
         #[doc(alias = "G_TLS_PASSWORD_PKCS11_USER")]
-        const PKCS11_USER = ffi::G_TLS_PASSWORD_PKCS11_USER as u32;
+        const PKCS11_USER = ffi::G_TLS_PASSWORD_PKCS11_USER as _;
         #[doc(alias = "G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER")]
-        const PKCS11_SECURITY_OFFICER = ffi::G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER as u32;
+        const PKCS11_SECURITY_OFFICER = ffi::G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER as _;
         #[doc(alias = "G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC")]
-        const PKCS11_CONTEXT_SPECIFIC = ffi::G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC as u32;
+        const PKCS11_CONTEXT_SPECIFIC = ffi::G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC as _;
     }
 }
 

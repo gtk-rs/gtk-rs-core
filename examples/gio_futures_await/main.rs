@@ -14,7 +14,7 @@ fn main() {
     let future = clone!(@strong l => async move {
         match read_file(file).await {
             Ok(()) => (),
-            Err(err) => eprintln!("Got error: {}", err),
+            Err(err) => eprintln!("Got error: {err}"),
         }
         l.quit();
     });
@@ -30,7 +30,7 @@ async fn read_file(file: gio::File) -> Result<(), String> {
     // Try to open the file.
     let strm = file
         .read_future(glib::PRIORITY_DEFAULT)
-        .map_err(|err| format!("Failed to open file: {}", err))
+        .map_err(|err| format!("Failed to open file: {err}"))
         .await?;
 
     // If opening the file succeeds, we asynchronously loop and
@@ -42,7 +42,7 @@ async fn read_file(file: gio::File) -> Result<(), String> {
     loop {
         let (b, len) = strm
             .read_future(buf, glib::PRIORITY_DEFAULT)
-            .map_err(|(_buf, err)| format!("Failed to read from stream: {}", err))
+            .map_err(|(_buf, err)| format!("Failed to read from stream: {err}"))
             .await?;
 
         // Once 0 is returned, we know that we're done with reading, otherwise
@@ -53,14 +53,14 @@ async fn read_file(file: gio::File) -> Result<(), String> {
 
         buf = b;
 
-        println!("line {}: {:?}", idx, str::from_utf8(&buf[0..len]).unwrap());
+        println!("line {idx}: {:?}", str::from_utf8(&buf[0..len]).unwrap());
 
         idx += 1;
     }
 
     // Asynchronously close the stream in the end.
     strm.close_future(glib::PRIORITY_DEFAULT)
-        .map_err(|err| format!("Failed to close stream: {}", err))
+        .map_err(|err| format!("Failed to close stream: {err}"))
         .await?;
 
     Ok(())

@@ -643,7 +643,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name = detail.map(|name| format!("changed::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"changed\0"[..], |n| n.as_bytes());
@@ -707,7 +707,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name = detail.map(|name| format!("writable-changed::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("writable-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"writable-changed\0"[..], |n| n.as_bytes());

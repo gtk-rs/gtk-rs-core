@@ -10,11 +10,11 @@ bitflags! {
     #[doc(alias = "GdkPixbufFormatFlags")]
     pub struct PixbufFormatFlags: u32 {
         #[doc(alias = "GDK_PIXBUF_FORMAT_WRITABLE")]
-        const WRITABLE = ffi::GDK_PIXBUF_FORMAT_WRITABLE as u32;
+        const WRITABLE = ffi::GDK_PIXBUF_FORMAT_WRITABLE as _;
         #[doc(alias = "GDK_PIXBUF_FORMAT_SCALABLE")]
-        const SCALABLE = ffi::GDK_PIXBUF_FORMAT_SCALABLE as u32;
+        const SCALABLE = ffi::GDK_PIXBUF_FORMAT_SCALABLE as _;
         #[doc(alias = "GDK_PIXBUF_FORMAT_THREADSAFE")]
-        const THREADSAFE = ffi::GDK_PIXBUF_FORMAT_THREADSAFE as u32;
+        const THREADSAFE = ffi::GDK_PIXBUF_FORMAT_THREADSAFE as _;
     }
 }
 

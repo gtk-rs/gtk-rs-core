@@ -240,7 +240,7 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name = detail.map(|name| format!("action-added::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("action-added::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"action-added\0"[..], |n| n.as_bytes());
@@ -279,7 +279,7 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name =
-                detail.map(|name| format!("action-enabled-changed::{}\0", name));
+                detail.map(|name| format!("action-enabled-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"action-enabled-changed\0"[..], |n| n.as_bytes());
@@ -315,7 +315,7 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name = detail.map(|name| format!("action-removed::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("action-removed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"action-removed\0"[..], |n| n.as_bytes());
@@ -353,8 +353,7 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
-            let detailed_signal_name =
-                detail.map(|name| format!("action-state-changed::{}\0", name));
+            let detailed_signal_name = detail.map(|name| format!("action-state-changed::{name}\0"));
             let signal_name: &[u8] = detailed_signal_name
                 .as_ref()
                 .map_or(&b"action-state-changed\0"[..], |n| n.as_bytes());

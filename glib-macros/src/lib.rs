@@ -827,7 +827,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
             let literal = stream.parse::<syn::LitStr>()?;
             stream.parse::<syn::parse::Nothing>()?;
             let bytes = std::ffi::CString::new(literal.value())
-                .map_err(|e| syn::Error::new_spanned(&literal, format!("{}", e)))?
+                .map_err(|e| syn::Error::new_spanned(&literal, format!("{e}")))?
                 .into_bytes_with_nul();
             let bytes = proc_macro2::Literal::byte_string(&bytes);
             Ok(quote::quote! { #bytes }.into())

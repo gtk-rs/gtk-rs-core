@@ -45,6 +45,7 @@ impl Resolver {
 
     #[doc(alias = "g_resolver_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> Resolver {
         unsafe { from_glib_full(ffi::g_resolver_get_default()) }
     }

@@ -181,7 +181,7 @@ mod tests {
             false,
             glib::closure_local!(@watch obj, @strong store => move |o: &SignalObject, a: u32, b: &str| {
                 assert_eq!(o, obj);
-                store.replace(format!("a {} b {}", a, b));
+                store.replace(format!("a {a} b {b}"));
             })
         );
         group.connect_closure(

@@ -508,7 +508,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_set_markup")]
     pub fn set_markup(&self, markup: &str) {
-        let length = markup.len() as i32;
+        let length = markup.len() as _;
         unsafe {
             ffi::pango_layout_set_markup(self.to_glib_none().0, markup.to_glib_none().0, length);
         }
@@ -516,7 +516,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_set_markup_with_accel")]
     pub fn set_markup_with_accel(&self, markup: &str, accel_marker: char) -> char {
-        let length = markup.len() as i32;
+        let length = markup.len() as _;
         unsafe {
             let mut accel_char = mem::MaybeUninit::uninit();
             ffi::pango_layout_set_markup_with_accel(
@@ -554,7 +554,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_set_text")]
     pub fn set_text(&self, text: &str) {
-        let length = text.len() as i32;
+        let length = text.len() as _;
         unsafe {
             ffi::pango_layout_set_text(self.to_glib_none().0, text.to_glib_none().0, length);
         }

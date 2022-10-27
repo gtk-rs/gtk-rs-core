@@ -1611,7 +1611,7 @@ impl<O: IsA<File>> FileExt for O {
             assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as usize),
+                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
                     from_glib_full(etag_out),
                 ))
             } else {
@@ -1660,7 +1660,7 @@ impl<O: IsA<File>> FileExt for O {
             );
             let result = if error.is_null() {
                 Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as usize),
+                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
                     from_glib_full(etag_out),
                 ))
             } else {
@@ -2768,7 +2768,7 @@ impl<O: IsA<File>> FileExt for O {
         flags: FileCreateFlags,
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Option<glib::GString>, glib::Error> {
-        let length = contents.len() as usize;
+        let length = contents.len() as _;
         unsafe {
             let mut new_etag = ptr::null_mut();
             let mut error = ptr::null_mut();

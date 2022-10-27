@@ -196,7 +196,7 @@ impl syn::parse::Parse for Closure {
             .inputs
             .iter()
             .enumerate()
-            .map(|(i, _)| Ident::new(&format!("____value{}", i), Span::call_site()))
+            .map(|(i, _)| Ident::new(&format!("____value{i}"), Span::call_site()))
             .collect();
         closure.capture = None;
         Ok(Closure {
@@ -228,7 +228,7 @@ impl ToTokens for Closure {
             .map(|c| c.outer_after_tokens(&crate_ident, &closure_ident));
 
         let arg_values = self.args.iter().enumerate().map(|(index, arg)| {
-            let err_msg = format!("Wrong type for argument {}: {{:?}}", index);
+            let err_msg = format!("Wrong type for argument {index}: {{:?}}");
             quote! {
                 let #arg = ::core::result::Result::unwrap_or_else(
                     #crate_ident::Value::get(&#values_ident[#index]),

@@ -105,7 +105,7 @@ impl LayoutLine {
                 &mut ranges,
                 n_ranges.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_full_num(ranges, n_ranges.assume_init() as usize)
+            FromGlibContainer::from_glib_full_num(ranges, n_ranges.assume_init() as _)
         }
     }
 

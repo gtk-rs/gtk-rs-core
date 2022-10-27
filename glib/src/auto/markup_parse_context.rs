@@ -71,7 +71,7 @@ impl MarkupParseContext {
 
     #[doc(alias = "g_markup_parse_context_parse")]
     pub fn parse(&self, text: &str) -> Result<(), crate::Error> {
-        let text_len = text.len() as isize;
+        let text_len = text.len() as _;
         unsafe {
             let mut error = ptr::null_mut();
             let is_ok = ffi::g_markup_parse_context_parse(

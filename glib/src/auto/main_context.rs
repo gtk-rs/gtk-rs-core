@@ -114,6 +114,7 @@ impl MainContext {
     }
 
     #[doc(alias = "g_main_context_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> MainContext {
         unsafe { from_glib_none(ffi::g_main_context_default()) }
     }
