@@ -83,7 +83,7 @@ impl GStr {
     /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
     /// trailing nul terminator instead of chopping it off.
     #[inline]
-    pub fn to_bytes_with_nul(&self) -> &[u8] {
+    pub fn as_bytes_with_nul(&self) -> &[u8] {
         self.0.as_bytes()
     }
     // rustdoc-stripper-ignore-next
@@ -92,7 +92,7 @@ impl GStr {
     /// The returned slice will **not** contain the trailing nul terminator that this GLib
     /// string has.
     #[inline]
-    pub fn to_bytes(&self) -> &[u8] {
+    pub fn as_bytes(&self) -> &[u8] {
         self.as_str().as_bytes()
     }
     // rustdoc-stripper-ignore-next
@@ -121,7 +121,7 @@ impl GStr {
     /// Converts this GLib string to a C string slice.
     #[inline]
     pub fn as_c_str(&self) -> &CStr {
-        unsafe { CStr::from_bytes_with_nul_unchecked(self.to_bytes_with_nul()) }
+        unsafe { CStr::from_bytes_with_nul_unchecked(self.as_bytes_with_nul()) }
     }
 
     #[doc(alias = "g_utf8_collate")]
@@ -144,7 +144,7 @@ impl GStr {
 /// use glib::{gstr, GStr, GString};
 ///
 /// const MY_STRING: &GStr = gstr!("Hello");
-/// assert_eq!(MY_STRING.to_bytes_with_nul()[5], 0u8);
+/// assert_eq!(MY_STRING.as_bytes_with_nul()[5], 0u8);
 /// let owned: GString = MY_STRING.to_owned();
 /// assert_eq!(MY_STRING, owned);
 /// # }
@@ -273,7 +273,7 @@ impl AsRef<Path> for GStr {
 
 impl AsRef<[u8]> for GStr {
     fn as_ref(&self) -> &[u8] {
-        self.to_bytes()
+        self.as_bytes()
     }
 }
 
