@@ -273,6 +273,7 @@ impl GStr {
             Ok(())
         }
     }
+    pub const NONE: Option<&'static GStr> = None;
 }
 
 // rustdoc-stripper-ignore-next
@@ -1861,6 +1862,92 @@ impl From<Vec<GString>> for Value {
 
 impl_from_glib_container_as_vec_string!(GString, *const c_char);
 impl_from_glib_container_as_vec_string!(GString, *mut c_char);
+
+// rustdoc-stripper-ignore-next
+/// A trait to accept both <code>&[str]</code> or <code>&[GStr]</code> as an argument.
+pub trait IntoGStr {
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T;
+}
+
+impl IntoGStr for &GStr {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        f(self)
+    }
+}
+
+impl IntoGStr for GString {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        f(self.as_gstr())
+    }
+}
+
+impl IntoGStr for &GString {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        f(self.as_gstr())
+    }
+}
+
+// Limit borrowed from rust std CStr optimization:
+// https://github.com/rust-lang/rust/blob/master/library/std/src/sys/common/small_c_string.rs#L10
+const MAX_STACK_ALLOCATION: usize = 384;
+
+impl IntoGStr for &str {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        if self.len() < MAX_STACK_ALLOCATION {
+            let mut s = mem::MaybeUninit::<[u8; MAX_STACK_ALLOCATION]>::uninit();
+            let ptr = s.as_mut_ptr() as *mut u8;
+            let gs = unsafe {
+                ptr::copy_nonoverlapping(self.as_ptr(), ptr, self.len());
+                ptr.add(self.len()).write(0);
+                GStr::from_utf8_with_nul_unchecked(slice::from_raw_parts(ptr, self.len() + 1))
+            };
+            f(gs)
+        } else {
+            f(GString::from(self).as_gstr())
+        }
+    }
+}
+
+impl IntoGStr for String {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        if self.len() < MAX_STACK_ALLOCATION {
+            self.as_str().run_with_gstr(f)
+        } else {
+            f(GString::from(self).as_gstr())
+        }
+    }
+}
+
+impl IntoGStr for &String {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(self, f: F) -> T {
+        self.as_str().run_with_gstr(f)
+    }
+}
+
+pub const NONE_STR: Option<&'static str> = None;
+
+// rustdoc-stripper-ignore-next
+/// A trait to accept both <code>[Option]&lt;&[str]></code> or <code>[Option]&lt;&[GStr]></code> as
+/// an argument.
+pub trait IntoOptionalGStr {
+    fn run_with_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T;
+}
+
+impl<S: IntoGStr> IntoOptionalGStr for Option<S> {
+    #[inline]
+    fn run_with_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T {
+        match self {
+            Some(t) => t.run_with_gstr(|s| f(Some(s))),
+            None => f(None),
+        }
+    }
+}
 
 #[cfg(test)]
 #[allow(clippy::disallowed_names)]
