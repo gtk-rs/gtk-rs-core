@@ -165,6 +165,13 @@ impl Default for &GStr {
     }
 }
 
+impl fmt::Display for GStr {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
 impl<'a> TryFrom<&'a CStr> for &'a GStr {
     type Error = std::str::Utf8Error;
     #[inline]
