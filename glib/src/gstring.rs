@@ -3,13 +3,13 @@
 use std::{
     borrow::{Borrow, Cow},
     cmp::Ordering,
-    ffi::{CStr, CString, OsStr},
+    ffi::{CStr, CString, OsStr, OsString},
     fmt, hash,
     marker::PhantomData,
     mem,
     ops::Deref,
     os::raw::{c_char, c_void},
-    path::Path,
+    path::{Path, PathBuf},
     ptr, slice,
 };
 
@@ -1282,6 +1282,42 @@ impl From<GString> for Box<str> {
     }
 }
 
+impl From<GString> for Vec<u8> {
+    #[inline]
+    fn from(value: GString) -> Vec<u8> {
+        value.into_bytes_with_nul()
+    }
+}
+
+impl TryFrom<GString> for CString {
+    type Error = GStringInteriorNulError<GString>;
+    #[inline]
+    fn try_from(value: GString) -> Result<Self, Self::Error> {
+        if let Some(nul_pos) = memchr::memchr(0, value.as_bytes()) {
+            return Err(GStringInteriorNulError(
+                value,
+                GStrInteriorNulError(nul_pos),
+            ));
+        }
+        let v = value.into_bytes_with_nul();
+        Ok(unsafe { CString::from_vec_with_nul_unchecked(v) })
+    }
+}
+
+impl From<GString> for OsString {
+    #[inline]
+    fn from(s: GString) -> Self {
+        OsString::from(String::from(s))
+    }
+}
+
+impl From<GString> for PathBuf {
+    #[inline]
+    fn from(s: GString) -> Self {
+        PathBuf::from(OsString::from(s))
+    }
+}
+
 impl From<String> for GString {
     #[inline]
     fn from(mut s: String) -> Self {
@@ -1305,6 +1341,16 @@ impl From<Box<str>> for GString {
     fn from(s: Box<str>) -> Self {
         // Moves the content of the String
         s.into_string().into()
+    }
+}
+
+impl<'a> From<Cow<'a, str>> for GString {
+    #[inline]
+    fn from(s: Cow<'a, str>) -> Self {
+        match s {
+            Cow::Borrowed(s) => Self::from(s),
+            Cow::Owned(s) => Self::from(s),
+        }
     }
 }
 
@@ -1336,22 +1382,66 @@ impl From<&str> for GString {
     }
 }
 
-impl From<CString> for GString {
+impl TryFrom<CString> for GString {
+    type Error = GStringUtf8Error<CString>;
     #[inline]
-    fn from(s: CString) -> Self {
-        // Moves the content of the CString
-        // Also check if it's valid UTF-8
-        let s = String::from_utf8(s.into_bytes_with_nul()).unwrap();
-        Self(Inner::Native(Some(s.into_boxed_str())))
+    fn try_from(value: CString) -> Result<Self, Self::Error> {
+        if value.as_bytes().is_empty() {
+            Ok(Self(Inner::Native(None)))
+        } else {
+            // Moves the content of the CString
+            // Also check if it's valid UTF-8
+            let s = String::from_utf8(value.into_bytes_with_nul()).map_err(|e| {
+                let err = e.utf8_error();
+                GStringUtf8Error(
+                    unsafe { CString::from_vec_with_nul_unchecked(e.into_bytes()) },
+                    err,
+                )
+            })?;
+            Ok(Self(Inner::Native(Some(s.into()))))
+        }
     }
 }
 
-impl From<&CStr> for GString {
+impl TryFrom<OsString> for GString {
+    type Error = GStringFromError<OsString>;
     #[inline]
-    fn from(c: &CStr) -> Self {
-        // Creates a copy with the GLib allocator
-        // Also check if it's valid UTF-8
-        c.to_str().unwrap().into()
+    fn try_from(value: OsString) -> Result<Self, Self::Error> {
+        Self::from_string_checked(value.into_string().map_err(GStringFromError::Unspecified)?)
+            .map_err(|e| GStringFromError::from(e).convert(OsString::from))
+    }
+}
+
+impl TryFrom<PathBuf> for GString {
+    type Error = GStringFromError<PathBuf>;
+    #[inline]
+    fn try_from(value: PathBuf) -> Result<Self, Self::Error> {
+        GString::try_from(value.into_os_string()).map_err(|e| e.convert(PathBuf::from))
+    }
+}
+
+impl TryFrom<&CStr> for GString {
+    type Error = std::str::Utf8Error;
+    #[inline]
+    fn try_from(value: &CStr) -> Result<Self, Self::Error> {
+        // Check if it's valid UTF-8
+        value.to_str()?;
+        let gstr = unsafe { GStr::from_utf8_with_nul_unchecked(value.to_bytes_with_nul()) };
+        Ok(gstr.to_owned())
+    }
+}
+
+impl<'a> From<Cow<'a, GStr>> for GString {
+    #[inline]
+    fn from(s: Cow<'a, GStr>) -> Self {
+        s.into_owned()
+    }
+}
+
+impl<'a> From<&'a GString> for Cow<'a, GStr> {
+    #[inline]
+    fn from(s: &'a GString) -> Self {
+        Cow::Borrowed(s.as_gstr())
     }
 }
 
@@ -1793,7 +1883,7 @@ mod tests {
     #[test]
     fn test_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
-        let gstring = GString::from(cstr);
+        let gstring = GString::try_from(cstr).unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let foo: Box<str> = gstring.into();
         assert_eq!(foo.as_ref(), "foo");
@@ -1802,7 +1892,7 @@ mod tests {
     #[test]
     fn test_string_from_gstring_from_cstring() {
         let cstr = CString::new("foo").unwrap();
-        let gstring = GString::from(cstr);
+        let gstring = GString::try_from(cstr).unwrap();
         assert_eq!(gstring.as_str(), "foo");
         let s = String::from(gstring);
         assert_eq!(s, "foo");
