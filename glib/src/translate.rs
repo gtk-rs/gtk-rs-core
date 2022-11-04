@@ -139,7 +139,9 @@ use std::{
     collections::HashMap,
     error::Error,
     ffi::{CStr, CString, OsStr, OsString},
-    fmt, mem,
+    fmt,
+    marker::PhantomData,
+    mem,
     path::{Path, PathBuf},
     ptr,
 };
@@ -502,6 +504,43 @@ impl<'a, P: Ptr, T: ?Sized + ToGlibPtr<'a, P>> ToGlibPtr<'a, P> for &'a T {
     }
 }
 
+#[doc(hidden)]
+#[derive(Debug)]
+pub enum CowStash<B, O> {
+    Borrowed(B),
+    Owned(O),
+}
+
+impl<'a, P: Ptr, T> ToGlibPtr<'a, P> for Cow<'a, T>
+where
+    T: ToOwned + ?Sized + ToGlibPtr<'a, P>,
+    T::Owned: ToGlibPtr<'a, P>,
+{
+    type Storage = CowStash<T::Storage, <T::Owned as ToGlibPtr<'a, P>>::Storage>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, P, Self> {
+        match self {
+            Cow::Borrowed(v) => {
+                let s = v.to_glib_none();
+                Stash(s.0, CowStash::Borrowed(s.1))
+            }
+            Cow::Owned(v) => {
+                let s = v.to_glib_none();
+                Stash(s.0, CowStash::Owned(s.1))
+            }
+        }
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> P {
+        match self {
+            Cow::Borrowed(v) => v.to_glib_full(),
+            Cow::Owned(v) => v.to_glib_full(),
+        }
+    }
+}
+
 impl<'a> ToGlibPtr<'a, *const c_char> for str {
     type Storage = Cow<'static, [u8]>;
 
@@ -578,6 +617,82 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for String {
     #[inline]
     fn to_glib_full(&self) -> *mut c_char {
         ToGlibPtr::to_glib_full(self.as_str())
+    }
+}
+
+impl<'a> ToGlibPtr<'a, *const c_char> for CStr {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const c_char, Self> {
+        Stash(self.as_ptr(), PhantomData)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *const c_char {
+        unsafe {
+            ffi::g_strndup(
+                self.as_ptr() as *const c_char,
+                self.to_bytes().len() as size_t,
+            ) as *const c_char
+        }
+    }
+}
+
+impl<'a> ToGlibPtr<'a, *mut c_char> for CStr {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
+        Stash(self.as_ptr() as *mut c_char, PhantomData)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        unsafe {
+            ffi::g_strndup(
+                self.as_ptr() as *const c_char,
+                self.to_bytes().len() as size_t,
+            ) as *mut c_char
+        }
+    }
+}
+
+impl<'a> ToGlibPtr<'a, *const c_char> for CString {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *const c_char, Self> {
+        Stash(self.as_ptr(), PhantomData)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *const c_char {
+        unsafe {
+            ffi::g_strndup(
+                self.as_ptr() as *const c_char,
+                self.as_bytes().len() as size_t,
+            ) as *const c_char
+        }
+    }
+}
+
+impl<'a> ToGlibPtr<'a, *mut c_char> for CString {
+    type Storage = PhantomData<&'a Self>;
+
+    #[inline]
+    fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
+        Stash(self.as_ptr() as *mut c_char, PhantomData)
+    }
+
+    #[inline]
+    fn to_glib_full(&self) -> *mut c_char {
+        unsafe {
+            ffi::g_strndup(
+                self.as_ptr() as *const c_char,
+                self.as_bytes().len() as size_t,
+            ) as *mut c_char
+        }
     }
 }
 
