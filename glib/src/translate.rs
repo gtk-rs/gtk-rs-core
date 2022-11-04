@@ -2578,7 +2578,7 @@ mod tests {
             FileTest::EXISTS | FileTest::IS_DIR
         ));
         assert!(crate::file_test(
-            &dir_1.canonicalize().unwrap(),
+            dir_1.canonicalize().unwrap(),
             FileTest::EXISTS | FileTest::IS_DIR
         ));
 
@@ -2602,7 +2602,7 @@ mod tests {
             FileTest::EXISTS | FileTest::IS_DIR
         ));
         assert!(crate::file_test(
-            &dir_2.canonicalize().unwrap(),
+            dir_2.canonicalize().unwrap(),
             FileTest::EXISTS | FileTest::IS_DIR
         ));
     }
@@ -2663,6 +2663,7 @@ mod tests {
 
         impl TryFromGlib<libc::c_uint> for SpecialU32 {
             type Error = GlibNoneError;
+            #[allow(clippy::unnecessary_cast)]
             unsafe fn try_from_glib(val: libc::c_uint) -> Result<Self, GlibNoneError> {
                 if val == SpecialU32::GLIB_NONE {
                     return Err(GlibNoneError);
