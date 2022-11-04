@@ -168,7 +168,7 @@ impl GStr {
     /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
     /// trailing nul terminator instead of chopping it off.
     #[inline]
-    pub fn as_bytes_with_nul(&self) -> &[u8] {
+    pub const fn as_bytes_with_nul(&self) -> &[u8] {
         self.0.as_bytes()
     }
     // rustdoc-stripper-ignore-next
@@ -177,7 +177,7 @@ impl GStr {
     /// The returned slice will **not** contain the trailing nul terminator that this GLib
     /// string has.
     #[inline]
-    pub fn as_bytes(&self) -> &[u8] {
+    pub const fn as_bytes(&self) -> &[u8] {
         self.as_str().as_bytes()
     }
     // rustdoc-stripper-ignore-next
@@ -192,15 +192,20 @@ impl GStr {
     /// writes to it) causes undefined behavior. It is your responsibility to make
     /// sure that the underlying memory is not freed too early.
     #[inline]
-    pub fn as_ptr(&self) -> *const c_char {
+    pub const fn as_ptr(&self) -> *const c_char {
         self.0.as_ptr() as *const _
     }
     // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a string slice.
     #[inline]
-    pub fn as_str(&self) -> &str {
+    pub const fn as_str(&self) -> &str {
         // Clip off the nul-byte
-        unsafe { self.0.get_unchecked(..self.0.len() - 1) }
+        unsafe {
+            std::str::from_utf8_unchecked(std::slice::from_raw_parts(
+                self.as_ptr() as *const _,
+                self.0.len() - 1,
+            ))
+        }
     }
     // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a C string slice, checking for interior nul-bytes.
@@ -227,7 +232,7 @@ impl GStr {
     /// `self` **must** not contain any interior nul-bytes besides the final terminating nul-byte.
     /// It is undefined behavior to call this on a string that contains interior nul-bytes.
     #[inline]
-    pub unsafe fn to_cstr_unchecked(&self) -> &CStr {
+    pub const unsafe fn to_cstr_unchecked(&self) -> &CStr {
         CStr::from_bytes_with_nul_unchecked(self.as_bytes_with_nul())
     }
 
