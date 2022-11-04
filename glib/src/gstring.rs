@@ -591,6 +591,10 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
     }
 }
 
+// size_of::<Inner>() minus two bytes for length and enum discriminant
+const INLINE_LEN: usize =
+    mem::size_of::<Option<Box<str>>>() + mem::size_of::<usize>() - mem::size_of::<u8>() * 2;
+
 // rustdoc-stripper-ignore-next
 /// A type representing an owned, C-compatible, nul-terminated UTF-8 string.
 ///
@@ -627,6 +631,22 @@ impl GString {
         Self(Inner::Native(None))
     }
     // rustdoc-stripper-ignore-next
+    /// Formats an [`Arguments`](std::fmt::Arguments) into a [`GString`].
+    ///
+    /// This function is the same as [`std::fmt::format`], except it returns a [`GString`]. The
+    /// [`Arguments`](std::fmt::Arguments) instance can be created with the
+    /// [`format_args!`](std::format_args) macro.
+    ///
+    /// Please note that using [`gformat!`] might be preferable.
+    pub fn format(args: fmt::Arguments) -> Self {
+        if let Some(s) = args.as_str() {
+            return Self::from(s);
+        }
+
+        let mut s = crate::GStringBuilder::default();
+        fmt::Write::write_fmt(&mut s, args).unwrap();
+        s.into_string()
+    }
     // rustdoc-stripper-ignore-next
     /// Creates a GLib string by consuming a byte vector.
     ///
@@ -882,6 +902,16 @@ impl GString {
             }
         }
     }
+}
+
+// rustdoc-stripper-ignore-next
+/// Creates a [`GString`] using interpolation of runtime expressions.
+///
+/// This macro is the same as [`std::format!`] except it returns a [`GString`]. It is faster than
+/// creating a [`String`] and then converting it manually to a [`GString`].
+#[macro_export]
+macro_rules! gformat {
+    ($($arg:tt)*) => { GString::format(std::format_args!($($arg)*)) };
 }
 
 // rustdoc-stripper-ignore-next
@@ -1970,5 +2000,11 @@ mod tests {
             assert_eq!(gstring.as_str(), "foo���bar");
             assert_ne!(ptr, gstring.as_ptr() as *const _);
         }
+    }
+
+    #[test]
+    fn gformat() {
+        let s = gformat!("bla bla {} bla", 123);
+        assert_eq!(s, "bla bla 123 bla");
     }
 }
