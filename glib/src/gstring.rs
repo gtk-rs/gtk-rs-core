@@ -238,8 +238,10 @@ impl GStr {
 
     #[doc(alias = "g_utf8_collate")]
     #[doc(alias = "utf8_collate")]
-    pub fn collate(&self, other: impl AsRef<GStr>) -> Ordering {
-        unsafe { ffi::g_utf8_collate(self.as_ptr(), other.as_ref().as_ptr()) }.cmp(&0)
+    pub fn collate(&self, other: impl IntoGStr) -> Ordering {
+        other.run_with_gstr(|other| {
+            unsafe { ffi::g_utf8_collate(self.to_glib_none().0, other.to_glib_none().0) }.cmp(&0)
+        })
     }
 
     fn check_nuls(s: impl AsRef<[u8]>) -> Result<(), GStrError> {

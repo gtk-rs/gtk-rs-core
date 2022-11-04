@@ -5,20 +5,22 @@ use std::{
     mem, ptr,
 };
 
-use crate::translate::*;
+use crate::{translate::*, GString, IntoGStr, IntoOptionalGStr};
 
 // rustdoc-stripper-ignore-next
 /// Same as [`get_prgname()`].
 ///
 /// [`get_prgname()`]: fn.get_prgname.html
 #[doc(alias = "get_program_name")]
-pub fn program_name() -> Option<String> {
+#[inline]
+pub fn program_name() -> Option<GString> {
     prgname()
 }
 
 #[doc(alias = "g_get_prgname")]
 #[doc(alias = "get_prgname")]
-pub fn prgname() -> Option<String> {
+#[inline]
+pub fn prgname() -> Option<GString> {
     unsafe { from_glib_none(ffi::g_get_prgname()) }
 }
 
@@ -26,13 +28,15 @@ pub fn prgname() -> Option<String> {
 /// Same as [`set_prgname()`].
 ///
 /// [`set_prgname()`]: fn.set_prgname.html
-pub fn set_program_name(name: Option<&str>) {
+#[inline]
+pub fn set_program_name(name: Option<impl IntoGStr>) {
     set_prgname(name)
 }
 
 #[doc(alias = "g_set_prgname")]
-pub fn set_prgname(name: Option<&str>) {
-    unsafe { ffi::g_set_prgname(name.to_glib_none().0) }
+#[inline]
+pub fn set_prgname(name: Option<impl IntoGStr>) {
+    name.run_with_gstr(|name| unsafe { ffi::g_set_prgname(name.to_glib_none().0) })
 }
 
 #[doc(alias = "g_environ_getenv")]
@@ -130,50 +134,60 @@ pub fn is_canonical_pspec_name(name: &str) -> bool {
 
 #[doc(alias = "g_uri_escape_string")]
 pub fn uri_escape_string(
-    unescaped: &str,
-    reserved_chars_allowed: Option<&str>,
+    unescaped: impl IntoGStr,
+    reserved_chars_allowed: Option<impl IntoGStr>,
     allow_utf8: bool,
 ) -> crate::GString {
-    unsafe {
-        from_glib_full(ffi::g_uri_escape_string(
-            unescaped.to_glib_none().0,
-            reserved_chars_allowed.to_glib_none().0,
-            allow_utf8.into_glib(),
-        ))
-    }
+    unescaped.run_with_gstr(|unescaped| {
+        reserved_chars_allowed.run_with_gstr(|reserved_chars_allowed| unsafe {
+            from_glib_full(ffi::g_uri_escape_string(
+                unescaped.to_glib_none().0,
+                reserved_chars_allowed.to_glib_none().0,
+                allow_utf8.into_glib(),
+            ))
+        })
+    })
 }
 
 #[doc(alias = "g_uri_unescape_string")]
 pub fn uri_unescape_string(
-    escaped_string: &str,
-    illegal_characters: Option<&str>,
+    escaped_string: impl IntoGStr,
+    illegal_characters: Option<impl IntoGStr>,
 ) -> Option<crate::GString> {
-    unsafe {
-        from_glib_full(ffi::g_uri_unescape_string(
-            escaped_string.to_glib_none().0,
-            illegal_characters.to_glib_none().0,
-        ))
-    }
+    escaped_string.run_with_gstr(|escaped_string| {
+        illegal_characters.run_with_gstr(|illegal_characters| unsafe {
+            from_glib_full(ffi::g_uri_unescape_string(
+                escaped_string.to_glib_none().0,
+                illegal_characters.to_glib_none().0,
+            ))
+        })
+    })
 }
 
 #[doc(alias = "g_uri_parse_scheme")]
-pub fn uri_parse_scheme(uri: &str) -> Option<crate::GString> {
-    unsafe { from_glib_full(ffi::g_uri_parse_scheme(uri.to_glib_none().0)) }
+pub fn uri_parse_scheme(uri: impl IntoGStr) -> Option<crate::GString> {
+    uri.run_with_gstr(|uri| unsafe {
+        from_glib_full(ffi::g_uri_parse_scheme(uri.to_glib_none().0))
+    })
 }
 
 #[doc(alias = "g_uri_unescape_segment")]
 pub fn uri_unescape_segment(
-    escaped_string: Option<&str>,
-    escaped_string_end: Option<&str>,
-    illegal_characters: Option<&str>,
+    escaped_string: Option<impl IntoGStr>,
+    escaped_string_end: Option<impl IntoGStr>,
+    illegal_characters: Option<impl IntoGStr>,
 ) -> Option<crate::GString> {
-    unsafe {
-        from_glib_full(ffi::g_uri_unescape_segment(
-            escaped_string.to_glib_none().0,
-            escaped_string_end.to_glib_none().0,
-            illegal_characters.to_glib_none().0,
-        ))
-    }
+    escaped_string.run_with_gstr(|escaped_string| {
+        escaped_string_end.run_with_gstr(|escaped_string_end| {
+            illegal_characters.run_with_gstr(|illegal_characters| unsafe {
+                from_glib_full(ffi::g_uri_unescape_segment(
+                    escaped_string.to_glib_none().0,
+                    escaped_string_end.to_glib_none().0,
+                    illegal_characters.to_glib_none().0,
+                ))
+            })
+        })
+    })
 }
 
 #[cfg(test)]
@@ -246,16 +260,19 @@ mod tests {
         );
         assert_eq!(crate::uri_parse_scheme("foo"), None);
 
-        let escaped = crate::uri_escape_string("&foo", None, true);
+        let escaped = crate::uri_escape_string("&foo", crate::NONE_STR, true);
         assert_eq!(escaped, GString::from("%26foo"));
 
-        let unescaped = crate::uri_unescape_string(escaped.as_str(), None);
+        let unescaped = crate::uri_unescape_string(escaped.as_str(), crate::GStr::NONE);
         assert_eq!(unescaped, Some(GString::from("&foo")));
 
         assert_eq!(
-            crate::uri_unescape_segment(Some("/foo"), None, None),
+            crate::uri_unescape_segment(Some("/foo"), crate::NONE_STR, crate::NONE_STR),
             Some(GString::from("/foo"))
         );
-        assert_eq!(crate::uri_unescape_segment(Some("/foo%"), None, None), None);
+        assert_eq!(
+            crate::uri_unescape_segment(Some("/foo%"), crate::NONE_STR, crate::NONE_STR),
+            None
+        );
     }
 }

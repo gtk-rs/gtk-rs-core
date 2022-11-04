@@ -14,8 +14,7 @@ use std::ptr;
 // #[cfg(windows)]
 // #[cfg(any(feature = "v2_58", feature = "dox"))]
 // use std::os::windows::io::AsRawHandle;
-use crate::translate::*;
-use crate::GString;
+use crate::{translate::*, GStr};
 #[cfg(not(windows))]
 use crate::{Error, Pid, SpawnFlags};
 
@@ -213,7 +212,7 @@ pub fn spawn_async_with_pipes<
 /// charset if available.
 #[doc(alias = "g_get_charset")]
 #[doc(alias = "get_charset")]
-pub fn charset() -> (bool, Option<GString>) {
+pub fn charset() -> (bool, Option<&'static GStr>) {
     unsafe {
         let mut out_charset = ptr::null();
         let is_utf8 = from_glib(ffi::g_get_charset(&mut out_charset));
