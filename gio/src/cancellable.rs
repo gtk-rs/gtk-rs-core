@@ -75,6 +75,10 @@ pub trait CancellableExtManual {
     /// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
     /// immediately if the cancellable is already cancelled.
     fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>;
+    // rustdoc-stripper-ignore-next
+    /// Set an error if the cancellable is already cancelled.
+    #[doc(alias = "g_cancellable_set_error_if_cancelled")]
+    fn set_error_if_cancelled(&self) -> Result<(), glib::Error>;
 }
 
 impl<O: IsA<Cancellable>> CancellableExtManual for O {
@@ -136,6 +140,24 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
             }
         })
     }
+
+    fn set_error_if_cancelled(&self) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_cancellable_set_error_if_cancelled(
+                self.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            // Here's the special case, this function has an inverted
+            // return value for the error case.
+            assert_eq!(is_ok == glib::ffi::GFALSE, error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -156,6 +178,13 @@ mod tests {
         let id = c.connect_cancelled_local(|_| {});
         c.cancel(); // if it doesn't crash at this point, then we're good to go!
         c.disconnect_cancelled(id.unwrap());
+    }
+
+    #[test]
+    fn cancellable_error_if_cancelled() {
+        let c = Cancellable::new();
+        c.cancel();
+        assert!(c.set_error_if_cancelled().is_err());
     }
 
     #[test]

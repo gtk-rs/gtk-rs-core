@@ -9,7 +9,6 @@ use glib::subclass::prelude::*;
 
 use std::ptr;
 
-use crate::prelude::CancellableExt;
 use crate::prelude::CancellableExtManual;
 use crate::AsyncInitable;
 use crate::AsyncResult;
