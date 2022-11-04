@@ -26,35 +26,120 @@ pub struct GStr(str);
 
 impl GStr {
     // rustdoc-stripper-ignore-next
-    /// Creates a GLib string wrapper from a string slice. The string slice must be terminated with
-    /// a nul byte.
+    /// Creates a GLib string wrapper from a byte slice.
     ///
-    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
-    /// that the string slice is nul-terminated and does not contain any interior nul bytes.
-    pub fn from_str_with_nul(s: &str) -> Result<&Self, std::ffi::FromBytesWithNulError> {
-        let bytes = s.as_bytes();
-        CStr::from_bytes_with_nul(bytes)?;
-        Ok(unsafe { Self::from_bytes_with_nul_unchecked(bytes) })
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring that the byte
+    /// slice is valid UTF-8 and is nul-terminated.
+    #[inline]
+    pub fn from_utf8_with_nul(bytes: &[u8]) -> Result<&Self, GStrError> {
+        Self::check_trailing_nul(bytes)?;
+        std::str::from_utf8(bytes)?;
+        Ok(unsafe { mem::transmute(bytes) })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a byte slice, checking for interior nul-bytes.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring that the byte
+    /// slice is valid UTF-8, is nul-terminated, and does not contain any interior nul-bytes.
+    #[inline]
+    pub fn from_utf8_with_nul_checked(bytes: &[u8]) -> Result<&Self, GStrError> {
+        Self::check_nuls(bytes)?;
+        std::str::from_utf8(bytes)?;
+        Ok(unsafe { mem::transmute(bytes) })
     }
     // rustdoc-stripper-ignore-next
     /// Unsafely creates a GLib string wrapper from a byte slice.
     ///
     /// This function will cast the provided `bytes` to a `GStr` wrapper without performing any
-    /// sanity checks. The provided slice **must** be valid UTF-8, nul-terminated and not contain
-    /// any interior nul bytes.
+    /// sanity checks.
+    ///
+    /// # Safety
+    ///
+    /// The provided slice **must** be valid UTF-8 and nul-terminated. It is undefined behavior to
+    /// pass a slice that does not uphold those conditions.
     #[inline]
-    pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &Self {
+    pub const unsafe fn from_utf8_with_nul_unchecked(bytes: &[u8]) -> &Self {
         debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
+        debug_assert!(std::str::from_utf8(bytes).is_ok());
         mem::transmute(bytes)
     }
     // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a byte slice, truncating it at the first nul-byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring that the byte
+    /// slice is valid UTF-8 and contains at least one nul-byte.
+    #[inline]
+    pub fn from_utf8_until_nul(bytes: &[u8]) -> Result<&Self, GStrError> {
+        let nul_pos = memchr::memchr(0, bytes).ok_or(GStrError::NoTrailingNul)?;
+        let bytes = unsafe { bytes.get_unchecked(..nul_pos + 1) };
+        std::str::from_utf8(bytes)?;
+        Ok(unsafe { mem::transmute(bytes) })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a string slice.
+    ///
+    /// The string slice must be terminated with a nul-byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
+    /// that the string slice is nul-terminated.
+    #[inline]
+    pub fn from_str_with_nul(s: &str) -> Result<&Self, GStrError> {
+        Self::check_trailing_nul(s)?;
+        Ok(unsafe { mem::transmute(s) })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a string slice, checking for interior nul-bytes.
+    ///
+    /// The string slice must be terminated with a nul-byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
+    /// that the string slice is nul-terminated and does not contain any interior nul-bytes.
+    #[inline]
+    pub fn from_str_with_nul_checked(s: &str) -> Result<&Self, GStrError> {
+        Self::check_nuls(s)?;
+        Ok(unsafe { mem::transmute(s) })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Unsafely creates a GLib string wrapper from a string slice. The string slice must be
+    /// terminated with a nul-byte.
+    ///
+    /// This function will cast the provided string slice to a `GStr` without performing any sanity
+    /// checks.
+    ///
+    /// # Safety
+    ///
+    /// The provided string slice **must** be nul-terminated. It is undefined behavior to pass a
+    /// slice that does not uphold those conditions.
+    #[inline]
+    pub const unsafe fn from_str_with_nul_unchecked(s: &str) -> &Self {
+        debug_assert!(!s.is_empty() && s.as_bytes()[s.len() - 1] == 0);
+        mem::transmute(s)
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string wrapper from a string slice, truncating it at the first nul-byte.
+    ///
+    /// The string slice must contain at least one nul-byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
+    /// that the string slice contains at least one nul-byte.
+    #[inline]
+    pub fn from_str_until_nul(s: &str) -> Result<&Self, GStrError> {
+        let b = s.as_bytes();
+        let nul_pos = memchr::memchr(0, b).ok_or(GStrError::NoTrailingNul)?;
+        let s = unsafe { std::str::from_utf8_unchecked(b.get_unchecked(..nul_pos + 1)) };
+        Ok(unsafe { mem::transmute(s) })
+    }
+    // rustdoc-stripper-ignore-next
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
-    /// valid UTF-8 and nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also
-    /// apply here.
+    /// valid UTF-8 and nul-terminated. All constraints from [`CStr::from_ptr`] also apply here.
+    ///
+    /// # Safety
+    ///
+    /// See [`CStr::from_ptr`](CStr::from_ptr#safety).
     #[inline]
     pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a Self {
         let cstr = CStr::from_ptr(ptr);
-        Self::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+        Self::from_utf8_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
     // rustdoc-stripper-ignore-next
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
@@ -66,7 +151,7 @@ impl GStr {
     pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, Self> {
         let mut end_ptr = ptr::null();
         if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
-            Cow::Borrowed(Self::from_bytes_with_nul_unchecked(slice::from_raw_parts(
+            Cow::Borrowed(Self::from_utf8_with_nul_unchecked(slice::from_raw_parts(
                 ptr as *const u8,
                 end_ptr.offset_from(ptr) as usize + 1,
             )))
@@ -114,14 +199,36 @@ impl GStr {
     /// Converts this GLib string to a string slice.
     #[inline]
     pub fn as_str(&self) -> &str {
-        // Clip off the nul byte
-        &self.0[0..self.0.len() - 1]
+        // Clip off the nul-byte
+        unsafe { self.0.get_unchecked(..self.0.len() - 1) }
     }
     // rustdoc-stripper-ignore-next
-    /// Converts this GLib string to a C string slice.
+    /// Converts this GLib string to a C string slice, checking for interior nul-bytes.
+    ///
+    /// Returns `Err` if the string contains any interior nul-bytes.
     #[inline]
-    pub fn as_c_str(&self) -> &CStr {
-        unsafe { CStr::from_bytes_with_nul_unchecked(self.as_bytes_with_nul()) }
+    pub fn to_cstr(&self) -> Result<&CStr, GStrInteriorNulError> {
+        Self::check_interior_nuls(self.as_bytes())?;
+        Ok(unsafe { self.to_cstr_unchecked() })
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a C string slice, truncating it at the first nul-byte.
+    #[inline]
+    pub fn to_cstr_until_nul(&self) -> &CStr {
+        let b = self.as_bytes_with_nul();
+        let nul_pos = memchr::memchr(0, b).unwrap();
+        unsafe { CStr::from_bytes_with_nul_unchecked(b.get_unchecked(..nul_pos + 1)) }
+    }
+    // rustdoc-stripper-ignore-next
+    /// Converts this GLib string to a C string slice, without checking for interior nul-bytes.
+    ///
+    /// # Safety
+    ///
+    /// `self` **must** not contain any interior nul-bytes besides the final terminating nul-byte.
+    /// It is undefined behavior to call this on a string that contains interior nul-bytes.
+    #[inline]
+    pub unsafe fn to_cstr_unchecked(&self) -> &CStr {
+        CStr::from_bytes_with_nul_unchecked(self.as_bytes_with_nul())
     }
 
     #[doc(alias = "g_utf8_collate")]
@@ -129,13 +236,72 @@ impl GStr {
     pub fn collate(&self, other: impl AsRef<GStr>) -> Ordering {
         unsafe { ffi::g_utf8_collate(self.as_ptr(), other.as_ref().as_ptr()) }.cmp(&0)
     }
+
+    fn check_nuls(s: impl AsRef<[u8]>) -> Result<(), GStrError> {
+        let s = s.as_ref();
+        if let Some(nul_pos) = memchr::memchr(0, s) {
+            if s.len() == nul_pos + 1 {
+                Ok(())
+            } else {
+                Err(GStrInteriorNulError(nul_pos).into())
+            }
+        } else {
+            Err(GStrError::NoTrailingNul)
+        }
+    }
+    #[inline]
+    fn check_trailing_nul(s: impl AsRef<[u8]>) -> Result<(), GStrError> {
+        if let Some(c) = s.as_ref().last().copied() {
+            if c == 0 {
+                return Ok(());
+            }
+        }
+        Err(GStrError::NoTrailingNul)
+    }
+    // rustdoc-stripper-ignore-next
+    /// Returns `Err` if the string slice contains any nul-bytes.
+    #[inline]
+    pub(crate) fn check_interior_nuls(s: impl AsRef<[u8]>) -> Result<(), GStrInteriorNulError> {
+        if let Some(nul_pos) = memchr::memchr(0, s.as_ref()) {
+            Err(GStrInteriorNulError(nul_pos))
+        } else {
+            Ok(())
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type holding all possible failures when creating a [`GStr`] reference.
+#[derive(thiserror::Error, Debug)]
+pub enum GStrError {
+    #[error(transparent)]
+    InvalidUtf8(#[from] std::str::Utf8Error),
+    #[error(transparent)]
+    InteriorNul(#[from] GStrInteriorNulError),
+    #[error("data provided is not nul terminated")]
+    NoTrailingNul,
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type indicating that a buffer had unexpected nul-bytes.
+#[derive(thiserror::Error, Copy, Clone, PartialEq, Eq, Debug)]
+#[error("data provided contains an interior nul-byte at byte pos {0}")]
+pub struct GStrInteriorNulError(usize);
+
+impl GStrInteriorNulError {
+    // rustdoc-stripper-ignore-next
+    /// Returns the position of the nul-byte in the slice that caused the conversion to fail.
+    #[inline]
+    pub fn nul_position(&self) -> usize {
+        self.0
+    }
 }
 
 // rustdoc-stripper-ignore-next
 /// Converts a static string literal into a static nul-terminated string.
 ///
 /// The expanded expression has type [`&'static GStr`]. This macro will panic if the
-/// string literal contains any interior nul bytes.
+/// string literal contains any interior nul-bytes.
 ///
 /// # Examples
 ///
@@ -154,7 +320,7 @@ impl GStr {
 #[macro_export]
 macro_rules! gstr {
     ($s:literal) => {
-        unsafe { $crate::GStr::from_bytes_with_nul_unchecked($crate::cstr_bytes!($s)) }
+        unsafe { $crate::GStr::from_utf8_with_nul_unchecked($crate::cstr_bytes!($s)) }
     };
 }
 
@@ -177,7 +343,7 @@ impl<'a> TryFrom<&'a CStr> for &'a GStr {
     #[inline]
     fn try_from(s: &'a CStr) -> Result<Self, Self::Error> {
         s.to_str()?;
-        Ok(unsafe { GStr::from_bytes_with_nul_unchecked(s.to_bytes_with_nul()) })
+        Ok(unsafe { GStr::from_utf8_with_nul_unchecked(s.to_bytes_with_nul()) })
     }
 }
 
@@ -253,12 +419,6 @@ impl AsRef<str> for GStr {
     }
 }
 
-impl AsRef<CStr> for GStr {
-    fn as_ref(&self) -> &CStr {
-        self.as_c_str()
-    }
-}
-
 impl AsRef<OsStr> for GStr {
     fn as_ref(&self) -> &OsStr {
         OsStr::new(self.as_str())
@@ -290,7 +450,19 @@ impl ToOwned for GStr {
 
     #[inline]
     fn to_owned(&self) -> Self::Owned {
-        GString(Inner::Native(Some(self.as_c_str().to_owned())))
+        if self.is_empty() {
+            return GString::default();
+        }
+        // Always copy with the GLib allocator
+        let b = self.as_bytes_with_nul();
+        let inner = unsafe {
+            let copy = ffi::g_strndup(b.as_ptr() as *const c_char, b.len());
+            Inner::Foreign {
+                ptr: ptr::NonNull::new_unchecked(copy),
+                len: b.len() - 1,
+            }
+        };
+        GString(inner)
     }
 }
 
@@ -304,14 +476,52 @@ impl StaticType for GStr {
     }
 }
 
+#[doc(hidden)]
+impl FromGlibPtrNone<*const u8> for &GStr {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const u8) -> Self {
+        assert!(!ptr.is_null(), "provided C string is NULL");
+        let cstr = CStr::from_ptr(ptr as *const _);
+        // Also check if it's valid UTF-8
+        GStr::from_str_with_nul_unchecked(cstr.to_str().unwrap())
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrNone<*const i8> for &GStr {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *const i8) -> Self {
+        from_glib_none(ptr as *const u8)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrNone<*mut u8> for &GStr {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *mut u8) -> Self {
+        from_glib_none(ptr as *const u8)
+    }
+}
+
+#[doc(hidden)]
+impl FromGlibPtrNone<*mut i8> for &GStr {
+    #[inline]
+    unsafe fn from_glib_none(ptr: *mut i8) -> Self {
+        from_glib_none(ptr as *const u8)
+    }
+}
+
 unsafe impl<'a> FromValue<'a> for &'a GStr {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         let cstr = CStr::from_ptr(ptr);
-        assert!(cstr.to_str().is_ok());
-        GStr::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+        assert!(
+            cstr.to_str().is_ok(),
+            "C string in glib::Value is not valid utf-8"
+        );
+        GStr::from_utf8_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
 }
 
@@ -382,11 +592,17 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
 /// `GString` is to <code>&[GStr]</code> as [`String`] is to <code>&[str]</code>: the former in
 /// each pair are owned strings; the latter are borrowed references.
 ///
-/// This type is very similar to [`std::ffi::CString`], but with one added constraint: the string
-/// must also be valid UTF-8.
+/// This type is similar to [`std::ffi::CString`], but with some special behavior. When debug
+/// assertions are enabled, <code>[From]&lt;[String]></code> will panic if there are interior
+/// nul-bytes. In production builds, no checks will be made for interior nul-bytes, and strings
+/// that contain interior nul-bytes will simply end at first nul-byte when converting to a C
+/// string.
+///
+/// The constructors beginning with `from_utf8` `and `from_string` can also be used to further
+/// control how interior nul-bytes are handled.
 pub struct GString(Inner);
 enum Inner {
-    Native(Option<CString>),
+    Native(Option<Box<str>>),
     Foreign {
         ptr: ptr::NonNull<c_char>,
         len: usize,
@@ -398,47 +614,162 @@ unsafe impl Sync for GString {}
 
 impl GString {
     // rustdoc-stripper-ignore-next
-    /// Return the `GString` as string slice.
-    pub fn as_str(&self) -> &str {
-        unsafe {
-            let (ptr, len) = match self.0 {
-                Inner::Native(ref cstr) => {
-                    let cstr = cstr.as_ref().unwrap();
-                    (cstr.as_ptr() as *const u8, cstr.to_bytes().len())
-                }
-                Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
-            };
-            if len == 0 {
-                ""
-            } else {
-                let slice = slice::from_raw_parts(ptr, len);
-                std::str::from_utf8_unchecked(slice)
-            }
+    /// Creates a new empty [`GString`].
+    ///
+    /// Does not allocate.
+    #[inline]
+    pub fn new() -> Self {
+        Self(Inner::Native(None))
+    }
+    // rustdoc-stripper-ignore-next
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a byte vector.
+    ///
+    /// Takes ownership of `bytes`. Returns `Err` if it contains invalid UTF-8.
+    ///
+    /// A trailing nul-byte will be appended by this function.
+    #[inline]
+    pub fn from_utf8(bytes: Vec<u8>) -> Result<Self, std::string::FromUtf8Error> {
+        Ok(Self::from_string_unchecked(String::from_utf8(bytes)?))
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a byte vector, checking for interior nul-bytes.
+    ///
+    /// Takes ownership of `bytes`, as long as it is valid UTF-8 and does not contain any interior
+    /// nul-bytes. Otherwise, `Err` is returned.
+    ///
+    /// A trailing nul-byte will be appended by this function.
+    #[inline]
+    pub fn from_utf8_checked(bytes: Vec<u8>) -> Result<Self, GStringFromError<Vec<u8>>> {
+        Ok(Self::from_string_checked(String::from_utf8(bytes)?)
+            .map_err(|e| GStringInteriorNulError(e.0.into_bytes(), e.1))?)
+    }
+    // rustdoc-stripper-ignore-next
+    /// Unsafely creates a GLib string by consuming a byte vector, without checking for UTF-8 or
+    /// interior nul-bytes.
+    ///
+    /// A trailing nul-byte will be appended by this function.
+    ///
+    /// # Safety
+    ///
+    /// The byte vector **must** not contain invalid UTF-8 characters. It is undefined behavior to
+    /// pass a vector that contains invalid UTF-8.
+    #[inline]
+    pub unsafe fn from_utf8_unchecked(mut v: Vec<u8>) -> Self {
+        if v.is_empty() {
+            Self(Inner::Native(None))
+        } else {
+            v.reserve_exact(1);
+            v.push(0);
+            Self(Inner::Native(Some(String::from_utf8_unchecked(v).into())))
         }
     }
-
     // rustdoc-stripper-ignore-next
-    /// Extracts the [`GStr`] containing the entire string.
-    pub fn as_gstr(&self) -> &GStr {
-        let bytes = match self.0 {
-            Inner::Native(ref cstr) => cstr.as_ref().unwrap().to_bytes_with_nul(),
-            Inner::Foreign { len, .. } if len == 0 => &[0],
-            Inner::Foreign { ptr, len } => unsafe {
-                slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
-            },
+    /// Creates a GLib string by consuming a nul-terminated byte vector, without checking for
+    /// interior nul-bytes.
+    ///
+    /// Takes ownership of `bytes`. Returns `Err` if it contains invalid UTF-8 or does not have a
+    /// trailing nul-byte.
+    #[inline]
+    pub fn from_utf8_with_nul(bytes: Vec<u8>) -> Result<Self, GStringFromError<Vec<u8>>> {
+        let s = String::from_utf8(bytes)?;
+        if s.as_bytes().last().copied() != Some(0u8) {
+            return Err(GStringNoTrailingNulError(s.into_bytes()).into());
+        }
+        if s.len() == 1 {
+            Ok(Self(Inner::Native(None)))
+        } else {
+            Ok(Self(Inner::Native(Some(s.into()))))
+        }
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a nul-terminated byte vector.
+    ///
+    /// Takes ownership of `bytes`. Returns `Err` if it contains invalid UTF-8, does not have a
+    /// trailing nul-byte, or contains interior nul-bytes.
+    #[inline]
+    pub fn from_utf8_with_nul_checked(bytes: Vec<u8>) -> Result<Self, GStringFromError<Vec<u8>>> {
+        let s = Self::from_utf8_with_nul(bytes)?;
+        if let Err(e) = GStr::check_interior_nuls(&s) {
+            return Err(GStringInteriorNulError(s.into_bytes(), e).into());
+        }
+        Ok(s)
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a byte vector, without checking for UTF-8, a trailing
+    /// nul-byte, or interior nul-bytes.
+    ///
+    /// # Safety
+    ///
+    /// The byte vector **must** not contain invalid UTF-8 characters, and **must** have a trailing
+    /// nul-byte. It is undefined behavior to pass a vector that does not uphold those conditions.
+    #[inline]
+    pub unsafe fn from_utf8_with_nul_unchecked(v: Vec<u8>) -> Self {
+        debug_assert!(!v.is_empty() && v[v.len() - 1] == 0);
+        let s = if cfg!(debug_assertions) {
+            let s = String::from_utf8(v).unwrap();
+            GStr::check_interior_nuls(&s[..s.len() - 1]).unwrap();
+            s
+        } else {
+            String::from_utf8_unchecked(v)
         };
-        unsafe { GStr::from_bytes_with_nul_unchecked(bytes) }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Return the underlying pointer of the `GString`.
-    pub fn as_ptr(&self) -> *const c_char {
-        match self.0 {
-            Inner::Native(ref cstr) => cstr.as_ref().unwrap().as_ptr() as *const _,
-            Inner::Foreign { ptr, .. } => ptr.as_ptr(),
+        if s.len() == 1 {
+            Self(Inner::Native(None))
+        } else {
+            Self(Inner::Native(Some(s.into())))
         }
     }
-
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a nul-terminated byte vector, truncating it at the first
+    /// nul-byte.
+    ///
+    /// Takes ownership of `bytes`. Returns `Err` if it contains invalid UTF-8 or does not contain
+    /// at least one nul-byte.
+    pub fn from_utf8_until_nul(mut bytes: Vec<u8>) -> Result<Self, GStringFromError<Vec<u8>>> {
+        let nul_pos = if let Some(nul_pos) = memchr::memchr(0, &bytes) {
+            nul_pos
+        } else {
+            return Err(GStringNoTrailingNulError(bytes).into());
+        };
+        if nul_pos == 0 {
+            Ok(Self(Inner::Native(None)))
+        } else {
+            if let Err(e) = std::str::from_utf8(unsafe { bytes.get_unchecked(..nul_pos) }) {
+                return Err(GStringUtf8Error(bytes, e).into());
+            }
+            bytes.truncate(nul_pos + 1);
+            let s = unsafe { String::from_utf8_unchecked(bytes) };
+            Ok(Self(Inner::Native(Some(s.into()))))
+        }
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a string, checking for interior nul-bytes.
+    ///
+    /// Takes ownership of `s`, as long as it does not contain any interior nul-bytes. Otherwise,
+    /// `Err` is returned.
+    ///
+    /// A trailing nul-byte will be appended by this function.
+    #[inline]
+    pub fn from_string_checked(s: String) -> Result<Self, GStringInteriorNulError<String>> {
+        if let Err(e) = GStr::check_interior_nuls(&s) {
+            return Err(GStringInteriorNulError(s, e));
+        }
+        Ok(Self::from_string_unchecked(s))
+    }
+    // rustdoc-stripper-ignore-next
+    /// Creates a GLib string by consuming a string, without checking for interior nul-bytes.
+    ///
+    /// A trailing nul-byte will be appended by this function.
+    #[inline]
+    pub fn from_string_unchecked(mut s: String) -> Self {
+        if s.is_empty() {
+            Self(Inner::Native(None))
+        } else {
+            s.reserve_exact(1);
+            s.push('\0');
+            Self(Inner::Native(Some(s.into())))
+        }
+    }
     // rustdoc-stripper-ignore-next
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
     /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
@@ -464,30 +795,221 @@ impl GString {
             len,
         })
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Return the `GString` as string slice.
+    #[inline]
+    pub fn as_str(&self) -> &str {
+        unsafe {
+            let (ptr, len) = match self.0 {
+                Inner::Native(None) => (ptr::null(), 0),
+                Inner::Native(Some(ref s)) => (s.as_ptr() as *const u8, s.len() - 1),
+                Inner::Foreign { ptr, len } => (ptr.as_ptr() as *const u8, len),
+            };
+            if len == 0 {
+                ""
+            } else {
+                let slice = slice::from_raw_parts(ptr, len);
+                std::str::from_utf8_unchecked(slice)
+            }
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Extracts the [`GStr`] containing the entire string.
+    #[inline]
+    pub fn as_gstr(&self) -> &GStr {
+        let bytes = match self.0 {
+            Inner::Native(None) => return <&GStr>::default(),
+            Inner::Native(Some(ref s)) => s.as_bytes(),
+            Inner::Foreign { len, .. } if len == 0 => &[0],
+            Inner::Foreign { ptr, len } => unsafe {
+                slice::from_raw_parts(ptr.as_ptr() as *const _, len + 1)
+            },
+        };
+        unsafe { GStr::from_utf8_with_nul_unchecked(bytes) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Return the underlying pointer of the `GString`.
+    #[inline]
+    pub fn as_ptr(&self) -> *const c_char {
+        match self.0 {
+            Inner::Native(None) => <&GStr>::default().as_ptr(),
+            Inner::Native(Some(ref s)) => s.as_ptr() as *const _,
+            Inner::Foreign { ptr, .. } => ptr.as_ptr(),
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Consumes the `GString` and returns the underlying byte buffer.
+    ///
+    /// The returned buffer is not guaranteed to contain a trailing nul-byte.
+    pub fn into_bytes(mut self) -> Vec<u8> {
+        match &mut self.0 {
+            Inner::Native(s) => match s.take() {
+                None => Vec::new(),
+                Some(s) => {
+                    let mut s = String::from(s);
+                    let _nul = s.pop();
+                    debug_assert_eq!(_nul, Some('\0'));
+                    s.into_bytes()
+                }
+            },
+            Inner::Foreign { ptr, len } => {
+                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len - 1) };
+                bytes.to_owned()
+            }
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Consumes the `GString` and returns the underlying byte buffer, with trailing nul-byte.
+    pub fn into_bytes_with_nul(mut self) -> Vec<u8> {
+        match &mut self.0 {
+            Inner::Native(s) => match s.take() {
+                None => vec![0u8],
+                Some(s) => str::into_boxed_bytes(s).into(),
+            },
+            Inner::Foreign { ptr, len } => {
+                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len) };
+                bytes.to_owned()
+            }
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type indicating that a buffer did not have a trailing nul-byte.
+///
+/// `T` is the type of the value the conversion was attempted from.
+#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
+#[error("data provided is not nul terminated")]
+pub struct GStringNoTrailingNulError<T>(T);
+
+impl<T> GStringNoTrailingNulError<T> {
+    // rustdoc-stripper-ignore-next
+    /// Returns the original value that was attempted to convert to [`GString`].
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type indicating that a buffer had unexpected nul-bytes.
+///
+/// `T` is the type of the value the conversion was attempted from.
+#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
+#[error("{1}")]
+pub struct GStringInteriorNulError<T>(T, GStrInteriorNulError);
+
+impl<T> GStringInteriorNulError<T> {
+    // rustdoc-stripper-ignore-next
+    /// Returns the original value that was attempted to convert to [`GString`].
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+    // rustdoc-stripper-ignore-next
+    /// Fetch a [`GStrInteriorNulError`] to get more details about the conversion failure.
+    #[inline]
+    pub fn nul_error(&self) -> GStrInteriorNulError {
+        self.1
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type indicating that a buffer had invalid UTF-8.
+///
+/// `T` is the type of the value the conversion was attempted from.
+#[derive(thiserror::Error, Clone, PartialEq, Eq, Debug)]
+#[error("{1}")]
+pub struct GStringUtf8Error<T>(T, std::str::Utf8Error);
+
+impl<T> GStringUtf8Error<T> {
+    // rustdoc-stripper-ignore-next
+    /// Returns the original value that was attempted to convert to [`GString`].
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+    // rustdoc-stripper-ignore-next
+    /// Fetch a [`Utf8Error`](std::str::Utf8Error) to get more details about the conversion
+    /// failure.
+    #[inline]
+    pub fn utf8_error(&self) -> std::str::Utf8Error {
+        self.1
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Error type holding all possible failures when creating a [`GString`].
+#[derive(thiserror::Error, Debug)]
+pub enum GStringFromError<T> {
+    #[error(transparent)]
+    NoTrailingNul(#[from] GStringNoTrailingNulError<T>),
+    #[error(transparent)]
+    InteriorNul(#[from] GStringInteriorNulError<T>),
+    #[error(transparent)]
+    InvalidUtf8(#[from] GStringUtf8Error<T>),
+    #[error("unable to convert")]
+    Unspecified(T),
+}
+
+impl<T> GStringFromError<T> {
+    pub fn into_inner(self) -> T {
+        match self {
+            Self::NoTrailingNul(GStringNoTrailingNulError(t)) => t,
+            Self::InteriorNul(GStringInteriorNulError(t, _)) => t,
+            Self::InvalidUtf8(GStringUtf8Error(t, _)) => t,
+            Self::Unspecified(t) => t,
+        }
+    }
+    #[inline]
+    fn convert<R>(self, func: impl FnOnce(T) -> R) -> GStringFromError<R> {
+        match self {
+            Self::NoTrailingNul(GStringNoTrailingNulError(t)) => {
+                GStringFromError::NoTrailingNul(GStringNoTrailingNulError(func(t)))
+            }
+            Self::InteriorNul(GStringInteriorNulError(t, e)) => {
+                GStringFromError::InteriorNul(GStringInteriorNulError(func(t), e))
+            }
+            Self::InvalidUtf8(GStringUtf8Error(t, e)) => {
+                GStringFromError::InvalidUtf8(GStringUtf8Error(func(t), e))
+            }
+            Self::Unspecified(t) => GStringFromError::Unspecified(func(t)),
+        }
+    }
+}
+
+impl From<std::string::FromUtf8Error> for GStringFromError<Vec<u8>> {
+    #[inline]
+    fn from(e: std::string::FromUtf8Error) -> Self {
+        let ue = e.utf8_error();
+        Self::InvalidUtf8(GStringUtf8Error(e.into_bytes(), ue))
+    }
 }
 
 impl IntoGlibPtr<*mut c_char> for GString {
     // rustdoc-stripper-ignore-next
-    /// Transform into a `NUL`-terminated raw C string pointer.
+    /// Transform into a nul-terminated raw C string pointer.
     unsafe fn into_glib_ptr(self) -> *mut c_char {
         match self.0 {
-            Inner::Native(ref cstr) => {
-                let cstr = cstr.as_ref().unwrap();
-
-                let ptr = cstr.as_ptr();
-                let len = cstr.to_bytes().len();
-
-                let copy = ffi::g_malloc(len + 1) as *mut c_char;
-                ptr::copy_nonoverlapping(ptr as *const c_char, copy, len + 1);
-                ptr::write(copy.add(len), 0);
-
-                copy
-            }
+            Inner::Native(None) => ffi::g_malloc0(1) as *mut _,
+            Inner::Native(Some(ref s)) => ffi::g_strndup(s.as_ptr() as *const _, s.len()),
             Inner::Foreign { ptr, .. } => {
                 let _s = mem::ManuallyDrop::new(self);
                 ptr.as_ptr()
             }
         }
+    }
+}
+
+impl Default for GString {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -693,12 +1215,6 @@ impl AsRef<str> for GString {
     }
 }
 
-impl AsRef<CStr> for GString {
-    fn as_ref(&self) -> &CStr {
-        self.as_gstr().as_c_str()
-    }
-}
-
 impl AsRef<OsStr> for GString {
     #[inline]
     fn as_ref(&self) -> &OsStr {
@@ -732,17 +1248,23 @@ impl Deref for GString {
 impl From<GString> for String {
     #[inline]
     fn from(mut s: GString) -> Self {
-        match s.0 {
-            Inner::Foreign { len, .. } if len == 0 => String::new(),
+        match &mut s.0 {
+            Inner::Native(s) => match s.take() {
+                None => Self::default(),
+                Some(s) => {
+                    // Moves the underlying string
+                    let mut s = String::from(s);
+                    let _nul = s.pop();
+                    debug_assert_eq!(_nul, Some('\0'));
+                    s
+                }
+            },
+            Inner::Foreign { len, .. } if *len == 0 => String::new(),
             Inner::Foreign { ptr, len } => unsafe {
                 // Creates a copy
-                let slice = slice::from_raw_parts(ptr.as_ptr() as *const u8, len);
+                let slice = slice::from_raw_parts(ptr.as_ptr() as *const u8, *len);
                 std::str::from_utf8_unchecked(slice).into()
             },
-            Inner::Native(ref mut cstr) => {
-                // Moves the underlying string
-                cstr.take().unwrap().into_string().unwrap()
-            }
         }
     }
 }
@@ -751,19 +1273,24 @@ impl From<GString> for Box<str> {
     #[inline]
     fn from(s: GString) -> Self {
         // Potentially creates a copy
-        let st: String = s.into();
-        st.into_boxed_str()
+        String::from(s).into()
     }
 }
 
 impl From<String> for GString {
     #[inline]
-    fn from(s: String) -> Self {
+    fn from(mut s: String) -> Self {
         // Moves the content of the String
-        unsafe {
+        if cfg!(debug_assertions) {
+            GStr::check_interior_nuls(&s).unwrap();
+        }
+        if s.is_empty() {
+            Self(Inner::Native(None))
+        } else {
+            s.reserve_exact(1);
+            s.push('\0');
             // No check for valid UTF-8 here
-            let cstr = CString::from_vec_unchecked(s.into_bytes());
-            GString(Inner::Native(Some(cstr)))
+            Self(Inner::Native(Some(s.into())))
         }
     }
 }
@@ -786,13 +1313,16 @@ impl From<&GStr> for GString {
 impl From<&str> for GString {
     #[inline]
     fn from(s: &str) -> Self {
+        if cfg!(debug_assertions) {
+            GStr::check_interior_nuls(s).unwrap();
+        }
+        if s.is_empty() {
+            return Self::default();
+        }
         // Allocates with the GLib allocator
         unsafe {
             // No check for valid UTF-8 here
-            let copy = ffi::g_malloc(s.len() + 1) as *mut c_char;
-            ptr::copy_nonoverlapping(s.as_ptr() as *const c_char, copy, s.len());
-            ptr::write(copy.add(s.len()), 0);
-
+            let copy = ffi::g_strndup(s.as_ptr() as *const c_char, s.len());
             GString(Inner::Foreign {
                 ptr: ptr::NonNull::new_unchecked(copy),
                 len: s.len(),
@@ -801,23 +1331,13 @@ impl From<&str> for GString {
     }
 }
 
-impl From<Vec<u8>> for GString {
-    #[inline]
-    fn from(s: Vec<u8>) -> Self {
-        // Moves the content of the Vec
-        // Also check if it's valid UTF-8
-        let cstring = CString::new(s).expect("CString::new failed");
-        cstring.into()
-    }
-}
-
 impl From<CString> for GString {
     #[inline]
     fn from(s: CString) -> Self {
         // Moves the content of the CString
         // Also check if it's valid UTF-8
-        assert!(s.to_str().is_ok());
-        Self(Inner::Native(Some(s)))
+        let s = String::from_utf8(s.into_bytes_with_nul()).unwrap();
+        Self(Inner::Native(Some(s.into_boxed_str())))
     }
 }
 
@@ -846,12 +1366,15 @@ impl<'a> From<&'a GStr> for Cow<'a, GStr> {
 impl FromGlibPtrFull<*mut u8> for GString {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut u8) -> Self {
-        assert!(!ptr.is_null());
+        assert!(!ptr.is_null(), "provided C string is NULL");
 
-        // Check for valid UTF-8 here
         let cstr = CStr::from_ptr(ptr as *const _);
-        assert!(cstr.to_str().is_ok());
-        GString(Inner::Foreign {
+        // Check for valid UTF-8 here
+        assert!(
+            cstr.to_str().is_ok(),
+            "provided C string is not valid utf-8"
+        );
+        Self(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
             len: cstr.to_bytes().len(),
         })
@@ -886,7 +1409,7 @@ impl FromGlibPtrFull<*const i8> for GString {
 impl FromGlibPtrNone<*const u8> for GString {
     #[inline]
     unsafe fn from_glib_none(ptr: *const u8) -> Self {
-        assert!(!ptr.is_null());
+        assert!(!ptr.is_null(), "provided C string is NULL");
         let cstr = CStr::from_ptr(ptr as *const _);
         // Also check if it's valid UTF-8
         cstr.to_str().unwrap().into()
@@ -926,7 +1449,7 @@ impl FromGlibPtrBorrow<*const u8> for GString {
         // Check for valid UTF-8 here
         let cstr = CStr::from_ptr(ptr as *const _);
         assert!(cstr.to_str().is_ok());
-        Borrowed::new(GString(Inner::Foreign {
+        Borrowed::new(Self(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
             len: cstr.to_bytes().len(),
         }))
@@ -1021,7 +1544,7 @@ impl<'a> ToGlibPtr<'a, *mut i8> for GString {
 impl FromGlibContainer<*const c_char, *const i8> for GString {
     unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::default();
         }
         let slice = slice::from_raw_parts(ptr as *const u8, num);
         // Also check if it's valid UTF-8
@@ -1030,7 +1553,7 @@ impl FromGlibContainer<*const c_char, *const i8> for GString {
 
     unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::default();
         }
 
         // Check if it's valid UTF-8
@@ -1045,7 +1568,7 @@ impl FromGlibContainer<*const c_char, *const i8> for GString {
 
     unsafe fn from_glib_full_num(ptr: *const i8, num: usize) -> Self {
         if num == 0 || ptr.is_null() {
-            return Self::from("");
+            return Self::default();
         }
 
         // Check if it's valid UTF-8
@@ -1283,7 +1806,7 @@ mod tests {
     #[test]
     fn test_vec_u8_to_gstring() {
         let v: &[u8] = b"foo";
-        let s: GString = Vec::from(v).into();
+        let s: GString = GString::from_utf8(Vec::from(v)).unwrap();
         assert_eq!(s.as_str(), "foo");
     }
 
