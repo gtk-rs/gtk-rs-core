@@ -25,6 +25,7 @@ pub use crate::cancellable_future::CancellableFuture;
 pub use crate::cancellable_future::Cancelled;
 mod converter;
 mod data_input_stream;
+mod datagram_based;
 mod dbus;
 pub use self::dbus::*;
 mod dbus_connection;

@@ -98,6 +98,9 @@ pub use self::data_input_stream::DataInputStream;
 mod data_output_stream;
 pub use self::data_output_stream::DataOutputStream;
 
+mod datagram_based;
+pub use self::datagram_based::DatagramBased;
+
 #[cfg(any(feature = "v2_72", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 mod debug_controller;
@@ -387,6 +390,7 @@ mod unix_fd_message;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 pub use self::unix_fd_message::UnixFDMessage;
+
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_input_stream;
@@ -723,6 +727,7 @@ pub mod traits {
     pub use super::converter_output_stream::ConverterOutputStreamExt;
     pub use super::data_input_stream::DataInputStreamExt;
     pub use super::data_output_stream::DataOutputStreamExt;
+    pub use super::datagram_based::DatagramBasedExt;
     pub use super::dbus_interface::DBusInterfaceExt;
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;

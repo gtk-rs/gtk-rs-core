@@ -15,6 +15,7 @@ pub use crate::application::*;
 pub use crate::cancellable::*;
 pub use crate::converter::*;
 pub use crate::data_input_stream::DataInputStreamExtManual;
+pub use crate::datagram_based::*;
 pub use crate::dbus_proxy::DBusProxyExtManual;
 #[cfg(any(feature = "v2_72", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
