@@ -2409,6 +2409,118 @@ impl From<PasswordSave> for glib::Value {
     }
 }
 
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GPollableReturn")]
+pub enum PollableReturn {
+    #[doc(alias = "G_POLLABLE_RETURN_FAILED")]
+    Failed,
+    #[doc(alias = "G_POLLABLE_RETURN_OK")]
+    Ok,
+    #[doc(alias = "G_POLLABLE_RETURN_WOULD_BLOCK")]
+    WouldBlock,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl fmt::Display for PollableReturn {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "PollableReturn::{}",
+            match *self {
+                Self::Failed => "Failed",
+                Self::Ok => "Ok",
+                Self::WouldBlock => "WouldBlock",
+                _ => "Unknown",
+            }
+        )
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[doc(hidden)]
+impl IntoGlib for PollableReturn {
+    type GlibType = ffi::GPollableReturn;
+
+    fn into_glib(self) -> ffi::GPollableReturn {
+        match self {
+            Self::Failed => ffi::G_POLLABLE_RETURN_FAILED,
+            Self::Ok => ffi::G_POLLABLE_RETURN_OK,
+            Self::WouldBlock => ffi::G_POLLABLE_RETURN_WOULD_BLOCK,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GPollableReturn> for PollableReturn {
+    unsafe fn from_glib(value: ffi::GPollableReturn) -> Self {
+        match value {
+            ffi::G_POLLABLE_RETURN_FAILED => Self::Failed,
+            ffi::G_POLLABLE_RETURN_OK => Self::Ok,
+            ffi::G_POLLABLE_RETURN_WOULD_BLOCK => Self::WouldBlock,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl StaticType for PollableReturn {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::g_pollable_return_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl glib::value::ValueType for PollableReturn {
+    type Type = Self;
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+unsafe impl<'a> FromValue<'a> for PollableReturn {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl ToValue for PollableReturn {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl From<PollableReturn> for glib::Value {
+    #[inline]
+    fn from(v: PollableReturn) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GResolverError")]

@@ -91,6 +91,7 @@ generate = [
     "Gio.OutputStreamSpliceFlags",
     "Gio.PasswordSave",
     "Gio.Permission",
+    "Gio.PollableReturn",
     "Gio.PropertyAction",
     "Gio.Proxy",
     "Gio.ProxyResolver",
@@ -151,8 +152,10 @@ ignore = [
 manual = [
     "Gio.ActionEntry",
     "Gio.FileAttributeInfo",
+    "Gio.InputMessage",
     "Gio.IOExtension",
     "Gio.IOExtensionPoint",
+    "Gio.OutputMessage",
     "Gio.Task",
     "GLib.ByteArray",
     "GLib.Bytes",
@@ -496,7 +499,6 @@ generate_builder = true
     name = "read_line_finish_utf8"
     #finish functions not needed
     manual = true
-
 
 [[object]]
 name = "Gio.DataOutputStream"
@@ -1188,6 +1190,22 @@ status = "generate"
         nullable = true
 
 [[object]]
+name = "Gio.SocketControlMessage"
+status = "generate"
+manual_traits = ["SocketControlMessageExtManual"]
+    [[object.function]]
+    name = "deserialize"
+        # NULL indicates deserialization failure
+        # Glib MR: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3099
+        [object.function.return]
+        nullable = true
+    [[object.function]]
+    name = "serialize"
+    # writes to a void pointer
+    manual = true
+    doc_trait_name = "SocketControlMessageExtManual"
+
+[[object]]
 name = "Gio.Subprocess"
 status = "generate"
     [[object.function]]
@@ -1318,6 +1336,11 @@ status = "generate"
     ignore = true
 
 [[object]]
+name = "Gio.UnixCredentialsMessage"
+status = "generate"
+cfg_condition = "unix"
+
+[[object]]
 name = "Gio.UnixFDList"
 status = "generate"
 cfg_condition = "unix"
@@ -1350,6 +1373,22 @@ manual_traits = ["UnixFDListExtManual"]
     # has to use RawFd
     manual = true
     doc_trait_name = "UnixFDListExtManual"
+
+[[object]]
+name = "Gio.UnixFDMessage"
+status = "generate"
+cfg_condition = "unix"
+manual_traits = ["UnixFDMessageExtManual"]
+    [[object.function]]
+    name = "append_fd"
+    # has to use RawFd
+    manual = true
+    doc_trait_name = "UnixFDMessageExtManual"
+    [[object.function]]
+    name = "steal_fds"
+    # has to use RawFd
+    manual = true
+    doc_trait_name = "UnixFDMessageExtManual"
 
 [[object]]
 name = "Gio.UnixInputStream"

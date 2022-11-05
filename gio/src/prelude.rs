@@ -32,10 +32,13 @@ pub use crate::pollable_input_stream::PollableInputStreamExtManual;
 pub use crate::pollable_output_stream::PollableOutputStreamExtManual;
 pub use crate::settings::SettingsExtManual;
 pub use crate::simple_proxy_resolver::SimpleProxyResolverExtManual;
-pub use crate::socket::*;
+pub use crate::socket::SocketExtManual;
+pub use crate::socket_control_message::*;
 pub use crate::tls_connection::TlsConnectionExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_fd_list::UnixFDListExtManual;
+#[cfg(any(unix, feature = "dox"))]
+pub use crate::unix_fd_message::UnixFDMessageExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_input_stream::UnixInputStreamExtManual;
 #[cfg(any(unix, feature = "dox"))]

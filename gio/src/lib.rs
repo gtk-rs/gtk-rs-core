@@ -76,11 +76,17 @@ mod settings;
 pub use crate::settings::BindingBuilder;
 mod simple_proxy_resolver;
 mod socket;
+pub use socket::{InputMessage, InputVector, OutputMessage, OutputVector, SocketControlMessages};
+mod socket_control_message;
+mod socket_msg_flags;
+pub use socket_msg_flags::SocketMsgFlags;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_fd_list;
+#[cfg(any(unix, feature = "dox"))]
+mod unix_fd_message;
 #[cfg(any(unix, feature = "dox"))]
 mod unix_input_stream;
 #[cfg(any(unix, feature = "dox"))]
