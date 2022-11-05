@@ -4,6 +4,8 @@ use crate::error::to_std_io_result;
 use crate::prelude::*;
 use crate::Cancellable;
 use crate::PollableOutputStream;
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use crate::{OutputVector, PollableReturn};
 use futures_channel::oneshot;
 use futures_core::task::{Context, Poll};
 use futures_core::Future;
@@ -41,6 +43,15 @@ pub trait PollableOutputStreamExtManual {
         cancellable: Option<&C>,
         priority: glib::Priority,
     ) -> Pin<Box<dyn Stream<Item = ()> + 'static>>;
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
+    fn writev_nonblocking(
+        &self,
+        vectors: &[OutputVector],
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<(PollableReturn, usize), glib::Error>;
 
     fn into_async_write(self) -> Result<OutputStreamAsyncWrite<Self>, Self>
     where
@@ -143,6 +154,33 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
                 }
             })
         }))
+    }
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    fn writev_nonblocking(
+        &self,
+        vectors: &[OutputVector],
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<(PollableReturn, usize), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let mut bytes_written = 0;
+
+            let ret = ffi::g_pollable_output_stream_writev_nonblocking(
+                self.as_ref().to_glib_none().0,
+                vectors.as_ptr() as *const _,
+                vectors.len(),
+                &mut bytes_written,
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok((from_glib(ret), bytes_written))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 }
 
