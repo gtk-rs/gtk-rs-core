@@ -236,6 +236,51 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         }
     }
 
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    fn poll_write_vectored(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        bufs: &[io::IoSlice<'_>],
+    ) -> Poll<io::Result<usize>> {
+        let stream = Pin::get_ref(self.as_ref());
+        let vectors = bufs
+            .iter()
+            .map(|v| OutputVector::new(&**v))
+            .collect::<smallvec::SmallVec<[_; 2]>>();
+        let gio_result = stream
+            .0
+            .as_ref()
+            .writev_nonblocking(&vectors, crate::Cancellable::NONE);
+
+        match gio_result {
+            Ok((PollableReturn::Ok, size)) => Poll::Ready(Ok(size as usize)),
+            Ok((PollableReturn::WouldBlock, _)) => {
+                let mut waker = Some(cx.waker().clone());
+                let source = stream.0.as_ref().create_source(
+                    crate::Cancellable::NONE,
+                    None,
+                    glib::PRIORITY_DEFAULT,
+                    move |_| {
+                        if let Some(waker) = waker.take() {
+                            waker.wake();
+                        }
+                        glib::Continue(false)
+                    },
+                );
+                let main_context = glib::MainContext::ref_thread_default();
+                source.attach(Some(&main_context));
+
+                Poll::Pending
+            }
+            Ok((_, _)) => unreachable!(),
+            Err(err) => Poll::Ready(Err(io::Error::new(
+                io::ErrorKind::from(err.kind::<crate::IOErrorEnum>().unwrap()),
+                err,
+            ))),
+        }
+    }
+
     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
         let stream = unsafe { Pin::get_unchecked_mut(self) };
 

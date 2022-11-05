@@ -668,6 +668,30 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
         to_std_io_result(result)
     }
 
+    fn write_all(&mut self, buf: &[u8]) -> io::Result<()> {
+        let result = self
+            .0
+            .as_ref()
+            .write_all(buf, crate::Cancellable::NONE)
+            .and_then(|(_, e)| e.map(Err).unwrap_or(Ok(())));
+        to_std_io_result(result)
+    }
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    fn write_vectored(&mut self, bufs: &[io::IoSlice<'_>]) -> io::Result<usize> {
+        let vectors = bufs
+            .iter()
+            .map(|v| OutputVector::new(&**v))
+            .collect::<smallvec::SmallVec<[_; 2]>>();
+        let result = self
+            .0
+            .as_ref()
+            .writev(&vectors, crate::Cancellable::NONE)
+            .map(|size| size as usize);
+        to_std_io_result(result)
+    }
+
     fn flush(&mut self) -> io::Result<()> {
         let gio_result = self.0.as_ref().flush(crate::Cancellable::NONE);
         to_std_io_result(gio_result)
