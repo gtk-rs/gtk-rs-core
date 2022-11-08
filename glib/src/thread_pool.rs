@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{future::Future, ptr};
+use std::{future::Future, panic, ptr};
 
 use futures_channel::oneshot;
 
@@ -12,6 +12,30 @@ pub struct ThreadPool(ptr::NonNull<ffi::GThreadPool>);
 
 unsafe impl Send for ThreadPool {}
 unsafe impl Sync for ThreadPool {}
+
+// rustdoc-stripper-ignore-next
+/// A handle to a thread running on a [`ThreadPool`].
+///
+/// Like [`std::thread::JoinHandle`] for a GLib thread. The return value from the task can be
+/// retrieved by calling [`ThreadHandle::join`]. Dropping the handle "detaches" the thread,
+/// allowing it to complete but discarding the return value.
+#[derive(Debug)]
+pub struct ThreadHandle<T> {
+    rx: std::sync::mpsc::Receiver<std::thread::Result<T>>,
+}
+
+impl<T> ThreadHandle<T> {
+    // rustdoc-stripper-ignore-next
+    /// Waits for the associated thread to finish.
+    ///
+    /// Blocks until the associated thread returns. Returns `Ok` with the value returned from the
+    /// thread, or `Err` if the thread panicked. This function will return immediately if the
+    /// associated thread has already finished.
+    #[inline]
+    pub fn join(self) -> std::thread::Result<T> {
+        self.rx.recv().unwrap()
+    }
+}
 
 impl ThreadPool {
     #[doc(alias = "g_thread_pool_new")]
@@ -53,9 +77,15 @@ impl ThreadPool {
     }
 
     #[doc(alias = "g_thread_pool_push")]
-    pub fn push<F: FnOnce() + Send + 'static>(&self, func: F) -> Result<(), crate::Error> {
+    pub fn push<T: Send + 'static, F: FnOnce() -> T + Send + 'static>(
+        &self,
+        func: F,
+    ) -> Result<ThreadHandle<T>, crate::Error> {
+        let (tx, rx) = std::sync::mpsc::sync_channel(1);
         unsafe {
-            let func: Box<dyn FnOnce() + Send + 'static> = Box::new(func);
+            let func: Box<dyn FnOnce() + Send + 'static> = Box::new(move || {
+                let _ = tx.send(panic::catch_unwind(panic::AssertUnwindSafe(func)));
+            });
             let func = Box::new(func);
             let mut err = ptr::null_mut();
 
@@ -66,7 +96,7 @@ impl ThreadPool {
                 &mut err,
             ));
             if ret {
-                Ok(())
+                Ok(ThreadHandle { rx })
             } else {
                 let _ = Box::from_raw(func);
                 Err(from_glib_full(err))
@@ -77,11 +107,12 @@ impl ThreadPool {
     pub fn push_future<T: Send + 'static, F: FnOnce() -> T + Send + 'static>(
         &self,
         func: F,
-    ) -> Result<impl Future<Output = T> + Send + Sync + 'static, crate::Error> {
+    ) -> Result<impl Future<Output = std::thread::Result<T>> + Send + Sync + 'static, crate::Error>
+    {
         let (sender, receiver) = oneshot::channel();
 
         self.push(move || {
-            let _ = sender.send(func());
+            let _ = sender.send(panic::catch_unwind(panic::AssertUnwindSafe(func)));
         })?;
 
         Ok(async move { receiver.await.expect("Dropped before executing") })
@@ -198,11 +229,14 @@ mod tests {
         let p = ThreadPool::exclusive(1).unwrap();
         let (sender, receiver) = mpsc::channel();
 
-        p.push(move || {
-            sender.send(true).unwrap();
-        })
-        .unwrap();
+        let handle = p
+            .push(move || {
+                sender.send(true).unwrap();
+                123
+            })
+            .unwrap();
 
+        assert_eq!(handle.join().unwrap(), 123);
         assert_eq!(receiver.recv(), Ok(true));
     }
 
@@ -214,6 +248,6 @@ mod tests {
         let fut = p.push_future(|| true).unwrap();
 
         let res = c.block_on(fut);
-        assert!(res);
+        assert!(res.unwrap());
     }
 }

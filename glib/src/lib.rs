@@ -205,7 +205,7 @@ mod future_with_timeout;
 pub use self::future_with_timeout::*;
 
 mod thread_pool;
-pub use self::thread_pool::ThreadPool;
+pub use self::thread_pool::{ThreadHandle, ThreadPool};
 
 pub mod thread_guard;
 
