@@ -16,7 +16,7 @@ fn structured_log() {
                 .map(|f| {
                     let value = if let Some(data) = f.user_data() {
                         assert!(f.value_str().is_none());
-                        format!("USERDATA: {}", data)
+                        format!("USERDATA: {data}")
                     } else {
                         f.value_str().unwrap().to_owned()
                     };

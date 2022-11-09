@@ -248,7 +248,7 @@ mod tests {
     #[test]
     fn display() {
         let s: crate::GStringBuilder = crate::GStringBuilder::new("This is a string.");
-        assert_eq!(&format!("{}", s), "This is a string.");
+        assert_eq!(&format!("{s}"), "This is a string.");
     }
 
     #[test]
