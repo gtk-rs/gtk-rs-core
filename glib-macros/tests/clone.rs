@@ -84,8 +84,8 @@ fn clone_failures() {
     for (index, (expr, err)) in TESTS.iter().enumerate() {
         let prefix = "fn main() { use glib::clone; let v = std::rc::Rc::new(1); ";
         let suffix = "; }";
-        let output = format!("{}{}{}", prefix, expr, suffix);
+        let output = format!("{prefix}{expr}{suffix}");
 
-        t.compile_fail_inline_check_sub(&format!("test_{}", index), &output, err);
+        t.compile_fail_inline_check_sub(&format!("test_{index}"), &output, err);
     }
 }
