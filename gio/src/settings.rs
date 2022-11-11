@@ -4,7 +4,7 @@ use crate::prelude::*;
 use crate::{Settings, SettingsBindFlags};
 use glib::translate::{from_glib_borrow, from_glib_none, IntoGlib, ToGlibPtr};
 use glib::variant::FromVariant;
-use glib::{BoolError, IsA, ToVariant};
+use glib::{BoolError, IsA, Variant};
 
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
@@ -170,7 +170,7 @@ impl<'a> BindingBuilder<'a> {
 pub trait SettingsExtManual {
     fn get<U: FromVariant>(&self, key: &str) -> U;
 
-    fn set<U: ToVariant>(&self, key: &str, value: &U) -> Result<(), BoolError>;
+    fn set(&self, key: &str, value: impl Into<Variant>) -> Result<(), BoolError>;
 
     #[doc(alias = "g_settings_bind")]
     #[doc(alias = "g_settings_bind_with_mapping")]
@@ -194,8 +194,8 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         })
     }
 
-    fn set<U: ToVariant>(&self, key: &str, value: &U) -> Result<(), BoolError> {
-        self.set_value(key, &value.to_variant())
+    fn set(&self, key: &str, value: impl Into<Variant>) -> Result<(), BoolError> {
+        self.set_value(key, &value.into())
     }
 
     fn bind<'a, P: IsA<glib::Object>>(
@@ -268,7 +268,7 @@ mod test {
     fn bool_set_get() {
         set_env();
         let settings = Settings::new("com.github.gtk-rs.test");
-        settings.set("test-bool", &false).unwrap();
+        settings.set("test-bool", false).unwrap();
         assert!(!settings.get::<bool>("test-bool"));
     }
 

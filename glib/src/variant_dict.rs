@@ -130,7 +130,7 @@ impl VariantDict {
     /// instance already, you should use the [`insert_value()`](#method.insert_value)
     /// method instead.
     #[doc(alias = "g_variant_dict_insert_value")]
-    pub fn insert<T: Into<Variant>>(&self, key: &str, value: T) {
+    pub fn insert(&self, key: &str, value: impl Into<Variant>) {
         unsafe {
             ffi::g_variant_dict_insert_value(
                 self.to_glib_none().0,
