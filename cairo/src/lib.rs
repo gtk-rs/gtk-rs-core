@@ -86,6 +86,20 @@ macro_rules! gvalue_impl {
             }
         }
 
+        impl From<$name> for glib::Value {
+            fn from(v: $name) -> Self {
+                unsafe {
+                    let mut value =
+                        glib::Value::from_type(<$name as glib::StaticType>::static_type());
+                    glib::gobject_ffi::g_value_take_boxed(
+                        value.to_glib_none_mut().0,
+                        glib::translate::IntoGlibPtr::into_glib_ptr(v) as *mut _,
+                    );
+                    value
+                }
+            }
+        }
+
         impl glib::value::ToValueOptional for $name {
             fn to_value_optional(s: Option<&Self>) -> glib::Value {
                 let mut value = glib::Value::for_value_type::<Self>();

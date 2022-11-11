@@ -288,6 +288,14 @@ impl crate::value::ToValue for Type {
     }
 }
 
+#[doc(hidden)]
+impl From<Type> for crate::Value {
+    #[inline]
+    fn from(t: Type) -> Self {
+        crate::value::ToValue::to_value(&t)
+    }
+}
+
 impl<'a, T: ?Sized + StaticType> StaticType for &'a T {
     fn static_type() -> Type {
         T::static_type()

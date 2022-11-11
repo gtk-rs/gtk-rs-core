@@ -174,6 +174,18 @@ impl crate::value::ToValue for Variant {
 }
 
 #[doc(hidden)]
+impl From<Variant> for crate::Value {
+    #[inline]
+    fn from(v: Variant) -> Self {
+        unsafe {
+            let mut value = crate::Value::from_type(Variant::static_type());
+            gobject_ffi::g_value_take_variant(value.to_glib_none_mut().0, v.into_glib_ptr());
+            value
+        }
+    }
+}
+
+#[doc(hidden)]
 impl crate::value::ToValueOptional for Variant {
     fn to_value_optional(s: Option<&Self>) -> crate::Value {
         let mut value = crate::Value::for_value_type::<Self>();

@@ -137,3 +137,12 @@ impl ToValue for LayoutDeserializeError {
         Self::static_type()
     }
 }
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<LayoutDeserializeError> for glib::Value {
+    #[inline]
+    fn from(v: LayoutDeserializeError) -> Self {
+        v.to_value()
+    }
+}

@@ -1171,6 +1171,20 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ::std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            fn from(o: $name $(<$($generic),+>)?) -> Self {
+                unsafe {
+                    let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
+                    $crate::gobject_ffi::g_value_take_object(
+                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        $crate::translate::IntoGlibPtr::<*mut $ffi_name>::into_glib_ptr(o) as *mut _,
+                    );
+                    value
+                }
+            }
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
