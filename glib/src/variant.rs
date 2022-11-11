@@ -993,6 +993,13 @@ impl<'a, T: ?Sized + ToVariant> ToVariant for &'a T {
     }
 }
 
+impl<'a, T: ?Sized + Into<Variant> + Clone> From<&'a T> for Variant {
+    #[inline]
+    fn from(v: &'a T) -> Self {
+        v.clone().into()
+    }
+}
+
 impl<'a, T: ?Sized + StaticVariantType> StaticVariantType for &'a T {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         <T as StaticVariantType>::static_variant_type()
@@ -1010,6 +1017,13 @@ macro_rules! impl_numeric {
         impl ToVariant for $name {
             fn to_variant(&self) -> Variant {
                 unsafe { from_glib_none(ffi::$new_fn(*self)) }
+            }
+        }
+
+        impl From<$name> for Variant {
+            #[inline]
+            fn from(v: $name) -> Self {
+                v.to_variant()
             }
         }
 
@@ -1083,6 +1097,13 @@ impl ToVariant for () {
     }
 }
 
+impl From<()> for Variant {
+    #[inline]
+    fn from(_: ()) -> Self {
+        ().to_variant()
+    }
+}
+
 impl FromVariant for () {
     fn from_variant(variant: &Variant) -> Option<Self> {
         if variant.is::<Self>() {
@@ -1102,6 +1123,13 @@ impl StaticVariantType for bool {
 impl ToVariant for bool {
     fn to_variant(&self) -> Variant {
         unsafe { from_glib_none(ffi::g_variant_new_boolean(self.into_glib())) }
+    }
+}
+
+impl From<bool> for Variant {
+    #[inline]
+    fn from(v: bool) -> Self {
+        v.to_variant()
     }
 }
 
@@ -1131,6 +1159,13 @@ impl ToVariant for String {
     }
 }
 
+impl From<String> for Variant {
+    #[inline]
+    fn from(s: String) -> Self {
+        s.to_variant()
+    }
+}
+
 impl FromVariant for String {
     fn from_variant(variant: &Variant) -> Option<Self> {
         variant.str().map(String::from)
@@ -1149,6 +1184,13 @@ impl ToVariant for str {
     }
 }
 
+impl From<&str> for Variant {
+    #[inline]
+    fn from(s: &str) -> Self {
+        s.to_variant()
+    }
+}
+
 impl StaticVariantType for std::path::PathBuf {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         std::path::Path::static_variant_type()
@@ -1158,6 +1200,13 @@ impl StaticVariantType for std::path::PathBuf {
 impl ToVariant for std::path::PathBuf {
     fn to_variant(&self) -> Variant {
         self.as_path().to_variant()
+    }
+}
+
+impl From<std::path::PathBuf> for Variant {
+    #[inline]
+    fn from(p: std::path::PathBuf) -> Self {
+        p.to_variant()
     }
 }
 
@@ -1183,6 +1232,13 @@ impl ToVariant for std::path::Path {
     }
 }
 
+impl From<&std::path::Path> for Variant {
+    #[inline]
+    fn from(p: &std::path::Path) -> Self {
+        p.to_variant()
+    }
+}
+
 impl StaticVariantType for std::ffi::OsString {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         std::ffi::OsStr::static_variant_type()
@@ -1192,6 +1248,13 @@ impl StaticVariantType for std::ffi::OsString {
 impl ToVariant for std::ffi::OsString {
     fn to_variant(&self) -> Variant {
         self.as_os_str().to_variant()
+    }
+}
+
+impl From<std::ffi::OsString> for Variant {
+    #[inline]
+    fn from(s: std::ffi::OsString) -> Self {
+        s.to_variant()
     }
 }
 
@@ -1217,6 +1280,13 @@ impl ToVariant for std::ffi::OsStr {
     }
 }
 
+impl From<&std::ffi::OsStr> for Variant {
+    #[inline]
+    fn from(s: &std::ffi::OsStr) -> Self {
+        s.to_variant()
+    }
+}
+
 impl<T: StaticVariantType> StaticVariantType for Option<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         Cow::Owned(VariantType::new_maybe(&T::static_variant_type()))
@@ -1226,6 +1296,13 @@ impl<T: StaticVariantType> StaticVariantType for Option<T> {
 impl<T: StaticVariantType + ToVariant> ToVariant for Option<T> {
     fn to_variant(&self) -> Variant {
         Variant::from_maybe::<T>(self.as_ref().map(|m| m.to_variant()).as_ref())
+    }
+}
+
+impl<T: StaticVariantType + Into<Variant>> From<Option<T>> for Variant {
+    #[inline]
+    fn from(v: Option<T>) -> Self {
+        Variant::from_maybe::<T>(v.map(|v| v.into()).as_ref())
     }
 }
 
@@ -1277,6 +1354,13 @@ impl<T: StaticVariantType + ToVariant> ToVariant for [T] {
     }
 }
 
+impl<T: StaticVariantType + ToVariant> From<&[T]> for Variant {
+    #[inline]
+    fn from(s: &[T]) -> Self {
+        s.to_variant()
+    }
+}
+
 impl<T: FromVariant> FromVariant for Vec<T> {
     fn from_variant(variant: &Variant) -> Option<Self> {
         if !variant.is_container() {
@@ -1302,21 +1386,33 @@ impl<T: StaticVariantType + ToVariant> ToVariant for Vec<T> {
     }
 }
 
+impl<T: StaticVariantType + Into<Variant>> From<Vec<T>> for Variant {
+    fn from(v: Vec<T>) -> Self {
+        unsafe {
+            if v.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    T::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for value in v {
+                let value = value.into();
+                ffi::g_variant_builder_add_value(&mut builder, value.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+}
+
 impl<T: StaticVariantType> StaticVariantType for Vec<T> {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         <[T]>::static_variant_type()
     }
-}
-
-#[test]
-fn test_regression_from_variant_panics() {
-    let variant = "text".to_variant();
-    let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
-    assert!(hashmap.is_none());
-
-    let variant = HashMap::<u64, u64>::new().to_variant();
-    let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
-    assert!(hashmap.is_some());
 }
 
 impl<K, V, H> FromVariant for HashMap<K, V, H>
@@ -1407,6 +1503,33 @@ where
     }
 }
 
+impl<K, V> From<HashMap<K, V>> for Variant
+where
+    K: StaticVariantType + Into<Variant> + Eq + Hash,
+    V: StaticVariantType + Into<Variant>,
+{
+    fn from(m: HashMap<K, V>) -> Self {
+        unsafe {
+            if m.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    DictEntry::<K, V>::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for (key, value) in m {
+                let entry = Variant::from(DictEntry::new(key, value));
+                ffi::g_variant_builder_add_value(&mut builder, entry.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+}
+
 impl<K, V> ToVariant for BTreeMap<K, V>
 where
     K: StaticVariantType + ToVariant + Eq + Hash,
@@ -1427,6 +1550,33 @@ where
             let mut builder = builder.assume_init();
             for (key, value) in self {
                 let entry = DictEntry::new(key, value).to_variant();
+                ffi::g_variant_builder_add_value(&mut builder, entry.to_glib_none().0);
+            }
+            from_glib_none(ffi::g_variant_builder_end(&mut builder))
+        }
+    }
+}
+
+impl<K, V> From<BTreeMap<K, V>> for Variant
+where
+    K: StaticVariantType + Into<Variant> + Eq + Hash,
+    V: StaticVariantType + Into<Variant>,
+{
+    fn from(m: BTreeMap<K, V>) -> Self {
+        unsafe {
+            if m.is_empty() {
+                return from_glib_none(ffi::g_variant_new_array(
+                    DictEntry::<K, V>::static_variant_type().to_glib_none().0,
+                    ptr::null(),
+                    0,
+                ));
+            }
+
+            let mut builder = mem::MaybeUninit::uninit();
+            ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::ARRAY.to_glib_none().0);
+            let mut builder = builder.assume_init();
+            for (key, value) in m {
+                let entry = Variant::from(DictEntry::new(key, value));
                 ffi::g_variant_builder_add_value(&mut builder, entry.to_glib_none().0);
             }
             from_glib_none(ffi::g_variant_builder_end(&mut builder))
@@ -1460,8 +1610,8 @@ pub struct DictEntry<K, V> {
 
 impl<K, V> DictEntry<K, V>
 where
-    K: StaticVariantType + ToVariant,
-    V: StaticVariantType + ToVariant,
+    K: StaticVariantType,
+    V: StaticVariantType,
 {
     pub fn new(key: K, value: V) -> Self {
         Self { key, value }
@@ -1506,6 +1656,16 @@ where
 {
     fn to_variant(&self) -> Variant {
         Variant::from_dict_entry(&self.key.to_variant(), &self.value.to_variant())
+    }
+}
+
+impl<K, V> From<DictEntry<K, V>> for Variant
+where
+    K: StaticVariantType + Into<Variant>,
+    V: StaticVariantType + Into<Variant>,
+{
+    fn from(e: DictEntry<K, V>) -> Self {
+        Variant::from_dict_entry(&e.key.into(), &e.value.into())
     }
 }
 
@@ -1626,6 +1786,26 @@ macro_rules! tuple_impls {
                     }
                 }
             }
+
+            impl<$($name),+> From<($($name,)+)> for Variant
+            where
+                $($name: Into<Variant>,)+
+            {
+                fn from(t: ($($name,)+)) -> Self {
+                    unsafe {
+                        let mut builder = mem::MaybeUninit::uninit();
+                        ffi::g_variant_builder_init(builder.as_mut_ptr(), VariantTy::TUPLE.to_glib_none().0);
+                        let mut builder = builder.assume_init();
+
+                        $(
+                            let field = t.$n.into();
+                            ffi::g_variant_builder_add_value(&mut builder, field.to_glib_none().0);
+                        )+
+
+                        from_glib_none(ffi::g_variant_builder_end(&mut builder))
+                    }
+                }
+            }
         )+
     }
 }
@@ -1649,9 +1829,9 @@ tuple_impls! {
     16 => (0 T0 1 T1 2 T2 3 T3 4 T4 5 T5 6 T6 7 T7 8 T8 9 T9 10 T10 11 T11 12 T12 13 T13 14 T14 15 T15)
 }
 
-impl<T: ToVariant + StaticVariantType> FromIterator<T> for Variant {
+impl<T: Into<Variant> + StaticVariantType> FromIterator<T> for Variant {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
-        Variant::array_from_iter::<T>(iter.into_iter().map(|v| v.to_variant()))
+        Variant::array_from_iter::<T>(iter.into_iter().map(|v| v.into()))
     }
 }
 
@@ -1755,6 +1935,34 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> ToVariant for FixedSizeVariantArray
     }
 }
 
+impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<FixedSizeVariantArray<A, T>> for Variant {
+    #[doc(alias = "g_variant_new_from_data")]
+    fn from(a: FixedSizeVariantArray<A, T>) -> Self {
+        unsafe {
+            let data = Box::new(a.0);
+            let (data_ptr, len) = {
+                let data = (*data).as_ref();
+                (data.as_ptr(), data.len() * mem::size_of::<T>())
+            };
+
+            unsafe extern "C" fn free_data<A: AsRef<[T]>, T: FixedSizeVariantType>(
+                ptr: ffi::gpointer,
+            ) {
+                let _ = Box::from_raw(ptr as *mut A);
+            }
+
+            from_glib_none(ffi::g_variant_new_from_data(
+                T::static_variant_type().to_glib_none().0,
+                data_ptr as ffi::gconstpointer,
+                len,
+                false.into_glib(),
+                Some(free_data::<A, T>),
+                Box::into_raw(data) as ffi::gpointer,
+            ))
+        }
+    }
+}
+
 /// A wrapper type around `Variant` handles.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Handle(pub i32);
@@ -1780,6 +1988,13 @@ impl StaticVariantType for Handle {
 impl ToVariant for Handle {
     fn to_variant(&self) -> Variant {
         unsafe { from_glib_none(ffi::g_variant_new_handle(self.0)) }
+    }
+}
+
+impl From<Handle> for Variant {
+    #[inline]
+    fn from(h: Handle) -> Self {
+        h.to_variant()
     }
 }
 
@@ -1853,6 +2068,15 @@ impl ToVariant for ObjectPath {
     }
 }
 
+impl From<ObjectPath> for Variant {
+    #[inline]
+    fn from(p: ObjectPath) -> Self {
+        let mut s = p.0;
+        s.push('\0');
+        unsafe { Self::from_data_trusted::<ObjectPath, _>(s) }
+    }
+}
+
 impl FromVariant for ObjectPath {
     #[allow(unused_unsafe)]
     fn from_variant(variant: &Variant) -> Option<Self> {
@@ -1921,6 +2145,15 @@ impl StaticVariantType for Signature {
 impl ToVariant for Signature {
     fn to_variant(&self) -> Variant {
         unsafe { from_glib_none(ffi::g_variant_new_signature(self.0.to_glib_none().0)) }
+    }
+}
+
+impl From<Signature> for Variant {
+    #[inline]
+    fn from(s: Signature) -> Self {
+        let mut s = s.0;
+        s.push('\0');
+        unsafe { Self::from_data_trusted::<Signature, _>(s) }
     }
 }
 
@@ -2253,5 +2486,16 @@ mod tests {
         let path = PathBuf::from("foo");
         let v = path.to_variant();
         assert_eq!(PathBuf::from_variant(&v), Some(path));
+    }
+
+    #[test]
+    fn test_regression_from_variant_panics() {
+        let variant = "text".to_variant();
+        let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
+        assert!(hashmap.is_none());
+
+        let variant = HashMap::<u64, u64>::new().to_variant();
+        let hashmap: Option<HashMap<u64, u64>> = FromVariant::from_variant(&variant);
+        assert!(hashmap.is_some());
     }
 }
