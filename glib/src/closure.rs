@@ -340,19 +340,20 @@ impl Closure {
     }
 }
 
-pub trait ToClosureReturnValue {
-    fn to_closure_return_value(&self) -> Option<Value>;
+pub trait IntoClosureReturnValue {
+    fn into_closure_return_value(self) -> Option<Value>;
 }
 
-impl ToClosureReturnValue for () {
-    fn to_closure_return_value(&self) -> Option<Value> {
+impl IntoClosureReturnValue for () {
+    fn into_closure_return_value(self) -> Option<Value> {
         None
     }
 }
 
-impl<T: ToValue> ToClosureReturnValue for T {
-    fn to_closure_return_value(&self) -> Option<Value> {
-        Some(self.to_value())
+impl<T: Into<Value>> IntoClosureReturnValue for T {
+    #[inline]
+    fn into_closure_return_value(self) -> Option<Value> {
+        Some(self.into())
     }
 }
 
