@@ -73,6 +73,6 @@ mod tests {
             s.log_clusters_mut()[i] = i as i32;
         }
         let widths = s.logical_widths(TXT, false);
-        println!("{:?}", widths);
+        println!("{widths:?}");
     }
 }

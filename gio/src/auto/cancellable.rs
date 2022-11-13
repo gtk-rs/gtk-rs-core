@@ -5,7 +5,6 @@
 use glib::object::IsA;
 use glib::translate::*;
 use std::fmt;
-use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GCancellable")]
@@ -62,9 +61,6 @@ pub trait CancellableExt: 'static {
 
     #[doc(alias = "g_cancellable_release_fd")]
     fn release_fd(&self);
-
-    #[doc(alias = "g_cancellable_set_error_if_cancelled")]
-    fn set_error_if_cancelled(&self) -> Result<(), glib::Error>;
 }
 
 impl<O: IsA<Cancellable>> CancellableExt for O {
@@ -105,22 +101,6 @@ impl<O: IsA<Cancellable>> CancellableExt for O {
     fn release_fd(&self) {
         unsafe {
             ffi::g_cancellable_release_fd(self.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn set_error_if_cancelled(&self) -> Result<(), glib::Error> {
-        unsafe {
-            let mut error = ptr::null_mut();
-            let is_ok = ffi::g_cancellable_set_error_if_cancelled(
-                self.as_ref().to_glib_none().0,
-                &mut error,
-            );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
         }
     }
 }
