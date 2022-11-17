@@ -108,7 +108,6 @@ pub use glyph_item_iter::{GlyphItemIntoIter, GlyphItemIter};
 mod glyph_string;
 mod item;
 mod language;
-pub use language::Language;
 mod layout;
 pub use layout::HitPosition;
 mod matrix;
