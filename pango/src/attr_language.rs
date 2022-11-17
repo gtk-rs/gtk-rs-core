@@ -8,7 +8,11 @@ define_attribute_struct!(AttrLanguage, ffi::PangoAttrLanguage, &[AttrType::Langu
 impl AttrLanguage {
     #[doc(alias = "pango_attr_language_new")]
     pub fn new(language: &Language) -> Self {
-        unsafe { from_glib_full(ffi::pango_attr_language_new(language.to_glib_none().0)) }
+        unsafe {
+            from_glib_full(ffi::pango_attr_language_new(mut_override(
+                language.to_glib_none().0,
+            )))
+        }
     }
 
     pub fn value(&self) -> Language {
