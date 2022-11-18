@@ -59,11 +59,8 @@ impl Language {
     }
 
     #[doc(alias = "pango_language_from_string")]
-    pub fn from_string(language: Option<&str>) -> Result<Language, glib::BoolError> {
-        unsafe {
-            Option::<_>::from_glib_none(ffi::pango_language_from_string(language.to_glib_none().0))
-                .ok_or_else(|| glib::bool_error!("Can't parse Language"))
-        }
+    pub fn from_string(language: &str) -> Language {
+        unsafe { from_glib_none(ffi::pango_language_from_string(language.to_glib_none().0)) }
     }
 
     #[doc(alias = "pango_language_get_default")]
