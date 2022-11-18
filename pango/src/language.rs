@@ -44,8 +44,9 @@ impl Language {
 }
 
 impl FromStr for Language {
-    type Err = glib::BoolError;
+    type Err = std::convert::Infallible;
+
     fn from_str(language: &str) -> Result<Self, Self::Err> {
-        Self::from_string(Some(language))
+        Ok(Self::from_string(language))
     }
 }
