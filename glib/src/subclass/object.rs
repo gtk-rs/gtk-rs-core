@@ -33,6 +33,8 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     ///
     /// This is called whenever the property of this specific subclass with the
     /// given index is set. The new value is passed as `glib::Value`.
+    ///
+    /// `value` is guaranteed to be of the correct type for the given property.
     fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
         unimplemented!()
     }
@@ -42,6 +44,8 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     ///
     /// This is called whenever the property value of the specific subclass with the
     /// given index should be returned.
+    ///
+    /// The returned `Value` must be of the correct type for the given property.
     #[doc(alias = "get_property")]
     fn property(&self, _id: usize, _pspec: &ParamSpec) -> Value {
         unimplemented!()
