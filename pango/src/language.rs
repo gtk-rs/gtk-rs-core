@@ -30,17 +30,6 @@ impl Language {
             ret
         }
     }
-
-    #[cfg(any(feature = "v1_48", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_48")))]
-    #[doc(alias = "get_preferred")]
-    #[doc(alias = "pango_language_get_preferred")]
-    pub fn preferred() -> Vec<Self> {
-        unsafe {
-            let ptr = ffi::pango_language_get_preferred();
-            Self::from_glib_full_as_vec(ptr)
-        }
-    }
 }
 
 impl FromStr for Language {
