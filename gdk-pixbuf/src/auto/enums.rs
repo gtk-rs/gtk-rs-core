@@ -88,6 +88,13 @@ impl ToValue for Colorspace {
     }
 }
 
+impl From<Colorspace> for glib::Value {
+    #[inline]
+    fn from(v: Colorspace) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GdkInterpType")]
@@ -180,6 +187,13 @@ impl ToValue for InterpType {
     }
 }
 
+impl From<InterpType> for glib::Value {
+    #[inline]
+    fn from(v: InterpType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg_attr(feature = "v2_42", deprecated = "Since 2.42")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -260,6 +274,13 @@ impl ToValue for PixbufAlphaMode {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<PixbufAlphaMode> for glib::Value {
+    #[inline]
+    fn from(v: PixbufAlphaMode) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -393,6 +414,13 @@ impl ToValue for PixbufError {
     }
 }
 
+impl From<PixbufError> for glib::Value {
+    #[inline]
+    fn from(v: PixbufError) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GdkPixbufRotation")]
@@ -482,5 +510,12 @@ impl ToValue for PixbufRotation {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<PixbufRotation> for glib::Value {
+    #[inline]
+    fn from(v: PixbufRotation) -> Self {
+        ToValue::to_value(&v)
     }
 }

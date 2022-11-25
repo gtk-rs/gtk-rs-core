@@ -121,6 +121,7 @@ pub const G_TYPE_FLAG_NONE: GTypeFlags = 0;
 pub const G_TYPE_FLAG_ABSTRACT: GTypeFlags = 16;
 pub const G_TYPE_FLAG_VALUE_ABSTRACT: GTypeFlags = 32;
 pub const G_TYPE_FLAG_FINAL: GTypeFlags = 64;
+pub const G_TYPE_FLAG_DEPRECATED: GTypeFlags = 128;
 
 pub type GTypeFundamentalFlags = c_uint;
 pub const G_TYPE_FLAG_CLASSED: GTypeFundamentalFlags = 1;

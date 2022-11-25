@@ -86,6 +86,13 @@ impl ToValue for FontMask {
     }
 }
 
+impl From<FontMask> for glib::Value {
+    #[inline]
+    fn from(v: FontMask) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 bitflags! {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
@@ -163,6 +170,15 @@ impl ToValue for LayoutDeserializeFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<LayoutDeserializeFlags> for glib::Value {
+    #[inline]
+    fn from(v: LayoutDeserializeFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -248,6 +264,15 @@ impl ToValue for LayoutSerializeFlags {
     }
 }
 
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<LayoutSerializeFlags> for glib::Value {
+    #[inline]
+    fn from(v: LayoutSerializeFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 bitflags! {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
@@ -325,6 +350,15 @@ impl ToValue for ShapeFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_44", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+impl From<ShapeFlags> for glib::Value {
+    #[inline]
+    fn from(v: ShapeFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -409,5 +443,14 @@ impl ToValue for ShowFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_44", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+impl From<ShowFlags> for glib::Value {
+    #[inline]
+    fn from(v: ShowFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }

@@ -1213,12 +1213,17 @@ pub struct _GAsyncQueue {
 pub type GAsyncQueue = *mut _GAsyncQueue;
 
 #[repr(C)]
-pub struct _GBookmarkFile {
+pub struct GBookmarkFile {
     _data: [u8; 0],
     _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
 }
 
-pub type GBookmarkFile = *mut _GBookmarkFile;
+impl ::std::fmt::Debug for GBookmarkFile {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GBookmarkFile @ {self:p}"))
+            .finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -2565,6 +2570,8 @@ extern "C" {
     //=========================================================================
     // GBookmarkFile
     //=========================================================================
+    pub fn g_bookmark_file_get_type() -> GType;
+    pub fn g_bookmark_file_new() -> *mut GBookmarkFile;
     pub fn g_bookmark_file_add_application(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2576,6 +2583,9 @@ extern "C" {
         uri: *const c_char,
         group: *const c_char,
     );
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_bookmark_file_copy(bookmark: *mut GBookmarkFile) -> *mut GBookmarkFile;
     pub fn g_bookmark_file_free(bookmark: *mut GBookmarkFile);
     pub fn g_bookmark_file_get_added(
         bookmark: *mut GBookmarkFile,
@@ -2829,7 +2839,6 @@ extern "C" {
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_bookmark_file_error_quark() -> GQuark;
-    pub fn g_bookmark_file_new() -> *mut GBookmarkFile;
 
     //=========================================================================
     // GByteArray

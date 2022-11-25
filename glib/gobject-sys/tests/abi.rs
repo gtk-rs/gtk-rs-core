@@ -675,6 +675,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_TYPE_FLAG_ABSTRACT", "16"),
     ("(guint) G_TYPE_FLAG_CLASSED", "1"),
     ("(guint) G_TYPE_FLAG_DEEP_DERIVABLE", "8"),
+    ("(guint) G_TYPE_FLAG_DEPRECATED", "128"),
     ("(guint) G_TYPE_FLAG_DERIVABLE", "4"),
     ("(guint) G_TYPE_FLAG_FINAL", "64"),
     ("(guint) G_TYPE_FLAG_INSTANTIATABLE", "2"),

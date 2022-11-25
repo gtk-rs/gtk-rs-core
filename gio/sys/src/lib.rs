@@ -14157,6 +14157,9 @@ extern "C" {
     pub fn g_task_set_priority(task: *mut GTask, priority: c_int);
     pub fn g_task_set_return_on_cancel(task: *mut GTask, return_on_cancel: gboolean) -> gboolean;
     pub fn g_task_set_source_tag(task: *mut GTask, source_tag: gpointer);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_task_set_static_name(task: *mut GTask, name: *const c_char);
     pub fn g_task_set_task_data(
         task: *mut GTask,
         task_data: gpointer,
@@ -16266,9 +16269,9 @@ extern "C" {
     //=========================================================================
     pub fn g_icon_get_type() -> GType;
     pub fn g_icon_deserialize(value: *mut glib::GVariant) -> *mut GIcon;
-    pub fn g_icon_hash(icon: gconstpointer) -> c_uint;
     pub fn g_icon_new_for_string(str: *const c_char, error: *mut *mut glib::GError) -> *mut GIcon;
     pub fn g_icon_equal(icon1: *mut GIcon, icon2: *mut GIcon) -> gboolean;
+    pub fn g_icon_hash(icon: gconstpointer) -> c_uint;
     pub fn g_icon_serialize(icon: *mut GIcon) -> *mut glib::GVariant;
     pub fn g_icon_to_string(icon: *mut GIcon) -> *mut c_char;
 

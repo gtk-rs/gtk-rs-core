@@ -98,6 +98,13 @@ impl ToValue for Alignment {
     }
 }
 
+impl From<Alignment> for glib::Value {
+    #[inline]
+    fn from(v: Alignment) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoAttrType")]
@@ -403,6 +410,13 @@ impl ToValue for AttrType {
     }
 }
 
+impl From<AttrType> for glib::Value {
+    #[inline]
+    fn from(v: AttrType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -503,6 +517,15 @@ impl ToValue for BaselineShift {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<BaselineShift> for glib::Value {
+    #[inline]
+    fn from(v: BaselineShift) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -701,6 +724,13 @@ impl ToValue for BidiType {
     }
 }
 
+impl From<BidiType> for glib::Value {
+    #[inline]
+    fn from(v: BidiType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoCoverageLevel")]
@@ -790,6 +820,13 @@ impl ToValue for CoverageLevel {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<CoverageLevel> for glib::Value {
+    #[inline]
+    fn from(v: CoverageLevel) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -900,6 +937,13 @@ impl ToValue for Direction {
     }
 }
 
+impl From<Direction> for glib::Value {
+    #[inline]
+    fn from(v: Direction) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoEllipsizeMode")]
@@ -989,6 +1033,13 @@ impl ToValue for EllipsizeMode {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<EllipsizeMode> for glib::Value {
+    #[inline]
+    fn from(v: EllipsizeMode) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1097,6 +1148,15 @@ impl ToValue for FontScale {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<FontScale> for glib::Value {
+    #[inline]
+    fn from(v: FontScale) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1240,6 +1300,13 @@ impl ToValue for Gravity {
     }
 }
 
+impl From<Gravity> for glib::Value {
+    #[inline]
+    fn from(v: Gravity) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoGravityHint")]
@@ -1324,6 +1391,13 @@ impl ToValue for GravityHint {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<GravityHint> for glib::Value {
+    #[inline]
+    fn from(v: GravityHint) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1425,6 +1499,15 @@ impl ToValue for Overline {
     }
 }
 
+#[cfg(any(feature = "v1_46", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+impl From<Overline> for glib::Value {
+    #[inline]
+    fn from(v: Overline) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoRenderPart")]
@@ -1519,6 +1602,13 @@ impl ToValue for RenderPart {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<RenderPart> for glib::Value {
+    #[inline]
+    fn from(v: RenderPart) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2198,6 +2288,13 @@ impl ToValue for Script {
     }
 }
 
+impl From<Script> for glib::Value {
+    #[inline]
+    fn from(v: Script) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoStretch")]
@@ -2315,6 +2412,13 @@ impl ToValue for Stretch {
     }
 }
 
+impl From<Stretch> for glib::Value {
+    #[inline]
+    fn from(v: Stretch) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoStyle")]
@@ -2399,6 +2503,13 @@ impl ToValue for Style {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<Style> for glib::Value {
+    #[inline]
+    fn from(v: Style) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2509,6 +2620,13 @@ impl ToValue for TabAlign {
     }
 }
 
+impl From<TabAlign> for glib::Value {
+    #[inline]
+    fn from(v: TabAlign) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -2614,6 +2732,15 @@ impl ToValue for TextTransform {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl From<TextTransform> for glib::Value {
+    #[inline]
+    fn from(v: TextTransform) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2726,6 +2853,13 @@ impl ToValue for Underline {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<Underline> for glib::Value {
+    #[inline]
+    fn from(v: Underline) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2861,6 +2995,13 @@ impl ToValue for Variant {
     }
 }
 
+impl From<Variant> for glib::Value {
+    #[inline]
+    fn from(v: Variant) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoWeight")]
@@ -2993,6 +3134,13 @@ impl ToValue for Weight {
     }
 }
 
+impl From<Weight> for glib::Value {
+    #[inline]
+    fn from(v: Weight) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoWrapMode")]
@@ -3077,5 +3225,12 @@ impl ToValue for WrapMode {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<WrapMode> for glib::Value {
+    #[inline]
+    fn from(v: WrapMode) -> Self {
+        ToValue::to_value(&v)
     }
 }

@@ -80,6 +80,13 @@ impl ToValue for BindingFlags {
     }
 }
 
+impl From<BindingFlags> for crate::Value {
+    #[inline]
+    fn from(v: BindingFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GSignalFlags")]
     pub struct SignalFlags: u32 {
