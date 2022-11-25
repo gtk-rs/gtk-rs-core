@@ -2,6 +2,8 @@
 
 use crate::translate::*;
 use crate::types::{StaticType, Type};
+use crate::value::{FromValue, ToValue};
+use crate::Value;
 use std::borrow::Borrow;
 use std::cmp::Ordering;
 use std::ffi::{CStr, CString, OsStr};
@@ -270,10 +272,10 @@ impl StaticType for GStr {
     }
 }
 
-unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
+unsafe impl<'a> FromValue<'a> for &'a GStr {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
-    unsafe fn from_value(value: &'a crate::Value) -> Self {
+    unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         let cstr = CStr::from_ptr(ptr);
         assert!(cstr.to_str().is_ok());
@@ -281,9 +283,9 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a GStr {
     }
 }
 
-impl crate::value::ToValue for GStr {
+impl ToValue for GStr {
     #[inline]
-    fn to_value(&self) -> crate::Value {
+    fn to_value(&self) -> Value {
         self.as_str().to_value()
     }
 
@@ -293,9 +295,9 @@ impl crate::value::ToValue for GStr {
     }
 }
 
-impl crate::value::ToValue for &GStr {
+impl ToValue for &GStr {
     #[inline]
-    fn to_value(&self) -> crate::Value {
+    fn to_value(&self) -> Value {
         (*self).to_value()
     }
 
@@ -307,7 +309,7 @@ impl crate::value::ToValue for &GStr {
 
 impl crate::value::ToValueOptional for GStr {
     #[inline]
-    fn to_value_optional(s: Option<&Self>) -> crate::Value {
+    fn to_value_optional(s: Option<&Self>) -> Value {
         crate::value::ToValueOptional::to_value_optional(s.map(|s| s.as_str()))
     }
 }
@@ -1021,13 +1023,13 @@ impl crate::value::ValueTypeOptional for GString {}
 unsafe impl<'a> crate::value::FromValue<'a> for GString {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
-    unsafe fn from_value(value: &'a crate::Value) -> Self {
+    unsafe fn from_value(value: &'a Value) -> Self {
         Self::from(<&str>::from_value(value))
     }
 }
 
 impl crate::value::ToValue for GString {
-    fn to_value(&self) -> crate::Value {
+    fn to_value(&self) -> Value {
         <&str>::to_value(&self.as_str())
     }
 
@@ -1037,8 +1039,18 @@ impl crate::value::ToValue for GString {
 }
 
 impl crate::value::ToValueOptional for GString {
-    fn to_value_optional(s: Option<&Self>) -> crate::Value {
+    fn to_value_optional(s: Option<&Self>) -> Value {
         <str>::to_value_optional(s.as_ref().map(|s| s.as_str()))
+    }
+}
+
+impl From<GString> for Value {
+    fn from(s: GString) -> Self {
+        unsafe {
+            let mut value = Value::for_value_type::<GString>();
+            gobject_ffi::g_value_take_string(value.to_glib_none_mut().0, s.into_glib_ptr());
+            value
+        }
     }
 }
 
@@ -1052,19 +1064,19 @@ impl crate::value::ValueType for Vec<GString> {
     type Type = Vec<GString>;
 }
 
-unsafe impl<'a> crate::value::FromValue<'a> for Vec<GString> {
+unsafe impl<'a> FromValue<'a> for Vec<GString> {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
-    unsafe fn from_value(value: &'a crate::value::Value) -> Self {
+    unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().0) as *const *const c_char;
         FromGlibPtrContainer::from_glib_none(ptr)
     }
 }
 
-impl crate::value::ToValue for Vec<GString> {
-    fn to_value(&self) -> crate::value::Value {
+impl ToValue for Vec<GString> {
+    fn to_value(&self) -> Value {
         unsafe {
-            let mut value = crate::value::Value::for_value_type::<Self>();
+            let mut value = Value::for_value_type::<Self>();
             let ptr: *mut *mut c_char = self.to_glib_full();
             gobject_ffi::g_value_take_boxed(value.to_glib_none_mut().0, ptr as *const c_void);
             value
@@ -1073,6 +1085,22 @@ impl crate::value::ToValue for Vec<GString> {
 
     fn value_type(&self) -> Type {
         <Vec<GString>>::static_type()
+    }
+}
+
+impl From<Vec<GString>> for Value {
+    fn from(mut v: Vec<GString>) -> Self {
+        unsafe {
+            let mut value = Value::for_value_type::<Vec<GString>>();
+            let container =
+                ToGlibContainerFromSlice::<*mut *mut c_char>::to_glib_container_from_slice(&v);
+            gobject_ffi::g_value_take_boxed(
+                value.to_glib_none_mut().0,
+                container.0 as *const c_void,
+            );
+            v.set_len(0);
+            value
+        }
     }
 }
 

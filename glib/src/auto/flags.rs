@@ -210,6 +210,13 @@ impl ToValue for IOCondition {
     }
 }
 
+impl From<IOCondition> for crate::Value {
+    #[inline]
+    fn from(v: IOCondition) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GKeyFileFlags")]
     pub struct KeyFileFlags: u32 {

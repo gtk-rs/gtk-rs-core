@@ -78,6 +78,13 @@ impl ToValue for AppInfoCreateFlags {
     }
 }
 
+impl From<AppInfoCreateFlags> for glib::Value {
+    #[inline]
+    fn from(v: AppInfoCreateFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GApplicationFlags")]
     pub struct ApplicationFlags: u32 {
@@ -158,6 +165,13 @@ impl ToValue for ApplicationFlags {
     }
 }
 
+impl From<ApplicationFlags> for glib::Value {
+    #[inline]
+    fn from(v: ApplicationFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GAskPasswordFlags")]
     pub struct AskPasswordFlags: u32 {
@@ -230,6 +244,13 @@ impl ToValue for AskPasswordFlags {
     }
 }
 
+impl From<AskPasswordFlags> for glib::Value {
+    #[inline]
+    fn from(v: AskPasswordFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GBusNameOwnerFlags")]
     pub struct BusNameOwnerFlags: u32 {
@@ -298,6 +319,13 @@ impl ToValue for BusNameOwnerFlags {
     }
 }
 
+impl From<BusNameOwnerFlags> for glib::Value {
+    #[inline]
+    fn from(v: BusNameOwnerFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GBusNameWatcherFlags")]
     pub struct BusNameWatcherFlags: u32 {
@@ -359,6 +387,13 @@ impl ToValue for BusNameWatcherFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<BusNameWatcherFlags> for glib::Value {
+    #[inline]
+    fn from(v: BusNameWatcherFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -428,6 +463,13 @@ impl ToValue for ConverterFlags {
     }
 }
 
+impl From<ConverterFlags> for glib::Value {
+    #[inline]
+    fn from(v: ConverterFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDBusCallFlags")]
     pub struct DBusCallFlags: u32 {
@@ -494,6 +536,13 @@ impl ToValue for DBusCallFlags {
     }
 }
 
+impl From<DBusCallFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusCallFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDBusCapabilityFlags")]
     pub struct DBusCapabilityFlags: u32 {
@@ -555,6 +604,13 @@ impl ToValue for DBusCapabilityFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DBusCapabilityFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusCapabilityFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -636,6 +692,13 @@ impl ToValue for DBusConnectionFlags {
     }
 }
 
+impl From<DBusConnectionFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusConnectionFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDBusInterfaceSkeletonFlags")]
     pub struct DBusInterfaceSkeletonFlags: u32 {
@@ -697,6 +760,13 @@ impl ToValue for DBusInterfaceSkeletonFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DBusInterfaceSkeletonFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusInterfaceSkeletonFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -765,6 +835,13 @@ impl ToValue for DBusMessageFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DBusMessageFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusMessageFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -844,6 +921,13 @@ impl ToValue for DBusProxyFlags {
     }
 }
 
+impl From<DBusProxyFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusProxyFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDBusSendMessageFlags")]
     pub struct DBusSendMessageFlags: u32 {
@@ -905,6 +989,13 @@ impl ToValue for DBusSendMessageFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DBusSendMessageFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusSendMessageFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -976,6 +1067,13 @@ impl ToValue for DBusServerFlags {
     }
 }
 
+impl From<DBusServerFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusServerFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDBusSignalFlags")]
     pub struct DBusSignalFlags: u32 {
@@ -1044,6 +1142,13 @@ impl ToValue for DBusSignalFlags {
     }
 }
 
+impl From<DBusSignalFlags> for glib::Value {
+    #[inline]
+    fn from(v: DBusSignalFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GDriveStartFlags")]
     pub struct DriveStartFlags: u32 {
@@ -1103,6 +1208,13 @@ impl ToValue for DriveStartFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DriveStartFlags> for glib::Value {
+    #[inline]
+    fn from(v: DriveStartFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1169,6 +1281,13 @@ impl ToValue for FileAttributeInfoFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileAttributeInfoFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileAttributeInfoFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1246,6 +1365,13 @@ impl ToValue for FileCopyFlags {
     }
 }
 
+impl From<FileCopyFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileCopyFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GFileCreateFlags")]
     pub struct FileCreateFlags: u32 {
@@ -1309,6 +1435,13 @@ impl ToValue for FileCreateFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileCreateFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileCreateFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1377,6 +1510,13 @@ impl ToValue for FileMeasureFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileMeasureFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileMeasureFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1450,6 +1590,13 @@ impl ToValue for FileMonitorFlags {
     }
 }
 
+impl From<FileMonitorFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileMonitorFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GFileQueryInfoFlags")]
     pub struct FileQueryInfoFlags: u32 {
@@ -1511,6 +1658,13 @@ impl ToValue for FileQueryInfoFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileQueryInfoFlags> for glib::Value {
+    #[inline]
+    fn from(v: FileQueryInfoFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1582,6 +1736,13 @@ impl ToValue for IOStreamSpliceFlags {
     }
 }
 
+impl From<IOStreamSpliceFlags> for glib::Value {
+    #[inline]
+    fn from(v: IOStreamSpliceFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GMountMountFlags")]
     pub struct MountMountFlags: u32 {
@@ -1641,6 +1802,13 @@ impl ToValue for MountMountFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<MountMountFlags> for glib::Value {
+    #[inline]
+    fn from(v: MountMountFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1708,6 +1876,13 @@ impl ToValue for MountUnmountFlags {
     }
 }
 
+impl From<MountUnmountFlags> for glib::Value {
+    #[inline]
+    fn from(v: MountUnmountFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GOutputStreamSpliceFlags")]
     pub struct OutputStreamSpliceFlags: u32 {
@@ -1771,6 +1946,13 @@ impl ToValue for OutputStreamSpliceFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<OutputStreamSpliceFlags> for glib::Value {
+    #[inline]
+    fn from(v: OutputStreamSpliceFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1856,6 +2038,15 @@ impl ToValue for ResolverNameLookupFlags {
     }
 }
 
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+impl From<ResolverNameLookupFlags> for glib::Value {
+    #[inline]
+    fn from(v: ResolverNameLookupFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GResourceLookupFlags")]
     pub struct ResourceLookupFlags: u32 {
@@ -1915,6 +2106,13 @@ impl ToValue for ResourceLookupFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<ResourceLookupFlags> for glib::Value {
+    #[inline]
+    fn from(v: ResourceLookupFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1987,6 +2185,13 @@ impl ToValue for SettingsBindFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<SettingsBindFlags> for glib::Value {
+    #[inline]
+    fn from(v: SettingsBindFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2072,6 +2277,13 @@ impl ToValue for SubprocessFlags {
     }
 }
 
+impl From<SubprocessFlags> for glib::Value {
+    #[inline]
+    fn from(v: SubprocessFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GTlsCertificateFlags")]
     pub struct TlsCertificateFlags: u32 {
@@ -2148,6 +2360,13 @@ impl ToValue for TlsCertificateFlags {
     }
 }
 
+impl From<TlsCertificateFlags> for glib::Value {
+    #[inline]
+    fn from(v: TlsCertificateFlags) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 bitflags! {
     #[doc(alias = "GTlsDatabaseVerifyFlags")]
     pub struct TlsDatabaseVerifyFlags: u32 {
@@ -2207,6 +2426,13 @@ impl ToValue for TlsDatabaseVerifyFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsDatabaseVerifyFlags> for glib::Value {
+    #[inline]
+    fn from(v: TlsDatabaseVerifyFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2281,5 +2507,12 @@ impl ToValue for TlsPasswordFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsPasswordFlags> for glib::Value {
+    #[inline]
+    fn from(v: TlsPasswordFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }

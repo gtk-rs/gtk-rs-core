@@ -16,6 +16,14 @@ use crate::ffi::cairo_region_t;
 pub struct Region(ptr::NonNull<cairo_region_t>);
 
 #[cfg(feature = "use_glib")]
+impl IntoGlibPtr<*mut ffi::cairo_region_t> for Region {
+    #[inline]
+    unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_region_t {
+        (&*std::mem::ManuallyDrop::new(self)).to_glib_none().0
+    }
+}
+
+#[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_region_t> for &'a Region {
     type Storage = &'a Region;

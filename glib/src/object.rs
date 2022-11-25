@@ -1171,6 +1171,20 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ::std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            fn from(o: $name $(<$($generic),+>)?) -> Self {
+                unsafe {
+                    let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
+                    $crate::gobject_ffi::g_value_take_object(
+                        $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        $crate::translate::IntoGlibPtr::<*mut $ffi_name>::into_glib_ptr(o) as *mut _,
+                    );
+                    value
+                }
+            }
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
@@ -1594,13 +1608,13 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
 
     // rustdoc-stripper-ignore-next
     /// Set property `name` to the given value `value`.
-    pub fn property<T: ToValue + 'a>(self, name: &'a str, value: T) -> Self {
+    pub fn property(self, name: &'a str, value: impl Into<Value>) -> Self {
         let ObjectBuilder {
             type_,
             mut properties,
             ..
         } = self;
-        properties.push((name, value.to_value()));
+        properties.push((name, value.into()));
 
         ObjectBuilder {
             type_,
@@ -1678,7 +1692,7 @@ pub trait ObjectExt: ObjectType {
     /// If the property does not exist, if the type of the property is different than
     /// the provided value, or if the property is not writable.
     #[doc(alias = "g_object_set_property")]
-    fn set_property<V: ToValue>(&self, property_name: &str, value: V);
+    fn set_property(&self, property_name: &str, value: impl Into<Value>);
 
     // rustdoc-stripper-ignore-next
     /// Sets the property `property_name` of the object to value `value`.
@@ -2284,7 +2298,7 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     #[track_caller]
-    fn set_property<V: ToValue>(&self, property_name: &str, value: V) {
+    fn set_property(&self, property_name: &str, value: impl Into<Value>) {
         let pspec = self.find_property(property_name).unwrap_or_else(|| {
             panic!(
                 "property '{property_name}' of type '{}' not found",
@@ -2292,7 +2306,7 @@ impl<T: ObjectType> ObjectExt for T {
             )
         });
 
-        let mut property_value = value.to_value();
+        let mut property_value = value.into();
         validate_property_type(self.type_(), false, &pspec, &mut property_value);
         unsafe {
             gobject_ffi::g_object_set_property(
@@ -3628,7 +3642,7 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     /// See [`Self::transform_from_with_values`] for a version which operates on `glib::Value`s.
     pub fn transform_from<
         S: FromValue<'f>,
-        T: ToValue,
+        T: Into<Value>,
         F: Fn(&'f crate::Binding, S) -> Option<T> + Send + Sync + 'static,
     >(
         self,
@@ -3637,7 +3651,7 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
         Self {
             transform_from: Some(Box::new(move |binding, from_value| {
                 let from_value = from_value.get().expect("Wrong value type");
-                func(binding, from_value).map(|r| r.to_value())
+                func(binding, from_value).map(|r| r.into())
             })),
             ..self
         }
@@ -3667,7 +3681,7 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
     /// See [`Self::transform_to_with_values`] for a version which operates on `glib::Value`s.
     pub fn transform_to<
         S: FromValue<'t>,
-        T: ToValue,
+        T: Into<Value>,
         F: Fn(&'t crate::Binding, S) -> Option<T> + Send + Sync + 'static,
     >(
         self,
@@ -3676,7 +3690,7 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
         Self {
             transform_to: Some(Box::new(move |binding, from_value| {
                 let from_value = from_value.get().expect("Wrong value type");
-                func(binding, from_value).map(|r| r.to_value())
+                func(binding, from_value).map(|r| r.into())
             })),
             ..self
         }

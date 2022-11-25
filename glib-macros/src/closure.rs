@@ -255,8 +255,8 @@ impl ToTokens for Closure {
                         );
                         #(#inner_before)*
                         #(#arg_values)*
-                        #crate_ident::closure::ToClosureReturnValue::to_closure_return_value(
-                            &(#closure)(#(#arg_names),*)
+                        #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value(
+                            (#closure)(#(#arg_names),*)
                         )
                     })
                 };

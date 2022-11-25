@@ -567,6 +567,14 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ::std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            #[inline]
+            fn from(v: $name $(<$($generic),+>)?) -> Self {
+                $crate::value::ToValue::to_value(&v)
+            }
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic: 'static + $($bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();

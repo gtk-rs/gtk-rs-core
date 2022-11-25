@@ -187,15 +187,15 @@ mod tests {
         group.connect_closure(
             "sig-with-ret",
             false,
-            glib::closure_local!(@watch obj => move |o: &SignalObject| -> String {
+            glib::closure_local!(@watch obj => move |o: &SignalObject| -> &'static crate::GStr {
                 assert_eq!(o, obj);
-                format!("Hello")
+                crate::gstr!("Hello")
             }),
         );
         group.set_target(Some(&obj));
         obj.emit_by_name::<()>("sig-with-args", &[&5u32, &"World"]);
         assert_eq!(*store.borrow(), "a 5 b World");
-        let ret = obj.emit_by_name::<String>("sig-with-ret", &[]);
+        let ret = obj.emit_by_name::<crate::GString>("sig-with-ret", &[]);
         assert_eq!(ret, "Hello");
         group.set_target(Object::NONE);
         let ret = obj.emit_by_name::<Option<String>>("sig-with-ret", &[]);

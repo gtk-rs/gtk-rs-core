@@ -161,6 +161,19 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             }
         }
 
+        impl ::std::convert::From<#name> for #crate_ident::Value {
+            fn from(v: #name) -> Self {
+                unsafe {
+                    let mut value = #crate_ident::Value::from_type(<#name as #crate_ident::StaticType>::static_type());
+                    #crate_ident::gobject_ffi::g_value_take_boxed(
+                        #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
+                        #crate_ident::translate::IntoGlibPtr::<*mut #name>::into_glib_ptr(v) as *mut _,
+                    );
+                    value
+                }
+            }
+        }
+
         #impl_to_value_optional
 
         #impl_from_value
@@ -185,6 +198,13 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
             unsafe fn from_glib_full(ptr: *mut #name) -> Self {
                 assert!(!ptr.is_null());
                 *::std::boxed::Box::from_raw(ptr)
+            }
+        }
+
+        impl #crate_ident::translate::IntoGlibPtr<*mut #name> for #name {
+            #[inline]
+            unsafe fn into_glib_ptr(self) -> *mut #name {
+                ::std::boxed::Box::into_raw(::std::boxed::Box::new(self)) as *mut _
             }
         }
 

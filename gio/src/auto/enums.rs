@@ -103,6 +103,13 @@ impl ToValue for BusType {
     }
 }
 
+impl From<BusType> for glib::Value {
+    #[inline]
+    fn from(v: BusType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GConverterResult")]
@@ -192,6 +199,13 @@ impl ToValue for ConverterResult {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<ConverterResult> for glib::Value {
+    #[inline]
+    fn from(v: ConverterResult) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -312,6 +326,13 @@ impl ToValue for CredentialsType {
     }
 }
 
+impl From<CredentialsType> for glib::Value {
+    #[inline]
+    fn from(v: CredentialsType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GDBusMessageByteOrder")]
@@ -391,6 +412,13 @@ impl ToValue for DBusMessageByteOrder {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DBusMessageByteOrder> for glib::Value {
+    #[inline]
+    fn from(v: DBusMessageByteOrder) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -516,6 +544,13 @@ impl ToValue for DBusMessageHeaderField {
     }
 }
 
+impl From<DBusMessageHeaderField> for glib::Value {
+    #[inline]
+    fn from(v: DBusMessageHeaderField) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GDBusMessageType")]
@@ -613,6 +648,13 @@ impl ToValue for DBusMessageType {
     }
 }
 
+impl From<DBusMessageType> for glib::Value {
+    #[inline]
+    fn from(v: DBusMessageType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GDataStreamByteOrder")]
@@ -697,6 +739,13 @@ impl ToValue for DataStreamByteOrder {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DataStreamByteOrder> for glib::Value {
+    #[inline]
+    fn from(v: DataStreamByteOrder) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -789,6 +838,13 @@ impl ToValue for DataStreamNewlineType {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<DataStreamNewlineType> for glib::Value {
+    #[inline]
+    fn from(v: DataStreamNewlineType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -889,6 +945,13 @@ impl ToValue for DriveStartStopType {
     }
 }
 
+impl From<DriveStartStopType> for glib::Value {
+    #[inline]
+    fn from(v: DriveStartStopType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GEmblemOrigin")]
@@ -981,6 +1044,13 @@ impl ToValue for EmblemOrigin {
     }
 }
 
+impl From<EmblemOrigin> for glib::Value {
+    #[inline]
+    fn from(v: EmblemOrigin) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GFileAttributeStatus")]
@@ -1065,6 +1135,13 @@ impl ToValue for FileAttributeStatus {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileAttributeStatus> for glib::Value {
+    #[inline]
+    fn from(v: FileAttributeStatus) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1187,6 +1264,13 @@ impl ToValue for FileAttributeType {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileAttributeType> for glib::Value {
+    #[inline]
+    fn from(v: FileAttributeType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1317,6 +1401,13 @@ impl ToValue for FileMonitorEvent {
     }
 }
 
+impl From<FileMonitorEvent> for glib::Value {
+    #[inline]
+    fn from(v: FileMonitorEvent) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GFileType")]
@@ -1421,6 +1512,13 @@ impl ToValue for FileType {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<FileType> for glib::Value {
+    #[inline]
+    fn from(v: FileType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -1806,6 +1904,13 @@ impl ToValue for IOErrorEnum {
     }
 }
 
+impl From<IOErrorEnum> for glib::Value {
+    #[inline]
+    fn from(v: IOErrorEnum) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg(any(feature = "v2_64", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -1909,6 +2014,15 @@ impl ToValue for MemoryMonitorWarningLevel {
     }
 }
 
+#[cfg(any(feature = "v2_64", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+impl From<MemoryMonitorWarningLevel> for glib::Value {
+    #[inline]
+    fn from(v: MemoryMonitorWarningLevel) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMountOperationResult")]
@@ -1993,6 +2107,13 @@ impl ToValue for MountOperationResult {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<MountOperationResult> for glib::Value {
+    #[inline]
+    fn from(v: MountOperationResult) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2088,6 +2209,13 @@ impl ToValue for NetworkConnectivity {
     }
 }
 
+impl From<NetworkConnectivity> for glib::Value {
+    #[inline]
+    fn from(v: NetworkConnectivity) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GNotificationPriority")]
@@ -2180,6 +2308,13 @@ impl ToValue for NotificationPriority {
     }
 }
 
+impl From<NotificationPriority> for glib::Value {
+    #[inline]
+    fn from(v: NotificationPriority) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GPasswordSave")]
@@ -2264,6 +2399,13 @@ impl ToValue for PasswordSave {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<PasswordSave> for glib::Value {
+    #[inline]
+    fn from(v: PasswordSave) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2373,6 +2515,13 @@ impl ToValue for ResolverError {
     }
 }
 
+impl From<ResolverError> for glib::Value {
+    #[inline]
+    fn from(v: ResolverError) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GResolverRecordType")]
@@ -2467,6 +2616,13 @@ impl ToValue for ResolverRecordType {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<ResolverRecordType> for glib::Value {
+    #[inline]
+    fn from(v: ResolverRecordType) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2567,6 +2723,13 @@ impl ToValue for ResourceError {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<ResourceError> for glib::Value {
+    #[inline]
+    fn from(v: ResourceError) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2687,6 +2850,13 @@ impl ToValue for SocketClientEvent {
     }
 }
 
+impl From<SocketClientEvent> for glib::Value {
+    #[inline]
+    fn from(v: SocketClientEvent) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GSocketFamily")]
@@ -2779,6 +2949,13 @@ impl ToValue for SocketFamily {
     }
 }
 
+impl From<SocketFamily> for glib::Value {
+    #[inline]
+    fn from(v: SocketFamily) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GSocketListenerEvent")]
@@ -2868,6 +3045,13 @@ impl ToValue for SocketListenerEvent {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<SocketListenerEvent> for glib::Value {
+    #[inline]
+    fn from(v: SocketListenerEvent) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -2968,6 +3152,13 @@ impl ToValue for SocketProtocol {
     }
 }
 
+impl From<SocketProtocol> for glib::Value {
+    #[inline]
+    fn from(v: SocketProtocol) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GSocketType")]
@@ -3060,6 +3251,13 @@ impl ToValue for SocketType {
     }
 }
 
+impl From<SocketType> for glib::Value {
+    #[inline]
+    fn from(v: SocketType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsAuthenticationMode")]
@@ -3147,6 +3345,13 @@ impl ToValue for TlsAuthenticationMode {
     }
 }
 
+impl From<TlsAuthenticationMode> for glib::Value {
+    #[inline]
+    fn from(v: TlsAuthenticationMode) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsCertificateRequestFlags")]
@@ -3221,6 +3426,13 @@ impl ToValue for TlsCertificateRequestFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsCertificateRequestFlags> for glib::Value {
+    #[inline]
+    fn from(v: TlsCertificateRequestFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -3332,6 +3544,15 @@ impl ToValue for TlsChannelBindingType {
     }
 }
 
+#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+impl From<TlsChannelBindingType> for glib::Value {
+    #[inline]
+    fn from(v: TlsChannelBindingType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsDatabaseLookupFlags")]
@@ -3411,6 +3632,13 @@ impl ToValue for TlsDatabaseLookupFlags {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsDatabaseLookupFlags> for glib::Value {
+    #[inline]
+    fn from(v: TlsDatabaseLookupFlags) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -3562,6 +3790,13 @@ impl ToValue for TlsError {
     }
 }
 
+impl From<TlsError> for glib::Value {
+    #[inline]
+    fn from(v: TlsError) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsInteractionResult")]
@@ -3646,6 +3881,13 @@ impl ToValue for TlsInteractionResult {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsInteractionResult> for glib::Value {
+    #[inline]
+    fn from(v: TlsInteractionResult) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -3777,6 +4019,15 @@ impl ToValue for TlsProtocolVersion {
     }
 }
 
+#[cfg(any(feature = "v2_70", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+impl From<TlsProtocolVersion> for glib::Value {
+    #[inline]
+    fn from(v: TlsProtocolVersion) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[cfg_attr(feature = "v2_60", deprecated = "Since 2.60")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -3862,6 +4113,13 @@ impl ToValue for TlsRehandshakeMode {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<TlsRehandshakeMode> for glib::Value {
+    #[inline]
+    fn from(v: TlsRehandshakeMode) -> Self {
+        ToValue::to_value(&v)
     }
 }
 
@@ -3971,6 +4229,14 @@ impl ToValue for UnixSocketAddressType {
     }
 }
 
+#[cfg(any(unix, feature = "dox"))]
+impl From<UnixSocketAddressType> for glib::Value {
+    #[inline]
+    fn from(v: UnixSocketAddressType) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GZlibCompressorFormat")]
@@ -4055,5 +4321,12 @@ impl ToValue for ZlibCompressorFormat {
 
     fn value_type(&self) -> glib::Type {
         Self::static_type()
+    }
+}
+
+impl From<ZlibCompressorFormat> for glib::Value {
+    #[inline]
+    fn from(v: ZlibCompressorFormat) -> Self {
+        ToValue::to_value(&v)
     }
 }

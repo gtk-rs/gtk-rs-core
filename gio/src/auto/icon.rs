@@ -24,15 +24,6 @@ impl Icon {
         unsafe { from_glib_full(ffi::g_icon_deserialize(value.to_glib_none().0)) }
     }
 
-    #[doc(alias = "g_icon_hash")]
-    pub fn hash(&self) -> u32 {
-        unsafe {
-            ffi::g_icon_hash(
-                ToGlibPtr::<*mut ffi::GIcon>::to_glib_none(self).0 as glib::ffi::gconstpointer,
-            )
-        }
-    }
-
     #[doc(alias = "g_icon_new_for_string")]
     #[doc(alias = "new_for_string")]
     pub fn for_string(str: &str) -> Result<Icon, glib::Error> {
@@ -52,6 +43,9 @@ pub trait IconExt: 'static {
     #[doc(alias = "g_icon_equal")]
     fn equal(&self, icon2: Option<&impl IsA<Icon>>) -> bool;
 
+    #[doc(alias = "g_icon_hash")]
+    fn hash(&self) -> u32;
+
     #[doc(alias = "g_icon_serialize")]
     fn serialize(&self) -> Option<glib::Variant>;
 
@@ -66,6 +60,15 @@ impl<O: IsA<Icon>> IconExt for O {
                 self.as_ref().to_glib_none().0,
                 icon2.map(|p| p.as_ref()).to_glib_none().0,
             ))
+        }
+    }
+
+    fn hash(&self) -> u32 {
+        unsafe {
+            ffi::g_icon_hash(
+                ToGlibPtr::<*mut ffi::GIcon>::to_glib_none(self.as_ref()).0
+                    as glib::ffi::gconstpointer,
+            )
         }
     }
 

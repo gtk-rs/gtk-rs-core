@@ -178,6 +178,14 @@ impl<'a> From<VariantType> for Cow<'a, VariantTy> {
 }
 
 #[doc(hidden)]
+impl IntoGlibPtr<*mut ffi::GVariantType> for VariantType {
+    #[inline]
+    unsafe fn into_glib_ptr(self) -> *mut ffi::GVariantType {
+        std::mem::ManuallyDrop::new(self).to_glib_none().0
+    }
+}
+
+#[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantType {
     type Storage = &'a Self;
 
@@ -801,6 +809,20 @@ impl crate::value::ToValue for VariantType {
 
     fn value_type(&self) -> crate::Type {
         VariantType::static_type()
+    }
+}
+
+#[doc(hidden)]
+impl From<VariantType> for crate::Value {
+    fn from(t: VariantType) -> Self {
+        unsafe {
+            let mut value = crate::Value::from_type(VariantType::static_type());
+            gobject_ffi::g_value_take_boxed(
+                value.to_glib_none_mut().0,
+                IntoGlibPtr::<*mut _>::into_glib_ptr(t) as *mut _,
+            );
+            value
+        }
     }
 }
 

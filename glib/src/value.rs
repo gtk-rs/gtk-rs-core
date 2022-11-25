@@ -399,6 +399,16 @@ impl<T: ToValueOptional + StaticType> ToValue for Option<T> {
     }
 }
 
+impl<T: Into<Value> + ToValueOptional> From<Option<T>> for Value {
+    #[inline]
+    fn from(t: Option<T>) -> Self {
+        match t {
+            None => T::to_value_optional(None),
+            Some(t) => t.into(),
+        }
+    }
+}
+
 impl<T: ToValueOptional + StaticType> StaticType for Option<T> {
     fn static_type() -> Type {
         T::static_type()
@@ -715,6 +725,10 @@ impl SendValue {
             ptr::read(&s.inner)
         }
     }
+    #[inline]
+    pub fn from_owned<T: Send + Into<Value> + ?Sized>(t: T) -> Self {
+        unsafe { Self::unsafe_from(t.into().into_raw()) }
+    }
 }
 
 impl fmt::Debug for SendValue {
@@ -822,6 +836,13 @@ impl ToValue for String {
     }
 }
 
+impl From<String> for Value {
+    #[inline]
+    fn from(s: String) -> Self {
+        s.to_value()
+    }
+}
+
 impl ToValueOptional for String {
     fn to_value_optional(s: Option<&Self>) -> Value {
         <str>::to_value_optional(s.as_ref().map(|s| s.as_str()))
@@ -853,6 +874,13 @@ impl ToValue for Vec<String> {
 
     fn value_type(&self) -> Type {
         <Vec<String>>::static_type()
+    }
+}
+
+impl From<Vec<String>> for Value {
+    #[inline]
+    fn from(s: Vec<String>) -> Self {
+        s.to_value()
     }
 }
 
@@ -912,6 +940,13 @@ impl ToValue for bool {
     }
 }
 
+impl From<bool> for Value {
+    #[inline]
+    fn from(v: bool) -> Self {
+        v.to_value()
+    }
+}
+
 impl ValueType for Pointer {
     type Type = Self;
 }
@@ -938,6 +973,13 @@ impl ToValue for Pointer {
     }
 }
 
+impl From<Pointer> for Value {
+    #[inline]
+    fn from(v: Pointer) -> Self {
+        v.to_value()
+    }
+}
+
 impl ValueType for ptr::NonNull<Pointee> {
     type Type = Pointer;
 }
@@ -957,6 +999,13 @@ impl ToValue for ptr::NonNull<Pointee> {
 
     fn value_type(&self) -> Type {
         <<Self as ValueType>::Type as StaticType>::static_type()
+    }
+}
+
+impl From<ptr::NonNull<Pointee>> for Value {
+    #[inline]
+    fn from(v: ptr::NonNull<Pointee>) -> Self {
+        v.to_value()
     }
 }
 
@@ -991,6 +1040,13 @@ macro_rules! numeric {
 
             fn value_type(&self) -> Type {
                 Self::static_type()
+            }
+        }
+
+        impl From<$name> for Value {
+            #[inline]
+            fn from(v: $name) -> Self {
+                v.to_value()
             }
         }
     };
@@ -1075,6 +1131,13 @@ impl ToValue for char {
     }
 }
 
+impl From<char> for Value {
+    #[inline]
+    fn from(v: char) -> Self {
+        v.to_value()
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// A [`Value`] containing another [`Value`].
 pub struct BoxedValue(pub Value);
@@ -1118,6 +1181,22 @@ impl ToValue for BoxedValue {
 
     fn value_type(&self) -> Type {
         BoxedValue::static_type()
+    }
+}
+
+impl From<BoxedValue> for Value {
+    #[inline]
+    fn from(v: BoxedValue) -> Self {
+        unsafe {
+            let mut value = Value::from_type(<BoxedValue>::static_type());
+
+            gobject_ffi::g_value_take_boxed(
+                value.to_glib_none_mut().0,
+                v.0.to_glib_full() as ffi::gconstpointer,
+            );
+
+            value
+        }
     }
 }
 

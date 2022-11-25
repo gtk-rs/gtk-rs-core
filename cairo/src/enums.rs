@@ -42,6 +42,13 @@ macro_rules! gvalue_impl {
                 <Self as glib::StaticType>::static_type()
             }
         }
+
+        impl From<$name> for glib::Value {
+            #[inline]
+            fn from(v: $name) -> Self {
+                glib::value::ToValue::to_value(&v)
+            }
+        }
     };
 }
 

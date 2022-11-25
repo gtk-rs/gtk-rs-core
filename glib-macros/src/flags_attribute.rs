@@ -174,6 +174,13 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
             }
         }
 
+        impl ::std::convert::From<#name> for #crate_ident::Value {
+            #[inline]
+            fn from(v: #name) -> Self {
+                #crate_ident::value::ToValue::to_value(&v)
+            }
+        }
+
         impl #crate_ident::StaticType for #name {
             fn static_type() -> #crate_ident::Type {
                 static ONCE: ::std::sync::Once = ::std::sync::Once::new();

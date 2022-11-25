@@ -37,6 +37,7 @@ fn derive_variant_for_struct(
     data_struct: syn::DataStruct,
 ) -> TokenStream {
     let glib = crate_ident_new();
+    let (impl_generics, type_generics, where_clause) = generics.split_for_impl();
     let (static_variant_type, to_variant, from_variant) = match data_struct.fields {
         Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
             let types = unnamed
@@ -49,7 +50,7 @@ fn derive_variant_for_struct(
             let idents_len = idents.len();
 
             let static_variant_type = quote! {
-                impl #generics #glib::StaticVariantType for #ident #generics {
+                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| {
 
@@ -72,7 +73,7 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #generics #glib::ToVariant for #ident #generics {
+                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
                     fn to_variant(&self) -> #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::array::IntoIter::<#glib::Variant, #idents_len>::new([
                             #(
@@ -81,10 +82,20 @@ fn derive_variant_for_struct(
                         ]))
                     }
                 }
+
+                impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
+                    fn from(v: #ident #type_generics) -> #glib::Variant {
+                        #glib::Variant::tuple_from_iter(::std::array::IntoIter::<#glib::Variant, #idents_len>::new([
+                            #(
+                                <#glib::Variant as ::std::convert::From<_>>::from(v.#idents)
+                            ),*
+                        ]))
+                    }
+                }
             };
 
             let from_variant = quote! {
-                impl #generics #glib::FromVariant for #ident #generics {
+                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return None;
@@ -115,7 +126,7 @@ fn derive_variant_for_struct(
             let counts = (0..types.len()).map(syn::Index::from).collect::<Vec<_>>();
 
             let static_variant_type = quote! {
-                impl #generics #glib::StaticVariantType for #ident #generics {
+                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| unsafe {
                             let ptr = #glib::ffi::g_string_sized_new(16);
@@ -144,7 +155,7 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #generics #glib::ToVariant for #ident #generics {
+                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
                     fn to_variant(&self) -> #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
                             #(
@@ -153,10 +164,20 @@ fn derive_variant_for_struct(
                         ]))
                     }
                 }
+
+                impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
+                    fn from(v: #ident #type_generics) -> #glib::Variant {
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
+                            #(
+                                <#glib::Variant as ::std::convert::From<_>>::from(v.#idents)
+                            ),*
+                        ]))
+                    }
+                }
             };
 
             let from_variant = quote! {
-                impl #generics #glib::FromVariant for #ident #generics {
+                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
                             return None;
@@ -177,7 +198,8 @@ fn derive_variant_for_struct(
         }
         Fields::Unit => {
             let static_variant_type = quote! {
-                impl #generics #glib::StaticVariantType for #ident #generics {
+                impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                    #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         ::std::borrow::Cow::Borrowed(#glib::VariantTy::UNIT)
                     }
@@ -185,15 +207,23 @@ fn derive_variant_for_struct(
             };
 
             let to_variant = quote! {
-                impl #generics #glib::ToVariant for #ident #generics {
+                impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
+                    #[inline]
                     fn to_variant(&self) -> #glib::Variant {
+                        #glib::ToVariant::to_variant(&())
+                    }
+                }
+
+                impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
+                    #[inline]
+                    fn from(v: #ident #type_generics) -> #glib::Variant {
                         #glib::ToVariant::to_variant(&())
                     }
                 }
             };
 
             let from_variant = quote! {
-                impl #generics #glib::FromVariant for #ident #generics {
+                impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         Some(Self)
                     }
@@ -262,6 +292,7 @@ fn derive_variant_for_enum(
 ) -> TokenStream {
     let glib = crate_ident_new();
     let static_variant_type = format!("({}v)", mode.tag_type());
+    let (impl_generics, type_generics, where_clause) = generics.split_for_impl();
 
     let to = data_enum.variants.iter().enumerate().map(|(index, v)| {
         let ident = &v.ident;
@@ -319,6 +350,54 @@ fn derive_variant_for_enum(
             },
         }
     });
+    let into = data_enum.variants.iter().enumerate().map(|(index, v)| {
+        let field_ident = &v.ident;
+        let tag = match &mode {
+            EnumMode::String => {
+                let nick = ToKebabCase::to_kebab_case(field_ident.to_string().as_str());
+                quote! { #nick }
+            }
+            EnumMode::Repr(repr) => quote! { #index as #repr },
+            _ => unimplemented!(),
+        };
+        match &v.fields {
+            syn::Fields::Named(FieldsNamed { named, .. }) => {
+                let field_names = named.iter().map(|f| f.ident.as_ref().unwrap());
+                let field_names2 = field_names.clone();
+                quote! {
+                    #ident::#field_ident { #(#field_names),* } => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
+                            #(<#glib::Variant as ::std::convert::From<_>>::from(#field_names2)),*
+                        ]))
+                    ))
+                }
+            }
+            syn::Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
+                let field_names = unnamed
+                    .iter()
+                    .enumerate()
+                    .map(|(i, _)| format_ident!("field{}", i));
+                let field_names2 = field_names.clone();
+                quote! {
+                    #ident::#field_ident(#(#field_names),*) => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
+                            #(<#glib::Variant as ::std::convert::From<_>>::from(#field_names2)),*
+                        ]))
+                    ))
+                }
+            }
+            syn::Fields::Unit => {
+                quote! {
+                    #ident::#field_ident => #glib::ToVariant::to_variant(&(
+                        #tag,
+                        #glib::ToVariant::to_variant(&())
+                    ))
+                }
+            }
+        }
+    });
     let from = data_enum.variants.iter().enumerate().map(|(index, v)| {
         let ident = &v.ident;
         let tag = match &mode {
@@ -368,7 +447,7 @@ fn derive_variant_for_enum(
     };
 
     let derived = quote! {
-        impl #generics #glib::StaticVariantType for #ident #generics {
+        impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
                     unsafe {
@@ -378,7 +457,7 @@ fn derive_variant_for_enum(
             }
         }
 
-        impl #generics #glib::ToVariant for #ident #generics {
+        impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
             fn to_variant(&self) -> #glib::Variant {
                 match self {
                     #(#to),*
@@ -386,7 +465,15 @@ fn derive_variant_for_enum(
             }
         }
 
-        impl #generics #glib::FromVariant for #ident #generics {
+        impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
+            fn from(v: #ident #type_generics) -> #glib::Variant {
+                match v {
+                    #(#into),*
+                }
+            }
+        }
+
+        impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
             fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
                 let (tag, value) = <(#repr, #glib::Variant) as #glib::FromVariant>::from_variant(&variant)?;
                 if !#glib::VariantTy::is_tuple(#glib::Variant::type_(&value)) {
@@ -410,6 +497,7 @@ fn derive_variant_for_c_enum(
 ) -> TokenStream {
     let glib = crate_ident_new();
     let static_variant_type = mode.tag_type().to_string();
+    let (impl_generics, type_generics, where_clause) = generics.split_for_impl();
 
     let (to_variant, from_variant) = match mode {
         EnumMode::String => {
@@ -508,7 +596,7 @@ fn derive_variant_for_c_enum(
     };
 
     let derived = quote! {
-        impl #generics #glib::StaticVariantType for #ident #generics {
+        impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
                     unsafe {
@@ -518,13 +606,20 @@ fn derive_variant_for_c_enum(
             }
         }
 
-        impl #generics #glib::ToVariant for #ident #generics {
+        impl #impl_generics #glib::ToVariant for #ident #type_generics #where_clause {
             fn to_variant(&self) -> #glib::Variant {
                 #to_variant
             }
         }
 
-        impl #generics #glib::FromVariant for #ident #generics {
+        impl #impl_generics ::std::convert::From<#ident #type_generics> for #glib::Variant #where_clause {
+            #[inline]
+            fn from(v: #ident #type_generics) -> #glib::Variant {
+                <#ident #type_generics as #glib::ToVariant>::to_variant(&v)
+            }
+        }
+
+        impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
             fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
                 #from_variant
             }

@@ -92,6 +92,13 @@ impl crate::ToValue for Inhibit {
     }
 }
 
+impl From<Inhibit> for crate::Value {
+    #[inline]
+    fn from(v: Inhibit) -> Self {
+        v.0.into()
+    }
+}
+
 pub unsafe fn connect_raw<F>(
     receiver: *mut gobject_ffi::GObject,
     signal_name: *const c_char,

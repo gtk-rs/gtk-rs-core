@@ -130,12 +130,12 @@ impl VariantDict {
     /// instance already, you should use the [`insert_value()`](#method.insert_value)
     /// method instead.
     #[doc(alias = "g_variant_dict_insert_value")]
-    pub fn insert<T: ToVariant>(&self, key: &str, value: &T) {
+    pub fn insert(&self, key: &str, value: impl Into<Variant>) {
         unsafe {
             ffi::g_variant_dict_insert_value(
                 self.to_glib_none().0,
                 key.to_glib_none().0,
-                value.to_variant().to_glib_none().0,
+                value.into().to_glib_none().0,
             )
         }
     }
@@ -215,6 +215,13 @@ impl ToVariant for VariantDict {
     }
 }
 
+impl From<VariantDict> for Variant {
+    #[inline]
+    fn from(d: VariantDict) -> Self {
+        unsafe { d.end_unsafe() }
+    }
+}
+
 impl FromVariant for VariantDict {
     fn from_variant(variant: &Variant) -> Option<Self> {
         if variant.type_() == VariantDict::static_variant_type() {
@@ -280,7 +287,7 @@ mod test {
     fn create_populate_remove() {
         let dict = VariantDict::default();
         let empty_var = dict.to_variant();
-        dict.insert("one", &1u64);
+        dict.insert("one", 1u64);
         assert!(dict.remove("one"));
         assert!(!dict.remove("one"));
         let var2 = dict.to_variant();
