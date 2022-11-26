@@ -2,7 +2,7 @@
 
 use std::{cmp, fmt, hash, mem, ops, ptr, slice, str};
 
-use crate::translate::*;
+use crate::{translate::*, GStr};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -12,7 +12,7 @@ wrapper! {
     pub struct GStringBuilder(BoxedInline<ffi::GString>);
 
     match fn {
-        copy => |ptr| ffi::g_string_new((*ptr).str),
+        copy => |ptr| ffi::g_string_new_len((*ptr).str, (*ptr).len.try_into().unwrap()),
         free => |ptr| ffi::g_string_free(ptr, ffi::GTRUE),
         init => |ptr| unsafe {
             let inner = ffi::GString {
@@ -111,7 +111,7 @@ impl GStringBuilder {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Returns `&str` slice.
+    /// Returns <code>&[str]</code> slice.
     pub fn as_str(&self) -> &str {
         unsafe {
             let ptr: *const u8 = self.inner.str as _;
@@ -125,7 +125,21 @@ impl GStringBuilder {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Returns `&str` slice.
+    /// Returns <code>&[GStr]</code> slice.
+    pub fn as_gstr(&self) -> &GStr {
+        unsafe {
+            let ptr: *const u8 = self.inner.str as _;
+            let len: usize = self.inner.len;
+            if len == 0 {
+                return Default::default();
+            }
+            let slice = slice::from_raw_parts(ptr, len + 1);
+            GStr::from_utf8_with_nul_unchecked(slice)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Finalizes the builder, converting it to a [`GString`].
     #[must_use = "String returned from the builder should probably be used"]
     pub fn into_string(self) -> crate::GString {
         unsafe {
@@ -173,6 +187,18 @@ impl PartialEq<GStringBuilder> for str {
     }
 }
 
+impl PartialEq<GStr> for GStringBuilder {
+    fn eq(&self, other: &GStr) -> bool {
+        self.as_gstr() == other
+    }
+}
+
+impl PartialEq<GStringBuilder> for GStr {
+    fn eq(&self, other: &GStringBuilder) -> bool {
+        self == other.as_gstr()
+    }
+}
+
 impl Eq for GStringBuilder {}
 
 impl cmp::PartialOrd for GStringBuilder {
@@ -190,6 +216,18 @@ impl cmp::PartialOrd<str> for GStringBuilder {
 impl cmp::PartialOrd<GStringBuilder> for str {
     fn partial_cmp(&self, other: &GStringBuilder) -> Option<cmp::Ordering> {
         Some(self.cmp(other.as_str()))
+    }
+}
+
+impl cmp::PartialOrd<GStr> for GStringBuilder {
+    fn partial_cmp(&self, other: &GStr) -> Option<cmp::Ordering> {
+        Some(self.as_gstr().cmp(other))
+    }
+}
+
+impl cmp::PartialOrd<GStringBuilder> for GStr {
+    fn partial_cmp(&self, other: &GStringBuilder) -> Option<cmp::Ordering> {
+        Some(self.cmp(other.as_gstr()))
     }
 }
 
@@ -217,6 +255,12 @@ impl AsRef<[u8]> for GStringBuilder {
 impl AsRef<str> for GStringBuilder {
     fn as_ref(&self) -> &str {
         self.as_str()
+    }
+}
+
+impl AsRef<GStr> for GStringBuilder {
+    fn as_ref(&self) -> &GStr {
+        self.as_gstr()
     }
 }
 
