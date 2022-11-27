@@ -7,7 +7,7 @@ use std::time::SystemTime;
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufAnimationIter")]
-    pub struct PixbufAnimationIter(Object<ffi::GdkPixbufAnimationIter>);
+    pub struct PixbufAnimationIter(Object<ffi::GdkPixbufAnimationIter, ffi::GdkPixbufAnimationIterClass>);
 
     match fn {
         type_ => || ffi::gdk_pixbuf_animation_iter_get_type(),
