@@ -34,6 +34,7 @@ macro_rules! glib_shared_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
+            #[doc = "Return the inner pointer to the underlying C value."]
             pub fn as_ptr(&self) -> *mut $ffi_name {
                 $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
             }

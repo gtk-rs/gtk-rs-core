@@ -968,10 +968,9 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             // Must not be a dangling pointer so let's create some uninitialized memory
             let priv_ = std::mem::MaybeUninit::<PrivateStruct<T>>::uninit();
             let ptr = priv_.as_ptr();
-            // FIXME: Technically UB but we'd need std::ptr::raw_const for this
-            let imp_ptr = &(*ptr).imp as *const _ as *const u8;
+            let imp_ptr = std::ptr::addr_of!((*ptr).imp) as *const u8;
             let ptr = ptr as *const u8;
-            imp_ptr as isize - ptr as isize
+            imp_ptr.offset_from(ptr)
         };
 
         let iface_types = T::Interfaces::iface_infos();
