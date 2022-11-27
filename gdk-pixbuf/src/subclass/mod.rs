@@ -4,10 +4,12 @@
 //! Traits intended for creating custom types.
 
 pub mod pixbuf_animation;
+pub mod pixbuf_animation_iter;
 
 pub mod prelude {
     pub use gio::subclass::prelude::*;
     pub use glib::subclass::prelude::*;
 
     pub use super::pixbuf_animation::{PixbufAnimationImpl, PixbufAnimationImplExt};
+    pub use super::pixbuf_animation_iter::{PixbufAnimationIterImpl, PixbufAnimationIterImplExt};
 }
