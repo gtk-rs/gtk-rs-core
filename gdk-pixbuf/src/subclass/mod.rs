@@ -5,6 +5,7 @@
 
 pub mod pixbuf_animation;
 pub mod pixbuf_animation_iter;
+pub mod pixbuf_loader;
 
 pub mod prelude {
     pub use gio::subclass::prelude::*;
@@ -12,4 +13,5 @@ pub mod prelude {
 
     pub use super::pixbuf_animation::{PixbufAnimationImpl, PixbufAnimationImplExt};
     pub use super::pixbuf_animation_iter::{PixbufAnimationIterImpl, PixbufAnimationIterImplExt};
+    pub use super::pixbuf_loader::{PixbufLoaderImpl, PixbufLoaderImplExt};
 }
