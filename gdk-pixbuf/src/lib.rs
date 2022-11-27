@@ -11,6 +11,8 @@ pub use glib;
 #[allow(unused_imports)]
 mod auto;
 
+pub mod subclass;
+
 mod pixbuf;
 mod pixbuf_animation;
 mod pixbuf_animation_iter;
