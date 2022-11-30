@@ -74,6 +74,7 @@ pub use self::enums::AttrType;
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 pub use self::enums::BaselineShift;
+#[allow(deprecated)]
 pub use self::enums::BidiType;
 pub use self::enums::CoverageLevel;
 pub use self::enums::Direction;

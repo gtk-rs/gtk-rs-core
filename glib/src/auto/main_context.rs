@@ -101,6 +101,7 @@ impl MainContext {
     //}
 
     //#[cfg_attr(feature = "v2_58", deprecated = "Since 2.58")]
+    //#[allow(deprecated)]
     //#[doc(alias = "g_main_context_wait")]
     //pub fn wait(&self, cond: /*Ignored*/&mut Cond, mutex: /*Ignored*/&mut Mutex) -> bool {
     //    unsafe { TODO: call ffi:g_main_context_wait() }

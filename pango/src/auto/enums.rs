@@ -584,6 +584,7 @@ pub enum BidiType {
     __Unknown(i32),
 }
 
+#[allow(deprecated)]
 impl BidiType {
     #[doc(alias = "pango_bidi_type_for_unichar")]
     pub fn for_unichar(ch: char) -> BidiType {
@@ -591,6 +592,7 @@ impl BidiType {
     }
 }
 
+#[allow(deprecated)]
 impl fmt::Display for BidiType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -626,6 +628,7 @@ impl fmt::Display for BidiType {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl IntoGlib for BidiType {
     type GlibType = ffi::PangoBidiType;
@@ -660,6 +663,7 @@ impl IntoGlib for BidiType {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoBidiType> for BidiType {
     unsafe fn from_glib(value: ffi::PangoBidiType) -> Self {
@@ -692,16 +696,19 @@ impl FromGlib<ffi::PangoBidiType> for BidiType {
     }
 }
 
+#[allow(deprecated)]
 impl StaticType for BidiType {
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_bidi_type_get_type()) }
     }
 }
 
+#[allow(deprecated)]
 impl glib::value::ValueType for BidiType {
     type Type = Self;
 }
 
+#[allow(deprecated)]
 unsafe impl<'a> FromValue<'a> for BidiType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -710,6 +717,7 @@ unsafe impl<'a> FromValue<'a> for BidiType {
     }
 }
 
+#[allow(deprecated)]
 impl ToValue for BidiType {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
@@ -724,6 +732,7 @@ impl ToValue for BidiType {
     }
 }
 
+#[allow(deprecated)]
 impl From<BidiType> for glib::Value {
     #[inline]
     fn from(v: BidiType) -> Self {
@@ -1858,6 +1867,7 @@ pub enum Script {
 
 impl Script {
     #[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
+    #[allow(deprecated)]
     #[doc(alias = "pango_script_for_unichar")]
     pub fn for_unichar(ch: char) -> Script {
         unsafe { from_glib(ffi::pango_script_for_unichar(ch.into_glib())) }

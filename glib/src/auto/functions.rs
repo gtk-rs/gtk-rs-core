@@ -764,6 +764,7 @@ pub fn spawn_async(
 //}
 
 #[cfg_attr(feature = "v2_70", deprecated = "Since 2.70")]
+#[allow(deprecated)]
 #[doc(alias = "g_spawn_check_exit_status")]
 pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     unsafe {

@@ -2,6 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#![cfg(target_os = "linux")]
+
 use glib_sys::*;
 use std::env;
 use std::error::Error;
@@ -110,7 +112,6 @@ impl Results {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_constants_with_c() {
     let mut c_constants: Vec<(String, String)> = Vec::new();
 
@@ -145,7 +146,6 @@ fn cross_validate_constants_with_c() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_layout_with_c() {
     let mut c_layouts = Vec::new();
 
@@ -1177,7 +1177,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_LOG_LEVEL_DEBUG", "128"),
     ("(guint) G_LOG_LEVEL_ERROR", "4"),
     ("(guint) G_LOG_LEVEL_INFO", "64"),
-    ("(guint) G_LOG_LEVEL_MASK", "-4"),
+    ("(guint) G_LOG_LEVEL_MASK", "4294967292"),
     ("(guint) G_LOG_LEVEL_MESSAGE", "32"),
     ("G_LOG_LEVEL_USER_SHIFT", "8"),
     ("(guint) G_LOG_LEVEL_WARNING", "16"),

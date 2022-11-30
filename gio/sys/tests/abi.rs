@@ -2,6 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#![cfg(target_os = "linux")]
+
 use gio_sys::*;
 use std::env;
 use std::error::Error;
@@ -12,7 +14,7 @@ use std::process::Command;
 use std::str;
 use tempfile::Builder;
 
-static PACKAGES: &[&str] = &["gio-2.0"];
+static PACKAGES: &[&str] = &["gio-2.0", "gio-unix-2.0"];
 
 #[derive(Clone, Debug)]
 struct Compiler {
@@ -110,7 +112,6 @@ impl Results {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_constants_with_c() {
     let mut c_constants: Vec<(String, String)> = Vec::new();
 
@@ -145,7 +146,6 @@ fn cross_validate_constants_with_c() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_layout_with_c() {
     let mut c_layouts = Vec::new();
 
