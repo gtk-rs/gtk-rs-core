@@ -222,7 +222,7 @@ extern "C" fn write_callback<W: io::Write + 'static>(
         {
             // Safety: `write_callback<W>` was instantiated in `Surface::_for_stream`
             // with a W parameter consistent with the box that was unsized to `Box<dyn Any>`.
-            let stream = unsafe { stream.downcast_mut_unchecked::<W>() };
+            let stream = unsafe { AnyExt::downcast_mut_unchecked::<W>(&mut **stream) };
             // Safety: this is the callback contract from cairo’s API
             let data = unsafe {
                 if data.is_null() || length == 0 {

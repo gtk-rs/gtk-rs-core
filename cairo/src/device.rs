@@ -201,39 +201,37 @@ impl Device {
     #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
     #[doc(alias = "cairo_xlib_device_debug_cap_xrender_version")]
     #[doc(alias = "cairo_xcb_device_debug_cap_xrender_version")]
-    pub fn debug_cap_xrender_version(&self, major_version: i32, minor_version: i32) {
-        unsafe {
-            match self.type_() {
-                DeviceType::Xlib => {
-                    #[cfg(feature = "xlib")]
-                    {
-                        ffi::cairo_xlib_device_debug_cap_xrender_version(
-                            self.to_raw_none(),
-                            major_version,
-                            minor_version,
-                        )
-                    }
-                    #[cfg(not(feature = "xlib"))]
-                    {
-                        panic!("you need to enable \"xlib\" feature")
-                    }
+    pub fn debug_cap_xrender_version(&self, _major_version: i32, _minor_version: i32) {
+        match self.type_() {
+            DeviceType::Xlib => {
+                #[cfg(feature = "xlib")]
+                unsafe {
+                    ffi::cairo_xlib_device_debug_cap_xrender_version(
+                        self.to_raw_none(),
+                        _major_version,
+                        _minor_version,
+                    )
                 }
-                DeviceType::Xcb => {
-                    #[cfg(feature = "xcb")]
-                    {
-                        ffi::cairo_xcb_device_debug_cap_xrender_version(
-                            self.to_raw_none(),
-                            major_version,
-                            minor_version,
-                        )
-                    }
-                    #[cfg(not(feature = "xcb"))]
-                    {
-                        panic!("you need to enable \"xcb\" feature")
-                    }
+                #[cfg(not(feature = "xlib"))]
+                {
+                    panic!("you need to enable \"xlib\" feature")
                 }
-                d => panic!("invalid device type: {}", d),
             }
+            DeviceType::Xcb => {
+                #[cfg(feature = "xcb")]
+                unsafe {
+                    ffi::cairo_xcb_device_debug_cap_xrender_version(
+                        self.to_raw_none(),
+                        _major_version,
+                        _minor_version,
+                    )
+                }
+                #[cfg(not(feature = "xcb"))]
+                {
+                    panic!("you need to enable \"xcb\" feature")
+                }
+            }
+            d => panic!("invalid device type: {}", d),
         }
     }
 
@@ -241,61 +239,57 @@ impl Device {
     #[doc(alias = "cairo_xlib_device_debug_get_precision")]
     #[doc(alias = "cairo_xcb_device_debug_get_precision")]
     pub fn debug_get_precision(&self) -> i32 {
-        unsafe {
-            match self.type_() {
-                DeviceType::Xlib => {
-                    #[cfg(feature = "xlib")]
-                    {
-                        ffi::cairo_xlib_device_debug_get_precision(self.to_raw_none())
-                    }
-                    #[cfg(not(feature = "xlib"))]
-                    {
-                        panic!("you need to enable \"xlib\" feature")
-                    }
+        match self.type_() {
+            DeviceType::Xlib => {
+                #[cfg(feature = "xlib")]
+                unsafe {
+                    ffi::cairo_xlib_device_debug_get_precision(self.to_raw_none())
                 }
-                DeviceType::Xcb => {
-                    #[cfg(feature = "xcb")]
-                    {
-                        ffi::cairo_xcb_device_debug_get_precision(self.to_raw_none())
-                    }
-                    #[cfg(not(feature = "xcb"))]
-                    {
-                        panic!("you need to enable \"xcb\" feature")
-                    }
+                #[cfg(not(feature = "xlib"))]
+                {
+                    panic!("you need to enable \"xlib\" feature")
                 }
-                d => panic!("invalid device type: {}", d),
             }
+            DeviceType::Xcb => {
+                #[cfg(feature = "xcb")]
+                unsafe {
+                    ffi::cairo_xcb_device_debug_get_precision(self.to_raw_none())
+                }
+                #[cfg(not(feature = "xcb"))]
+                {
+                    panic!("you need to enable \"xcb\" feature")
+                }
+            }
+            d => panic!("invalid device type: {}", d),
         }
     }
 
     #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
     #[doc(alias = "cairo_xlib_device_debug_set_precision")]
     #[doc(alias = "cairo_xcb_device_debug_set_precision")]
-    pub fn debug_set_precision(&self, precision: i32) {
-        unsafe {
-            match self.type_() {
-                DeviceType::Xlib => {
-                    #[cfg(feature = "xlib")]
-                    {
-                        ffi::cairo_xlib_device_debug_set_precision(self.to_raw_none(), precision)
-                    }
-                    #[cfg(not(feature = "xlib"))]
-                    {
-                        panic!("you need to enable \"xlib\" feature")
-                    }
+    pub fn debug_set_precision(&self, _precision: i32) {
+        match self.type_() {
+            DeviceType::Xlib => {
+                #[cfg(feature = "xlib")]
+                unsafe {
+                    ffi::cairo_xlib_device_debug_set_precision(self.to_raw_none(), _precision)
                 }
-                DeviceType::Xcb => {
-                    #[cfg(feature = "xcb")]
-                    {
-                        ffi::cairo_xcb_device_debug_set_precision(self.to_raw_none(), precision)
-                    }
-                    #[cfg(not(feature = "xcb"))]
-                    {
-                        panic!("you need to enable \"xcb\" feature")
-                    }
+                #[cfg(not(feature = "xlib"))]
+                {
+                    panic!("you need to enable \"xlib\" feature")
                 }
-                d => panic!("invalid device type: {}", d),
             }
+            DeviceType::Xcb => {
+                #[cfg(feature = "xcb")]
+                unsafe {
+                    ffi::cairo_xcb_device_debug_set_precision(self.to_raw_none(), _precision)
+                }
+                #[cfg(not(feature = "xcb"))]
+                {
+                    panic!("you need to enable \"xcb\" feature")
+                }
+            }
+            d => panic!("invalid device type: {}", d),
         }
     }
 
