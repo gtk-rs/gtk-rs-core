@@ -502,6 +502,7 @@ pub use self::enums::TlsInteractionResult;
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
 pub use self::enums::TlsProtocolVersion;
+#[allow(deprecated)]
 pub use self::enums::TlsRehandshakeMode;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
@@ -676,6 +677,7 @@ pub use self::constants::TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT;
 pub use self::constants::TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER;
 pub use self::constants::VFS_EXTENSION_POINT_NAME;
 pub use self::constants::VOLUME_IDENTIFIER_KIND_CLASS;
+#[allow(deprecated)]
 pub use self::constants::VOLUME_IDENTIFIER_KIND_HAL_UDI;
 pub use self::constants::VOLUME_IDENTIFIER_KIND_LABEL;
 pub use self::constants::VOLUME_IDENTIFIER_KIND_NFS_MOUNT;

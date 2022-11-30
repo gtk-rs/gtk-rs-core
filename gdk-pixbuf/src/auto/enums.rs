@@ -207,6 +207,7 @@ pub enum PixbufAlphaMode {
     __Unknown(i32),
 }
 
+#[allow(deprecated)]
 impl fmt::Display for PixbufAlphaMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -221,6 +222,7 @@ impl fmt::Display for PixbufAlphaMode {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl IntoGlib for PixbufAlphaMode {
     type GlibType = ffi::GdkPixbufAlphaMode;
@@ -234,6 +236,7 @@ impl IntoGlib for PixbufAlphaMode {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
     unsafe fn from_glib(value: ffi::GdkPixbufAlphaMode) -> Self {
@@ -245,16 +248,19 @@ impl FromGlib<ffi::GdkPixbufAlphaMode> for PixbufAlphaMode {
     }
 }
 
+#[allow(deprecated)]
 impl StaticType for PixbufAlphaMode {
     fn static_type() -> Type {
         unsafe { from_glib(ffi::gdk_pixbuf_alpha_mode_get_type()) }
     }
 }
 
+#[allow(deprecated)]
 impl glib::value::ValueType for PixbufAlphaMode {
     type Type = Self;
 }
 
+#[allow(deprecated)]
 unsafe impl<'a> FromValue<'a> for PixbufAlphaMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -263,6 +269,7 @@ unsafe impl<'a> FromValue<'a> for PixbufAlphaMode {
     }
 }
 
+#[allow(deprecated)]
 impl ToValue for PixbufAlphaMode {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
@@ -277,6 +284,7 @@ impl ToValue for PixbufAlphaMode {
     }
 }
 
+#[allow(deprecated)]
 impl From<PixbufAlphaMode> for glib::Value {
     #[inline]
     fn from(v: PixbufAlphaMode) -> Self {

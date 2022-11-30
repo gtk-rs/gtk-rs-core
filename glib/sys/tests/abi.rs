@@ -2,6 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#![cfg(target_os = "linux")]
+
 use glib_sys::*;
 use std::env;
 use std::error::Error;
@@ -110,7 +112,6 @@ impl Results {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_constants_with_c() {
     let mut c_constants: Vec<(String, String)> = Vec::new();
 
@@ -145,7 +146,6 @@ fn cross_validate_constants_with_c() {
 }
 
 #[test]
-#[cfg(target_os = "linux")]
 fn cross_validate_layout_with_c() {
     let mut c_layouts = Vec::new();
 
@@ -751,13 +751,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GTestLogMsg",
-        Layout {
-            size: size_of::<GTestLogMsg>(),
-            alignment: align_of::<GTestLogMsg>(),
-        },
-    ),
-    (
         "GTestLogType",
         Layout {
             size: size_of::<GTestLogType>(),
@@ -1169,7 +1162,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_LN10", "2.302585"),
     ("G_LN2", "0.693147"),
     ("G_LOG_2_BASE_10", "0.301030"),
-    ("G_LOG_DOMAIN", "0"),
     ("G_LOG_FATAL_MASK", "5"),
     ("(guint) G_LOG_FLAG_FATAL", "2"),
     ("(guint) G_LOG_FLAG_RECURSION", "1"),
@@ -1177,7 +1169,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(guint) G_LOG_LEVEL_DEBUG", "128"),
     ("(guint) G_LOG_LEVEL_ERROR", "4"),
     ("(guint) G_LOG_LEVEL_INFO", "64"),
-    ("(guint) G_LOG_LEVEL_MASK", "-4"),
+    ("(guint) G_LOG_LEVEL_MASK", "4294967292"),
     ("(guint) G_LOG_LEVEL_MESSAGE", "32"),
     ("G_LOG_LEVEL_USER_SHIFT", "8"),
     ("(guint) G_LOG_LEVEL_WARNING", "16"),
@@ -1809,5 +1801,4 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ),
     ("(gint) G_VARIANT_PARSE_ERROR_VALUE_EXPECTED", "17"),
     ("G_WIN32_MSG_HANDLE", "19981206"),
-    ("g_macro__has_attribute___noreturn__", "0"),
 ];

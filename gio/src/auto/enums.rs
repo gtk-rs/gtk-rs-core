@@ -4043,6 +4043,7 @@ pub enum TlsRehandshakeMode {
     __Unknown(i32),
 }
 
+#[allow(deprecated)]
 impl fmt::Display for TlsRehandshakeMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -4058,6 +4059,7 @@ impl fmt::Display for TlsRehandshakeMode {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl IntoGlib for TlsRehandshakeMode {
     type GlibType = ffi::GTlsRehandshakeMode;
@@ -4072,6 +4074,7 @@ impl IntoGlib for TlsRehandshakeMode {
     }
 }
 
+#[allow(deprecated)]
 #[doc(hidden)]
 impl FromGlib<ffi::GTlsRehandshakeMode> for TlsRehandshakeMode {
     unsafe fn from_glib(value: ffi::GTlsRehandshakeMode) -> Self {
@@ -4084,16 +4087,19 @@ impl FromGlib<ffi::GTlsRehandshakeMode> for TlsRehandshakeMode {
     }
 }
 
+#[allow(deprecated)]
 impl StaticType for TlsRehandshakeMode {
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_tls_rehandshake_mode_get_type()) }
     }
 }
 
+#[allow(deprecated)]
 impl glib::value::ValueType for TlsRehandshakeMode {
     type Type = Self;
 }
 
+#[allow(deprecated)]
 unsafe impl<'a> FromValue<'a> for TlsRehandshakeMode {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -4102,6 +4108,7 @@ unsafe impl<'a> FromValue<'a> for TlsRehandshakeMode {
     }
 }
 
+#[allow(deprecated)]
 impl ToValue for TlsRehandshakeMode {
     fn to_value(&self) -> glib::Value {
         let mut value = glib::Value::for_value_type::<Self>();
@@ -4116,6 +4123,7 @@ impl ToValue for TlsRehandshakeMode {
     }
 }
 
+#[allow(deprecated)]
 impl From<TlsRehandshakeMode> for glib::Value {
     #[inline]
     fn from(v: TlsRehandshakeMode) -> Self {

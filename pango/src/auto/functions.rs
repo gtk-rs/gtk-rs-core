@@ -18,6 +18,7 @@ use std::mem;
 use std::ptr;
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
+//#[allow(deprecated)]
 //#[doc(alias = "pango_break")]
 //#[doc(alias = "break")]
 //pub fn break_(text: &str, analysis: &mut Analysis, attrs: /*Ignored*/&[LogAttr]) {

@@ -86,7 +86,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GTestConfig", sizeof(GTestConfig), alignof(GTestConfig));
     printf("%s;%zu;%zu\n", "GTestFileType", sizeof(GTestFileType), alignof(GTestFileType));
     printf("%s;%zu;%zu\n", "GTestLogBuffer", sizeof(GTestLogBuffer), alignof(GTestLogBuffer));
-    printf("%s;%zu;%zu\n", "GTestLogMsg", sizeof(GTestLogMsg), alignof(GTestLogMsg));
     printf("%s;%zu;%zu\n", "GTestLogType", sizeof(GTestLogType), alignof(GTestLogType));
     printf("%s;%zu;%zu\n", "GTestResult", sizeof(GTestResult), alignof(GTestResult));
     printf("%s;%zu;%zu\n", "GTestSubprocessFlags", sizeof(GTestSubprocessFlags), alignof(GTestSubprocessFlags));

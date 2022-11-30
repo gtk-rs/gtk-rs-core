@@ -23,6 +23,7 @@ pub use self::pixbuf_format::PixbufFormat;
 mod enums;
 pub use self::enums::Colorspace;
 pub use self::enums::InterpType;
+#[allow(deprecated)]
 pub use self::enums::PixbufAlphaMode;
 pub use self::enums::PixbufError;
 pub use self::enums::PixbufRotation;

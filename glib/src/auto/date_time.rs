@@ -59,6 +59,7 @@ impl DateTime {
     }
 
     //#[cfg_attr(feature = "v2_62", deprecated = "Since 2.62")]
+    //#[allow(deprecated)]
     //#[doc(alias = "g_date_time_new_from_timeval_local")]
     //#[doc(alias = "new_from_timeval_local")]
     //pub fn from_timeval_local(tv: /*Ignored*/&TimeVal) -> Result<DateTime, BoolError> {
@@ -66,6 +67,7 @@ impl DateTime {
     //}
 
     //#[cfg_attr(feature = "v2_62", deprecated = "Since 2.62")]
+    //#[allow(deprecated)]
     //#[doc(alias = "g_date_time_new_from_timeval_utc")]
     //#[doc(alias = "new_from_timeval_utc")]
     //pub fn from_timeval_utc(tv: /*Ignored*/&TimeVal) -> Result<DateTime, BoolError> {
@@ -437,6 +439,7 @@ impl DateTime {
     }
 
     //#[cfg_attr(feature = "v2_62", deprecated = "Since 2.62")]
+    //#[allow(deprecated)]
     //#[doc(alias = "g_date_time_to_timeval")]
     //pub fn to_timeval(&self, tv: /*Ignored*/&mut TimeVal) -> bool {
     //    unsafe { TODO: call ffi:g_date_time_to_timeval() }
