@@ -11,3 +11,5 @@
 #include <gio/gunixmounts.h>
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixsocketaddress.h>
+#define G_SETTINGS_ENABLE_BACKEND 1
+#include <gio/gsettingsbackend.h>

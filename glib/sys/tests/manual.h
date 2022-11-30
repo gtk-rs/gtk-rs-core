@@ -2,3 +2,8 @@
 
 #include <glib.h>
 #include <glib-object.h>
+
+// included in Gir on all platforms even though it is only present on windows
+#ifndef G_WIN32_MSG_HANDLE
+#define G_WIN32_MSG_HANDLE 19981206
+#endif
