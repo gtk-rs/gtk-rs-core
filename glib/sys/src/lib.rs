@@ -752,7 +752,6 @@ pub const G_LITTLE_ENDIAN: c_int = 1234;
 pub const G_LN10: c_double = 2.302585;
 pub const G_LN2: c_double = 0.693147;
 pub const G_LOG_2_BASE_10: c_double = 0.301030;
-pub const G_LOG_DOMAIN: c_char = 0;
 pub const G_LOG_FATAL_MASK: c_int = 5;
 pub const G_LOG_LEVEL_USER_SHIFT: c_int = 8;
 pub const G_OPTION_REMAINING: *const c_char = b"\0" as *const u8 as *const c_char;
@@ -789,7 +788,6 @@ pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: *const c_char =
     b"!$&'()*+,;=\0" as *const u8 as *const c_char;
 pub const G_USEC_PER_SEC: c_int = 1000000;
 pub const G_WIN32_MSG_HANDLE: c_int = 19981206;
-pub const g_macro__has_attribute___noreturn__: c_int = 0;
 
 // Flags
 pub type GAsciiType = c_uint;
@@ -2181,27 +2179,6 @@ pub struct GTestLogBuffer {
 impl ::std::fmt::Debug for GTestLogBuffer {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GTestLogBuffer @ {self:p}"))
-            .finish()
-    }
-}
-
-#[repr(C)]
-pub struct GTestLogMsg {
-    pub log_type: GTestLogType,
-    pub n_strings: c_uint,
-    pub strings: *mut *mut c_char,
-    pub n_nums: c_uint,
-    _truncated_record_marker: c_void,
-    // /*Unimplemented*/*mut long double
-}
-
-impl ::std::fmt::Debug for GTestLogMsg {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GTestLogMsg @ {self:p}"))
-            .field("log_type", &self.log_type)
-            .field("n_strings", &self.n_strings)
-            .field("strings", &self.strings)
-            .field("n_nums", &self.n_nums)
             .finish()
     }
 }
@@ -4808,14 +4785,14 @@ extern "C" {
     // GTestLogBuffer
     //=========================================================================
     pub fn g_test_log_buffer_free(tbuffer: *mut GTestLogBuffer);
-    pub fn g_test_log_buffer_pop(tbuffer: *mut GTestLogBuffer) -> *mut GTestLogMsg;
+    //pub fn g_test_log_buffer_pop(tbuffer: *mut GTestLogBuffer) -> /*Ignored*/*mut GTestLogMsg;
     pub fn g_test_log_buffer_push(tbuffer: *mut GTestLogBuffer, n_bytes: c_uint, bytes: *const u8);
     pub fn g_test_log_buffer_new() -> *mut GTestLogBuffer;
 
     //=========================================================================
     // GTestLogMsg
     //=========================================================================
-    pub fn g_test_log_msg_free(tmsg: *mut GTestLogMsg);
+    //pub fn g_test_log_msg_free(tmsg: /*Ignored*/*mut GTestLogMsg);
 
     //=========================================================================
     // GTestSuite
