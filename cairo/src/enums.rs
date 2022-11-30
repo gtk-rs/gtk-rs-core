@@ -1976,7 +1976,7 @@ impl fmt::Display for MeshCorner {
 }
 
 #[cfg(any(feature = "freetype", feature = "dox"))]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_ft_synthesize_t")]
 pub enum FtSynthesize {
@@ -2028,7 +2028,7 @@ impl fmt::Display for FtSynthesize {
 }
 
 #[cfg(any(feature = "script", feature = "dox"))]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[non_exhaustive]
 #[doc(alias = "cairo_script_mode_t")]
 pub enum ScriptMode {
