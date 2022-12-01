@@ -296,10 +296,10 @@ impl<T: ObjectType> Cast for T {}
 /// let widget: Option<Widget> = list_item.child();
 ///
 /// // Without using `CastNone`
-/// let label: gtk::Label = widget.unwrap().downcast().unwrap();
+/// let label = widget.unwrap().downcast::<gtk::Label>().unwrap();
 ///
 /// // Using `CastNone` we can avoid the first `unwrap()` call
-/// let label: gtk::Label = widget.downcast().unwrap();
+/// let label = widget.downcast::<gtk::Label>().unwrap();
 /// ````
 pub trait CastNone: Sized {
     type Inner;
