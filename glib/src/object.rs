@@ -290,6 +290,17 @@ impl<T: ObjectType> Cast for T {}
 
 // rustdoc-stripper-ignore-next
 /// Convenience trait mirroring `Cast`, implemented on `Option<Object>` types.
+///
+/// # Example
+/// ```ignore
+/// let widget: Option<Widget> = list_item.child();
+///
+/// // Without using `CastNone`
+/// let label: gtk::Label = widget.unwrap().downcast().unwrap();
+///
+/// // Using `CastNone` we can avoid the first `unwrap()` call
+/// let label: gtk::Label = widget.downcast().unwrap();
+/// ````
 pub trait CastNone: Sized {
     type Inner;
     fn downcast<T: ObjectType>(self) -> Result<T, Self>
