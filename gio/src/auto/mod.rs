@@ -98,6 +98,9 @@ pub use self::data_input_stream::DataInputStream;
 mod data_output_stream;
 pub use self::data_output_stream::DataOutputStream;
 
+mod datagram_based;
+pub use self::datagram_based::DatagramBased;
+
 #[cfg(any(feature = "v2_72", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 mod debug_controller;
@@ -316,6 +319,9 @@ pub use self::socket_connectable::SocketConnectable;
 mod socket_connection;
 pub use self::socket_connection::SocketConnection;
 
+mod socket_control_message;
+pub use self::socket_control_message::SocketControlMessage;
+
 mod socket_listener;
 pub use self::socket_listener::SocketListener;
 
@@ -366,10 +372,24 @@ pub use self::tls_server_connection::TlsServerConnection;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+mod unix_credentials_message;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+pub use self::unix_credentials_message::UnixCredentialsMessage;
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
 mod unix_fd_list;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 pub use self::unix_fd_list::UnixFDList;
+
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+mod unix_fd_message;
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+pub use self::unix_fd_message::UnixFDMessage;
 
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
@@ -483,6 +503,9 @@ pub use self::enums::MountOperationResult;
 pub use self::enums::NetworkConnectivity;
 pub use self::enums::NotificationPriority;
 pub use self::enums::PasswordSave;
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+pub use self::enums::PollableReturn;
 pub use self::enums::ResolverError;
 pub use self::enums::ResolverRecordType;
 pub use self::enums::ResourceError;
@@ -704,6 +727,7 @@ pub mod traits {
     pub use super::converter_output_stream::ConverterOutputStreamExt;
     pub use super::data_input_stream::DataInputStreamExt;
     pub use super::data_output_stream::DataOutputStreamExt;
+    pub use super::datagram_based::DatagramBasedExt;
     pub use super::dbus_interface::DBusInterfaceExt;
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
@@ -768,6 +792,7 @@ pub mod traits {
     pub use super::socket_client::SocketClientExt;
     pub use super::socket_connectable::SocketConnectableExt;
     pub use super::socket_connection::SocketConnectionExt;
+    pub use super::socket_control_message::SocketControlMessageExt;
     pub use super::socket_listener::SocketListenerExt;
     pub use super::socket_service::SocketServiceExt;
     pub use super::tcp_connection::TcpConnectionExt;
@@ -783,7 +808,13 @@ pub mod traits {
     pub use super::tls_server_connection::TlsServerConnectionExt;
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    pub use super::unix_credentials_message::UnixCredentialsMessageExt;
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub use super::unix_fd_list::UnixFDListExt;
+    #[cfg(any(unix, feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    pub use super::unix_fd_message::UnixFDMessageExt;
     #[cfg(any(unix, feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(unix)))]
     pub use super::unix_input_stream::UnixInputStreamExt;

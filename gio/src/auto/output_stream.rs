@@ -134,36 +134,6 @@ pub trait OutputStreamExt: 'static {
         bytes: &glib::Bytes,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<isize, glib::Error>> + 'static>>;
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //#[doc(alias = "g_output_stream_writev")]
-    //fn writev(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error>;
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //#[doc(alias = "g_output_stream_writev_all")]
-    //fn writev_all(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error>;
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //#[doc(alias = "g_output_stream_writev_all_async")]
-    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
-
-    //
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_future(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //#[doc(alias = "g_output_stream_writev_async")]
-    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P);
-
-    //
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_future(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>>;
 }
 
 impl<O: IsA<OutputStream>> OutputStreamExt for O {
@@ -583,66 +553,6 @@ impl<O: IsA<OutputStream>> OutputStreamExt for O {
             },
         ))
     }
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error> {
-    //    unsafe { TODO: call ffi:g_output_stream_writev() }
-    //}
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all(&self, vectors: /*Ignored*/&[OutputVector], cancellable: Option<&impl IsA<Cancellable>>) -> Result<usize, glib::Error> {
-    //    unsafe { TODO: call ffi:g_output_stream_writev_all() }
-    //}
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
-    //    unsafe { TODO: call ffi:g_output_stream_writev_all_async() }
-    //}
-
-    //
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_all_future(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
-
-    //let vectors = vectors.clone();
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.writev_all_async(
-    //        &vectors,
-    //        io_priority,
-    //        Some(cancellable),
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
-
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_async<P: FnOnce(Result<usize, glib::Error>) + 'static>(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
-    //    unsafe { TODO: call ffi:g_output_stream_writev_async() }
-    //}
-
-    //
-    //#[cfg(any(feature = "v2_60", feature = "dox"))]
-    //#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    //fn writev_future(&self, vectors: /*Ignored*/&[OutputVector], io_priority: glib::Priority) -> Pin<Box_<dyn std::future::Future<Output = Result<usize, glib::Error>> + 'static>> {
-
-    //let vectors = vectors.clone();
-    //Box_::pin(crate::GioFuture::new(self, move |obj, cancellable, send| {
-    //    obj.writev_async(
-    //        &vectors,
-    //        io_priority,
-    //        Some(cancellable),
-    //        move |res| {
-    //            send.resolve(res);
-    //        },
-    //    );
-    //}))
-    //}
 }
 
 impl fmt::Display for OutputStream {

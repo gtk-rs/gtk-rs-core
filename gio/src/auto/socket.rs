@@ -4,6 +4,7 @@
 
 use crate::Cancellable;
 use crate::Credentials;
+use crate::DatagramBased;
 use crate::InetAddress;
 use crate::Initable;
 use crate::SocketAddress;
@@ -25,7 +26,7 @@ use std::ptr;
 
 glib::wrapper! {
     #[doc(alias = "GSocket")]
-    pub struct Socket(Object<ffi::GSocket, ffi::GSocketClass>) @implements Initable;
+    pub struct Socket(Object<ffi::GSocket, ffi::GSocketClass>) @implements DatagramBased, Initable;
 
     match fn {
         type_ => || ffi::g_socket_get_type(),
