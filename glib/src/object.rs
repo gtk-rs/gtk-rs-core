@@ -304,6 +304,8 @@ pub trait CastNone: Sized {
     fn upcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: IsA<T>;
+    fn dynamic_cast<T: ObjectType>(self) -> Result<T, Self>;
+    fn dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T>;
 }
 impl<I: ObjectType + Sized> CastNone for Option<I> {
     type Inner = I;
@@ -334,6 +336,13 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
         Self::Inner: IsA<T>,
     {
         self.as_ref().map(|i| i.upcast_ref())
+    }
+    fn dynamic_cast<T: ObjectType>(self) -> Result<T, Self> {
+        self.ok_or(None)
+            .and_then(|i| i.dynamic_cast().map_err(|e| Some(e)))
+    }
+    fn dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T> {
+        self.as_ref().and_then(|i| i.dynamic_cast_ref())
     }
 }
 
