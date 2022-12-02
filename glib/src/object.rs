@@ -291,6 +291,11 @@ impl<T: ObjectType> Cast for T {}
 // rustdoc-stripper-ignore-next
 /// Convenience trait mirroring `Cast`, implemented on `Option<Object>` types.
 ///
+/// # Warning
+/// Inveitably this trait will discard informations about a downcast failure:
+/// you don't know if the object was not of the expected type, or if it was `None`.
+/// If you need to handle the downcast error, use `Cast` over a `glib::Object`.
+///
 /// # Example
 /// ```ignore
 /// let widget: Option<Widget> = list_item.child();
@@ -299,60 +304,59 @@ impl<T: ObjectType> Cast for T {}
 /// let label = widget.unwrap().downcast::<gtk::Label>().unwrap();
 ///
 /// // Using `CastNone` we can avoid the first `unwrap()` call
-/// let label = widget.downcast::<gtk::Label>().unwrap();
+/// let label = widget.and_downcast::<gtk::Label>().unwrap();
 /// ````
 pub trait CastNone: Sized {
     type Inner;
-    fn downcast<T: ObjectType>(self) -> Result<T, Self>
+    fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: CanDowncast<T>;
-    fn downcast_ref<T: ObjectType>(&self) -> Option<&T>
+    fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: CanDowncast<T>;
-    fn upcast<T: ObjectType>(self) -> Option<T>
+    fn and_upcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: IsA<T>;
-    fn upcast_ref<T: ObjectType>(&self) -> Option<&T>
+    fn and_upcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: IsA<T>;
-    fn dynamic_cast<T: ObjectType>(self) -> Result<T, Self>;
-    fn dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T>;
+    fn and_dynamic_cast<T: ObjectType>(self) -> Result<T, Self>;
+    fn and_dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T>;
 }
 impl<I: ObjectType + Sized> CastNone for Option<I> {
     type Inner = I;
 
-    fn downcast<T: ObjectType>(self) -> Result<T, Self>
+    fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: CanDowncast<T>,
     {
-        self.ok_or(None)
-            .and_then(|i| i.downcast().map_err(|e| Some(e)))
+        self.and_then(|i| i.downcast().ok())
     }
 
-    fn downcast_ref<T: ObjectType>(&self) -> Option<&T>
+    fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: CanDowncast<T>,
     {
         self.as_ref().and_then(|i| i.downcast_ref())
     }
-    fn upcast<T: ObjectType>(self) -> Option<T>
+    fn and_upcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: IsA<T>,
     {
         self.map(|i| i.upcast())
     }
 
-    fn upcast_ref<T: ObjectType>(&self) -> Option<&T>
+    fn and_upcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: IsA<T>,
     {
         self.as_ref().map(|i| i.upcast_ref())
     }
-    fn dynamic_cast<T: ObjectType>(self) -> Result<T, Self> {
+    fn and_dynamic_cast<T: ObjectType>(self) -> Result<T, Self> {
         self.ok_or(None)
             .and_then(|i| i.dynamic_cast().map_err(|e| Some(e)))
     }
-    fn dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T> {
+    fn and_dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T> {
         self.as_ref().and_then(|i| i.dynamic_cast_ref())
     }
 }
