@@ -29,8 +29,8 @@ pub use self::bytes::Bytes;
 pub use self::closure::{Closure, RustClosure};
 pub use self::error::{BoolError, Error};
 pub use self::object::{
-    BorrowedObject, Cast, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt, ObjectType,
-    SendWeakRef, WeakRef,
+    BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt,
+    ObjectType, SendWeakRef, WeakRef,
 };
 pub use self::signal::{
     signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
