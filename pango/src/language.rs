@@ -41,12 +41,21 @@ impl Language {
             Self::from_glib_full_as_vec(ptr)
         }
     }
+
+    pub fn to_string(&self) -> glib::GString {
+        self.to_str()
+    }
 }
 
 impl FromStr for Language {
     type Err = std::convert::Infallible;
-
     fn from_str(language: &str) -> Result<Self, Self::Err> {
         Ok(Self::from_string(language))
+    }
+}
+
+impl Default for Language {
+    fn default() -> Self {
+        Self::default()
     }
 }
