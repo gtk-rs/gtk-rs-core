@@ -53,6 +53,9 @@ pub use self::glyph_string::GlyphString;
 mod item;
 pub use self::item::Item;
 
+mod language;
+pub use self::language::Language;
+
 mod layout_iter;
 pub use self::layout_iter::LayoutIter;
 

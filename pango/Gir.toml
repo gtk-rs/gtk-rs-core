@@ -69,7 +69,6 @@ manual = [
     "Pango.Coverage",
     "Pango.GlyphGeometry",
     "Pango.GlyphInfo",
-    "Pango.Language",
     "Pango.LayoutDeserializeError",
     "Pango.Rectangle",
 ]
@@ -331,6 +330,26 @@ concurrency = "send+sync"
         [[object.function.parameter]]
         name = "glyphs"
         const = true
+
+[[object]]
+name = "Pango.Language"
+status = "generate"
+    [[object.function]]
+    pattern = "get_(scripts|preferred)"
+    manual = true # probably needs annotation fixes upstream (array zero-terminated=1)
+    [[object.function]]
+    pattern = "(get_sample_string|includes_script|matches|to_string)"
+        [[object.function.parameter]]
+        name = "language"
+        const = true
+    [[object.function]]
+    name = "from_string"
+    # This only returns NULL when passing NULL
+        [[object.function.parameter]]
+        name = "language"
+        nullable = false
+        [object.function.return]
+        nullable = false
 
 [[object]]
 name = "Pango.Layout"
