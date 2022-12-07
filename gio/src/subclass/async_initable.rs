@@ -62,7 +62,7 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
                     .init_finish
                     .expect("no parent \"init_finish\" implementation");
 
-                let r: Box<ThreadGuard<GioFutureResult<(), Error>>> =
+                let r: Box<ThreadGuard<GioFutureResult<Result<(), Error>>>> =
                     Box::from_raw(user_data as *mut _);
                 let r = r.into_inner();
 
@@ -79,7 +79,7 @@ impl<T: AsyncInitableImpl> AsyncInitableImplExt for T {
             Box::pin(crate::GioFuture::new(
                 &*self.obj(),
                 move |obj, cancellable, res| {
-                    let user_data: Box<ThreadGuard<GioFutureResult<(), Error>>> =
+                    let user_data: Box<ThreadGuard<GioFutureResult<Result<(), Error>>>> =
                         Box::new(ThreadGuard::new(res));
                     let user_data = Box::into_raw(user_data);
                     init_async(
