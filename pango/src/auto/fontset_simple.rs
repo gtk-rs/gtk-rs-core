@@ -5,6 +5,7 @@
 use crate::Font;
 use crate::Fontset;
 use crate::Language;
+use glib::object::Cast;
 use glib::object::IsA;
 use glib::translate::*;
 use std::fmt;
@@ -25,9 +26,9 @@ impl FontsetSimple {
     }
 
     #[doc(alias = "pango_fontset_simple_append")]
-    pub fn append(&self, font: &impl IsA<Font>) {
+    pub fn append(&self, font: impl IsA<Font>) {
         unsafe {
-            ffi::pango_fontset_simple_append(self.to_glib_none().0, font.as_ref().to_glib_full());
+            ffi::pango_fontset_simple_append(self.to_glib_none().0, font.upcast().into_glib_ptr());
         }
     }
 
