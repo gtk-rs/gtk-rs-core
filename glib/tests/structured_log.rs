@@ -82,12 +82,22 @@ fn structured_log() {
             )
         })
         .collect::<Vec<_>>();
+
+    let path = if cfg!(windows) {
+        "glib\\tests\\structured_log.rs"
+    } else {
+        "glib/tests/structured_log.rs"
+    };
+
     assert_eq!(
         log[0],
         (
             LogLevel::Message,
             vec![
                 ("PRIORITY", "5" as &str),
+                ("CODE_FILE", path as &str),
+                ("CODE_LINE", "30" as &str),
+                ("CODE_FUNC", "structured_log::structured_log" as &str),
                 ("MY_META", "abc"),
                 ("MESSAGE", "normal with meta"),
                 ("MY_META2", "def"),
@@ -101,6 +111,9 @@ fn structured_log() {
             LogLevel::Message,
             vec![
                 ("PRIORITY", "5" as &str),
+                ("CODE_FILE", path as &str),
+                ("CODE_LINE", "40" as &str),
+                ("CODE_FUNC", "structured_log::structured_log" as &str),
                 ("MY_META", "abc"),
                 ("MESSAGE", "formatted with meta: 123 456"),
                 ("MY_META2", "defghi"),
