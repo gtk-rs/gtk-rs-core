@@ -164,7 +164,7 @@ pub trait ApplicationExt: 'static {
     //fn add_main_option_entries(&self, entries: /*Ignored*/&[glib::OptionEntry]);
 
     //#[doc(alias = "g_application_add_option_group")]
-    //fn add_option_group(&self, group: /*Ignored*/&glib::OptionGroup);
+    //fn add_option_group(&self, group: /*Ignored*/glib::OptionGroup);
 
     #[doc(alias = "g_application_bind_busy_property")]
     fn bind_busy_property(&self, object: &impl IsA<glib::Object>, property: &str);
@@ -334,7 +334,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
     //    unsafe { TODO: call ffi:g_application_add_main_option_entries() }
     //}
 
-    //fn add_option_group(&self, group: /*Ignored*/&glib::OptionGroup) {
+    //fn add_option_group(&self, group: /*Ignored*/glib::OptionGroup) {
     //    unsafe { TODO: call ffi:g_application_add_option_group() }
     //}
 
