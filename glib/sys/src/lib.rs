@@ -698,6 +698,7 @@ pub const G_CSET_A_2_Z: *const c_char =
 pub const G_CSET_DIGITS: *const c_char = b"0123456789\0" as *const u8 as *const c_char;
 pub const G_CSET_a_2_z: *const c_char =
     b"abcdefghijklmnopqrstuvwxyz\0" as *const u8 as *const c_char;
+pub const G_C_STD_VERSION: c_int = 199000;
 pub const G_DATALIST_FLAGS_MASK: c_int = 3;
 pub const G_DATE_BAD_DAY: c_int = 0;
 pub const G_DATE_BAD_JULIAN: c_int = 0;

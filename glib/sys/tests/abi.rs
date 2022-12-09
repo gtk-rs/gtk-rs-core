@@ -1006,6 +1006,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_CSET_A_2_Z", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     ("G_CSET_DIGITS", "0123456789"),
     ("G_CSET_a_2_z", "abcdefghijklmnopqrstuvwxyz"),
+    ("G_C_STD_VERSION", "199000"),
     ("G_DATALIST_FLAGS_MASK", "3"),
     ("(gint) G_DATE_APRIL", "4"),
     ("(gint) G_DATE_AUGUST", "8"),
