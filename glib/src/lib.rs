@@ -48,6 +48,49 @@ pub use self::variant_dict::VariantDict;
 pub use self::variant_iter::{VariantIter, VariantStrIter};
 pub use self::variant_type::{VariantTy, VariantTyIterator, VariantType};
 
+// Hack for the time being to retrieve the current function's name as a string.
+// Based on the stdext cratelicensed under the MIT license.
+//
+// Copyright (c) 2020 Igor Aleksanov
+//
+// Previous attempts to get such a macro into std:
+// * https://github.com/rust-lang/rfcs/pull/466
+// * https://github.com/rust-lang/rfcs/pull/1719
+// * https://github.com/rust-lang/rfcs/issues/1743
+// * https://github.com/rust-lang/rfcs/pull/2818
+// * ...
+// rustdoc-stripper-ignore-next
+/// This macro returns the name of the enclosing function.
+/// As the internal implementation is based on the [`std::any::type_name`], this macro derives
+/// all the limitations of this function.
+///
+/// ## Examples
+///
+/// ```rust
+/// mod bar {
+///     pub fn sample_function() {
+///         assert!(glib::function_name!().ends_with("bar::sample_function"));
+///     }
+/// }
+///
+/// bar::sample_function();
+/// ```
+///
+/// [`std::any::type_name`]: https://doc.rust-lang.org/std/any/fn.type_name.html
+#[macro_export]
+macro_rules! function_name {
+    () => {{
+        // Okay, this is ugly, I get it. However, this is the best we can get on a stable rust.
+        fn f() {}
+        fn type_name_of<T>(_: T) -> &'static str {
+            std::any::type_name::<T>()
+        }
+        let name = type_name_of(f);
+        // `3` is the length of the `::f`.
+        &name[..name.len() - 3]
+    }};
+}
+
 pub mod clone;
 #[macro_use]
 pub mod wrapper;

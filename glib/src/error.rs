@@ -158,30 +158,46 @@ pub trait ErrorDomain: Copy {
 #[macro_export]
 macro_rules! bool_error(
 // Plain strings
-    ($msg:expr) =>  {
-        $crate::BoolError::new($msg, file!(), module_path!(), line!())
-    };
+    ($msg:expr) => {{
+        $crate::BoolError::new(
+            $msg,
+            file!(),
+            $crate::function_name!(),
+            line!(),
+        )
+    }};
 
 // Format strings
-    ($($msg:tt)*) =>  { {
-        $crate::BoolError::new(format!($($msg)*), file!(), module_path!(), line!())
+    ($($msg:tt)*) =>  {{
+        $crate::BoolError::new(
+            format!($($msg)*),
+            file!(),
+            $crate::function_name!(),
+            line!(),
+        )
     }};
 );
 
 #[macro_export]
 macro_rules! result_from_gboolean(
 // Plain strings
-    ($ffi_bool:expr, $msg:expr) =>  {
-        $crate::BoolError::from_glib($ffi_bool, $msg, file!(), module_path!(), line!())
-    };
+    ($ffi_bool:expr, $msg:expr) => {{
+        $crate::BoolError::from_glib(
+            $ffi_bool,
+            $msg,
+            file!(),
+            $crate::function_name!(),
+            line!(),
+        )
+    }};
 
 // Format strings
-    ($ffi_bool:expr, $($msg:tt)*) =>  { {
+    ($ffi_bool:expr, $($msg:tt)*) =>  {{
         $crate::BoolError::from_glib(
             $ffi_bool,
             format!($($msg)*),
             file!(),
-            module_path!(),
+            $crate::function_name!(),
             line!(),
         )
     }};
