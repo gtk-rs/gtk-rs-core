@@ -15,11 +15,31 @@ wrapper! {
     /// A mutable text buffer that grows automatically.
     #[doc(alias = "GString")]
     #[must_use = "The builder must be built to be used"]
-    pub struct GStringBuilder(Boxed<ffi::GString>);
+    pub struct GStringBuilder(BoxedInline<ffi::GString>);
 
     match fn {
         copy => |ptr| ffi::g_string_new((*ptr).str),
         free => |ptr| ffi::g_string_free(ptr, ffi::GTRUE),
+        init => |ptr| unsafe {
+            *ptr = ffi::GString {
+                str: ffi::g_malloc0(64) as *mut _,
+                len: 0,
+                allocated_len: 64,
+            };
+        },
+        copy_into => |dest, src| {
+            let allocated_len = (*src).allocated_len;
+            let mut inner = ffi::GString {
+                str: ffi::g_malloc0(allocated_len) as *mut _,
+                len: 0,
+                allocated_len,
+            };
+            ffi::g_string_append_len(&mut inner, (*src).str, (*src).len as isize);
+            *dest = inner;
+        },
+        clear => |ptr| {
+            ffi::g_free((*ptr).str as *mut _);
+        },
         type_ => || ffi::g_gstring_get_type(),
     }
 }
@@ -29,13 +49,28 @@ unsafe impl Sync for GStringBuilder {}
 
 impl GStringBuilder {
     #[doc(alias = "g_string_new_len")]
-    pub fn new<T: AsRef<[u8]>>(data: T) -> GStringBuilder {
-        let bytes = data.as_ref();
+    pub fn new<T: AsRef<str>>(data: T) -> GStringBuilder {
+        let data = data.as_ref();
+        assert!(data.len() < usize::MAX - 1);
         unsafe {
-            from_glib_full(ffi::g_string_new_len(
-                bytes.as_ptr() as *const _,
-                bytes.len() as isize,
-            ))
+            let allocated_len = usize::next_power_of_two(std::cmp::max(data.len(), 64) + 1);
+            assert_ne!(allocated_len, 0);
+
+            let mut inner = ffi::GString {
+                str: ffi::g_malloc(allocated_len) as *mut _,
+                len: 0,
+                allocated_len,
+            };
+            if data.is_empty() {
+                ptr::write(inner.str, 0);
+            } else {
+                ffi::g_string_append_len(
+                    &mut inner,
+                    data.as_ptr() as *const _,
+                    data.len() as isize,
+                );
+            }
+            Self { inner }
         }
     }
 
@@ -107,10 +142,7 @@ impl GStringBuilder {
     pub fn into_string(self) -> crate::GString {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
-            from_glib_full(ffi::g_string_free(
-                mut_override(s.to_glib_none().0),
-                ffi::GFALSE,
-            ))
+            crate::GString::from_glib_full_num(s.inner.str, s.inner.len)
         }
     }
 }
@@ -119,7 +151,7 @@ impl Default for GStringBuilder {
     // rustdoc-stripper-ignore-next
     /// Creates a new empty string.
     fn default() -> Self {
-        unsafe { from_glib_full(ffi::g_string_new(ptr::null())) }
+        Self::new("")
     }
 }
 
