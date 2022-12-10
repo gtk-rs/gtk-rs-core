@@ -859,36 +859,57 @@ macro_rules! g_printerr {
 /// ```
 #[macro_export]
 macro_rules! log_structured {
-    ($log_domain:expr, $log_level:expr, {$($key:expr => $format:expr $(,$arg:expr)* $(,)?);+ $(;)?} $(,)?) => {
-        (|| {
-            let log_domain = <Option<&str> as std::convert::From<_>>::from($log_domain);
-            let log_domain_str = log_domain.unwrap_or_default();
-            let level: $crate::LogLevel = $log_level;
-            let field_count =
-                <[()]>::len(&[$($crate::log_structured_inner!(@clear $key)),+])
-                + log_domain.map(|_| 2usize).unwrap_or(1usize);
+    ($log_domain:expr, $log_level:expr, {$($key:expr => $format:expr $(,$arg:expr)* $(,)?);+ $(;)?} $(,)?) => {{
+        let log_domain = <Option<&str> as std::convert::From<_>>::from($log_domain);
+        let log_domain_str = log_domain.unwrap_or_default();
+        let level: $crate::LogLevel = $log_level;
+        let field_count =
+            <[()]>::len(&[$($crate::log_structured_inner!(@clear $key)),+])
+            + log_domain.map(|_| 2usize).unwrap_or(1usize)
+            + 3;
 
-            $crate::log_structured_array(
-                level,
-                &[
+        let mut line = [0u8; 32]; // 32 decimal digits of line numbers should be enough!
+        let line = {
+            use std::io::Write;
+
+            let mut cursor = std::io::Cursor::new(&mut line[..]);
+            std::write!(&mut cursor, "{}", line!()).unwrap();
+            let pos = cursor.position() as usize;
+            &line[..pos]
+        };
+
+        $crate::log_structured_array(
+            level,
+            &[
+                $crate::LogField::new(
+                    $crate::gstr!("PRIORITY"),
+                    level.priority().as_bytes(),
+                ),
+                $crate::LogField::new(
+                    $crate::gstr!("CODE_FILE"),
+                    file!().as_bytes(),
+                ),
+                $crate::LogField::new(
+                    $crate::gstr!("CODE_LINE"),
+                    line,
+                ),
+                $crate::LogField::new(
+                    $crate::gstr!("CODE_FUNC"),
+                    $crate::function_name!().as_bytes(),
+                ),
+                $(
                     $crate::LogField::new(
-                        $crate::gstr!("PRIORITY"),
-                        level.priority().as_bytes(),
+                        $crate::log_structured_inner!(@key $key),
+                        $crate::log_structured_inner!(@value $format $(,$arg)*),
                     ),
-                    $(
-                        $crate::LogField::new(
-                            $crate::log_structured_inner!(@key $key),
-                            $crate::log_structured_inner!(@value $format $(,$arg)*),
-                        ),
-                    )+
-                    $crate::LogField::new(
-                        $crate::gstr!("GLIB_DOMAIN"),
-                        log_domain_str.as_bytes(),
-                    ),
-                ][0..field_count],
-            )
-        })()
-    };
+                )+
+                $crate::LogField::new(
+                    $crate::gstr!("GLIB_DOMAIN"),
+                    log_domain_str.as_bytes(),
+                ),
+            ][0..field_count],
+        )
+    }};
 }
 
 #[doc(hidden)]
