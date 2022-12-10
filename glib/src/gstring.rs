@@ -59,6 +59,27 @@ impl GStr {
         Self::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
     // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
+    /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
+    /// every invalid character replaced by the Unicode replacement character (U+FFFD).
+    #[inline]
+    pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, Self> {
+        let mut end_ptr = ptr::null();
+        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
+            Cow::Borrowed(Self::from_bytes_with_nul_unchecked(slice::from_raw_parts(
+                ptr as *const u8,
+                end_ptr.offset_from(ptr) as usize + 1,
+            )))
+        } else {
+            Cow::Owned(GString::from_glib_full(ffi::g_utf8_make_valid(
+                ptr as *const _,
+                -1,
+            )))
+        }
+    }
+    // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a byte slice containing the trailing 0 byte.
     ///
     /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
@@ -407,6 +428,17 @@ impl GString {
             Inner::Native(ref cstr) => cstr.as_ref().unwrap().as_ptr() as *const _,
             Inner::Foreign { ptr, .. } => ptr.as_ptr(),
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
+    /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
+    /// every invalid character replaced by the Unicode replacement character (U+FFFD).
+    #[inline]
+    pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, GStr> {
+        GStr::from_ptr_lossy(ptr)
     }
 }
 
@@ -1235,5 +1267,26 @@ mod tests {
         h.insert(gstring, 42);
         let gstring: GString = "foo".into();
         assert!(h.contains_key(&gstring));
+    }
+
+    #[test]
+    fn test_gstring_from_ptr_lossy() {
+        let data = CString::new("foo").unwrap();
+        let ptr = data.as_ptr();
+
+        unsafe {
+            let gstring = GString::from_ptr_lossy(ptr);
+            assert_eq!(gstring.as_str(), "foo");
+            assert_eq!(ptr, gstring.as_ptr());
+        }
+
+        let data = b"foo\xF0\x90\x80bar\0";
+        let ptr = data.as_ptr();
+
+        unsafe {
+            let gstring = GString::from_ptr_lossy(ptr as *const _);
+            assert_eq!(gstring.as_str(), "foo���bar");
+            assert_ne!(ptr, gstring.as_ptr() as *const _);
+        }
     }
 }
