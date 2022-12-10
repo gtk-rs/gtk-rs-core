@@ -2,7 +2,7 @@
 
 use crate::translate::*;
 use crate::types::{StaticType, Type};
-use std::borrow::Borrow;
+use std::borrow::{Borrow, Cow};
 use std::cmp::Ordering;
 use std::ffi::{CStr, CString, OsStr};
 use std::fmt;
@@ -737,6 +737,18 @@ impl From<&CStr> for GString {
         // Creates a copy with the GLib allocator
         // Also check if it's valid UTF-8
         c.to_str().unwrap().into()
+    }
+}
+
+impl<'a> From<GString> for Cow<'a, GStr> {
+    fn from(v: GString) -> Self {
+        Cow::Owned(v)
+    }
+}
+
+impl<'a> From<&'a GStr> for Cow<'a, GStr> {
+    fn from(v: &'a GStr) -> Self {
+        Cow::Borrowed(v)
     }
 }
 
