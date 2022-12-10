@@ -4,7 +4,7 @@ use crate::translate::*;
 use crate::types::{StaticType, Type};
 use crate::value::{FromValue, ToValue};
 use crate::Value;
-use std::borrow::Borrow;
+use std::borrow::{Borrow, Cow};
 use std::cmp::Ordering;
 use std::ffi::{CStr, CString, OsStr};
 use std::fmt;
@@ -18,7 +18,7 @@ use std::slice;
 use std::string::String;
 
 // rustdoc-stripper-ignore-next
-/// Representaion of a borrowed [`GString`].
+/// Representation of a borrowed [`GString`].
 ///
 /// This type is very similar to [`std::ffi::CStr`], but with one added constraint: the string
 /// must also be valid UTF-8.
@@ -57,6 +57,27 @@ impl GStr {
     pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a Self {
         let cstr = CStr::from_ptr(ptr);
         Self::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+    }
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
+    /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
+    /// every invalid character replaced by the Unicode replacement character (U+FFFD).
+    #[inline]
+    pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, Self> {
+        let mut end_ptr = ptr::null();
+        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
+            Cow::Borrowed(Self::from_bytes_with_nul_unchecked(slice::from_raw_parts(
+                ptr as *const u8,
+                end_ptr.offset_from(ptr) as usize + 1,
+            )))
+        } else {
+            Cow::Owned(GString::from_glib_full(ffi::g_utf8_make_valid(
+                ptr as *const _,
+                -1,
+            )))
+        }
     }
     // rustdoc-stripper-ignore-next
     /// Converts this GLib string to a byte slice containing the trailing 0 byte.
@@ -408,6 +429,17 @@ impl GString {
             Inner::Foreign { ptr, .. } => ptr.as_ptr(),
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
+    /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
+    /// every invalid character replaced by the Unicode replacement character (U+FFFD).
+    #[inline]
+    pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, GStr> {
+        GStr::from_ptr_lossy(ptr)
+    }
 }
 
 impl IntoGlibPtr<*mut c_char> for GString {
@@ -739,6 +771,18 @@ impl From<&CStr> for GString {
         // Creates a copy with the GLib allocator
         // Also check if it's valid UTF-8
         c.to_str().unwrap().into()
+    }
+}
+
+impl<'a> From<GString> for Cow<'a, GStr> {
+    fn from(v: GString) -> Self {
+        Cow::Owned(v)
+    }
+}
+
+impl<'a> From<&'a GStr> for Cow<'a, GStr> {
+    fn from(v: &'a GStr) -> Self {
+        Cow::Borrowed(v)
     }
 }
 
@@ -1223,5 +1267,26 @@ mod tests {
         h.insert(gstring, 42);
         let gstring: GString = "foo".into();
         assert!(h.contains_key(&gstring));
+    }
+
+    #[test]
+    fn test_gstring_from_ptr_lossy() {
+        let data = CString::new("foo").unwrap();
+        let ptr = data.as_ptr();
+
+        unsafe {
+            let gstring = GString::from_ptr_lossy(ptr);
+            assert_eq!(gstring.as_str(), "foo");
+            assert_eq!(ptr, gstring.as_ptr());
+        }
+
+        let data = b"foo\xF0\x90\x80bar\0";
+        let ptr = data.as_ptr();
+
+        unsafe {
+            let gstring = GString::from_ptr_lossy(ptr as *const _);
+            assert_eq!(gstring.as_str(), "foo���bar");
+            assert_ne!(ptr, gstring.as_ptr() as *const _);
+        }
     }
 }
