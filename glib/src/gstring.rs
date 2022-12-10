@@ -16,7 +16,7 @@ use std::slice;
 use std::string::String;
 
 // rustdoc-stripper-ignore-next
-/// Representaion of a borrowed [`GString`].
+/// Representation of a borrowed [`GString`].
 ///
 /// This type is very similar to [`std::ffi::CStr`], but with one added constraint: the string
 /// must also be valid UTF-8.
