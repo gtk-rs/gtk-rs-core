@@ -1,15 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::SurfaceType;
+use std::{convert::TryFrom, fmt, ops::Deref, ptr};
+
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use std::convert::TryFrom;
-use std::fmt;
-use std::ops::Deref;
-use std::ptr;
 
-use crate::error::Error;
-use crate::surface::Surface;
+use crate::{Error, Surface, SurfaceType};
 
 #[derive(Debug)]
 pub struct XCBDrawable(pub u32);

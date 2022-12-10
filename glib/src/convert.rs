@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{translate::*, ConvertError, Error, GStr, GString, Slice};
 use std::{io, os::raw::c_char, path::PathBuf, ptr};
+
+use crate::{translate::*, ConvertError, Error, GStr, GString, Slice};
 
 // rustdoc-stripper-ignore-next
 /// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input

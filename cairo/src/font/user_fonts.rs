@@ -1,8 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use super::{FontExtents, FontFace, ScaledFont, TextCluster, TextClusterFlags, TextExtents};
-use crate::utils::status_to_result;
-use crate::{Context, Error, Glyph};
+use crate::{utils::status_to_result, Context, Error, Glyph};
 
 type BoxInitFunc =
     Box<dyn Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync>;

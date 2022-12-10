@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Matrix;
-use crate::Point3D;
-use crate::Vec3;
-use crate::Vec4;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Matrix, Point3D, Vec3, Vec4};
 
 impl Matrix {
     #[doc(alias = "graphene_matrix_init_from_2d")]

@@ -1,18 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::SocketAddress;
-use crate::UnixSocketAddress;
-use crate::UnixSocketAddressType;
-use glib::translate::*;
 #[cfg(not(feature = "dox"))]
 use std::ffi::OsStr;
 #[cfg(unix)]
 #[cfg(not(feature = "dox"))]
 use std::os::unix::ffi::OsStrExt;
-use std::path;
-use std::ptr;
-use std::slice;
+use std::{path, ptr, slice};
+
+use glib::translate::*;
+
+use crate::{prelude::*, SocketAddress, UnixSocketAddress, UnixSocketAddressType};
 
 #[derive(Debug)]
 pub enum UnixSocketAddressPath<'a> {

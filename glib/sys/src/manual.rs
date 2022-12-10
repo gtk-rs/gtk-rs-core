@@ -1,10 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[allow(unused_imports)]
-use libc::{c_char, c_int, c_ushort, c_void};
-
 #[cfg(unix)]
 pub use libc::passwd;
+#[allow(unused_imports)]
+use libc::{c_char, c_int, c_ushort, c_void};
 
 #[cfg(all(not(unix), feature = "dox"))]
 #[repr(C)]
@@ -47,8 +46,9 @@ pub use self::win32::*;
 
 #[cfg(target_family = "windows")]
 mod win32 {
-    use crate::gpointer;
     use libc::c_char;
+
+    use crate::gpointer;
 
     extern "C" {
         pub fn g_win32_get_package_installation_directory_of_module(

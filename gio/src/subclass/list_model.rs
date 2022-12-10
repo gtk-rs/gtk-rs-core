@@ -1,10 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::ListModel;
-use glib::subclass::prelude::*;
-use glib::translate::*;
-use glib::{Cast, IsA, ObjectExt};
+use glib::{prelude::*, subclass::prelude::*, translate::*};
 use once_cell::sync::Lazy;
+
+use crate::ListModel;
 
 pub trait ListModelImpl: ObjectImpl {
     #[doc(alias = "get_item_type")]

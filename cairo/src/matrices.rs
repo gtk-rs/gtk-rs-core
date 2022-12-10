@@ -2,8 +2,7 @@
 
 use std::fmt;
 
-use crate::error::Error;
-use crate::utils::status_to_result;
+use crate::{utils::status_to_result, Error};
 
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq)]

@@ -1,16 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::MeshCorner;
-use crate::enums::{Extend, Filter, PatternType};
-use crate::error::Error;
-use crate::ffi::{cairo_pattern_t, cairo_surface_t};
-use crate::utils::status_to_result;
-use crate::{Matrix, Path, Surface};
+use std::{convert::TryFrom, fmt, ops::Deref, ptr};
+
 use libc::{c_double, c_int, c_uint};
-use std::convert::TryFrom;
-use std::fmt;
-use std::ops::Deref;
-use std::ptr;
+
+use crate::{
+    ffi::{cairo_pattern_t, cairo_surface_t},
+    utils::status_to_result,
+    Error, Extend, Filter, Matrix, MeshCorner, Path, PatternType, Surface,
+};
 
 // See https://cairographics.org/manual/bindings-patterns.html for more info
 #[derive(Debug)]

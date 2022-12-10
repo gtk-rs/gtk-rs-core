@@ -1,17 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Cancellable;
-use crate::DatagramBased;
-use crate::InputMessage;
-use crate::OutputMessage;
+use std::{cell::RefCell, mem::transmute, pin::Pin, ptr, time::Duration};
+
 use futures_core::stream::Stream;
-use glib::object::{Cast, IsA};
-use glib::translate::*;
-use std::cell::RefCell;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
-use std::time::Duration;
+use glib::{prelude::*, translate::*};
+
+use crate::{Cancellable, DatagramBased, InputMessage, OutputMessage};
 
 pub trait DatagramBasedExtManual: Sized {
     #[doc(alias = "g_datagram_based_create_source")]

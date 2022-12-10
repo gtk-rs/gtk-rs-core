@@ -1,16 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::subclass::prelude::*;
-use glib::translate::*;
-
-use glib::{Cast, Error};
-
-use crate::Cancellable;
-use crate::InputStream;
-use crate::OutputStream;
-use crate::OutputStreamSpliceFlags;
-
 use std::ptr;
+
+use glib::{subclass::prelude::*, translate::*, Cast, Error};
+
+use crate::{Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
 
 pub trait OutputStreamImpl: ObjectImpl + OutputStreamImplExt + Send {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -189,8 +183,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    use std::isize;
-    use std::slice;
+    use std::{isize, slice};
 
     assert!(count <= isize::MAX as usize);
 
@@ -300,9 +293,10 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
 
 #[cfg(test)]
 mod tests {
+    use std::cell::RefCell;
+
     use super::*;
     use crate::prelude::*;
-    use std::cell::RefCell;
 
     mod imp {
         use super::*;

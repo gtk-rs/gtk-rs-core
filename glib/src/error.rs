@@ -3,14 +3,9 @@
 // rustdoc-stripper-ignore-next
 //! `Error` binding and helper trait.
 
-use crate::translate::*;
-use crate::Quark;
-use std::borrow::Cow;
-use std::convert::Infallible;
-use std::error;
-use std::ffi::CStr;
-use std::fmt;
-use std::str;
+use std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
+
+use crate::{translate::*, Quark};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -253,9 +248,10 @@ impl error::Error for BoolError {}
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::ToValue;
     use std::ffi::CString;
+
+    use super::*;
+    use crate::prelude::*;
 
     #[test]
     fn test_error_matches() {

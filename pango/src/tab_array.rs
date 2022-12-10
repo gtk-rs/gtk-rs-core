@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{TabAlign, TabArray};
 use glib::{translate::*, Slice};
+
+use crate::{TabAlign, TabArray};
 
 impl TabArray {
     #[doc(alias = "pango_tab_array_get_tabs")]

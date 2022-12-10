@@ -1,11 +1,10 @@
-use futures::prelude::*;
-use futures::task::{Context, Poll};
+use std::{error::Error, io, pin::Pin};
+
+use futures::{
+    prelude::*,
+    task::{Context, Poll},
+};
 use gio::prelude::*;
-
-use std::io;
-use std::pin::Pin;
-
-use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // Get the default main context and run our async function on it

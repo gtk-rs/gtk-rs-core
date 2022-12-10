@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::fmt::Debug;
-use std::io;
+use std::{fmt::Debug, io};
+
 use thiserror::Error;
 
 #[derive(Error, Debug, Clone, PartialEq, Copy, Eq)]

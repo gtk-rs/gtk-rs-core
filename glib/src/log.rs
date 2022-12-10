@@ -1,14 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::GString;
-use crate::{GStr, LogWriterOutput};
-use once_cell::sync::Lazy;
-use std::boxed::Box as Box_;
-use std::sync::{Arc, Mutex};
-
 #[cfg(any(unix, feature = "dox"))]
 use std::os::unix::io::AsRawFd;
+use std::{
+    boxed::Box as Box_,
+    sync::{Arc, Mutex},
+};
+
+use once_cell::sync::Lazy;
+
+use crate::{translate::*, GStr, GString, LogWriterOutput};
 
 #[derive(Debug)]
 pub struct LogHandlerId(u32);

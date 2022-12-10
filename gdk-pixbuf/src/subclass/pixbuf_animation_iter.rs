@@ -5,9 +5,7 @@
 
 use std::time::Duration;
 
-use glib::subclass::prelude::*;
-use glib::translate::*;
-use glib::Cast;
+use glib::{subclass::prelude::*, translate::*, Cast};
 
 use crate::{Pixbuf, PixbufAnimationIter};
 

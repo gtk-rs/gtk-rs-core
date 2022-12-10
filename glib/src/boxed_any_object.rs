@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{
+    any::Any,
+    cell::{Ref, RefMut},
+};
+
 use crate as glib;
-use crate::subclass::prelude::*;
-use crate::{object_subclass, wrapper, Object};
-use std::any::Any;
-use std::cell::{Ref, RefCell, RefMut};
+use crate::{subclass::prelude::*, Object};
 
 #[derive(thiserror::Error, Debug)]
 pub enum BorrowError {
@@ -22,13 +24,17 @@ pub enum BorrowMutError {
 }
 
 mod imp {
-    use super::*;
+    use std::{any::Any, cell::RefCell};
+
+    use crate as glib;
+    use crate::subclass::prelude::*;
 
     #[derive(Debug)]
     pub struct BoxedAnyObject {
         pub value: RefCell<Box<dyn Any>>,
     }
-    #[object_subclass]
+
+    #[glib::object_subclass]
     impl ObjectSubclass for BoxedAnyObject {
         const NAME: &'static str = "BoxedAnyObject";
         type Type = super::BoxedAnyObject;
@@ -43,7 +49,7 @@ mod imp {
     impl ObjectImpl for BoxedAnyObject {}
 }
 
-wrapper! {
+glib::wrapper! {
     // rustdoc-stripper-ignore-next
     /// This is a subclass of `glib::object::Object` capable of storing any Rust type.
     /// It let's you insert a Rust type anywhere a `glib::object::Object` is needed.

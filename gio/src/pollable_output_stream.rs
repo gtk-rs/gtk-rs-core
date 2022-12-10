@@ -1,23 +1,19 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::to_std_io_result;
-use crate::prelude::*;
-use crate::Cancellable;
-use crate::PollableOutputStream;
+use std::{cell::RefCell, io, mem::transmute, pin::Pin};
+
+use futures_channel::oneshot;
+use futures_core::{
+    stream::Stream,
+    task::{Context, Poll},
+    Future,
+};
+use futures_io::AsyncWrite;
+use glib::{prelude::*, translate::*};
+
+use crate::{error::to_std_io_result, prelude::*, Cancellable, PollableOutputStream};
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 use crate::{OutputVector, PollableReturn};
-use futures_channel::oneshot;
-use futures_core::task::{Context, Poll};
-use futures_core::Future;
-use futures_io::AsyncWrite;
-use glib::object::{Cast, IsA};
-use glib::translate::*;
-use std::cell::RefCell;
-use std::io;
-use std::mem::transmute;
-use std::pin::Pin;
-
-use futures_core::stream::Stream;
 
 pub trait PollableOutputStreamExtManual {
     #[doc(alias = "g_pollable_output_stream_create_source")]

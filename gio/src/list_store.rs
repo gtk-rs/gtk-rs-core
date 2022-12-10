@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::auto::traits::ListModelExt;
-use crate::ListModel;
-use crate::ListStore;
-use glib::translate::*;
-use glib::Cast;
-use glib::{IsA, Object};
 use std::cmp::Ordering;
+
+use glib::{prelude::*, translate::*, Object};
+
+use crate::{prelude::*, ListModel, ListStore};
 
 impl ListStore {
     #[doc(alias = "g_list_store_insert_sorted")]
@@ -143,8 +141,7 @@ impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-    use crate::ListStore;
+    use crate::{prelude::*, ListStore};
 
     #[test]
     fn splice() {

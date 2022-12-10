@@ -1,17 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::traits::AsyncInitableExt;
-use crate::AsyncInitable;
-use crate::Cancellable;
-
-use glib::object::IsA;
-use glib::object::IsClass;
-use glib::value::ToValue;
-use glib::{Cast, Object, StaticType, Type};
+use std::{boxed::Box as Box_, pin::Pin};
 
 use futures_util::TryFutureExt;
-use std::boxed::Box as Box_;
-use std::pin::Pin;
+use glib::{object::IsClass, prelude::*, Object, Type};
+
+use crate::{prelude::*, AsyncInitable, Cancellable};
 
 impl AsyncInitable {
     #[doc(alias = "g_async_initable_new_async")]

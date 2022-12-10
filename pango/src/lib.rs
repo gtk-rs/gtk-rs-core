@@ -11,9 +11,10 @@ pub use glib;
 #[allow(clippy::derive_hash_xor_eq)]
 #[allow(unused_imports)]
 mod auto;
-pub use crate::auto::functions::*;
-pub use crate::auto::*;
-pub use crate::functions::*;
+pub use crate::{
+    auto::{functions::*, *},
+    functions::*,
+};
 
 #[doc(alias = "PANGO_SCALE")]
 pub const SCALE: i32 = ffi::PANGO_SCALE;

@@ -1,6 +1,6 @@
-use glib::*;
-
 use std::sync::{Arc, Mutex};
+
+use glib::*;
 
 #[derive(Default)]
 struct Counters {

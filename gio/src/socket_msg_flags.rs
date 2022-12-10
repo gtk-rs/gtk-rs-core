@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use glib::value::{FromValue, ToValue};
-use glib::{StaticType, Type};
 use std::fmt;
+
+use glib::{prelude::*, translate::*, value::FromValue, Type};
 
 bitflags::bitflags! {
     #[doc(alias = "GSocketMsgFlags")]

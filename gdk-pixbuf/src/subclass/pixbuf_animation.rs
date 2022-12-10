@@ -3,13 +3,11 @@
 // rustdoc-stripper-ignore-next
 //! Traits intended for subclassing [`PixbufAnimation`](crate::PixbufAnimation).
 
-use std::mem::MaybeUninit;
-use std::time::Duration;
+use std::{mem::MaybeUninit, time::Duration};
+
+use glib::{subclass::prelude::*, translate::*, Cast};
 
 use crate::{Pixbuf, PixbufAnimation, PixbufAnimationIter};
-use glib::subclass::prelude::*;
-use glib::translate::*;
-use glib::Cast;
 
 pub trait PixbufAnimationImpl: ObjectImpl {
     fn is_static_image(&self) -> bool {

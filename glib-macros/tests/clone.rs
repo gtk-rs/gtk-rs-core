@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::clone;
 use std::rc::Rc;
+
+use glib::clone;
 
 #[test]
 fn clone() {

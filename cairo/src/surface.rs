@@ -1,22 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use libc::{c_ulong, c_void};
-use std::ffi::CString;
-use std::fmt;
-use std::ops::Deref;
-use std::ptr;
-use std::slice;
+use std::{ffi::CString, fmt, ops::Deref, ptr, slice};
 
-use crate::enums::{Content, Format, SurfaceType};
-use crate::error::Error;
-use crate::utils::status_to_result;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
+use libc::{c_ulong, c_void};
 
-use crate::device::Device;
-use crate::image_surface::ImageSurface;
-use crate::rectangle::Rectangle;
-use crate::rectangle_int::RectangleInt;
+use crate::{
+    utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle, RectangleInt,
+    SurfaceType,
+};
 
 #[derive(Debug)]
 #[doc(alias = "cairo_surface_t")]
@@ -430,9 +423,7 @@ impl fmt::Display for MappedImageSurface {
 
 #[cfg(test)]
 mod tests {
-    use crate::constants::MIME_TYPE_PNG;
-    use crate::Format;
-    use crate::ImageSurface;
+    use crate::{constants::MIME_TYPE_PNG, Format, ImageSurface};
 
     #[test]
     fn mime_data() {

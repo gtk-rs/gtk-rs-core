@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::ToGlibPtr;
+use glib::translate::*;
 
-use crate::Analysis;
-use crate::Item;
+use crate::{Analysis, Item};
 
 impl Item {
     pub fn offset(&self) -> i32 {

@@ -1,20 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::to_std_io_result;
-use crate::prelude::*;
-use crate::Cancellable;
-use crate::InputStream;
-use crate::Seekable;
+use std::{future::Future, io, mem, pin::Pin, ptr};
+
 use futures_core::task::{Context, Poll};
 use futures_io::{AsyncBufRead, AsyncRead};
-use glib::object::IsA;
-use glib::translate::*;
-use glib::Priority;
-use std::future::Future;
-use std::io;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use glib::{prelude::*, translate::*, Priority};
+
+use crate::{error::to_std_io_result, prelude::*, Cancellable, InputStream, Seekable};
 
 pub trait InputStreamExtManual: Sized {
     #[doc(alias = "g_input_stream_read")]
@@ -594,11 +586,11 @@ impl<T: IsA<InputStream>> Unpin for InputStreamAsyncBufRead<T> {}
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-    use crate::test_util::run_async;
-    use crate::MemoryInputStream;
-    use glib::Bytes;
     use std::io::Read;
+
+    use glib::Bytes;
+
+    use crate::{prelude::*, test_util::run_async, MemoryInputStream};
 
     #[test]
     fn read_all_async() {

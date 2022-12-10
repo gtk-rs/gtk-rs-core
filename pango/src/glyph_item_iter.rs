@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::GlyphItem;
-use glib::{translate::*, GStr, GString};
 use std::{marker::PhantomData, mem};
+
+use glib::{translate::*, GStr, GString};
+
+use crate::GlyphItem;
 
 #[derive(Clone, Debug)]
 pub struct GlyphItemIter<'item> {

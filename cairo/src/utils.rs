@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::Error;
-use std::ffi::CStr;
-use std::fmt;
+use std::{ffi::CStr, fmt};
+
+use crate::Error;
 
 // rustdoc-stripper-ignore-next
 /// Resets all static data within cairo to its original state (i.e. identical to the state at program

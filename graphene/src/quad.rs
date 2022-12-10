@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Point;
-use crate::Quad;
-use crate::Rect;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Point, Quad, Rect};
 
 impl Quad {
     #[doc(alias = "graphene_quad_init")]

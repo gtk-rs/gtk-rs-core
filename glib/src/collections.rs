@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{fmt, iter::FusedIterator, marker::PhantomData, mem, ptr};
+
 use crate::translate::*;
-use std::iter::FusedIterator;
-use std::marker::PhantomData;
-use std::{fmt, mem, ptr};
 
 #[derive(Debug, PartialEq, Eq)]
 enum ContainerTransfer {

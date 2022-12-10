@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{ffi::CStr, fmt, num::NonZeroU32};
+
 use crate::translate::*;
-use std::ffi::CStr;
-use std::fmt;
-use std::num::NonZeroU32;
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]

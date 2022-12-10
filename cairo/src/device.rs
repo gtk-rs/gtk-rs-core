@@ -1,27 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::DeviceType;
-use crate::error::Error;
-use crate::utils::status_to_result;
-
-use std::fmt;
-use std::ptr;
-
-#[cfg(feature = "use_glib")]
-use glib::translate::*;
-
-#[cfg(any(feature = "script", feature = "dox"))]
-use crate::enums::Content;
-#[cfg(any(feature = "script", feature = "dox"))]
-use crate::enums::ScriptMode;
-#[cfg(any(feature = "script", feature = "dox"))]
-use crate::recording_surface::RecordingSurface;
-#[cfg(any(feature = "script", feature = "dox"))]
-use crate::surface::Surface;
 #[cfg(any(feature = "script", feature = "dox"))]
 use std::ffi::CString;
 #[cfg(any(feature = "script", feature = "dox"))]
 use std::path::Path;
+use std::{fmt, ptr};
+
+#[cfg(feature = "use_glib")]
+use glib::translate::*;
+
+use crate::{utils::status_to_result, DeviceType, Error};
+#[cfg(any(feature = "script", feature = "dox"))]
+use crate::{Content, RecordingSurface, ScriptMode, Surface};
 
 #[derive(Debug)]
 #[must_use = "if unused the Device will immediately be released"]

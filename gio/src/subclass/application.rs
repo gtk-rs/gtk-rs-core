@@ -1,18 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
+use std::{ffi::OsString, fmt, ops::Deref, ptr};
 
-use glib::subclass::prelude::*;
-
-use glib::{Cast, VariantDict};
+use glib::{subclass::prelude::*, translate::*, Cast, VariantDict};
+use libc::{c_char, c_int, c_void};
 
 use crate::Application;
-
-use libc::{c_char, c_int, c_void};
-use std::ffi::OsString;
-use std::fmt;
-use std::ops::Deref;
-use std::ptr;
 
 pub struct ArgumentList {
     pub(crate) ptr: *mut *mut *mut c_char,

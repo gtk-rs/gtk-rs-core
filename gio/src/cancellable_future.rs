@@ -1,17 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::cancellable::CancellableExtManual;
-use crate::cancellable::CancelledHandlerId;
-use crate::prelude::CancellableExt;
-use crate::Cancellable;
-use crate::IOErrorEnum;
+use std::{
+    fmt::{Debug, Display},
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
+
 use pin_project_lite::pin_project;
-use std::fmt::Debug;
-use std::fmt::Display;
-use std::future::Future;
-use std::pin::Pin;
-use std::task::Context;
-use std::task::Poll;
+
+use crate::{cancellable::CancelledHandlerId, prelude::*, Cancellable, IOErrorEnum};
 
 // rustdoc-stripper-ignore-next
 /// Indicator that the [`CancellableFuture`] was cancelled.
@@ -143,11 +141,10 @@ impl Display for Cancelled {
 
 #[cfg(test)]
 mod tests {
-    use super::Cancellable;
-    use super::CancellableExt;
-    use super::CancellableFuture;
-    use super::Cancelled;
     use futures_channel::oneshot;
+
+    use super::{Cancellable, CancellableFuture, Cancelled};
+    use crate::prelude::*;
 
     #[test]
     fn cancellable_future_ok() {

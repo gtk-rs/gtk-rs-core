@@ -1,8 +1,7 @@
-use gio::prelude::*;
-
 use std::str;
 
 use futures::prelude::*;
+use gio::prelude::*;
 
 fn main() {
     let c = glib::MainContext::default();

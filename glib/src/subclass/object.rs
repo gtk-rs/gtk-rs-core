@@ -4,12 +4,10 @@
 //! Module that contains all types needed for creating a direct subclass of `GObject`
 //! or implementing virtual methods of it.
 
-use super::prelude::*;
-use super::Signal;
-use crate::translate::*;
-use crate::{Cast, Object, ObjectType, ParamSpec, Value};
-use std::mem;
-use std::ptr;
+use std::{mem, ptr};
+
+use super::{prelude::*, Signal};
+use crate::{prelude::*, translate::*, Cast, Object, ParamSpec, Value};
 
 // rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.
@@ -229,17 +227,13 @@ impl<T: ObjectImpl> ObjectImplExt for T {
 
 #[cfg(test)]
 mod test {
-    use super::super::super::object::ObjectExt;
-    use super::super::super::value::{ToValue, Value};
+    use std::cell::RefCell;
+
     use super::*;
     // We rename the current crate as glib, since the macros in glib-macros
     // generate the glib namespace through the crate_ident_new utility,
     // and that returns `glib` (and not `crate`) when called inside the glib crate
     use crate as glib;
-    use crate::ParamSpecBuilderExt;
-    use crate::StaticType;
-
-    use std::cell::RefCell;
 
     mod imp {
         use super::*;
@@ -548,8 +542,10 @@ mod test {
 
     #[test]
     fn test_signals() {
-        use std::sync::atomic::{AtomicBool, Ordering};
-        use std::sync::Arc;
+        use std::sync::{
+            atomic::{AtomicBool, Ordering},
+            Arc,
+        };
 
         let type_ = SimpleObject::static_type();
         let obj = Object::with_type(type_, &[("name", &"old-name")]);
@@ -592,8 +588,10 @@ mod test {
 
     #[test]
     fn test_callback_validity() {
-        use std::sync::atomic::{AtomicBool, Ordering};
-        use std::sync::Arc;
+        use std::sync::{
+            atomic::{AtomicBool, Ordering},
+            Arc,
+        };
 
         let type_ = SimpleObject::static_type();
         let obj = Object::with_type(type_, &[("name", &"old-name")]);

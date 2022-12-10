@@ -1,15 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::OutputStream;
-use crate::UnixOutputStream;
-use glib::object::{Cast, IsA};
-use glib::translate::*;
-
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 
+use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), feature = "dox"))]
 use socket::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+
+use crate::{OutputStream, UnixOutputStream};
 
 impl UnixOutputStream {
     // rustdoc-stripper-ignore-next

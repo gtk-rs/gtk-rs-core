@@ -1,14 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::cell::Cell;
-use std::iter::FusedIterator;
-use std::marker::PhantomData;
-use std::rc::Rc;
+use std::{cell::Cell, iter::FusedIterator, marker::PhantomData, rc::Rc};
 
 use glib::SignalHandlerId;
 
-use crate::prelude::*;
-use crate::ListModel;
+use crate::{prelude::*, ListModel};
 
 #[derive(thiserror::Error, Debug, PartialEq, Eq)]
 #[error("can't downcast ListModel's items (`{actual}`) to the requested type `{requested}`")]

@@ -7,46 +7,44 @@
 #![allow(clippy::non_send_fields_in_send_ty)]
 #![doc = include_str!("../README.md")]
 
-pub use ffi;
-pub use gobject_ffi;
-
 #[doc(hidden)]
 pub use bitflags;
-
+pub use ffi;
 #[doc(hidden)]
-pub use once_cell;
-
+pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
     clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
     Enum, ErrorDomain, SharedBoxed, Variant,
 };
-
+pub use gobject_ffi;
 #[doc(hidden)]
-pub use glib_macros::cstr_bytes;
+pub use once_cell;
 
-pub use self::byte_array::ByteArray;
-pub use self::bytes::Bytes;
-pub use self::closure::{Closure, RustClosure};
-pub use self::error::{BoolError, Error};
-pub use self::object::{
-    BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt,
-    ObjectType, SendWeakRef, WeakRef,
+pub use self::{
+    byte_array::ByteArray,
+    bytes::Bytes,
+    closure::{Closure, RustClosure},
+    enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory},
+    error::{BoolError, Error},
+    object::{
+        BorrowedObject, Cast, CastNone, Class, InitiallyUnowned, Interface, IsA, Object, ObjectExt,
+        ObjectType, SendWeakRef, WeakRef,
+    },
+    signal::{
+        signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
+        signal_stop_emission_by_name, SignalHandlerId,
+    },
+    types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong},
+    value::{BoxedValue, SendValue, ToSendValue, ToValue, Value},
+    variant::{
+        FixedSizeVariantArray, FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant,
+        Variant,
+    },
+    variant_dict::VariantDict,
+    variant_iter::{VariantIter, VariantStrIter},
+    variant_type::{VariantTy, VariantTyIterator, VariantType},
+    FileError,
 };
-pub use self::signal::{
-    signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
-    signal_stop_emission_by_name, SignalHandlerId,
-};
-pub use self::FileError;
-
-pub use self::enums::{EnumClass, EnumValue, FlagsBuilder, FlagsClass, FlagsValue, UserDirectory};
-pub use self::types::{ILong, Pointer, StaticType, StaticTypeExt, Type, ULong};
-pub use self::value::{BoxedValue, SendValue, ToSendValue, ToValue, Value};
-pub use self::variant::{
-    FixedSizeVariantArray, FixedSizeVariantType, FromVariant, StaticVariantType, ToVariant, Variant,
-};
-pub use self::variant_dict::VariantDict;
-pub use self::variant_iter::{VariantIter, VariantStrIter};
-pub use self::variant_type::{VariantTy, VariantTyIterator, VariantType};
 
 // Hack for the time being to retrieve the current function's name as a string.
 // Based on the stdext cratelicensed under the MIT license.
@@ -111,8 +109,7 @@ pub use boxed_any_object::BoxedAnyObject;
 pub mod collections;
 pub use collections::{List, PtrSlice, SList, Slice};
 
-pub use self::auto::functions::*;
-pub use self::auto::*;
+pub use self::auto::{functions::*, *};
 #[allow(non_upper_case_globals)]
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::type_complexity)]
@@ -151,8 +148,10 @@ mod utils;
 pub use self::utils::*;
 mod main_context;
 mod main_context_channel;
-pub use self::main_context::MainContextAcquireGuard;
-pub use self::main_context_channel::{Receiver, Sender, SyncSender};
+pub use self::{
+    main_context::MainContextAcquireGuard,
+    main_context_channel::{Receiver, Sender, SyncSender},
+};
 mod date;
 mod date_time;
 mod time_span;
@@ -171,26 +170,22 @@ mod quark;
 pub use self::quark::Quark;
 #[macro_use]
 mod log;
-pub use self::log::log_set_handler;
-
-pub use self::log::{
-    log_default_handler, log_remove_handler, log_set_always_fatal, log_set_default_handler,
-    log_set_fatal_mask, log_set_writer_func, log_structured_array, log_unset_default_handler,
-    log_variant, log_writer_default, log_writer_format_fields, log_writer_journald,
-    log_writer_standard_streams, set_print_handler, set_printerr_handler, unset_print_handler,
-    unset_printerr_handler, LogField, LogHandlerId, LogLevel, LogLevels,
-};
-
-#[cfg(any(unix, feature = "dox"))]
-pub use self::log::{log_writer_is_journald, log_writer_supports_color};
-
-#[cfg(any(feature = "v2_68", feature = "dox"))]
-pub use self::log::{log_writer_default_set_use_stderr, log_writer_default_would_drop};
-
 #[doc(hidden)]
 #[cfg(any(feature = "dox", feature = "log_macros"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
 pub use rs_log;
+
+pub use self::log::{
+    log_default_handler, log_remove_handler, log_set_always_fatal, log_set_default_handler,
+    log_set_fatal_mask, log_set_handler, log_set_writer_func, log_structured_array,
+    log_unset_default_handler, log_variant, log_writer_default, log_writer_format_fields,
+    log_writer_journald, log_writer_standard_streams, set_print_handler, set_printerr_handler,
+    unset_print_handler, unset_printerr_handler, LogField, LogHandlerId, LogLevel, LogLevels,
+};
+#[cfg(any(feature = "v2_68", feature = "dox"))]
+pub use self::log::{log_writer_default_set_use_stderr, log_writer_default_would_drop};
+#[cfg(any(unix, feature = "dox"))]
+pub use self::log::{log_writer_is_journald, log_writer_supports_color};
 
 #[cfg(any(feature = "log", feature = "dox"))]
 #[macro_use]

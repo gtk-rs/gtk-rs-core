@@ -1,14 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Cancellable;
-use crate::DataInputStream;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::GString;
-use std::boxed::Box as Box_;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
+
+use glib::{prelude::*, translate::*, GString};
+
+use crate::{Cancellable, DataInputStream};
 
 pub trait DataInputStreamExtManual: 'static {
     #[doc(alias = "g_data_input_stream_read_line")]

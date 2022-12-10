@@ -1,7 +1,8 @@
 #![cfg(feature = "v2_36")]
 
-use gio::prelude::*;
 use std::io;
+
+use gio::prelude::*;
 
 #[test]
 #[cfg(feature = "v2_36")]

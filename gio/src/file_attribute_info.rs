@@ -1,10 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
+use std::{fmt, mem, ptr};
 
-use std::fmt;
-use std::mem;
-use std::ptr;
+use glib::translate::*;
 
 glib::wrapper! {
     #[doc(alias = "GFileAttributeInfo")]

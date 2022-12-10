@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{AttrType, FontDescription};
 use glib::translate::*;
+
+use crate::{AttrType, FontDescription};
 
 define_attribute_struct!(AttrFontDesc, ffi::PangoAttrFontDesc, &[AttrType::FontDesc]);
 

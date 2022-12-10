@@ -1,16 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::object::ObjectRef;
-use crate::prelude::*;
-use crate::translate::*;
-use crate::Binding;
-use crate::BindingFlags;
-use crate::BindingGroup;
-use crate::BoolError;
-use crate::Object;
-use crate::ParamSpec;
-use crate::Value;
 use std::{fmt, ptr};
+
+use crate::{
+    object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags, BindingGroup, BoolError,
+    Object, ParamSpec, Value,
+};
 
 impl BindingGroup {
     #[doc(alias = "bind_with_closures")]
@@ -277,8 +272,7 @@ impl<'a> BindingGroupBuilder<'a> {
 
 #[cfg(test)]
 mod test {
-    use crate::prelude::*;
-    use crate::subclass::prelude::*;
+    use crate::{prelude::*, subclass::prelude::*};
 
     #[test]
     fn binding_without_source() {
@@ -425,11 +419,11 @@ mod test {
     }
 
     mod imp {
-        use super::*;
-
-        use once_cell::sync::Lazy;
         use std::cell::RefCell;
 
+        use once_cell::sync::Lazy;
+
+        use super::*;
         use crate as glib;
 
         #[derive(Debug, Default)]

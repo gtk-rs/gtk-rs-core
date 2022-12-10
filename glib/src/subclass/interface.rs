@@ -1,10 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{marker, mem};
+
 use super::{InitializingType, Signal};
-use crate::translate::*;
-use crate::{IsA, Object, ObjectExt, ParamSpec, Type};
-use std::marker;
-use std::mem;
+use crate::{prelude::*, translate::*, Object, ParamSpec, Type};
 
 // rustdoc-stripper-ignore-next
 /// Trait for a type list of prerequisite object types.

@@ -1,15 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::AttrType;
-use crate::Attribute;
-use crate::FontDescription;
-use crate::Language;
-use glib::translate::*;
-use glib::SList;
+use std::{marker::PhantomData, mem, ptr};
 
-use std::marker::PhantomData;
-use std::mem;
-use std::ptr;
+use glib::{translate::*, SList};
+
+use crate::{AttrType, Attribute, FontDescription, Language};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AttrIterator<'list> {

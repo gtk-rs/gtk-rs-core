@@ -1,13 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::AppInfo;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-use crate::AppLaunchContext;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-use crate::Cancellable;
-use glib::object::IsA;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-use glib::translate::*;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg(any(feature = "v2_60", feature = "dox"))]
@@ -16,6 +8,16 @@ use std::boxed::Box as Box_;
 use std::pin::Pin;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 use std::ptr;
+
+use glib::prelude::*;
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use glib::translate::*;
+
+use crate::AppInfo;
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use crate::AppLaunchContext;
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use crate::Cancellable;
 
 pub trait AppInfoExtManual: 'static {
     #[cfg(any(feature = "v2_60", feature = "dox"))]

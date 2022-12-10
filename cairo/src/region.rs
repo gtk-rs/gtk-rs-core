@@ -1,15 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::RegionOverlap;
-use crate::error::Error;
-use crate::utils::status_to_result;
-use crate::RectangleInt;
+use std::{fmt, ptr};
+
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use std::fmt;
-use std::ptr;
 
-use crate::ffi::cairo_region_t;
+use crate::{ffi::cairo_region_t, utils::status_to_result, Error, RectangleInt, RegionOverlap};
 
 #[derive(Debug)]
 #[repr(transparent)]

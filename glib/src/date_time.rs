@@ -2,8 +2,7 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::DateTime;
-    use crate::ToValue;
+    use crate::{prelude::*, DateTime};
 
     #[test]
     fn test_value() {

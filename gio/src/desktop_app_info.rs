@@ -1,20 +1,19 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
-use crate::AppLaunchContext;
-use crate::DesktopAppInfo;
-use glib::object::IsA;
-use glib::translate::*;
-#[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
-use glib::Error;
-use glib::GString;
-#[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
 use std::boxed::Box as Box_;
+#[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
+use std::os::unix::io::AsRawFd;
 #[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
 use std::ptr;
 
 #[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
-use std::os::unix::io::AsRawFd;
+use glib::Error;
+use glib::{prelude::*, translate::*, GString};
+
+#[cfg(any(all(feature = "v2_58", unix), all(unix, feature = "dox")))]
+use crate::AppLaunchContext;
+use crate::DesktopAppInfo;
 
 impl DesktopAppInfo {
     #[doc(alias = "g_desktop_app_info_search")]

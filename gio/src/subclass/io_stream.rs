@@ -1,17 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::prelude::*;
-use glib::subclass::prelude::*;
-use glib::translate::*;
-
-use glib::{Cast, Error};
-
-use crate::Cancellable;
-use crate::{IOStream, InputStream, OutputStream};
-
 use std::ptr;
 
+use glib::{prelude::*, subclass::prelude::*, translate::*, Cast, Error};
 use once_cell::sync::Lazy;
+
+use crate::{Cancellable, IOStream, InputStream, OutputStream};
 
 pub trait IOStreamImpl: ObjectImpl + IOStreamImplExt + Send {
     fn input_stream(&self) -> InputStream {

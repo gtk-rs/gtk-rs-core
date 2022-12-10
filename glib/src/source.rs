@@ -1,21 +1,16 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::{from_glib, from_glib_full, FromGlib, IntoGlib, ToGlibPtr};
-#[cfg(any(unix, feature = "dox"))]
-use crate::IOCondition;
+#[cfg(unix)]
+use std::os::unix::io::RawFd;
+use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
+
 use ffi::{self, gboolean, gpointer};
 #[cfg(all(not(unix), feature = "dox"))]
 use libc::c_int as RawFd;
-use std::cell::RefCell;
-use std::mem::transmute;
-use std::num::NonZeroU32;
-#[cfg(unix)]
-use std::os::unix::io::RawFd;
-use std::time::Duration;
 
-use crate::thread_guard::ThreadGuard;
-use crate::MainContext;
-use crate::Source;
+#[cfg(any(unix, feature = "dox"))]
+use crate::IOCondition;
+use crate::{thread_guard::ThreadGuard, translate::*, MainContext, Source};
 
 // rustdoc-stripper-ignore-next
 /// The id of a source that is returned by `idle_add` and `timeout_add`.

@@ -40,18 +40,16 @@
 //! assert_eq!(str_none.get::<Option<String>>(), Ok(None));
 //! ```
 
-use libc::{c_char, c_void};
-use std::convert::Infallible;
-use std::error;
-use std::ffi::CStr;
-use std::fmt;
-use std::mem;
-use std::ops::Deref;
-use std::ptr;
+use std::{convert::Infallible, error, ffi::CStr, fmt, mem, ops::Deref, ptr};
 
-use crate::gstring::GString;
-use crate::translate::*;
-use crate::types::{Pointee, Pointer, StaticType, Type};
+use libc::{c_char, c_void};
+
+use crate::{
+    gstring::GString,
+    prelude::*,
+    translate::*,
+    types::{Pointee, Pointer, Type},
+};
 
 // rustdoc-stripper-ignore-next
 /// A type that can be stored in `Value`s.

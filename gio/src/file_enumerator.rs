@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::FileEnumerator;
-use crate::FileInfo;
 use std::iter::FusedIterator;
+
+use crate::{prelude::*, FileEnumerator, FileInfo};
 
 impl Iterator for FileEnumerator {
     type Item = Result<FileInfo, glib::Error>;

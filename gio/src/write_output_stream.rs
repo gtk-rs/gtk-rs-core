@@ -1,17 +1,18 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::subclass::prelude::*;
-use crate::OutputStream;
+use std::{
+    any::Any,
+    io::{Seek, Write},
+};
 
-use std::any::Any;
-use std::io::{Seek, Write};
-
-use crate::read_input_stream::std_error_to_gio_error;
+use crate::{
+    prelude::*, read_input_stream::std_error_to_gio_error, subclass::prelude::*, OutputStream,
+};
 
 mod imp {
-    use super::*;
     use std::cell::RefCell;
+
+    use super::*;
 
     pub(super) enum Writer {
         Write(AnyWriter),
@@ -291,8 +292,9 @@ impl AnyWriter {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::io::Cursor;
+
+    use super::*;
 
     #[test]
     fn test_write() {

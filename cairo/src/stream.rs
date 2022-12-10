@@ -1,16 +1,18 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::Error;
-use crate::{Surface, UserDataKey};
-use ffi::cairo_status_t;
+use std::{
+    any::Any,
+    cell::{Cell, RefCell},
+    io,
+    panic::AssertUnwindSafe,
+    ptr,
+    rc::Rc,
+};
 
+use ffi::cairo_status_t;
 use libc::{c_double, c_uchar, c_uint, c_void};
-use std::any::Any;
-use std::cell::{Cell, RefCell};
-use std::io;
-use std::panic::AssertUnwindSafe;
-use std::ptr;
-use std::rc::Rc;
+
+use crate::{Error, Surface, UserDataKey};
 
 macro_rules! for_stream_constructors {
     ($constructor_ffi: ident) => {

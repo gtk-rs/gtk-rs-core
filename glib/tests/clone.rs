@@ -1,8 +1,10 @@
-use std::cell::RefCell;
-use std::panic;
-use std::rc::Rc;
-use std::sync::{Arc, Mutex};
-use std::thread;
+use std::{
+    cell::RefCell,
+    panic,
+    rc::Rc,
+    sync::{Arc, Mutex},
+    thread,
+};
 
 use futures_executor::block_on;
 use glib::clone;

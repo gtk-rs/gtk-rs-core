@@ -1,22 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(feature = "use_glib")]
-use glib::translate::*;
-use std::cmp::PartialEq;
-use std::hash;
-
-#[cfg(any(feature = "v1_16", feature = "dox"))]
-use crate::font::font_face::to_optional_string;
 #[cfg(any(feature = "v1_16", feature = "dox"))]
 use std::ffi::CString;
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
+use std::{cmp::PartialEq, hash};
 
-use crate::utils::status_to_result;
-use crate::{
-    enums::{Antialias, HintMetrics, HintStyle, SubpixelOrder},
-    Error,
-};
+#[cfg(feature = "use_glib")]
+use glib::translate::*;
+
+#[cfg(any(feature = "v1_16", feature = "dox"))]
+use crate::font::font_face::to_optional_string;
+use crate::{utils::status_to_result, Antialias, Error, HintMetrics, HintStyle, SubpixelOrder};
 
 #[cfg(feature = "use_glib")]
 glib::wrapper! {

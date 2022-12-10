@@ -1,12 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{
+    borrow::Borrow,
+    cmp::{Eq, Ord, Ordering, PartialEq, PartialOrd},
+    fmt,
+    hash::{Hash, Hasher},
+    ops::Deref,
+    slice,
+};
+
 use crate::translate::*;
-use std::borrow::Borrow;
-use std::cmp::{Eq, Ord, Ordering, PartialEq, PartialOrd};
-use std::fmt;
-use std::hash::{Hash, Hasher};
-use std::ops::Deref;
-use std::slice;
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -214,8 +217,9 @@ impl Hash for Bytes {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::collections::HashSet;
+
+    use super::*;
 
     #[test]
     fn eq() {

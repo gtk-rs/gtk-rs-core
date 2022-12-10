@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::{prelude::*, Variant};
+
 use crate::{ActionMap, SimpleAction};
-use glib::{IsA, Variant};
 
 #[doc(alias = "GActionEntry")]
 pub struct ActionEntry<O>
@@ -101,9 +102,8 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-
     use super::*;
+    use crate::prelude::*;
 
     #[test]
     fn action_entry() {

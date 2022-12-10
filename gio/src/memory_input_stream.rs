@@ -2,11 +2,12 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-    use crate::MemoryInputStream;
+    use std::error::Error;
+
     use futures_util::io::{AsyncBufReadExt, AsyncReadExt};
     use glib::Bytes;
-    use std::error::Error;
+
+    use crate::{prelude::*, MemoryInputStream};
 
     #[test]
     fn new() {

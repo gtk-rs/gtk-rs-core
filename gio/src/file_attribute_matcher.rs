@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use glib::GString;
 use std::iter::{FusedIterator, IntoIterator};
+
+use glib::{translate::*, GString};
 
 pub struct FileAttributematcherIter(crate::FileAttributeMatcher);
 

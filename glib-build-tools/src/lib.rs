@@ -2,9 +2,7 @@
 
 #![doc = include_str!("../README.md")]
 
-use std::env;
-use std::path::Path;
-use std::process::Command;
+use std::{env, path::Path, process::Command};
 
 // rustdoc-stripper-ignore-next
 /// Call to run `glib-compile-resources` to generate compiled gresources to embed

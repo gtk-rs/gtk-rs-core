@@ -6,8 +6,7 @@
 
 use std::iter::{DoubleEndedIterator, ExactSizeIterator, FusedIterator};
 
-use crate::translate::*;
-use crate::variant::Variant;
+use crate::{translate::*, Variant};
 
 // rustdoc-stripper-ignore-next
 /// Iterator over items in a variant.
@@ -203,9 +202,12 @@ impl<'a> FusedIterator for VariantStrIter<'a> {}
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-    use crate::variant::{DictEntry, Variant};
     use std::collections::HashMap;
+
+    use crate::{
+        prelude::*,
+        variant::{DictEntry, Variant},
+    };
 
     #[test]
     fn test_variant_iter_variant() {

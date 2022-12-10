@@ -1,15 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::UnixFDList;
-use glib::object::IsA;
-use glib::translate::*;
-use std::{mem, ptr};
-
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
+use std::{mem, ptr};
 
+use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), feature = "dox"))]
 use socket::{AsRawFd, IntoRawFd, RawFd};
+
+use crate::UnixFDList;
 
 impl UnixFDList {
     #[doc(alias = "g_unix_fd_list_new_from_array")]

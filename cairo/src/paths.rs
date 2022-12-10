@@ -1,10 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::enums::PathDataType;
-use crate::ffi::cairo_path_t;
-use std::fmt;
-use std::iter::FusedIterator;
-use std::ptr;
+use std::{fmt, iter::FusedIterator, ptr};
+
+use crate::{ffi::cairo_path_t, PathDataType};
 
 #[derive(Debug)]
 pub struct Path(ptr::NonNull<cairo_path_t>);
@@ -127,9 +125,7 @@ fn to_tuple(pair: &[f64; 2]) -> (f64, f64) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::context::*;
-    use crate::enums::Format;
-    use crate::image_surface::*;
+    use crate::{context::*, enums::Format, image_surface::*};
 
     fn make_cr() -> Context {
         let surface = ImageSurface::create(Format::Rgb24, 1, 1).unwrap();

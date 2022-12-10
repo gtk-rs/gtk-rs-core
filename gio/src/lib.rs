@@ -21,8 +21,7 @@ pub use application::{ApplicationBusyGuard, ApplicationHoldGuard};
 mod async_initable;
 mod cancellable;
 mod cancellable_future;
-pub use crate::cancellable_future::CancellableFuture;
-pub use crate::cancellable_future::Cancelled;
+pub use crate::cancellable_future::{CancellableFuture, Cancelled};
 mod converter;
 mod data_input_stream;
 mod datagram_based;
@@ -102,10 +101,9 @@ mod unix_socket_address;
 #[cfg(test)]
 mod test_util;
 
-pub use crate::auto::functions::*;
-pub use crate::auto::*;
-
 pub use auto::builders;
+
+pub use crate::auto::{functions::*, *};
 pub mod prelude;
 
 #[allow(clippy::wrong_self_convention)]

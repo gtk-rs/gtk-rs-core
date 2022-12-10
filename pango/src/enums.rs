@@ -2,15 +2,11 @@
 
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
-use glib::{
-    error::ErrorDomain,
-    translate::*,
-    value::{FromValue, ToValue},
-    Quark, StaticType,
-};
+use std::fmt;
+
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
-use std::fmt;
+use glib::{error::ErrorDomain, prelude::*, translate::*, value::FromValue, Quark};
 
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]

@@ -1,7 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::log as glib_log;
-use crate::translate::*;
+use crate::{log as glib_log, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a

@@ -1,13 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Application;
-use crate::File;
-use glib::prelude::*;
-use glib::signal::{connect_raw, SignalHandlerId};
-use glib::translate::*;
-use glib::GString;
-use std::boxed::Box as Box_;
-use std::mem::transmute;
+use std::{boxed::Box as Box_, mem::transmute};
+
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+    GString,
+};
+
+use crate::{Application, File};
 
 pub trait ApplicationExtManual {
     #[doc(alias = "g_application_run")]

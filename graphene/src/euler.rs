@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Euler;
-use crate::EulerOrder;
-use crate::Matrix;
-use crate::Quaternion;
-use crate::Vec3;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Euler, EulerOrder, Matrix, Quaternion, Vec3};
 
 impl Euler {
     #[doc(alias = "graphene_euler_init")]

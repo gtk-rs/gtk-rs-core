@@ -1,15 +1,16 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::subclass::prelude::*;
-use crate::InputStream;
+use std::{
+    any::Any,
+    io::{Read, Seek},
+};
 
-use std::any::Any;
-use std::io::{Read, Seek};
+use crate::{prelude::*, subclass::prelude::*, InputStream};
 
 mod imp {
-    use super::*;
     use std::cell::RefCell;
+
+    use super::*;
 
     pub(super) enum Reader {
         Read(AnyReader),
@@ -324,8 +325,9 @@ pub(crate) fn std_error_to_gio_error<T>(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::io::Cursor;
+
+    use super::*;
 
     #[test]
     fn test_read() {

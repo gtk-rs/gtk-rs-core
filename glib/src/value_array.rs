@@ -1,10 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::Value;
-use std::cmp::Ordering;
-use std::ops;
-use std::slice;
+use std::{cmp::Ordering, ops, slice};
+
+use crate::{translate::*, Value};
 
 wrapper! {
     #[derive(Debug)]

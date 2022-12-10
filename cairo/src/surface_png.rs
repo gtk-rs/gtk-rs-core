@@ -1,16 +1,16 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::status_to_result;
-use std::any::Any;
-use std::io::{self, Read, Write};
-use std::panic::AssertUnwindSafe;
-use std::slice;
+use std::{
+    any::Any,
+    io::{self, Read, Write},
+    panic::AssertUnwindSafe,
+    slice,
+};
 
+use ffi::cairo_status_t;
 use libc::{c_uint, c_void};
 
-use crate::error::{Error, IoError};
-use crate::{ImageSurface, Surface};
-use ffi::cairo_status_t;
+use crate::{utils::status_to_result, Error, ImageSurface, IoError, Surface};
 
 struct ReadEnv<'a, R: 'a + Read> {
     reader: &'a mut R,
@@ -152,9 +152,10 @@ impl Surface {
 
 #[cfg(test)]
 mod tests {
+    use std::io::ErrorKind;
+
     use super::*;
     use crate::enums::Format;
-    use std::io::ErrorKind;
 
     struct IoErrorReader;
 

@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::CoverageLevel;
+use std::{fmt, mem, ptr};
+
 use glib::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+
+use crate::CoverageLevel;
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 glib::wrapper! {

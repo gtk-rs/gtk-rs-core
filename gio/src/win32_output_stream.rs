@@ -1,11 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::OutputStream;
-use glib::object::{Cast, IsA};
-use glib::translate::*;
-use std::fmt;
+use std::{
+    fmt,
+    os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle},
+};
 
-use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle};
+use glib::{prelude::*, translate::*};
+
+use crate::OutputStream;
 
 glib::wrapper! {
     pub struct Win32OutputStream(Object<ffi::GWin32OutputStream, ffi::GWin32OutputStreamClass>) @extends OutputStream;

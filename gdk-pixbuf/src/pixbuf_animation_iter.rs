@@ -1,9 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use super::Pixbuf;
+use std::time::SystemTime;
+
 use glib::translate::*;
 
-use std::time::SystemTime;
+use super::Pixbuf;
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufAnimationIter")]

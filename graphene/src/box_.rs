@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Box;
-use crate::Point3D;
-use crate::Vec3;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Box, Point3D, Vec3};
 
 impl Box {
     #[doc(alias = "graphene_box_get_vertices")]

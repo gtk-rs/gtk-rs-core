@@ -1,11 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::io;
+
 #[cfg(any(feature = "v2_74", feature = "dox"))]
 use crate::glib::translate::*;
 #[cfg(any(feature = "v2_74", feature = "dox"))]
 use crate::glib::FileError;
 use crate::IOErrorEnum;
-use std::io;
 
 impl From<IOErrorEnum> for io::ErrorKind {
     fn from(kind: IOErrorEnum) -> Self {

@@ -2,12 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::object::IsA;
-use crate::object::ObjectType as ObjectType_;
-use crate::translate::*;
-use crate::Object;
-use crate::StaticType;
 use std::fmt;
+
+use crate::{
+    object::{IsA, ObjectType as ObjectType_},
+    translate::*,
+    Object, StaticType,
+};
 
 crate::wrapper! {
     #[doc(alias = "GSignalGroup")]

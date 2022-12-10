@@ -1,11 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::borrow::Cow;
-use std::default::Default;
+use std::{borrow::Cow, default::Default};
 
-use crate::translate::*;
-use crate::variant::*;
-use crate::variant_type::*;
+use crate::{translate::*, variant::*, variant_type::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next

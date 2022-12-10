@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::marker::PhantomData;
-use std::rc::{self, Rc};
-use std::sync::{self, Arc};
+use std::{
+    marker::PhantomData,
+    rc::{self, Rc},
+    sync::{self, Arc},
+};
 
 // rustdoc-stripper-ignore-next
 /// Trait for generalizing downgrading a strong reference to a weak reference.

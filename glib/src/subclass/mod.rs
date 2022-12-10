@@ -245,20 +245,24 @@ pub use object_impl_ref::{ObjectImplRef, ObjectImplWeakRef};
 pub mod prelude {
     // rustdoc-stripper-ignore-next
     //! Prelude that re-exports all important traits from this crate.
-    pub use super::boxed::BoxedType;
-    pub use super::interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType};
-    pub use super::object::{ObjectClassSubclassExt, ObjectImpl, ObjectImplExt};
-    pub use super::shared::{RefCounted, SharedType};
-    pub use super::types::{
-        ClassStruct, InstanceStruct, InstanceStructExt, IsImplementable, IsSubclassable,
-        IsSubclassableExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt,
-        ObjectSubclassType,
+    pub use super::{
+        boxed::BoxedType,
+        interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType},
+        object::{ObjectClassSubclassExt, ObjectImpl, ObjectImplExt},
+        shared::{RefCounted, SharedType},
+        types::{
+            ClassStruct, InstanceStruct, InstanceStructExt, IsImplementable, IsSubclassable,
+            IsSubclassableExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt,
+            ObjectSubclassType,
+        },
     };
 }
 
-pub use self::boxed::register_boxed_type;
-pub use self::interface::register_interface;
-pub use self::signal::{
-    Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
+pub use self::{
+    boxed::register_boxed_type,
+    interface::register_interface,
+    signal::{
+        Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
+    },
+    types::{register_type, InitializingObject, InitializingType, TypeData},
 };
-pub use self::types::{register_type, InitializingObject, InitializingType, TypeData};

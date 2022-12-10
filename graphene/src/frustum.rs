@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Frustum;
-use crate::Matrix;
-use crate::Plane;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Frustum, Matrix, Plane};
 
 impl Frustum {
     #[doc(alias = "graphene_frustum_get_planes")]

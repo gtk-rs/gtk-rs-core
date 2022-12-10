@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::source::Priority;
-use crate::translate::*;
-use crate::MainContext;
-use crate::Source;
-use crate::SourceId;
-use ffi::{self, gboolean, gpointer};
 use std::mem;
+
+use ffi::{self, gboolean, gpointer};
+
+use crate::{source::Priority, translate::*, MainContext, Source, SourceId};
 
 impl MainContext {
     #[doc(alias = "g_main_context_prepare")]
@@ -208,10 +206,9 @@ impl<'a> Drop for ThreadDefaultContext<'a> {
 
 #[cfg(test)]
 mod tests {
+    use std::{panic, ptr, thread};
+
     use super::*;
-    use std::panic;
-    use std::ptr;
-    use std::thread;
 
     #[test]
     fn test_invoke() {

@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::InetAddress;
-use crate::SocketFamily;
-use glib::object::IsA;
-use glib::translate::*;
-
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+
+use glib::{prelude::*, translate::*};
+
+use crate::{prelude::*, InetAddress, SocketFamily};
 
 #[derive(Debug)]
 pub enum InetAddressBytes<'a> {

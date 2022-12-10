@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
+use std::{future::Future, ptr};
 
 use futures_channel::oneshot;
-use std::future::Future;
-use std::ptr;
+
+use crate::translate::*;
 
 #[derive(Debug)]
 #[doc(alias = "GThreadPool")]

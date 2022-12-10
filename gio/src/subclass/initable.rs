@@ -1,15 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::object::Cast;
-use glib::translate::*;
-use glib::Error;
-
-use glib::subclass::prelude::*;
-
 use std::ptr;
 
-use crate::Cancellable;
-use crate::Initable;
+use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
+
+use crate::{Cancellable, Initable};
 
 pub trait InitableImpl: ObjectImpl {
     fn init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
@@ -81,15 +76,12 @@ unsafe extern "C" fn initable_init<T: InitableImpl>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::prelude::*;
-    use crate::traits::InitableExt;
-    use crate::{Cancellable, Initable};
+    use crate::{prelude::*, Cancellable, Initable};
 
     pub mod imp {
-        use super::*;
-        use crate::Cancellable;
-        use crate::Initable;
         use std::cell::Cell;
+
+        use super::*;
 
         pub struct InitableTestType(pub Cell<u64>);
 

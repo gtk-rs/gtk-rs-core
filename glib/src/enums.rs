@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::value::{FromValue, Value, ValueTypeChecker};
-use crate::Type;
-use std::ffi::CStr;
-use std::{cmp, fmt, ptr};
+use std::{cmp, ffi::CStr, fmt, ptr};
+
+use crate::{
+    translate::*,
+    value::{FromValue, ValueTypeChecker},
+    Type, Value,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum UserDirectory {
@@ -928,7 +930,6 @@ impl std::error::Error for InvalidFlagsError {}
 #[cfg(test)]
 mod tests {
     use super::*;
-
     use crate::StaticType;
 
     #[test]

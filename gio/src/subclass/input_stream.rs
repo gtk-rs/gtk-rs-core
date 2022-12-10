@@ -1,14 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::subclass::prelude::*;
-use glib::translate::*;
-
-use glib::{Cast, Error};
-
-use crate::Cancellable;
-use crate::InputStream;
-
 use std::ptr;
+
+use glib::{subclass::prelude::*, translate::*, Cast, Error};
+
+use crate::{Cancellable, InputStream};
 
 pub trait InputStreamImpl: ObjectImpl + InputStreamImplExt + Send {
     fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -132,8 +128,7 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    use std::isize;
-    use std::slice;
+    use std::{isize, slice};
 
     assert!(count <= isize::MAX as usize);
 
@@ -222,10 +217,10 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::prelude::*;
-    use crate::subclass::prelude::*;
     use std::cell::RefCell;
+
+    use super::*;
+    use crate::{prelude::*, subclass::prelude::*};
 
     mod imp {
         use super::*;

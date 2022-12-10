@@ -3,8 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Module for registering shared types for Rust types.
 
-use crate::translate::*;
-use crate::StaticType;
+use crate::{prelude::*, translate::*};
 
 pub unsafe trait RefCounted: Clone + Sized + 'static {
     // rustdoc-stripper-ignore-next
@@ -151,7 +150,6 @@ mod test {
     // generate the glib namespace through the crate_ident_new utility,
     // and that returns `glib` (and not `crate`) when called inside the glib crate
     use crate as glib;
-    use crate::value::ToValue;
 
     #[derive(Clone, Debug, PartialEq, Eq)]
     struct MySharedInner {

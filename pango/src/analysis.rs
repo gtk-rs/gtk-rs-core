@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{Attribute, Font, Gravity, Language, Script};
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Attribute, Font, Gravity, Language, Script};
 
 glib::wrapper! {
     #[doc(alias = "PangoAnalysis")]

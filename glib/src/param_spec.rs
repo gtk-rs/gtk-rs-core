@@ -1,20 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::utils::is_canonical_pspec_name;
-use crate::IsA;
-use crate::ParamFlags;
-use crate::StaticType;
-use crate::Type;
-use crate::Value;
+use std::{char::CharTryFromError, convert::TryFrom, ffi::CStr};
+
 use crate::{
     object::{Interface, InterfaceRef, IsClass, IsInterface, ObjectClass},
-    Object,
+    prelude::*,
+    translate::*,
+    utils::is_canonical_pspec_name,
+    Object, ParamFlags, Type, Value,
 };
-
-use std::char::CharTryFromError;
-use std::convert::TryFrom;
-use std::ffi::CStr;
 
 // Can't use get_type here as this is not a boxed type but another fundamental type
 wrapper! {

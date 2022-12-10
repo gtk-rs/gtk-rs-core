@@ -1,16 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{ffi::CString, mem::MaybeUninit, ptr};
+
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use std::ffi::CString;
-use std::mem::MaybeUninit;
-use std::ptr;
 
-use crate::matrices::Matrix;
-use crate::utils::status_to_result;
-use crate::{enums::FontType, Error, FontExtents, Glyph, TextCluster, TextExtents};
-
-use super::{FontFace, FontOptions};
+use crate::{
+    utils::status_to_result, Error, FontExtents, FontFace, FontOptions, FontType, Glyph, Matrix,
+    TextCluster, TextExtents,
+};
 
 #[cfg(feature = "use_glib")]
 glib::wrapper! {
