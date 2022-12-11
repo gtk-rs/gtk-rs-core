@@ -21,20 +21,25 @@ wrapper! {
         copy => |ptr| ffi::g_string_new((*ptr).str),
         free => |ptr| ffi::g_string_free(ptr, ffi::GTRUE),
         init => |ptr| unsafe {
-            *ptr = ffi::GString {
-                str: ffi::g_malloc0(64) as *mut _,
+            let inner = ffi::GString {
+                str: ffi::g_malloc(64) as *mut _,
                 len: 0,
                 allocated_len: 64,
             };
+            ptr::write(inner.str, 0);
+
+            *ptr = inner;
         },
         copy_into => |dest, src| {
+            assert!((*src).allocated_len > (*src).len);
             let allocated_len = (*src).allocated_len;
-            let mut inner = ffi::GString {
-                str: ffi::g_malloc0(allocated_len) as *mut _,
+            let inner = ffi::GString {
+                str: ffi::g_malloc(allocated_len) as *mut _,
                 len: 0,
                 allocated_len,
             };
-            ffi::g_string_append_len(&mut inner, (*src).str, (*src).len as isize);
+            // +1 to also copy the NUL-terminator
+            ptr::copy_nonoverlapping((*src).str, inner.str, (*src).len + 1);
             *dest = inner;
         },
         clear => |ptr| {
@@ -56,19 +61,16 @@ impl GStringBuilder {
             let allocated_len = usize::next_power_of_two(std::cmp::max(data.len(), 64) + 1);
             assert_ne!(allocated_len, 0);
 
-            let mut inner = ffi::GString {
+            let inner = ffi::GString {
                 str: ffi::g_malloc(allocated_len) as *mut _,
-                len: 0,
+                len: data.len(),
                 allocated_len,
             };
             if data.is_empty() {
                 ptr::write(inner.str, 0);
             } else {
-                ffi::g_string_append_len(
-                    &mut inner,
-                    data.as_ptr() as *const _,
-                    data.len() as isize,
-                );
+                ptr::copy_nonoverlapping(data.as_ptr() as *const _, inner.str, data.len());
+                ptr::write(inner.str.add(data.len()), 0);
             }
             Self { inner }
         }
@@ -249,6 +251,7 @@ mod tests {
     #[test]
     fn append() {
         let mut s = crate::GStringBuilder::new("");
+        assert_eq!(&*s, "");
         s.append("Hello");
         s.append(" ");
         s.append("there!");
@@ -259,6 +262,7 @@ mod tests {
     #[test]
     fn prepend() {
         let mut s = crate::GStringBuilder::new("456");
+        assert_eq!(&*s, "456");
         s.prepend("123");
         assert_eq!(&*s, "123456");
     }
