@@ -1,12 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::ActionGroup;
-use glib::subclass::prelude::*;
-use glib::translate::*;
-use glib::{Cast, GString, ObjectExt, Quark, Variant, VariantType};
+use std::{mem, ptr};
+
+use glib::{prelude::*, subclass::prelude::*, translate::*, GString, Quark, Variant, VariantType};
 use once_cell::sync::Lazy;
-use std::mem;
-use std::ptr;
+
+use crate::ActionGroup;
 
 pub trait ActionGroupImpl: ObjectImpl {
     fn action_added(&self, action_name: &str) {

@@ -1,17 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::object::IsA;
-use glib::translate::*;
-use glib::Error;
-use libc::{c_uchar, c_void};
-use std::io::Read;
-use std::mem;
-use std::path::Path;
-use std::pin::Pin;
-use std::ptr;
-use std::slice;
+use std::{future::Future, io::Read, mem, path::Path, pin::Pin, ptr, slice};
 
-use std::future::Future;
+use glib::{object::IsA, translate::*, Error};
+use libc::{c_uchar, c_void};
 
 use crate::{Colorspace, Pixbuf, PixbufFormat};
 

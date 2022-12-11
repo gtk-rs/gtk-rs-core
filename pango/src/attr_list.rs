@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{AttrList, Attribute};
-use glib::translate::*;
 use std::mem;
+
+use glib::translate::*;
+
+use crate::{AttrList, Attribute};
 
 impl AttrList {
     #[doc(alias = "pango_attr_list_change")]

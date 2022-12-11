@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Size;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::Size;
 
 impl Size {
     #[doc(alias = "graphene_size_init")]

@@ -1,8 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::Binding;
-use crate::Object;
+use crate::{prelude::*, Binding, Object};
 
 impl Binding {
     #[doc(alias = "get_source")]
@@ -18,8 +16,7 @@ impl Binding {
 
 #[cfg(test)]
 mod test {
-    use crate::prelude::*;
-    use crate::subclass::prelude::*;
+    use crate::{prelude::*, subclass::prelude::*};
 
     #[test]
     fn binding() {
@@ -222,11 +219,11 @@ mod test {
     }
 
     mod imp {
-        use super::*;
-
-        use once_cell::sync::Lazy;
         use std::cell::RefCell;
 
+        use once_cell::sync::Lazy;
+
+        use super::*;
         use crate as glib;
 
         #[derive(Debug, Default)]

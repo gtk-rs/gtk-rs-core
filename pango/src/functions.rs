@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Analysis;
-use crate::GlyphString;
-use crate::Item;
+use std::ptr;
+
+use glib::translate::*;
+
 #[cfg(any(feature = "v1_44", feature = "dox"))]
 use crate::ShapeFlags;
-use glib::translate::*;
-use std::ptr;
+use crate::{Analysis, GlyphString, Item};
 
 #[doc(alias = "pango_reorder_items")]
 pub fn reorder_items(logical_items: &[&Item]) -> Vec<Item> {

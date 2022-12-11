@@ -1,10 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(feature = "use_glib")]
-use glib::translate::*;
 use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::mem;
+
+#[cfg(feature = "use_glib")]
+use glib::translate::*;
 
 #[derive(Clone, Copy, PartialEq)]
 #[repr(transparent)]
@@ -141,7 +142,8 @@ mod tests {
     #[cfg(feature = "use_glib")]
     #[test]
     fn rectangle_gvalues() {
-        use glib::ToValue;
+        use glib::prelude::*;
+
         let rect = Rectangle::new(1., 2., 3., 4.);
         let value = rect.to_value();
         assert_eq!(value.get::<Rectangle>().unwrap().width(), 3.);

@@ -1,7 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::prelude::*;
-use glib::translate::{FromGlib, IntoGlib};
+use glib::{
+    prelude::*,
+    translate::{FromGlib, IntoGlib},
+};
 
 #[test]
 fn derive_error_domain() {
@@ -244,8 +246,9 @@ fn attr_flags() {
 #[test]
 fn subclassable() {
     mod foo {
-        use super::*;
         use glib::subclass::prelude::*;
+
+        use super::*;
 
         mod imp {
             use super::*;
@@ -612,8 +615,7 @@ fn closure() {
     }
 
     {
-        use glib::prelude::*;
-        use glib::subclass::prelude::*;
+        use glib::{prelude::*, subclass::prelude::*};
 
         #[derive(Default)]
         pub struct FooPrivate {}

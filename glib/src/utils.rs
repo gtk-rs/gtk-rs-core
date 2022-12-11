@@ -1,9 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{
+    ffi::{OsStr, OsString},
+    mem, ptr,
+};
+
 use crate::translate::*;
-use std::ffi::{OsStr, OsString};
-use std::mem;
-use std::ptr;
 
 // rustdoc-stripper-ignore-next
 /// Same as [`get_prgname()`].
@@ -176,8 +178,7 @@ pub fn uri_unescape_segment(
 
 #[cfg(test)]
 mod tests {
-    use std::env;
-    use std::sync::Mutex;
+    use std::{env, sync::Mutex};
 
     //Mutex to prevent run environment tests parallel
     static LOCK: once_cell::sync::Lazy<Mutex<()>> = once_cell::sync::Lazy::new(|| Mutex::new(()));
@@ -216,8 +217,9 @@ mod tests {
 
     #[test]
     fn test_filename_from_uri() {
-        use crate::GString;
         use std::path::PathBuf;
+
+        use crate::GString;
         let uri: GString = "file:///foo/bar.txt".into();
         if let Ok((filename, hostname)) = crate::filename_from_uri(&uri) {
             assert_eq!(filename, PathBuf::from(r"/foo/bar.txt"));

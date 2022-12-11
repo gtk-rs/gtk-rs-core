@@ -18,6 +18,5 @@ mod signal_group;
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 pub use binding_group::BindingGroupBuilder;
 
-pub use self::auto::*;
-pub use self::flags::*;
+pub use self::{auto::*, flags::*};
 //pub use self::auto::functions::*;

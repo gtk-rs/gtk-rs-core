@@ -2,20 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::SocketConnectable;
-use crate::TlsCertificate;
-use crate::TlsCertificateFlags;
-use crate::TlsDatabaseLookupFlags;
-use crate::TlsDatabaseVerifyFlags;
-use crate::TlsInteraction;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
+    TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction,
+};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GTlsDatabase")]

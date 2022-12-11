@@ -1,9 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::crate_ident_new;
-use proc_macro::token_stream::IntoIter as ProcIter;
-use proc_macro::{Delimiter, Group, Ident, Punct, Spacing, Span, TokenStream, TokenTree};
 use std::iter::Peekable;
+
+use proc_macro::{
+    token_stream::IntoIter as ProcIter, Delimiter, Group, Ident, Punct, Spacing, Span, TokenStream,
+    TokenTree,
+};
+
+use crate::utils::crate_ident_new;
 
 #[derive(Clone, Copy, Debug)]
 enum BorrowKind {

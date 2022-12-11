@@ -1,14 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::Error;
-use crate::gstring::GString;
-use crate::translate::*;
-use crate::KeyFileFlags;
-use std::mem;
-use std::path;
-use std::ptr;
+use std::{mem, path, ptr};
 
-use crate::KeyFile;
+use crate::{translate::*, Error, GString, KeyFile, KeyFileFlags};
 
 impl KeyFile {
     #[doc(alias = "g_key_file_save_to_file")]

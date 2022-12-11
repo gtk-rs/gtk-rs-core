@@ -1,10 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::crate_ident_new;
 use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_error::abort;
 use quote::{quote, ToTokens, TokenStreamExt};
 use syn::{ext::IdentExt, spanned::Spanned, Token};
+
+use crate::utils::crate_ident_new;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum CaptureKind {

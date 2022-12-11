@@ -2,25 +2,16 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::Drive;
-use crate::File;
-use crate::Icon;
-use crate::Mount;
-use crate::MountMountFlags;
-use crate::MountOperation;
-use crate::MountUnmountFlags;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncResult, Cancellable, Drive, File, Icon, Mount, MountMountFlags, MountOperation,
+    MountUnmountFlags,
+};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GVolume")]

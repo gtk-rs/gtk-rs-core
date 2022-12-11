@@ -1,17 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use glib::object::IsA;
-use glib::object::ObjectType as ObjectType_;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::value::ValueType;
-use glib::Cast;
-use std::boxed::Box as Box_;
-use std::mem::transmute;
-use std::ptr;
+use std::{boxed::Box as Box_, mem::transmute, ptr};
+
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+    value::ValueType,
+};
+
+use crate::{AsyncResult, Cancellable};
 
 glib::wrapper! {
     // rustdoc-stripper-ignore-next
@@ -385,8 +383,7 @@ unsafe impl<V: ValueType + Send> Sync for Task<V> {}
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::prelude::*;
-    use crate::test_util::run_async_local;
+    use crate::{prelude::*, test_util::run_async_local};
 
     #[test]
     fn test_int_async_result() {

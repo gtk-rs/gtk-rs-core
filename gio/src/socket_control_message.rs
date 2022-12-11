@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::SocketControlMessage;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
+
+use crate::{prelude::*, SocketControlMessage};
 
 pub trait SocketControlMessageExtManual: Sized {
     #[doc(alias = "g_socket_control_message_serialize")]

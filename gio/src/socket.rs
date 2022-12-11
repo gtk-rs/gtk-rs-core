@@ -1,34 +1,23 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Cancellable;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-use crate::PollableReturn;
-use crate::Socket;
-use crate::SocketAddress;
-use crate::SocketControlMessage;
-use glib::object::{Cast, IsA};
-use glib::translate::*;
-use glib::ObjectType;
-use glib::Slice;
-use std::cell::RefCell;
-use std::marker::PhantomData;
-use std::mem::transmute;
 #[cfg(all(not(unix), feature = "dox"))]
 use std::os::raw::c_int;
 #[cfg(all(not(windows), feature = "dox"))]
 use std::os::raw::c_void;
-use std::pin::Pin;
-use std::ptr;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-use std::time::Duration;
-
-use futures_core::stream::Stream;
-
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
-
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use std::time::Duration;
+use std::{cell::RefCell, marker::PhantomData, mem::transmute, pin::Pin, ptr};
+
+use futures_core::stream::Stream;
+use glib::{prelude::*, translate::*, Slice};
+
+#[cfg(any(feature = "v2_60", feature = "dox"))]
+use crate::PollableReturn;
+use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage};
 
 impl Socket {
     #[cfg(any(unix, feature = "dox"))]
@@ -921,12 +910,10 @@ mod tests {
     #[test]
     #[cfg(unix)]
     fn socket_messages() {
+        use std::{io, os::unix::io::AsRawFd};
+
         use super::Socket;
-        use crate::prelude::*;
-        use crate::Cancellable;
-        use crate::UnixFDMessage;
-        use std::io;
-        use std::os::unix::io::AsRawFd;
+        use crate::{prelude::*, Cancellable, UnixFDMessage};
 
         let mut fds = [0 as libc::c_int; 2];
         let (out_sock, in_sock) = unsafe {
@@ -993,8 +980,7 @@ mod tests {
     #[cfg(unix)]
     fn dgram_socket_messages() {
         use super::Socket;
-        use crate::prelude::*;
-        use crate::Cancellable;
+        use crate::{prelude::*, Cancellable};
 
         let addr = crate::InetSocketAddress::from_string("127.0.0.1", 28351).unwrap();
 

@@ -1,14 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::signal::connect_raw;
-use crate::signal::SignalHandlerId;
-use crate::translate::*;
-use crate::Object;
-use crate::ObjectType;
-use crate::RustClosure;
-use crate::SignalGroup;
-use crate::Value;
 use std::mem::transmute;
+
+use crate::{
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+    Object, ObjectType, RustClosure, SignalGroup, Value,
+};
 
 impl SignalGroup {
     #[doc(alias = "g_signal_group_connect_closure")]
@@ -127,17 +125,15 @@ impl SignalGroup {
 
 #[cfg(test)]
 mod tests {
+    use std::{cell::RefCell, rc::Rc};
+
     use super::*;
     use crate as glib;
-    use crate::ObjectExt;
-    use crate::StaticType;
-    use std::cell::RefCell;
-    use std::rc::Rc;
+    use crate::{ObjectExt, StaticType};
 
     mod imp {
         use super::*;
-        use crate::subclass::prelude::*;
-        use crate::subclass::Signal;
+        use crate::subclass::{prelude::*, Signal};
 
         #[derive(Default)]
         pub struct SignalObject {}

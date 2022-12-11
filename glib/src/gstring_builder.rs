@@ -1,14 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{cmp, fmt, hash, mem, ops, ptr, slice, str};
+
 use crate::translate::*;
-use std::cmp;
-use std::fmt;
-use std::hash;
-use std::mem;
-use std::ops;
-use std::ptr;
-use std::slice;
-use std::str;
 
 wrapper! {
     // rustdoc-stripper-ignore-next

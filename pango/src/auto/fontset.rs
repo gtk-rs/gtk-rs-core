@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Font;
-use crate::FontMetrics;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Font, FontMetrics};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

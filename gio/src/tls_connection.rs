@@ -1,13 +1,15 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-use crate::TlsChannelBindingType;
-use crate::TlsConnection;
+use std::ptr;
+
+use glib::prelude::*;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 use glib::translate::*;
-use glib::IsA;
+
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-use std::ptr;
+use crate::TlsChannelBindingType;
+use crate::TlsConnection;
 
 pub trait TlsConnectionExtManual {
     #[cfg(any(feature = "v2_66", feature = "dox"))]

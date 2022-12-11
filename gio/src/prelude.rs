@@ -6,36 +6,14 @@
 #[doc(hidden)]
 pub use glib::prelude::*;
 
-pub use crate::auto::traits::*;
-
-pub use crate::action_map::ActionMapExtManual;
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 pub use crate::app_info::AppInfoExtManual;
-pub use crate::application::*;
-pub use crate::cancellable::*;
-pub use crate::converter::*;
-pub use crate::data_input_stream::DataInputStreamExtManual;
-pub use crate::datagram_based::*;
-pub use crate::dbus_proxy::DBusProxyExtManual;
 #[cfg(any(feature = "v2_72", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 pub use crate::desktop_app_info::DesktopAppInfoExtManual;
-pub use crate::file::FileExtManual;
-pub use crate::inet_address::InetAddressExtManual;
-pub use crate::input_stream::InputStreamExtManual;
-pub use crate::io_stream::IOStreamExtManual;
-pub use crate::list_model::ListModelExtManual;
-pub use crate::output_stream::OutputStreamExtManual;
-pub use crate::pollable_input_stream::PollableInputStreamExtManual;
-pub use crate::pollable_output_stream::PollableOutputStreamExtManual;
-pub use crate::settings::SettingsExtManual;
-pub use crate::simple_proxy_resolver::SimpleProxyResolverExtManual;
-pub use crate::socket::SocketExtManual;
-pub use crate::socket_control_message::*;
-pub use crate::tls_connection::TlsConnectionExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_fd_list::UnixFDListExtManual;
 #[cfg(any(unix, feature = "dox"))]
@@ -46,3 +24,13 @@ pub use crate::unix_input_stream::UnixInputStreamExtManual;
 pub use crate::unix_output_stream::UnixOutputStreamExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddressPath};
+pub use crate::{
+    action_map::ActionMapExtManual, application::*, auto::traits::*, cancellable::*, converter::*,
+    data_input_stream::DataInputStreamExtManual, datagram_based::*, dbus_proxy::DBusProxyExtManual,
+    file::FileExtManual, inet_address::InetAddressExtManual, input_stream::InputStreamExtManual,
+    io_stream::IOStreamExtManual, list_model::ListModelExtManual,
+    output_stream::OutputStreamExtManual, pollable_input_stream::PollableInputStreamExtManual,
+    pollable_output_stream::PollableOutputStreamExtManual, settings::SettingsExtManual,
+    simple_proxy_resolver::SimpleProxyResolverExtManual, socket::SocketExtManual,
+    socket_control_message::*, tls_connection::TlsConnectionExtManual,
+};

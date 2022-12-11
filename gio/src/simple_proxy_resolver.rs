@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::ProxyResolver;
-use crate::SimpleProxyResolver;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
+
+use crate::{ProxyResolver, SimpleProxyResolver};
 
 impl SimpleProxyResolver {
     #[doc(alias = "g_simple_proxy_resolver_new")]

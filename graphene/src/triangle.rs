@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Point3D;
-use crate::Triangle;
-use crate::Vec3;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Point3D, Triangle, Vec3};
 
 impl Triangle {
     #[doc(alias = "graphene_triangle_init_from_float")]

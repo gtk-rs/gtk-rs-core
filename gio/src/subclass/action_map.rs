@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{Action, ActionMap};
-use glib::subclass::prelude::*;
-use glib::translate::*;
-use glib::{Cast, GString, IsA, ObjectExt, Quark};
-use once_cell::sync::Lazy;
 use std::collections::HashMap;
+
+use glib::{prelude::*, subclass::prelude::*, translate::*, GString, Quark};
+use once_cell::sync::Lazy;
+
+use crate::{Action, ActionMap};
 
 pub trait ActionMapImpl: ObjectImpl {
     fn lookup_action(&self, action_name: &str) -> Option<Action>;

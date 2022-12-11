@@ -2,14 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Subprocess;
-use crate::SubprocessFlags;
+use crate::{Subprocess, SubprocessFlags};
 use glib::translate::*;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use std::boxed::Box as Box_;
-use std::fmt;
-use std::ptr;
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSubprocessLauncher")]

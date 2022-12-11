@@ -12,8 +12,7 @@ pub use pango;
 #[allow(unused_imports)]
 mod auto;
 
-pub use crate::auto::functions::*;
-pub use crate::auto::*;
+pub use crate::auto::{functions::*, *};
 pub mod prelude;
 
 mod font_map;

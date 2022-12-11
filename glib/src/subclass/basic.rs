@@ -5,11 +5,10 @@
 //! `GObject` subclasses that don't require any additional data in these
 //! structs and don't provide any new virtual methods.
 
-use super::prelude::*;
-use crate::object::ObjectType;
+use std::{fmt, ops};
 
-use std::fmt;
-use std::ops;
+use super::prelude::*;
+use crate::prelude::*;
 
 // rustdoc-stripper-ignore-next
 /// A basic instance struct that does not store any additional data.

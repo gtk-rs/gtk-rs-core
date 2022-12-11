@@ -1,16 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use glib::Cast;
-use glib::Error;
-use glib::SeekType;
-
-use glib::subclass::prelude::*;
-
 use std::ptr;
 
-use crate::Cancellable;
-use crate::Seekable;
+use glib::{subclass::prelude::*, translate::*, Cast, Error, SeekType};
+
+use crate::{Cancellable, Seekable};
 
 pub trait SeekableImpl: ObjectImpl + Send {
     fn tell(&self) -> i64;

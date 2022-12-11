@@ -1,22 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(feature = "use_glib")]
-use glib::translate::*;
 use std::ffi::{CStr, CString};
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
 #[cfg(any(feature = "freetype", feature = "dox"))]
 use std::rc::Rc;
 
-use crate::{
-    enums::{FontSlant, FontType, FontWeight},
-    Error,
-};
+#[cfg(feature = "use_glib")]
+use glib::translate::*;
 
 #[cfg(any(feature = "freetype", feature = "dox"))]
-use crate::enums::FtSynthesize;
-
-use crate::utils::status_to_result;
+use crate::FtSynthesize;
+use crate::{utils::status_to_result, Error, FontSlant, FontType, FontWeight};
 
 #[cfg(any(feature = "freetype", feature = "dox"))]
 static FT_FACE_KEY: crate::UserDataKey<freetype::face::Face> = crate::UserDataKey::new();

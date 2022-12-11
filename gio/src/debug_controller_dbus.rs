@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::DBusConnection;
-use crate::DebugControllerDBus;
-use glib::object::IsA;
+use glib::prelude::*;
+
+use crate::{DBusConnection, DebugControllerDBus};
 
 pub trait DebugControllerDBusExtManual: Sized {
     fn connection(&self) -> DBusConnection;

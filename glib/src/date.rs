@@ -1,14 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::BoolError;
-use crate::DateDay;
-use crate::DateMonth;
-use crate::DateWeekday;
-use crate::DateYear;
-use std::cmp;
-use std::fmt;
-use std::hash;
+use std::{cmp, fmt, hash};
+
+use crate::{translate::*, BoolError, DateDay, DateMonth, DateWeekday, DateYear};
 
 wrapper! {
     #[doc(alias = "GDate")]

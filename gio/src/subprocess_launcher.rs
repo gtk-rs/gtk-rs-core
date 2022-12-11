@@ -1,11 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::SubprocessLauncher;
+#[cfg(any(unix, all(feature = "dox", unix)))]
+use std::os::unix::io::IntoRawFd;
+
 #[cfg(any(unix, feature = "dox"))]
 #[cfg(any(unix, feature = "dox"))]
 use glib::translate::*;
-#[cfg(any(unix, all(feature = "dox", unix)))]
-use std::os::unix::io::IntoRawFd;
+
+use crate::SubprocessLauncher;
 
 #[cfg(all(feature = "dox", not(unix)))]
 pub trait IntoRawFd: Sized {

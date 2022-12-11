@@ -1,9 +1,8 @@
-use gio::prelude::*;
-use glib::{self, clone};
+use std::str;
 
 use futures::prelude::*;
-
-use std::str;
+use gio::prelude::*;
+use glib::{self, clone};
 
 fn main() {
     let c = glib::MainContext::default();

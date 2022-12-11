@@ -1,19 +1,20 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::thread_guard::ThreadGuard;
-use crate::translate::*;
-use futures_core::future::Future;
-use futures_core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
-use futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
-use std::mem;
-use std::pin::{self, Pin};
-use std::ptr;
+use std::{
+    mem,
+    pin::{self, Pin},
+    ptr,
+};
 
-use crate::MainContext;
-use crate::MainLoop;
-use crate::Priority;
-use crate::Source;
-use crate::SourceId;
+use futures_core::{
+    future::Future,
+    task::{Context, Poll, RawWaker, RawWakerVTable, Waker},
+};
+use futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
+
+use crate::{
+    thread_guard::ThreadGuard, translate::*, MainContext, MainLoop, Priority, Source, SourceId,
+};
 
 // Wrapper around Send Futures and non-Send Futures that will panic
 // if the non-Send Future is polled/dropped from a different thread
@@ -352,11 +353,12 @@ impl LocalSpawn for MainContext {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use std::{sync::mpsc, thread};
+
     use futures_channel::oneshot;
     use futures_util::future::{FutureExt, TryFutureExt};
-    use std::sync::mpsc;
-    use std::thread;
+
+    use super::*;
 
     #[test]
     fn test_spawn() {

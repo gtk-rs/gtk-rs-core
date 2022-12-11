@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Box;
-use crate::Point3D;
+use crate::{Box, Point3D};
 use glib::translate::*;
 
 glib::wrapper! {

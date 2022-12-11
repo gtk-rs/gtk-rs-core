@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Analysis;
-use crate::Font;
-use crate::Rectangle;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Analysis, Font, Rectangle};
+use glib::{prelude::*, translate::*};
 use std::mem;
 
 glib::wrapper! {

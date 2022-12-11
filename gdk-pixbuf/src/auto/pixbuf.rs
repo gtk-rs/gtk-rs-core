@@ -2,16 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Colorspace;
-use crate::InterpType;
-use crate::PixbufFormat;
-use crate::PixbufRotation;
-use glib::object::IsA;
-use glib::object::ObjectType as ObjectType_;
-use glib::translate::*;
-use glib::StaticType;
-use std::fmt;
-use std::ptr;
+use crate::{Colorspace, InterpType, PixbufFormat, PixbufRotation};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbuf")]

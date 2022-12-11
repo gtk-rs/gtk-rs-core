@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use glib::Type;
-use std::fmt;
-use std::ptr;
+use std::{fmt, ptr};
+
+use glib::{translate::*, Type};
 
 // rustdoc-stripper-ignore-next
 /// The implementation of an `IOExtensionPoint`.

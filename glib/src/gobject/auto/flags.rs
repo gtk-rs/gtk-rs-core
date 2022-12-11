@@ -2,11 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::translate::*;
-use crate::value::FromValue;
-use crate::value::ToValue;
-use crate::StaticType;
-use crate::Type;
+use crate::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
 use bitflags::bitflags;
 use std::fmt;
 

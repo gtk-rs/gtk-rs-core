@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::SocketControlMessage;
-use crate::UnixFDList;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{SocketControlMessage, UnixFDList};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Emblem;
-use crate::Icon;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::StaticType;
+use crate::{Emblem, Icon};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

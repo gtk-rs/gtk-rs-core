@@ -5,28 +5,15 @@
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
 use crate::InetAddress;
-use crate::SocketConnectable;
-use crate::TlsCertificateFlags;
+use crate::{SocketConnectable, TlsCertificateFlags};
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-use glib::object::Cast;
-use glib::object::IsA;
+use glib::signal::{connect_raw, SignalHandlerId};
+use glib::{prelude::*, translate::*};
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-use glib::signal::connect_raw;
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-use std::boxed::Box as Box_;
-use std::fmt;
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
-use std::mem::transmute;
-use std::ptr;
+use std::{boxed::Box as Box_, mem::transmute};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GTlsCertificate")]

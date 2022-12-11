@@ -1,19 +1,16 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use futures_channel::{mpsc, oneshot};
-use futures_core::future::{FusedFuture, Future};
-use futures_core::stream::{FusedStream, Stream};
-use futures_core::task;
-use futures_core::task::Poll;
-use std::marker::Unpin;
-use std::pin;
-use std::pin::Pin;
-use std::time::Duration;
+use std::{marker::Unpin, pin, pin::Pin, time::Duration};
 
-use crate::Continue;
-use crate::MainContext;
-use crate::Priority;
-use crate::Source;
+use futures_channel::{mpsc, oneshot};
+use futures_core::{
+    future::{FusedFuture, Future},
+    stream::{FusedStream, Stream},
+    task,
+    task::Poll,
+};
+
+use crate::{Continue, MainContext, Priority, Source};
 
 // rustdoc-stripper-ignore-next
 /// Represents a `Future` around a `glib::Source`. The future will
@@ -416,11 +413,11 @@ pub fn unix_signal_stream_with_priority(
 
 #[cfg(test)]
 mod tests {
+    use std::{thread, time::Duration};
+
+    use futures_util::{future::FutureExt, stream::StreamExt};
+
     use super::*;
-    use futures_util::future::FutureExt;
-    use futures_util::stream::StreamExt;
-    use std::thread;
-    use std::time::Duration;
 
     #[test]
     fn test_timeout() {

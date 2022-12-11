@@ -1,11 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use super::prelude::*;
-use crate::clone::{Downgrade, Upgrade};
-use crate::prelude::*;
-use crate::WeakRef;
-
 use std::{cmp, fmt, hash};
+
+use super::prelude::*;
+use crate::{
+    clone::{Downgrade, Upgrade},
+    prelude::*,
+    WeakRef,
+};
 
 // rustdoc-stripper-ignore-next
 /// Reference-counted wrapper around an [`ObjectSubclass`] reference.

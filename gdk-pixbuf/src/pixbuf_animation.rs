@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::PixbufAnimation;
-use crate::PixbufAnimationIter;
-use glib::object::IsA;
-use glib::translate::*;
+use std::{ptr, time::SystemTime};
 
-use std::ptr;
-use std::time::SystemTime;
+use glib::{object::IsA, translate::*};
+
+use crate::{PixbufAnimation, PixbufAnimationIter};
 
 pub trait PixbufAnimationExtManual {
     #[doc(alias = "gdk_pixbuf_animation_get_iter")]

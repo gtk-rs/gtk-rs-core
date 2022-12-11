@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Vec2;
-use crate::Vec3;
-use crate::Vec4;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Vec2, Vec3, Vec4};
 
 impl Vec4 {
     #[doc(alias = "graphene_vec4_init")]

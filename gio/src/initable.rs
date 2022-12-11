@@ -1,12 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::traits::InitableExt;
-use crate::Cancellable;
-use crate::Initable;
-use glib::object::IsA;
-use glib::object::IsClass;
-use glib::value::ToValue;
-use glib::{Cast, Object, StaticType, Type};
+use glib::{object::IsClass, prelude::*, Object, Type};
+
+use crate::{prelude::*, Cancellable, Initable};
 
 impl Initable {
     // rustdoc-stripper-ignore-next

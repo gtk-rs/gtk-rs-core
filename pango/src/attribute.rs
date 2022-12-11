@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{AttrClass, AttrType, Attribute};
 use glib::translate::*;
+
+use crate::{AttrClass, AttrType, Attribute};
 
 impl Attribute {
     #[doc(alias = "get_attr_class")]

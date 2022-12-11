@@ -2,13 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Box;
-use crate::Plane;
-use crate::Point3D;
-use crate::RayIntersectionKind;
-use crate::Sphere;
-use crate::Triangle;
-use crate::Vec3;
+use crate::{Box, Plane, Point3D, RayIntersectionKind, Sphere, Triangle, Vec3};
 use glib::translate::*;
 use std::mem;
 

@@ -2,18 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AppInfoCreateFlags;
-use crate::AppLaunchContext;
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::File;
-use crate::Icon;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::pin::Pin;
-use std::ptr;
+use crate::{AppInfoCreateFlags, AppLaunchContext, AsyncResult, Cancellable, File, Icon};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GAppInfo")]

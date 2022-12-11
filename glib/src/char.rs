@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::FromGlib;
-use crate::translate::IntoGlib;
+use std::{convert::TryFrom, num::TryFromIntError};
+
 use libc::{c_char, c_uchar};
-use std::convert::TryFrom;
-use std::num::TryFromIntError;
+
+use crate::translate::*;
 
 // rustdoc-stripper-ignore-next
 /// Wrapper for values where C functions expect a plain C `char`
@@ -172,7 +172,6 @@ impl IntoGlib for UChar {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::translate::from_glib;
 
     #[test]
     #[allow(clippy::unnecessary_cast)]

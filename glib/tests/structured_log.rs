@@ -3,8 +3,9 @@
 
 #[test]
 fn structured_log() {
-    use glib::*;
     use std::sync::{Arc, Mutex};
+
+    use glib::*;
 
     let log = Arc::new(Mutex::new(Vec::new()));
     {
@@ -96,7 +97,7 @@ fn structured_log() {
             vec![
                 ("PRIORITY", "5" as &str),
                 ("CODE_FILE", path as &str),
-                ("CODE_LINE", "30" as &str),
+                ("CODE_LINE", "31" as &str),
                 ("CODE_FUNC", "structured_log::structured_log" as &str),
                 ("MY_META", "abc"),
                 ("MESSAGE", "normal with meta"),
@@ -112,7 +113,7 @@ fn structured_log() {
             vec![
                 ("PRIORITY", "5" as &str),
                 ("CODE_FILE", path as &str),
-                ("CODE_LINE", "40" as &str),
+                ("CODE_LINE", "41" as &str),
                 ("CODE_FUNC", "structured_log::structured_log" as &str),
                 ("MY_META", "abc"),
                 ("MESSAGE", "formatted with meta: 123 456"),

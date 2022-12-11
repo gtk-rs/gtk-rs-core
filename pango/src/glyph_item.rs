@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{GlyphItem, GlyphString, Item};
 use glib::translate::*;
+
+use crate::{GlyphItem, GlyphString, Item};
 
 impl GlyphItem {
     pub fn item(&self) -> Item {

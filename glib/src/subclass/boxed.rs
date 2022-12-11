@@ -3,8 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Module for registering boxed types for Rust types.
 
-use crate::translate::*;
-use crate::StaticType;
+use crate::{prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Trait for defining boxed types.
@@ -68,8 +67,7 @@ mod test {
     // generate the glib namespace through the crate_ident_new utility,
     // and that returns `glib` (and not `crate`) when called inside the glib crate
     use crate as glib;
-    use crate::value::ToValue;
-    use crate::StaticType;
+    use crate::prelude::*;
 
     #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
     #[boxed_type(name = "MyBoxed")]

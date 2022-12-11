@@ -3,29 +3,18 @@
 // rustdoc-stripper-ignore-next
 //! `IMPL` Object wrapper implementation and `Object` binding.
 
-use crate::types::StaticType;
-use crate::PtrSlice;
-use crate::{quark::Quark, subclass::signal::SignalQuery};
-use crate::{translate::*, value::FromValue};
-use std::cmp;
-use std::fmt;
-use std::hash;
-use std::marker::PhantomData;
-use std::mem;
-use std::mem::ManuallyDrop;
-use std::ops;
-use std::pin::Pin;
-use std::ptr;
+use std::{cmp, fmt, hash, marker::PhantomData, mem, mem::ManuallyDrop, ops, pin::Pin, ptr};
 
-use crate::closure::TryFromClosureReturnValue;
-use crate::subclass::{prelude::ObjectSubclass, SignalId};
-use crate::value::ToValue;
-use crate::SignalHandlerId;
-use crate::Type;
-use crate::Value;
-use crate::{Closure, RustClosure};
-
-use crate::thread_guard::thread_id;
+use crate::{
+    closure::TryFromClosureReturnValue,
+    prelude::*,
+    quark::Quark,
+    subclass::{prelude::*, signal::SignalQuery, SignalId},
+    thread_guard::thread_id,
+    translate::*,
+    value::FromValue,
+    Closure, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
+};
 
 // rustdoc-stripper-ignore-next
 /// Implemented by types representing `glib::Object` and subclasses of it.
@@ -4494,11 +4483,16 @@ impl<'a, T: crate::clone::Downgrade + ObjectType> crate::clone::Downgrade
 
 #[cfg(test)]
 mod tests {
+    use std::{
+        cell::Cell,
+        rc::Rc,
+        sync::{
+            atomic::{AtomicBool, Ordering},
+            Arc,
+        },
+    };
+
     use super::*;
-    use std::cell::Cell;
-    use std::rc::Rc;
-    use std::sync::atomic::{AtomicBool, Ordering};
-    use std::sync::Arc;
 
     #[test]
     fn new() {

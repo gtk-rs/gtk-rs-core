@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Permission;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

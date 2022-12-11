@@ -193,55 +193,41 @@ macro_rules! gvalue_impl_inline {
     };
 }
 
-pub use crate::user_data::UserDataKey;
-
-pub use crate::context::{Context, RectangleList};
-
-pub use crate::paths::{Path, PathSegment, PathSegments};
-
-pub use crate::device::Device;
-
-pub use crate::enums::*;
-
-pub use crate::error::{BorrowError, Error, IoError, Result};
-
-pub use crate::patterns::{
-    Gradient, LinearGradient, Mesh, Pattern, RadialGradient, SolidPattern, SurfacePattern,
-};
-
-pub use crate::font::{
-    FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph, ScaledFont,
-    TextCluster, TextExtents, UserFontFace,
-};
-
-pub use crate::matrices::Matrix;
-
-pub use crate::recording_surface::RecordingSurface;
-pub use crate::rectangle::Rectangle;
-pub use crate::rectangle_int::RectangleInt;
-
-pub use crate::region::Region;
-
-pub use crate::surface::{MappedImageSurface, Surface};
-
-pub use crate::image_surface::{ImageSurface, ImageSurfaceData, ImageSurfaceDataOwned};
-
-#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
-pub use stream::StreamWithError;
-
 #[cfg(any(feature = "pdf", feature = "dox"))]
 pub use pdf::PdfSurface;
-
 #[cfg(any(feature = "ps", feature = "dox"))]
 pub use ps::PsSurface;
-
+#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
+pub use stream::StreamWithError;
 #[cfg(any(feature = "svg", feature = "dox"))]
 pub use svg::SvgSurface;
-
 #[cfg(any(feature = "xcb", feature = "dox"))]
 pub use xcb::{
     XCBConnection, XCBDrawable, XCBPixmap, XCBRenderPictFormInfo, XCBScreen, XCBSurface,
     XCBVisualType,
+};
+
+pub use crate::{
+    context::{Context, RectangleList},
+    device::Device,
+    enums::*,
+    error::{BorrowError, Error, IoError, Result},
+    font::{
+        FontExtents, FontFace, FontOptions, FontSlant, FontType, FontWeight, Glyph, ScaledFont,
+        TextCluster, TextExtents, UserFontFace,
+    },
+    image_surface::{ImageSurface, ImageSurfaceData, ImageSurfaceDataOwned},
+    matrices::Matrix,
+    paths::{Path, PathSegment, PathSegments},
+    patterns::{
+        Gradient, LinearGradient, Mesh, Pattern, RadialGradient, SolidPattern, SurfacePattern,
+    },
+    recording_surface::RecordingSurface,
+    rectangle::Rectangle,
+    rectangle_int::RectangleInt,
+    region::Region,
+    surface::{MappedImageSurface, Surface},
+    user_data::UserDataKey,
 };
 
 #[macro_use]
@@ -338,6 +324,5 @@ mod borrowed {
 
 #[cfg(not(feature = "use_glib"))]
 pub use borrowed::Borrowed;
-
 #[cfg(feature = "use_glib")]
 pub(crate) use glib::translate::Borrowed;

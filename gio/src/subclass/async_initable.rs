@@ -1,22 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::object::Cast;
-use glib::thread_guard::ThreadGuard;
-use glib::translate::*;
-use glib::Error;
+use std::{future::Future, pin::Pin, ptr};
 
-use glib::subclass::prelude::*;
+use glib::{prelude::*, subclass::prelude::*, thread_guard::ThreadGuard, translate::*, Error};
 
-use std::ptr;
-
-use crate::prelude::CancellableExtManual;
-use crate::AsyncInitable;
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::GioFutureResult;
-use crate::LocalTask;
-
-use std::{future::Future, pin::Pin};
+use crate::{prelude::*, AsyncInitable, AsyncResult, Cancellable, GioFutureResult, LocalTask};
 
 pub trait AsyncInitableImpl: ObjectImpl {
     fn init_future(
@@ -186,13 +174,11 @@ unsafe extern "C" fn async_initable_init_finish<T: AsyncInitableImpl>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::prelude::*;
-    use crate::traits::AsyncInitableExt;
 
     pub mod imp {
-        use super::*;
-        use crate::AsyncInitable;
         use std::cell::Cell;
+
+        use super::*;
 
         pub struct AsyncInitableTestType(pub Cell<u64>);
 

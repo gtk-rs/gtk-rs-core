@@ -17,14 +17,16 @@ pub mod prelude {
     #[doc(hidden)]
     pub use glib::subclass::prelude::*;
 
-    pub use super::action_group::{ActionGroupImpl, ActionGroupImplExt};
-    pub use super::action_map::{ActionMapImpl, ActionMapImplExt};
-    pub use super::application::{ApplicationImpl, ApplicationImplExt};
-    pub use super::async_initable::{AsyncInitableImpl, AsyncInitableImplExt};
-    pub use super::initable::{InitableImpl, InitableImplExt};
-    pub use super::input_stream::{InputStreamImpl, InputStreamImplExt};
-    pub use super::io_stream::{IOStreamImpl, IOStreamImplExt};
-    pub use super::list_model::{ListModelImpl, ListModelImplExt};
-    pub use super::output_stream::{OutputStreamImpl, OutputStreamImplExt};
-    pub use super::seekable::{SeekableImpl, SeekableImplExt};
+    pub use super::{
+        action_group::{ActionGroupImpl, ActionGroupImplExt},
+        action_map::{ActionMapImpl, ActionMapImplExt},
+        application::{ApplicationImpl, ApplicationImplExt},
+        async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
+        initable::{InitableImpl, InitableImplExt},
+        input_stream::{InputStreamImpl, InputStreamImplExt},
+        io_stream::{IOStreamImpl, IOStreamImplExt},
+        list_model::{ListModelImpl, ListModelImplExt},
+        output_stream::{OutputStreamImpl, OutputStreamImplExt},
+        seekable::{SeekableImpl, SeekableImplExt},
+    };
 }

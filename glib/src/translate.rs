@@ -130,19 +130,20 @@
 //!     }
 //! ```
 
-use libc::{c_char, size_t};
-use std::char;
-use std::cmp::{Eq, Ordering, PartialEq};
-use std::collections::HashMap;
-use std::error::Error;
-use std::ffi::{CStr, CString};
-use std::ffi::{OsStr, OsString};
-use std::fmt;
-use std::mem;
 #[cfg(not(windows))]
 use std::os::unix::prelude::*;
-use std::path::{Path, PathBuf};
-use std::ptr;
+use std::{
+    char,
+    cmp::{Eq, Ordering, PartialEq},
+    collections::HashMap,
+    error::Error,
+    ffi::{CStr, CString, OsStr, OsString},
+    fmt, mem,
+    path::{Path, PathBuf},
+    ptr,
+};
+
+use libc::{c_char, size_t};
 
 // rustdoc-stripper-ignore-next
 /// A pointer
@@ -2462,13 +2463,12 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::FileTest;
-    use std::fs;
+    use std::{collections::HashMap, fs};
+
     use tempfile::tempdir;
 
     use super::*;
-    use crate::GString;
-    use std::collections::HashMap;
+    use crate::{FileTest, GString};
 
     #[test]
     fn boolean() {
@@ -2702,8 +2702,7 @@ mod tests {
 
     #[test]
     fn invalid_value() {
-        use std::convert::TryFrom;
-        use std::num::TryFromIntError;
+        use std::{convert::TryFrom, num::TryFromIntError};
 
         #[derive(Debug, PartialEq, Eq)]
         struct U32(u32);
@@ -2723,8 +2722,7 @@ mod tests {
 
     #[test]
     fn none_or_invalid_value() {
-        use std::convert::TryFrom;
-        use std::num::TryFromIntError;
+        use std::{convert::TryFrom, num::TryFromIntError};
 
         #[derive(Debug, PartialEq, Eq)]
         struct SpecialU32(u32);

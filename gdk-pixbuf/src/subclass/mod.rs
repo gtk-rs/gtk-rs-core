@@ -11,7 +11,9 @@ pub mod prelude {
     pub use gio::subclass::prelude::*;
     pub use glib::subclass::prelude::*;
 
-    pub use super::pixbuf_animation::{PixbufAnimationImpl, PixbufAnimationImplExt};
-    pub use super::pixbuf_animation_iter::{PixbufAnimationIterImpl, PixbufAnimationIterImplExt};
-    pub use super::pixbuf_loader::{PixbufLoaderImpl, PixbufLoaderImplExt};
+    pub use super::{
+        pixbuf_animation::{PixbufAnimationImpl, PixbufAnimationImplExt},
+        pixbuf_animation_iter::{PixbufAnimationIterImpl, PixbufAnimationIterImplExt},
+        pixbuf_loader::{PixbufLoaderImpl, PixbufLoaderImplExt},
+    };
 }

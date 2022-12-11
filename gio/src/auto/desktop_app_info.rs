@@ -2,16 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AppInfo;
-use crate::AppLaunchContext;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
+use crate::{AppInfo, AppLaunchContext};
+use glib::{prelude::*, translate::*};
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
 use std::mem;
-use std::ptr;
+use std::{boxed::Box as Box_, fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GDesktopAppInfo")]

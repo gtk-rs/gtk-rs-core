@@ -2,18 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::DBusConnection;
-use crate::DBusMessage;
-use crate::DBusMethodInfo;
-use crate::DBusPropertyInfo;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
-use glib::object::Cast;
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

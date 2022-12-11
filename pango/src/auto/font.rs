@@ -5,18 +5,11 @@
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 use crate::Context;
-use crate::Coverage;
-use crate::FontDescription;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
 use crate::FontFace;
-use crate::FontMap;
-use crate::FontMetrics;
-use crate::Glyph;
-use crate::Language;
-use crate::Rectangle;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Coverage, FontDescription, FontMap, FontMetrics, Glyph, Language, Rectangle};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]

@@ -2,18 +2,11 @@
 
 // TODO: support marshaller.
 
-use std::mem;
-use std::ptr;
-use std::slice;
+use std::{mem, ptr, slice};
 
 use libc::{c_uint, c_void};
 
-use crate::translate::{from_glib_none, mut_override, ToGlibPtr, ToGlibPtrMut, Uninitialized};
-use crate::value::FromValue;
-use crate::StaticType;
-use crate::ToValue;
-use crate::Type;
-use crate::Value;
+use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
@@ -398,8 +391,10 @@ unsafe impl Sync for Closure {}
 
 #[cfg(test)]
 mod tests {
-    use std::sync::atomic::{AtomicUsize, Ordering};
-    use std::sync::Arc;
+    use std::sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc,
+    };
 
     use super::*;
 

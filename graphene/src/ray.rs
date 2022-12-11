@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Point3D;
-use crate::Ray;
-use crate::Vec3;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Point3D, Ray, Vec3};
 
 impl Ray {
     #[doc(alias = "graphene_ray_init")]

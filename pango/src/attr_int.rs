@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::translate::*;
+
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 use crate::FontScale;
@@ -10,8 +12,6 @@ use crate::Overline;
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
 use crate::ShowFlags;
 use crate::{AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
-
-use glib::translate::*;
 
 define_attribute_struct!(
     AttrInt,

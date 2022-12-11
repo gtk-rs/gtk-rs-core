@@ -1,9 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{resources_register, Resource};
+use std::{mem, ptr};
+
 use glib::translate::*;
-use std::mem;
-use std::ptr;
+
+use crate::{resources_register, Resource};
 
 impl Resource {
     #[doc(alias = "g_resource_new_from_data")]

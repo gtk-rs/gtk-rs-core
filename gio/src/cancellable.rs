@@ -1,11 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::Cancellable;
+use std::num::NonZeroU64;
+
 use futures_channel::oneshot;
 use futures_core::Future;
-use glib::{translate::*, IsA};
-use std::num::NonZeroU64;
+use glib::{prelude::*, translate::*};
+
+use crate::Cancellable;
 
 // rustdoc-stripper-ignore-next
 /// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
@@ -163,6 +164,8 @@ impl<O: IsA<Cancellable>> CancellableExtManual for O {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    use crate::prelude::*;
 
     #[test]
     fn cancellable_callback() {

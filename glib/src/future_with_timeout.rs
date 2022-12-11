@@ -1,10 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{error, fmt};
+
 use futures_util::{
     future::{self, Either, Future},
     pin_mut,
 };
-use std::{error, fmt};
 
 // rustdoc-stripper-ignore-next
 /// The error returned when a future times out.
@@ -50,11 +51,12 @@ pub async fn future_with_timeout<T>(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::MainContext;
-    use crate::MainLoop;
-    use futures_util::FutureExt;
     use std::time::Duration;
+
+    use futures_util::FutureExt;
+
+    use super::*;
+    use crate::{MainContext, MainLoop};
 
     #[test]
     fn test_future_with_timeout() {

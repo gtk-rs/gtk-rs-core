@@ -3,12 +3,9 @@
 // rustdoc-stripper-ignore-next
 //! Runtime type information.
 
-use crate::translate::*;
-use crate::Slice;
+use std::{fmt, mem, ptr};
 
-use std::fmt;
-use std::mem;
-use std::ptr;
+use crate::{translate::*, Slice};
 
 // rustdoc-stripper-ignore-next
 /// A GLib or GLib-based library type
@@ -581,9 +578,10 @@ impl FromGlibContainerAsVec<Type, *mut ffi::GType> for Type {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::{BTreeSet, HashSet};
+
     use super::*;
     use crate::InitiallyUnowned;
-    use std::collections::{BTreeSet, HashSet};
 
     #[test]
     fn invalid() {

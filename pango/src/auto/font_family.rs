@@ -3,11 +3,8 @@
 // DO NOT EDIT
 
 use crate::FontFace;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use glib::{prelude::*, translate::*};
+use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontFamily")]

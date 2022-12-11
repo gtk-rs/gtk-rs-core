@@ -9,18 +9,15 @@ use std::mem;
 use std::os::unix::io::AsRawFd;
 #[cfg(not(windows))]
 use std::os::unix::io::{FromRawFd, IntoRawFd, RawFd};
+use std::ptr;
+
 // #[cfg(windows)]
 // #[cfg(any(feature = "v2_58", feature = "dox"))]
 // use std::os::windows::io::AsRawHandle;
 use crate::translate::*;
-#[cfg(not(windows))]
-use crate::Error;
 use crate::GString;
 #[cfg(not(windows))]
-use crate::Pid;
-#[cfg(not(windows))]
-use crate::SpawnFlags;
-use std::ptr;
+use crate::{Error, Pid, SpawnFlags};
 
 #[cfg(any(feature = "v2_58", feature = "dox"))]
 #[cfg(not(windows))]

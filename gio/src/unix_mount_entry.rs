@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Icon;
-use crate::UnixMountEntry;
-use glib::translate::*;
-use glib::GString;
-use std::cmp;
-use std::mem;
+use std::{cmp, mem};
+
+use glib::{translate::*, GString};
+
+use crate::{Icon, UnixMountEntry};
 
 impl UnixMountEntry {
     #[doc(alias = "g_unix_mount_at")]

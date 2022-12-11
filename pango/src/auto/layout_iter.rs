@@ -2,10 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Layout;
-use crate::LayoutLine;
-use crate::LayoutRun;
-use crate::Rectangle;
+use crate::{Layout, LayoutLine, LayoutRun, Rectangle};
 use glib::translate::*;
 use std::mem;
 

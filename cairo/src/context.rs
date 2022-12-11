@@ -1,29 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::font::{
-    FontExtents, FontFace, FontOptions, Glyph, ScaledFont, TextCluster, TextExtents,
-};
-use crate::matrices::Matrix;
-use crate::paths::Path;
-use crate::Rectangle;
-use crate::{
-    Antialias, Content, FillRule, FontSlant, FontWeight, LineCap, LineJoin, Operator,
-    TextClusterFlags,
-};
+use std::{ffi::CString, fmt, mem::MaybeUninit, ops, ptr, slice};
+
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
-use std::ffi::CString;
-use std::fmt;
-use std::mem::MaybeUninit;
-use std::ops;
-use std::ptr;
-use std::slice;
 
-use crate::error::Error;
-use crate::ffi::{cairo_rectangle_list_t, cairo_t};
-use crate::patterns::Pattern;
-use crate::surface::Surface;
-use crate::utils::status_to_result;
+use crate::{
+    ffi::{cairo_rectangle_list_t, cairo_t},
+    utils::status_to_result,
+    Antialias, Content, Error, FillRule, FontExtents, FontFace, FontOptions, FontSlant, FontWeight,
+    Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern, Rectangle, ScaledFont, Surface,
+    TextCluster, TextClusterFlags, TextExtents,
+};
 
 pub struct RectangleList {
     ptr: *mut cairo_rectangle_list_t,
@@ -958,11 +946,10 @@ impl fmt::Display for Context {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::enums::Format;
-    use crate::image_surface::ImageSurface;
-    use crate::patterns::LinearGradient;
     use float_eq::float_eq;
+
+    use super::*;
+    use crate::{enums::Format, image_surface::ImageSurface, patterns::LinearGradient};
 
     fn create_ctx() -> Context {
         let surface = ImageSurface::create(Format::ARgb32, 10, 10).unwrap();

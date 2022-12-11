@@ -1,21 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::types::{StaticType, Type};
-use crate::value::{FromValue, ToValue};
-use crate::Value;
-use std::borrow::{Borrow, Cow};
-use std::cmp::Ordering;
-use std::ffi::{CStr, CString, OsStr};
-use std::fmt;
-use std::hash;
-use std::mem;
-use std::ops::Deref;
-use std::os::raw::{c_char, c_void};
-use std::path::Path;
-use std::ptr;
-use std::slice;
-use std::string::String;
+use std::{
+    borrow::{Borrow, Cow},
+    cmp::Ordering,
+    ffi::{CStr, CString, OsStr},
+    fmt, hash, mem,
+    ops::Deref,
+    os::raw::{c_char, c_void},
+    path::Path,
+    ptr, slice,
+};
+
+use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
 
 // rustdoc-stripper-ignore-next
 /// Representation of a borrowed [`GString`].
@@ -1169,8 +1165,9 @@ impl_from_glib_container_as_vec_string!(GString, *mut c_char);
 #[cfg(test)]
 #[allow(clippy::disallowed_names)]
 mod tests {
-    use super::*;
     use std::ffi::CString;
+
+    use super::*;
 
     #[test]
     fn test_gstring() {

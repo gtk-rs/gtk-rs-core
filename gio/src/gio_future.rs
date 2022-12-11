@@ -1,15 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{
+    future::Future,
+    pin::{self, Pin},
+};
+
 use futures_channel::oneshot;
 use futures_core::{
     task::{Context, Poll},
     FusedFuture,
 };
-use std::future::Future;
-use std::pin::{self, Pin};
 
-use crate::prelude::*;
-use crate::Cancellable;
+use crate::{prelude::*, Cancellable};
 
 pub struct GioFuture<F, O, T> {
     obj: O,

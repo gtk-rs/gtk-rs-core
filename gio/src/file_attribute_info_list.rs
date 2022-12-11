@@ -1,9 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::FileAttributeInfo;
-use crate::FileAttributeInfoList;
-
 use glib::translate::*;
+
+use crate::{FileAttributeInfo, FileAttributeInfoList};
 
 impl FileAttributeInfoList {
     #[doc(alias = "g_file_attribute_info_list_lookup")]

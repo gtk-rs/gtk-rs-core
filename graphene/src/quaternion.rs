@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Euler;
-use crate::Matrix;
-use crate::Quaternion;
-use crate::Vec3;
-use crate::Vec4;
-use glib::translate::*;
 use std::fmt;
+
+use glib::translate::*;
+
+use crate::{Euler, Matrix, Quaternion, Vec3, Vec4};
 
 impl Quaternion {
     #[doc(alias = "graphene_quaternion_init")]

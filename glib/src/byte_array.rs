@@ -11,13 +11,16 @@
 //! assert_eq!(ba, "abc".as_bytes());
 //! ```
 
+use std::{
+    borrow::Borrow,
+    cmp::Ordering,
+    fmt,
+    hash::{Hash, Hasher},
+    ops::Deref,
+    slice,
+};
+
 use crate::translate::*;
-use std::borrow::Borrow;
-use std::cmp::Ordering;
-use std::fmt;
-use std::hash::{Hash, Hasher};
-use std::ops::Deref;
-use std::slice;
 
 wrapper! {
     #[doc(alias = "GByteArray")]
@@ -132,8 +135,9 @@ impl Hash for ByteArray {
 }
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::collections::HashSet;
+
+    use super::*;
 
     #[test]
     fn various() {

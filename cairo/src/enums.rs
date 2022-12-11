@@ -2,10 +2,10 @@
 
 use std::fmt::{self, Debug};
 
-use crate::error::Error;
-
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
+
+use crate::Error;
 
 // Helper macro for our GValue related trait impls
 #[cfg(feature = "use_glib")]

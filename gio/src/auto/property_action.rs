@@ -3,10 +3,7 @@
 // DO NOT EDIT
 
 use crate::Action;
-use glib::object::IsA;
-use glib::object::ObjectType as ObjectType_;
-use glib::translate::*;
-use glib::StaticType;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

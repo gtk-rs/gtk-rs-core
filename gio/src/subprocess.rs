@@ -1,13 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Cancellable;
-use crate::Subprocess;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::GString;
+use std::{pin::Pin, ptr};
+
+use glib::{prelude::*, translate::*, GString};
 use libc::c_char;
-use std::pin::Pin;
-use std::ptr;
+
+use crate::{Cancellable, Subprocess};
 
 impl Subprocess {
     #[doc(alias = "g_subprocess_communicate_utf8_async")]

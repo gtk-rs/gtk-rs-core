@@ -18,6 +18,5 @@ mod pixbuf_animation;
 mod pixbuf_animation_iter;
 pub mod prelude;
 
-pub use crate::auto::*;
-
 pub use self::pixbuf_animation_iter::PixbufAnimationIter;
+pub use crate::auto::*;

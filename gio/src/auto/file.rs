@@ -2,33 +2,14 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AppInfo;
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::DriveStartFlags;
-use crate::FileAttributeInfoList;
-use crate::FileCopyFlags;
-use crate::FileCreateFlags;
-use crate::FileEnumerator;
-use crate::FileIOStream;
-use crate::FileInfo;
-use crate::FileInputStream;
-use crate::FileMonitor;
-use crate::FileMonitorFlags;
-use crate::FileOutputStream;
-use crate::FileQueryInfoFlags;
-use crate::FileType;
-use crate::Mount;
-use crate::MountMountFlags;
-use crate::MountOperation;
-use crate::MountUnmountFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AppInfo, AsyncResult, Cancellable, DriveStartFlags, FileAttributeInfoList, FileCopyFlags,
+    FileCreateFlags, FileEnumerator, FileIOStream, FileInfo, FileInputStream, FileMonitor,
+    FileMonitorFlags, FileOutputStream, FileQueryInfoFlags, FileType, Mount, MountMountFlags,
+    MountOperation, MountUnmountFlags,
+};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, mem, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GFile")]

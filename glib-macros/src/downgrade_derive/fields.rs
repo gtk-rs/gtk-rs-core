@@ -1,9 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::crate_ident_new;
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use syn::{Fields, FieldsNamed, FieldsUnnamed, Ident, Type};
+
+use crate::utils::crate_ident_new;
 
 /// Parts needed to derive Downgrade and Upgrade implementation.
 pub struct DowngradeStructParts {

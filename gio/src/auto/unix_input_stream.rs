@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::InputStream;
-use crate::PollableInputStream;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{InputStream, PollableInputStream};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

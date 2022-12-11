@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::translate::*;
-use glib::Type;
-use std::fmt;
-use std::ptr;
+use std::{fmt, ptr};
 
-use crate::io_extension::IOExtension;
+use glib::{translate::*, Type};
+
+use crate::IOExtension;
 
 // rustdoc-stripper-ignore-next
 /// Builder for extension points.
@@ -144,8 +143,9 @@ impl IOExtensionPoint {
 
 #[cfg(test)]
 mod tests {
+    use glib::prelude::*;
+
     use super::*;
-    use glib::StaticType;
 
     #[test]
     fn extension_point() {

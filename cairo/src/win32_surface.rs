@@ -1,16 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{convert::TryFrom, fmt, ops::Deref};
+
 pub use ffi::winapi;
-
-use std::convert::TryFrom;
-use std::fmt;
-use std::ops::Deref;
-
-use crate::enums::{Format, SurfaceType};
-use crate::error::Error;
-use crate::surface::Surface;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
+
+use crate::{Error, Format, Surface, SurfaceType};
 
 declare_surface!(Win32Surface, SurfaceType::Win32);
 

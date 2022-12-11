@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::DBusInterfaceInfo;
-use crate::DBusObject;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{DBusInterfaceInfo, DBusObject};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

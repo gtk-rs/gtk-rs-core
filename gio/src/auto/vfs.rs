@@ -3,10 +3,8 @@
 // DO NOT EDIT
 
 use crate::File;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt};
 
 glib::wrapper! {
     #[doc(alias = "GVfs")]

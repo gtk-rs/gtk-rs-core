@@ -2,15 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use crate::{AsyncResult, Cancellable};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, mem, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GInputStream")]

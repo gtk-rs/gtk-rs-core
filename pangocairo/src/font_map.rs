@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::{prelude::*, translate::*};
+
 use crate::FontMap;
-use glib::object::IsA;
-use glib::translate::*;
 
 pub trait FontMapExtManual {
     #[doc(alias = "pango_cairo_font_map_get_font_type")]

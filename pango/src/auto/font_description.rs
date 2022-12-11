@@ -2,15 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::FontMask;
-use crate::Gravity;
-use crate::Stretch;
-use crate::Style;
-use crate::Variant;
-use crate::Weight;
+use crate::{FontMask, Gravity, Stretch, Style, Variant, Weight};
 use glib::translate::*;
-use std::fmt;
-use std::hash;
+use std::{fmt, hash};
 
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord)]

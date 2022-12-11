@@ -1,16 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::utils::is_canonical_pspec_name;
-use crate::Closure;
-use crate::SignalFlags;
-use crate::StaticType;
-use crate::Type;
-use crate::Value;
+use std::{fmt, num::NonZeroU32, ptr, sync::Mutex};
 
-use std::ptr;
-use std::sync::Mutex;
-use std::{fmt, num::NonZeroU32};
+use crate::{
+    prelude::*, translate::*, utils::is_canonical_pspec_name, Closure, SignalFlags, Type, Value,
+};
 
 // rustdoc-stripper-ignore-next
 /// Builder for signals.

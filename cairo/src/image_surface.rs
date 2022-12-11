@@ -1,19 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::convert::TryFrom;
-use std::ops::{Deref, DerefMut};
-use std::rc::Rc;
-use std::slice;
+use std::{
+    convert::TryFrom,
+    fmt,
+    ops::{Deref, DerefMut},
+    rc::Rc,
+    slice,
+};
 
-use crate::enums::{Format, SurfaceType};
-use crate::error::Error;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::surface::Surface;
-use crate::utils::status_to_result;
-use crate::BorrowError;
-use std::fmt;
+use crate::{utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
 
 declare_surface!(ImageSurface, SurfaceType::Image);
 
@@ -338,7 +336,8 @@ mod tests {
     #[cfg(feature = "use_glib")]
     #[test]
     fn surface_gvalues() {
-        use glib::ToValue;
+        use glib::prelude::*;
+
         let surface = ImageSurface::create(Format::ARgb32, 10, 10).unwrap();
         let value = surface.to_value();
         assert_eq!(value.get::<ImageSurface>().unwrap().width(), 10);

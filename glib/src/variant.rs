@@ -101,23 +101,18 @@
 //! assert_eq!(PathBuf::from_variant(&path_variant).as_deref(), Some(path));
 //! ```
 
-use crate::bytes::Bytes;
-use crate::translate::*;
-use crate::StaticType;
-use crate::Type;
-use crate::VariantTy;
-use crate::VariantType;
-use crate::{VariantIter, VariantStrIter};
-use std::borrow::Cow;
-use std::cmp::{Eq, Ordering, PartialEq, PartialOrd};
-use std::collections::BTreeMap;
-use std::collections::HashMap;
-use std::fmt;
-use std::hash::{BuildHasher, Hash, Hasher};
-use std::mem;
-use std::ptr;
-use std::slice;
-use std::str;
+use std::{
+    borrow::Cow,
+    cmp::{Eq, Ordering, PartialEq, PartialOrd},
+    collections::{BTreeMap, HashMap},
+    fmt,
+    hash::{BuildHasher, Hash, Hasher},
+    mem, ptr, slice, str,
+};
+
+use crate::{
+    prelude::*, translate::*, Bytes, Type, VariantIter, VariantStrIter, VariantTy, VariantType,
+};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -2184,8 +2179,9 @@ impl FromVariant for Signature {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::collections::{HashMap, HashSet};
+
+    use super::*;
 
     macro_rules! unsigned {
         ($name:ident, $ty:ident) => {

@@ -2,8 +2,9 @@
 
 use std::str::FromStr;
 
-use crate::{Language, Script};
 use glib::translate::*;
+
+use crate::{Language, Script};
 
 unsafe impl Send for Language {}
 unsafe impl Sync for Language {}

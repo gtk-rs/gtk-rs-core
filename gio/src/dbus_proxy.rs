@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::{boxed::Box as Box_, mem::transmute};
+
+use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
+
 use crate::DBusProxy;
-use glib::signal::connect_raw;
-use glib::translate::*;
-use glib::{Cast, IsA, SignalHandlerId};
-use std::boxed::Box as Box_;
-use std::mem::transmute;
 
 pub trait DBusProxyExtManual: 'static {
     #[cfg(feature = "v2_72")]

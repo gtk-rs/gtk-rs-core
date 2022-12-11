@@ -1,18 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::translate::*;
-use crate::types::StaticType;
-use crate::types::Type;
-use crate::BoolError;
-use std::borrow::{Borrow, Cow, ToOwned};
-use std::cmp::{Eq, PartialEq};
-use std::fmt;
-use std::hash::{Hash, Hasher};
-use std::iter;
-use std::ops::Deref;
-use std::ptr;
-use std::slice;
-use std::str::FromStr;
+use std::{
+    borrow::{Borrow, Cow, ToOwned},
+    cmp::{Eq, PartialEq},
+    fmt,
+    hash::{Hash, Hasher},
+    iter,
+    ops::Deref,
+    ptr, slice,
+    str::FromStr,
+};
+
+use crate::{prelude::*, translate::*, BoolError, Type};
 
 // rustdoc-stripper-ignore-next
 /// Describes `Variant` types.
@@ -947,7 +946,6 @@ impl<'a> iter::FusedIterator for VariantTyIterator<'a> {}
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ToValue;
 
     unsafe fn equal<T, U>(ptr1: *const T, ptr2: *const U) -> bool {
         from_glib(ffi::g_variant_type_equal(

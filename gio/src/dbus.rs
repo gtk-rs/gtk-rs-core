@@ -1,11 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::BusNameOwnerFlags;
-use crate::BusNameWatcherFlags;
-use crate::BusType;
-use crate::DBusConnection;
-use glib::translate::*;
 use std::num::NonZeroU32;
+
+use glib::translate::*;
+
+use crate::{BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct OwnerId(NonZeroU32);

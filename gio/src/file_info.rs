@@ -1,9 +1,13 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::FileInfo;
+use std::{
+    mem,
+    time::{Duration, SystemTime},
+};
+
 use glib::translate::*;
-use std::mem;
-use std::time::{Duration, SystemTime};
+
+use crate::FileInfo;
 
 impl FileInfo {
     #[cfg_attr(feature = "v2_62", deprecated)]

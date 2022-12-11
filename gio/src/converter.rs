@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::Converter;
-use crate::ConverterFlags;
-use crate::ConverterResult;
-use glib::object::IsA;
-use glib::translate::*;
-use std::mem;
-use std::ptr;
+use std::{mem, ptr};
+
+use glib::{prelude::*, translate::*};
+
+use crate::{Converter, ConverterFlags, ConverterResult};
 
 pub trait ConverterExtManual {
     #[doc(alias = "g_converter_convert")]

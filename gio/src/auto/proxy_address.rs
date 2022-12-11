@@ -2,13 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::InetAddress;
-use crate::InetSocketAddress;
-use crate::SocketAddress;
-use crate::SocketConnectable;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{InetAddress, InetSocketAddress, SocketAddress, SocketConnectable};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

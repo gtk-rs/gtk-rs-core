@@ -3,13 +3,15 @@
 // rustdoc-stripper-ignore-next
 //! `IMPL` Boxed wrapper implementation.
 
+use std::{
+    cmp, fmt,
+    hash::{Hash, Hasher},
+    marker::PhantomData,
+    ops::{Deref, DerefMut},
+    ptr,
+};
+
 use crate::translate::*;
-use std::cmp;
-use std::fmt;
-use std::hash::{Hash, Hasher};
-use std::marker::PhantomData;
-use std::ops::{Deref, DerefMut};
-use std::ptr;
 
 // rustdoc-stripper-ignore-next
 /// Wrapper implementations for Boxed types. See `wrapper!`.

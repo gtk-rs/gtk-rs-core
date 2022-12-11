@@ -1,19 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::error::to_std_io_result;
-use crate::prelude::*;
-use crate::Cancellable;
-use crate::OutputStream;
+use std::{io, mem, pin::Pin, ptr};
+
+use glib::{prelude::*, translate::*, Priority};
+
 #[cfg(any(feature = "v2_60", feature = "dox"))]
 use crate::OutputVector;
-use crate::Seekable;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::Priority;
-use std::io;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use crate::{error::to_std_io_result, prelude::*, Cancellable, OutputStream, Seekable};
 
 pub trait OutputStreamExtManual: Sized + OutputStreamExt {
     #[doc(alias = "g_output_stream_write_async")]
@@ -715,14 +708,13 @@ impl<T: IsA<OutputStream> + IsA<Seekable>> io::Seek for OutputStreamWrite<T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
-    use crate::test_util::run_async;
-    use crate::MemoryInputStream;
-    use crate::MemoryOutputStream;
+    use std::io::Write;
+
+    use glib::Bytes;
+
     #[cfg(feature = "v2_60")]
     use crate::OutputVector;
-    use glib::Bytes;
-    use std::io::Write;
+    use crate::{prelude::*, test_util::run_async, MemoryInputStream, MemoryOutputStream};
 
     #[test]
     fn splice_async() {

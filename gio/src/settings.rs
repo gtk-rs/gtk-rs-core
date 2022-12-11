@@ -1,10 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::prelude::*;
-use crate::{Settings, SettingsBindFlags};
-use glib::translate::{from_glib_borrow, from_glib_none, IntoGlib, ToGlibPtr};
-use glib::variant::FromVariant;
-use glib::{BoolError, IsA, Variant};
+use glib::{prelude::*, translate::*, variant::FromVariant, BoolError, Variant};
+
+use crate::{prelude::*, Settings, SettingsBindFlags};
 
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
@@ -218,11 +216,9 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
 
 #[cfg(test)]
 mod test {
+    use std::{env::set_var, process::Command, str::from_utf8, sync::Once};
+
     use super::*;
-    use std::env::set_var;
-    use std::process::Command;
-    use std::str::from_utf8;
-    use std::sync::Once;
 
     static INIT: Once = Once::new();
 

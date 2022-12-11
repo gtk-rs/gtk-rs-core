@@ -513,10 +513,34 @@ pub const G_FILE_ATTRIBUTE_STANDARD_TYPE: *const c_char =
     b"standard::type\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED: *const c_char =
     b"thumbnail::failed\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE: *const c_char =
+    b"thumbnail::failed-large\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL: *const c_char =
+    b"thumbnail::failed-normal\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE: *const c_char =
+    b"thumbnail::failed-xlarge\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: *const c_char =
+    b"thumbnail::failed-xxlarge\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: *const c_char =
     b"thumbnail::is-valid\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE: *const c_char =
+    b"thumbnail::is-valid-large\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL: *const c_char =
+    b"thumbnail::is-valid-normal\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE: *const c_char =
+    b"thumbnail::is-valid-xlarge\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE: *const c_char =
+    b"thumbnail::is-valid-xxlarge\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH: *const c_char =
     b"thumbnail::path\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE: *const c_char =
+    b"thumbnail::path-large\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL: *const c_char =
+    b"thumbnail::path-normal\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE: *const c_char =
+    b"thumbnail::path-xlarge\0" as *const u8 as *const c_char;
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE: *const c_char =
+    b"thumbnail::path-xxlarge\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_ACCESS: *const c_char =
     b"time::access\0" as *const u8 as *const c_char;
 pub const G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC: *const c_char =

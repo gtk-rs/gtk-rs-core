@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::{error::ErrorDomain, translate::*};
+
 use crate::DBusMethodInvocation;
-use glib::error::ErrorDomain;
-use glib::translate::*;
 
 impl DBusMethodInvocation {
     #[doc(alias = "g_dbus_method_invocation_return_error_literal")]

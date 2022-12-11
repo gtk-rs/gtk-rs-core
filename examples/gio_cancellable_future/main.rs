@@ -1,10 +1,7 @@
-use std::future::pending;
-use std::thread;
-use std::time::Duration;
-
-use gio::prelude::*;
+use std::{future::pending, thread, time::Duration};
 
 use futures::prelude::*;
+use gio::prelude::*;
 
 /// A very long task. This task actually never ends.
 async fn a_very_long_task() {

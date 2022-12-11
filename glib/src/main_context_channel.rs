@@ -1,18 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::thread_guard::ThreadGuard;
-use crate::translate::*;
-use crate::Continue;
-use crate::MainContext;
-use crate::Priority;
-use crate::Source;
-use crate::SourceId;
-use std::collections::VecDeque;
-use std::fmt;
-use std::mem;
-use std::ptr;
-use std::sync::mpsc;
-use std::sync::{Arc, Condvar, Mutex};
+use std::{
+    collections::VecDeque,
+    fmt, mem, ptr,
+    sync::{mpsc, Arc, Condvar, Mutex},
+};
+
+use crate::{
+    thread_guard::ThreadGuard, translate::*, Continue, MainContext, Priority, Source, SourceId,
+};
 
 enum ChannelSourceState {
     NotAttached,
@@ -595,13 +591,15 @@ impl MainContext {
 
 #[cfg(test)]
 mod tests {
+    use std::{
+        cell::RefCell,
+        rc::Rc,
+        sync::atomic::{AtomicBool, Ordering},
+        thread, time,
+    };
+
     use super::*;
     use crate::MainLoop;
-    use std::cell::RefCell;
-    use std::rc::Rc;
-    use std::sync::atomic::{AtomicBool, Ordering};
-    use std::thread;
-    use std::time;
 
     #[test]
     fn test_channel() {

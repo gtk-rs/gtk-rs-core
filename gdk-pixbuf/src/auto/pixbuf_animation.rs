@@ -3,12 +3,8 @@
 // DO NOT EDIT
 
 use crate::Pixbuf;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::pin::Pin;
-use std::ptr;
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufAnimation")]

@@ -3,13 +3,13 @@
 // rustdoc-stripper-ignore-next
 //! `IMPL` Low level signal support.
 
-use crate::object::ObjectType;
-use crate::translate::{from_glib, FromGlib, IntoGlib, ToGlibPtr};
+use std::{mem, num::NonZeroU64};
+
 use ffi::{gboolean, gpointer};
 use gobject_ffi::{self, GCallback};
 use libc::{c_char, c_ulong, c_void};
-use std::mem;
-use std::num::NonZeroU64;
+
+use crate::{prelude::*, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// The id of a signal that is returned by `connect`.

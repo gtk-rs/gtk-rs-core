@@ -1,24 +1,22 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(all(feature = "svg", feature = "v1_16"), feature = "dox"))]
-use crate::enums::SvgUnit;
-use crate::enums::{SurfaceType, SvgVersion};
-use crate::error::Error;
-use std::convert::TryFrom;
-use std::ffi::{CStr, CString};
-use std::fmt;
-use std::io;
-use std::mem;
-use std::ops::Deref;
 #[cfg(not(windows))]
 use std::os::unix::prelude::*;
-use std::path::Path;
-use std::ptr;
-
-use crate::surface::Surface;
+use std::{
+    convert::TryFrom,
+    ffi::{CStr, CString},
+    fmt, io, mem,
+    ops::Deref,
+    path::Path,
+    ptr,
+};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
+
+#[cfg(any(all(feature = "svg", feature = "v1_16"), feature = "dox"))]
+use crate::SvgUnit;
+use crate::{Error, Surface, SurfaceType, SvgVersion};
 
 impl SvgVersion {
     pub fn as_str(self) -> Option<&'static str> {
@@ -119,9 +117,10 @@ impl SvgSurface {
 
 #[cfg(test)]
 mod test {
+    use tempfile::{tempfile, NamedTempFile};
+
     use super::*;
     use crate::context::*;
-    use tempfile::{tempfile, NamedTempFile};
 
     fn draw(surface: &Surface) {
         let cr = Context::new(surface).expect("Can't create a Cairo context");

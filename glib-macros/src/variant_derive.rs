@@ -1,12 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::utils::{crate_ident_new, find_attribute_meta};
 use heck::ToKebabCase;
 use proc_macro::TokenStream;
 use proc_macro_error::abort;
 use quote::{format_ident, quote};
-use syn::{Data, DeriveInput};
-use syn::{Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Type};
+use syn::{Data, DeriveInput, Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Type};
+
+use crate::utils::{crate_ident_new, find_attribute_meta};
 
 pub fn impl_variant(input: DeriveInput) -> TokenStream {
     match input.data {

@@ -39,10 +39,11 @@ pub use self::windows_streams::*;
 
 #[cfg(target_family = "windows")]
 mod windows_streams {
+    use libc::c_void;
+
     use crate::{
         gboolean, GInputStream, GInputStreamClass, GOutputStream, GOutputStreamClass, GType,
     };
-    use libc::c_void;
 
     #[link(name = "gio-2.0")]
     extern "C" {

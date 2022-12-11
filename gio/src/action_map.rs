@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use glib::{clone, prelude::*};
+
 use crate::{prelude::*, ActionEntry, ActionMap, SimpleAction};
-use glib::{clone, Cast, IsA};
 
 pub trait ActionMapExtManual {
     #[doc(alias = "g_action_map_add_action_entries")]

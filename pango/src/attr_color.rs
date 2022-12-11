@@ -1,7 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{AttrType, Color};
 use glib::translate::*;
+
+use crate::{AttrType, Color};
 
 define_attribute_struct!(
     AttrColor,

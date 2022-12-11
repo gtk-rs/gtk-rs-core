@@ -3,16 +3,15 @@
 // rustdoc-stripper-ignore-next
 //! Module that contains the basic infrastructure for subclassing `GObject`.
 
-use crate::object::{Cast, IsClass, IsInterface, ObjectSubclassIs, ObjectType, ParentClassIs};
-use crate::translate::*;
-use crate::{Closure, Object, StaticType, Type, Value};
-use std::any::Any;
-use std::collections::BTreeMap;
-use std::marker;
-use std::mem;
-use std::ptr;
+use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
 use super::SignalId;
+use crate::{
+    object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
+    prelude::*,
+    translate::*,
+    Closure, Object, Type, Value,
+};
 
 // rustdoc-stripper-ignore-next
 /// A newly registered `glib::Type` that is currently still being initialized.

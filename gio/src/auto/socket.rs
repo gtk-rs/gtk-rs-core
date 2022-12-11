@@ -2,27 +2,16 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Cancellable;
-use crate::Credentials;
-use crate::DatagramBased;
-use crate::InetAddress;
-use crate::Initable;
-use crate::SocketAddress;
-use crate::SocketConnection;
-use crate::SocketFamily;
-use crate::SocketProtocol;
-use crate::SocketType;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem;
-use std::mem::transmute;
-use std::ptr;
+use crate::{
+    Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
+    SocketConnection, SocketFamily, SocketProtocol, SocketType,
+};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem, mem::transmute, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSocket")]

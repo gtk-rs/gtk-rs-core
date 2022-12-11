@@ -1,15 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::UnixFDMessage;
-use glib::object::IsA;
-use glib::translate::*;
-use std::{mem, ptr};
-
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, RawFd};
+use std::{mem, ptr};
 
+use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), feature = "dox"))]
 use socket::{AsRawFd, RawFd};
+
+use crate::UnixFDMessage;
 
 pub trait UnixFDMessageExtManual: Sized {
     #[doc(alias = "g_unix_fd_message_append_fd")]

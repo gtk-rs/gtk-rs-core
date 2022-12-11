@@ -1,8 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::UnixMountPoint;
-use glib::translate::*;
 use std::mem;
+
+use glib::translate::*;
+
+use crate::UnixMountPoint;
 
 impl UnixMountPoint {
     #[cfg(any(unix, feature = "dox"))]
