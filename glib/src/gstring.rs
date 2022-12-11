@@ -440,6 +440,21 @@ impl GString {
     pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, GStr> {
         GStr::from_ptr_lossy(ptr)
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
+    /// `len` is the length without the nul-terminator, i.e. if `len == 0` is passed then `*ptr`
+    /// must be the nul-terminator.
+    pub unsafe fn from_ptr_and_len_unchecked(ptr: *const c_char, len: usize) -> Self {
+        assert!(!ptr.is_null());
+
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+            len,
+        })
+    }
 }
 
 impl IntoGlibPtr<*mut c_char> for GString {

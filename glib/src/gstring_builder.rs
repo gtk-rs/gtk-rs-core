@@ -116,10 +116,6 @@ impl GStringBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Returns `&str` slice.
-    ///
-    /// # Panics
-    ///
-    /// If the string builder contains invalid UTF-8 this function panics.
     pub fn as_str(&self) -> &str {
         unsafe {
             let ptr: *const u8 = self.inner.str as _;
@@ -128,21 +124,17 @@ impl GStringBuilder {
                 return "";
             }
             let slice = slice::from_raw_parts(ptr, len);
-            std::str::from_utf8(slice).unwrap()
+            std::str::from_utf8_unchecked(slice)
         }
     }
 
     // rustdoc-stripper-ignore-next
     /// Returns `&str` slice.
-    ///
-    /// # Panics
-    ///
-    /// If the string builder contains invalid UTF-8 this function panics.
     #[must_use = "String returned from the builder should probably be used"]
     pub fn into_string(self) -> crate::GString {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
-            crate::GString::from_glib_full_num(s.inner.str, s.inner.len)
+            crate::GString::from_ptr_and_len_unchecked(s.inner.str, s.inner.len)
         }
     }
 }
