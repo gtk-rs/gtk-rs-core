@@ -2,23 +2,14 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::translate::*;
-use crate::Bytes;
-use crate::ChecksumType;
-use crate::Error;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
-use crate::FileTest;
-use crate::FormatSizeFlags;
-use crate::Pid;
-use crate::Source;
-use crate::SpawnFlags;
-use crate::UnicodeScript;
-use crate::UserDirectory;
-use std::boxed::Box as Box_;
-use std::mem;
-use std::ptr;
+use crate::{
+    translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags,
+    UnicodeScript, UserDirectory,
+};
+use std::{boxed::Box as Box_, mem, ptr};
 
 #[doc(alias = "g_access")]
 pub fn access(filename: impl AsRef<std::path::Path>, mode: i32) -> i32 {

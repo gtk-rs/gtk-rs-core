@@ -2,24 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::BusType;
-use crate::Cancellable;
-use crate::DBusConnection;
-use crate::File;
-use crate::IOErrorEnum;
-use crate::IOStream;
-use crate::Icon;
-use crate::InputStream;
-use crate::Resource;
-use crate::ResourceLookupFlags;
-use crate::SettingsBackend;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
+    InputStream, Resource, ResourceLookupFlags, SettingsBackend,
+};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
 
 #[doc(alias = "g_bus_get")]
 pub fn bus_get<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(

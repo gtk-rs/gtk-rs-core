@@ -2,24 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::FilterInputStream;
-use crate::InputStream;
-use crate::Seekable;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-use glib::ToValue;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
+use crate::{AsyncResult, Cancellable, FilterInputStream, InputStream, Seekable};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem, mem::transmute, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GBufferedInputStream")]

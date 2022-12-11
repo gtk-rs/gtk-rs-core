@@ -642,8 +642,44 @@ pub use self::constants::FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TARGET_URI;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TYPE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE;
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS;
 #[cfg(any(feature = "v2_74", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]

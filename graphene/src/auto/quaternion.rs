@@ -2,9 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Matrix;
-use crate::Vec3;
-use crate::Vec4;
+use crate::{Matrix, Vec3, Vec4};
 use glib::translate::*;
 use std::mem;
 

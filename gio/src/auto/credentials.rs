@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GCredentials")]

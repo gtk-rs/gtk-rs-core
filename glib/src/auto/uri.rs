@@ -2,14 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::translate::*;
-use crate::Bytes;
-use crate::Error;
-use crate::UriFlags;
-use crate::UriHideFlags;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use crate::{translate::*, Bytes, Error, UriFlags, UriHideFlags};
+use std::{fmt, mem, ptr};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

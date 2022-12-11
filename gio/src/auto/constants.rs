@@ -446,6 +446,42 @@ pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED: once_cell::sync::Lazy<&'static st
             .to_str()
             .unwrap()
     });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL")]
+pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE)
+            .to_str()
+            .unwrap()
+    });
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
@@ -453,10 +489,82 @@ pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: once_cell::sync::Lazy<&'static str
             .to_str()
             .unwrap()
     });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE)
+            .to_str()
+            .unwrap()
+    });
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH: once_cell::sync::Lazy<&'static str> =
     once_cell::sync::Lazy::new(|| unsafe {
         CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE)
+            .to_str()
+            .unwrap()
+    });
+#[cfg(any(feature = "v2_76", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE")]
+pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE: once_cell::sync::Lazy<&'static str> =
+    once_cell::sync::Lazy::new(|| unsafe {
+        CStr::from_ptr(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE)
             .to_str()
             .unwrap()
     });

@@ -2,22 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Direction;
-use crate::Font;
-use crate::FontDescription;
-use crate::FontFamily;
-use crate::FontMap;
-use crate::FontMetrics;
-use crate::Fontset;
-use crate::Gravity;
-use crate::GravityHint;
-use crate::Language;
-use crate::Matrix;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use crate::{
+    Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
+    GravityHint, Language, Matrix,
+};
+use glib::{prelude::*, translate::*};
+use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoContext")]

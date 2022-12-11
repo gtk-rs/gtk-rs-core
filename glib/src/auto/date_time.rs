@@ -2,13 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::translate::*;
-use crate::BoolError;
-use crate::TimeSpan;
-use crate::TimeZone;
-use std::cmp;
-use std::hash;
-use std::mem;
+use crate::{translate::*, BoolError, TimeSpan, TimeZone};
+use std::{cmp, hash, mem};
 
 crate::wrapper! {
     #[derive(Debug)]

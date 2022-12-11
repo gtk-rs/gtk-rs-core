@@ -2,17 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Box;
-use crate::Euler;
-use crate::Point;
-use crate::Point3D;
-use crate::Quad;
-use crate::Quaternion;
-use crate::Ray;
-use crate::Rect;
-use crate::Sphere;
-use crate::Vec3;
-use crate::Vec4;
+use crate::{Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
 use glib::translate::*;
 use std::mem;
 

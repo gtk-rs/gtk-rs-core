@@ -2,17 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Context;
-use crate::Font;
-use crate::FontDescription;
-use crate::FontFamily;
-use crate::Fontset;
-use crate::Language;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use crate::{Context, Font, FontDescription, FontFamily, Fontset, Language};
+use glib::{prelude::*, translate::*};
+use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "PangoFontMap")]

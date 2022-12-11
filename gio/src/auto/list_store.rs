@@ -3,11 +3,7 @@
 // DO NOT EDIT
 
 use crate::ListModel;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::StaticType;
-use glib::ToValue;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 #[cfg(any(feature = "v2_64", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]

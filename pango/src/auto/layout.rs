@@ -2,28 +2,21 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Alignment;
-use crate::AttrList;
-use crate::Context;
 #[cfg(any(feature = "v1_46", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
 use crate::Direction;
-use crate::EllipsizeMode;
-use crate::FontDescription;
-use crate::LayoutIter;
-use crate::LayoutLine;
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 use crate::LayoutSerializeFlags;
-use crate::Rectangle;
-use crate::TabArray;
-use crate::WrapMode;
+use crate::{
+    Alignment, AttrList, Context, EllipsizeMode, FontDescription, LayoutIter, LayoutLine,
+    Rectangle, TabArray, WrapMode,
+};
 use glib::translate::*;
-use std::fmt;
-use std::mem;
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 use std::ptr;
+use std::{fmt, mem};
 
 glib::wrapper! {
     #[doc(alias = "PangoLayout")]

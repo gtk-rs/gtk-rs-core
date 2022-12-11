@@ -2,31 +2,19 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncInitable;
-use crate::AsyncResult;
-use crate::BusType;
-use crate::Cancellable;
-use crate::DBusCallFlags;
-use crate::DBusConnection;
-use crate::DBusInterface;
-use crate::DBusInterfaceInfo;
-use crate::DBusProxyFlags;
-use crate::Initable;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-use glib::ToValue;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection, DBusInterface,
+    DBusInterfaceInfo, DBusProxyFlags, Initable,
+};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GDBusProxy")]

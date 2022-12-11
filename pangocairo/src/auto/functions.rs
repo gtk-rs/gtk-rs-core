@@ -2,8 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 
 #[doc(alias = "pango_cairo_context_get_resolution")]
 pub fn context_get_resolution(context: &pango::Context) -> f64 {

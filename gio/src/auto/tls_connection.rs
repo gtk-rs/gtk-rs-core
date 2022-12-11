@@ -3,28 +3,19 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::IOStream;
-use crate::TlsCertificate;
-use crate::TlsCertificateFlags;
-use crate::TlsDatabase;
-use crate::TlsInteraction;
 #[cfg(any(feature = "v2_70", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
 use crate::TlsProtocolVersion;
-use crate::TlsRehandshakeMode;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
+    TlsInteraction, TlsRehandshakeMode,
+};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem::transmute, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GTlsConnection")]

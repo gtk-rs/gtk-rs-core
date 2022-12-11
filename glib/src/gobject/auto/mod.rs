@@ -20,4 +20,5 @@ mod signal_group;
 pub use self::signal_group::SignalGroup;
 
 mod flags;
-pub use self::flags::{BindingFlags, SignalFlags};
+pub use self::flags::BindingFlags;
+pub use self::flags::SignalFlags;

@@ -2,17 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Color;
-use crate::Font;
-use crate::Glyph;
-use crate::GlyphItem;
-use crate::GlyphString;
-use crate::Layout;
-use crate::LayoutLine;
-use crate::Matrix;
-use crate::RenderPart;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

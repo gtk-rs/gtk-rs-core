@@ -2,18 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::Initable;
-use crate::InputStream;
-use crate::OutputStream;
-use crate::SubprocessFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::pin::Pin;
-use std::ptr;
+use crate::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GSubprocess")]

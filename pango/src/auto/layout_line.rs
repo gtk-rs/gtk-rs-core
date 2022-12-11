@@ -7,8 +7,7 @@
 use crate::Direction;
 use crate::Rectangle;
 use glib::translate::*;
-use std::mem;
-use std::ptr;
+use std::{mem, ptr};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

@@ -2,15 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use std::fmt;
-
+use crate::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
 use bitflags::bitflags;
-
-use crate::{
-    translate::*,
-    value::{FromValue, ToValue},
-    StaticType, Type,
-};
+use std::fmt;
 
 bitflags! {
     #[doc(alias = "GBindingFlags")]

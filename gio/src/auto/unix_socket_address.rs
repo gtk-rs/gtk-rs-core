@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::SocketAddress;
-use crate::SocketConnectable;
-use crate::UnixSocketAddressType;
-use glib::object::IsA;
-use glib::translate::*;
-use glib::StaticType;
+use crate::{SocketAddress, SocketConnectable, UnixSocketAddressType};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

@@ -3,13 +3,8 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::FileAttributeMatcher;
-use crate::FileAttributeStatus;
-use crate::FileAttributeType;
-use crate::FileType;
-use crate::Icon;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FileAttributeMatcher, FileAttributeStatus, FileAttributeType, FileType, Icon};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {

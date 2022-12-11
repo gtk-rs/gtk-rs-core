@@ -2,20 +2,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Analysis;
-use crate::AttrIterator;
-use crate::AttrList;
-use crate::Context;
-use crate::Direction;
-use crate::GlyphString;
-use crate::Item;
-use crate::Stretch;
-use crate::Style;
-use crate::Variant;
-use crate::Weight;
+use crate::{
+    Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, Stretch, Style,
+    Variant, Weight,
+};
 use glib::translate::*;
-use std::mem;
-use std::ptr;
+use std::{mem, ptr};
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
 //#[allow(deprecated)]

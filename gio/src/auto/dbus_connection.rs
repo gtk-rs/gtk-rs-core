@@ -2,33 +2,20 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::AsyncInitable;
-use crate::AsyncResult;
-use crate::Cancellable;
-use crate::Credentials;
-use crate::DBusAuthObserver;
-use crate::DBusCallFlags;
-use crate::DBusCapabilityFlags;
-use crate::DBusConnectionFlags;
-use crate::DBusMessage;
-use crate::DBusSendMessageFlags;
-use crate::IOStream;
-use crate::Initable;
 #[cfg(any(unix, feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
-use glib::object::IsA;
-use glib::object::ObjectType as ObjectType_;
-use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-use glib::translate::*;
-use glib::StaticType;
-use std::boxed::Box as Box_;
-use std::fmt;
-use std::mem;
-use std::mem::transmute;
-use std::pin::Pin;
-use std::ptr;
+use crate::{
+    AsyncInitable, AsyncResult, Cancellable, Credentials, DBusAuthObserver, DBusCallFlags,
+    DBusCapabilityFlags, DBusConnectionFlags, DBusMessage, DBusSendMessageFlags, IOStream,
+    Initable,
+};
+use glib::{
+    prelude::*,
+    signal::{connect_raw, SignalHandlerId},
+    translate::*,
+};
+use std::{boxed::Box as Box_, fmt, mem, mem::transmute, pin::Pin, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GDBusConnection")]

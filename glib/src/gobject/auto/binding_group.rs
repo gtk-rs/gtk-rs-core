@@ -2,14 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use std::{boxed::Box as Box_, fmt, mem::transmute};
-
 use crate::{
-    object::{IsA, ObjectType as ObjectType_},
+    prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
     Object,
 };
+use std::{boxed::Box as Box_, fmt, mem::transmute};
 
 crate::wrapper! {
     #[doc(alias = "GBindingGroup")]

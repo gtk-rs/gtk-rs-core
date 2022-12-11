@@ -2,11 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::Box;
-use crate::Plane;
-use crate::Point3D;
-use crate::Vec2;
-use crate::Vec3;
+use crate::{Box, Plane, Point3D, Vec2, Vec3};
 use glib::translate::*;
 
 glib::wrapper! {
