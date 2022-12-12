@@ -121,6 +121,12 @@ impl GStr {
     pub fn as_c_str(&self) -> &CStr {
         unsafe { CStr::from_bytes_with_nul_unchecked(self.to_bytes_with_nul()) }
     }
+
+    #[doc(alias = "g_utf8_collate")]
+    #[doc(alias = "utf8_collate")]
+    pub fn collate(&self, other: impl AsRef<GStr>) -> Ordering {
+        unsafe { ffi::g_utf8_collate(self.as_ptr(), other.as_ref().as_ptr()) }.cmp(&0)
+    }
 }
 
 // rustdoc-stripper-ignore-next

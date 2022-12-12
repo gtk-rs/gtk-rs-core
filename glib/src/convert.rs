@@ -2,7 +2,7 @@
 
 use std::{io, os::raw::c_char, path::PathBuf, ptr};
 
-use crate::{translate::*, ConvertError, Error, GStr, GString, Slice};
+use crate::{translate::*, ConvertError, Error, GStr, GString, NormalizeMode, Slice};
 
 // rustdoc-stripper-ignore-next
 /// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input
@@ -318,6 +318,74 @@ pub fn locale_to_utf8(opsysstring: &[u8]) -> Result<(crate::GString, usize), Cvt
     }
 }
 
+#[doc(alias = "g_utf8_to_ucs4")]
+#[doc(alias = "g_utf8_to_ucs4_fast")]
+#[doc(alias = "utf8_to_ucs4")]
+pub fn utf8_to_utf32(str: impl AsRef<str>) -> Slice<char> {
+    unsafe {
+        let mut items_written = 0;
+
+        let str_as_utf32 = ffi::g_utf8_to_ucs4_fast(
+            str.as_ref().as_ptr().cast::<c_char>(),
+            str.as_ref().len() as _,
+            &mut items_written,
+        );
+
+        // NOTE: We assume that u32 and char have the same layout and trust that glib won't give us
+        //       invalid UTF-32 codepoints
+        Slice::from_glib_full_num(str_as_utf32.cast::<char>(), items_written as usize)
+    }
+}
+
+#[doc(alias = "g_ucs4_to_utf8")]
+#[doc(alias = "ucs4_to_utf8")]
+pub fn utf32_to_utf8(str: impl AsRef<[char]>) -> GString {
+    let mut items_read = 0;
+    let mut items_written = 0;
+    let mut error = ptr::null_mut();
+
+    unsafe {
+        let str_as_utf8 = ffi::g_ucs4_to_utf8(
+            str.as_ref().as_ptr().cast::<u32>(),
+            str.as_ref().len() as _,
+            &mut items_read,
+            &mut items_written,
+            &mut error,
+        );
+
+        assert!(
+            error.is_null(),
+            "Rust `char` should always be convertible to UTF-8"
+        );
+
+        GString::from_glib_full_num(str_as_utf8, items_written as usize)
+    }
+}
+
+#[doc(alias = "g_utf8_casefold")]
+#[doc(alias = "utf8_casefold")]
+pub fn casefold(str: impl AsRef<str>) -> GString {
+    unsafe {
+        let str = ffi::g_utf8_casefold(str.as_ref().as_ptr().cast(), str.as_ref().len() as isize);
+
+        from_glib_full(str)
+    }
+}
+
+#[doc(alias = "g_utf8_normalize")]
+#[doc(alias = "utf8_normalize")]
+pub fn normalize(str: impl AsRef<str>, mode: NormalizeMode) -> GString {
+    unsafe {
+        let str = ffi::g_utf8_normalize(
+            str.as_ref().as_ptr().cast(),
+            str.as_ref().len() as isize,
+            mode.into_glib(),
+        );
+
+        from_glib_full(str)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -349,5 +417,16 @@ mod tests {
     #[test]
     fn filename_charsets() {
         let _ = super::filename_charsets();
+    }
+
+    #[test]
+    fn utf8_and_utf32() {
+        let utf32 = ['A', 'b', '🤔'];
+        let utf8 = super::utf32_to_utf8(utf32);
+        assert_eq!(utf8, "Ab🤔");
+
+        let utf8 = "🤔 ț";
+        let utf32 = super::utf8_to_utf32(utf8);
+        assert_eq!(utf32.as_slice(), &['🤔', ' ', 'ț']);
     }
 }
