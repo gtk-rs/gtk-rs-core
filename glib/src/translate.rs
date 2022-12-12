@@ -579,6 +579,15 @@ pub trait IntoGlibPtr<P: Ptr> {
     unsafe fn into_glib_ptr(self) -> P;
 }
 
+impl<P: Ptr, T: IntoGlibPtr<P>> IntoGlibPtr<P> for Option<T> {
+    #[inline]
+    unsafe fn into_glib_ptr(self) -> P {
+        self.map_or(Ptr::from::<()>(ptr::null_mut()), |s| {
+            IntoGlibPtr::into_glib_ptr(s)
+        })
+    }
+}
+
 impl GlibPtrDefault for str {
     type GlibType = *mut c_char;
 }
