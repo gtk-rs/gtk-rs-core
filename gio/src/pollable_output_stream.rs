@@ -242,7 +242,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         let stream = Pin::get_ref(self.as_ref());
         let vectors = bufs
             .iter()
-            .map(|v| OutputVector::new(&**v))
+            .map(|v| OutputVector::new(v))
             .collect::<smallvec::SmallVec<[_; 2]>>();
         let gio_result = stream
             .0
