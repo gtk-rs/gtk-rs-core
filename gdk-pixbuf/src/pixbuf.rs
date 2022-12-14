@@ -513,7 +513,7 @@ impl Pixbuf {
         Box::pin(gio::GioFuture::new(self, move |obj, cancellable, send| {
             let options = options
                 .iter()
-                .map(|&(ref k, ref v)| (k.as_str(), v.as_str()))
+                .map(|(k, v)| (k.as_str(), v.as_str()))
                 .collect::<Vec<(&str, &str)>>();
 
             obj.save_to_streamv_async(

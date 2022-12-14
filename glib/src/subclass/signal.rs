@@ -537,8 +537,7 @@ impl Signal {
     pub fn builder(name: &str) -> SignalBuilder {
         assert!(
             is_canonical_pspec_name(name),
-            "{} is not a valid canonical signal name",
-            name
+            "{name} is not a valid canonical signal name",
         );
         SignalBuilder {
             name: name.to_owned(),

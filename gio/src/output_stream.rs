@@ -677,11 +677,7 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
             .iter()
             .map(|v| OutputVector::new(v))
             .collect::<smallvec::SmallVec<[_; 2]>>();
-        let result = self
-            .0
-            .as_ref()
-            .writev(&vectors, crate::Cancellable::NONE)
-            .map(|size| size as usize);
+        let result = self.0.as_ref().writev(&vectors, crate::Cancellable::NONE);
         to_std_io_result(result)
     }
 

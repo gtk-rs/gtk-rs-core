@@ -651,7 +651,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
                 &mut error,
             );
             if error.is_null() {
-                Ok((from_glib(ret), bytes_written as usize))
+                Ok((from_glib(ret), bytes_written))
             } else {
                 Err(from_glib_full(error))
             }
