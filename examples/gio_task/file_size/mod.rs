@@ -39,7 +39,7 @@ impl FileSize {
             )
         };
 
-        glib::MainContext::default().spawn_local(async move {
+        glib::MainContext::ref_thread_default().spawn_local(async move {
             let size = gio::File::for_path("Cargo.toml")
                 .query_info_future("*", gio::FileQueryInfoFlags::NONE, glib::PRIORITY_DEFAULT)
                 .await
