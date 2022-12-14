@@ -23,7 +23,7 @@ pub struct SourceId(NonZeroU32);
 impl SourceId {
     // rustdoc-stripper-ignore-next
     /// Returns the internal source ID.
-    pub unsafe fn as_raw(&self) -> u32 {
+    pub fn as_raw(&self) -> u32 {
         self.0.get()
     }
 

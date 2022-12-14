@@ -197,6 +197,7 @@ pub use self::bridged_logging::{rust_log_handler, GlibLogger, GlibLoggerDomain, 
 pub mod subclass;
 
 mod main_context_futures;
+pub use main_context_futures::{JoinError, JoinHandle};
 mod source_futures;
 pub use self::source_futures::*;
 
@@ -204,7 +205,7 @@ mod future_with_timeout;
 pub use self::future_with_timeout::*;
 
 mod thread_pool;
-pub use self::thread_pool::ThreadPool;
+pub use self::thread_pool::{ThreadHandle, ThreadPool};
 
 pub mod thread_guard;
 
