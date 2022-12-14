@@ -468,8 +468,7 @@ impl TypeData {
         if let Some(ref mut class_data) = self.class_data {
             assert!(
                 class_data.get(&type_).is_none(),
-                "The class_data already contains a key for {}",
-                type_
+                "The class_data already contains a key for {type_}",
             );
 
             class_data.insert(type_, Box::new(data));
@@ -801,8 +800,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
             if let Some(ref mut instance_data) = priv_.instance_data {
                 assert!(
                     instance_data.get(&type_).is_none(),
-                    "The class_data already contains a key for {}",
-                    type_
+                    "The class_data already contains a key for {type_}",
                 );
 
                 instance_data.insert(type_, Box::new(data));

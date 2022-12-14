@@ -721,8 +721,7 @@ macro_rules! define_builder_numeric {
 fn assert_param_name(name: &str) {
     assert!(
         is_canonical_pspec_name(name),
-        "{} is not a valid canonical parameter name",
-        name
+        "{name} is not a valid canonical parameter name",
     );
 }
 define_param_spec_numeric!(

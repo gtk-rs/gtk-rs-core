@@ -41,10 +41,7 @@ fn main() {
     thread::spawn(move || {
         thread::sleep(TIMEOUT);
 
-        println!(
-            "Timeout ({:?}) elapsed! Cancelling pending task...",
-            TIMEOUT
-        );
+        println!("Timeout ({TIMEOUT:?}) elapsed! Cancelling pending task...",);
 
         cancellable.cancel();
     });
