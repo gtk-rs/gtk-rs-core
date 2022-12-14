@@ -675,7 +675,7 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
     fn write_vectored(&mut self, bufs: &[io::IoSlice<'_>]) -> io::Result<usize> {
         let vectors = bufs
             .iter()
-            .map(|v| OutputVector::new(&**v))
+            .map(|v| OutputVector::new(v))
             .collect::<smallvec::SmallVec<[_; 2]>>();
         let result = self
             .0
