@@ -250,7 +250,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
             .writev_nonblocking(&vectors, crate::Cancellable::NONE);
 
         match gio_result {
-            Ok((PollableReturn::Ok, size)) => Poll::Ready(Ok(size as usize)),
+            Ok((PollableReturn::Ok, size)) => Poll::Ready(Ok(size)),
             Ok((PollableReturn::WouldBlock, _)) => {
                 let mut waker = Some(cx.waker().clone());
                 let source = stream.0.as_ref().create_source(

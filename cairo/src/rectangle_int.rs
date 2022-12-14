@@ -28,7 +28,7 @@ impl RectangleInt {
         self.0.x = x;
     }
     pub fn y(&self) -> i32 {
-        self.0.x
+        self.0.y
     }
     pub fn set_y(&mut self, y: i32) {
         self.0.y = y;
