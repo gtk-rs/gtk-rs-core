@@ -108,10 +108,7 @@ fn run_in_thread(send: oneshot::Sender<()>) {
     let cancellable = gio::Cancellable::new();
 
     let closure = move |value: i64, source_object: &FileSize| {
-        println!(
-            "Safe callback (threaded version) - Returned value from task: {}",
-            value
-        );
+        println!("Safe callback (threaded version) - Returned value from task: {value}",);
         println!(
             "Safe callback (threaded version) - FileSize::size: {}",
             source_object.retrieved_size().unwrap()

@@ -2741,10 +2741,7 @@ impl<T: ObjectType> ObjectExt for T {
 
         assert!(
             type_.is_a(signal_query_type),
-            "Signal '{}' of type '{}' but got type '{}'",
-            signal_name,
-            type_,
-            signal_query_type
+            "Signal '{signal_name}' of type '{type_}' but got type '{signal_query_type}'",
         );
 
         let handler = gobject_ffi::g_signal_connect_closure_by_id(
@@ -2790,10 +2787,7 @@ impl<T: ObjectType> ObjectExt for T {
         let signal_query_type = signal_query.type_();
         assert!(
             type_.is_a(signal_query_type),
-            "Signal '{}' of type '{}' but got type '{}'",
-            signal_name,
-            type_,
-            signal_query_type
+            "Signal '{signal_name}' of type '{type_}' but got type '{signal_query_type}'",
         );
 
         unsafe {

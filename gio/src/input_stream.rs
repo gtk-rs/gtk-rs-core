@@ -531,10 +531,7 @@ impl<T: IsA<InputStream>> InputStreamAsyncBufRead<T> {
             {
                 let available = j - i;
                 if amt > available {
-                    panic!(
-                        "Cannot consume {} bytes as only {} are available",
-                        amt, available
-                    )
+                    panic!("Cannot consume {amt} bytes as only {available} are available",)
                 }
                 let remaining = available - amt;
                 if remaining == 0 {
