@@ -17,18 +17,22 @@ impl Size {
         }
     }
 
+    #[inline]
     pub fn width(&self) -> f32 {
         self.inner.width
     }
 
+    #[inline]
     pub fn set_width(&mut self, width: f32) {
         self.inner.width = width;
     }
 
+    #[inline]
     pub fn height(&self) -> f32 {
         self.inner.height
     }
 
+    #[inline]
     pub fn set_height(&mut self, height: f32) {
         self.inner.height = height;
     }

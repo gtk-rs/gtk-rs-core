@@ -182,6 +182,7 @@ impl<'a, T: IsA<glib::Object>> DoubleEndedIterator for ListModelIter<'a, T> {
     }
 }
 impl<'a, T: IsA<glib::Object>> Drop for ListModelIter<'a, T> {
+    #[inline]
     fn drop(&mut self) {
         self.model.disconnect(self.signal_id.take().unwrap());
     }

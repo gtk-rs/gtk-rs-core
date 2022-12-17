@@ -241,6 +241,7 @@ impl UserFontFace {
 impl std::ops::Deref for UserFontFace {
     type Target = FontFace;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }

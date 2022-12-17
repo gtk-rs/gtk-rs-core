@@ -30,10 +30,12 @@ impl ValueArray {
         }
     }
 
+    #[inline]
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
 
+    #[inline]
     pub fn len(&self) -> usize {
         self.inner.n_values as usize
     }
@@ -104,6 +106,7 @@ impl ValueArray {
 impl ops::Deref for ValueArray {
     type Target = [Value];
 
+    #[inline]
     fn deref(&self) -> &[Value] {
         if self.is_empty() {
             return &[];
@@ -119,6 +122,7 @@ impl ops::Deref for ValueArray {
 }
 
 impl ops::DerefMut for ValueArray {
+    #[inline]
     fn deref_mut(&mut self) -> &mut [Value] {
         if self.is_empty() {
             return &mut [];

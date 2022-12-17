@@ -52,22 +52,26 @@ impl FontOptions {
     }
 
     #[cfg(feature = "use_glib")]
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
         from_glib_full(ptr)
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
         assert!(!ptr.is_null());
         Self(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[cfg(feature = "use_glib")]
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_font_options_t {
         mut_override(self.to_glib_none().0)
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_font_options_t {
         self.0.as_ptr()
     }
@@ -176,6 +180,7 @@ impl hash::Hash for FontOptions {
 
 #[cfg(not(feature = "use_glib"))]
 impl Drop for FontOptions {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_font_options_destroy(self.to_raw_none());
@@ -185,6 +190,7 @@ impl Drop for FontOptions {
 
 #[cfg(not(feature = "use_glib"))]
 impl Clone for FontOptions {
+    #[inline]
     fn clone(&self) -> FontOptions {
         unsafe { FontOptions::from_raw_full(ffi::cairo_font_options_copy(self.to_raw_none())) }
     }

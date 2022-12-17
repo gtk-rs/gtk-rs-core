@@ -58,12 +58,14 @@ unsafe impl<T: ObjectSubclass> super::types::ClassStruct for ClassStruct<T> {
 impl<T: ObjectSubclass> ops::Deref for ClassStruct<T> {
     type Target = crate::Class<<T as ObjectSubclass>::Type>;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         unsafe { &*(self as *const _ as *const Self::Target) }
     }
 }
 
 impl<T: ObjectSubclass> ops::DerefMut for ClassStruct<T> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { &mut *(self as *mut _ as *mut Self::Target) }
     }

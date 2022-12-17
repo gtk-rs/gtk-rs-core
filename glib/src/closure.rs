@@ -123,18 +123,21 @@ impl RustClosure {
 }
 
 impl From<RustClosure> for Closure {
+    #[inline]
     fn from(c: RustClosure) -> Self {
         c.0
     }
 }
 
 impl AsRef<Closure> for RustClosure {
+    #[inline]
     fn as_ref(&self) -> &Closure {
         &self.0
     }
 }
 
 impl AsRef<Closure> for Closure {
+    #[inline]
     fn as_ref(&self) -> &Closure {
         self
     }
@@ -338,6 +341,7 @@ pub trait IntoClosureReturnValue {
 }
 
 impl IntoClosureReturnValue for () {
+    #[inline]
     fn into_closure_return_value(self) -> Option<Value> {
         None
     }
@@ -355,6 +359,7 @@ pub trait TryFromClosureReturnValue: StaticType + Sized + 'static {
 }
 
 impl TryFromClosureReturnValue for () {
+    #[inline]
     fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
         match v {
             None => Ok(()),
@@ -367,6 +372,7 @@ impl TryFromClosureReturnValue for () {
 }
 
 impl<T: for<'a> FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue for T {
+    #[inline]
     fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
         v.ok_or_else(|| {
             bool_error!(

@@ -31,6 +31,7 @@ impl<T> ThreadGuard<T> {
     /// created on, and otherwise panics.
     ///
     /// The thread guard implements the `Send` trait even if the contained value does not.
+    #[inline]
     pub fn new(value: T) -> Self {
         Self {
             thread_id: thread_id(),
@@ -45,6 +46,7 @@ impl<T> ThreadGuard<T> {
     ///
     /// This function panics if called from a different thread than where the thread guard was
     /// created.
+    #[inline]
     pub fn get_ref(&self) -> &T {
         assert!(
             self.thread_id == thread_id(),
@@ -61,6 +63,7 @@ impl<T> ThreadGuard<T> {
     ///
     /// This function panics if called from a different thread than where the thread guard was
     /// created.
+    #[inline]
     pub fn get_mut(&mut self) -> &mut T {
         assert!(
             self.thread_id == thread_id(),
@@ -77,6 +80,7 @@ impl<T> ThreadGuard<T> {
     ///
     /// This function panics if called from a different thread than where the thread guard was
     /// created.
+    #[inline]
     pub fn into_inner(mut self) -> T {
         assert!(
             self.thread_id == thread_id(),
@@ -88,12 +92,14 @@ impl<T> ThreadGuard<T> {
 
     // rustdoc-stripper-ignore-next
     /// Returns `true` if the current thread owns the value, i.e. it can be accessed safely.
+    #[inline]
     pub fn is_owner(&self) -> bool {
         self.thread_id == thread_id()
     }
 }
 
 impl<T> Drop for ThreadGuard<T> {
+    #[inline]
     fn drop(&mut self) {
         assert!(
             self.thread_id == thread_id(),

@@ -244,6 +244,7 @@ impl GStr {
         })
     }
 
+    #[inline]
     fn check_nuls(s: impl AsRef<[u8]>) -> Result<(), GStrError> {
         let s = s.as_ref();
         if let Some(nul_pos) = memchr::memchr(0, s) {
@@ -333,6 +334,7 @@ macro_rules! gstr {
 }
 
 impl Default for &GStr {
+    #[inline]
     fn default() -> Self {
         const SLICE: &[c_char] = &[0];
         unsafe { GStr::from_ptr(SLICE.as_ptr()) }
@@ -356,90 +358,105 @@ impl<'a> TryFrom<&'a CStr> for &'a GStr {
 }
 
 impl PartialEq<GStr> for String {
+    #[inline]
     fn eq(&self, other: &GStr) -> bool {
         self.as_str() == other.as_str()
     }
 }
 
 impl PartialEq<str> for GStr {
+    #[inline]
     fn eq(&self, other: &str) -> bool {
         self.as_str() == other
     }
 }
 
 impl PartialEq<&str> for GStr {
+    #[inline]
     fn eq(&self, other: &&str) -> bool {
         self.as_str() == *other
     }
 }
 
 impl PartialEq<GStr> for &str {
+    #[inline]
     fn eq(&self, other: &GStr) -> bool {
         *self == other.as_str()
     }
 }
 
 impl PartialEq<String> for GStr {
+    #[inline]
     fn eq(&self, other: &String) -> bool {
         self.as_str() == other.as_str()
     }
 }
 
 impl PartialEq<GStr> for str {
+    #[inline]
     fn eq(&self, other: &GStr) -> bool {
         self == other.as_str()
     }
 }
 
 impl PartialOrd<GStr> for String {
+    #[inline]
     fn partial_cmp(&self, other: &GStr) -> Option<Ordering> {
         Some(self.cmp(&String::from(other.as_str())))
     }
 }
 
 impl PartialOrd<String> for GStr {
+    #[inline]
     fn partial_cmp(&self, other: &String) -> Option<Ordering> {
         Some(self.as_str().cmp(other.as_str()))
     }
 }
 
 impl PartialOrd<GStr> for str {
+    #[inline]
     fn partial_cmp(&self, other: &GStr) -> Option<Ordering> {
         Some(self.cmp(other.as_str()))
     }
 }
 
 impl PartialOrd<str> for GStr {
+    #[inline]
     fn partial_cmp(&self, other: &str) -> Option<Ordering> {
         Some(self.as_str().cmp(other))
     }
 }
 
 impl AsRef<GStr> for GStr {
+    #[inline]
     fn as_ref(&self) -> &GStr {
         self
     }
 }
 
 impl AsRef<str> for GStr {
+    #[inline]
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
 
 impl AsRef<OsStr> for GStr {
+    #[inline]
     fn as_ref(&self) -> &OsStr {
         OsStr::new(self.as_str())
     }
 }
 
 impl AsRef<Path> for GStr {
+    #[inline]
     fn as_ref(&self) -> &Path {
         Path::new(self.as_str())
     }
 }
 
 impl AsRef<[u8]> for GStr {
+    #[inline]
     fn as_ref(&self) -> &[u8] {
         self.as_bytes()
     }
@@ -448,6 +465,7 @@ impl AsRef<[u8]> for GStr {
 impl Deref for GStr {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &str {
         self.as_str()
     }
@@ -484,6 +502,7 @@ impl GlibPtrDefault for GStr {
 }
 
 impl StaticType for GStr {
+    #[inline]
     fn static_type() -> Type {
         str::static_type()
     }
@@ -527,6 +546,7 @@ impl FromGlibPtrNone<*mut i8> for &GStr {
 unsafe impl<'a> FromValue<'a> for &'a GStr {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         let cstr = CStr::from_ptr(ptr);
@@ -766,6 +786,7 @@ impl GString {
     ///
     /// Takes ownership of `bytes`. Returns `Err` if it contains invalid UTF-8 or does not contain
     /// at least one nul-byte.
+    #[inline]
     pub fn from_utf8_until_nul(mut bytes: Vec<u8>) -> Result<Self, GStringFromError<Vec<u8>>> {
         let nul_pos = if let Some(nul_pos) = memchr::memchr(0, &bytes) {
             nul_pos
@@ -828,6 +849,7 @@ impl GString {
     ///
     /// `len` is the length without the nul-terminator, i.e. if `len == 0` is passed then `*ptr`
     /// must be the nul-terminator.
+    #[inline]
     pub unsafe fn from_ptr_and_len_unchecked(ptr: *const c_char, len: usize) -> Self {
         assert!(!ptr.is_null());
 
@@ -886,6 +908,7 @@ impl GString {
     /// Consumes the `GString` and returns the underlying byte buffer.
     ///
     /// The returned buffer is not guaranteed to contain a trailing nul-byte.
+    #[inline]
     pub fn into_bytes(mut self) -> Vec<u8> {
         match &mut self.0 {
             Inner::Native(s) => {
@@ -906,6 +929,7 @@ impl GString {
 
     // rustdoc-stripper-ignore-next
     /// Consumes the `GString` and returns the underlying byte buffer, with trailing nul-byte.
+    #[inline]
     pub fn into_bytes_with_nul(mut self) -> Vec<u8> {
         match &mut self.0 {
             Inner::Native(s) => str::into_boxed_bytes(mem::replace(s, "".into())).into(),
@@ -1045,6 +1069,7 @@ impl From<std::string::FromUtf8Error> for GStringFromError<Vec<u8>> {
 impl IntoGlibPtr<*mut c_char> for GString {
     // rustdoc-stripper-ignore-next
     /// Transform into a nul-terminated raw C string pointer.
+    #[inline]
     unsafe fn into_glib_ptr(self) -> *mut c_char {
         match self.0 {
             Inner::Native(ref s) => ffi::g_strndup(s.as_ptr() as *const _, s.len()),
@@ -1500,12 +1525,14 @@ impl<'a> From<&'a GString> for Cow<'a, GStr> {
 }
 
 impl<'a> From<GString> for Cow<'a, GStr> {
+    #[inline]
     fn from(v: GString) -> Self {
         Cow::Owned(v)
     }
 }
 
 impl<'a> From<&'a GStr> for Cow<'a, GStr> {
+    #[inline]
     fn from(v: &'a GStr) -> Self {
         Cow::Borrowed(v)
     }
@@ -1822,6 +1849,7 @@ impl crate::value::ToValueOptional for GString {
 }
 
 impl From<GString> for Value {
+    #[inline]
     fn from(s: GString) -> Self {
         unsafe {
             let mut value = Value::for_value_type::<GString>();
@@ -1845,6 +1873,7 @@ impl crate::value::ValueType for Vec<GString> {
 unsafe impl<'a> FromValue<'a> for Vec<GString> {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().0) as *const *const c_char;
         FromGlibPtrContainer::from_glib_none(ptr)
@@ -1852,6 +1881,7 @@ unsafe impl<'a> FromValue<'a> for Vec<GString> {
 }
 
 impl ToValue for Vec<GString> {
+    #[inline]
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::for_value_type::<Self>();
@@ -1868,6 +1898,7 @@ impl ToValue for Vec<GString> {
 }
 
 impl From<Vec<GString>> for Value {
+    #[inline]
     fn from(mut v: Vec<GString>) -> Self {
         unsafe {
             let mut value = Value::for_value_type::<Vec<GString>>();

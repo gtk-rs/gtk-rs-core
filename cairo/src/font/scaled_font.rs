@@ -51,32 +51,38 @@ impl ScaledFont {
     }
 
     #[cfg(feature = "use_glib")]
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_scaled_font_t {
         self.to_glib_none().0
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_scaled_font_t {
         self.0.as_ptr()
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
         assert!(!ptr.is_null());
         ScaledFont(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[cfg(feature = "use_glib")]
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
         from_glib_full(ptr)
     }
 
     #[cfg(feature = "use_glib")]
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
         from_glib_none(ptr)
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
         assert!(!ptr.is_null());
         ffi::cairo_scaled_font_reference(ptr);
@@ -260,6 +266,7 @@ impl ScaledFont {
 
 #[cfg(not(feature = "use_glib"))]
 impl Drop for ScaledFont {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_scaled_font_destroy(self.to_raw_none());
@@ -269,6 +276,7 @@ impl Drop for ScaledFont {
 
 #[cfg(not(feature = "use_glib"))]
 impl Clone for ScaledFont {
+    #[inline]
     fn clone(&self) -> ScaledFont {
         unsafe { ScaledFont::from_raw_none(self.to_raw_none()) }
     }

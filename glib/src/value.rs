@@ -141,6 +141,7 @@ unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeChecker<T> {
     type Error = ValueTypeMismatchError;
 
     #[doc(alias = "g_type_check_value_holds")]
+    #[inline]
     fn check(value: &Value) -> Result<(), Self::Error> {
         unsafe {
             if gobject_ffi::g_type_check_value_holds(&value.inner, T::static_type().into_glib())
@@ -161,6 +162,7 @@ pub struct CharTypeChecker();
 unsafe impl ValueTypeChecker for CharTypeChecker {
     type Error = InvalidCharError;
 
+    #[inline]
     fn check(value: &Value) -> Result<(), Self::Error> {
         let v = value.get::<u32>()?;
         match char::from_u32(v) {
@@ -235,6 +237,7 @@ pub struct GenericValueTypeOrNoneChecker<T>(std::marker::PhantomData<T>);
 unsafe impl<T: StaticType> ValueTypeChecker for GenericValueTypeOrNoneChecker<T> {
     type Error = ValueTypeMismatchOrNoneError<ValueTypeMismatchError>;
 
+    #[inline]
     fn check(value: &Value) -> Result<(), Self::Error> {
         GenericValueTypeChecker::<T>::check(value)?;
 
@@ -306,6 +309,7 @@ where
 {
     type Error = E;
 
+    #[inline]
     fn check(value: &Value) -> Result<(), Self::Error> {
         match T::Checker::check(value) {
             Err(ValueTypeMismatchOrNoneError::UnexpectedNone) => Ok(()),
@@ -325,6 +329,7 @@ where
 {
     type Checker = ValueTypeOrNoneChecker<T, C, E>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         match T::Checker::check(value) {
             Err(ValueTypeMismatchOrNoneError::UnexpectedNone) => None,
@@ -367,10 +372,12 @@ pub trait ToValue {
 // rustdoc-stripper-ignore-next
 /// Blanket implementation for all references.
 impl<T: ToValue + StaticType> ToValue for &T {
+    #[inline]
     fn to_value(&self) -> Value {
         T::to_value(*self)
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         T::static_type()
     }
@@ -388,10 +395,12 @@ pub trait ToValueOptional {
 // rustdoc-stripper-ignore-next
 /// Blanket implementation for all optional types.
 impl<T: ToValueOptional + StaticType> ToValue for Option<T> {
+    #[inline]
     fn to_value(&self) -> Value {
         T::to_value_optional(self.as_ref())
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         T::static_type()
     }
@@ -408,37 +417,44 @@ impl<T: Into<Value> + ToValueOptional> From<Option<T>> for Value {
 }
 
 impl<T: ToValueOptional + StaticType> StaticType for Option<T> {
+    #[inline]
     fn static_type() -> Type {
         T::static_type()
     }
 }
 
 impl<T: ToValueOptional + StaticType + ?Sized> ToValueOptional for &T {
+    #[inline]
     fn to_value_optional(s: Option<&Self>) -> Value {
         <T as ToValueOptional>::to_value_optional(s.as_ref().map(|s| **s))
     }
 }
 
+#[inline]
 unsafe fn copy_value(value: *const gobject_ffi::GValue) -> *mut gobject_ffi::GValue {
     let copy = ffi::g_malloc0(mem::size_of::<gobject_ffi::GValue>()) as *mut gobject_ffi::GValue;
     copy_into_value(copy, value);
     copy
 }
 
+#[inline]
 unsafe fn free_value(value: *mut gobject_ffi::GValue) {
     clear_value(value);
     ffi::g_free(value as *mut _);
 }
 
+#[inline]
 unsafe fn init_value(value: *mut gobject_ffi::GValue) {
     ptr::write(value, mem::zeroed());
 }
 
+#[inline]
 unsafe fn copy_into_value(dest: *mut gobject_ffi::GValue, src: *const gobject_ffi::GValue) {
     gobject_ffi::g_value_init(dest, (*src).g_type);
     gobject_ffi::g_value_copy(src, dest);
 }
 
+#[inline]
 unsafe fn clear_value(value: *mut gobject_ffi::GValue) {
     // Before GLib 2.48, unsetting a zeroed GValue would give critical warnings
     // https://bugzilla.gnome.org/show_bug.cgi?id=755766
@@ -476,6 +492,7 @@ crate::wrapper! {
 impl Value {
     // rustdoc-stripper-ignore-next
     /// Creates a new `Value` that is initialized with `type_`
+    #[inline]
     pub fn from_type(type_: Type) -> Self {
         unsafe {
             assert_eq!(
@@ -490,6 +507,7 @@ impl Value {
 
     // rustdoc-stripper-ignore-next
     /// Creates a new `Value` that is initialized for a given `ValueType`.
+    #[inline]
     pub fn for_value_type<T: ValueType>() -> Self {
         Value::from_type(T::Type::static_type())
     }
@@ -498,6 +516,7 @@ impl Value {
     /// Tries to get a value of type `T`.
     ///
     /// Returns `Ok` if the type is correct.
+    #[inline]
     pub fn get<'a, T>(&'a self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
     where
         T: FromValue<'a>,
@@ -510,6 +529,7 @@ impl Value {
 
     // rustdoc-stripper-ignore-next
     /// Tries to get a value of an owned type `T`.
+    #[inline]
     pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
     where
         T: for<'b> FromValue<'b> + 'static,
@@ -538,6 +558,7 @@ impl Value {
 
     // rustdoc-stripper-ignore-next
     /// Returns the type of the value.
+    #[inline]
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.inner.g_type) }
     }
@@ -584,6 +605,7 @@ impl Value {
 
     // rustdoc-stripper-ignore-next
     /// Consumes `Value` and returns the corresponding `GValue`.
+    #[inline]
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
@@ -591,6 +613,7 @@ impl Value {
         }
     }
 
+    #[inline]
     pub fn try_into_send_value<T: Send + StaticType>(self) -> Result<SendValue, Self> {
         if self.type_().is_a(T::static_type()) {
             unsafe { Ok(SendValue::unsafe_from(self.into_raw())) }
@@ -618,26 +641,31 @@ impl<'a, T: ?Sized + ToValue> From<&'a T> for Value {
 }
 
 impl From<SendValue> for Value {
+    #[inline]
     fn from(value: SendValue) -> Self {
         unsafe { Value::unsafe_from(value.into_raw()) }
     }
 }
 
 impl ToValue for Value {
+    #[inline]
     fn to_value(&self) -> Value {
         self.clone()
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         self.type_()
     }
 }
 
 impl<'a> ToValue for &'a Value {
+    #[inline]
     fn to_value(&self) -> Value {
         (*self).clone()
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         self.type_()
     }
@@ -647,6 +675,8 @@ pub struct NopChecker;
 
 unsafe impl ValueTypeChecker for NopChecker {
     type Error = Infallible;
+
+    #[inline]
     fn check(_value: &Value) -> Result<(), Self::Error> {
         Ok(())
     }
@@ -655,6 +685,7 @@ unsafe impl ValueTypeChecker for NopChecker {
 unsafe impl<'a> FromValue<'a> for Value {
     type Checker = NopChecker;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         value.clone()
     }
@@ -663,32 +694,38 @@ unsafe impl<'a> FromValue<'a> for Value {
 unsafe impl<'a> FromValue<'a> for &'a Value {
     type Checker = NopChecker;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         value
     }
 }
 
 impl ToValue for SendValue {
+    #[inline]
     fn to_value(&self) -> Value {
         unsafe { from_glib_none(self.to_glib_none().0) }
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         self.type_()
     }
 }
 
 impl<'a> ToValue for &'a SendValue {
+    #[inline]
     fn to_value(&self) -> Value {
         unsafe { from_glib_none(self.to_glib_none().0) }
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         self.type_()
     }
 }
 
 impl StaticType for BoxedValue {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(gobject_ffi::g_value_get_type()) }
     }
@@ -717,6 +754,7 @@ unsafe impl Send for SendValue {}
 impl SendValue {
     // rustdoc-stripper-ignore-next
     /// Consumes `SendValue` and returns the corresponding `GValue`.
+    #[inline]
     pub fn into_raw(self) -> gobject_ffi::GValue {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
@@ -738,6 +776,7 @@ impl fmt::Debug for SendValue {
 impl Deref for SendValue {
     type Target = Value;
 
+    #[inline]
     fn deref(&self) -> &Value {
         unsafe { &*(self as *const SendValue as *const Value) }
     }
@@ -759,6 +798,7 @@ pub trait ToSendValue: Send + ToValue {
 }
 
 impl<T: Send + ToValue + ?Sized> ToSendValue for T {
+    #[inline]
     fn to_send_value(&self) -> SendValue {
         unsafe { SendValue::unsafe_from(self.to_value().into_raw()) }
     }
@@ -767,6 +807,7 @@ impl<T: Send + ToValue + ?Sized> ToSendValue for T {
 unsafe impl<'a> FromValue<'a> for &'a str {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         CStr::from_ptr(ptr).to_str().expect("Invalid UTF-8")
@@ -919,12 +960,14 @@ impl ValueType for bool {
 unsafe impl<'a> FromValue<'a> for bool {
     type Checker = GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         from_glib(gobject_ffi::g_value_get_boolean(value.to_glib_none().0))
     }
 }
 
 impl ToValue for bool {
+    #[inline]
     fn to_value(&self) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {
@@ -933,6 +976,7 @@ impl ToValue for bool {
         value
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         Self::static_type()
     }
@@ -952,12 +996,14 @@ impl ValueType for Pointer {
 unsafe impl<'a> FromValue<'a> for Pointer {
     type Checker = GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         gobject_ffi::g_value_get_pointer(value.to_glib_none().0)
     }
 }
 
 impl ToValue for Pointer {
+    #[inline]
     fn to_value(&self) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {
@@ -966,6 +1012,7 @@ impl ToValue for Pointer {
         value
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         <<Self as ValueType>::Type as StaticType>::static_type()
     }
@@ -985,16 +1032,19 @@ impl ValueType for ptr::NonNull<Pointee> {
 unsafe impl<'a> FromValue<'a> for ptr::NonNull<Pointee> {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         ptr::NonNull::new_unchecked(Pointer::from_value(value))
     }
 }
 
 impl ToValue for ptr::NonNull<Pointee> {
+    #[inline]
     fn to_value(&self) -> Value {
         self.as_ptr().to_value()
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         <<Self as ValueType>::Type as StaticType>::static_type()
     }
@@ -1008,6 +1058,7 @@ impl From<ptr::NonNull<Pointee>> for Value {
 }
 
 impl ToValueOptional for ptr::NonNull<Pointee> {
+    #[inline]
     fn to_value_optional(p: Option<&Self>) -> Value {
         p.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut()).to_value()
     }
@@ -1022,12 +1073,14 @@ macro_rules! numeric {
         unsafe impl<'a> FromValue<'a> for $name {
             type Checker = GenericValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a Value) -> Self {
                 $get(value.to_glib_none().0)
             }
         }
 
         impl ToValue for $name {
+            #[inline]
             fn to_value(&self) -> Value {
                 let mut value = Value::for_value_type::<Self>();
                 unsafe {
@@ -1036,6 +1089,7 @@ macro_rules! numeric {
                 value
             }
 
+            #[inline]
             fn value_type(&self) -> Type {
                 Self::static_type()
             }
@@ -1108,6 +1162,7 @@ impl ValueType for char {
 unsafe impl<'a> FromValue<'a> for char {
     type Checker = CharTypeChecker;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         let res: u32 = gobject_ffi::g_value_get_uint(value.to_glib_none().0);
         // safe because the check is done by `Self::Checker`
@@ -1116,6 +1171,7 @@ unsafe impl<'a> FromValue<'a> for char {
 }
 
 impl ToValue for char {
+    #[inline]
     fn to_value(&self) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {
@@ -1124,6 +1180,7 @@ impl ToValue for char {
         value
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         crate::Type::U32
     }
@@ -1143,6 +1200,7 @@ pub struct BoxedValue(pub Value);
 impl Deref for BoxedValue {
     type Target = Value;
 
+    #[inline]
     fn deref(&self) -> &Value {
         &self.0
     }
@@ -1157,6 +1215,7 @@ impl ValueTypeOptional for BoxedValue {}
 unsafe impl<'a> FromValue<'a> for BoxedValue {
     type Checker = GenericValueTypeOrNoneChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().0);
         BoxedValue(from_glib_none(ptr as *const gobject_ffi::GValue))
@@ -1164,6 +1223,7 @@ unsafe impl<'a> FromValue<'a> for BoxedValue {
 }
 
 impl ToValue for BoxedValue {
+    #[inline]
     fn to_value(&self) -> Value {
         unsafe {
             let mut value = Value::from_type(<BoxedValue>::static_type());
@@ -1177,6 +1237,7 @@ impl ToValue for BoxedValue {
         }
     }
 
+    #[inline]
     fn value_type(&self) -> Type {
         BoxedValue::static_type()
     }
@@ -1199,6 +1260,7 @@ impl From<BoxedValue> for Value {
 }
 
 impl ToValueOptional for BoxedValue {
+    #[inline]
     fn to_value_optional(s: Option<&Self>) -> Value {
         let mut value = Value::for_value_type::<Self>();
         unsafe {

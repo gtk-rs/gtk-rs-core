@@ -8,10 +8,12 @@ use crate::{ffi::cairo_path_t, PathDataType};
 pub struct Path(ptr::NonNull<cairo_path_t>);
 
 impl Path {
+    #[inline]
     pub fn as_ptr(&self) -> *mut cairo_path_t {
         self.0.as_ptr()
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(pointer: *mut cairo_path_t) -> Path {
         assert!(!pointer.is_null());
         Path(ptr::NonNull::new_unchecked(pointer))
@@ -40,6 +42,7 @@ impl Path {
 }
 
 impl Drop for Path {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_path_destroy(self.as_ptr());

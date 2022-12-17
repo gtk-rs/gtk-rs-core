@@ -28,6 +28,7 @@ impl fmt::Display for SocketMsgFlags {
 impl IntoGlib for SocketMsgFlags {
     type GlibType = ffi::GSocketMsgFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GSocketMsgFlags {
         self.bits()
     }
@@ -35,12 +36,14 @@ impl IntoGlib for SocketMsgFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GSocketMsgFlags> for SocketMsgFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GSocketMsgFlags) -> Self {
         Self::from_bits_truncate(value)
     }
 }
 
 impl StaticType for SocketMsgFlags {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_socket_msg_flags_get_type()) }
     }

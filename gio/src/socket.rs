@@ -84,12 +84,15 @@ unsafe impl<'v> Sync for InputVector<'v> {}
 
 impl<'v> std::ops::Deref for InputVector<'v> {
     type Target = [u8];
+
+    #[inline]
     fn deref(&self) -> &Self::Target {
         unsafe { std::slice::from_raw_parts(self.vector.buffer as *const _, self.vector.size) }
     }
 }
 
 impl<'v> std::ops::DerefMut for InputVector<'v> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { std::slice::from_raw_parts_mut(self.vector.buffer as *mut _, self.vector.size) }
     }
@@ -120,6 +123,7 @@ impl AsRef<[SocketControlMessage]> for SocketControlMessages {
 
 impl std::ops::Deref for SocketControlMessages {
     type Target = [SocketControlMessage];
+
     #[inline]
     fn deref(&self) -> &Self::Target {
         self.as_ref()
@@ -229,6 +233,8 @@ unsafe impl<'v> Sync for OutputVector<'v> {}
 
 impl<'v> std::ops::Deref for OutputVector<'v> {
     type Target = [u8];
+
+    #[inline]
     fn deref(&self) -> &Self::Target {
         unsafe { std::slice::from_raw_parts(self.vector.buffer as *const _, self.vector.size) }
     }

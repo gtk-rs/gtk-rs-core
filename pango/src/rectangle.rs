@@ -10,6 +10,7 @@ glib::wrapper! {
 }
 
 impl Rectangle {
+    #[inline]
     pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
         unsafe {
             Self::unsafe_from(ffi::PangoRectangle {
@@ -21,34 +22,42 @@ impl Rectangle {
         }
     }
 
+    #[inline]
     pub fn x(&self) -> i32 {
         self.inner.x
     }
 
+    #[inline]
     pub fn set_x(&mut self, x: i32) {
         self.inner.x = x;
     }
 
+    #[inline]
     pub fn y(&self) -> i32 {
         self.inner.y
     }
 
+    #[inline]
     pub fn set_y(&mut self, y: i32) {
         self.inner.y = y;
     }
 
+    #[inline]
     pub fn width(&self) -> i32 {
         self.inner.width
     }
 
+    #[inline]
     pub fn set_width(&mut self, width: i32) {
         self.inner.width = width;
     }
 
+    #[inline]
     pub fn height(&self) -> i32 {
         self.inner.height
     }
 
+    #[inline]
     pub fn set_height(&mut self, height: i32) {
         self.inner.height = height;
     }

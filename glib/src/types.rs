@@ -145,6 +145,7 @@ impl Type {
     }
 
     #[doc(alias = "g_type_is_a")]
+    #[inline]
     pub fn is_a(self, other: Self) -> bool {
         unsafe {
             from_glib(gobject_ffi::g_type_is_a(
@@ -238,6 +239,7 @@ pub trait StaticType {
 
 impl StaticType for Type {
     #[doc(alias = "g_gtype_get_type")]
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(gobject_ffi::g_gtype_get_type()) }
     }
@@ -251,6 +253,7 @@ pub trait StaticTypeExt {
 }
 
 impl<T: StaticType> StaticTypeExt for T {
+    #[inline]
     fn ensure_type() {
         T::static_type();
     }
@@ -265,6 +268,7 @@ impl crate::value::ValueType for Type {
 unsafe impl<'a> crate::value::FromValue<'a> for Type {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         from_glib(gobject_ffi::g_value_get_gtype(value.to_glib_none().0))
     }
@@ -272,6 +276,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for Type {
 
 #[doc(hidden)]
 impl crate::value::ToValue for Type {
+    #[inline]
     fn to_value(&self) -> crate::Value {
         unsafe {
             let mut value = crate::Value::from_type(Type::static_type());
@@ -280,6 +285,7 @@ impl crate::value::ToValue for Type {
         }
     }
 
+    #[inline]
     fn value_type(&self) -> crate::Type {
         Type::static_type()
     }
@@ -294,12 +300,14 @@ impl From<Type> for crate::Value {
 }
 
 impl<'a, T: ?Sized + StaticType> StaticType for &'a T {
+    #[inline]
     fn static_type() -> Type {
         T::static_type()
     }
 }
 
 impl<'a, T: ?Sized + StaticType> StaticType for &'a mut T {
+    #[inline]
     fn static_type() -> Type {
         T::static_type()
     }
@@ -308,6 +316,7 @@ impl<'a, T: ?Sized + StaticType> StaticType for &'a mut T {
 macro_rules! builtin {
     ($name:ty, $val:ident) => {
         impl StaticType for $name {
+            #[inline]
             fn static_type() -> Type {
                 Type::$val
             }
@@ -339,6 +348,7 @@ pub type Pointer = ffi::gpointer;
 pub type Pointee = libc::c_void;
 
 impl StaticType for ptr::NonNull<Pointee> {
+    #[inline]
     fn static_type() -> Type {
         Pointer::static_type()
     }
@@ -350,48 +360,56 @@ pub struct ILong(pub libc::c_long);
 impl std::ops::Deref for ILong {
     type Target = libc::c_long;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
 impl std::ops::DerefMut for ILong {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
 impl From<libc::c_long> for ILong {
+    #[inline]
     fn from(v: libc::c_long) -> ILong {
         ILong(v)
     }
 }
 
 impl From<ILong> for libc::c_long {
+    #[inline]
     fn from(v: ILong) -> libc::c_long {
         v.0
     }
 }
 
 impl PartialEq<libc::c_long> for ILong {
+    #[inline]
     fn eq(&self, other: &libc::c_long) -> bool {
         &self.0 == other
     }
 }
 
 impl PartialEq<ILong> for libc::c_long {
+    #[inline]
     fn eq(&self, other: &ILong) -> bool {
         self == &other.0
     }
 }
 
 impl PartialOrd<libc::c_long> for ILong {
+    #[inline]
     fn partial_cmp(&self, other: &libc::c_long) -> Option<std::cmp::Ordering> {
         self.0.partial_cmp(other)
     }
 }
 
 impl PartialOrd<ILong> for libc::c_long {
+    #[inline]
     fn partial_cmp(&self, other: &ILong) -> Option<std::cmp::Ordering> {
         self.partial_cmp(&other.0)
     }
@@ -403,48 +421,56 @@ pub struct ULong(pub libc::c_ulong);
 impl std::ops::Deref for ULong {
     type Target = libc::c_ulong;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
 impl std::ops::DerefMut for ULong {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
 impl From<libc::c_ulong> for ULong {
+    #[inline]
     fn from(v: libc::c_ulong) -> ULong {
         ULong(v)
     }
 }
 
 impl From<ULong> for libc::c_ulong {
+    #[inline]
     fn from(v: ULong) -> libc::c_ulong {
         v.0
     }
 }
 
 impl PartialEq<libc::c_ulong> for ULong {
+    #[inline]
     fn eq(&self, other: &libc::c_ulong) -> bool {
         &self.0 == other
     }
 }
 
 impl PartialEq<ULong> for libc::c_ulong {
+    #[inline]
     fn eq(&self, other: &ULong) -> bool {
         self == &other.0
     }
 }
 
 impl PartialOrd<libc::c_ulong> for ULong {
+    #[inline]
     fn partial_cmp(&self, other: &libc::c_ulong) -> Option<std::cmp::Ordering> {
         self.0.partial_cmp(other)
     }
 }
 
 impl PartialOrd<ULong> for libc::c_ulong {
+    #[inline]
     fn partial_cmp(&self, other: &ULong) -> Option<std::cmp::Ordering> {
         self.partial_cmp(&other.0)
     }
@@ -466,18 +492,21 @@ builtin!(String, STRING);
 builtin!(Pointer, POINTER);
 
 impl<'a> StaticType for [&'a str] {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_strv_get_type()) }
     }
 }
 
 impl StaticType for Vec<String> {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_strv_get_type()) }
     }
 }
 
 impl StaticType for () {
+    #[inline]
     fn static_type() -> Type {
         Type::UNIT
     }
@@ -510,10 +539,12 @@ impl IntoGlib for Type {
 impl<'a> ToGlibContainerFromSlice<'a, *mut ffi::GType> for Type {
     type Storage = PhantomData<&'a [Type]>;
 
+    #[inline]
     fn to_glib_none_from_slice(t: &'a [Type]) -> (*mut ffi::GType, Self::Storage) {
         (t.as_ptr() as *mut ffi::GType, PhantomData)
     }
 
+    #[inline]
     fn to_glib_container_from_slice(t: &'a [Type]) -> (*mut ffi::GType, Self::Storage) {
         (Self::to_glib_full_from_slice(t), PhantomData)
     }

@@ -20,6 +20,7 @@ use crate::{Content, RecordingSurface, ScriptMode, Surface};
 pub struct DeviceAcquireGuard<'a>(&'a Device);
 
 impl<'a> Drop for DeviceAcquireGuard<'a> {
+    #[inline]
     fn drop(&mut self) {
         self.0.release();
     }
@@ -31,22 +32,26 @@ impl<'a> Drop for DeviceAcquireGuard<'a> {
 pub struct Device(ptr::NonNull<ffi::cairo_device_t>);
 
 impl Device {
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_device_t) -> Device {
         assert!(!ptr.is_null());
         ffi::cairo_device_reference(ptr);
         Device(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_device_t) -> crate::Borrowed<Device> {
         assert!(!ptr.is_null());
         crate::Borrowed::new(Device(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_device_t) -> Device {
         assert!(!ptr.is_null());
         Device(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_device_t {
         self.0.as_ptr()
     }
@@ -286,6 +291,7 @@ impl Device {
     }
 
     #[doc(alias = "cairo_device_status")]
+    #[inline]
     pub fn status(&self) -> Result<(), Error> {
         let status = unsafe { ffi::cairo_device_status(self.to_raw_none()) };
         status_to_result(status)
@@ -352,12 +358,14 @@ gvalue_impl!(
 );
 
 impl Clone for Device {
+    #[inline]
     fn clone(&self) -> Device {
         unsafe { Self::from_raw_none(ffi::cairo_device_reference(self.0.as_ptr())) }
     }
 }
 
 impl Drop for Device {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_device_destroy(self.0.as_ptr());

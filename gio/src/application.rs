@@ -89,6 +89,7 @@ impl<O: IsA<Application>> ApplicationExtManual for O {
 pub struct ApplicationHoldGuard(glib::WeakRef<Application>);
 
 impl Drop for ApplicationHoldGuard {
+    #[inline]
     fn drop(&mut self) {
         if let Some(application) = self.0.upgrade() {
             unsafe {
@@ -103,6 +104,7 @@ impl Drop for ApplicationHoldGuard {
 pub struct ApplicationBusyGuard(glib::WeakRef<Application>);
 
 impl Drop for ApplicationBusyGuard {
+    #[inline]
     fn drop(&mut self) {
         if let Some(application) = self.0.upgrade() {
             unsafe {

@@ -12,7 +12,7 @@ wrapper! {
     pub struct GStringBuilder(BoxedInline<ffi::GString>);
 
     match fn {
-        copy => |ptr| ffi::g_string_new_len((*ptr).str, (*ptr).len.try_into().unwrap()),
+        copy => |ptr| ffi::g_string_new_len((*ptr).str, (*ptr).len as isize),
         free => |ptr| ffi::g_string_free(ptr, ffi::GTRUE),
         init => |ptr| unsafe {
             let inner = ffi::GString {
@@ -48,6 +48,7 @@ unsafe impl Sync for GStringBuilder {}
 
 impl GStringBuilder {
     #[doc(alias = "g_string_new_len")]
+    #[inline]
     pub fn new<T: AsRef<str>>(data: T) -> GStringBuilder {
         let data = data.as_ref();
         assert!(data.len() < usize::MAX - 1);
@@ -72,6 +73,7 @@ impl GStringBuilder {
 
     #[doc(alias = "g_string_append")]
     #[doc(alias = "g_string_append_len")]
+    #[inline]
     pub fn append(&mut self, val: &str) {
         unsafe {
             ffi::g_string_append_len(
@@ -84,6 +86,7 @@ impl GStringBuilder {
 
     #[doc(alias = "g_string_prepend")]
     #[doc(alias = "g_string_prepend_len")]
+    #[inline]
     pub fn prepend(&mut self, val: &str) {
         unsafe {
             ffi::g_string_prepend_len(
@@ -96,6 +99,7 @@ impl GStringBuilder {
 
     #[doc(alias = "g_string_append_c")]
     #[doc(alias = "g_string_append_unichar")]
+    #[inline]
     pub fn append_c(&mut self, val: char) {
         unsafe {
             ffi::g_string_append_unichar(self.to_glib_none_mut().0, val.into_glib());
@@ -104,6 +108,7 @@ impl GStringBuilder {
 
     #[doc(alias = "g_string_prepend_c")]
     #[doc(alias = "g_string_prepend_unichar")]
+    #[inline]
     pub fn prepend_c(&mut self, val: char) {
         unsafe {
             ffi::g_string_prepend_unichar(self.to_glib_none_mut().0, val.into_glib());
@@ -112,6 +117,7 @@ impl GStringBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Returns <code>&[str]</code> slice.
+    #[inline]
     pub fn as_str(&self) -> &str {
         unsafe {
             let ptr: *const u8 = self.inner.str as _;
@@ -126,6 +132,7 @@ impl GStringBuilder {
 
     // rustdoc-stripper-ignore-next
     /// Returns <code>&[GStr]</code> slice.
+    #[inline]
     pub fn as_gstr(&self) -> &GStr {
         unsafe {
             let ptr: *const u8 = self.inner.str as _;
@@ -141,6 +148,7 @@ impl GStringBuilder {
     // rustdoc-stripper-ignore-next
     /// Finalizes the builder, converting it to a [`GString`].
     #[must_use = "String returned from the builder should probably be used"]
+    #[inline]
     pub fn into_string(self) -> crate::GString {
         unsafe {
             let s = mem::ManuallyDrop::new(self);
@@ -152,48 +160,56 @@ impl GStringBuilder {
 impl Default for GStringBuilder {
     // rustdoc-stripper-ignore-next
     /// Creates a new empty string.
+    #[inline]
     fn default() -> Self {
         Self::new("")
     }
 }
 
 impl fmt::Debug for GStringBuilder {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
 
 impl fmt::Display for GStringBuilder {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
 
 impl PartialEq for GStringBuilder {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.as_str() == other.as_str()
     }
 }
 
 impl PartialEq<str> for GStringBuilder {
+    #[inline]
     fn eq(&self, other: &str) -> bool {
         self.as_str() == other
     }
 }
 
 impl PartialEq<GStringBuilder> for str {
+    #[inline]
     fn eq(&self, other: &GStringBuilder) -> bool {
         self == other.as_str()
     }
 }
 
 impl PartialEq<GStr> for GStringBuilder {
+    #[inline]
     fn eq(&self, other: &GStr) -> bool {
         self.as_gstr() == other
     }
 }
 
 impl PartialEq<GStringBuilder> for GStr {
+    #[inline]
     fn eq(&self, other: &GStringBuilder) -> bool {
         self == other.as_gstr()
     }
@@ -202,42 +218,49 @@ impl PartialEq<GStringBuilder> for GStr {
 impl Eq for GStringBuilder {}
 
 impl cmp::PartialOrd for GStringBuilder {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
 
 impl cmp::PartialOrd<str> for GStringBuilder {
+    #[inline]
     fn partial_cmp(&self, other: &str) -> Option<cmp::Ordering> {
         Some(self.as_str().cmp(other))
     }
 }
 
 impl cmp::PartialOrd<GStringBuilder> for str {
+    #[inline]
     fn partial_cmp(&self, other: &GStringBuilder) -> Option<cmp::Ordering> {
         Some(self.cmp(other.as_str()))
     }
 }
 
 impl cmp::PartialOrd<GStr> for GStringBuilder {
+    #[inline]
     fn partial_cmp(&self, other: &GStr) -> Option<cmp::Ordering> {
         Some(self.as_gstr().cmp(other))
     }
 }
 
 impl cmp::PartialOrd<GStringBuilder> for GStr {
+    #[inline]
     fn partial_cmp(&self, other: &GStringBuilder) -> Option<cmp::Ordering> {
         Some(self.cmp(other.as_gstr()))
     }
 }
 
 impl cmp::Ord for GStringBuilder {
+    #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.as_str().cmp(other.as_str())
     }
 }
 
 impl hash::Hash for GStringBuilder {
+    #[inline]
     fn hash<H>(&self, state: &mut H)
     where
         H: hash::Hasher,
@@ -247,18 +270,21 @@ impl hash::Hash for GStringBuilder {
 }
 
 impl AsRef<[u8]> for GStringBuilder {
+    #[inline]
     fn as_ref(&self) -> &[u8] {
         self.as_bytes()
     }
 }
 
 impl AsRef<str> for GStringBuilder {
+    #[inline]
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
 
 impl AsRef<GStr> for GStringBuilder {
+    #[inline]
     fn as_ref(&self) -> &GStr {
         self.as_gstr()
     }
@@ -267,17 +293,20 @@ impl AsRef<GStr> for GStringBuilder {
 impl ops::Deref for GStringBuilder {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &str {
         self.as_str()
     }
 }
 
 impl fmt::Write for GStringBuilder {
+    #[inline]
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.append(s);
         Ok(())
     }
 
+    #[inline]
     fn write_char(&mut self, c: char) -> fmt::Result {
         self.append_c(c);
         Ok(())

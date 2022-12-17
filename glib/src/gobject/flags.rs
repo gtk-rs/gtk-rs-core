@@ -42,6 +42,7 @@ impl Default for ParamFlags {
 impl IntoGlib for ParamFlags {
     type GlibType = gobject_ffi::GParamFlags;
 
+    #[inline]
     fn into_glib(self) -> gobject_ffi::GParamFlags {
         self.bits()
     }
@@ -49,6 +50,7 @@ impl IntoGlib for ParamFlags {
 
 #[doc(hidden)]
 impl FromGlib<gobject_ffi::GParamFlags> for ParamFlags {
+    #[inline]
     unsafe fn from_glib(value: gobject_ffi::GParamFlags) -> Self {
         Self::from_bits_truncate(value)
     }

@@ -23,6 +23,7 @@ wrapper! {
 }
 
 impl StaticType for ParamSpec {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(gobject_ffi::G_TYPE_PARAM) }
     }
@@ -104,6 +105,7 @@ impl crate::value::ToValueOptional for ParamSpec {
 }
 
 impl AsRef<ParamSpec> for ParamSpec {
+    #[inline]
     fn as_ref(&self) -> &ParamSpec {
         self
     }
@@ -134,6 +136,7 @@ impl ParamSpec {
     }
 
     #[doc(alias = "get_type")]
+    #[inline]
     pub fn type_(&self) -> Type {
         unsafe {
             from_glib(
@@ -146,6 +149,7 @@ impl ParamSpec {
     }
 
     #[doc(alias = "get_value_type")]
+    #[inline]
     pub fn value_type(&self) -> crate::Type {
         unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).value_type) }
     }
@@ -153,6 +157,7 @@ impl ParamSpec {
     #[cfg(any(feature = "v2_74", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_param_value_is_valid")]
+    #[inline]
     pub fn value_is_valid(&self, value: &Value) -> bool {
         unsafe {
             from_glib(gobject_ffi::g_param_value_is_valid(
@@ -163,17 +168,20 @@ impl ParamSpec {
     }
 
     #[doc(alias = "get_owner_type")]
+    #[inline]
     pub fn owner_type(&self) -> crate::Type {
         unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).owner_type) }
     }
 
     #[doc(alias = "get_flags")]
+    #[inline]
     pub fn flags(&self) -> ParamFlags {
         unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).flags) }
     }
 
     #[doc(alias = "g_param_spec_get_blurb")]
     #[doc(alias = "get_blurb")]
+    #[inline]
     pub fn blurb(&self) -> Option<&str> {
         unsafe {
             let ptr = gobject_ffi::g_param_spec_get_blurb(self.to_glib_none().0);
@@ -187,6 +195,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_default_value")]
     #[doc(alias = "get_default_value")]
+    #[inline]
     pub fn default_value(&self) -> &Value {
         unsafe {
             &*(gobject_ffi::g_param_spec_get_default_value(self.to_glib_none().0)
@@ -196,6 +205,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_name")]
     #[doc(alias = "get_name")]
+    #[inline]
     pub fn name<'a>(&self) -> &'a str {
         unsafe {
             CStr::from_ptr(gobject_ffi::g_param_spec_get_name(self.to_glib_none().0))
@@ -206,6 +216,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_name_quark")]
     #[doc(alias = "get_name_quark")]
+    #[inline]
     pub fn name_quark(&self) -> crate::Quark {
         unsafe {
             from_glib(gobject_ffi::g_param_spec_get_name_quark(
@@ -221,6 +232,7 @@ impl ParamSpec {
     /// Otherwise, `self.name()` is returned.
     #[doc(alias = "g_param_spec_get_nick")]
     #[doc(alias = "get_nick")]
+    #[inline]
     pub fn nick(&self) -> &str {
         unsafe {
             CStr::from_ptr(gobject_ffi::g_param_spec_get_nick(self.to_glib_none().0))
@@ -235,6 +247,7 @@ impl ParamSpec {
 
     #[doc(alias = "g_param_spec_get_redirect_target")]
     #[doc(alias = "get_redirect_target")]
+    #[inline]
     pub fn redirect_target(&self) -> Option<ParamSpec> {
         unsafe {
             from_glib_none(gobject_ffi::g_param_spec_get_redirect_target(
@@ -258,6 +271,7 @@ impl ParamSpec {
     #[cfg(any(feature = "v2_66", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_param_spec_is_valid_name")]
+    #[inline]
     pub fn is_valid_name(name: &str) -> bool {
         unsafe {
             from_glib(gobject_ffi::g_param_spec_is_valid_name(
@@ -291,6 +305,7 @@ macro_rules! define_param_spec {
         }
 
         impl StaticType for $rust_type {
+            #[inline]
             fn static_type() -> Type {
                 unsafe {
                     from_glib(*g_param_spec_types.add($rust_type_offset))
@@ -378,6 +393,7 @@ macro_rules! define_param_spec {
         impl std::ops::Deref for $rust_type {
             type Target = ParamSpec;
 
+            #[inline]
             fn deref(&self) -> &Self::Target {
                 unsafe {
                     &*(self as *const $rust_type as *const ParamSpec)
@@ -439,6 +455,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl FromGlibPtrNone<*const gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
             unsafe fn from_glib_none(ptr: *const gobject_ffi::GParamSpec) -> Self {
                 from_glib_none(ptr as *const $ffi_type)
             }
@@ -446,6 +463,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl FromGlibPtrNone<*mut gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
             unsafe fn from_glib_none(ptr: *mut gobject_ffi::GParamSpec) -> Self {
                 from_glib_none(ptr as *mut $ffi_type)
             }
@@ -453,6 +471,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl FromGlibPtrBorrow<*const gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
             unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GParamSpec) -> Borrowed<Self> {
                 from_glib_borrow(ptr as *const $ffi_type)
             }
@@ -460,6 +479,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl FromGlibPtrBorrow<*mut gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
             unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GParamSpec) -> Borrowed<Self> {
                 from_glib_borrow(ptr as *mut $ffi_type)
             }
@@ -467,24 +487,28 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl FromGlibPtrFull<*mut gobject_ffi::GParamSpec> for $rust_type {
+            #[inline]
             unsafe fn from_glib_full(ptr: *mut gobject_ffi::GParamSpec) -> Self {
                 from_glib_full(ptr as *mut $ffi_type)
             }
         }
 
         impl $rust_type {
+            #[inline]
             pub fn upcast(self) -> ParamSpec {
                 unsafe {
                     from_glib_full(ToGlibPtr::<*const $ffi_type>::to_glib_full(&self) as *mut gobject_ffi::GParamSpec)
                 }
             }
 
+            #[inline]
             pub fn upcast_ref(&self) -> &ParamSpec {
                 &*self
             }
         }
 
         impl AsRef<ParamSpec> for $rust_type {
+            #[inline]
             fn as_ref(&self) -> &ParamSpec {
                 &self
             }
@@ -495,6 +519,7 @@ macro_rules! define_param_spec {
 macro_rules! define_param_spec_default {
     ($rust_type:ident, $ffi_type:path, $value_type:ty, $from_glib:expr) => {
         impl $rust_type {
+            #[inline]
             pub fn default_value(&self) -> $value_type {
                 unsafe {
                     let ptr =
@@ -509,6 +534,7 @@ macro_rules! define_param_spec_default {
 macro_rules! define_param_spec_min_max {
     ($rust_type:ident, $ffi_type:path, $value_type:ty) => {
         impl $rust_type {
+            #[inline]
             pub fn minimum(&self) -> $value_type {
                 unsafe {
                     let ptr =
@@ -517,6 +543,7 @@ macro_rules! define_param_spec_min_max {
                 }
             }
 
+            #[inline]
             pub fn maximum(&self) -> $value_type {
                 unsafe {
                     let ptr =
@@ -934,6 +961,7 @@ impl ParamSpecEnum {
     }
 
     #[doc(alias = "get_enum_class")]
+    #[inline]
     pub fn enum_class(&self) -> crate::EnumClass {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecEnum>::to_glib_none(self).0;
@@ -945,6 +973,7 @@ impl ParamSpecEnum {
         }
     }
 
+    #[inline]
     pub fn default_value<T: StaticType + FromGlib<i32>>(&self) -> Result<T, crate::BoolError> {
         unsafe {
             if !self.enum_class().type_().is_a(T::static_type()) {
@@ -958,6 +987,7 @@ impl ParamSpecEnum {
         }
     }
 
+    #[inline]
     pub fn default_value_as_i32(&self) -> i32 {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecEnum>::to_glib_none(self).0;
@@ -1051,6 +1081,7 @@ impl ParamSpecFlags {
     }
 
     #[doc(alias = "get_flags_class")]
+    #[inline]
     pub fn flags_class(&self) -> crate::FlagsClass {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecFlags>::to_glib_none(self).0;
@@ -1062,6 +1093,7 @@ impl ParamSpecFlags {
         }
     }
 
+    #[inline]
     pub fn default_value<T: StaticType + FromGlib<u32>>(&self) -> Result<T, crate::BoolError> {
         unsafe {
             if !self.flags_class().type_().is_a(T::static_type()) {
@@ -1075,6 +1107,7 @@ impl ParamSpecFlags {
         }
     }
 
+    #[inline]
     pub fn default_value_as_u32(&self) -> u32 {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecFlags>::to_glib_none(self).0;
@@ -1428,6 +1461,7 @@ impl ParamSpecValueArray {
     }
 
     #[doc(alias = "get_element_spec")]
+    #[inline]
     pub fn element_spec(&self) -> Option<ParamSpec> {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecValueArray>::to_glib_none(self).0;
@@ -1437,6 +1471,7 @@ impl ParamSpecValueArray {
     }
 
     #[doc(alias = "get_fixed_n_elements")]
+    #[inline]
     pub fn fixed_n_elements(&self) -> u32 {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecValueArray>::to_glib_none(self).0;
@@ -1647,6 +1682,7 @@ impl ParamSpecOverride {
     }
 
     #[doc(alias = "get_overridden")]
+    #[inline]
     pub fn overridden(&self) -> ParamSpec {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecOverride>::to_glib_none(self).0;
@@ -1748,6 +1784,7 @@ impl ParamSpecVariant {
     }
 
     #[doc(alias = "get_type")]
+    #[inline]
     pub fn type_(&self) -> Option<&crate::VariantTy> {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecVariant>::to_glib_none(self).0;

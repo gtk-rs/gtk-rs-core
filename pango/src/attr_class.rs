@@ -10,6 +10,7 @@ use crate::AttrType;
 impl<'a> ToGlibPtr<'a, *mut ffi::PangoAttrClass> for &'a AttrClass {
     type Storage = PhantomData<&'a AttrClass>;
 
+    #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::PangoAttrClass, Self> {
         Stash(self.0, PhantomData)
     }
@@ -17,6 +18,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::PangoAttrClass> for &'a AttrClass {
 
 #[doc(hidden)]
 impl FromGlibPtrNone<*mut ffi::PangoAttrClass> for AttrClass {
+    #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::PangoAttrClass) -> Self {
         assert!(!ptr.is_null());
         Self(ptr)
@@ -25,6 +27,7 @@ impl FromGlibPtrNone<*mut ffi::PangoAttrClass> for AttrClass {
 
 #[doc(hidden)]
 impl FromGlibPtrFull<*mut ffi::PangoAttrClass> for AttrClass {
+    #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::PangoAttrClass) -> Self {
         assert!(!ptr.is_null());
         Self(ptr)
@@ -33,6 +36,7 @@ impl FromGlibPtrFull<*mut ffi::PangoAttrClass> for AttrClass {
 
 #[doc(hidden)]
 impl FromGlibPtrNone<*const ffi::PangoAttrClass> for AttrClass {
+    #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::PangoAttrClass) -> Self {
         assert!(!ptr.is_null());
         Self(ptr as *mut _)
@@ -41,6 +45,7 @@ impl FromGlibPtrNone<*const ffi::PangoAttrClass> for AttrClass {
 
 #[doc(hidden)]
 impl FromGlibPtrFull<*const ffi::PangoAttrClass> for AttrClass {
+    #[inline]
     unsafe fn from_glib_full(ptr: *const ffi::PangoAttrClass) -> Self {
         assert!(!ptr.is_null());
         Self(ptr as *mut _)
@@ -51,12 +56,14 @@ impl FromGlibPtrFull<*const ffi::PangoAttrClass> for AttrClass {
 pub struct AttrClass(*mut ffi::PangoAttrClass);
 
 impl AttrClass {
+    #[inline]
     pub fn type_(&self) -> AttrType {
         unsafe { from_glib((*self.0).type_) }
     }
 }
 
 impl PartialEq for AttrClass {
+    #[inline]
     fn eq(&self, other: &AttrClass) -> bool {
         self.0 == other.0
     }

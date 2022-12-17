@@ -36,6 +36,7 @@ wrapper! {
 impl Deref for ByteArray {
     type Target = [u8];
 
+    #[inline]
     fn deref(&self) -> &[u8] {
         unsafe {
             let self_ptr: *const ffi::GByteArray = self.to_glib_none().0;
@@ -52,6 +53,7 @@ impl Deref for ByteArray {
 }
 
 impl AsRef<[u8]> for ByteArray {
+    #[inline]
     fn as_ref(&self) -> &[u8] {
         self
     }

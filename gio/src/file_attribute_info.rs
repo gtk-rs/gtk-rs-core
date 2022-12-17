@@ -32,6 +32,7 @@ glib::wrapper! {
 }
 
 impl FileAttributeInfo {
+    #[inline]
     pub fn name(&self) -> &str {
         unsafe {
             use std::ffi::CStr;
@@ -42,10 +43,12 @@ impl FileAttributeInfo {
         }
     }
 
+    #[inline]
     pub fn type_(&self) -> crate::FileAttributeType {
         unsafe { from_glib(self.inner.type_) }
     }
 
+    #[inline]
     pub fn flags(&self) -> crate::FileAttributeInfoFlags {
         unsafe { from_glib(self.inner.flags) }
     }

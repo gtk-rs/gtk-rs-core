@@ -46,6 +46,7 @@ impl ArgumentList {
 impl Deref for ArgumentList {
     type Target = [OsString];
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         self.items.as_slice()
     }

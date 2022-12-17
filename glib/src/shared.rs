@@ -37,6 +37,7 @@ macro_rules! glib_shared_wrapper {
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
             #[doc = "Return the inner pointer to the underlying C value."]
+            #[inline]
             pub fn as_ptr(&self) -> *mut $ffi_name {
                 $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
             }
@@ -297,6 +298,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
@@ -305,6 +307,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *const $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
@@ -316,6 +319,7 @@ macro_rules! glib_shared_wrapper {
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
+            #[inline]
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
@@ -334,6 +338,7 @@ macro_rules! glib_shared_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
@@ -345,6 +350,7 @@ macro_rules! glib_shared_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for &'a $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
@@ -356,6 +362,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValue for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
                     let mut value = $crate::Value::from_type(<Self as $crate::StaticType>::static_type());
@@ -367,12 +374,14 @@ macro_rules! glib_shared_wrapper {
                 }
             }
 
+            #[inline]
             fn value_type(&self) -> $crate::Type {
                 <Self as $crate::StaticType>::static_type()
             }
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            #[inline]
             fn from(s: $name $(<$($generic),+>)?) -> Self {
                 unsafe {
                     let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
@@ -387,6 +396,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
                 unsafe {
@@ -425,6 +435,7 @@ pub struct Shared<T, MM: SharedMemoryManager<T>> {
 }
 
 impl<T, MM: SharedMemoryManager<T>> Drop for Shared<T, MM> {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             MM::unref(self.inner.as_ptr());
@@ -433,6 +444,7 @@ impl<T, MM: SharedMemoryManager<T>> Drop for Shared<T, MM> {
 }
 
 impl<T, MM: SharedMemoryManager<T>> Clone for Shared<T, MM> {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe {
             MM::ref_(self.inner.as_ptr());
@@ -453,18 +465,21 @@ impl<T, MM: SharedMemoryManager<T>> fmt::Debug for Shared<T, MM> {
 }
 
 impl<T, MM: SharedMemoryManager<T>> PartialOrd for Shared<T, MM> {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
 impl<T, MM: SharedMemoryManager<T>> Ord for Shared<T, MM> {
+    #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
 impl<T, MM: SharedMemoryManager<T>> PartialEq for Shared<T, MM> {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.inner == other.inner
     }
@@ -473,6 +488,7 @@ impl<T, MM: SharedMemoryManager<T>> PartialEq for Shared<T, MM> {
 impl<T, MM: SharedMemoryManager<T>> Eq for Shared<T, MM> {}
 
 impl<T, MM: SharedMemoryManager<T>> Hash for Shared<T, MM> {
+    #[inline]
     fn hash<H>(&self, state: &mut H)
     where
         H: Hasher,

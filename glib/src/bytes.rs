@@ -43,6 +43,7 @@ impl Bytes {
     // rustdoc-stripper-ignore-next
     /// Copies `data` into a new shared slice.
     #[doc(alias = "g_bytes_new")]
+    #[inline]
     fn new<T: AsRef<[u8]>>(data: T) -> Bytes {
         let data = data.as_ref();
         unsafe { from_glib_full(ffi::g_bytes_new(data.as_ptr() as *const _, data.len())) }
@@ -51,6 +52,7 @@ impl Bytes {
     // rustdoc-stripper-ignore-next
     /// Creates a view into static `data` without copying.
     #[doc(alias = "g_bytes_new_static")]
+    #[inline]
     pub fn from_static(data: &'static [u8]) -> Bytes {
         unsafe {
             from_glib_full(ffi::g_bytes_new_static(
@@ -88,6 +90,7 @@ unsafe impl Send for Bytes {}
 unsafe impl Sync for Bytes {}
 
 impl<'a, T: ?Sized + Borrow<[u8]> + 'a> From<&'a T> for Bytes {
+    #[inline]
     fn from(value: &'a T) -> Bytes {
         Bytes::new(value.borrow())
     }
@@ -103,6 +106,7 @@ impl fmt::Debug for Bytes {
 }
 
 impl AsRef<[u8]> for Bytes {
+    #[inline]
     fn as_ref(&self) -> &[u8] {
         self
     }
@@ -111,6 +115,7 @@ impl AsRef<[u8]> for Bytes {
 impl Deref for Bytes {
     type Target = [u8];
 
+    #[inline]
     fn deref(&self) -> &[u8] {
         unsafe {
             let mut len = 0;
@@ -126,6 +131,7 @@ impl Deref for Bytes {
 
 impl PartialEq for Bytes {
     #[doc(alias = "g_bytes_equal")]
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         unsafe {
             from_glib(ffi::g_bytes_equal(
@@ -139,6 +145,7 @@ impl PartialEq for Bytes {
 impl Eq for Bytes {}
 
 impl PartialOrd for Bytes {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         unsafe {
             let ret = ffi::g_bytes_compare(
@@ -151,6 +158,7 @@ impl PartialOrd for Bytes {
 }
 
 impl Ord for Bytes {
+    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         unsafe {
             let ret = ffi::g_bytes_compare(
@@ -209,6 +217,7 @@ impl_cmp!(Bytes, Vec<u8>);
 impl_cmp!(&'a Bytes, Vec<u8>);
 
 impl Hash for Bytes {
+    #[inline]
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.len().hash(state);
         Hash::hash_slice(self, state)

@@ -20,6 +20,7 @@ macro_rules! gvalue_impl_inner {
         use glib::translate::*;
 
         impl glib::types::StaticType for $name {
+            #[inline]
             fn static_type() -> glib::types::Type {
                 unsafe { from_glib($get_type()) }
             }
@@ -294,6 +295,7 @@ mod borrowed {
 
     impl<T> Borrowed<T> {
         /// Creates a new borrowed value.
+        #[inline]
         pub fn new(val: T) -> Self {
             Self(mem::ManuallyDrop::new(val))
         }
@@ -302,12 +304,14 @@ mod borrowed {
         ///
         /// The returned value must never be dropped and instead has to be passed to `mem::forget()` or
         /// be directly wrapped in `mem::ManuallyDrop` or another `Borrowed` wrapper.
+        #[inline]
         pub unsafe fn into_inner(self) -> T {
             mem::ManuallyDrop::into_inner(self.0)
         }
     }
 
     impl<T> AsRef<T> for Borrowed<T> {
+        #[inline]
         fn as_ref(&self) -> &T {
             &*self.0
         }
@@ -316,6 +320,7 @@ mod borrowed {
     impl<T> std::ops::Deref for Borrowed<T> {
         type Target = T;
 
+        #[inline]
         fn deref(&self) -> &T {
             &*self.0
         }

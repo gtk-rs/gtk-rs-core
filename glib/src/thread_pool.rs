@@ -206,6 +206,7 @@ impl ThreadPool {
 }
 
 impl Drop for ThreadPool {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::g_thread_pool_free(self.0.as_ptr(), ffi::GFALSE, ffi::GTRUE);

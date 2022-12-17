@@ -185,6 +185,7 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
         }
     }
 
+    #[inline]
     fn instance_init(_instance: &mut super::InitializingObject<T>) {}
 }
 
@@ -203,6 +204,7 @@ pub trait ObjectImplExt: ObjectSubclass {
 }
 
 impl<T: ObjectImpl> ObjectImplExt for T {
+    #[inline]
     fn parent_constructed(&self) {
         unsafe {
             let data = T::type_data();

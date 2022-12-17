@@ -22,6 +22,7 @@ pub struct RectangleList {
 impl ops::Deref for RectangleList {
     type Target = [Rectangle];
 
+    #[inline]
     fn deref(&self) -> &[Rectangle] {
         unsafe {
             let ptr = (*self.ptr).rectangles as *mut Rectangle;
@@ -37,6 +38,7 @@ impl ops::Deref for RectangleList {
 }
 
 impl Drop for RectangleList {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_rectangle_list_destroy(self.ptr);
@@ -116,12 +118,14 @@ gvalue_impl!(
 );
 
 impl Clone for Context {
+    #[inline]
     fn clone(&self) -> Context {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }
 }
 
 impl Drop for Context {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_destroy(self.0.as_ptr());
@@ -149,11 +153,13 @@ impl Context {
         Context(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_t {
         self.0.as_ptr()
     }
 
     #[doc(alias = "cairo_status")]
+    #[inline]
     pub fn status(&self) -> Result<(), Error> {
         let status = unsafe { ffi::cairo_status(self.0.as_ptr()) };
         status_to_result(status)

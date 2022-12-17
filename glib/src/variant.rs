@@ -129,6 +129,7 @@ wrapper! {
 }
 
 impl StaticType for Variant {
+    #[inline]
     fn static_type() -> Type {
         Type::VARIANT
     }
@@ -957,6 +958,7 @@ impl Hash for Variant {
 }
 
 impl AsRef<Variant> for Variant {
+    #[inline]
     fn as_ref(&self) -> &Self {
         self
     }
@@ -1882,30 +1884,35 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> FixedSizeVariantArray<A, T> {
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::Deref for FixedSizeVariantArray<A, T> {
     type Target = A;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::DerefMut for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<A> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_ref(&self) -> &A {
         &self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsMut<A> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_mut(&mut self) -> &mut A {
         &mut self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_ref(&self) -> &[T] {
         self.0.as_ref()
     }
@@ -1914,6 +1921,7 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArra
 impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> AsMut<[T]>
     for FixedSizeVariantArray<A, T>
 {
+    #[inline]
     fn as_mut(&mut self) -> &mut [T] {
         self.0.as_mut()
     }
@@ -2032,6 +2040,7 @@ impl ObjectPath {
 impl std::ops::Deref for ObjectPath {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
@@ -2112,6 +2121,7 @@ impl Signature {
 impl std::ops::Deref for Signature {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }

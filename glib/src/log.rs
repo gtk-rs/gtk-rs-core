@@ -16,6 +16,7 @@ pub struct LogHandlerId(u32);
 
 #[doc(hidden)]
 impl FromGlib<u32> for LogHandlerId {
+    #[inline]
     unsafe fn from_glib(value: u32) -> Self {
         Self(value)
     }
@@ -25,6 +26,7 @@ impl FromGlib<u32> for LogHandlerId {
 impl IntoGlib for LogHandlerId {
     type GlibType = u32;
 
+    #[inline]
     fn into_glib(self) -> u32 {
         self.0
     }
@@ -50,6 +52,7 @@ pub enum LogLevel {
 impl IntoGlib for LogLevel {
     type GlibType = u32;
 
+    #[inline]
     fn into_glib(self) -> u32 {
         match self {
             Self::Error => ffi::G_LOG_LEVEL_ERROR,
@@ -64,6 +67,7 @@ impl IntoGlib for LogLevel {
 
 #[doc(hidden)]
 impl FromGlib<u32> for LogLevel {
+    #[inline]
     unsafe fn from_glib(value: u32) -> Self {
         if value & ffi::G_LOG_LEVEL_ERROR != 0 {
             Self::Error
@@ -119,6 +123,7 @@ bitflags::bitflags! {
 impl IntoGlib for LogLevels {
     type GlibType = ffi::GLogLevelFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GLogLevelFlags {
         self.bits()
     }
@@ -126,6 +131,7 @@ impl IntoGlib for LogLevels {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GLogLevelFlags> for LogLevels {
+    #[inline]
     unsafe fn from_glib(value: ffi::GLogLevelFlags) -> Self {
         Self::from_bits_truncate(value)
     }

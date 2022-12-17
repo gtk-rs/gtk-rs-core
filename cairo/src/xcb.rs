@@ -13,6 +13,7 @@ use crate::{Error, Surface, SurfaceType};
 pub struct XCBDrawable(pub u32);
 
 impl XCBDrawable {
+    #[inline]
     fn to_raw_none(&self) -> u32 {
         self.0
     }
@@ -28,6 +29,7 @@ impl fmt::Display for XCBDrawable {
 pub struct XCBPixmap(pub u32);
 
 impl XCBPixmap {
+    #[inline]
     fn to_raw_none(&self) -> u32 {
         self.0
     }
@@ -44,20 +46,24 @@ impl fmt::Display for XCBPixmap {
 pub struct XCBConnection(pub ptr::NonNull<ffi::xcb_connection_t>);
 
 impl XCBConnection {
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::xcb_connection_t {
         self.0.as_ptr()
     }
 
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_connection_t) -> XCBConnection {
         assert!(!ptr.is_null());
         XCBConnection(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_connection_t) -> Borrowed<XCBConnection> {
         assert!(!ptr.is_null());
         Borrowed::new(XCBConnection(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_connection_t) -> XCBConnection {
         assert!(!ptr.is_null());
         XCBConnection(ptr::NonNull::new_unchecked(ptr))
@@ -99,6 +105,7 @@ impl FromGlibPtrFull<*mut ffi::xcb_connection_t> for XCBConnection {
 }
 
 impl Clone for XCBConnection {
+    #[inline]
     fn clone(&self) -> XCBConnection {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }
@@ -115,15 +122,18 @@ impl fmt::Display for XCBConnection {
 pub struct XCBRenderPictFormInfo(pub ptr::NonNull<ffi::xcb_render_pictforminfo_t>);
 
 impl XCBRenderPictFormInfo {
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::xcb_render_pictforminfo_t {
         self.0.as_ptr()
     }
 
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_render_pictforminfo_t) -> XCBRenderPictFormInfo {
         assert!(!ptr.is_null());
         XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(
         ptr: *mut ffi::xcb_render_pictforminfo_t,
     ) -> Borrowed<XCBRenderPictFormInfo> {
@@ -131,6 +141,7 @@ impl XCBRenderPictFormInfo {
         Borrowed::new(XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_render_pictforminfo_t) -> XCBRenderPictFormInfo {
         assert!(!ptr.is_null());
         XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr))
@@ -176,6 +187,7 @@ impl FromGlibPtrFull<*mut ffi::xcb_render_pictforminfo_t> for XCBRenderPictFormI
 }
 
 impl Clone for XCBRenderPictFormInfo {
+    #[inline]
     fn clone(&self) -> XCBRenderPictFormInfo {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }
@@ -192,20 +204,24 @@ impl fmt::Display for XCBRenderPictFormInfo {
 pub struct XCBScreen(pub ptr::NonNull<ffi::xcb_screen_t>);
 
 impl XCBScreen {
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::xcb_screen_t {
         self.0.as_ptr()
     }
 
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_screen_t) -> XCBScreen {
         assert!(!ptr.is_null());
         XCBScreen(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_screen_t) -> Borrowed<XCBScreen> {
         assert!(!ptr.is_null());
         Borrowed::new(XCBScreen(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_screen_t) -> XCBScreen {
         assert!(!ptr.is_null());
         XCBScreen(ptr::NonNull::new_unchecked(ptr))
@@ -247,6 +263,7 @@ impl FromGlibPtrFull<*mut ffi::xcb_screen_t> for XCBScreen {
 }
 
 impl Clone for XCBScreen {
+    #[inline]
     fn clone(&self) -> XCBScreen {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }
@@ -354,20 +371,24 @@ impl XCBSurface {
 pub struct XCBVisualType(pub ptr::NonNull<ffi::xcb_visualtype_t>);
 
 impl XCBVisualType {
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::xcb_visualtype_t {
         self.0.as_ptr()
     }
 
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_visualtype_t) -> XCBVisualType {
         assert!(!ptr.is_null());
         XCBVisualType(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_visualtype_t) -> Borrowed<XCBVisualType> {
         assert!(!ptr.is_null());
         Borrowed::new(XCBVisualType(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_visualtype_t) -> XCBVisualType {
         assert!(!ptr.is_null());
         XCBVisualType(ptr::NonNull::new_unchecked(ptr))
@@ -409,6 +430,7 @@ impl FromGlibPtrFull<*mut ffi::xcb_visualtype_t> for XCBVisualType {
 }
 
 impl Clone for XCBVisualType {
+    #[inline]
     fn clone(&self) -> XCBVisualType {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }

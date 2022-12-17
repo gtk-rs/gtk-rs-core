@@ -47,6 +47,7 @@ impl fmt::Display for LayoutDeserializeError {
 impl IntoGlib for LayoutDeserializeError {
     type GlibType = ffi::PangoLayoutDeserializeError;
 
+    #[inline]
     fn into_glib(self) -> ffi::PangoLayoutDeserializeError {
         match self {
             Self::Invalid => ffi::PANGO_LAYOUT_DESERIALIZE_INVALID,
@@ -61,6 +62,7 @@ impl IntoGlib for LayoutDeserializeError {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 #[doc(hidden)]
 impl FromGlib<ffi::PangoLayoutDeserializeError> for LayoutDeserializeError {
+    #[inline]
     unsafe fn from_glib(value: ffi::PangoLayoutDeserializeError) -> Self {
         match value {
             ffi::PANGO_LAYOUT_DESERIALIZE_INVALID => Self::Invalid,
@@ -97,6 +99,7 @@ impl ErrorDomain for LayoutDeserializeError {
 #[cfg(any(feature = "v1_50", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
 impl StaticType for LayoutDeserializeError {
+    #[inline]
     fn static_type() -> glib::Type {
         unsafe { from_glib(ffi::pango_layout_deserialize_error_get_type()) }
     }

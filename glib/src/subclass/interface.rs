@@ -126,6 +126,7 @@ pub trait ObjectInterfaceExt: ObjectInterface {
     /// Get interface from an instance.
     ///
     /// This will panic if `obj` does not implement the interface.
+    #[inline]
     fn from_instance<T: IsA<Object>>(obj: &T) -> &Self {
         assert!(obj.as_ref().type_().is_a(Self::type_()));
 

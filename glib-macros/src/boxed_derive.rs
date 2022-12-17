@@ -20,6 +20,7 @@ fn gen_impl_from_value_optional(name: &Ident, crate_ident: &TokenStream) -> Toke
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
             type Checker = #crate_ident::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
@@ -30,6 +31,7 @@ fn gen_impl_from_value_optional(name: &Ident, crate_ident: &TokenStream) -> Toke
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for &'a #name {
             type Checker = #crate_ident::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_get_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
@@ -44,6 +46,7 @@ fn gen_impl_from_value(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
             type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
@@ -54,6 +57,7 @@ fn gen_impl_from_value(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for &'a #name {
             type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_get_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
                 assert!(!ptr.is_null());
@@ -68,6 +72,7 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
 
     quote! {
         impl #crate_ident::value::ToValueOptional for #name {
+            #[inline]
             fn to_value_optional(s: ::core::option::Option<&Self>) -> #crate_ident::Value {
                 let mut value = #crate_ident::Value::for_value_type::<Self>();
                 unsafe {
@@ -121,6 +126,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::StaticType for #name {
+            #[inline]
             fn static_type() -> #crate_ident::Type {
                 static ONCE: ::std::sync::Once = ::std::sync::Once::new();
                 static mut TYPE_: #crate_ident::Type = #crate_ident::Type::INVALID;
@@ -144,6 +150,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::value::ToValue for #name {
+            #[inline]
             fn to_value(&self) -> #crate_ident::Value {
                 unsafe {
                     let ptr: *mut #name = ::std::boxed::Box::into_raw(::std::boxed::Box::new(self.clone()));
@@ -156,12 +163,14 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
+            #[inline]
             fn value_type(&self) -> #crate_ident::Type {
                 <#name as #crate_ident::StaticType>::static_type()
             }
         }
 
         impl ::std::convert::From<#name> for #crate_ident::Value {
+            #[inline]
             fn from(v: #name) -> Self {
                 unsafe {
                     let mut value = #crate_ident::Value::from_type(<#name as #crate_ident::StaticType>::static_type());

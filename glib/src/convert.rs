@@ -198,6 +198,7 @@ impl IConv {
 }
 
 impl Drop for IConv {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::g_iconv_close(self.0);
