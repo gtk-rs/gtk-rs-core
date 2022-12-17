@@ -341,12 +341,11 @@ impl crate::value::ToValueOptional for GStr {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const c_char> for GStr {
-    type Storage = GString;
+    type Storage = PhantomData<&'a Self>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const c_char, Self> {
-        let tmp = self.to_owned();
-        Stash(self.as_ptr(), tmp)
+        Stash(self.as_ptr(), PhantomData)
     }
 
     #[inline]
@@ -357,12 +356,11 @@ impl<'a> ToGlibPtr<'a, *const c_char> for GStr {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
-    type Storage = GString;
+    type Storage = PhantomData<&'a Self>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *mut c_char, Self> {
-        let tmp = self.to_owned();
-        Stash(tmp.as_ptr() as *mut c_char, tmp)
+        Stash(self.as_ptr() as *mut c_char, PhantomData)
     }
 
     #[inline]
