@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 use std::{fmt, ptr};
 
 #[cfg(feature = "use_glib")]
@@ -22,11 +24,11 @@ impl IntoGlibPtr<*mut ffi::cairo_region_t> for Region {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_region_t> for &'a Region {
-    type Storage = &'a Region;
+    type Storage = PhantomData<&'a Region>;
 
     #[inline]
-    fn to_glib_none(&self) -> Stash<'a, *mut ffi::cairo_region_t, &'a Region> {
-        Stash(self.0.as_ptr(), *self)
+    fn to_glib_none(&self) -> Stash<'a, *mut ffi::cairo_region_t, Self> {
+        Stash(self.0.as_ptr(), PhantomData)
     }
 
     #[inline]
@@ -38,13 +40,13 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_region_t> for &'a Region {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_region_t> for Region {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
 
     // FIXME: This is unsafe: regions are reference counted, so we could get multiple mutable
     // references here
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::cairo_region_t, Self> {
-        StashMut(self.0.as_ptr(), self)
+        StashMut(self.0.as_ptr(), PhantomData)
     }
 }
 

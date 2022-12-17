@@ -229,12 +229,12 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         }
 
         impl<'a> #crate_ident::translate::ToGlibPtr<'a, *const #refcounted_type_prefix::InnerType> for #name {
-            type Storage = &'a Self;
+            type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
             fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *const #refcounted_type_prefix::InnerType, Self> {
                 unsafe {
-                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0), self)
+                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0), std::marker::PhantomData)
                 }
             }
 
@@ -248,12 +248,12 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         }
 
         impl<'a> #crate_ident::translate::ToGlibPtr<'a, *mut #refcounted_type_prefix::InnerType> for #name {
-            type Storage = &'a Self;
+            type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
             fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *mut #refcounted_type_prefix::InnerType, Self> {
                 unsafe {
-                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0) as *mut _, self)
+                    #crate_ident::translate::Stash(#refcounted_type_prefix::as_ptr(&self.0) as *mut _, std::marker::PhantomData)
                 }
             }
 

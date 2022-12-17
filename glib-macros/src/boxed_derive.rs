@@ -209,11 +209,11 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl<'a> #crate_ident::translate::ToGlibPtr<'a, *const #name> for #name {
-            type Storage = &'a Self;
+            type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
             fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *const #name, Self> {
-                #crate_ident::translate::Stash(self as *const #name, self)
+                #crate_ident::translate::Stash(self as *const #name, std::marker::PhantomData)
             }
 
             #[inline]
@@ -223,11 +223,11 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl<'a> #crate_ident::translate::ToGlibPtr<'a, *mut #name> for #name {
-            type Storage = &'a Self;
+            type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
             fn to_glib_none(&'a self) -> #crate_ident::translate::Stash<'a, *mut #name, Self> {
-                #crate_ident::translate::Stash(self as *const #name as *mut _, self)
+                #crate_ident::translate::Stash(self as *const #name as *mut _, std::marker::PhantomData)
             }
 
             #[inline]

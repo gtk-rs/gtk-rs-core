@@ -187,11 +187,11 @@ macro_rules! glib_boxed_inline_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = &'a Self;
+            type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
-                $crate::translate::Stash(&self.inner as *const $ffi_name, self)
+                $crate::translate::Stash(&self.inner as *const $ffi_name, std::marker::PhantomData)
             }
 
             #[inline]
@@ -205,12 +205,12 @@ macro_rules! glib_boxed_inline_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = &'a mut Self;
+            type Storage = std::marker::PhantomData<&'a mut Self>;
 
             #[inline]
             fn to_glib_none_mut(&'a mut self) -> $crate::translate::StashMut<'a, *mut $ffi_name, Self> {
                 let ptr = &mut self.inner as *mut $ffi_name;
-                $crate::translate::StashMut(ptr, self)
+                $crate::translate::StashMut(ptr, std::marker::PhantomData)
             }
         }
 
@@ -274,16 +274,16 @@ macro_rules! glib_boxed_inline_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = Option<&'a [Self]>;
+            type Storage = std::marker::PhantomData<&'a [Self]>;
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut $ffi_name, Self::Storage) {
-                (t.as_ptr() as *mut $ffi_name, Some(t))
+                (t.as_ptr() as *mut $ffi_name, std::marker::PhantomData)
             }
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut $ffi_name, Self::Storage) {
                 (
                     $crate::translate::ToGlibContainerFromSlice::<'a, *mut $ffi_name>::to_glib_full_from_slice(t),
-                    None,
+                    std::marker::PhantomData,
                 )
             }
 
@@ -305,7 +305,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic: 'a $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = Option<&'a [Self]>;
+            type Storage = std::marker::PhantomData<&'a [Self]>;
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*const $ffi_name, Self::Storage) {
                 let (ptr, stash) = $crate::translate::ToGlibContainerFromSlice::<'a, *mut $ffi_name>::to_glib_none_from_slice(t);

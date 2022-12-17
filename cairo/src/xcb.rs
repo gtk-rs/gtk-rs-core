@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 use std::{convert::TryFrom, fmt, ops::Deref, ptr};
 
 #[cfg(feature = "use_glib")]
@@ -64,11 +66,11 @@ impl XCBConnection {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::xcb_connection_t> for &'a XCBConnection {
-    type Storage = &'a XCBConnection;
+    type Storage = PhantomData<&'a XCBConnection>;
 
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::xcb_connection_t, &'a XCBConnection> {
-        Stash(self.to_raw_none(), *self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 }
 
@@ -137,13 +139,13 @@ impl XCBRenderPictFormInfo {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::xcb_render_pictforminfo_t> for &'a XCBRenderPictFormInfo {
-    type Storage = &'a XCBRenderPictFormInfo;
+    type Storage = PhantomData<&'a XCBRenderPictFormInfo>;
 
     #[inline]
     fn to_glib_none(
         &self,
     ) -> Stash<'a, *mut ffi::xcb_render_pictforminfo_t, &'a XCBRenderPictFormInfo> {
-        Stash(self.to_raw_none(), *self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 }
 
@@ -212,11 +214,11 @@ impl XCBScreen {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::xcb_screen_t> for &'a XCBScreen {
-    type Storage = &'a XCBScreen;
+    type Storage = PhantomData<&'a XCBScreen>;
 
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::xcb_screen_t, &'a XCBScreen> {
-        Stash(self.to_raw_none(), *self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 }
 
@@ -374,11 +376,11 @@ impl XCBVisualType {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::xcb_visualtype_t> for &'a XCBVisualType {
-    type Storage = &'a XCBVisualType;
+    type Storage = PhantomData<&'a XCBVisualType>;
 
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::xcb_visualtype_t, &'a XCBVisualType> {
-        Stash(self.to_raw_none(), *self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 }
 

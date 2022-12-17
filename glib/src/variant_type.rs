@@ -6,6 +6,7 @@ use std::{
     fmt,
     hash::{Hash, Hasher},
     iter,
+    marker::PhantomData,
     ops::Deref,
     ptr, slice,
     str::FromStr,
@@ -186,10 +187,10 @@ impl IntoGlibPtr<*mut ffi::GVariantType> for VariantType {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantType {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::GVariantType, Self> {
-        Stash(self.ptr.as_ptr(), self)
+        Stash(self.ptr.as_ptr(), PhantomData)
     }
 
     fn to_glib_full(&self) -> *const ffi::GVariantType {
@@ -199,10 +200,10 @@ impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantType {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::GVariantType> for VariantType {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::GVariantType, Self> {
-        Stash(self.ptr.as_ptr(), self)
+        Stash(self.ptr.as_ptr(), PhantomData)
     }
 
     fn to_glib_full(&self) -> *mut ffi::GVariantType {
@@ -212,10 +213,10 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GVariantType> for VariantType {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtrMut<'a, *mut ffi::GVariantType> for VariantType {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
 
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::GVariantType, Self> {
-        StashMut(self.ptr.as_ptr(), self)
+        StashMut(self.ptr.as_ptr(), PhantomData)
     }
 }
 
@@ -669,10 +670,10 @@ unsafe impl Sync for VariantTy {}
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const ffi::GVariantType> for VariantTy {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::GVariantType, Self> {
-        Stash(self.as_ptr(), self)
+        Stash(self.as_ptr(), PhantomData)
     }
 }
 

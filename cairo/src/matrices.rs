@@ -1,6 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use std::fmt;
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 
 use crate::{utils::status_to_result, Error};
 
@@ -181,24 +183,25 @@ impl Uninitialized for Matrix {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const ffi::cairo_matrix_t> for Matrix {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::cairo_matrix_t, Self> {
-        let ptr: *const Matrix = self;
-        Stash(ptr as *const ffi::cairo_matrix_t, self)
+        Stash(
+            self as *const Matrix as *const ffi::cairo_matrix_t,
+            PhantomData,
+        )
     }
 }
 
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_matrix_t> for Matrix {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
 
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::cairo_matrix_t, Self> {
-        let ptr: *mut Matrix = &mut *self;
-        StashMut(ptr as *mut ffi::cairo_matrix_t, self)
+        StashMut(self as *mut Matrix as *mut ffi::cairo_matrix_t, PhantomData)
     }
 }
 

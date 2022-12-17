@@ -144,10 +144,10 @@ impl<'a, 'list> ToGlibPtr<'a, *const ffi::PangoAttrIterator> for AttrIterator<'l
 where
     'list: 'a,
 {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::PangoAttrIterator, Self> {
-        Stash(self.ptr.as_ptr() as *const _, self)
+        Stash(self.ptr.as_ptr() as *const _, PhantomData)
     }
 }
 
@@ -156,10 +156,10 @@ impl<'a, 'list> ToGlibPtrMut<'a, *mut ffi::PangoAttrIterator> for AttrIterator<'
 where
     'list: 'a,
 {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::PangoAttrIterator, Self> {
-        StashMut(self.ptr.as_ptr(), self)
+        StashMut(self.ptr.as_ptr(), PhantomData)
     }
 }
 

@@ -72,7 +72,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = &'a $crate::shared::Shared<$ffi_name, Self>;
+            type Storage = std::marker::PhantomData<&'a $crate::shared::Shared<$ffi_name, Self>>;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
@@ -88,7 +88,7 @@ macro_rules! glib_shared_wrapper {
 
         #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
-            type Storage = &'a $crate::shared::Shared<$ffi_name, Self>;
+            type Storage = std::marker::PhantomData<&'a $crate::shared::Shared<$ffi_name, Self>>;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const $ffi_name, Self> {
@@ -487,11 +487,11 @@ impl<'a, T: 'static, MM> ToGlibPtr<'a, *mut T> for Shared<T, MM>
 where
     MM: SharedMemoryManager<T> + 'static,
 {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *mut T, Self> {
-        Stash(self.inner.as_ptr(), self)
+        Stash(self.inner.as_ptr(), PhantomData)
     }
 
     #[inline]

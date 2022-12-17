@@ -1,15 +1,17 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::marker::PhantomData;
+
 use glib::translate::*;
 
 use crate::AttrType;
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut ffi::PangoAttrClass> for &'a AttrClass {
-    type Storage = &'a AttrClass;
+    type Storage = PhantomData<&'a AttrClass>;
 
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::PangoAttrClass, Self> {
-        Stash(self.0, *self)
+        Stash(self.0, PhantomData)
     }
 }
 

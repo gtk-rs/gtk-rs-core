@@ -430,11 +430,11 @@ impl GlibPtrDefault for ObjectRef {
 
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GObject> for ObjectRef {
-    type Storage = &'a ObjectRef;
+    type Storage = PhantomData<&'a ObjectRef>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *mut gobject_ffi::GObject, Self> {
-        Stash(self.inner.as_ptr(), self)
+        Stash(self.inner.as_ptr(), PhantomData)
     }
 
     #[inline]

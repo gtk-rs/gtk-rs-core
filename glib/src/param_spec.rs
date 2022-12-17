@@ -389,7 +389,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl<'a> ToGlibPtr<'a, *const gobject_ffi::GParamSpec> for $rust_type {
-            type Storage = &'a $crate::shared::Shared<$ffi_type, $rust_type>;
+            type Storage = std::marker::PhantomData<&'a $crate::shared::Shared<$ffi_type, $rust_type>>;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *const gobject_ffi::GParamSpec, Self> {
@@ -405,7 +405,7 @@ macro_rules! define_param_spec {
 
         #[doc(hidden)]
         impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GParamSpec> for $rust_type {
-            type Storage = &'a $crate::shared::Shared<$ffi_type, $rust_type>;
+            type Storage = std::marker::PhantomData<&'a $crate::shared::Shared<$ffi_type, $rust_type>>;
 
             #[inline]
             fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut gobject_ffi::GParamSpec, Self> {
