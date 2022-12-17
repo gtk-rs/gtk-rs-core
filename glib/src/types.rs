@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Runtime type information.
 
-use std::{fmt, mem, ptr};
+use std::{fmt, marker::PhantomData, mem, ptr};
 
 use crate::{translate::*, Slice};
 
@@ -508,16 +508,14 @@ impl IntoGlib for Type {
 }
 
 impl<'a> ToGlibContainerFromSlice<'a, *mut ffi::GType> for Type {
-    type Storage = Option<Vec<ffi::GType>>;
+    type Storage = PhantomData<&'a [Type]>;
 
     fn to_glib_none_from_slice(t: &'a [Type]) -> (*mut ffi::GType, Self::Storage) {
-        let mut vec = t.iter().map(|t| t.into_glib()).collect::<Vec<_>>();
-
-        (vec.as_mut_ptr(), Some(vec))
+        (t.as_ptr() as *mut ffi::GType, PhantomData)
     }
 
     fn to_glib_container_from_slice(t: &'a [Type]) -> (*mut ffi::GType, Self::Storage) {
-        (Self::to_glib_full_from_slice(t), None)
+        (Self::to_glib_full_from_slice(t), PhantomData)
     }
 
     fn to_glib_full_from_slice(t: &[Type]) -> *mut ffi::GType {
