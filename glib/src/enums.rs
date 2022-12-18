@@ -26,9 +26,6 @@ pub enum UserDirectory {
     Templates,
     #[doc(alias = "G_USER_DIRECTORY_VIDEOS")]
     Videos,
-    #[doc(hidden)]
-    #[doc(alias = "G_USER_N_DIRECTORIES")]
-    NDirectories,
 }
 
 #[doc(hidden)]
@@ -45,7 +42,6 @@ impl IntoGlib for UserDirectory {
             Self::PublicShare => ffi::G_USER_DIRECTORY_PUBLIC_SHARE,
             Self::Templates => ffi::G_USER_DIRECTORY_TEMPLATES,
             Self::Videos => ffi::G_USER_DIRECTORY_VIDEOS,
-            Self::NDirectories => ffi::G_USER_N_DIRECTORIES,
         }
     }
 }
