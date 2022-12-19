@@ -234,6 +234,7 @@ impl fmt::Display for RayIntersectionKind {
 impl IntoGlib for RayIntersectionKind {
     type GlibType = ffi::graphene_ray_intersection_kind_t;
 
+    #[inline]
     fn into_glib(self) -> ffi::graphene_ray_intersection_kind_t {
         match self {
             Self::None => ffi::GRAPHENE_RAY_INTERSECTION_KIND_NONE,
@@ -246,6 +247,7 @@ impl IntoGlib for RayIntersectionKind {
 
 #[doc(hidden)]
 impl FromGlib<ffi::graphene_ray_intersection_kind_t> for RayIntersectionKind {
+    #[inline]
     unsafe fn from_glib(value: ffi::graphene_ray_intersection_kind_t) -> Self {
         skip_assert_initialized!();
         match value {

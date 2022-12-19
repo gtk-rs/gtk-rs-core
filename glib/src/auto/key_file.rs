@@ -268,7 +268,7 @@ impl KeyFile {
                 flags.into_glib(),
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -289,7 +289,7 @@ impl KeyFile {
                 flags.into_glib(),
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -312,7 +312,7 @@ impl KeyFile {
                 flags.into_glib(),
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -335,7 +335,7 @@ impl KeyFile {
                 key.to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -353,7 +353,7 @@ impl KeyFile {
                 group_name.to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -372,7 +372,7 @@ impl KeyFile {
                 key.to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -414,7 +414,7 @@ impl KeyFile {
                 comment.to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

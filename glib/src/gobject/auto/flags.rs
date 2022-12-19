@@ -30,6 +30,7 @@ impl fmt::Display for BindingFlags {
 impl IntoGlib for BindingFlags {
     type GlibType = gobject_ffi::GBindingFlags;
 
+    #[inline]
     fn into_glib(self) -> gobject_ffi::GBindingFlags {
         self.bits()
     }
@@ -37,12 +38,14 @@ impl IntoGlib for BindingFlags {
 
 #[doc(hidden)]
 impl FromGlib<gobject_ffi::GBindingFlags> for BindingFlags {
+    #[inline]
     unsafe fn from_glib(value: gobject_ffi::GBindingFlags) -> Self {
         Self::from_bits_truncate(value)
     }
 }
 
 impl StaticType for BindingFlags {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(gobject_ffi::g_binding_flags_get_type()) }
     }
@@ -55,6 +58,7 @@ impl crate::value::ValueType for BindingFlags {
 unsafe impl<'a> FromValue<'a> for BindingFlags {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         from_glib(crate::gobject_ffi::g_value_get_flags(
             value.to_glib_none().0,
@@ -63,6 +67,7 @@ unsafe impl<'a> FromValue<'a> for BindingFlags {
 }
 
 impl ToValue for BindingFlags {
+    #[inline]
     fn to_value(&self) -> crate::Value {
         let mut value = crate::Value::for_value_type::<Self>();
         unsafe {
@@ -71,6 +76,7 @@ impl ToValue for BindingFlags {
         value
     }
 
+    #[inline]
     fn value_type(&self) -> crate::Type {
         Self::static_type()
     }
@@ -119,6 +125,7 @@ impl fmt::Display for SignalFlags {
 impl IntoGlib for SignalFlags {
     type GlibType = gobject_ffi::GSignalFlags;
 
+    #[inline]
     fn into_glib(self) -> gobject_ffi::GSignalFlags {
         self.bits()
     }
@@ -126,6 +133,7 @@ impl IntoGlib for SignalFlags {
 
 #[doc(hidden)]
 impl FromGlib<gobject_ffi::GSignalFlags> for SignalFlags {
+    #[inline]
     unsafe fn from_glib(value: gobject_ffi::GSignalFlags) -> Self {
         Self::from_bits_truncate(value)
     }

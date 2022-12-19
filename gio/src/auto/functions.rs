@@ -436,7 +436,7 @@ pub fn dbus_is_supported_address(string: &str) -> Result<(), glib::Error> {
     unsafe {
         let mut error = ptr::null_mut();
         let is_ok = ffi::g_dbus_is_supported_address(string.to_glib_none().0, &mut error);
-        assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+        debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok(())
         } else {
@@ -538,7 +538,7 @@ pub fn resources_get_info(
             flags.as_mut_ptr(),
             &mut error,
         );
-        assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+        debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok((size.assume_init(), flags.assume_init()))
         } else {

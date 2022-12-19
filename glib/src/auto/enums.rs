@@ -44,6 +44,7 @@ impl fmt::Display for ChecksumType {
 impl IntoGlib for ChecksumType {
     type GlibType = ffi::GChecksumType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GChecksumType {
         match self {
             Self::Md5 => ffi::G_CHECKSUM_MD5,
@@ -58,6 +59,7 @@ impl IntoGlib for ChecksumType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GChecksumType> for ChecksumType {
+    #[inline]
     unsafe fn from_glib(value: ffi::GChecksumType) -> Self {
         match value {
             ffi::G_CHECKSUM_MD5 => Self::Md5,
@@ -118,6 +120,7 @@ impl fmt::Display for ConvertError {
 impl IntoGlib for ConvertError {
     type GlibType = ffi::GConvertError;
 
+    #[inline]
     fn into_glib(self) -> ffi::GConvertError {
         match self {
             Self::NoConversion => ffi::G_CONVERT_ERROR_NO_CONVERSION,
@@ -135,6 +138,7 @@ impl IntoGlib for ConvertError {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GConvertError> for ConvertError {
+    #[inline]
     unsafe fn from_glib(value: ffi::GConvertError) -> Self {
         match value {
             ffi::G_CONVERT_ERROR_NO_CONVERSION => Self::NoConversion,
@@ -151,25 +155,22 @@ impl FromGlib<ffi::GConvertError> for ConvertError {
 }
 
 impl ErrorDomain for ConvertError {
+    #[inline]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::g_convert_error_quark()) }
     }
 
+    #[inline]
     fn code(self) -> i32 {
         self.into_glib()
     }
 
+    #[inline]
+    #[allow(clippy::match_single_binding)]
     fn from(code: i32) -> Option<Self> {
-        match code {
-            ffi::G_CONVERT_ERROR_NO_CONVERSION => Some(Self::NoConversion),
-            ffi::G_CONVERT_ERROR_ILLEGAL_SEQUENCE => Some(Self::IllegalSequence),
-            ffi::G_CONVERT_ERROR_FAILED => Some(Self::Failed),
-            ffi::G_CONVERT_ERROR_PARTIAL_INPUT => Some(Self::PartialInput),
-            ffi::G_CONVERT_ERROR_BAD_URI => Some(Self::BadUri),
-            ffi::G_CONVERT_ERROR_NOT_ABSOLUTE_PATH => Some(Self::NotAbsolutePath),
-            ffi::G_CONVERT_ERROR_NO_MEMORY => Some(Self::NoMemory),
-            ffi::G_CONVERT_ERROR_EMBEDDED_NUL => Some(Self::EmbeddedNul),
-            _ => Some(Self::Failed),
+        match unsafe { from_glib(code) } {
+            Self::__Unknown(_) => Some(Self::Failed),
+            value => Some(value),
         }
     }
 }
@@ -327,6 +328,7 @@ impl fmt::Display for DateWeekday {
 impl IntoGlib for DateWeekday {
     type GlibType = ffi::GDateWeekday;
 
+    #[inline]
     fn into_glib(self) -> ffi::GDateWeekday {
         match self {
             Self::BadWeekday => ffi::G_DATE_BAD_WEEKDAY,
@@ -344,6 +346,7 @@ impl IntoGlib for DateWeekday {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GDateWeekday> for DateWeekday {
+    #[inline]
     unsafe fn from_glib(value: ffi::GDateWeekday) -> Self {
         match value {
             ffi::G_DATE_BAD_WEEKDAY => Self::BadWeekday,
@@ -525,42 +528,22 @@ impl FromGlib<ffi::GFileError> for FileError {
 }
 
 impl ErrorDomain for FileError {
+    #[inline]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::g_file_error_quark()) }
     }
 
+    #[inline]
     fn code(self) -> i32 {
         self.into_glib()
     }
 
+    #[inline]
+    #[allow(clippy::match_single_binding)]
     fn from(code: i32) -> Option<Self> {
-        match code {
-            ffi::G_FILE_ERROR_EXIST => Some(Self::Exist),
-            ffi::G_FILE_ERROR_ISDIR => Some(Self::Isdir),
-            ffi::G_FILE_ERROR_ACCES => Some(Self::Acces),
-            ffi::G_FILE_ERROR_NAMETOOLONG => Some(Self::Nametoolong),
-            ffi::G_FILE_ERROR_NOENT => Some(Self::Noent),
-            ffi::G_FILE_ERROR_NOTDIR => Some(Self::Notdir),
-            ffi::G_FILE_ERROR_NXIO => Some(Self::Nxio),
-            ffi::G_FILE_ERROR_NODEV => Some(Self::Nodev),
-            ffi::G_FILE_ERROR_ROFS => Some(Self::Rofs),
-            ffi::G_FILE_ERROR_TXTBSY => Some(Self::Txtbsy),
-            ffi::G_FILE_ERROR_FAULT => Some(Self::Fault),
-            ffi::G_FILE_ERROR_LOOP => Some(Self::Loop),
-            ffi::G_FILE_ERROR_NOSPC => Some(Self::Nospc),
-            ffi::G_FILE_ERROR_NOMEM => Some(Self::Nomem),
-            ffi::G_FILE_ERROR_MFILE => Some(Self::Mfile),
-            ffi::G_FILE_ERROR_NFILE => Some(Self::Nfile),
-            ffi::G_FILE_ERROR_BADF => Some(Self::Badf),
-            ffi::G_FILE_ERROR_INVAL => Some(Self::Inval),
-            ffi::G_FILE_ERROR_PIPE => Some(Self::Pipe),
-            ffi::G_FILE_ERROR_AGAIN => Some(Self::Again),
-            ffi::G_FILE_ERROR_INTR => Some(Self::Intr),
-            ffi::G_FILE_ERROR_IO => Some(Self::Io),
-            ffi::G_FILE_ERROR_PERM => Some(Self::Perm),
-            ffi::G_FILE_ERROR_NOSYS => Some(Self::Nosys),
-            ffi::G_FILE_ERROR_FAILED => Some(Self::Failed),
-            _ => Some(Self::Failed),
+        match unsafe { from_glib(code) } {
+            Self::__Unknown(_) => Some(Self::Failed),
+            value => Some(value),
         }
     }
 }
@@ -607,6 +590,7 @@ impl fmt::Display for KeyFileError {
 impl IntoGlib for KeyFileError {
     type GlibType = ffi::GKeyFileError;
 
+    #[inline]
     fn into_glib(self) -> ffi::GKeyFileError {
         match self {
             Self::UnknownEncoding => ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
@@ -622,6 +606,7 @@ impl IntoGlib for KeyFileError {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GKeyFileError> for KeyFileError {
+    #[inline]
     unsafe fn from_glib(value: ffi::GKeyFileError) -> Self {
         match value {
             ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING => Self::UnknownEncoding,
@@ -636,23 +621,21 @@ impl FromGlib<ffi::GKeyFileError> for KeyFileError {
 }
 
 impl ErrorDomain for KeyFileError {
+    #[inline]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::g_key_file_error_quark()) }
     }
 
+    #[inline]
     fn code(self) -> i32 {
         self.into_glib()
     }
 
+    #[inline]
+    #[allow(clippy::match_single_binding)]
     fn from(code: i32) -> Option<Self> {
-        match code {
-            ffi::G_KEY_FILE_ERROR_UNKNOWN_ENCODING => Some(Self::UnknownEncoding),
-            ffi::G_KEY_FILE_ERROR_PARSE => Some(Self::Parse),
-            ffi::G_KEY_FILE_ERROR_NOT_FOUND => Some(Self::NotFound),
-            ffi::G_KEY_FILE_ERROR_KEY_NOT_FOUND => Some(Self::KeyNotFound),
-            ffi::G_KEY_FILE_ERROR_GROUP_NOT_FOUND => Some(Self::GroupNotFound),
-            ffi::G_KEY_FILE_ERROR_INVALID_VALUE => Some(Self::InvalidValue),
-            value => Some(Self::__Unknown(value)),
+        match unsafe { from_glib(code) } {
+            value => Some(value),
         }
     }
 }
@@ -687,6 +670,7 @@ impl fmt::Display for LogWriterOutput {
 impl IntoGlib for LogWriterOutput {
     type GlibType = ffi::GLogWriterOutput;
 
+    #[inline]
     fn into_glib(self) -> ffi::GLogWriterOutput {
         match self {
             Self::Handled => ffi::G_LOG_WRITER_HANDLED,
@@ -698,6 +682,7 @@ impl IntoGlib for LogWriterOutput {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GLogWriterOutput> for LogWriterOutput {
+    #[inline]
     unsafe fn from_glib(value: ffi::GLogWriterOutput) -> Self {
         match value {
             ffi::G_LOG_WRITER_HANDLED => Self::Handled,
@@ -752,6 +737,7 @@ impl fmt::Display for MarkupError {
 impl IntoGlib for MarkupError {
     type GlibType = ffi::GMarkupError;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMarkupError {
         match self {
             Self::BadUtf8 => ffi::G_MARKUP_ERROR_BAD_UTF8,
@@ -768,6 +754,7 @@ impl IntoGlib for MarkupError {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMarkupError> for MarkupError {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMarkupError) -> Self {
         match value {
             ffi::G_MARKUP_ERROR_BAD_UTF8 => Self::BadUtf8,
@@ -783,24 +770,21 @@ impl FromGlib<ffi::GMarkupError> for MarkupError {
 }
 
 impl ErrorDomain for MarkupError {
+    #[inline]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::g_markup_error_quark()) }
     }
 
+    #[inline]
     fn code(self) -> i32 {
         self.into_glib()
     }
 
+    #[inline]
+    #[allow(clippy::match_single_binding)]
     fn from(code: i32) -> Option<Self> {
-        match code {
-            ffi::G_MARKUP_ERROR_BAD_UTF8 => Some(Self::BadUtf8),
-            ffi::G_MARKUP_ERROR_EMPTY => Some(Self::Empty),
-            ffi::G_MARKUP_ERROR_PARSE => Some(Self::Parse),
-            ffi::G_MARKUP_ERROR_UNKNOWN_ELEMENT => Some(Self::UnknownElement),
-            ffi::G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE => Some(Self::UnknownAttribute),
-            ffi::G_MARKUP_ERROR_INVALID_CONTENT => Some(Self::InvalidContent),
-            ffi::G_MARKUP_ERROR_MISSING_ATTRIBUTE => Some(Self::MissingAttribute),
-            value => Some(Self::__Unknown(value)),
+        match unsafe { from_glib(code) } {
+            value => Some(value),
         }
     }
 }
@@ -841,6 +825,7 @@ impl fmt::Display for NormalizeMode {
 impl IntoGlib for NormalizeMode {
     type GlibType = ffi::GNormalizeMode;
 
+    #[inline]
     fn into_glib(self) -> ffi::GNormalizeMode {
         match self {
             Self::Default => ffi::G_NORMALIZE_DEFAULT,
@@ -854,6 +839,7 @@ impl IntoGlib for NormalizeMode {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GNormalizeMode> for NormalizeMode {
+    #[inline]
     unsafe fn from_glib(value: ffi::GNormalizeMode) -> Self {
         match value {
             ffi::G_NORMALIZE_DEFAULT => Self::Default,
@@ -916,6 +902,7 @@ impl fmt::Display for OptionArg {
 impl IntoGlib for OptionArg {
     type GlibType = ffi::GOptionArg;
 
+    #[inline]
     fn into_glib(self) -> ffi::GOptionArg {
         match self {
             Self::None => ffi::G_OPTION_ARG_NONE,
@@ -934,6 +921,7 @@ impl IntoGlib for OptionArg {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GOptionArg> for OptionArg {
+    #[inline]
     unsafe fn from_glib(value: ffi::GOptionArg) -> Self {
         match value {
             ffi::G_OPTION_ARG_NONE => Self::None,
@@ -983,6 +971,7 @@ impl fmt::Display for SeekType {
 impl IntoGlib for SeekType {
     type GlibType = ffi::GSeekType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GSeekType {
         match self {
             Self::Cur => ffi::G_SEEK_CUR,
@@ -995,6 +984,7 @@ impl IntoGlib for SeekType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GSeekType> for SeekType {
+    #[inline]
     unsafe fn from_glib(value: ffi::GSeekType) -> Self {
         match value {
             ffi::G_SEEK_CUR => Self::Cur,
@@ -1038,6 +1028,7 @@ impl fmt::Display for TimeType {
 impl IntoGlib for TimeType {
     type GlibType = ffi::GTimeType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GTimeType {
         match self {
             Self::Standard => ffi::G_TIME_TYPE_STANDARD,
@@ -1050,6 +1041,7 @@ impl IntoGlib for TimeType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GTimeType> for TimeType {
+    #[inline]
     unsafe fn from_glib(value: ffi::GTimeType) -> Self {
         match value {
             ffi::G_TIME_TYPE_STANDARD => Self::Standard,
@@ -2030,6 +2022,7 @@ impl fmt::Display for UriError {
 impl IntoGlib for UriError {
     type GlibType = ffi::GUriError;
 
+    #[inline]
     fn into_glib(self) -> ffi::GUriError {
         match self {
             Self::Failed => ffi::G_URI_ERROR_FAILED,
@@ -2051,6 +2044,7 @@ impl IntoGlib for UriError {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriError> for UriError {
+    #[inline]
     unsafe fn from_glib(value: ffi::GUriError) -> Self {
         match value {
             ffi::G_URI_ERROR_FAILED => Self::Failed,
@@ -2071,27 +2065,22 @@ impl FromGlib<ffi::GUriError> for UriError {
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 impl ErrorDomain for UriError {
+    #[inline]
     fn domain() -> Quark {
         unsafe { from_glib(ffi::g_uri_error_quark()) }
     }
 
+    #[inline]
     fn code(self) -> i32 {
         self.into_glib()
     }
 
+    #[inline]
+    #[allow(clippy::match_single_binding)]
     fn from(code: i32) -> Option<Self> {
-        match code {
-            ffi::G_URI_ERROR_FAILED => Some(Self::Failed),
-            ffi::G_URI_ERROR_BAD_SCHEME => Some(Self::BadScheme),
-            ffi::G_URI_ERROR_BAD_USER => Some(Self::BadUser),
-            ffi::G_URI_ERROR_BAD_PASSWORD => Some(Self::BadPassword),
-            ffi::G_URI_ERROR_BAD_AUTH_PARAMS => Some(Self::BadAuthParams),
-            ffi::G_URI_ERROR_BAD_HOST => Some(Self::BadHost),
-            ffi::G_URI_ERROR_BAD_PORT => Some(Self::BadPort),
-            ffi::G_URI_ERROR_BAD_PATH => Some(Self::BadPath),
-            ffi::G_URI_ERROR_BAD_QUERY => Some(Self::BadQuery),
-            ffi::G_URI_ERROR_BAD_FRAGMENT => Some(Self::BadFragment),
-            _ => Some(Self::Failed),
+        match unsafe { from_glib(code) } {
+            Self::__Unknown(_) => Some(Self::Failed),
+            value => Some(value),
         }
     }
 }

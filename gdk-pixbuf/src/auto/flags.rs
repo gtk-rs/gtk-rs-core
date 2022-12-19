@@ -28,6 +28,7 @@ impl fmt::Display for PixbufFormatFlags {
 impl IntoGlib for PixbufFormatFlags {
     type GlibType = ffi::GdkPixbufFormatFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GdkPixbufFormatFlags {
         self.bits()
     }
@@ -35,6 +36,7 @@ impl IntoGlib for PixbufFormatFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GdkPixbufFormatFlags> for PixbufFormatFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GdkPixbufFormatFlags) -> Self {
         Self::from_bits_truncate(value)
     }

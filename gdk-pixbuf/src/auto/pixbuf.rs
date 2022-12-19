@@ -667,7 +667,7 @@ impl Pixbuf {
         unsafe {
             let mut error = ptr::null_mut();
             let is_ok = ffi::gdk_pixbuf_init_modules(path.to_glib_none().0, &mut error);
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
