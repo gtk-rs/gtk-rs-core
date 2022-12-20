@@ -2,7 +2,7 @@
 
 use std::fmt;
 #[cfg(feature = "use_glib")]
-use std::mem;
+use std::{marker::PhantomData, mem};
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
@@ -70,24 +70,28 @@ impl Uninitialized for Rectangle {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtr<'a, *const ffi::cairo_rectangle_t> for Rectangle {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::cairo_rectangle_t, Self> {
-        let ptr: *const Rectangle = self;
-        Stash(ptr as *const ffi::cairo_rectangle_t, self)
+        Stash(
+            self as *const Rectangle as *const ffi::cairo_rectangle_t,
+            PhantomData,
+        )
     }
 }
 
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_rectangle_t> for Rectangle {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
 
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::cairo_rectangle_t, Self> {
-        let ptr: *mut Rectangle = &mut *self;
-        StashMut(ptr as *mut ffi::cairo_rectangle_t, self)
+        StashMut(
+            self as *mut Rectangle as *mut ffi::cairo_rectangle_t,
+            PhantomData,
+        )
     }
 }
 

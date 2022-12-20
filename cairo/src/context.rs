@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 use std::{ffi::CString, fmt, mem::MaybeUninit, ops, ptr, slice};
 
 #[cfg(feature = "use_glib")]
@@ -69,11 +71,11 @@ impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
-    type Storage = &'a Context;
+    type Storage = PhantomData<&'a Context>;
 
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::cairo_t, &'a Context> {
-        Stash(self.0.as_ptr(), *self)
+        Stash(self.0.as_ptr(), PhantomData)
     }
 
     #[inline]

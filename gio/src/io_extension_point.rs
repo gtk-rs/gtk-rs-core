@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{fmt, ptr};
+use std::{fmt, marker::PhantomData, ptr};
 
 use glib::{translate::*, Type};
 
@@ -68,11 +68,11 @@ impl FromGlibPtrNone<*mut ffi::GIOExtensionPoint> for IOExtensionPoint {
 }
 
 impl<'a> ToGlibPtr<'a, *mut ffi::GIOExtensionPoint> for &'a IOExtensionPoint {
-    type Storage = &'a IOExtensionPoint;
+    type Storage = PhantomData<&'a IOExtensionPoint>;
 
     #[inline]
     fn to_glib_none(&self) -> Stash<'a, *mut ffi::GIOExtensionPoint, &'a IOExtensionPoint> {
-        Stash(self.0.as_ptr() as *mut ffi::GIOExtensionPoint, *self)
+        Stash(self.0.as_ptr() as *mut ffi::GIOExtensionPoint, PhantomData)
     }
 }
 

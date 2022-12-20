@@ -161,10 +161,10 @@ impl<'a, 'item> ToGlibPtr<'a, *const ffi::PangoGlyphItemIter> for GlyphItemIter<
 where
     'item: 'a,
 {
-    type Storage = &'a Self;
+    type Storage = PhantomData<&'a Self>;
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *const ffi::PangoGlyphItemIter, Self> {
-        Stash(&self.inner, self)
+        Stash(&self.inner, PhantomData)
     }
 }
 
@@ -173,9 +173,9 @@ impl<'a, 'item> ToGlibPtrMut<'a, *mut ffi::PangoGlyphItemIter> for GlyphItemIter
 where
     'item: 'a,
 {
-    type Storage = &'a mut Self;
+    type Storage = PhantomData<&'a mut Self>;
     #[inline]
     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::PangoGlyphItemIter, Self> {
-        StashMut(&mut self.inner, self)
+        StashMut(&mut self.inner, PhantomData)
     }
 }

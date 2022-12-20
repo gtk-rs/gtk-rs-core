@@ -35,8 +35,7 @@ impl ValueArray {
     }
 
     pub fn len(&self) -> usize {
-        let value = self.to_glib_none();
-        value.1.n_values as usize
+        self.inner.n_values as usize
     }
 
     #[doc(alias = "get_nth")]

@@ -801,14 +801,17 @@ where
 macro_rules! impl_to_glib_container_from_slice_fundamental {
     ($name:ty) => {
         impl<'a> ToGlibContainerFromSlice<'a, *mut $name> for $name {
-            type Storage = &'a [$name];
+            type Storage = std::marker::PhantomData<&'a [$name]>;
 
-            fn to_glib_none_from_slice(t: &'a [$name]) -> (*mut $name, &'a [$name]) {
-                (t.as_ptr() as *mut $name, t)
+            fn to_glib_none_from_slice(t: &'a [$name]) -> (*mut $name, Self::Storage) {
+                (t.as_ptr() as *mut $name, std::marker::PhantomData)
             }
 
-            fn to_glib_container_from_slice(t: &'a [$name]) -> (*mut $name, &'a [$name]) {
-                (ToGlibContainerFromSlice::to_glib_full_from_slice(t), t)
+            fn to_glib_container_from_slice(t: &'a [$name]) -> (*mut $name, Self::Storage) {
+                (
+                    ToGlibContainerFromSlice::to_glib_full_from_slice(t),
+                    std::marker::PhantomData,
+                )
             }
 
             fn to_glib_full_from_slice(t: &[$name]) -> *mut $name {

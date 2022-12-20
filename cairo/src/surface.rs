@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 use std::{ffi::CString, fmt, ops::Deref, ptr, slice};
 
 #[cfg(feature = "use_glib")]
@@ -292,11 +294,11 @@ impl IntoGlibPtr<*mut ffi::cairo_surface_t> for Surface {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_surface_t> for Surface {
-    type Storage = &'a Surface;
+    type Storage = PhantomData<&'a Surface>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::cairo_surface_t, Self> {
-        Stash(self.to_raw_none(), self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 
     #[inline]

@@ -45,7 +45,7 @@ macro_rules! declare_surface {
 
         #[cfg(feature = "use_glib")]
         impl<'a> ToGlibPtr<'a, *mut ffi::cairo_surface_t> for $surf_name {
-            type Storage = &'a Surface;
+            type Storage = std::marker::PhantomData<&'a Surface>;
 
             #[inline]
             fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::cairo_surface_t, Self> {

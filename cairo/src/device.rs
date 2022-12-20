@@ -2,6 +2,8 @@
 
 #[cfg(any(feature = "script", feature = "dox"))]
 use std::ffi::CString;
+#[cfg(feature = "use_glib")]
+use std::marker::PhantomData;
 #[cfg(any(feature = "script", feature = "dox"))]
 use std::path::Path;
 use std::{fmt, ptr};
@@ -305,11 +307,11 @@ impl IntoGlibPtr<*mut ffi::cairo_device_t> for Device {
 
 #[cfg(feature = "use_glib")]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_device_t> for Device {
-    type Storage = &'a Device;
+    type Storage = PhantomData<&'a Device>;
 
     #[inline]
     fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::cairo_device_t, Self> {
-        Stash(self.to_raw_none(), self)
+        Stash(self.to_raw_none(), PhantomData)
     }
 
     #[inline]
