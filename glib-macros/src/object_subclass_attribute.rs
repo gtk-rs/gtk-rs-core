@@ -110,7 +110,6 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
                 unsafe {
                     let data = Self::type_data();
                     let type_ = data.as_ref().type_();
-                    assert!(type_.is_valid());
 
                     type_
                 }

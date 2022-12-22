@@ -60,7 +60,7 @@ impl FontOptions {
     #[cfg(not(feature = "use_glib"))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self(ptr::NonNull::new_unchecked(ptr))
     }
 

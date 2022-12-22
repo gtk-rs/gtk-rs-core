@@ -359,7 +359,7 @@ mod test {
             fn constructed(&self) {
                 self.parent_constructed();
 
-                assert_eq!(self as *const _, self.obj().imp() as *const _);
+                debug_assert_eq!(self as *const _, self.obj().imp() as *const _);
 
                 *self.constructed.borrow_mut() = true;
             }

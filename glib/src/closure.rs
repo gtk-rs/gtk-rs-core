@@ -275,7 +275,6 @@ impl Closure {
         let size = u32::max(4, mem::align_of::<*mut c_void>() as u32)
             + 3 * mem::size_of::<*mut c_void>() as u32;
         let closure = gobject_ffi::g_closure_new_simple(size, ptr::null_mut());
-        assert_ne!(closure, ptr::null_mut());
         let callback = Box::new(callback);
         let ptr: *mut F = Box::into_raw(callback);
         let ptr: *mut c_void = ptr as *mut _;

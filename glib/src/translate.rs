@@ -1669,7 +1669,7 @@ impl<P: Ptr, T: FromGlibPtrFull<P>> FromGlibPtrFull<P> for Option<T> {
 impl FromGlibPtrNone<*const c_char> for String {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self::from_utf8_lossy(CStr::from_ptr(ptr).to_bytes()).into_owned()
     }
 }
@@ -1688,7 +1688,7 @@ impl FromGlibPtrFull<*const c_char> for String {
 impl FromGlibPtrNone<*mut c_char> for String {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self::from_utf8_lossy(CStr::from_ptr(ptr).to_bytes()).into_owned()
     }
 }
@@ -1705,7 +1705,7 @@ impl FromGlibPtrFull<*mut c_char> for String {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib paths on UNIX are always in the local encoding, which can be
     // UTF-8 or anything else really, but is always a NUL-terminated string
@@ -1715,7 +1715,7 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib paths on Windows are always UTF-8, as such we can convert to a String
     // first and then go to a PathBuf from there. Unless there is a bug
@@ -1728,7 +1728,7 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on UNIX are always in the local encoding,
     // which can be UTF-8 or anything else really, but is always a NUL-terminated string
@@ -1738,7 +1738,7 @@ pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on Windows are always UTF-8,
     // as such we can convert to a String
@@ -1753,7 +1753,7 @@ pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 impl FromGlibPtrNone<*const c_char> for PathBuf {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_path_buf(ptr)
     }
 }
@@ -1770,7 +1770,7 @@ impl FromGlibPtrFull<*const c_char> for PathBuf {
 impl FromGlibPtrNone<*mut c_char> for PathBuf {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_path_buf(ptr)
     }
 }
@@ -1786,14 +1786,14 @@ impl FromGlibPtrFull<*mut c_char> for PathBuf {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
     let slice = std::slice::from_raw_parts(ptr as *const u8, num);
     OsString::from_vec(slice.to_vec()).into()
 }
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
     let slice = std::slice::from_raw_parts(ptr as *const u8, num);
     String::from_utf8(slice.into())
         .expect("Invalid, non-UTF8 path")
@@ -1865,7 +1865,7 @@ impl FromGlibContainer<*const c_char, *mut u8> for PathBuf {
 impl FromGlibPtrNone<*const c_char> for OsString {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_os_string(ptr)
     }
 }
@@ -1882,7 +1882,7 @@ impl FromGlibPtrFull<*const c_char> for OsString {
 impl FromGlibPtrNone<*mut c_char> for OsString {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_os_string(ptr)
     }
 }
@@ -2500,7 +2500,7 @@ where
             return Vec::new();
         }
         let pdata = (*ptr).pdata;
-        assert!((*ptr).len as usize >= num);
+        debug_assert!((*ptr).len as usize >= num);
         let mut res = Vec::with_capacity(num);
         for i in 0..num {
             let item_ptr: <T as GlibPtrDefault>::GlibType = Ptr::from(ptr::read(pdata.add(i)));
@@ -2528,7 +2528,7 @@ where
             return Vec::new();
         }
         let pdata = (*ptr).pdata;
-        assert!((*ptr).len as usize >= num);
+        debug_assert!((*ptr).len as usize >= num);
         let mut res = Vec::with_capacity(num);
         for i in 0..num {
             let item_ptr: <T as GlibPtrDefault>::GlibType = Ptr::from(ptr::read(pdata.add(i)));

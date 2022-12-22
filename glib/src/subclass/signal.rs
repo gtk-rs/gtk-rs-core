@@ -235,7 +235,7 @@ impl SignalId {
             let mut query_ptr = std::mem::MaybeUninit::uninit();
             gobject_ffi::g_signal_query(self.into_glib(), query_ptr.as_mut_ptr());
             let query = query_ptr.assume_init();
-            assert_ne!(query.signal_id, 0);
+            debug_assert_ne!(query.signal_id, 0);
             SignalQuery(query)
         }
     }
@@ -256,7 +256,7 @@ impl SignalId {
 impl FromGlib<u32> for SignalId {
     #[inline]
     unsafe fn from_glib(signal_id: u32) -> Self {
-        assert_ne!(signal_id, 0);
+        debug_assert_ne!(signal_id, 0);
         Self::new(NonZeroU32::new_unchecked(signal_id))
     }
 }

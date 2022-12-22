@@ -60,7 +60,7 @@ impl SignalHandlerId {
 impl FromGlib<c_ulong> for SignalHandlerId {
     #[inline]
     unsafe fn from_glib(val: c_ulong) -> Self {
-        assert_ne!(val, 0);
+        debug_assert_ne!(val, 0);
         Self(NonZeroU64::new_unchecked(val as _))
     }
 }
@@ -109,8 +109,8 @@ pub unsafe fn connect_raw<F>(
         // destroy
         let _ = Box::<F>::from_raw(ptr as *mut _);
     }
-    assert_eq!(mem::size_of::<*mut F>(), mem::size_of::<gpointer>());
-    assert!(trampoline.is_some());
+    debug_assert_eq!(mem::size_of::<*mut F>(), mem::size_of::<gpointer>());
+    debug_assert!(trampoline.is_some());
     let handle = gobject_ffi::g_signal_connect_data(
         receiver,
         signal_name,
@@ -119,7 +119,7 @@ pub unsafe fn connect_raw<F>(
         Some(destroy_closure::<F>),
         0,
     );
-    assert!(handle > 0);
+    debug_assert!(handle > 0);
     from_glib(handle)
 }
 

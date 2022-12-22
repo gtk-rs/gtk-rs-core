@@ -300,7 +300,7 @@ macro_rules! glib_boxed_wrapper {
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
@@ -311,10 +311,10 @@ macro_rules! glib_boxed_wrapper {
 
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
+                debug_assert!(!(*ptr).is_null());
                 &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
@@ -432,7 +432,7 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtrMut<'a, *mut T> for Box
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let ptr = MM::copy(ptr);
         from_glib_full(ptr)
     }
@@ -441,7 +441,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T,
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *const T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let ptr = MM::copy(ptr);
         from_glib_full(ptr)
     }
@@ -450,7 +450,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,
@@ -461,7 +461,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T,
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *const T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self {
             inner: ptr::NonNull::new_unchecked(ptr as *mut T),
             _dummy: PhantomData,
@@ -472,7 +472,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,

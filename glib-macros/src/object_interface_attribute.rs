@@ -64,7 +64,6 @@ pub fn impl_object_interface(input: &syn::ItemImpl) -> TokenStream {
                 });
 
                 unsafe {
-                    assert!(TYPE.is_valid());
                     TYPE
                 }
             }

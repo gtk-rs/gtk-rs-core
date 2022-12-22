@@ -341,7 +341,7 @@ macro_rules! glib_shared_wrapper {
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
@@ -352,10 +352,10 @@ macro_rules! glib_shared_wrapper {
 
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
+                debug_assert!(!(*ptr).is_null());
                 &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
@@ -520,7 +520,7 @@ where
 impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         MM::ref_(ptr);
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
@@ -532,7 +532,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*mut T> for Shared<
 impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*const T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *const T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         MM::ref_(ptr as *mut _);
         Self {
             inner: ptr::NonNull::new_unchecked(ptr as *mut _),
@@ -544,7 +544,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrNone<*const T> for Share
 impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrFull<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             mm: PhantomData,
@@ -555,7 +555,7 @@ impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrFull<*mut T> for Shared<
 impl<T: 'static, MM: SharedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Shared<T, MM> {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             mm: PhantomData,

@@ -47,7 +47,7 @@ impl SourceId {
 impl FromGlib<u32> for SourceId {
     #[inline]
     unsafe fn from_glib(val: u32) -> Self {
-        assert_ne!(val, 0);
+        debug_assert_ne!(val, 0);
         Self(NonZeroU32::new_unchecked(val))
     }
 }

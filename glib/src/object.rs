@@ -548,8 +548,8 @@ impl<'a> ToGlibContainerFromSlice<'a, *const *mut gobject_ffi::GObject> for Obje
 impl FromGlibPtrNone<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut gobject_ffi::GObject) -> Self {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         // Attention: This takes ownership of floating references!
         Self {
@@ -571,8 +571,8 @@ impl FromGlibPtrNone<*const gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut gobject_ffi::GObject) -> Self {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
@@ -584,8 +584,8 @@ impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrBorrow<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GObject) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         Borrowed::new(Self {
             inner: ptr::NonNull::new_unchecked(ptr),
@@ -1229,8 +1229,8 @@ macro_rules! glib_object_wrapper {
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
-                assert_ne!((*ptr).ref_count, 0);
+                debug_assert!(!ptr.is_null());
+                debug_assert_ne!((*ptr).ref_count, 0);
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
@@ -1241,11 +1241,11 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
-                assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
+                debug_assert!(!(*ptr).is_null());
+                debug_assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
                 &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
@@ -4306,7 +4306,7 @@ impl<T: IsInterface> Interface<T> {
     pub fn default() -> InterfaceRef<'static, T> {
         unsafe {
             let ptr = gobject_ffi::g_type_default_interface_ref(T::static_type().into_glib());
-            assert!(!ptr.is_null());
+            debug_assert!(!ptr.is_null());
             InterfaceRef(
                 ptr::NonNull::new_unchecked(ptr as *mut Self),
                 true,

@@ -20,7 +20,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::PangoAttrClass> for &'a AttrClass {
 impl FromGlibPtrNone<*mut ffi::PangoAttrClass> for AttrClass {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::PangoAttrClass) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self(ptr)
     }
 }
@@ -29,7 +29,7 @@ impl FromGlibPtrNone<*mut ffi::PangoAttrClass> for AttrClass {
 impl FromGlibPtrFull<*mut ffi::PangoAttrClass> for AttrClass {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::PangoAttrClass) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self(ptr)
     }
 }
@@ -38,7 +38,7 @@ impl FromGlibPtrFull<*mut ffi::PangoAttrClass> for AttrClass {
 impl FromGlibPtrNone<*const ffi::PangoAttrClass> for AttrClass {
     #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::PangoAttrClass) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self(ptr as *mut _)
     }
 }
@@ -47,7 +47,7 @@ impl FromGlibPtrNone<*const ffi::PangoAttrClass> for AttrClass {
 impl FromGlibPtrFull<*const ffi::PangoAttrClass> for AttrClass {
     #[inline]
     unsafe fn from_glib_full(ptr: *const ffi::PangoAttrClass) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self(ptr as *mut _)
     }
 }

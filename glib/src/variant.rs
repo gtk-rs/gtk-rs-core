@@ -149,7 +149,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for Variant {
 
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         let ptr = gobject_ffi::g_value_dup_variant(value.to_glib_none().0);
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         from_glib_full(ptr)
     }
 }
@@ -405,12 +405,12 @@ impl Variant {
                 n_elements.as_mut_ptr(),
                 mem::size_of::<T>(),
             );
-            assert!(!ptr.is_null());
 
             let n_elements = n_elements.assume_init();
             if n_elements == 0 {
                 Ok(&[])
             } else {
+                debug_assert!(!ptr.is_null());
                 Ok(slice::from_raw_parts(ptr as *const T, n_elements))
             }
         }
@@ -550,10 +550,10 @@ impl Variant {
     ///
     /// # Panics
     ///
-    /// Panics if compiled with `debug_assertions` and the variant is not maybe-typed.
+    /// Panics if the variant is not maybe-typed.
     #[inline]
     pub fn as_maybe(&self) -> Option<Variant> {
-        debug_assert!(self.type_().is_maybe());
+        assert!(self.type_().is_maybe());
 
         unsafe { from_glib_full(ffi::g_variant_get_maybe(self.to_glib_none().0)) }
     }
@@ -587,9 +587,10 @@ impl Variant {
                 &mut error,
             );
             if variant.is_null() {
-                assert!(!error.is_null());
+                debug_assert!(!error.is_null());
                 Err(from_glib_full(error))
             } else {
+                debug_assert!(error.is_null());
                 Ok(from_glib_full(variant))
             }
         }

@@ -62,7 +62,7 @@ impl fmt::Display for IOExtensionPoint {
 impl FromGlibPtrNone<*mut ffi::GIOExtensionPoint> for IOExtensionPoint {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::GIOExtensionPoint) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         IOExtensionPoint(ptr::NonNull::new_unchecked(ptr))
     }
 }

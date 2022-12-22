@@ -43,7 +43,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for ParamSpec {
 
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         from_glib_full(ptr as *mut gobject_ffi::GParamSpec)
     }
 }
@@ -53,14 +53,14 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a ParamSpec {
     type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             std::mem::size_of::<Self>(),
             std::mem::size_of::<crate::ffi::gpointer>()
         );
         let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
         let ptr = &value.data[0].v_pointer as *const crate::ffi::gpointer
             as *const *const gobject_ffi::GParamSpec;
-        assert!(!(*ptr).is_null());
+        debug_assert!(!(*ptr).is_null());
         &*(ptr as *const ParamSpec)
     }
 }
@@ -327,7 +327,7 @@ macro_rules! define_param_spec {
 
             unsafe fn from_value(value: &'a crate::Value) -> Self {
                 let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 from_glib_full(ptr as *mut $ffi_type)
             }
         }
@@ -337,10 +337,10 @@ macro_rules! define_param_spec {
             type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<crate::ffi::gpointer>());
                 let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const crate::ffi::gpointer as *const *const gobject_ffi::GParamSpec;
-                assert!(!(*ptr).is_null());
+                debug_assert!(!(*ptr).is_null());
                 &*(ptr as *const $rust_type)
             }
         }
@@ -966,7 +966,7 @@ impl ParamSpecEnum {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecEnum>::to_glib_none(self).0;
 
-            assert!(!(*ptr).enum_class.is_null());
+            debug_assert!(!(*ptr).enum_class.is_null());
 
             crate::EnumClass::new(from_glib((*(*ptr).enum_class).g_type_class.g_type))
                 .expect("Invalid enum class")
@@ -1086,7 +1086,7 @@ impl ParamSpecFlags {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecFlags>::to_glib_none(self).0;
 
-            assert!(!(*ptr).flags_class.is_null());
+            debug_assert!(!(*ptr).flags_class.is_null());
 
             crate::FlagsClass::new(from_glib((*(*ptr).flags_class).g_type_class.g_type))
                 .expect("Invalid flags class")

@@ -178,12 +178,13 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                     let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
                         let type_ = #crate_ident::gobject_ffi::g_enum_register_static(name.as_ptr(), VALUES.as_ptr());
-                        TYPE = #crate_ident::translate::from_glib(type_);
+                        let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
+                        assert!(type_.is_valid());
+                        TYPE = type_;
                     }
                 });
 
                 unsafe {
-                    assert!(TYPE.is_valid());
                     TYPE
                 }
             }

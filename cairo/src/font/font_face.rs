@@ -114,7 +114,7 @@ impl FontFace {
     #[cfg(not(feature = "use_glib"))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_face_t) -> FontFace {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         FontFace(ptr::NonNull::new_unchecked(ptr))
     }
 
@@ -127,7 +127,7 @@ impl FontFace {
     #[cfg(not(feature = "use_glib"))]
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_font_face_t) -> FontFace {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         FontFace(ptr::NonNull::new_unchecked(ptr))
     }
 

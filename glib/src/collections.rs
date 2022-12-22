@@ -162,11 +162,11 @@ impl<
         ptr: *const <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> &'a [T] {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
             &[]
@@ -184,11 +184,11 @@ impl<
         ptr: *const <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         PtrSlice {
             ptr: if len == 0 {
@@ -210,11 +210,11 @@ impl<
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         PtrSlice {
             ptr: if len == 0 {
@@ -235,11 +235,11 @@ impl<
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         for i in 0..len {
             let p = ptr.add(i);
@@ -266,11 +266,11 @@ impl<
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         PtrSlice {
             ptr: if len == 0 {
@@ -320,7 +320,7 @@ impl<
     /// Create a new `PtrSlice` around a `NULL`-terminated C array where the items are borrowed.
     #[inline]
     pub unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
@@ -536,7 +536,7 @@ impl<T: 'static> Slice<T> {
     /// Borrows a static C array.
     #[inline]
     pub unsafe fn from_glib_borrow_num<'a>(ptr: *const T, len: usize) -> &'a [T] {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
             &[]
@@ -549,7 +549,7 @@ impl<T: 'static> Slice<T> {
     /// Borrows a static mutable C array.
     #[inline]
     pub unsafe fn from_glib_borrow_num_mut<'a>(ptr: *mut T, len: usize) -> &'a mut [T] {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
             &mut []
@@ -564,7 +564,7 @@ impl<T: 'static> Slice<T> {
     /// Must only be called for static allocations that are never invalidated.
     #[inline]
     pub unsafe fn from_glib_none_num_static(ptr: *const T, len: usize) -> Self {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         Slice {
             ptr: if len == 0 {
@@ -583,7 +583,7 @@ impl<T: 'static> Slice<T> {
     /// Must only be called for static items that are never invalidated.
     #[inline]
     pub unsafe fn from_glib_container_num_static(ptr: *mut T, len: usize) -> Self {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         Slice {
             ptr: if len == 0 {
@@ -604,7 +604,7 @@ impl<T: 'static> Slice<T> {
     where
         T: Copy,
     {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         Slice {
             ptr: if len == 0 {
@@ -625,7 +625,7 @@ impl<T: 'static> Slice<T> {
     where
         T: FromGlibPtrNone<P>,
     {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         for i in 0..len {
             let p = ptr.add(i);
@@ -652,7 +652,7 @@ impl<T: 'static> Slice<T> {
     where
         T: Copy,
     {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         Slice {
             ptr: if len == 0 {
@@ -670,7 +670,7 @@ impl<T: 'static> Slice<T> {
     /// Create a new `Slice` around a C array.
     #[inline]
     pub unsafe fn from_glib_full_num(ptr: *mut T, len: usize) -> Self {
-        assert!(!ptr.is_null() || len == 0);
+        debug_assert!(!ptr.is_null() || len == 0);
 
         Slice {
             ptr: if len == 0 {
@@ -976,7 +976,7 @@ impl<
 {
     #[inline]
     fn new(list: &'a List<T>) -> ListIter<'a, T> {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
@@ -1076,7 +1076,7 @@ impl<
     /// Create a new `SList` around a list.
     #[inline]
     pub unsafe fn from_glib_container(list: *mut ffi::GSList) -> SList<T> {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );
@@ -1252,7 +1252,7 @@ impl<
 {
     #[inline]
     fn new(list: &'a SList<T>) -> SListIter<'a, T> {
-        assert_eq!(
+        debug_assert_eq!(
             mem::size_of::<T>(),
             mem::size_of::<<T as GlibPtrDefault>::GlibType>()
         );

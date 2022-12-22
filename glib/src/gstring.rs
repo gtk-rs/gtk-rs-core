@@ -512,10 +512,10 @@ impl StaticType for GStr {
 impl FromGlibPtrNone<*const u8> for &GStr {
     #[inline]
     unsafe fn from_glib_none(ptr: *const u8) -> Self {
-        assert!(!ptr.is_null(), "provided C string is NULL");
+        debug_assert!(!ptr.is_null());
         let cstr = CStr::from_ptr(ptr as *const _);
-        // Also check if it's valid UTF-8
-        GStr::from_str_with_nul_unchecked(cstr.to_str().unwrap())
+        debug_assert!(cstr.to_str().is_ok(), "C string is not valid utf-8");
+        GStr::from_utf8_with_nul_unchecked(cstr.to_bytes_with_nul())
     }
 }
 
@@ -550,7 +550,7 @@ unsafe impl<'a> FromValue<'a> for &'a GStr {
     unsafe fn from_value(value: &'a Value) -> Self {
         let ptr = gobject_ffi::g_value_get_string(value.to_glib_none().0);
         let cstr = CStr::from_ptr(ptr);
-        assert!(
+        debug_assert!(
             cstr.to_str().is_ok(),
             "C string in glib::Value is not valid utf-8"
         );
@@ -851,7 +851,7 @@ impl GString {
     /// must be the nul-terminator.
     #[inline]
     pub unsafe fn from_ptr_and_len_unchecked(ptr: *const c_char, len: usize) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
 
         GString(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
@@ -1542,14 +1542,11 @@ impl<'a> From<&'a GStr> for Cow<'a, GStr> {
 impl FromGlibPtrFull<*mut u8> for GString {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut u8) -> Self {
-        assert!(!ptr.is_null(), "provided C string is NULL");
+        debug_assert!(!ptr.is_null());
 
         let cstr = CStr::from_ptr(ptr as *const _);
         // Check for valid UTF-8 here
-        assert!(
-            cstr.to_str().is_ok(),
-            "provided C string is not valid utf-8"
-        );
+        debug_assert!(cstr.to_str().is_ok());
         Self(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
             len: cstr.to_bytes().len(),
@@ -1585,10 +1582,8 @@ impl FromGlibPtrFull<*const i8> for GString {
 impl FromGlibPtrNone<*const u8> for GString {
     #[inline]
     unsafe fn from_glib_none(ptr: *const u8) -> Self {
-        assert!(!ptr.is_null(), "provided C string is NULL");
-        let cstr = CStr::from_ptr(ptr as *const _);
-        // Also check if it's valid UTF-8
-        cstr.to_str().unwrap().into()
+        debug_assert!(!ptr.is_null());
+        <&GStr>::from_glib_none(ptr).into()
     }
 }
 
@@ -1620,11 +1615,11 @@ impl FromGlibPtrNone<*mut i8> for GString {
 impl FromGlibPtrBorrow<*const u8> for GString {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *const u8) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
 
         // Check for valid UTF-8 here
         let cstr = CStr::from_ptr(ptr as *const _);
-        assert!(cstr.to_str().is_ok());
+        debug_assert!(cstr.to_str().is_ok());
         Borrowed::new(Self(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
             len: cstr.to_bytes().len(),
@@ -1723,8 +1718,12 @@ impl FromGlibContainer<*const c_char, *const i8> for GString {
             return Self::default();
         }
         let slice = slice::from_raw_parts(ptr as *const u8, num);
-        // Also check if it's valid UTF-8
-        std::str::from_utf8(slice).unwrap().into()
+        if cfg!(debug_assertions) {
+            // Also check if it's valid UTF-8
+            std::str::from_utf8(slice).unwrap().into()
+        } else {
+            std::str::from_utf8_unchecked(slice).into()
+        }
     }
 
     unsafe fn from_glib_container_num(ptr: *const i8, num: usize) -> Self {
@@ -1732,9 +1731,11 @@ impl FromGlibContainer<*const c_char, *const i8> for GString {
             return Self::default();
         }
 
-        // Check if it's valid UTF-8
-        let slice = slice::from_raw_parts(ptr as *const u8, num);
-        std::str::from_utf8(slice).unwrap();
+        if cfg!(debug_assertions) {
+            // Check if it's valid UTF-8
+            let slice = slice::from_raw_parts(ptr as *const u8, num);
+            std::str::from_utf8(slice).unwrap();
+        }
 
         GString(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
@@ -1747,9 +1748,11 @@ impl FromGlibContainer<*const c_char, *const i8> for GString {
             return Self::default();
         }
 
-        // Check if it's valid UTF-8
-        let slice = slice::from_raw_parts(ptr as *const u8, num);
-        std::str::from_utf8(slice).unwrap();
+        if cfg!(debug_assertions) {
+            // Check if it's valid UTF-8
+            let slice = slice::from_raw_parts(ptr as *const u8, num);
+            std::str::from_utf8(slice).unwrap();
+        }
 
         GString(Inner::Foreign {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),

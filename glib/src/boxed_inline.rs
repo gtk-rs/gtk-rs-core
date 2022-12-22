@@ -334,7 +334,7 @@ macro_rules! glib_boxed_inline_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
 
                 let mut v = <Self as $crate::translate::Uninitialized>::uninitialized();
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
@@ -356,7 +356,7 @@ macro_rules! glib_boxed_inline_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrFull<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
 
                 let mut v = <Self as $crate::translate::Uninitialized>::uninitialized();
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
@@ -381,7 +381,7 @@ macro_rules! glib_boxed_inline_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
 
                 $crate::translate::Borrowed::new(Self {
                     inner: std::ptr::read(ptr),
@@ -543,7 +543,7 @@ macro_rules! glib_boxed_inline_wrapper {
             #[inline]
             unsafe fn from_value(value: &'_ $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <Self as $crate::translate::FromGlibPtrNone<*const $ffi_name>>::from_glib_none(ptr as *const $ffi_name)
             }
         }
@@ -555,7 +555,7 @@ macro_rules! glib_boxed_inline_wrapper {
             #[inline]
             unsafe fn from_value(value: &'_ $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 &*(ptr as *const $ffi_name as *const $name $(<$($generic),+>)?)
             }
         }

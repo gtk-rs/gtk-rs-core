@@ -44,7 +44,7 @@ fn gen_impl_from_value_optional(name: &Ident, crate_ident: &TokenStream) -> Toke
             #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 #name(#refcounted_type_prefix::from_raw(ptr as *mut _))
             }
         }
@@ -61,7 +61,7 @@ fn gen_impl_from_value(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
             #[inline]
             unsafe fn from_value(value: &'a #crate_ident::Value) -> Self {
                 let ptr = #crate_ident::gobject_ffi::g_value_dup_boxed(#crate_ident::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 #name(#refcounted_type_prefix::from_raw(ptr as *mut _))
             }
         }

@@ -21,20 +21,20 @@ pub struct Surface(ptr::NonNull<ffi::cairo_surface_t>);
 impl Surface {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_surface_t) -> Surface {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ffi::cairo_surface_reference(ptr);
         Surface(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_surface_t) -> crate::Borrowed<Surface> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         crate::Borrowed::new(Surface(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_surface_t) -> Result<Surface, Error> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let status = ffi::cairo_surface_status(ptr);
         status_to_result(status)?;
         Ok(Surface(ptr::NonNull::new_unchecked(ptr)))

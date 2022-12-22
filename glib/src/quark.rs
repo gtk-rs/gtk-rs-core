@@ -56,7 +56,7 @@ impl std::str::FromStr for Quark {
 impl FromGlib<ffi::GQuark> for Quark {
     #[inline]
     unsafe fn from_glib(value: ffi::GQuark) -> Self {
-        assert_ne!(value, 0);
+        debug_assert_ne!(value, 0);
         Self(NonZeroU32::new_unchecked(value))
     }
 }

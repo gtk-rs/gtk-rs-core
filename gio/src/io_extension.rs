@@ -29,7 +29,7 @@ impl fmt::Display for IOExtension {
 impl FromGlibPtrNone<*mut ffi::GIOExtension> for IOExtension {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::GIOExtension) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         IOExtension(ptr::NonNull::new_unchecked(ptr))
     }
 }

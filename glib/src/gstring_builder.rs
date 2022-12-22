@@ -25,7 +25,7 @@ wrapper! {
             *ptr = inner;
         },
         copy_into => |dest, src| {
-            assert!((*src).allocated_len > (*src).len);
+            debug_assert!((*src).allocated_len > (*src).len);
             let allocated_len = (*src).allocated_len;
             let inner = ffi::GString {
                 str: ffi::g_malloc(allocated_len) as *mut _,

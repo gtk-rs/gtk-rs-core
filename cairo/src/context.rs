@@ -136,20 +136,20 @@ impl Drop for Context {
 impl Context {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_t) -> Context {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ffi::cairo_reference(ptr);
         Context(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_t) -> crate::Borrowed<Context> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         crate::Borrowed::new(Context(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_t) -> Context {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Context(ptr::NonNull::new_unchecked(ptr))
     }
 

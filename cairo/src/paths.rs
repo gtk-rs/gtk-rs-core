@@ -15,7 +15,7 @@ impl Path {
 
     #[inline]
     pub unsafe fn from_raw_full(pointer: *mut cairo_path_t) -> Path {
-        assert!(!pointer.is_null());
+        debug_assert!(!pointer.is_null());
         Path(ptr::NonNull::new_unchecked(pointer))
     }
 

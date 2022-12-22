@@ -134,7 +134,7 @@ pub trait ObjectInterfaceExt: ObjectInterface {
             let klass = (*(obj.as_ptr() as *const gobject_ffi::GTypeInstance)).g_class;
             let interface =
                 gobject_ffi::g_type_interface_peek(klass as *mut _, Self::type_().into_glib());
-            assert!(!interface.is_null());
+            debug_assert!(!interface.is_null());
             &*(interface as *const Self)
         }
     }

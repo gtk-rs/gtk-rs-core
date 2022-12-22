@@ -67,7 +67,7 @@ impl TaskSource {
         _user_data: ffi::gpointer,
     ) -> ffi::gboolean {
         let source = &mut *(source as *mut Self);
-        assert!(callback.is_none());
+        debug_assert!(callback.is_none());
 
         // Poll the TaskSource and ensure we're never called again if the
         // contained Future resolved now.

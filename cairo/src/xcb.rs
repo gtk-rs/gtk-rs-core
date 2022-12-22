@@ -53,19 +53,19 @@ impl XCBConnection {
 
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_connection_t) -> XCBConnection {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBConnection(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_connection_t) -> Borrowed<XCBConnection> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(XCBConnection(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_connection_t) -> XCBConnection {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBConnection(ptr::NonNull::new_unchecked(ptr))
     }
 }
@@ -129,7 +129,7 @@ impl XCBRenderPictFormInfo {
 
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_render_pictforminfo_t) -> XCBRenderPictFormInfo {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr))
     }
 
@@ -137,13 +137,13 @@ impl XCBRenderPictFormInfo {
     pub unsafe fn from_raw_borrow(
         ptr: *mut ffi::xcb_render_pictforminfo_t,
     ) -> Borrowed<XCBRenderPictFormInfo> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_render_pictforminfo_t) -> XCBRenderPictFormInfo {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBRenderPictFormInfo(ptr::NonNull::new_unchecked(ptr))
     }
 }
@@ -211,19 +211,19 @@ impl XCBScreen {
 
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_screen_t) -> XCBScreen {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBScreen(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_screen_t) -> Borrowed<XCBScreen> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(XCBScreen(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_screen_t) -> XCBScreen {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBScreen(ptr::NonNull::new_unchecked(ptr))
     }
 }
@@ -378,19 +378,19 @@ impl XCBVisualType {
 
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::xcb_visualtype_t) -> XCBVisualType {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBVisualType(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::xcb_visualtype_t) -> Borrowed<XCBVisualType> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(XCBVisualType(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::xcb_visualtype_t) -> XCBVisualType {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         XCBVisualType(ptr::NonNull::new_unchecked(ptr))
     }
 }

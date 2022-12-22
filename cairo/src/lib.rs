@@ -46,7 +46,7 @@ macro_rules! gvalue_impl {
                 let ptr = glib::gobject_ffi::g_value_dup_boxed(
                     glib::translate::ToGlibPtr::to_glib_none(value).0,
                 );
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <$name as glib::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(
                     ptr as *mut $ffi_name,
                 )
@@ -57,14 +57,14 @@ macro_rules! gvalue_impl {
             type Checker = glib::value::GenericValueTypeOrNoneChecker<Self>;
 
             unsafe fn from_value(value: &'a glib::Value) -> Self {
-                assert_eq!(
+                debug_assert_eq!(
                     std::mem::size_of::<Self>(),
                     std::mem::size_of::<glib::ffi::gpointer>()
                 );
                 let value = &*(value as *const glib::Value as *const glib::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const glib::ffi::gpointer
                     as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
+                debug_assert!(!(*ptr).is_null());
                 &*(ptr as *const $name)
             }
         }
@@ -129,7 +129,7 @@ macro_rules! gvalue_impl_inline {
                 let ptr = glib::gobject_ffi::g_value_get_boxed(
                     glib::translate::ToGlibPtr::to_glib_none(value).0,
                 );
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <$name as glib::translate::FromGlibPtrNone<*mut $ffi_name>>::from_glib_none(
                     ptr as *mut $ffi_name,
                 )
@@ -143,7 +143,7 @@ macro_rules! gvalue_impl_inline {
                 let ptr = glib::gobject_ffi::g_value_get_boxed(
                     glib::translate::ToGlibPtr::to_glib_none(value).0,
                 );
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 &*(ptr as *mut $name)
             }
         }

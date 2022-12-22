@@ -712,7 +712,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         unsafe {
             let data = Self::type_data();
             let type_ = data.as_ref().type_();
-            assert!(type_.is_valid());
+            debug_assert!(type_.is_valid());
 
             let offset = -data.as_ref().impl_offset();
 
@@ -723,7 +723,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             // The object might just be finalized, and in that case it's unsafe to access
             // it and use any API on it. This can only happen from inside the Drop impl
             // of Self.
-            assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
+            debug_assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
 
             crate::BorrowedObject::new(ptr)
         }
@@ -747,7 +747,7 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         unsafe {
             let type_data = Self::type_data();
             let self_type_ = type_data.as_ref().type_();
-            assert!(self_type_.is_valid());
+            debug_assert!(self_type_.is_valid());
 
             let offset = -type_data.as_ref().private_imp_offset;
 
@@ -815,7 +815,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
         unsafe {
             let type_data = T::type_data();
             let self_type_ = type_data.as_ref().type_();
-            assert!(self_type_.is_valid());
+            debug_assert!(self_type_.is_valid());
 
             let offset = type_data.as_ref().private_offset;
 
@@ -866,7 +866,7 @@ unsafe extern "C" fn class_init<T: ObjectSubclass>(
         let klass = &mut *(klass as *mut T::Class);
         let parent_class = gobject_ffi::g_type_class_peek_parent(klass as *mut _ as ffi::gpointer)
             as *mut <T::ParentType as ObjectType>::GlibClassType;
-        assert!(!parent_class.is_null());
+        debug_assert!(!parent_class.is_null());
 
         data.as_mut().parent_class = parent_class as ffi::gpointer;
 

@@ -65,7 +65,7 @@ impl ScaledFont {
     #[cfg(not(feature = "use_glib"))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ScaledFont(ptr::NonNull::new_unchecked(ptr))
     }
 
@@ -84,7 +84,7 @@ impl ScaledFont {
     #[cfg(not(feature = "use_glib"))]
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ffi::cairo_scaled_font_reference(ptr);
         ScaledFont(ptr::NonNull::new_unchecked(ptr))
     }

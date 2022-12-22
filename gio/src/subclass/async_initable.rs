@@ -159,7 +159,7 @@ unsafe extern "C" fn async_initable_init_finish<T: AsyncInitableImpl>(
 
     match task.propagate() {
         Ok(v) => {
-            assert!(v);
+            debug_assert!(v);
             true.into_glib()
         }
         Err(e) => {

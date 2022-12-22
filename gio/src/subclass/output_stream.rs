@@ -74,9 +74,9 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
             if res == -1 {
                 Err(from_glib_full(err))
             } else {
-                assert!(res >= 0);
+                debug_assert!(res >= 0);
                 let res = res as usize;
-                assert!(res <= buffer.len());
+                debug_assert!(res <= buffer.len());
                 Ok(res)
             }
         }
@@ -156,7 +156,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
             if res == -1 {
                 Err(from_glib_full(err))
             } else {
-                assert!(res >= 0);
+                debug_assert!(res >= 0);
                 let res = res as usize;
                 Ok(res)
             }
@@ -185,7 +185,7 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
 ) -> isize {
     use std::{isize, slice};
 
-    assert!(count <= isize::MAX as usize);
+    debug_assert!(count <= isize::MAX as usize);
 
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
