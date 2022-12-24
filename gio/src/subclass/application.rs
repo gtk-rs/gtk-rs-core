@@ -425,7 +425,7 @@ mod tests {
 
                 for arg in arguments {
                     // TODO: we need https://github.com/rust-lang/rust/issues/49802
-                    let a = arg.into_string().unwrap();
+                    let a = arg.to_str().unwrap();
                     assert!(!a.starts_with("--local-"))
                 }
 
@@ -437,7 +437,7 @@ mod tests {
 
                 for (i, line) in arguments.iter().enumerate() {
                     // TODO: we need https://github.com/rust-lang/rust/issues/49802
-                    let l = line.clone().into_string().unwrap();
+                    let l = line.to_str().unwrap();
                     if l.starts_with("--local-") {
                         rm.push(i)
                     }
