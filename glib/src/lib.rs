@@ -138,7 +138,7 @@ pub use self::source::*;
 #[macro_use]
 pub mod translate;
 mod gstring;
-pub use self::gstring::{GStr, GString};
+pub use self::gstring::*;
 mod gstring_builder;
 pub use self::gstring_builder::GStringBuilder;
 pub mod types;
