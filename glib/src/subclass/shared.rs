@@ -135,11 +135,14 @@ pub fn register_shared_type<T: SharedType>() -> crate::Type {
             type_name.to_str().unwrap()
         );
 
-        from_glib(gobject_ffi::g_boxed_type_register_static(
+        let type_ = crate::Type::from_glib(gobject_ffi::g_boxed_type_register_static(
             type_name.as_ptr(),
             Some(shared_ref::<T>),
             Some(shared_unref::<T>),
-        ))
+        ));
+        assert!(type_.is_valid());
+
+        type_
     }
 }
 

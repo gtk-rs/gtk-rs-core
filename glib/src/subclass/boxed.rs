@@ -53,11 +53,14 @@ pub fn register_boxed_type<T: BoxedType>() -> crate::Type {
             type_name.to_str().unwrap()
         );
 
-        from_glib(gobject_ffi::g_boxed_type_register_static(
+        let type_ = crate::Type::from_glib(gobject_ffi::g_boxed_type_register_static(
             type_name.as_ptr(),
             Some(boxed_copy::<T>),
             Some(boxed_free::<T>),
-        ))
+        ));
+        assert!(type_.is_valid());
+
+        type_
     }
 }
 

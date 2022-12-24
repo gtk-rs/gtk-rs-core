@@ -197,7 +197,8 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
             gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite);
         }
 
-        let type_ = from_glib(type_);
+        let type_ = Type::from_glib(type_);
+        assert!(type_.is_valid());
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
 

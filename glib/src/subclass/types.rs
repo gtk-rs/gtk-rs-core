@@ -936,7 +936,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             type_name.to_str().unwrap()
         );
 
-        let type_ = from_glib(gobject_ffi::g_type_register_static_simple(
+        let type_ = Type::from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),
             type_name.as_ptr(),
             mem::size_of::<T::Class>() as u32,
@@ -949,6 +949,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
                 0
             },
         ));
+        assert!(type_.is_valid());
 
         let mut data = T::type_data();
         data.as_mut().type_ = type_;
