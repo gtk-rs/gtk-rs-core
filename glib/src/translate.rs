@@ -352,6 +352,10 @@ impl IntoGlib for char {
     }
 }
 
+unsafe impl TransparentType for char {
+    type GlibType = u32;
+}
+
 impl IntoGlib for Option<char> {
     type GlibType = u32;
 
@@ -1998,6 +2002,10 @@ impl FromGlibContainerAsVec<bool, *mut ffi::gboolean> for bool {
 
 macro_rules! impl_from_glib_container_as_vec_fundamental {
     ($name:ty) => {
+        unsafe impl TransparentType for $name {
+            type GlibType = $name;
+        }
+
         impl FromGlibContainerAsVec<$name, *const $name> for $name {
             unsafe fn from_glib_none_num_as_vec(ptr: *const $name, num: usize) -> Vec<Self> {
                 if num == 0 || ptr.is_null() {
@@ -2603,6 +2611,24 @@ where
         // Can't really free a *const
         unimplemented!()
     }
+}
+
+/// Trait for types that have the same memory representation as a pointer to their FFI type.
+///
+/// Values of types implementing this trait can be transmuted to pointers of the FFI type,
+/// references to pointers of pointers to the FFI type.
+pub unsafe trait TransparentPtrType: Clone + Sized + GlibPtrDefault {}
+
+/// Trait for types that have the same memory representation as their FFI type.
+///
+/// Values of types implementing this trait can be transmuted directly to the FFI type, references
+/// to pointers to the FFI type.
+pub unsafe trait TransparentType: Clone + Sized {
+    type GlibType;
+}
+
+unsafe impl<T: TransparentPtrType> TransparentType for T {
+    type GlibType = <T as GlibPtrDefault>::GlibType;
 }
 
 #[cfg(test)]

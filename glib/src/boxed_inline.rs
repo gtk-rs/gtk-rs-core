@@ -165,6 +165,11 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentType for $name $(<$($generic),+>)? {
+            type GlibType = $ffi_name;
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::Uninitialized for $name $(<$($generic),+>)? {
             #[inline]
             unsafe fn uninitialized() -> Self {

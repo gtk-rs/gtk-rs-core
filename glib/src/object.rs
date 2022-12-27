@@ -904,6 +904,9 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentPtrType for $name $(<$($generic),+>)? {}
+
+        #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ObjectType for $name $(<$($generic),+>)? {
             type GlibType = $ffi_name;
             type GlibClassType = $ffi_class_name;

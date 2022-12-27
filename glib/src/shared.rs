@@ -72,6 +72,9 @@ macro_rules! glib_shared_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentPtrType for $name $(<$($generic),+>)? {}
+
+        #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a $crate::shared::Shared<$ffi_name, Self>>;
 

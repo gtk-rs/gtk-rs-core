@@ -14,6 +14,10 @@ use crate::{translate::*, Slice};
 #[repr(transparent)]
 pub struct Type(ffi::GType);
 
+unsafe impl TransparentType for Type {
+    type GlibType = ffi::GType;
+}
+
 impl Type {
     // rustdoc-stripper-ignore-next
     /// An invalid `Type` used as error return value in some functions

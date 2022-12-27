@@ -60,6 +60,9 @@ macro_rules! glib_boxed_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentPtrType for $name $(<$($generic),+>)? {}
+
+        #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a $crate::boxed::Boxed<$ffi_name, Self>>;
 
