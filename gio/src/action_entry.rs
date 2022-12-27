@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, Variant};
+use glib::{prelude::*, Variant, VariantTy, VariantType};
 
 use crate::{ActionMap, SimpleAction};
 
@@ -10,8 +10,8 @@ where
     O: IsA<ActionMap>,
 {
     name: String,
-    parameter_type: Option<String>,
-    state: Option<String>,
+    parameter_type: Option<VariantType>,
+    state: Option<Variant>,
     pub(crate) activate: Option<Box<dyn Fn(&O, &SimpleAction, Option<&Variant>) + 'static>>,
     pub(crate) change_state: Option<Box<dyn Fn(&O, &SimpleAction, Option<&Variant>) + 'static>>,
 }
@@ -24,12 +24,12 @@ where
         &self.name
     }
 
-    pub fn parameter_type(&self) -> Option<&str> {
+    pub fn parameter_type(&self) -> Option<&VariantTy> {
         self.parameter_type.as_deref()
     }
 
-    pub fn state(&self) -> Option<&str> {
-        self.state.as_deref()
+    pub fn state(&self) -> Option<&Variant> {
+        self.state.as_ref()
     }
 
     pub fn builder(name: &str) -> ActionEntryBuilder<O> {
@@ -69,13 +69,13 @@ where
         })
     }
 
-    pub fn parameter_type(mut self, parameter_type: &str) -> Self {
-        self.0.parameter_type = Some(parameter_type.to_owned());
+    pub fn parameter_type(mut self, parameter_type: Option<&VariantTy>) -> Self {
+        self.0.parameter_type = parameter_type.map(|vt| vt.to_owned());
         self
     }
 
-    pub fn state(mut self, state: &str) -> Self {
-        self.0.state = Some(state.to_owned());
+    pub fn state(mut self, state: Variant) -> Self {
+        self.0.state = Some(state);
         self
     }
 
@@ -109,12 +109,20 @@ mod tests {
     fn action_entry() {
         let app = crate::Application::new(None, Default::default());
 
-        let close = ActionEntry::builder("close")
-            .activate(move |_app, _, _| {
-                //Do something
-            })
-            .build();
-        app.add_action_entries(vec![close]).unwrap();
+        app.add_action_entries(vec![
+            ActionEntry::builder("close")
+                .activate(move |_app, _, _| {
+                    //Do something
+                })
+                .build(),
+            ActionEntry::builder("enable")
+                .state(true.to_variant())
+                .change_state(move |_app, _, _| {
+                    //Do something
+                })
+                .build(),
+        ]);
         assert!(app.lookup_action("close").is_some());
+        assert!(app.lookup_action("enable").is_some());
     }
 }
