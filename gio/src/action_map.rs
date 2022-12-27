@@ -6,36 +6,18 @@ use crate::{prelude::*, ActionEntry, ActionMap, SimpleAction};
 
 pub trait ActionMapExtManual {
     #[doc(alias = "g_action_map_add_action_entries")]
-    fn add_action_entries(
-        &self,
-        entries: impl IntoIterator<Item = ActionEntry<Self>>,
-    ) -> Result<(), glib::BoolError>
+    fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>)
     where
         Self: IsA<ActionMap>;
 }
 
 impl<O: IsA<ActionMap>> ActionMapExtManual for O {
-    fn add_action_entries(
-        &self,
-        entries: impl IntoIterator<Item = ActionEntry<Self>>,
-    ) -> Result<(), glib::BoolError> {
+    fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>) {
         for entry in entries.into_iter() {
-            let parameter_type = if let Some(param_type) = entry.parameter_type() {
-                Some(glib::VariantType::new(param_type)?)
-            } else {
-                None
-            };
             let action = if let Some(state) = entry.state() {
-                let state = glib::Variant::parse(None, state).map_err(|e| {
-                    glib::bool_error!(
-                        "Invalid state passed to gio::ActionEntry {} {}",
-                        entry.name(),
-                        e
-                    )
-                })?;
-                SimpleAction::new_stateful(entry.name(), parameter_type.as_deref(), &state)
+                SimpleAction::new_stateful(entry.name(), entry.parameter_type(), &state)
             } else {
-                SimpleAction::new(entry.name(), parameter_type.as_deref())
+                SimpleAction::new(entry.name(), entry.parameter_type())
             };
             let action_map = self.as_ref();
             if let Some(callback) = entry.activate {
@@ -52,6 +34,5 @@ impl<O: IsA<ActionMap>> ActionMapExtManual for O {
             }
             self.as_ref().add_action(&action);
         }
-        Ok(())
     }
 }
