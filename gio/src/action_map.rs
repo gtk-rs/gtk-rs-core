@@ -15,7 +15,7 @@ impl<O: IsA<ActionMap>> ActionMapExtManual for O {
     fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>) {
         for entry in entries.into_iter() {
             let action = if let Some(state) = entry.state() {
-                SimpleAction::new_stateful(entry.name(), entry.parameter_type(), &state)
+                SimpleAction::new_stateful(entry.name(), entry.parameter_type(), state.clone())
             } else {
                 SimpleAction::new(entry.name(), entry.parameter_type())
             };
