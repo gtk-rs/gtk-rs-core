@@ -46,6 +46,8 @@ pub unsafe trait ObjectType:
 
     fn as_object_ref(&self) -> &ObjectRef;
     fn as_ptr(&self) -> *mut Self::GlibType;
+
+    unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self;
 }
 
 // rustdoc-stripper-ignore-next
@@ -918,7 +920,12 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn as_ptr(&self) -> *mut Self::GlibType {
-                $crate::translate::ToGlibPtr::to_glib_none(&*self.inner).0 as *mut _
+                unsafe { *(self as *const Self as *const *const $ffi_name) as *mut $ffi_name }
+            }
+
+            #[inline]
+            unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self {
+                &*(ptr as *const Self)
             }
         }
 
@@ -1246,10 +1253,9 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
-                let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                debug_assert!(!(*ptr).is_null());
-                debug_assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
-                &*(ptr as *const $name $(<$($generic),+>)?)
+                debug_assert!(!value.data[0].v_pointer.is_null());
+                debug_assert_ne!((*(value.data[0].v_pointer as *const $crate::gobject_ffi::GObject)).ref_count, 0);
+                <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
             }
         }
 

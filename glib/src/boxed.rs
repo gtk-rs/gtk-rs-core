@@ -41,7 +41,19 @@ macro_rules! glib_boxed_wrapper {
             #[doc = "Return the inner pointer to the underlying C value."]
             #[inline]
             pub fn as_ptr(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
+                unsafe { *(self as *const Self as *const *const $ffi_name) as *mut $ffi_name }
+            }
+
+            #[doc = "Borrows the underlying C value."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const $ffi_name) -> &'a Self {
+                &*(ptr as *const Self)
+            }
+
+            #[doc = "Borrows the underlying C value mutably."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut *mut $ffi_name) -> &'a mut Self {
+                &mut *(ptr as *mut Self)
             }
         }
 
@@ -316,9 +328,8 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
-                let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                debug_assert!(!(*ptr).is_null());
-                &*(ptr as *const $name $(<$($generic),+>)?)
+                debug_assert!(!value.data[0].v_pointer.is_null());
+                <$name $(<$($generic),+>)?>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
             }
         }
 
