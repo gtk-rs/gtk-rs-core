@@ -4,473 +4,13 @@ use std::{fmt, iter::FusedIterator, marker::PhantomData, mem, ptr};
 
 use crate::translate::*;
 
+pub mod ptr_slice;
+pub use ptr_slice::PtrSlice;
+
 #[derive(Debug, PartialEq, Eq)]
 enum ContainerTransfer {
     Full,
     Container,
-    None,
-}
-
-// rustdoc-stripper-ignore-next
-/// Slice of elements of type `T` allocated by the GLib allocator.
-///
-/// This can be used like a `&[T]`.
-pub struct PtrSlice<
-    T: GlibPtrDefault
-        + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-        + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-> {
-    ptr: ptr::NonNull<T::GlibType>,
-    len: usize,
-    transfer: ContainerTransfer,
-}
-
-impl<
-        T: fmt::Debug
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > fmt::Debug for PtrSlice<T>
-{
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.as_slice().fmt(f)
-    }
-}
-
-unsafe impl<
-        T: Send
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > Send for PtrSlice<T>
-{
-}
-
-unsafe impl<
-        T: Sync
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > Sync for PtrSlice<T>
-{
-}
-
-impl<
-        T: PartialEq
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > PartialEq for PtrSlice<T>
-{
-    fn eq(&self, other: &Self) -> bool {
-        self.as_slice() == other.as_slice()
-    }
-}
-
-impl<
-        T: Eq
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > Eq for PtrSlice<T>
-{
-}
-
-impl<
-        T: PartialOrd
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > PartialOrd for PtrSlice<T>
-{
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        self.as_slice().partial_cmp(other.as_slice())
-    }
-}
-
-impl<
-        T: Ord
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > Ord for PtrSlice<T>
-{
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.as_slice().cmp(other.as_slice())
-    }
-}
-
-impl<
-        T: std::hash::Hash
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > std::hash::Hash for PtrSlice<T>
-{
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.as_slice().hash(state)
-    }
-}
-
-impl<
-        T: PartialEq
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > PartialEq<[T]> for PtrSlice<T>
-{
-    fn eq(&self, other: &[T]) -> bool {
-        self.as_slice() == other
-    }
-}
-
-impl<
-        T: PartialEq
-            + GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > PartialEq<PtrSlice<T>> for [T]
-{
-    fn eq(&self, other: &PtrSlice<T>) -> bool {
-        self == other.as_slice()
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > PtrSlice<T>
-{
-    // rustdoc-stripper-ignore-next
-    /// Borrows a static C array.
-    #[inline]
-    pub unsafe fn from_glib_borrow<'a>(ptr: *const <T as GlibPtrDefault>::GlibType) -> &'a [T] {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
-            }
-        }
-        Self::from_glib_borrow_num(ptr, len)
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Borrows a static C array.
-    #[inline]
-    pub unsafe fn from_glib_borrow_num<'a>(
-        ptr: *const <T as GlibPtrDefault>::GlibType,
-        len: usize,
-    ) -> &'a [T] {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        if len == 0 {
-            &[]
-        } else {
-            std::slice::from_raw_parts(ptr as *const T, len)
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a static C array.
-    ///
-    /// Must only be called for static allocations that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_none_num_static(
-        ptr: *const <T as GlibPtrDefault>::GlibType,
-        len: usize,
-    ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        PtrSlice {
-            ptr: if len == 0 {
-                ptr::NonNull::dangling()
-            } else {
-                ptr::NonNull::new_unchecked(ptr as *mut _)
-            },
-            len,
-            transfer: ContainerTransfer::None,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a C array of which the items are static.
-    ///
-    /// Must only be called for static items that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_container_num_static(
-        ptr: *mut <T as GlibPtrDefault>::GlibType,
-        len: usize,
-    ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        PtrSlice {
-            ptr: if len == 0 {
-                ffi::g_free(ptr as ffi::gpointer);
-                ptr::NonNull::dangling()
-            } else {
-                ptr::NonNull::new_unchecked(ptr)
-            },
-            len,
-            transfer: ContainerTransfer::Container,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a C array where the items are borrowed.
-    #[inline]
-    pub unsafe fn from_glib_container_num(
-        ptr: *mut <T as GlibPtrDefault>::GlibType,
-        len: usize,
-    ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        for i in 0..len {
-            let p = ptr.add(i);
-            let v: T = from_glib_none(*p);
-            ptr::write((*p).to(), v);
-        }
-
-        PtrSlice {
-            ptr: if len == 0 {
-                ffi::g_free(ptr as ffi::gpointer);
-                ptr::NonNull::dangling()
-            } else {
-                ptr::NonNull::new_unchecked(ptr)
-            },
-            len,
-            transfer: ContainerTransfer::Full,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a C array.
-    #[inline]
-    pub unsafe fn from_glib_full_num(
-        ptr: *mut <T as GlibPtrDefault>::GlibType,
-        len: usize,
-    ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        PtrSlice {
-            ptr: if len == 0 {
-                ffi::g_free(ptr as ffi::gpointer);
-                ptr::NonNull::dangling()
-            } else {
-                ptr::NonNull::new_unchecked(ptr)
-            },
-            len,
-            transfer: ContainerTransfer::Full,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a static `NULL`-terminated C array.
-    ///
-    /// Must only be called for static allocations that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_none_static(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
-            }
-        }
-
-        PtrSlice::from_glib_none_num_static(ptr, len)
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a `NULL`-terminated C array of which the items are static.
-    ///
-    /// Must only be called for static items that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_container_static(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
-            }
-        }
-
-        PtrSlice::from_glib_container_num_static(ptr, len)
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a `NULL`-terminated C array where the items are borrowed.
-    #[inline]
-    pub unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                let p = ptr.add(len);
-                let v: T = from_glib_none(*p);
-                ptr::write((*p).to(), v);
-
-                len += 1;
-            }
-        }
-
-        PtrSlice::from_glib_full_num(ptr, len)
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `PtrSlice` around a `NULL`-terminated C array.
-    #[inline]
-    pub unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
-            }
-        }
-
-        PtrSlice::from_glib_full_num(ptr, len)
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Returns the underlying pointer.
-    #[inline]
-    pub fn as_ptr(&self) -> *const <T as GlibPtrDefault>::GlibType {
-        if self.len == 0 {
-            ptr::null()
-        } else {
-            self.ptr.as_ptr()
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Borrows this slice as a `&[T]`.
-    #[inline]
-    pub fn as_slice(&self) -> &[T] {
-        self.as_ref()
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > Drop for PtrSlice<T>
-{
-    #[inline]
-    fn drop(&mut self) {
-        unsafe {
-            if self.transfer == ContainerTransfer::Full {
-                for i in 0..self.len {
-                    let _: T = from_glib_full(*self.ptr.as_ptr().add(i));
-                }
-            }
-
-            if self.transfer != ContainerTransfer::None && self.ptr != ptr::NonNull::dangling() {
-                ffi::g_free(self.ptr.as_ptr() as ffi::gpointer);
-            }
-        }
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > AsRef<[T]> for PtrSlice<T>
-{
-    #[inline]
-    fn as_ref(&self) -> &[T] {
-        unsafe {
-            if self.len == 0 {
-                &[]
-            } else {
-                std::slice::from_raw_parts(self.ptr.as_ptr() as *const T, self.len)
-            }
-        }
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > std::ops::Deref for PtrSlice<T>
-{
-    type Target = [T];
-
-    #[inline]
-    fn deref(&self) -> &[T] {
-        self.as_ref()
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > FromGlibContainer<<T as GlibPtrDefault>::GlibType, *mut <T as GlibPtrDefault>::GlibType>
-    for PtrSlice<T>
-{
-    unsafe fn from_glib_none_num(_ptr: *mut <T as GlibPtrDefault>::GlibType, _num: usize) -> Self {
-        unimplemented!()
-    }
-
-    #[inline]
-    unsafe fn from_glib_container_num(
-        ptr: *mut <T as GlibPtrDefault>::GlibType,
-        num: usize,
-    ) -> Self {
-        Self::from_glib_container_num(ptr, num)
-    }
-
-    #[inline]
-    unsafe fn from_glib_full_num(ptr: *mut <T as GlibPtrDefault>::GlibType, num: usize) -> Self {
-        Self::from_glib_full_num(ptr, num)
-    }
-}
-
-impl<
-        T: GlibPtrDefault
-            + FromGlibPtrFull<<T as GlibPtrDefault>::GlibType>
-            + FromGlibPtrNone<<T as GlibPtrDefault>::GlibType>,
-    > FromGlibPtrContainer<<T as GlibPtrDefault>::GlibType, *mut <T as GlibPtrDefault>::GlibType>
-    for PtrSlice<T>
-{
-    unsafe fn from_glib_none(_ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        unimplemented!()
-    }
-
-    #[inline]
-    unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_container(ptr)
-    }
-
-    #[inline]
-    unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_full(ptr)
-    }
 }
 
 // rustdoc-stripper-ignore-next
@@ -555,25 +95,6 @@ impl<T: 'static> Slice<T> {
             &mut []
         } else {
             std::slice::from_raw_parts_mut(ptr, len)
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new `Slice` around a static C array.
-    ///
-    /// Must only be called for static allocations that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_none_num_static(ptr: *const T, len: usize) -> Self {
-        debug_assert!(!ptr.is_null() || len == 0);
-
-        Slice {
-            ptr: if len == 0 {
-                ptr::NonNull::dangling()
-            } else {
-                ptr::NonNull::new_unchecked(ptr as *mut _)
-            },
-            len,
-            transfer: ContainerTransfer::None,
         }
     }
 
@@ -696,13 +217,13 @@ impl<T: 'static> Drop for Slice<T> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
-            if self.transfer == ContainerTransfer::Full {
+            if self.transfer == ContainerTransfer::Full && mem::needs_drop::<T>() {
                 for i in 0..self.len {
-                    let _ = ptr::read(self.ptr.as_ptr().add(i));
+                    ptr::drop_in_place::<T>(self.ptr.as_ptr().add(i));
                 }
             }
 
-            if self.transfer != ContainerTransfer::None && self.ptr != ptr::NonNull::dangling() {
+            if self.len != 0 {
                 ffi::g_free(self.ptr.as_ptr() as ffi::gpointer);
             }
         }
@@ -787,19 +308,6 @@ impl<
     > List<T>
 {
     // rustdoc-stripper-ignore-next
-    /// Create a new `List` around a static list of static items.
-    ///
-    /// Must only be called for a static list of static allocations that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_none_static(list: *mut ffi::GList) -> List<T> {
-        List {
-            ptr: ptr::NonNull::new(list),
-            transfer: ContainerTransfer::None,
-            phantom: PhantomData,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
     /// Create a new `List` around a list.
     #[inline]
     pub unsafe fn from_glib_container(list: *mut ffi::GList) -> List<T> {
@@ -851,6 +359,7 @@ impl<
 
     // rustdoc-stripper-ignore-next
     /// Check if the list is empty.
+    #[inline]
     pub fn is_empty(&self) -> bool {
         self.ptr.is_none()
     }
@@ -895,9 +404,7 @@ impl<
                     from_glib_none(Ptr::from(cur.as_ref().data))
                 };
 
-                if self.transfer != ContainerTransfer::None {
-                    ffi::g_list_free_1(cur.as_ptr());
-                }
+                ffi::g_list_free_1(cur.as_ptr());
 
                 Some(item)
             },
@@ -1060,19 +567,6 @@ impl<
     > SList<T>
 {
     // rustdoc-stripper-ignore-next
-    /// Create a new `SList` around a static list of static items.
-    ///
-    /// Must only be called for a static list of static allocations that are never invalidated.
-    #[inline]
-    pub unsafe fn from_glib_none_static(list: *mut ffi::GSList) -> SList<T> {
-        SList {
-            ptr: ptr::NonNull::new(list),
-            transfer: ContainerTransfer::None,
-            phantom: PhantomData,
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
     /// Create a new `SList` around a list.
     #[inline]
     pub unsafe fn from_glib_container(list: *mut ffi::GSList) -> SList<T> {
@@ -1171,9 +665,7 @@ impl<
                     from_glib_none(Ptr::from(cur.as_ref().data))
                 };
 
-                if self.transfer != ContainerTransfer::None {
-                    ffi::g_slist_free_1(cur.as_ptr());
-                }
+                ffi::g_slist_free_1(cur.as_ptr());
 
                 Some(item)
             },
@@ -1321,34 +813,6 @@ mod test {
         };
 
         assert_eq!(&items[..], &*slice);
-    }
-
-    #[test]
-    fn ptr_slice() {
-        let items = [
-            crate::Error::new(crate::FileError::Failed, "Failed 1"),
-            crate::Error::new(crate::FileError::Noent, "Failed 2"),
-            crate::Error::new(crate::FileError::Io, "Failed 3"),
-            crate::Error::new(crate::FileError::Perm, "Failed 4"),
-        ];
-
-        let slice = unsafe {
-            let ptr = ffi::g_malloc(mem::size_of::<ffi::GDate>() * 4) as *mut *mut ffi::GError;
-            ptr::write(ptr.add(0), items[0].to_glib_full() as *mut _);
-            ptr::write(ptr.add(1), items[1].to_glib_full() as *mut _);
-            ptr::write(ptr.add(2), items[2].to_glib_full() as *mut _);
-            ptr::write(ptr.add(3), items[3].to_glib_full() as *mut _);
-
-            PtrSlice::<crate::Error>::from_glib_full_num(ptr, 4)
-        };
-
-        for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
-            assert_eq!(a.message(), b.message());
-            assert_eq!(
-                a.kind::<crate::FileError>().unwrap(),
-                b.kind::<crate::FileError>().unwrap()
-            );
-        }
     }
 
     #[test]

@@ -3469,7 +3469,7 @@ impl ObjectClass {
 
             let props =
                 gobject_ffi::g_object_class_list_properties(klass as *mut _, &mut n_properties);
-            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num(props, n_properties as usize, true)
         }
     }
 }
@@ -4399,7 +4399,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
                 interface as *mut _,
                 &mut n_properties,
             );
-            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num(props, n_properties as usize, true)
         }
     }
 }

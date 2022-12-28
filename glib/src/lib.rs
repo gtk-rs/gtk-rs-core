@@ -107,7 +107,7 @@ mod boxed_any_object;
 pub use boxed_any_object::BoxedAnyObject;
 
 pub mod collections;
-pub use collections::{List, PtrSlice, SList, Slice};
+pub use collections::{ptr_slice::IntoPtrSlice, List, PtrSlice, SList, Slice};
 
 pub use self::auto::{functions::*, *};
 #[allow(non_upper_case_globals)]
