@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
-use socket::{AsRawFd, IntoRawFd, RawFd};
+use socket::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 
 use crate::{ffi, OutputStream, UnixOutputStream};
 
@@ -37,6 +37,15 @@ impl UnixOutputStream {
 impl AsRawFd for UnixOutputStream {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_unix_output_stream_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+impl AsFd for UnixOutputStream {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        unsafe {
+            let raw_fd = self.as_raw_fd();
+            BorrowedFd::borrow_raw(raw_fd)
+        }
     }
 }
 
