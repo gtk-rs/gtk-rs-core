@@ -132,12 +132,14 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
         impl #crate_ident::translate::IntoGlib for #name {
             type GlibType = u32;
 
+            #[inline]
             fn into_glib(self) -> u32 {
                 self.bits()
             }
         }
 
         impl #crate_ident::translate::FromGlib<u32> for #name {
+            #[inline]
             unsafe fn from_glib(value: u32) -> Self {
                 Self::from_bits_truncate(value)
             }
@@ -150,6 +152,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
             type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::value::Value) -> Self {
                 #crate_ident::translate::from_glib(#crate_ident::gobject_ffi::g_value_get_flags(
                     #crate_ident::translate::ToGlibPtr::to_glib_none(value).0
@@ -158,6 +161,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::value::ToValue for #name {
+            #[inline]
             fn to_value(&self) -> #crate_ident::value::Value {
                 let mut value = #crate_ident::value::Value::for_value_type::<Self>();
                 unsafe {
@@ -169,6 +173,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
                 value
             }
 
+            #[inline]
             fn value_type(&self) -> #crate_ident::Type {
                 <Self as #crate_ident::StaticType>::static_type()
             }
@@ -182,6 +187,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::StaticType for #name {
+            #[inline]
             fn static_type() -> #crate_ident::Type {
                 static ONCE: ::std::sync::Once = ::std::sync::Once::new();
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
@@ -199,12 +205,13 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
                     let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
                         let type_ = #crate_ident::gobject_ffi::g_flags_register_static(name.as_ptr(), VALUES.as_ptr());
-                        TYPE = #crate_ident::translate::from_glib(type_);
+                        let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
+                        assert!(type_.is_valid());
+                        TYPE = type_;
                     }
                 });
 
                 unsafe {
-                    assert!(TYPE.is_valid());
                     TYPE
                 }
             }

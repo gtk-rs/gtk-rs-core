@@ -51,6 +51,7 @@ fn derive_variant_for_struct(
 
             let static_variant_type = quote! {
                 impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                    #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| {
 
@@ -127,6 +128,7 @@ fn derive_variant_for_struct(
 
             let static_variant_type = quote! {
                 impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+                    #[inline]
                     fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                         static TYP: #glib::once_cell::sync::Lazy<#glib::VariantType> = #glib::once_cell::sync::Lazy::new(|| unsafe {
                             let ptr = #glib::ffi::g_string_sized_new(16);
@@ -448,6 +450,7 @@ fn derive_variant_for_enum(
 
     let derived = quote! {
         impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+            #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
                     unsafe {
@@ -597,6 +600,7 @@ fn derive_variant_for_c_enum(
 
     let derived = quote! {
         impl #impl_generics #glib::StaticVariantType for #ident #type_generics #where_clause {
+            #[inline]
             fn static_variant_type() -> ::std::borrow::Cow<'static, #glib::VariantTy> {
                 ::std::borrow::Cow::Borrowed(
                     unsafe {

@@ -204,7 +204,7 @@ impl Uri {
             let mut error = ptr::null_mut();
             let is_ok =
                 ffi::g_uri_is_valid(uri_string.to_glib_none().0, flags.into_glib(), &mut error);
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -363,7 +363,7 @@ impl Uri {
                 &mut fragment,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),
@@ -398,7 +398,7 @@ impl Uri {
                 port.as_mut_ptr(),
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),
@@ -454,7 +454,7 @@ impl Uri {
                 &mut fragment,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
                     from_glib_full(scheme),

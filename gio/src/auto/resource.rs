@@ -59,7 +59,7 @@ impl Resource {
                 flags.as_mut_ptr(),
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((size.assume_init(), flags.assume_init()))
             } else {

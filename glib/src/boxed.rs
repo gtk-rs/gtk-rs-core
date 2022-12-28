@@ -39,6 +39,7 @@ macro_rules! glib_boxed_wrapper {
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $name $(<$($generic),+>)? {
             #[doc = "Return the inner pointer to the underlying C value."]
+            #[inline]
             pub fn as_ptr(&self) -> *mut $ffi_name {
                 $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
             }
@@ -256,6 +257,7 @@ macro_rules! glib_boxed_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
@@ -264,6 +266,7 @@ macro_rules! glib_boxed_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *const $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
@@ -275,6 +278,7 @@ macro_rules! glib_boxed_wrapper {
 
     (@value_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty, @type_ $get_type_expr:expr) => {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
+            #[inline]
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
@@ -293,9 +297,10 @@ macro_rules! glib_boxed_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
+                debug_assert!(!ptr.is_null());
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
@@ -304,17 +309,19 @@ macro_rules! glib_boxed_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for &'a $name $(<$($generic),+>)? {
             type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
+                debug_assert!(!(*ptr).is_null());
                 &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValue for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
                     let mut value = $crate::Value::from_type(<Self as $crate::StaticType>::static_type());
@@ -326,12 +333,14 @@ macro_rules! glib_boxed_wrapper {
                 }
             }
 
+            #[inline]
             fn value_type(&self) -> $crate::Type {
                 <Self as $crate::StaticType>::static_type()
             }
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            #[inline]
             fn from(o: $name $(<$($generic),+>)?) -> Self {
                 unsafe {
                     let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
@@ -346,6 +355,7 @@ macro_rules! glib_boxed_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
                 unsafe {
@@ -422,7 +432,7 @@ impl<'a, T: 'static, MM: BoxedMemoryManager<T>> ToGlibPtrMut<'a, *mut T> for Box
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let ptr = MM::copy(ptr);
         from_glib_full(ptr)
     }
@@ -431,7 +441,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*mut T> for Boxed<T,
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_none(ptr: *const T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let ptr = MM::copy(ptr);
         from_glib_full(ptr)
     }
@@ -440,7 +450,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrNone<*const T> for Boxed<
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,
@@ -451,7 +461,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*mut T> for Boxed<T,
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_full(ptr: *const T) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self {
             inner: ptr::NonNull::new_unchecked(ptr as *mut T),
             _dummy: PhantomData,
@@ -462,7 +472,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrFull<*const T> for Boxed<
 impl<T: 'static, MM: BoxedMemoryManager<T>> FromGlibPtrBorrow<*mut T> for Boxed<T, MM> {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut T) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Borrowed::new(Self {
             inner: ptr::NonNull::new_unchecked(ptr),
             _dummy: PhantomData,
@@ -486,18 +496,21 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> fmt::Debug for Boxed<T, MM> {
 }
 
 impl<T, MM: BoxedMemoryManager<T>> PartialOrd for Boxed<T, MM> {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.to_glib_none().0.partial_cmp(&other.to_glib_none().0)
     }
 }
 
 impl<T, MM: BoxedMemoryManager<T>> Ord for Boxed<T, MM> {
+    #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.to_glib_none().0.cmp(&other.to_glib_none().0)
     }
 }
 
 impl<T, MM: BoxedMemoryManager<T>> PartialEq for Boxed<T, MM> {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.to_glib_none().0 == other.to_glib_none().0
     }
@@ -506,6 +519,7 @@ impl<T, MM: BoxedMemoryManager<T>> PartialEq for Boxed<T, MM> {
 impl<T, MM: BoxedMemoryManager<T>> Eq for Boxed<T, MM> {}
 
 impl<T, MM: BoxedMemoryManager<T>> Hash for Boxed<T, MM> {
+    #[inline]
     fn hash<H>(&self, state: &mut H)
     where
         H: Hasher,
@@ -524,6 +538,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> Clone for Boxed<T, MM> {
 impl<T: 'static, MM: BoxedMemoryManager<T>> Deref for Boxed<T, MM> {
     type Target = T;
 
+    #[inline]
     fn deref(&self) -> &T {
         unsafe {
             // This is safe because the pointer will remain valid while self is borrowed
@@ -533,6 +548,7 @@ impl<T: 'static, MM: BoxedMemoryManager<T>> Deref for Boxed<T, MM> {
 }
 
 impl<T: 'static, MM: BoxedMemoryManager<T>> DerefMut for Boxed<T, MM> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut T {
         unsafe {
             // This is safe because the pointer will remain valid while self is borrowed

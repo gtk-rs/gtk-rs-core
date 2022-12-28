@@ -36,6 +36,7 @@ impl fmt::Display for FileSetContentsFlags {
 impl IntoGlib for FileSetContentsFlags {
     type GlibType = ffi::GFileSetContentsFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GFileSetContentsFlags {
         self.bits()
     }
@@ -45,6 +46,7 @@ impl IntoGlib for FileSetContentsFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GFileSetContentsFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -76,6 +78,7 @@ impl fmt::Display for FileTest {
 impl IntoGlib for FileTest {
     type GlibType = ffi::GFileTest;
 
+    #[inline]
     fn into_glib(self) -> ffi::GFileTest {
         self.bits()
     }
@@ -83,6 +86,7 @@ impl IntoGlib for FileTest {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GFileTest> for FileTest {
+    #[inline]
     unsafe fn from_glib(value: ffi::GFileTest) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -120,6 +124,7 @@ impl fmt::Display for FormatSizeFlags {
 impl IntoGlib for FormatSizeFlags {
     type GlibType = ffi::GFormatSizeFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GFormatSizeFlags {
         self.bits()
     }
@@ -127,6 +132,7 @@ impl IntoGlib for FormatSizeFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GFormatSizeFlags> for FormatSizeFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GFormatSizeFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -160,6 +166,7 @@ impl fmt::Display for IOCondition {
 impl IntoGlib for IOCondition {
     type GlibType = ffi::GIOCondition;
 
+    #[inline]
     fn into_glib(self) -> ffi::GIOCondition {
         self.bits()
     }
@@ -167,12 +174,14 @@ impl IntoGlib for IOCondition {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GIOCondition> for IOCondition {
+    #[inline]
     unsafe fn from_glib(value: ffi::GIOCondition) -> Self {
         Self::from_bits_truncate(value)
     }
 }
 
 impl StaticType for IOCondition {
+    #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::g_io_condition_get_type()) }
     }
@@ -185,6 +194,7 @@ impl crate::value::ValueType for IOCondition {
 unsafe impl<'a> FromValue<'a> for IOCondition {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
+    #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         from_glib(crate::gobject_ffi::g_value_get_flags(
             value.to_glib_none().0,
@@ -193,6 +203,7 @@ unsafe impl<'a> FromValue<'a> for IOCondition {
 }
 
 impl ToValue for IOCondition {
+    #[inline]
     fn to_value(&self) -> crate::Value {
         let mut value = crate::Value::for_value_type::<Self>();
         unsafe {
@@ -201,6 +212,7 @@ impl ToValue for IOCondition {
         value
     }
 
+    #[inline]
     fn value_type(&self) -> crate::Type {
         Self::static_type()
     }
@@ -235,6 +247,7 @@ impl fmt::Display for KeyFileFlags {
 impl IntoGlib for KeyFileFlags {
     type GlibType = ffi::GKeyFileFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GKeyFileFlags {
         self.bits()
     }
@@ -242,6 +255,7 @@ impl IntoGlib for KeyFileFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GKeyFileFlags> for KeyFileFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GKeyFileFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -281,6 +295,7 @@ impl fmt::Display for LogLevelFlags {
 impl IntoGlib for LogLevelFlags {
     type GlibType = ffi::GLogLevelFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GLogLevelFlags {
         self.bits()
     }
@@ -288,6 +303,7 @@ impl IntoGlib for LogLevelFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GLogLevelFlags> for LogLevelFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GLogLevelFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -319,6 +335,7 @@ impl fmt::Display for MainContextFlags {
 impl IntoGlib for MainContextFlags {
     type GlibType = ffi::GMainContextFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMainContextFlags {
         self.bits()
     }
@@ -328,6 +345,7 @@ impl IntoGlib for MainContextFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GMainContextFlags> for MainContextFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMainContextFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -365,6 +383,7 @@ impl fmt::Display for OptionFlags {
 impl IntoGlib for OptionFlags {
     type GlibType = ffi::GOptionFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GOptionFlags {
         self.bits()
     }
@@ -372,6 +391,7 @@ impl IntoGlib for OptionFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GOptionFlags> for OptionFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GOptionFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -425,6 +445,7 @@ impl fmt::Display for SpawnFlags {
 impl IntoGlib for SpawnFlags {
     type GlibType = ffi::GSpawnFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GSpawnFlags {
         self.bits()
     }
@@ -432,6 +453,7 @@ impl IntoGlib for SpawnFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GSpawnFlags> for SpawnFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GSpawnFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -479,6 +501,7 @@ impl fmt::Display for UriFlags {
 impl IntoGlib for UriFlags {
     type GlibType = ffi::GUriFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GUriFlags {
         self.bits()
     }
@@ -488,6 +511,7 @@ impl IntoGlib for UriFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriFlags> for UriFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GUriFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -527,6 +551,7 @@ impl fmt::Display for UriHideFlags {
 impl IntoGlib for UriHideFlags {
     type GlibType = ffi::GUriHideFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GUriHideFlags {
         self.bits()
     }
@@ -536,6 +561,7 @@ impl IntoGlib for UriHideFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GUriHideFlags) -> Self {
         Self::from_bits_truncate(value)
     }
@@ -571,6 +597,7 @@ impl fmt::Display for UriParamsFlags {
 impl IntoGlib for UriParamsFlags {
     type GlibType = ffi::GUriParamsFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GUriParamsFlags {
         self.bits()
     }
@@ -580,6 +607,7 @@ impl IntoGlib for UriParamsFlags {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriParamsFlags> for UriParamsFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GUriParamsFlags) -> Self {
         Self::from_bits_truncate(value)
     }

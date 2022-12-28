@@ -83,6 +83,7 @@ impl From<Char> for u8 {
 
 #[doc(hidden)]
 impl FromGlib<c_char> for Char {
+    #[inline]
     unsafe fn from_glib(value: c_char) -> Self {
         Self(value)
     }
@@ -92,6 +93,7 @@ impl FromGlib<c_char> for Char {
 impl IntoGlib for Char {
     type GlibType = c_char;
 
+    #[inline]
     fn into_glib(self) -> c_char {
         self.0
     }
@@ -155,6 +157,7 @@ impl From<UChar> for u8 {
 
 #[doc(hidden)]
 impl FromGlib<c_uchar> for UChar {
+    #[inline]
     unsafe fn from_glib(value: c_uchar) -> Self {
         Self(value)
     }
@@ -164,6 +167,7 @@ impl FromGlib<c_uchar> for UChar {
 impl IntoGlib for UChar {
     type GlibType = c_uchar;
 
+    #[inline]
     fn into_glib(self) -> c_uchar {
         self.0
     }

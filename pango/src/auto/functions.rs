@@ -118,7 +118,7 @@ pub fn markup_parser_finish(
             accel_char.as_mut_ptr(),
             &mut error,
         );
-        assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+        debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok((
                 from_glib_full(attr_list),
@@ -157,7 +157,7 @@ pub fn parse_markup(
             accel_char.as_mut_ptr(),
             &mut error,
         );
-        assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+        debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
         if error.is_null() {
             Ok((
                 from_glib_full(attr_list),

@@ -19,24 +19,28 @@ use crate::{
 pub struct Surface(ptr::NonNull<ffi::cairo_surface_t>);
 
 impl Surface {
+    #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_surface_t) -> Surface {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ffi::cairo_surface_reference(ptr);
         Surface(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_surface_t) -> crate::Borrowed<Surface> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         crate::Borrowed::new(Surface(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_surface_t) -> Result<Surface, Error> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         let status = ffi::cairo_surface_status(ptr);
         status_to_result(status)?;
         Ok(Surface(ptr::NonNull::new_unchecked(ptr)))
     }
 
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_surface_t {
         self.0.as_ptr()
     }
@@ -273,6 +277,7 @@ impl Surface {
     }
 
     #[doc(alias = "cairo_surface_status")]
+    #[inline]
     pub fn status(&self) -> Result<(), Error> {
         let status = unsafe { ffi::cairo_surface_status(self.to_raw_none()) };
         status_to_result(status)
@@ -339,12 +344,14 @@ gvalue_impl!(
 );
 
 impl Clone for Surface {
+    #[inline]
     fn clone(&self) -> Surface {
         unsafe { Self::from_raw_none(self.0.as_ptr()) }
     }
 }
 
 impl Drop for Surface {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_surface_destroy(self.0.as_ptr());
@@ -353,6 +360,7 @@ impl Drop for Surface {
 }
 
 impl AsRef<Surface> for Surface {
+    #[inline]
     fn as_ref(&self) -> &Surface {
         self
     }
@@ -395,18 +403,21 @@ pub struct MappedImageSurface {
 impl Deref for MappedImageSurface {
     type Target = ImageSurface;
 
+    #[inline]
     fn deref(&self) -> &ImageSurface {
         &self.image_surface
     }
 }
 
 impl AsRef<ImageSurface> for MappedImageSurface {
+    #[inline]
     fn as_ref(&self) -> &ImageSurface {
         &self.image_surface
     }
 }
 
 impl Drop for MappedImageSurface {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_surface_unmap_image(

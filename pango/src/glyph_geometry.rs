@@ -8,26 +8,32 @@ glib::wrapper! {
 }
 
 impl GlyphGeometry {
+    #[inline]
     pub fn width(&self) -> i32 {
         self.inner.width
     }
 
+    #[inline]
     pub fn set_width(&mut self, width: i32) {
         self.inner.width = width;
     }
 
+    #[inline]
     pub fn x_offset(&self) -> i32 {
         self.inner.x_offset
     }
 
+    #[inline]
     pub fn set_x_offset(&mut self, x_offset: i32) {
         self.inner.x_offset = x_offset;
     }
 
+    #[inline]
     pub fn y_offset(&self) -> i32 {
         self.inner.y_offset
     }
 
+    #[inline]
     pub fn set_y_offset(&mut self, y_offset: i32) {
         self.inner.y_offset = y_offset;
     }

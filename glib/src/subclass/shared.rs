@@ -33,19 +33,23 @@ where
 {
     type InnerType = T;
 
+    #[inline]
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType {
         std::sync::Arc::increment_strong_count(this);
         this
     }
 
+    #[inline]
     fn as_ptr(&self) -> *const Self::InnerType {
         std::sync::Arc::as_ptr(self)
     }
 
+    #[inline]
     unsafe fn into_raw(self) -> *const Self::InnerType {
         std::sync::Arc::into_raw(self)
     }
 
+    #[inline]
     unsafe fn from_raw(this: *const Self::InnerType) -> Self {
         std::sync::Arc::from_raw(this)
     }
@@ -57,20 +61,24 @@ where
 {
     type InnerType = T;
 
+    #[inline]
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType {
         use std::mem::ManuallyDrop;
         let this_rc = ManuallyDrop::new(std::rc::Rc::from_raw(this));
         std::rc::Rc::into_raw(ManuallyDrop::take(&mut this_rc.clone()))
     }
 
+    #[inline]
     fn as_ptr(&self) -> *const Self::InnerType {
         std::rc::Rc::as_ptr(self)
     }
 
+    #[inline]
     unsafe fn into_raw(self) -> *const Self::InnerType {
         std::rc::Rc::into_raw(self)
     }
 
+    #[inline]
     unsafe fn from_raw(this: *const Self::InnerType) -> Self {
         std::rc::Rc::from_raw(this)
     }
@@ -135,11 +143,14 @@ pub fn register_shared_type<T: SharedType>() -> crate::Type {
             type_name.to_str().unwrap()
         );
 
-        from_glib(gobject_ffi::g_boxed_type_register_static(
+        let type_ = crate::Type::from_glib(gobject_ffi::g_boxed_type_register_static(
             type_name.as_ptr(),
             Some(shared_ref::<T>),
             Some(shared_unref::<T>),
-        ))
+        ));
+        assert!(type_.is_valid());
+
+        type_
     }
 }
 

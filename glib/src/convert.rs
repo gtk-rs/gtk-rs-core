@@ -198,6 +198,7 @@ impl IConv {
 }
 
 impl Drop for IConv {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::g_iconv_close(self.0);
@@ -368,7 +369,7 @@ pub fn utf32_to_utf8(str: impl AsRef<[char]>) -> GString {
             &mut error,
         );
 
-        assert!(
+        debug_assert!(
             error.is_null(),
             "Rust `char` should always be convertible to UTF-8"
         );

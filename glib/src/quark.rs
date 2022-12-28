@@ -54,8 +54,9 @@ impl std::str::FromStr for Quark {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GQuark> for Quark {
+    #[inline]
     unsafe fn from_glib(value: ffi::GQuark) -> Self {
-        assert_ne!(value, 0);
+        debug_assert_ne!(value, 0);
         Self(NonZeroU32::new_unchecked(value))
     }
 }
@@ -76,6 +77,7 @@ impl TryFromGlib<ffi::GQuark> for Quark {
 impl IntoGlib for Quark {
     type GlibType = ffi::GQuark;
 
+    #[inline]
     fn into_glib(self) -> ffi::GQuark {
         self.0.get()
     }
@@ -85,6 +87,7 @@ impl IntoGlib for Quark {
 impl IntoGlib for Option<Quark> {
     type GlibType = ffi::GQuark;
 
+    #[inline]
     fn into_glib(self) -> ffi::GQuark {
         self.map(|s| s.0.get()).unwrap_or(0)
     }

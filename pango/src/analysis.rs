@@ -12,26 +12,32 @@ glib::wrapper! {
 }
 
 impl Analysis {
+    #[inline]
     pub fn font(&self) -> Font {
         unsafe { from_glib_none(self.inner.font) }
     }
 
+    #[inline]
     pub fn level(&self) -> u8 {
         self.inner.level
     }
 
+    #[inline]
     pub fn gravity(&self) -> Gravity {
         unsafe { from_glib(self.inner.gravity as i32) }
     }
 
+    #[inline]
     pub fn flags(&self) -> u8 {
         self.inner.flags
     }
 
+    #[inline]
     pub fn script(&self) -> Script {
         unsafe { from_glib(self.inner.script as i32) }
     }
 
+    #[inline]
     pub fn language(&self) -> Language {
         unsafe { from_glib_none(self.inner.language) }
     }

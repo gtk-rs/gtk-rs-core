@@ -85,12 +85,14 @@ gvalue_impl!(
 );
 
 impl Clone for Region {
+    #[inline]
     fn clone(&self) -> Region {
         unsafe { Self::from_raw_none(self.to_raw_none()) }
     }
 }
 
 impl Drop for Region {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::cairo_region_destroy(self.0.as_ptr());
@@ -100,6 +102,7 @@ impl Drop for Region {
 
 impl PartialEq for Region {
     #[doc(alias = "cairo_region_equal")]
+    #[inline]
     fn eq(&self, other: &Region) -> bool {
         unsafe { ffi::cairo_region_equal(self.0.as_ptr(), other.0.as_ptr()).as_bool() }
     }
@@ -110,23 +113,24 @@ impl Eq for Region {}
 impl Region {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_region_t) -> Region {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         ffi::cairo_region_reference(ptr);
         Region(ptr::NonNull::new_unchecked(ptr))
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_region_t) -> crate::Borrowed<Region> {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         crate::Borrowed::new(Region(ptr::NonNull::new_unchecked(ptr)))
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_region_t) -> Region {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Region(ptr::NonNull::new_unchecked(ptr))
     }
 
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_region_t {
         self.0.as_ptr()
     }

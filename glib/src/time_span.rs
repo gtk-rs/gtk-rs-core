@@ -9,6 +9,7 @@ use crate::translate::*;
 pub struct TimeSpan(pub i64);
 
 impl FromGlib<i64> for TimeSpan {
+    #[inline]
     unsafe fn from_glib(v: i64) -> TimeSpan {
         TimeSpan(v)
     }
@@ -17,6 +18,7 @@ impl FromGlib<i64> for TimeSpan {
 impl IntoGlib for TimeSpan {
     type GlibType = i64;
 
+    #[inline]
     fn into_glib(self) -> i64 {
         self.0
     }

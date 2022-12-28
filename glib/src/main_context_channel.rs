@@ -210,7 +210,7 @@ unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
     _user_data: ffi::gpointer,
 ) -> ffi::gboolean {
     let source = &mut *(source as *mut ChannelSource<T, F>);
-    assert!(callback.is_none());
+    debug_assert!(callback.is_none());
 
     // Set ready-time to -1 so that we won't get called again before a new item is added
     // to the channel queue.
@@ -491,7 +491,6 @@ impl<T> Receiver<T> {
                 mut_override(&*source_funcs),
                 mem::size_of::<ChannelSource<T, F>>() as u32,
             ) as *mut ChannelSource<T, F>;
-            assert!(!source.is_null());
 
             #[cfg(feature = "v2_64")]
             {

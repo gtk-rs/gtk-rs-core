@@ -26,15 +26,13 @@ pub enum UserDirectory {
     Templates,
     #[doc(alias = "G_USER_DIRECTORY_VIDEOS")]
     Videos,
-    #[doc(hidden)]
-    #[doc(alias = "G_USER_N_DIRECTORIES")]
-    NDirectories,
 }
 
 #[doc(hidden)]
 impl IntoGlib for UserDirectory {
     type GlibType = ffi::GUserDirectory;
 
+    #[inline]
     fn into_glib(self) -> ffi::GUserDirectory {
         match self {
             Self::Desktop => ffi::G_USER_DIRECTORY_DESKTOP,
@@ -45,7 +43,6 @@ impl IntoGlib for UserDirectory {
             Self::PublicShare => ffi::G_USER_DIRECTORY_PUBLIC_SHARE,
             Self::Templates => ffi::G_USER_DIRECTORY_TEMPLATES,
             Self::Videos => ffi::G_USER_DIRECTORY_VIDEOS,
-            Self::NDirectories => ffi::G_USER_N_DIRECTORIES,
         }
     }
 }
@@ -186,6 +183,7 @@ impl EnumClass {
 }
 
 impl Drop for EnumClass {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             gobject_ffi::g_type_class_unref(self.0.as_ptr() as *mut _);
@@ -194,6 +192,7 @@ impl Drop for EnumClass {
 }
 
 impl Clone for EnumClass {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe {
             Self(ptr::NonNull::new(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _).unwrap())
@@ -683,6 +682,7 @@ impl FlagsClass {
 }
 
 impl Drop for FlagsClass {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             gobject_ffi::g_type_class_unref(self.0.as_ptr() as *mut _);
@@ -691,6 +691,7 @@ impl Drop for FlagsClass {
 }
 
 impl Clone for FlagsClass {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe {
             Self(ptr::NonNull::new(gobject_ffi::g_type_class_ref(self.type_().into_glib()) as *mut _).unwrap())

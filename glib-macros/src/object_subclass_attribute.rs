@@ -62,6 +62,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
     let new_opt = (!has_new).then(|| {
         quote! {
+            #[inline]
             fn new() -> Self {
                 ::std::default::Default::default()
             }
@@ -91,12 +92,14 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         }
 
         unsafe impl #crate_ident::subclass::types::ObjectSubclassType for #self_ty {
+            #[inline]
             fn type_data() -> ::std::ptr::NonNull<#crate_ident::subclass::TypeData> {
                 static mut DATA: #crate_ident::subclass::TypeData =
                     #crate_ident::subclass::types::INIT_TYPE_DATA;
-                unsafe { ::std::ptr::NonNull::new_unchecked(&mut DATA) }
+                unsafe { ::std::ptr::NonNull::from(&mut DATA) }
             }
 
+            #[inline]
             fn type_() -> #crate_ident::Type {
                 static ONCE: ::std::sync::Once = ::std::sync::Once::new();
 
@@ -107,7 +110,6 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
                 unsafe {
                     let data = Self::type_data();
                     let type_ = data.as_ref().type_();
-                    assert!(type_.is_valid());
 
                     type_
                 }
@@ -117,6 +119,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         #[doc(hidden)]
         impl #crate_ident::subclass::types::FromObject for #self_ty {
             type FromObjectType = <Self as #crate_ident::subclass::types::ObjectSubclass>::Type;
+            #[inline]
             fn from_object(obj: &Self::FromObjectType) -> &Self {
                 <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_instance(obj)
             }
@@ -126,6 +129,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         impl #crate_ident::clone::Downgrade for #self_ty {
             type Weak = #crate_ident::subclass::ObjectImplWeakRef<#self_ty>;
 
+            #[inline]
             fn downgrade(&self) -> Self::Weak {
                 let ref_counted = #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self);
                 #crate_ident::clone::Downgrade::downgrade(&ref_counted)
@@ -133,6 +137,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         }
 
         impl #self_ty {
+            #[inline]
             pub fn downgrade(&self) -> <Self as #crate_ident::clone::Downgrade>::Weak {
                 #crate_ident::clone::Downgrade::downgrade(self)
             }
@@ -142,6 +147,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
         impl ::std::borrow::ToOwned for #self_ty {
             type Owned = #crate_ident::subclass::ObjectImplRef<#self_ty>;
 
+            #[inline]
             fn to_owned(&self) -> Self::Owned {
                 #crate_ident::subclass::prelude::ObjectSubclassExt::ref_counted(self)
             }
@@ -149,6 +155,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
 
         #[doc(hidden)]
         impl ::std::borrow::Borrow<#self_ty> for #crate_ident::subclass::ObjectImplRef<#self_ty> {
+            #[inline]
             fn borrow(&self) -> &#self_ty {
                 self
             }

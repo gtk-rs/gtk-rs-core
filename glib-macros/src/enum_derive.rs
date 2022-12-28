@@ -90,6 +90,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::translate::IntoGlib for #name {
             type GlibType = i32;
 
+            #[inline]
             fn into_glib(self) -> i32 {
                 self as i32
             }
@@ -98,6 +99,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::translate::TryFromGlib<i32> for #name {
             type Error = i32;
 
+            #[inline]
             unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
                 let from_glib = || {
                     #from_glib
@@ -108,6 +110,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::translate::FromGlib<i32> for #name {
+            #[inline]
             unsafe fn from_glib(value: i32) -> Self {
                 use #crate_ident::translate::TryFromGlib;
 
@@ -122,6 +125,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         unsafe impl<'a> #crate_ident::value::FromValue<'a> for #name {
             type Checker = #crate_ident::value::GenericValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a #crate_ident::value::Value) -> Self {
                 #crate_ident::translate::from_glib(#crate_ident::gobject_ffi::g_value_get_enum(
                     #crate_ident::translate::ToGlibPtr::to_glib_none(value).0
@@ -130,6 +134,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::value::ToValue for #name {
+            #[inline]
             fn to_value(&self) -> #crate_ident::value::Value {
                 let mut value = #crate_ident::value::Value::for_value_type::<Self>();
                 unsafe {
@@ -141,6 +146,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                 value
             }
 
+            #[inline]
             fn value_type(&self) -> #crate_ident::Type {
                 <Self as #crate_ident::StaticType>::static_type()
             }
@@ -154,6 +160,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #crate_ident::StaticType for #name {
+            #[inline]
             fn static_type() -> #crate_ident::Type {
                 static ONCE: ::std::sync::Once = ::std::sync::Once::new();
                 static mut TYPE: #crate_ident::Type = #crate_ident::Type::INVALID;
@@ -171,12 +178,13 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                     let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
                         let type_ = #crate_ident::gobject_ffi::g_enum_register_static(name.as_ptr(), VALUES.as_ptr());
-                        TYPE = #crate_ident::translate::from_glib(type_);
+                        let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
+                        assert!(type_.is_valid());
+                        TYPE = type_;
                     }
                 });
 
                 unsafe {
-                    assert!(TYPE.is_valid());
                     TYPE
                 }
             }

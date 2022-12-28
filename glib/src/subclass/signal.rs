@@ -63,10 +63,12 @@ impl fmt::Debug for SignalClassHandlerToken {
 pub struct SignalInvocationHint(gobject_ffi::GSignalInvocationHint);
 
 impl SignalInvocationHint {
+    #[inline]
     pub fn detail(&self) -> Option<crate::Quark> {
         unsafe { try_from_glib(self.0.detail).ok() }
     }
 
+    #[inline]
     pub fn run_type(&self) -> SignalFlags {
         unsafe { from_glib(self.0.run_type) }
     }
@@ -91,6 +93,7 @@ unsafe impl Sync for SignalQuery {}
 impl SignalQuery {
     // rustdoc-stripper-ignore-next
     /// The name of the signal.
+    #[inline]
     pub fn signal_name<'a>(&self) -> &'a str {
         unsafe {
             let ptr = self.0.signal_name;
@@ -100,36 +103,42 @@ impl SignalQuery {
 
     // rustdoc-stripper-ignore-next
     /// The ID of the signal.
+    #[inline]
     pub fn signal_id(&self) -> SignalId {
         unsafe { SignalId::from_glib(self.0.signal_id) }
     }
 
     // rustdoc-stripper-ignore-next
     /// The instance type this signal can be emitted for.
+    #[inline]
     pub fn type_(&self) -> Type {
         unsafe { from_glib(self.0.itype) }
     }
 
     // rustdoc-stripper-ignore-next
     /// The signal flags.
+    #[inline]
     pub fn flags(&self) -> SignalFlags {
         unsafe { from_glib(self.0.signal_flags) }
     }
 
     // rustdoc-stripper-ignore-next
     /// The return type for the user callback.
+    #[inline]
     pub fn return_type(&self) -> SignalType {
         unsafe { from_glib(self.0.return_type) }
     }
 
     // rustdoc-stripper-ignore-next
     /// The number of parameters the user callback takes.
+    #[inline]
     pub fn n_params(&self) -> u32 {
         self.0.n_params
     }
 
     // rustdoc-stripper-ignore-next
     /// The parameters for the user callback.
+    #[inline]
     pub fn param_types(&self) -> &[SignalType] {
         if self.n_params() == 0 {
             return &[];
@@ -168,11 +177,13 @@ impl SignalId {
     /// # Safety
     ///
     /// The caller has to ensure it's a valid signal identifier.
+    #[inline]
     pub unsafe fn new(id: NonZeroU32) -> Self {
         Self(id)
     }
 
     #[doc(alias = "g_signal_parse_name")]
+    #[inline]
     pub fn parse_name(
         name: &str,
         type_: Type,
@@ -203,6 +214,7 @@ impl SignalId {
     // rustdoc-stripper-ignore-next
     /// Find a SignalId by its `name`, and the `type` it connects to.
     #[doc(alias = "g_signal_lookup")]
+    #[inline]
     pub fn lookup(name: &str, type_: Type) -> Option<Self> {
         unsafe {
             let signal_id = gobject_ffi::g_signal_lookup(name.to_glib_none().0, type_.into_glib());
@@ -217,12 +229,13 @@ impl SignalId {
     // rustdoc-stripper-ignore-next
     /// Queries more in-depth information about the current signal.
     #[doc(alias = "g_signal_query")]
+    #[inline]
     pub fn query(&self) -> SignalQuery {
         unsafe {
             let mut query_ptr = std::mem::MaybeUninit::uninit();
             gobject_ffi::g_signal_query(self.into_glib(), query_ptr.as_mut_ptr());
             let query = query_ptr.assume_init();
-            assert_ne!(query.signal_id, 0);
+            debug_assert_ne!(query.signal_id, 0);
             SignalQuery(query)
         }
     }
@@ -230,6 +243,7 @@ impl SignalId {
     // rustdoc-stripper-ignore-next
     /// Find the signal name.
     #[doc(alias = "g_signal_name")]
+    #[inline]
     pub fn name<'a>(&self) -> &'a str {
         unsafe {
             let ptr = gobject_ffi::g_signal_name(self.into_glib());
@@ -240,8 +254,9 @@ impl SignalId {
 
 #[doc(hidden)]
 impl FromGlib<u32> for SignalId {
+    #[inline]
     unsafe fn from_glib(signal_id: u32) -> Self {
-        assert_ne!(signal_id, 0);
+        debug_assert_ne!(signal_id, 0);
         Self::new(NonZeroU32::new_unchecked(signal_id))
     }
 }
@@ -250,6 +265,7 @@ impl FromGlib<u32> for SignalId {
 impl IntoGlib for SignalId {
     type GlibType = u32;
 
+    #[inline]
     fn into_glib(self) -> u32 {
         self.0.into()
     }
@@ -260,26 +276,31 @@ impl IntoGlib for SignalId {
 pub struct SignalType(ffi::GType);
 
 impl SignalType {
+    #[inline]
     pub fn with_static_scope(type_: Type) -> Self {
         Self(type_.into_glib() | gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT)
     }
 
+    #[inline]
     pub fn static_scope(&self) -> bool {
         (self.0 & gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT) != 0
     }
 
+    #[inline]
     pub fn type_(&self) -> Type {
         (*self).into()
     }
 }
 
 impl From<Type> for SignalType {
+    #[inline]
     fn from(type_: Type) -> Self {
         Self(type_.into_glib())
     }
 }
 
 impl From<SignalType> for Type {
+    #[inline]
     fn from(type_: SignalType) -> Self {
         // Remove the extra-bit used for G_SIGNAL_TYPE_STATIC_SCOPE
         let type_ = type_.0 & (!gobject_ffi::G_TYPE_FLAG_RESERVED_ID_BIT);
@@ -288,6 +309,7 @@ impl From<SignalType> for Type {
 }
 
 impl PartialEq<Type> for SignalType {
+    #[inline]
     fn eq(&self, other: &Type) -> bool {
         let type_: Type = (*self).into();
         type_.eq(other)
@@ -316,6 +338,7 @@ impl std::fmt::Display for SignalType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GType> for SignalType {
+    #[inline]
     unsafe fn from_glib(type_: ffi::GType) -> Self {
         Self(type_)
     }
@@ -325,6 +348,7 @@ impl FromGlib<ffi::GType> for SignalType {
 impl IntoGlib for SignalType {
     type GlibType = ffi::GType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GType {
         self.0
     }
@@ -551,24 +575,28 @@ impl Signal {
 
     // rustdoc-stripper-ignore-next
     /// Name of the signal.
+    #[inline]
     pub fn name(&self) -> &str {
         &self.name
     }
 
     // rustdoc-stripper-ignore-next
     /// Flags of the signal.
+    #[inline]
     pub fn flags(&self) -> SignalFlags {
         self.flags
     }
 
     // rustdoc-stripper-ignore-next
     /// Parameter types of the signal.
+    #[inline]
     pub fn param_types(&self) -> &[SignalType] {
         &self.param_types
     }
 
     // rustdoc-stripper-ignore-next
     /// Return type of the signal.
+    #[inline]
     pub fn return_type(&self) -> SignalType {
         self.return_type
     }
@@ -577,6 +605,7 @@ impl Signal {
     /// Signal ID.
     ///
     /// This will panic if called before the signal was registered.
+    #[inline]
     pub fn signal_id(&self) -> SignalId {
         match &*self.registration.lock().unwrap() {
             SignalRegistration::Unregistered { .. } => panic!("Signal not registered yet"),
@@ -588,6 +617,7 @@ impl Signal {
     /// Type this signal was registered for.
     ///
     /// This will panic if called before the signal was registered.
+    #[inline]
     pub fn type_(&self) -> Type {
         match &*self.registration.lock().unwrap() {
             SignalRegistration::Unregistered { .. } => panic!("Signal not registered yet"),

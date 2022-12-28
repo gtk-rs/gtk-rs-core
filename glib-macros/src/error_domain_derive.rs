@@ -29,6 +29,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
 
     quote! {
         impl #crate_ident::error::ErrorDomain for #name {
+            #[inline]
             fn domain() -> #crate_ident::Quark {
                 use #crate_ident::translate::from_glib;
 
@@ -39,10 +40,12 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
                 *QUARK
             }
 
+            #[inline]
             fn code(self) -> i32 {
                 self as i32
             }
 
+            #[inline]
             fn from(value: i32) -> ::core::option::Option<Self>
             where
                 Self: Sized

@@ -194,6 +194,7 @@ impl<T: 'static> Ptr for *mut T {
 /// Overrides pointer mutability.
 ///
 /// Use when the C API should be specifying a const pointer but doesn't.
+#[inline]
 pub fn mut_override<T>(ptr: *const T) -> *mut T {
     ptr as *mut T
 }
@@ -203,6 +204,7 @@ pub fn mut_override<T>(ptr: *const T) -> *mut T {
 ///
 /// Use when the C API need const pointer, but function with `IsA<T>` constraint,
 /// that usually don't have const pointer conversion.
+#[inline]
 pub fn const_override<T>(ptr: *mut T) -> *const T {
     ptr as *const T
 }
@@ -273,6 +275,7 @@ pub struct Borrowed<T>(mem::ManuallyDrop<T>);
 impl<T> Borrowed<T> {
     // rustdoc-stripper-ignore-next
     /// Creates a new borrowed value.
+    #[inline]
     pub fn new(val: T) -> Self {
         Self(mem::ManuallyDrop::new(val))
     }
@@ -284,12 +287,14 @@ impl<T> Borrowed<T> {
     ///
     /// The returned value must never be dropped and instead has to be passed to `mem::forget()` or
     /// be directly wrapped in `mem::ManuallyDrop` or another `Borrowed` wrapper.
+    #[inline]
     pub unsafe fn into_inner(self) -> T {
         mem::ManuallyDrop::into_inner(self.0)
     }
 }
 
 impl<T> AsRef<T> for Borrowed<T> {
+    #[inline]
     fn as_ref(&self) -> &T {
         &self.0
     }
@@ -298,6 +303,7 @@ impl<T> AsRef<T> for Borrowed<T> {
 impl<T> std::ops::Deref for Borrowed<T> {
     type Target = T;
 
+    #[inline]
     fn deref(&self) -> &T {
         &self.0
     }
@@ -928,10 +934,12 @@ macro_rules! impl_to_glib_container_from_slice_fundamental {
         impl<'a> ToGlibContainerFromSlice<'a, *mut $name> for $name {
             type Storage = std::marker::PhantomData<&'a [$name]>;
 
+            #[inline]
             fn to_glib_none_from_slice(t: &'a [$name]) -> (*mut $name, Self::Storage) {
                 (t.as_ptr() as *mut $name, std::marker::PhantomData)
             }
 
+            #[inline]
             fn to_glib_container_from_slice(t: &'a [$name]) -> (*mut $name, Self::Storage) {
                 (
                     ToGlibContainerFromSlice::to_glib_full_from_slice(t),
@@ -939,6 +947,7 @@ macro_rules! impl_to_glib_container_from_slice_fundamental {
                 )
             }
 
+            #[inline]
             fn to_glib_full_from_slice(t: &[$name]) -> *mut $name {
                 if t.len() == 0 {
                     return ptr::null_mut();
@@ -1143,6 +1152,7 @@ where
 pub struct List(ptr::NonNull<ffi::GList>);
 
 impl Drop for List {
+    #[inline]
     fn drop(&mut self) {
         unsafe { ffi::g_list_free(self.0.as_ptr()) }
     }
@@ -1226,6 +1236,7 @@ where
 pub struct SList(ptr::NonNull<ffi::GSList>);
 
 impl Drop for SList {
+    #[inline]
     fn drop(&mut self) {
         unsafe { ffi::g_slist_free(self.0.as_ptr()) }
     }
@@ -1285,6 +1296,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
 pub struct HashTable(ptr::NonNull<ffi::GHashTable>);
 
 impl Drop for HashTable {
+    #[inline]
     fn drop(&mut self) {
         unsafe { ffi::g_hash_table_unref(self.0.as_ptr()) }
     }
@@ -1294,6 +1306,7 @@ impl Drop for HashTable {
 pub struct PtrArray(ptr::NonNull<ffi::GPtrArray>);
 
 impl Drop for PtrArray {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             ffi::g_ptr_array_unref(self.0.as_ptr());
@@ -1454,24 +1467,28 @@ pub enum GlibNoneOrInvalidError<I: Error> {
 impl<I: Error> GlibNoneOrInvalidError<I> {
     // rustdoc-stripper-ignore-next
     /// Builds the `None` variant.
+    #[inline]
     pub fn none() -> Self {
         Self::None
     }
 
     // rustdoc-stripper-ignore-next
     /// Returns `true` if `self` is the `None` variant.
+    #[inline]
     pub fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
 
     // rustdoc-stripper-ignore-next
     /// Returns `true` if `self` is the `Invalid` variant.
+    #[inline]
     pub fn is_invalid(&self) -> bool {
         matches!(self, Self::Invalid(_))
     }
 }
 
 impl<I: Error> From<I> for GlibNoneOrInvalidError<I> {
+    #[inline]
     fn from(invalid: I) -> Self {
         Self::Invalid(invalid)
     }
@@ -1652,7 +1669,7 @@ impl<P: Ptr, T: FromGlibPtrFull<P>> FromGlibPtrFull<P> for Option<T> {
 impl FromGlibPtrNone<*const c_char> for String {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self::from_utf8_lossy(CStr::from_ptr(ptr).to_bytes()).into_owned()
     }
 }
@@ -1671,7 +1688,7 @@ impl FromGlibPtrFull<*const c_char> for String {
 impl FromGlibPtrNone<*mut c_char> for String {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         Self::from_utf8_lossy(CStr::from_ptr(ptr).to_bytes()).into_owned()
     }
 }
@@ -1688,7 +1705,7 @@ impl FromGlibPtrFull<*mut c_char> for String {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib paths on UNIX are always in the local encoding, which can be
     // UTF-8 or anything else really, but is always a NUL-terminated string
@@ -1698,7 +1715,7 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib paths on Windows are always UTF-8, as such we can convert to a String
     // first and then go to a PathBuf from there. Unless there is a bug
@@ -1711,7 +1728,7 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on UNIX are always in the local encoding,
     // which can be UTF-8 or anything else really, but is always a NUL-terminated string
@@ -1721,7 +1738,7 @@ pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
 
     // GLib OS string (environment strings) on Windows are always UTF-8,
     // as such we can convert to a String
@@ -1736,7 +1753,7 @@ pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 impl FromGlibPtrNone<*const c_char> for PathBuf {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_path_buf(ptr)
     }
 }
@@ -1753,7 +1770,7 @@ impl FromGlibPtrFull<*const c_char> for PathBuf {
 impl FromGlibPtrNone<*mut c_char> for PathBuf {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_path_buf(ptr)
     }
 }
@@ -1769,14 +1786,14 @@ impl FromGlibPtrFull<*mut c_char> for PathBuf {
 
 #[cfg(not(windows))]
 pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
     let slice = std::slice::from_raw_parts(ptr as *const u8, num);
     OsString::from_vec(slice.to_vec()).into()
 }
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
-    assert!(!ptr.is_null());
+    debug_assert!(!ptr.is_null());
     let slice = std::slice::from_raw_parts(ptr as *const u8, num);
     String::from_utf8(slice.into())
         .expect("Invalid, non-UTF8 path")
@@ -1785,7 +1802,6 @@ pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBu
 
 #[doc(hidden)]
 impl FromGlibContainer<*const c_char, *const i8> for PathBuf {
-    #[inline]
     unsafe fn from_glib_none_num(ptr: *const i8, num: usize) -> Self {
         c_to_path_buf_num(ptr as *const _, num)
     }
@@ -1849,7 +1865,7 @@ impl FromGlibContainer<*const c_char, *mut u8> for PathBuf {
 impl FromGlibPtrNone<*const c_char> for OsString {
     #[inline]
     unsafe fn from_glib_none(ptr: *const c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_os_string(ptr)
     }
 }
@@ -1866,7 +1882,7 @@ impl FromGlibPtrFull<*const c_char> for OsString {
 impl FromGlibPtrNone<*mut c_char> for OsString {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut c_char) -> Self {
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         c_to_os_string(ptr)
     }
 }
@@ -2484,7 +2500,7 @@ where
             return Vec::new();
         }
         let pdata = (*ptr).pdata;
-        assert!((*ptr).len as usize >= num);
+        debug_assert!((*ptr).len as usize >= num);
         let mut res = Vec::with_capacity(num);
         for i in 0..num {
             let item_ptr: <T as GlibPtrDefault>::GlibType = Ptr::from(ptr::read(pdata.add(i)));
@@ -2512,7 +2528,7 @@ where
             return Vec::new();
         }
         let pdata = (*ptr).pdata;
-        assert!((*ptr).len as usize >= num);
+        debug_assert!((*ptr).len as usize >= num);
         let mut res = Vec::with_capacity(num);
         for i in 0..num {
             let item_ptr: <T as GlibPtrDefault>::GlibType = Ptr::from(ptr::read(pdata.add(i)));

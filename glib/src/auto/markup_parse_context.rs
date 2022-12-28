@@ -27,7 +27,7 @@ impl MarkupParseContext {
         unsafe {
             let mut error = ptr::null_mut();
             let is_ok = ffi::g_markup_parse_context_end_parse(self.to_glib_none().0, &mut error);
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -78,7 +78,7 @@ impl MarkupParseContext {
                 text_len,
                 &mut error,
             );
-            assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

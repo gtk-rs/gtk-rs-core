@@ -248,6 +248,7 @@ pub trait Cast: ObjectType {
     /// If not running with `debug_assertions` enabled, the caller is responsible
     /// for ensuring that the instance implements `T`
     #[track_caller]
+    #[inline]
     unsafe fn unsafe_cast<T: ObjectType>(self) -> T {
         debug_assert!(self.is::<T>());
         T::unsafe_from(self.into())
@@ -265,6 +266,7 @@ pub trait Cast: ObjectType {
     /// If not running with `debug_assertions` enabled, the caller is responsible
     /// for ensuring that the instance implements `T`
     #[track_caller]
+    #[inline]
     unsafe fn unsafe_cast_ref<T: ObjectType>(&self) -> &T {
         debug_assert!(self.is::<T>());
         // This cast is safe because all our wrapper types have the
@@ -315,6 +317,7 @@ pub trait CastNone: Sized {
 impl<I: ObjectType + Sized> CastNone for Option<I> {
     type Inner = I;
 
+    #[inline]
     fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: CanDowncast<T>,
@@ -322,12 +325,15 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
         self.and_then(|i| i.downcast().ok())
     }
 
+    #[inline]
     fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: CanDowncast<T>,
     {
         self.as_ref().and_then(|i| i.downcast_ref())
     }
+
+    #[inline]
     fn and_upcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: IsA<T>,
@@ -335,16 +341,21 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
         self.map(|i| i.upcast())
     }
 
+    #[inline]
     fn and_upcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
         Self::Inner: IsA<T>,
     {
         self.as_ref().map(|i| i.upcast_ref())
     }
+
+    #[inline]
     fn and_dynamic_cast<T: ObjectType>(self) -> Result<T, Self> {
         self.ok_or(None)
             .and_then(|i| i.dynamic_cast().map_err(|e| Some(e)))
     }
+
+    #[inline]
     fn and_dynamic_cast_ref<T: ObjectType>(&self) -> Option<&T> {
         self.as_ref().and_then(|i| i.dynamic_cast_ref())
     }
@@ -363,6 +374,7 @@ pub struct ObjectRef {
 }
 
 impl Clone for ObjectRef {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe {
             Self {
@@ -373,6 +385,7 @@ impl Clone for ObjectRef {
 }
 
 impl Drop for ObjectRef {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             gobject_ffi::g_object_unref(self.inner.as_ptr());
@@ -395,18 +408,21 @@ impl fmt::Debug for ObjectRef {
 }
 
 impl PartialOrd for ObjectRef {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
 impl Ord for ObjectRef {
+    #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
 impl PartialEq for ObjectRef {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.inner == other.inner
     }
@@ -415,6 +431,7 @@ impl PartialEq for ObjectRef {
 impl Eq for ObjectRef {}
 
 impl hash::Hash for ObjectRef {
+    #[inline]
     fn hash<H>(&self, state: &mut H)
     where
         H: hash::Hasher,
@@ -531,8 +548,8 @@ impl<'a> ToGlibContainerFromSlice<'a, *const *mut gobject_ffi::GObject> for Obje
 impl FromGlibPtrNone<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut gobject_ffi::GObject) -> Self {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         // Attention: This takes ownership of floating references!
         Self {
@@ -554,8 +571,8 @@ impl FromGlibPtrNone<*const gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut gobject_ffi::GObject) -> Self {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         Self {
             inner: ptr::NonNull::new_unchecked(ptr),
@@ -567,8 +584,8 @@ impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrBorrow<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GObject) -> Borrowed<Self> {
-        assert!(!ptr.is_null());
-        assert_ne!((*ptr).ref_count, 0);
+        debug_assert!(!ptr.is_null());
+        debug_assert_ne!((*ptr).ref_count, 0);
 
         Borrowed::new(Self {
             inner: ptr::NonNull::new_unchecked(ptr),
@@ -708,6 +725,7 @@ pub struct TypedObjectRef<T, P> {
 }
 
 impl<T, P> TypedObjectRef<T, P> {
+    #[inline]
     pub unsafe fn new(obj: ObjectRef) -> Self {
         Self {
             inner: obj,
@@ -716,12 +734,14 @@ impl<T, P> TypedObjectRef<T, P> {
         }
     }
 
+    #[inline]
     pub fn into_inner(self) -> ObjectRef {
         self.inner
     }
 }
 
 impl<T, P> Clone for TypedObjectRef<T, P> {
+    #[inline]
     fn clone(&self) -> Self {
         Self {
             inner: self.inner.clone(),
@@ -734,6 +754,7 @@ impl<T, P> Clone for TypedObjectRef<T, P> {
 impl<T, P> ops::Deref for TypedObjectRef<T, P> {
     type Target = ObjectRef;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
@@ -754,18 +775,21 @@ impl<T, P> fmt::Debug for TypedObjectRef<T, P> {
 }
 
 impl<T, P> PartialOrd for TypedObjectRef<T, P> {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
 impl<T, P> Ord for TypedObjectRef<T, P> {
+    #[inline]
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
 impl<T, P> PartialEq for TypedObjectRef<T, P> {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.inner == other.inner
     }
@@ -774,6 +798,7 @@ impl<T, P> PartialEq for TypedObjectRef<T, P> {
 impl<T, P> Eq for TypedObjectRef<T, P> {}
 
 impl<T, P> hash::Hash for TypedObjectRef<T, P> {
+    #[inline]
     fn hash<H>(&self, state: &mut H)
     where
         H: hash::Hasher,
@@ -856,6 +881,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::ObjectRef {
+            #[inline]
             fn from(s: $name $(<$($generic),+>)?) -> $crate::object::ObjectRef {
                 s.inner.into_inner()
             }
@@ -863,6 +889,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
                 $name {
                     inner: $crate::object::TypedObjectRef::new(t),
@@ -881,10 +908,12 @@ macro_rules! glib_object_wrapper {
             type GlibType = $ffi_name;
             type GlibClassType = $ffi_class_name;
 
+            #[inline]
             fn as_object_ref(&self) -> &$crate::object::ObjectRef {
                 &self.inner
             }
 
+            #[inline]
             fn as_ptr(&self) -> *mut Self::GlibType {
                 $crate::translate::ToGlibPtr::to_glib_none(&*self.inner).0 as *mut _
             }
@@ -892,6 +921,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
+            #[inline]
             fn as_ref(&self) -> &$crate::object::ObjectRef {
                 &self.inner
             }
@@ -899,6 +929,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<Self> for $name $(<$($generic),+>)? {
+            #[inline]
             fn as_ref(&self) -> &Self {
                 self
             }
@@ -910,6 +941,8 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::subclass::types::FromObject for $name $(<$($generic),+>)? {
             type FromObjectType = Self;
+
+            #[inline]
             fn from_object(obj: &Self::FromObjectType) -> &Self {
                 obj
             }
@@ -951,6 +984,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *mut $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *mut _
@@ -959,6 +993,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*const $ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
             unsafe fn into_glib_ptr(self) -> *const $ffi_name {
                 let s = std::mem::ManuallyDrop::new(self);
                 $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(&*s).0 as *const _
@@ -1172,6 +1207,7 @@ macro_rules! glib_object_wrapper {
         }
 
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::types::StaticType for $name $(<$($generic),+>)? {
+            #[inline]
             fn static_type() -> $crate::types::Type {
                 #[allow(unused_unsafe)]
                 unsafe { $crate::translate::from_glib($get_type_expr) }
@@ -1190,10 +1226,11 @@ macro_rules! glib_object_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for $name $(<$($generic),+>)? {
             type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_dup_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
-                assert!(!ptr.is_null());
-                assert_ne!((*ptr).ref_count, 0);
+                debug_assert!(!ptr.is_null());
+                debug_assert_ne!((*ptr).ref_count, 0);
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
             }
         }
@@ -1202,18 +1239,20 @@ macro_rules! glib_object_wrapper {
         unsafe impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::value::FromValue<'a> for &'a $name $(<$($generic),+>)? {
             type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
+            #[inline]
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
-                assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
+                debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                assert!(!(*ptr).is_null());
-                assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
+                debug_assert!(!(*ptr).is_null());
+                debug_assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
                 &*(ptr as *const $name $(<$($generic),+>)?)
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValue for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
                     let mut value = $crate::Value::from_type(<Self as $crate::StaticType>::static_type());
@@ -1225,6 +1264,7 @@ macro_rules! glib_object_wrapper {
                 }
             }
 
+            #[inline]
             fn value_type(&self) -> $crate::Type {
                 <Self as $crate::StaticType>::static_type()
             }
@@ -1232,6 +1272,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? ::std::convert::From<$name $(<$($generic),+>)?> for $crate::Value {
+            #[inline]
             fn from(o: $name $(<$($generic),+>)?) -> Self {
                 unsafe {
                     let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
@@ -1246,6 +1287,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::value::ToValueOptional for $name $(<$($generic),+>)? {
+            #[inline]
             fn to_value_optional(s: Option<&Self>) -> $crate::Value {
                 let mut value = $crate::Value::for_value_type::<Self>();
                 unsafe {
@@ -1267,6 +1309,7 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::clone::Downgrade for $name $(<$($generic),+>)? {
             type Weak = $crate::object::WeakRef<Self>;
 
+            #[inline]
             fn downgrade(&self) -> Self::Weak {
                 <Self as $crate::object::ObjectExt>::downgrade(&self)
             }
@@ -1280,6 +1323,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $super_name {
+            #[inline]
             fn from(v: $name $(<$($generic),+>)?) -> Self {
                 <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
             }
@@ -1287,6 +1331,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$super_name> for $name $(<$($generic),+>)? {
+            #[inline]
             fn as_ref(&self) -> &$super_name {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1294,6 +1339,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$super_name> for $name $(<$($generic),+>)? {
+            #[inline]
             fn borrow(&self) -> &$super_name {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1362,6 +1408,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
+            #[inline]
             fn as_ref(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1369,6 +1416,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
+            #[inline]
             fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1376,6 +1424,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::Object {
+            #[inline]
             fn from(v: $name $(<$($generic),+>)?) -> Self {
                 <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
             }
@@ -1440,6 +1489,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$crate::object::Object> for $name $(<$($generic),+>)? {
+            #[inline]
             fn as_ref(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1447,6 +1497,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$crate::object::Object> for $name $(<$($generic),+>)? {
+            #[inline]
             fn borrow(&self) -> &$crate::object::Object {
                 $crate::object::Cast::upcast_ref(self)
             }
@@ -1454,6 +1505,7 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $crate::object::Object {
+            #[inline]
             fn from(v: $name $(<$($generic),+>)?) -> Self {
                 <$name $(::<$($generic),+>)? as $crate::Cast>::upcast(v)
             }
@@ -1702,6 +1754,7 @@ pub struct PropertyNotificationFreezeGuard(ObjectRef);
 
 impl Drop for PropertyNotificationFreezeGuard {
     #[doc(alias = "g_object_thaw_notify")]
+    #[inline]
     fn drop(&mut self) {
         unsafe { gobject_ffi::g_object_thaw_notify(self.0.to_glib_none().0) }
     }
@@ -2314,14 +2367,17 @@ pub trait ObjectExt: ObjectType {
 }
 
 impl<T: ObjectType> ObjectExt for T {
+    #[inline]
     fn is<U: StaticType>(&self) -> bool {
         self.type_().is_a(U::static_type())
     }
 
+    #[inline]
     fn type_(&self) -> Type {
         self.object_class().type_()
     }
 
+    #[inline]
     fn object_class(&self) -> &ObjectClass {
         unsafe {
             let obj: *mut gobject_ffi::GObject = self.as_object_ref().to_glib_none().0;
@@ -2330,6 +2386,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn class(&self) -> &Class<Self>
     where
         Self: IsClass,
@@ -2341,6 +2398,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn class_of<U: IsClass>(&self) -> Option<&Class<U>> {
         if !self.is::<U>() {
             return None;
@@ -2353,6 +2411,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn interface<U: IsInterface>(&self) -> Option<InterfaceRef<U>> {
         Interface::from_class(self.object_class())
     }
@@ -2524,6 +2583,7 @@ impl<T: ObjectType> ObjectExt for T {
         self.object_class().list_properties()
     }
 
+    #[inline]
     fn freeze_notify(&self) -> PropertyNotificationFreezeGuard {
         unsafe { gobject_ffi::g_object_freeze_notify(self.as_object_ref().to_glib_none().0) };
         PropertyNotificationFreezeGuard(self.as_object_ref().clone())
@@ -2808,6 +2868,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn watch_closure(&self, closure: &impl AsRef<Closure>) {
         let closure = closure.as_ref();
         unsafe {
@@ -3065,6 +3126,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn disconnect(&self, handler_id: SignalHandlerId) {
         unsafe {
             gobject_ffi::g_signal_handler_disconnect(
@@ -3132,6 +3194,7 @@ impl<T: ObjectType> ObjectExt for T {
         )
     }
 
+    #[inline]
     fn notify(&self, property_name: &str) {
         unsafe {
             gobject_ffi::g_object_notify(
@@ -3141,6 +3204,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn notify_by_pspec(&self, pspec: &crate::ParamSpec) {
         unsafe {
             gobject_ffi::g_object_notify_by_pspec(
@@ -3150,6 +3214,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
     }
 
+    #[inline]
     fn downgrade(&self) -> WeakRef<T> {
         unsafe {
             let w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
@@ -3180,6 +3245,7 @@ impl<T: ObjectType> ObjectExt for T {
         BindingBuilder::new(self, source_property, target, target_property)
     }
 
+    #[inline]
     fn ref_count(&self) -> u32 {
         let stash = self.as_object_ref().to_glib_none();
         let ptr: *mut gobject_ffi::GObject = stash.0;
@@ -3187,6 +3253,7 @@ impl<T: ObjectType> ObjectExt for T {
         unsafe { ffi::g_atomic_int_get(&(*ptr).ref_count as *const u32 as *const i32) as u32 }
     }
 
+    #[inline]
     unsafe fn run_dispose(&self) {
         gobject_ffi::g_object_run_dispose(self.as_ptr() as *mut _);
     }
@@ -3213,6 +3280,7 @@ impl<T: ObjectType> WatchedObject<T> {
     ///
     /// This should only be called from within a closure that was previously attached to `T` using
     /// `Watchable::watch_closure`.
+    #[inline]
     pub unsafe fn borrow(&self) -> Borrowed<T>
     where
         T: FromGlibPtrBorrow<*mut <T as ObjectType>::GlibType>,
@@ -3490,6 +3558,7 @@ impl<T: ObjectType> WeakRef<T> {
     /// Create a new empty weak reference.
     ///
     /// `upgrade` will always return `None` until an object is set on it.
+    #[inline]
     pub fn new() -> WeakRef<T> {
         unsafe {
             let mut w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
@@ -3504,6 +3573,7 @@ impl<T: ObjectType> WeakRef<T> {
     // rustdoc-stripper-ignore-next
     /// Set this weak reference to the given object.
     #[doc(alias = "g_weak_ref_set")]
+    #[inline]
     pub fn set(&self, obj: Option<&T>) {
         unsafe {
             gobject_ffi::g_weak_ref_set(
@@ -3520,6 +3590,7 @@ impl<T: ObjectType> WeakRef<T> {
     ///
     /// If the stored object was already destroyed or no object was set in this weak reference then
     /// `None` is returned.
+    #[inline]
     pub fn upgrade(&self) -> Option<T> {
         unsafe {
             let ptr = gobject_ffi::g_weak_ref_get(mut_override(Pin::as_ref(&self.0).get_ref()));
@@ -3534,6 +3605,7 @@ impl<T: ObjectType> WeakRef<T> {
 }
 
 impl<T: ObjectType> Drop for WeakRef<T> {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             gobject_ffi::g_weak_ref_clear(Pin::as_mut(&mut self.0).get_unchecked_mut());
@@ -3542,6 +3614,7 @@ impl<T: ObjectType> Drop for WeakRef<T> {
 }
 
 impl<T: ObjectType> Clone for WeakRef<T> {
+    #[inline]
     fn clone(&self) -> Self {
         unsafe {
             let o = self.upgrade();
@@ -3558,6 +3631,7 @@ impl<T: ObjectType> Clone for WeakRef<T> {
 }
 
 impl<T: ObjectType> Default for WeakRef<T> {
+    #[inline]
     fn default() -> Self {
         Self::new()
     }
@@ -3577,10 +3651,12 @@ unsafe impl<T: ObjectType + Send + Sync> Send for WeakRef<T> {}
 pub struct SendWeakRef<T: ObjectType>(WeakRef<T>, Option<usize>);
 
 impl<T: ObjectType> SendWeakRef<T> {
+    #[inline]
     pub fn new() -> SendWeakRef<T> {
         SendWeakRef(WeakRef::new(), None)
     }
 
+    #[inline]
     pub fn into_weak_ref(self) -> WeakRef<T> {
         assert!(
             self.1.is_none() || self.1 == Some(thread_id()),
@@ -3594,6 +3670,7 @@ impl<T: ObjectType> SendWeakRef<T> {
 impl<T: ObjectType> ops::Deref for SendWeakRef<T> {
     type Target = WeakRef<T>;
 
+    #[inline]
     fn deref(&self) -> &WeakRef<T> {
         assert!(
             self.1.is_none() || self.1 == Some(thread_id()),
@@ -3606,18 +3683,21 @@ impl<T: ObjectType> ops::Deref for SendWeakRef<T> {
 
 // Deriving this gives the wrong trait bounds
 impl<T: ObjectType> Clone for SendWeakRef<T> {
+    #[inline]
     fn clone(&self) -> Self {
         Self(self.0.clone(), self.1)
     }
 }
 
 impl<T: ObjectType> Default for SendWeakRef<T> {
+    #[inline]
     fn default() -> Self {
         Self::new()
     }
 }
 
 impl<T: ObjectType> From<WeakRef<T>> for SendWeakRef<T> {
+    #[inline]
     fn from(v: WeakRef<T>) -> SendWeakRef<T> {
         SendWeakRef(v, Some(thread_id()))
     }
@@ -3932,6 +4012,7 @@ impl<T: IsClass> Class<T> {
     /// This is not equivalent to `T::static_type()` but is the type of the subclass of `T` where
     /// this class belongs to.
     #[doc(alias = "get_type")]
+    #[inline]
     pub fn type_(&self) -> Type {
         unsafe {
             // This also works for interfaces because they also have the type
@@ -3943,6 +4024,7 @@ impl<T: IsClass> Class<T> {
 
     // rustdoc-stripper-ignore-next
     /// Casts this class to a reference to a parent type's class.
+    #[inline]
     pub fn upcast_ref<U: IsClass>(&self) -> &Class<U>
     where
         T: IsA<U>,
@@ -3955,6 +4037,7 @@ impl<T: IsClass> Class<T> {
 
     // rustdoc-stripper-ignore-next
     /// Casts this class to a mutable reference to a parent type's class.
+    #[inline]
     pub fn upcast_ref_mut<U: IsClass>(&mut self) -> &mut Class<U>
     where
         T: IsA<U>,
@@ -3968,6 +4051,7 @@ impl<T: IsClass> Class<T> {
     // rustdoc-stripper-ignore-next
     /// Casts this class to a reference to a child type's class or
     /// fails if this class is not implementing the child class.
+    #[inline]
     pub fn downcast_ref<U: IsClass>(&self) -> Option<&Class<U>>
     where
         U: IsA<T>,
@@ -3985,6 +4069,7 @@ impl<T: IsClass> Class<T> {
     // rustdoc-stripper-ignore-next
     /// Casts this class to a mutable reference to a child type's class or
     /// fails if this class is not implementing the child class.
+    #[inline]
     pub fn downcast_ref_mut<U: IsClass>(&mut self) -> Option<&mut Class<U>>
     where
         U: IsA<T>,
@@ -4004,6 +4089,7 @@ impl<T: IsClass> Class<T> {
     ///
     /// This will return `None` if `type_` is not a subclass of `Self`.
     #[doc(alias = "g_type_class_ref")]
+    #[inline]
     pub fn from_type(type_: Type) -> Option<ClassRef<'static, T>> {
         if !type_.is_a(T::static_type()) {
             return None;
@@ -4026,6 +4112,7 @@ impl<T: IsClass> Class<T> {
     // rustdoc-stripper-ignore-next
     /// Gets the parent class struct, if any.
     #[doc(alias = "g_type_class_peek_parent")]
+    #[inline]
     pub fn parent(&self) -> Option<ClassRef<T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_class_peek_parent(&self.0 as *const _ as *mut _);
@@ -4046,12 +4133,14 @@ unsafe impl<T: IsClass> Send for Class<T> {}
 unsafe impl<T: IsClass> Sync for Class<T> {}
 
 impl<T: IsClass> AsRef<T::GlibClassType> for Class<T> {
+    #[inline]
     fn as_ref(&self) -> &T::GlibClassType {
         &self.0
     }
 }
 
 impl<T: IsClass> AsMut<T::GlibClassType> for Class<T> {
+    #[inline]
     fn as_mut(&mut self) -> &mut T::GlibClassType {
         &mut self.0
     }
@@ -4065,12 +4154,14 @@ pub struct ClassRef<'a, T: IsClass>(ptr::NonNull<Class<T>>, bool, PhantomData<&'
 impl<'a, T: IsClass> ops::Deref for ClassRef<'a, T> {
     type Target = Class<T>;
 
+    #[inline]
     fn deref(&self) -> &Class<T> {
         unsafe { self.0.as_ref() }
     }
 }
 
 impl<'a, T: IsClass> Drop for ClassRef<'a, T> {
+    #[inline]
     fn drop(&mut self) {
         if self.1 {
             unsafe {
@@ -4098,6 +4189,7 @@ pub unsafe trait ObjectSubclassIs: IsClass {
 impl<T: ParentClassIs> ops::Deref for Class<T> {
     type Target = Class<T::Parent>;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         unsafe {
             let klass = self as *const _ as *const Self::Target;
@@ -4107,6 +4199,7 @@ impl<T: ParentClassIs> ops::Deref for Class<T> {
 }
 
 impl<T: ParentClassIs> ops::DerefMut for Class<T> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe {
             let klass = self as *mut _ as *mut Self::Target;
@@ -4130,6 +4223,7 @@ impl<T: IsInterface> Interface<T> {
     ///
     /// This is equivalent to `T::static_type()`.
     #[doc(alias = "get_type")]
+    #[inline]
     pub fn type_(&self) -> Type {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GTypeInterface;
@@ -4143,6 +4237,7 @@ impl<T: IsInterface> Interface<T> {
     /// This is not equivalent to `T::static_type()` but is the type id of the type this specific
     /// interface belongs to.
     #[doc(alias = "get_instance_type")]
+    #[inline]
     pub fn instance_type(&self) -> Type {
         unsafe {
             // This also works for interfaces because they also have the type
@@ -4156,6 +4251,7 @@ impl<T: IsInterface> Interface<T> {
     /// Gets the interface struct for `Self` of `klass`.
     ///
     /// This will return `None` if `klass` is not implementing `Self`.
+    #[inline]
     pub fn from_class<U: IsClass>(klass: &Class<U>) -> Option<InterfaceRef<T>> {
         if !klass.type_().is_a(T::static_type()) {
             return None;
@@ -4182,6 +4278,7 @@ impl<T: IsInterface> Interface<T> {
     /// Gets the default interface struct for `Self`.
     ///
     /// This will return `None` if `type_` is not an interface.
+    #[inline]
     pub fn from_type(type_: Type) -> Option<InterfaceRef<'static, T>> {
         if !type_.is_a(Type::INTERFACE) {
             return None;
@@ -4205,10 +4302,11 @@ impl<T: IsInterface> Interface<T> {
     /// Gets the default interface struct for `Self`.
     #[doc(alias = "g_type_default_interface_ref")]
     #[allow(clippy::should_implement_trait)]
+    #[inline]
     pub fn default() -> InterfaceRef<'static, T> {
         unsafe {
             let ptr = gobject_ffi::g_type_default_interface_ref(T::static_type().into_glib());
-            assert!(!ptr.is_null());
+            debug_assert!(!ptr.is_null());
             InterfaceRef(
                 ptr::NonNull::new_unchecked(ptr as *mut Self),
                 true,
@@ -4223,6 +4321,7 @@ impl<T: IsInterface> Interface<T> {
     /// This returns the parent interface if a parent type of the instance type also implements the
     /// interface.
     #[doc(alias = "g_type_interface_peek_parent")]
+    #[inline]
     pub fn parent(&self) -> Option<InterfaceRef<T>> {
         unsafe {
             let ptr = gobject_ffi::g_type_interface_peek_parent(&self.0 as *const _ as *mut _);
@@ -4300,12 +4399,14 @@ unsafe impl<T: IsInterface> Send for Interface<T> {}
 unsafe impl<T: IsInterface> Sync for Interface<T> {}
 
 impl<T: IsInterface> AsRef<T::GlibClassType> for Interface<T> {
+    #[inline]
     fn as_ref(&self) -> &T::GlibClassType {
         &self.0
     }
 }
 
 impl<T: IsInterface> AsMut<T::GlibClassType> for Interface<T> {
+    #[inline]
     fn as_mut(&mut self) -> &mut T::GlibClassType {
         &mut self.0
     }
@@ -4317,6 +4418,7 @@ impl<T: IsInterface> AsMut<T::GlibClassType> for Interface<T> {
 pub struct InterfaceRef<'a, T: IsInterface>(ptr::NonNull<Interface<T>>, bool, PhantomData<&'a ()>);
 
 impl<'a, T: IsInterface> Drop for InterfaceRef<'a, T> {
+    #[inline]
     fn drop(&mut self) {
         if self.1 {
             unsafe {
@@ -4329,6 +4431,7 @@ impl<'a, T: IsInterface> Drop for InterfaceRef<'a, T> {
 impl<'a, T: IsInterface> ops::Deref for InterfaceRef<'a, T> {
     type Target = Interface<T>;
 
+    #[inline]
     fn deref(&self) -> &Interface<T> {
         unsafe { self.0.as_ref() }
     }
@@ -4420,6 +4523,7 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
     /// # SAFETY:
     ///
     /// The pointer needs to be valid for at least the lifetime `'a`.
+    #[inline]
     pub unsafe fn new(ptr: *mut T::GlibType) -> BorrowedObject<'a, T> {
         BorrowedObject {
             ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
@@ -4429,6 +4533,7 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
 
     // rustdoc-stripper-ignore-next
     /// Downgrade to a weak reference.
+    #[inline]
     pub fn downgrade(&self) -> <Self as crate::clone::Downgrade>::Weak
     where
         T: crate::clone::Downgrade,
@@ -4440,24 +4545,28 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
 impl<'a, T> ops::Deref for BorrowedObject<'a, T> {
     type Target = T;
 
+    #[inline]
     fn deref(&self) -> &T {
         unsafe { &*(&self.ptr as *const _ as *const T) }
     }
 }
 
 impl<'a, T> AsRef<T> for BorrowedObject<'a, T> {
+    #[inline]
     fn as_ref(&self) -> &T {
         unsafe { &*(&self.ptr as *const _ as *const T) }
     }
 }
 
 impl<'a, T: PartialEq> PartialEq<T> for BorrowedObject<'a, T> {
+    #[inline]
     fn eq(&self, other: &T) -> bool {
         <T as PartialEq>::eq(self, other)
     }
 }
 
 impl<'a, T: PartialOrd> PartialOrd<T> for BorrowedObject<'a, T> {
+    #[inline]
     fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
         <T as PartialOrd>::partial_cmp(self, other)
     }
@@ -4468,6 +4577,7 @@ impl<'a, T: crate::clone::Downgrade + ObjectType> crate::clone::Downgrade
 {
     type Weak = <T as crate::clone::Downgrade>::Weak;
 
+    #[inline]
     fn downgrade(&self) -> Self::Weak {
         <T as crate::clone::Downgrade>::downgrade(self)
     }

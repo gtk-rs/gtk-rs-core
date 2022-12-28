@@ -179,12 +179,14 @@ unsafe impl Send for ImageSurfaceDataOwned {}
 unsafe impl Sync for ImageSurfaceDataOwned {}
 
 impl ImageSurfaceDataOwned {
+    #[inline]
     pub fn into_inner(self) -> ImageSurface {
         self.surface
     }
 }
 
 impl AsRef<[u8]> for ImageSurfaceDataOwned {
+    #[inline]
     fn as_ref(&self) -> &[u8] {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
         unsafe {
@@ -198,6 +200,7 @@ impl AsRef<[u8]> for ImageSurfaceDataOwned {
 }
 
 impl AsMut<[u8]> for ImageSurfaceDataOwned {
+    #[inline]
     fn as_mut(&mut self) -> &mut [u8] {
         let len = (self.surface.stride() as usize) * (self.surface.height() as usize);
         unsafe {
@@ -213,12 +216,14 @@ impl AsMut<[u8]> for ImageSurfaceDataOwned {
 impl Deref for ImageSurfaceDataOwned {
     type Target = [u8];
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         self.as_ref()
     }
 }
 
 impl DerefMut for ImageSurfaceDataOwned {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut()
     }
@@ -253,6 +258,7 @@ impl<'a> ImageSurfaceData<'a> {
 }
 
 impl<'a> Drop for ImageSurfaceData<'a> {
+    #[inline]
     fn drop(&mut self) {
         if self.dirty {
             self.surface.mark_dirty()
@@ -263,12 +269,14 @@ impl<'a> Drop for ImageSurfaceData<'a> {
 impl<'a> Deref for ImageSurfaceData<'a> {
     type Target = [u8];
 
+    #[inline]
     fn deref(&self) -> &[u8] {
         self.slice
     }
 }
 
 impl<'a> DerefMut for ImageSurfaceData<'a> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut [u8] {
         self.dirty = true;
         self.slice

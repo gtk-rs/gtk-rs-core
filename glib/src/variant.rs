@@ -129,6 +129,7 @@ wrapper! {
 }
 
 impl StaticType for Variant {
+    #[inline]
     fn static_type() -> Type {
         Type::VARIANT
     }
@@ -148,7 +149,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for Variant {
 
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         let ptr = gobject_ffi::g_value_dup_variant(value.to_glib_none().0);
-        assert!(!ptr.is_null());
+        debug_assert!(!ptr.is_null());
         from_glib_full(ptr)
     }
 }
@@ -404,12 +405,12 @@ impl Variant {
                 n_elements.as_mut_ptr(),
                 mem::size_of::<T>(),
             );
-            assert!(!ptr.is_null());
 
             let n_elements = n_elements.assume_init();
             if n_elements == 0 {
                 Ok(&[])
             } else {
+                debug_assert!(!ptr.is_null());
                 Ok(slice::from_raw_parts(ptr as *const T, n_elements))
             }
         }
@@ -549,10 +550,10 @@ impl Variant {
     ///
     /// # Panics
     ///
-    /// Panics if compiled with `debug_assertions` and the variant is not maybe-typed.
+    /// Panics if the variant is not maybe-typed.
     #[inline]
     pub fn as_maybe(&self) -> Option<Variant> {
-        debug_assert!(self.type_().is_maybe());
+        assert!(self.type_().is_maybe());
 
         unsafe { from_glib_full(ffi::g_variant_get_maybe(self.to_glib_none().0)) }
     }
@@ -586,9 +587,10 @@ impl Variant {
                 &mut error,
             );
             if variant.is_null() {
-                assert!(!error.is_null());
+                debug_assert!(!error.is_null());
                 Err(from_glib_full(error))
             } else {
+                debug_assert!(error.is_null());
                 Ok(from_glib_full(variant))
             }
         }
@@ -957,6 +959,7 @@ impl Hash for Variant {
 }
 
 impl AsRef<Variant> for Variant {
+    #[inline]
     fn as_ref(&self) -> &Self {
         self
     }
@@ -1882,30 +1885,35 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> FixedSizeVariantArray<A, T> {
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::Deref for FixedSizeVariantArray<A, T> {
     type Target = A;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> std::ops::DerefMut for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<A> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_ref(&self) -> &A {
         &self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsMut<A> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_mut(&mut self) -> &mut A {
         &mut self.0
     }
 }
 
 impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArray<A, T> {
+    #[inline]
     fn as_ref(&self) -> &[T] {
         self.0.as_ref()
     }
@@ -1914,6 +1922,7 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> AsRef<[T]> for FixedSizeVariantArra
 impl<A: AsRef<[T]> + AsMut<[T]>, T: FixedSizeVariantType> AsMut<[T]>
     for FixedSizeVariantArray<A, T>
 {
+    #[inline]
     fn as_mut(&mut self) -> &mut [T] {
         self.0.as_mut()
     }
@@ -2032,6 +2041,7 @@ impl ObjectPath {
 impl std::ops::Deref for ObjectPath {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
@@ -2112,6 +2122,7 @@ impl Signature {
 impl std::ops::Deref for Signature {
     type Target = str;
 
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }

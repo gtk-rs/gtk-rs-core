@@ -967,7 +967,7 @@ impl<O: IsA<File>> FileExt for O {
                 super_callback0 as *const _ as usize as *mut _,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -991,7 +991,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1185,7 +1185,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1589,7 +1589,7 @@ impl<O: IsA<File>> FileExt for O {
                 &mut etag_out,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok((
                     FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
@@ -1692,7 +1692,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1775,7 +1775,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -1797,7 +1797,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2055,7 +2055,7 @@ impl<O: IsA<File>> FileExt for O {
                 super_callback0 as *const _ as usize as *mut _,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2764,7 +2764,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(from_glib_full(new_etag))
             } else {
@@ -2914,7 +2914,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2940,7 +2940,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2966,7 +2966,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -2992,7 +2992,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -3018,7 +3018,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -3044,7 +3044,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -3150,7 +3150,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -3413,7 +3413,7 @@ impl<O: IsA<File>> FileExt for O {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {

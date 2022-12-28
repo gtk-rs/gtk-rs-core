@@ -10,6 +10,7 @@ macro_rules! declare_surface {
         impl TryFrom<Surface> for $surf_name {
             type Error = Surface;
 
+            #[inline]
             fn try_from(surface: Surface) -> Result<$surf_name, Surface> {
                 if surface.type_() == $surf_type {
                     Ok($surf_name(surface))
@@ -20,6 +21,7 @@ macro_rules! declare_surface {
         }
 
         impl $surf_name {
+            #[inline]
             pub unsafe fn from_raw_full(
                 ptr: *mut ffi::cairo_surface_t,
             ) -> Result<$surf_name, crate::error::Error> {
@@ -27,6 +29,7 @@ macro_rules! declare_surface {
                 Self::try_from(surface).map_err(|_| crate::error::Error::SurfaceTypeMismatch)
             }
 
+            #[inline]
             pub unsafe fn from_raw_none(
                 ptr: *mut ffi::cairo_surface_t,
             ) -> Result<$surf_name, crate::error::Error> {
@@ -99,18 +102,21 @@ macro_rules! declare_surface {
         impl Deref for $surf_name {
             type Target = Surface;
 
+            #[inline]
             fn deref(&self) -> &Surface {
                 &self.0
             }
         }
 
         impl AsRef<Surface> for $surf_name {
+            #[inline]
             fn as_ref(&self) -> &Surface {
                 &self.0
             }
         }
 
         impl Clone for $surf_name {
+            #[inline]
             fn clone(&self) -> $surf_name {
                 $surf_name(self.0.clone())
             }

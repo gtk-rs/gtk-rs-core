@@ -13,6 +13,7 @@ use glib::translate::*;
 pub struct RectangleInt(ffi::cairo_rectangle_int_t);
 
 impl RectangleInt {
+    #[inline]
     pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
         Self(ffi::cairo_rectangle_int_t {
             x,
@@ -21,27 +22,35 @@ impl RectangleInt {
             height,
         })
     }
+    #[inline]
     pub fn x(&self) -> i32 {
         self.0.x
     }
+    #[inline]
     pub fn set_x(&mut self, x: i32) {
         self.0.x = x;
     }
+    #[inline]
     pub fn y(&self) -> i32 {
         self.0.y
     }
+    #[inline]
     pub fn set_y(&mut self, y: i32) {
         self.0.y = y;
     }
+    #[inline]
     pub fn width(&self) -> i32 {
         self.0.width
     }
+    #[inline]
     pub fn set_width(&mut self, width: i32) {
         self.0.width = width;
     }
+    #[inline]
     pub fn height(&self) -> i32 {
         self.0.height
     }
+    #[inline]
     pub fn set_height(&mut self, height: i32) {
         self.0.height = height;
     }
@@ -98,6 +107,7 @@ impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_rectangle_int_t> for RectangleInt {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl FromGlibPtrNone<*const ffi::cairo_rectangle_int_t> for RectangleInt {
+    #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::cairo_rectangle_int_t) -> Self {
         *(ptr as *const RectangleInt)
     }
@@ -106,6 +116,7 @@ impl FromGlibPtrNone<*const ffi::cairo_rectangle_int_t> for RectangleInt {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl FromGlibPtrBorrow<*mut ffi::cairo_rectangle_int_t> for RectangleInt {
+    #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_rectangle_int_t) -> crate::Borrowed<Self> {
         crate::Borrowed::new(*(ptr as *mut RectangleInt))
     }
@@ -114,6 +125,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_rectangle_int_t> for RectangleInt {
 #[cfg(feature = "use_glib")]
 #[doc(hidden)]
 impl FromGlibPtrNone<*mut ffi::cairo_rectangle_int_t> for RectangleInt {
+    #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_rectangle_int_t) -> Self {
         *(ptr as *mut RectangleInt)
     }
@@ -127,6 +139,7 @@ gvalue_impl_inline!(
 );
 
 impl RectangleInt {
+    #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_rectangle_int_t {
         let ptr = self as *const RectangleInt as usize;
         ptr as *mut ffi::cairo_rectangle_int_t

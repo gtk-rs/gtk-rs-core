@@ -123,18 +123,21 @@ impl RustClosure {
 }
 
 impl From<RustClosure> for Closure {
+    #[inline]
     fn from(c: RustClosure) -> Self {
         c.0
     }
 }
 
 impl AsRef<Closure> for RustClosure {
+    #[inline]
     fn as_ref(&self) -> &Closure {
         &self.0
     }
 }
 
 impl AsRef<Closure> for Closure {
+    #[inline]
     fn as_ref(&self) -> &Closure {
         self
     }
@@ -272,7 +275,6 @@ impl Closure {
         let size = u32::max(4, mem::align_of::<*mut c_void>() as u32)
             + 3 * mem::size_of::<*mut c_void>() as u32;
         let closure = gobject_ffi::g_closure_new_simple(size, ptr::null_mut());
-        assert_ne!(closure, ptr::null_mut());
         let callback = Box::new(callback);
         let ptr: *mut F = Box::into_raw(callback);
         let ptr: *mut c_void = ptr as *mut _;
@@ -338,6 +340,7 @@ pub trait IntoClosureReturnValue {
 }
 
 impl IntoClosureReturnValue for () {
+    #[inline]
     fn into_closure_return_value(self) -> Option<Value> {
         None
     }
@@ -355,6 +358,7 @@ pub trait TryFromClosureReturnValue: StaticType + Sized + 'static {
 }
 
 impl TryFromClosureReturnValue for () {
+    #[inline]
     fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
         match v {
             None => Ok(()),
@@ -367,6 +371,7 @@ impl TryFromClosureReturnValue for () {
 }
 
 impl<T: for<'a> FromValue<'a> + StaticType + 'static> TryFromClosureReturnValue for T {
+    #[inline]
     fn try_from_closure_return_value(v: Option<Value>) -> Result<Self, crate::BoolError> {
         v.ok_or_else(|| {
             bool_error!(

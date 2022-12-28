@@ -114,18 +114,22 @@ impl Quaternion {
         }
     }
 
+    #[inline]
     pub fn x(&self) -> f32 {
         self.inner.x
     }
 
+    #[inline]
     pub fn y(&self) -> f32 {
         self.inner.y
     }
 
+    #[inline]
     pub fn z(&self) -> f32 {
         self.inner.z
     }
 
+    #[inline]
     pub fn w(&self) -> f32 {
         self.inner.w
     }

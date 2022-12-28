@@ -126,6 +126,7 @@ pub trait ObjectInterfaceExt: ObjectInterface {
     /// Get interface from an instance.
     ///
     /// This will panic if `obj` does not implement the interface.
+    #[inline]
     fn from_instance<T: IsA<Object>>(obj: &T) -> &Self {
         assert!(obj.as_ref().type_().is_a(Self::type_()));
 
@@ -133,7 +134,7 @@ pub trait ObjectInterfaceExt: ObjectInterface {
             let klass = (*(obj.as_ptr() as *const gobject_ffi::GTypeInstance)).g_class;
             let interface =
                 gobject_ffi::g_type_interface_peek(klass as *mut _, Self::type_().into_glib());
-            assert!(!interface.is_null());
+            debug_assert!(!interface.is_null());
             &*(interface as *const Self)
         }
     }
@@ -197,7 +198,8 @@ pub fn register_interface<T: ObjectInterface>() -> Type {
             gobject_ffi::g_type_interface_add_prerequisite(type_, prerequisite);
         }
 
-        let type_ = from_glib(type_);
+        let type_ = Type::from_glib(type_);
+        assert!(type_.is_valid());
 
         T::type_init(&mut InitializingType::<T>(type_, marker::PhantomData));
 

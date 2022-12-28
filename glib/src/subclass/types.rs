@@ -23,6 +23,7 @@ pub struct InitializingType<T>(pub(crate) Type, pub(crate) marker::PhantomData<*
 impl<T> IntoGlib for InitializingType<T> {
     type GlibType = ffi::GType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GType {
         self.0.into_glib()
     }
@@ -56,6 +57,7 @@ pub unsafe trait InstanceStruct: Sized + 'static {
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
     /// of the parent class.
+    #[inline]
     fn instance_init(&mut self) {
         unsafe {
             let obj = from_glib_borrow::<_, Object>(self as *mut _ as *mut gobject_ffi::GObject);
@@ -87,6 +89,7 @@ pub unsafe trait InstanceStructExt: InstanceStruct {
 }
 
 unsafe impl<T: InstanceStruct> InstanceStructExt for T {
+    #[inline]
     fn imp(&self) -> &Self::Type {
         unsafe {
             let data = Self::Type::type_data();
@@ -99,6 +102,7 @@ unsafe impl<T: InstanceStruct> InstanceStructExt for T {
         }
     }
 
+    #[inline]
     fn class(&self) -> &<Self::Type as ObjectSubclass>::Class {
         unsafe { &**(self as *const _ as *const *const <Self::Type as ObjectSubclass>::Class) }
     }
@@ -113,6 +117,7 @@ pub trait ObjectSubclassIsExt: ObjectSubclassIs {
 }
 
 impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSubclassIsExt for T {
+    #[inline]
     fn imp(&self) -> &T::Subclass {
         T::Subclass::from_instance(self)
     }
@@ -138,6 +143,7 @@ pub unsafe trait ClassStruct: Sized + 'static {
     /// Override the vfuncs of all parent types.
     ///
     /// This is automatically called during type initialization.
+    #[inline]
     fn class_init(&mut self) {
         unsafe {
             let base = &mut *(self as *mut _
@@ -158,6 +164,7 @@ pub unsafe trait IsSubclassable<T: ObjectSubclass>: IsSubclassableDefault<T> {
     ///
     /// This is automatically called during type initialization and must call `class_init()` of the
     /// parent class.
+    #[inline]
     fn class_init(class: &mut crate::Class<Self>) {
         Self::default_class_init(class);
     }
@@ -167,6 +174,7 @@ pub unsafe trait IsSubclassable<T: ObjectSubclass>: IsSubclassableDefault<T> {
     ///
     /// This is automatically called during instance initialization and must call `instance_init()`
     /// of the parent class.
+    #[inline]
     fn instance_init(instance: &mut InitializingObject<T>) {
         Self::default_instance_init(instance);
     }
@@ -184,18 +192,22 @@ impl<T: ObjectSubclass, U: IsSubclassable<T> + ParentClassIs> IsSubclassableDefa
 where
     U::Parent: IsSubclassable<T>,
 {
+    #[inline]
     fn default_class_init(class: &mut crate::Class<Self>) {
         U::Parent::class_init(class);
     }
 
+    #[inline]
     fn default_instance_init(instance: &mut InitializingObject<T>) {
         U::Parent::instance_init(instance);
     }
 }
 
 impl<T: ObjectSubclass> IsSubclassableDefault<T> for Object {
+    #[inline]
     fn default_class_init(_class: &mut crate::Class<Self>) {}
 
+    #[inline]
     fn default_instance_init(_instance: &mut InitializingObject<T>) {}
 }
 
@@ -209,6 +221,7 @@ pub trait IsSubclassableExt: IsClass + ParentClassIs {
 }
 
 impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
+    #[inline]
     fn parent_class_init<T: ObjectSubclass>(class: &mut crate::Class<Self>)
     where
         U::Parent: IsSubclassable<T>,
@@ -216,6 +229,7 @@ impl<U: IsClass + ParentClassIs> IsSubclassableExt for U {
         Self::Parent::class_init(class);
     }
 
+    #[inline]
     fn parent_instance_init<T: ObjectSubclass>(instance: &mut InitializingObject<T>)
     where
         U::Parent: IsSubclassable<T>,
@@ -285,6 +299,7 @@ impl<T: ObjectSubclass> InterfaceList<T> for () {
         vec![]
     }
 
+    #[inline]
     fn instance_init(_instance: &mut InitializingObject<T>) {}
 }
 
@@ -303,6 +318,7 @@ where
         )]
     }
 
+    #[inline]
     fn instance_init(instance: &mut InitializingObject<T>) {
         A::instance_init(instance);
     }
@@ -348,6 +364,7 @@ macro_rules! interface_list_trait_impl(
                 ]
             }
 
+            #[inline]
             fn instance_init(instance: &mut InitializingObject<T>) {
                 $(
                     $name::instance_init(instance);
@@ -384,6 +401,7 @@ unsafe impl Sync for TypeData {}
 impl TypeData {
     // rustdoc-stripper-ignore-next
     /// Returns the type ID.
+    #[inline]
     #[doc(alias = "get_type")]
     pub fn type_(&self) -> Type {
         self.type_
@@ -395,6 +413,7 @@ impl TypeData {
     /// This is used for chaining up to the parent class' implementation
     /// of virtual methods.
     #[doc(alias = "get_parent_class")]
+    #[inline]
     pub fn parent_class(&self) -> ffi::gpointer {
         debug_assert!(!self.parent_class.is_null());
         self.parent_class
@@ -478,6 +497,7 @@ impl TypeData {
     /// Returns the offset of the private implementation struct in bytes relative to the beginning
     /// of the instance struct.
     #[doc(alias = "get_impl_offset")]
+    #[inline]
     pub fn impl_offset(&self) -> isize {
         self.private_offset + self.private_imp_offset
     }
@@ -587,6 +607,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     /// for implementing `GObject` interfaces.
     ///
     /// Optional
+    #[inline]
     fn type_init(_type_: &mut InitializingType<Self>) {}
 
     /// Class initialization.
@@ -598,6 +619,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     /// or calling class methods.
     ///
     /// Optional
+    #[inline]
     fn class_init(_klass: &mut Self::Class) {}
 
     // rustdoc-stripper-ignore-next
@@ -623,6 +645,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     /// to itself for providing additional context.
     ///
     /// Optional, either implement this or `new()`.
+    #[inline]
     fn with_class(_klass: &Self::Class) -> Self {
         Self::new()
     }
@@ -632,6 +655,7 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     ///
     /// Called just after `with_class()`. At this point the initialization has not completed yet, so
     /// only a limited set of operations is safe (see `InitializingObject`).
+    #[inline]
     fn instance_init(_obj: &InitializingObject<Self>) {}
 }
 
@@ -673,19 +697,22 @@ pub trait ObjectSubclassExt: ObjectSubclass {
 }
 
 impl<T: ObjectSubclass> ObjectSubclassExt for T {
+    #[inline]
     fn instance(&self) -> crate::BorrowedObject<Self::Type> {
         self.obj()
     }
 
+    #[inline]
     fn from_instance(obj: &Self::Type) -> &Self {
         Self::from_obj(obj)
     }
 
+    #[inline]
     fn obj(&self) -> crate::BorrowedObject<Self::Type> {
         unsafe {
             let data = Self::type_data();
             let type_ = data.as_ref().type_();
-            assert!(type_.is_valid());
+            debug_assert!(type_.is_valid());
 
             let offset = -data.as_ref().impl_offset();
 
@@ -696,12 +723,13 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
             // The object might just be finalized, and in that case it's unsafe to access
             // it and use any API on it. This can only happen from inside the Drop impl
             // of Self.
-            assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
+            debug_assert_ne!((*(ptr as *mut gobject_ffi::GObject)).ref_count, 0);
 
             crate::BorrowedObject::new(ptr)
         }
     }
 
+    #[inline]
     fn from_obj(obj: &Self::Type) -> &Self {
         unsafe {
             let ptr = obj.as_ptr() as *const Self::Instance;
@@ -709,15 +737,17 @@ impl<T: ObjectSubclass> ObjectSubclassExt for T {
         }
     }
 
+    #[inline]
     fn ref_counted(&self) -> super::ObjectImplRef<Self> {
         super::ObjectImplRef::new(self)
     }
 
+    #[inline]
     fn instance_data<U: Any + Send + Sync + 'static>(&self, type_: Type) -> Option<&U> {
         unsafe {
             let type_data = Self::type_data();
             let self_type_ = type_data.as_ref().type_();
-            assert!(self_type_.is_valid());
+            debug_assert!(self_type_.is_valid());
 
             let offset = -type_data.as_ref().private_imp_offset;
 
@@ -757,6 +787,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
     /// The returned object has not been completely initialized at this point. Use of the object
     /// should be restricted to methods that are explicitly documented to be safe to call during
     /// `instance_init()`.
+    #[inline]
     pub unsafe fn as_ref(&self) -> &T::Type {
         &self.0
     }
@@ -769,6 +800,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
     /// The returned object has not been completely initialized at this point. Use of the object
     /// should be restricted to methods that are explicitly documented to be safe to call during
     /// `instance_init()`.
+    #[inline]
     pub fn as_ptr(&self) -> *mut T::Type {
         self.0.as_ptr() as *const T::Type as *mut T::Type
     }
@@ -783,7 +815,7 @@ impl<T: ObjectSubclass> InitializingObject<T> {
         unsafe {
             let type_data = T::type_data();
             let self_type_ = type_data.as_ref().type_();
-            assert!(self_type_.is_valid());
+            debug_assert!(self_type_.is_valid());
 
             let offset = type_data.as_ref().private_offset;
 
@@ -834,7 +866,7 @@ unsafe extern "C" fn class_init<T: ObjectSubclass>(
         let klass = &mut *(klass as *mut T::Class);
         let parent_class = gobject_ffi::g_type_class_peek_parent(klass as *mut _ as ffi::gpointer)
             as *mut <T::ParentType as ObjectType>::GlibClassType;
-        assert!(!parent_class.is_null());
+        debug_assert!(!parent_class.is_null());
 
         data.as_mut().parent_class = parent_class as ffi::gpointer;
 
@@ -936,7 +968,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             type_name.to_str().unwrap()
         );
 
-        let type_ = from_glib(gobject_ffi::g_type_register_static_simple(
+        let type_ = Type::from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),
             type_name.as_ptr(),
             mem::size_of::<T::Class>() as u32,
@@ -949,6 +981,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
                 0
             },
         ));
+        assert!(type_.is_valid());
 
         let mut data = T::type_data();
         data.as_mut().type_ = type_;
