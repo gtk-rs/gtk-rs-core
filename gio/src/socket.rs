@@ -3,7 +3,7 @@
 #[cfg(not(unix))]
 use std::os::raw::c_int;
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
 #[cfg(feature = "v2_60")]
@@ -29,6 +29,14 @@ impl Socket {
             Ok(from_glib_full(ret))
         } else {
             Err(from_glib_full(error))
+        }
+    }
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(windows)))]
+    pub fn from_owned_fd(fd: OwnedFd) -> Result<Socket, glib::Error> {
+        unsafe {
+            let fd = fd.into_raw_fd();
+            Socket::from_fd(fd)
         }
     }
     #[cfg(windows)]

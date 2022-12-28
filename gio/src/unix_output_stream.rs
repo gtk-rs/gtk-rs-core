@@ -1,7 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), docsrs))]
@@ -34,6 +34,16 @@ impl UnixOutputStream {
         let fd = fd.as_raw_fd();
         let close_fd = false.into_glib();
         OutputStream::from_glib_full(ffi::g_unix_output_stream_new(fd, close_fd)).unsafe_cast()
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new [`Self`] that takes ownership of the passed in fd.
+    #[doc(alias = "g_unix_output_stream_new")]
+    pub fn from_owned_fd(fd: OwnedFd) -> Self {
+        unsafe {
+            let fd = fd.into_raw_fd();
+            UnixOutputStream::take_fd(fd)
+        }
     }
 }
 
