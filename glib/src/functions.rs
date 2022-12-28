@@ -241,7 +241,7 @@ pub fn compute_checksum_for_string(
 
 #[cfg(unix)]
 #[doc(alias = "g_unix_open_pipe")]
-pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
+pub unsafe fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
     unsafe {
         let mut fds = [0, 2];
         let mut error = ptr::null_mut();
