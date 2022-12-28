@@ -3,7 +3,7 @@
 #[cfg(all(unix, feature = "v2_58"))]
 use std::boxed::Box as Box_;
 #[cfg(all(unix, feature = "v2_58"))]
-use std::os::unix::io::AsRawFd;
+use std::os::unix::io::{AsFd, AsRawFd};
 #[cfg(all(unix, feature = "v2_58"))]
 use std::ptr;
 
@@ -48,21 +48,16 @@ impl DesktopAppInfo {
 pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
     #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", unix))))]
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager_with_fds")]
-    fn launch_uris_as_manager_with_fds<
-        P: IsA<AppLaunchContext>,
-        T: AsRawFd,
-        U: AsRawFd,
-        V: AsRawFd,
-    >(
+    fn launch_uris_as_manager_with_fds<P: IsA<AppLaunchContext>>(
         &self,
         uris: &[&str],
         launch_context: Option<&P>,
         spawn_flags: glib::SpawnFlags,
         user_setup: Option<Box_<dyn FnOnce() + 'static>>,
         pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
-        stdin_fd: &mut T,
-        stdout_fd: &mut U,
-        stderr_fd: &mut V,
+        stdin_fd: Option<impl AsFd>,
+        stdout_fd: Option<impl AsFd>,
+        stderr_fd: Option<impl AsFd>,
     ) -> Result<(), Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
         unsafe extern "C" fn user_setup_func(user_data: glib::ffi::gpointer) {
@@ -99,6 +94,10 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
         let super_callback0: Box_<Option<Box_<dyn FnOnce() + 'static>>> = user_setup_data;
         let super_callback1: &Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> =
             &pid_callback_data;
+
+        let stdin_raw_fd = stdin_fd.map_or(-1, |fd| fd.as_fd().as_raw_fd());
+        let stdout_raw_fd = stdout_fd.map_or(-1, |fd| fd.as_fd().as_raw_fd());
+        let stderr_raw_fd = stderr_fd.map_or(-1, |fd| fd.as_fd().as_raw_fd());
         unsafe {
             let mut error = ptr::null_mut();
             let _ = ffi::g_desktop_app_info_launch_uris_as_manager_with_fds(
@@ -110,9 +109,9 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
                 Box_::into_raw(super_callback0) as *mut _,
                 pid_callback,
                 super_callback1 as *const _ as *mut _,
-                stdin_fd.as_raw_fd(),
-                stdout_fd.as_raw_fd(),
-                stderr_fd.as_raw_fd(),
+                stdin_raw_fd,
+                stdout_raw_fd,
+                stderr_raw_fd,
                 &mut error,
             );
             if error.is_null() {
