@@ -3,7 +3,7 @@
 #[cfg(not(unix))]
 use std::os::raw::c_int;
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
 #[cfg(feature = "v2_60")]
@@ -59,6 +59,17 @@ impl Socket {
 impl AsRawFd for Socket {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_socket_get_fd(self.to_glib_none().0) as _ }
+    }
+}
+
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+impl AsFd for Socket {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        unsafe {
+            let raw_fd = self.as_raw_fd();
+            BorrowedFd::borrow_raw(raw_fd)
+        }
     }
 }
 
