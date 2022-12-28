@@ -1,12 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::RawFd;
+use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, RawFd};
 use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
 use crate::ffi::{self, gboolean, gpointer};
-#[cfg(all(not(unix), docsrs))]
-use libc::c_int as RawFd;
 
 #[cfg(unix)]
 use crate::IOCondition;
@@ -154,33 +152,35 @@ fn into_raw_child_watch_local<F: FnMut(Pid, i32) + 'static>(func: F) -> gpointer
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn trampoline_unix_fd<
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static,
 >(
-    fd: i32,
+    raw_fd: i32,
     condition: ffi::GIOCondition,
     func: gpointer,
 ) -> gboolean {
     let func: &RefCell<F> = &*(func as *const RefCell<F>);
+    let fd = BorrowedFd::borrow_raw(raw_fd);
     (*func.borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn trampoline_unix_fd_local<
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + 'static,
 >(
-    fd: i32,
+    raw_fd: i32,
     condition: ffi::GIOCondition,
     func: gpointer,
 ) -> gboolean {
     let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+    let fd = BorrowedFd::borrow_raw(raw_fd);
     (*func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn destroy_closure_unix_fd<
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static,
 >(
     ptr: gpointer,
 ) {
@@ -190,7 +190,7 @@ unsafe extern "C" fn destroy_closure_unix_fd<
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn destroy_closure_unix_fd_local<
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + 'static,
 >(
     ptr: gpointer,
 ) {
@@ -199,7 +199,7 @@ unsafe extern "C" fn destroy_closure_unix_fd_local<
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
-fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static>(
+fn into_raw_unix_fd<F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static>(
     func: F,
 ) -> gpointer {
     let func: Box<RefCell<F>> = Box::new(RefCell::new(func));
@@ -208,7 +208,7 @@ fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
-fn into_raw_unix_fd_local<F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static>(
+fn into_raw_unix_fd_local<F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + 'static>(
     func: F,
 ) -> gpointer {
     let func: Box<ThreadGuard<RefCell<F>>> = Box::new(ThreadGuard::new(RefCell::new(func)));
@@ -872,14 +872,14 @@ where
 /// The default main loop almost always is the main loop of the main thread.
 /// Thus, the closure is called on the main thread.
 #[doc(alias = "g_unix_fd_add_full")]
-pub fn unix_fd_add<F>(fd: RawFd, condition: IOCondition, func: F) -> SourceId
+pub fn unix_fd_add<F>(fd: impl AsFd, condition: IOCondition, func: F) -> SourceId
 where
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static,
 {
     unsafe {
         from_glib(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
-            fd,
+            fd.as_fd().as_raw_fd(),
             condition.into_glib(),
             Some(trampoline_unix_fd::<F>),
             into_raw_unix_fd(func),
@@ -907,7 +907,7 @@ pub fn unix_fd_add_full<F>(
     func: F,
 ) -> SourceId
 where
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static,
 {
     unsafe {
         from_glib(ffi::g_unix_fd_add_full(
@@ -939,9 +939,9 @@ where
 /// This function panics if called from a different thread than the one that
 /// owns the main context.
 #[doc(alias = "g_unix_fd_add_full")]
-pub fn unix_fd_add_local<F>(fd: RawFd, condition: IOCondition, func: F) -> SourceId
+pub fn unix_fd_add_local<F>(fd: impl AsFd, condition: IOCondition, func: F) -> SourceId
 where
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + 'static,
 {
     unsafe {
         let context = MainContext::default();
@@ -950,7 +950,7 @@ where
             .expect("default main context already acquired by another thread");
         from_glib(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
-            fd,
+            fd.as_fd().as_raw_fd(),
             condition.into_glib(),
             Some(trampoline_unix_fd_local::<F>),
             into_raw_unix_fd_local(func),
@@ -984,7 +984,7 @@ pub fn unix_fd_add_local_full<F>(
     func: F,
 ) -> SourceId
 where
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + 'static,
 {
     unsafe {
         let context = MainContext::default();
@@ -1230,17 +1230,17 @@ where
 /// until it returns `ControlFlow::Break`.
 #[doc(alias = "g_unix_fd_source_new")]
 pub fn unix_fd_source_new<F>(
-    fd: RawFd,
+    fd: impl AsFd,
     condition: IOCondition,
     name: Option<&str>,
     priority: Priority,
     func: F,
 ) -> Source
 where
-    F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static,
+    F: FnMut(BorrowedFd, IOCondition) -> ControlFlow + Send + 'static,
 {
     unsafe {
-        let source = ffi::g_unix_fd_source_new(fd, condition.into_glib());
+        let source = ffi::g_unix_fd_source_new(fd.as_fd().as_raw_fd(), condition.into_glib());
         ffi::g_source_set_callback(
             source,
             Some(transmute::<
