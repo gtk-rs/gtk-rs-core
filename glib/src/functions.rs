@@ -135,7 +135,7 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>>(
 #[cfg(not(windows))]
 #[cfg_attr(docsrs, doc(cfg(not(windows))))]
 #[doc(alias = "g_spawn_async_with_pipes")]
-pub fn spawn_async_with_pipes<
+pub unsafe fn spawn_async_with_pipes<
     P: AsRef<std::path::Path>,
     T: FromRawFd,
     U: FromRawFd,
