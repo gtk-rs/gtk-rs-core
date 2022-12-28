@@ -9,7 +9,7 @@ use std::mem;
 #[cfg(feature = "v2_58")]
 use std::os::unix::io::{AsFd, AsRawFd};
 #[cfg(not(windows))]
-use std::os::unix::io::{FromRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{FromRawFd, OwnedFd, RawFd};
 use std::ptr;
 
 // #[cfg(windows)]
@@ -261,7 +261,7 @@ pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
 #[doc(alias = "g_file_open_tmp")]
 pub fn file_open_tmp(
     tmpl: Option<impl AsRef<std::path::Path>>,
-) -> Result<(RawFd, std::path::PathBuf), crate::Error> {
+) -> Result<(OwnedFd, std::path::PathBuf), crate::Error> {
     unsafe {
         let mut name_used = ptr::null_mut();
         let mut error = ptr::null_mut();
@@ -271,7 +271,7 @@ pub fn file_open_tmp(
             &mut error,
         );
         if error.is_null() {
-            Ok((ret.into_raw_fd(), from_glib_full(name_used)))
+            Ok((OwnedFd::from_raw_fd(ret), from_glib_full(name_used)))
         } else {
             Err(from_glib_full(error))
         }
