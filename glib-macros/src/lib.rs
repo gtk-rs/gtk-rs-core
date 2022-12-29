@@ -512,7 +512,7 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// use glib::subclass::prelude::*;
 ///
 /// #[derive(Debug, Copy, Clone, glib::ErrorDomain)]
-/// #[error_domain(name = "ExFoo")]
+/// #[error_domain(name = "ex-foo")]
 /// enum Foo {
 ///     Blah,
 ///     Baaz,

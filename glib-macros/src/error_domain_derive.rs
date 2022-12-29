@@ -18,7 +18,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
     let domain_name = match parse_name(input, "error_domain") {
         Ok(name) => name,
         Err(e) => abort_call_site!(
-            "{}: #[derive(glib::ErrorDomain)] requires #[error_domain(name = \"DomainName\")]",
+            "{}: #[derive(glib::ErrorDomain)] requires #[error_domain(name = \"domain-name\")]",
             e
         ),
     };
