@@ -876,6 +876,21 @@ impl<T: TransparentType + 'static> IntoGlibPtr<*mut T::GlibType> for Slice<T> {
     }
 }
 
+impl<T: TransparentPtrType> From<super::PtrSlice<T>> for Slice<T> {
+    fn from(value: super::PtrSlice<T>) -> Self {
+        let len = value.len();
+        let capacity = value.capacity();
+        unsafe {
+            let ptr = value.into_raw();
+            Slice::<T> {
+                ptr: ptr::NonNull::new_unchecked(ptr),
+                len,
+                capacity,
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

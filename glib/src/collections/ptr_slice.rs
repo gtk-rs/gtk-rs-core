@@ -1047,6 +1047,33 @@ impl<T: TransparentPtrType> IntoGlibPtr<*mut <T as GlibPtrDefault>::GlibType> fo
     }
 }
 
+impl<T: TransparentPtrType> From<super::Slice<T>> for PtrSlice<T> {
+    fn from(value: super::Slice<T>) -> Self {
+        let len = value.len();
+        let capacity = value.capacity();
+        unsafe {
+            let ptr = value.into_raw();
+            let mut s = PtrSlice::<T> {
+                ptr: ptr::NonNull::new_unchecked(ptr),
+                len,
+                capacity,
+            };
+
+            // Reserve space for the `NULL`-terminator if needed
+            if len == capacity {
+                s.reserve(0);
+            }
+
+            ptr::write(
+                s.ptr.as_ptr().add(s.len()),
+                Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+            );
+
+            s
+        }
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// A trait to accept both <code>&[T]</code> or <code>PtrSlice<T></code> as an argument.
 pub trait IntoPtrSlice<T: TransparentPtrType> {
