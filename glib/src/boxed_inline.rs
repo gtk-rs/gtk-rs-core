@@ -248,11 +248,12 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), &s.inner as *const $ffi_name);
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 };
@@ -262,11 +263,12 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut *const $ffi_name {
                 unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), $crate::translate::ToGlibPtr::to_glib_full(s));
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 }
@@ -312,7 +314,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut $ffi_name {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;

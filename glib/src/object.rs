@@ -816,19 +816,22 @@ macro_rules! glib_object_wrapper {
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let mut v_ptr = Vec::with_capacity(t.len() + 1);
-                v_ptr.extend(t.iter().map(|t| <Self as $crate::ObjectType>::as_ptr(t)));
-                v_ptr.push(std::ptr::null_mut());
+                unsafe {
+                    let ptr = v_ptr.as_mut_ptr();
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *mut $ffi_name, ptr, t.len());
+                    std::ptr::write(ptr.add(t.len()), std::ptr::null_mut());
+                    v_ptr.set_len(t.len() + 1);
+                }
 
                 (v_ptr.as_ptr() as *mut *mut $ffi_name, (std::marker::PhantomData, Some(v_ptr)))
             }
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
 
-                    for (i, t) in t.iter().enumerate() {
-                        std::ptr::write(v_ptr.add(i), <Self as $crate::ObjectType>::as_ptr(t));
-                    }
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *mut $ffi_name, v_ptr, t.len());
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 };
@@ -838,11 +841,12 @@ macro_rules! glib_object_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut *mut $ffi_name {
                 unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), $crate::translate::ToGlibPtr::to_glib_full(s));
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 }
