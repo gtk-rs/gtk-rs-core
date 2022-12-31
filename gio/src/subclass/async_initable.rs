@@ -4,7 +4,9 @@ use std::{future::Future, pin::Pin, ptr};
 
 use glib::{prelude::*, subclass::prelude::*, thread_guard::ThreadGuard, translate::*, Error};
 
-use crate::{prelude::*, AsyncInitable, AsyncResult, Cancellable, GioFutureResult, LocalTask};
+use crate::{
+    AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask,
+};
 
 pub trait AsyncInitableImpl: ObjectImpl {
     fn init_future(
@@ -100,12 +102,12 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
 ) {
     let instance = &*(initable as *mut T::Instance);
     let imp = instance.imp();
-    let cancellable = from_glib_borrow::<_, Option<Cancellable>>(cancellable);
+    let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
 
     let task = callback.map(|callback| {
         let task = LocalTask::new(
             Some(imp.obj().unsafe_cast_ref::<glib::Object>()),
-            cancellable.as_ref().as_ref(),
+            cancellable.as_ref(),
             move |task, obj| {
                 let result: *mut crate::ffi::GAsyncResult =
                     task.upcast_ref::<AsyncResult>().to_glib_none().0;
@@ -120,17 +122,11 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
 
     glib::MainContext::ref_thread_default().spawn_local(async move {
         let io_priority = from_glib(io_priority);
-        let res = if let Some(cancellable) = cancellable.as_ref() {
-            futures_util::future::select(
-                imp.init_future(io_priority),
-                Box::pin(async {
-                    cancellable.future().await;
-                    cancellable.set_error_if_cancelled()
-                }),
-            )
-            .await
-            .factor_first()
-            .0
+        let res = if let Some(cancellable) = cancellable {
+            CancellableFuture::new(imp.init_future(io_priority), cancellable)
+                .await
+                .map_err(|cancelled| cancelled.into())
+                .and_then(|res| res)
         } else {
             imp.init_future(io_priority).await
         };
@@ -174,6 +170,7 @@ unsafe extern "C" fn async_initable_init_finish<T: AsyncInitableImpl>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::prelude::*;
 
     pub mod imp {
         use std::cell::Cell;
