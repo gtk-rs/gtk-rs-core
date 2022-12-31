@@ -114,7 +114,7 @@ pub fn file_get_contents(
             &mut error,
         );
         if error.is_null() {
-            Ok(crate::Slice::from_glib_full_num_copy(
+            Ok(crate::Slice::from_glib_full_num(
                 contents,
                 length.assume_init() as _,
             ))

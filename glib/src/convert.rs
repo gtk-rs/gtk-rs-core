@@ -349,7 +349,7 @@ pub fn utf8_to_utf32(str: impl AsRef<str>) -> Slice<char> {
 
         // NOTE: We assume that u32 and char have the same layout and trust that glib won't give us
         //       invalid UTF-32 codepoints
-        Slice::from_glib_full_num(str_as_utf32.cast::<char>(), items_written as usize)
+        Slice::from_glib_full_num(str_as_utf32, items_written as usize)
     }
 }
 
