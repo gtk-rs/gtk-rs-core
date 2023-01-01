@@ -204,21 +204,21 @@ mod tests {
         for (i, mut attrs) in iter.into_iter().enumerate() {
             if i == 0 {
                 attrs
-                    .next()
+                    .pop_front()
                     .unwrap()
                     .downcast_ref::<crate::AttrColor>()
                     .unwrap();
                 attrs
-                    .next()
+                    .pop_front()
                     .unwrap()
                     .downcast_ref::<crate::AttrSize>()
                     .unwrap();
                 attrs
-                    .next()
+                    .pop_front()
                     .unwrap()
                     .downcast_ref::<crate::AttrLanguage>()
                     .unwrap();
-                assert!(attrs.next().is_none());
+                assert!(attrs.is_empty());
             }
             max = i + 1;
         }
