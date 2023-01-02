@@ -14,6 +14,10 @@ use crate::{translate::*, Slice};
 #[repr(transparent)]
 pub struct Type(ffi::GType);
 
+unsafe impl TransparentType for Type {
+    type GlibType = ffi::GType;
+}
+
 impl Type {
     // rustdoc-stripper-ignore-next
     /// An invalid `Type` used as error return value in some functions
@@ -169,7 +173,7 @@ impl Type {
             let mut n_children = 0u32;
             let children = gobject_ffi::g_type_children(self.into_glib(), &mut n_children);
 
-            Slice::from_glib_full_num_copy(children as *mut Self, n_children as usize)
+            Slice::from_glib_full_num(children, n_children as usize)
         }
     }
 
@@ -179,7 +183,7 @@ impl Type {
             let mut n_interfaces = 0u32;
             let interfaces = gobject_ffi::g_type_interfaces(self.into_glib(), &mut n_interfaces);
 
-            Slice::from_glib_full_num_copy(interfaces as *mut Self, n_interfaces as usize)
+            Slice::from_glib_full_num(interfaces, n_interfaces as usize)
         }
     }
 
@@ -187,7 +191,7 @@ impl Type {
     pub fn interface_prerequisites(self) -> Slice<Self> {
         unsafe {
             match self {
-                t if !t.is_a(Self::INTERFACE) => Slice::from_glib_full_num_copy(ptr::null_mut(), 0),
+                t if !t.is_a(Self::INTERFACE) => Slice::from_glib_full_num(ptr::null_mut(), 0),
                 _ => {
                     let mut n_prereqs = 0u32;
                     let prereqs = gobject_ffi::g_type_interface_prerequisites(
@@ -195,7 +199,7 @@ impl Type {
                         &mut n_prereqs,
                     );
 
-                    Slice::from_glib_full_num_copy(prereqs as *mut Self, n_prereqs as usize)
+                    Slice::from_glib_full_num(prereqs, n_prereqs as usize)
                 }
             }
         }

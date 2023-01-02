@@ -30,7 +30,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
-            @copy ptr unsafe { let copy = $crate::ffi::g_malloc0(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; std::ptr::copy_nonoverlapping(ptr, copy, 1); copy },
+            @copy ptr unsafe { let copy = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; std::ptr::copy_nonoverlapping(ptr, copy, 1); copy },
             @free ptr unsafe { $crate::ffi::g_free(ptr as *mut _); },
             @init _ptr (), @copy_into dest src std::ptr::copy_nonoverlapping(src, dest, 1), @clear _ptr ()
         );
@@ -100,7 +100,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
         $crate::glib_boxed_inline_wrapper!(
             @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
-            @copy ptr unsafe { let copy = $crate::ffi::g_malloc0(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; let c = |$copy_into_arg_dest, $copy_into_arg_src| $copy_into_expr; c(copy, ptr); copy },
+            @copy ptr unsafe { let copy = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; let c = |$copy_into_arg_dest, $copy_into_arg_src| $copy_into_expr; c(copy, ptr); copy },
             @free ptr unsafe { let c = |$clear_arg| $clear_expr; c(ptr); $crate::ffi::g_free(ptr as *mut _); },
             @init $init_arg $init_expr, @copy_into $copy_into_arg_dest $copy_into_arg_src $copy_into_expr, @clear $clear_arg $clear_expr
         );
@@ -157,11 +157,28 @@ macro_rules! glib_boxed_inline_wrapper {
             pub fn as_ptr(&self) -> *mut $ffi_name {
                 &self.inner as *const $ffi_name as *mut _
             }
+
+            #[doc = "Borrows the underlying C value."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const $ffi_name) -> &'a Self {
+                &*(ptr as *const Self)
+            }
+
+            #[doc = "Borrows the underlying C value mutably."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut $ffi_name) -> &'a mut Self {
+                &mut *(ptr as *mut Self)
+            }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::GlibPtrDefault for $name $(<$($generic),+>)? {
             type GlibType = *mut $ffi_name;
+        }
+
+        #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentType for $name $(<$($generic),+>)? {
+            type GlibType = $ffi_name;
         }
 
         #[doc(hidden)]
@@ -231,11 +248,12 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), &s.inner as *const $ffi_name);
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 };
@@ -245,11 +263,12 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut *const $ffi_name {
                 unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), $crate::translate::ToGlibPtr::to_glib_full(s));
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 }
@@ -295,7 +314,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut $ffi_name {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;

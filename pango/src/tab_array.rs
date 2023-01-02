@@ -17,7 +17,7 @@ impl TabArray {
                 alignments.as_mut_ptr(),
                 locations.as_mut_ptr(),
             );
-            let locations = Slice::from_glib_container_num_copy(locations.assume_init(), size);
+            let locations = Slice::from_glib_container_num(locations.assume_init(), size);
             let alignments = alignments.assume_init();
             let mut alignments_vec = Vec::with_capacity(locations.len());
             for i in 0..locations.len() {

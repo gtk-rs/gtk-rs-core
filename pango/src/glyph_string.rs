@@ -13,7 +13,7 @@ impl GlyphString {
     #[inline]
     pub fn glyph_info(&self) -> &[GlyphInfo] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).glyphs as *const GlyphInfo;
+            let ptr = (*self.to_glib_none().0).glyphs;
             Slice::from_glib_borrow_num(ptr, self.num_glyphs() as usize)
         }
     }
@@ -21,7 +21,7 @@ impl GlyphString {
     #[inline]
     pub fn glyph_info_mut(&mut self) -> &mut [GlyphInfo] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).glyphs as *mut GlyphInfo;
+            let ptr = (*self.to_glib_none().0).glyphs;
             Slice::from_glib_borrow_num_mut(ptr, self.num_glyphs() as usize)
         }
     }

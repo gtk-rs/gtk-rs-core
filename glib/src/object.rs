@@ -46,6 +46,8 @@ pub unsafe trait ObjectType:
 
     fn as_object_ref(&self) -> &ObjectRef;
     fn as_ptr(&self) -> *mut Self::GlibType;
+
+    unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self;
 }
 
 // rustdoc-stripper-ignore-next
@@ -461,90 +463,6 @@ impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GObject> for ObjectRef {
 }
 
 #[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *mut *mut gobject_ffi::GObject> for ObjectRef {
-    type Storage = (
-        Vec<Stash<'a, *mut gobject_ffi::GObject, ObjectRef>>,
-        Option<Vec<*mut gobject_ffi::GObject>>,
-    );
-
-    fn to_glib_none_from_slice(
-        t: &'a [ObjectRef],
-    ) -> (*mut *mut gobject_ffi::GObject, Self::Storage) {
-        let v: Vec<_> = t.iter().map(|s| s.to_glib_none()).collect();
-        let mut v_ptr: Vec<_> = v.iter().map(|s| s.0).collect();
-        v_ptr.push(ptr::null_mut() as *mut gobject_ffi::GObject);
-
-        (
-            v_ptr.as_ptr() as *mut *mut gobject_ffi::GObject,
-            (v, Some(v_ptr)),
-        )
-    }
-
-    fn to_glib_container_from_slice(
-        t: &'a [ObjectRef],
-    ) -> (*mut *mut gobject_ffi::GObject, Self::Storage) {
-        let v: Vec<_> = t.iter().map(|s| s.to_glib_none()).collect();
-
-        let v_ptr = unsafe {
-            let v_ptr = ffi::g_malloc0(mem::size_of::<*mut gobject_ffi::GObject>() * (t.len() + 1))
-                as *mut *mut gobject_ffi::GObject;
-
-            for (i, s) in v.iter().enumerate() {
-                ptr::write(v_ptr.add(i), s.0);
-            }
-
-            v_ptr
-        };
-
-        (v_ptr, (v, None))
-    }
-
-    fn to_glib_full_from_slice(t: &[ObjectRef]) -> *mut *mut gobject_ffi::GObject {
-        unsafe {
-            let v_ptr =
-                ffi::g_malloc0(std::mem::size_of::<*mut gobject_ffi::GObject>() * (t.len() + 1))
-                    as *mut *mut gobject_ffi::GObject;
-
-            for (i, s) in t.iter().enumerate() {
-                ptr::write(v_ptr.add(i), s.to_glib_full());
-            }
-
-            v_ptr
-        }
-    }
-}
-
-#[doc(hidden)]
-impl<'a> ToGlibContainerFromSlice<'a, *const *mut gobject_ffi::GObject> for ObjectRef {
-    type Storage = (
-        Vec<Stash<'a, *mut gobject_ffi::GObject, ObjectRef>>,
-        Option<Vec<*mut gobject_ffi::GObject>>,
-    );
-
-    fn to_glib_none_from_slice(
-        t: &'a [ObjectRef],
-    ) -> (*const *mut gobject_ffi::GObject, Self::Storage) {
-        let (ptr, stash) =
-            ToGlibContainerFromSlice::<'a, *mut *mut gobject_ffi::GObject>::to_glib_none_from_slice(
-                t,
-            );
-        (ptr as *const *mut gobject_ffi::GObject, stash)
-    }
-
-    fn to_glib_container_from_slice(
-        _: &'a [ObjectRef],
-    ) -> (*const *mut gobject_ffi::GObject, Self::Storage) {
-        // Can't have consumer free a *const pointer
-        unimplemented!()
-    }
-
-    fn to_glib_full_from_slice(_: &[ObjectRef]) -> *const *mut gobject_ffi::GObject {
-        // Can't have consumer free a *const pointer
-        unimplemented!()
-    }
-}
-
-#[doc(hidden)]
 impl FromGlibPtrNone<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut gobject_ffi::GObject) -> Self {
@@ -598,122 +516,6 @@ impl FromGlibPtrBorrow<*const gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GObject) -> Borrowed<Self> {
         from_glib_borrow(ptr as *mut gobject_ffi::GObject)
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibContainerAsVec<*mut gobject_ffi::GObject, *mut *mut gobject_ffi::GObject>
-    for ObjectRef
-{
-    unsafe fn from_glib_none_num_as_vec(
-        ptr: *mut *mut gobject_ffi::GObject,
-        num: usize,
-    ) -> Vec<Self> {
-        if num == 0 || ptr.is_null() {
-            return Vec::new();
-        }
-
-        // Attention: This takes ownership of floating references!
-        let mut res = Vec::with_capacity(num);
-        for i in 0..num {
-            res.push(from_glib_none(ptr::read(ptr.add(i))));
-        }
-        res
-    }
-
-    unsafe fn from_glib_container_num_as_vec(
-        ptr: *mut *mut gobject_ffi::GObject,
-        num: usize,
-    ) -> Vec<Self> {
-        // Attention: This takes ownership of floating references!
-        let res = FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
-        ffi::g_free(ptr as *mut _);
-        res
-    }
-
-    unsafe fn from_glib_full_num_as_vec(
-        ptr: *mut *mut gobject_ffi::GObject,
-        num: usize,
-    ) -> Vec<Self> {
-        if num == 0 || ptr.is_null() {
-            ffi::g_free(ptr as *mut _);
-            return Vec::new();
-        }
-
-        let mut res = Vec::with_capacity(num);
-        for i in 0..num {
-            res.push(from_glib_full(ptr::read(ptr.add(i))));
-        }
-        ffi::g_free(ptr as *mut _);
-        res
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrArrayContainerAsVec<*mut gobject_ffi::GObject, *mut *mut gobject_ffi::GObject>
-    for ObjectRef
-{
-    unsafe fn from_glib_none_as_vec(ptr: *mut *mut gobject_ffi::GObject) -> Vec<Self> {
-        // Attention: This takes ownership of floating references!
-        FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, c_ptr_array_len(ptr))
-    }
-
-    unsafe fn from_glib_container_as_vec(ptr: *mut *mut gobject_ffi::GObject) -> Vec<Self> {
-        // Attention: This takes ownership of floating references!
-        FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr, c_ptr_array_len(ptr))
-    }
-
-    unsafe fn from_glib_full_as_vec(ptr: *mut *mut gobject_ffi::GObject) -> Vec<Self> {
-        FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, c_ptr_array_len(ptr))
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibContainerAsVec<*mut gobject_ffi::GObject, *const *mut gobject_ffi::GObject>
-    for ObjectRef
-{
-    unsafe fn from_glib_none_num_as_vec(
-        ptr: *const *mut gobject_ffi::GObject,
-        num: usize,
-    ) -> Vec<Self> {
-        // Attention: This takes ownership of floating references!
-        FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *mut *mut _, num)
-    }
-
-    unsafe fn from_glib_container_num_as_vec(
-        _: *const *mut gobject_ffi::GObject,
-        _: usize,
-    ) -> Vec<Self> {
-        // Can't free a *const
-        unimplemented!()
-    }
-
-    unsafe fn from_glib_full_num_as_vec(
-        _: *const *mut gobject_ffi::GObject,
-        _: usize,
-    ) -> Vec<Self> {
-        // Can't free a *const
-        unimplemented!()
-    }
-}
-
-#[doc(hidden)]
-impl FromGlibPtrArrayContainerAsVec<*mut gobject_ffi::GObject, *const *mut gobject_ffi::GObject>
-    for ObjectRef
-{
-    unsafe fn from_glib_none_as_vec(ptr: *const *mut gobject_ffi::GObject) -> Vec<Self> {
-        // Attention: This takes ownership of floating references!
-        FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(ptr as *mut *mut _)
-    }
-
-    unsafe fn from_glib_container_as_vec(_: *const *mut gobject_ffi::GObject) -> Vec<Self> {
-        // Can't free a *const
-        unimplemented!()
-    }
-
-    unsafe fn from_glib_full_as_vec(_: *const *mut gobject_ffi::GObject) -> Vec<Self> {
-        // Can't free a *const
-        unimplemented!()
     }
 }
 
@@ -904,6 +706,9 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentPtrType for $name $(<$($generic),+>)? {}
+
+        #[doc(hidden)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ObjectType for $name $(<$($generic),+>)? {
             type GlibType = $ffi_name;
             type GlibClassType = $ffi_class_name;
@@ -915,7 +720,12 @@ macro_rules! glib_object_wrapper {
 
             #[inline]
             fn as_ptr(&self) -> *mut Self::GlibType {
-                $crate::translate::ToGlibPtr::to_glib_none(&*self.inner).0 as *mut _
+                unsafe { *(self as *const Self as *const *const $ffi_name) as *mut $ffi_name }
+            }
+
+            #[inline]
+            unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const Self::GlibType) -> &'a Self {
+                &*(ptr as *const Self)
             }
         }
 
@@ -1006,19 +816,22 @@ macro_rules! glib_object_wrapper {
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let mut v_ptr = Vec::with_capacity(t.len() + 1);
-                v_ptr.extend(t.iter().map(|t| <Self as $crate::ObjectType>::as_ptr(t)));
-                v_ptr.push(std::ptr::null_mut());
+                unsafe {
+                    let ptr = v_ptr.as_mut_ptr();
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *mut $ffi_name, ptr, t.len());
+                    std::ptr::write(ptr.add(t.len()), std::ptr::null_mut());
+                    v_ptr.set_len(t.len() + 1);
+                }
 
                 (v_ptr.as_ptr() as *mut *mut $ffi_name, (std::marker::PhantomData, Some(v_ptr)))
             }
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut *mut $ffi_name, Self::Storage) {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
 
-                    for (i, t) in t.iter().enumerate() {
-                        std::ptr::write(v_ptr.add(i), <Self as $crate::ObjectType>::as_ptr(t));
-                    }
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *mut $ffi_name, v_ptr, t.len());
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 };
@@ -1028,11 +841,12 @@ macro_rules! glib_object_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut *mut $ffi_name {
                 unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*mut $ffi_name>() * (t.len() + 1)) as *mut *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), $crate::translate::ToGlibPtr::to_glib_full(s));
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 }
@@ -1243,10 +1057,9 @@ macro_rules! glib_object_wrapper {
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
-                let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                debug_assert!(!(*ptr).is_null());
-                debug_assert_ne!((**(ptr as *const *const $crate::gobject_ffi::GObject)).ref_count, 0);
-                &*(ptr as *const $name $(<$($generic),+>)?)
+                debug_assert!(!value.data[0].v_pointer.is_null());
+                debug_assert_ne!((*(value.data[0].v_pointer as *const $crate::gobject_ffi::GObject)).ref_count, 0);
+                <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
             }
         }
 
@@ -3460,7 +3273,7 @@ impl ObjectClass {
 
             let props =
                 gobject_ffi::g_object_class_list_properties(klass as *mut _, &mut n_properties);
-            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num(props, n_properties as usize, true)
         }
     }
 }
@@ -4390,7 +4203,7 @@ impl<T: IsA<Object> + IsInterface> Interface<T> {
                 interface as *mut _,
                 &mut n_properties,
             );
-            PtrSlice::from_glib_container_num_static(props, n_properties as usize)
+            PtrSlice::from_glib_container_num(props, n_properties as usize, true)
         }
     }
 }

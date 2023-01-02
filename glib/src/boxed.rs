@@ -41,7 +41,19 @@ macro_rules! glib_boxed_wrapper {
             #[doc = "Return the inner pointer to the underlying C value."]
             #[inline]
             pub fn as_ptr(&self) -> *mut $ffi_name {
-                $crate::translate::ToGlibPtr::to_glib_none(&self.inner).0 as *mut _
+                unsafe { *(self as *const Self as *const *const $ffi_name) as *mut $ffi_name }
+            }
+
+            #[doc = "Borrows the underlying C value."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const *const $ffi_name) -> &'a Self {
+                &*(ptr as *const Self)
+            }
+
+            #[doc = "Borrows the underlying C value mutably."]
+            #[inline]
+            pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut *mut $ffi_name) -> &'a mut Self {
+                &mut *(ptr as *mut Self)
             }
         }
 
@@ -58,6 +70,9 @@ macro_rules! glib_boxed_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::GlibPtrDefault for $name $(<$($generic),+>)? {
             type GlibType = *mut $ffi_name;
         }
+
+        #[doc(hidden)]
+        unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::TransparentPtrType for $name $(<$($generic),+>)? {}
 
         #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
@@ -92,19 +107,22 @@ macro_rules! glib_boxed_wrapper {
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
                 let mut v_ptr = Vec::with_capacity(t.len() + 1);
-                v_ptr.extend(t.iter().map(|t| t.as_ptr() as *const $ffi_name));
-                v_ptr.push(std::ptr::null());
+                unsafe {
+                    let ptr = v_ptr.as_mut_ptr();
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *const $ffi_name, ptr, t.len());
+                    std::ptr::write(ptr.add(t.len()), std::ptr::null_mut());
+                    v_ptr.set_len(t.len() + 1);
+                }
 
                 (v_ptr.as_ptr() as *mut *const $ffi_name, (std::marker::PhantomData, Some(v_ptr)))
             }
 
             fn to_glib_container_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
-                    for (i, t) in t.iter().enumerate() {
-                        std::ptr::write(v_ptr.add(i), t.as_ptr());
-                    }
+                    std::ptr::copy_nonoverlapping(t.as_ptr() as *mut *const $ffi_name, v_ptr, t.len());
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 };
@@ -114,11 +132,12 @@ macro_rules! glib_boxed_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut *const $ffi_name {
                 unsafe {
-                    let v_ptr = $crate::ffi::g_malloc0(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<*const $ffi_name>() * (t.len() + 1)) as *mut *const $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         std::ptr::write(v_ptr.add(i), $crate::translate::ToGlibPtr::to_glib_full(s));
                     }
+                    std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
 
                     v_ptr
                 }
@@ -313,9 +332,8 @@ macro_rules! glib_boxed_wrapper {
             unsafe fn from_value(value: &'a $crate::Value) -> Self {
                 debug_assert_eq!(std::mem::size_of::<Self>(), std::mem::size_of::<$crate::ffi::gpointer>());
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
-                let ptr = &value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name;
-                debug_assert!(!(*ptr).is_null());
-                &*(ptr as *const $name $(<$($generic),+>)?)
+                debug_assert!(!value.data[0].v_pointer.is_null());
+                <$name $(<$($generic),+>)?>::from_glib_ptr_borrow(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *const $ffi_name)
             }
         }
 
