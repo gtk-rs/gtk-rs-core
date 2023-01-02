@@ -23,18 +23,22 @@ impl<T: TransparentPtrType> SList<T> {
     #[inline]
     pub unsafe fn from_glib_none(list: *const ffi::GSList) -> SList<T> {
         // Need to copy the whole list
-        unsafe extern "C" fn copy_item<T: TransparentPtrType>(
-            ptr: ffi::gconstpointer,
-            _user_data: ffi::gpointer,
-        ) -> ffi::gpointer {
-            let mut item =
-                mem::ManuallyDrop::new((*(&ptr as *const ffi::gconstpointer as *const T)).clone());
+        let list = if mem::needs_drop::<T>() {
+            unsafe extern "C" fn copy_item<T: TransparentPtrType>(
+                ptr: ffi::gconstpointer,
+                _user_data: ffi::gpointer,
+            ) -> ffi::gpointer {
+                let mut item = mem::ManuallyDrop::new(
+                    (*(&ptr as *const ffi::gconstpointer as *const T)).clone(),
+                );
 
-            *(&mut *item as *mut T as *mut *mut T::GlibType) as ffi::gpointer
-        }
+                *(&mut *item as *mut T as *mut *mut T::GlibType) as ffi::gpointer
+            }
 
-        let list =
-            ffi::g_slist_copy_deep(mut_override(list), Some(copy_item::<T>), ptr::null_mut());
+            ffi::g_slist_copy_deep(mut_override(list), Some(copy_item::<T>), ptr::null_mut())
+        } else {
+            ffi::g_slist_copy(mut_override(list))
+        };
 
         SList {
             ptr: ptr::NonNull::new(list),
@@ -47,15 +51,17 @@ impl<T: TransparentPtrType> SList<T> {
     #[inline]
     pub unsafe fn from_glib_container(list: *mut ffi::GSList) -> SList<T> {
         // Need to copy all items as we only own the container
-        unsafe extern "C" fn copy_item<T: TransparentPtrType>(
-            ptr: ffi::gpointer,
-            _user_data: ffi::gpointer,
-        ) {
-            let item = (*(&ptr as *const ffi::gpointer as *const T)).clone();
-            ptr::write(ptr as *mut T, item);
-        }
+        if mem::needs_drop::<T>() {
+            unsafe extern "C" fn copy_item<T: TransparentPtrType>(
+                ptr: ffi::gpointer,
+                _user_data: ffi::gpointer,
+            ) {
+                let item = (*(&ptr as *const ffi::gpointer as *const T)).clone();
+                ptr::write(ptr as *mut T, item);
+            }
 
-        ffi::g_slist_foreach(list, Some(copy_item::<T>), ptr::null_mut());
+            ffi::g_slist_foreach(list, Some(copy_item::<T>), ptr::null_mut());
+        }
 
         SList {
             ptr: ptr::NonNull::new(list),
@@ -388,11 +394,15 @@ impl<T: TransparentPtrType> Drop for SList<T> {
     fn drop(&mut self) {
         if let Some(ptr) = self.ptr {
             unsafe {
-                unsafe extern "C" fn drop_item<T: TransparentPtrType>(mut ptr: ffi::gpointer) {
-                    ptr::drop_in_place(&mut ptr as *mut ffi::gpointer as *mut T);
-                }
+                if mem::needs_drop::<T>() {
+                    unsafe extern "C" fn drop_item<T: TransparentPtrType>(mut ptr: ffi::gpointer) {
+                        ptr::drop_in_place(&mut ptr as *mut ffi::gpointer as *mut T);
+                    }
 
-                ffi::g_slist_free_full(ptr.as_ptr(), Some(drop_item::<T>));
+                    ffi::g_slist_free_full(ptr.as_ptr(), Some(drop_item::<T>));
+                } else {
+                    ffi::g_slist_free(ptr.as_ptr());
+                }
             }
         }
     }
