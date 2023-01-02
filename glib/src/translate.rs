@@ -995,12 +995,13 @@ macro_rules! impl_to_glib_container_from_slice_string {
                 let v: Vec<_> = t.iter().map(ToGlibPtr::to_glib_none).collect();
 
                 let v_ptr = unsafe {
-                    let v_ptr = ffi::g_malloc0(mem::size_of::<$ffi_name>() * (t.len() + 1))
+                    let v_ptr = ffi::g_malloc(mem::size_of::<$ffi_name>() * (t.len() + 1))
                         as *mut $ffi_name;
 
                     for (i, s) in v.iter().enumerate() {
                         ptr::write(v_ptr.add(i), s.0);
                     }
+                    ptr::write(v_ptr.add(t.len()), ptr::null_mut());
 
                     v_ptr
                 };
@@ -1010,12 +1011,13 @@ macro_rules! impl_to_glib_container_from_slice_string {
 
             fn to_glib_full_from_slice(t: &[$name]) -> *mut $ffi_name {
                 unsafe {
-                    let v_ptr = ffi::g_malloc0(mem::size_of::<$ffi_name>() * (t.len() + 1))
+                    let v_ptr = ffi::g_malloc(mem::size_of::<$ffi_name>() * (t.len() + 1))
                         as *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         ptr::write(v_ptr.add(i), s.to_glib_full());
                     }
+                    ptr::write(v_ptr.add(t.len()), ptr::null_mut());
 
                     v_ptr
                 }
@@ -1036,12 +1038,13 @@ macro_rules! impl_to_glib_container_from_slice_string {
                 let v: Vec<_> = t.iter().map(ToGlibPtr::to_glib_none).collect();
 
                 let v_ptr = unsafe {
-                    let v_ptr = ffi::g_malloc0(mem::size_of::<$ffi_name>() * (t.len() + 1))
+                    let v_ptr = ffi::g_malloc(mem::size_of::<$ffi_name>() * (t.len() + 1))
                         as *mut $ffi_name;
 
                     for (i, s) in v.iter().enumerate() {
                         ptr::write(v_ptr.add(i), s.0);
                     }
+                    ptr::write(v_ptr.add(t.len()), ptr::null_mut());
 
                     v_ptr as *const $ffi_name
                 };
@@ -1051,12 +1054,13 @@ macro_rules! impl_to_glib_container_from_slice_string {
 
             fn to_glib_full_from_slice(t: &[$name]) -> *const $ffi_name {
                 unsafe {
-                    let v_ptr = ffi::g_malloc0(mem::size_of::<$ffi_name>() * (t.len() + 1))
+                    let v_ptr = ffi::g_malloc(mem::size_of::<$ffi_name>() * (t.len() + 1))
                         as *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         ptr::write(v_ptr.add(i), s.to_glib_full());
                     }
+                    ptr::write(v_ptr.add(t.len()), ptr::null_mut());
 
                     v_ptr as *const $ffi_name
                 }
@@ -1966,10 +1970,12 @@ impl FromGlibContainerAsVec<bool, *const ffi::gboolean> for bool {
             return Vec::new();
         }
 
-        let mut res = Vec::with_capacity(num);
+        let mut res = Vec::<Self>::with_capacity(num);
+        let res_ptr = res.as_mut_ptr();
         for i in 0..num {
-            res.push(from_glib(ptr::read(ptr.add(i))));
+            *res_ptr.add(i) = from_glib(ptr::read(ptr.add(i)));
         }
+        res.set_len(num);
         res
     }
 
@@ -2013,9 +2019,9 @@ macro_rules! impl_from_glib_container_as_vec_fundamental {
                 }
 
                 let mut res = Vec::with_capacity(num);
-                for i in 0..num {
-                    res.push(ptr::read(ptr.add(i)));
-                }
+                let res_ptr = res.as_mut_ptr();
+                std::ptr::copy_nonoverlapping(ptr, res_ptr, num);
+                res.set_len(num);
                 res
             }
 
@@ -2067,10 +2073,15 @@ macro_rules! impl_from_glib_container_as_vec_string {
                     return Vec::new();
                 }
 
-                let mut res = Vec::with_capacity(num);
+                let mut res = Vec::<Self>::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
                 for i in 0..num {
-                    res.push(from_glib_none(ptr::read(ptr.add(i)) as $ffi_name));
+                    std::ptr::write(
+                        res_ptr.add(i),
+                        from_glib_none(ptr::read(ptr.add(i)) as $ffi_name),
+                    );
                 }
+                res.set_len(num);
                 res
             }
 
@@ -2102,10 +2113,15 @@ macro_rules! impl_from_glib_container_as_vec_string {
                     return Vec::new();
                 }
 
-                let mut res = Vec::with_capacity(num);
+                let mut res = Vec::<Self>::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
                 for i in 0..num {
-                    res.push(from_glib_full(ptr::read(ptr.add(i))));
+                    std::ptr::write(
+                        res_ptr.add(i),
+                        from_glib_full(ptr::read(ptr.add(i)) as $ffi_name),
+                    );
                 }
+                res.set_len(num);
                 ffi::g_free(ptr as *mut _);
                 res
             }

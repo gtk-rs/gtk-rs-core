@@ -439,10 +439,12 @@ macro_rules! glib_boxed_inline_wrapper {
                     return Vec::new();
                 }
 
-                let mut res = Vec::with_capacity(num);
+                let mut res = Vec::<Self>::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
                 for i in 0..num {
-                    res.push($crate::translate::from_glib_none(ptr.add(i)));
+                    ::std::ptr::write(res_ptr.add(i), $crate::translate::from_glib_none(ptr.add(i)));
                 }
+                res.set_len(num);
                 res
             }
 
@@ -459,9 +461,9 @@ macro_rules! glib_boxed_inline_wrapper {
                 }
 
                 let mut res = Vec::with_capacity(num);
-                for i in 0..num {
-                    res.push(std::ptr::read(ptr.add(i) as *const $name $(<$($generic),+>)?));
-                }
+                let res_ptr = res.as_mut_ptr();
+                ::std::ptr::copy_nonoverlapping(ptr as *mut Self, res_ptr, num);
+                res.set_len(num);
                 $crate::ffi::g_free(ptr as *mut _);
                 res
             }
@@ -474,10 +476,12 @@ macro_rules! glib_boxed_inline_wrapper {
                     return Vec::new();
                 }
 
-                let mut res = Vec::with_capacity(num);
+                let mut res = Vec::<Self>::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
                 for i in 0..num {
-                    res.push($crate::translate::from_glib_none(std::ptr::read(ptr.add(i))));
+                    ::std::ptr::write(res_ptr.add(i), $crate::translate::from_glib_none(::std::ptr::read(ptr.add(i))));
                 }
+                res.set_len(num);
                 res
             }
 
@@ -493,10 +497,12 @@ macro_rules! glib_boxed_inline_wrapper {
                     return Vec::new();
                 }
 
-                let mut res = Vec::with_capacity(num);
+                let mut res = Vec::<Self>::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
                 for i in 0..num {
-                    res.push($crate::translate::from_glib_full(std::ptr::read(ptr.add(i))));
+                    ::std::ptr::write(res_ptr.add(i), $crate::translate::from_glib_full(::std::ptr::read(ptr.add(i))));
                 }
+                res.set_len(num);
                 $crate::ffi::g_free(ptr as *mut _);
                 res
             }

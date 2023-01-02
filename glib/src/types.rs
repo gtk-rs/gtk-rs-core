@@ -560,10 +560,9 @@ impl<'a> ToGlibContainerFromSlice<'a, *mut ffi::GType> for Type {
 
         unsafe {
             let res =
-                ffi::g_malloc0(mem::size_of::<ffi::GType>() * (t.len() + 1)) as *mut ffi::GType;
-            for (i, v) in t.iter().enumerate() {
-                *res.add(i) = v.into_glib();
-            }
+                ffi::g_malloc(mem::size_of::<ffi::GType>() * (t.len() + 1)) as *mut ffi::GType;
+            std::ptr::copy_nonoverlapping(t.as_ptr() as *const ffi::GType, res, t.len());
+            *res.add(t.len()) = 0;
             res
         }
     }
@@ -575,10 +574,10 @@ impl FromGlibContainerAsVec<Type, *const ffi::GType> for Type {
             return Vec::new();
         }
 
-        let mut res = Vec::with_capacity(num);
-        for i in 0..num {
-            res.push(from_glib(*ptr.add(i)));
-        }
+        let mut res = Vec::<Self>::with_capacity(num);
+        let res_ptr = res.as_mut_ptr() as *mut ffi::GType;
+        std::ptr::copy_nonoverlapping(ptr, res_ptr, num);
+        res.set_len(num);
         res
     }
 
