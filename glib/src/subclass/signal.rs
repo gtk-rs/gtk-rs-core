@@ -354,30 +354,6 @@ impl IntoGlib for SignalType {
     }
 }
 
-impl FromGlibContainerAsVec<Type, *const ffi::GType> for SignalType {
-    unsafe fn from_glib_none_num_as_vec(ptr: *const ffi::GType, num: usize) -> Vec<Self> {
-        if num == 0 || ptr.is_null() {
-            return Vec::new();
-        }
-
-        let mut res = Vec::with_capacity(num);
-        for i in 0..num {
-            res.push(from_glib(*ptr.add(i)));
-        }
-        res
-    }
-
-    unsafe fn from_glib_container_num_as_vec(_: *const ffi::GType, _: usize) -> Vec<Self> {
-        // Can't really free a *const
-        unimplemented!();
-    }
-
-    unsafe fn from_glib_full_num_as_vec(_: *const ffi::GType, _: usize) -> Vec<Self> {
-        // Can't really free a *const
-        unimplemented!();
-    }
-}
-
 #[allow(clippy::type_complexity)]
 enum SignalRegistration {
     Unregistered {
