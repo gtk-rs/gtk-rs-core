@@ -207,7 +207,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
@@ -225,7 +225,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a mut Self>;
 
             #[inline]
@@ -236,7 +236,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = (std::marker::PhantomData<&'a [Self]>, Option<Vec<*const $ffi_name>>);
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
@@ -276,7 +276,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = (std::marker::PhantomData<&'a [Self]>, Option<Vec<*const $ffi_name>>);
 
             #[inline]
@@ -297,7 +297,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a [Self]>;
 
             #[inline]
@@ -329,7 +329,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a [Self]>;
 
             #[inline]
