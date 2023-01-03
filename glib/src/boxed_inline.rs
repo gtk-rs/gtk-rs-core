@@ -29,7 +29,7 @@ macro_rules! glib_boxed_inline_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::marker::Copy for $name $(<$($generic),+>)? {}
 
         $crate::glib_boxed_inline_wrapper!(
-            @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @generic_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @copy ptr unsafe { let copy = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; std::ptr::copy_nonoverlapping(ptr, copy, 1); copy },
             @free ptr unsafe { $crate::ffi::g_free(ptr as *mut _); },
             @init _ptr (), @copy_into dest src std::ptr::copy_nonoverlapping(src, dest, 1), @clear _ptr ()
@@ -61,7 +61,7 @@ macro_rules! glib_boxed_inline_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::marker::Copy for $name $(<$($generic),+>)? {}
 
         $crate::glib_boxed_inline_wrapper!(
-            @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @generic_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
             @init _ptr (), @copy_into dest src std::ptr::copy_nonoverlapping(src, dest, 1), @clear _ptr ()
         );
@@ -99,7 +99,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         $crate::glib_boxed_inline_wrapper!(
-            @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @generic_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @copy ptr unsafe { let copy = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name; let c = |$copy_into_arg_dest, $copy_into_arg_src| $copy_into_expr; c(copy, ptr); copy },
             @free ptr unsafe { let c = |$clear_arg| $clear_expr; c(ptr); $crate::ffi::g_free(ptr as *mut _); },
             @init $init_arg $init_expr, @copy_into $copy_into_arg_dest $copy_into_arg_src $copy_into_expr, @clear $clear_arg $clear_expr
@@ -140,7 +140,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         $crate::glib_boxed_inline_wrapper!(
-            @generic_impl [$($attr)*] $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
+            @generic_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name,
             @copy $copy_arg $copy_expr, @free $free_arg $free_expr,
             @init $init_arg $init_expr, @copy_into $copy_into_arg_dest $copy_into_arg_src $copy_into_expr, @clear $clear_arg $clear_expr
         );
@@ -148,7 +148,7 @@ macro_rules! glib_boxed_inline_wrapper {
         $crate::glib_boxed_inline_wrapper!(@value_impl $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $ffi_name $(, @type_ $get_type_expr)?);
     };
 
-    (@generic_impl [$($attr:meta)*] $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
+    (@generic_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $ffi_name:ty,
      @copy $copy_arg:ident $copy_expr:expr, @free $free_arg:ident $free_expr:expr,
      @init $init_arg:ident $init_expr:expr, @copy_into $copy_into_arg_dest:ident $copy_into_arg_src:ident $copy_into_expr:expr, @clear $clear_arg:ident $clear_expr:expr) => {
 
@@ -207,7 +207,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a Self>;
 
             #[inline]
@@ -225,7 +225,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a mut Self>;
 
             #[inline]
@@ -236,7 +236,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = (std::marker::PhantomData<&'a [Self]>, Option<Vec<*const $ffi_name>>);
 
             fn to_glib_none_from_slice(t: &'a [Self]) -> (*mut *const $ffi_name, Self::Storage) {
@@ -276,7 +276,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = (std::marker::PhantomData<&'a [Self]>, Option<Vec<*const $ffi_name>>);
 
             #[inline]
@@ -297,7 +297,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a + $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a [Self]>;
 
             #[inline]
@@ -329,7 +329,7 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
-        impl<'a $(, $($generic: 'a $($bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibContainerFromSlice<'a, *const $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a [Self]>;
 
             #[inline]
