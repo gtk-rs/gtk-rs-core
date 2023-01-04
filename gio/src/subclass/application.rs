@@ -2,7 +2,7 @@
 
 use std::{ffi::OsString, fmt, ops::Deref, ptr};
 
-use glib::{subclass::prelude::*, translate::*, Cast, VariantDict};
+use glib::{subclass::prelude::*, translate::*, Cast, ExitCode, VariantDict};
 use libc::{c_char, c_int, c_void};
 
 use crate::Application;
@@ -77,11 +77,11 @@ pub trait ApplicationImpl: ObjectImpl + ApplicationImplExt {
         self.parent_before_emit(platform_data)
     }
 
-    fn command_line(&self, command_line: &crate::ApplicationCommandLine) -> i32 {
+    fn command_line(&self, command_line: &crate::ApplicationCommandLine) -> ExitCode {
         self.parent_command_line(command_line)
     }
 
-    fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<i32> {
+    fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
         self.parent_local_command_line(arguments)
     }
 
@@ -105,7 +105,7 @@ pub trait ApplicationImpl: ObjectImpl + ApplicationImplExt {
         self.parent_startup()
     }
 
-    fn handle_local_options(&self, options: &VariantDict) -> i32 {
+    fn handle_local_options(&self, options: &VariantDict) -> ExitCode {
         self.parent_handle_local_options(options)
     }
 }
@@ -114,14 +114,14 @@ pub trait ApplicationImplExt: ObjectSubclass {
     fn parent_activate(&self);
     fn parent_after_emit(&self, platform_data: &glib::Variant);
     fn parent_before_emit(&self, platform_data: &glib::Variant);
-    fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> i32;
-    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<i32>;
+    fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> ExitCode;
+    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode>;
     fn parent_open(&self, files: &[crate::File], hint: &str);
     fn parent_quit_mainloop(&self);
     fn parent_run_mainloop(&self);
     fn parent_shutdown(&self);
     fn parent_startup(&self);
-    fn parent_handle_local_options(&self, options: &VariantDict) -> i32;
+    fn parent_handle_local_options(&self, options: &VariantDict) -> ExitCode;
 }
 
 impl<T: ApplicationImpl> ApplicationImplExt for T {
@@ -164,7 +164,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
         }
     }
 
-    fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> i32 {
+    fn parent_command_line(&self, command_line: &crate::ApplicationCommandLine) -> ExitCode {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
@@ -175,10 +175,11 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                 self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                 command_line.to_glib_none().0,
             )
+            .into()
         }
     }
 
-    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<i32> {
+    fn parent_local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
@@ -196,7 +197,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
 
             match res {
                 glib::ffi::GFALSE => None,
-                _ => Some(exit_status),
+                _ => Some(exit_status.into()),
             }
         }
     }
@@ -261,7 +262,7 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
         }
     }
 
-    fn parent_handle_local_options(&self, options: &VariantDict) -> i32 {
+    fn parent_handle_local_options(&self, options: &VariantDict) -> ExitCode {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GApplicationClass;
@@ -270,9 +271,10 @@ impl<T: ApplicationImpl> ApplicationImplExt for T {
                     self.obj().unsafe_cast_ref::<Application>().to_glib_none().0,
                     options.to_glib_none().0,
                 )
+                .into()
             } else {
                 // Continue default handling
-                -1
+                ExitCode::from(-1)
             }
         }
     }
@@ -329,7 +331,7 @@ unsafe extern "C" fn application_command_line<T: ApplicationImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.command_line(&from_glib_borrow(command_line))
+    imp.command_line(&from_glib_borrow(command_line)).into()
 }
 unsafe extern "C" fn application_local_command_line<T: ApplicationImpl>(
     ptr: *mut ffi::GApplication,
@@ -340,7 +342,7 @@ unsafe extern "C" fn application_local_command_line<T: ApplicationImpl>(
     let imp = instance.imp();
 
     let mut args = ArgumentList::new(arguments);
-    let res = imp.local_command_line(&mut args);
+    let res = imp.local_command_line(&mut args).map(i32::from);
     args.refresh();
 
     match res {
@@ -395,7 +397,7 @@ unsafe extern "C" fn application_handle_local_options<T: ApplicationImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.handle_local_options(&from_glib_borrow(options))
+    imp.handle_local_options(&from_glib_borrow(options)).into()
 }
 
 #[cfg(test)]
@@ -421,7 +423,7 @@ mod tests {
         impl ObjectImpl for SimpleApplication {}
 
         impl ApplicationImpl for SimpleApplication {
-            fn command_line(&self, cmd_line: &crate::ApplicationCommandLine) -> i32 {
+            fn command_line(&self, cmd_line: &crate::ApplicationCommandLine) -> ExitCode {
                 let arguments = cmd_line.arguments();
 
                 for arg in arguments {
@@ -430,10 +432,10 @@ mod tests {
                     assert!(!a.starts_with("--local-"))
                 }
 
-                EXIT_STATUS
+                EXIT_STATUS.into()
             }
 
-            fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<i32> {
+            fn local_command_line(&self, arguments: &mut ArgumentList) -> Option<ExitCode> {
                 let mut rm = Vec::new();
 
                 for (i, line) in arguments.iter().enumerate() {
@@ -469,6 +471,6 @@ mod tests {
 
         app.set_inactivity_timeout(10000);
 
-        assert_eq!(app.run_with_args(&["--local"]), EXIT_STATUS);
+        assert_eq!(app.run_with_args(&["--local"]), EXIT_STATUS.into());
     }
 }

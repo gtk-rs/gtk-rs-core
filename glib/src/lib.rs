@@ -105,6 +105,8 @@ pub mod object;
 
 mod boxed_any_object;
 pub use boxed_any_object::BoxedAnyObject;
+mod exit_code;
+pub use exit_code::ExitCode;
 
 pub mod collections;
 pub use collections::{

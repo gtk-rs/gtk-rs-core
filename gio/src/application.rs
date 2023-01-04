@@ -6,16 +6,16 @@ use glib::{
     prelude::*,
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    GString,
+    ExitCode, GString,
 };
 
 use crate::{Application, File};
 
 pub trait ApplicationExtManual {
     #[doc(alias = "g_application_run")]
-    fn run(&self) -> i32;
+    fn run(&self) -> ExitCode;
     #[doc(alias = "g_application_run")]
-    fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> i32;
+    fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> ExitCode;
     fn connect_open<F: Fn(&Self, &[File], &str) + 'static>(&self, f: F) -> SignalHandlerId;
 
     #[doc(alias = "g_application_hold")]
@@ -26,16 +26,17 @@ pub trait ApplicationExtManual {
 }
 
 impl<O: IsA<Application>> ApplicationExtManual for O {
-    fn run(&self) -> i32 {
+    fn run(&self) -> ExitCode {
         self.run_with_args(&std::env::args().collect::<Vec<_>>())
     }
 
-    fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> i32 {
+    fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> ExitCode {
         let argv: Vec<&str> = args.iter().map(|a| a.as_ref()).collect();
         let argc = argv.len() as i32;
-        unsafe {
+        let exit_code = unsafe {
             ffi::g_application_run(self.as_ref().to_glib_none().0, argc, argv.to_glib_none().0)
-        }
+        };
+        ExitCode::from(exit_code)
     }
 
     fn connect_open<F: Fn(&Self, &[File], &str) + 'static>(&self, f: F) -> SignalHandlerId {
