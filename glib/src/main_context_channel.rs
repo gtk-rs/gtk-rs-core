@@ -199,9 +199,9 @@ impl<T> Channel<T> {
 #[repr(C)]
 struct ChannelSource<T, F: FnMut(T) -> Continue + 'static> {
     source: ffi::GSource,
-    source_funcs: Option<Box<ffi::GSourceFuncs>>,
-    channel: Option<Channel<T>>,
-    callback: Option<ThreadGuard<F>>,
+    source_funcs: Box<ffi::GSourceFuncs>,
+    channel: Channel<T>,
+    callback: ThreadGuard<F>,
 }
 
 unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
@@ -218,21 +218,13 @@ unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
 
     // Get a reference to the callback. This will panic if we're called from a different
     // thread than where the source was attached to the main context.
-    let callback = source
-        .callback
-        .as_mut()
-        .expect("ChannelSource called before Receiver was attached")
-        .get_mut();
+    let callback = source.callback.get_mut();
 
     // Now iterate over all items that we currently have in the channel until it is
     // empty again. If all senders are disconnected at some point we remove the GSource
     // from the main context it was attached to as it will never ever be called again.
-    let channel = source
-        .channel
-        .as_ref()
-        .expect("ChannelSource without Channel");
     loop {
-        match channel.try_recv() {
+        match source.channel.try_recv() {
             Err(mpsc::TryRecvError::Empty) => break,
             Err(mpsc::TryRecvError::Disconnected) => return ffi::G_SOURCE_REMOVE,
             Ok(item) => {
@@ -250,14 +242,12 @@ unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
 unsafe extern "C" fn dispose<T, F: FnMut(T) -> Continue + 'static>(source: *mut ffi::GSource) {
     let source = &mut *(source as *mut ChannelSource<T, F>);
 
-    if let Some(ref channel) = source.channel {
-        // Set the source inside the channel to None so that all senders know that there
-        // is no receiver left and wake up the condition variable if any
-        let mut inner = (channel.0).0.lock().unwrap();
-        inner.source = ChannelSourceState::Destroyed;
-        if let Some(ChannelBound { ref cond, .. }) = (channel.0).1 {
-            cond.notify_all();
-        }
+    // Set the source inside the channel to None so that all senders know that there
+    // is no receiver left and wake up the condition variable if any
+    let mut inner = (source.channel.0).0.lock().unwrap();
+    inner.source = ChannelSourceState::Destroyed;
+    if let Some(ChannelBound { ref cond, .. }) = (source.channel.0).1 {
+        cond.notify_all();
     }
 }
 
@@ -266,14 +256,8 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
 
     // Drop all memory we own by taking it out of the Options
 
-    #[cfg(feature = "v2_64")]
-    {
-        let _ = source.channel.take().expect("Receiver without channel");
-    }
     #[cfg(not(feature = "v2_64"))]
     {
-        let channel = source.channel.take().expect("Receiver without channel");
-
         // FIXME: This is the same as would otherwise be done in the dispose() function but
         // unfortunately it doesn't exist in older version of GLib. Doing it only here can
         // cause a channel sender to get a reference to the source with reference count 0
@@ -283,14 +267,14 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
         //
         // Set the source inside the channel to None so that all senders know that there
         // is no receiver left and wake up the condition variable if any
-        let mut inner = (channel.0).0.lock().unwrap();
+        let mut inner = (source.channel.0).0.lock().unwrap();
         inner.source = ChannelSourceState::Destroyed;
-        if let Some(ChannelBound { ref cond, .. }) = (channel.0).1 {
+        if let Some(ChannelBound { ref cond, .. }) = (source.channel.0).1 {
             cond.notify_all();
         }
     }
-
-    let _ = source.source_funcs.take();
+    ptr::drop_in_place(&mut source.channel);
+    ptr::drop_in_place(&mut source.source_funcs);
 
     // Take the callback out of the source. This will panic if the value is dropped
     // from a different thread than where the callback was created so try to drop it
@@ -299,11 +283,10 @@ unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut
     // This can only really happen if the caller to `attach()` gets the `Source` from the returned
     // `SourceId` and sends it to another thread or otherwise retrieves it from the main context,
     // but better safe than sorry.
-    let callback = source
-        .callback
-        .take()
-        .expect("channel source finalized twice");
-    if !callback.is_owner() {
+    if source.callback.is_owner() {
+        ptr::drop_in_place(&mut source.callback);
+    } else {
+        let callback = ptr::read(&source.callback);
         let context =
             ffi::g_source_get_context(source as *mut ChannelSource<T, F> as *mut ffi::GSource);
         if !context.is_null() {
@@ -522,9 +505,9 @@ impl<T> Receiver<T> {
             // Store all our data inside our part of the GSource
             {
                 let source = &mut *source;
-                ptr::write(&mut source.channel, Some(channel));
-                ptr::write(&mut source.callback, Some(ThreadGuard::new(func)));
-                ptr::write(&mut source.source_funcs, Some(source_funcs));
+                ptr::write(ptr::addr_of_mut!(source.channel), channel);
+                ptr::write(ptr::addr_of_mut!(source.callback), ThreadGuard::new(func));
+                ptr::write(ptr::addr_of_mut!(source.source_funcs), source_funcs);
             }
 
             let source = Source::from_glib_full(mut_override(&(*source).source));
