@@ -118,7 +118,7 @@ impl<'a> BindingBuilder<'a> {
             let user_data = &*(user_data as *const Mappings);
             let f = user_data.1.as_ref().unwrap();
             let value = &*(value as *const glib::Value);
-            f(value, from_glib_none(variant_type)).to_glib_full()
+            f(value, from_glib_none(variant_type)).into_glib_ptr()
         }
         unsafe extern "C" fn destroy_closure(ptr: *mut libc::c_void) {
             let _ = Box::<Mappings>::from_raw(ptr as *mut _);

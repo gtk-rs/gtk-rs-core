@@ -61,7 +61,7 @@ glib::wrapper! {
 
 macro_rules! task_impl {
     ($name:ident $(, @bound: $bound:tt)? $(, @safety: $safety:tt)?) => {
-        impl <V: ValueType $(+ $bound)?> $name<V> {
+        impl <V: Into<glib::Value> + ValueType $(+ $bound)?> $name<V> {
             #[doc(alias = "g_task_new")]
             #[allow(unused_unsafe)]
             pub unsafe fn new<S, P, Q>(
@@ -260,14 +260,15 @@ macro_rules! task_impl {
                     },
                     #[cfg(not(feature = "v2_64"))]
                     Ok(v) => unsafe {
+                        let v: glib::Value = v.into();
                         ffi::g_task_return_pointer(
                             self.to_glib_none().0,
-                            v.to_value().to_glib_full() as *mut _,
+                            <glib::Value as glib::translate::IntoGlibPtr::<*mut glib::gobject_ffi::GValue>>::into_glib_ptr(v) as glib::ffi::gpointer,
                             Some(value_free),
                         )
                     },
                     Err(e) => unsafe {
-                        ffi::g_task_return_error(self.to_glib_none().0, e.to_glib_full() as *mut _);
+                        ffi::g_task_return_error(self.to_glib_none().0, e.into_glib_ptr());
                     },
                 }
             }

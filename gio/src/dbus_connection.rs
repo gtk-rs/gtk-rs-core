@@ -207,7 +207,7 @@ impl DBusConnection {
             let incoming = from_glib(incoming);
             let callback: &P = &*(user_data as *mut _);
             let res = (*callback)(&connection, &message, incoming);
-            res.to_glib_full()
+            res.into_glib_ptr()
         }
         let filter_function = Some(filter_function_func::<P> as _);
         unsafe extern "C" fn user_data_free_func_func<

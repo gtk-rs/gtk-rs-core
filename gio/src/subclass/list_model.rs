@@ -142,5 +142,5 @@ where
             type_.name()
         );
     };
-    item.to_glib_full()
+    item.into_glib_ptr()
 }

@@ -118,7 +118,7 @@ impl ParamSpec {
     pub fn downcast<T: ParamSpecType>(self) -> Result<T, ParamSpec> {
         unsafe {
             if self.type_() == T::static_type() {
-                Ok(from_glib_full(self.to_glib_full()))
+                Ok(from_glib_full(self.into_glib_ptr()))
             } else {
                 Err(self)
             }
@@ -497,7 +497,7 @@ macro_rules! define_param_spec {
             #[inline]
             pub fn upcast(self) -> ParamSpec {
                 unsafe {
-                    from_glib_full(ToGlibPtr::<*const $ffi_type>::to_glib_full(&self) as *mut gobject_ffi::GParamSpec)
+                    from_glib_full(IntoGlibPtr::<*mut $ffi_type>::into_glib_ptr(self) as *mut gobject_ffi::GParamSpec)
                 }
             }
 
