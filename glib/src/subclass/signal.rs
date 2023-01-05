@@ -3,7 +3,8 @@
 use std::{fmt, num::NonZeroU32, ptr, sync::Mutex};
 
 use crate::{
-    prelude::*, translate::*, utils::is_canonical_pspec_name, Closure, SignalFlags, Type, Value,
+    prelude::*, translate::*, utils::is_canonical_pspec_name, Closure, IntoGStr, SignalFlags, Type,
+    Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -192,13 +193,15 @@ impl SignalId {
         let mut signal_id = std::mem::MaybeUninit::uninit();
         let mut detail_quark = std::mem::MaybeUninit::uninit();
         unsafe {
-            let found: bool = from_glib(gobject_ffi::g_signal_parse_name(
-                name.to_glib_none().0,
-                type_.into_glib(),
-                signal_id.as_mut_ptr(),
-                detail_quark.as_mut_ptr(),
-                force_detail.into_glib(),
-            ));
+            let found: bool = name.run_with_gstr(|name| {
+                from_glib(gobject_ffi::g_signal_parse_name(
+                    name.as_ptr(),
+                    type_.into_glib(),
+                    signal_id.as_mut_ptr(),
+                    detail_quark.as_mut_ptr(),
+                    force_detail.into_glib(),
+                ))
+            });
 
             if found {
                 Some((
@@ -217,7 +220,9 @@ impl SignalId {
     #[inline]
     pub fn lookup(name: &str, type_: Type) -> Option<Self> {
         unsafe {
-            let signal_id = gobject_ffi::g_signal_lookup(name.to_glib_none().0, type_.into_glib());
+            let signal_id = name.run_with_gstr(|name| {
+                gobject_ffi::g_signal_lookup(name.as_ptr(), type_.into_glib())
+            });
             if signal_id == 0 {
                 None
             } else {

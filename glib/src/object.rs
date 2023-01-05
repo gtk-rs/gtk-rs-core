@@ -13,7 +13,7 @@ use crate::{
     thread_guard::thread_id,
     translate::*,
     value::FromValue,
-    Closure, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
+    Closure, IntoGStr, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -2482,10 +2482,12 @@ impl<T: ObjectType> ObjectExt for T {
 
     fn stop_signal_emission_by_name(&self, signal_name: &str) {
         unsafe {
-            gobject_ffi::g_signal_stop_emission_by_name(
-                self.as_object_ref().to_glib_none().0,
-                signal_name.to_glib_none().0,
-            );
+            signal_name.run_with_gstr(|signal_name| {
+                gobject_ffi::g_signal_stop_emission_by_name(
+                    self.as_object_ref().to_glib_none().0,
+                    signal_name.as_ptr(),
+                )
+            });
         }
     }
 
@@ -3012,10 +3014,12 @@ impl<T: ObjectType> ObjectExt for T {
     #[inline]
     fn notify(&self, property_name: &str) {
         unsafe {
-            gobject_ffi::g_object_notify(
-                self.as_object_ref().to_glib_none().0,
-                property_name.to_glib_none().0,
-            );
+            property_name.run_with_gstr(|property_name| {
+                gobject_ffi::g_object_notify(
+                    self.as_object_ref().to_glib_none().0,
+                    property_name.as_ptr(),
+                )
+            });
         }
     }
 
@@ -3257,10 +3261,12 @@ impl ObjectClass {
         unsafe {
             let klass = self as *const _ as *const gobject_ffi::GObjectClass;
 
-            from_glib_none(gobject_ffi::g_object_class_find_property(
-                klass as *mut _,
-                property_name.to_glib_none().0,
-            ))
+            property_name.run_with_gstr(|property_name| {
+                from_glib_none(gobject_ffi::g_object_class_find_property(
+                    klass as *mut _,
+                    property_name.as_ptr(),
+                ))
+            })
         }
     }
 
