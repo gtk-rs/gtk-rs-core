@@ -5,7 +5,7 @@
 
 use std::{fmt, marker::PhantomData, mem, ptr};
 
-use crate::{translate::*, Slice};
+use crate::{translate::*, IntoGStr, Slice};
 
 // rustdoc-stripper-ignore-next
 /// A GLib or GLib-based library type
@@ -206,9 +206,12 @@ impl Type {
     }
 
     #[doc(alias = "g_type_from_name")]
-    pub fn from_name(name: &str) -> Option<Self> {
+    pub fn from_name(name: impl IntoGStr) -> Option<Self> {
         unsafe {
-            let type_: Self = from_glib(gobject_ffi::g_type_from_name(name.to_glib_none().0));
+            let type_ = name.run_with_gstr(|name| {
+                Self::from_glib(gobject_ffi::g_type_from_name(name.as_ptr()))
+            });
+
             Some(type_).filter(|t| t.is_valid())
         }
     }
