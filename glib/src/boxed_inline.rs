@@ -588,7 +588,7 @@ macro_rules! glib_boxed_inline_wrapper {
             #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
-                    let mut value = $crate::Value::from_type(<Self as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_set_boxed(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::ToGlibPtr::<*const $ffi_name>::to_glib_none(self).0 as *mut _,

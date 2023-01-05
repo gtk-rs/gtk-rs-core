@@ -833,7 +833,7 @@ unsafe impl<'a> FromValue<'a> for &'a str {
 impl ToValue for str {
     fn to_value(&self) -> Value {
         unsafe {
-            let mut value = Value::from_type(<String>::static_type());
+            let mut value = Value::for_value_type::<String>();
 
             gobject_ffi::g_value_take_string(value.to_glib_none_mut().0, self.to_glib_full());
 
@@ -1242,7 +1242,7 @@ impl ToValue for BoxedValue {
     #[inline]
     fn to_value(&self) -> Value {
         unsafe {
-            let mut value = Value::from_type(<BoxedValue>::static_type());
+            let mut value = Value::for_value_type::<BoxedValue>();
 
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
@@ -1263,7 +1263,7 @@ impl From<BoxedValue> for Value {
     #[inline]
     fn from(v: BoxedValue) -> Self {
         unsafe {
-            let mut value = Value::from_type(<BoxedValue>::static_type());
+            let mut value = Value::for_value_type::<BoxedValue>();
 
             gobject_ffi::g_value_take_boxed(
                 value.to_glib_none_mut().0,

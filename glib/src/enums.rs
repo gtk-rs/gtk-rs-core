@@ -245,7 +245,7 @@ impl EnumValue {
     /// Convert enum value to a `Value`.
     pub fn to_value(&self, enum_: &EnumClass) -> Value {
         unsafe {
-            let mut v = Value::from_type(enum_.type_());
+            let mut v = Value::from_type_unchecked(enum_.type_());
             gobject_ffi::g_value_set_enum(v.to_glib_none_mut().0, self.0.value);
             v
         }
@@ -761,7 +761,7 @@ impl FlagsValue {
     /// Convert flags value to a `Value`.
     pub fn to_value(&self, flags: &FlagsClass) -> Value {
         unsafe {
-            let mut v = Value::from_type(flags.type_());
+            let mut v = Value::from_type_unchecked(flags.type_());
             gobject_ffi::g_value_set_flags(v.to_glib_none_mut().0, self.0.value);
             v
         }
@@ -814,7 +814,7 @@ impl Eq for FlagsValue {}
 pub struct FlagsBuilder<'a>(&'a FlagsClass, Option<Value>);
 impl<'a> FlagsBuilder<'a> {
     fn new(flags_class: &FlagsClass) -> FlagsBuilder {
-        let value = Value::from_type(flags_class.type_());
+        let value = unsafe { Value::from_type_unchecked(flags_class.type_()) };
         FlagsBuilder(flags_class, Some(value))
     }
 

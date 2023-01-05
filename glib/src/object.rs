@@ -1070,7 +1070,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             fn to_value(&self) -> $crate::Value {
                 unsafe {
-                    let mut value = $crate::Value::from_type(<Self as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type_unchecked(<Self as $crate::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_take_object(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::ToGlibPtr::<*mut $ffi_name>::to_glib_full(self) as *mut _,
@@ -1090,7 +1090,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             fn from(o: $name $(<$($generic),+>)?) -> Self {
                 unsafe {
-                    let mut value = $crate::Value::from_type(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
+                    let mut value = $crate::Value::from_type_unchecked(<$name $(<$($generic),+>)? as $crate::StaticType>::static_type());
                     $crate::gobject_ffi::g_value_take_object(
                         $crate::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         $crate::translate::IntoGlibPtr::<*mut $ffi_name>::into_glib_ptr(o) as *mut _,
@@ -2363,7 +2363,7 @@ impl<T: ObjectType> ObjectExt for T {
         }
 
         unsafe {
-            let mut value = Value::from_type(pspec.value_type());
+            let mut value = Value::from_type_unchecked(pspec.value_type());
             gobject_ffi::g_object_get_property(
                 self.as_object_ref().to_glib_none().0,
                 pspec.name().as_ptr() as *const _,
@@ -2719,7 +2719,7 @@ impl<T: ObjectType> ObjectExt for T {
             validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
-                Value::from_type(signal_query.return_type().into())
+                Value::from_type_unchecked(signal_query.return_type().into())
             } else {
                 Value::uninitialized()
             };
@@ -2766,7 +2766,7 @@ impl<T: ObjectType> ObjectExt for T {
             validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
-                Value::from_type(signal_query.return_type().into())
+                Value::from_type_unchecked(signal_query.return_type().into())
             } else {
                 Value::uninitialized()
             };
@@ -2867,7 +2867,7 @@ impl<T: ObjectType> ObjectExt for T {
             validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
-                Value::from_type(signal_query.return_type().into())
+                Value::from_type_unchecked(signal_query.return_type().into())
             } else {
                 Value::uninitialized()
             };
@@ -2920,7 +2920,7 @@ impl<T: ObjectType> ObjectExt for T {
             validate_signal_arguments(type_, &signal_query, &mut args[1..]);
 
             let mut return_value = if signal_query.return_type() != Type::UNIT {
-                Value::from_type(signal_query.return_type().into())
+                Value::from_type_unchecked(signal_query.return_type().into())
             } else {
                 Value::uninitialized()
             };
