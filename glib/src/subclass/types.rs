@@ -1081,7 +1081,7 @@ pub(crate) unsafe fn signal_chain_from_overridden(
         "Arguments must be forwarded without changes when chaining up"
     );
 
-    let mut result = Value::from_type(token.1);
+    let mut result = Value::from_type_unchecked(token.1);
     gobject_ffi::g_signal_chain_from_overridden(
         values.as_ptr() as *mut Value as *mut gobject_ffi::GValue,
         result.to_glib_none_mut().0,

@@ -283,7 +283,7 @@ impl crate::value::ToValue for Type {
     #[inline]
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value = crate::Value::from_type(Type::static_type());
+            let mut value = crate::Value::from_type_unchecked(Type::static_type());
             gobject_ffi::g_value_set_gtype(value.to_glib_none_mut().0, self.into_glib());
             value
         }

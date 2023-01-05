@@ -753,7 +753,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a VariantTy {
 impl crate::value::ToValue for VariantTy {
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value = crate::Value::from_type(VariantTy::static_type());
+            let mut value = crate::Value::from_type_unchecked(VariantTy::static_type());
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
                 self.to_glib_none().0 as *mut _,
@@ -824,7 +824,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for VariantType {
 impl crate::value::ToValue for VariantType {
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value = crate::Value::from_type(VariantType::static_type());
+            let mut value = crate::Value::from_type_unchecked(VariantType::static_type());
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
                 ToGlibPtr::<*mut _>::to_glib_none(&self).0 as *mut _,
@@ -842,7 +842,7 @@ impl crate::value::ToValue for VariantType {
 impl From<VariantType> for crate::Value {
     fn from(t: VariantType) -> Self {
         unsafe {
-            let mut value = crate::Value::from_type(VariantType::static_type());
+            let mut value = crate::Value::from_type_unchecked(VariantType::static_type());
             gobject_ffi::g_value_take_boxed(
                 value.to_glib_none_mut().0,
                 IntoGlibPtr::<*mut _>::into_glib_ptr(t) as *mut _,

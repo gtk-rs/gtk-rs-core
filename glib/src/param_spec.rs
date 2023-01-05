@@ -69,7 +69,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a ParamSpec {
 impl crate::value::ToValue for ParamSpec {
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value = crate::Value::from_type(ParamSpec::static_type());
+            let mut value = crate::Value::from_type_unchecked(ParamSpec::static_type());
             gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, self.to_glib_full());
             value
         }
@@ -85,7 +85,7 @@ impl From<ParamSpec> for crate::Value {
     #[inline]
     fn from(s: ParamSpec) -> Self {
         unsafe {
-            let mut value = crate::Value::from_type(ParamSpec::static_type());
+            let mut value = crate::Value::from_type_unchecked(ParamSpec::static_type());
             gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.into_glib_ptr());
             value
         }
@@ -349,7 +349,7 @@ macro_rules! define_param_spec {
         impl crate::value::ToValue for $rust_type {
             fn to_value(&self) -> crate::Value {
                 unsafe {
-                    let mut value = crate::Value::from_type($rust_type::static_type());
+                    let mut value = crate::Value::from_type_unchecked($rust_type::static_type());
                     gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, $crate::translate::ToGlibPtr::<*const $ffi_type>::to_glib_full(self) as *mut _);
                     value
                 }
@@ -365,7 +365,7 @@ macro_rules! define_param_spec {
             #[inline]
             fn from(s: $rust_type) -> Self {
                 unsafe {
-                    let mut value = crate::Value::from_type($rust_type::static_type());
+                    let mut value = crate::Value::from_type_unchecked($rust_type::static_type());
                     gobject_ffi::g_value_take_param(
                         value.to_glib_none_mut().0,
                         $crate::translate::IntoGlibPtr::<*mut gobject_ffi::GParamSpec>::into_glib_ptr(s),

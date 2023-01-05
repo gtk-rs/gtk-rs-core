@@ -174,7 +174,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
             fn to_value(&self) -> #crate_ident::Value {
                 unsafe {
                     let ptr = #refcounted_type_prefix::into_raw(self.0.clone());
-                    let mut value = #crate_ident::Value::from_type(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         ptr as *mut _
@@ -193,7 +193,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
             #[inline]
             fn from(v: #name) -> Self {
                 unsafe {
-                    let mut value = #crate_ident::Value::from_type(<#name as #crate_ident::StaticType>::static_type());
+                    let mut value = #crate_ident::Value::from_type_unchecked(<#name as #crate_ident::StaticType>::static_type());
                     #crate_ident::gobject_ffi::g_value_take_boxed(
                         #crate_ident::translate::ToGlibPtrMut::to_glib_none_mut(&mut value).0,
                         #crate_ident::translate::IntoGlibPtr::<*mut #refcounted_type_prefix::InnerType>::into_glib_ptr(v) as *mut _,

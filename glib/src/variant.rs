@@ -158,7 +158,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for Variant {
 impl crate::value::ToValue for Variant {
     fn to_value(&self) -> crate::Value {
         unsafe {
-            let mut value = crate::Value::from_type(Variant::static_type());
+            let mut value = crate::Value::from_type_unchecked(Variant::static_type());
             gobject_ffi::g_value_take_variant(value.to_glib_none_mut().0, self.to_glib_full());
             value
         }
@@ -174,7 +174,7 @@ impl From<Variant> for crate::Value {
     #[inline]
     fn from(v: Variant) -> Self {
         unsafe {
-            let mut value = crate::Value::from_type(Variant::static_type());
+            let mut value = crate::Value::from_type_unchecked(Variant::static_type());
             gobject_ffi::g_value_take_variant(value.to_glib_none_mut().0, v.into_glib_ptr());
             value
         }

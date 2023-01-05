@@ -491,14 +491,30 @@ crate::wrapper! {
 
 impl Value {
     // rustdoc-stripper-ignore-next
-    /// Creates a new `Value` that is initialized with `type_`
-    #[inline]
+    /// Creates a new `Value` that is initialized with `type_`.
+    ///
+    /// # Panics
+    ///
+    /// If `type_` can't be stored in a `Value` this function panics.
     pub fn from_type(type_: Type) -> Self {
         unsafe {
             assert_eq!(
                 gobject_ffi::g_type_check_is_value_type(type_.into_glib()),
                 ffi::GTRUE
             );
+            Self::from_type_unchecked(type_)
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Creates a new `Value` that is initialized with `type_`.
+    ///
+    /// # SAFETY
+    ///
+    /// This must be called with a valid `type_` that can be stored in `Value`s.
+    #[inline]
+    pub unsafe fn from_type_unchecked(type_: Type) -> Self {
+        unsafe {
             let mut value = Value::uninitialized();
             gobject_ffi::g_value_init(value.to_glib_none_mut().0, type_.into_glib());
             value
@@ -509,7 +525,7 @@ impl Value {
     /// Creates a new `Value` that is initialized for a given `ValueType`.
     #[inline]
     pub fn for_value_type<T: ValueType>() -> Self {
-        Value::from_type(T::Type::static_type())
+        unsafe { Value::from_type_unchecked(T::Type::static_type()) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -817,7 +833,7 @@ unsafe impl<'a> FromValue<'a> for &'a str {
 impl ToValue for str {
     fn to_value(&self) -> Value {
         unsafe {
-            let mut value = Value::from_type(<String>::static_type());
+            let mut value = Value::for_value_type::<String>();
 
             gobject_ffi::g_value_take_string(value.to_glib_none_mut().0, self.to_glib_full());
 
@@ -1226,7 +1242,7 @@ impl ToValue for BoxedValue {
     #[inline]
     fn to_value(&self) -> Value {
         unsafe {
-            let mut value = Value::from_type(<BoxedValue>::static_type());
+            let mut value = Value::for_value_type::<BoxedValue>();
 
             gobject_ffi::g_value_set_boxed(
                 value.to_glib_none_mut().0,
@@ -1247,7 +1263,7 @@ impl From<BoxedValue> for Value {
     #[inline]
     fn from(v: BoxedValue) -> Self {
         unsafe {
-            let mut value = Value::from_type(<BoxedValue>::static_type());
+            let mut value = Value::for_value_type::<BoxedValue>();
 
             gobject_ffi::g_value_take_boxed(
                 value.to_glib_none_mut().0,
