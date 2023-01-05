@@ -118,7 +118,7 @@ impl ParamSpec {
     pub fn downcast<T: ParamSpecType>(self) -> Result<T, ParamSpec> {
         unsafe {
             if self.type_() == T::static_type() {
-                Ok(from_glib_full(self.to_glib_full()))
+                Ok(from_glib_full(self.into_glib_ptr()))
             } else {
                 Err(self)
             }
@@ -497,7 +497,7 @@ macro_rules! define_param_spec {
             #[inline]
             pub fn upcast(self) -> ParamSpec {
                 unsafe {
-                    from_glib_full(ToGlibPtr::<*const $ffi_type>::to_glib_full(&self) as *mut gobject_ffi::GParamSpec)
+                    from_glib_full(IntoGlibPtr::<*mut $ffi_type>::into_glib_ptr(self) as *mut gobject_ffi::GParamSpec)
                 }
             }
 
@@ -1462,11 +1462,18 @@ impl ParamSpecValueArray {
 
     #[doc(alias = "get_element_spec")]
     #[inline]
-    pub fn element_spec(&self) -> Option<ParamSpec> {
+    pub fn element_spec(&self) -> Option<&ParamSpec> {
         unsafe {
             let ptr = ToGlibPtr::<*const gobject_ffi::GParamSpecValueArray>::to_glib_none(self).0;
 
-            from_glib_none((*ptr).element_spec)
+            if (*ptr).element_spec.is_null() {
+                None
+            } else {
+                Some(
+                    &*(&(*ptr).element_spec as *const *mut gobject_ffi::GParamSpec
+                        as *const ParamSpec),
+                )
+            }
         }
     }
 

@@ -164,5 +164,5 @@ unsafe extern "C" fn animation_get_iter<T: PixbufAnimationImpl>(
     let total = Duration::from_secs((*start_time_ptr).tv_sec.try_into().unwrap())
         + Duration::from_micros((*start_time_ptr).tv_usec.try_into().unwrap());
 
-    imp.iter(total).to_glib_full()
+    imp.iter(total).into_glib_ptr()
 }

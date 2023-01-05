@@ -54,7 +54,9 @@ impl Attribute {
     pub fn downcast<T: IsAttribute>(self) -> Result<T, Attribute> {
         unsafe {
             if T::ATTR_TYPES.contains(&self.attr_class().type_()) {
-                Ok(from_glib_full(self.to_glib_full()))
+                Ok(from_glib_full(glib::translate::IntoGlibPtr::<
+                    *mut ffi::PangoAttribute,
+                >::into_glib_ptr(self)))
             } else {
                 Err(self)
             }
@@ -140,7 +142,7 @@ macro_rules! define_attribute_struct {
 
             #[inline]
             fn upcast(self) -> crate::Attribute {
-                unsafe { glib::translate::from_glib_full(glib::translate::ToGlibPtr::to_glib_full(&self) as *mut ffi::PangoAttribute) }
+                unsafe { glib::translate::from_glib_full(glib::translate::IntoGlibPtr::<*mut $ffi_type>::into_glib_ptr(self) as *mut ffi::PangoAttribute) }
             }
 
             #[inline]

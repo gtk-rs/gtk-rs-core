@@ -927,9 +927,7 @@ unsafe extern "C" fn finalize<T: ObjectSubclass>(obj: *mut gobject_ffi::GObject)
     let priv_ptr = ptr.offset(private_offset);
     let priv_storage = &mut *(priv_ptr as *mut PrivateStruct<T>);
     ptr::drop_in_place(&mut priv_storage.imp);
-    if let Some(instance_data) = priv_storage.instance_data.take() {
-        drop(instance_data);
-    }
+    ptr::drop_in_place(&mut priv_storage.instance_data);
 
     // Chain up to the parent class' finalize implementation, if any.
     let parent_class = &*(data.as_ref().parent_class() as *const gobject_ffi::GObjectClass);
