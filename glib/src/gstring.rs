@@ -951,7 +951,7 @@ impl GString {
 /// creating a [`String`] and then converting it manually to a [`GString`].
 #[macro_export]
 macro_rules! gformat {
-    ($($arg:tt)*) => { GString::format(std::format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::GString::format(std::format_args!($($arg)*)) };
 }
 
 // rustdoc-stripper-ignore-next
