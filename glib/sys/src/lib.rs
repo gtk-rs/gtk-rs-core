@@ -693,11 +693,9 @@ pub const G_VARIANT_PARSE_ERROR_RECURSION: GVariantParseError = 18;
 // Constants
 pub const G_ASCII_DTOSTR_BUF_SIZE: c_int = 39;
 pub const G_BIG_ENDIAN: c_int = 4321;
-pub const G_CSET_A_2_Z: *const c_char =
-    b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0" as *const u8 as *const c_char;
-pub const G_CSET_DIGITS: *const c_char = b"0123456789\0" as *const u8 as *const c_char;
-pub const G_CSET_a_2_z: *const c_char =
-    b"abcdefghijklmnopqrstuvwxyz\0" as *const u8 as *const c_char;
+pub const G_CSET_A_2_Z: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0";
+pub const G_CSET_DIGITS: &[u8] = b"0123456789\0";
+pub const G_CSET_a_2_z: &[u8] = b"abcdefghijklmnopqrstuvwxyz\0";
 pub const G_DATALIST_FLAGS_MASK: c_int = 3;
 pub const G_DATE_BAD_DAY: c_int = 0;
 pub const G_DATE_BAD_JULIAN: c_int = 0;
@@ -706,55 +704,38 @@ pub const G_E: c_double = 2.718282;
 pub const G_HOOK_FLAG_USER_SHIFT: c_int = 4;
 pub const G_IEEE754_DOUBLE_BIAS: c_int = 1023;
 pub const G_IEEE754_FLOAT_BIAS: c_int = 127;
-pub const G_KEY_FILE_DESKTOP_GROUP: *const c_char =
-    b"Desktop Entry\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_ACTIONS: *const c_char =
-    b"Actions\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_CATEGORIES: *const c_char =
-    b"Categories\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_COMMENT: *const c_char =
-    b"Comment\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE: *const c_char =
-    b"DBusActivatable\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_EXEC: *const c_char = b"Exec\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME: *const c_char =
-    b"GenericName\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_HIDDEN: *const c_char = b"Hidden\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_ICON: *const c_char = b"Icon\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_MIME_TYPE: *const c_char =
-    b"MimeType\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_NAME: *const c_char = b"Name\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: *const c_char =
-    b"NotShowIn\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY: *const c_char =
-    b"NoDisplay\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN: *const c_char =
-    b"OnlyShowIn\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_PATH: *const c_char = b"Path\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: *const c_char =
-    b"StartupNotify\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: *const c_char =
-    b"StartupWMClass\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_TERMINAL: *const c_char =
-    b"Terminal\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_TRY_EXEC: *const c_char =
-    b"TryExec\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_TYPE: *const c_char = b"Type\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_URL: *const c_char = b"URL\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_KEY_VERSION: *const c_char =
-    b"Version\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_TYPE_APPLICATION: *const c_char =
-    b"Application\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_TYPE_DIRECTORY: *const c_char =
-    b"Directory\0" as *const u8 as *const c_char;
-pub const G_KEY_FILE_DESKTOP_TYPE_LINK: *const c_char = b"Link\0" as *const u8 as *const c_char;
+pub const G_KEY_FILE_DESKTOP_GROUP: &[u8] = b"Desktop Entry\0";
+pub const G_KEY_FILE_DESKTOP_KEY_ACTIONS: &[u8] = b"Actions\0";
+pub const G_KEY_FILE_DESKTOP_KEY_CATEGORIES: &[u8] = b"Categories\0";
+pub const G_KEY_FILE_DESKTOP_KEY_COMMENT: &[u8] = b"Comment\0";
+pub const G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE: &[u8] = b"DBusActivatable\0";
+pub const G_KEY_FILE_DESKTOP_KEY_EXEC: &[u8] = b"Exec\0";
+pub const G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME: &[u8] = b"GenericName\0";
+pub const G_KEY_FILE_DESKTOP_KEY_HIDDEN: &[u8] = b"Hidden\0";
+pub const G_KEY_FILE_DESKTOP_KEY_ICON: &[u8] = b"Icon\0";
+pub const G_KEY_FILE_DESKTOP_KEY_MIME_TYPE: &[u8] = b"MimeType\0";
+pub const G_KEY_FILE_DESKTOP_KEY_NAME: &[u8] = b"Name\0";
+pub const G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: &[u8] = b"NotShowIn\0";
+pub const G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY: &[u8] = b"NoDisplay\0";
+pub const G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN: &[u8] = b"OnlyShowIn\0";
+pub const G_KEY_FILE_DESKTOP_KEY_PATH: &[u8] = b"Path\0";
+pub const G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: &[u8] = b"StartupNotify\0";
+pub const G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: &[u8] = b"StartupWMClass\0";
+pub const G_KEY_FILE_DESKTOP_KEY_TERMINAL: &[u8] = b"Terminal\0";
+pub const G_KEY_FILE_DESKTOP_KEY_TRY_EXEC: &[u8] = b"TryExec\0";
+pub const G_KEY_FILE_DESKTOP_KEY_TYPE: &[u8] = b"Type\0";
+pub const G_KEY_FILE_DESKTOP_KEY_URL: &[u8] = b"URL\0";
+pub const G_KEY_FILE_DESKTOP_KEY_VERSION: &[u8] = b"Version\0";
+pub const G_KEY_FILE_DESKTOP_TYPE_APPLICATION: &[u8] = b"Application\0";
+pub const G_KEY_FILE_DESKTOP_TYPE_DIRECTORY: &[u8] = b"Directory\0";
+pub const G_KEY_FILE_DESKTOP_TYPE_LINK: &[u8] = b"Link\0";
 pub const G_LITTLE_ENDIAN: c_int = 1234;
 pub const G_LN10: c_double = 2.302585;
 pub const G_LN2: c_double = 0.693147;
 pub const G_LOG_2_BASE_10: c_double = 0.301030;
 pub const G_LOG_FATAL_MASK: c_int = 5;
 pub const G_LOG_LEVEL_USER_SHIFT: c_int = 8;
-pub const G_OPTION_REMAINING: *const c_char = b"\0" as *const u8 as *const c_char;
+pub const G_OPTION_REMAINING: &[u8] = b"\0";
 pub const G_PDP_ENDIAN: c_int = 3412;
 pub const G_PI: c_double = 3.141593;
 pub const G_PI_2: c_double = 1.570796;
@@ -767,25 +748,22 @@ pub const G_PRIORITY_LOW: c_int = 300;
 pub const G_SOURCE_CONTINUE: gboolean = GTRUE;
 pub const G_SOURCE_REMOVE: gboolean = GFALSE;
 pub const G_SQRT2: c_double = 1.414214;
-pub const G_STR_DELIMITERS: *const c_char = b"_-|> <.\0" as *const u8 as *const c_char;
+pub const G_STR_DELIMITERS: &[u8] = b"_-|> <.\0";
 pub const GLIB_SYSDEF_AF_INET: c_int = 2;
 pub const GLIB_SYSDEF_AF_INET6: c_int = 10;
 pub const GLIB_SYSDEF_AF_UNIX: c_int = 1;
 pub const GLIB_SYSDEF_MSG_DONTROUTE: c_int = 4;
 pub const GLIB_SYSDEF_MSG_OOB: c_int = 1;
 pub const GLIB_SYSDEF_MSG_PEEK: c_int = 2;
-pub const G_TEST_OPTION_ISOLATE_DIRS: *const c_char =
-    b"isolate_dirs\0" as *const u8 as *const c_char;
+pub const G_TEST_OPTION_ISOLATE_DIRS: &[u8] = b"isolate_dirs\0";
 pub const G_TIME_SPAN_DAY: i64 = 86400000000;
 pub const G_TIME_SPAN_HOUR: i64 = 3600000000;
 pub const G_TIME_SPAN_MILLISECOND: i64 = 1000;
 pub const G_TIME_SPAN_MINUTE: i64 = 60000000;
 pub const G_TIME_SPAN_SECOND: i64 = 1000000;
 pub const G_UNICHAR_MAX_DECOMPOSITION_LENGTH: c_int = 18;
-pub const G_URI_RESERVED_CHARS_GENERIC_DELIMITERS: *const c_char =
-    b":/?#[]@\0" as *const u8 as *const c_char;
-pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: *const c_char =
-    b"!$&'()*+,;=\0" as *const u8 as *const c_char;
+pub const G_URI_RESERVED_CHARS_GENERIC_DELIMITERS: &[u8] = b":/?#[]@\0";
+pub const G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS: &[u8] = b"!$&'()*+,;=\0";
 pub const G_USEC_PER_SEC: c_int = 1000000;
 pub const G_WIN32_MSG_HANDLE: c_int = 19981206;
 

@@ -388,245 +388,134 @@ pub const G_ZLIB_COMPRESSOR_FORMAT_RAW: GZlibCompressorFormat = 2;
 // Constants
 pub const G_DBUS_METHOD_INVOCATION_HANDLED: gboolean = glib::GTRUE;
 pub const G_DBUS_METHOD_INVOCATION_UNHANDLED: gboolean = glib::GFALSE;
-pub const G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-debug-controller\0" as *const u8 as *const c_char;
-pub const G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-desktop-app-info-lookup\0" as *const u8 as *const c_char;
-pub const G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: *const c_char =
-    b"unix-device\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE: *const c_char =
-    b"access::can-delete\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE: *const c_char =
-    b"access::can-execute\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_READ: *const c_char =
-    b"access::can-read\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME: *const c_char =
-    b"access::can-rename\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH: *const c_char =
-    b"access::can-trash\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE: *const c_char =
-    b"access::can-write\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE: *const c_char =
-    b"dos::is-archive\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT: *const c_char =
-    b"dos::is-mountpoint\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_DOS_IS_SYSTEM: *const c_char =
-    b"dos::is-system\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG: *const c_char =
-    b"dos::reparse-point-tag\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ETAG_VALUE: *const c_char =
-    b"etag::value\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_FREE: *const c_char =
-    b"filesystem::free\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_READONLY: *const c_char =
-    b"filesystem::readonly\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE: *const c_char =
-    b"filesystem::remote\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_SIZE: *const c_char =
-    b"filesystem::size\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_TYPE: *const c_char =
-    b"filesystem::type\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_USED: *const c_char =
-    b"filesystem::used\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW: *const c_char =
-    b"filesystem::use-preview\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_GVFS_BACKEND: *const c_char =
-    b"gvfs::backend\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ID_FILE: *const c_char = b"id::file\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_ID_FILESYSTEM: *const c_char =
-    b"id::filesystem\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT: *const c_char =
-    b"mountable::can-eject\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT: *const c_char =
-    b"mountable::can-mount\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: *const c_char =
-    b"mountable::can-poll\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START: *const c_char =
-    b"mountable::can-start\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED: *const c_char =
-    b"mountable::can-start-degraded\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: *const c_char =
-    b"mountable::can-stop\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: *const c_char =
-    b"mountable::can-unmount\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI: *const c_char =
-    b"mountable::hal-udi\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC: *const c_char =
-    b"mountable::is-media-check-automatic\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: *const c_char =
-    b"mountable::start-stop-type\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: *const c_char =
-    b"mountable::unix-device\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: *const c_char =
-    b"mountable::unix-device-file\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_OWNER_GROUP: *const c_char =
-    b"owner::group\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_OWNER_USER: *const c_char =
-    b"owner::user\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_OWNER_USER_REAL: *const c_char =
-    b"owner::user-real\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_PREVIEW_ICON: *const c_char =
-    b"preview::icon\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_RECENT_MODIFIED: *const c_char =
-    b"recent::modified\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_SELINUX_CONTEXT: *const c_char =
-    b"selinux::context\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE: *const c_char =
-    b"standard::allocated-size\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: *const c_char =
-    b"standard::content-type\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_COPY_NAME: *const c_char =
-    b"standard::copy-name\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION: *const c_char =
-    b"standard::description\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME: *const c_char =
-    b"standard::display-name\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME: *const c_char =
-    b"standard::edit-name\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE: *const c_char =
-    b"standard::fast-content-type\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_ICON: *const c_char =
-    b"standard::icon\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP: *const c_char =
-    b"standard::is-backup\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN: *const c_char =
-    b"standard::is-hidden\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK: *const c_char =
-    b"standard::is-symlink\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL: *const c_char =
-    b"standard::is-virtual\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_IS_VOLATILE: *const c_char =
-    b"standard::is-volatile\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_NAME: *const c_char =
-    b"standard::name\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_SIZE: *const c_char =
-    b"standard::size\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER: *const c_char =
-    b"standard::sort-order\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: *const c_char =
-    b"standard::symbolic-icon\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: *const c_char =
-    b"standard::symlink-target\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_TARGET_URI: *const c_char =
-    b"standard::target-uri\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_STANDARD_TYPE: *const c_char =
-    b"standard::type\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED: *const c_char =
-    b"thumbnail::failed\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE: *const c_char =
-    b"thumbnail::failed-large\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL: *const c_char =
-    b"thumbnail::failed-normal\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE: *const c_char =
-    b"thumbnail::failed-xlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: *const c_char =
-    b"thumbnail::failed-xxlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: *const c_char =
-    b"thumbnail::is-valid\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE: *const c_char =
-    b"thumbnail::is-valid-large\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL: *const c_char =
-    b"thumbnail::is-valid-normal\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE: *const c_char =
-    b"thumbnail::is-valid-xlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE: *const c_char =
-    b"thumbnail::is-valid-xxlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH: *const c_char =
-    b"thumbnail::path\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE: *const c_char =
-    b"thumbnail::path-large\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL: *const c_char =
-    b"thumbnail::path-normal\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE: *const c_char =
-    b"thumbnail::path-xlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE: *const c_char =
-    b"thumbnail::path-xxlarge\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_ACCESS: *const c_char =
-    b"time::access\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC: *const c_char =
-    b"time::access-nsec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_ACCESS_USEC: *const c_char =
-    b"time::access-usec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CHANGED: *const c_char =
-    b"time::changed\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC: *const c_char =
-    b"time::changed-nsec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CHANGED_USEC: *const c_char =
-    b"time::changed-usec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CREATED: *const c_char =
-    b"time::created\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CREATED_NSEC: *const c_char =
-    b"time::created-nsec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_CREATED_USEC: *const c_char =
-    b"time::created-usec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_MODIFIED: *const c_char =
-    b"time::modified\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC: *const c_char =
-    b"time::modified-nsec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC: *const c_char =
-    b"time::modified-usec\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TRASH_DELETION_DATE: *const c_char =
-    b"trash::deletion-date\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT: *const c_char =
-    b"trash::item-count\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_TRASH_ORIG_PATH: *const c_char =
-    b"trash::orig-path\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_BLOCKS: *const c_char =
-    b"unix::blocks\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE: *const c_char =
-    b"unix::block-size\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_DEVICE: *const c_char =
-    b"unix::device\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_GID: *const c_char = b"unix::gid\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_INODE: *const c_char =
-    b"unix::inode\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT: *const c_char =
-    b"unix::is-mountpoint\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_MODE: *const c_char = b"unix::mode\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_NLINK: *const c_char =
-    b"unix::nlink\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_RDEV: *const c_char = b"unix::rdev\0" as *const u8 as *const c_char;
-pub const G_FILE_ATTRIBUTE_UNIX_UID: *const c_char = b"unix::uid\0" as *const u8 as *const c_char;
-pub const G_MEMORY_MONITOR_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-memory-monitor\0" as *const u8 as *const c_char;
-pub const G_MENU_ATTRIBUTE_ACTION: *const c_char = b"action\0" as *const u8 as *const c_char;
-pub const G_MENU_ATTRIBUTE_ACTION_NAMESPACE: *const c_char =
-    b"action-namespace\0" as *const u8 as *const c_char;
-pub const G_MENU_ATTRIBUTE_ICON: *const c_char = b"icon\0" as *const u8 as *const c_char;
-pub const G_MENU_ATTRIBUTE_LABEL: *const c_char = b"label\0" as *const u8 as *const c_char;
-pub const G_MENU_ATTRIBUTE_TARGET: *const c_char = b"target\0" as *const u8 as *const c_char;
-pub const G_MENU_LINK_SECTION: *const c_char = b"section\0" as *const u8 as *const c_char;
-pub const G_MENU_LINK_SUBMENU: *const c_char = b"submenu\0" as *const u8 as *const c_char;
-pub const G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-native-volume-monitor\0" as *const u8 as *const c_char;
-pub const G_NETWORK_MONITOR_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-network-monitor\0" as *const u8 as *const c_char;
-pub const G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-power-profile-monitor\0" as *const u8 as *const c_char;
-pub const G_PROXY_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-proxy\0" as *const u8 as *const c_char;
-pub const G_PROXY_RESOLVER_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-proxy-resolver\0" as *const u8 as *const c_char;
-pub const G_SETTINGS_BACKEND_EXTENSION_POINT_NAME: *const c_char =
-    b"gsettings-backend\0" as *const u8 as *const c_char;
-pub const G_TLS_BACKEND_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-tls-backend\0" as *const u8 as *const c_char;
-pub const G_TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT: *const c_char =
-    b"1.3.6.1.5.5.7.3.2\0" as *const u8 as *const c_char;
-pub const G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER: *const c_char =
-    b"1.3.6.1.5.5.7.3.1\0" as *const u8 as *const c_char;
-pub const G_VFS_EXTENSION_POINT_NAME: *const c_char = b"gio-vfs\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_CLASS: *const c_char = b"class\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_HAL_UDI: *const c_char =
-    b"hal-udi\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_LABEL: *const c_char = b"label\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT: *const c_char =
-    b"nfs-mount\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE: *const c_char =
-    b"unix-device\0" as *const u8 as *const c_char;
-pub const G_VOLUME_IDENTIFIER_KIND_UUID: *const c_char = b"uuid\0" as *const u8 as *const c_char;
-pub const G_VOLUME_MONITOR_EXTENSION_POINT_NAME: *const c_char =
-    b"gio-volume-monitor\0" as *const u8 as *const c_char;
+pub const G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME: &[u8] = b"gio-debug-controller\0";
+pub const G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: &[u8] = b"gio-desktop-app-info-lookup\0";
+pub const G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: &[u8] = b"unix-device\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE: &[u8] = b"access::can-delete\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE: &[u8] = b"access::can-execute\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_READ: &[u8] = b"access::can-read\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME: &[u8] = b"access::can-rename\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH: &[u8] = b"access::can-trash\0";
+pub const G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE: &[u8] = b"access::can-write\0";
+pub const G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE: &[u8] = b"dos::is-archive\0";
+pub const G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT: &[u8] = b"dos::is-mountpoint\0";
+pub const G_FILE_ATTRIBUTE_DOS_IS_SYSTEM: &[u8] = b"dos::is-system\0";
+pub const G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG: &[u8] = b"dos::reparse-point-tag\0";
+pub const G_FILE_ATTRIBUTE_ETAG_VALUE: &[u8] = b"etag::value\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_FREE: &[u8] = b"filesystem::free\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_READONLY: &[u8] = b"filesystem::readonly\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE: &[u8] = b"filesystem::remote\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_SIZE: &[u8] = b"filesystem::size\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_TYPE: &[u8] = b"filesystem::type\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_USED: &[u8] = b"filesystem::used\0";
+pub const G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW: &[u8] = b"filesystem::use-preview\0";
+pub const G_FILE_ATTRIBUTE_GVFS_BACKEND: &[u8] = b"gvfs::backend\0";
+pub const G_FILE_ATTRIBUTE_ID_FILE: &[u8] = b"id::file\0";
+pub const G_FILE_ATTRIBUTE_ID_FILESYSTEM: &[u8] = b"id::filesystem\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT: &[u8] = b"mountable::can-eject\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT: &[u8] = b"mountable::can-mount\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: &[u8] = b"mountable::can-poll\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START: &[u8] = b"mountable::can-start\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED: &[u8] = b"mountable::can-start-degraded\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: &[u8] = b"mountable::can-stop\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: &[u8] = b"mountable::can-unmount\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI: &[u8] = b"mountable::hal-udi\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC: &[u8] =
+    b"mountable::is-media-check-automatic\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: &[u8] = b"mountable::start-stop-type\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: &[u8] = b"mountable::unix-device\0";
+pub const G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: &[u8] = b"mountable::unix-device-file\0";
+pub const G_FILE_ATTRIBUTE_OWNER_GROUP: &[u8] = b"owner::group\0";
+pub const G_FILE_ATTRIBUTE_OWNER_USER: &[u8] = b"owner::user\0";
+pub const G_FILE_ATTRIBUTE_OWNER_USER_REAL: &[u8] = b"owner::user-real\0";
+pub const G_FILE_ATTRIBUTE_PREVIEW_ICON: &[u8] = b"preview::icon\0";
+pub const G_FILE_ATTRIBUTE_RECENT_MODIFIED: &[u8] = b"recent::modified\0";
+pub const G_FILE_ATTRIBUTE_SELINUX_CONTEXT: &[u8] = b"selinux::context\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE: &[u8] = b"standard::allocated-size\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: &[u8] = b"standard::content-type\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_COPY_NAME: &[u8] = b"standard::copy-name\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION: &[u8] = b"standard::description\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME: &[u8] = b"standard::display-name\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME: &[u8] = b"standard::edit-name\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE: &[u8] = b"standard::fast-content-type\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_ICON: &[u8] = b"standard::icon\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP: &[u8] = b"standard::is-backup\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN: &[u8] = b"standard::is-hidden\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK: &[u8] = b"standard::is-symlink\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL: &[u8] = b"standard::is-virtual\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_IS_VOLATILE: &[u8] = b"standard::is-volatile\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_NAME: &[u8] = b"standard::name\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_SIZE: &[u8] = b"standard::size\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER: &[u8] = b"standard::sort-order\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: &[u8] = b"standard::symbolic-icon\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: &[u8] = b"standard::symlink-target\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_TARGET_URI: &[u8] = b"standard::target-uri\0";
+pub const G_FILE_ATTRIBUTE_STANDARD_TYPE: &[u8] = b"standard::type\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED: &[u8] = b"thumbnail::failed\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE: &[u8] = b"thumbnail::failed-large\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL: &[u8] = b"thumbnail::failed-normal\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE: &[u8] = b"thumbnail::failed-xlarge\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: &[u8] = b"thumbnail::failed-xxlarge\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: &[u8] = b"thumbnail::is-valid\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE: &[u8] = b"thumbnail::is-valid-large\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL: &[u8] = b"thumbnail::is-valid-normal\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE: &[u8] = b"thumbnail::is-valid-xlarge\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE: &[u8] = b"thumbnail::is-valid-xxlarge\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH: &[u8] = b"thumbnail::path\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE: &[u8] = b"thumbnail::path-large\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL: &[u8] = b"thumbnail::path-normal\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE: &[u8] = b"thumbnail::path-xlarge\0";
+pub const G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE: &[u8] = b"thumbnail::path-xxlarge\0";
+pub const G_FILE_ATTRIBUTE_TIME_ACCESS: &[u8] = b"time::access\0";
+pub const G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC: &[u8] = b"time::access-nsec\0";
+pub const G_FILE_ATTRIBUTE_TIME_ACCESS_USEC: &[u8] = b"time::access-usec\0";
+pub const G_FILE_ATTRIBUTE_TIME_CHANGED: &[u8] = b"time::changed\0";
+pub const G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC: &[u8] = b"time::changed-nsec\0";
+pub const G_FILE_ATTRIBUTE_TIME_CHANGED_USEC: &[u8] = b"time::changed-usec\0";
+pub const G_FILE_ATTRIBUTE_TIME_CREATED: &[u8] = b"time::created\0";
+pub const G_FILE_ATTRIBUTE_TIME_CREATED_NSEC: &[u8] = b"time::created-nsec\0";
+pub const G_FILE_ATTRIBUTE_TIME_CREATED_USEC: &[u8] = b"time::created-usec\0";
+pub const G_FILE_ATTRIBUTE_TIME_MODIFIED: &[u8] = b"time::modified\0";
+pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC: &[u8] = b"time::modified-nsec\0";
+pub const G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC: &[u8] = b"time::modified-usec\0";
+pub const G_FILE_ATTRIBUTE_TRASH_DELETION_DATE: &[u8] = b"trash::deletion-date\0";
+pub const G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT: &[u8] = b"trash::item-count\0";
+pub const G_FILE_ATTRIBUTE_TRASH_ORIG_PATH: &[u8] = b"trash::orig-path\0";
+pub const G_FILE_ATTRIBUTE_UNIX_BLOCKS: &[u8] = b"unix::blocks\0";
+pub const G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE: &[u8] = b"unix::block-size\0";
+pub const G_FILE_ATTRIBUTE_UNIX_DEVICE: &[u8] = b"unix::device\0";
+pub const G_FILE_ATTRIBUTE_UNIX_GID: &[u8] = b"unix::gid\0";
+pub const G_FILE_ATTRIBUTE_UNIX_INODE: &[u8] = b"unix::inode\0";
+pub const G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT: &[u8] = b"unix::is-mountpoint\0";
+pub const G_FILE_ATTRIBUTE_UNIX_MODE: &[u8] = b"unix::mode\0";
+pub const G_FILE_ATTRIBUTE_UNIX_NLINK: &[u8] = b"unix::nlink\0";
+pub const G_FILE_ATTRIBUTE_UNIX_RDEV: &[u8] = b"unix::rdev\0";
+pub const G_FILE_ATTRIBUTE_UNIX_UID: &[u8] = b"unix::uid\0";
+pub const G_MEMORY_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-memory-monitor\0";
+pub const G_MENU_ATTRIBUTE_ACTION: &[u8] = b"action\0";
+pub const G_MENU_ATTRIBUTE_ACTION_NAMESPACE: &[u8] = b"action-namespace\0";
+pub const G_MENU_ATTRIBUTE_ICON: &[u8] = b"icon\0";
+pub const G_MENU_ATTRIBUTE_LABEL: &[u8] = b"label\0";
+pub const G_MENU_ATTRIBUTE_TARGET: &[u8] = b"target\0";
+pub const G_MENU_LINK_SECTION: &[u8] = b"section\0";
+pub const G_MENU_LINK_SUBMENU: &[u8] = b"submenu\0";
+pub const G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-native-volume-monitor\0";
+pub const G_NETWORK_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-network-monitor\0";
+pub const G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-power-profile-monitor\0";
+pub const G_PROXY_EXTENSION_POINT_NAME: &[u8] = b"gio-proxy\0";
+pub const G_PROXY_RESOLVER_EXTENSION_POINT_NAME: &[u8] = b"gio-proxy-resolver\0";
+pub const G_SETTINGS_BACKEND_EXTENSION_POINT_NAME: &[u8] = b"gsettings-backend\0";
+pub const G_TLS_BACKEND_EXTENSION_POINT_NAME: &[u8] = b"gio-tls-backend\0";
+pub const G_TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT: &[u8] = b"1.3.6.1.5.5.7.3.2\0";
+pub const G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER: &[u8] = b"1.3.6.1.5.5.7.3.1\0";
+pub const G_VFS_EXTENSION_POINT_NAME: &[u8] = b"gio-vfs\0";
+pub const G_VOLUME_IDENTIFIER_KIND_CLASS: &[u8] = b"class\0";
+pub const G_VOLUME_IDENTIFIER_KIND_HAL_UDI: &[u8] = b"hal-udi\0";
+pub const G_VOLUME_IDENTIFIER_KIND_LABEL: &[u8] = b"label\0";
+pub const G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT: &[u8] = b"nfs-mount\0";
+pub const G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE: &[u8] = b"unix-device\0";
+pub const G_VOLUME_IDENTIFIER_KIND_UUID: &[u8] = b"uuid\0";
+pub const G_VOLUME_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-volume-monitor\0";
 
 // Flags
 pub type GAppInfoCreateFlags = c_uint;
