@@ -114,8 +114,8 @@ impl ops::Deref for ValueArray {
 
         unsafe {
             slice::from_raw_parts(
-                (*self.to_glib_none().0).values as *const Value,
-                (*self.to_glib_none().0).n_values as usize,
+                (*self.as_ptr()).values as *const Value,
+                (*self.as_ptr()).n_values as usize,
             )
         }
     }
@@ -130,8 +130,8 @@ impl ops::DerefMut for ValueArray {
 
         unsafe {
             slice::from_raw_parts_mut(
-                (*self.to_glib_none().0).values as *mut Value,
-                (*self.to_glib_none().0).n_values as usize,
+                (*self.as_ptr()).values as *mut Value,
+                (*self.as_ptr()).n_values as usize,
             )
         }
     }

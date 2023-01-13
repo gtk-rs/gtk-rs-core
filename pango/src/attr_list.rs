@@ -11,7 +11,7 @@ impl AttrList {
     pub fn change(&self, attr: impl Into<Attribute>) {
         unsafe {
             let attr = attr.into();
-            ffi::pango_attr_list_change(self.to_glib_none().0, attr.to_glib_none().0 as *mut _);
+            ffi::pango_attr_list_change(self.to_glib_none().0, attr.to_glib_none().0);
             mem::forget(attr); //As attr transferred fully
         }
     }
@@ -32,7 +32,7 @@ impl AttrList {
     pub fn insert(&self, attr: impl Into<Attribute>) {
         unsafe {
             let attr = attr.into();
-            ffi::pango_attr_list_insert(self.to_glib_none().0, attr.to_glib_none().0 as *mut _);
+            ffi::pango_attr_list_insert(self.to_glib_none().0, attr.to_glib_none().0);
             mem::forget(attr); //As attr transferred fully
         }
     }
@@ -41,10 +41,7 @@ impl AttrList {
     pub fn insert_before(&self, attr: impl Into<Attribute>) {
         unsafe {
             let attr = attr.into();
-            ffi::pango_attr_list_insert_before(
-                self.to_glib_none().0,
-                attr.to_glib_none().0 as *mut _,
-            );
+            ffi::pango_attr_list_insert_before(self.to_glib_none().0, attr.to_glib_none().0);
             mem::forget(attr); //As attr transferred fully
         }
     }

@@ -7,13 +7,13 @@ use crate::{GlyphInfo, GlyphString};
 impl GlyphString {
     #[inline]
     pub fn num_glyphs(&self) -> i32 {
-        unsafe { (*self.to_glib_none().0).num_glyphs }
+        unsafe { (*self.as_ptr()).num_glyphs }
     }
 
     #[inline]
     pub fn glyph_info(&self) -> &[GlyphInfo] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).glyphs;
+            let ptr = (*self.as_ptr()).glyphs;
             Slice::from_glib_borrow_num(ptr, self.num_glyphs() as usize)
         }
     }
@@ -21,7 +21,7 @@ impl GlyphString {
     #[inline]
     pub fn glyph_info_mut(&mut self) -> &mut [GlyphInfo] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).glyphs;
+            let ptr = (*self.as_ptr()).glyphs;
             Slice::from_glib_borrow_num_mut(ptr, self.num_glyphs() as usize)
         }
     }
@@ -29,7 +29,7 @@ impl GlyphString {
     #[inline]
     pub fn log_clusters(&self) -> &[i32] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).log_clusters as *const i32;
+            let ptr = (*self.as_ptr()).log_clusters as *const i32;
             Slice::from_glib_borrow_num(ptr, self.num_glyphs() as usize)
         }
     }
@@ -37,7 +37,7 @@ impl GlyphString {
     #[inline]
     pub fn log_clusters_mut(&mut self) -> &mut [i32] {
         unsafe {
-            let ptr = (*self.to_glib_none().0).log_clusters;
+            let ptr = (*self.as_ptr()).log_clusters;
             Slice::from_glib_borrow_num_mut(ptr, self.num_glyphs() as usize)
         }
     }

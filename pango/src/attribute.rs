@@ -8,45 +8,37 @@ impl Attribute {
     #[doc(alias = "get_attr_class")]
     #[inline]
     pub fn attr_class(&self) -> AttrClass {
-        unsafe { from_glib_none((*self.to_glib_none().0).klass) }
+        unsafe { from_glib_none((*self.as_ptr()).klass) }
     }
 
     #[inline]
     pub fn type_(&self) -> AttrType {
-        unsafe { from_glib((*(*self.to_glib_none().0).klass).type_) }
+        unsafe { from_glib((*(*self.as_ptr()).klass).type_) }
     }
 
     #[doc(alias = "get_start_index")]
     #[inline]
     pub fn start_index(&self) -> u32 {
-        unsafe {
-            let stash = self.to_glib_none();
-            (*stash.0).start_index
-        }
+        unsafe { (*self.as_ptr()).start_index }
     }
 
     #[doc(alias = "get_end_index")]
     #[inline]
     pub fn end_index(&self) -> u32 {
-        unsafe {
-            let stash = self.to_glib_none();
-            (*stash.0).end_index
-        }
+        unsafe { (*self.as_ptr()).end_index }
     }
 
     #[inline]
     pub fn set_start_index(&mut self, index: u32) {
         unsafe {
-            let stash = self.to_glib_none_mut();
-            (*stash.0).start_index = index;
+            (*self.as_ptr()).start_index = index;
         }
     }
 
     #[inline]
     pub fn set_end_index(&mut self, index: u32) {
         unsafe {
-            let stash = self.to_glib_none_mut();
-            (*stash.0).end_index = index;
+            (*self.as_ptr()).end_index = index;
         }
     }
 
@@ -120,9 +112,8 @@ macro_rules! define_attribute_struct {
             #[doc(alias = "pango_attribute_equal")]
             fn equal<'a, T:  crate::attribute::IsAttribute>(&self, attr2: &'a T) -> bool {
                 unsafe {
-                    glib::translate::from_glib(ffi::pango_attribute_equal(
-                       glib::translate::ToGlibPtr::to_glib_none(self).0 as *const ffi::PangoAttribute,
-                       glib::translate::ToGlibPtr::to_glib_none(attr2.upcast_ref()).0 as *const ffi::PangoAttribute,
+                    glib::translate::from_glib(ffi::pango_attribute_equal(self.as_ptr() as *const ffi::PangoAttribute,
+                       glib::translate::ToGlibPtr::to_glib_none(attr2.upcast_ref()).0,
                     ))
                 }
             }

@@ -1193,10 +1193,10 @@ mod test {
 
         let slice = unsafe {
             let ptr = ffi::g_malloc(mem::size_of::<ffi::GDate>() * 4) as *mut *mut ffi::GError;
-            ptr::write(ptr.add(0), items[0].to_glib_full() as *mut _);
-            ptr::write(ptr.add(1), items[1].to_glib_full() as *mut _);
-            ptr::write(ptr.add(2), items[2].to_glib_full() as *mut _);
-            ptr::write(ptr.add(3), items[3].to_glib_full() as *mut _);
+            ptr::write(ptr.add(0), items[0].to_glib_full());
+            ptr::write(ptr.add(1), items[1].to_glib_full());
+            ptr::write(ptr.add(2), items[2].to_glib_full());
+            ptr::write(ptr.add(3), items[3].to_glib_full());
 
             PtrSlice::<crate::Error>::from_glib_full_num(ptr, 4, false)
         };
