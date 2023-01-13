@@ -91,6 +91,22 @@ macro_rules! glib_boxed_wrapper {
         }
 
         #[doc(hidden)]
+        impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtr<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
+            type Storage = std::marker::PhantomData<&'a $crate::boxed::Boxed<$ffi_name, Self>>;
+
+            #[inline]
+            fn to_glib_none(&'a self) -> $crate::translate::Stash<'a, *mut $ffi_name, Self> {
+                let stash = $crate::translate::ToGlibPtr::to_glib_none(&self.inner);
+                $crate::translate::Stash(stash.0 as *mut _, stash.1)
+            }
+
+            #[inline]
+            fn to_glib_full(&self) -> *mut $ffi_name {
+                $crate::translate::ToGlibPtr::to_glib_full(&self.inner) as *mut _
+            }
+        }
+
+        #[doc(hidden)]
         impl<'a $(, $($generic $(: $bound $(+ $bound2)*)?),+)?> $crate::translate::ToGlibPtrMut<'a, *mut $ffi_name> for $name $(<$($generic),+>)? {
             type Storage = std::marker::PhantomData<&'a mut $crate::boxed::Boxed<$ffi_name, Self>>;
 
