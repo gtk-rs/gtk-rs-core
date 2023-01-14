@@ -6,7 +6,7 @@ Pango __1.40__ is the lowest supported version for the underlying library.
 
 ## Minimum supported Rust version
 
-Currently, the minimum supported Rust version is `1.63.0`.
+Currently, the minimum supported Rust version is `1.64.0`.
 
 ## Documentation
 
