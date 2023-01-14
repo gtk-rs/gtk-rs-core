@@ -1,7 +1,5 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::ptr;
-
 use glib::translate::*;
 
 #[cfg(any(feature = "v1_44", feature = "dox"))]
@@ -9,19 +7,11 @@ use crate::ShapeFlags;
 use crate::{Analysis, GlyphString, Item};
 
 #[doc(alias = "pango_reorder_items")]
-pub fn reorder_items(logical_items: &[&Item]) -> Vec<Item> {
+pub fn reorder_items(logical_items: &glib::List<Item>) -> glib::List<Item> {
     unsafe {
-        let stash_vec: Vec<_> = logical_items
-            .iter()
-            .rev()
-            .map(|v| v.to_glib_none())
-            .collect();
-        let mut list: *mut glib::ffi::GList = ptr::null_mut();
-        for stash in &stash_vec {
-            list = glib::ffi::g_list_prepend(list, Ptr::to(stash.0));
-        }
-
-        FromGlibPtrContainer::from_glib_full(ffi::pango_reorder_items(list))
+        FromGlibPtrContainer::from_glib_full(ffi::pango_reorder_items(
+            logical_items.as_ptr() as *mut _
+        ))
     }
 }
 
