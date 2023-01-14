@@ -2804,6 +2804,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_MENU_ATTRIBUTE_ICON", "icon"),
     ("G_MENU_ATTRIBUTE_LABEL", "label"),
     ("G_MENU_ATTRIBUTE_TARGET", "target"),
+    ("G_MENU_EXPORTER_MAX_SECTION_SIZE", "1000"),
     ("G_MENU_LINK_SECTION", "section"),
     ("G_MENU_LINK_SUBMENU", "submenu"),
     ("(guint) G_MOUNT_MOUNT_NONE", "0"),

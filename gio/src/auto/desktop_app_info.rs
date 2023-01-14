@@ -211,9 +211,9 @@ impl DesktopAppInfo {
         pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
     ) -> Result<(), glib::Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
-        unsafe extern "C" fn user_setup_func(user_data: glib::ffi::gpointer) {
+        unsafe extern "C" fn user_setup_func(data: glib::ffi::gpointer) {
             let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-                Box_::from_raw(user_data as *mut _);
+                Box_::from_raw(data as *mut _);
             let callback = (*callback).expect("cannot get closure...");
             callback()
         }

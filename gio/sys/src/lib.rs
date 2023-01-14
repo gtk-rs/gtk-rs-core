@@ -497,6 +497,7 @@ pub const G_MENU_ATTRIBUTE_ACTION_NAMESPACE: &[u8] = b"action-namespace\0";
 pub const G_MENU_ATTRIBUTE_ICON: &[u8] = b"icon\0";
 pub const G_MENU_ATTRIBUTE_LABEL: &[u8] = b"label\0";
 pub const G_MENU_ATTRIBUTE_TARGET: &[u8] = b"target\0";
+pub const G_MENU_EXPORTER_MAX_SECTION_SIZE: c_int = 1000;
 pub const G_MENU_LINK_SECTION: &[u8] = b"section\0";
 pub const G_MENU_LINK_SUBMENU: &[u8] = b"submenu\0";
 pub const G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME: &[u8] = b"gio-native-volume-monitor\0";

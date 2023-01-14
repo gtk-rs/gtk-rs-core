@@ -2445,6 +2445,21 @@ extern "C" {
         clear_: gboolean,
         element_size: c_uint,
     ) -> *mut GArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_array_new_take(
+        data: gpointer,
+        len: size_t,
+        clear: gboolean,
+        element_size: size_t,
+    ) -> *mut GArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_array_new_take_zero_terminated(
+        data: gpointer,
+        clear: gboolean,
+        element_size: size_t,
+    ) -> *mut GArray;
     pub fn g_array_prepend_vals(
         array: *mut GArray,
         data: gconstpointer,
@@ -3122,7 +3137,13 @@ extern "C" {
         hash_table: *mut GHashTable,
         length: *mut c_uint,
     ) -> *mut gpointer;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_hash_table_get_keys_as_ptr_array(hash_table: *mut GHashTable) -> *mut GPtrArray;
     pub fn g_hash_table_get_values(hash_table: *mut GHashTable) -> *mut GList;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_hash_table_get_values_as_ptr_array(hash_table: *mut GHashTable) -> *mut GPtrArray;
     pub fn g_hash_table_insert(
         hash_table: *mut GHashTable,
         key: gpointer,
@@ -3156,6 +3177,12 @@ extern "C" {
     pub fn g_hash_table_size(hash_table: *mut GHashTable) -> c_uint;
     pub fn g_hash_table_steal(hash_table: *mut GHashTable, key: gconstpointer) -> gboolean;
     pub fn g_hash_table_steal_all(hash_table: *mut GHashTable);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_hash_table_steal_all_keys(hash_table: *mut GHashTable) -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_hash_table_steal_all_values(hash_table: *mut GHashTable) -> *mut GPtrArray;
     #[cfg(any(feature = "v2_58", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
     pub fn g_hash_table_steal_extended(
@@ -4117,6 +4144,23 @@ extern "C" {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
     pub fn g_ptr_array_is_null_terminated(array: *mut GPtrArray) -> gboolean;
     pub fn g_ptr_array_new() -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_new_from_array(
+        data: *mut gpointer,
+        len: size_t,
+        copy_func: GCopyFunc,
+        copy_func_user_data: gpointer,
+        element_free_func: GDestroyNotify,
+    ) -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_new_from_null_terminated_array(
+        data: *mut gpointer,
+        copy_func: GCopyFunc,
+        copy_func_user_data: gpointer,
+        element_free_func: GDestroyNotify,
+    ) -> *mut GPtrArray;
     pub fn g_ptr_array_new_full(
         reserved_size: c_uint,
         element_free_func: GDestroyNotify,
@@ -4127,6 +4171,19 @@ extern "C" {
         reserved_size: c_uint,
         element_free_func: GDestroyNotify,
         null_terminated: gboolean,
+    ) -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_new_take(
+        data: *mut gpointer,
+        len: size_t,
+        element_free_func: GDestroyNotify,
+    ) -> *mut GPtrArray;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_new_take_null_terminated(
+        data: *mut gpointer,
+        element_free_func: GDestroyNotify,
     ) -> *mut GPtrArray;
     pub fn g_ptr_array_new_with_free_func(element_free_func: GDestroyNotify) -> *mut GPtrArray;
     pub fn g_ptr_array_ref(array: *mut GPtrArray) -> *mut GPtrArray;
@@ -4143,6 +4200,16 @@ extern "C" {
     pub fn g_ptr_array_set_size(array: *mut GPtrArray, length: c_int);
     pub fn g_ptr_array_sized_new(reserved_size: c_uint) -> *mut GPtrArray;
     pub fn g_ptr_array_sort(array: *mut GPtrArray, compare_func: GCompareFunc);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_sort_values(array: *mut GPtrArray, compare_func: GCompareFunc);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_ptr_array_sort_values_with_data(
+        array: *mut GPtrArray,
+        compare_func: GCompareDataFunc,
+        user_data: gpointer,
+    );
     pub fn g_ptr_array_sort_with_data(
         array: *mut GPtrArray,
         compare_func: GCompareDataFunc,

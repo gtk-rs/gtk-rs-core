@@ -940,10 +940,10 @@ impl<O: IsA<File>> FileExt for O {
         unsafe extern "C" fn progress_callback_func(
             current_num_bytes: i64,
             total_num_bytes: i64,
-            user_data: glib::ffi::gpointer,
+            data: glib::ffi::gpointer,
         ) {
             let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                user_data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
@@ -2028,10 +2028,10 @@ impl<O: IsA<File>> FileExt for O {
         unsafe extern "C" fn progress_callback_func(
             current_num_bytes: i64,
             total_num_bytes: i64,
-            user_data: glib::ffi::gpointer,
+            data: glib::ffi::gpointer,
         ) {
             let callback: *mut Option<&mut dyn (FnMut(i64, i64))> =
-                user_data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
+                data as *const _ as usize as *mut Option<&mut dyn (FnMut(i64, i64))>;
             if let Some(ref mut callback) = *callback {
                 callback(current_num_bytes, total_num_bytes)
             } else {
