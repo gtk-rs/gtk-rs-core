@@ -50,8 +50,8 @@ impl SubprocessLauncher {
     #[doc(alias = "g_subprocess_launcher_set_child_setup")]
     pub fn set_child_setup<P: Fn() + 'static>(&self, child_setup: P) {
         let child_setup_data: Box_<P> = Box_::new(child_setup);
-        unsafe extern "C" fn child_setup_func<P: Fn() + 'static>(user_data: glib::ffi::gpointer) {
-            let callback: &P = &*(user_data as *mut _);
+        unsafe extern "C" fn child_setup_func<P: Fn() + 'static>(data: glib::ffi::gpointer) {
+            let callback: &P = &*(data as *mut _);
             (*callback)();
         }
         let child_setup = Some(child_setup_func::<P> as _);

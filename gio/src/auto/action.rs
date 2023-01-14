@@ -29,7 +29,7 @@ impl Action {
     #[doc(alias = "g_action_parse_detailed_name")]
     pub fn parse_detailed_name(
         detailed_name: &str,
-    ) -> Result<(glib::GString, glib::Variant), glib::Error> {
+    ) -> Result<(glib::GString, Option<glib::Variant>), glib::Error> {
         unsafe {
             let mut action_name = ptr::null_mut();
             let mut target_value = ptr::null_mut();

@@ -709,9 +709,8 @@ pub fn spawn_async(
     child_setup: Option<Box_<dyn FnOnce() + 'static>>,
 ) -> Result<Pid, crate::Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
-    unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
-        let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-            Box_::from_raw(user_data as *mut _);
+    unsafe extern "C" fn child_setup_func(data: ffi::gpointer) {
+        let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::from_raw(data as *mut _);
         let callback = (*callback).expect("cannot get closure...");
         callback()
     }
