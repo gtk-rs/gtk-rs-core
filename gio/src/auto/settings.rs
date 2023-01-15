@@ -162,10 +162,6 @@ pub trait SettingsExt: 'static {
     #[doc(alias = "get_string")]
     fn string(&self, key: &str) -> glib::GString;
 
-    #[doc(alias = "g_settings_get_strv")]
-    #[doc(alias = "get_strv")]
-    fn strv(&self, key: &str) -> Vec<glib::GString>;
-
     #[doc(alias = "g_settings_get_uint")]
     #[doc(alias = "get_uint")]
     fn uint(&self, key: &str) -> u32;
@@ -217,9 +213,6 @@ pub trait SettingsExt: 'static {
 
     #[doc(alias = "g_settings_set_string")]
     fn set_string(&self, key: &str, value: &str) -> Result<(), glib::error::BoolError>;
-
-    #[doc(alias = "g_settings_set_strv")]
-    fn set_strv(&self, key: &str, value: &[&str]) -> Result<(), glib::error::BoolError>;
 
     #[doc(alias = "g_settings_set_uint")]
     fn set_uint(&self, key: &str, value: u32) -> Result<(), glib::error::BoolError>;
@@ -385,15 +378,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    fn strv(&self, key: &str) -> Vec<glib::GString> {
-        unsafe {
-            FromGlibPtrContainer::from_glib_full(ffi::g_settings_get_strv(
-                self.as_ref().to_glib_none().0,
-                key.to_glib_none().0,
-            ))
-        }
-    }
-
     fn uint(&self, key: &str) -> u32 {
         unsafe { ffi::g_settings_get_uint(self.as_ref().to_glib_none().0, key.to_glib_none().0) }
     }
@@ -535,19 +519,6 @@ impl<O: IsA<Settings>> SettingsExt for O {
         unsafe {
             glib::result_from_gboolean!(
                 ffi::g_settings_set_string(
-                    self.as_ref().to_glib_none().0,
-                    key.to_glib_none().0,
-                    value.to_glib_none().0
-                ),
-                "Can't set readonly key"
-            )
-        }
-    }
-
-    fn set_strv(&self, key: &str, value: &[&str]) -> Result<(), glib::error::BoolError> {
-        unsafe {
-            glib::result_from_gboolean!(
-                ffi::g_settings_set_strv(
                     self.as_ref().to_glib_none().0,
                     key.to_glib_none().0,
                     value.to_glib_none().0
