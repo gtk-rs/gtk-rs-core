@@ -102,11 +102,6 @@ pub trait TlsConnectionExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_tls_connection_set_advertised_protocols")]
-    fn set_advertised_protocols(&self, protocols: &[&str]);
-
     #[doc(alias = "g_tls_connection_set_certificate")]
     fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>);
 
@@ -367,17 +362,6 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
                 });
             },
         ))
-    }
-
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
-    fn set_advertised_protocols(&self, protocols: &[&str]) {
-        unsafe {
-            ffi::g_tls_connection_set_advertised_protocols(
-                self.as_ref().to_glib_none().0,
-                protocols.to_glib_none().0,
-            );
-        }
     }
 
     fn set_certificate(&self, certificate: &impl IsA<TlsCertificate>) {
