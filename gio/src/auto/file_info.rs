@@ -138,17 +138,6 @@ impl FileInfo {
         }
     }
 
-    #[doc(alias = "g_file_info_get_attribute_stringv")]
-    #[doc(alias = "get_attribute_stringv")]
-    pub fn attribute_stringv(&self, attribute: &str) -> Vec<glib::GString> {
-        unsafe {
-            FromGlibPtrContainer::from_glib_none(ffi::g_file_info_get_attribute_stringv(
-                self.to_glib_none().0,
-                attribute.to_glib_none().0,
-            ))
-        }
-    }
-
     #[doc(alias = "g_file_info_get_attribute_type")]
     #[doc(alias = "get_attribute_type")]
     pub fn attribute_type(&self, attribute: &str) -> FileAttributeType {
@@ -418,17 +407,6 @@ impl FileInfo {
     pub fn set_attribute_string(&self, attribute: &str, attr_value: &str) {
         unsafe {
             ffi::g_file_info_set_attribute_string(
-                self.to_glib_none().0,
-                attribute.to_glib_none().0,
-                attr_value.to_glib_none().0,
-            );
-        }
-    }
-
-    #[doc(alias = "g_file_info_set_attribute_stringv")]
-    pub fn set_attribute_stringv(&self, attribute: &str, attr_value: &[&str]) {
-        unsafe {
-            ffi::g_file_info_set_attribute_stringv(
                 self.to_glib_none().0,
                 attribute.to_glib_none().0,
                 attr_value.to_glib_none().0,
