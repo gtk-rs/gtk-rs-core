@@ -2,7 +2,7 @@ FROM fedora:rawhide
 
 RUN dnf update -y && \
     dnf install wget git meson cmake gcc gcc-c++ \
-    libpng-devel turbojpeg-devel libXext-devel libXrender-devel -y && \
+    libpng-devel turbojpeg-devel libXext-devel libXrender-devel gobject-introspection-devel -y && \
     dnf clean all -y
 
 RUN git clone https://gitlab.gnome.org/GNOME/glib.git --depth=1 && \
