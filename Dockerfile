@@ -15,19 +15,19 @@ RUN git clone https://gitlab.gnome.org/GNOME/glib.git --depth=1 && \
         meson install -C builddir) && \
     git clone https://github.com/harfbuzz/harfbuzz.git --depth=1 && \
     (cd /harfbuzz && \
-        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dtests=disabled -Ddocs=disabled && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=enabled -Dtests=disabled -Ddocs=disabled && \
         meson install -C builddir) && \
     git clone https://gitlab.gnome.org/GNOME/pango.git --depth=1 && \
     (cd /pango && \
-        meson setup builddir --prefix=/usr --buildtype release -Dfreetype=enabled -Dintrospection=disabled -Dxft=disabled && \
+        meson setup builddir --prefix=/usr --buildtype release -Dfreetype=enabled -Dintrospection=enabled -Dxft=disabled && \
         meson install -C builddir) && \
     git clone https://gitlab.gnome.org/GNOME/gdk-pixbuf.git --depth=1 && \
     (cd /gdk-pixbuf && \
-        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dtests=false -Dman=false -Dinstalled_tests=false -Dgio_sniffing=false && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=enabled -Dtests=false -Dman=false -Dinstalled_tests=false -Dgio_sniffing=false && \
         meson install -C builddir) && \
     git clone https://github.com/ebassi/graphene.git --depth=1 && \
     (cd /graphene && \
-        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=disabled -Dtests=false -Dinstalled_tests=false && \
+        meson setup builddir --prefix=/usr --buildtype release -Dintrospection=enabled -Dtests=false -Dinstalled_tests=false && \
         meson install -C builddir) && \
     rm -rf /glib /cairo /harfbuzz /pango /gdk-pixbuf /graphene
 
