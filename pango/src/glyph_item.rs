@@ -6,11 +6,11 @@ use crate::{GlyphItem, GlyphString, Item};
 
 impl GlyphItem {
     pub fn item(&self) -> Item {
-        unsafe { from_glib_none((*self.to_glib_none().0).item) }
+        unsafe { from_glib_none((*self.as_ptr()).item) }
     }
 
     pub fn glyph_string(&self) -> GlyphString {
-        unsafe { from_glib_none((*self.to_glib_none().0).glyphs) }
+        unsafe { from_glib_none((*self.as_ptr()).glyphs) }
     }
 
     #[doc(alias = "pango_glyph_item_get_logical_widths")]
