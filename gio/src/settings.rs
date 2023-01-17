@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, variant::FromVariant, BoolError, Variant};
+use glib::{prelude::*, translate::*, variant::FromVariant, BoolError, IntoStrV, StrV, Variant};
 
 use crate::{prelude::*, Settings, SettingsBindFlags};
 
@@ -170,6 +170,13 @@ pub trait SettingsExtManual {
 
     fn set(&self, key: &str, value: impl Into<Variant>) -> Result<(), BoolError>;
 
+    #[doc(alias = "g_settings_get_strv")]
+    #[doc(alias = "get_strv")]
+    fn strv(&self, key: &str) -> StrV;
+
+    #[doc(alias = "g_settings_set_strv")]
+    fn set_strv(&self, key: &str, value: impl IntoStrV) -> Result<(), glib::error::BoolError>;
+
     #[doc(alias = "g_settings_bind")]
     #[doc(alias = "g_settings_bind_with_mapping")]
     fn bind<'a, P: IsA<glib::Object>>(
@@ -194,6 +201,30 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
 
     fn set(&self, key: &str, value: impl Into<Variant>) -> Result<(), BoolError> {
         self.set_value(key, &value.into())
+    }
+
+    fn strv(&self, key: &str) -> StrV {
+        unsafe {
+            FromGlibPtrContainer::from_glib_full(ffi::g_settings_get_strv(
+                self.as_ref().to_glib_none().0,
+                key.to_glib_none().0,
+            ))
+        }
+    }
+
+    fn set_strv(&self, key: &str, value: impl IntoStrV) -> Result<(), glib::error::BoolError> {
+        unsafe {
+            value.run_with_strv(|value| {
+                glib::result_from_gboolean!(
+                    ffi::g_settings_set_strv(
+                        self.as_ref().to_glib_none().0,
+                        key.to_glib_none().0,
+                        value.as_ptr() as *mut _,
+                    ),
+                    "Can't set readonly key"
+                )
+            })
+        }
     }
 
     fn bind<'a, P: IsA<glib::Object>>(
