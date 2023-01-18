@@ -199,7 +199,7 @@ pub use self::bridged_logging::{rust_log_handler, GlibLogger, GlibLoggerDomain, 
 pub mod subclass;
 
 mod main_context_futures;
-pub use main_context_futures::{JoinError, JoinHandle};
+pub use main_context_futures::{spawn, spawn_with_priority, JoinError, JoinHandle};
 mod source_futures;
 pub use self::source_futures::*;
 
