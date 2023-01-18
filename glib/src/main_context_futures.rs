@@ -353,6 +353,87 @@ impl<T: 'static> futures_core::FusedFuture for JoinHandle<T> {
     }
 }
 
+unsafe impl<T> Send for JoinHandle<T> {}
+
+// rustdoc-stripper-ignore-next
+/// Variant of [`JoinHandle`] that is returned from [`MainContext::spawn_from_within`].
+#[derive(Debug)]
+pub struct SpawnWithinJoinHandle<T> {
+    rx: Option<oneshot::Receiver<JoinHandle<T>>>,
+    join_handle: Option<JoinHandle<T>>,
+}
+
+impl<T> SpawnWithinJoinHandle<T> {
+    // rustdoc-stripper-ignore-next
+    /// Waits until the task is spawned and returns the [`JoinHandle`].
+    pub async fn into_inner(self) -> Result<JoinHandle<T>, JoinError> {
+        if let Some(join_handle) = self.join_handle {
+            return Ok(join_handle);
+        }
+
+        if let Some(rx) = self.rx {
+            match rx.await {
+                Ok(join_handle) => return Ok(join_handle),
+                Err(_) => return Err(JoinErrorInner::Cancelled.into()),
+            }
+        }
+
+        Err(JoinErrorInner::Cancelled.into())
+    }
+}
+
+impl<T: 'static> Future for SpawnWithinJoinHandle<T> {
+    type Output = Result<T, JoinError>;
+    #[inline]
+    fn poll(
+        mut self: std::pin::Pin<&mut Self>,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Self::Output> {
+        if let Some(ref mut rx) = self.rx {
+            match std::pin::Pin::new(rx).poll(cx) {
+                std::task::Poll::Pending => return std::task::Poll::Pending,
+                std::task::Poll::Ready(Err(_)) => {
+                    self.rx = None;
+                    return std::task::Poll::Ready(Err(JoinErrorInner::Cancelled.into()));
+                }
+                std::task::Poll::Ready(Ok(join_handle)) => {
+                    self.rx = None;
+                    self.join_handle = Some(join_handle);
+                }
+            }
+        }
+
+        if let Some(ref mut join_handle) = self.join_handle {
+            match std::pin::Pin::new(join_handle).poll(cx) {
+                std::task::Poll::Pending => return std::task::Poll::Pending,
+                std::task::Poll::Ready(Err(e)) => {
+                    self.join_handle = None;
+                    return std::task::Poll::Ready(Err(e));
+                }
+                std::task::Poll::Ready(Ok(r)) => {
+                    self.join_handle = None;
+                    return std::task::Poll::Ready(Ok(r));
+                }
+            }
+        }
+
+        std::task::Poll::Ready(Err(JoinErrorInner::Cancelled.into()))
+    }
+}
+
+impl<T: 'static> futures_core::FusedFuture for SpawnWithinJoinHandle<T> {
+    #[inline]
+    fn is_terminated(&self) -> bool {
+        if let Some(ref rx) = self.rx {
+            rx.is_terminated()
+        } else if let Some(ref join_handle) = self.join_handle {
+            join_handle.is_terminated()
+        } else {
+            true
+        }
+    }
+}
+
 // rustdoc-stripper-ignore-next
 /// Task failure from awaiting a [`JoinHandle`].
 #[derive(Debug)]
@@ -492,6 +573,42 @@ impl MainContext {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Spawn a new infallible `Future` on the main context from inside the main context.
+    ///
+    /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
+    ///
+    /// This can be called only from any thread.
+    pub fn spawn_from_within<R: 'static, F: Future<Output = R> + 'static>(
+        &self,
+        func: impl FnOnce() -> F + Send + 'static,
+    ) -> SpawnWithinJoinHandle<R> {
+        self.spawn_from_within_with_priority(crate::PRIORITY_DEFAULT, func)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Spawn a new infallible `Future` on the main context from inside the main context.
+    ///
+    /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
+    ///
+    /// This can be called only from any thread.
+    pub fn spawn_from_within_with_priority<R: 'static, F: Future<Output = R> + 'static>(
+        &self,
+        priority: Priority,
+        func: impl FnOnce() -> F + Send + 'static,
+    ) -> SpawnWithinJoinHandle<R> {
+        let ctx = self.clone();
+        let (tx, rx) = oneshot::channel();
+        self.invoke_with_priority(priority, move || {
+            let _ = tx.send(ctx.spawn_local(func()));
+        });
+
+        SpawnWithinJoinHandle {
+            rx: Some(rx),
+            join_handle: None,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Runs a new, infallible `Future` on the main context and block until it finished, returning
     /// the result of the `Future`.
     ///
@@ -625,6 +742,23 @@ mod tests {
             l.run();
         })
         .unwrap();
+    }
+
+    #[test]
+    fn test_spawn_from_within() {
+        let c = MainContext::new();
+        let l = crate::MainLoop::new(Some(&c), false);
+
+        std::thread::spawn({
+            let l_clone = l.clone();
+            move || {
+                c.spawn_from_within(move || async move {
+                    l_clone.quit();
+                });
+            }
+        });
+
+        l.run();
     }
 
     #[test]
