@@ -500,7 +500,7 @@ mod test {
 
         impl MySimpleObject {
             pub fn new() -> Self {
-                glib::Object::new(&[])
+                glib::Object::new_default()
             }
 
             #[doc(alias = "get_size")]

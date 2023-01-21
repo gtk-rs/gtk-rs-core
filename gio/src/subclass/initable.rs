@@ -167,10 +167,9 @@ mod tests {
     #[should_panic = ""]
     fn test_initable_new_failure() {
         let value: u32 = 2;
-        let _ = Initable::new::<InitableTestType, Cancellable>(
-            &[("invalid-property", &value)],
-            Option::<&Cancellable>::None,
-        );
+        let _ = Initable::builder::<InitableTestType>()
+            .property("invalid-property", value)
+            .build(Option::<&Cancellable>::None);
         unreachable!();
     }
 

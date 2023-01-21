@@ -431,7 +431,7 @@ mod test {
 
     #[test]
     fn test_create_child_object() {
-        let obj: ChildObject = Object::new(&[]);
+        let obj: ChildObject = Object::new_default();
 
         assert_eq!(&obj, obj.imp().obj().as_ref());
     }

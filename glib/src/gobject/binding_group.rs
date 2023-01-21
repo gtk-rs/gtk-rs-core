@@ -479,7 +479,7 @@ mod test {
 
     impl Default for TestObject {
         fn default() -> Self {
-            crate::Object::new(&[])
+            crate::Object::new_default()
         }
     }
 
