@@ -19,18 +19,20 @@ pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target:
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir = Path::new(&out_dir);
 
-    let status = Command::new("glib-compile-resources")
+    let output = Command::new("glib-compile-resources")
         .arg("--sourcedir")
         .arg(source_dir.as_ref())
         .arg("--target")
         .arg(out_dir.join(target))
         .arg(gresource)
-        .status()
+        .output()
         .unwrap();
 
     assert!(
-        status.success(),
-        "glib-compile-resources failed with exit status {status}",
+        output.status.success(),
+        "glib-compile-resources failed with exit status {} and stderr:\n{}",
+        output.status,
+        String::from_utf8_lossy(&output.stderr)
     );
 
     println!("cargo:rerun-if-changed={gresource}");
