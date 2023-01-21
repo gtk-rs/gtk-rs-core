@@ -1418,6 +1418,31 @@ impl Object {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Create a new instance of an object of the given type with the given properties as mutable
+    /// values.
+    ///
+    /// # Panics
+    ///
+    /// This panics if the object is not instantiable, doesn't have all the given properties or
+    /// property values of the wrong type are provided.
+    #[track_caller]
+    pub fn with_mut_values(type_: Type, properties: &mut [(&str, Value)]) -> Object {
+        #[cfg(feature = "gio")]
+        unsafe {
+            let iface_type = from_glib(gio_ffi::g_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
+            }
+            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
+            if type_.is_a(iface_type) {
+                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
+            }
+        }
+
+        unsafe { Object::new_internal(type_, properties) }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
     /// # Panics
@@ -1514,27 +1539,30 @@ impl Object {
 #[must_use = "builder doesn't do anything unless built"]
 pub struct ObjectBuilder<'a, O> {
     type_: Type,
-    properties: Vec<(&'a str, Value)>,
+    properties: smallvec::SmallVec<[(&'a str, Value); 16]>,
     phantom: PhantomData<O>,
 }
 
 impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
+    #[inline]
     fn new(type_: Type) -> Self {
         ObjectBuilder {
             type_,
-            properties: vec![],
+            properties: smallvec::SmallVec::new(),
             phantom: PhantomData,
         }
     }
 
     // rustdoc-stripper-ignore-next
     /// Gets the type of this builder.
+    #[inline]
     pub fn type_(&self) -> Type {
         self.type_
     }
 
     // rustdoc-stripper-ignore-next
     /// Set property `name` to the given value `value`.
+    #[inline]
     pub fn property(self, name: &'a str, value: impl Into<Value>) -> Self {
         let ObjectBuilder {
             type_,
@@ -1558,8 +1586,9 @@ impl<'a, O: IsA<Object> + IsClass> ObjectBuilder<'a, O> {
     /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     #[track_caller]
-    pub fn build(self) -> O {
-        let object = Object::with_values(self.type_, &self.properties);
+    #[inline]
+    pub fn build(mut self) -> O {
+        let object = Object::with_mut_values(self.type_, &mut self.properties);
         unsafe { object.unsafe_cast::<O>() }
     }
 }
