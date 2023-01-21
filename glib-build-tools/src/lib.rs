@@ -17,12 +17,13 @@ use std::{env, path::Path, process::Command};
 /// ```
 pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target: &str) {
     let out_dir = env::var("OUT_DIR").unwrap();
+    let out_dir = Path::new(&out_dir);
 
     let status = Command::new("glib-compile-resources")
         .arg("--sourcedir")
         .arg(source_dir.as_ref())
         .arg("--target")
-        .arg(&format!("{out_dir}/{target}"))
+        .arg(out_dir.join(target))
         .arg(gresource)
         .status()
         .unwrap();
