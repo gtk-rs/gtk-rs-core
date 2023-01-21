@@ -39,83 +39,71 @@ impl DataInputStream {
     ///
     /// This method returns an instance of [`DataInputStreamBuilder`](crate::builders::DataInputStreamBuilder) which can be used to create [`DataInputStream`] objects.
     pub fn builder() -> DataInputStreamBuilder {
-        DataInputStreamBuilder::default()
+        DataInputStreamBuilder::new()
     }
 }
 
 impl Default for DataInputStream {
     fn default() -> Self {
-        glib::object::Object::new::<Self>(&[])
+        glib::object::Object::new_default::<Self>()
     }
 }
 
-#[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`DataInputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct DataInputStreamBuilder {
-    byte_order: Option<DataStreamByteOrder>,
-    newline_type: Option<DataStreamNewlineType>,
-    buffer_size: Option<u32>,
-    base_stream: Option<InputStream>,
-    close_base_stream: Option<bool>,
+    builder: glib::object::ObjectBuilder<'static, DataInputStream>,
 }
 
 impl DataInputStreamBuilder {
-    // rustdoc-stripper-ignore-next
-    /// Create a new [`DataInputStreamBuilder`].
-    pub fn new() -> Self {
-        Self::default()
+    fn new() -> Self {
+        Self {
+            builder: glib::object::Object::builder(),
+        }
+    }
+
+    pub fn byte_order(self, byte_order: DataStreamByteOrder) -> Self {
+        Self {
+            builder: self.builder.property("byte-order", byte_order),
+        }
+    }
+
+    pub fn newline_type(self, newline_type: DataStreamNewlineType) -> Self {
+        Self {
+            builder: self.builder.property("newline-type", newline_type),
+        }
+    }
+
+    pub fn buffer_size(self, buffer_size: u32) -> Self {
+        Self {
+            builder: self.builder.property("buffer-size", buffer_size),
+        }
+    }
+
+    pub fn base_stream(self, base_stream: &impl IsA<InputStream>) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("base-stream", base_stream.clone().upcast()),
+        }
+    }
+
+    pub fn close_base_stream(self, close_base_stream: bool) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("close-base-stream", close_base_stream),
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Build the [`DataInputStream`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> DataInputStream {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref byte_order) = self.byte_order {
-            properties.push(("byte-order", byte_order));
-        }
-        if let Some(ref newline_type) = self.newline_type {
-            properties.push(("newline-type", newline_type));
-        }
-        if let Some(ref buffer_size) = self.buffer_size {
-            properties.push(("buffer-size", buffer_size));
-        }
-        if let Some(ref base_stream) = self.base_stream {
-            properties.push(("base-stream", base_stream));
-        }
-        if let Some(ref close_base_stream) = self.close_base_stream {
-            properties.push(("close-base-stream", close_base_stream));
-        }
-        glib::Object::new::<DataInputStream>(&properties)
-    }
-
-    pub fn byte_order(mut self, byte_order: DataStreamByteOrder) -> Self {
-        self.byte_order = Some(byte_order);
-        self
-    }
-
-    pub fn newline_type(mut self, newline_type: DataStreamNewlineType) -> Self {
-        self.newline_type = Some(newline_type);
-        self
-    }
-
-    pub fn buffer_size(mut self, buffer_size: u32) -> Self {
-        self.buffer_size = Some(buffer_size);
-        self
-    }
-
-    pub fn base_stream(mut self, base_stream: &impl IsA<InputStream>) -> Self {
-        self.base_stream = Some(base_stream.clone().upcast());
-        self
-    }
-
-    pub fn close_base_stream(mut self, close_base_stream: bool) -> Self {
-        self.close_base_stream = Some(close_base_stream);
-        self
+        self.builder.build()
     }
 }
 

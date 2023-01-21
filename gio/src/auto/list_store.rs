@@ -29,7 +29,7 @@ impl ListStore {
     ///
     /// This method returns an instance of [`ListStoreBuilder`](crate::builders::ListStoreBuilder) which can be used to create [`ListStore`] objects.
     pub fn builder() -> ListStoreBuilder {
-        ListStoreBuilder::default()
+        ListStoreBuilder::new()
     }
 
     #[doc(alias = "g_list_store_append")]
@@ -86,41 +86,37 @@ impl ListStore {
 
 impl Default for ListStore {
     fn default() -> Self {
-        glib::object::Object::new::<Self>(&[])
+        glib::object::Object::new_default::<Self>()
     }
 }
 
-#[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`ListStore`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct ListStoreBuilder {
-    item_type: Option<glib::types::Type>,
+    builder: glib::object::ObjectBuilder<'static, ListStore>,
 }
 
 impl ListStoreBuilder {
-    // rustdoc-stripper-ignore-next
-    /// Create a new [`ListStoreBuilder`].
-    pub fn new() -> Self {
-        Self::default()
+    fn new() -> Self {
+        Self {
+            builder: glib::object::Object::builder(),
+        }
+    }
+
+    pub fn item_type(self, item_type: glib::types::Type) -> Self {
+        Self {
+            builder: self.builder.property("item-type", item_type),
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Build the [`ListStore`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> ListStore {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref item_type) = self.item_type {
-            properties.push(("item-type", item_type));
-        }
-        glib::Object::new::<ListStore>(&properties)
-    }
-
-    pub fn item_type(mut self, item_type: glib::types::Type) -> Self {
-        self.item_type = Some(item_type);
-        self
+        self.builder.build()
     }
 }
 

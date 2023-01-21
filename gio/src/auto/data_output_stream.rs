@@ -36,65 +36,59 @@ impl DataOutputStream {
     ///
     /// This method returns an instance of [`DataOutputStreamBuilder`](crate::builders::DataOutputStreamBuilder) which can be used to create [`DataOutputStream`] objects.
     pub fn builder() -> DataOutputStreamBuilder {
-        DataOutputStreamBuilder::default()
+        DataOutputStreamBuilder::new()
     }
 }
 
 impl Default for DataOutputStream {
     fn default() -> Self {
-        glib::object::Object::new::<Self>(&[])
+        glib::object::Object::new_default::<Self>()
     }
 }
 
-#[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`DataOutputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct DataOutputStreamBuilder {
-    byte_order: Option<DataStreamByteOrder>,
-    base_stream: Option<OutputStream>,
-    close_base_stream: Option<bool>,
+    builder: glib::object::ObjectBuilder<'static, DataOutputStream>,
 }
 
 impl DataOutputStreamBuilder {
-    // rustdoc-stripper-ignore-next
-    /// Create a new [`DataOutputStreamBuilder`].
-    pub fn new() -> Self {
-        Self::default()
+    fn new() -> Self {
+        Self {
+            builder: glib::object::Object::builder(),
+        }
+    }
+
+    pub fn byte_order(self, byte_order: DataStreamByteOrder) -> Self {
+        Self {
+            builder: self.builder.property("byte-order", byte_order),
+        }
+    }
+
+    pub fn base_stream(self, base_stream: &impl IsA<OutputStream>) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("base-stream", base_stream.clone().upcast()),
+        }
+    }
+
+    pub fn close_base_stream(self, close_base_stream: bool) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("close-base-stream", close_base_stream),
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Build the [`DataOutputStream`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> DataOutputStream {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref byte_order) = self.byte_order {
-            properties.push(("byte-order", byte_order));
-        }
-        if let Some(ref base_stream) = self.base_stream {
-            properties.push(("base-stream", base_stream));
-        }
-        if let Some(ref close_base_stream) = self.close_base_stream {
-            properties.push(("close-base-stream", close_base_stream));
-        }
-        glib::Object::new::<DataOutputStream>(&properties)
-    }
-
-    pub fn byte_order(mut self, byte_order: DataStreamByteOrder) -> Self {
-        self.byte_order = Some(byte_order);
-        self
-    }
-
-    pub fn base_stream(mut self, base_stream: &impl IsA<OutputStream>) -> Self {
-        self.base_stream = Some(base_stream.clone().upcast());
-        self
-    }
-
-    pub fn close_base_stream(mut self, close_base_stream: bool) -> Self {
-        self.close_base_stream = Some(close_base_stream);
-        self
+        self.builder.build()
     }
 }
 
