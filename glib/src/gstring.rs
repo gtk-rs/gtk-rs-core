@@ -1461,6 +1461,13 @@ impl From<&str> for GString {
     }
 }
 
+impl From<&String> for GString {
+    #[inline]
+    fn from(s: &String) -> Self {
+        GString::from(s.as_str())
+    }
+}
+
 impl TryFrom<CString> for GString {
     type Error = GStringUtf8Error<CString>;
     #[inline]
