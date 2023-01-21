@@ -784,6 +784,12 @@ status = "generate"
     ignore = true
 
 [[object]]
+name = "Gio.FileDescriptorBased"
+status = "manual"
+cfg_condition = "unix"
+manual_traits = ["FileDescriptorBasedExtManual"]
+
+[[object]]
 name = "Gio.FileEnumerator"
 status = "generate"
     [[object.function]]
@@ -1460,9 +1466,8 @@ manual_traits = ["UnixInputStreamExtManual"]
 
     [[object.function]]
     name = "get_fd"
-    # has to use RawFd
-    manual = true
-    doc_trait_name = "UnixInputStreamExtManual"
+    # conflicts with as FileDescriptorBased::fd
+    ignore = true
 
     [[object.property]]
     name = "fd"
@@ -1531,9 +1536,8 @@ manual_traits = ["UnixOutputStreamExtManual"]
 
     [[object.function]]
     name = "get_fd"
-    # has to use RawFd
-    manual = true
-    doc_trait_name = "UnixOutputStreamExtManual"
+    # conflicts with as FileDescriptorBased::fd
+    ignore = true
 
     [[object.property]]
     name = "fd"
