@@ -119,7 +119,7 @@ pub trait ObjectSubclassIsExt: ObjectSubclassIs {
 impl<T: ObjectSubclassIs<Subclass = S>, S: ObjectSubclass<Type = Self>> ObjectSubclassIsExt for T {
     #[inline]
     fn imp(&self) -> &T::Subclass {
-        T::Subclass::from_instance(self)
+        T::Subclass::from_obj(self)
     }
 }
 
@@ -665,10 +665,12 @@ pub trait ObjectSubclassExt: ObjectSubclass {
     // rustdoc-stripper-ignore-next
     /// Returns the corresponding object instance.
     #[doc(alias = "get_instance")]
+    #[deprecated = "Use obj() instead"]
     fn instance(&self) -> crate::BorrowedObject<Self::Type>;
 
     // rustdoc-stripper-ignore-next
     /// Returns the implementation from an instance.
+    #[deprecated = "Use from_obj() instead"]
     fn from_instance(obj: &Self::Type) -> &Self;
 
     // rustdoc-stripper-ignore-next

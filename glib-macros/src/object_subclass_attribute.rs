@@ -121,7 +121,7 @@ pub fn impl_object_subclass(input: &syn::ItemImpl) -> TokenStream {
             type FromObjectType = <Self as #crate_ident::subclass::types::ObjectSubclass>::Type;
             #[inline]
             fn from_object(obj: &Self::FromObjectType) -> &Self {
-                <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_instance(obj)
+                <Self as #crate_ident::subclass::types::ObjectSubclassExt>::from_obj(obj)
             }
         }
 
