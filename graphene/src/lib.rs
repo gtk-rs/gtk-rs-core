@@ -1,6 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![doc(html_root_url = "https://gtk-rs.org/gtk-rs-core/git/docs/")]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
