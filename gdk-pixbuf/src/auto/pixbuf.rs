@@ -222,7 +222,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_add_alpha")]
     #[must_use]
-    pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Option<Pixbuf> {
+    pub fn add_alpha(&self, substitute_color: bool, r: u8, g: u8, b: u8) -> Pixbuf {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_add_alpha(
                 self.to_glib_none().0,
@@ -472,7 +472,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_subpixbuf")]
     #[must_use]
-    pub fn new_subpixbuf(&self, src_x: i32, src_y: i32, width: i32, height: i32) -> Option<Pixbuf> {
+    pub fn new_subpixbuf(&self, src_x: i32, src_y: i32, width: i32, height: i32) -> Pixbuf {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_new_subpixbuf(
                 self.to_glib_none().0,
@@ -485,7 +485,7 @@ impl Pixbuf {
     }
 
     #[doc(alias = "gdk_pixbuf_read_pixel_bytes")]
-    pub fn read_pixel_bytes(&self) -> Option<glib::Bytes> {
+    pub fn read_pixel_bytes(&self) -> glib::Bytes {
         unsafe { from_glib_full(ffi::gdk_pixbuf_read_pixel_bytes(self.to_glib_none().0)) }
     }
 

@@ -3,6 +3,7 @@
 // DO NOT EDIT
 
 use glib::translate::*;
+use std::fmt;
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -18,7 +19,7 @@ glib::wrapper! {
 impl PixbufFormat {
     #[doc(alias = "gdk_pixbuf_format_get_description")]
     #[doc(alias = "get_description")]
-    pub fn description(&self) -> Option<glib::GString> {
+    pub fn description(&self) -> glib::GString {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_format_get_description(mut_override(
                 self.to_glib_none().0,
@@ -38,7 +39,7 @@ impl PixbufFormat {
 
     #[doc(alias = "gdk_pixbuf_format_get_license")]
     #[doc(alias = "get_license")]
-    pub fn license(&self) -> Option<glib::GString> {
+    pub fn license(&self) -> glib::GString {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_format_get_license(mut_override(
                 self.to_glib_none().0,
@@ -58,7 +59,7 @@ impl PixbufFormat {
 
     #[doc(alias = "gdk_pixbuf_format_get_name")]
     #[doc(alias = "get_name")]
-    pub fn name(&self) -> Option<glib::GString> {
+    pub fn name(&self) -> glib::GString {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_format_get_name(mut_override(
                 self.to_glib_none().0,
@@ -108,6 +109,13 @@ impl PixbufFormat {
         unsafe {
             ffi::gdk_pixbuf_format_set_disabled(self.to_glib_none_mut().0, disabled.into_glib());
         }
+    }
+}
+
+impl fmt::Display for PixbufFormat {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(&self.name())
     }
 }
 
