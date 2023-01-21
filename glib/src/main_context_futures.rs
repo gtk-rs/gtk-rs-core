@@ -552,6 +552,36 @@ impl Spawn for MainContext {
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Spawns an infallible, non-`Send` on the current thread-default [`MainContext`].
+///
+/// Panics if there is no thread-default main context on this thread and if this thread
+/// does not own the global default main context.
+pub fn spawn<R: 'static, F: Future<Output = R> + 'static>(f: F) -> JoinHandle<R> {
+    spawn_with_priority(crate::PRIORITY_DEFAULT, f)
+}
+
+// rustdoc-stripper-ignore-next
+/// Spawns an infallible, non-`Send` on the current thread-default [`MainContext`] with a
+/// non-default priority.
+///
+/// Panics if there is no thread-default main context on this thread and if this thread
+/// does not own the global default main context.
+pub fn spawn_with_priority<R: 'static, F: Future<Output = R> + 'static>(
+    priority: Priority,
+    f: F,
+) -> JoinHandle<R> {
+    let ctx = MainContext::thread_default().unwrap_or_else(|| {
+        let ctx = MainContext::default();
+        assert!(
+            ctx.is_owner(),
+            "Current thread does not own the default main context and has no thread-default main context",
+        );
+        ctx
+    });
+    ctx.spawn_local_with_priority(priority, f)
+}
+
 impl LocalSpawn for MainContext {
     fn spawn_local_obj(&self, f: LocalFutureObj<'static, ()>) -> Result<(), SpawnError> {
         let (tx, _) = oneshot::channel();
