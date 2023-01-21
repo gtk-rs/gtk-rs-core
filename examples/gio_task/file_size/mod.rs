@@ -13,7 +13,7 @@ unsafe impl Sync for FileSize {}
 
 impl FileSize {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new_default()
     }
 
     pub fn retrieved_size(&self) -> Option<i64> {

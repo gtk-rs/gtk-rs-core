@@ -175,7 +175,7 @@
 //! impl SimpleObject {
 //!     // Create an object instance of the new type.
 //!     pub fn new() -> Self {
-//!         glib::Object::new(&[])
+//!         glib::Object::new_default()
 //!     }
 //! }
 //!
