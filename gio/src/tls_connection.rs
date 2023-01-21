@@ -5,7 +5,7 @@ use std::ptr;
 
 use glib::prelude::*;
 #[cfg(any(feature = "v2_66", feature = "dox"))]
-use glib::translate::*;
+use glib::{translate::*, IntoStrV};
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
 use crate::TlsChannelBindingType;
@@ -20,6 +20,11 @@ pub trait TlsConnectionExtManual {
         &self,
         type_: TlsChannelBindingType,
     ) -> Result<glib::ByteArray, glib::Error>;
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_tls_connection_set_advertised_protocols")]
+    fn set_advertised_protocols(&self, protocols: impl IntoStrV);
 }
 
 impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {
@@ -43,6 +48,19 @@ impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {
             } else {
                 Err(from_glib_full(error))
             }
+        }
+    }
+
+    #[cfg(any(feature = "v2_60", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    fn set_advertised_protocols(&self, protocols: impl IntoStrV) {
+        unsafe {
+            protocols.run_with_strv(|protocols| {
+                ffi::g_tls_connection_set_advertised_protocols(
+                    self.as_ref().to_glib_none().0,
+                    protocols.as_ptr() as *mut _,
+                );
+            })
         }
     }
 }
