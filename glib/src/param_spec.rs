@@ -1000,11 +1000,17 @@ impl ParamSpecEnum {
         }
     }
 
-    pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
+    pub fn builder_with_default<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>>(
         name: &str,
         default_value: T,
     ) -> ParamSpecEnumBuilder<T> {
         ParamSpecEnumBuilder::new(name, default_value)
+    }
+
+    pub fn builder<T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32> + Default>(
+        name: &str,
+    ) -> ParamSpecEnumBuilder<T> {
+        ParamSpecEnumBuilder::new(name, T::default())
     }
 }
 

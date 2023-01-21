@@ -100,10 +100,9 @@
 //!                 vec![
 //!                     glib::ParamSpecString::builder("name")
 //!                         .build(),
-//!                     glib::ParamSpecEnum::builder::<Animal>("animal", Animal::default())
+//!                     glib::ParamSpecEnum::builder::<Animal>("animal")
 //!                         .build(),
 //!                     glib::ParamSpecFlags::builder::<MyFlags>("flags")
-//!                         .default_value(MyFlags::default())
 //!                         .build(),
 //!                     glib::ParamSpecVariant::builder("variant", glib::VariantTy::ANY)
 //!                         .build(),
