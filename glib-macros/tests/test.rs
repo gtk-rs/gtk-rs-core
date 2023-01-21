@@ -517,7 +517,7 @@ fn closure() {
     assert_eq!(concat_str.invoke::<String>(&[&"Hello"]), "Hello World");
 
     let weak_test = {
-        let obj = glib::Object::new::<glib::Object>(&[]);
+        let obj = glib::Object::new_default::<glib::Object>();
 
         assert_eq!(obj.ref_count(), 1);
         let weak_test = glib::closure_local!(@watch obj => move || obj.ref_count());
@@ -541,7 +541,7 @@ fn closure() {
             }
         }
 
-        let obj = glib::Object::new::<glib::Object>(&[]);
+        let obj = glib::Object::new_default::<glib::Object>();
         assert_eq!(obj.ref_count_in_closure(), 2);
     }
 
@@ -559,13 +559,13 @@ fn closure() {
         }
 
         let a = A {
-            obj: glib::Object::new::<glib::Object>(&[]),
+            obj: glib::Object::new_default::<glib::Object>(),
         };
         assert_eq!(a.ref_count_in_closure(), 2);
     }
 
     let strong_test = {
-        let obj = glib::Object::new::<glib::Object>(&[]);
+        let obj = glib::Object::new_default::<glib::Object>();
 
         let strong_test = glib::closure_local!(@strong obj => move || obj.ref_count());
         assert_eq!(strong_test.invoke::<u32>(&[]), 2);
@@ -575,7 +575,7 @@ fn closure() {
     assert_eq!(strong_test.invoke::<u32>(&[]), 1);
 
     let weak_none_test = {
-        let obj = glib::Object::new::<glib::Object>(&[]);
+        let obj = glib::Object::new_default::<glib::Object>();
 
         let weak_none_test = glib::closure_local!(@weak-allow-none obj => move || {
             obj.map(|o| o.ref_count()).unwrap_or_default()
@@ -587,8 +587,8 @@ fn closure() {
     assert_eq!(weak_none_test.invoke::<u32>(&[]), 0);
 
     {
-        let obj1 = glib::Object::new::<glib::Object>(&[]);
-        let obj2 = glib::Object::new::<glib::Object>(&[]);
+        let obj1 = glib::Object::new_default::<glib::Object>();
+        let obj2 = glib::Object::new_default::<glib::Object>();
 
         let obj_arg_test =
             glib::closure!(|a: glib::Object, b: glib::Object| { a.ref_count() + b.ref_count() });
@@ -606,7 +606,7 @@ fn closure() {
             a: glib::Object,
         }
 
-        let a = glib::Object::new::<glib::Object>(&[]);
+        let a = glib::Object::new_default::<glib::Object>();
         let a_struct = A { a };
         let struct_test = glib::closure_local!(@strong a_struct.a as a => move || {
             a.ref_count()
@@ -639,7 +639,7 @@ fn closure() {
         }
 
         let cast_test = {
-            let f = glib::Object::new::<Foo>(&[]);
+            let f = glib::Object::new_default::<Foo>();
 
             assert_eq!(f.my_ref_count(), 1);
             let cast_test = glib::closure_local!(@watch f => move || f.my_ref_count());
@@ -684,7 +684,7 @@ fn closure() {
         }
 
         let inc_by = {
-            let obj = glib::Object::new::<SendObject>(&[]);
+            let obj = glib::Object::new_default::<SendObject>();
             let inc_by = glib::closure!(@watch obj => move |x: i32| {
                 let old = obj.value();
                 obj.set_value(x + old);

@@ -124,7 +124,7 @@ mod tests {
     #[allow(clippy::new_without_default)]
     impl InitableTestType {
         pub fn new() -> Self {
-            Initable::new(&[], Option::<&Cancellable>::None)
+            Initable::new_default(Option::<&Cancellable>::None)
                 .expect("Failed creation/initialization of InitableTestType object")
         }
 
@@ -175,9 +175,8 @@ mod tests {
 
     #[test]
     fn test_initable_with_initable_with_type() {
-        let test = Initable::with_type(
+        let test = Initable::new_default_with_type(
             InitableTestType::static_type(),
-            &[],
             Option::<&Cancellable>::None,
         )
         .expect("Failed creation/initialization of InitableTestType object from type")
@@ -188,9 +187,8 @@ mod tests {
 
     #[test]
     fn test_initable_with_initable_with_values() {
-        let test = Initable::with_values(
+        let test = Initable::new_default_with_type(
             InitableTestType::static_type(),
-            &[],
             Option::<&Cancellable>::None,
         )
         .expect("Failed creation/initialization of InitableTestType object from values")

@@ -227,7 +227,7 @@ mod tests {
     #[allow(clippy::new_without_default)]
     impl AsyncInitableTestType {
         pub async fn new() -> Self {
-            AsyncInitable::new_future(&[], glib::PRIORITY_DEFAULT)
+            AsyncInitable::new_default_future(glib::PRIORITY_DEFAULT)
                 .await
                 .expect("Failed creation/initialization of AsyncInitableTestType object")
         }
@@ -276,11 +276,10 @@ mod tests {
     fn test_async_initable_new_failure() {
         glib::MainContext::new().block_on(async {
             let value: u32 = 2;
-            let _ = AsyncInitable::new_future::<AsyncInitableTestType>(
-                &[("invalid-property", &value)],
-                glib::PRIORITY_DEFAULT,
-            )
-            .await;
+            let _ = AsyncInitable::builder::<AsyncInitableTestType>()
+                .property("invalid-property", value)
+                .build_future(glib::PRIORITY_DEFAULT)
+                .await;
             unreachable!();
         });
     }
@@ -288,9 +287,8 @@ mod tests {
     #[test]
     fn test_async_initable_with_initable_with_type() {
         glib::MainContext::new().block_on(async {
-            let test = AsyncInitable::with_type_future(
+            let test = AsyncInitable::new_default_with_type_future(
                 AsyncInitableTestType::static_type(),
-                &[],
                 glib::PRIORITY_DEFAULT,
             )
             .await
@@ -304,9 +302,8 @@ mod tests {
     #[test]
     fn test_async_initable_with_async_initable_with_values() {
         glib::MainContext::new().block_on(async {
-            let test = AsyncInitable::with_values_future(
+            let test = AsyncInitable::new_default_with_type_future(
                 AsyncInitableTestType::static_type(),
-                &[],
                 glib::PRIORITY_DEFAULT,
             )
             .await

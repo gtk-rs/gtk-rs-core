@@ -394,7 +394,7 @@ mod test {
     #[test]
     fn test_create() {
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[]);
+        let obj = Object::new_default_with_type(type_);
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
@@ -417,7 +417,7 @@ mod test {
     #[test]
     fn test_properties() {
         let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[]);
+        let obj = Object::new_default_with_type(type_);
 
         assert!(obj.type_().is_a(Dummy::static_type()));
 
@@ -453,10 +453,10 @@ mod test {
 
     #[test]
     fn test_set_property() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
         assert_eq!(
             obj.property::<String>("construct-name"),
@@ -472,17 +472,17 @@ mod test {
         obj.set_property("name", &"test");
         assert_eq!(obj.property::<String>("name"), String::from("test"));
 
-        let child = Object::with_type(ChildObject::static_type(), &[]);
+        let child = Object::new_default_with_type(ChildObject::static_type());
         obj.set_property("child", &child);
     }
 
     #[test]
     #[should_panic = "property 'construct-name' of type 'SimpleObject' is not writable"]
     fn test_set_property_non_writable() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
         obj.set_property("construct-name", &"test");
     }
@@ -490,10 +490,10 @@ mod test {
     #[test]
     #[should_panic = "property 'test' of type 'SimpleObject' not found"]
     fn test_set_property_not_found() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
         obj.set_property("test", &true);
     }
@@ -501,10 +501,10 @@ mod test {
     #[test]
     #[should_panic = "property 'constructed' of type 'SimpleObject' is not writable"]
     fn test_set_property_not_writable() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
         obj.set_property("constructed", &false);
     }
@@ -512,10 +512,10 @@ mod test {
     #[test]
     #[should_panic = "property 'name' of type 'SimpleObject' can't be set from the given type (expected: 'gchararray', got: 'gboolean')"]
     fn test_set_property_wrong_type() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
         obj.set_property("name", &false);
     }
@@ -523,12 +523,12 @@ mod test {
     #[test]
     #[should_panic = "property 'child' of type 'SimpleObject' can't be set from the given type (expected: 'ChildObject', got: 'SimpleObject')"]
     fn test_set_property_wrong_type_2() {
-        let obj = Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("name", &"initial")],
-        );
+        let obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("name", "initial")
+            .build();
 
-        let other_obj = Object::with_type(SimpleObject::static_type(), &[]);
+        let other_obj = Object::new_default_with_type(SimpleObject::static_type());
 
         obj.set_property("child", &other_obj);
     }
@@ -536,10 +536,10 @@ mod test {
     #[test]
     #[should_panic = "Can't set construct property 'construct-name' for type 'SimpleObject' twice"]
     fn test_construct_property_set_twice() {
-        Object::with_type(
-            SimpleObject::static_type(),
-            &[("construct-name", &"meh"), ("construct-name", &"meh2")],
-        );
+        let _obj = Object::builder::<SimpleObject>()
+            .property("construct-name", "meh")
+            .property("construct-name", "meh2")
+            .build();
     }
 
     #[test]
@@ -549,8 +549,9 @@ mod test {
             Arc,
         };
 
-        let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[("name", &"old-name")]);
+        let obj = Object::builder::<SimpleObject>()
+            .property("name", "old-name")
+            .build();
 
         let name_changed_triggered = Arc::new(AtomicBool::new(false));
         let name_changed_clone = name_changed_triggered.clone();
@@ -576,7 +577,7 @@ mod test {
 
     #[test]
     fn test_signal_return_expected_type() {
-        let obj = Object::with_type(SimpleObject::static_type(), &[]);
+        let obj = Object::new_default_with_type(SimpleObject::static_type());
 
         obj.connect("create-string", false, move |_args| {
             Some("return value".to_value())
@@ -595,8 +596,9 @@ mod test {
             Arc,
         };
 
-        let type_ = SimpleObject::static_type();
-        let obj = Object::with_type(type_, &[("name", &"old-name")]);
+        let obj = Object::builder::<SimpleObject>()
+            .property("name", "old-name")
+            .build();
 
         let name_changed_triggered = Arc::new(AtomicBool::new(false));
         let name_changed_clone = name_changed_triggered.clone();
@@ -613,10 +615,10 @@ mod test {
 
     #[test]
     fn test_signal_return_expected_object_type() {
-        let obj = Object::with_type(SimpleObject::static_type(), &[]);
+        let obj = Object::new_default_with_type(SimpleObject::static_type());
 
         obj.connect("create-child-object", false, move |_args| {
-            Some(Object::with_type(ChildObject::static_type(), &[]).to_value())
+            Some(Object::new_default_with_type(ChildObject::static_type()).to_value())
         });
         let value: glib::Object = obj.emit_by_name("create-child-object", &[]);
         assert!(value.type_().is_a(ChildObject::static_type()));
