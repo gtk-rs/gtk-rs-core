@@ -1352,6 +1352,8 @@ impl Object {
     /// property values of the wrong type are provided.
     #[allow(clippy::new_ret_no_self)]
     #[track_caller]
+    #[deprecated = "Use Object::builder() or Object::new_default() instead"]
+    #[allow(deprecated)]
     pub fn new<T: IsA<Object> + IsClass>(properties: &[(&str, &dyn ToValue)]) -> T {
         let object = Object::with_type(T::static_type(), properties);
         unsafe { object.unsafe_cast() }
@@ -1365,6 +1367,7 @@ impl Object {
     /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     #[track_caller]
+    #[deprecated = "Use Object::builder_with_type() or Object::new_default_with_type() instead"]
     pub fn with_type(type_: Type, properties: &[(&str, &dyn ToValue)]) -> Object {
         #[cfg(feature = "gio")]
         unsafe {
@@ -1412,11 +1415,15 @@ impl Object {
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object of the given type with the given properties.
     ///
+    /// If possible call [`with_mut_values`] instead as this function has to take copies of all
+    /// values before constructing the object.
+    ///
     /// # Panics
     ///
     /// This panics if the object is not instantiable, doesn't have all the given properties or
     /// property values of the wrong type are provided.
     #[track_caller]
+    #[deprecated = "Use Object::with_mut_values()` instead"]
     pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Object {
         #[cfg(feature = "gio")]
         unsafe {
