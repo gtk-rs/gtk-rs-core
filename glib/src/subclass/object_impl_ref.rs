@@ -55,7 +55,7 @@ impl<T: ObjectSubclass> std::ops::Deref for ObjectImplRef<T> {
 
     #[inline]
     fn deref(&self) -> &Self::Target {
-        T::from_instance(&self.0)
+        T::from_obj(&self.0)
     }
 }
 
