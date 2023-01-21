@@ -148,6 +148,11 @@ impl ParamSpec {
         }
     }
 
+    #[inline]
+    pub fn is<T: StaticType>(&self) -> bool {
+        self.type_().is_a(T::static_type())
+    }
+
     #[doc(alias = "get_value_type")]
     #[inline]
     pub fn value_type(&self) -> crate::Type {
