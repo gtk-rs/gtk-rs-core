@@ -529,6 +529,29 @@ impl From<StrV> for Vec<GString> {
     }
 }
 
+impl From<Vec<String>> for StrV {
+    #[inline]
+    fn from(value: Vec<String>) -> Self {
+        unsafe {
+            let len = value.len();
+            let mut s = Self::with_capacity(len);
+            for (i, item) in value.into_iter().enumerate() {
+                *s.ptr.as_ptr().add(i) = GString::from(item).into_glib_ptr();
+            }
+            s.len = len;
+            *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
+            s
+        }
+    }
+}
+
+impl<'a> From<Vec<&'a str>> for StrV {
+    #[inline]
+    fn from(value: Vec<&'a str>) -> Self {
+        value.as_slice().into()
+    }
+}
+
 impl From<Vec<GString>> for StrV {
     #[inline]
     fn from(value: Vec<GString>) -> Self {
@@ -555,6 +578,21 @@ impl<const N: usize> From<[GString; N]> for StrV {
                 *s.ptr.as_ptr().add(i) = v.into_glib_ptr();
             }
             s.len = len;
+            *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
+            s
+        }
+    }
+}
+
+impl<'a, const N: usize> From<[&'a str; N]> for StrV {
+    #[inline]
+    fn from(value: [&'a str; N]) -> Self {
+        unsafe {
+            let mut s = Self::with_capacity(value.len());
+            for (i, item) in value.iter().enumerate() {
+                *s.ptr.as_ptr().add(i) = GString::from(*item).into_glib_ptr();
+            }
+            s.len = value.len();
             *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
             s
         }
