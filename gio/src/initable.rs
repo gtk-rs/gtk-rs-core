@@ -14,6 +14,8 @@ impl Initable {
     /// `Initable::init` failed.
     #[allow(clippy::new_ret_no_self)]
     #[track_caller]
+    #[deprecated = "Use Initable::builder() or Initable::new_default() instead"]
+    #[allow(deprecated)]
     pub fn new<O: IsClass + IsA<Object> + IsA<Initable>>(
         properties: &[(&str, &dyn ToValue)],
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -28,6 +30,7 @@ impl Initable {
     /// Similar to [`Object::with_type`] but can fail because the object initialization in
     /// `Initable::init` failed.
     #[track_caller]
+    #[deprecated = "Use Initable::builder() or Initable::new_default_with_type() instead"]
     pub fn with_type(
         type_: Type,
         properties: &[(&str, &dyn ToValue)],
@@ -89,6 +92,7 @@ impl Initable {
     /// Similar to [`Object::with_values`] but can fail because the object initialization in
     /// `Initable::init` failed.
     #[track_caller]
+    #[deprecated = "Use Initable::with_mut_values() instead"]
     pub fn with_values(
         type_: Type,
         properties: &[(&str, glib::Value)],

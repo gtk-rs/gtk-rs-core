@@ -48,74 +48,65 @@ impl BufferedOutputStream {
     ///
     /// This method returns an instance of [`BufferedOutputStreamBuilder`](crate::builders::BufferedOutputStreamBuilder) which can be used to create [`BufferedOutputStream`] objects.
     pub fn builder() -> BufferedOutputStreamBuilder {
-        BufferedOutputStreamBuilder::default()
+        BufferedOutputStreamBuilder::new()
     }
 }
 
 impl Default for BufferedOutputStream {
     fn default() -> Self {
-        glib::object::Object::new::<Self>(&[])
+        glib::object::Object::new_default::<Self>()
     }
 }
 
-#[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`BufferedOutputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct BufferedOutputStreamBuilder {
-    auto_grow: Option<bool>,
-    buffer_size: Option<u32>,
-    base_stream: Option<OutputStream>,
-    close_base_stream: Option<bool>,
+    builder: glib::object::ObjectBuilder<'static, BufferedOutputStream>,
 }
 
 impl BufferedOutputStreamBuilder {
-    // rustdoc-stripper-ignore-next
-    /// Create a new [`BufferedOutputStreamBuilder`].
-    pub fn new() -> Self {
-        Self::default()
+    fn new() -> Self {
+        Self {
+            builder: glib::object::Object::builder(),
+        }
+    }
+
+    pub fn auto_grow(self, auto_grow: bool) -> Self {
+        Self {
+            builder: self.builder.property("auto-grow", auto_grow),
+        }
+    }
+
+    pub fn buffer_size(self, buffer_size: u32) -> Self {
+        Self {
+            builder: self.builder.property("buffer-size", buffer_size),
+        }
+    }
+
+    pub fn base_stream(self, base_stream: &impl IsA<OutputStream>) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("base-stream", base_stream.clone().upcast()),
+        }
+    }
+
+    pub fn close_base_stream(self, close_base_stream: bool) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("close-base-stream", close_base_stream),
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Build the [`BufferedOutputStream`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> BufferedOutputStream {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref auto_grow) = self.auto_grow {
-            properties.push(("auto-grow", auto_grow));
-        }
-        if let Some(ref buffer_size) = self.buffer_size {
-            properties.push(("buffer-size", buffer_size));
-        }
-        if let Some(ref base_stream) = self.base_stream {
-            properties.push(("base-stream", base_stream));
-        }
-        if let Some(ref close_base_stream) = self.close_base_stream {
-            properties.push(("close-base-stream", close_base_stream));
-        }
-        glib::Object::new::<BufferedOutputStream>(&properties)
-    }
-
-    pub fn auto_grow(mut self, auto_grow: bool) -> Self {
-        self.auto_grow = Some(auto_grow);
-        self
-    }
-
-    pub fn buffer_size(mut self, buffer_size: u32) -> Self {
-        self.buffer_size = Some(buffer_size);
-        self
-    }
-
-    pub fn base_stream(mut self, base_stream: &impl IsA<OutputStream>) -> Self {
-        self.base_stream = Some(base_stream.clone().upcast());
-        self
-    }
-
-    pub fn close_base_stream(mut self, close_base_stream: bool) -> Self {
-        self.close_base_stream = Some(close_base_stream);
-        self
+        self.builder.build()
     }
 }
 

@@ -37,65 +37,61 @@ impl ConverterInputStream {
     ///
     /// This method returns an instance of [`ConverterInputStreamBuilder`](crate::builders::ConverterInputStreamBuilder) which can be used to create [`ConverterInputStream`] objects.
     pub fn builder() -> ConverterInputStreamBuilder {
-        ConverterInputStreamBuilder::default()
+        ConverterInputStreamBuilder::new()
     }
 }
 
 impl Default for ConverterInputStream {
     fn default() -> Self {
-        glib::object::Object::new::<Self>(&[])
+        glib::object::Object::new_default::<Self>()
     }
 }
 
-#[derive(Clone, Default)]
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`ConverterInputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct ConverterInputStreamBuilder {
-    converter: Option<Converter>,
-    base_stream: Option<InputStream>,
-    close_base_stream: Option<bool>,
+    builder: glib::object::ObjectBuilder<'static, ConverterInputStream>,
 }
 
 impl ConverterInputStreamBuilder {
-    // rustdoc-stripper-ignore-next
-    /// Create a new [`ConverterInputStreamBuilder`].
-    pub fn new() -> Self {
-        Self::default()
+    fn new() -> Self {
+        Self {
+            builder: glib::object::Object::builder(),
+        }
+    }
+
+    pub fn converter(self, converter: &impl IsA<Converter>) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("converter", converter.clone().upcast()),
+        }
+    }
+
+    pub fn base_stream(self, base_stream: &impl IsA<InputStream>) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("base-stream", base_stream.clone().upcast()),
+        }
+    }
+
+    pub fn close_base_stream(self, close_base_stream: bool) -> Self {
+        Self {
+            builder: self
+                .builder
+                .property("close-base-stream", close_base_stream),
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Build the [`ConverterInputStream`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> ConverterInputStream {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref converter) = self.converter {
-            properties.push(("converter", converter));
-        }
-        if let Some(ref base_stream) = self.base_stream {
-            properties.push(("base-stream", base_stream));
-        }
-        if let Some(ref close_base_stream) = self.close_base_stream {
-            properties.push(("close-base-stream", close_base_stream));
-        }
-        glib::Object::new::<ConverterInputStream>(&properties)
-    }
-
-    pub fn converter(mut self, converter: &impl IsA<Converter>) -> Self {
-        self.converter = Some(converter.clone().upcast());
-        self
-    }
-
-    pub fn base_stream(mut self, base_stream: &impl IsA<InputStream>) -> Self {
-        self.base_stream = Some(base_stream.clone().upcast());
-        self
-    }
-
-    pub fn close_base_stream(mut self, close_base_stream: bool) -> Self {
-        self.close_base_stream = Some(close_base_stream);
-        self
+        self.builder.build()
     }
 }
 

@@ -462,11 +462,10 @@ mod tests {
 
     #[test]
     fn test_simple_application() {
-        let app = glib::Object::new::<SimpleApplication>(&[
-            ("application-id", &"org.gtk-rs.SimpleApplication"),
-            ("flags", &crate::ApplicationFlags::empty()),
-        ])
-        .upcast::<crate::Application>();
+        let app = glib::Object::builder::<SimpleApplication>()
+            .property("application-id", "org.gtk-rs.SimpleApplication")
+            .property("flags", crate::ApplicationFlags::empty())
+            .build();
 
         app.set_inactivity_timeout(10000);
 

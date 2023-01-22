@@ -313,7 +313,7 @@ mod tests {
 
     #[test]
     fn test_simple_stream() {
-        let stream = glib::Object::new::<SimpleInputStream>(&[]);
+        let stream = glib::Object::new_default::<SimpleInputStream>();
 
         let mut buf = [0; 16];
         assert_eq!(stream.read(&mut buf, crate::Cancellable::NONE), Ok(16));

@@ -170,7 +170,7 @@ mod tests {
     fn group_emit() {
         let group = SignalGroup::new(SignalObject::static_type());
 
-        let obj = Object::new::<SignalObject>(&[]);
+        let obj = Object::new_default::<SignalObject>();
         let store = Rc::new(RefCell::new(String::new()));
         group.connect_closure(
             "sig-with-args",

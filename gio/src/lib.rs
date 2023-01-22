@@ -101,7 +101,11 @@ mod unix_socket_address;
 #[cfg(test)]
 mod test_util;
 
-pub use auto::builders;
+pub mod builders {
+    pub use super::async_initable::AsyncInitableBuilder;
+    pub use super::auto::builders::*;
+    pub use super::initable::InitableBuilder;
+}
 
 pub use crate::auto::{functions::*, *};
 pub mod prelude;

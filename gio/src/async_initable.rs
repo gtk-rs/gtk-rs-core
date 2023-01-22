@@ -16,6 +16,8 @@ impl AsyncInitable {
     #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default() instead"]
+    #[allow(deprecated)]
     pub fn new<
         O: IsClass + IsA<Object> + IsA<AsyncInitable>,
         Q: FnOnce(Result<O, glib::Error>) + 'static,
@@ -41,6 +43,8 @@ impl AsyncInitable {
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_future() instead"]
+    #[allow(deprecated)]
     pub fn new_future<O: IsClass + IsA<Object> + IsA<AsyncInitable>>(
         properties: &[(&str, &dyn ToValue)],
         io_priority: glib::Priority,
@@ -58,6 +62,7 @@ impl AsyncInitable {
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_with_type() instead"]
     pub fn with_type<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
         type_: Type,
         properties: &[(&str, &dyn ToValue)],
@@ -93,6 +98,7 @@ impl AsyncInitable {
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_future() instead"]
     pub fn with_type_future(
         type_: Type,
         properties: &[(&str, &dyn ToValue)],
@@ -230,6 +236,7 @@ impl AsyncInitable {
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::with_mut_values() instead"]
     pub fn with_values<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
         type_: Type,
         properties: &[(&str, glib::Value)],
@@ -265,6 +272,7 @@ impl AsyncInitable {
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
+    #[deprecated = "Use AsyncInitable::with_mut_values_future() instead"]
     pub fn with_values_future(
         type_: Type,
         properties: &[(&str, glib::Value)],
