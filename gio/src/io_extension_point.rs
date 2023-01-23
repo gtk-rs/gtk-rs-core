@@ -2,7 +2,7 @@
 
 use std::{fmt, marker::PhantomData, ptr};
 
-use glib::{translate::*, Type};
+use glib::{translate::*, GString, IntoGStr, Type};
 
 use crate::IOExtension;
 
@@ -10,13 +10,13 @@ use crate::IOExtension;
 /// Builder for extension points.
 #[derive(Debug)]
 #[must_use = "The builder must be built to be used"]
-pub struct IOExtensionPointBuilder<'a> {
-    name: &'a str,
+pub struct IOExtensionPointBuilder {
+    name: GString,
     required_type: Option<Type>,
 }
 
-impl<'a> IOExtensionPointBuilder<'a> {
-    fn new(name: &'a str) -> Self {
+impl IOExtensionPointBuilder {
+    fn new(name: GString) -> Self {
         Self {
             name,
             required_type: None,
@@ -80,16 +80,16 @@ impl IOExtensionPoint {
     // rustdoc-stripper-ignore-next
     /// Create a new builder for an extension point.
     #[doc(alias = "g_io_extension_point_register")]
-    pub fn builder(name: &str) -> IOExtensionPointBuilder {
-        IOExtensionPointBuilder::new(name)
+    pub fn builder(name: impl Into<GString>) -> IOExtensionPointBuilder {
+        IOExtensionPointBuilder::new(name.into())
     }
 
     #[doc(alias = "g_io_extension_point_lookup")]
-    pub fn lookup(name: &str) -> Option<Self> {
-        unsafe {
+    pub fn lookup(name: impl IntoGStr) -> Option<Self> {
+        name.run_with_gstr(|name| unsafe {
             let ep = ffi::g_io_extension_point_lookup(name.to_glib_none().0);
             from_glib_none(ep)
-        }
+        })
     }
 
     #[doc(alias = "g_io_extension_point_get_extensions")]
@@ -107,14 +107,14 @@ impl IOExtensionPoint {
     }
 
     #[doc(alias = "g_io_extension_point_get_extension_by_name")]
-    pub fn extension_by_name(&self, name: &str) -> Option<IOExtension> {
-        unsafe {
+    pub fn extension_by_name(&self, name: impl IntoGStr) -> Option<IOExtension> {
+        name.run_with_gstr(|name| unsafe {
             let e = ffi::g_io_extension_point_get_extension_by_name(
                 self.0.as_ptr(),
                 name.to_glib_none().0,
             );
             from_glib_none(e)
-        }
+        })
     }
 
     #[doc(alias = "g_io_extension_point_get_required_type")]
@@ -124,20 +124,22 @@ impl IOExtensionPoint {
 
     #[doc(alias = "g_io_extension_point_implement")]
     pub fn implement(
-        extension_point_name: &str,
+        extension_point_name: impl IntoGStr,
         type_: Type,
-        extension_name: &str,
+        extension_name: impl IntoGStr,
         priority: i32,
     ) -> Option<IOExtension> {
-        unsafe {
-            let e = ffi::g_io_extension_point_implement(
-                extension_point_name.to_glib_none().0,
-                type_.into_glib(),
-                extension_name.to_glib_none().0,
-                priority,
-            );
-            from_glib_none(e)
-        }
+        extension_point_name.run_with_gstr(|extension_point_name| {
+            extension_name.run_with_gstr(|extension_name| unsafe {
+                let e = ffi::g_io_extension_point_implement(
+                    extension_point_name.to_glib_none().0,
+                    type_.into_glib(),
+                    extension_name.to_glib_none().0,
+                    priority,
+                );
+                from_glib_none(e)
+            })
+        })
     }
 }
 
