@@ -20,7 +20,6 @@ use crate::{prelude::*, translate::*, value::FromValue, Type, Value};
 ///
 /// This type is very similar to [`std::ffi::CStr`], but with one added constraint: the string
 /// must also be valid UTF-8.
-#[derive(Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[repr(transparent)]
 pub struct GStr(str);
 
@@ -331,6 +330,43 @@ macro_rules! gstr {
     ($s:literal) => {
         unsafe { $crate::GStr::from_utf8_with_nul_unchecked($crate::cstr_bytes!($s)) }
     };
+}
+
+impl fmt::Debug for GStr {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        <&str as fmt::Debug>::fmt(&self.as_str(), f)
+    }
+}
+
+impl PartialEq for GStr {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.as_str().eq(other.as_str())
+    }
+}
+
+impl Eq for GStr {}
+
+impl PartialOrd for GStr {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.as_str().partial_cmp(other.as_str())
+    }
+}
+
+impl Ord for GStr {
+    #[inline]
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.as_str().cmp(other.as_str())
+    }
+}
+
+impl hash::Hash for GStr {
+    #[inline]
+    fn hash<H: hash::Hasher>(&self, state: &mut H) {
+        self.as_str().hash(state)
+    }
 }
 
 impl Default for &GStr {
