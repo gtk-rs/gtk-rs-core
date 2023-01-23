@@ -10,18 +10,22 @@ use std::{env, path::Path, process::Command};
 ///
 /// ```no_run
 /// glib_build_tools::compile_resources(
-///     "resources",
+///     &["resources"],
 ///     "resources/resources.gresource.xml",
 ///     "compiled.gresource",
 /// );
 /// ```
-pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target: &str) {
+pub fn compile_resources<P: AsRef<Path>>(source_dirs: &[P], gresource: &str, target: &str) {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir = Path::new(&out_dir);
 
-    let output = Command::new("glib-compile-resources")
-        .arg("--sourcedir")
-        .arg(source_dir.as_ref())
+    let mut command = Command::new("glib-compile-resources");
+
+    for source_dir in source_dirs {
+        command.arg("--sourcedir").arg(source_dir.as_ref());
+    }
+
+    let output = command
         .arg("--target")
         .arg(out_dir.join(target))
         .arg(gresource)
@@ -36,9 +40,13 @@ pub fn compile_resources<P: AsRef<Path>>(source_dir: P, gresource: &str, target:
     );
 
     println!("cargo:rerun-if-changed={gresource}");
-    let output = Command::new("glib-compile-resources")
-        .arg("--sourcedir")
-        .arg(source_dir.as_ref())
+    let mut command = Command::new("glib-compile-resources");
+
+    for source_dir in source_dirs {
+        command.arg("--sourcedir").arg(source_dir.as_ref());
+    }
+
+    let output = command
         .arg("--generate-dependencies")
         .arg(gresource)
         .output()
