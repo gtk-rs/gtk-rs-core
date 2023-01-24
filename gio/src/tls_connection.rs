@@ -4,7 +4,7 @@
 use std::ptr;
 
 use glib::prelude::*;
-#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg(any(feature = "v2_60", feature = "dox"))]
 use glib::{translate::*, IntoStrV};
 
 #[cfg(any(feature = "v2_66", feature = "dox"))]
