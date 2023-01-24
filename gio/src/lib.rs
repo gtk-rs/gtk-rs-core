@@ -47,6 +47,10 @@ pub use crate::file_attribute_info::FileAttributeInfo;
 mod file_attribute_info_list;
 mod file_attribute_matcher;
 pub use crate::file_attribute_matcher::FileAttributematcherIter;
+#[cfg(any(unix, feature = "dox"))]
+mod file_descriptor_based;
+#[cfg(any(unix, feature = "dox"))]
+pub use file_descriptor_based::FileDescriptorBased;
 mod file_enumerator;
 mod file_info;
 mod flags;

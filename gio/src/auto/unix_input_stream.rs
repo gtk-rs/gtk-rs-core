@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{InputStream, PollableInputStream};
+use crate::{FileDescriptorBased, InputStream, PollableInputStream};
 use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GUnixInputStream")]
-    pub struct UnixInputStream(Object<ffi::GUnixInputStream, ffi::GUnixInputStreamClass>) @extends InputStream, @implements PollableInputStream;
+    pub struct UnixInputStream(Object<ffi::GUnixInputStream, ffi::GUnixInputStreamClass>) @extends InputStream, @implements FileDescriptorBased, PollableInputStream;
 
     match fn {
         type_ => || ffi::g_unix_input_stream_get_type(),

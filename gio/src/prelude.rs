@@ -15,6 +15,8 @@ pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
 #[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
 pub use crate::desktop_app_info::DesktopAppInfoExtManual;
 #[cfg(any(unix, feature = "dox"))]
+pub use crate::file_descriptor_based::FileDescriptorBasedExtManual;
+#[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_fd_list::UnixFDListExtManual;
 #[cfg(any(unix, feature = "dox"))]
 pub use crate::unix_fd_message::UnixFDMessageExtManual;

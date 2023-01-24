@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 #[cfg(unix)]
-use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 #[cfg(all(not(unix), feature = "dox"))]
-use socket::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+use socket::{AsRawFd, IntoRawFd, RawFd};
 
 use crate::{OutputStream, UnixOutputStream};
 
@@ -44,10 +44,6 @@ impl AsRawFd for UnixOutputStream {
 }
 
 pub trait UnixOutputStreamExtManual: Sized {
-    #[doc(alias = "g_unix_output_stream_get_fd")]
-    #[doc(alias = "get_fd")]
-    fn fd<T: FromRawFd>(&self) -> T;
-
     // rustdoc-stripper-ignore-next
     /// Sets whether the fd of this stream will be closed when the stream is closed.
     ///
@@ -59,14 +55,6 @@ pub trait UnixOutputStreamExtManual: Sized {
 }
 
 impl<O: IsA<UnixOutputStream>> UnixOutputStreamExtManual for O {
-    fn fd<T: FromRawFd>(&self) -> T {
-        unsafe {
-            T::from_raw_fd(ffi::g_unix_output_stream_get_fd(
-                self.as_ref().to_glib_none().0,
-            ))
-        }
-    }
-
     unsafe fn set_close_fd(&self, close_fd: bool) {
         ffi::g_unix_output_stream_set_close_fd(
             self.as_ref().to_glib_none().0,
