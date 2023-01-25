@@ -157,6 +157,7 @@ pub use self::{
 mod date;
 mod date_time;
 mod time_span;
+mod time_zone;
 pub use self::time_span::*;
 pub mod value;
 pub mod variant;
