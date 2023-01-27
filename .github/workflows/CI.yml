@@ -72,8 +72,12 @@ jobs:
         if: matrix.rust == 'beta' || matrix.rust == 'stable'
       - working-directory: ${{ matrix.conf.name }}
         name: clippy ${{ matrix.conf.name }}
+        run: cargo clippy --all-targets
+        if: matrix.rust == 'beta'
+      - working-directory: ${{ matrix.conf.name }}
+        name: clippy ${{ matrix.conf.name }}
         run: cargo clippy --all-targets -- -D warnings
-        if: matrix.rust == 'beta' || matrix.rust == 'stable'
+        if: matrix.rust == 'stable'
       # tests
       - name: build
         run: cargo build --manifest-path ${{ matrix.conf.name }}/Cargo.toml --features "${{ matrix.conf.features }}"
