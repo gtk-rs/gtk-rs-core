@@ -227,7 +227,7 @@ mod tests {
     #[allow(clippy::new_without_default)]
     impl AsyncInitableTestType {
         pub async fn new() -> Self {
-            AsyncInitable::new_default_future(glib::PRIORITY_DEFAULT)
+            AsyncInitable::new_future(glib::PRIORITY_DEFAULT)
                 .await
                 .expect("Failed creation/initialization of AsyncInitableTestType object")
         }
@@ -287,7 +287,7 @@ mod tests {
     #[test]
     fn test_async_initable_with_initable_with_type() {
         glib::MainContext::new().block_on(async {
-            let test = AsyncInitable::new_default_with_type_future(
+            let test = AsyncInitable::with_type_future(
                 AsyncInitableTestType::static_type(),
                 glib::PRIORITY_DEFAULT,
             )
@@ -302,7 +302,7 @@ mod tests {
     #[test]
     fn test_async_initable_with_async_initable_with_values() {
         glib::MainContext::new().block_on(async {
-            let test = AsyncInitable::new_default_with_type_future(
+            let test = AsyncInitable::with_type_future(
                 AsyncInitableTestType::static_type(),
                 glib::PRIORITY_DEFAULT,
             )

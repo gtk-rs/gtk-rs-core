@@ -1354,60 +1354,15 @@ impl Object {
     pub const NONE: Option<&'static Object> = None;
 
     // rustdoc-stripper-ignore-next
-    /// Create a new instance of an object with the given properties.
+    /// Create a new instance of an object with the default property values.
     ///
     /// # Panics
     ///
-    /// This panics if the object is not instantiable, doesn't have all the given properties or
-    /// property values of the wrong type are provided.
+    /// This panics if the object is not instantiable.
+    #[track_caller]
     #[allow(clippy::new_ret_no_self)]
-    #[track_caller]
-    #[deprecated = "Use Object::builder() or Object::new_default() instead"]
-    #[allow(deprecated)]
-    pub fn new<T: IsA<Object> + IsClass>(properties: &[(&str, &dyn ToValue)]) -> T {
-        let object = Object::with_type(T::static_type(), properties);
-        unsafe { object.unsafe_cast() }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an object of the given type with the given properties.
-    ///
-    /// # Panics
-    ///
-    /// This panics if the object is not instantiable, doesn't have all the given properties or
-    /// property values of the wrong type are provided.
-    #[track_caller]
-    #[deprecated = "Use Object::builder_with_type() or Object::new_default_with_type() instead"]
-    pub fn with_type(type_: Type, properties: &[(&str, &dyn ToValue)]) -> Object {
-        #[cfg(feature = "gio")]
-        unsafe {
-            let iface_type = from_glib(gio_ffi::g_initable_get_type());
-            if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
-            }
-            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
-            if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
-            }
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.to_value()));
-        }
-
-        unsafe { Object::new_internal(type_, &mut property_values) }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an object with the default property values.
-    ///
-    /// # Panics
-    ///
-    /// This panics if the object is not instantiable.
-    #[track_caller]
-    pub fn new_default<T: IsA<Object> + IsClass>() -> T {
-        let object = Object::new_default_with_type(T::static_type());
+    pub fn new<T: IsA<Object> + IsClass>() -> T {
+        let object = Object::with_type(T::static_type());
         unsafe { object.unsafe_cast() }
     }
 
@@ -1418,42 +1373,8 @@ impl Object {
     ///
     /// This panics if the object is not instantiable.
     #[track_caller]
-    pub fn new_default_with_type(type_: Type) -> Object {
+    pub fn with_type(type_: Type) -> Object {
         Object::with_mut_values(type_, &mut [])
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an object of the given type with the given properties.
-    ///
-    /// If possible call [`with_mut_values`] instead as this function has to take copies of all
-    /// values before constructing the object.
-    ///
-    /// # Panics
-    ///
-    /// This panics if the object is not instantiable, doesn't have all the given properties or
-    /// property values of the wrong type are provided.
-    #[track_caller]
-    #[deprecated = "Use Object::with_mut_values()` instead"]
-    pub fn with_values(type_: Type, properties: &[(&str, Value)]) -> Object {
-        #[cfg(feature = "gio")]
-        unsafe {
-            let iface_type = from_glib(gio_ffi::g_initable_get_type());
-            if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
-            }
-            let iface_type = from_glib(gio_ffi::g_async_initable_get_type());
-            if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
-            }
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            // FIXME> This cloning can be avoided with GLib 2.74, see below.
-            property_values.push((*name, value.clone()));
-        }
-
-        unsafe { Object::new_internal(type_, &mut property_values) }
     }
 
     // rustdoc-stripper-ignore-next
@@ -4487,13 +4408,13 @@ mod tests {
 
     #[test]
     fn new() {
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
         drop(obj);
     }
 
     #[test]
     fn data() {
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
         unsafe {
             obj.set_data::<String>("foo", "hello".into());
             let data = obj.data::<String>("foo").unwrap();
@@ -4505,7 +4426,7 @@ mod tests {
 
     #[test]
     fn weak_ref() {
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
 
         let weakref: WeakRef<Object> = WeakRef::new();
         weakref.set(Some(&obj));
@@ -4523,7 +4444,7 @@ mod tests {
 
     #[test]
     fn weak_ref_notify() {
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
 
         let handle = obj.add_weak_ref_notify(|| {
             unreachable!();
@@ -4541,7 +4462,7 @@ mod tests {
         assert!(called.load(Ordering::SeqCst));
         handle.disconnect();
 
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
 
         let called = Arc::new(AtomicBool::new(false));
         let called_weak = Arc::downgrade(&called);
@@ -4552,7 +4473,7 @@ mod tests {
         drop(obj);
         assert!(called.load(Ordering::SeqCst));
 
-        let obj: Object = Object::new_default();
+        let obj: Object = Object::new();
 
         let called = Rc::new(Cell::new(false));
         let called_weak = Rc::downgrade(&called);
@@ -4566,7 +4487,7 @@ mod tests {
 
     #[test]
     fn test_value() {
-        let obj1: Object = Object::new_default();
+        let obj1: Object = Object::new();
         let v = obj1.to_value();
         let obj2 = v.get::<&Object>().unwrap();
 

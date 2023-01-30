@@ -8,70 +8,26 @@ use crate::{prelude::*, Cancellable, Initable};
 
 impl Initable {
     // rustdoc-stripper-ignore-next
-    /// Create a new instance of an initable object with the given properties.
+    /// Create a new instance of an object with the default property values.
     ///
     /// Similar to [`Object::new`] but can fail because the object initialization in
     /// `Initable::init` failed.
+    #[track_caller]
     #[allow(clippy::new_ret_no_self)]
-    #[track_caller]
-    #[deprecated = "Use Initable::builder() or Initable::new_default() instead"]
-    #[allow(deprecated)]
-    pub fn new<O: IsClass + IsA<Object> + IsA<Initable>>(
-        properties: &[(&str, &dyn ToValue)],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<O, glib::Error> {
-        Self::with_type(O::static_type(), properties, cancellable)
-            .map(|o| unsafe { o.unsafe_cast() })
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an initable object of the given type with the given properties.
-    ///
-    /// Similar to [`Object::with_type`] but can fail because the object initialization in
-    /// `Initable::init` failed.
-    #[track_caller]
-    #[deprecated = "Use Initable::builder() or Initable::new_default_with_type() instead"]
-    pub fn with_type(
-        type_: Type,
-        properties: &[(&str, &dyn ToValue)],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Object, glib::Error> {
-        if !type_.is_a(Initable::static_type()) {
-            panic!("Type '{type_}' is not initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.to_value()));
-        }
-
-        unsafe {
-            let object = Object::new_internal(type_, &mut property_values);
-            object.unsafe_cast_ref::<Self>().init(cancellable)?;
-            Ok(object)
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an object with the default property values.
-    ///
-    /// Similar to [`Object::new_default`] but can fail because the object initialization in
-    /// `Initable::init` failed.
-    #[track_caller]
-    pub fn new_default<T: IsA<Object> + IsClass + IsA<Initable>>(
+    pub fn new<T: IsA<Object> + IsClass + IsA<Initable>>(
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<T, glib::Error> {
-        let object = Self::new_default_with_type(T::static_type(), cancellable)?;
+        let object = Self::with_type(T::static_type(), cancellable)?;
         Ok(unsafe { object.unsafe_cast() })
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an object with the default property values.
     ///
-    /// Similar to [`Object::new_default_with_type`] but can fail because the object initialization in
+    /// Similar to [`Object::with_type`] but can fail because the object initialization in
     /// `Initable::init` failed.
     #[track_caller]
-    pub fn new_default_with_type(
+    pub fn with_type(
         type_: Type,
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Object, glib::Error> {
@@ -81,34 +37,6 @@ impl Initable {
 
         unsafe {
             let object = Object::new_internal(type_, &mut []);
-            object.unsafe_cast_ref::<Self>().init(cancellable)?;
-            Ok(object)
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an initable object of the given type with the given properties.
-    ///
-    /// Similar to [`Object::with_values`] but can fail because the object initialization in
-    /// `Initable::init` failed.
-    #[track_caller]
-    #[deprecated = "Use Initable::with_mut_values() instead"]
-    pub fn with_values(
-        type_: Type,
-        properties: &[(&str, glib::Value)],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Object, glib::Error> {
-        if !type_.is_a(Initable::static_type()) {
-            panic!("Type '{type_}' is not initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.clone()));
-        }
-
-        unsafe {
-            let object = Object::new_internal(type_, &mut property_values);
             object.unsafe_cast_ref::<Self>().init(cancellable)?;
             Ok(object)
         }

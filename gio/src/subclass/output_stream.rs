@@ -338,7 +338,7 @@ mod tests {
 
     #[test]
     fn test_simple_stream() {
-        let stream = glib::Object::new_default::<SimpleOutputStream>();
+        let stream = glib::Object::new::<SimpleOutputStream>();
 
         assert_eq!(*stream.imp().sum.borrow(), 0);
         assert_eq!(

@@ -21,7 +21,7 @@ glib::wrapper! {
 
 impl Default for TestObject {
     fn default() -> Self {
-        glib::Object::new_default()
+        glib::Object::new()
     }
 }
 
