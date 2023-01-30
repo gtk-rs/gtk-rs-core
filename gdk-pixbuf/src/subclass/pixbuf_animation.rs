@@ -137,12 +137,20 @@ unsafe extern "C" fn animation_get_size<T: PixbufAnimationImpl>(
     width_ptr: *mut libc::c_int,
     height_ptr: *mut libc::c_int,
 ) {
+    if width_ptr.is_null() && height_ptr.is_null() {
+        return;
+    }
+
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
     let (width, height) = imp.size();
-    *width_ptr = width;
-    *height_ptr = height;
+    if !width_ptr.is_null() {
+        *width_ptr = width;
+    }
+    if !height_ptr.is_null() {
+        *height_ptr = height;
+    }
 }
 
 unsafe extern "C" fn animation_get_static_image<T: PixbufAnimationImpl>(
