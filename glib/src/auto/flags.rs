@@ -187,6 +187,16 @@ impl StaticType for IOCondition {
     }
 }
 
+impl crate::HasParamSpec for IOCondition {
+    type ParamSpec = crate::ParamSpecFlags;
+    type SetValue = Self;
+    type BuilderFn = fn(&str) -> crate::ParamSpecFlagsBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name| Self::ParamSpec::builder(name)
+    }
+}
+
 impl crate::value::ValueType for IOCondition {
     type Type = Self;
 }

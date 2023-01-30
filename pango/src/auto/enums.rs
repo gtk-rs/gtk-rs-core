@@ -70,6 +70,16 @@ impl StaticType for Alignment {
     }
 }
 
+impl glib::HasParamSpec for Alignment {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Alignment {
     type Type = Self;
 }
@@ -386,6 +396,16 @@ impl StaticType for AttrType {
     }
 }
 
+impl glib::HasParamSpec for AttrType {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for AttrType {
     type Type = Self;
 }
@@ -493,6 +513,18 @@ impl StaticType for BaselineShift {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_baseline_shift_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::HasParamSpec for BaselineShift {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -716,6 +748,17 @@ impl StaticType for BidiType {
 }
 
 #[allow(deprecated)]
+impl glib::HasParamSpec for BidiType {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
+#[allow(deprecated)]
 impl glib::value::ValueType for BidiType {
     type Type = Self;
 }
@@ -821,6 +864,16 @@ impl StaticType for CoverageLevel {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_coverage_level_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for CoverageLevel {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -944,6 +997,16 @@ impl StaticType for Direction {
     }
 }
 
+impl glib::HasParamSpec for Direction {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Direction {
     type Type = Self;
 }
@@ -1046,6 +1109,16 @@ impl StaticType for EllipsizeMode {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_ellipsize_mode_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for EllipsizeMode {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -1161,6 +1234,18 @@ impl StaticType for FontScale {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_font_scale_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::HasParamSpec for FontScale {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -1325,6 +1410,16 @@ impl StaticType for Gravity {
     }
 }
 
+impl glib::HasParamSpec for Gravity {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Gravity {
     type Type = Self;
 }
@@ -1422,6 +1517,16 @@ impl StaticType for GravityHint {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_gravity_hint_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for GravityHint {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -1527,6 +1632,18 @@ impl StaticType for Overline {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_overline_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_46", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+impl glib::HasParamSpec for Overline {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -1645,6 +1762,16 @@ impl StaticType for RenderPart {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_render_part_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for RenderPart {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -2336,6 +2463,16 @@ impl StaticType for Script {
     }
 }
 
+impl glib::HasParamSpec for Script {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Script {
     type Type = Self;
 }
@@ -2466,6 +2603,16 @@ impl StaticType for Stretch {
     }
 }
 
+impl glib::HasParamSpec for Stretch {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Stretch {
     type Type = Self;
 }
@@ -2563,6 +2710,16 @@ impl StaticType for Style {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_style_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for Style {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -2686,6 +2843,16 @@ impl StaticType for TabAlign {
     }
 }
 
+impl glib::HasParamSpec for TabAlign {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for TabAlign {
     type Type = Self;
 }
@@ -2798,6 +2965,18 @@ impl StaticType for TextTransform {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_text_transform_get_type()) }
+    }
+}
+
+#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+impl glib::HasParamSpec for TextTransform {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -2931,6 +3110,16 @@ impl StaticType for Underline {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_underline_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for Underline {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 
@@ -3079,6 +3268,16 @@ impl StaticType for Variant {
     }
 }
 
+impl glib::HasParamSpec for Variant {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Variant {
     type Type = Self;
 }
@@ -3224,6 +3423,16 @@ impl StaticType for Weight {
     }
 }
 
+impl glib::HasParamSpec for Weight {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
+    }
+}
+
 impl glib::value::ValueType for Weight {
     type Type = Self;
 }
@@ -3321,6 +3530,16 @@ impl StaticType for WrapMode {
     #[inline]
     fn static_type() -> Type {
         unsafe { from_glib(ffi::pango_wrap_mode_get_type()) }
+    }
+}
+
+impl glib::HasParamSpec for WrapMode {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
     }
 }
 

@@ -164,6 +164,7 @@ impl IntoGlib for EulerOrder {
 impl FromGlib<ffi::graphene_euler_order_t> for EulerOrder {
     unsafe fn from_glib(value: ffi::graphene_euler_order_t) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GRAPHENE_EULER_ORDER_DEFAULT => Self::Default,
             ffi::GRAPHENE_EULER_ORDER_XYZ => Self::Xyz,
@@ -250,6 +251,7 @@ impl FromGlib<ffi::graphene_ray_intersection_kind_t> for RayIntersectionKind {
     #[inline]
     unsafe fn from_glib(value: ffi::graphene_ray_intersection_kind_t) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GRAPHENE_RAY_INTERSECTION_KIND_NONE => Self::None,
             ffi::GRAPHENE_RAY_INTERSECTION_KIND_ENTER => Self::Enter,
