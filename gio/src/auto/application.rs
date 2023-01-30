@@ -62,7 +62,7 @@ impl Application {
 
 impl Default for Application {
     fn default() -> Self {
-        glib::object::Object::new_default::<Self>()
+        glib::object::Object::new::<Self>()
     }
 }
 
