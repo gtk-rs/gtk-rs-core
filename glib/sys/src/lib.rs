@@ -4733,6 +4733,9 @@ extern "C" {
     pub fn g_string_equal(v: *const GString, v2: *const GString) -> gboolean;
     pub fn g_string_erase(string: *mut GString, pos: ssize_t, len: ssize_t) -> *mut GString;
     pub fn g_string_free(string: *mut GString, free_segment: gboolean) -> *mut c_char;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_string_free_and_steal(string: *mut GString) -> *mut c_char;
     pub fn g_string_free_to_bytes(string: *mut GString) -> *mut GBytes;
     pub fn g_string_hash(str: *const GString) -> c_uint;
     pub fn g_string_insert(string: *mut GString, pos: ssize_t, val: *const c_char) -> *mut GString;
