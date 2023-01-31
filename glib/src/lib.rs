@@ -110,7 +110,7 @@ pub use exit_code::ExitCode;
 
 pub mod collections;
 pub use collections::{
-    ptr_slice::IntoPtrSlice, strv::IntoStrV, List, PtrSlice, SList, Slice, StrV, StrVItem,
+    ptr_slice::IntoPtrSlice, strv::IntoStrV, List, PtrSlice, SList, Slice, StrV,
 };
 
 pub use self::auto::{functions::*, *};
