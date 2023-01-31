@@ -17,8 +17,8 @@ glib::wrapper! {
 
 impl PixbufAnimationIter {
     #[doc(alias = "gdk_pixbuf_animation_iter_advance")]
-    pub fn advance(&self, start_time: SystemTime) -> bool {
-        let diff = start_time
+    pub fn advance(&self, current_time: SystemTime) -> bool {
+        let diff = current_time
             .duration_since(SystemTime::UNIX_EPOCH)
             .expect("failed to convert time");
 

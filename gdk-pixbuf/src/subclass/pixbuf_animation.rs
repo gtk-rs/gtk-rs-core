@@ -3,7 +3,10 @@
 // rustdoc-stripper-ignore-next
 //! Traits intended for subclassing [`PixbufAnimation`](crate::PixbufAnimation).
 
-use std::{mem::MaybeUninit, time::Duration};
+use std::{
+    mem::MaybeUninit,
+    time::{Duration, SystemTime},
+};
 
 use glib::{subclass::prelude::*, translate::*, Cast};
 
@@ -22,7 +25,7 @@ pub trait PixbufAnimationImpl: ObjectImpl {
         self.parent_size()
     }
 
-    fn iter(&self, start_time: Duration) -> PixbufAnimationIter {
+    fn iter(&self, start_time: SystemTime) -> PixbufAnimationIter {
         self.parent_iter(start_time)
     }
 }
@@ -31,7 +34,7 @@ pub trait PixbufAnimationImplExt: ObjectSubclass {
     fn parent_is_static_image(&self) -> bool;
     fn parent_static_image(&self) -> Option<Pixbuf>;
     fn parent_size(&self) -> (i32, i32);
-    fn parent_iter(&self, start_time: Duration) -> PixbufAnimationIter;
+    fn parent_iter(&self, start_time: SystemTime) -> PixbufAnimationIter;
 }
 
 impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
@@ -88,7 +91,7 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
         }
     }
 
-    fn parent_iter(&self, start_time: Duration) -> PixbufAnimationIter {
+    fn parent_iter(&self, start_time: SystemTime) -> PixbufAnimationIter {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GdkPixbufAnimationClass;
@@ -96,16 +99,19 @@ impl<T: PixbufAnimationImpl> PixbufAnimationImplExt for T {
                 .get_iter
                 .expect("No parent class implementation for \"get_iter\"");
 
+            let diff = start_time
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .expect("failed to convert time");
             let time = glib::ffi::GTimeVal {
-                tv_sec: start_time.as_secs() as _,
-                tv_usec: start_time.subsec_micros() as _,
+                tv_sec: diff.as_secs() as _,
+                tv_usec: diff.subsec_micros() as _,
             };
             from_glib_full(f(
                 self.obj()
                     .unsafe_cast_ref::<PixbufAnimation>()
                     .to_glib_none()
                     .0,
-                &time as *const _,
+                &time,
             ))
         }
     }
@@ -169,8 +175,9 @@ unsafe extern "C" fn animation_get_iter<T: PixbufAnimationImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    let total = Duration::from_secs((*start_time_ptr).tv_sec.try_into().unwrap())
+    let start_time = SystemTime::UNIX_EPOCH
+        + Duration::from_secs((*start_time_ptr).tv_sec.try_into().unwrap())
         + Duration::from_micros((*start_time_ptr).tv_usec.try_into().unwrap());
 
-    imp.iter(total).into_glib_ptr()
+    imp.iter(start_time).into_glib_ptr()
 }
