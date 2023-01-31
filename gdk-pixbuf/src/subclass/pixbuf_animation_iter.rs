@@ -5,7 +5,8 @@
 
 use std::time::Duration;
 
-use glib::{subclass::prelude::*, translate::*, Cast};
+use glib::{prelude::*, subclass::prelude::*, translate::*};
+use once_cell::sync::Lazy;
 
 use crate::{Pixbuf, PixbufAnimationIter};
 
@@ -138,13 +139,19 @@ unsafe extern "C" fn animation_iter_get_delay_time<T: PixbufAnimationIterImpl>(
     imp.delay_time().map(|t| t.as_millis() as i32).unwrap_or(-1)
 }
 
+static PIXBUF_QUARK: Lazy<glib::Quark> =
+    Lazy::new(|| glib::Quark::from_str("gtk-rs-subclass-pixbuf"));
+
 unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
 ) -> *mut ffi::GdkPixbuf {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    imp.pixbuf().to_glib_none().0
+    let pixbuf = imp.pixbuf();
+    // Ensure that the pixbuf stays alive until the next call
+    imp.obj().set_qdata(*PIXBUF_QUARK, pixbuf.clone());
+    pixbuf.to_glib_none().0
 }
 
 unsafe extern "C" fn animation_iter_on_currently_loading_frame<T: PixbufAnimationIterImpl>(
