@@ -8,9 +8,18 @@ use crate::translate::*;
 /// A list of items of type `T`.
 ///
 /// Behaves like an `Iterator<Item = T>` but allows modifications.
+#[repr(transparent)]
 pub struct SList<T: TransparentPtrType> {
     ptr: Option<ptr::NonNull<ffi::GSList>>,
     phantom: PhantomData<T>,
+}
+
+#[doc(hidden)]
+unsafe impl<T: TransparentPtrType> TransparentPtrType for SList<T> {}
+
+#[doc(hidden)]
+impl<T: TransparentPtrType> GlibPtrDefault for SList<T> {
+    type GlibType = *mut ffi::GSList;
 }
 
 unsafe impl<T: Send + TransparentPtrType> Send for SList<T> {}
