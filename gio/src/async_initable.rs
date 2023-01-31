@@ -9,144 +9,22 @@ use crate::{prelude::*, AsyncInitable, Cancellable};
 
 impl AsyncInitable {
     // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object with the given properties.
+    /// Create a new instance of an async initable object with the default property values.
     ///
     /// Similar to [`Object::new`] but can fail because the object initialization in
     /// `AsyncInitable::init` failed.
-    #[allow(clippy::new_ret_no_self)]
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
-    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default() instead"]
-    #[allow(deprecated)]
+    #[allow(clippy::new_ret_no_self)]
     pub fn new<
         O: IsClass + IsA<Object> + IsA<AsyncInitable>,
         Q: FnOnce(Result<O, glib::Error>) + 'static,
     >(
-        properties: &[(&str, &dyn ToValue)],
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: Q,
     ) {
-        Self::with_type(
-            O::static_type(),
-            properties,
-            io_priority,
-            cancellable,
-            move |res| callback(res.map(|o| unsafe { o.unsafe_cast() })),
-        )
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object with the given properties as future.
-    ///
-    /// Similar to [`Object::new`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_future() instead"]
-    #[allow(deprecated)]
-    pub fn new_future<O: IsClass + IsA<Object> + IsA<AsyncInitable>>(
-        properties: &[(&str, &dyn ToValue)],
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<O, glib::Error>> + 'static>> {
-        Box::pin(
-            Self::with_type_future(O::static_type(), properties, io_priority)
-                .map_ok(|o| unsafe { o.unsafe_cast() }),
-        )
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object of the given type with the given properties.
-    ///
-    /// Similar to [`Object::with_type`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_with_type() instead"]
-    pub fn with_type<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
-        type_: Type,
-        properties: &[(&str, &dyn ToValue)],
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: Q,
-    ) {
-        if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{type_}' is not async initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.to_value()));
-        }
-
-        unsafe {
-            let obj = Object::new_internal(type_, &mut property_values);
-            obj.unsafe_cast_ref::<Self>().init_async(
-                io_priority,
-                cancellable,
-                glib::clone!(@strong obj => move |res| {
-                    callback(res.map(|_| obj));
-                }),
-            )
-        };
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object of the given type with the given properties as future.
-    ///
-    /// Similar to [`Object::with_type`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    #[deprecated = "Use AsyncInitable::builder() or AsyncInitable::new_default_future() instead"]
-    pub fn with_type_future(
-        type_: Type,
-        properties: &[(&str, &dyn ToValue)],
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Object, glib::Error>> + 'static>> {
-        if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{type_}' is not async initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.to_value()));
-        }
-
-        unsafe {
-            // FIXME: object construction should ideally happen as part of the future
-            let obj = Object::new_internal(type_, &mut property_values);
-            Box_::pin(crate::GioFuture::new(
-                &obj,
-                move |obj, cancellable, send| {
-                    obj.unsafe_cast_ref::<Self>().init_async(
-                        io_priority,
-                        Some(cancellable),
-                        glib::clone!(@strong obj => move |res| {
-                            send.resolve(res.map(|_| obj));
-                        }),
-                    );
-                },
-            ))
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object with the default property values.
-    ///
-    /// Similar to [`Object::new_default`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    pub fn new_default<
-        O: IsClass + IsA<Object> + IsA<AsyncInitable>,
-        Q: FnOnce(Result<O, glib::Error>) + 'static,
-    >(
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: Q,
-    ) {
-        Self::new_default_with_type(O::static_type(), io_priority, cancellable, move |res| {
+        Self::with_type(O::static_type(), io_priority, cancellable, move |res| {
             callback(res.map(|o| unsafe { o.unsafe_cast() }))
         })
     }
@@ -154,15 +32,15 @@ impl AsyncInitable {
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an async initable object with the default property values as future.
     ///
-    /// Similar to [`Object::new_default`] but can fail because the object initialization in
+    /// Similar to [`Object::new`] but can fail because the object initialization in
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
-    pub fn new_default_future<O: IsClass + IsA<Object> + IsA<AsyncInitable>>(
+    pub fn new_future<O: IsClass + IsA<Object> + IsA<AsyncInitable>>(
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<O, glib::Error>> + 'static>> {
         Box::pin(
-            Self::new_default_with_type_future(O::static_type(), io_priority)
+            Self::with_type_future(O::static_type(), io_priority)
                 .map_ok(|o| unsafe { o.unsafe_cast() }),
         )
     }
@@ -171,11 +49,11 @@ impl AsyncInitable {
     /// Create a new instance of an async initable object of the given type with the default
     /// property values.
     ///
-    /// Similar to [`Object::new_default_with_type`] but can fail because the object initialization in
+    /// Similar to [`Object::with_type`] but can fail because the object initialization in
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
-    pub fn new_default_with_type<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
+    pub fn with_type<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
         type_: Type,
         io_priority: glib::Priority,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -200,11 +78,11 @@ impl AsyncInitable {
     // rustdoc-stripper-ignore-next
     /// Create a new instance of an async initable object of the given type with the default property values as future.
     ///
-    /// Similar to [`Object::new_default_with_type`] but can fail because the object initialization in
+    /// Similar to [`Object::with_type`] but can fail because the object initialization in
     /// `AsyncInitable::init` failed.
     #[doc(alias = "g_async_initable_new_async")]
     #[track_caller]
-    pub fn new_default_with_type_future(
+    pub fn with_type_future(
         type_: Type,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Object, glib::Error>> + 'static>> {
@@ -217,82 +95,6 @@ impl AsyncInitable {
                 &(),
                 move |_obj, cancellable, send| {
                     let obj = Object::new_internal(type_, &mut []);
-                    obj.unsafe_cast_ref::<Self>().init_async(
-                        io_priority,
-                        Some(cancellable),
-                        glib::clone!(@strong obj => move |res| {
-                            send.resolve(res.map(|_| obj));
-                        }),
-                    );
-                },
-            ))
-        }
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object of the given type with the given properties.
-    ///
-    /// Similar to [`Object::with_values`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    #[deprecated = "Use AsyncInitable::with_mut_values() instead"]
-    pub fn with_values<Q: FnOnce(Result<Object, glib::Error>) + 'static>(
-        type_: Type,
-        properties: &[(&str, glib::Value)],
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: Q,
-    ) {
-        if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{type_}' is not async initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.clone()));
-        }
-
-        unsafe {
-            let obj = Object::new_internal(type_, &mut property_values);
-            obj.unsafe_cast_ref::<Self>().init_async(
-                io_priority,
-                cancellable,
-                glib::clone!(@strong obj => move |res| {
-                    callback(res.map(|_| obj));
-                }),
-            )
-        };
-    }
-
-    // rustdoc-stripper-ignore-next
-    /// Create a new instance of an async initable object of the given type with the given properties as a future.
-    ///
-    /// Similar to [`Object::with_values`] but can fail because the object initialization in
-    /// `AsyncInitable::init` failed.
-    #[doc(alias = "g_async_initable_new_async")]
-    #[track_caller]
-    #[deprecated = "Use AsyncInitable::with_mut_values_future() instead"]
-    pub fn with_values_future(
-        type_: Type,
-        properties: &[(&str, glib::Value)],
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Object, glib::Error>> + 'static>> {
-        if !type_.is_a(AsyncInitable::static_type()) {
-            panic!("Type '{type_}' is not async initable");
-        }
-
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        for (name, value) in properties {
-            property_values.push((*name, value.clone()));
-        }
-
-        unsafe {
-            // FIXME: object construction should ideally happen as part of the future
-            let obj = Object::new_internal(type_, &mut property_values);
-            Box_::pin(crate::GioFuture::new(
-                &obj,
-                move |obj, cancellable, send| {
                     obj.unsafe_cast_ref::<Self>().init_async(
                         io_priority,
                         Some(cancellable),

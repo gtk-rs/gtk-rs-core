@@ -54,7 +54,7 @@ impl BufferedInputStream {
 
 impl Default for BufferedInputStream {
     fn default() -> Self {
-        glib::object::Object::new_default::<Self>()
+        glib::object::Object::new::<Self>()
     }
 }
 

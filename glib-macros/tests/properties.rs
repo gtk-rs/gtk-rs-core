@@ -132,7 +132,7 @@ fn props() {
         }
     }
 
-    let myfoo: foo::Foo = glib::object::Object::new_default();
+    let myfoo: foo::Foo = glib::object::Object::new();
 
     // Read bar
     let bar: String = myfoo.property("bar");

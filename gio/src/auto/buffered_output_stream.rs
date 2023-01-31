@@ -54,7 +54,7 @@ impl BufferedOutputStream {
 
 impl Default for BufferedOutputStream {
     fn default() -> Self {
-        glib::object::Object::new_default::<Self>()
+        glib::object::Object::new::<Self>()
     }
 }
 
