@@ -2,248 +2,7 @@
 
 use std::{ffi::c_char, fmt, marker::PhantomData, mem, ptr};
 
-use crate::{translate::*, GStr, GString};
-
-// rustdoc-stripper-ignore-next
-/// `NULL`-terminated UTF-8 string as stored in [`StrV`].
-///
-/// Unlike [`&GStr`] this does not have its length stored.
-#[repr(transparent)]
-pub struct StrVItem(ptr::NonNull<c_char>);
-
-impl fmt::Debug for StrVItem {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(self.as_str())
-    }
-}
-
-impl std::ops::Deref for StrVItem {
-    type Target = GStr;
-
-    #[inline]
-    fn deref(&self) -> &Self::Target {
-        self.as_ref()
-    }
-}
-
-impl AsRef<GStr> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &GStr {
-        unsafe { GStr::from_ptr(self.0.as_ptr()) }
-    }
-}
-
-impl AsRef<str> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &str {
-        self.as_str()
-    }
-}
-
-impl fmt::Display for StrVItem {
-    #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.as_str())
-    }
-}
-
-impl Eq for StrVItem {}
-
-impl PartialEq for StrVItem {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        self.as_str() == other.as_str()
-    }
-}
-
-impl PartialEq<StrVItem> for String {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        self.as_str() == other.as_str()
-    }
-}
-
-impl PartialEq<StrVItem> for GString {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        self.as_str() == other.as_str()
-    }
-}
-
-impl PartialEq<str> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &str) -> bool {
-        self.as_str() == other
-    }
-}
-
-impl PartialEq<&str> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &&str) -> bool {
-        self.as_str() == *other
-    }
-}
-
-impl PartialEq<GStr> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &GStr) -> bool {
-        self.as_str() == other
-    }
-}
-
-impl PartialEq<&GStr> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &&GStr) -> bool {
-        self.as_str() == *other
-    }
-}
-
-impl PartialEq<StrVItem> for &str {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        *self == other.as_str()
-    }
-}
-
-impl PartialEq<StrVItem> for &GStr {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        *self == other.as_str()
-    }
-}
-
-impl PartialEq<String> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &String) -> bool {
-        self.as_str() == other.as_str()
-    }
-}
-
-impl PartialEq<GString> for StrVItem {
-    #[inline]
-    fn eq(&self, other: &GString) -> bool {
-        self.as_str() == other.as_str()
-    }
-}
-
-impl PartialEq<StrVItem> for str {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        self == other.as_str()
-    }
-}
-
-impl PartialEq<StrVItem> for GStr {
-    #[inline]
-    fn eq(&self, other: &StrVItem) -> bool {
-        self == other.as_str()
-    }
-}
-
-impl PartialOrd<StrVItem> for StrVItem {
-    #[inline]
-    fn partial_cmp(&self, other: &StrVItem) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl Ord for StrVItem {
-    #[inline]
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.as_str().cmp(other.as_str())
-    }
-}
-
-impl PartialOrd<StrVItem> for String {
-    #[inline]
-    fn partial_cmp(&self, other: &StrVItem) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<StrVItem> for GString {
-    #[inline]
-    fn partial_cmp(&self, other: &StrVItem) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<String> for StrVItem {
-    #[inline]
-    fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<GString> for StrVItem {
-    #[inline]
-    fn partial_cmp(&self, other: &GString) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<StrVItem> for str {
-    #[inline]
-    fn partial_cmp(&self, other: &StrVItem) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<StrVItem> for GStr {
-    #[inline]
-    fn partial_cmp(&self, other: &StrVItem) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
-    }
-}
-
-impl PartialOrd<str> for StrVItem {
-    #[inline]
-    fn partial_cmp(&self, other: &str) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other))
-    }
-}
-
-impl PartialOrd<GStr> for StrVItem {
-    #[inline]
-    fn partial_cmp(&self, other: &GStr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other))
-    }
-}
-
-impl AsRef<StrVItem> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &StrVItem {
-        self
-    }
-}
-
-impl AsRef<std::ffi::OsStr> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &std::ffi::OsStr {
-        self.as_str().as_ref()
-    }
-}
-
-impl AsRef<std::path::Path> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &std::path::Path {
-        self.as_str().as_ref()
-    }
-}
-
-impl AsRef<[u8]> for StrVItem {
-    #[inline]
-    fn as_ref(&self) -> &[u8] {
-        self.as_bytes()
-    }
-}
-
-impl std::hash::Hash for StrVItem {
-    #[inline]
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.as_str().hash(state);
-    }
-}
+use crate::{translate::*, GStr, GStrPtr, GString};
 
 // rustdoc-stripper-ignore-next
 /// Minimum size of the `StrV` allocation.
@@ -341,25 +100,25 @@ impl Default for StrV {
     }
 }
 
-impl AsRef<[StrVItem]> for StrV {
+impl AsRef<[GStrPtr]> for StrV {
     #[inline]
-    fn as_ref(&self) -> &[StrVItem] {
+    fn as_ref(&self) -> &[GStrPtr] {
         self.as_slice()
     }
 }
 
-impl std::borrow::Borrow<[StrVItem]> for StrV {
+impl std::borrow::Borrow<[GStrPtr]> for StrV {
     #[inline]
-    fn borrow(&self) -> &[StrVItem] {
+    fn borrow(&self) -> &[GStrPtr] {
         self.as_slice()
     }
 }
 
 impl std::ops::Deref for StrV {
-    type Target = [StrVItem];
+    type Target = [GStrPtr];
 
     #[inline]
-    fn deref(&self) -> &[StrVItem] {
+    fn deref(&self) -> &[GStrPtr] {
         self.as_slice()
     }
 }
@@ -401,8 +160,8 @@ impl std::iter::FromIterator<GString> for StrV {
 }
 
 impl<'a> std::iter::IntoIterator for &'a StrV {
-    type Item = &'a StrVItem;
-    type IntoIter = std::slice::Iter<'a, StrVItem>;
+    type Item = &'a GStrPtr;
+    type IntoIter = std::slice::Iter<'a, GStrPtr>;
 
     #[inline]
     fn into_iter(self) -> Self::IntoIter {
@@ -442,12 +201,12 @@ impl IntoIter {
     // rustdoc-stripper-ignore-next
     /// Returns the remaining items as slice.
     #[inline]
-    pub fn as_slice(&self) -> &[StrVItem] {
+    pub fn as_slice(&self) -> &[GStrPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
             } else {
-                std::slice::from_raw_parts(self.idx.as_ptr() as *const StrVItem, self.len)
+                std::slice::from_raw_parts(self.idx.as_ptr() as *const GStrPtr, self.len)
             }
         }
     }
@@ -648,7 +407,7 @@ impl StrV {
     // rustdoc-stripper-ignore-next
     /// Borrows a C array.
     #[inline]
-    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a [StrVItem] {
+    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a [GStrPtr] {
         let mut len = 0;
         if !ptr.is_null() {
             while !(*ptr.add(len)).is_null() {
@@ -661,16 +420,13 @@ impl StrV {
     // rustdoc-stripper-ignore-next
     /// Borrows a C array.
     #[inline]
-    pub unsafe fn from_glib_borrow_num<'a>(
-        ptr: *const *const c_char,
-        len: usize,
-    ) -> &'a [StrVItem] {
+    pub unsafe fn from_glib_borrow_num<'a>(ptr: *const *const c_char, len: usize) -> &'a [GStrPtr] {
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
             &[]
         } else {
-            std::slice::from_raw_parts(ptr as *const StrVItem, len)
+            std::slice::from_raw_parts(ptr as *const GStrPtr, len)
         }
     }
 
@@ -919,14 +675,14 @@ impl StrV {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Borrows this slice as a `&[StrVItem]`.
+    /// Borrows this slice as a `&[GStrPtr]`.
     #[inline]
-    pub fn as_slice(&self) -> &[StrVItem] {
+    pub fn as_slice(&self) -> &[GStrPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
             } else {
-                std::slice::from_raw_parts(self.ptr.as_ptr() as *const StrVItem, self.len)
+                std::slice::from_raw_parts(self.ptr.as_ptr() as *const GStrPtr, self.len)
             }
         }
     }
@@ -1192,7 +948,7 @@ impl crate::StaticType for StrV {
     }
 }
 
-impl<'a> crate::StaticType for &'a [StrVItem] {
+impl<'a> crate::StaticType for &'a [GStrPtr] {
     #[inline]
     fn static_type() -> crate::Type {
         <Vec<String>>::static_type()
@@ -1212,7 +968,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for StrV {
     }
 }
 
-unsafe impl<'a> crate::value::FromValue<'a> for &'a [StrVItem] {
+unsafe impl<'a> crate::value::FromValue<'a> for &'a [GStrPtr] {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a crate::value::Value) -> Self {

@@ -655,6 +655,271 @@ impl<'a> ToGlibPtr<'a, *mut c_char> for GStr {
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// `NULL`-terminated UTF-8 string as stored in [`StrV`].
+///
+/// Unlike [`&GStr`] this does not have its length stored.
+#[repr(transparent)]
+pub struct GStrPtr(ptr::NonNull<c_char>);
+
+#[doc(hidden)]
+unsafe impl TransparentPtrType for GStrPtr {}
+
+#[doc(hidden)]
+impl GlibPtrDefault for GStrPtr {
+    type GlibType = *mut c_char;
+}
+
+impl Clone for GStrPtr {
+    #[inline]
+    fn clone(&self) -> GStrPtr {
+        unsafe { GStrPtr(ptr::NonNull::new_unchecked(ffi::g_strdup(self.0.as_ptr()))) }
+    }
+}
+
+impl Drop for GStrPtr {
+    #[inline]
+    fn drop(&mut self) {
+        unsafe {
+            ffi::g_free(self.0.as_ptr() as *mut _);
+        }
+    }
+}
+
+impl fmt::Debug for GStrPtr {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl std::ops::Deref for GStrPtr {
+    type Target = GStr;
+
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
+
+impl AsRef<GStr> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &GStr {
+        unsafe { GStr::from_ptr(self.0.as_ptr()) }
+    }
+}
+
+impl AsRef<str> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &str {
+        self.as_str()
+    }
+}
+
+impl fmt::Display for GStrPtr {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl Eq for GStrPtr {}
+
+impl PartialEq for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GStrPtr> for String {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GStrPtr> for GString {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<str> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &str) -> bool {
+        self.as_str() == other
+    }
+}
+
+impl PartialEq<&str> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &&str) -> bool {
+        self.as_str() == *other
+    }
+}
+
+impl PartialEq<GStr> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &GStr) -> bool {
+        self.as_str() == other
+    }
+}
+
+impl PartialEq<&GStr> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &&GStr) -> bool {
+        self.as_str() == *other
+    }
+}
+
+impl PartialEq<GStrPtr> for &str {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        *self == other.as_str()
+    }
+}
+
+impl PartialEq<GStrPtr> for &GStr {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        *self == other.as_str()
+    }
+}
+
+impl PartialEq<String> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &String) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GString> for GStrPtr {
+    #[inline]
+    fn eq(&self, other: &GString) -> bool {
+        self.as_str() == other.as_str()
+    }
+}
+
+impl PartialEq<GStrPtr> for str {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        self == other.as_str()
+    }
+}
+
+impl PartialEq<GStrPtr> for GStr {
+    #[inline]
+    fn eq(&self, other: &GStrPtr) -> bool {
+        self == other.as_str()
+    }
+}
+
+impl PartialOrd<GStrPtr> for GStrPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &GStrPtr) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl Ord for GStrPtr {
+    #[inline]
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.as_str().cmp(other.as_str())
+    }
+}
+
+impl PartialOrd<GStrPtr> for String {
+    #[inline]
+    fn partial_cmp(&self, other: &GStrPtr) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GStrPtr> for GString {
+    #[inline]
+    fn partial_cmp(&self, other: &GStrPtr) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<String> for GStrPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GString> for GStrPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &GString) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GStrPtr> for str {
+    #[inline]
+    fn partial_cmp(&self, other: &GStrPtr) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<GStrPtr> for GStr {
+    #[inline]
+    fn partial_cmp(&self, other: &GStrPtr) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other.as_str()))
+    }
+}
+
+impl PartialOrd<str> for GStrPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &str) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other))
+    }
+}
+
+impl PartialOrd<GStr> for GStrPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &GStr) -> Option<std::cmp::Ordering> {
+        Some(self.as_str().cmp(other))
+    }
+}
+
+impl AsRef<GStrPtr> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &GStrPtr {
+        self
+    }
+}
+
+impl AsRef<std::ffi::OsStr> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &std::ffi::OsStr {
+        self.as_str().as_ref()
+    }
+}
+
+impl AsRef<std::path::Path> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &std::path::Path {
+        self.as_str().as_ref()
+    }
+}
+
+impl AsRef<[u8]> for GStrPtr {
+    #[inline]
+    fn as_ref(&self) -> &[u8] {
+        self.as_bytes()
+    }
+}
+
+impl std::hash::Hash for GStrPtr {
+    #[inline]
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.as_str().hash(state);
+    }
+}
+
 // size_of::<Inner>() minus two bytes for length and enum discriminant
 const INLINE_LEN: usize =
     mem::size_of::<Option<Box<str>>>() + mem::size_of::<usize>() - mem::size_of::<u8>() * 2;
