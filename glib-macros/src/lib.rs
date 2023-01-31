@@ -530,7 +530,8 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 }
 
 /// Derive macro for defining a [`BoxedType`]`::type_` function and
-/// the [`glib::Value`] traits.
+/// the [`glib::Value`] traits. Eventually, the type can be set as `nullable` to
+/// get an implemention of `glib::value::ToValueOptional`.
 ///
 /// # Example
 ///
@@ -539,7 +540,7 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 /// use glib::subclass::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
-/// #[boxed_type(name = "MyBoxed")]
+/// #[boxed_type(name = "MyBoxed", nullable)]
 /// struct MyBoxed(String);
 /// ```
 ///
