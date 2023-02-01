@@ -200,7 +200,7 @@ pub trait FileExtManual: Sized {
         Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
     >(
         &self,
-        attributes: &'static str,
+        attributes: &str,
         flags: FileQueryInfoFlags,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
@@ -209,7 +209,7 @@ pub trait FileExtManual: Sized {
 
     fn enumerate_children_future(
         &self,
-        attributes: &'static str,
+        attributes: &str,
         flags: FileQueryInfoFlags,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>;
@@ -432,7 +432,7 @@ impl<O: IsA<File>> FileExtManual for O {
         Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
     >(
         &self,
-        attributes: &'static str,
+        attributes: &str,
         flags: FileQueryInfoFlags,
         io_priority: glib::Priority,
         cancellable: Option<&P>,
@@ -486,16 +486,17 @@ impl<O: IsA<File>> FileExtManual for O {
 
     fn enumerate_children_future(
         &self,
-        attributes: &'static str,
+        attributes: &str,
         flags: FileQueryInfoFlags,
         io_priority: glib::Priority,
     ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>
     {
+        let attributes = attributes.to_owned();
         Box::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {
                 obj.enumerate_children_async(
-                    attributes,
+                    &attributes,
                     flags,
                     io_priority,
                     Some(cancellable),
