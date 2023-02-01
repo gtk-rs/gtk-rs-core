@@ -88,19 +88,6 @@ impl KeyFile {
         }
     }
 
-    #[doc(alias = "g_key_file_get_groups")]
-    #[doc(alias = "get_groups")]
-    pub fn groups(&self) -> (Vec<crate::GString>, usize) {
-        unsafe {
-            let mut length = mem::MaybeUninit::uninit();
-            let ret = FromGlibPtrContainer::from_glib_full(ffi::g_key_file_get_groups(
-                self.to_glib_none().0,
-                length.as_mut_ptr(),
-            ));
-            (ret, length.assume_init())
-        }
-    }
-
     #[doc(alias = "g_key_file_get_int64")]
     #[doc(alias = "get_int64")]
     pub fn int64(&self, group_name: &str, key: &str) -> Result<i64, crate::Error> {
@@ -156,29 +143,6 @@ impl KeyFile {
                 Ok(FromGlibContainer::from_glib_container_num(
                     ret,
                     length.assume_init() as _,
-                ))
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
-    #[doc(alias = "g_key_file_get_keys")]
-    #[doc(alias = "get_keys")]
-    pub fn keys(&self, group_name: &str) -> Result<(Vec<crate::GString>, usize), crate::Error> {
-        unsafe {
-            let mut length = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
-            let ret = ffi::g_key_file_get_keys(
-                self.to_glib_none().0,
-                group_name.to_glib_none().0,
-                length.as_mut_ptr(),
-                &mut error,
-            );
-            if error.is_null() {
-                Ok((
-                    FromGlibPtrContainer::from_glib_full(ret),
-                    length.assume_init(),
                 ))
             } else {
                 Err(from_glib_full(error))

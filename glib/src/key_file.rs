@@ -2,7 +2,7 @@
 
 use std::{mem, path, ptr};
 
-use crate::{translate::*, Error, GString, KeyFile, KeyFileFlags};
+use crate::{translate::*, Error, GStrPtr, GString, KeyFile, KeyFileFlags, PtrSlice};
 
 impl KeyFile {
     #[doc(alias = "g_key_file_save_to_file")]
@@ -82,6 +82,39 @@ impl KeyFile {
             let ret =
                 ffi::g_key_file_to_data(self.to_glib_none().0, ptr::null_mut(), ptr::null_mut());
             from_glib_full(ret)
+        }
+    }
+
+    #[doc(alias = "g_key_file_get_groups")]
+    #[doc(alias = "get_groups")]
+    pub fn groups(&self) -> PtrSlice<GStrPtr> {
+        unsafe {
+            let mut length = mem::MaybeUninit::uninit();
+            let ret = ffi::g_key_file_get_groups(self.to_glib_none().0, length.as_mut_ptr());
+            FromGlibContainer::from_glib_full_num(ret, length.assume_init() as _)
+        }
+    }
+
+    #[doc(alias = "g_key_file_get_keys")]
+    #[doc(alias = "get_keys")]
+    pub fn keys(&self, group_name: &str) -> Result<PtrSlice<GStrPtr>, crate::Error> {
+        unsafe {
+            let mut length = mem::MaybeUninit::uninit();
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_key_file_get_keys(
+                self.to_glib_none().0,
+                group_name.to_glib_none().0,
+                length.as_mut_ptr(),
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(FromGlibContainer::from_glib_full_num(
+                    ret,
+                    length.assume_init() as _,
+                ))
+            } else {
+                Err(from_glib_full(error))
+            }
         }
     }
 
@@ -167,7 +200,7 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_string_list")]
     #[doc(alias = "get_string_list")]
-    pub fn string_list(&self, group_name: &str, key: &str) -> Result<Vec<GString>, Error> {
+    pub fn string_list(&self, group_name: &str, key: &str) -> Result<PtrSlice<GStrPtr>, Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -223,7 +256,7 @@ impl KeyFile {
         group_name: &str,
         key: &str,
         locale: Option<&str>,
-    ) -> Result<Vec<GString>, Error> {
+    ) -> Result<PtrSlice<GStrPtr>, Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
