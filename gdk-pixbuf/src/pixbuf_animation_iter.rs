@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::time::SystemTime;
+use std::time::{Duration, SystemTime};
 
 use glib::translate::*;
 
@@ -17,8 +17,8 @@ glib::wrapper! {
 
 impl PixbufAnimationIter {
     #[doc(alias = "gdk_pixbuf_animation_iter_advance")]
-    pub fn advance(&self, start_time: SystemTime) -> bool {
-        let diff = start_time
+    pub fn advance(&self, current_time: SystemTime) -> bool {
+        let diff = current_time
             .duration_since(SystemTime::UNIX_EPOCH)
             .expect("failed to convert time");
 
@@ -45,8 +45,16 @@ impl PixbufAnimationIter {
 
     #[doc(alias = "gdk_pixbuf_animation_iter_get_delay_time")]
     #[doc(alias = "get_delay_time")]
-    pub fn delay_time(&self) -> i32 {
-        unsafe { ffi::gdk_pixbuf_animation_iter_get_delay_time(self.to_glib_none().0) }
+    pub fn delay_time(&self) -> Option<Duration> {
+        unsafe {
+            let res = ffi::gdk_pixbuf_animation_iter_get_delay_time(self.to_glib_none().0);
+
+            if res < 0 {
+                None
+            } else {
+                Some(Duration::from_millis(res as u64))
+            }
+        }
     }
 
     #[doc(alias = "gdk_pixbuf_animation_iter_on_currently_loading_frame")]

@@ -3,7 +3,7 @@
 // rustdoc-stripper-ignore-next
 //! Traits intended for subclassing [`PixbufAnimationIter`](crate::PixbufAnimationIter).
 
-use std::time::Duration;
+use std::time::{Duration, SystemTime};
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 use once_cell::sync::Lazy;
@@ -25,8 +25,8 @@ pub trait PixbufAnimationIterImpl: ObjectImpl {
         self.parent_on_currently_loading_frame()
     }
 
-    fn advance(&self, time: Duration) -> bool {
-        self.parent_advance(time)
+    fn advance(&self, current_time: SystemTime) -> bool {
+        self.parent_advance(current_time)
     }
 }
 
@@ -34,7 +34,7 @@ pub trait PixbufAnimationIterImplExt: ObjectSubclass {
     fn parent_delay_time(&self) -> Option<Duration>;
     fn parent_pixbuf(&self) -> Pixbuf;
     fn parent_on_currently_loading_frame(&self) -> bool;
-    fn parent_advance(&self, time: Duration) -> bool;
+    fn parent_advance(&self, current_time: SystemTime) -> bool;
 }
 
 impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T {
@@ -52,10 +52,10 @@ impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T {
                 .unsafe_cast_ref::<PixbufAnimationIter>()
                 .to_glib_none()
                 .0);
-            if time == -1 {
+            if time < 0 {
                 None
             } else {
-                Some(Duration::from_millis(time.try_into().unwrap()))
+                Some(Duration::from_millis(time as u64))
             }
         }
     }
@@ -94,7 +94,7 @@ impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T {
         }
     }
 
-    fn parent_advance(&self, time: Duration) -> bool {
+    fn parent_advance(&self, current_time: SystemTime) -> bool {
         unsafe {
             let data = T::type_data();
             let parent_class =
@@ -103,16 +103,19 @@ impl<T: PixbufAnimationIterImpl> PixbufAnimationIterImplExt for T {
                 .advance
                 .expect("No parent class implementation for \"advance\"");
 
+            let diff = current_time
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .expect("failed to convert time");
             let time = glib::ffi::GTimeVal {
-                tv_sec: time.as_secs() as _,
-                tv_usec: time.subsec_micros() as _,
+                tv_sec: diff.as_secs() as _,
+                tv_usec: diff.subsec_micros() as _,
             };
             from_glib(f(
                 self.obj()
                     .unsafe_cast_ref::<PixbufAnimationIter>()
                     .to_glib_none()
                     .0,
-                &time as *const _,
+                &time,
             ))
         }
     }
@@ -165,13 +168,14 @@ unsafe extern "C" fn animation_iter_on_currently_loading_frame<T: PixbufAnimatio
 
 unsafe extern "C" fn animation_iter_advance<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
-    time_ptr: *const glib::ffi::GTimeVal,
+    current_time_ptr: *const glib::ffi::GTimeVal,
 ) -> glib::ffi::gboolean {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    let total = Duration::from_secs((*time_ptr).tv_sec.try_into().unwrap())
-        + Duration::from_micros((*time_ptr).tv_usec.try_into().unwrap());
+    let current_time = SystemTime::UNIX_EPOCH
+        + Duration::from_secs((*current_time_ptr).tv_sec.try_into().unwrap())
+        + Duration::from_micros((*current_time_ptr).tv_usec.try_into().unwrap());
 
-    imp.advance(total).into_glib()
+    imp.advance(current_time).into_glib()
 }
