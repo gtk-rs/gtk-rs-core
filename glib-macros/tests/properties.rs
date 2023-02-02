@@ -62,14 +62,14 @@ fn props() {
                     get = |t: &Self| t.author.borrow().name.to_owned(),
                     set = Self::set_author_name)]
                 fake_field: PhantomData<String>,
-                #[property(get, set, user_1, user_2, lax_validation)]
+                #[property(get, set, explicit_notify, lax_validation)]
                 custom_flags: RefCell<String>,
-                #[property(get, set, user_1, glib::ParamFlags::USER_2)]
-                custom_flags_by_path: RefCell<String>,
                 #[property(get, set, builder())]
                 simple_builder: RefCell<u32>,
                 #[property(get, set, builder().minimum(0).maximum(5))]
                 numeric_builder: RefCell<u32>,
+                #[property(get, set, minimum = 0, maximum = 5)]
+                builder_fields_without_builder: RefCell<u32>,
                 #[property(get, set, builder('c'))]
                 builder_with_required_param: RefCell<char>,
                 #[property(get, set)]
@@ -164,15 +164,7 @@ fn props() {
     // custom flags
     assert_eq!(
         myfoo.find_property("custom_flags").unwrap().flags(),
-        ParamFlags::USER_1
-            | ParamFlags::USER_2
-            | ParamFlags::READWRITE
-            | ParamFlags::LAX_VALIDATION
-    );
-    // custom flags
-    assert_eq!(
-        myfoo.find_property("custom_flags_by_path").unwrap().flags(),
-        ParamFlags::READWRITE | ParamFlags::USER_1 | ParamFlags::USER_2
+        ParamFlags::EXPLICIT_NOTIFY | ParamFlags::READWRITE | ParamFlags::LAX_VALIDATION
     );
 
     // numeric builder
@@ -184,6 +176,18 @@ fn props() {
             .unwrap()
             .maximum(),
         5
+    );
+
+    assert_eq!(
+        {
+            let spec = myfoo
+                .find_property("builder_fields_without_builder")
+                .unwrap()
+                .downcast::<glib::ParamSpecUInt>()
+                .unwrap();
+            (spec.minimum(), spec.maximum())
+        },
+        (0, 5)
     );
 
     // builder with required param

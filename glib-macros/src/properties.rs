@@ -5,7 +5,7 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::{quote, quote_spanned};
-use std::str::FromStr;
+use std::collections::HashMap;
 use syn::ext::IdentExt;
 use syn::parenthesized;
 use syn::parse::Parse;
@@ -49,7 +49,7 @@ impl Parse for PropsMacroInput {
             _ => {
                 return Err(syn::Error::new(
                     derive_input.span(),
-                    "props can only be derived on structs",
+                    "Properties can only be derived on structs",
                 ))
             }
         };
@@ -76,12 +76,6 @@ impl std::convert::From<Option<syn::Expr>> for MaybeCustomFn {
 }
 
 enum PropAttr {
-    // ident
-    Flag(&'static str),
-
-    // path
-    FlagPath(syn::Path),
-
     // builder(required_params).parameter(value)
     // becomes
     // Builder(Punctuated(required_params), Optionals(TokenStream))
@@ -94,33 +88,18 @@ enum PropAttr {
     // ident = expr
     Type(syn::Type),
 
+    // This will get translated from `ident = value` to `.ident(value)`
+    // and will get appended after the `builder(...)` call.
+    // ident [= expr]
+    BuilderField((syn::Ident, Option<syn::Expr>)),
+
     // ident = ident
     Member(syn::Ident),
 
     // ident = "literal"
     Name(syn::LitStr),
-    Nick(syn::LitStr),
-    Blurb(syn::LitStr),
 }
 
-const FLAGS: [&str; 16] = [
-    "readable",
-    "writable",
-    "readwrite",
-    "construct",
-    "construct_only",
-    "lax_validation",
-    "user_1",
-    "user_2",
-    "user_3",
-    "user_4",
-    "user_5",
-    "user_6",
-    "user_7",
-    "user_8",
-    "explicit_notify",
-    "deprecated",
-];
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let name = input.call(syn::Ident::parse_any)?;
@@ -128,28 +107,14 @@ impl Parse for PropAttr {
 
         let res = if input.peek(Token![=]) {
             let _assign_token: Token![=] = input.parse()?;
-            if input.peek(syn::LitStr) {
-                let lit: syn::LitStr = input.parse()?;
-                // name = "literal"
-                match &*name_str {
-                    "name" => PropAttr::Name(lit),
-                    "nick" => PropAttr::Nick(lit),
-                    "blurb" => PropAttr::Blurb(lit),
-                    _ => {
-                        panic!("Invalid attribute for property")
-                    }
-                }
-            } else {
-                // name = expr | type | ident
-                match &*name_str {
-                    "get" => PropAttr::Get(Some(input.parse()?)),
-                    "set" => PropAttr::Set(Some(input.parse()?)),
-                    "type" => PropAttr::Type(input.parse()?),
-                    "member" => PropAttr::Member(input.parse()?),
-                    _ => {
-                        panic!("Invalid attribute for property")
-                    }
-                }
+            // name = expr | type | ident
+            match &*name_str {
+                "name" => PropAttr::Name(input.parse()?),
+                "get" => PropAttr::Get(Some(input.parse()?)),
+                "set" => PropAttr::Set(Some(input.parse()?)),
+                "type" => PropAttr::Type(input.parse()?),
+                "member" => PropAttr::Member(input.parse()?),
+                _ => PropAttr::BuilderField((name, Some(input.parse()?))),
             }
         } else if input.peek(syn::token::Paren) {
             match &*name_str {
@@ -160,31 +125,29 @@ impl Parse for PropAttr {
                     let rest: TokenStream2 = input.parse()?;
                     PropAttr::Builder(required, rest)
                 }
-                _ => panic!("Unsupported attribute list {name_str}(...)"),
+                _ => {
+                    return Err(syn::Error::new(
+                        name.span(),
+                        format!("Unsupported attribute list {name_str}(...)"),
+                    ))
+                }
             }
-        } else if input.peek(Token![::]) {
-            let mut p: syn::Path = input.parse()?;
-            p.segments.insert(
-                0,
-                syn::PathSegment {
-                    ident: format_ident!("{}", name),
-                    arguments: syn::PathArguments::None,
-                },
-            );
-            PropAttr::FlagPath(p)
         } else {
             // attributes with only the identifier
             // name
             match &*name_str {
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
-                name => {
-                    if let Some(flag) = FLAGS.iter().find(|x| *x == &name) {
-                        PropAttr::Flag(flag)
-                    } else {
-                        panic!("Invalid attribute for property")
-                    }
+                "readwrite" | "read_only" | "write_only" => {
+                    return Err(syn::Error::new(
+                        name.span(),
+                        format!(
+                            "{name} is a flag managed by the Properties macro. \
+                            Use `get` and `set` to manage read and write access to a property",
+                        ),
+                    ))
                 }
+                _ => PropAttr::BuilderField((name, None)),
             }
         };
         Ok(res)
@@ -197,50 +160,57 @@ struct ReceivedAttrs {
     set: Option<MaybeCustomFn>,
     ty: Option<syn::Type>,
     member: Option<syn::Ident>,
-    flags: Vec<&'static str>,
-    flags_paths: Vec<syn::Path>,
     name: Option<syn::LitStr>,
-    nick: Option<syn::LitStr>,
-    blurb: Option<syn::LitStr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
+    builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
 }
 impl ReceivedAttrs {
-    fn new(attrs: impl IntoIterator<Item = PropAttr>) -> Self {
-        attrs.into_iter().fold(Self::default(), |mut this, attr| {
+    fn new(
+        attrs_span: &proc_macro2::Span,
+        attrs: impl IntoIterator<Item = PropAttr>,
+    ) -> syn::Result<Self> {
+        let this = attrs.into_iter().fold(Self::default(), |mut this, attr| {
             this.set_from_attr(attr);
             this
-        })
+        });
+
+        if this.get.is_none() && this.set.is_none() {
+            return Err(syn::Error::new(
+                *attrs_span,
+                "No `get` or `set` specified: at least one is required.".to_string(),
+            ));
+        }
+        Ok(this)
     }
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
             PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
             PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
             PropAttr::Name(lit) => self.name = Some(lit),
-            PropAttr::Nick(lit) => self.nick = Some(lit),
-            PropAttr::Blurb(lit) => self.blurb = Some(lit),
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
-            PropAttr::Flag(flag) => self.flags.push(flag),
-            PropAttr::FlagPath(flag) => self.flags_paths.push(flag),
             PropAttr::Builder(required_params, optionals) => {
                 self.builder = Some((required_params, optionals))
+            }
+            PropAttr::BuilderField((ident, expr)) => {
+                self.builder_fields.insert(ident, expr);
             }
         }
     }
 }
+
+// It's a cleaned up version of `ReceivedAttrs` where some missing attributes get a default,
+// generated value.
 struct PropDesc {
     attrs_span: proc_macro2::Span,
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
-    nick: Option<syn::LitStr>,
-    blurb: Option<syn::LitStr>,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
-    flags: Vec<&'static str>,
-    flags_paths: Vec<syn::Path>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
+    builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
 }
 impl PropDesc {
     fn new(
@@ -248,18 +218,15 @@ impl PropDesc {
         field_ident: syn::Ident,
         field_ty: syn::Type,
         attrs: ReceivedAttrs,
-    ) -> Self {
+    ) -> syn::Result<Self> {
         let ReceivedAttrs {
             get,
             set,
             ty,
             member,
-            flags,
             name,
-            nick,
-            blurb,
             builder,
-            flags_paths,
+            builder_fields,
         } = attrs;
 
         // Fill needed, but missing, attributes with calculated default values
@@ -272,20 +239,17 @@ impl PropDesc {
         let ty = ty.unwrap_or_else(|| field_ty.clone());
 
         // Now that everything is set and safe, return the final proprety description
-        Self {
+        Ok(Self {
             attrs_span,
             field_ident,
             get,
             set,
             ty,
             member,
-            flags,
             name,
-            nick,
-            blurb,
             builder,
-            flags_paths,
-        }
+            builder_fields,
+        })
     }
 }
 
@@ -294,32 +258,20 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let properties_build_phase = props.iter().map(|prop| {
         let PropDesc {
-            ty,
-            name,
-            nick,
-            blurb,
-            builder,
-            flags_paths,
-            ..
+            ty, name, builder, ..
         } = prop;
 
-        let flags = {
-            let write = prop.set.as_ref().map(|_| quote!(WRITABLE));
-            let read = prop.get.as_ref().map(|_| quote!(READABLE));
-
-            let flags_iter = [write, read].into_iter().flatten().chain(
-                prop.flags
-                    .iter()
-                    .map(|x| str::to_uppercase(x))
-                    .map(|f| TokenStream2::from_str(&f).unwrap()),
-            );
-            quote!(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)* #(| #flags_paths)*)
+        let rw_flags = match (&prop.get, &prop.set) {
+            (Some(_), Some(_)) => quote!(.readwrite()),
+            (Some(_), None) => quote!(.read_only()),
+            (None, Some(_)) => quote!(.write_only()),
+            (None, None) => unreachable!("No `get` or `set` specified"),
         };
 
         let builder_call = builder
             .as_ref()
             .cloned()
-            .map(|(mut required_params, opts)| {
+            .map(|(mut required_params, chained_methods)| {
                 let name_expr = syn::ExprLit {
                     attrs: vec![],
                     lit: syn::Lit::Str(name.to_owned()),
@@ -327,19 +279,18 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
                 required_params.insert(0, name_expr.into());
                 let required_params = required_params.iter();
 
-                quote!((#(#required_params,)*)#opts)
+                quote!((#(#required_params,)*)#chained_methods)
             })
             .unwrap_or(quote!((#name)));
 
-        let build_nick = nick.as_ref().map(|x| quote!(.nick(#x)));
-        let build_blurb = blurb.as_ref().map(|x| quote!(.blurb(#x)));
+        let builder_fields = prop.builder_fields.iter().map(|(k, v)| quote!(.#k(#v)));
+
         let span = prop.attrs_span;
         quote_spanned! {span=>
             <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
                 ::param_spec_builder() #builder_call
-                #build_nick
-                #build_blurb
-                .flags(#flags)
+                #rw_flags
+                #(#builder_fields)*
                 .build()
         }
     });
@@ -473,12 +424,12 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
                     let attrs = attrs.parse_args_with(
                         syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
                     )?;
-                    Ok(PropDesc::new(
+                    PropDesc::new(
                         span,
                         ident.as_ref().unwrap().clone(),
                         ty.clone(),
-                        ReceivedAttrs::new(attrs),
-                    ))
+                        ReceivedAttrs::new(&span, attrs)?,
+                    )
                 })
         })
         .collect::<syn::Result<_>>()
@@ -501,7 +452,8 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
                  self.property::<<#ty as #crate_ident::Property>::Value>(#name)
             })
         });
-        let setter = (p.set.is_some() && !p.flags.contains(&"construct_only")).then(|| {
+        let is_construct_only = p.builder_fields.iter().any(|(k, _)| *k == "construct_only");
+        let setter = (p.set.is_some() && !is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
             quote!(pub fn #ident<'a>(&self, value: impl std::borrow::Borrow<<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue>) {
                 self.set_property_from_value(#name, &::std::convert::From::from(std::borrow::Borrow::borrow(&value)))

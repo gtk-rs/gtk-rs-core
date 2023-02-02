@@ -866,9 +866,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         #[property(name = "author-name", get, set, type = String, member = name)]
 ///         #[property(name = "author-nick", get, set, type = String, member = nick)]
 ///         author: RefCell<Author>,
-///         #[property(get, set, user_1, user_2, lax_validation)]
+///         #[property(get, set, explicit_notify, lax_validation)]
 ///         custom_flags: RefCell<String>,
-///         #[property(get, set, builder().minimum(0).maximum(5))]
+///         #[property(get, set, minimum = 0, maximum = 3)]
 ///         numeric_builder: RefCell<u32>,
 ///         #[property(get, set, builder('c'))]
 ///         builder_with_required_param: RefCell<char>,
