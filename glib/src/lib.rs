@@ -174,6 +174,8 @@ mod property;
 pub use self::property::*;
 mod quark;
 pub use self::quark::Quark;
+pub mod match_info;
+pub mod regex;
 #[macro_use]
 mod log;
 #[doc(hidden)]

@@ -364,6 +364,126 @@ impl FromGlib<ffi::GOptionFlags> for OptionFlags {
 
 bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GRegexCompileFlags")]
+    pub struct RegexCompileFlags: u32 {
+        #[doc(alias = "G_REGEX_DEFAULT")]
+        const DEFAULT = ffi::G_REGEX_DEFAULT as _;
+        #[doc(alias = "G_REGEX_CASELESS")]
+        const CASELESS = ffi::G_REGEX_CASELESS as _;
+        #[doc(alias = "G_REGEX_MULTILINE")]
+        const MULTILINE = ffi::G_REGEX_MULTILINE as _;
+        #[doc(alias = "G_REGEX_DOTALL")]
+        const DOTALL = ffi::G_REGEX_DOTALL as _;
+        #[doc(alias = "G_REGEX_EXTENDED")]
+        const EXTENDED = ffi::G_REGEX_EXTENDED as _;
+        #[doc(alias = "G_REGEX_ANCHORED")]
+        const ANCHORED = ffi::G_REGEX_ANCHORED as _;
+        #[doc(alias = "G_REGEX_DOLLAR_ENDONLY")]
+        const DOLLAR_ENDONLY = ffi::G_REGEX_DOLLAR_ENDONLY as _;
+        #[doc(alias = "G_REGEX_UNGREEDY")]
+        const UNGREEDY = ffi::G_REGEX_UNGREEDY as _;
+        #[doc(alias = "G_REGEX_RAW")]
+        const RAW = ffi::G_REGEX_RAW as _;
+        #[doc(alias = "G_REGEX_NO_AUTO_CAPTURE")]
+        const NO_AUTO_CAPTURE = ffi::G_REGEX_NO_AUTO_CAPTURE as _;
+        #[doc(alias = "G_REGEX_OPTIMIZE")]
+        const OPTIMIZE = ffi::G_REGEX_OPTIMIZE as _;
+        #[doc(alias = "G_REGEX_FIRSTLINE")]
+        const FIRSTLINE = ffi::G_REGEX_FIRSTLINE as _;
+        #[doc(alias = "G_REGEX_DUPNAMES")]
+        const DUPNAMES = ffi::G_REGEX_DUPNAMES as _;
+        #[doc(alias = "G_REGEX_NEWLINE_CR")]
+        const NEWLINE_CR = ffi::G_REGEX_NEWLINE_CR as _;
+        #[doc(alias = "G_REGEX_NEWLINE_LF")]
+        const NEWLINE_LF = ffi::G_REGEX_NEWLINE_LF as _;
+        #[doc(alias = "G_REGEX_NEWLINE_CRLF")]
+        const NEWLINE_CRLF = ffi::G_REGEX_NEWLINE_CRLF as _;
+        #[doc(alias = "G_REGEX_NEWLINE_ANYCRLF")]
+        const NEWLINE_ANYCRLF = ffi::G_REGEX_NEWLINE_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_BSR_ANYCRLF")]
+        const BSR_ANYCRLF = ffi::G_REGEX_BSR_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_JAVASCRIPT_COMPAT")]
+        const JAVASCRIPT_COMPAT = ffi::G_REGEX_JAVASCRIPT_COMPAT as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for RegexCompileFlags {
+    type GlibType = ffi::GRegexCompileFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GRegexCompileFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GRegexCompileFlags> for RegexCompileFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GRegexCompileFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    #[doc(alias = "GRegexMatchFlags")]
+    pub struct RegexMatchFlags: u32 {
+        #[doc(alias = "G_REGEX_MATCH_DEFAULT")]
+        const DEFAULT = ffi::G_REGEX_MATCH_DEFAULT as _;
+        #[doc(alias = "G_REGEX_MATCH_ANCHORED")]
+        const ANCHORED = ffi::G_REGEX_MATCH_ANCHORED as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTBOL")]
+        const NOTBOL = ffi::G_REGEX_MATCH_NOTBOL as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEOL")]
+        const NOTEOL = ffi::G_REGEX_MATCH_NOTEOL as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEMPTY")]
+        const NOTEMPTY = ffi::G_REGEX_MATCH_NOTEMPTY as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL")]
+        const PARTIAL = ffi::G_REGEX_MATCH_PARTIAL as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_CR")]
+        const NEWLINE_CR = ffi::G_REGEX_MATCH_NEWLINE_CR as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_LF")]
+        const NEWLINE_LF = ffi::G_REGEX_MATCH_NEWLINE_LF as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_CRLF")]
+        const NEWLINE_CRLF = ffi::G_REGEX_MATCH_NEWLINE_CRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_ANY")]
+        const NEWLINE_ANY = ffi::G_REGEX_MATCH_NEWLINE_ANY as _;
+        #[doc(alias = "G_REGEX_MATCH_NEWLINE_ANYCRLF")]
+        const NEWLINE_ANYCRLF = ffi::G_REGEX_MATCH_NEWLINE_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_BSR_ANYCRLF")]
+        const BSR_ANYCRLF = ffi::G_REGEX_MATCH_BSR_ANYCRLF as _;
+        #[doc(alias = "G_REGEX_MATCH_BSR_ANY")]
+        const BSR_ANY = ffi::G_REGEX_MATCH_BSR_ANY as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL_SOFT")]
+        const PARTIAL_SOFT = ffi::G_REGEX_MATCH_PARTIAL_SOFT as _;
+        #[doc(alias = "G_REGEX_MATCH_PARTIAL_HARD")]
+        const PARTIAL_HARD = ffi::G_REGEX_MATCH_PARTIAL_HARD as _;
+        #[doc(alias = "G_REGEX_MATCH_NOTEMPTY_ATSTART")]
+        const NOTEMPTY_ATSTART = ffi::G_REGEX_MATCH_NOTEMPTY_ATSTART as _;
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for RegexMatchFlags {
+    type GlibType = ffi::GRegexMatchFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GRegexMatchFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GRegexMatchFlags> for RegexMatchFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GRegexMatchFlags) -> Self {
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GSpawnFlags")]
     pub struct SpawnFlags: u32 {
         #[doc(alias = "G_SPAWN_DEFAULT")]
