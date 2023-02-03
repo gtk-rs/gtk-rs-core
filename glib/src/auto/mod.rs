@@ -20,6 +20,12 @@ pub use self::main_loop::MainLoop;
 mod markup_parse_context;
 pub use self::markup_parse_context::MarkupParseContext;
 
+mod match_info;
+pub use self::match_info::MatchInfo;
+
+mod regex;
+pub use self::regex::Regex;
+
 mod source;
 pub use self::source::Source;
 
@@ -67,6 +73,8 @@ pub use self::flags::LogLevelFlags;
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::flags::MainContextFlags;
 pub use self::flags::OptionFlags;
+pub use self::flags::RegexCompileFlags;
+pub use self::flags::RegexMatchFlags;
 pub use self::flags::SpawnFlags;
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
