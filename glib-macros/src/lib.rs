@@ -530,8 +530,8 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 }
 
 /// Derive macro for defining a [`BoxedType`]`::type_` function and
-/// the [`glib::Value`] traits. Eventually, the type can be set as `nullable` to
-/// get an implemention of `glib::value::ToValueOptional`.
+/// the [`glib::Value`] traits. Optionally, the type can be marked as
+/// `nullable` to get an implemention of `glib::value::ToValueOptional`.
 ///
 /// # Example
 ///
@@ -540,8 +540,12 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 /// use glib::subclass::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
-/// #[boxed_type(name = "MyBoxed", nullable)]
+/// #[boxed_type(name = "MyBoxed")]
 /// struct MyBoxed(String);
+///
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+/// #[boxed_type(name = "MyNullableBoxed", nullable)]
+/// struct MyNullableBoxed(String);
 /// ```
 ///
 /// [`BoxedType`]: ../glib/subclass/boxed/trait.BoxedType.html
@@ -555,7 +559,8 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 }
 
 /// Derive macro for defining a [`SharedType`]`::get_type` function and
-/// the [`glib::Value`] traits.
+/// the [`glib::Value`] traits. Optionally, the type can be marked as
+/// `nullable` to get an implemention of `glib::value::ToValueOptional`.
 ///
 /// # Example
 ///
@@ -567,9 +572,14 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 /// struct MySharedInner {
 ///   foo: String,
 /// }
+///
 /// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
 /// #[shared_boxed_type(name = "MySharedBoxed")]
-/// struct MyShared(std::sync::Arc<MySharedInner>);
+/// struct MySharedBoxed(std::sync::Arc<MySharedInner>);
+///
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+/// #[shared_boxed_type(name = "MyNullableSharedBoxed", nullable)]
+/// struct MyNullableSharedBoxed(std::sync::Arc<MySharedInner>);
 /// ```
 ///
 /// [`SharedType`]: ../glib/subclass/shared/trait.SharedType.html
