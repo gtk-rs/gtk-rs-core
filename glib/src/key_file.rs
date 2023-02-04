@@ -2,7 +2,7 @@
 
 use std::{mem, path, ptr};
 
-use crate::{translate::*, Error, GStrPtr, GString, KeyFile, KeyFileFlags, PtrSlice};
+use crate::{translate::*, Error, GString, GStringPtr, KeyFile, KeyFileFlags, PtrSlice};
 
 impl KeyFile {
     #[doc(alias = "g_key_file_save_to_file")]
@@ -87,7 +87,7 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_groups")]
     #[doc(alias = "get_groups")]
-    pub fn groups(&self) -> PtrSlice<GStrPtr> {
+    pub fn groups(&self) -> PtrSlice<GStringPtr> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let ret = ffi::g_key_file_get_groups(self.to_glib_none().0, length.as_mut_ptr());
@@ -97,7 +97,7 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_keys")]
     #[doc(alias = "get_keys")]
-    pub fn keys(&self, group_name: &str) -> Result<PtrSlice<GStrPtr>, crate::Error> {
+    pub fn keys(&self, group_name: &str) -> Result<PtrSlice<GStringPtr>, crate::Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -200,7 +200,7 @@ impl KeyFile {
 
     #[doc(alias = "g_key_file_get_string_list")]
     #[doc(alias = "get_string_list")]
-    pub fn string_list(&self, group_name: &str, key: &str) -> Result<PtrSlice<GStrPtr>, Error> {
+    pub fn string_list(&self, group_name: &str, key: &str) -> Result<PtrSlice<GStringPtr>, Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -256,7 +256,7 @@ impl KeyFile {
         group_name: &str,
         key: &str,
         locale: Option<&str>,
-    ) -> Result<PtrSlice<GStrPtr>, Error> {
+    ) -> Result<PtrSlice<GStringPtr>, Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();

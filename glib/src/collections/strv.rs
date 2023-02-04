@@ -2,7 +2,7 @@
 
 use std::{ffi::c_char, fmt, marker::PhantomData, mem, ptr};
 
-use crate::{translate::*, GStr, GStrPtr, GString};
+use crate::{translate::*, GStr, GString, GStringPtr};
 
 // rustdoc-stripper-ignore-next
 /// Minimum size of the `StrV` allocation.
@@ -100,25 +100,25 @@ impl Default for StrV {
     }
 }
 
-impl AsRef<[GStrPtr]> for StrV {
+impl AsRef<[GStringPtr]> for StrV {
     #[inline]
-    fn as_ref(&self) -> &[GStrPtr] {
+    fn as_ref(&self) -> &[GStringPtr] {
         self.as_slice()
     }
 }
 
-impl std::borrow::Borrow<[GStrPtr]> for StrV {
+impl std::borrow::Borrow<[GStringPtr]> for StrV {
     #[inline]
-    fn borrow(&self) -> &[GStrPtr] {
+    fn borrow(&self) -> &[GStringPtr] {
         self.as_slice()
     }
 }
 
 impl std::ops::Deref for StrV {
-    type Target = [GStrPtr];
+    type Target = [GStringPtr];
 
     #[inline]
-    fn deref(&self) -> &[GStrPtr] {
+    fn deref(&self) -> &[GStringPtr] {
         self.as_slice()
     }
 }
@@ -160,8 +160,8 @@ impl std::iter::FromIterator<GString> for StrV {
 }
 
 impl<'a> std::iter::IntoIterator for &'a StrV {
-    type Item = &'a GStrPtr;
-    type IntoIter = std::slice::Iter<'a, GStrPtr>;
+    type Item = &'a GStringPtr;
+    type IntoIter = std::slice::Iter<'a, GStringPtr>;
 
     #[inline]
     fn into_iter(self) -> Self::IntoIter {
@@ -201,12 +201,12 @@ impl IntoIter {
     // rustdoc-stripper-ignore-next
     /// Returns the remaining items as slice.
     #[inline]
-    pub fn as_slice(&self) -> &[GStrPtr] {
+    pub fn as_slice(&self) -> &[GStringPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
             } else {
-                std::slice::from_raw_parts(self.idx.as_ptr() as *const GStrPtr, self.len)
+                std::slice::from_raw_parts(self.idx.as_ptr() as *const GStringPtr, self.len)
             }
         }
     }
@@ -407,7 +407,7 @@ impl StrV {
     // rustdoc-stripper-ignore-next
     /// Borrows a C array.
     #[inline]
-    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a [GStrPtr] {
+    pub unsafe fn from_glib_borrow<'a>(ptr: *const *const c_char) -> &'a [GStringPtr] {
         let mut len = 0;
         if !ptr.is_null() {
             while !(*ptr.add(len)).is_null() {
@@ -420,13 +420,16 @@ impl StrV {
     // rustdoc-stripper-ignore-next
     /// Borrows a C array.
     #[inline]
-    pub unsafe fn from_glib_borrow_num<'a>(ptr: *const *const c_char, len: usize) -> &'a [GStrPtr] {
+    pub unsafe fn from_glib_borrow_num<'a>(
+        ptr: *const *const c_char,
+        len: usize,
+    ) -> &'a [GStringPtr] {
         debug_assert!(!ptr.is_null() || len == 0);
 
         if len == 0 {
             &[]
         } else {
-            std::slice::from_raw_parts(ptr as *const GStrPtr, len)
+            std::slice::from_raw_parts(ptr as *const GStringPtr, len)
         }
     }
 
@@ -675,14 +678,14 @@ impl StrV {
     }
 
     // rustdoc-stripper-ignore-next
-    /// Borrows this slice as a `&[GStrPtr]`.
+    /// Borrows this slice as a `&[GStringPtr]`.
     #[inline]
-    pub fn as_slice(&self) -> &[GStrPtr] {
+    pub fn as_slice(&self) -> &[GStringPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
             } else {
-                std::slice::from_raw_parts(self.ptr.as_ptr() as *const GStrPtr, self.len)
+                std::slice::from_raw_parts(self.ptr.as_ptr() as *const GStringPtr, self.len)
             }
         }
     }
@@ -948,7 +951,7 @@ impl crate::StaticType for StrV {
     }
 }
 
-impl<'a> crate::StaticType for &'a [GStrPtr] {
+impl<'a> crate::StaticType for &'a [GStringPtr] {
     #[inline]
     fn static_type() -> crate::Type {
         <Vec<String>>::static_type()
@@ -968,7 +971,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for StrV {
     }
 }
 
-unsafe impl<'a> crate::value::FromValue<'a> for &'a [GStrPtr] {
+unsafe impl<'a> crate::value::FromValue<'a> for &'a [GStringPtr] {
     type Checker = crate::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a crate::value::Value) -> Self {
