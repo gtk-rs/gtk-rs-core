@@ -394,7 +394,7 @@ impl Clone for StrV {
         unsafe {
             let mut s = Self::with_capacity(self.len());
             for (i, item) in self.iter().enumerate() {
-                *s.ptr.as_ptr().add(i) = GString::from(item.as_str()).into_glib_ptr();
+                *s.ptr.as_ptr().add(i) = GString::from(item.to_str()).into_glib_ptr();
             }
             s.len = self.len();
             *s.ptr.as_ptr().add(s.len) = ptr::null_mut();
@@ -446,11 +446,23 @@ impl StrV {
         if len == 0 {
             StrV::default()
         } else {
-            // Need to fully copy the array here.
-            let slice = Self::from_glib_borrow_num(ptr, len);
-            let mut s = Self::new();
-            s.extend_from_slice(slice);
-            s
+            let new_ptr =
+                ffi::g_malloc(mem::size_of::<*mut c_char>() * len + 1) as *mut *mut c_char;
+
+            // Need to clone every item because we don't own it here
+            for i in 0..len {
+                let p = ptr.add(i) as *mut *const c_char;
+                let q = new_ptr.add(i) as *mut *const c_char;
+                *q = ffi::g_strdup(*p);
+            }
+
+            *new_ptr.add(len) = ptr::null_mut();
+
+            StrV {
+                ptr: ptr::NonNull::new_unchecked(new_ptr),
+                len,
+                capacity: len + 1,
+            }
         }
     }
 

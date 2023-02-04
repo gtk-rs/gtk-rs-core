@@ -670,6 +670,22 @@ impl GlibPtrDefault for GStringPtr {
     type GlibType = *mut c_char;
 }
 
+impl GStringPtr {
+    // rustdoc-stripper-ignore-next
+    /// Returns the corresponding [`&GStr`].
+    #[inline]
+    pub fn to_gstr(&self) -> &GStr {
+        unsafe { GStr::from_ptr(self.0.as_ptr()) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the corresponding [`&str`].
+    #[inline]
+    pub fn to_str(&self) -> &str {
+        self.to_gstr().as_str()
+    }
+}
+
 impl Clone for GStringPtr {
     #[inline]
     fn clone(&self) -> GStringPtr {
@@ -688,37 +704,14 @@ impl Drop for GStringPtr {
 
 impl fmt::Debug for GStringPtr {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(self.as_str())
-    }
-}
-
-impl std::ops::Deref for GStringPtr {
-    type Target = GStr;
-
-    #[inline]
-    fn deref(&self) -> &Self::Target {
-        self.as_ref()
-    }
-}
-
-impl AsRef<GStr> for GStringPtr {
-    #[inline]
-    fn as_ref(&self) -> &GStr {
-        unsafe { GStr::from_ptr(self.0.as_ptr()) }
-    }
-}
-
-impl AsRef<str> for GStringPtr {
-    #[inline]
-    fn as_ref(&self) -> &str {
-        self.as_str()
+        f.write_str(self.to_str())
     }
 }
 
 impl fmt::Display for GStringPtr {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.as_str())
+        f.write_str(self.to_str())
     }
 }
 
@@ -727,161 +720,161 @@ impl Eq for GStringPtr {}
 impl PartialEq for GStringPtr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.as_str()
+        self.to_gstr() == other.to_gstr()
     }
 }
 
 impl PartialEq<GStringPtr> for String {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.as_str()
+        self.as_str() == other.to_str()
     }
 }
 
 impl PartialEq<GStringPtr> for GString {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.as_str()
+        self.as_str() == other.to_str()
     }
 }
 
 impl PartialEq<str> for GStringPtr {
     #[inline]
     fn eq(&self, other: &str) -> bool {
-        self.as_str() == other
+        self.to_str() == other
     }
 }
 
 impl PartialEq<&str> for GStringPtr {
     #[inline]
     fn eq(&self, other: &&str) -> bool {
-        self.as_str() == *other
+        self.to_str() == *other
     }
 }
 
 impl PartialEq<GStr> for GStringPtr {
     #[inline]
     fn eq(&self, other: &GStr) -> bool {
-        self.as_str() == other
+        self.to_gstr() == other
     }
 }
 
 impl PartialEq<&GStr> for GStringPtr {
     #[inline]
     fn eq(&self, other: &&GStr) -> bool {
-        self.as_str() == *other
+        self.to_gstr() == *other
     }
 }
 
 impl PartialEq<GStringPtr> for &str {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        *self == other.as_str()
+        *self == other.to_str()
     }
 }
 
 impl PartialEq<GStringPtr> for &GStr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        *self == other.as_str()
+        self.as_str() == other.to_str()
     }
 }
 
 impl PartialEq<String> for GStringPtr {
     #[inline]
     fn eq(&self, other: &String) -> bool {
-        self.as_str() == other.as_str()
+        self.to_str() == other.as_str()
     }
 }
 
 impl PartialEq<GString> for GStringPtr {
     #[inline]
     fn eq(&self, other: &GString) -> bool {
-        self.as_str() == other.as_str()
+        self.to_str() == other.as_str()
     }
 }
 
 impl PartialEq<GStringPtr> for str {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self == other.as_str()
+        self == other.to_str()
     }
 }
 
 impl PartialEq<GStringPtr> for GStr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self == other.as_str()
+        self == other.to_gstr()
     }
 }
 
 impl PartialOrd<GStringPtr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.to_gstr().cmp(other.to_gstr()))
     }
 }
 
 impl Ord for GStringPtr {
     #[inline]
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.as_str().cmp(other.as_str())
+        self.to_gstr().cmp(other.to_gstr())
     }
 }
 
 impl PartialOrd<GStringPtr> for String {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.as_str().cmp(other.to_str()))
     }
 }
 
 impl PartialOrd<GStringPtr> for GString {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.as_str().cmp(other.to_str()))
     }
 }
 
 impl PartialOrd<String> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.to_str().cmp(other.as_str()))
     }
 }
 
 impl PartialOrd<GString> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GString) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.to_str().cmp(other.as_str()))
     }
 }
 
 impl PartialOrd<GStringPtr> for str {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other.as_str()))
+        Some(self.cmp(other.to_str()))
     }
 }
 
 impl PartialOrd<GStringPtr> for GStr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.as_str()))
+        Some(self.cmp(other.to_gstr()))
     }
 }
 
 impl PartialOrd<str> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &str) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other))
+        Some(self.to_str().cmp(other))
     }
 }
 
 impl PartialOrd<GStr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other))
+        Some(self.to_gstr().cmp(other))
     }
 }
 
@@ -892,31 +885,10 @@ impl AsRef<GStringPtr> for GStringPtr {
     }
 }
 
-impl AsRef<std::ffi::OsStr> for GStringPtr {
-    #[inline]
-    fn as_ref(&self) -> &std::ffi::OsStr {
-        self.as_str().as_ref()
-    }
-}
-
-impl AsRef<std::path::Path> for GStringPtr {
-    #[inline]
-    fn as_ref(&self) -> &std::path::Path {
-        self.as_str().as_ref()
-    }
-}
-
-impl AsRef<[u8]> for GStringPtr {
-    #[inline]
-    fn as_ref(&self) -> &[u8] {
-        self.as_bytes()
-    }
-}
-
 impl std::hash::Hash for GStringPtr {
     #[inline]
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.as_str().hash(state);
+        self.to_str().hash(state);
     }
 }
 
