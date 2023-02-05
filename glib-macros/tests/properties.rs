@@ -4,6 +4,59 @@ use glib::prelude::*;
 use glib::ParamFlags;
 
 #[cfg(test)]
+mod base {
+    use glib::prelude::*;
+    use glib::subclass::prelude::*;
+    use glib_macros::Properties;
+    use std::marker::PhantomData;
+
+    pub mod imp {
+        use glib::{ParamSpec, Value};
+
+        use super::*;
+
+        #[derive(Properties, Default)]
+        #[properties(wrapper_type = super::Base)]
+        pub struct Base {
+            #[property(get = Self::not_overridden)]
+            overridden: PhantomData<u32>,
+            #[property(get = Self::not_overridden)]
+            not_overridden: PhantomData<u32>,
+        }
+
+        impl ObjectImpl for Base {
+            fn properties() -> &'static [ParamSpec] {
+                Self::derived_properties()
+            }
+            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
+                Self::derived_set_property(self, _id, _value, _pspec)
+            }
+            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
+                Self::derived_property(self, id, _pspec)
+            }
+        }
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for Base {
+            const NAME: &'static str = "MyBase";
+            type Type = super::Base;
+        }
+
+        impl Base {
+            fn not_overridden(&self) -> u32 {
+                42
+            }
+        }
+    }
+
+    glib::wrapper! {
+        pub struct Base(ObjectSubclass<imp::Base>);
+    }
+
+    unsafe impl<T: ObjectImpl> IsSubclassable<T> for Base {}
+}
+
+#[cfg(test)]
 mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
@@ -13,6 +66,8 @@ mod foo {
     use std::cell::RefCell;
     use std::marker::PhantomData;
     use std::sync::Mutex;
+
+    use super::base::Base;
 
     #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
     #[boxed_type(name = "SimpleBoxedString")]
@@ -88,6 +143,8 @@ mod foo {
             once_cell: OnceCell<u8>,
             #[property(get, set)]
             cell: Cell<u8>,
+            #[property(get = Self::overridden, override_class = Base)]
+            overridden: PhantomData<u32>,
         }
 
         impl ObjectImpl for Foo {
@@ -106,6 +163,7 @@ mod foo {
         impl ObjectSubclass for Foo {
             const NAME: &'static str = "MyFoo";
             type Type = super::Foo;
+            type ParentType = Base;
         }
 
         impl Foo {
@@ -118,11 +176,14 @@ mod foo {
             fn set_fizz(&self, value: String) {
                 *self.fizz.borrow_mut() = format!("custom set: {}", value);
             }
+            fn overridden(&self) -> u32 {
+                43
+            }
         }
     }
 
     glib::wrapper! {
-        pub struct Foo(ObjectSubclass<imp::Foo>);
+        pub struct Foo(ObjectSubclass<imp::Foo>) @extends Base;
     }
 }
 
@@ -274,5 +335,13 @@ fn props() {
             myfoo.property::<String>("author-nick"),
             "setter nick".to_string()
         );
+    }
+
+    // overrides
+    {
+        let overridden: u32 = myfoo.property("overridden");
+        assert_eq!(overridden, 43);
+        let not_overridden: u32 = myfoo.property("not-overridden");
+        assert_eq!(not_overridden, 42);
     }
 }
