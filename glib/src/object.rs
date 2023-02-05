@@ -878,6 +878,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
+                debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
@@ -891,6 +892,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
+                debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
@@ -904,6 +906,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
+                debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_full(ptr as *mut _)),
@@ -917,6 +920,7 @@ macro_rules! glib_object_wrapper {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
             unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
+                debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $crate::translate::Borrowed::new(
                     $name {
