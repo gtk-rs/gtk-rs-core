@@ -144,16 +144,29 @@ impl GStr {
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
     /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
     ///
+    /// If the string is valid UTF-8 then it is directly returned, otherwise `None` is returned.
+    #[inline]
+    pub unsafe fn from_ptr_checked<'a>(ptr: *const c_char) -> Option<&'a Self> {
+        let mut end_ptr = ptr::null();
+        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
+            Some(Self::from_utf8_with_nul_unchecked(slice::from_raw_parts(
+                ptr as *const u8,
+                end_ptr.offset_from(ptr) as usize + 1,
+            )))
+        } else {
+            None
+        }
+    }
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
     /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
     /// every invalid character replaced by the Unicode replacement character (U+FFFD).
     #[inline]
     pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, Self> {
-        let mut end_ptr = ptr::null();
-        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
-            Cow::Borrowed(Self::from_utf8_with_nul_unchecked(slice::from_raw_parts(
-                ptr as *const u8,
-                end_ptr.offset_from(ptr) as usize + 1,
-            )))
+        if let Some(gs) = Self::from_ptr_checked(ptr) {
+            Cow::Borrowed(gs)
         } else {
             Cow::Owned(GString::from_glib_full(ffi::g_utf8_make_valid(
                 ptr as *const _,
