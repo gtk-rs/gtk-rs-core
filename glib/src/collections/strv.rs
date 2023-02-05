@@ -201,7 +201,7 @@ impl IntoIter {
     // rustdoc-stripper-ignore-next
     /// Returns the remaining items as slice.
     #[inline]
-    pub fn as_slice(&self) -> &[GStringPtr] {
+    pub const fn as_slice(&self) -> &[GStringPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
@@ -692,7 +692,7 @@ impl StrV {
     // rustdoc-stripper-ignore-next
     /// Borrows this slice as a `&[GStringPtr]`.
     #[inline]
-    pub fn as_slice(&self) -> &[GStringPtr] {
+    pub const fn as_slice(&self) -> &[GStringPtr] {
         unsafe {
             if self.len == 0 {
                 &[]
