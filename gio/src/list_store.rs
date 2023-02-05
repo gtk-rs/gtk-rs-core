@@ -107,6 +107,16 @@ impl ListStore {
     }
 }
 
+impl<P: IsA<glib::Object>> std::iter::FromIterator<P> for ListStore {
+    fn from_iter<I: IntoIterator<Item = P>>(iter: I) -> Self {
+        let store = Self::new(P::static_type());
+        for item in iter.into_iter() {
+            store.append(&item)
+        }
+        store
+    }
+}
+
 impl<'a> std::iter::IntoIterator for &'a ListStore {
     type Item = <&'a ListModel as IntoIterator>::Item;
     type IntoIter = <&'a ListModel as IntoIterator>::IntoIter;
@@ -168,5 +178,16 @@ mod tests {
         let list_from_slice = ListStore::new(ListStore::static_type());
         list_from_slice.extend_from_slice(&[item0, item1.clone()]);
         assert_eq!(list_from_slice.item(1).as_ref(), Some(item1.upcast_ref()));
+    }
+
+    #[test]
+    fn from_iterator() {
+        let item0 = ListStore::new(ListStore::static_type());
+        let item1 = ListStore::new(ListStore::static_type());
+        let v = vec![item0.clone(), item1.clone()];
+        let list = ListStore::from_iter(v);
+        assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
+        assert_eq!(list.item(1).as_ref(), Some(item1.upcast_ref()));
+        assert_eq!(list.item(2).as_ref(), None);
     }
 }
