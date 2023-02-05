@@ -64,6 +64,8 @@ mod foo {
             fake_field: PhantomData<String>,
             #[property(get, set, explicit_notify, lax_validation)]
             custom_flags: RefCell<String>,
+            #[property(get, set, default = "hello")]
+            with_default: RefCell<String>,
             #[property(get, set, builder())]
             simple_builder: RefCell<u32>,
             #[property(get, set, builder().minimum(0).maximum(5))]
@@ -159,6 +161,17 @@ fn props() {
     assert_eq!(
         myfoo.find_property("custom_flags").unwrap().flags(),
         ParamFlags::EXPLICIT_NOTIFY | ParamFlags::READWRITE | ParamFlags::LAX_VALIDATION
+    );
+
+    // default value
+    assert_eq!(
+        myfoo
+            .find_property("with_default")
+            .unwrap()
+            .default_value()
+            .get::<String>()
+            .unwrap(),
+        "hello".to_string()
     );
 
     // numeric builder

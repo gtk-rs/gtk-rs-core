@@ -114,6 +114,11 @@ impl Parse for PropAttr {
                 "set" => PropAttr::Set(Some(input.parse()?)),
                 "type" => PropAttr::Type(input.parse()?),
                 "member" => PropAttr::Member(input.parse()?),
+                // Special case "default = ..." and map it to .default_value(...)
+                "default" => PropAttr::BuilderField((
+                    syn::Ident::new("default_value", name.span()),
+                    Some(input.parse()?),
+                )),
                 _ => PropAttr::BuilderField((name, Some(input.parse()?))),
             }
         } else if input.peek(syn::token::Paren) {
