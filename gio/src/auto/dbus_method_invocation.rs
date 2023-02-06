@@ -6,7 +6,10 @@
 #[cfg_attr(feature = "dox", doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
-use glib::{prelude::*, translate::*};
+#[cfg(any(unix, feature = "dox"))]
+#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+use glib::prelude::*;
+use glib::translate::*;
 use std::fmt;
 
 glib::wrapper! {

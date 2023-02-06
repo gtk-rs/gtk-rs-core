@@ -43,8 +43,7 @@ impl<O: IsA<Fontset>> FontsetExt for O {
             let fontset = from_glib_borrow(fontset);
             let font = from_glib_borrow(font);
             let callback: *mut P = user_data as *const _ as usize as *mut P;
-            let res = (*callback)(&fontset, &font);
-            res.into_glib()
+            (*callback)(&fontset, &font).into_glib()
         }
         let func = Some(func_func::<P> as _);
         let super_callback0: &P = &func_data;

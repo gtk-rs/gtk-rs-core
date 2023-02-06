@@ -948,7 +948,7 @@ impl<O: IsA<File>> FileExt for O {
                 callback(current_num_bytes, total_num_bytes)
             } else {
                 panic!("cannot get closure...")
-            };
+            }
         }
         let progress_callback = if progress_callback_data.is_some() {
             Some(progress_callback_func as _)
@@ -2036,7 +2036,7 @@ impl<O: IsA<File>> FileExt for O {
                 callback(current_num_bytes, total_num_bytes)
             } else {
                 panic!("cannot get closure...")
-            };
+            }
         }
         let progress_callback = if progress_callback_data.is_some() {
             Some(progress_callback_func as _)

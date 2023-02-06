@@ -123,12 +123,12 @@ impl<O: IsA<Vfs>> VfsExt for O {
             let identifier: Borrowed<glib::GString> = from_glib_borrow(identifier);
             let callback: &Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>> =
                 &*(user_data as *mut _);
-            let res = if let Some(ref callback) = *callback {
+            if let Some(ref callback) = *callback {
                 callback(&vfs, identifier.as_str())
             } else {
                 panic!("cannot get closure...")
-            };
-            res.to_glib_full()
+            }
+            .to_glib_full()
         }
         let uri_func = if uri_func_data.is_some() {
             Some(uri_func_func as _)
@@ -146,12 +146,12 @@ impl<O: IsA<Vfs>> VfsExt for O {
             let identifier: Borrowed<glib::GString> = from_glib_borrow(identifier);
             let callback: &Option<Box_<dyn Fn(&Vfs, &str) -> File + 'static>> =
                 &*(user_data as *mut _);
-            let res = if let Some(ref callback) = *callback {
+            if let Some(ref callback) = *callback {
                 callback(&vfs, identifier.as_str())
             } else {
                 panic!("cannot get closure...")
-            };
-            res.to_glib_full()
+            }
+            .to_glib_full()
         }
         let parse_name_func = if parse_name_func_data.is_some() {
             Some(parse_name_func_func as _)
