@@ -6,13 +6,6 @@ use glib::SignalHandlerId;
 
 use crate::{prelude::*, ListModel};
 
-#[derive(thiserror::Error, Debug, PartialEq, Eq)]
-#[error("can't downcast ListModel's items (`{actual}`) to the requested type `{requested}`")]
-pub struct ListModelItemsTypeErr {
-    actual: glib::Type,
-    requested: glib::Type,
-}
-
 pub trait ListModelExtManual: Sized {
     // rustdoc-stripper-ignore-next
     /// Get an immutable snapshot of the container inside the `ListModel`.
@@ -23,7 +16,11 @@ pub trait ListModelExtManual: Sized {
     // rustdoc-stripper-ignore-next
     /// If `T::static_type().is_a(self.item_type())` then it returns an iterator over the `ListModel` elements,
     /// else the types are not compatible and returns an `Err(...)`.
-    fn iter<T: IsA<glib::Object>>(&self) -> Result<ListModelIter<T>, ListModelItemsTypeErr>;
+    ///
+    /// # Panics
+    ///
+    /// Panics if `T::static_type().is_a(self.item_type())` is not true.
+    fn iter<T: IsA<glib::Object>>(&self) -> ListModelIter<T>;
 }
 
 impl<T: IsA<ListModel>> ListModelExtManual for T {
@@ -34,13 +31,9 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
         }
         res
     }
-    fn iter<LT: IsA<glib::Object>>(&self) -> Result<ListModelIter<LT>, ListModelItemsTypeErr> {
-        if !self.item_type().is_a(LT::static_type()) {
-            return Err(ListModelItemsTypeErr {
-                actual: self.item_type(),
-                requested: LT::static_type(),
-            });
-        }
+
+    fn iter<LT: IsA<glib::Object>>(&self) -> ListModelIter<LT> {
+        assert!(self.item_type().is_a(LT::static_type()));
 
         let len = self.n_items();
         let changed = Rc::new(Cell::new(false));
@@ -52,14 +45,14 @@ impl<T: IsA<ListModel>> ListModelExtManual for T {
             }
         }));
 
-        Ok(ListModelIter {
+        ListModelIter {
             ty: Default::default(),
             i: 0,
             reverse_pos: len,
             model: self.upcast_ref(),
             changed,
             signal_id,
-        })
+        }
     }
 }
 
@@ -194,7 +187,6 @@ impl<'a> std::iter::IntoIterator for &'a ListModel {
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
-            .expect("can't create a ListModelIter with the requested item type")
     }
 }
 
@@ -210,7 +202,7 @@ fn list_model_iter_ok() {
     list.append(&m2);
     list.append(&m3);
 
-    let mut iter = list.iter::<crate::Menu>().unwrap();
+    let mut iter = list.iter::<crate::Menu>();
 
     assert_eq!(iter.len(), 3);
     assert_eq!(iter.next(), Some(Ok(m1)));
@@ -237,7 +229,8 @@ fn list_model_iter_err() {
     list.append(&m3);
     list.append(&m4);
 
-    let mut iter = list.iter::<crate::Menu>().unwrap();
+    let mut iter = list.iter::<crate::Menu>();
+
     assert_eq!(iter.next_back(), Some(Ok(m4)));
 
     // These two don't affect the iter
@@ -273,7 +266,7 @@ fn list_model_iter_nth() {
     list.append(&m5);
     list.append(&m6);
 
-    let mut iter = list.iter::<crate::Menu>().unwrap();
+    let mut iter = list.iter::<crate::Menu>();
 
     assert_eq!(iter.len(), 6);
     assert_eq!(iter.nth(1), Some(Ok(m2)));
@@ -296,7 +289,7 @@ fn list_model_iter_last() {
     list.append(&m2);
     list.append(&m3);
 
-    let iter = list.iter::<crate::Menu>().unwrap();
+    let iter = list.iter::<crate::Menu>();
 
     assert_eq!(iter.len(), 3);
     assert_eq!(iter.last(), Some(Ok(m3)));
@@ -313,7 +306,7 @@ fn list_model_iter_count() {
     list.append(&m2);
     list.append(&m3);
 
-    let iter = list.iter::<crate::Menu>().unwrap();
+    let iter = list.iter::<crate::Menu>();
 
     assert_eq!(iter.len(), 3);
     assert_eq!(iter.count(), 3);
