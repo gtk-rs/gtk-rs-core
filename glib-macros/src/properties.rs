@@ -85,6 +85,10 @@ enum PropAttr {
     Get(Option<syn::Expr>),
     Set(Option<syn::Expr>),
 
+    // ident [= expr]
+    OverrideClass(syn::Type),
+    OverrideInterface(syn::Type),
+
     // ident = expr
     Type(syn::Type),
 
@@ -112,6 +116,8 @@ impl Parse for PropAttr {
                 "name" => PropAttr::Name(input.parse()?),
                 "get" => PropAttr::Get(Some(input.parse()?)),
                 "set" => PropAttr::Set(Some(input.parse()?)),
+                "override_class" => PropAttr::OverrideClass(input.parse()?),
+                "override_interface" => PropAttr::OverrideInterface(input.parse()?),
                 "type" => PropAttr::Type(input.parse()?),
                 "member" => PropAttr::Member(input.parse()?),
                 // Special case "default = ..." and map it to .default_value(...)
@@ -138,8 +144,7 @@ impl Parse for PropAttr {
                 }
             }
         } else {
-            // attributes with only the identifier
-            // name
+            // attributes with only the identifier name
             match &*name_str {
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
@@ -163,12 +168,15 @@ impl Parse for PropAttr {
 struct ReceivedAttrs {
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
+    override_class: Option<syn::Type>,
+    override_interface: Option<syn::Type>,
     ty: Option<syn::Type>,
     member: Option<syn::Ident>,
     name: Option<syn::LitStr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
 }
+
 impl ReceivedAttrs {
     fn new(
         attrs_span: &proc_macro2::Span,
@@ -185,13 +193,24 @@ impl ReceivedAttrs {
                 "No `get` or `set` specified: at least one is required.".to_string(),
             ));
         }
+
+        if this.override_class.is_some() && this.override_interface.is_some() {
+            return Err(syn::Error::new(
+                *attrs_span,
+                "Both `override_class` and `override_interface` specified.".to_string(),
+            ));
+        }
+
         Ok(this)
     }
+
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
             PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
             PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
             PropAttr::Name(lit) => self.name = Some(lit),
+            PropAttr::OverrideClass(ty) => self.override_class = Some(ty),
+            PropAttr::OverrideInterface(ty) => self.override_interface = Some(ty),
             PropAttr::Type(ty) => self.ty = Some(ty),
             PropAttr::Member(member) => self.member = Some(member),
             PropAttr::Builder(required_params, optionals) => {
@@ -211,12 +230,15 @@ struct PropDesc {
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
+    override_class: Option<syn::Type>,
+    override_interface: Option<syn::Type>,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
 }
+
 impl PropDesc {
     fn new(
         attrs_span: proc_macro2::Span,
@@ -227,6 +249,8 @@ impl PropDesc {
         let ReceivedAttrs {
             get,
             set,
+            override_class,
+            override_interface,
             ty,
             member,
             name,
@@ -247,11 +271,13 @@ impl PropDesc {
         Ok(Self {
             attrs_span,
             field_ident,
+            ty,
+            name,
+            override_class,
+            override_interface,
             get,
             set,
-            ty,
             member,
-            name,
             builder,
             builder_fields,
         })
@@ -271,6 +297,19 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
             (Some(_), None) => quote!(.read_only()),
             (None, Some(_)) => quote!(.write_only()),
             (None, None) => unreachable!("No `get` or `set` specified"),
+        };
+
+        match (&prop.override_class, &prop.override_interface) {
+            (Some(c), None) => {
+                return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#name))
+            }
+            (None, Some(i)) => {
+                return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#name))
+            }
+            (Some(_), Some(_)) => {
+                unreachable!("Both `override_class` and `override_interface` specified")
+            }
+            (None, None) => (),
         };
 
         let builder_call = builder
@@ -309,6 +348,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     )
 }
+
 fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let match_branch_get = props.iter().flat_map(|p| {
@@ -360,6 +400,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         }
     )
 }
+
 fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let match_branch_set = props.iter().flat_map(|p| {
