@@ -144,16 +144,29 @@ impl GStr {
     /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
     /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
     ///
+    /// If the string is valid UTF-8 then it is directly returned, otherwise `None` is returned.
+    #[inline]
+    pub unsafe fn from_ptr_checked<'a>(ptr: *const c_char) -> Option<&'a Self> {
+        let mut end_ptr = ptr::null();
+        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
+            Some(Self::from_utf8_with_nul_unchecked(slice::from_raw_parts(
+                ptr as *const u8,
+                end_ptr.offset_from(ptr) as usize + 1,
+            )))
+        } else {
+            None
+        }
+    }
+    // rustdoc-stripper-ignore-next
+    /// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also apply here.
+    ///
     /// If the string is valid UTF-8 then it is directly returned otherwise a copy is created with
     /// every invalid character replaced by the Unicode replacement character (U+FFFD).
     #[inline]
     pub unsafe fn from_ptr_lossy<'a>(ptr: *const c_char) -> Cow<'a, Self> {
-        let mut end_ptr = ptr::null();
-        if ffi::g_utf8_validate(ptr as *const _, -1, &mut end_ptr) != ffi::GFALSE {
-            Cow::Borrowed(Self::from_utf8_with_nul_unchecked(slice::from_raw_parts(
-                ptr as *const u8,
-                end_ptr.offset_from(ptr) as usize + 1,
-            )))
+        if let Some(gs) = Self::from_ptr_checked(ptr) {
+            Cow::Borrowed(gs)
         } else {
             Cow::Owned(GString::from_glib_full(ffi::g_utf8_make_valid(
                 ptr as *const _,
@@ -684,12 +697,37 @@ impl GStringPtr {
     pub fn to_str(&self) -> &str {
         self.to_gstr().as_str()
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the string's C pointer.
+    #[inline]
+    pub const fn as_ptr(&self) -> *const c_char {
+        self.0.as_ptr()
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Wrapper around `libc::strcmp` returning `Ordering`.
+    ///
+    /// # Safety
+    ///
+    /// `a` and `b` must be non-null pointers to nul-terminated C strings.
+    #[inline]
+    unsafe fn strcmp(a: *const c_char, b: *const c_char) -> Ordering {
+        from_glib(libc::strcmp(a, b))
+    }
 }
 
 impl Clone for GStringPtr {
     #[inline]
     fn clone(&self) -> GStringPtr {
         unsafe { GStringPtr(ptr::NonNull::new_unchecked(ffi::g_strdup(self.0.as_ptr()))) }
+    }
+}
+
+impl IntoGlibPtr<*mut c_char> for GStringPtr {
+    #[inline]
+    unsafe fn into_glib_ptr(self) -> *mut c_char {
+        self.0.as_ptr()
     }
 }
 
@@ -704,7 +742,7 @@ impl Drop for GStringPtr {
 
 impl fmt::Debug for GStringPtr {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(self.to_str())
+        <&GStr as fmt::Debug>::fmt(&self.to_gstr(), f)
     }
 }
 
@@ -720,105 +758,105 @@ impl Eq for GStringPtr {}
 impl PartialEq for GStringPtr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.to_gstr() == other.to_gstr()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for String {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.to_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for GString {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.to_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<str> for GStringPtr {
     #[inline]
     fn eq(&self, other: &str) -> bool {
-        self.to_str() == other
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<&str> for GStringPtr {
     #[inline]
     fn eq(&self, other: &&str) -> bool {
-        self.to_str() == *other
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStr> for GStringPtr {
     #[inline]
     fn eq(&self, other: &GStr) -> bool {
-        self.to_gstr() == other
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<&GStr> for GStringPtr {
     #[inline]
     fn eq(&self, other: &&GStr) -> bool {
-        self.to_gstr() == *other
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for &str {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        *self == other.to_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for &GStr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self.as_str() == other.to_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<String> for GStringPtr {
     #[inline]
     fn eq(&self, other: &String) -> bool {
-        self.to_str() == other.as_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GString> for GStringPtr {
     #[inline]
     fn eq(&self, other: &GString) -> bool {
-        self.to_str() == other.as_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for str {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self == other.to_str()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialEq<GStringPtr> for GStr {
     #[inline]
     fn eq(&self, other: &GStringPtr) -> bool {
-        self == other.to_gstr()
+        self.partial_cmp(other) == Some(Ordering::Equal)
     }
 }
 
 impl PartialOrd<GStringPtr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.to_gstr().cmp(other.to_gstr()))
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
     }
 }
 
 impl Ord for GStringPtr {
     #[inline]
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.to_gstr().cmp(other.to_gstr())
+        unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) }
     }
 }
 
@@ -832,21 +870,21 @@ impl PartialOrd<GStringPtr> for String {
 impl PartialOrd<GStringPtr> for GString {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.as_str().cmp(other.to_str()))
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
     }
 }
 
 impl PartialOrd<String> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &String) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other.as_str()))
+        Some(self.to_str().cmp(other))
     }
 }
 
 impl PartialOrd<GString> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GString) -> Option<std::cmp::Ordering> {
-        Some(self.to_str().cmp(other.as_str()))
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
     }
 }
 
@@ -860,7 +898,7 @@ impl PartialOrd<GStringPtr> for str {
 impl PartialOrd<GStringPtr> for GStr {
     #[inline]
     fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other.to_gstr()))
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
     }
 }
 
@@ -871,10 +909,38 @@ impl PartialOrd<str> for GStringPtr {
     }
 }
 
+impl PartialOrd<&str> for GStringPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &&str) -> Option<std::cmp::Ordering> {
+        Some(self.to_str().cmp(other))
+    }
+}
+
 impl PartialOrd<GStr> for GStringPtr {
     #[inline]
     fn partial_cmp(&self, other: &GStr) -> Option<std::cmp::Ordering> {
-        Some(self.to_gstr().cmp(other))
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
+    }
+}
+
+impl PartialOrd<&GStr> for GStringPtr {
+    #[inline]
+    fn partial_cmp(&self, other: &&GStr) -> Option<std::cmp::Ordering> {
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
+    }
+}
+
+impl PartialOrd<GStringPtr> for &str {
+    #[inline]
+    fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(&other.to_str()))
+    }
+}
+
+impl PartialOrd<GStringPtr> for &GStr {
+    #[inline]
+    fn partial_cmp(&self, other: &GStringPtr) -> Option<std::cmp::Ordering> {
+        Some(unsafe { GStringPtr::strcmp(self.as_ptr(), other.as_ptr()) })
     }
 }
 
