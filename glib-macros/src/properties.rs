@@ -312,6 +312,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             field_ident,
             member,
             get,
+            ty,
             ..
         } = p;
 
@@ -320,7 +321,10 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
         get.as_ref().map(|get| {
             let body = match (member, get) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
-                    DerivedPropertiesEnum::#enum_ident => ::std::convert::From::from((#expr)(&self))
+                    DerivedPropertiesEnum::#enum_ident => {
+                        let value: <#ty as #crate_ident::Property>::Value = (#expr)(&self);
+                        ::std::convert::From::from(value)
+                    }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>

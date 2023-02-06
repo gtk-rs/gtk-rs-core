@@ -45,6 +45,8 @@ fn props() {
                 bar: Mutex<String>,
                 #[property(get, set)]
                 double: RefCell<f64>,
+                #[property(get = |_| 42.0, set)]
+                infer_inline_type: RefCell<f64>,
                 // The following property doesn't store any data. The value of the property is calculated
                 // when the value is accessed.
                 #[property(get = Self::hello_world)]
@@ -230,6 +232,9 @@ fn props() {
 
         myfoo.set_double(0.1);
         assert_eq!(myfoo.property::<f64>("double"), 0.1);
+
+        myfoo.set_infer_inline_type(42.0);
+        assert_eq!(myfoo.property::<f64>("infer-inline-type"), 42.0);
 
         // simple with various String types
         myfoo.set_bar(String::from("setter working"));
