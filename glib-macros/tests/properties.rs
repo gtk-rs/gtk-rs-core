@@ -2,129 +2,132 @@
 
 use glib::prelude::*;
 use glib::ParamFlags;
-#[test]
-fn props() {
-    mod foo {
-        use glib::prelude::*;
-        use glib::subclass::prelude::*;
-        use glib_macros::Properties;
-        use std::cell::Cell;
-        use std::cell::RefCell;
-        use std::marker::PhantomData;
-        use std::sync::Mutex;
 
-        use once_cell::sync::OnceCell;
+#[cfg(test)]
+mod foo {
+    use glib::prelude::*;
+    use glib::subclass::prelude::*;
+    use glib_macros::Properties;
+    use once_cell::sync::OnceCell;
+    use std::cell::Cell;
+    use std::cell::RefCell;
+    use std::marker::PhantomData;
+    use std::sync::Mutex;
 
-        #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
-        #[boxed_type(name = "SimpleBoxedString")]
-        pub struct SimpleBoxedString(pub String);
+    #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
+    #[boxed_type(name = "SimpleBoxedString")]
+    pub struct SimpleBoxedString(pub String);
 
-        #[derive(Copy, Default, Clone, Debug, PartialEq, Eq, glib::Enum)]
-        #[enum_type(name = "SimpleEnum")]
-        pub enum SimpleEnum {
-            #[default]
-            One,
+    #[derive(Copy, Default, Clone, Debug, PartialEq, Eq, glib::Enum)]
+    #[enum_type(name = "SimpleEnum")]
+    pub enum SimpleEnum {
+        #[default]
+        One,
+    }
+
+    #[derive(Default, Clone)]
+    struct Author {
+        name: String,
+        nick: String,
+    }
+
+    pub mod imp {
+        use glib::{ParamSpec, Value};
+        use std::rc::Rc;
+
+        use super::*;
+
+        #[derive(Properties, Default)]
+        #[properties(wrapper_type = super::Foo)]
+        pub struct Foo {
+            #[property(get, set)]
+            bar: Mutex<String>,
+            #[property(get, set)]
+            double: RefCell<f64>,
+            #[property(get = |_| 42.0, set)]
+            infer_inline_type: RefCell<f64>,
+            // The following property doesn't store any data. The value of the property is calculated
+            // when the value is accessed.
+            #[property(get = Self::hello_world)]
+            _buzz: PhantomData<String>,
+            #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
+                blurb = "short description stored in the GLib type system"
+            )]
+            fizz: RefCell<String>,
+            #[property(name = "author-name", get, set, type = String, member = name)]
+            #[property(name = "author-nick", get, set, type = String, member = nick)]
+            author: RefCell<Author>,
+            #[property(
+                type = String,
+                get = |t: &Self| t.author.borrow().name.to_owned(),
+                set = Self::set_author_name)]
+            fake_field: PhantomData<String>,
+            #[property(get, set, explicit_notify, lax_validation)]
+            custom_flags: RefCell<String>,
+            #[property(get, set, default = "hello")]
+            with_default: RefCell<String>,
+            #[property(get, set, builder())]
+            simple_builder: RefCell<u32>,
+            #[property(get, set, builder().minimum(0).maximum(5))]
+            numeric_builder: RefCell<u32>,
+            #[property(get, set, minimum = 0, maximum = 5)]
+            builder_fields_without_builder: RefCell<u32>,
+            #[property(get, set, builder('c'))]
+            builder_with_required_param: RefCell<char>,
+            #[property(get, set)]
+            boxed: RefCell<SimpleBoxedString>,
+            #[property(get, set, builder(SimpleEnum::One))]
+            fenum: RefCell<SimpleEnum>,
+            #[property(get, set)]
+            object: RefCell<Option<glib::Object>>,
+            #[property(get, set)]
+            optional: RefCell<Option<String>>,
+            #[property(get, set)]
+            smart_pointer: Rc<RefCell<String>>,
+            #[property(get, set)]
+            once_cell: OnceCell<u8>,
+            #[property(get, set)]
+            cell: Cell<u8>,
         }
 
-        #[derive(Default, Clone)]
-        struct Author {
-            name: String,
-            nick: String,
-        }
-
-        pub mod imp {
-            use glib::{ParamSpec, Value};
-            use std::rc::Rc;
-
-            use super::*;
-
-            #[derive(Properties, Default)]
-            #[properties(wrapper_type = super::Foo)]
-            pub struct Foo {
-                #[property(get, set)]
-                bar: Mutex<String>,
-                #[property(get, set)]
-                double: RefCell<f64>,
-                #[property(get = |_| 42.0, set)]
-                infer_inline_type: RefCell<f64>,
-                // The following property doesn't store any data. The value of the property is calculated
-                // when the value is accessed.
-                #[property(get = Self::hello_world)]
-                _buzz: PhantomData<String>,
-                #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
-                    blurb = "short description stored in the GLib type system"
-                )]
-                fizz: RefCell<String>,
-                #[property(name = "author-name", get, set, type = String, member = name)]
-                #[property(name = "author-nick", get, set, type = String, member = nick)]
-                author: RefCell<Author>,
-                #[property(
-                    type = String,
-                    get = |t: &Self| t.author.borrow().name.to_owned(),
-                    set = Self::set_author_name)]
-                fake_field: PhantomData<String>,
-                #[property(get, set, explicit_notify, lax_validation)]
-                custom_flags: RefCell<String>,
-                #[property(get, set, builder())]
-                simple_builder: RefCell<u32>,
-                #[property(get, set, builder().minimum(0).maximum(5))]
-                numeric_builder: RefCell<u32>,
-                #[property(get, set, minimum = 0, maximum = 5)]
-                builder_fields_without_builder: RefCell<u32>,
-                #[property(get, set, builder('c'))]
-                builder_with_required_param: RefCell<char>,
-                #[property(get, set)]
-                boxed: RefCell<SimpleBoxedString>,
-                #[property(get, set, builder(SimpleEnum::One))]
-                fenum: RefCell<SimpleEnum>,
-                #[property(get, set)]
-                object: RefCell<Option<glib::Object>>,
-                #[property(get, set)]
-                optional: RefCell<Option<String>>,
-                #[property(get, set)]
-                smart_pointer: Rc<RefCell<String>>,
-                #[property(get, set)]
-                once_cell: OnceCell<u8>,
-                #[property(get, set)]
-                cell: Cell<u8>,
+        impl ObjectImpl for Foo {
+            fn properties() -> &'static [ParamSpec] {
+                Self::derived_properties()
             }
-
-            impl ObjectImpl for Foo {
-                fn properties() -> &'static [ParamSpec] {
-                    Self::derived_properties()
-                }
-                fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                    Self::derived_set_property(self, _id, _value, _pspec)
-                }
-                fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                    Self::derived_property(self, id, _pspec)
-                }
+            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
+                Self::derived_set_property(self, _id, _value, _pspec)
             }
-
-            #[glib::object_subclass]
-            impl ObjectSubclass for Foo {
-                const NAME: &'static str = "MyFoo";
-                type Type = super::Foo;
-            }
-
-            impl Foo {
-                fn set_author_name(&self, value: String) {
-                    self.author.borrow_mut().name = value;
-                }
-                fn hello_world(&self) -> String {
-                    String::from("Hello world!")
-                }
-                fn set_fizz(&self, value: String) {
-                    *self.fizz.borrow_mut() = format!("custom set: {}", value);
-                }
+            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
+                Self::derived_property(self, id, _pspec)
             }
         }
 
-        glib::wrapper! {
-            pub struct Foo(ObjectSubclass<imp::Foo>);
+        #[glib::object_subclass]
+        impl ObjectSubclass for Foo {
+            const NAME: &'static str = "MyFoo";
+            type Type = super::Foo;
+        }
+
+        impl Foo {
+            fn set_author_name(&self, value: String) {
+                self.author.borrow_mut().name = value;
+            }
+            fn hello_world(&self) -> String {
+                String::from("Hello world!")
+            }
+            fn set_fizz(&self, value: String) {
+                *self.fizz.borrow_mut() = format!("custom set: {}", value);
+            }
         }
     }
 
+    glib::wrapper! {
+        pub struct Foo(ObjectSubclass<imp::Foo>);
+    }
+}
+
+#[test]
+fn props() {
     let myfoo: foo::Foo = glib::object::Object::new();
 
     // Read bar
@@ -158,6 +161,17 @@ fn props() {
     assert_eq!(
         myfoo.find_property("custom_flags").unwrap().flags(),
         ParamFlags::EXPLICIT_NOTIFY | ParamFlags::READWRITE | ParamFlags::LAX_VALIDATION
+    );
+
+    // default value
+    assert_eq!(
+        myfoo
+            .find_property("with_default")
+            .unwrap()
+            .default_value()
+            .get::<String>()
+            .unwrap(),
+        "hello".to_string()
     );
 
     // numeric builder
