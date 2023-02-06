@@ -2,14 +2,13 @@
 
 #![cfg_attr(feature = "dox", feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
-#![allow(clippy::missing_safety_doc)]
 
 pub use ffi;
 pub use glib;
 
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::derive_hash_xor_eq)]
-#[allow(unused_imports)]
+#[allow(clippy::missing_safety_doc)]
 mod auto;
 pub use crate::{
     auto::{functions::*, *},

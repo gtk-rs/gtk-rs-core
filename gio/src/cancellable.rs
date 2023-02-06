@@ -18,6 +18,7 @@ pub struct CancelledHandlerId(NonZeroU64);
 impl CancelledHandlerId {
     // rustdoc-stripper-ignore-next
     /// Returns the internal signal handler ID.
+    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn as_raw(&self) -> libc::c_ulong {
         self.0.get() as libc::c_ulong
     }

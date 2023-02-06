@@ -12,7 +12,9 @@ where
     name: String,
     parameter_type: Option<VariantType>,
     state: Option<Variant>,
+    #[allow(clippy::type_complexity)]
     pub(crate) activate: Option<Box<dyn Fn(&O, &SimpleAction, Option<&Variant>) + 'static>>,
+    #[allow(clippy::type_complexity)]
     pub(crate) change_state: Option<Box<dyn Fn(&O, &SimpleAction, Option<&Variant>) + 'static>>,
 }
 

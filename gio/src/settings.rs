@@ -11,7 +11,9 @@ pub struct BindingBuilder<'a> {
     object: &'a glib::Object,
     property: &'a str,
     flags: SettingsBindFlags,
+    #[allow(clippy::type_complexity)]
     get_mapping: Option<Box<dyn Fn(&glib::Variant, glib::Type) -> Option<glib::Value>>>,
+    #[allow(clippy::type_complexity)]
     set_mapping: Option<Box<dyn Fn(&glib::Value, glib::VariantType) -> Option<glib::Variant>>>,
 }
 

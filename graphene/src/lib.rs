@@ -16,11 +16,6 @@ macro_rules! skip_assert_initialized {
     () => {};
 }
 
-#[allow(clippy::transmute_ptr_to_ref)]
-#[allow(clippy::type_complexity)]
-#[allow(clippy::unreadable_literal)]
-#[allow(clippy::derive_hash_xor_eq)]
-#[allow(unused_imports)]
 mod auto;
 
 pub mod prelude;

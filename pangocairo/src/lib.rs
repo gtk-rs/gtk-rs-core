@@ -8,8 +8,6 @@ pub use ffi;
 pub use glib;
 pub use pango;
 
-#[allow(clippy::too_many_arguments)]
-#[allow(unused_imports)]
 mod auto;
 
 pub use crate::auto::{functions::*, *};

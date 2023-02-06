@@ -67,6 +67,7 @@ impl Attribute {
     }
 }
 
+#[allow(clippy::missing_safety_doc)]
 pub unsafe trait IsAttribute:
     FromGlibPtrFull<*const ffi::PangoAttribute>
     + FromGlibPtrFull<*mut ffi::PangoAttribute>
