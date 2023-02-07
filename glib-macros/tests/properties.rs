@@ -87,6 +87,7 @@ mod foo {
     }
 
     pub mod imp {
+        use glib::thread_guard::ThreadGuard;
         use glib::{ParamSpec, Value};
         use std::rc::Rc;
 
@@ -145,6 +146,8 @@ mod foo {
             cell: Cell<u8>,
             #[property(get = Self::overridden, override_class = Base)]
             overridden: PhantomData<u32>,
+            #[property(get, set)]
+            thread_guard: ThreadGuard<Mutex<String>>,
         }
 
         impl ObjectImpl for Foo {
@@ -194,6 +197,12 @@ fn props() {
     // Read bar
     let bar: String = myfoo.property("bar");
     assert_eq!(bar, "".to_string());
+
+    // Set the thread guard
+    myfoo.set_property("thread-guard", "foobar".to_value());
+    // And grab directly the string from the guard after
+    let bar: String = myfoo.property("thread-guard");
+    assert_eq!(bar, "foobar".to_string());
 
     // Set bar
     myfoo.set_property("bar", "epic".to_value());

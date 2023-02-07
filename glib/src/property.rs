@@ -9,6 +9,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::RwLock;
 
+use crate::thread_guard::ThreadGuard;
 use crate::HasParamSpec;
 
 // rustdoc-stripper-ignore-next
@@ -35,6 +36,9 @@ impl<T: Property> Property for Mutex<T> {
     type Value = T::Value;
 }
 impl<T: Property> Property for RwLock<T> {
+    type Value = T::Value;
+}
+impl<T: Property> Property for ThreadGuard<T> {
     type Value = T::Value;
 }
 impl<T: Property> Property for once_cell::sync::OnceCell<T> {
@@ -128,6 +132,19 @@ impl<T> PropertySetNested for RwLock<T> {
     type SetNestedValue = T;
     fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
         f(&mut self.write().unwrap());
+    }
+}
+
+impl<T: PropertyGet> PropertyGet for ThreadGuard<T> {
+    type Value = T::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        self.get_ref().get(f)
+    }
+}
+impl<T: PropertySetNested> PropertySetNested for ThreadGuard<T> {
+    type SetNestedValue = T::SetNestedValue;
+    fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
+        self.get_ref().set_nested(f)
     }
 }
 

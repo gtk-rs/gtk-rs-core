@@ -4,6 +4,7 @@ use std::{
     mem, ptr,
     sync::atomic::{AtomicUsize, Ordering},
 };
+
 fn next_thread_id() -> usize {
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
     COUNTER.fetch_add(1, Ordering::SeqCst)
@@ -108,6 +109,12 @@ impl<T> Drop for ThreadGuard<T> {
             self.thread_id == thread_id(),
             "Value dropped on a different thread than where it was created"
         );
+    }
+}
+
+impl<T: Default> Default for ThreadGuard<T> {
+    fn default() -> Self {
+        Self::new(T::default())
     }
 }
 
