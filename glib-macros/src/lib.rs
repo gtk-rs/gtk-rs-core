@@ -17,7 +17,7 @@ mod utils;
 
 use proc_macro::TokenStream;
 use proc_macro_error::proc_macro_error;
-use syn::{parse_macro_input, DeriveInput, NestedMeta};
+use syn::{parse_macro_input, DeriveInput};
 
 /// Macro for passing variables as strong or weak references into a closure.
 ///
@@ -460,7 +460,7 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn enum_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = enum_derive::impl_enum(&input);
+    let gen = enum_derive::impl_enum(input);
     gen.into()
 }
 
@@ -497,9 +497,8 @@ pub fn enum_derive(input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 #[proc_macro_error]
 pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let attr_meta = parse_macro_input!(attr as NestedMeta);
-    let input = parse_macro_input!(item as DeriveInput);
-    let gen = flags_attribute::impl_flags(&attr_meta, &input);
+    let input = parse_macro_input!(item as syn::ItemEnum);
+    let gen = flags_attribute::impl_flags(attr.into(), input);
     gen.into()
 }
 
@@ -525,7 +524,7 @@ pub fn flags(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn error_domain_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = error_domain_derive::impl_error_domain(&input);
+    let gen = error_domain_derive::impl_error_domain(input);
     gen.into()
 }
 
@@ -554,7 +553,7 @@ pub fn error_domain_derive(input: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = boxed_derive::impl_boxed(&input);
+    let gen = boxed_derive::impl_boxed(input);
     gen.into()
 }
 
@@ -588,7 +587,7 @@ pub fn boxed_derive(input: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn shared_boxed_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    let gen = shared_boxed_derive::impl_shared_boxed(&input);
+    let gen = shared_boxed_derive::impl_shared_boxed(input);
     gen.into()
 }
 
@@ -829,7 +828,8 @@ pub fn downgrade(input: TokenStream) -> TokenStream {
 #[proc_macro_error]
 pub fn variant_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    variant_derive::impl_variant(input)
+    let gen = variant_derive::impl_variant(input);
+    gen.into()
 }
 #[proc_macro]
 pub fn cstr_bytes(item: TokenStream) -> TokenStream {

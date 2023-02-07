@@ -4,7 +4,7 @@ use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::abort_call_site;
 use quote::quote;
 
-use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_name};
+use crate::utils::crate_ident_new;
 
 fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenStream {
     let refcounted_type_prefix = refcounted_type_prefix(name, crate_ident);
@@ -93,28 +93,29 @@ fn refcounted_type_prefix(name: &Ident, crate_ident: &TokenStream) -> proc_macro
     }
 }
 
-pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
+#[derive(deluxe::ExtractAttributes, Default)]
+#[deluxe(attributes(shared_boxed_type))]
+struct SharedBoxedType {
+    name: String,
+    #[deluxe(default)]
+    nullable: bool,
+}
+
+pub fn impl_shared_boxed(mut input: syn::DeriveInput) -> proc_macro2::TokenStream {
     let name = &input.ident;
 
-    let refcounted_type = match refcounted_type(input) {
+    let errors = deluxe::Errors::new();
+    let SharedBoxedType {
+        name: gtype_name,
+        nullable,
+    } = deluxe::extract_attributes_optional(&mut input.attrs, &errors);
+
+    let refcounted_type = match refcounted_type(&input) {
         Some(p) => p,
         _ => {
             abort_call_site!("#[derive(glib::SharedBoxed)] requires struct MyStruct(T: RefCounted)")
         }
     };
-
-    let gtype_name = match parse_name(input, "shared_boxed_type") {
-        Ok(name) => name,
-        Err(e) => abort_call_site!(
-            "{}: #[derive(glib::SharedBoxed)] requires #[shared_boxed_type(name = \"SharedBoxedTypeName\")]",
-            e
-        ),
-    };
-
-    let meta = find_attribute_meta(&input.attrs, "shared_boxed_type")
-        .unwrap()
-        .unwrap();
-    let nullable = find_nested_meta(&meta, "nullable").is_some();
 
     let crate_ident = crate_ident_new();
     let refcounted_type_prefix = refcounted_type_prefix(name, &crate_ident);
@@ -132,6 +133,8 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
     };
 
     quote! {
+        #errors
+
         impl #crate_ident::subclass::shared::SharedType for #name {
             const NAME: &'static str = #gtype_name;
 
