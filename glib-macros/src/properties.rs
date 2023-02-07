@@ -85,7 +85,7 @@ enum PropAttr {
     Get(Option<syn::Expr>),
     Set(Option<syn::Expr>),
 
-    // ident [= expr]
+    // ident = expr
     OverrideClass(syn::Type),
     OverrideInterface(syn::Type),
 
@@ -177,33 +177,19 @@ struct ReceivedAttrs {
     builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
 }
 
-impl ReceivedAttrs {
-    fn new(
-        attrs_span: &proc_macro2::Span,
-        attrs: impl IntoIterator<Item = PropAttr>,
-    ) -> syn::Result<Self> {
+impl Parse for ReceivedAttrs {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let attrs = syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated(input)?;
         let this = attrs.into_iter().fold(Self::default(), |mut this, attr| {
             this.set_from_attr(attr);
             this
         });
 
-        if this.get.is_none() && this.set.is_none() {
-            return Err(syn::Error::new(
-                *attrs_span,
-                "No `get` or `set` specified: at least one is required.".to_string(),
-            ));
-        }
-
-        if this.override_class.is_some() && this.override_interface.is_some() {
-            return Err(syn::Error::new(
-                *attrs_span,
-                "Both `override_class` and `override_interface` specified.".to_string(),
-            ));
-        }
-
         Ok(this)
     }
+}
 
+impl ReceivedAttrs {
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
             PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
@@ -257,6 +243,21 @@ impl PropDesc {
             builder,
             builder_fields,
         } = attrs;
+
+        if get.is_none() && set.is_none() {
+            return Err(syn::Error::new(
+                attrs_span,
+                "No `get` or `set` specified: at least one is required.".to_string(),
+            ));
+        }
+
+        if override_class.is_some() && override_interface.is_some() {
+            return Err(syn::Error::new(
+                attrs_span,
+                "Both `override_class` and `override_interface` specified.".to_string(),
+            ));
+        }
+
 
         // Fill needed, but missing, attributes with calculated default values
         let name = name.unwrap_or_else(|| {
@@ -469,16 +470,13 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
             attrs
                 .into_iter()
                 .filter(|a| a.path.is_ident("property"))
-                .map(move |attrs| {
-                    let span = attrs.span();
-                    let attrs = attrs.parse_args_with(
-                        syn::punctuated::Punctuated::<PropAttr, Token![,]>::parse_terminated,
-                    )?;
+                .map(move |prop_attrs| {
+                    let span = prop_attrs.span();
                     PropDesc::new(
                         span,
                         ident.as_ref().unwrap().clone(),
                         ty.clone(),
-                        ReceivedAttrs::new(&span, attrs)?,
+                        prop_attrs.parse_args()?
                     )
                 })
         })
