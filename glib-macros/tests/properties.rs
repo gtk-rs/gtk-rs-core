@@ -117,6 +117,8 @@ mod foo {
                 get = |t: &Self| t.author.borrow().name.to_owned(),
                 set = Self::set_author_name)]
             fake_field: PhantomData<String>,
+            #[property(get)]
+            read_only_text: String,
             #[property(get, set, explicit_notify, lax_validation)]
             custom_flags: RefCell<String>,
             #[property(get, set, default = "hello")]
@@ -217,6 +219,12 @@ fn props() {
     myfoo.set_property("author-nick", "freddy-nick".to_value());
     let author_name: String = myfoo.property("author-nick");
     assert_eq!(author_name, "freddy-nick".to_string());
+
+    // read_only
+    assert_eq!(
+        myfoo.find_property("read_only_text").unwrap().flags(),
+        ParamFlags::READABLE
+    );
 
     // custom flags
     assert_eq!(
