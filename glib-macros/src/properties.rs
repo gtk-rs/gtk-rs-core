@@ -42,7 +42,12 @@ impl Parse for PropsMacroInput {
             .attrs
             .iter()
             .find(|x| x.path.is_ident("properties"))
-            .expect("missing #[properties(wrapper_type = ...)]");
+            .ok_or_else(|| {
+                syn::Error::new(
+                    derive_input.span(),
+                    "missing #[properties(wrapper_type = ...)]",
+                )
+            })?;
         let wrapper_ty: PropertiesAttr = wrapper_ty.parse_args()?;
         let props: Vec<_> = match derive_input.data {
             syn::Data::Struct(struct_data) => parse_fields(struct_data.fields)?,
@@ -258,7 +263,6 @@ impl PropDesc {
             ));
         }
 
-
         // Fill needed, but missing, attributes with calculated default values
         let name = name.unwrap_or_else(|| {
             syn::LitStr::new(
@@ -285,65 +289,66 @@ impl PropDesc {
     }
 }
 
+fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
+    let crate_ident = crate_ident_new();
+    let PropDesc {
+        ty, name, builder, ..
+    } = prop;
+
+    match (&prop.override_class, &prop.override_interface) {
+        (Some(c), None) => return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#name)),
+        (None, Some(i)) => {
+            return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#name))
+        }
+        (Some(_), Some(_)) => {
+            unreachable!("Both `override_class` and `override_interface` specified")
+        }
+        (None, None) => (),
+    };
+
+    let rw_flags = match (&prop.get, &prop.set) {
+        (Some(_), Some(_)) => quote!(.readwrite()),
+        (Some(_), None) => quote!(.read_only()),
+        (None, Some(_)) => quote!(.write_only()),
+        (None, None) => unreachable!("No `get` or `set` specified"),
+    };
+
+    let builder_call = builder
+        .as_ref()
+        .cloned()
+        .map(|(mut required_params, chained_methods)| {
+            let name_expr = syn::ExprLit {
+                attrs: vec![],
+                lit: syn::Lit::Str(name.to_owned()),
+            };
+            required_params.insert(0, name_expr.into());
+            let required_params = required_params.iter();
+
+            quote!((#(#required_params,)*)#chained_methods)
+        })
+        .unwrap_or(quote!((#name)));
+
+    let builder_fields = prop.builder_fields.iter().map(|(k, v)| quote!(.#k(#v)));
+
+    let span = prop.attrs_span;
+    quote_spanned! {span=>
+        <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
+            ::param_spec_builder() #builder_call
+            #rw_flags
+            #(#builder_fields)*
+            .build()
+    }
+}
+
 fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let n_props = props.len();
     let crate_ident = crate_ident_new();
-    let properties_build_phase = props.iter().map(|prop| {
-        let PropDesc {
-            ty, name, builder, ..
-        } = prop;
-
-        let rw_flags = match (&prop.get, &prop.set) {
-            (Some(_), Some(_)) => quote!(.readwrite()),
-            (Some(_), None) => quote!(.read_only()),
-            (None, Some(_)) => quote!(.write_only()),
-            (None, None) => unreachable!("No `get` or `set` specified"),
-        };
-
-        match (&prop.override_class, &prop.override_interface) {
-            (Some(c), None) => {
-                return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#name))
-            }
-            (None, Some(i)) => {
-                return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#name))
-            }
-            (Some(_), Some(_)) => {
-                unreachable!("Both `override_class` and `override_interface` specified")
-            }
-            (None, None) => (),
-        };
-
-        let builder_call = builder
-            .as_ref()
-            .cloned()
-            .map(|(mut required_params, chained_methods)| {
-                let name_expr = syn::ExprLit {
-                    attrs: vec![],
-                    lit: syn::Lit::Str(name.to_owned()),
-                };
-                required_params.insert(0, name_expr.into());
-                let required_params = required_params.iter();
-
-                quote!((#(#required_params,)*)#chained_methods)
-            })
-            .unwrap_or(quote!((#name)));
-
-        let builder_fields = prop.builder_fields.iter().map(|(k, v)| quote!(.#k(#v)));
-
-        let span = prop.attrs_span;
-        quote_spanned! {span=>
-            <<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>
-                ::param_spec_builder() #builder_call
-                #rw_flags
-                #(#builder_fields)*
-                .build()
-        }
-    });
+    let param_specs = props.iter().map(expand_param_spec);
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
             use #crate_ident::once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
-                #(#properties_build_phase,)*
+                #(#param_specs,)*
             ]);
             PROPERTIES.as_ref()
         }
@@ -393,10 +398,10 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             pspec: &#crate_ident::ParamSpec
         ) -> #crate_ident::Value {
             let prop = DerivedPropertiesEnum::try_from(id-1)
-                .unwrap_or_else(|_| panic!("missing handler for property {}", pspec.name()));
+                .unwrap_or_else(|_| panic!("property not defined {}", pspec.name()));
             match prop {
                 #(#match_branch_get,)*
-                _ => unreachable!(),
+                _ => panic!("missing getter for property {}", pspec.name()),
             }
         }
     )
@@ -451,10 +456,10 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             pspec: &#crate_ident::ParamSpec
         ){
             let prop = DerivedPropertiesEnum::try_from(id-1)
-                .unwrap_or_else(|_| panic!("missing handler for property {}", pspec.name()));;
+                .unwrap_or_else(|_| panic!("property not defined {}", pspec.name()));
             match prop {
                 #(#match_branch_set,)*
-                _ => unreachable!(),
+                _ => panic!("missing setter for property {}", pspec.name()),
             }
         }
     )
@@ -476,7 +481,7 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
                         span,
                         ident.as_ref().unwrap().clone(),
                         ty.clone(),
-                        prop_attrs.parse_args()?
+                        prop_attrs.parse_args()?,
                     )
                 })
         })
@@ -488,7 +493,7 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
     format_ident!("{}", name.value().replace('-', "_"))
 }
 
-fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
+fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let defs = props.iter().map(|p| {
         let name = &p.name;
@@ -516,7 +521,7 @@ fn expand_getset_properties_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#defs)*)
 }
 
-fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
+fn expand_wrapper_connect_prop_notify(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
@@ -531,7 +536,7 @@ fn expand_connect_prop_notify_impl(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#connection_fns)*)
 }
 
-fn expand_notify_impl(props: &[PropDesc]) -> TokenStream2 {
+fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let emit_fns = props.iter().map(|p| {
         let name = &p.name;
@@ -601,9 +606,9 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
     let fn_properties = expand_properties_fn(&input.props);
     let fn_property = expand_property_fn(&input.props);
     let fn_set_property = expand_set_property_fn(&input.props);
-    let getset_properties_impl = expand_getset_properties_impl(&input.props);
-    let connect_prop_notify_impl = expand_connect_prop_notify_impl(&input.props);
-    let notify_impl = expand_notify_impl(&input.props);
+    let getset_properties = expand_wrapper_getset_properties(&input.props);
+    let connect_prop_notify = expand_wrapper_connect_prop_notify(&input.props);
+    let notify_prop = expand_wrapper_notify_prop(&input.props);
     let properties_enum = expand_properties_enum(&input.props);
 
     let expanded = quote! {
@@ -618,9 +623,9 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
         }
 
         impl #wrapper_type {
-            #getset_properties_impl
-            #connect_prop_notify_impl
-            #notify_impl
+            #getset_properties
+            #connect_prop_notify
+            #notify_prop
         }
 
     };
