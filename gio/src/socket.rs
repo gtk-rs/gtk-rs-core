@@ -21,6 +21,7 @@ use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage};
 
 impl Socket {
     #[cfg(any(unix, feature = "dox"))]
+    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn from_fd(fd: impl IntoRawFd) -> Result<Socket, glib::Error> {
         let fd = fd.into_raw_fd();
         let mut error = ptr::null_mut();
@@ -32,6 +33,7 @@ impl Socket {
         }
     }
     #[cfg(any(windows, feature = "dox"))]
+    #[allow(clippy::missing_safety_doc)]
     pub unsafe fn from_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
         let mut error = ptr::null_mut();

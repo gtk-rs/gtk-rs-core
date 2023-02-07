@@ -237,7 +237,7 @@ impl DesktopAppInfo {
                 callback(&appinfo, pid)
             } else {
                 panic!("cannot get closure...")
-            };
+            }
         }
         let pid_callback = if pid_callback_data.is_some() {
             Some(pid_callback_func as _)

@@ -52,7 +52,7 @@ impl SubprocessLauncher {
         let child_setup_data: Box_<P> = Box_::new(child_setup);
         unsafe extern "C" fn child_setup_func<P: Fn() + 'static>(data: glib::ffi::gpointer) {
             let callback: &P = &*(data as *mut _);
-            (*callback)();
+            (*callback)()
         }
         let child_setup = Some(child_setup_func::<P> as _);
         unsafe extern "C" fn destroy_notify_func<P: Fn() + 'static>(data: glib::ffi::gpointer) {

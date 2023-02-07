@@ -238,6 +238,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "g_dbus_connection_signal_subscribe")]
+    #[allow(clippy::too_many_arguments)]
     pub fn signal_subscribe<
         P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
     >(
