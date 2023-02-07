@@ -80,6 +80,13 @@ impl<T: PropertySetNested> PropertySet for T {
     }
 }
 
+impl<T: HasParamSpec> PropertyGet for T {
+    type Value = T;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(self)
+    }
+}
+
 impl<T: Copy> PropertyGet for Cell<T> {
     type Value = T;
     fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
