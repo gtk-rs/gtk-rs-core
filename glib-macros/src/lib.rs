@@ -848,6 +848,29 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
     .unwrap_or_else(|e| e.into_compile_error().into())
 }
 
+/// This macro enables you to derive object properties in a quick way.
+///
+/// # Getters and setters
+/// By default, they are generated for you.
+/// You can use a custom getter/setter by assigning an expression to `get`/`set`.
+/// Example: `#[property(get = |_| 2, set)]`.
+///
+/// The macro will always generate, on the wrapper type, the corresponding `$property()` and
+/// `set_$property()` methods.
+/// Notice: you can't reimplement the generated methods on the wrapper type, but you can change their
+/// behavior using a custom getter/setter.
+///
+/// # Supported types
+/// Every type implementing the trait `Property` is supported.
+/// If you want to support a custom type, you should consider implementing `Property` and
+/// `PropertyGet`. If your type supports interior mutability, you should implement also
+/// `PropertySet` and `PropertySetNested` if possible.
+/// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
+/// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
+/// always define a custom one.
+/// If you want to support a custom type with a custom `ParamSpec`, you should implement the trait
+/// `HasParamSpec` instead of `Property`.
+///
 /// # Example
 /// ```
 /// use std::cell::RefCell;
