@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":[["FontExt","Trait containing all [`struct@Font`] methods."],["FontMapExt","Trait containing all [`struct@FontMap`] methods."],["FontMapExtManual",""]]};

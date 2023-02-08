@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Language","The [`Language`][crate::Language] structure is used to represent a language."]]});

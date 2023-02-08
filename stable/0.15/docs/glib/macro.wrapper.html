@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Defines a wrapper type and implements the appropriate traits."><meta name="keywords" content="rust, rustlang, rust-lang, wrapper"><title>wrapper in glib - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In glib</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../glib/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">wrapper</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/glib/wrapper.rs.html#277-445">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><div class="example-wrap"><pre class="rust macro"><code><span class="macro">macro_rules!</span> <span class="ident">wrapper</span> {
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">Boxed</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span><span class="op">&gt;</span>);
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            <span class="ident">copy</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_expr</span>:<span class="ident">expr</span>,
+            <span class="ident">free</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">free_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">free_expr</span>:<span class="ident">expr</span>,
+            $(
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+            )<span class="question-mark">?</span>
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">BoxedInline</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span><span class="op">&gt;</span>);
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            $(
+            <span class="ident">copy</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_expr</span>:<span class="ident">expr</span>,
+            <span class="ident">free</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">free_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">free_expr</span>:<span class="ident">expr</span>,
+            )<span class="question-mark">?</span>
+            $(
+            <span class="ident">init</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_expr</span>:<span class="ident">expr</span>,
+            <span class="ident">copy_into</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_into_arg_dest</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_into_arg_src</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">copy_into_expr</span>:<span class="ident">expr</span>,
+            <span class="ident">clear</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">clear_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">clear_expr</span>:<span class="ident">expr</span>,
+            )<span class="question-mark">?</span>
+            $(
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+            )<span class="question-mark">?</span>
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">BoxedInline</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span><span class="op">&gt;</span>);
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">Shared</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span><span class="op">&gt;</span>);
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            <span class="kw-2">ref</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ref_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ref_expr</span>:<span class="ident">expr</span>,
+            <span class="ident">unref</span> =&gt; <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">unref_arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">unref_expr</span>:<span class="ident">expr</span>,
+            $(
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+            )<span class="question-mark">?</span>
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">Object</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_class_name</span>:<span class="ident">ty</span>)<span class="question-mark">?</span><span class="op">&gt;</span>) $(@<span class="ident">implements</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">implements</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">Object</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_class_name</span>:<span class="ident">ty</span>)<span class="question-mark">?</span><span class="op">&gt;</span>) @<span class="ident">extends</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extends</span>:<span class="ident">path</span>),<span class="op">+</span> $(, @<span class="ident">implements</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">implements</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">ObjectSubclass</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">subclass</span>:<span class="ident">ty</span><span class="op">&gt;</span>) $(@<span class="ident">implements</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">implements</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">ObjectSubclass</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">subclass</span>:<span class="ident">ty</span><span class="op">&gt;</span>) @<span class="ident">extends</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extends</span>:<span class="ident">path</span>),<span class="op">+</span> $(, @<span class="ident">implements</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">implements</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">Interface</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_name</span>:<span class="ident">ty</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ffi_class_name</span>:<span class="ident">ty</span>)<span class="question-mark">?</span><span class="op">&gt;</span>) $(@<span class="ident">requires</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">requires</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">match</span> <span class="kw">fn</span> {
+            <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">get_type_expr</span>:<span class="ident">expr</span>,
+        }
+    ) =&gt; { ... };
+    (
+        $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">visibility</span>:<span class="ident">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generic</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound</span>:<span class="ident">tt</span> $(<span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bound2</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="op">+</span><span class="op">&gt;</span>)<span class="question-mark">?</span> (<span class="ident">ObjectInterface</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">iface_name</span>:<span class="ident">ty</span><span class="op">&gt;</span>) $(@<span class="ident">requires</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">requires</span>:<span class="ident">path</span>),<span class="op">+</span>)<span class="question-mark">?</span>;
+    ) =&gt; { ... };
+}</code></pre></div>
+</div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Defines a wrapper type and implements the appropriate traits.</p>
+<p>The basic syntax is</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Your documentation goes here</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">kind</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">foreign</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fn_name</span> =&gt; <span class="comment">/* a closure-like expression */</span>,
+        ...
+    }
+}</code></pre></div>
+<p>This creates a wrapper named <code>$name</code> around the foreign type
+<code>$foreign</code> of <code>$kind</code> — one of <a href="#boxed"><code>Boxed</code></a>,
+<a href="#shared"><code>Shared</code></a>, or <a href="#object"><code>Object</code></a>.</p>
+<p>Inside the <code>match fn</code> block there are closure-like expressions to
+provide ways of copying/freeing, or referencing/unreferencing the
+value that you are wrapping.  These expressions will be evaluated
+in an <code>unsafe</code> context, since they frequently invoke <code>extern</code>
+functions from an FFI crate.</p>
+<p>What follows is a description of each of the possible <code>$kind</code>:
+<a href="#boxed"><code>Boxed</code></a>, <a href="#shared"><code>Shared</code></a>, and <a href="#object"><code>Object</code></a>;
+note that each supports different sets of <code>$fn_name</code> inside the
+<code>match fn</code> block.  Also, <code>Object</code> may require you to specify
+things like the class struct to wrap, plus any interfaces that the
+class implements.</p>
+<h4 id="boxed-heap-allocated"><a href="#boxed-heap-allocated">Boxed (heap allocated)</a></h4>
+<p>Boxed records with single ownership allocated on the heap.</p>
+<p>With no registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Text buffer iterator</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextIter</span>(<span class="ident">Boxed</span><span class="op">&lt;</span><span class="ident">ffi::GtkTextIter</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">copy</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_copy</span>(<span class="ident">ptr</span>),
+        <span class="ident">free</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_free</span>(<span class="ident">ptr</span>),
+    }
+}</code></pre></div>
+<p><code>copy</code>: <code>|*const $foreign| -&gt; *mut $foreign</code> creates a copy of the value.</p>
+<p><code>free</code>: <code>|*mut $foreign|</code> frees the value.</p>
+<p>With a registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Text buffer iterator</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextIter</span>(<span class="ident">Boxed</span><span class="op">&lt;</span><span class="ident">ffi::GtkTextIter</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">copy</span>     =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_copy</span>(<span class="ident">ptr</span>),
+        <span class="ident">free</span>     =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_free</span>(<span class="ident">ptr</span>),
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span>    <span class="ident">ffi::gtk_text_iter_get_type</span>(),
+    }
+}</code></pre></div>
+<p><code>type_</code>: <code>|| -&gt; glib_ffi::GType</code> (optional) returns the
+<code>glib_ffi::GType</code> that corresponds to the foreign struct.</p>
+<h4 id="boxedinline-inline-stack-allocated"><a href="#boxedinline-inline-stack-allocated">BoxedInline (inline, stack allocated)</a></h4>
+<p>Boxed records with single ownership allocated on the stack or otherwise inline.
+With no registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Text buffer iterator</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextIter</span>(<span class="ident">BoxedInline</span><span class="op">&lt;</span><span class="ident">ffi::GtkTextIter</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">copy</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_copy</span>(<span class="ident">ptr</span>),
+        <span class="ident">free</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_free</span>(<span class="ident">ptr</span>),
+    }
+}</code></pre></div>
+<p><code>copy</code>: <code>|*const $foreign| -&gt; *mut $foreign</code> (optional) creates a heap allocated copy of the value.</p>
+<p><code>free</code>: <code>|*mut $foreign|</code> (optional) frees the value.</p>
+<p>With a registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Text buffer iterator</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextIter</span>(<span class="ident">BoxedInline</span><span class="op">&lt;</span><span class="ident">ffi::GtkTextIter</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">copy</span>     =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_copy</span>(<span class="ident">ptr</span>),
+        <span class="ident">free</span>     =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gtk_text_iter_free</span>(<span class="ident">ptr</span>),
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span>    <span class="ident">ffi::gtk_text_iter_get_type</span>(),
+    }
+}</code></pre></div>
+<p><code>type_</code>: <code>|| -&gt; glib_ffi::GType</code> (optional) returns the
+<code>glib_ffi::GType</code> that corresponds to the foreign struct.</p>
+<h4 id="shared"><a href="#shared">Shared</a></h4>
+<p>Records with reference-counted, shared ownership.</p>
+<p>With no registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Object holding timing information for a single frame.</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FrameTimings</span>(<span class="ident">Shared</span><span class="op">&lt;</span><span class="ident">ffi::GdkFrameTimings</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="kw-2">ref</span>   =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gdk_frame_timings_ref</span>(<span class="ident">ptr</span>),
+        <span class="ident">unref</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gdk_frame_timings_unref</span>(<span class="ident">ptr</span>),
+    }
+}</code></pre></div>
+<p><code>ref</code>: <code>|*mut $foreign|</code> increases the refcount.</p>
+<p><code>unref</code>: <code>|*mut $foreign|</code> decreases the refcount.</p>
+<p>With a registered <code>glib_ffi::GType</code>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Object holding timing information for a single frame.</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FrameTimings</span>(<span class="ident">Shared</span><span class="op">&lt;</span><span class="ident">ffi::GdkFrameTimings</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="kw-2">ref</span>      =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gdk_frame_timings_ref</span>(<span class="ident">ptr</span>),
+        <span class="ident">unref</span>    =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::gdk_frame_timings_unref</span>(<span class="ident">ptr</span>),
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span>    <span class="ident">ffi::gdk_frame_timings_get_type</span>(),
+    }
+}</code></pre></div>
+<p><code>type_</code>: <code>|| -&gt; glib_ffi::GType</code> (optional) returns the
+<code>glib_ffi::GType</code> that corresponds to the foreign struct.</p>
+<h4 id="object"><a href="#object">Object</a></h4>
+<p>Objects – classes.  Note that the class name, if available, must be specified after the
+$foreign type; see below for <a href="#non-derivable-classes">non-derivable classes</a>.</p>
+<p>The basic syntax is this:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="doccomment">/// Your documentation goes here</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InstanceName</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::InstanceStruct</span>, <span class="ident">ffi::ClassStruct</span><span class="op">&gt;</span>)
+        @<span class="ident">extends</span> <span class="ident">ParentClass</span>, <span class="ident">GrandparentClass</span>, ...,
+        @<span class="ident">implements</span> <span class="ident">Interface1</span>, <span class="ident">Interface2</span>, ...;
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::instance_get_type</span>(),
+    }
+}</code></pre></div>
+<p><code>type_</code>: <code>|| -&gt; glib_ffi::GType</code> returns the <code>glib_ffi::GType</code>
+that corresponds to the foreign class.</p>
+<h5 id="all-parent-classes-must-be-specified"><a href="#all-parent-classes-must-be-specified">All parent classes must be specified</a></h5>
+<p>In the example above, “<code>@extends ParentClass, GrandparentClass, ...,</code>” is where you must
+specify all the parent classes of the one you are wrapping. The uppermost parent class,
+<code>glib::Object</code>, must not be specified.</p>
+<p>For example, <code>ffi::GtkWindowGroup</code> derives directly from
+<code>GObject</code>, so it can be simply wrapped as follows:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowGroup</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GtkWindowGroup</span>, <span class="ident">ffi::GtkWindowGroupClass</span><span class="op">&gt;</span>);
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::gtk_window_group_get_type</span>(),
+    }
+}</code></pre></div>
+<p>In contrast, <code>ffi::GtkButton</code> has a parent, grandparent, etc. classes, which must be specified:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Button</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GtkButton</span><span class="op">&gt;</span>) @<span class="ident">extends</span> <span class="ident">Bin</span>, <span class="ident">Container</span>, <span class="ident">Widget</span>;
+        <span class="comment">// see note on interfaces in the example below</span>
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::gtk_button_get_type</span>(),
+    }
+}</code></pre></div>
+<h5 id="objects-which-implement-interfaces"><a href="#objects-which-implement-interfaces">Objects which implement interfaces</a></h5>
+<p>The example above is incomplete, since <code>ffi::GtkButton</code> actually implements two interfaces,
+<code>Buildable</code> and <code>Actionable</code>.  In this case, they must be specified after all the parent classes
+behind the <code>@implements</code> keyword:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Button</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GtkButton</span><span class="op">&gt;</span>)
+        @<span class="ident">extends</span> <span class="ident">Bin</span>, <span class="ident">Container</span>, <span class="ident">Widget</span>, <span class="comment">// parent classes</span>
+        @<span class="ident">implements</span> <span class="ident">Buildable</span>, <span class="ident">Actionable</span>;  <span class="comment">// interfaces</span>
+
+    <span class="kw">match</span> <span class="kw">fn</span> {
+        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::gtk_button_get_type</span>(),
+    }
+}</code></pre></div>
+<h5 id="non-derivable-classes"><a href="#non-derivable-classes">Non-derivable classes</a></h5>
+<p>By convention, GObject implements “final” classes, i.e. those who
+cannot be subclassed, by <em>not</em> exposing a public Class struct.
+This way it is not possible to override any methods, as there are
+no <code>klass.method_name</code> fields to overwrite.  In this case, don’t
+specify a FFI class name at all in the <code>Object&lt;&gt;</code> part:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Clipboard</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GtkClipboard</span><span class="op">&gt;</span>);
+    ...
+}</code></pre></div>
+<h5 id="interfaces"><a href="#interfaces">Interfaces</a></h5>
+<p>Interfaces are passed in the same way to the macro but instead of specifying
+<code>Object</code>, <code>Interface</code> has to be specified:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TreeModel</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GtkTreeModel</span>, <span class="ident">ffi::GtkTreeModelIface</span><span class="op">&gt;</span>);
+    ...
+}</code></pre></div>
+<h5 id="interfaces-with-prerequisites"><a href="#interfaces-with-prerequisites">Interfaces with prerequisites</a></h5>
+<p>Interfaces can declare prerequisites, i.e. the classes from which types that implement the
+interface have to inherit or interfaces that have to be implemented:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="macro">wrapper!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TreeSortable</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GtkTreeSortable</span>, <span class="ident">ffi::GtkTreeSortable</span><span class="op">&gt;</span>) @<span class="ident">requires</span> <span class="ident">TreeModel</span>;
+    ...
+}</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

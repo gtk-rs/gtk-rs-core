@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Returns the depth of the stack of calls to [`MainContext::dispatch()`][crate::MainContext::dispatch()] on any [`MainContext`][crate::MainContext] in the current thread. That is, when called from the toplevel, it gives 0. When called from within a callback from [`MainContext::iteration()`][crate::MainContext::iteration()] (or [`MainLoop::run()`][crate::MainLoop::run()], etc.) it returns 1. When called from within a callback to a recursive call to [`MainContext::iteration()`][crate::MainContext::iteration()], it returns 2. And so forth."><meta name="keywords" content="rust, rustlang, rust-lang, main_depth"><title>main_depth in glib - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In glib</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../glib/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="index.html">glib</a>::<wbr><a class="fn" href="#">main_depth</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/glib/auto/functions.rs.html#1356-1358">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub fn main_depth() -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns the depth of the stack of calls to
+<a href="struct.MainContext.html#method.dispatch" title="crate::MainContext::dispatch()"><code>MainContext::dispatch()</code></a> on any <a href="struct.MainContext.html" title="crate::MainContext"><code>MainContext</code></a> in the current thread.
+That is, when called from the toplevel, it gives 0. When
+called from within a callback from <a href="struct.MainContext.html#method.iteration" title="crate::MainContext::iteration()"><code>MainContext::iteration()</code></a>
+(or <a href="struct.MainLoop.html#method.run" title="crate::MainLoop::run()"><code>MainLoop::run()</code></a>, etc.) it returns 1. When called from within
+a callback to a recursive call to <a href="struct.MainContext.html#method.iteration" title="crate::MainContext::iteration()"><code>MainContext::iteration()</code></a>,
+it returns 2. And so forth.</p>
+<p>This function is useful in a situation like the following:
+Imagine an extremely simple “garbage collected” system.</p>
+<p><strong>⚠️ The following code is in C ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-C"><code>static GList *free_list;
+
+gpointer
+allocate_memory (gsize size)
+{
+  gpointer result = g_malloc (size);
+  free_list = g_list_prepend (free_list, result);
+  return result;
+}
+
+void
+free_allocated_memory (void)
+{
+  GList *l;
+  for (l = free_list; l; l = l-&gt;next);
+    g_free (l-&gt;data);
+  g_list_free (free_list);
+  free_list = NULL;
+ }
+
+[...]
+
+while (TRUE);
+ {
+   g_main_context_iteration (NULL, TRUE);
+   free_allocated_memory();
+  }</code></pre></div>
+<p>This works from an application, however, if you want to do the same
+thing from a library, it gets more difficult, since you no longer
+control the main loop. You might think you can simply use an idle
+function to make the call to <code>free_allocated_memory()</code>, but that
+doesn’t work, since the idle function could be called from a
+recursive callback. This can be fixed by using <a href="functions/fn.main_depth.html" title="crate::main_depth()"><code>main_depth()</code></a></p>
+<p><strong>⚠️ The following code is in C ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-C"><code>gpointer
+allocate_memory (gsize size)
+{
+  FreeListBlock *block = g_new (FreeListBlock, 1);
+  block-&gt;mem = g_malloc (size);
+  block-&gt;depth = g_main_depth ();
+  free_list = g_list_prepend (free_list, block);
+  return block-&gt;mem;
+}
+
+void
+free_allocated_memory (void)
+{
+  GList *l;
+
+  int depth = g_main_depth ();
+  for (l = free_list; l; );
+    {
+      GList *next = l-&gt;next;
+      FreeListBlock *block = l-&gt;data;
+      if (block-&gt;depth &gt; depth)
+        {
+          g_free (block-&gt;mem);
+          g_free (block);
+          free_list = g_list_delete_link (free_list, l);
+        }
+
+      l = next;
+    }
+  }</code></pre></div>
+<p>There is a temptation to use <a href="functions/fn.main_depth.html" title="crate::main_depth()"><code>main_depth()</code></a> to solve
+problems with reentrancy. For instance, while waiting for data
+to be received from the network in response to a menu item,
+the menu item might be selected again. It might seem that
+one could make the menu item’s callback return immediately
+and do nothing if <a href="functions/fn.main_depth.html" title="crate::main_depth()"><code>main_depth()</code></a> returns a value greater than 1.
+However, this should be avoided since the user then sees selecting
+the menu item do nothing. Furthermore, you’ll find yourself adding
+these checks all over your code, since there are doubtless many,
+many things that the user could do. Instead, you can use the
+following techniques:</p>
+<ol>
+<li>
+<p>Use <code>gtk_widget_set_sensitive()</code> or modal dialogs to prevent
+the user from interacting with elements while the main
+loop is recursing.</p>
+</li>
+<li>
+<p>Avoid main loop recursion in situations where you can’t handle
+arbitrary callbacks. Instead, structure your code so that you
+simply return to the main loop and then get called again when
+there is more work to do.</p>
+</li>
+</ol>
+<h2 id="returns"><a href="#returns">Returns</a></h2>
+<p>The main loop recursion level in the current thread</p>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

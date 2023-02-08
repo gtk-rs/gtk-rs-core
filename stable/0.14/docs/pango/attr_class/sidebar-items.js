@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AttrClass","The [`AttrClass`][crate::AttrClass] structure stores the type and operations for a particular type of attribute. The functions in this structure should not be called directly. Instead, one should use the wrapper functions provided for [`Attribute`][crate::Attribute]."]]});

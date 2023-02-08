@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Writes all of `contents` to a file named `filename`, with good error checking. If a file called `filename` already exists it will be overwritten."><meta name="keywords" content="rust, rustlang, rust-lang, file_set_contents_full"><title>file_set_contents_full in glib::functions - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In glib::functions</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="../index.html">glib</a>::<wbr><a href="index.html">functions</a>::<wbr><a class="fn" href="#">file_set_contents_full</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/glib/auto/functions.rs.html#413-437">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub fn file_set_contents_full(<br>&nbsp;&nbsp;&nbsp;&nbsp;filename: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;contents: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], <br>&nbsp;&nbsp;&nbsp;&nbsp;flags: <a class="struct" href="../struct.FileSetContentsFlags.html" title="struct glib::FileSetContentsFlags">FileSetContentsFlags</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;mode: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</code></pre></div><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_66</code></strong> only.</div></span><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Writes all of <code>contents</code> to a file named <code>filename</code>, with good error checking.
+If a file called <code>filename</code> already exists it will be overwritten.</p>
+<p><code>flags</code> control the properties of the write operation: whether it’s atomic,
+and what the tradeoff is between returning quickly or being resilient to
+system crashes.</p>
+<p>As this function performs file I/O, it is recommended to not call it anywhere
+where blocking would cause problems, such as in the main loop of a graphical
+application. In particular, if <code>flags</code> has any value other than
+<a href="../struct.FileSetContentsFlags.html#associatedconstant.NONE" title="crate::FileSetContentsFlags::NONE"><code>FileSetContentsFlags::NONE</code></a> then this function may call <code>fsync()</code>.</p>
+<p>If <a href="../struct.FileSetContentsFlags.html#associatedconstant.CONSISTENT" title="crate::FileSetContentsFlags::CONSISTENT"><code>FileSetContentsFlags::CONSISTENT</code></a> is set in <code>flags</code>, the operation is atomic
+in the sense that it is first written to a temporary file which is then
+renamed to the final name.</p>
+<p>Notes:</p>
+<ul>
+<li>
+<p>On UNIX, if <code>filename</code> already exists hard links to <code>filename</code> will break.
+Also since the file is recreated, existing permissions, access control
+lists, metadata etc. may be lost. If <code>filename</code> is a symbolic link,
+the link itself will be replaced, not the linked file.</p>
+</li>
+<li>
+<p>On UNIX, if <code>filename</code> already exists and is non-empty, and if the system
+supports it (via a journalling filesystem or equivalent), and if
+<a href="../struct.FileSetContentsFlags.html#associatedconstant.CONSISTENT" title="crate::FileSetContentsFlags::CONSISTENT"><code>FileSetContentsFlags::CONSISTENT</code></a> is set in <code>flags</code>, the <code>fsync()</code> call (or
+equivalent) will be used to ensure atomic replacement: <code>filename</code>
+will contain either its old contents or <code>contents</code>, even in the face of
+system power loss, the disk being unsafely removed, etc.</p>
+</li>
+<li>
+<p>On UNIX, if <code>filename</code> does not already exist or is empty, there is a
+possibility that system power loss etc. after calling this function will
+leave <code>filename</code> empty or full of NUL bytes, depending on the underlying
+filesystem, unless <a href="../struct.FileSetContentsFlags.html#associatedconstant.DURABLE" title="crate::FileSetContentsFlags::DURABLE"><code>FileSetContentsFlags::DURABLE</code></a> and
+<a href="../struct.FileSetContentsFlags.html#associatedconstant.CONSISTENT" title="crate::FileSetContentsFlags::CONSISTENT"><code>FileSetContentsFlags::CONSISTENT</code></a> are set in <code>flags</code>.</p>
+</li>
+<li>
+<p>On Windows renaming a file will not remove an existing file with the
+new name, so on Windows there is a race condition between the existing
+file being removed and the temporary file being renamed.</p>
+</li>
+<li>
+<p>On Windows there is no way to remove a file that is open to some
+process, or mapped into memory. Thus, this function will fail if
+<code>filename</code> already exists and is open.</p>
+</li>
+</ul>
+<p>If the call was successful, it returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a>. If the call was not successful,
+it returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="false"><code>false</code></a> and sets <code>error</code>. The error domain is <code>G_FILE_ERROR</code>.
+Possible error codes are those in the <code>GFileError</code> enumeration.</p>
+<p>Note that the name for the temporary file is constructed by appending up
+to 7 characters to <code>filename</code>.</p>
+<p>If the file didn’t exist before and is created, it will be given the
+permissions from <code>mode</code>. Otherwise, the permissions of the existing file may
+be changed to <code>mode</code> depending on <code>flags</code>, or they may remain unchanged.</p>
+<h3 id="filename"><a href="#filename"><code>filename</code></a></h3>
+<p>name of a file to write <code>contents</code> to, in the GLib file name
+encoding</p>
+<h3 id="contents"><a href="#contents"><code>contents</code></a></h3>
+<p>string to write to the file</p>
+<h3 id="flags"><a href="#flags"><code>flags</code></a></h3>
+<p>flags controlling the safety vs speed of the operation</p>
+<h3 id="mode"><a href="#mode"><code>mode</code></a></h3>
+<p>file mode, as passed to <code>open()</code>; typically this will be <code>0666</code></p>
+<h2 id="returns"><a href="#returns">Returns</a></h2>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="false"><code>false</code></a> if an error occurred</p>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Macro for passing variables as strong or weak references into a closure."><meta name="keywords" content="rust, rustlang, rust-lang, clone"><title>clone in glib_macros - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In glib_macros</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../glib_macros/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">glib_macros</a>::<wbr><a class="macro" href="#">clone</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/glib_macros/lib.rs.html#266">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust macro"><code>clone!() { /* proc-macro */ }</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for passing variables as strong or weak references into a closure.</p>
+<p>This macro can be useful in combination with closures, e.g. signal handlers, to reduce the
+boilerplate required for passing strong or weak references into the closure. It will
+automatically create the new reference and pass it with the same name into the closure.</p>
+<p>If upgrading the weak reference to a strong reference inside the closure is failing, the
+closure is immediately returning an optional default return value. If none is provided, <code>()</code> is
+returned.</p>
+<p><strong>⚠️ IMPORTANT ⚠️</strong></p>
+<p><code>glib</code> needs to be in scope, so unless it’s one of the direct crate dependencies, you need to
+import it because <code>clone!</code> is using it. For example:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">gtk::glib</span>;</code></pre></div>
+<h4 id="debugging"><a href="#debugging">Debugging</a></h4>
+<p>In case something goes wrong inside the <code>clone!</code> macro, we use the <a href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.g_debug.html"><code>g_debug</code></a> macro. Meaning
+that if you want to see these debug messages, you’ll have to set the <code>G_MESSAGES_DEBUG</code>
+environment variable when running your code (either in the code directly or when running the
+binary) to either “all” or <a href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/constant.CLONE_MACRO_LOG_DOMAIN.html"><code>CLONE_MACRO_LOG_DOMAIN</code></a>:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">glib::CLONE_MACRO_LOG_DOMAIN</span>;
+
+<span class="ident">std::env::set_var</span>(<span class="string">&quot;G_MESSAGES_DEBUG&quot;</span>, <span class="ident">CLONE_MACRO_LOG_DOMAIN</span>);
+<span class="ident">std::env::set_var</span>(<span class="string">&quot;G_MESSAGES_DEBUG&quot;</span>, <span class="string">&quot;all&quot;</span>);</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ G_MESSAGES_DEBUG=all ./binary</code></pre></div><h4 id="passing-a-strong-reference"><a href="#passing-a-strong-reference">Passing a strong reference</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib</span>;
+<span class="kw">use</span> <span class="ident">glib_macros::clone</span>;
+<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
+
+<span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">1</span>);
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="ident">v</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+    <span class="macro">println!</span>(<span class="string">&quot;v: {}, x: {}&quot;</span>, <span class="ident">v</span>, <span class="ident">x</span>);
+});
+
+<span class="ident">closure</span>(<span class="number">2</span>);</code></pre></div>
+<h4 id="passing-a-weak-reference"><a href="#passing-a-weak-reference">Passing a weak reference</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib</span>;
+<span class="kw">use</span> <span class="ident">glib_macros::clone</span>;
+<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
+
+<span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">2</span>);
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">weak</span> <span class="ident">u</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+    <span class="macro">println!</span>(<span class="string">&quot;u: {}, x: {}&quot;</span>, <span class="ident">u</span>, <span class="ident">x</span>);
+});
+
+<span class="ident">closure</span>(<span class="number">3</span>);</code></pre></div>
+<h5 id="allowing-a-nullable-weak-reference"><a href="#allowing-a-nullable-weak-reference">Allowing a nullable weak reference</a></h5>
+<p>In some cases, even if the weak references can’t be retrieved, you might want to still have
+your closure called. In this case, you need to use <code>@weak-allow-none</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib</span>;
+<span class="kw">use</span> <span class="ident">glib_macros::clone</span>;
+<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
+
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> {
+    <span class="comment">// This `Rc` won&#39;t be available in the closure because it&#39;s dropped at the end of the</span>
+    <span class="comment">// current block</span>
+    <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">2</span>);
+    <span class="macro">clone!</span>(@<span class="ident">weak</span><span class="op">-</span><span class="ident">allow</span><span class="op">-</span><span class="ident">none</span> <span class="ident">u</span> =&gt; @<span class="ident">default</span><span class="op">-</span><span class="kw">return</span> <span class="bool-val">false</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+        <span class="comment">// We need to use a Debug print for `u` because it&#39;ll be an `Option`.</span>
+        <span class="macro">println!</span>(<span class="string">&quot;u: {:?}, x: {}&quot;</span>, <span class="ident">u</span>, <span class="ident">x</span>);
+        <span class="bool-val">true</span>
+    })
+};
+
+<span class="macro">assert_eq!</span>(<span class="ident">closure</span>(<span class="number">3</span>), <span class="bool-val">true</span>);</code></pre></div>
+<h4 id="renaming-variables"><a href="#renaming-variables">Renaming variables</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib</span>;
+<span class="kw">use</span> <span class="ident">glib_macros::clone</span>;
+<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
+
+<span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">1</span>);
+<span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">2</span>);
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="ident">v</span> <span class="kw">as</span> <span class="ident">y</span>, @<span class="ident">weak</span> <span class="ident">u</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+    <span class="macro">println!</span>(<span class="string">&quot;v as y: {}, u: {}, x: {}&quot;</span>, <span class="ident">y</span>, <span class="ident">u</span>, <span class="ident">x</span>);
+});
+
+<span class="ident">closure</span>(<span class="number">3</span>);</code></pre></div>
+<h4 id="providing-a-default-return-value-if-upgrading-a-weak-reference-fails"><a href="#providing-a-default-return-value-if-upgrading-a-weak-reference-fails">Providing a default return value if upgrading a weak reference fails</a></h4>
+<p>You can do it in two different ways:</p>
+<p>Either by providing the value yourself using <code>@default-return</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib</span>;
+<span class="kw">use</span> <span class="ident">glib_macros::clone</span>;
+<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
+
+<span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">1</span>);
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">weak</span> <span class="ident">v</span> =&gt; @<span class="ident">default</span><span class="op">-</span><span class="kw">return</span> <span class="bool-val">false</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+    <span class="macro">println!</span>(<span class="string">&quot;v: {}, x: {}&quot;</span>, <span class="ident">v</span>, <span class="ident">x</span>);
+    <span class="bool-val">true</span>
+});
+
+<span class="comment">// Drop value so that the weak reference can&#39;t be upgraded.</span>
+<span class="ident">drop</span>(<span class="ident">v</span>);
+
+<span class="macro">assert_eq!</span>(<span class="ident">closure</span>(<span class="number">2</span>), <span class="bool-val">false</span>);</code></pre></div>
+<p>Or by using <code>@default-panic</code> (if the value fails to get upgraded, it’ll panic):</p>
+
+<div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic"><code><span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">weak</span> <span class="ident">v</span> =&gt; @<span class="ident">default</span><span class="op">-</span><span class="ident">panic</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+    <span class="macro">println!</span>(<span class="string">&quot;v: {}, x: {}&quot;</span>, <span class="ident">v</span>, <span class="ident">x</span>);
+    <span class="bool-val">true</span>
+});</code></pre></div>
+<h4 id="errors"><a href="#errors">Errors</a></h4>
+<p>Here is a list of errors you might encounter:</p>
+<p><strong>Missing <code>@weak</code> or <code>@strong</code></strong>:</p>
+
+<div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail"><code><span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Rc::new</span>(<span class="number">1</span>);
+
+<span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(<span class="ident">v</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="macro">println!</span>(<span class="string">&quot;v: {}, x: {}&quot;</span>, <span class="ident">v</span>, <span class="ident">x</span>));</code></pre></div>
+<p><strong>Passing <code>self</code> as an argument</strong>:</p>
+
+<div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail"><code><span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Foo</span>;
+
+<span class="kw">impl</span> <span class="ident">Foo</span> {
+    <span class="kw">fn</span> <span class="ident">foo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="self">self</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;self: {:?}&quot;</span>, <span class="self">self</span>);
+        });
+    }
+}</code></pre></div>
+<p>If you want to use <code>self</code> directly, you’ll need to rename it:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Foo</span>;
+
+<span class="kw">impl</span> <span class="ident">Foo</span> {
+    <span class="kw">fn</span> <span class="ident">foo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="self">self</span> <span class="kw">as</span> <span class="ident">this</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;self: {:?}&quot;</span>, <span class="ident">this</span>);
+        });
+    }
+}</code></pre></div>
+<p><strong>Passing fields directly</strong></p>
+
+<div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail"><code><span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Foo</span> {
+    <span class="ident">v</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Foo</span> {
+    <span class="kw">fn</span> <span class="ident">foo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="self">self</span>.<span class="ident">v</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;self.v: {:?}&quot;</span>, <span class="ident">v</span>);
+        });
+    }
+}</code></pre></div>
+<p>You can do it by renaming it:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span> <span class="ident">Foo</span> {
+    <span class="kw">fn</span> <span class="ident">foo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">closure</span> <span class="op">=</span> <span class="macro">clone!</span>(@<span class="ident">strong</span> <span class="self">self</span>.<span class="ident">v</span> <span class="kw">as</span> <span class="ident">v</span> =&gt; <span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;self.v: {}&quot;</span>, <span class="ident">v</span>);
+        });
+    }
+}</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="glib_macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

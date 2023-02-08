@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Char","Wrapper for values where C functions expect a plain C `char`"],["UChar","Wrapper for values where C functions expect a plain C `unsigned char`"]]};

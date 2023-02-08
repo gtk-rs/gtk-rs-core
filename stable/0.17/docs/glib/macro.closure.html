@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Macro for creating a `Closure` object. This is a wrapper around `Closure::new` that automatically type checks its arguments at run-time."><title>closure in glib - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../static.files/ayu-a0090c8b1ced384f.css"><script src="../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.17" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.17") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../glib/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../glib/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In glib</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">glib</a>::<wbr><a class="macro" href="#">closure</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/glib_macros/lib.rs.html#422">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>closure!() { /* proc-macro */ }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Macro for creating a <a href="../glib/closure/struct.Closure.html"><code>Closure</code></a> object. This is a wrapper around <a href="../glib/closure/struct.Closure.html#method.new"><code>Closure::new</code></a> that
+automatically type checks its arguments at run-time.</p>
+<p>A <code>Closure</code> takes <a href="../glib/value/struct.Value.html"><code>Value</code></a> objects as inputs and output. This macro will automatically convert
+the inputs to Rust types when invoking its callback, and then will convert the output back to a
+<code>Value</code>. All inputs must implement the <a href="../glib/value/trait.FromValue.html"><code>FromValue</code></a> trait, and outputs must either implement
+the <a href="../glib/value/trait.ToValue.html"><code>ToValue</code></a> trait or be the unit type <code>()</code>. Type-checking of inputs is done at run-time; if
+incorrect types are passed via <a href="../glib/closure/struct.Closure.html#method.invoke"><code>Closure::invoke</code></a> then the closure will panic. Note that when
+passing input types derived from <a href="../glib/object/struct.Object.html"><code>Object</code></a> or <a href="../glib/object/struct.Interface.html"><code>Interface</code></a>, you must take care to upcast to
+the exact object or interface type that is being received.</p>
+<p>Similarly to <a href="macro.clone.html"><code>clone!</code></a>, this macro can be useful in combination with signal
+handlers to reduce boilerplate when passing references. Unique to <code>Closure</code> objects is the
+ability to watch an object using a the <code>@watch</code> directive. Only an <a href="../glib/object/struct.Object.html"><code>Object</code></a> value can be
+passed to <code>@watch</code>, and only one object can be watched per closure. When an object is watched,
+a weak reference to the object is held in the closure. When the object is destroyed, the
+closure will become invalidated: all signal handlers connected to the closure will become
+disconnected, and any calls to <a href="../glib/closure/struct.Closure.html#method.invoke"><code>Closure::invoke</code></a> on the closure will be silently ignored.
+Internally, this is accomplished using <a href="../glib/object/trait.ObjectExt.html#tymethod.watch_closure"><code>Object::watch_closure</code></a> on the watched object.</p>
+<p>The <code>@weak-allow-none</code> and <code>@strong</code> captures are also supported and behave the same as in
+<a href="macro.clone.html"><code>clone!</code></a>, as is aliasing captures with the <code>as</code> keyword. Notably, these
+captures are able to reference <code>Rc</code> and <code>Arc</code> values in addition to <code>Object</code> values.</p>
+<p><strong>⚠️ IMPORTANT ⚠️</strong></p>
+<p><code>glib</code> needs to be in scope, so unless it’s one of the direct crate dependencies, you need to
+import it because <code>closure!</code> is using it. For example:</p>
+
+<div class="example-wrap ignore"><div class='tooltip'>ⓘ</div><pre class="rust rust-example-rendered"><code><span class="kw">use </span>gtk::glib;</code></pre></div>
+<h4 id="using-as-a-closure-object"><a href="#using-as-a-closure-object">Using as a closure object</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib_macros::closure;
+
+<span class="kw">let </span>concat_str = <span class="macro">closure!</span>(|s: <span class="kw-2">&amp;</span>str| s.to_owned() + <span class="string">&quot; World&quot;</span>);
+<span class="kw">let </span>result = concat_str.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="string">&quot;Hello&quot;</span>]);
+<span class="macro">assert_eq!</span>(result, <span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
+<h4 id="connecting-to-a-signal"><a href="#connecting-to-a-signal">Connecting to a signal</a></h4>
+<p>For wrapping closures that can’t be sent across threads, the
+<a href="macro.closure_local.html"><code>closure_local!</code></a> macro can be used. It has the same syntax as
+<code>closure!</code>, but instead uses <a href="../glib/closure/struct.Closure.html#method.new_local"><code>Closure::new_local</code></a> internally.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib_macros::closure_local;
+
+<span class="kw">let </span>obj = glib::Object::new::&lt;glib::Object&gt;();
+obj.connect_closure(
+    <span class="string">&quot;notify&quot;</span>, <span class="bool-val">false</span>,
+    <span class="macro">closure_local!</span>(|_obj: glib::Object, pspec: glib::ParamSpec| {
+        <span class="macro">println!</span>(<span class="string">&quot;property notify: {}&quot;</span>, pspec.name());
+    }));</code></pre></div>
+<h4 id="object-watching"><a href="#object-watching">Object Watching</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib_macros::closure_local;
+
+<span class="kw">let </span>closure = {
+    <span class="kw">let </span>obj = glib::Object::new::&lt;glib::Object&gt;();
+    <span class="kw">let </span>closure = <span class="macro">closure_local!</span>(@watch obj =&gt; <span class="kw">move </span>|| {
+        obj.type_().name()
+    });
+    <span class="macro">assert_eq!</span>(closure.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[]), <span class="string">&quot;GObject&quot;</span>);
+    closure
+};
+<span class="comment">// `obj` is dropped, closure invalidated so it always does nothing and returns None
+</span>closure.invoke::&lt;()&gt;(<span class="kw-2">&amp;</span>[]);</code></pre></div>
+<p><code>@watch</code> has special behavior when connected to a signal:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib_macros::closure_local;
+
+<span class="kw">let </span>obj = glib::Object::new::&lt;glib::Object&gt;();
+{
+    <span class="kw">let </span>other = glib::Object::new::&lt;glib::Object&gt;();
+    obj.connect_closure(
+        <span class="string">&quot;notify&quot;</span>, <span class="bool-val">false</span>,
+        <span class="macro">closure_local!</span>(@watch other <span class="kw">as </span>b =&gt; <span class="kw">move </span>|a: glib::Object, pspec: glib::ParamSpec| {
+            <span class="kw">let </span>value = a.property_value(pspec.name());
+            b.set_property(pspec.name(), <span class="kw-2">&amp;</span>value);
+        }));
+    <span class="comment">// The signal handler will disconnect automatically at the end of this
+    // block when `other` is dropped.
+</span>}</code></pre></div>
+<h4 id="weak-and-strong-references"><a href="#weak-and-strong-references">Weak and Strong References</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib;
+<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib_macros::closure;
+<span class="kw">use </span>std::sync::Arc;
+
+<span class="kw">let </span>closure = {
+    <span class="kw">let </span>a = Arc::new(String::from(<span class="string">&quot;Hello&quot;</span>));
+    <span class="kw">let </span>b = Arc::new(String::from(<span class="string">&quot;World&quot;</span>));
+    <span class="kw">let </span>c = <span class="string">&quot;!&quot;</span>;
+    <span class="kw">let </span>closure = <span class="macro">closure!</span>(@strong a, @weak-allow-none b, @to-owned c =&gt; <span class="kw">move </span>|| {
+        <span class="comment">// `a` is Arc&lt;String&gt;, `b` is Option&lt;Arc&lt;String&gt;&gt;, `c` is a `String`
+        </span><span class="macro">format!</span>(<span class="string">&quot;{} {}{}&quot;</span>, a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| <span class="string">&quot;Moon&quot;</span>), c)
+    });
+    <span class="macro">assert_eq!</span>(closure.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[]), <span class="string">&quot;Hello World!&quot;</span>);
+    closure
+};
+<span class="comment">// `a`, `c` still kept alive, `b` is dropped
+</span><span class="macro">assert_eq!</span>(closure.invoke::&lt;String&gt;(<span class="kw-2">&amp;</span>[]), <span class="string">&quot;Hello Moon!&quot;</span>);</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

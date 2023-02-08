@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all [`struct@Cancellable`] methods."><meta name="keywords" content="rust, rustlang, rust-lang, CancellableExt"><title>CancellableExt in gio::prelude - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">CancellableExt</a></h2><div class="sidebar-elems"><section><div class="block"><h3 class="sidebar-title"><a href="#required-methods">Required Methods</a></h3><ul><li><a href="#tymethod.cancel">cancel</a></li><li><a href="#tymethod.connect_cancelled">connect_cancelled</a></li><li><a href="#tymethod.disconnect">disconnect</a></li><li><a href="#tymethod.fd">fd</a></li><li><a href="#tymethod.is_cancelled">is_cancelled</a></li><li><a href="#tymethod.pop_current">pop_current</a></li><li><a href="#tymethod.push_current">push_current</a></li><li><a href="#tymethod.release_fd">release_fd</a></li><li><a href="#tymethod.set_error_if_cancelled">set_error_if_cancelled</a></li></ul></div><div class="block"><h3 class="sidebar-title"><a href="#implementors">Implementors</a></h3></div></section><h2 class="location"><a href="index.html">In gio::prelude</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Trait <a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a>::<wbr><a class="trait" href="#">CancellableExt</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#78-248">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust trait"><code>pub trait CancellableExt: 'static {
+    fn <a href="#tymethod.cancel" class="fnname">cancel</a>(&amp;self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.disconnect" class="fnname">disconnect</a>(&amp;self, handler_id: c_ulong);
+<span class="item-spacer"></span>    fn <a href="#tymethod.fd" class="fnname">fd</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.is_cancelled" class="fnname">is_cancelled</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.pop_current" class="fnname">pop_current</a>(&amp;self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.push_current" class="fnname">push_current</a>(&amp;self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.release_fd" class="fnname">release_fd</a>(&amp;self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_error_if_cancelled" class="fnname">set_error_if_cancelled</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_cancelled" class="fnname">connect_cancelled</a>&lt;F:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self) + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f: F<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>;
+}</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.Cancellable.html" title="Cancellable"><code>Cancellable</code></a> methods.</p>
+<h2 id="implementors-1"><a href="#implementors-1">Implementors</a></h2>
+<p><a href="../struct.Cancellable.html" title="crate::Cancellable"><code>Cancellable</code></a></p>
+</div></details><h2 id="required-methods" class="small-section-header">Required Methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle" open><summary><div id="tymethod.cancel" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#96">source</a></div><h4 class="code-header">fn <a href="#tymethod.cancel" class="fnname">cancel</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Will set <code>self</code> to cancelled, and will emit the
+<code>signal::Cancellable::cancelled</code> signal. (However, see the warning about
+race conditions in the documentation for that signal if you are
+planning to connect to it.)</p>
+<p>This function is thread-safe. In other words, you can safely call
+it from a thread other than the one running the operation that was
+passed the <code>self</code>.</p>
+<p>If <code>self</code> is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a>, this function returns immediately for convenience.</p>
+<p>The convention within GIO is that cancelling an asynchronous
+operation causes it to complete asynchronously. That is, if you
+cancel the operation from the same thread in which it is running,
+then the operation’s <code>GAsyncReadyCallback</code> will not be invoked until
+the application returns to the main loop.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.disconnect" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#118">source</a></div><h4 class="code-header">fn <a href="#tymethod.disconnect" class="fnname">disconnect</a>(&amp;self, handler_id: c_ulong)</h4></div></summary><div class="docblock"><p>Disconnects a handler from a cancellable instance similar to
+<code>g_signal_handler_disconnect()</code>. Additionally, in the event that a
+signal handler is currently running, this call will block until the
+handler has finished. Calling this function from a
+<code>signal::Cancellable::cancelled</code> signal handler will therefore result in a
+deadlock.</p>
+<p>This avoids a race condition where a thread cancels at the
+same time as the cancellable operation is finished and the
+signal handler is removed. See <code>signal::Cancellable::cancelled</code> for
+details on how to use this.</p>
+<p>If <code>self</code> is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a> or <code>handler_id</code> is <code>0</code> this function does
+nothing.</p>
+<h6 id="handler_id"><a href="#handler_id"><code>handler_id</code></a></h6>
+<p>Handler id of the handler to be disconnected, or <code>0</code>.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.fd" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#140">source</a></div><h4 class="code-header">fn <a href="#tymethod.fd" class="fnname">fd</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></h4></div></summary><div class="docblock"><p>Gets the file descriptor for a cancellable job. This can be used to
+implement cancellable operations on Unix systems. The returned fd will
+turn readable when <code>self</code> is cancelled.</p>
+<p>You are not supposed to read from the fd yourself, just check for
+readable status. Reading to unset the readable status is done
+with <code>g_cancellable_reset()</code>.</p>
+<p>After a successful return from this function, you should use
+<a href="trait.CancellableExt.html#tymethod.release_fd" title="Self::release_fd()"><code>release_fd()</code></a> to free up resources allocated for
+the returned file descriptor.</p>
+<p>See also <code>g_cancellable_make_pollfd()</code>.</p>
+<h5 id="returns"><a href="#returns">Returns</a></h5>
+<p>A valid file descriptor. <code>-1</code> if the file descriptor
+is not supported, or on errors.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.is_cancelled" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#149">source</a></div><h4 class="code-header">fn <a href="#tymethod.is_cancelled" class="fnname">is_cancelled</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Checks if a cancellable job has been cancelled.</p>
+<h5 id="returns-1"><a href="#returns-1">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> if <code>self</code> is cancelled,
+FALSE if called with <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a> or if item is not cancelled.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.pop_current" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#157">source</a></div><h4 class="code-header">fn <a href="#tymethod.pop_current" class="fnname">pop_current</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Pops <code>self</code> off the cancellable stack (verifying that <code>self</code>
+is on the top of the stack).</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.push_current" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#168">source</a></div><h4 class="code-header">fn <a href="#tymethod.push_current" class="fnname">push_current</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Pushes <code>self</code> onto the cancellable stack. The current
+cancellable can then be received using <a href="../struct.Cancellable.html#method.current" title="crate::Cancellable::current()"><code>Cancellable::current()</code></a>.</p>
+<p>This is useful when implementing cancellable operations in
+code that does not allow you to pass down the cancellable object.</p>
+<p>This is typically called automatically by e.g. <a href="../struct.File.html" title="crate::File"><code>File</code></a> operations,
+so you rarely have to call this yourself.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.release_fd" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#180">source</a></div><h4 class="code-header">fn <a href="#tymethod.release_fd" class="fnname">release_fd</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Releases a resources previously allocated by <a href="trait.CancellableExt.html#tymethod.fd" title="Self::fd()"><code>fd()</code></a>
+or <code>g_cancellable_make_pollfd()</code>.</p>
+<p>For compatibility reasons with older releases, calling this function
+is not strictly required, the resources will be automatically freed
+when the <code>self</code> is finalized. However, the <code>self</code> will
+block scarce file descriptors until it is finalized if this function
+is not called. This can cause the application to run out of file
+descriptors when many <code>GCancellables</code> are used at the same time.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.set_error_if_cancelled" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#189">source</a></div><h4 class="code-header">fn <a href="#tymethod.set_error_if_cancelled" class="fnname">set_error_if_cancelled</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></div></summary><div class="docblock"><p>If the <code>self</code> is cancelled, sets the error to notify
+that the operation was cancelled.</p>
+<h5 id="returns-2"><a href="#returns-2">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> if <code>self</code> was cancelled, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="false"><code>false</code></a> if it was not</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.connect_cancelled" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#247">source</a></div><h4 class="code-header">fn <a href="#tymethod.connect_cancelled" class="fnname">connect_cancelled</a>&lt;F:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self) + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;f: F<br>) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></div></summary><div class="docblock"><p>Emitted when the operation has been cancelled.</p>
+<p>Can be used by implementations of cancellable operations. If the
+operation is cancelled from another thread, the signal will be
+emitted in the thread that cancelled the operation, not the
+thread that is running the operation.</p>
+<p>Note that disconnecting from this signal (or any signal) in a
+multi-threaded program is prone to race conditions. For instance
+it is possible that a signal handler may be invoked even after
+a call to <code>g_signal_handler_disconnect()</code> for that handler has
+already returned.</p>
+<p>There is also a problem when cancellation happens right before
+connecting to the signal. If this happens the signal will
+unexpectedly not be emitted, and checking before connecting to
+the signal leaves a race condition where this is still happening.</p>
+<p>In order to make it safe and easy to connect handlers there
+are two helper functions: <code>g_cancellable_connect()</code> and
+<a href="trait.CancellableExt.html#tymethod.disconnect" title="Self::disconnect()"><code>disconnect()</code></a> which protect against problems
+like this.</p>
+<p>An example of how to us this:</p>
+<p><strong>⚠️ The following code is in C ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-C"><code>    // Make sure we don&#39;t do unnecessary work if already cancelled
+    if (g_cancellable_set_error_if_cancelled (cancellable, error))
+      return;
+
+    // Set up all the data needed to be able to handle cancellation
+    // of the operation
+    my_data = my_data_new (...);
+
+    id = 0;
+    if (cancellable)
+      id = g_cancellable_connect (cancellable,
+                      G_CALLBACK (cancelled_handler)
+                      data, NULL);
+
+    // cancellable operation here...
+
+    g_cancellable_disconnect (cancellable, id);
+
+    // cancelled_handler is never called after this, it is now safe
+    // to free the data
+    my_data_free (my_data);</code></pre></div>
+<p>Note that the cancelled signal is emitted in the thread that
+the user cancelled from, which may be the main thread. So, the
+cancellable signal should not do something that can block.</p>
+</div></details></div><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div class="item-list" id="implementors-list"><section id="impl-CancellableExt" class="impl has-srclink"><span class="rightside"><a class="srclink" href="../../src/gio/auto/cancellable.rs.html#250-340">source</a></span><a href="#impl-CancellableExt" class="anchor"></a><h3 class="code-header in-band">impl&lt;O:&nbsp;<a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt; <a class="trait" href="trait.CancellableExt.html" title="trait gio::prelude::CancellableExt">CancellableExt</a> for O</h3></section></div><script type="text/javascript" src="../../implementors/gio/auto/cancellable/trait.CancellableExt.js" data-ignore-extern-crates="" async></script></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

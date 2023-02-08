@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["glib"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Write.html\" title=\"trait core::fmt::Write\">Write</a> for <a class=\"struct\" href=\"glib/struct.GStringBuilder.html\" title=\"struct glib::GStringBuilder\">GStringBuilder</a>","synthetic":false,"types":["glib::gstring_builder::GStringBuilder"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

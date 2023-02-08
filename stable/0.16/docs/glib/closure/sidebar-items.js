@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Closure",""],["RustClosure",""]],"trait":[["ToClosureReturnValue",""],["TryFromClosureReturnValue",""]]};

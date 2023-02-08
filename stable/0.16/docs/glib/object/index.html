@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`IMPL` Object wrapper implementation and `Object` binding."><meta name="keywords" content="rust, rustlang, rust-lang, object"><title>glib::object - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-06d53869768b7c80.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-b500e95a81de8901.css"><link rel="stylesheet" disabled href="../../static.files/dark-8e2401c021b2439b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-0c8cf6c01af981d0.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/main-a211dbb005fb8161.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.16" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.16") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><h2></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><h2 class="location"><a href="#">Module object</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#types">Type Definitions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn">Module <a href="../index.html">glib</a>::<wbr><a class="mod" href="#">object</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/glib/object.rs.html#4-4581">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>IMPL</code> Object wrapper implementation and <code>Object</code> binding.</p>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BindingBuilder.html" title="glib::object::BindingBuilder struct">BindingBuilder</a></div><div class="item-right docblock-short">Builder for object property bindings.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BorrowedObject.html" title="glib::object::BorrowedObject struct">BorrowedObject</a></div><div class="item-right docblock-short">Borrowed reference to an object of type <code>T</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Class.html" title="glib::object::Class struct">Class</a></div><div class="item-right docblock-short">Class struct of type <code>T</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ClassRef.html" title="glib::object::ClassRef struct">ClassRef</a></div><div class="item-right docblock-short">Reference to the class struct of type <code>T</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InitiallyUnowned.html" title="glib::object::InitiallyUnowned struct">InitiallyUnowned</a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Interface.html" title="glib::object::Interface struct">Interface</a></div><div class="item-right docblock-short">Interface struct of type <code>T</code> for some type.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InterfaceRef.html" title="glib::object::InterfaceRef struct">InterfaceRef</a></div><div class="item-right docblock-short">Reference to a class struct of type <code>T</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Object.html" title="glib::object::Object struct">Object</a></div><div class="item-right docblock-short">The base class in the object hierarchy.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ObjectBuilder.html" title="glib::object::ObjectBuilder struct">ObjectBuilder</a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ObjectRef.html" title="glib::object::ObjectRef struct">ObjectRef</a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ObjectValueTypeChecker.html" title="glib::object::ObjectValueTypeChecker struct">ObjectValueTypeChecker</a></div><div class="item-right docblock-short"><code>Value</code> type checker for object types.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PropertyNotificationFreezeGuard.html" title="glib::object::PropertyNotificationFreezeGuard struct">PropertyNotificationFreezeGuard</a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SendWeakRef.html" title="glib::object::SendWeakRef struct">SendWeakRef</a></div><div class="item-right docblock-short">A weak reference to the object it was created for that can be sent to
+different threads even for object types that don’t implement <code>Send</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TypedObjectRef.html" title="glib::object::TypedObjectRef struct">TypedObjectRef</a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.WeakRef.html" title="glib::object::WeakRef struct">WeakRef</a></div><div class="item-right docblock-short">A weak reference to an object.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.WeakRefNotify.html" title="glib::object::WeakRefNotify struct">WeakRefNotify</a></div><div class="item-right docblock-short">A handle to disconnect a weak ref notify closure.</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.CanDowncast.html" title="glib::object::CanDowncast trait">CanDowncast</a></div><div class="item-right docblock-short">Marker trait for the statically known possibility of downcasting from <code>Self</code> to <code>T</code>.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Cast.html" title="glib::object::Cast trait">Cast</a></div><div class="item-right docblock-short">Upcasting and downcasting support.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.CastNone.html" title="glib::object::CastNone trait">CastNone</a></div><div class="item-right docblock-short">Convenience trait mirroring <code>Cast</code>, implemented on <code>Option&lt;Object&gt;</code> types.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.IsA.html" title="glib::object::IsA trait">IsA</a></div><div class="item-right docblock-short">Declares the “is a” relationship.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.IsClass.html" title="glib::object::IsClass trait">IsClass</a></div><div class="item-right docblock-short">Trait implemented by class types.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.IsInterface.html" title="glib::object::IsInterface trait">IsInterface</a></div><div class="item-right docblock-short">Trait implemented by interface types.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ObjectExt.html" title="glib::object::ObjectExt trait">ObjectExt</a></div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ObjectSubclassIs.html" title="glib::object::ObjectSubclassIs trait">ObjectSubclassIs</a></div><div class="item-right docblock-short">Automatically implemented by <code>ObjectSubclass</code> variants of
+<a href="../macro.wrapper.html" title="crate::wrapper!"><code>wrapper!</code></a></div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ObjectType.html" title="glib::object::ObjectType trait">ObjectType</a></div><div class="item-right docblock-short">Implemented by types representing <code>glib::Object</code> and subclasses of it.</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ParentClassIs.html" title="glib::object::ParentClassIs trait">ParentClassIs</a></div></div></div><h2 id="types" class="small-section-header"><a href="#types">Type Definitions</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="type" href="type.ObjectClass.html" title="glib::object::ObjectClass type">ObjectClass</a></div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (ec56537c4 2022-12-15)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>

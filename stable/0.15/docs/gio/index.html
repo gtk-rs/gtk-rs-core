@@ -1,0 +1,961 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Rust GIO bindings"><meta name="keywords" content="rust, rustlang, rust-lang, gio"><title>gio - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="../crates.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate gio</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.15.12</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li><li><a href="#functions">Functions</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../gio/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">gio</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/gio/lib.rs.html#3-134">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="rust-gio-bindings"><a href="#rust-gio-bindings">Rust GIO bindings</a></h2>
+<p><strong>Rust</strong> bindings and wrappers for <a href="https://docs.gtk.org/gio/">GIO</a>, part of <a href="https://github.com/gtk-rs/gtk-rs-core">gtk-rs-core</a>.</p>
+<p>GIO <strong>2.48</strong> is the lowest supported version for the underlying library.</p>
+<h3 id="minimum-supported-rust-version"><a href="#minimum-supported-rust-version">Minimum supported Rust version</a></h3>
+<p>Currently, the minimum supported Rust version is <code>1.56.0</code>.</p>
+<h3 id="documentation"><a href="#documentation">Documentation</a></h3>
+<ul>
+<li><a href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs/gio/">Rust API - Stable</a></li>
+<li><a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio">Rust API - Development</a></li>
+<li><a href="https://docs.gtk.org/gio/">C API</a></li>
+<li><a href="https://www.gtk.org/docs/installations/">GTK Installation instructions</a></li>
+</ul>
+<h3 id="using"><a href="#using">Using</a></h3>
+<p>We recommend using <a href="https://crates.io/keywords/gtk-rs">crates from crates.io</a>,
+as <a href="https://gtk-rs.org/#using">demonstrated here</a>.</p>
+<p>If you want to track the bleeding edge, use the git dependency instead:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+gio = { git = &quot;https://github.com/gtk-rs/gtk-rs-core.git&quot;, package = &quot;gio&quot; }</code></pre></div>
+<p>Avoid mixing versioned and git crates like this:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+gio = &quot;0.13&quot;
+gio = { git = &quot;https://github.com/gtk-rs/gtk-rs-core.git&quot;, package = &quot;gio&quot; }</code></pre></div><h4 id="see-also"><a href="#see-also">See Also</a></h4>
+<ul>
+<li><a href="https://crates.io/crates/glib">glib</a></li>
+</ul>
+<h3 id="license"><a href="#license">License</a></h3>
+<p><strong>gio</strong> is available under the MIT License, please refer to it.</p>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item" id="reexport.ffi"><code>pub use <a class="mod" href="../gio_sys/index.html" title="mod gio_sys">ffi</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.glib"><code>pub use <a class="mod" href="../glib/index.html" title="mod glib">glib</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="functions/index.html" title="gio::functions mod">functions</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="prelude/index.html" title="gio::prelude mod">prelude</a></div><div class="item-right docblock-short"><p>Traits and essential types intended for blanket imports.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="subclass/index.html" title="gio::subclass mod">subclass</a></div><div class="item-right docblock-short"></div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.resources_register_include.html" title="gio::resources_register_include macro">resources_register_include</a></div><div class="item-right docblock-short"><p>Include gresources generated with <a href="fn.compile_resources.html" title="compile_resources">compile_resources</a> and register with glib. <code>path</code> is
+relative to <code>OUTDIR</code>.</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Action.html" title="gio::Action struct">Action</a></div><div class="item-right docblock-short"><p><a href="struct.Action.html" title="crate::Action"><code>Action</code></a> represents a single named action.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ActionGroup.html" title="gio::ActionGroup struct">ActionGroup</a></div><div class="item-right docblock-short"><p><a href="struct.ActionGroup.html" title="crate::ActionGroup"><code>ActionGroup</code></a> represents a group of actions. Actions can be used to
+expose functionality in a structured way, either from one part of a
+program to another, or to the outside world. Action groups are often
+used together with a <a href="struct.MenuModel.html" title="crate::MenuModel"><code>MenuModel</code></a> that provides additional
+representation data for displaying the actions to the user, e.g. in
+a menu.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ActionGroupExportId.html" title="gio::ActionGroupExportId struct">ActionGroupExportId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ActionMap.html" title="gio::ActionMap struct">ActionMap</a></div><div class="item-right docblock-short"><p>The GActionMap interface is implemented by <a href="struct.ActionGroup.html" title="crate::ActionGroup"><code>ActionGroup</code></a>
+implementations that operate by containing a number of
+named <a href="struct.Action.html" title="crate::Action"><code>Action</code></a> instances, such as <a href="struct.SimpleActionGroup.html" title="crate::SimpleActionGroup"><code>SimpleActionGroup</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AppInfo.html" title="gio::AppInfo struct">AppInfo</a></div><div class="item-right docblock-short"><p><a href="struct.AppInfo.html" title="crate::AppInfo"><code>AppInfo</code></a> and <a href="struct.AppLaunchContext.html" title="crate::AppLaunchContext"><code>AppLaunchContext</code></a> are used for describing and launching
+applications installed on the system.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AppInfoCreateFlags.html" title="gio::AppInfoCreateFlags struct">AppInfoCreateFlags</a></div><div class="item-right docblock-short"><p>Flags used when creating a <a href="struct.AppInfo.html" title="crate::AppInfo"><code>AppInfo</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AppInfoMonitor.html" title="gio::AppInfoMonitor struct">AppInfoMonitor</a></div><div class="item-right docblock-short"><p><a href="struct.AppInfoMonitor.html" title="crate::AppInfoMonitor"><code>AppInfoMonitor</code></a> is a very simple object used for monitoring the app
+info database for changes (ie: newly installed or removed
+applications).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AppLaunchContext.html" title="gio::AppLaunchContext struct">AppLaunchContext</a></div><div class="item-right docblock-short"><p>Integrating the launch with the launching application. This is used to
+handle for instance startup notification and launching the new application
+on the same screen as the launching window.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Application.html" title="gio::Application struct">Application</a></div><div class="item-right docblock-short"><p>A <a href="struct.Application.html" title="crate::Application"><code>Application</code></a> is the foundation of an application. It wraps some
+low-level platform-specific services and is intended to act as the
+foundation for higher-level application classes such as
+<code>GtkApplication</code> or <code>MxApplication</code>. In general, you should not use
+this class outside of a higher level framework.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ApplicationCommandLine.html" title="gio::ApplicationCommandLine struct">ApplicationCommandLine</a></div><div class="item-right docblock-short"><p><a href="struct.ApplicationCommandLine.html" title="crate::ApplicationCommandLine"><code>ApplicationCommandLine</code></a> represents a command-line invocation of
+an application. It is created by <a href="struct.Application.html" title="crate::Application"><code>Application</code></a> and emitted
+in the <code>signal::Application::command-line</code> signal and virtual function.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ApplicationFlags.html" title="gio::ApplicationFlags struct">ApplicationFlags</a></div><div class="item-right docblock-short"><p>Flags used to define the behaviour of a <a href="struct.Application.html" title="crate::Application"><code>Application</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AskPasswordFlags.html" title="gio::AskPasswordFlags struct">AskPasswordFlags</a></div><div class="item-right docblock-short"><p><a href="struct.AskPasswordFlags.html" title="crate::AskPasswordFlags"><code>AskPasswordFlags</code></a> are used to request specific information from the
+user, or to notify the user of their choices in an authentication
+situation.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AsyncInitable.html" title="gio::AsyncInitable struct">AsyncInitable</a></div><div class="item-right docblock-short"><p>This is the asynchronous version of <a href="struct.Initable.html" title="crate::Initable"><code>Initable</code></a>; it behaves the same
+in all ways except that initialization is asynchronous. For more details
+see the descriptions on <a href="struct.Initable.html" title="crate::Initable"><code>Initable</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AsyncResult.html" title="gio::AsyncResult struct">AsyncResult</a></div><div class="item-right docblock-short"><p>Provides a base class for implementing asynchronous function results.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BindingBuilder.html" title="gio::BindingBuilder struct">BindingBuilder</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BufferedInputStream.html" title="gio::BufferedInputStream struct">BufferedInputStream</a></div><div class="item-right docblock-short"><p>Buffered input stream implements <a href="struct.FilterInputStream.html" title="crate::FilterInputStream"><code>FilterInputStream</code></a> and provides
+for buffered reads.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BufferedOutputStream.html" title="gio::BufferedOutputStream struct">BufferedOutputStream</a></div><div class="item-right docblock-short"><p>Buffered output stream implements <a href="struct.FilterOutputStream.html" title="crate::FilterOutputStream"><code>FilterOutputStream</code></a> and provides
+for buffered writes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BusNameOwnerFlags.html" title="gio::BusNameOwnerFlags struct">BusNameOwnerFlags</a></div><div class="item-right docblock-short"><p>Flags used in <code>g_bus_own_name()</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BusNameWatcherFlags.html" title="gio::BusNameWatcherFlags struct">BusNameWatcherFlags</a></div><div class="item-right docblock-short"><p>Flags used in <code>g_bus_watch_name()</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BytesIcon.html" title="gio::BytesIcon struct">BytesIcon</a></div><div class="item-right docblock-short"><p><a href="struct.BytesIcon.html" title="crate::BytesIcon"><code>BytesIcon</code></a> specifies an image held in memory in a common format (usually
+png) to be used as icon.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Cancellable.html" title="gio::Cancellable struct">Cancellable</a></div><div class="item-right docblock-short"><p>GCancellable is a thread-safe operation cancellation stack used
+throughout GIO to allow for cancellation of synchronous and
+asynchronous operations.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.CharsetConverter.html" title="gio::CharsetConverter struct">CharsetConverter</a></div><div class="item-right docblock-short"><p><a href="struct.CharsetConverter.html" title="crate::CharsetConverter"><code>CharsetConverter</code></a> is an implementation of <a href="struct.Converter.html" title="crate::Converter"><code>Converter</code></a> based on
+GIConv.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Converter.html" title="gio::Converter struct">Converter</a></div><div class="item-right docblock-short"><p><a href="struct.Converter.html" title="crate::Converter"><code>Converter</code></a> is implemented by objects that convert
+binary data in various ways. The conversion can be
+stateful and may fail at any place.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ConverterFlags.html" title="gio::ConverterFlags struct">ConverterFlags</a></div><div class="item-right docblock-short"><p>Flags used when calling a <a href="prelude/trait.ConverterExtManual.html#tymethod.convert" title="crate::prelude::ConverterExtManual::convert()"><code>ConverterExtManual::convert()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ConverterInputStream.html" title="gio::ConverterInputStream struct">ConverterInputStream</a></div><div class="item-right docblock-short"><p>Converter input stream implements <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> and allows
+conversion of data of various types during reading.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ConverterOutputStream.html" title="gio::ConverterOutputStream struct">ConverterOutputStream</a></div><div class="item-right docblock-short"><p>Converter output stream implements <a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a> and allows
+conversion of data of various types during reading.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Credentials.html" title="gio::Credentials struct">Credentials</a></div><div class="item-right docblock-short"><p>The <a href="struct.Credentials.html" title="crate::Credentials"><code>Credentials</code></a> type is a reference-counted wrapper for native
+credentials. This information is typically used for identifying,
+authenticating and authorizing other processes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusActionGroup.html" title="gio::DBusActionGroup struct">DBusActionGroup</a></div><div class="item-right docblock-short"><p><a href="struct.DBusActionGroup.html" title="crate::DBusActionGroup"><code>DBusActionGroup</code></a> is an implementation of the <a href="struct.ActionGroup.html" title="crate::ActionGroup"><code>ActionGroup</code></a>
+interface that can be used as a proxy for an action group
+that is exported over D-Bus with <a href="struct.DBusConnection.html#method.export_action_group" title="crate::DBusConnection::export_action_group()"><code>DBusConnection::export_action_group()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusArgInfo.html" title="gio::DBusArgInfo struct">DBusArgInfo</a></div><div class="item-right docblock-short"><p>Information about an argument for a method or a signal.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusAuthObserver.html" title="gio::DBusAuthObserver struct">DBusAuthObserver</a></div><div class="item-right docblock-short"><p>The <a href="struct.DBusAuthObserver.html" title="crate::DBusAuthObserver"><code>DBusAuthObserver</code></a> type provides a mechanism for participating
+in how a <a href="struct.DBusServer.html" title="crate::DBusServer"><code>DBusServer</code></a> (or a <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a>) authenticates remote
+peers. Simply instantiate a <a href="struct.DBusAuthObserver.html" title="crate::DBusAuthObserver"><code>DBusAuthObserver</code></a> and connect to the
+signals you are interested in. Note that new signals may be added
+in the future</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusCallFlags.html" title="gio::DBusCallFlags struct">DBusCallFlags</a></div><div class="item-right docblock-short"><p>Flags used in <a href="struct.DBusConnection.html#method.call" title="crate::DBusConnection::call()"><code>DBusConnection::call()</code></a> and similar APIs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusCapabilityFlags.html" title="gio::DBusCapabilityFlags struct">DBusCapabilityFlags</a></div><div class="item-right docblock-short"><p>Capabilities negotiated with the remote peer.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusConnection.html" title="gio::DBusConnection struct">DBusConnection</a></div><div class="item-right docblock-short"><p>The <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a> type is used for D-Bus connections to remote
+peers such as a message buses. It is a low-level API that offers a
+lot of flexibility. For instance, it lets you establish a connection
+over any transport that can by represented as a <a href="struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusConnectionFlags.html" title="gio::DBusConnectionFlags struct">DBusConnectionFlags</a></div><div class="item-right docblock-short"><p>Flags used when creating a new <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusInterface.html" title="gio::DBusInterface struct">DBusInterface</a></div><div class="item-right docblock-short"><p>The <a href="struct.DBusInterface.html" title="crate::DBusInterface"><code>DBusInterface</code></a> type is the base type for D-Bus interfaces both
+on the service side (see <a href="struct.DBusInterfaceSkeleton.html" title="crate::DBusInterfaceSkeleton"><code>DBusInterfaceSkeleton</code></a>) and client side
+(see <a href="struct.DBusProxy.html" title="crate::DBusProxy"><code>DBusProxy</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusInterfaceInfo.html" title="gio::DBusInterfaceInfo struct">DBusInterfaceInfo</a></div><div class="item-right docblock-short"><p>Information about a D-Bus interface.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusInterfaceSkeleton.html" title="gio::DBusInterfaceSkeleton struct">DBusInterfaceSkeleton</a></div><div class="item-right docblock-short"><p>Abstract base class for D-Bus interfaces on the service side.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusInterfaceSkeletonFlags.html" title="gio::DBusInterfaceSkeletonFlags struct">DBusInterfaceSkeletonFlags</a></div><div class="item-right docblock-short"><p>Flags describing the behavior of a <a href="struct.DBusInterfaceSkeleton.html" title="crate::DBusInterfaceSkeleton"><code>DBusInterfaceSkeleton</code></a> instance.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusMenuModel.html" title="gio::DBusMenuModel struct">DBusMenuModel</a></div><div class="item-right docblock-short"><p><a href="struct.DBusMenuModel.html" title="crate::DBusMenuModel"><code>DBusMenuModel</code></a> is an implementation of <a href="struct.MenuModel.html" title="crate::MenuModel"><code>MenuModel</code></a> that can be used
+as a proxy for a menu model that is exported over D-Bus with
+<a href="struct.DBusConnection.html#method.export_menu_model" title="crate::DBusConnection::export_menu_model()"><code>DBusConnection::export_menu_model()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusMessage.html" title="gio::DBusMessage struct">DBusMessage</a></div><div class="item-right docblock-short"><p>A type for representing D-Bus messages that can be sent or received
+on a <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusMessageFlags.html" title="gio::DBusMessageFlags struct">DBusMessageFlags</a></div><div class="item-right docblock-short"><p>Message flags used in <a href="struct.DBusMessage.html" title="crate::DBusMessage"><code>DBusMessage</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusMethodInfo.html" title="gio::DBusMethodInfo struct">DBusMethodInfo</a></div><div class="item-right docblock-short"><p>Information about a method on an D-Bus interface.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusMethodInvocation.html" title="gio::DBusMethodInvocation struct">DBusMethodInvocation</a></div><div class="item-right docblock-short"><p>Instances of the <a href="struct.DBusMethodInvocation.html" title="crate::DBusMethodInvocation"><code>DBusMethodInvocation</code></a> class are used when
+handling D-Bus method calls. It provides a way to asynchronously
+return results and errors.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusNodeInfo.html" title="gio::DBusNodeInfo struct">DBusNodeInfo</a></div><div class="item-right docblock-short"><p>Information about nodes in a remote object hierarchy.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusObject.html" title="gio::DBusObject struct">DBusObject</a></div><div class="item-right docblock-short"><p>The <a href="struct.DBusObject.html" title="crate::DBusObject"><code>DBusObject</code></a> type is the base type for D-Bus objects on both
+the service side (see <code>GDBusObjectSkeleton</code>) and the client side
+(see <code>GDBusObjectProxy</code>). It is essentially just a container of
+interfaces.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusPropertyInfo.html" title="gio::DBusPropertyInfo struct">DBusPropertyInfo</a></div><div class="item-right docblock-short"><p>Information about a D-Bus property on a D-Bus interface.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusProxy.html" title="gio::DBusProxy struct">DBusProxy</a></div><div class="item-right docblock-short"><p><a href="struct.DBusProxy.html" title="crate::DBusProxy"><code>DBusProxy</code></a> is a base class used for proxies to access a D-Bus
+interface on a remote object. A <a href="struct.DBusProxy.html" title="crate::DBusProxy"><code>DBusProxy</code></a> can be constructed for
+both well-known and unique names.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusProxyFlags.html" title="gio::DBusProxyFlags struct">DBusProxyFlags</a></div><div class="item-right docblock-short"><p>Flags used when constructing an instance of a <a href="struct.DBusProxy.html" title="crate::DBusProxy"><code>DBusProxy</code></a> derived class.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusSendMessageFlags.html" title="gio::DBusSendMessageFlags struct">DBusSendMessageFlags</a></div><div class="item-right docblock-short"><p>Flags used when sending <code>GDBusMessages</code> on a <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusServer.html" title="gio::DBusServer struct">DBusServer</a></div><div class="item-right docblock-short"><p><a href="struct.DBusServer.html" title="crate::DBusServer"><code>DBusServer</code></a> is a helper for listening to and accepting D-Bus
+connections. This can be used to create a new D-Bus server, allowing two
+peers to use the D-Bus protocol for their own specialized communication.
+A server instance provided in this way will not perform message routing or
+implement the org.freedesktop.DBus interface.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusServerFlags.html" title="gio::DBusServerFlags struct">DBusServerFlags</a></div><div class="item-right docblock-short"><p>Flags used when creating a <a href="struct.DBusServer.html" title="crate::DBusServer"><code>DBusServer</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusSignalFlags.html" title="gio::DBusSignalFlags struct">DBusSignalFlags</a></div><div class="item-right docblock-short"><p>Flags used when subscribing to signals via <a href="struct.DBusConnection.html#method.signal_subscribe" title="crate::DBusConnection::signal_subscribe()"><code>DBusConnection::signal_subscribe()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DBusSignalInfo.html" title="gio::DBusSignalInfo struct">DBusSignalInfo</a></div><div class="item-right docblock-short"><p>Information about a signal on a D-Bus interface.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DataInputStream.html" title="gio::DataInputStream struct">DataInputStream</a></div><div class="item-right docblock-short"><p>Data input stream implements <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> and includes functions for
+reading structured data directly from a binary input stream.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DataOutputStream.html" title="gio::DataOutputStream struct">DataOutputStream</a></div><div class="item-right docblock-short"><p>Data output stream implements <a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a> and includes functions for
+writing data directly to an output stream.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DebugController.html" title="gio::DebugController struct">DebugController</a></div><div class="item-right docblock-short"><p><a href="struct.DebugController.html" title="crate::DebugController"><code>DebugController</code></a> is an interface to expose control of debugging features and
+debug output.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DebugControllerDBus.html" title="gio::DebugControllerDBus struct">DebugControllerDBus</a></div><div class="item-right docblock-short"><p><a href="struct.DebugControllerDBus.html" title="crate::DebugControllerDBus"><code>DebugControllerDBus</code></a> is an implementation of <a href="struct.DebugController.html" title="crate::DebugController"><code>DebugController</code></a> which exposes
+debug settings as a D-Bus object.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DesktopAppInfo.html" title="gio::DesktopAppInfo struct">DesktopAppInfo</a></div><div class="item-right docblock-short"><p><a href="struct.DesktopAppInfo.html" title="crate::DesktopAppInfo"><code>DesktopAppInfo</code></a> is an implementation of <a href="struct.AppInfo.html" title="crate::AppInfo"><code>AppInfo</code></a> based on
+desktop files.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Drive.html" title="gio::Drive struct">Drive</a></div><div class="item-right docblock-short"><p><a href="struct.Drive.html" title="crate::Drive"><code>Drive</code></a> - this represent a piece of hardware connected to the machine.
+It’s generally only created for removable hardware or hardware with
+removable media.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.DriveStartFlags.html" title="gio::DriveStartFlags struct">DriveStartFlags</a></div><div class="item-right docblock-short"><p>Flags used when starting a drive.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Emblem.html" title="gio::Emblem struct">Emblem</a></div><div class="item-right docblock-short"><p><a href="struct.Emblem.html" title="crate::Emblem"><code>Emblem</code></a> is an implementation of <a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> that supports
+having an emblem, which is an icon with additional properties.
+It can than be added to a <a href="struct.EmblemedIcon.html" title="crate::EmblemedIcon"><code>EmblemedIcon</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.EmblemedIcon.html" title="gio::EmblemedIcon struct">EmblemedIcon</a></div><div class="item-right docblock-short"><p><a href="struct.EmblemedIcon.html" title="crate::EmblemedIcon"><code>EmblemedIcon</code></a> is an implementation of <a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> that supports
+adding an emblem to an icon. Adding multiple emblems to an
+icon is ensured via <a href="prelude/trait.EmblemedIconExt.html#tymethod.add_emblem" title="crate::prelude::EmblemedIconExt::add_emblem()"><code>EmblemedIconExt::add_emblem()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.File.html" title="gio::File struct">File</a></div><div class="item-right docblock-short"><p><a href="struct.File.html" title="crate::File"><code>File</code></a> is a high level abstraction for manipulating files on a
+virtual file system. <code>GFiles</code> are lightweight, immutable objects
+that do no I/O upon creation. It is necessary to understand that
+<a href="struct.File.html" title="crate::File"><code>File</code></a> objects do not represent files, merely an identifier for a
+file. All file content I/O is implemented as streaming operations
+(see <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> and <a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileAttributeInfo.html" title="gio::FileAttributeInfo struct">FileAttributeInfo</a></div><div class="item-right docblock-short"><p>Information about a specific attribute.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileAttributeInfoFlags.html" title="gio::FileAttributeInfoFlags struct">FileAttributeInfoFlags</a></div><div class="item-right docblock-short"><p>Flags specifying the behaviour of an attribute.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileAttributeInfoList.html" title="gio::FileAttributeInfoList struct">FileAttributeInfoList</a></div><div class="item-right docblock-short"><p>Acts as a lightweight registry for possible valid file attributes.
+The registry stores Key-Value pair formats as <code>GFileAttributeInfos</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileAttributeMatcher.html" title="gio::FileAttributeMatcher struct">FileAttributeMatcher</a></div><div class="item-right docblock-short"><p>Determines if a string matches a file attribute.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileAttributematcherIter.html" title="gio::FileAttributematcherIter struct">FileAttributematcherIter</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileCopyFlags.html" title="gio::FileCopyFlags struct">FileCopyFlags</a></div><div class="item-right docblock-short"><p>Flags used when copying or moving files.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileCreateFlags.html" title="gio::FileCreateFlags struct">FileCreateFlags</a></div><div class="item-right docblock-short"><p>Flags used when an operation may create a file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileEnumerator.html" title="gio::FileEnumerator struct">FileEnumerator</a></div><div class="item-right docblock-short"><p><a href="struct.FileEnumerator.html" title="crate::FileEnumerator"><code>FileEnumerator</code></a> allows you to operate on a set of <code>GFiles</code>,
+returning a <a href="struct.FileInfo.html" title="crate::FileInfo"><code>FileInfo</code></a> structure for each file enumerated (e.g.
+<a href="prelude/trait.FileExt.html#tymethod.enumerate_children" title="crate::prelude::FileExt::enumerate_children()"><code>FileExt::enumerate_children()</code></a> will return a <a href="struct.FileEnumerator.html" title="crate::FileEnumerator"><code>FileEnumerator</code></a> for each
+of the children within a directory).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileIOStream.html" title="gio::FileIOStream struct">FileIOStream</a></div><div class="item-right docblock-short"><p>GFileIOStream provides io streams that both read and write to the same
+file handle.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileIcon.html" title="gio::FileIcon struct">FileIcon</a></div><div class="item-right docblock-short"><p><a href="struct.FileIcon.html" title="crate::FileIcon"><code>FileIcon</code></a> specifies an icon by pointing to an image file
+to be used as icon.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileInfo.html" title="gio::FileInfo struct">FileInfo</a></div><div class="item-right docblock-short"><p>Functionality for manipulating basic metadata for files. <a href="struct.FileInfo.html" title="crate::FileInfo"><code>FileInfo</code></a>
+implements methods for getting information that all files should
+contain, and allows for manipulation of extended attributes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileInputStream.html" title="gio::FileInputStream struct">FileInputStream</a></div><div class="item-right docblock-short"><p>GFileInputStream provides input streams that take their
+content from a file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileMeasureFlags.html" title="gio::FileMeasureFlags struct">FileMeasureFlags</a></div><div class="item-right docblock-short"><p>Flags that can be used with <a href="prelude/trait.FileExtManual.html#tymethod.measure_disk_usage" title="crate::prelude::FileExtManual::measure_disk_usage()"><code>FileExtManual::measure_disk_usage()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileMonitor.html" title="gio::FileMonitor struct">FileMonitor</a></div><div class="item-right docblock-short"><p>Monitors a file or directory for changes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileMonitorFlags.html" title="gio::FileMonitorFlags struct">FileMonitorFlags</a></div><div class="item-right docblock-short"><p>Flags used to set what a <a href="struct.FileMonitor.html" title="crate::FileMonitor"><code>FileMonitor</code></a> will watch for.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileOutputStream.html" title="gio::FileOutputStream struct">FileOutputStream</a></div><div class="item-right docblock-short"><p>GFileOutputStream provides output streams that write their
+content to a file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FileQueryInfoFlags.html" title="gio::FileQueryInfoFlags struct">FileQueryInfoFlags</a></div><div class="item-right docblock-short"><p>Flags used when querying a <a href="struct.FileInfo.html" title="crate::FileInfo"><code>FileInfo</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FilenameCompleter.html" title="gio::FilenameCompleter struct">FilenameCompleter</a></div><div class="item-right docblock-short"><p>Completes partial file and directory names given a partial string by
+looking in the file system for clues. Can return a list of possible
+completion strings for widget implementations.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FilterId.html" title="gio::FilterId struct">FilterId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FilterInputStream.html" title="gio::FilterInputStream struct">FilterInputStream</a></div><div class="item-right docblock-short"><p>Base class for input stream implementations that perform some
+kind of filtering operation on a base stream. Typical examples
+of filtering operations are character set conversion, compression
+and byte order flipping.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.FilterOutputStream.html" title="gio::FilterOutputStream struct">FilterOutputStream</a></div><div class="item-right docblock-short"><p>Base class for output stream implementations that perform some
+kind of filtering operation on a base stream. Typical examples
+of filtering operations are character set conversion, compression
+and byte order flipping.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.GioFuture.html" title="gio::GioFuture struct">GioFuture</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.GioFutureResult.html" title="gio::GioFutureResult struct">GioFutureResult</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOExtension.html" title="gio::IOExtension struct">IOExtension</a></div><div class="item-right docblock-short"><p>The implementation of an <code>IOExtensionPoint</code>.
+<a href="struct.IOExtension.html" title="crate::IOExtension"><code>IOExtension</code></a> is an opaque data structure and can only be accessed
+using the following functions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOExtensionPoint.html" title="gio::IOExtensionPoint struct">IOExtensionPoint</a></div><div class="item-right docblock-short"><p>An extension point provides a mechanism to extend the functionality of a library or application.
+Each extension point is identified by a name, and it may optionally require that any implementation
+must be of a certain type.
+<a href="struct.IOExtensionPoint.html" title="crate::IOExtensionPoint"><code>IOExtensionPoint</code></a> is an opaque data structure and can only be accessed
+using the following functions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOExtensionPointBuilder.html" title="gio::IOExtensionPointBuilder struct">IOExtensionPointBuilder</a></div><div class="item-right docblock-short"><p>Builder for extension points.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOStream.html" title="gio::IOStream struct">IOStream</a></div><div class="item-right docblock-short"><p>GIOStream represents an object that has both read and write streams.
+Generally the two streams act as separate input and output streams,
+but they share some common resources and state. For instance, for
+seekable streams, both streams may use the same position.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOStreamAsyncReadWrite.html" title="gio::IOStreamAsyncReadWrite struct">IOStreamAsyncReadWrite</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.IOStreamSpliceFlags.html" title="gio::IOStreamSpliceFlags struct">IOStreamSpliceFlags</a></div><div class="item-right docblock-short"><p>GIOStreamSpliceFlags determine how streams should be spliced.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Icon.html" title="gio::Icon struct">Icon</a></div><div class="item-right docblock-short"><p><a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> is a very minimal interface for icons. It provides functions
+for checking the equality of two icons, hashing of icons and
+serializing an icon to and from strings.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InetAddress.html" title="gio::InetAddress struct">InetAddress</a></div><div class="item-right docblock-short"><p><a href="struct.InetAddress.html" title="crate::InetAddress"><code>InetAddress</code></a> represents an IPv4 or IPv6 internet address. Use
+<a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_name" title="crate::prelude::ResolverExt::lookup_by_name()"><code>ResolverExt::lookup_by_name()</code></a> or <a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_name_async" title="crate::prelude::ResolverExt::lookup_by_name_async()"><code>ResolverExt::lookup_by_name_async()</code></a> to
+look up the <a href="struct.InetAddress.html" title="crate::InetAddress"><code>InetAddress</code></a> for a hostname. Use
+<a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_address" title="crate::prelude::ResolverExt::lookup_by_address()"><code>ResolverExt::lookup_by_address()</code></a> or
+<a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_address_async" title="crate::prelude::ResolverExt::lookup_by_address_async()"><code>ResolverExt::lookup_by_address_async()</code></a> to look up the hostname for a
+<a href="struct.InetAddress.html" title="crate::InetAddress"><code>InetAddress</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InetAddressMask.html" title="gio::InetAddressMask struct">InetAddressMask</a></div><div class="item-right docblock-short"><p><a href="struct.InetAddressMask.html" title="crate::InetAddressMask"><code>InetAddressMask</code></a> represents a range of IPv4 or IPv6 addresses
+described by a base address and a length indicating how many bits
+of the base address are relevant for matching purposes. These are
+often given in string form. Eg, “10.0.0.0/8”, or “fe80::/10”.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InetSocketAddress.html" title="gio::InetSocketAddress struct">InetSocketAddress</a></div><div class="item-right docblock-short"><p>An IPv4 or IPv6 socket address; that is, the combination of a
+<a href="struct.InetAddress.html" title="crate::InetAddress"><code>InetAddress</code></a> and a port number.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Initable.html" title="gio::Initable struct">Initable</a></div><div class="item-right docblock-short"><p><a href="struct.Initable.html" title="crate::Initable"><code>Initable</code></a> is implemented by objects that can fail during
+initialization. If an object implements this interface then
+it must be initialized as the first thing after construction,
+either via <a href="prelude/trait.InitableExt.html#tymethod.init" title="crate::prelude::InitableExt::init()"><code>InitableExt::init()</code></a> or <a href="prelude/trait.AsyncInitableExt.html#tymethod.init_async" title="crate::prelude::AsyncInitableExt::init_async()"><code>AsyncInitableExt::init_async()</code></a>
+(the latter is only available if it also implements <a href="struct.AsyncInitable.html" title="crate::AsyncInitable"><code>AsyncInitable</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InputStream.html" title="gio::InputStream struct">InputStream</a></div><div class="item-right docblock-short"><p><a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> has functions to read from a stream (<a href="prelude/trait.InputStreamExtManual.html#tymethod.read" title="crate::prelude::InputStreamExtManual::read()"><code>InputStreamExtManual::read()</code></a>),
+to close a stream (<a href="prelude/trait.InputStreamExt.html#tymethod.close" title="crate::prelude::InputStreamExt::close()"><code>InputStreamExt::close()</code></a>) and to skip some content
+(<a href="prelude/trait.InputStreamExt.html#tymethod.skip" title="crate::prelude::InputStreamExt::skip()"><code>InputStreamExt::skip()</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InputStreamAsyncBufRead.html" title="gio::InputStreamAsyncBufRead struct">InputStreamAsyncBufRead</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InputStreamAsyncRead.html" title="gio::InputStreamAsyncRead struct">InputStreamAsyncRead</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.InputStreamRead.html" title="gio::InputStreamRead struct">InputStreamRead</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ListModel.html" title="gio::ListModel struct">ListModel</a></div><div class="item-right docblock-short"><p><a href="struct.ListModel.html" title="crate::ListModel"><code>ListModel</code></a> is an interface that represents a mutable list of
+<code>GObjects</code>. Its main intention is as a model for various widgets in
+user interfaces, such as list views, but it can also be used as a
+convenient method of returning lists of data, with support for
+updates.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ListStore.html" title="gio::ListStore struct">ListStore</a></div><div class="item-right docblock-short"><p><a href="struct.ListStore.html" title="crate::ListStore"><code>ListStore</code></a> is a simple implementation of <a href="struct.ListModel.html" title="crate::ListModel"><code>ListModel</code></a> that stores all
+items in memory.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.LoadableIcon.html" title="gio::LoadableIcon struct">LoadableIcon</a></div><div class="item-right docblock-short"><p>Extends the <a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> interface and adds the ability to
+load icons from streams.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.LocalTask.html" title="gio::LocalTask struct">LocalTask</a></div><div class="item-right docblock-short"><p><code>LocalTask</code> provides idiomatic access to gio’s <code>GTask</code> API, for
+instance by being generic over their value type, while not completely departing
+from the underlying C API. <code>LocalTask</code> does not require its value to be <code>Send</code>
+and <code>Sync</code> and thus is useful to to implement gio style asynchronous
+tasks that run in the glib main loop. If you need to run tasks in threads
+see the <code>Task</code> type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MemoryInputStream.html" title="gio::MemoryInputStream struct">MemoryInputStream</a></div><div class="item-right docblock-short"><p><a href="struct.MemoryInputStream.html" title="crate::MemoryInputStream"><code>MemoryInputStream</code></a> is a class for using arbitrary
+memory chunks as input for GIO streaming input operations.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MemoryMonitor.html" title="gio::MemoryMonitor struct">MemoryMonitor</a></div><div class="item-right docblock-short"><p><a href="struct.MemoryMonitor.html" title="crate::MemoryMonitor"><code>MemoryMonitor</code></a> will monitor system memory and suggest to the application
+when to free memory so as to leave more room for other applications.
+It is implemented on Linux using the <a href="https://gitlab.freedesktop.org/hadess/low-memory-monitor/">Low Memory Monitor</a>
+(<a href="https://hadess.pages.freedesktop.org/low-memory-monitor/">API documentation</a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MemoryOutputStream.html" title="gio::MemoryOutputStream struct">MemoryOutputStream</a></div><div class="item-right docblock-short"><p><a href="struct.MemoryOutputStream.html" title="crate::MemoryOutputStream"><code>MemoryOutputStream</code></a> is a class for using arbitrary
+memory chunks as output for GIO streaming output operations.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Menu.html" title="gio::Menu struct">Menu</a></div><div class="item-right docblock-short"><p><a href="struct.Menu.html" title="crate::Menu"><code>Menu</code></a> is a simple implementation of <a href="struct.MenuModel.html" title="crate::MenuModel"><code>MenuModel</code></a>.
+You populate a <a href="struct.Menu.html" title="crate::Menu"><code>Menu</code></a> by adding <a href="struct.MenuItem.html" title="crate::MenuItem"><code>MenuItem</code></a> instances to it.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MenuAttributeIter.html" title="gio::MenuAttributeIter struct">MenuAttributeIter</a></div><div class="item-right docblock-short"><p><a href="struct.MenuAttributeIter.html" title="crate::MenuAttributeIter"><code>MenuAttributeIter</code></a> is an opaque structure type. You must access it
+using the functions below.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MenuItem.html" title="gio::MenuItem struct">MenuItem</a></div><div class="item-right docblock-short"><p><a href="struct.MenuItem.html" title="crate::MenuItem"><code>MenuItem</code></a> is an opaque structure type. You must access it using the
+functions below.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MenuLinkIter.html" title="gio::MenuLinkIter struct">MenuLinkIter</a></div><div class="item-right docblock-short"><p><a href="struct.MenuLinkIter.html" title="crate::MenuLinkIter"><code>MenuLinkIter</code></a> is an opaque structure type. You must access it using
+the functions below.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MenuModel.html" title="gio::MenuModel struct">MenuModel</a></div><div class="item-right docblock-short"><p><a href="struct.MenuModel.html" title="crate::MenuModel"><code>MenuModel</code></a> represents the contents of a menu – an ordered list of
+menu items. The items are associated with actions, which can be
+activated through them. Items can be grouped in sections, and may
+have submenus associated with them. Both items and sections usually
+have some representation data, such as labels or icons. The type of
+the associated action (ie whether it is stateful, and what kind of
+state it has) can influence the representation of the item.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MenuModelExportId.html" title="gio::MenuModelExportId struct">MenuModelExportId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Mount.html" title="gio::Mount struct">Mount</a></div><div class="item-right docblock-short"><p>The <a href="struct.Mount.html" title="crate::Mount"><code>Mount</code></a> interface represents user-visible mounts. Note, when
+porting from GnomeVFS, <a href="struct.Mount.html" title="crate::Mount"><code>Mount</code></a> is the moral equivalent of <code>GnomeVFSVolume</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MountMountFlags.html" title="gio::MountMountFlags struct">MountMountFlags</a></div><div class="item-right docblock-short"><p>Flags used when mounting a mount.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MountOperation.html" title="gio::MountOperation struct">MountOperation</a></div><div class="item-right docblock-short"><p><a href="struct.MountOperation.html" title="crate::MountOperation"><code>MountOperation</code></a> provides a mechanism for interacting with the user.
+It can be used for authenticating mountable operations, such as loop
+mounting files, hard drive partitions or server locations. It can
+also be used to ask the user questions or show a list of applications
+preventing unmount or eject operations from completing.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.MountUnmountFlags.html" title="gio::MountUnmountFlags struct">MountUnmountFlags</a></div><div class="item-right docblock-short"><p>Flags used when an unmounting a mount.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.NetworkAddress.html" title="gio::NetworkAddress struct">NetworkAddress</a></div><div class="item-right docblock-short"><p><a href="struct.NetworkAddress.html" title="crate::NetworkAddress"><code>NetworkAddress</code></a> provides an easy way to resolve a hostname and
+then attempt to connect to that host, handling the possibility of
+multiple IP addresses and multiple address families.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.NetworkMonitor.html" title="gio::NetworkMonitor struct">NetworkMonitor</a></div><div class="item-right docblock-short"><p><a href="struct.NetworkMonitor.html" title="crate::NetworkMonitor"><code>NetworkMonitor</code></a> provides an easy-to-use cross-platform API
+for monitoring network connectivity. On Linux, the available
+implementations are based on the kernel’s netlink interface and
+on NetworkManager.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.NetworkService.html" title="gio::NetworkService struct">NetworkService</a></div><div class="item-right docblock-short"><p>Like <a href="struct.NetworkAddress.html" title="crate::NetworkAddress"><code>NetworkAddress</code></a> does with hostnames, <a href="struct.NetworkService.html" title="crate::NetworkService"><code>NetworkService</code></a>
+provides an easy way to resolve a SRV record, and then attempt to
+connect to one of the hosts that implements that service, handling
+service priority/weighting, multiple IP addresses, and multiple
+address families.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Notification.html" title="gio::Notification struct">Notification</a></div><div class="item-right docblock-short"><p><a href="struct.Notification.html" title="crate::Notification"><code>Notification</code></a> is a mechanism for creating a notification to be shown
+to the user – typically as a pop-up notification presented by the
+desktop environment shell.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OutputStream.html" title="gio::OutputStream struct">OutputStream</a></div><div class="item-right docblock-short"><p><a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a> has functions to write to a stream (<a href="prelude/trait.OutputStreamExt.html#tymethod.write" title="crate::prelude::OutputStreamExt::write()"><code>OutputStreamExt::write()</code></a>),
+to close a stream (<a href="prelude/trait.OutputStreamExt.html#tymethod.close" title="crate::prelude::OutputStreamExt::close()"><code>OutputStreamExt::close()</code></a>) and to flush pending writes
+(<a href="prelude/trait.OutputStreamExt.html#tymethod.flush" title="crate::prelude::OutputStreamExt::flush()"><code>OutputStreamExt::flush()</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OutputStreamAsyncWrite.html" title="gio::OutputStreamAsyncWrite struct">OutputStreamAsyncWrite</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OutputStreamSpliceFlags.html" title="gio::OutputStreamSpliceFlags struct">OutputStreamSpliceFlags</a></div><div class="item-right docblock-short"><p>GOutputStreamSpliceFlags determine how streams should be spliced.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OutputStreamWrite.html" title="gio::OutputStreamWrite struct">OutputStreamWrite</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OwnerId.html" title="gio::OwnerId struct">OwnerId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Permission.html" title="gio::Permission struct">Permission</a></div><div class="item-right docblock-short"><p>A <a href="struct.Permission.html" title="crate::Permission"><code>Permission</code></a> represents the status of the caller’s permission to
+perform a certain action.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PollableInputStream.html" title="gio::PollableInputStream struct">PollableInputStream</a></div><div class="item-right docblock-short"><p><a href="struct.PollableInputStream.html" title="crate::PollableInputStream"><code>PollableInputStream</code></a> is implemented by <code>GInputStreams</code> that
+can be polled for readiness to read. This can be used when
+interfacing with a non-GIO API that expects
+UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PollableOutputStream.html" title="gio::PollableOutputStream struct">PollableOutputStream</a></div><div class="item-right docblock-short"><p><a href="struct.PollableOutputStream.html" title="crate::PollableOutputStream"><code>PollableOutputStream</code></a> is implemented by <code>GOutputStreams</code> that
+can be polled for readiness to write. This can be used when
+interfacing with a non-GIO API that expects
+UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PowerProfileMonitor.html" title="gio::PowerProfileMonitor struct">PowerProfileMonitor</a></div><div class="item-right docblock-short"><p><a href="struct.PowerProfileMonitor.html" title="crate::PowerProfileMonitor"><code>PowerProfileMonitor</code></a> makes it possible for applications as well as OS components
+to monitor system power profiles and act upon them. It currently only exports
+whether the system is in “Power Saver” mode (known as “Low Power” mode on
+some systems).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PropertyAction.html" title="gio::PropertyAction struct">PropertyAction</a></div><div class="item-right docblock-short"><p>A <a href="struct.PropertyAction.html" title="crate::PropertyAction"><code>PropertyAction</code></a> is a way to get a <a href="struct.Action.html" title="crate::Action"><code>Action</code></a> with a state value
+reflecting and controlling the value of a <a href="../glib/object/struct.Object.html" title="crate::glib::Object"><code>glib::Object</code></a> property.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Proxy.html" title="gio::Proxy struct">Proxy</a></div><div class="item-right docblock-short"><p>A <a href="struct.Proxy.html" title="crate::Proxy"><code>Proxy</code></a> handles connecting to a remote host via a given type of
+proxy server. It is implemented by the ‘gio-proxy’ extension point.
+The extensions are named after their proxy protocol name. As an
+example, a SOCKS5 proxy implementation can be retrieved with the
+name ‘socks5’ using the function
+<a href="struct.IOExtensionPoint.html#method.extension_by_name" title="crate::IOExtensionPoint::extension_by_name()"><code>IOExtensionPoint::extension_by_name()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ProxyAddress.html" title="gio::ProxyAddress struct">ProxyAddress</a></div><div class="item-right docblock-short"><p>Support for proxied <a href="struct.InetSocketAddress.html" title="crate::InetSocketAddress"><code>InetSocketAddress</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ProxyResolver.html" title="gio::ProxyResolver struct">ProxyResolver</a></div><div class="item-right docblock-short"><p><a href="struct.ProxyResolver.html" title="crate::ProxyResolver"><code>ProxyResolver</code></a> provides synchronous and asynchronous network proxy
+resolution. <a href="struct.ProxyResolver.html" title="crate::ProxyResolver"><code>ProxyResolver</code></a> is used within <a href="struct.SocketClient.html" title="crate::SocketClient"><code>SocketClient</code></a> through
+the method <a href="prelude/trait.SocketConnectableExt.html#tymethod.proxy_enumerate" title="crate::prelude::SocketConnectableExt::proxy_enumerate()"><code>SocketConnectableExt::proxy_enumerate()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ReadInputStream.html" title="gio::ReadInputStream struct">ReadInputStream</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RegistrationId.html" title="gio::RegistrationId struct">RegistrationId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RemoteActionGroup.html" title="gio::RemoteActionGroup struct">RemoteActionGroup</a></div><div class="item-right docblock-short"><p>The GRemoteActionGroup interface is implemented by <a href="struct.ActionGroup.html" title="crate::ActionGroup"><code>ActionGroup</code></a>
+instances that either transmit action invocations to other processes
+or receive action invocations in the local process from other
+processes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Resolver.html" title="gio::Resolver struct">Resolver</a></div><div class="item-right docblock-short"><p><a href="struct.Resolver.html" title="crate::Resolver"><code>Resolver</code></a> provides cancellable synchronous and asynchronous DNS
+resolution, for hostnames (<a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_address" title="crate::prelude::ResolverExt::lookup_by_address()"><code>ResolverExt::lookup_by_address()</code></a>,
+<a href="prelude/trait.ResolverExt.html#tymethod.lookup_by_name" title="crate::prelude::ResolverExt::lookup_by_name()"><code>ResolverExt::lookup_by_name()</code></a> and their async variants) and SRV
+(service) records (<a href="prelude/trait.ResolverExt.html#tymethod.lookup_service" title="crate::prelude::ResolverExt::lookup_service()"><code>ResolverExt::lookup_service()</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ResolverNameLookupFlags.html" title="gio::ResolverNameLookupFlags struct">ResolverNameLookupFlags</a><span class="stab portability" title="Available on crate feature `v2_60` only"><code>v2_60</code></span></div><div class="item-right docblock-short"><p>Flags to modify lookup behavior.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Resource.html" title="gio::Resource struct">Resource</a></div><div class="item-right docblock-short"><p>Applications and libraries often contain binary or textual data that is
+really part of the application, rather than user data. For instance
+<code>GtkBuilder</code> .ui files, splashscreen images, GMenu markup XML, CSS files,
+icons, etc. These are often shipped as files in <code>$datadir/appname</code>, or
+manually included as literal strings in the code.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ResourceLookupFlags.html" title="gio::ResourceLookupFlags struct">ResourceLookupFlags</a></div><div class="item-right docblock-short"><p>GResourceLookupFlags determine how resource path lookups are handled.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Seekable.html" title="gio::Seekable struct">Seekable</a></div><div class="item-right docblock-short"><p><a href="struct.Seekable.html" title="crate::Seekable"><code>Seekable</code></a> is implemented by streams (implementations of
+<a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> or <a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a>) that support seeking.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Settings.html" title="gio::Settings struct">Settings</a></div><div class="item-right docblock-short"><p>The <a href="struct.Settings.html" title="crate::Settings"><code>Settings</code></a> class provides a convenient API for storing and retrieving
+application settings.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SettingsBackend.html" title="gio::SettingsBackend struct">SettingsBackend</a></div><div class="item-right docblock-short"><p>The <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a> interface defines a generic interface for
+non-strictly-typed data that is stored in a hierarchy. To implement
+an alternative storage backend for <a href="struct.Settings.html" title="crate::Settings"><code>Settings</code></a>, you need to implement
+the <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a> interface and then make it implement the
+extension point <a href="static.SETTINGS_BACKEND_EXTENSION_POINT_NAME.html" title="crate::SETTINGS_BACKEND_EXTENSION_POINT_NAME"><code>SETTINGS_BACKEND_EXTENSION_POINT_NAME</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SettingsBindFlags.html" title="gio::SettingsBindFlags struct">SettingsBindFlags</a></div><div class="item-right docblock-short"><p>Flags used when creating a binding. These flags determine in which
+direction the binding works. The default is to synchronize in both
+directions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SettingsSchema.html" title="gio::SettingsSchema struct">SettingsSchema</a></div><div class="item-right docblock-short"><p>The <a href="struct.SettingsSchemaSource.html" title="crate::SettingsSchemaSource"><code>SettingsSchemaSource</code></a> and <a href="struct.SettingsSchema.html" title="crate::SettingsSchema"><code>SettingsSchema</code></a> APIs provide a
+mechanism for advanced control over the loading of schemas and a
+mechanism for introspecting their content.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SettingsSchemaKey.html" title="gio::SettingsSchemaKey struct">SettingsSchemaKey</a></div><div class="item-right docblock-short"><p><a href="struct.SettingsSchemaKey.html" title="crate::SettingsSchemaKey"><code>SettingsSchemaKey</code></a> is an opaque data structure and can only be accessed
+using the following functions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SettingsSchemaSource.html" title="gio::SettingsSchemaSource struct">SettingsSchemaSource</a></div><div class="item-right docblock-short"><p>This is an opaque structure type. You may not access it directly.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SignalSubscriptionId.html" title="gio::SignalSubscriptionId struct">SignalSubscriptionId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SimpleAction.html" title="gio::SimpleAction struct">SimpleAction</a></div><div class="item-right docblock-short"><p>A <a href="struct.SimpleAction.html" title="crate::SimpleAction"><code>SimpleAction</code></a> is the obvious simple implementation of the <a href="struct.Action.html" title="crate::Action"><code>Action</code></a>
+interface. This is the easiest way to create an action for purposes of
+adding it to a <a href="struct.SimpleActionGroup.html" title="crate::SimpleActionGroup"><code>SimpleActionGroup</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SimpleActionGroup.html" title="gio::SimpleActionGroup struct">SimpleActionGroup</a></div><div class="item-right docblock-short"><p><a href="struct.SimpleActionGroup.html" title="crate::SimpleActionGroup"><code>SimpleActionGroup</code></a> is a hash table filled with <a href="struct.Action.html" title="crate::Action"><code>Action</code></a> objects,
+implementing the <a href="struct.ActionGroup.html" title="crate::ActionGroup"><code>ActionGroup</code></a> and <a href="struct.ActionMap.html" title="crate::ActionMap"><code>ActionMap</code></a> interfaces.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SimpleIOStream.html" title="gio::SimpleIOStream struct">SimpleIOStream</a></div><div class="item-right docblock-short"><p>GSimpleIOStream creates a <a href="struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a> from an arbitrary <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> and
+<a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a>. This allows any pair of input and output streams to be used
+with <a href="struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a> methods.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SimplePermission.html" title="gio::SimplePermission struct">SimplePermission</a></div><div class="item-right docblock-short"><p><a href="struct.SimplePermission.html" title="crate::SimplePermission"><code>SimplePermission</code></a> is a trivial implementation of <a href="struct.Permission.html" title="crate::Permission"><code>Permission</code></a> that
+represents a permission that is either always or never allowed. The
+value is given at construction and doesn’t change.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SimpleProxyResolver.html" title="gio::SimpleProxyResolver struct">SimpleProxyResolver</a></div><div class="item-right docblock-short"><p><a href="struct.SimpleProxyResolver.html" title="crate::SimpleProxyResolver"><code>SimpleProxyResolver</code></a> is a simple <a href="struct.ProxyResolver.html" title="crate::ProxyResolver"><code>ProxyResolver</code></a> implementation
+that handles a single default proxy, multiple URI-scheme-specific
+proxies, and a list of hosts that proxies should not be used for.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Socket.html" title="gio::Socket struct">Socket</a></div><div class="item-right docblock-short"><p>A <a href="struct.Socket.html" title="crate::Socket"><code>Socket</code></a> is a low-level networking primitive. It is a more or less
+direct mapping of the BSD socket API in a portable GObject based API.
+It supports both the UNIX socket implementations and winsock2 on Windows.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketAddress.html" title="gio::SocketAddress struct">SocketAddress</a></div><div class="item-right docblock-short"><p><a href="struct.SocketAddress.html" title="crate::SocketAddress"><code>SocketAddress</code></a> is the equivalent of struct sockaddr in the BSD
+sockets API. This is an abstract class; use <a href="struct.InetSocketAddress.html" title="crate::InetSocketAddress"><code>InetSocketAddress</code></a>
+for internet sockets, or <a href="struct.UnixSocketAddress.html" title="crate::UnixSocketAddress"><code>UnixSocketAddress</code></a> for UNIX domain sockets.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketAddressEnumerator.html" title="gio::SocketAddressEnumerator struct">SocketAddressEnumerator</a></div><div class="item-right docblock-short"><p><a href="struct.SocketAddressEnumerator.html" title="crate::SocketAddressEnumerator"><code>SocketAddressEnumerator</code></a> is an enumerator type for <a href="struct.SocketAddress.html" title="crate::SocketAddress"><code>SocketAddress</code></a>
+instances. It is returned by enumeration functions such as
+<a href="prelude/trait.SocketConnectableExt.html#tymethod.enumerate" title="crate::prelude::SocketConnectableExt::enumerate()"><code>SocketConnectableExt::enumerate()</code></a>, which returns a <a href="struct.SocketAddressEnumerator.html" title="crate::SocketAddressEnumerator"><code>SocketAddressEnumerator</code></a>
+to list each <a href="struct.SocketAddress.html" title="crate::SocketAddress"><code>SocketAddress</code></a> which could be used to connect to that
+<a href="struct.SocketConnectable.html" title="crate::SocketConnectable"><code>SocketConnectable</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketClient.html" title="gio::SocketClient struct">SocketClient</a></div><div class="item-right docblock-short"><p><a href="struct.SocketClient.html" title="crate::SocketClient"><code>SocketClient</code></a> is a lightweight high-level utility class for connecting to
+a network host using a connection oriented socket type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketConnectable.html" title="gio::SocketConnectable struct">SocketConnectable</a></div><div class="item-right docblock-short"><p>Objects that describe one or more potential socket endpoints
+implement <a href="struct.SocketConnectable.html" title="crate::SocketConnectable"><code>SocketConnectable</code></a>. Callers can then use
+<a href="prelude/trait.SocketConnectableExt.html#tymethod.enumerate" title="crate::prelude::SocketConnectableExt::enumerate()"><code>SocketConnectableExt::enumerate()</code></a> to get a <a href="struct.SocketAddressEnumerator.html" title="crate::SocketAddressEnumerator"><code>SocketAddressEnumerator</code></a>
+to try out each socket address in turn until one succeeds, as shown
+in the sample code below.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketConnection.html" title="gio::SocketConnection struct">SocketConnection</a></div><div class="item-right docblock-short"><p><a href="struct.SocketConnection.html" title="crate::SocketConnection"><code>SocketConnection</code></a> is a <a href="struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a> for a connected socket. They
+can be created either by <a href="struct.SocketClient.html" title="crate::SocketClient"><code>SocketClient</code></a> when connecting to a host,
+or by <a href="struct.SocketListener.html" title="crate::SocketListener"><code>SocketListener</code></a> when accepting a new client.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketListener.html" title="gio::SocketListener struct">SocketListener</a></div><div class="item-right docblock-short"><p>A <a href="struct.SocketListener.html" title="crate::SocketListener"><code>SocketListener</code></a> is an object that keeps track of a set
+of server sockets and helps you accept sockets from any of the
+socket, either sync or async.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SocketService.html" title="gio::SocketService struct">SocketService</a></div><div class="item-right docblock-short"><p>A <a href="struct.SocketService.html" title="crate::SocketService"><code>SocketService</code></a> is an object that represents a service that
+is provided to the network or over local sockets. When a new
+connection is made to the service the <code>signal::SocketService::incoming</code>
+signal is emitted.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SrvTarget.html" title="gio::SrvTarget struct">SrvTarget</a></div><div class="item-right docblock-short"><p>SRV (service) records are used by some network protocols to provide
+service-specific aliasing and load-balancing. For example, XMPP
+(Jabber) uses SRV records to locate the XMPP server for a domain;
+rather than connecting directly to “example.com” or assuming a
+specific server hostname like “xmpp.example.com”, an XMPP client
+would look up the “xmpp-client” SRV record for “example.com”, and
+then connect to whatever host was pointed to by that record.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Subprocess.html" title="gio::Subprocess struct">Subprocess</a></div><div class="item-right docblock-short"><p><a href="struct.Subprocess.html" title="crate::Subprocess"><code>Subprocess</code></a> allows the creation of and interaction with child
+processes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SubprocessFlags.html" title="gio::SubprocessFlags struct">SubprocessFlags</a></div><div class="item-right docblock-short"><p>Flags to define the behaviour of a <a href="struct.Subprocess.html" title="crate::Subprocess"><code>Subprocess</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SubprocessLauncher.html" title="gio::SubprocessLauncher struct">SubprocessLauncher</a></div><div class="item-right docblock-short"><p>This class contains a set of options for launching child processes,
+such as where its standard input and output will be directed, the
+argument list, the environment, and more.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Task.html" title="gio::Task struct">Task</a></div><div class="item-right docblock-short"><p><code>Task</code> provides idiomatic access to gio’s <code>GTask</code> API, for
+instance by being generic over their value type, while not completely departing
+from the underlying C API. <code>Task</code> is <code>Send</code> and <code>Sync</code> and requires its value to
+also be <code>Send</code> and <code>Sync</code>, thus is useful to to implement gio style asynchronous
+tasks that run in threads. If you need to only run tasks in glib main loop
+see the <code>LocalTask</code> type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TcpConnection.html" title="gio::TcpConnection struct">TcpConnection</a></div><div class="item-right docblock-short"><p>This is the subclass of <a href="struct.SocketConnection.html" title="crate::SocketConnection"><code>SocketConnection</code></a> that is created
+for TCP/IP sockets.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ThemedIcon.html" title="gio::ThemedIcon struct">ThemedIcon</a></div><div class="item-right docblock-short"><p><a href="struct.ThemedIcon.html" title="crate::ThemedIcon"><code>ThemedIcon</code></a> is an implementation of <a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> that supports icon themes.
+<a href="struct.ThemedIcon.html" title="crate::ThemedIcon"><code>ThemedIcon</code></a> contains a list of all of the icons present in an icon
+theme, so that icons can be looked up quickly. <a href="struct.ThemedIcon.html" title="crate::ThemedIcon"><code>ThemedIcon</code></a> does
+not provide actual pixmaps for icons, just the icon names.
+Ideally something like <code>gtk_icon_theme_choose_icon()</code> should be used to
+resolve the list of names so that fallback icons work nicely with
+themes that inherit other themes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ThreadedSocketService.html" title="gio::ThreadedSocketService struct">ThreadedSocketService</a></div><div class="item-right docblock-short"><p>A <a href="struct.ThreadedSocketService.html" title="crate::ThreadedSocketService"><code>ThreadedSocketService</code></a> is a simple subclass of <a href="struct.SocketService.html" title="crate::SocketService"><code>SocketService</code></a>
+that handles incoming connections by creating a worker thread and
+dispatching the connection to it by emitting the
+<code>signal::ThreadedSocketService::run</code> signal in the new thread.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsBackend.html" title="gio::TlsBackend struct">TlsBackend</a></div><div class="item-right docblock-short"><p>TLS (Transport Layer Security, aka SSL) and DTLS backend.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsCertificate.html" title="gio::TlsCertificate struct">TlsCertificate</a></div><div class="item-right docblock-short"><p>A certificate used for TLS authentication and encryption.
+This can represent either a certificate only (eg, the certificate
+received by a client from a server), or the combination of
+a certificate and a private key (which is needed when acting as a
+<a href="struct.TlsServerConnection.html" title="crate::TlsServerConnection"><code>TlsServerConnection</code></a>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsCertificateFlags.html" title="gio::TlsCertificateFlags struct">TlsCertificateFlags</a></div><div class="item-right docblock-short"><p>A set of flags describing TLS certification validation. This can be
+used to describe why a particular certificate was rejected (for
+example, in <code>signal::TlsConnection::accept-certificate</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsClientConnection.html" title="gio::TlsClientConnection struct">TlsClientConnection</a></div><div class="item-right docblock-short"><p><a href="struct.TlsClientConnection.html" title="crate::TlsClientConnection"><code>TlsClientConnection</code></a> is the client-side subclass of
+<a href="struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a>, representing a client-side TLS connection.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsConnection.html" title="gio::TlsConnection struct">TlsConnection</a></div><div class="item-right docblock-short"><p><a href="struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a> is the base TLS connection class type, which wraps
+a <a href="struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a> and provides TLS encryption on top of it. Its
+subclasses, <a href="struct.TlsClientConnection.html" title="crate::TlsClientConnection"><code>TlsClientConnection</code></a> and <a href="struct.TlsServerConnection.html" title="crate::TlsServerConnection"><code>TlsServerConnection</code></a>,
+implement client-side and server-side TLS, respectively.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsDatabase.html" title="gio::TlsDatabase struct">TlsDatabase</a></div><div class="item-right docblock-short"><p><a href="struct.TlsDatabase.html" title="crate::TlsDatabase"><code>TlsDatabase</code></a> is used to look up certificates and other information
+from a certificate or key store. It is an abstract base class which
+TLS library specific subtypes override.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsDatabaseVerifyFlags.html" title="gio::TlsDatabaseVerifyFlags struct">TlsDatabaseVerifyFlags</a></div><div class="item-right docblock-short"><p>Flags for <a href="prelude/trait.TlsDatabaseExt.html#tymethod.verify_chain" title="crate::prelude::TlsDatabaseExt::verify_chain()"><code>TlsDatabaseExt::verify_chain()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsFileDatabase.html" title="gio::TlsFileDatabase struct">TlsFileDatabase</a></div><div class="item-right docblock-short"><p><a href="struct.TlsFileDatabase.html" title="crate::TlsFileDatabase"><code>TlsFileDatabase</code></a> is implemented by <a href="struct.TlsDatabase.html" title="crate::TlsDatabase"><code>TlsDatabase</code></a> objects which load
+their certificate information from a file. It is an interface which
+TLS library specific subtypes implement.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsInteraction.html" title="gio::TlsInteraction struct">TlsInteraction</a></div><div class="item-right docblock-short"><p><a href="struct.TlsInteraction.html" title="crate::TlsInteraction"><code>TlsInteraction</code></a> provides a mechanism for the TLS connection and database
+code to interact with the user. It can be used to ask the user for passwords.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsPassword.html" title="gio::TlsPassword struct">TlsPassword</a></div><div class="item-right docblock-short"><p>Holds a password used in TLS.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsPasswordFlags.html" title="gio::TlsPasswordFlags struct">TlsPasswordFlags</a></div><div class="item-right docblock-short"><p>Various flags for the password.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TlsServerConnection.html" title="gio::TlsServerConnection struct">TlsServerConnection</a></div><div class="item-right docblock-short"><p><a href="struct.TlsServerConnection.html" title="crate::TlsServerConnection"><code>TlsServerConnection</code></a> is the server-side subclass of <a href="struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a>,
+representing a server-side TLS connection.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixFDList.html" title="gio::UnixFDList struct">UnixFDList</a></div><div class="item-right docblock-short"><p>A <a href="struct.UnixFDList.html" title="crate::UnixFDList"><code>UnixFDList</code></a> contains a list of file descriptors. It owns the file
+descriptors that it contains, closing them when finalized.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixInputStream.html" title="gio::UnixInputStream struct">UnixInputStream</a></div><div class="item-right docblock-short"><p><a href="struct.UnixInputStream.html" title="crate::UnixInputStream"><code>UnixInputStream</code></a> implements <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a> for reading from a UNIX
+file descriptor, including asynchronous operations. (If the file
+descriptor refers to a socket or pipe, this will use <code>poll()</code> to do
+asynchronous I/O. If it refers to a regular file, it will fall back
+to doing asynchronous I/O in another thread.)</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixMountEntry.html" title="gio::UnixMountEntry struct">UnixMountEntry</a></div><div class="item-right docblock-short"><p>Defines a Unix mount entry (e.g. <code>&lt;filename&gt;</code>/media/cdrom<code>&lt;/filename&gt;</code>).
+This corresponds roughly to a mtab entry.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixMountPoint.html" title="gio::UnixMountPoint struct">UnixMountPoint</a></div><div class="item-right docblock-short"><p>Defines a Unix mount point (e.g. <code>&lt;filename&gt;</code>/dev<code>&lt;/filename&gt;</code>).
+This corresponds roughly to a fstab entry.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixOutputStream.html" title="gio::UnixOutputStream struct">UnixOutputStream</a></div><div class="item-right docblock-short"><p><a href="struct.UnixOutputStream.html" title="crate::UnixOutputStream"><code>UnixOutputStream</code></a> implements <a href="struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a> for writing to a UNIX
+file descriptor, including asynchronous operations. (If the file
+descriptor refers to a socket or pipe, this will use <code>poll()</code> to do
+asynchronous I/O. If it refers to a regular file, it will fall back
+to doing asynchronous I/O in another thread.)</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UnixSocketAddress.html" title="gio::UnixSocketAddress struct">UnixSocketAddress</a></div><div class="item-right docblock-short"><p>Support for UNIX-domain (also known as local) sockets.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Vfs.html" title="gio::Vfs struct">Vfs</a></div><div class="item-right docblock-short"><p>Entry point for using GIO functionality.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Volume.html" title="gio::Volume struct">Volume</a></div><div class="item-right docblock-short"><p>The <a href="struct.Volume.html" title="crate::Volume"><code>Volume</code></a> interface represents user-visible objects that can be
+mounted. Note, when porting from GnomeVFS, <a href="struct.Volume.html" title="crate::Volume"><code>Volume</code></a> is the moral
+equivalent of <code>GnomeVFSDrive</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.VolumeMonitor.html" title="gio::VolumeMonitor struct">VolumeMonitor</a></div><div class="item-right docblock-short"><p><a href="struct.VolumeMonitor.html" title="crate::VolumeMonitor"><code>VolumeMonitor</code></a> is for listing the user interesting devices and volumes
+on the computer. In other words, what a file selector or file manager
+would show in a sidebar.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.WatcherId.html" title="gio::WatcherId struct">WatcherId</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.WriteOutputStream.html" title="gio::WriteOutputStream struct">WriteOutputStream</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ZlibCompressor.html" title="gio::ZlibCompressor struct">ZlibCompressor</a></div><div class="item-right docblock-short"><p><a href="struct.ZlibCompressor.html" title="crate::ZlibCompressor"><code>ZlibCompressor</code></a> is an implementation of <a href="struct.Converter.html" title="crate::Converter"><code>Converter</code></a> that
+compresses data using zlib.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ZlibDecompressor.html" title="gio::ZlibDecompressor struct">ZlibDecompressor</a></div><div class="item-right docblock-short"><p><a href="struct.ZlibDecompressor.html" title="crate::ZlibDecompressor"><code>ZlibDecompressor</code></a> is an implementation of <a href="struct.Converter.html" title="crate::Converter"><code>Converter</code></a> that
+decompresses data compressed with zlib.</p>
+</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.BusType.html" title="gio::BusType enum">BusType</a></div><div class="item-right docblock-short"><p>An enumeration for well-known message buses.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ConverterResult.html" title="gio::ConverterResult enum">ConverterResult</a></div><div class="item-right docblock-short"><p>Results returned from <a href="prelude/trait.ConverterExtManual.html#tymethod.convert" title="crate::prelude::ConverterExtManual::convert()"><code>ConverterExtManual::convert()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.CredentialsType.html" title="gio::CredentialsType enum">CredentialsType</a></div><div class="item-right docblock-short"><p>Enumeration describing different kinds of native credential types.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DBusMessageByteOrder.html" title="gio::DBusMessageByteOrder enum">DBusMessageByteOrder</a></div><div class="item-right docblock-short"><p>Enumeration used to describe the byte order of a D-Bus message.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DBusMessageHeaderField.html" title="gio::DBusMessageHeaderField enum">DBusMessageHeaderField</a></div><div class="item-right docblock-short"><p>Header fields used in <a href="struct.DBusMessage.html" title="crate::DBusMessage"><code>DBusMessage</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DBusMessageType.html" title="gio::DBusMessageType enum">DBusMessageType</a></div><div class="item-right docblock-short"><p>Message types used in <a href="struct.DBusMessage.html" title="crate::DBusMessage"><code>DBusMessage</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DataStreamByteOrder.html" title="gio::DataStreamByteOrder enum">DataStreamByteOrder</a></div><div class="item-right docblock-short"><p><a href="enum.DataStreamByteOrder.html" title="crate::DataStreamByteOrder"><code>DataStreamByteOrder</code></a> is used to ensure proper endianness of streaming data sources
+across various machine architectures.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DataStreamNewlineType.html" title="gio::DataStreamNewlineType enum">DataStreamNewlineType</a></div><div class="item-right docblock-short"><p><a href="enum.DataStreamNewlineType.html" title="crate::DataStreamNewlineType"><code>DataStreamNewlineType</code></a> is used when checking for or setting the line endings for a given file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.DriveStartStopType.html" title="gio::DriveStartStopType enum">DriveStartStopType</a></div><div class="item-right docblock-short"><p>Enumeration describing how a drive can be started/stopped.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.EmblemOrigin.html" title="gio::EmblemOrigin enum">EmblemOrigin</a></div><div class="item-right docblock-short"><p>GEmblemOrigin is used to add information about the origin of the emblem
+to <a href="struct.Emblem.html" title="crate::Emblem"><code>Emblem</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.FileAttributeStatus.html" title="gio::FileAttributeStatus enum">FileAttributeStatus</a></div><div class="item-right docblock-short"><p>Used by <a href="prelude/trait.FileExt.html#tymethod.set_attributes_from_info" title="crate::prelude::FileExt::set_attributes_from_info()"><code>FileExt::set_attributes_from_info()</code></a> when setting file attributes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.FileAttributeType.html" title="gio::FileAttributeType enum">FileAttributeType</a></div><div class="item-right docblock-short"><p>The data types for file attributes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.FileMonitorEvent.html" title="gio::FileMonitorEvent enum">FileMonitorEvent</a></div><div class="item-right docblock-short"><p>Specifies what type of event a monitor event is.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.FileType.html" title="gio::FileType enum">FileType</a></div><div class="item-right docblock-short"><p>Indicates the file’s on-disk type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.IOErrorEnum.html" title="gio::IOErrorEnum enum">IOErrorEnum</a></div><div class="item-right docblock-short"><p>Error codes returned by GIO functions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.InetAddressBytes.html" title="gio::InetAddressBytes enum">InetAddressBytes</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.MemoryMonitorWarningLevel.html" title="gio::MemoryMonitorWarningLevel enum">MemoryMonitorWarningLevel</a><span class="stab portability" title="Available on crate feature `v2_64` only"><code>v2_64</code></span></div><div class="item-right docblock-short"><p>Memory availability warning levels.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.MountOperationResult.html" title="gio::MountOperationResult enum">MountOperationResult</a></div><div class="item-right docblock-short"><p><a href="enum.MountOperationResult.html" title="crate::MountOperationResult"><code>MountOperationResult</code></a> is returned as a result when a request for
+information is send by the mounting operation.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.NetworkConnectivity.html" title="gio::NetworkConnectivity enum">NetworkConnectivity</a></div><div class="item-right docblock-short"><p>The host’s network connectivity state, as reported by <a href="struct.NetworkMonitor.html" title="crate::NetworkMonitor"><code>NetworkMonitor</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.NotificationPriority.html" title="gio::NotificationPriority enum">NotificationPriority</a></div><div class="item-right docblock-short"><p>Priority levels for <code>GNotifications</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.PasswordSave.html" title="gio::PasswordSave enum">PasswordSave</a></div><div class="item-right docblock-short"><p><a href="enum.PasswordSave.html" title="crate::PasswordSave"><code>PasswordSave</code></a> is used to indicate the lifespan of a saved password.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ResolverError.html" title="gio::ResolverError enum">ResolverError</a></div><div class="item-right docblock-short"><p>An error code used with <code>G_RESOLVER_ERROR</code> in a <a href="../glib/error/struct.Error.html" title="crate::glib::Error"><code>glib::Error</code></a> returned
+from a <a href="struct.Resolver.html" title="crate::Resolver"><code>Resolver</code></a> routine.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ResolverRecordType.html" title="gio::ResolverRecordType enum">ResolverRecordType</a></div><div class="item-right docblock-short"><p>The type of record that <a href="prelude/trait.ResolverExt.html#tymethod.lookup_records" title="crate::prelude::ResolverExt::lookup_records()"><code>ResolverExt::lookup_records()</code></a> or
+<a href="prelude/trait.ResolverExt.html#tymethod.lookup_records_async" title="crate::prelude::ResolverExt::lookup_records_async()"><code>ResolverExt::lookup_records_async()</code></a> should retrieve. The records are returned
+as lists of <a href="../glib/variant/struct.Variant.html" title="crate::glib::Variant"><code>glib::Variant</code></a> tuples. Each record type has different values in
+the variant tuples returned.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ResourceError.html" title="gio::ResourceError enum">ResourceError</a></div><div class="item-right docblock-short"><p>An error code used with <code>G_RESOURCE_ERROR</code> in a <a href="../glib/error/struct.Error.html" title="crate::glib::Error"><code>glib::Error</code></a> returned
+from a <a href="struct.Resource.html" title="crate::Resource"><code>Resource</code></a> routine.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SocketClientEvent.html" title="gio::SocketClientEvent enum">SocketClientEvent</a></div><div class="item-right docblock-short"><p>Describes an event occurring on a <a href="struct.SocketClient.html" title="crate::SocketClient"><code>SocketClient</code></a>. See the
+<code>signal::SocketClient::event</code> signal for more details.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SocketFamily.html" title="gio::SocketFamily enum">SocketFamily</a></div><div class="item-right docblock-short"><p>The protocol family of a <a href="struct.SocketAddress.html" title="crate::SocketAddress"><code>SocketAddress</code></a>. (These values are
+identical to the system defines <code>AF_INET</code>, <code>AF_INET6</code> and <code>AF_UNIX</code>,
+if available.)</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SocketListenerEvent.html" title="gio::SocketListenerEvent enum">SocketListenerEvent</a></div><div class="item-right docblock-short"><p>Describes an event occurring on a <a href="struct.SocketListener.html" title="crate::SocketListener"><code>SocketListener</code></a>. See the
+<code>signal::SocketListener::event</code> signal for more details.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SocketProtocol.html" title="gio::SocketProtocol enum">SocketProtocol</a></div><div class="item-right docblock-short"><p>A protocol identifier is specified when creating a <a href="struct.Socket.html" title="crate::Socket"><code>Socket</code></a>, which is a
+family/type specific identifier, where 0 means the default protocol for
+the particular family/type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SocketType.html" title="gio::SocketType enum">SocketType</a></div><div class="item-right docblock-short"><p>Flags used when creating a <a href="struct.Socket.html" title="crate::Socket"><code>Socket</code></a>. Some protocols may not implement
+all the socket types.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsAuthenticationMode.html" title="gio::TlsAuthenticationMode enum">TlsAuthenticationMode</a></div><div class="item-right docblock-short"><p>The client authentication mode for a <a href="struct.TlsServerConnection.html" title="crate::TlsServerConnection"><code>TlsServerConnection</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsCertificateRequestFlags.html" title="gio::TlsCertificateRequestFlags enum">TlsCertificateRequestFlags</a></div><div class="item-right docblock-short"><p>Flags for <a href="prelude/trait.TlsInteractionExt.html#tymethod.request_certificate" title="crate::prelude::TlsInteractionExt::request_certificate()"><code>TlsInteractionExt::request_certificate()</code></a>,
+<a href="prelude/trait.TlsInteractionExt.html#tymethod.request_certificate_async" title="crate::prelude::TlsInteractionExt::request_certificate_async()"><code>TlsInteractionExt::request_certificate_async()</code></a>, and
+<a href="prelude/trait.TlsInteractionExt.html#tymethod.invoke_request_certificate" title="crate::prelude::TlsInteractionExt::invoke_request_certificate()"><code>TlsInteractionExt::invoke_request_certificate()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsChannelBindingType.html" title="gio::TlsChannelBindingType enum">TlsChannelBindingType</a><span class="stab portability" title="Available on crate feature `v2_66` only"><code>v2_66</code></span></div><div class="item-right docblock-short"><p>The type of TLS channel binding data to retrieve from <a href="struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a>
+or <code>GDtlsConnection</code>, as documented by RFC 5929. The
+<a href="https://tools.ietf.org/html/rfc5929%60section%60-5"><code>tls-unique-for-telnet</code></a>
+binding type is not currently implemented.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsDatabaseLookupFlags.html" title="gio::TlsDatabaseLookupFlags enum">TlsDatabaseLookupFlags</a></div><div class="item-right docblock-short"><p>Flags for <a href="prelude/trait.TlsDatabaseExt.html#tymethod.lookup_certificate_for_handle" title="crate::prelude::TlsDatabaseExt::lookup_certificate_for_handle()"><code>TlsDatabaseExt::lookup_certificate_for_handle()</code></a>,
+<a href="prelude/trait.TlsDatabaseExt.html#tymethod.lookup_certificate_issuer" title="crate::prelude::TlsDatabaseExt::lookup_certificate_issuer()"><code>TlsDatabaseExt::lookup_certificate_issuer()</code></a>,
+and <a href="prelude/trait.TlsDatabaseExt.html#tymethod.lookup_certificates_issued_by" title="crate::prelude::TlsDatabaseExt::lookup_certificates_issued_by()"><code>TlsDatabaseExt::lookup_certificates_issued_by()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsError.html" title="gio::TlsError enum">TlsError</a></div><div class="item-right docblock-short"><p>An error code used with <code>G_TLS_ERROR</code> in a <a href="../glib/error/struct.Error.html" title="crate::glib::Error"><code>glib::Error</code></a> returned from a
+TLS-related routine.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsInteractionResult.html" title="gio::TlsInteractionResult enum">TlsInteractionResult</a></div><div class="item-right docblock-short"><p><a href="enum.TlsInteractionResult.html" title="crate::TlsInteractionResult"><code>TlsInteractionResult</code></a> is returned by various functions in <a href="struct.TlsInteraction.html" title="crate::TlsInteraction"><code>TlsInteraction</code></a>
+when finishing an interaction request.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsProtocolVersion.html" title="gio::TlsProtocolVersion enum">TlsProtocolVersion</a><span class="stab portability" title="Available on crate feature `v2_70` only"><code>v2_70</code></span></div><div class="item-right docblock-short"><p>The TLS or DTLS protocol version used by a <a href="struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a> or
+<code>GDtlsConnection</code>. The integer values of these versions are sequential
+to ensure newer known protocol versions compare greater than older
+known versions. Any known DTLS protocol version will compare greater
+than any SSL or TLS protocol version. The protocol version may be
+<a href="enum.TlsProtocolVersion.html#variant.Unknown" title="Self::Unknown"><code>Unknown</code></a> if the TLS backend supports a newer
+protocol version that GLib does not yet know about. This means that
+it’s possible for an unknown DTLS protocol version to compare less
+than the TLS protocol versions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TlsRehandshakeMode.html" title="gio::TlsRehandshakeMode enum">TlsRehandshakeMode</a></div><div class="item-right docblock-short"><p>When to allow rehandshaking. See
+<a href="prelude/trait.TlsConnectionExt.html#tymethod.set_rehandshake_mode" title="crate::prelude::TlsConnectionExt::set_rehandshake_mode()"><code>TlsConnectionExt::set_rehandshake_mode()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.UnixSocketAddressType.html" title="gio::UnixSocketAddressType enum">UnixSocketAddressType</a><span class="stab portability" title="Available on Unix only">Unix</span></div><div class="item-right docblock-short"><p>The type of name used by a <a href="struct.UnixSocketAddress.html" title="crate::UnixSocketAddress"><code>UnixSocketAddress</code></a>.
+<a href="enum.UnixSocketAddressType.html#variant.Path" title="Self::Path"><code>Path</code></a> indicates a traditional unix domain
+socket bound to a filesystem path. <a href="enum.UnixSocketAddressType.html#variant.Anonymous" title="Self::Anonymous"><code>Anonymous</code></a>
+indicates a socket not bound to any name (eg, a client-side socket,
+or a socket created with <code>socketpair()</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ZlibCompressorFormat.html" title="gio::ZlibCompressorFormat enum">ZlibCompressorFormat</a></div><div class="item-right docblock-short"><p>Used to select the type of data format to use for <a href="struct.ZlibDecompressor.html" title="crate::ZlibDecompressor"><code>ZlibDecompressor</code></a>
+and <a href="struct.ZlibCompressor.html" title="crate::ZlibCompressor"><code>ZlibCompressor</code></a>.</p>
+</div></div></div><h2 id="statics" class="small-section-header"><a href="#statics">Statics</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="static" href="static.DEBUG_CONTROLLER_EXTENSION_POINT_NAME.html" title="gio::DEBUG_CONTROLLER_EXTENSION_POINT_NAME static">DEBUG_CONTROLLER_EXTENSION_POINT_NAME</a><span class="stab portability" title="Available on crate feature `v2_72` only"><code>v2_72</code></span></div><div class="item-right docblock-short"><p>Extension point for debug control functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.html" title="gio::DRIVE_IDENTIFIER_KIND_UNIX_DEVICE static">DRIVE_IDENTIFIER_KIND_UNIX_DEVICE</a><span class="stab portability" title="Available on crate feature `v2_58` only"><code>v2_58</code></span></div><div class="item-right docblock-short"><p>The string used to obtain a Unix device path with <a href="prelude/trait.DriveExt.html#tymethod.identifier" title="crate::prelude::DriveExt::identifier()"><code>DriveExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_DELETE.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_DELETE static">FILE_ATTRIBUTE_ACCESS_CAN_DELETE</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for checking deletion privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE static">FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for getting execution privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_READ.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_READ static">FILE_ATTRIBUTE_ACCESS_CAN_READ</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for getting read privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_RENAME.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_RENAME static">FILE_ATTRIBUTE_ACCESS_CAN_RENAME</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for checking renaming privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_TRASH.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_TRASH static">FILE_ATTRIBUTE_ACCESS_CAN_TRASH</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for checking trashing privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ACCESS_CAN_WRITE.html" title="gio::FILE_ATTRIBUTE_ACCESS_CAN_WRITE static">FILE_ATTRIBUTE_ACCESS_CAN_WRITE</a></div><div class="item-right docblock-short"><p>A key in the “access” namespace for getting write privileges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_DOS_IS_ARCHIVE.html" title="gio::FILE_ATTRIBUTE_DOS_IS_ARCHIVE static">FILE_ATTRIBUTE_DOS_IS_ARCHIVE</a></div><div class="item-right docblock-short"><p>A key in the “dos” namespace for checking if the file’s archive flag
+is set.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT.html" title="gio::FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT static">FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT</a><span class="stab portability" title="Available on crate feature `v2_60` only"><code>v2_60</code></span></div><div class="item-right docblock-short"><p>A key in the “dos” namespace for checking if the file is a NTFS mount point
+(a volume mount or a junction point).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_DOS_IS_SYSTEM.html" title="gio::FILE_ATTRIBUTE_DOS_IS_SYSTEM static">FILE_ATTRIBUTE_DOS_IS_SYSTEM</a></div><div class="item-right docblock-short"><p>A key in the “dos” namespace for checking if the file’s backup flag
+is set.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG.html" title="gio::FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG static">FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG</a><span class="stab portability" title="Available on crate feature `v2_60` only"><code>v2_60</code></span></div><div class="item-right docblock-short"><p>A key in the “dos” namespace for getting the file NTFS reparse tag.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ETAG_VALUE.html" title="gio::FILE_ATTRIBUTE_ETAG_VALUE static">FILE_ATTRIBUTE_ETAG_VALUE</a></div><div class="item-right docblock-short"><p>A key in the “etag” namespace for getting the value of the file’s
+entity tag.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_FREE.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_FREE static">FILE_ATTRIBUTE_FILESYSTEM_FREE</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for getting the number of bytes
+of free space left on the file system.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_READONLY.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_READONLY static">FILE_ATTRIBUTE_FILESYSTEM_READONLY</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for checking if the file system
+is read only.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_REMOTE.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_REMOTE static">FILE_ATTRIBUTE_FILESYSTEM_REMOTE</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for checking if the file system
+is remote.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_SIZE.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_SIZE static">FILE_ATTRIBUTE_FILESYSTEM_SIZE</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for getting the total size (in
+bytes) of the file system, used in <a href="prelude/trait.FileExt.html#tymethod.query_filesystem_info" title="crate::prelude::FileExt::query_filesystem_info()"><code>FileExt::query_filesystem_info()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_TYPE.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_TYPE static">FILE_ATTRIBUTE_FILESYSTEM_TYPE</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for getting the file system’s type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_USED.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_USED static">FILE_ATTRIBUTE_FILESYSTEM_USED</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for getting the number of bytes
+used by data on the file system.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.html" title="gio::FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW static">FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW</a></div><div class="item-right docblock-short"><p>A key in the “filesystem” namespace for hinting a file manager
+application whether it should preview (e.g. thumbnail) files on the
+file system.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_GVFS_BACKEND.html" title="gio::FILE_ATTRIBUTE_GVFS_BACKEND static">FILE_ATTRIBUTE_GVFS_BACKEND</a></div><div class="item-right docblock-short"><p>A key in the “gvfs” namespace that gets the name of the current
+GVFS backend in use.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ID_FILE.html" title="gio::FILE_ATTRIBUTE_ID_FILE static">FILE_ATTRIBUTE_ID_FILE</a></div><div class="item-right docblock-short"><p>A key in the “id” namespace for getting a file identifier.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_ID_FILESYSTEM.html" title="gio::FILE_ATTRIBUTE_ID_FILESYSTEM static">FILE_ATTRIBUTE_ID_FILESYSTEM</a></div><div class="item-right docblock-short"><p>A key in the “id” namespace for getting the file system identifier.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT static">FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) can be ejected.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT static">FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) is mountable.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL static">FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) can be polled.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_START.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_START static">FILE_ATTRIBUTE_MOUNTABLE_CAN_START</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) can be started.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED static">FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) can be started degraded.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP static">FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) can be stopped.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT static">FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) is unmountable.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI static">FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for getting the HAL UDI for the mountable
+file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC static">FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for checking if a file (of
+type G_FILE_TYPE_MOUNTABLE) is automatically polled for media.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE static">FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for getting the <a href="enum.DriveStartStopType.html" title="crate::DriveStartStopType"><code>DriveStartStopType</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE static">FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for getting the unix device.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE.html" title="gio::FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE static">FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE</a></div><div class="item-right docblock-short"><p>A key in the “mountable” namespace for getting the unix device file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_OWNER_GROUP.html" title="gio::FILE_ATTRIBUTE_OWNER_GROUP static">FILE_ATTRIBUTE_OWNER_GROUP</a></div><div class="item-right docblock-short"><p>A key in the “owner” namespace for getting the file owner’s group.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_OWNER_USER.html" title="gio::FILE_ATTRIBUTE_OWNER_USER static">FILE_ATTRIBUTE_OWNER_USER</a></div><div class="item-right docblock-short"><p>A key in the “owner” namespace for getting the user name of the
+file’s owner.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_OWNER_USER_REAL.html" title="gio::FILE_ATTRIBUTE_OWNER_USER_REAL static">FILE_ATTRIBUTE_OWNER_USER_REAL</a></div><div class="item-right docblock-short"><p>A key in the “owner” namespace for getting the real name of the
+user that owns the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_PREVIEW_ICON.html" title="gio::FILE_ATTRIBUTE_PREVIEW_ICON static">FILE_ATTRIBUTE_PREVIEW_ICON</a></div><div class="item-right docblock-short"><p>A key in the “preview” namespace for getting a <a href="struct.Icon.html" title="crate::Icon"><code>Icon</code></a> that can be
+used to get preview of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_RECENT_MODIFIED.html" title="gio::FILE_ATTRIBUTE_RECENT_MODIFIED static">FILE_ATTRIBUTE_RECENT_MODIFIED</a><span class="stab portability" title="Available on crate feature `v2_52` only"><code>v2_52</code></span></div><div class="item-right docblock-short"><p>A key in the “recent” namespace for getting time, when the metadata for the
+file in <code>recent:///</code> was last changed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_SELINUX_CONTEXT.html" title="gio::FILE_ATTRIBUTE_SELINUX_CONTEXT static">FILE_ATTRIBUTE_SELINUX_CONTEXT</a></div><div class="item-right docblock-short"><p>A key in the “selinux” namespace for getting the file’s SELinux
+context.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE.html" title="gio::FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE static">FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the amount of disk space
+that is consumed by the file (in bytes).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.html" title="gio::FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE static">FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the content type of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_COPY_NAME.html" title="gio::FILE_ATTRIBUTE_STANDARD_COPY_NAME static">FILE_ATTRIBUTE_STANDARD_COPY_NAME</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the copy name of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_DESCRIPTION.html" title="gio::FILE_ATTRIBUTE_STANDARD_DESCRIPTION static">FILE_ATTRIBUTE_STANDARD_DESCRIPTION</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the description of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.html" title="gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME static">FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the display name of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_EDIT_NAME.html" title="gio::FILE_ATTRIBUTE_STANDARD_EDIT_NAME static">FILE_ATTRIBUTE_STANDARD_EDIT_NAME</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for edit name of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE.html" title="gio::FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE static">FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the fast content type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_ICON.html" title="gio::FILE_ATTRIBUTE_STANDARD_ICON static">FILE_ATTRIBUTE_STANDARD_ICON</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the icon for the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_IS_BACKUP.html" title="gio::FILE_ATTRIBUTE_STANDARD_IS_BACKUP static">FILE_ATTRIBUTE_STANDARD_IS_BACKUP</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for checking if a file is a backup file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.html" title="gio::FILE_ATTRIBUTE_STANDARD_IS_HIDDEN static">FILE_ATTRIBUTE_STANDARD_IS_HIDDEN</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for checking if a file is hidden.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.html" title="gio::FILE_ATTRIBUTE_STANDARD_IS_SYMLINK static">FILE_ATTRIBUTE_STANDARD_IS_SYMLINK</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for checking if the file is a symlink.
+Typically the actual type is something else, if we followed the symlink
+to get the type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL.html" title="gio::FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL static">FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for checking if a file is virtual.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_IS_VOLATILE.html" title="gio::FILE_ATTRIBUTE_STANDARD_IS_VOLATILE static">FILE_ATTRIBUTE_STANDARD_IS_VOLATILE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for checking if a file is
+volatile. This is meant for opaque, non-POSIX-like backends to
+indicate that the URI is not persistent. Applications should look
+at <a href="static.FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET.html" title="crate::FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET"><code>FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET</code></a> for the persistent URI.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_NAME.html" title="gio::FILE_ATTRIBUTE_STANDARD_NAME static">FILE_ATTRIBUTE_STANDARD_NAME</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the name of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_SIZE.html" title="gio::FILE_ATTRIBUTE_STANDARD_SIZE static">FILE_ATTRIBUTE_STANDARD_SIZE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the file’s size (in bytes).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_SORT_ORDER.html" title="gio::FILE_ATTRIBUTE_STANDARD_SORT_ORDER static">FILE_ATTRIBUTE_STANDARD_SORT_ORDER</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for setting the sort order of a file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.html" title="gio::FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON static">FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the symbolic icon for the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET.html" title="gio::FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET static">FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the symlink target, if the file
+is a symlink.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_TARGET_URI.html" title="gio::FILE_ATTRIBUTE_STANDARD_TARGET_URI static">FILE_ATTRIBUTE_STANDARD_TARGET_URI</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for getting the target URI for the file, in
+the case of <a href="enum.FileType.html#variant.Shortcut" title="crate::FileType::Shortcut"><code>FileType::Shortcut</code></a> or <a href="enum.FileType.html#variant.Mountable" title="crate::FileType::Mountable"><code>FileType::Mountable</code></a> files.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_STANDARD_TYPE.html" title="gio::FILE_ATTRIBUTE_STANDARD_TYPE static">FILE_ATTRIBUTE_STANDARD_TYPE</a></div><div class="item-right docblock-short"><p>A key in the “standard” namespace for storing file types.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_THUMBNAILING_FAILED.html" title="gio::FILE_ATTRIBUTE_THUMBNAILING_FAILED static">FILE_ATTRIBUTE_THUMBNAILING_FAILED</a></div><div class="item-right docblock-short"><p>A key in the “thumbnail” namespace for checking if thumbnailing failed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_THUMBNAIL_IS_VALID.html" title="gio::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID static">FILE_ATTRIBUTE_THUMBNAIL_IS_VALID</a></div><div class="item-right docblock-short"><p>A key in the “thumbnail” namespace for checking whether the thumbnail is outdated.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_THUMBNAIL_PATH.html" title="gio::FILE_ATTRIBUTE_THUMBNAIL_PATH static">FILE_ATTRIBUTE_THUMBNAIL_PATH</a></div><div class="item-right docblock-short"><p>A key in the “thumbnail” namespace for getting the path to the thumbnail
+image.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_ACCESS.html" title="gio::FILE_ATTRIBUTE_TIME_ACCESS static">FILE_ATTRIBUTE_TIME_ACCESS</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the time the file was last
+accessed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_ACCESS_USEC.html" title="gio::FILE_ATTRIBUTE_TIME_ACCESS_USEC static">FILE_ATTRIBUTE_TIME_ACCESS_USEC</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the microseconds of the time
+the file was last accessed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_CHANGED.html" title="gio::FILE_ATTRIBUTE_TIME_CHANGED static">FILE_ATTRIBUTE_TIME_CHANGED</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the time the file was last
+changed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_CHANGED_USEC.html" title="gio::FILE_ATTRIBUTE_TIME_CHANGED_USEC static">FILE_ATTRIBUTE_TIME_CHANGED_USEC</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the microseconds of the time
+the file was last changed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_CREATED.html" title="gio::FILE_ATTRIBUTE_TIME_CREATED static">FILE_ATTRIBUTE_TIME_CREATED</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the time the file was created.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_CREATED_USEC.html" title="gio::FILE_ATTRIBUTE_TIME_CREATED_USEC static">FILE_ATTRIBUTE_TIME_CREATED_USEC</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the microseconds of the time
+the file was created.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_MODIFIED.html" title="gio::FILE_ATTRIBUTE_TIME_MODIFIED static">FILE_ATTRIBUTE_TIME_MODIFIED</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the time the file was last
+modified.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TIME_MODIFIED_USEC.html" title="gio::FILE_ATTRIBUTE_TIME_MODIFIED_USEC static">FILE_ATTRIBUTE_TIME_MODIFIED_USEC</a></div><div class="item-right docblock-short"><p>A key in the “time” namespace for getting the microseconds of the time
+the file was last modified.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TRASH_DELETION_DATE.html" title="gio::FILE_ATTRIBUTE_TRASH_DELETION_DATE static">FILE_ATTRIBUTE_TRASH_DELETION_DATE</a></div><div class="item-right docblock-short"><p>A key in the “trash” namespace for getting the deletion date and time
+of a file inside the <code>trash:///</code> folder.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TRASH_ITEM_COUNT.html" title="gio::FILE_ATTRIBUTE_TRASH_ITEM_COUNT static">FILE_ATTRIBUTE_TRASH_ITEM_COUNT</a></div><div class="item-right docblock-short"><p>A key in the “trash” namespace for getting the number of (toplevel) items
+that are present in the <code>trash:///</code> folder.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_TRASH_ORIG_PATH.html" title="gio::FILE_ATTRIBUTE_TRASH_ORIG_PATH static">FILE_ATTRIBUTE_TRASH_ORIG_PATH</a></div><div class="item-right docblock-short"><p>A key in the “trash” namespace for getting the original path of a file
+inside the <code>trash:///</code> folder before it was trashed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_BLOCKS.html" title="gio::FILE_ATTRIBUTE_UNIX_BLOCKS static">FILE_ATTRIBUTE_UNIX_BLOCKS</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the number of blocks allocated
+for the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_BLOCK_SIZE.html" title="gio::FILE_ATTRIBUTE_UNIX_BLOCK_SIZE static">FILE_ATTRIBUTE_UNIX_BLOCK_SIZE</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the block size for the file
+system.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_DEVICE.html" title="gio::FILE_ATTRIBUTE_UNIX_DEVICE static">FILE_ATTRIBUTE_UNIX_DEVICE</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the device id of the device the
+file is located on (see <code>stat()</code> documentation).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_GID.html" title="gio::FILE_ATTRIBUTE_UNIX_GID static">FILE_ATTRIBUTE_UNIX_GID</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the group ID for the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_INODE.html" title="gio::FILE_ATTRIBUTE_UNIX_INODE static">FILE_ATTRIBUTE_UNIX_INODE</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the inode of the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT.html" title="gio::FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT static">FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for checking if the file represents a
+UNIX mount point.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_MODE.html" title="gio::FILE_ATTRIBUTE_UNIX_MODE static">FILE_ATTRIBUTE_UNIX_MODE</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the mode of the file
+(e.g. whether the file is a regular file, symlink, etc).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_NLINK.html" title="gio::FILE_ATTRIBUTE_UNIX_NLINK static">FILE_ATTRIBUTE_UNIX_NLINK</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the number of hard links
+for a file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_RDEV.html" title="gio::FILE_ATTRIBUTE_UNIX_RDEV static">FILE_ATTRIBUTE_UNIX_RDEV</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the device ID for the file
+(if it is a special file).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.FILE_ATTRIBUTE_UNIX_UID.html" title="gio::FILE_ATTRIBUTE_UNIX_UID static">FILE_ATTRIBUTE_UNIX_UID</a></div><div class="item-right docblock-short"><p>A key in the “unix” namespace for getting the user ID for the file.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MEMORY_MONITOR_EXTENSION_POINT_NAME.html" title="gio::MEMORY_MONITOR_EXTENSION_POINT_NAME static">MEMORY_MONITOR_EXTENSION_POINT_NAME</a><span class="stab portability" title="Available on crate feature `v2_64` only"><code>v2_64</code></span></div><div class="item-right docblock-short"><p>Extension point for memory usage monitoring functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_ATTRIBUTE_ACTION.html" title="gio::MENU_ATTRIBUTE_ACTION static">MENU_ATTRIBUTE_ACTION</a></div><div class="item-right docblock-short"><p>The menu item attribute which holds the action name of the item. Action
+names are namespaced with an identifier for the action group in which the
+action resides. For example, “win.” for window-specific actions and “app.”
+for application-wide actions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_ATTRIBUTE_ACTION_NAMESPACE.html" title="gio::MENU_ATTRIBUTE_ACTION_NAMESPACE static">MENU_ATTRIBUTE_ACTION_NAMESPACE</a></div><div class="item-right docblock-short"><p>The menu item attribute that holds the namespace for all action names in
+menus that are linked from this item.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_ATTRIBUTE_ICON.html" title="gio::MENU_ATTRIBUTE_ICON static">MENU_ATTRIBUTE_ICON</a></div><div class="item-right docblock-short"><p>The menu item attribute which holds the icon of the item.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_ATTRIBUTE_LABEL.html" title="gio::MENU_ATTRIBUTE_LABEL static">MENU_ATTRIBUTE_LABEL</a></div><div class="item-right docblock-short"><p>The menu item attribute which holds the label of the item.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_ATTRIBUTE_TARGET.html" title="gio::MENU_ATTRIBUTE_TARGET static">MENU_ATTRIBUTE_TARGET</a></div><div class="item-right docblock-short"><p>The menu item attribute which holds the target with which the item’s action
+will be activated.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_LINK_SECTION.html" title="gio::MENU_LINK_SECTION static">MENU_LINK_SECTION</a></div><div class="item-right docblock-short"><p>The name of the link that associates a menu item with a section. The linked
+menu will usually be shown in place of the menu item, using the item’s label
+as a header.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.MENU_LINK_SUBMENU.html" title="gio::MENU_LINK_SUBMENU static">MENU_LINK_SUBMENU</a></div><div class="item-right docblock-short"><p>The name of the link that associates a menu item with a submenu.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME.html" title="gio::NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME static">NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.NETWORK_MONITOR_EXTENSION_POINT_NAME.html" title="gio::NETWORK_MONITOR_EXTENSION_POINT_NAME static">NETWORK_MONITOR_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for network status monitoring functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME.html" title="gio::POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME static">POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME</a><span class="stab portability" title="Available on crate feature `v2_70` only"><code>v2_70</code></span></div><div class="item-right docblock-short"><p>Extension point for power profile usage monitoring functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.PROXY_EXTENSION_POINT_NAME.html" title="gio::PROXY_EXTENSION_POINT_NAME static">PROXY_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for proxy functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.PROXY_RESOLVER_EXTENSION_POINT_NAME.html" title="gio::PROXY_RESOLVER_EXTENSION_POINT_NAME static">PROXY_RESOLVER_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for proxy resolving functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.SETTINGS_BACKEND_EXTENSION_POINT_NAME.html" title="gio::SETTINGS_BACKEND_EXTENSION_POINT_NAME static">SETTINGS_BACKEND_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a> functionality.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.TLS_BACKEND_EXTENSION_POINT_NAME.html" title="gio::TLS_BACKEND_EXTENSION_POINT_NAME static">TLS_BACKEND_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for TLS functionality via <a href="struct.TlsBackend.html" title="crate::TlsBackend"><code>TlsBackend</code></a>.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT.html" title="gio::TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT static">TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT</a></div><div class="item-right docblock-short"><p>The purpose used to verify the client certificate in a TLS connection.
+Used by TLS servers.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER.html" title="gio::TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER static">TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER</a></div><div class="item-right docblock-short"><p>The purpose used to verify the server certificate in a TLS connection. This
+is the most common purpose in use. Used by TLS clients.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VFS_EXTENSION_POINT_NAME.html" title="gio::VFS_EXTENSION_POINT_NAME static">VFS_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for <a href="struct.Vfs.html" title="crate::Vfs"><code>Vfs</code></a> functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_CLASS.html" title="gio::VOLUME_IDENTIFIER_KIND_CLASS static">VOLUME_IDENTIFIER_KIND_CLASS</a></div><div class="item-right docblock-short"><p>The string used to obtain the volume class with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_HAL_UDI.html" title="gio::VOLUME_IDENTIFIER_KIND_HAL_UDI static">VOLUME_IDENTIFIER_KIND_HAL_UDI</a></div><div class="item-right docblock-short"><p>The string used to obtain a Hal UDI with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_LABEL.html" title="gio::VOLUME_IDENTIFIER_KIND_LABEL static">VOLUME_IDENTIFIER_KIND_LABEL</a></div><div class="item-right docblock-short"><p>The string used to obtain a filesystem label with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_NFS_MOUNT.html" title="gio::VOLUME_IDENTIFIER_KIND_NFS_MOUNT static">VOLUME_IDENTIFIER_KIND_NFS_MOUNT</a></div><div class="item-right docblock-short"><p>The string used to obtain a NFS mount with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_UNIX_DEVICE.html" title="gio::VOLUME_IDENTIFIER_KIND_UNIX_DEVICE static">VOLUME_IDENTIFIER_KIND_UNIX_DEVICE</a></div><div class="item-right docblock-short"><p>The string used to obtain a Unix device path with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_IDENTIFIER_KIND_UUID.html" title="gio::VOLUME_IDENTIFIER_KIND_UUID static">VOLUME_IDENTIFIER_KIND_UUID</a></div><div class="item-right docblock-short"><p>The string used to obtain a UUID with <a href="prelude/trait.VolumeExt.html#tymethod.identifier" title="crate::prelude::VolumeExt::identifier()"><code>VolumeExt::identifier()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="static" href="static.VOLUME_MONITOR_EXTENSION_POINT_NAME.html" title="gio::VOLUME_MONITOR_EXTENSION_POINT_NAME static">VOLUME_MONITOR_EXTENSION_POINT_NAME</a></div><div class="item-right docblock-short"><p>Extension point for volume monitor functionality.
+See [Extending GIO][extending-gio].</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_get.html" title="gio::bus_get fn">bus_get</a></div><div class="item-right docblock-short"><p>Asynchronously connects to the message bus specified by <code>bus_type</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_get_future.html" title="gio::bus_get_future fn">bus_get_future</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_get_sync.html" title="gio::bus_get_sync fn">bus_get_sync</a></div><div class="item-right docblock-short"><p>Synchronously connects to the message bus specified by <code>bus_type</code>.
+Note that the returned object may shared with other callers,
+e.g. if two separate parts of a process calls this function with
+the same <code>bus_type</code>, they will share the same object.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_own_name.html" title="gio::bus_own_name fn">bus_own_name</a></div><div class="item-right docblock-short"><p>Starts acquiring <code>name</code> on the bus specified by <code>bus_type</code> and calls
+<code>name_acquired_handler</code> and <code>name_lost_handler</code> when the name is
+acquired respectively lost. Callbacks will be invoked in the
+[thread-default main context][g-main-context-push-thread-default]
+of the thread you are calling this function from.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_own_name_on_connection.html" title="gio::bus_own_name_on_connection fn">bus_own_name_on_connection</a></div><div class="item-right docblock-short"><p>Like <code>g_bus_own_name()</code> but takes a <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a> instead of a
+<a href="enum.BusType.html" title="crate::BusType"><code>BusType</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_unown_name.html" title="gio::bus_unown_name fn">bus_unown_name</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_unwatch_name.html" title="gio::bus_unwatch_name fn">bus_unwatch_name</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_watch_name.html" title="gio::bus_watch_name fn">bus_watch_name</a></div><div class="item-right docblock-short"><p>Starts watching <code>name</code> on the bus specified by <code>bus_type</code> and calls
+<code>name_appeared_handler</code> and <code>name_vanished_handler</code> when the name is
+known to have an owner respectively known to lose its
+owner. Callbacks will be invoked in the
+[thread-default main context][g-main-context-push-thread-default]
+of the thread you are calling this function from.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.bus_watch_name_on_connection.html" title="gio::bus_watch_name_on_connection fn">bus_watch_name_on_connection</a></div><div class="item-right docblock-short"><p>Like <code>g_bus_watch_name()</code> but takes a <a href="struct.DBusConnection.html" title="crate::DBusConnection"><code>DBusConnection</code></a> instead of a
+<a href="enum.BusType.html" title="crate::BusType"><code>BusType</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.compile_resources.html" title="gio::compile_resources fn">compile_resources</a></div><div class="item-right docblock-short"><p>Call from build script to run <code>glib-compile-resources</code> to generate compiled gresources to embed
+in binary with <a href="macro.resources_register_include.html" title="resources_register_include">resources_register_include</a>. <code>target</code> is relative to <code>OUT_DIR</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_can_be_executable.html" title="gio::content_type_can_be_executable fn">content_type_can_be_executable</a></div><div class="item-right docblock-short"><p>Checks if a content type can be executable. Note that for instance
+things like text files can be executables (i.e. scripts and batch files).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_equals.html" title="gio::content_type_equals fn">content_type_equals</a></div><div class="item-right docblock-short"><p>Compares two content types for equality.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_from_mime_type.html" title="gio::content_type_from_mime_type fn">content_type_from_mime_type</a></div><div class="item-right docblock-short"><p>Tries to find a content type based on the mime type name.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_description.html" title="gio::content_type_get_description fn">content_type_get_description</a></div><div class="item-right docblock-short"><p>Gets the human readable description of the content type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_generic_icon_name.html" title="gio::content_type_get_generic_icon_name fn">content_type_get_generic_icon_name</a></div><div class="item-right docblock-short"><p>Gets the generic icon name for a content type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_icon.html" title="gio::content_type_get_icon fn">content_type_get_icon</a></div><div class="item-right docblock-short"><p>Gets the icon for a content type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_mime_dirs.html" title="gio::content_type_get_mime_dirs fn">content_type_get_mime_dirs</a><span class="stab portability" title="Available on crate feature `v2_60` only"><code>v2_60</code></span></div><div class="item-right docblock-short"><p>Get the list of directories which MIME data is loaded from. See
+<a href="functions/fn.content_type_set_mime_dirs.html" title="crate::content_type_set_mime_dirs()"><code>content_type_set_mime_dirs()</code></a> for details.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_mime_type.html" title="gio::content_type_get_mime_type fn">content_type_get_mime_type</a></div><div class="item-right docblock-short"><p>Gets the mime type for the content type, if one is registered.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_get_symbolic_icon.html" title="gio::content_type_get_symbolic_icon fn">content_type_get_symbolic_icon</a></div><div class="item-right docblock-short"><p>Gets the symbolic icon for a content type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_guess.html" title="gio::content_type_guess fn">content_type_guess</a></div><div class="item-right docblock-short"><p>Guesses the content type based on example data. If the function is
+uncertain, <code>result_uncertain</code> will be set to <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a>. Either <code>filename</code>
+or <code>data</code> may be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a>, in which case the guess will be based solely
+on the other argument.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_guess_for_tree.html" title="gio::content_type_guess_for_tree fn">content_type_guess_for_tree</a></div><div class="item-right docblock-short"><p>Tries to guess the type of the tree with root <code>root</code>, by
+looking at the files it contains. The result is an array
+of content types, with the best guess coming first.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_is_a.html" title="gio::content_type_is_a fn">content_type_is_a</a></div><div class="item-right docblock-short"><p>Determines if <code>type_</code> is a subset of <code>supertype</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_is_mime_type.html" title="gio::content_type_is_mime_type fn">content_type_is_mime_type</a><span class="stab portability" title="Available on crate feature `v2_52` only"><code>v2_52</code></span></div><div class="item-right docblock-short"><p>Determines if <code>type_</code> is a subset of <code>mime_type</code>.
+Convenience wrapper around <a href="functions/fn.content_type_is_a.html" title="crate::content_type_is_a()"><code>content_type_is_a()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_is_unknown.html" title="gio::content_type_is_unknown fn">content_type_is_unknown</a></div><div class="item-right docblock-short"><p>Checks if the content type is the generic “unknown” type.
+On UNIX this is the “application/octet-stream” mimetype,
+while on win32 it is “*” and on OSX it is a dynamic type
+or octet-stream.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_type_set_mime_dirs.html" title="gio::content_type_set_mime_dirs fn">content_type_set_mime_dirs</a><span class="stab portability" title="Available on crate feature `v2_60` only"><code>v2_60</code></span></div><div class="item-right docblock-short"><p>Set the list of directories used by GIO to load the MIME database.
+If <code>dirs</code> is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a>, the directories used are the default:</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.content_types_get_registered.html" title="gio::content_types_get_registered fn">content_types_get_registered</a></div><div class="item-right docblock-short"><p>Gets a list of strings containing all the registered content types
+known to the system. The list and its data should be freed using
+<code>g_list_free_full (list, g_free)</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_address_escape_value.html" title="gio::dbus_address_escape_value fn">dbus_address_escape_value</a></div><div class="item-right docblock-short"><p>Escape <code>string</code> so it can appear in a D-Bus address as the value
+part of a key-value pair.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_address_get_for_bus_sync.html" title="gio::dbus_address_get_for_bus_sync fn">dbus_address_get_for_bus_sync</a></div><div class="item-right docblock-short"><p>Synchronously looks up the D-Bus address for the well-known message
+bus instance specified by <code>bus_type</code>. This may involve using various
+platform specific mechanisms.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_address_get_stream.html" title="gio::dbus_address_get_stream fn">dbus_address_get_stream</a></div><div class="item-right docblock-short"><p>Asynchronously connects to an endpoint specified by <code>address</code> and
+sets up the connection so it is in a state to run the client-side
+of the D-Bus authentication conversation. <code>address</code> must be in the
+<a href="https://dbus.freedesktop.org/doc/dbus-specification.html%60addresses%60">D-Bus address format</a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_address_get_stream_future.html" title="gio::dbus_address_get_stream_future fn">dbus_address_get_stream_future</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_address_get_stream_sync.html" title="gio::dbus_address_get_stream_sync fn">dbus_address_get_stream_sync</a></div><div class="item-right docblock-short"><p>Synchronously connects to an endpoint specified by <code>address</code> and
+sets up the connection so it is in a state to run the client-side
+of the D-Bus authentication conversation. <code>address</code> must be in the
+<a href="https://dbus.freedesktop.org/doc/dbus-specification.html%60addresses%60">D-Bus address format</a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_escape_object_path.html" title="gio::dbus_escape_object_path fn">dbus_escape_object_path</a><span class="stab portability" title="Available on crate feature `v2_68` only"><code>v2_68</code></span></div><div class="item-right docblock-short"><p>This is a language binding friendly version of <code>g_dbus_escape_object_path_bytestring()</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_generate_guid.html" title="gio::dbus_generate_guid fn">dbus_generate_guid</a></div><div class="item-right docblock-short"><p>Generate a D-Bus GUID that can be used with
+e.g. <a href="struct.DBusConnection.html#method.new" title="crate::DBusConnection::new()"><code>DBusConnection::new()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_gvalue_to_gvariant.html" title="gio::dbus_gvalue_to_gvariant fn">dbus_gvalue_to_gvariant</a></div><div class="item-right docblock-short"><p>Converts a <a href="../glib/value/struct.Value.html" title="crate::glib::Value"><code>glib::Value</code></a> to a <a href="../glib/variant/struct.Variant.html" title="crate::glib::Variant"><code>glib::Variant</code></a> of the type indicated by the <code>type_</code>
+parameter.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_gvariant_to_gvalue.html" title="gio::dbus_gvariant_to_gvalue fn">dbus_gvariant_to_gvalue</a></div><div class="item-right docblock-short"><p>Converts a <a href="../glib/variant/struct.Variant.html" title="crate::glib::Variant"><code>glib::Variant</code></a> to a <a href="../glib/value/struct.Value.html" title="crate::glib::Value"><code>glib::Value</code></a>. If <code>value</code> is floating, it is consumed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_address.html" title="gio::dbus_is_address fn">dbus_is_address</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a
+<a href="https://dbus.freedesktop.org/doc/dbus-specification.html%60addresses%60">D-Bus address</a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_error_name.html" title="gio::dbus_is_error_name fn">dbus_is_error_name</a><span class="stab portability" title="Available on crate feature `v2_70` only"><code>v2_70</code></span></div><div class="item-right docblock-short"><p>Check whether <code>string</code> is a valid D-Bus error name.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_guid.html" title="gio::dbus_is_guid fn">dbus_is_guid</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a D-Bus GUID.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_interface_name.html" title="gio::dbus_is_interface_name fn">dbus_is_interface_name</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a valid D-Bus interface name.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_member_name.html" title="gio::dbus_is_member_name fn">dbus_is_member_name</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a valid D-Bus member (e.g. signal or method) name.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_name.html" title="gio::dbus_is_name fn">dbus_is_name</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a valid D-Bus bus name (either unique or well-known).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_supported_address.html" title="gio::dbus_is_supported_address fn">dbus_is_supported_address</a></div><div class="item-right docblock-short"><p>Like <a href="functions/fn.dbus_is_address.html" title="crate::dbus_is_address()"><code>dbus_is_address()</code></a> but also checks if the library supports the
+transports in <code>string</code> and that key/value pairs for each transport
+are valid. See the specification of the
+<a href="https://dbus.freedesktop.org/doc/dbus-specification.html%60addresses%60">D-Bus address format</a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.dbus_is_unique_name.html" title="gio::dbus_is_unique_name fn">dbus_is_unique_name</a></div><div class="item-right docblock-short"><p>Checks if <code>string</code> is a valid D-Bus unique bus name.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.io_error_from_errno.html" title="gio::io_error_from_errno fn">io_error_from_errno</a></div><div class="item-right docblock-short"><p>Converts errno.h error codes into GIO error codes. The fallback
+value <a href="enum.IOErrorEnum.html#variant.Failed" title="crate::IOErrorEnum::Failed"><code>IOErrorEnum::Failed</code></a> is returned for error codes not currently
+handled (but note that future GLib releases may return a more
+specific value instead).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.io_modules_scan_all_in_directory.html" title="gio::io_modules_scan_all_in_directory fn">io_modules_scan_all_in_directory</a></div><div class="item-right docblock-short"><p>Scans all the modules in the specified directory, ensuring that
+any extension point implemented by a module is registered.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.keyfile_settings_backend_new.html" title="gio::keyfile_settings_backend_new fn">keyfile_settings_backend_new</a></div><div class="item-right docblock-short"><p>Creates a keyfile-backed <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.memory_settings_backend_new.html" title="gio::memory_settings_backend_new fn">memory_settings_backend_new</a></div><div class="item-right docblock-short"><p>Creates a memory-backed <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.null_settings_backend_new.html" title="gio::null_settings_backend_new fn">null_settings_backend_new</a></div><div class="item-right docblock-short"><p>Creates a readonly <a href="struct.SettingsBackend.html" title="crate::SettingsBackend"><code>SettingsBackend</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_enumerate_children.html" title="gio::resources_enumerate_children fn">resources_enumerate_children</a></div><div class="item-right docblock-short"><p>Returns all the names of children at the specified <code>path</code> in the set of
+globally registered resources.
+The return result is a <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a> terminated list of strings which should
+be released with <code>g_strfreev()</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_get_info.html" title="gio::resources_get_info fn">resources_get_info</a></div><div class="item-right docblock-short"><p>Looks for a file at the specified <code>path</code> in the set of
+globally registered resources and if found returns information about it.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_lookup_data.html" title="gio::resources_lookup_data fn">resources_lookup_data</a></div><div class="item-right docblock-short"><p>Looks for a file at the specified <code>path</code> in the set of
+globally registered resources and returns a <a href="../glib/bytes/struct.Bytes.html" title="crate::glib::Bytes"><code>glib::Bytes</code></a> that
+lets you directly access the data in memory.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_open_stream.html" title="gio::resources_open_stream fn">resources_open_stream</a></div><div class="item-right docblock-short"><p>Looks for a file at the specified <code>path</code> in the set of
+globally registered resources and returns a <a href="struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a>
+that lets you read the data.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_register.html" title="gio::resources_register fn">resources_register</a></div><div class="item-right docblock-short"><p>Registers the resource with the process-global set of resources.
+Once a resource is registered the files in it can be accessed
+with the global resource lookup functions like <a href="functions/fn.resources_lookup_data.html" title="crate::resources_lookup_data()"><code>resources_lookup_data()</code></a>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.resources_unregister.html" title="gio::resources_unregister fn">resources_unregister</a></div><div class="item-right docblock-short"><p>Unregisters the resource from the process-global set of resources.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.unix_is_mount_path_system_internal.html" title="gio::unix_is_mount_path_system_internal fn">unix_is_mount_path_system_internal</a><span class="stab portability" title="Available on Unix only">Unix</span></div><div class="item-right docblock-short"><p>Determines if <code>mount_path</code> is considered an implementation of the
+OS. This is primarily used for hiding mountable and mounted volumes
+that only are used in the OS and has little to no relevance to the
+casual user.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.unix_is_system_device_path.html" title="gio::unix_is_system_device_path fn">unix_is_system_device_path</a><span class="stab portability" title="Available on Unix and crate feature `v2_56` only">Unix and <code>v2_56</code></span></div><div class="item-right docblock-short"><p>Determines if <code>device_path</code> is considered a block device path which is only
+used in implementation of the OS. This is primarily used for hiding
+mounted volumes that are intended as APIs for programs to read, and system
+administrators at a shell; rather than something that should, for example,
+appear in a GUI. For example, the Linux <code>/proc</code> filesystem.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.unix_is_system_fs_type.html" title="gio::unix_is_system_fs_type fn">unix_is_system_fs_type</a><span class="stab portability" title="Available on Unix and crate feature `v2_56` only">Unix and <code>v2_56</code></span></div><div class="item-right docblock-short"><p>Determines if <code>fs_type</code> is considered a type of file system which is only
+used in implementation of the OS. This is primarily used for hiding
+mounted volumes that are intended as APIs for programs to read, and system
+administrators at a shell; rather than something that should, for example,
+appear in a GUI. For example, the Linux <code>/proc</code> filesystem.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

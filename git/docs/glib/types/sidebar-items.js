@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["instance_of",""]],"struct":[["ILong",""],["Type","A GLib or GLib-based library type"],["ULong",""]],"trait":[["StaticType","Types that are supported by GLib dynamic typing."],["StaticTypeExt",""]],"type":[["Pointee","The target of a [Pointer]"],["Pointer","A GLib pointer"]]};

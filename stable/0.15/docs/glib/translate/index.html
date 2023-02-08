@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Translation between GLib/GLib-based FFI types and their Rust counterparts."><meta name="keywords" content="rust, rustlang, rust-lang, translate"><title>glib::translate - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module translate</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">glib</a>::<wbr><a class="mod" href="#">translate</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/glib/translate.rs.html#4-2687">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Translation between GLib/GLib-based FFI types and their Rust counterparts.</p>
+<p>This module allows library bindings authors to decouple type translation
+logic and use unified idioms at FFI boundaries. It also implements
+translation of GLib core data types.</p>
+<p><code>FromGlib</code>, <code>from_glib</code> and <code>IntoGlib</code> translate simple types like <code>bool</code>.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code>    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_accept_focus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">accept_focus</span>: <span class="ident">bool</span>) {
+        <span class="kw">unsafe</span> { <span class="ident">gdk::ffi::gdk_window_set_accept_focus</span>(<span class="self">self</span>.<span class="ident">pointer</span>, <span class="ident">accept_focus</span>.<span class="ident">into_glib</span>()) }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_accept_focus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">gdk::ffi::gdk_window_get_accept_focus</span>(<span class="self">self</span>.<span class="ident">pointer</span>)) }
+    }</code></pre></div>
+<p>Implementing <a href="trait.OptionIntoGlib.html" title="OptionIntoGlib"><code>OptionIntoGlib</code></a> on a Rust type <code>T</code> allows specifying a sentinel to indicate
+a <code>None</code> value and auto-implementing <a href="trait.FromGlib.html" title="FromGlib"><code>FromGlib</code></a> for <code>Option&lt;T&gt;</code>, which would not be
+possible in dependent crates due to the <a href="https://doc.rust-lang.org/book/ch10-02-traits.html#implementing-a-trait-on-a-type">orphan rule</a>.
+In the example below, <a href="trait.IntoGlib.html" title="IntoGlib"><code>IntoGlib</code></a> is auto-implemented for <code>Option&lt;SpecialU32&gt;</code>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">struct</span> <span class="ident">SpecialU32</span>(<span class="ident">u32</span>);
+<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">SpecialU32</span> {
+    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">libc::c_uint</span>;
+    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">libc::c_uint</span> {
+        <span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">libc::c_uint</span>
+    }
+}
+<span class="kw">impl</span> <span class="ident">OptionIntoGlib</span> <span class="kw">for</span> <span class="ident">SpecialU32</span> {
+    <span class="kw">const</span> <span class="ident">GLIB_NONE</span>: <span class="ident"><span class="self">Self</span>::GlibType</span> <span class="op">=</span> <span class="number">0xFFFFFF</span>;
+}</code></pre></div>
+<p>In order to auto-implement <a href="trait.FromGlib.html" title="FromGlib"><code>FromGlib</code></a> for <code>Option&lt;SpecialU32&gt;</code>, proceed as follows:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span> <span class="ident">TryFromGlib</span><span class="op">&lt;</span><span class="ident">libc::c_uint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SpecialU32</span> {
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">GlibNoneError</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_from_glib</span>(<span class="ident">val</span>: <span class="ident">libc::c_uint</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">GlibNoneError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">val</span> <span class="op">==</span> <span class="ident">SpecialU32::GLIB_NONE</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">GlibNoneError</span>);
+        }
+        <span class="prelude-val">Ok</span>(<span class="ident">SpecialU32</span>(<span class="ident">val</span> <span class="kw">as</span> <span class="ident">u32</span>))
+    }
+}</code></pre></div>
+<p>The <a href="trait.TryFromGlib.html" title="TryFromGlib"><code>TryFromGlib</code></a> trait can also be implemented when the Glib type range is larger than the
+target Rust type’s range. In the example below, the Rust type <code>U32</code> can be built from a signed
+[<code>libc::c_long</code>], which means that the negative range is not valid.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">struct</span> <span class="ident">U32</span>(<span class="ident">u32</span>);
+<span class="kw">impl</span> <span class="ident">TryFromGlib</span><span class="op">&lt;</span><span class="ident">libc::c_long</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">U32</span> {
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromIntError</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_from_glib</span>(<span class="ident">val</span>: <span class="ident">libc::c_long</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TryFromIntError</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">U32</span>(<span class="ident">u32::try_from</span>(<span class="ident">val</span>)<span class="question-mark">?</span>))
+    }
+}</code></pre></div>
+<p>Finally, you can define <a href="trait.TryFromGlib.html" title="TryFromGlib"><code>TryFromGlib</code></a> with both <code>None</code> and <code>Invalid</code> alternatives by setting
+the associated <code>type Error = GlibNoneOrInvalidError&lt;I&gt;</code> (where <code>I</code> is the <code>Error</code> type
+when the value is invalid), which results in auto-implementing <a href="trait.FromGlib.html" title="FromGlib"><code>FromGlib</code></a> for
+<code>Result&lt;Option&lt;T&gt;, I&gt;</code>.</p>
+<p><code>ToGlibPtr</code>, <code>FromGlibPtrNone</code>, <code>FromGlibPtrFull</code> and <code>FromGlibPtrBorrow</code> work on <code>gpointer</code>s
+and ensure correct ownership of values
+according to <a href="https://gi.readthedocs.io/en/latest/annotations/giannotations.html">Glib ownership transfer rules</a>.</p>
+<p><code>FromGlibPtrNone</code> and <code>FromGlibPtrFull</code>
+must be called on values obtained from C,
+according to their <code>transfer</code> annotations.
+They acquire non-gobject types,
+as well as turning floating references to strong ones,
+which are the only ones properly handled by the Rust bindings.</p>
+<p>For more information about floating references, please refer to the “Floating references” section
+of <a href="https://docs.gtk.org/gobject/floating-refs.html">the gobject reference</a>.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code>    <span class="kw">fn</span> <span class="ident">get_title</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">title</span> <span class="op">=</span> <span class="ident">gtk::ffi::gtk_window_get_title</span>(<span class="self">self</span>.<span class="ident">pointer</span>);
+            <span class="ident">from_glib_none</span>(<span class="ident">title</span>)
+        }
+    }
+    <span class="kw">fn</span> <span class="ident">create_bool</span>(<span class="ident">value</span>: <span class="ident">gboolean</span>) -&gt; <span class="ident">Variant</span> {
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">variant</span> <span class="op">=</span> <span class="ident">ffi::g_variant_new_boolean</span>(<span class="ident">value</span>);
+            <span class="comment">// g_variant_new_boolean has `transfer none`</span>
+            <span class="ident">from_glib_none</span>(<span class="ident">variant</span>)
+        }
+    }</code></pre></div>
+<p>Letting the foreign library borrow pointers from the Rust side often
+requires having a temporary variable of an intermediate type (e.g. <code>CString</code>).
+A <code>Stash</code> contains the temporary storage and a pointer into it that
+is valid for the lifetime of the <code>Stash</code>. As the lifetime of the <code>Stash</code> returned
+from <code>to_glib_none</code> is at least the enclosing statement, you can avoid explicitly
+binding the stash in most cases and just take the pointer out of it:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code>    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_icon_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="ident">gdk::ffi::gdk_window_set_icon_name</span>(<span class="self">self</span>.<span class="ident">pointer</span>, <span class="ident">name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)
+        }
+    }</code></pre></div>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Borrowed.html" title="glib::translate::Borrowed struct">Borrowed</a></div><div class="item-right docblock-short"><p>Wrapper around values representing borrowed C memory.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.GlibNoneError.html" title="glib::translate::GlibNoneError struct">GlibNoneError</a></div><div class="item-right docblock-short"><p>Error type for <a href="trait.TryFromGlib.html" title="TryFromGlib"><code>TryFromGlib</code></a> when the Glib value is None.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.HashTable.html" title="glib::translate::HashTable struct">HashTable</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.List.html" title="glib::translate::List struct">List</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.PtrArray.html" title="glib::translate::PtrArray struct">PtrArray</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SList.html" title="glib::translate::SList struct">SList</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Stash.html" title="glib::translate::Stash struct">Stash</a></div><div class="item-right docblock-short"><p>Helper type that stores temporary values used for translation.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.StashMut.html" title="glib::translate::StashMut struct">StashMut</a></div><div class="item-right docblock-short"></div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.GlibNoneOrInvalidError.html" title="glib::translate::GlibNoneOrInvalidError enum">GlibNoneOrInvalidError</a></div><div class="item-right docblock-short"><p>Error type for <a href="trait.TryFromGlib.html" title="TryFromGlib"><code>TryFromGlib</code></a> when the Glib value can be None or invalid.</p>
+</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlib.html" title="glib::translate::FromGlib trait">FromGlib</a></div><div class="item-right docblock-short"><p>Translate a simple type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibContainer.html" title="glib::translate::FromGlibContainer trait">FromGlibContainer</a></div><div class="item-right docblock-short"><p>Translate from a container.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibContainerAsVec.html" title="glib::translate::FromGlibContainerAsVec trait">FromGlibContainerAsVec</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibPtrArrayContainerAsVec.html" title="glib::translate::FromGlibPtrArrayContainerAsVec trait">FromGlibPtrArrayContainerAsVec</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibPtrBorrow.html" title="glib::translate::FromGlibPtrBorrow trait">FromGlibPtrBorrow</a></div><div class="item-right docblock-short"><p>Translate from a pointer type by borrowing, without affecting the refcount.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibPtrContainer.html" title="glib::translate::FromGlibPtrContainer trait">FromGlibPtrContainer</a></div><div class="item-right docblock-short"><p>Translate from a container of pointers.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibPtrFull.html" title="glib::translate::FromGlibPtrFull trait">FromGlibPtrFull</a></div><div class="item-right docblock-short"><p>Translate from a pointer type which is annotated with <code>transfer full</code>.
+This transfers the ownership of the value to the Rust side.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FromGlibPtrNone.html" title="glib::translate::FromGlibPtrNone trait">FromGlibPtrNone</a></div><div class="item-right docblock-short"><p>Translate from a pointer type which is annotated with <code>transfer none</code>.
+The resulting value is referenced at least once, by the bindings.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.GlibPtrDefault.html" title="glib::translate::GlibPtrDefault trait">GlibPtrDefault</a></div><div class="item-right docblock-short"><p>Provides the default pointer type to be used in some container conversions.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.IntoGlib.html" title="glib::translate::IntoGlib trait">IntoGlib</a></div><div class="item-right docblock-short"><p>Translate a simple type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.OptionIntoGlib.html" title="glib::translate::OptionIntoGlib trait">OptionIntoGlib</a></div><div class="item-right docblock-short"><p>A Rust type <code>T</code> for which <code>Option&lt;T&gt;</code> translates to the same glib type as T.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Ptr.html" title="glib::translate::Ptr trait">Ptr</a></div><div class="item-right docblock-short"><p>A pointer</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToGlibContainerFromSlice.html" title="glib::translate::ToGlibContainerFromSlice trait">ToGlibContainerFromSlice</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToGlibPtr.html" title="glib::translate::ToGlibPtr trait">ToGlibPtr</a></div><div class="item-right docblock-short"><p>Translate to a pointer.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToGlibPtrMut.html" title="glib::translate::ToGlibPtrMut trait">ToGlibPtrMut</a></div><div class="item-right docblock-short"><p>Translate to a pointer with a mutable borrow.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.TryFromGlib.html" title="glib::translate::TryFromGlib trait">TryFromGlib</a></div><div class="item-right docblock-short"><p>Translate from a Glib type which can result in an undefined and/or invalid value.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Uninitialized.html" title="glib::translate::Uninitialized trait">Uninitialized</a></div><div class="item-right docblock-short"><p>A trait for creating an uninitialized value. Handy for receiving outparams.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.UnsafeFrom.html" title="glib::translate::UnsafeFrom trait">UnsafeFrom</a></div><div class="item-right docblock-short"><p>Unsafe variant of the <code>From</code> trait.</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.c_ptr_array_len.html" title="glib::translate::c_ptr_array_len fn">c_ptr_array_len</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.const_override.html" title="glib::translate::const_override fn">const_override</a></div><div class="item-right docblock-short"><p>Overrides pointer constness.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_glib.html" title="glib::translate::from_glib fn">from_glib</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Translate a simple type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_glib_borrow.html" title="glib::translate::from_glib_borrow fn">from_glib_borrow</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Translate from a pointer type, borrowing the pointer.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_glib_full.html" title="glib::translate::from_glib_full fn">from_glib_full</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Translate from a pointer type, transfer: full (assume ownership).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_glib_none.html" title="glib::translate::from_glib_none fn">from_glib_none</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Translate from a pointer type, transfer: none.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.mut_override.html" title="glib::translate::mut_override fn">mut_override</a></div><div class="item-right docblock-short"><p>Overrides pointer mutability.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.try_from_glib.html" title="glib::translate::try_from_glib fn">try_from_glib</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Translate from a Glib type which can result in an undefined and/or invalid value.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.uninitialized.html" title="glib::translate::uninitialized fn">uninitialized</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Returns an uninitialized value.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

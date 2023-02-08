@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all [`struct@IOStream`] methods."><meta name="keywords" content="rust, rustlang, rust-lang, IOStreamExt"><title>IOStreamExt in gio::prelude - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.15" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.15") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">IOStreamExt</a></h2><div class="sidebar-elems"><section><div class="block"><h3 class="sidebar-title"><a href="#required-methods">Required Methods</a></h3><ul><li><a href="#tymethod.clear_pending">clear_pending</a></li><li><a href="#tymethod.close">close</a></li><li><a href="#tymethod.close_async">close_async</a></li><li><a href="#tymethod.close_future">close_future</a></li><li><a href="#tymethod.connect_closed_notify">connect_closed_notify</a></li><li><a href="#tymethod.has_pending">has_pending</a></li><li><a href="#tymethod.input_stream">input_stream</a></li><li><a href="#tymethod.is_closed">is_closed</a></li><li><a href="#tymethod.output_stream">output_stream</a></li><li><a href="#tymethod.set_pending">set_pending</a></li></ul></div><div class="block"><h3 class="sidebar-title"><a href="#implementors">Implementors</a></h3></div></section><h2 class="location"><a href="index.html">In gio::prelude</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Trait <a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a>::<wbr><a class="trait" href="#">IOStreamExt</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#90-216">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust trait"><code>pub trait IOStreamExt: 'static {
+    fn <a href="#tymethod.clear_pending" class="fnname">clear_pending</a>(&amp;self);
+<span class="item-spacer"></span>    fn <a href="#tymethod.close" class="fnname">close</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.close_async" class="fnname">close_async</a>&lt;P:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callback: P<br>&nbsp;&nbsp;&nbsp;&nbsp;);
+<span class="item-spacer"></span>    fn <a href="#tymethod.close_future" class="fnname">close_future</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a><br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.input_stream" class="fnname">input_stream</a>(&amp;self) -&gt; <a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.output_stream" class="fnname">output_stream</a>(&amp;self) -&gt; <a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.has_pending" class="fnname">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.is_closed" class="fnname">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_pending" class="fnname">set_pending</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_closed_notify" class="fnname">connect_closed_notify</a>&lt;F:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self) + 'static&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f: F<br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>;
+}</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.IOStream.html" title="IOStream"><code>IOStream</code></a> methods.</p>
+<h2 id="implementors-1"><a href="#implementors-1">Implementors</a></h2>
+<p><a href="../struct.FileIOStream.html" title="crate::FileIOStream"><code>FileIOStream</code></a>, <a href="../struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a>, <a href="../struct.SimpleIOStream.html" title="crate::SimpleIOStream"><code>SimpleIOStream</code></a>, <a href="../struct.SocketConnection.html" title="crate::SocketConnection"><code>SocketConnection</code></a>, <a href="../struct.TlsConnection.html" title="crate::TlsConnection"><code>TlsConnection</code></a></p>
+</div></details><h2 id="required-methods" class="small-section-header">Required Methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle" open><summary><div id="tymethod.clear_pending" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#93">source</a></div><h4 class="code-header">fn <a href="#tymethod.clear_pending" class="fnname">clear_pending</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Clears the pending flag on <code>self</code>.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.close" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#135">source</a></div><h4 class="code-header">fn <a href="#tymethod.close" class="fnname">close</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;<br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></div></summary><div class="docblock"><p>Closes the stream, releasing resources related to it. This will also
+close the individual input and output streams, if they are not already
+closed.</p>
+<p>Once the stream is closed, all other operations will return
+<a href="../enum.IOErrorEnum.html#variant.Closed" title="crate::IOErrorEnum::Closed"><code>IOErrorEnum::Closed</code></a>. Closing a stream multiple times will not
+return an error.</p>
+<p>Closing a stream will automatically flush any outstanding buffers
+in the stream.</p>
+<p>Streams will be automatically closed when the last reference
+is dropped, but you might want to call this function to make sure
+resources are released as early as possible.</p>
+<p>Some streams might keep the backing store of the stream (e.g. a file
+descriptor) open after the stream is closed. See the documentation for
+the individual stream for details.</p>
+<p>On failure the first error that happened will be reported, but the
+close operation will finish as much as possible. A stream that failed
+to close will still return <a href="../enum.IOErrorEnum.html#variant.Closed" title="crate::IOErrorEnum::Closed"><code>IOErrorEnum::Closed</code></a> for all operations.
+Still, it is important to check and report the error to the user,
+otherwise there might be a loss of data as all data might not be written.</p>
+<p>If <code>cancellable</code> is not NULL, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="crate::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.
+Cancelling a close will still leave the stream closed, but some streams
+can use a faster close that doesn’t block to e.g. check errors.</p>
+<p>The default implementation of this method just calls close on the
+individual input/output streams.</p>
+<h6 id="cancellable"><a href="#cancellable"><code>cancellable</code></a></h6>
+<p>optional <a href="../struct.Cancellable.html" title="crate::Cancellable"><code>Cancellable</code></a> object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="None"><code>None</code></a> to ignore</p>
+<h5 id="returns"><a href="#returns">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="false"><code>false</code></a> on failure</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.close_async" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#154-159">source</a></div><h4 class="code-header">fn <a href="#tymethod.close_async" class="fnname">close_async</a>&lt;P:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;, <br>&nbsp;&nbsp;&nbsp;&nbsp;callback: P<br>)</h4></div></summary><div class="docblock"><p>Requests an asynchronous close of the stream, releasing resources
+related to it. When the operation is finished <code>callback</code> will be
+called. You can then call <code>g_io_stream_close_finish()</code> to get
+the result of the operation.</p>
+<p>For behaviour details see <a href="trait.IOStreamExt.html#tymethod.close" title="Self::close()"><code>close()</code></a>.</p>
+<p>The asynchronous methods have a default fallback that uses threads
+to implement asynchronicity, so they are optional for inheriting
+classes. However, if you override one you must override all.</p>
+<h6 id="io_priority"><a href="#io_priority"><code>io_priority</code></a></h6>
+<p>the io priority of the request</p>
+<h6 id="cancellable-1"><a href="#cancellable-1"><code>cancellable</code></a></h6>
+<p>optional cancellable object</p>
+<h6 id="callback"><a href="#callback"><code>callback</code></a></h6>
+<p>callback to call when the request is satisfied</p>
+</div></details><div id="tymethod.close_future" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#161-164">source</a></div><h4 class="code-header">fn <a href="#tymethod.close_future" class="fnname">close_future</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a><br>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box_</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></div><details class="rustdoc-toggle" open><summary><div id="tymethod.input_stream" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#175">source</a></div><h4 class="code-header">fn <a href="#tymethod.input_stream" class="fnname">input_stream</a>(&amp;self) -&gt; <a class="struct" href="../struct.InputStream.html" title="struct gio::InputStream">InputStream</a></h4></div></summary><div class="docblock"><p>Gets the input stream for this object. This is used
+for reading.</p>
+<h5 id="returns-1"><a href="#returns-1">Returns</a></h5>
+<p>a <a href="../struct.InputStream.html" title="crate::InputStream"><code>InputStream</code></a>, owned by the <a href="../struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a>.
+Do not free.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.output_stream" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#186">source</a></div><h4 class="code-header">fn <a href="#tymethod.output_stream" class="fnname">output_stream</a>(&amp;self) -&gt; <a class="struct" href="../struct.OutputStream.html" title="struct gio::OutputStream">OutputStream</a></h4></div></summary><div class="docblock"><p>Gets the output stream for this object. This is used for
+writing.</p>
+<h5 id="returns-2"><a href="#returns-2">Returns</a></h5>
+<p>a <a href="../struct.OutputStream.html" title="crate::OutputStream"><code>OutputStream</code></a>, owned by the <a href="../struct.IOStream.html" title="crate::IOStream"><code>IOStream</code></a>.
+Do not free.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.has_pending" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#194">source</a></div><h4 class="code-header">fn <a href="#tymethod.has_pending" class="fnname">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Checks if a stream has pending actions.</p>
+<h5 id="returns-3"><a href="#returns-3">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> if <code>self</code> has pending actions.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.is_closed" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#202">source</a></div><h4 class="code-header">fn <a href="#tymethod.is_closed" class="fnname">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Checks if a stream is closed.</p>
+<h5 id="returns-4"><a href="#returns-4">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> if the stream is closed.</p>
+</div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.set_pending" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#212">source</a></div><h4 class="code-header">fn <a href="#tymethod.set_pending" class="fnname">set_pending</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></div></summary><div class="docblock"><p>Sets <code>self</code> to have actions pending. If the pending flag is
+already set or <code>self</code> is closed, it will return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="false"><code>false</code></a> and set
+<code>error</code>.</p>
+<h5 id="returns-5"><a href="#returns-5">Returns</a></h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="true"><code>true</code></a> if pending was previously unset and is now set.</p>
+</div></details><div id="tymethod.connect_closed_notify" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#215">source</a></div><h4 class="code-header">fn <a href="#tymethod.connect_closed_notify" class="fnname">connect_closed_notify</a>&lt;F:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></div></div><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div class="item-list" id="implementors-list"><section id="impl-IOStreamExt" class="impl has-srclink"><span class="rightside"><a class="srclink" href="../../src/gio/auto/io_stream.rs.html#218-363">source</a></span><a href="#impl-IOStreamExt" class="anchor"></a><h3 class="code-header in-band">impl&lt;O:&nbsp;<a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.IOStream.html" title="struct gio::IOStream">IOStream</a>&gt;&gt; <a class="trait" href="trait.IOStreamExt.html" title="trait gio::prelude::IOStreamExt">IOStreamExt</a> for O</h3></section></div><script type="text/javascript" src="../../implementors/gio/auto/io_stream/trait.IOStreamExt.js" data-ignore-extern-crates="" async></script></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["thread_id","Returns a unique ID for the current thread."]],"struct":[["ThreadGuard","Thread guard that only gives access to the contained value on the thread it was created on."]]};
