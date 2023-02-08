@@ -171,6 +171,7 @@ Sebastian Dröge:
 - gdk-pixbuf: Ensure that `transfer-none` return values in subclassing are staying alive long enough
 - gio: Don't require a `'static` `&str` in `File::enumerate_children_async()` and `enumerate_children_future()`
 - glib: Add `NULL` debug assertion to `from_glib_full()` and others for GObjects
+- glib: Implement `ValueArray` `Value` traits manually because of the custom paramspec
 
 YuraIz:
 - ci: Enable introspection
@@ -184,6 +185,8 @@ ranfdev:
 - glib: properties: infer inline get type
 - glib: properties: `impl Parse` for `ReceivedAttrs`
 - glib: properties: improve errors of missing properties, refactor
+- glib: properties: impl `PropertyGet` for `T: HasParamSpec`
+- glib: properties: Improve properties macro docs
 
 ## [0.16.7]
 
