@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_connection.rs`."><title>socket_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_connection.rs`."><title>socket_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -410,138 +412,136 @@
 <a href="#337" id="337">337</a>
 <a href="#338" id="338">338</a>
 <a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{AsyncResult, Cancellable, IOStream, Socket, SocketAddress, SocketFamily, SocketType};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, pin::Pin, ptr};
+</span><span class="kw">use crate</span>::{<a href="async_result.rs.html#7-105">AsyncResult</a>, <a href="cancellable.rs.html#7-85">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="socket.rs.html#16-185">Socket</a>, <a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="enums.rs.html#3232-3247">SocketFamily</a>, <a href="enums.rs.html#3564-3581">SocketType</a>};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// [`SocketConnection`][crate::SocketConnection] is a [`IOStream`][crate::IOStream] for a connected socket. They
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GSocketConnection` is a [`IOStream`][crate::IOStream] for a connected socket. They
     /// can be created either by [`SocketClient`][crate::SocketClient] when connecting to a host,
     /// or by [`SocketListener`][crate::SocketListener] when accepting a new client.
     ///
-    /// The type of the [`SocketConnection`][crate::SocketConnection] object returned from these calls
+    /// The type of the `GSocketConnection` object returned from these calls
     /// depends on the type of the underlying socket that is in use. For
     /// instance, for a TCP/IP connection it will be a [`TcpConnection`][crate::TcpConnection].
     ///
     /// Choosing what type of object to construct is done with the socket
-    /// connection factory, and it is possible for 3rd parties to register
+    /// connection factory, and it is possible for third parties to register
     /// custom socket connection types for specific combination of socket
     /// family/type/protocol using [`factory_register_type()`][Self::factory_register_type()].
     ///
-    /// To close a [`SocketConnection`][crate::SocketConnection], use [`IOStreamExt::close()`][crate::prelude::IOStreamExt::close()]. Closing both
-    /// substreams of the [`IOStream`][crate::IOStream] separately will not close the underlying
-    /// [`Socket`][crate::Socket].
+    /// To close a `GSocketConnection`, use [`IOStreamExt::close()`][crate::prelude::IOStreamExt::close()]. Closing both
+    /// substreams of the [`IOStream`][crate::IOStream] separately will not close the
+    /// underlying [`Socket`][crate::Socket].
     ///
     /// ## Properties
     ///
     ///
     /// #### `socket`
-    ///  Readable | Writeable | Construct Only
+    ///  The underlying [`Socket`][crate::Socket].
+    ///
+    /// Readable | Writeable | Construct Only
     /// &lt;details&gt;&lt;summary&gt;&lt;h4&gt;IOStream&lt;/h4&gt;&lt;/summary&gt;
     ///
     ///
     /// #### `closed`
-    ///  Readable
+    ///  Whether the stream is closed.
+    ///
+    /// Readable
     ///
     ///
     /// #### `input-stream`
-    ///  Readable
+    ///  The [`InputStream`][crate::InputStream] to read from.
+    ///
+    /// Readable
     ///
     ///
     /// #### `output-stream`
-    ///  Readable
+    ///  The [`OutputStream`][crate::OutputStream] to write to.
+    ///
+    /// Readable
     /// &lt;/details&gt;
     ///
     /// # Implements
     ///
     /// [`SocketConnectionExt`][trait@crate::prelude::SocketConnectionExt], [`IOStreamExt`][trait@crate::prelude::IOStreamExt], [`trait@glib::ObjectExt`], [`IOStreamExtManual`][trait@crate::prelude::IOStreamExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GSocketConnection&quot;</span>)]
-    </span><span class="kw">pub struct </span>SocketConnection(Object&lt;ffi::GSocketConnection, ffi::GSocketConnectionClass&gt;) @extends IOStream;
+    </span><span class="attr">#[doc(alias = <span class="string">"GSocketConnection"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.SocketConnection.html">SocketConnection</a>(Object&lt;<a href="../../../gio_sys/struct.GSocketConnection.html">ffi::GSocketConnection</a>, <a href="../../../gio_sys/struct.GSocketConnectionClass.html">ffi::GSocketConnectionClass</a>&gt;) @extends <a href="io_stream.rs.html#13-94">IOStream</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_socket_connection_get_type(),
     }
 }
 
-<span class="kw">impl </span>SocketConnection {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SocketConnection&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#9-64">SocketConnection</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#9-64">SocketConnection</a>&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Looks up the `GType` to be used when creating socket connections on
-    /// sockets with the specified `family`, `type_` and `protocol_id`.
+    <span class="doccomment">/// Looks up the #GType to be used when creating socket connections on
+    /// sockets with the specified @family, @type_ and @protocol_id.
     ///
-    /// If no type is registered, the [`SocketConnection`][crate::SocketConnection] base type is returned.
+    /// If no type is registered, the #GSocketConnection base type is returned.
     /// ## `family`
-    /// a [`SocketFamily`][crate::SocketFamily]
+    /// a #GSocketFamily
     /// ## `type_`
-    /// a [`SocketType`][crate::SocketType]
+    /// a #GSocketType
     /// ## `protocol_id`
     /// a protocol id
     ///
     /// # Returns
     ///
-    /// a `GType`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_factory_lookup_type&quot;</span>)]
+    /// a #GType
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_factory_lookup_type"</span>)]
     </span><span class="kw">pub fn </span>factory_lookup_type(
-        family: SocketFamily,
-        type_: SocketType,
-        protocol_id: i32,
-    ) -&gt; glib::types::Type {
+        family: <a href="enums.rs.html#3232-3247">SocketFamily</a>,
+        type_: <a href="enums.rs.html#3564-3581">SocketType</a>,
+        protocol_id: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <a href="../../../glib/types/struct.Type.html">glib::types::Type</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_socket_connection_factory_lookup_type(
-                family.into_glib(),
-                type_.into_glib(),
-                protocol_id,
+                <a href="#85">family</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#86">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#87">protocol_id</a>,
             ))
         }
     }
 
-    <span class="doccomment">/// Looks up the `GType` to be used when creating socket connections on
-    /// sockets with the specified `family`, `type_` and `protocol`.
+    <span class="doccomment">/// Looks up the #GType to be used when creating socket connections on
+    /// sockets with the specified @family, @type_ and @protocol.
     ///
-    /// If no type is registered, the [`SocketConnection`][crate::SocketConnection] base type is returned.
+    /// If no type is registered, the #GSocketConnection base type is returned.
     /// ## `g_type`
-    /// a `GType`, inheriting from `G_TYPE_SOCKET_CONNECTION`
+    /// a #GType, inheriting from `G_TYPE_SOCKET_CONNECTION`
     /// ## `family`
-    /// a [`SocketFamily`][crate::SocketFamily]
+    /// a #GSocketFamily
     /// ## `type_`
-    /// a [`SocketType`][crate::SocketType]
+    /// a #GSocketType
     /// ## `protocol`
     /// a protocol id
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_factory_register_type&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_factory_register_type"</span>)]
     </span><span class="kw">pub fn </span>factory_register_type(
-        g_type: glib::types::Type,
-        family: SocketFamily,
-        type_: SocketType,
-        protocol: i32,
+        g_type: <a href="../../../glib/types/struct.Type.html">glib::types::Type</a>,
+        family: <a href="enums.rs.html#3232-3247">SocketFamily</a>,
+        type_: <a href="enums.rs.html#3564-3581">SocketType</a>,
+        protocol: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::g_socket_connection_factory_register_type(
-                g_type.into_glib(),
-                family.into_glib(),
-                type_.into_glib(),
-                protocol,
+                <a href="#112">g_type</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#113">family</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#114">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#115">protocol</a>,
             );
         }
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#9-64"><span class="kw">super</span>::SocketConnection</a>&gt;&gt; <a href="#129">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@SocketConnection`] methods.
@@ -549,235 +549,206 @@
 /// # Implementors
 ///
 /// [`SocketConnection`][struct@crate::SocketConnection], [`TcpConnection`][struct@crate::TcpConnection]
-</span><span class="kw">pub trait </span>SocketConnectionExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Connect `self` to the specified remote address.
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.SocketConnectionExt.html">SocketConnectionExt</a>: IsA&lt;<a href="#9-64">SocketConnection</a>&gt; + <a href="#129">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Connect @self to the specified remote address.
     /// ## `address`
-    /// a [`SocketAddress`][crate::SocketAddress] specifying the remote address.
+    /// a #GSocketAddress specifying the remote address.
     /// ## `cancellable`
     /// a `GCancellable` or [`None`]
     ///
     /// # Returns
     ///
     /// [`true`] if the connection succeeded, [`false`] on error
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_connect&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_connect"</span>)]
     </span><span class="kw">fn </span>connect(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
-
-    <span class="doccomment">/// Asynchronously connect `self` to the specified remote address.
-    ///
-    /// This clears the [`blocking`][struct@crate::Socket#blocking] flag on `self`&#39;s underlying
-    /// socket if it is currently set.
-    ///
-    /// Use `g_socket_connection_connect_finish()` to retrieve the result.
-    /// ## `address`
-    /// a [`SocketAddress`][crate::SocketAddress] specifying the remote address.
-    /// ## `cancellable`
-    /// a `GCancellable` or [`None`]
-    /// ## `callback`
-    /// a `GAsyncReadyCallback`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_connect_async&quot;</span>)]
-    </span><span class="kw">fn </span>connect_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    );
-
-    <span class="kw">fn </span>connect_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketAddress&gt; + Clone + <span class="lifetime">&#39;static</span>),
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
-
-    <span class="doccomment">/// Try to get the local address of a socket connection.
-    ///
-    /// # Returns
-    ///
-    /// a [`SocketAddress`][crate::SocketAddress] or [`None`] on error.
-    ///  Free the returned object with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_get_local_address&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_local_address&quot;</span>)]
-    </span><span class="kw">fn </span>local_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt;;
-
-    <span class="doccomment">/// Try to get the remote address of a socket connection.
-    ///
-    /// Since GLib 2.40, when used with [`SocketClientExt::connect()`][crate::prelude::SocketClientExt::connect()] or
-    /// [`SocketClientExt::connect_async()`][crate::prelude::SocketClientExt::connect_async()], during emission of
-    /// [`SocketClientEvent::Connecting`][crate::SocketClientEvent::Connecting], this function will return the remote
-    /// address that will be used for the connection. This allows
-    /// applications to print e.g. &quot;Connecting to example.com
-    /// (10.42.77.3)...&quot;.
-    ///
-    /// # Returns
-    ///
-    /// a [`SocketAddress`][crate::SocketAddress] or [`None`] on error.
-    ///  Free the returned object with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_get_remote_address&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_remote_address&quot;</span>)]
-    </span><span class="kw">fn </span>remote_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt;;
-
-    <span class="doccomment">/// Gets the underlying [`Socket`][crate::Socket] object of the connection.
-    /// This can be useful if you want to do something unusual on it
-    /// not supported by the [`SocketConnection`][crate::SocketConnection] APIs.
-    ///
-    /// # Returns
-    ///
-    /// a [`Socket`][crate::Socket] or [`None`] on error.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_get_socket&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_socket&quot;</span>)]
-    </span><span class="kw">fn </span>socket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Socket;
-
-    <span class="doccomment">/// Checks if `self` is connected. This is equivalent to calling
-    /// [`SocketExt::is_connected()`][crate::prelude::SocketExt::is_connected()] on `self`&#39;s underlying [`Socket`][crate::Socket].
-    ///
-    /// # Returns
-    ///
-    /// whether `self` is connected
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_socket_connection_is_connected&quot;</span>)]
-    </span><span class="kw">fn </span>is_connected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;SocketConnection&gt;&gt; SocketConnectionExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>connect(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_address.rs.html#13-38">SocketAddress</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_socket_connection_connect(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                address.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#150">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#151">address</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#152">cancellable</a>.map(|p| <a href="#159">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#155">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#155">error</a>))
             }
         }
     }
 
-    <span class="kw">fn </span>connect_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    <span class="doccomment">/// Asynchronously connect @self to the specified remote address.
+    ///
+    /// This clears the #GSocket:blocking flag on @self's underlying
+    /// socket if it is currently set.
+    ///
+    /// If #GSocket:timeout is set, the operation will time out and return
+    /// [`IOErrorEnum::TimedOut`][crate::IOErrorEnum::TimedOut] after that period. Otherwise, it will continue
+    /// indefinitely until operating system timeouts (if any) are hit.
+    ///
+    /// Use g_socket_connection_connect_finish() to retrieve the result.
+    /// ## `address`
+    /// a #GSocketAddress specifying the remote address.
+    /// ## `cancellable`
+    /// a `GCancellable` or [`None`]
+    /// ## `callback`
+    /// a #GAsyncReadyCallback
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_connect_async"</span>)]
+    </span><span class="kw">fn </span>connect_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_address.rs.html#13-38">SocketAddress</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#194">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#195">is_main_context_owner</a>)
+            .then(|| <a href="#194">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>connect_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#192">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let _ </span>=
-                ffi::g_socket_connection_connect_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+                ffi::g_socket_connection_connect_finish(<a href="#209">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#210">res</a>, <span class="kw-2">&amp;mut </span><a href="#213">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#213">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#211">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#221">callback</a>.into_inner();
+            <a href="#223">callback</a>(<a href="#216">result</a>);
         }
         <span class="kw">let </span>callback = connect_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_socket_connection_connect_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                address.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#189">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#190">address</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#191">cancellable</a>.map(|p| <a href="#231">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#226">callback</a>),
+                Box_::into_raw(<a href="#204">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">fn </span>connect_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        address: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketAddress&gt; + Clone + <span class="lifetime">&#39;static</span>),
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        <span class="kw">let </span>address = address.clone();
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+        address: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="socket_address.rs.html#13-38">SocketAddress</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+        <span class="kw">let </span>address = <a href="#240">address</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#239">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.connect_async(<span class="kw-2">&amp;</span>address, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#245">obj</a>.<a href="#188-236">connect_async</a>(<span class="kw-2">&amp;</span><a href="#242">address</a>, <span class="prelude-val">Some</span>(<a href="#245">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#245">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#246">res</a>);
                 });
             },
         ))
     }
 
-    <span class="kw">fn </span>local_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt; {
+    <span class="doccomment">/// Try to get the local address of a socket connection.
+    ///
+    /// # Returns
+    ///
+    /// a #GSocketAddress or [`None`] on error.
+    ///     Free the returned object with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_get_local_address"</span>)]
+    #[doc(alias = <span class="string">"get_local_address"</span>)]
+    </span><span class="kw">fn </span>local_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_socket_connection_get_local_address(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#261">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#263">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#264">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#263">error</a>))
             }
         }
     }
 
-    <span class="kw">fn </span>remote_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt; {
+    <span class="doccomment">/// Try to get the remote address of a socket connection.
+    ///
+    /// Since GLib 2.40, when used with g_socket_client_connect() or
+    /// g_socket_client_connect_async(), during emission of
+    /// [`SocketClientEvent::Connecting`][crate::SocketClientEvent::Connecting], this function will return the remote
+    /// address that will be used for the connection.  This allows
+    /// applications to print e.g. "Connecting to example.com
+    /// (10.42.77.3)...".
+    ///
+    /// # Returns
+    ///
+    /// a #GSocketAddress or [`None`] on error.
+    ///     Free the returned object with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_get_remote_address"</span>)]
+    #[doc(alias = <span class="string">"get_remote_address"</span>)]
+    </span><span class="kw">fn </span>remote_address(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="socket_address.rs.html#13-38">SocketAddress</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_socket_connection_get_remote_address(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#291">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#293">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#294">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#293">error</a>))
             }
         }
     }
 
-    <span class="kw">fn </span>socket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Socket {
+    <span class="doccomment">/// Gets the underlying #GSocket object of the connection.
+    /// This can be useful if you want to do something unusual on it
+    /// not supported by the #GSocketConnection APIs.
+    ///
+    /// # Returns
+    ///
+    /// a #GSocket or [`None`] on error.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_get_socket"</span>)]
+    #[doc(alias = <span class="string">"get_socket"</span>)]
+    </span><span class="kw">fn </span>socket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="socket.rs.html#16-185">Socket</a> {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_socket_connection_get_socket(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#315">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn </span>is_connected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Checks if @self is connected. This is equivalent to calling
+    /// g_socket_is_connected() on @self's underlying #GSocket.
+    ///
+    /// # Returns
+    ///
+    /// whether @self is connected
+    </span><span class="attr">#[doc(alias = <span class="string">"g_socket_connection_is_connected"</span>)]
+    </span><span class="kw">fn </span>is_connected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_socket_connection_is_connected(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#330">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>SocketConnection {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;SocketConnection&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#9-64">SocketConnection</a>&gt;&gt; <a href="#138-337">SocketConnectionExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

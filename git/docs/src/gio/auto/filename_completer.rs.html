@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/filename_completer.rs`."><title>filename_completer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/filename_completer.rs`."><title>filename_completer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -196,24 +198,18 @@
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a>
-<a href="#128" id="128">128</a>
-<a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
 </span><span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Completes partial file and directory names given a partial string by
     /// looking in the file system for clues. Can return a list of possible
     /// completion strings for widget implementations.
@@ -229,41 +225,41 @@
     /// # Implements
     ///
     /// [`trait@glib::ObjectExt`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GFilenameCompleter&quot;</span>)]
-    </span><span class="kw">pub struct </span>FilenameCompleter(Object&lt;ffi::GFilenameCompleter, ffi::GFilenameCompleterClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GFilenameCompleter"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.FilenameCompleter.html">FilenameCompleter</a>(Object&lt;<a href="../../../gio_sys/struct.GFilenameCompleter.html">ffi::GFilenameCompleter</a>, <a href="../../../gio_sys/struct.GFilenameCompleterClass.html">ffi::GFilenameCompleterClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_filename_completer_get_type(),
     }
 }
 
-<span class="kw">impl </span>FilenameCompleter {
+<span class="kw">impl </span><a href="#12-34">FilenameCompleter</a> {
     <span class="doccomment">/// Creates a new filename completer.
     ///
     /// # Returns
     ///
-    /// a [`FilenameCompleter`][crate::FilenameCompleter].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filename_completer_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; FilenameCompleter {
+    /// a #GFilenameCompleter.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filename_completer_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#12-34">FilenameCompleter</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::g_filename_completer_new()) }
     }
 
-    <span class="doccomment">/// Obtains a completion for `initial_text` from `self`.
+    <span class="doccomment">/// Obtains a completion for @initial_text from @self.
     /// ## `initial_text`
     /// text to be completed.
     ///
     /// # Returns
     ///
     /// a completed string, or [`None`] if no
-    ///  completion exists. This string is not owned by GIO, so remember to `g_free()`
-    ///  it when finished.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filename_completer_get_completion_suffix&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_completion_suffix&quot;</span>)]
-    </span><span class="kw">pub fn </span>completion_suffix(<span class="kw-2">&amp;</span><span class="self">self</span>, initial_text: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+    ///     completion exists. This string is not owned by GIO, so remember to g_free()
+    ///     it when finished.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filename_completer_get_completion_suffix"</span>)]
+    #[doc(alias = <span class="string">"get_completion_suffix"</span>)]
+    </span><span class="kw">pub fn </span>completion_suffix(<span class="kw-2">&amp;</span><span class="self">self</span>, initial_text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_filename_completer_get_completion_suffix(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                initial_text.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#58">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#58">initial_text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -274,64 +270,57 @@
     ///
     /// # Returns
     ///
-    /// array of strings with possible completions for `initial_text`.
-    /// This array must be freed by `g_strfreev()` when finished.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filename_completer_get_completions&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_completions&quot;</span>)]
-    </span><span class="kw">pub fn </span>completions(<span class="kw-2">&amp;</span><span class="self">self</span>, initial_text: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;glib::GString&gt; {
+    /// array of strings with possible completions for @initial_text.
+    /// This array must be freed by g_strfreev() when finished.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filename_completer_get_completions"</span>)]
+    #[doc(alias = <span class="string">"get_completions"</span>)]
+    </span><span class="kw">pub fn </span>completions(<span class="kw-2">&amp;</span><span class="self">self</span>, initial_text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
-            FromGlibPtrContainer::from_glib_full(ffi::g_filename_completer_get_completions(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                initial_text.to_glib_none().<span class="number">0</span>,
+            <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(ffi::g_filename_completer_get_completions(
+                <a class="self" href="#77">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#77">initial_text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// If `dirs_only` is [`true`], `self` will only
+    <span class="doccomment">/// If @dirs_only is [`true`], @self will only
     /// complete directory names, and not file names.
     /// ## `dirs_only`
-    /// a `gboolean`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filename_completer_set_dirs_only&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_dirs_only(<span class="kw-2">&amp;</span><span class="self">self</span>, dirs_only: bool) {
+    /// a #gboolean.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filename_completer_set_dirs_only"</span>)]
+    </span><span class="kw">pub fn </span>set_dirs_only(<span class="kw-2">&amp;</span><span class="self">self</span>, dirs_only: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_filename_completer_set_dirs_only(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, dirs_only.into_glib());
+            ffi::g_filename_completer_set_dirs_only(<a class="self" href="#91">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#91">dirs_only</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
     <span class="doccomment">/// Emitted when the file name completion information comes available.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;got-completion-data&quot;</span>)]
-    </span><span class="kw">pub fn </span>connect_got_completion_data&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>got_completion_data_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span>FilenameCompleter) + <span class="lifetime">&#39;static</span>&gt;(
-            this: <span class="kw-2">*mut </span>ffi::GFilenameCompleter,
-            f: glib::ffi::gpointer,
+    </span><span class="attr">#[doc(alias = <span class="string">"got-completion-data"</span>)]
+    </span><span class="kw">pub fn </span>connect_got_completion_data&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>got_completion_data_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="#12-34">FilenameCompleter</a>) + <span class="lifetime">'static</span>&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFilenameCompleter.html">ffi::GFilenameCompleter</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(<span class="kw-2">&amp;</span>from_glib_borrow(this))
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#102">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#104">f</a>(<span class="kw-2">&amp;</span>from_glib_borrow(<a href="#101">this</a>))
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;got-completion-data\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#99">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#99">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"got-completion-data\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     got_completion_data_trampoline::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#108">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>FilenameCompleter {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#12-34">FilenameCompleter</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#43-45"><span class="self">Self</span>::new</a>()
     }
 }
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>FilenameCompleter {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;FilenameCompleter&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

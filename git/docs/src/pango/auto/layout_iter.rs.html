@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout_iter.rs`."><title>layout_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout_iter.rs`."><title>layout_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pango/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../pango/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -467,16 +469,14 @@
 <a href="#394" id="394">394</a>
 <a href="#395" id="395">395</a>
 <a href="#396" id="396">396</a>
-<a href="#397" id="397">397</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Layout, LayoutLine, LayoutRun, Rectangle};
-<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::mem;
+</span><span class="kw">use crate</span>::{<a href="layout.rs.html#17-62">Layout</a>, <a href="layout_line.rs.html#11-26">LayoutLine</a>, <a href="alias.rs.html#13">LayoutRun</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>};
+<span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`LayoutIter`][crate::LayoutIter] can be used to iterate over the visual
     /// extents of a [`Layout`][crate::Layout].
     ///
@@ -484,7 +484,7 @@
     ///
     /// The [`LayoutIter`][crate::LayoutIter] structure is opaque, and has no user-visible fields.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span>LayoutIter(Boxed&lt;ffi::PangoLayoutIter&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.LayoutIter.html">LayoutIter</a>(Boxed&lt;<a href="../../../pango_sys/struct.PangoLayoutIter.html">ffi::PangoLayoutIter</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::pango_layout_iter_copy(mut_override(ptr)),
@@ -493,22 +493,22 @@
     }
 }
 
-<span class="kw">impl </span>LayoutIter {
+<span class="kw">impl </span><a href="#8-23">LayoutIter</a> {
     <span class="doccomment">/// Determines whether @self is on the last line of the layout.
     ///
     /// # Returns
     ///
     /// [`true`] if @self is on the last line
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_at_last_line&quot;</span>)]
-    </span><span class="kw">pub fn </span>at_last_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_at_last_line"</span>)]
+    </span><span class="kw">pub fn </span>at_last_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_layout_iter_at_last_line(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#32">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Gets the Y position of the current line&#39;s baseline, in layout
+    <span class="doccomment">/// Gets the Y position of the current line's baseline, in layout
     /// coordinates.
     ///
     /// Layout coordinates have the origin at the top left of the entire layout.
@@ -516,10 +516,10 @@
     /// # Returns
     ///
     /// baseline of current line
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_baseline&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_baseline&quot;</span>)]
-    </span><span class="kw">pub fn </span>baseline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_baseline(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_baseline"</span>)]
+    #[doc(alias = <span class="string">"get_baseline"</span>)]
+    </span><span class="kw">pub fn </span>baseline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_baseline(<a class="self" href="#50">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the extents of the current character, in layout coordinates.
@@ -535,16 +535,16 @@
     /// ## `logical_rect`
     /// rectangle to fill with
     ///   logical extents
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_char_extents&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_char_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>char_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Rectangle {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_char_extents"</span>)]
+    #[doc(alias = <span class="string">"get_char_extents"</span>)]
+    </span><span class="kw">pub fn </span>char_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="../rectangle.rs.html#7-15">Rectangle</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_layout_iter_get_char_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#69">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#71">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            logical_rect
+            <a href="#71">logical_rect</a>
         }
     }
 
@@ -560,18 +560,18 @@
     ///
     /// ## `logical_rect`
     /// rectangle to fill with logical extents
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_cluster_extents&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_cluster_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>cluster_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_cluster_extents"</span>)]
+    #[doc(alias = <span class="string">"get_cluster_extents"</span>)]
+    </span><span class="kw">pub fn </span>cluster_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_layout_iter_get_cluster_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#94">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#96">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#97">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#96">ink_rect</a>, <a href="#97">logical_rect</a>)
         }
     }
 
@@ -585,10 +585,10 @@
     /// # Returns
     ///
     /// current byte index
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_index&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_index&quot;</span>)]
-    </span><span class="kw">pub fn </span>index(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_index(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_index"</span>)]
+    #[doc(alias = <span class="string">"get_index"</span>)]
+    </span><span class="kw">pub fn </span>index(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_index(<a class="self" href="#119">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the layout associated with a [`LayoutIter`][crate::LayoutIter].
@@ -596,10 +596,10 @@
     /// # Returns
     ///
     /// the layout associated with @self
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_layout&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_layout&quot;</span>)]
-    </span><span class="kw">pub fn </span>layout(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Layout&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_layout(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_layout"</span>)]
+    #[doc(alias = <span class="string">"get_layout"</span>)]
+    </span><span class="kw">pub fn </span>layout(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="layout.rs.html#17-62">Layout</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_layout(<a class="self" href="#130">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Obtains the extents of the [`Layout`][crate::Layout] being iterated over.
@@ -612,18 +612,18 @@
     ///
     /// ## `logical_rect`
     /// rectangle to fill with logical extents
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_layout_extents&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_layout_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>layout_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_layout_extents"</span>)]
+    #[doc(alias = <span class="string">"get_layout_extents"</span>)]
+    </span><span class="kw">pub fn </span>layout_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_layout_iter_get_layout_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#146">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#148">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#149">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#148">ink_rect</a>, <a href="#149">logical_rect</a>)
         }
     }
 
@@ -636,10 +636,10 @@
     /// # Returns
     ///
     /// the current line
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_line&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_line&quot;</span>)]
-    </span><span class="kw">pub fn </span>line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;LayoutLine&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_line(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_line"</span>)]
+    #[doc(alias = <span class="string">"get_line"</span>)]
+    </span><span class="kw">pub fn </span>line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="layout_line.rs.html#11-26">LayoutLine</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_line(<a class="self" href="#170">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Obtains the extents of the current line.
@@ -657,18 +657,18 @@
     ///
     /// ## `logical_rect`
     /// rectangle to fill with logical extents
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_line_extents&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_line_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_line_extents"</span>)]
+    #[doc(alias = <span class="string">"get_line_extents"</span>)]
+    </span><span class="kw">pub fn </span>line_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_layout_iter_get_line_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#191">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#193">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#194">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#193">ink_rect</a>, <a href="#194">logical_rect</a>)
         }
     }
 
@@ -682,12 +682,12 @@
     ///
     /// the current line, that should not be
     ///   modified
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_line_readonly&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_line_readonly&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_readonly(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;LayoutLine&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_line_readonly"</span>)]
+    #[doc(alias = <span class="string">"get_line_readonly"</span>)]
+    </span><span class="kw">pub fn </span>line_readonly(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="layout_line.rs.html#11-26">LayoutLine</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_layout_iter_get_line_readonly(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#216">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -696,7 +696,7 @@
     /// between the lines in the layout, and returns the space belonging to
     /// the current line.
     ///
-    /// A line&#39;s range includes the line&#39;s logical extents. plus half of the
+    /// A line's range includes the line's logical extents. plus half of the
     /// spacing above and below the line, if [`Layout::set_spacing()`][crate::Layout::set_spacing()]
     /// has been called to set layout spacing. The Y positions are in layout
     /// coordinates (origin at top left of the entire layout).
@@ -712,24 +712,24 @@
     ///
     /// ## `y1_`
     /// end of line
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_line_yrange&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_line_yrange&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_yrange(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (i32, i32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_line_yrange"</span>)]
+    #[doc(alias = <span class="string">"get_line_yrange"</span>)]
+    </span><span class="kw">pub fn </span>line_yrange(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>y0_ = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>y1_ = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>y0_ = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>y1_ = std::mem::MaybeUninit::uninit();
             ffi::pango_layout_iter_get_line_yrange(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                y0_.as_mut_ptr(),
-                y1_.as_mut_ptr(),
+                <a class="self" href="#246">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#248">y0_</a>.as_mut_ptr(),
+                <a href="#249">y1_</a>.as_mut_ptr(),
             );
-            (y0_.assume_init(), y1_.assume_init())
+            (<a href="#248">y0_</a>.assume_init(), <a href="#249">y1_</a>.assume_init())
         }
     }
 
     <span class="doccomment">/// Gets the current run.
     ///
-    /// When iterating by run, at the end of each line, there&#39;s a position
+    /// When iterating by run, at the end of each line, there's a position
     /// with a [`None`] run, so this function can return [`None`]. The [`None`] run
     /// at the end of each line ensures that all lines have at least one run,
     /// even lines consisting of only a newline.
@@ -740,25 +740,25 @@
     /// # Returns
     ///
     /// the current run
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_run&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_run&quot;</span>)]
-    </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;LayoutRun&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_run(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_run"</span>)]
+    #[doc(alias = <span class="string">"get_run"</span>)]
+    </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="alias.rs.html#13">LayoutRun</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_layout_iter_get_run(<a class="self" href="#274">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the Y position of the current run&#39;s baseline, in layout
+    <span class="doccomment">/// Gets the Y position of the current run's baseline, in layout
     /// coordinates.
     ///
     /// Layout coordinates have the origin at the top left of the entire layout.
     ///
     /// The run baseline can be different from the line baseline, for
     /// example due to superscript or subscript positioning.
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_layout_iter_get_run_baseline&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_run_baseline&quot;</span>)]
-    </span><span class="kw">pub fn </span>run_baseline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_run_baseline(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>) }
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_layout_iter_get_run_baseline"</span>)]
+    #[doc(alias = <span class="string">"get_run_baseline"</span>)]
+    </span><span class="kw">pub fn </span>run_baseline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_layout_iter_get_run_baseline(<a class="self" href="#289">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the extents of the current run in layout coordinates.
@@ -773,24 +773,24 @@
     ///
     /// ## `logical_rect`
     /// rectangle to fill with logical extents
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_run_extents&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_run_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>run_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_run_extents"</span>)]
+    #[doc(alias = <span class="string">"get_run_extents"</span>)]
+    </span><span class="kw">pub fn </span>run_extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_layout_iter_get_run_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#307">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#309">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#310">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#309">ink_rect</a>, <a href="#310">logical_rect</a>)
         }
     }
 
     <span class="doccomment">/// Gets the current run for read-only access.
     ///
-    /// When iterating by run, at the end of each line, there&#39;s a position
+    /// When iterating by run, at the end of each line, there's a position
     /// with a [`None`] run, so this function can return [`None`]. The [`None`] run
     /// at the end of each line ensures that all lines have at least one run,
     /// even lines consisting of only a newline.
@@ -803,12 +803,12 @@
     ///
     /// the current run, that
     ///   should not be modified
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_get_run_readonly&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_run_readonly&quot;</span>)]
-    </span><span class="kw">pub fn </span>run_readonly(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;LayoutRun&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_get_run_readonly"</span>)]
+    #[doc(alias = <span class="string">"get_run_readonly"</span>)]
+    </span><span class="kw">pub fn </span>run_readonly(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="alias.rs.html#13">LayoutRun</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_layout_iter_get_run_readonly(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#337">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -820,9 +820,9 @@
     /// # Returns
     ///
     /// whether motion was possible
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_next_char&quot;</span>)]
-    </span><span class="kw">pub fn </span>next_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_char(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_next_char"</span>)]
+    </span><span class="kw">pub fn </span>next_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_char(<a class="self" href="#353">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Moves @self forward to the next cluster in visual order.
@@ -832,11 +832,11 @@
     /// # Returns
     ///
     /// whether motion was possible
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_next_cluster&quot;</span>)]
-    </span><span class="kw">pub fn </span>next_cluster(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_next_cluster"</span>)]
+    </span><span class="kw">pub fn </span>next_cluster(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_layout_iter_next_cluster(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#365">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -848,9 +848,9 @@
     /// # Returns
     ///
     /// whether motion was possible
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_next_line&quot;</span>)]
-    </span><span class="kw">pub fn </span>next_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_line(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_next_line"</span>)]
+    </span><span class="kw">pub fn </span>next_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_line(<a class="self" href="#381">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Moves @self forward to the next run in visual order.
@@ -860,10 +860,9 @@
     /// # Returns
     ///
     /// whether motion was possible
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_iter_next_run&quot;</span>)]
-    </span><span class="kw">pub fn </span>next_run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_run(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_iter_next_run"</span>)]
+    </span><span class="kw">pub fn </span>next_run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_layout_iter_next_run(<a class="self" href="#393">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>)) }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

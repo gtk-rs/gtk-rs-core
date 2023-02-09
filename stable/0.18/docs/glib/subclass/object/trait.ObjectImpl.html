@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait for implementors of `glib::Object` subclasses."><title>ObjectImpl in glib::subclass::object - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-452d19225583af2a.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (3cdd004e5 2023-12-29)" data-channel="nightly" data-search-js="search-c17e98913a53b3b7.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-6902632119e002ca.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.18" == "master") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.18") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../../glib/index.html">glib</a><span class="version">0.18.5</span></h2></div><h2 class="location"><a href="#">ObjectImpl</a></h2><div class="sidebar-elems"><section><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.constructed">constructed</a></li><li><a href="#method.dispatch_properties_changed">dispatch_properties_changed</a></li><li><a href="#method.dispose">dispose</a></li><li><a href="#method.notify">notify</a></li><li><a href="#method.properties">properties</a></li><li><a href="#method.property">property</a></li><li><a href="#method.set_property">set_property</a></li><li><a href="#method.signals">signals</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In glib::subclass::object</a></h2></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../../index.html">glib</a>::<wbr><a href="../index.html">subclass</a>::<wbr><a href="index.html">object</a>::<wbr><a class="trait" href="#">ObjectImpl</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../../src/glib/subclass/object.rs.html#17-93">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait ObjectImpl: <a class="trait" href="../types/trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass">ObjectSubclass</a> + <a class="trait" href="trait.ObjectImplExt.html" title="trait glib::subclass::object::ObjectImplExt">ObjectImplExt</a> {
+    // Provided methods
+    fn <a href="#method.properties" class="fn">properties</a>() -&gt; &amp;'static [<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>] { ... }
+<span class="item-spacer"></span>    fn <a href="#method.signals" class="fn">signals</a>() -&gt; &amp;'static [<a class="struct" href="../signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>] { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_property" class="fn">set_property</a>(&amp;self, _id: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: &amp;<a class="struct" href="../../value/struct.Value.html" title="struct glib::value::Value">Value</a>, _pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.property" class="fn">property</a>(&amp;self, _id: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>) -&gt; <a class="struct" href="../../value/struct.Value.html" title="struct glib::value::Value">Value</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.constructed" class="fn">constructed</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.dispose" class="fn">dispose</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.notify" class="fn">notify</a>(&amp;self, pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.dispatch_properties_changed" class="fn">dispatch_properties_changed</a>(&amp;self, pspecs: &amp;[<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>]) { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait for implementors of <code>glib::Object</code> subclasses.</p>
+<p>This allows overriding the virtual methods of <code>glib::Object</code>. Except for
+<code>finalize</code> as implementing <code>Drop</code> would allow the same behavior.</p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.properties" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#20-22">source</a><h4 class="code-header">fn <a href="#method.properties" class="fn">properties</a>() -&gt; &amp;'static [<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>]</h4></section></summary><div class="docblock"><p>Properties installed for this type.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.signals" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#26-28">source</a><h4 class="code-header">fn <a href="#method.signals" class="fn">signals</a>() -&gt; &amp;'static [<a class="struct" href="../signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>]</h4></section></summary><div class="docblock"><p>Signals installed for this type.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_property" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#37-39">source</a><h4 class="code-header">fn <a href="#method.set_property" class="fn">set_property</a>(&amp;self, _id: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: &amp;<a class="struct" href="../../value/struct.Value.html" title="struct glib::value::Value">Value</a>, _pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>)</h4></section></summary><div class="docblock"><p>Property setter.</p>
+<p>This is called whenever the property of this specific subclass with the
+given index is set. The new value is passed as <code>glib::Value</code>.</p>
+<p><code>value</code> is guaranteed to be of the correct type for the given property.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.property" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#49-51">source</a><h4 class="code-header">fn <a href="#method.property" class="fn">property</a>(&amp;self, _id: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>) -&gt; <a class="struct" href="../../value/struct.Value.html" title="struct glib::value::Value">Value</a></h4></section></summary><div class="docblock"><p>Property getter.</p>
+<p>This is called whenever the property value of the specific subclass with the
+given index should be returned.</p>
+<p>The returned <code>Value</code> must be of the correct type for the given property.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.constructed" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#59-61">source</a><h4 class="code-header">fn <a href="#method.constructed" class="fn">constructed</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Constructed.</p>
+<p>This is called once construction of the instance is finished.</p>
+<p>Should chain up to the parent class’ implementation.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.dispose" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#70">source</a><h4 class="code-header">fn <a href="#method.dispose" class="fn">dispose</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Disposes of the object.</p>
+<p>When <code>dispose()</code> ends, the object should not hold any reference to any other member object.
+The object is also expected to be able to answer client method invocations (with possibly an
+error code but no memory violation) until it is dropped. <code>dispose()</code> can be executed more
+than once.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.notify" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#86-88">source</a><h4 class="code-header">fn <a href="#method.notify" class="fn">notify</a>(&amp;self, pspec: &amp;<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>)</h4></section></summary><div class="docblock"><p>Function to be called when property change is notified for with
+<code>self.notify(&quot;property&quot;)</code>.
+Emits a “notify” signal for the property <code>property_name</code> on <code>self</code>.</p>
+<p>When possible, eg. when signaling a property change from within the class
+that registered the property, you should use <a href="../../object/trait.ObjectExt.html#tymethod.notify_by_pspec" title="method glib::object::ObjectExt::notify_by_pspec"><code>ObjectExt::notify_by_pspec()</code></a>
+instead.</p>
+<p>Note that emission of the notify signal may be blocked with
+<a href="../../object/trait.ObjectExt.html#tymethod.freeze_notify" title="method glib::object::ObjectExt::freeze_notify"><code>ObjectExt::freeze_notify()</code></a>. In this case, the signal emissions are queued
+and will be emitted (in reverse order) when [<code>ObjectExt::thaw_notify()</code>][crate::prelude::ObjectExt::thaw_notify()] is
+called.</p>
+</div></details><section id="method.dispatch_properties_changed" class="method"><a class="src rightside" href="../../../src/glib/subclass/object.rs.html#90-92">source</a><h4 class="code-header">fn <a href="#method.dispatch_properties_changed" class="fn">dispatch_properties_changed</a>(&amp;self, pspecs: &amp;[<a class="struct" href="../../struct.ParamSpec.html" title="struct glib::ParamSpec">ParamSpec</a>])</h4></section></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/glib/subclass/object/trait.ObjectImpl.js" async></script></section></div></main></body></html>

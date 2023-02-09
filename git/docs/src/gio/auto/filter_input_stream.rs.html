@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/filter_input_stream.rs`."><title>filter_input_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/filter_input_stream.rs`."><title>filter_input_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -203,24 +205,19 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::InputStream;
+</span><span class="kw">use </span><a href="input_stream.rs.html#9-35"><span class="kw">crate</span>::InputStream</a>;
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Base class for input stream implementations that perform some
     /// kind of filtering operation on a base stream. Typical examples
     /// of filtering operations are character set conversion, compression
@@ -232,25 +229,34 @@
     ///
     ///
     /// #### `base-stream`
-    ///  Readable | Writeable | Construct Only
+    ///  The underlying base stream on which the I/O ops will be done.
+    ///
+    /// Readable | Writeable | Construct Only
     ///
     ///
     /// #### `close-base-stream`
-    ///  Readable | Writeable | Construct
+    ///  Whether the base stream should be closed when the filter stream is closed.
+    ///
+    /// Readable | Writeable | Construct
     ///
     /// # Implements
     ///
     /// [`FilterInputStreamExt`][trait@crate::prelude::FilterInputStreamExt], [`InputStreamExt`][trait@crate::prelude::InputStreamExt], [`trait@glib::ObjectExt`], [`InputStreamExtManual`][trait@crate::prelude::InputStreamExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GFilterInputStream&quot;</span>)]
-    </span><span class="kw">pub struct </span>FilterInputStream(Object&lt;ffi::GFilterInputStream, ffi::GFilterInputStreamClass&gt;) @extends InputStream;
+    </span><span class="attr">#[doc(alias = <span class="string">"GFilterInputStream"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.FilterInputStream.html">FilterInputStream</a>(Object&lt;<a href="../../../gio_sys/struct.GFilterInputStream.html">ffi::GFilterInputStream</a>, <a href="../../../gio_sys/struct.GFilterInputStreamClass.html">ffi::GFilterInputStreamClass</a>&gt;) @extends <a href="input_stream.rs.html#9-35">InputStream</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_filter_input_stream_get_type(),
     }
 }
 
-<span class="kw">impl </span>FilterInputStream {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>FilterInputStream&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#13-44">FilterInputStream</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#13-44">FilterInputStream</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#13-44"><span class="kw">super</span>::FilterInputStream</a>&gt;&gt; <a href="#51">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@FilterInputStream`] methods.
@@ -258,92 +264,77 @@
 /// # Implementors
 ///
 /// [`BufferedInputStream`][struct@crate::BufferedInputStream], [`ConverterInputStream`][struct@crate::ConverterInputStream], [`FilterInputStream`][struct@crate::FilterInputStream]
-</span><span class="kw">pub trait </span>FilterInputStreamExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.FilterInputStreamExt.html">FilterInputStreamExt</a>: IsA&lt;<a href="#13-44">FilterInputStream</a>&gt; + <a href="#51">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Gets the base stream for the filter stream.
     ///
     /// # Returns
     ///
-    /// a [`InputStream`][crate::InputStream].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filter_input_stream_get_base_stream&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_base_stream&quot;</span>)]
-    </span><span class="kw">fn </span>base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InputStream;
+    /// a #GInputStream.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filter_input_stream_get_base_stream"</span>)]
+    #[doc(alias = <span class="string">"get_base_stream"</span>)]
+    </span><span class="kw">fn </span>base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="input_stream.rs.html#9-35">InputStream</a> {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_filter_input_stream_get_base_stream(
+                <a class="self" href="#68">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Returns whether the base stream will be closed when `self` is
+    <span class="doccomment">/// Returns whether the base stream will be closed when @self is
     /// closed.
     ///
     /// # Returns
     ///
     /// [`true`] if the base stream will be closed.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filter_input_stream_get_close_base_stream&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_close_base_stream&quot;</span>)]
-    </span><span class="kw">fn </span>closes_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-
-    <span class="doccomment">/// Sets whether the base stream will be closed when `self` is closed.
-    /// ## `close_base`
-    /// [`true`] to close the base stream.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_filter_input_stream_set_close_base_stream&quot;</span>)]
-    </span><span class="kw">fn </span>set_close_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>, close_base: bool);
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;close-base-stream&quot;</span>)]
-    </span><span class="kw">fn </span>connect_close_base_stream_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;FilterInputStream&gt;&gt; FilterInputStreamExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InputStream {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_filter_input_stream_get_base_stream(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>closes_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filter_input_stream_get_close_base_stream"</span>)]
+    #[doc(alias = <span class="string">"get_close_base_stream"</span>)]
+    </span><span class="kw">fn </span>closes_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_filter_input_stream_get_close_base_stream(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#84">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn </span>set_close_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>, close_base: bool) {
+    <span class="doccomment">/// Sets whether the base stream will be closed when @self is closed.
+    /// ## `close_base`
+    /// [`true`] to close the base stream.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_filter_input_stream_set_close_base_stream"</span>)]
+    </span><span class="kw">fn </span>set_close_base_stream(<span class="kw-2">&amp;</span><span class="self">self</span>, close_base: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_filter_input_stream_set_close_base_stream(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                close_base.into_glib(),
+                <a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#96">close_base</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
 
-    <span class="kw">fn </span>connect_close_base_stream_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_close_base_stream_trampoline&lt;
-            P: IsA&lt;FilterInputStream&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"close-base-stream"</span>)]
+    </span><span class="kw">fn </span>connect_close_base_stream_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_close_base_stream_trampoline&lt;
+            P: IsA&lt;<a href="#13-44">FilterInputStream</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GFilterInputStream,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFilterInputStream.html">ffi::GFilterInputStream</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(FilterInputStream::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#113">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#115">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">FilterInputStream::from_glib_borrow</a>(<a href="#111">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::close-base-stream\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#106">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#106">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::close-base-stream\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_close_base_stream_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#119">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>FilterInputStream {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;FilterInputStream&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#13-44">FilterInputStream</a>&gt;&gt; <a href="#60-130">FilterInputStreamExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

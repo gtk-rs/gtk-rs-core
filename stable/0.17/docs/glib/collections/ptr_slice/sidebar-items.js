@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["IntoIter",""],["PtrSlice","Slice of elements of type `T` allocated by the GLib allocator."]],"trait":[["IntoPtrSlice","A trait to accept both &[T] or PtrSlice as an argument."]]};
+window.SIDEBAR_ITEMS = {"struct":["IntoIter","PtrSlice"],"trait":["IntoPtrSlice"]};

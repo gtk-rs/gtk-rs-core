@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/layout.rs`."><title>layout.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/layout.rs`."><title>layout.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../pango/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../pango/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -190,30 +192,30 @@
 <a href="#117" id="117">117</a>
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+</span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{LayoutLine, LayoutRun};
+<span class="kw">use crate</span>::{<a href="auto/layout_line.rs.html#11-26">LayoutLine</a>, <a href="auto/alias.rs.html#13">LayoutRun</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// The result of [`LayoutLine::x_to_index`].
 </span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-</span><span class="kw">pub struct </span>HitPosition {
-    index: i32,
-    trailing: i32,
-    is_inside: bool,
+</span><span class="kw">pub struct </span><a href="../../pango/struct.HitPosition.html">HitPosition</a> {
+    index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    trailing: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    is_inside: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 
-<span class="kw">impl </span>HitPosition {
+<span class="kw">impl </span><a href="#10-14">HitPosition</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The UTF-8 byte offset of the grapheme closest to the position.
     ///
-    /// This position is relative to the start of the [`Layout`]&#39;s text.
+    /// This position is relative to the start of the [`Layout`]'s text.
     ///
     /// [`Layout`]: crate::Layout
-    </span><span class="kw">pub fn </span>index(<span class="self">self</span>) -&gt; i32 {
-        <span class="self">self</span>.index
+    </span><span class="kw">pub fn </span>index(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <a class="self" href="#23">self</a>.index
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -223,8 +225,8 @@
     /// in the grapheme. This represents whether the user clicked near the start
     /// of the grapheme or near the end; this is important for things like
     /// resolving cursor positions.
-    </span><span class="kw">pub fn </span>trailing(<span class="self">self</span>) -&gt; i32 {
-        <span class="self">self</span>.trailing
+    </span><span class="kw">pub fn </span>trailing(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <a class="self" href="#34">self</a>.trailing
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -232,35 +234,35 @@
     ///
     /// If this is `false`, then `index` and `trailing` will always resolve
     /// to either the very first or the very last position in the line; this
-    /// behaviour is dependent on the line&#39;s resolved writing direction.
-    </span><span class="kw">pub fn </span>is_inside(<span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.is_inside
+    /// behaviour is dependent on the line's resolved writing direction.
+    </span><span class="kw">pub fn </span>is_inside(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#44">self</a>.is_inside
     }
 }
 
-<span class="kw">impl </span>LayoutLine {
+<span class="kw">impl </span><a href="auto/layout_line.rs.html#11-26">LayoutLine</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The byte index of the start of this line into the text used to create
     /// the source [`Layout`].
     ///
     /// [`Layout`]: crate::Layout
-    </span><span class="attr">#[cfg(not(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>)))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(not(cfg(feature = <span class="string">&quot;v1_50&quot;</span>))))]
+    </span><span class="attr">#[cfg(not(feature = <span class="string">"v1_50"</span>))]
+    #[cfg_attr(docsrs, doc(cfg(not(feature = <span class="string">"v1_50"</span>))))]
     </span><span class="kw">pub fn </span>start_index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
         <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).start_index }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// The length of this line&#39;s text, in bytes.
-    </span><span class="attr">#[cfg(not(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>)))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(not(cfg(feature = <span class="string">&quot;v1_50&quot;</span>))))]
+    </span><span class="doccomment">/// The length of this line's text, in bytes.
+    </span><span class="attr">#[cfg(not(feature = <span class="string">"v1_50"</span>))]
+    #[cfg_attr(docsrs, doc(cfg(not(feature = <span class="string">"v1_50"</span>))))]
     </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
         <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).length }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_runs&quot;</span>)]
-    </span><span class="kw">pub fn </span>runs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;LayoutRun&gt; {
-        <span class="kw">unsafe </span>{ FromGlibPtrContainer::from_glib_none((<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).runs) }
+    <span class="attr">#[doc(alias = <span class="string">"pango_layout_line_runs"</span>)]
+    </span><span class="kw">pub fn </span>runs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="auto/alias.rs.html#13">LayoutRun</a>&gt; {
+        <span class="kw">unsafe </span>{ <a href="../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_none</a>((<span class="kw-2">*</span><a class="self" href="#70">self</a>.<a href="auto/layout_line.rs.html#11-26">as_ptr</a>()).runs) }
     }
     <span class="doccomment">/// Converts from x offset to the byte index of the corresponding character
     /// within the text of the layout.
@@ -288,26 +290,25 @@
     /// location to store an integer indicating where in the
     ///   grapheme the user clicked. It will either be zero, or the number of
     ///   characters in the grapheme. 0 represents the leading edge of the grapheme.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_x_to_index&quot;</span>)]
-    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, x_pos: i32) -&gt; HitPosition {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_line_x_to_index"</span>)]
+    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, x_pos: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="#10-14">HitPosition</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>index = <span class="number">0</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>trailing = <span class="number">0</span>;
 
         <span class="kw">let </span>is_inside = <span class="kw">unsafe </span>{
             from_glib(ffi::pango_layout_line_x_to_index(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                x_pos,
-                <span class="kw-2">&amp;mut </span>index,
-                <span class="kw-2">&amp;mut </span>trailing,
+                <a class="self" href="#100">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#100">x_pos</a>,
+                <span class="kw-2">&amp;mut </span><a href="#101">index</a>,
+                <span class="kw-2">&amp;mut </span><a href="#102">trailing</a>,
             ))
         };
 
-        HitPosition {
-            index,
-            trailing,
-            is_inside,
+        <a href="#10-14">HitPosition</a> {
+            <a href="#101">index</a>,
+            <a href="#102">trailing</a>,
+            <a href="#104">is_inside</a>,
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

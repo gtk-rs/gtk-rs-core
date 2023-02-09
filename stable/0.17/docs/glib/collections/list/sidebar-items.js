@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["IntoIter","A destructive iterator over a [`List`]."],["Iter","A non-destructive iterator over a [`List`]."],["IterMut","A non-destructive iterator over a [`List`]."],["List","A list of items of type `T`."]]};
+window.SIDEBAR_ITEMS = {"struct":["IntoIter","Iter","IterMut","List"]};

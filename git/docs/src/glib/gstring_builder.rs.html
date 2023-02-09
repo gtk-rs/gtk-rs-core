@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring_builder.rs`."><title>gstring_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring_builder.rs`."><title>gstring_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -438,18 +440,18 @@
 <a href="#365" id="365">365</a>
 <a href="#366" id="366">366</a>
 <a href="#367" id="367">367</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{cmp, fmt, hash, mem, ops, ptr, slice, str};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/index.html">cmp</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/std/hash/index.html">hash</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>, <a href="https://doc.rust-lang.org/nightly/alloc/str/index.html">str</a>};
 
-<span class="kw">use crate</span>::{translate::<span class="kw-2">*</span>, GStr};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="gstring.rs.html#24">GStr</a>};
 
-<span class="macro">wrapper! </span>{
+<a class="macro" href="wrapper.rs.html#277-445">wrapper! </a>{
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// A mutable text buffer that grows automatically.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GString&quot;</span>)]
-    #[must_use = <span class="string">&quot;The builder must be built to be used&quot;</span>]
-    </span><span class="kw">pub struct </span>GStringBuilder(BoxedInline&lt;ffi::GString&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GString"</span>)]
+    #[must_use = <span class="string">"The builder must be built to be used"</span>]
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.GStringBuilder.html">GStringBuilder</a>(BoxedInline&lt;ffi::GString&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::g_string_new_len((<span class="kw-2">*</span>ptr).str, (<span class="kw-2">*</span>ptr).len <span class="kw">as </span>isize),
@@ -483,272 +485,272 @@
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>GStringBuilder {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>GStringBuilder {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {}
 
-<span class="kw">impl </span>GStringBuilder {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_string_new_len&quot;</span>)]
+<span class="kw">impl </span><a href="#7-44">GStringBuilder</a> {
+    <span class="attr">#[doc(alias = <span class="string">"g_string_new_len"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>new&lt;T: AsRef&lt;str&gt;&gt;(data: T) -&gt; GStringBuilder {
-        <span class="kw">let </span>data = data.as_ref();
-        <span class="macro">assert!</span>(data.len() &lt; usize::MAX - <span class="number">1</span>);
+    </span><span class="kw">pub fn </span>new&lt;T: AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;(data: T) -&gt; <a href="#7-44">GStringBuilder</a> {
+        <span class="kw">let </span>data = <a href="#52">data</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(data.len() &lt; usize::MAX - <span class="number">1</span>);
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>allocated_len = usize::next_power_of_two(std::cmp::max(data.len(), <span class="number">64</span>) + <span class="number">1</span>);
-            <span class="macro">assert_ne!</span>(allocated_len, <span class="number">0</span>);
+            <span class="kw">let </span>allocated_len = usize::next_power_of_two(std::cmp::max(<a href="#53">data</a>.len(), <span class="number">64</span>) + <span class="number">1</span>);
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_ne.html">assert_ne!</a>(allocated_len, <span class="number">0</span>);
 
             <span class="kw">let </span>inner = ffi::GString {
-                str: ffi::g_malloc(allocated_len) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                len: data.len(),
-                allocated_len,
+                str: ffi::g_malloc(<a href="#56">allocated_len</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                len: <a href="#53">data</a>.len(),
+                <a href="#56">allocated_len</a>,
             };
             <span class="kw">if </span>data.is_empty() {
-                ptr::write(inner.str, <span class="number">0</span>);
+                ptr::write(<a href="#59">inner</a>.str, <span class="number">0</span>);
             } <span class="kw">else </span>{
-                ptr::copy_nonoverlapping(data.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, inner.str, data.len());
-                ptr::write(inner.str.add(data.len()), <span class="number">0</span>);
+                ptr::copy_nonoverlapping(<a href="#53">data</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, <a href="#59">inner</a>.str, <a href="#53">data</a>.len());
+                ptr::write(<a href="#59">inner</a>.str.add(<a href="#53">data</a>.len()), <span class="number">0</span>);
             }
-            <span class="self">Self </span>{ inner }
+            <span class="self">Self </span>{ <a href="#59">inner</a> }
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_string_append&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;g_string_append_len&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_string_append"</span>)]
+    #[doc(alias = <span class="string">"g_string_append_len"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span>str) {
+    </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_string_append_len(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                val.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                val.len() <span class="kw">as </span>isize,
+                <a class="self" href="#77">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#77">val</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#77">val</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
             );
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_string_prepend&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;g_string_prepend_len&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_string_prepend"</span>)]
+    #[doc(alias = <span class="string">"g_string_prepend_len"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>prepend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span>str) {
+    </span><span class="kw">pub fn </span>prepend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_string_prepend_len(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                val.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                val.len() <span class="kw">as </span>isize,
+                <a class="self" href="#90">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#90">val</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#90">val</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
             );
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_string_append_c&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;g_string_append_unichar&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_string_append_c"</span>)]
+    #[doc(alias = <span class="string">"g_string_append_unichar"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>append_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: char) {
+    </span><span class="kw">pub fn </span>append_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_string_append_unichar(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, val.into_glib());
+            ffi::g_string_append_unichar(<a class="self" href="#103">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#103">val</a>.<a href="translate.rs.html#333">into_glib</a>());
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_string_prepend_c&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;g_string_prepend_unichar&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"g_string_prepend_c"</span>)]
+    #[doc(alias = <span class="string">"g_string_prepend_unichar"</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>prepend_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: char) {
+    </span><span class="kw">pub fn </span>prepend_c(<span class="kw-2">&amp;mut </span><span class="self">self</span>, val: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_string_prepend_unichar(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, val.into_glib());
+            ffi::g_string_prepend_unichar(<a class="self" href="#112">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#112">val</a>.<a href="translate.rs.html#333">into_glib</a>());
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// Returns &lt;code&gt;&amp;[str]&lt;/code&gt; slice.
+    </span><span class="doccomment">/// Returns `&amp;[str]` slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr: <span class="kw-2">*const </span>u8 = <span class="self">self</span>.inner.str <span class="kw">as _</span>;
-            <span class="kw">let </span>len: usize = <span class="self">self</span>.inner.len;
+            <span class="kw">let </span>ptr: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> = <a class="self" href="#121">self</a>.inner.str <span class="kw">as _</span>;
+            <span class="kw">let </span>len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = <a class="self" href="#121">self</a>.inner.len;
             <span class="kw">if </span>len == <span class="number">0 </span>{
-                <span class="kw">return </span><span class="string">&quot;&quot;</span>;
+                <span class="kw">return </span><span class="string">""</span>;
             }
-            <span class="kw">let </span>slice = slice::from_raw_parts(ptr, len);
-            std::str::from_utf8_unchecked(slice)
+            <span class="kw">let </span>slice = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#123">ptr</a>, <a href="#124">len</a>);
+            std::str::from_utf8_unchecked(<a href="#128">slice</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns &lt;code&gt;&amp;[GStr]&lt;/code&gt; slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_gstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
+    </span><span class="kw">pub fn </span>as_gstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="gstring.rs.html#24">GStr</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr: <span class="kw-2">*const </span>u8 = <span class="self">self</span>.inner.str <span class="kw">as _</span>;
-            <span class="kw">let </span>len: usize = <span class="self">self</span>.inner.len;
+            <span class="kw">let </span>ptr: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> = <a class="self" href="#136">self</a>.inner.str <span class="kw">as _</span>;
+            <span class="kw">let </span>len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = <a class="self" href="#136">self</a>.inner.len;
             <span class="kw">if </span>len == <span class="number">0 </span>{
-                <span class="kw">return </span>Default::default();
+                <span class="kw">return </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default::default</a>();
             }
-            <span class="kw">let </span>slice = slice::from_raw_parts(ptr, len + <span class="number">1</span>);
-            GStr::from_utf8_with_nul_unchecked(slice)
+            <span class="kw">let </span>slice = <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#138">ptr</a>, <a href="#139">len</a> + <span class="number">1</span>);
+            <a href="gstring.rs.html#60-64">GStr::from_utf8_with_nul_unchecked</a>(<a href="#143">slice</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Finalizes the builder, converting it to a [`GString`].
-    </span><span class="attr">#[must_use = <span class="string">&quot;String returned from the builder should probably be used&quot;</span>]
+    </span><span class="attr">#[must_use = <span class="string">"String returned from the builder should probably be used"</span>]
     #[inline]
-    </span><span class="kw">pub fn </span>into_string(<span class="self">self</span>) -&gt; <span class="kw">crate</span>::GString {
+    </span><span class="kw">pub fn </span>into_string(<span class="self">self</span>) -&gt; <a href="gstring.rs.html#996"><span class="kw">crate</span>::GString</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>s = mem::ManuallyDrop::new(<span class="self">self</span>);
-            <span class="kw">crate</span>::GString::from_ptr_and_len_unchecked(s.inner.str, s.inner.len)
+            <span class="kw">let </span>s = mem::ManuallyDrop::new(<a class="self" href="#152">self</a>);
+            <a href="gstring.rs.html#1209-1216"><span class="kw">crate</span>::GString::from_ptr_and_len_unchecked</a>(<a href="#154">s</a>.inner.str, <a href="#154">s</a>.inner.len)
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new empty string.
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new(<span class="string">&quot;&quot;</span>)
+        <a href="#52-72"><span class="self">Self</span>::new</a>(<span class="string">""</span>)
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="self">self</span>.as_str())
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#171">f</a>.write_str(<a class="self" href="#171">self</a>.<a href="#121-131">as_str</a>())
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="self">self</span>.as_str())
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#178">f</a>.write_str(<a class="self" href="#178">self</a>.<a href="#121-131">as_str</a>())
     }
 }
 
-<span class="kw">impl </span>PartialEq <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.as_str() == other.as_str()
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#185">self</a>.<a href="#121-131">as_str</a>() == <a href="#185">other</a>.<a href="#121-131">as_str</a>()
     }
 }
 
-<span class="kw">impl </span>PartialEq&lt;str&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>PartialEq&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; bool {
-        <span class="self">self</span>.as_str() == other
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#192">self</a>.<a href="#121-131">as_str</a>() == <a href="#192">other</a>
     }
 }
 
-<span class="kw">impl </span>PartialEq&lt;GStringBuilder&gt; <span class="kw">for </span>str {
+<span class="kw">impl </span>PartialEq&lt;<a href="#7-44">GStringBuilder</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStringBuilder) -&gt; bool {
-        <span class="self">self </span>== other.as_str()
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#7-44">GStringBuilder</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="self"><a href="#199">self</a> </span>== <a href="#199">other</a>.<a href="#121-131">as_str</a>()
     }
 }
 
-<span class="kw">impl </span>PartialEq&lt;GStr&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>PartialEq&lt;<a href="gstring.rs.html#24">GStr</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; bool {
-        <span class="self">self</span>.as_gstr() == other
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="gstring.rs.html#24">GStr</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#206">self</a>.<a href="#136-146">as_gstr</a>() == <a href="#206">other</a>
     }
 }
 
-<span class="kw">impl </span>PartialEq&lt;GStringBuilder&gt; <span class="kw">for </span>GStr {
+<span class="kw">impl </span>PartialEq&lt;<a href="#7-44">GStringBuilder</a>&gt; <span class="kw">for </span><a href="gstring.rs.html#24">GStr</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStringBuilder) -&gt; bool {
-        <span class="self">self </span>== other.as_gstr()
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#7-44">GStringBuilder</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="self"><a href="#213">self</a> </span>== <a href="#213">other</a>.<a href="#136-146">as_gstr</a>()
     }
 }
 
-<span class="kw">impl </span>Eq <span class="kw">for </span>GStringBuilder {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {}
 
-<span class="kw">impl </span>cmp::PartialOrd <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">cmp::PartialOrd</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
+        <span class="prelude-val">Some</span>(<a class="self" href="#222">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#222">other</a>))
     }
 }
 
-<span class="kw">impl </span>cmp::PartialOrd&lt;str&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>cmp::PartialOrd&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other))
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
+        <span class="prelude-val">Some</span>(<a class="self" href="#229">self</a>.<a href="#121-131">as_str</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#229">other</a>))
     }
 }
 
-<span class="kw">impl </span>cmp::PartialOrd&lt;GStringBuilder&gt; <span class="kw">for </span>str {
+<span class="kw">impl </span>cmp::PartialOrd&lt;<a href="#7-44">GStringBuilder</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStringBuilder) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other.as_str()))
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#7-44">GStringBuilder</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
+        <span class="prelude-val">Some</span>(<a class="self" href="#236">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#236">other</a>.<a href="#121-131">as_str</a>()))
     }
 }
 
-<span class="kw">impl </span>cmp::PartialOrd&lt;GStr&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>cmp::PartialOrd&lt;<a href="gstring.rs.html#24">GStr</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_gstr().cmp(other))
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="gstring.rs.html#24">GStr</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
+        <span class="prelude-val">Some</span>(<a class="self" href="#243">self</a>.<a href="#136-146">as_gstr</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#243">other</a>))
     }
 }
 
-<span class="kw">impl </span>cmp::PartialOrd&lt;GStringBuilder&gt; <span class="kw">for </span>GStr {
+<span class="kw">impl </span>cmp::PartialOrd&lt;<a href="#7-44">GStringBuilder</a>&gt; <span class="kw">for </span><a href="gstring.rs.html#24">GStr</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStringBuilder) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other.as_gstr()))
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><a href="#7-44">GStringBuilder</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
+        <span class="prelude-val">Some</span>(<a class="self" href="#250">self</a>.<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#250">other</a>.<a href="#136-146">as_gstr</a>()))
     }
 }
 
-<span class="kw">impl </span>cmp::Ord <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp::Ord</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; cmp::Ordering {
-        <span class="self">self</span>.as_str().cmp(other.as_str())
+    </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a> {
+        <a class="self" href="#257">self</a>.<a href="#121-131">as_str</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#257">other</a>.<a href="#121-131">as_str</a>())
     }
 }
 
-<span class="kw">impl </span>hash::Hash <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">hash::Hash</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>hash&lt;H&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H)
     <span class="kw">where
-        </span>H: hash::Hasher,
+        </span>H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">hash::Hasher</a>,
     {
-        <span class="self">self</span>.as_str().hash(state)
+        <a class="self" href="#264">self</a>.<a href="#121-131">as_str</a>().<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">hash</a>(<a href="#264">state</a>)
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;[u8]&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
-        <span class="self">self</span>.as_bytes()
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
+        <a class="self" href="#274">self</a>.as_bytes()
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;str&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.as_str()
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
+        <a class="self" href="#281">self</a>.<a href="#121-131">as_str</a>()
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;GStr&gt; <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span>AsRef&lt;<a href="gstring.rs.html#24">GStr</a>&gt; <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
-        <span class="self">self</span>.as_gstr()
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="gstring.rs.html#24">GStr</a> {
+        <a class="self" href="#288">self</a>.<a href="#136-146">as_gstr</a>()
     }
 }
 
-<span class="kw">impl </span>ops::Deref <span class="kw">for </span>GStringBuilder {
-    <span class="kw">type </span>Target = str;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
+    <span class="kw">type </span>Target = <a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.as_str()
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
+        <a class="self" href="#297">self</a>.<a href="#121-131">as_str</a>()
     }
 }
 
-<span class="kw">impl </span>fmt::Write <span class="kw">for </span>GStringBuilder {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Write.html">fmt::Write</a> <span class="kw">for </span><a href="#7-44">GStringBuilder</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>write_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, s: <span class="kw-2">&amp;</span>str) -&gt; fmt::Result {
-        <span class="self">self</span>.append(s);
+    </span><span class="kw">fn </span>write_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a class="self" href="#304">self</a>.<a href="#77-85">append</a>(<a href="#304">s</a>);
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>write_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, c: char) -&gt; fmt::Result {
-        <span class="self">self</span>.append_c(c);
+    </span><span class="kw">fn </span>write_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, c: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a class="self" href="#310">self</a>.<a href="#103-107">append_c</a>(<a href="#310">c</a>);
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -757,40 +759,40 @@
 </span><span class="kw">mod </span>tests {
     <span class="attr">#[test]
     </span><span class="kw">fn </span>append() {
-        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">&quot;&quot;</span>);
-        s.append(<span class="string">&quot;Hello&quot;</span>);
-        s.append(<span class="string">&quot; &quot;</span>);
-        s.append(<span class="string">&quot;there!&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">&quot;Hello there!&quot;</span>);
-        <span class="macro">assert_eq!</span>(s.into_string().as_str(), <span class="string">&quot;Hello there!&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">""</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">""</span>);
+        s.append(<span class="string">"Hello"</span>);
+        s.append(<span class="string">" "</span>);
+        s.append(<span class="string">"there!"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">"Hello there!"</span>);
+        <span class="macro">assert_eq!</span>(s.into_string().as_str(), <span class="string">"Hello there!"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>prepend() {
-        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;456&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">&quot;456&quot;</span>);
-        s.prepend(<span class="string">&quot;123&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">&quot;123456&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">"456"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">"456"</span>);
+        s.prepend(<span class="string">"123"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">"123456"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>default() {
         <span class="kw">let </span>s1: <span class="kw">crate</span>::GStringBuilder = Default::default();
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s1, <span class="string">&quot;&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s1, <span class="string">""</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>display() {
-        <span class="kw">let </span>s: <span class="kw">crate</span>::GStringBuilder = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;This is a string.&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{s}&quot;</span>), <span class="string">&quot;This is a string.&quot;</span>);
+        <span class="kw">let </span>s: <span class="kw">crate</span>::GStringBuilder = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">"This is a string."</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{s}"</span>), <span class="string">"This is a string."</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>eq() {
-        <span class="kw">let </span>a1 = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;a&quot;</span>);
-        <span class="kw">let </span>a2 = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;a&quot;</span>);
-        <span class="kw">let </span>b = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">&quot;b&quot;</span>);
+        <span class="kw">let </span>a1 = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">"a"</span>);
+        <span class="kw">let </span>a2 = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">"a"</span>);
+        <span class="kw">let </span>b = <span class="kw">crate</span>::GStringBuilder::new(<span class="string">"b"</span>);
         <span class="macro">assert_eq!</span>(a1, a2);
         <span class="macro">assert_ne!</span>(a1, b);
         <span class="macro">assert_ne!</span>(a2, b);
@@ -801,9 +803,8 @@
         <span class="kw">use </span>std::fmt::Write;
 
         <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="kw">crate</span>::GStringBuilder::default();
-        <span class="macro">write!</span>(<span class="kw-2">&amp;mut </span>s, <span class="string">&quot;bla bla {} bla&quot;</span>, <span class="number">123</span>).unwrap();
-        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">&quot;bla bla 123 bla&quot;</span>);
+        <span class="macro">write!</span>(<span class="kw-2">&amp;mut </span>s, <span class="string">"bla bla {} bla"</span>, <span class="number">123</span>).unwrap();
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;*</span>s, <span class="string">"bla bla 123 bla"</span>);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

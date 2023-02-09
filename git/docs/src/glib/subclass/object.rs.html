@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/object.rs`."><title>object.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/object.rs`."><title>object.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -723,31 +725,132 @@
 <a href="#650" id="650">650</a>
 <a href="#651" id="651">651</a>
 <a href="#652" id="652">652</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! Module that contains all types needed for creating a direct subclass of `GObject`
 //! or implementing virtual methods of it.
 
-</span><span class="kw">use </span>std::{mem, ptr};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use super</span>::{prelude::<span class="kw-2">*</span>, Signal};
-<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, Cast, Object, ParamSpec, Value};
+<span class="kw">use super</span>::{<a href="mod.rs.html#442-458">prelude</a>::<span class="kw-2">*</span>, <a href="signal.rs.html#29-35">Signal</a>};
+<span class="kw">use crate</span>::{<a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../object.rs.html#1351-1354">Object</a>, <a href="../param_spec.rs.html#19-42">ParamSpec</a>, <a href="../collections/slice.rs.html#15-19">Slice</a>, <a href="../value.rs.html#476-510">Value</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Trait for implementors of `glib::Object` subclasses.
 ///
-/// This allows overriding the virtual methods of `glib::Object`.
-</span><span class="kw">pub trait </span>ObjectImpl: ObjectSubclass + ObjectImplExt {
+/// This allows overriding the virtual methods of `glib::Object`. Except for
+/// `finalize` as implementing `Drop` would allow the same behavior.
+</span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a>: <a href="types.rs.html#584-701">ObjectSubclass</a> + <a href="#293-354">ObjectImplExt</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[ParamSpec] {
+    </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Signals installed for this type.
-    </span><span class="kw">fn </span>signals() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[Signal] {
+    </span><span class="kw">fn </span>signals() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="signal.rs.html#29-35">Signal</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
@@ -758,8 +861,14 @@
     /// given index is set. The new value is passed as `glib::Value`.
     ///
     /// `value` is guaranteed to be of the correct type for the given property.
-    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, _value: <span class="kw-2">&amp;</span>Value, _pspec: <span class="kw-2">&amp;</span>ParamSpec) {
-        <span class="macro">unimplemented!</span>()
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// the generic setter for all properties of this type. Should be
+    ///  overridden for every type with properties. If implementations of
+    ///  `set_property` don't emit property change notification explicitly, this will
+    ///  be done implicitly by the type system. However, if the notify signal is
+    ///  emitted explicitly, the type system will not emit it a second time.
+    </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -769,9 +878,12 @@
     /// given index should be returned.
     ///
     /// The returned `Value` must be of the correct type for the given property.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;get_property&quot;</span>)]
-    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, _pspec: <span class="kw-2">&amp;</span>ParamSpec) -&gt; Value {
-        <span class="macro">unimplemented!</span>()
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// the generic getter for all properties of this type. Should be
+    ///  overridden for every type with properties.
+    </span><span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
+    </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#476-510">Value</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -779,9 +891,17 @@
     ///
     /// This is called once construction of the instance is finished.
     ///
-    /// Should chain up to the parent class&#39; implementation.
+    /// Should chain up to the parent class' implementation.
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// the `constructed` function is called by [`Object::new()`][crate::Object::new()] as the
+    ///  final step of the object creation process. At the point of the call, all
+    ///  construction properties have been set on the object. The purpose of this
+    ///  call is to allow for object initialisation steps that can only be performed
+    ///  after construction properties have been set. `constructed` implementors
+    ///  should chain up to the `constructed` call of their parent class to allow it
+    ///  to complete its initialisation.
     </span><span class="kw">fn </span>constructed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.parent_constructed();
+        <a class="self" href="#76">self</a>.<a href="#297-306">parent_constructed</a>();
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -791,20 +911,51 @@
     /// The object is also expected to be able to answer client method invocations (with possibly an
     /// error code but no memory violation) until it is dropped. `dispose()` can be executed more
     /// than once.
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// the `dispose` function is supposed to drop all references to other
+    ///  objects, but keep the instance otherwise intact, so that client method
+    ///  invocations still work. It may be run multiple times (due to reference
+    ///  loops). Before returning, `dispose` should chain up to the `dispose` method
+    ///  of the parent class.
     </span><span class="kw">fn </span>dispose(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
+
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Function to be called when property change is notified for with
+    /// `self.notify("property")`.
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Emits a "notify" signal for the property `property_name` on `self`.
+    ///
+    /// When possible, eg. when signaling a property change from within the class
+    /// that registered the property, you should use [`ObjectExt::notify_by_pspec()`][crate::prelude::ObjectExt::notify_by_pspec()]
+    /// instead.
+    ///
+    /// Note that emission of the notify signal may be blocked with
+    /// [`ObjectExt::freeze_notify()`][crate::prelude::ObjectExt::freeze_notify()]. In this case, the signal emissions are queued
+    /// and will be emitted (in reverse order) when [`ObjectExt::thaw_notify()`][crate::prelude::ObjectExt::thaw_notify()] is
+    /// called.
+    </span><span class="kw">fn </span>notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+        <a class="self" href="#109">self</a>.<a href="#311-323">parent_notify</a>(<a href="#109">pspec</a>)
+    }
+
+    <span class="doccomment">/// emits property change notification for a bunch
+    ///  of properties. Overriding `dispatch_properties_changed` should be rarely
+    ///  needed.
+    </span><span class="kw">fn </span>dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
+        <a class="self" href="#116">self</a>.<a href="#328-341">parent_dispatch_properties_changed</a>(<a href="#116">pspecs</a>)
+    }
 }
 
-<span class="attr">#[doc(alias = <span class="string">&quot;get_property&quot;</span>)]
-</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>property&lt;T: ObjectImpl&gt;(
-    obj: <span class="kw-2">*mut </span>gobject_ffi::GObject,
-    id: u32,
-    value: <span class="kw-2">*mut </span>gobject_ffi::GValue,
-    pspec: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec,
+<span class="attr">#[doc(alias = <span class="string">"get_property"</span>)]
+</span><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>property&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(
+    obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>,
+    id: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+    value: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
+    pspec: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>,
 ) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(obj <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#123">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#128">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    <span class="kw">let </span>v = imp.property(id <span class="kw">as </span>usize, <span class="kw-2">&amp;</span>from_glib_borrow(pspec));
+    <span class="kw">let </span>v = <a href="#129">imp</a>.<a href="#58-60">property</a>(<a href="#124">id</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="kw-2">&amp;</span><a href="../translate.rs.html#1642-1644">from_glib_borrow</a>(<a href="#126">pspec</a>));
 
     <span class="comment">// We first unset the value we get passed in, in case it contained
     // any previous data. Then we directly overwrite it with our new
@@ -814,44 +965,63 @@
     // Without this, by using the GValue API, we would have to create
     // a copy of the value when setting it on the destination just to
     // immediately free the original value afterwards.
-    </span>gobject_ffi::g_value_unset(value);
-    <span class="kw">let </span>v = mem::ManuallyDrop::new(v);
-    ptr::write(value, ptr::read(v.to_glib_none().<span class="number">0</span>));
+    </span>gobject_ffi::g_value_unset(<a href="#125">value</a>);
+    <span class="kw">let </span>v = mem::ManuallyDrop::new(<a href="#131">v</a>);
+    ptr::write(<a href="#125">value</a>, ptr::read(<a href="#142">v</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>));
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>set_property&lt;T: ObjectImpl&gt;(
-    obj: <span class="kw-2">*mut </span>gobject_ffi::GObject,
-    id: u32,
-    value: <span class="kw-2">*mut </span>gobject_ffi::GValue,
-    pspec: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec,
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>set_property&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(
+    obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>,
+    id: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+    value: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>,
+    pspec: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>,
 ) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(obj <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = instance.imp();
-    imp.set_property(
-        id <span class="kw">as </span>usize,
-        <span class="kw-2">&amp;*</span>(value <span class="kw">as </span><span class="kw-2">*mut </span>Value),
-        <span class="kw-2">&amp;</span>from_glib_borrow(pspec),
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#147">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#152">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <a href="#153">imp</a>.<a href="#43-45">set_property</a>(
+        <a href="#148">id</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+        <span class="kw-2">&amp;*</span>(<a href="#149">value</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#476-510">Value</a>),
+        <span class="kw-2">&amp;</span><a href="../translate.rs.html#1642-1644">from_glib_borrow</a>(<a href="#150">pspec</a>),
     );
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>constructed&lt;T: ObjectImpl&gt;(obj: <span class="kw-2">*mut </span>gobject_ffi::GObject) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(obj <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = instance.imp();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>constructed&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#161">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#162">instance</a>.<a href="types.rs.html#84">imp</a>();
 
-    imp.constructed();
+    <a href="#163">imp</a>.<a href="#76-78">constructed</a>();
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispose&lt;T: ObjectImpl&gt;(obj: <span class="kw-2">*mut </span>gobject_ffi::GObject) {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(obj <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = instance.imp();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(
+    obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>,
+    pspec: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>,
+) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#169">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#172">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <a href="#173">imp</a>.<a href="#109-111">notify</a>(<span class="kw-2">&amp;</span><a href="../translate.rs.html#1642-1644">from_glib_borrow</a>(<a href="#170">pspec</a>));
+}
 
-    imp.dispose();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dispatch_properties_changed&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(
+    obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>,
+    n_pspecs: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+    pspecs: <span class="kw-2">*mut *mut </span><a href="../../../gobject_sys/struct.GParamSpec.html">gobject_ffi::GParamSpec</a>,
+) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#178">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#182">instance</a>.<a href="types.rs.html#84">imp</a>();
+    <a href="#183">imp</a>.<a href="#116-118">dispatch_properties_changed</a>(<a href="../collections/slice.rs.html#405-413">Slice::from_glib_borrow_num</a>(<a href="#180">pspecs</a>, <a href="#179">n_pspecs</a> <span class="kw">as _</span>));
+}
 
-    <span class="comment">// Chain up to the parent&#39;s dispose.
-    </span><span class="kw">let </span>data = T::type_data();
-    <span class="kw">let </span>parent_class = data.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GObjectClass;
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span>parent_class).dispose {
-        func(obj);
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dispose&lt;T: <a href="#17-119">ObjectImpl</a>&gt;(obj: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">gobject_ffi::GObject</a>) {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#187">obj</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#188">instance</a>.<a href="types.rs.html#84">imp</a>();
+
+    <a href="#189">imp</a>.<a href="#93">dispose</a>();
+
+    <span class="comment">// Chain up to the parent's dispose.
+    </span><span class="kw">let </span>data = <a href="types.rs.html#554">T::type_data</a>();
+    <span class="kw">let </span>parent_class = <a href="#194">data</a>.as_ref().<a href="types.rs.html#458-461">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#195">parent_class</a>).dispose {
+        <a href="#196">func</a>(<a href="#187">obj</a>);
     }
 }
 
@@ -859,77 +1029,79 @@
 </span><span class="doccomment">/// Trait containing only the property related functions of `ObjectImpl`.
 /// Implemented by the `Props` macro.
 /// When implementing `ObjectImpl` you may want to delegate the function calls to this trait.
-</span><span class="kw">pub trait </span>DerivedObjectProperties: ObjectSubclass {
+</span><span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.DerivedObjectProperties.html">DerivedObjectProperties</a>: <a href="types.rs.html#584-701">ObjectSubclass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Properties installed for this type.
-    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[ParamSpec] {
+    </span><span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>] {
         <span class="kw-2">&amp;</span>[]
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`] macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, _value: <span class="kw-2">&amp;</span>Value, _pspec: <span class="kw-2">&amp;</span>ParamSpec) {
-        <span class="macro">unimplemented!</span>()
+    </span><span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _value: <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Similar to [`ObjectImpl`](trait.ObjectImpl.html) but auto-generated by the [`Properties`] macro
     /// to allow handling more complex use-cases.
-    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, _pspec: <span class="kw-2">&amp;</span>ParamSpec) -&gt; Value {
-        <span class="macro">unimplemented!</span>()
+    </span><span class="kw">fn </span>derived_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, _pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) -&gt; <a href="../value.rs.html#476-510">Value</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>()
     }
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
-</span><span class="doccomment">/// Extension trait for `glib::Object`&#39;s class struct.
+</span><span class="doccomment">/// Extension trait for `glib::Object`'s class struct.
 ///
 /// This contains various class methods and allows subclasses to override signal class handlers.
-</span><span class="kw">pub unsafe trait </span>ObjectClassSubclassExt: Sized + <span class="lifetime">&#39;static </span>{
-    <span class="kw">fn </span>override_signal_class_handler&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, class_handler: F)
+</span><span class="kw">pub unsafe trait </span><a href="../../../glib/subclass/object/trait.ObjectClassSubclassExt.html">ObjectClassSubclassExt</a>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <span class="lifetime">'static </span>{
+    <span class="kw">fn </span>override_signal_class_handler&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, class_handler: F)
     <span class="kw">where
-        </span>F: Fn(<span class="kw-2">&amp;</span><span class="kw">super</span>::SignalClassHandlerToken, <span class="kw-2">&amp;</span>[Value]) -&gt; <span class="prelude-ty">Option</span>&lt;Value&gt; + Send + Sync + <span class="lifetime">&#39;static</span>,
+        </span>F: Fn(<span class="kw-2">&amp;</span><a href="signal.rs.html#39-49"><span class="kw">super</span>::SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{
-            <span class="kw">super</span>::types::signal_override_class_handler(
-                name,
-                <span class="kw-2">*</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>ffi::GType),
-                class_handler,
+            <a href="types.rs.html#1156-1211"><span class="kw">super</span>::types::signal_override_class_handler</a>(
+                <a href="#232">name</a>,
+                <span class="kw-2">*</span>(<span class="self"><a href="#232">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_ as </span><span class="kw-2">*mut </span>ffi::GType),
+                <a href="#232">class_handler</a>,
             );
         }
     }
 }
 
-<span class="kw">unsafe impl </span>ObjectClassSubclassExt <span class="kw">for </span><span class="kw">crate</span>::Class&lt;Object&gt; {}
+<span class="kw">unsafe impl </span><a href="#231-244">ObjectClassSubclassExt</a> <span class="kw">for </span><span class="kw">crate</span>::Class&lt;<a href="../object.rs.html#1351-1354">Object</a>&gt; {}
 
-<span class="kw">unsafe impl</span>&lt;T: ObjectImpl&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span>Object {
+<span class="kw">unsafe impl</span>&lt;T: <a href="#17-119">ObjectImpl</a>&gt; IsSubclassable&lt;T&gt; <span class="kw">for </span><a href="../object.rs.html#1351-1354">Object</a> {
     <span class="kw">fn </span>class_init(class: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::Class&lt;<span class="self">Self</span>&gt;) {
-        <span class="kw">let </span>klass = class.as_mut();
-        klass.set_property = <span class="prelude-val">Some</span>(set_property::&lt;T&gt;);
-        klass.get_property = <span class="prelude-val">Some</span>(property::&lt;T&gt;);
-        klass.constructed = <span class="prelude-val">Some</span>(constructed::&lt;T&gt;);
-        klass.dispose = <span class="prelude-val">Some</span>(dispose::&lt;T&gt;);
+        <span class="kw">let </span>klass = <a href="#249">class</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">as_mut</a>();
+        <a href="#250">klass</a>.set_property = <span class="prelude-val">Some</span>(set_property::&lt;T&gt;);
+        <a href="#250">klass</a>.get_property = <span class="prelude-val">Some</span>(property::&lt;T&gt;);
+        <a href="#250">klass</a>.constructed = <span class="prelude-val">Some</span>(constructed::&lt;T&gt;);
+        <a href="#250">klass</a>.notify = <span class="prelude-val">Some</span>(notify::&lt;T&gt;);
+        <a href="#250">klass</a>.dispatch_properties_changed = <span class="prelude-val">Some</span>(dispatch_properties_changed::&lt;T&gt;);
+        <a href="#250">klass</a>.dispose = <span class="prelude-val">Some</span>(dispose::&lt;T&gt;);
 
         <span class="kw">let </span>pspecs = &lt;T <span class="kw">as </span>ObjectImpl&gt;::properties();
         <span class="kw">if </span>!pspecs.is_empty() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>pspecs_ptrs = Vec::with_capacity(pspecs.len() + <span class="number">1</span>);
+                <span class="kw">let </span><span class="kw-2">mut </span>pspecs_ptrs = Vec::with_capacity(<a href="#258">pspecs</a>.len() + <span class="number">1</span>);
 
-                pspecs_ptrs.push(ptr::null_mut());
+                <a href="#261">pspecs_ptrs</a>.push(ptr::null_mut());
 
                 <span class="kw">for </span>pspec <span class="kw">in </span>pspecs {
                     pspecs_ptrs.push(pspec.to_glib_none().<span class="number">0</span>);
                 }
 
                 gobject_ffi::g_object_class_install_properties(
-                    klass,
-                    pspecs_ptrs.len() <span class="kw">as </span>u32,
-                    pspecs_ptrs.as_mut_ptr(),
+                    <a href="#250">klass</a>,
+                    <a href="#261">pspecs_ptrs</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+                    <a href="#261">pspecs_ptrs</a>.as_mut_ptr(),
                 );
             }
         }
 
-        <span class="kw">let </span>type_ = T::type_();
+        <span class="kw">let </span>type_ = <a href="types.rs.html#561">T::type_</a>();
         <span class="kw">let </span>signals = &lt;T <span class="kw">as </span>ObjectImpl&gt;::signals();
         <span class="kw">for </span>signal <span class="kw">in </span>signals {
             signal.register(type_);
@@ -940,43 +1112,75 @@
     </span><span class="kw">fn </span>instance_init(_instance: <span class="kw-2">&amp;mut </span><span class="kw">super</span>::InitializingObject&lt;T&gt;) {}
 }
 
-<span class="kw">pub trait </span>ObjectImplExt: ObjectSubclass {
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <a href="#293-354"><span class="kw">super</span>::ObjectImplExt</a>&gt; <a href="#289">Sealed</a> <span class="kw">for </span>T {}
+}
+
+<span class="kw">pub trait </span><a href="../../../glib/subclass/object/trait.ObjectImplExt.html">ObjectImplExt</a>: <a href="#289">sealed::Sealed</a> + <a href="types.rs.html#584-701">ObjectSubclass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// Chain up to the parent class&#39; implementation of `glib::Object::constructed()`.
-    </span><span class="kw">fn </span>parent_constructed(<span class="kw-2">&amp;</span><span class="self">self</span>);
+    </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::constructed()`.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>parent_constructed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>data = <a href="types.rs.html#554"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_class = <a href="#299">data</a>.as_ref().<a href="types.rs.html#458-461">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#300">parent_class</a>).constructed {
+                <a href="#302">func</a>(<a class="self" href="#297">self</a>.<a href="types.rs.html#722">obj</a>().<a href="../object.rs.html#272-279">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1351-1354">Object</a>&gt;().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+            }
+        }
+    }
+
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::notify()`.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>parent_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, pspec: <span class="kw-2">&amp;</span><a href="../param_spec.rs.html#19-42">ParamSpec</a>) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>data = <a href="types.rs.html#554"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_class = <a href="#313">data</a>.as_ref().<a href="types.rs.html#458-461">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#314">parent_class</a>).notify {
+                <a href="#316">func</a>(
+                    <a class="self" href="#311">self</a>.<a href="types.rs.html#722">obj</a>().<a href="../object.rs.html#272-279">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1351-1354">Object</a>&gt;().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#311">pspec</a>.<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                );
+            }
+        }
+    }
+
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>parent_dispatch_properties_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, pspecs: <span class="kw-2">&amp;</span>[<a href="../param_spec.rs.html#19-42">ParamSpec</a>]) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>data = <a href="types.rs.html#554"><span class="self">Self</span>::type_data</a>();
+            <span class="kw">let </span>parent_class = <a href="#330">data</a>.as_ref().<a href="types.rs.html#458-461">parent_class</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObjectClass.html">gobject_ffi::GObjectClass</a>;
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span><a href="#331">parent_class</a>).dispatch_properties_changed {
+                <a href="#333">func</a>(
+                    <a class="self" href="#328">self</a>.<a href="types.rs.html#722">obj</a>().<a href="../object.rs.html#272-279">unsafe_cast_ref</a>::&lt;<a href="../object.rs.html#1351-1354">Object</a>&gt;().<a href="../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#328">pspecs</a>.len() <span class="kw">as _</span>,
+                    <a href="#328">pspecs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                );
+            }
+        }
+    }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Chain up to parent class signal handler.
     </span><span class="kw">fn </span>signal_chain_from_overridden(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        token: <span class="kw-2">&amp;</span><span class="kw">super</span>::SignalClassHandlerToken,
-        values: <span class="kw-2">&amp;</span>[Value],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Value&gt;;
-}
-
-<span class="kw">impl</span>&lt;T: ObjectImpl&gt; ObjectImplExt <span class="kw">for </span>T {
-    <span class="attr">#[inline]
-    </span><span class="kw">fn </span>parent_constructed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        token: <span class="kw-2">&amp;</span><a href="signal.rs.html#39-49"><span class="kw">super</span>::SignalClassHandlerToken</a>,
+        values: <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>],
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>data = T::type_data();
-            <span class="kw">let </span>parent_class = data.as_ref().parent_class() <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GObjectClass;
-
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>func) = (<span class="kw-2">*</span>parent_class).constructed {
-                func(<span class="self">self</span>.obj().unsafe_cast_ref::&lt;Object&gt;().to_glib_none().<span class="number">0</span>);
-            }
-        }
-    }
-
-    <span class="kw">fn </span>signal_chain_from_overridden(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        token: <span class="kw-2">&amp;</span><span class="kw">super</span>::SignalClassHandlerToken,
-        values: <span class="kw-2">&amp;</span>[Value],
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Value&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">super</span>::types::signal_chain_from_overridden(<span class="self">self</span>.obj().as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, token, values)
+            <a href="types.rs.html#1213-1231"><span class="kw">super</span>::types::signal_chain_from_overridden</a>(<a class="self" href="#346">self</a>.<a href="types.rs.html#722">obj</a>().<a href="../object.rs.html#48">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#347">token</a>, <a href="#348">values</a>)
         }
     }
 }
+
+<span class="kw">impl</span>&lt;T: <a href="#17-119">ObjectImpl</a>&gt; <a href="#293-354">ObjectImplExt</a> <span class="kw">for </span>T {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>test {
@@ -989,6 +1193,8 @@
     </span><span class="kw">use crate as </span>glib;
 
     <span class="kw">mod </span>imp {
+        <span class="kw">use </span>std::sync::OnceLock;
+
         <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
         <span class="comment">// A dummy `Object` to test setting an `Object` property and returning an `Object` in signals
@@ -997,7 +1203,7 @@
 
         <span class="attr">#[glib::object_subclass]
         </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>ChildObject {
-            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;ChildObject&quot;</span>;
+            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"ChildObject"</span>;
             <span class="kw">type </span>Type = <span class="kw">super</span>::ChildObject;
         }
 
@@ -1012,86 +1218,82 @@
 
         <span class="attr">#[glib::object_subclass]
         </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>SimpleObject {
-            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;SimpleObject&quot;</span>;
+            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"SimpleObject"</span>;
             <span class="kw">type </span>Type = <span class="kw">super</span>::SimpleObject;
             <span class="kw">type </span>Interfaces = (<span class="kw">super</span>::Dummy,);
         }
 
         <span class="kw">impl </span>ObjectImpl <span class="kw">for </span>SimpleObject {
-            <span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[ParamSpec] {
-                <span class="kw">use </span>once_cell::sync::Lazy;
-                <span class="kw">static </span>PROPERTIES: Lazy&lt;Vec&lt;ParamSpec&gt;&gt; = Lazy::new(|| {
+            <span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[ParamSpec] {
+                <span class="kw">static </span>PROPERTIES: OnceLock&lt;Vec&lt;ParamSpec&gt;&gt; = OnceLock::new();
+                PROPERTIES.get_or_init(|| {
                     <span class="macro">vec!</span>[
-                        <span class="kw">crate</span>::ParamSpecString::builder(<span class="string">&quot;name&quot;</span>).build(),
-                        <span class="kw">crate</span>::ParamSpecString::builder(<span class="string">&quot;construct-name&quot;</span>)
+                        <span class="kw">crate</span>::ParamSpecString::builder(<span class="string">"name"</span>).build(),
+                        <span class="kw">crate</span>::ParamSpecString::builder(<span class="string">"construct-name"</span>)
                             .construct_only()
                             .build(),
-                        <span class="kw">crate</span>::ParamSpecBoolean::builder(<span class="string">&quot;constructed&quot;</span>)
+                        <span class="kw">crate</span>::ParamSpecBoolean::builder(<span class="string">"constructed"</span>)
                             .read_only()
                             .build(),
-                        <span class="kw">crate</span>::ParamSpecObject::builder::&lt;<span class="kw">super</span>::ChildObject&gt;(<span class="string">&quot;child&quot;</span>).build(),
+                        <span class="kw">crate</span>::ParamSpecObject::builder::&lt;<span class="kw">super</span>::ChildObject&gt;(<span class="string">"child"</span>).build(),
                     ]
-                });
-
-                PROPERTIES.as_ref()
+                })
             }
 
-            <span class="kw">fn </span>signals() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw">super</span>::Signal] {
-                <span class="kw">use </span>once_cell::sync::Lazy;
-                <span class="kw">static </span>SIGNALS: Lazy&lt;Vec&lt;<span class="kw">super</span>::Signal&gt;&gt; = Lazy::new(|| {
+            <span class="kw">fn </span>signals() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw">super</span>::Signal] {
+                <span class="kw">static </span>SIGNALS: OnceLock&lt;Vec&lt;<span class="kw">super</span>::Signal&gt;&gt; = OnceLock::new();
+                SIGNALS.get_or_init(|| {
                     <span class="macro">vec!</span>[
-                        <span class="kw">super</span>::Signal::builder(<span class="string">&quot;name-changed&quot;</span>)
+                        <span class="kw">super</span>::Signal::builder(<span class="string">"name-changed"</span>)
                             .param_types([String::static_type()])
                             .build(),
-                        <span class="kw">super</span>::Signal::builder(<span class="string">&quot;change-name&quot;</span>)
+                        <span class="kw">super</span>::Signal::builder(<span class="string">"change-name"</span>)
                             .param_types([String::static_type()])
                             .return_type::&lt;String&gt;()
                             .action()
                             .class_handler(|<span class="kw">_</span>, args| {
                                 <span class="kw">let </span>obj = args[<span class="number">0</span>]
                                     .get::&lt;<span class="kw">super</span>::SimpleObject&gt;()
-                                    .expect(<span class="string">&quot;Failed to get Object from args[0]&quot;</span>);
+                                    .expect(<span class="string">"Failed to get Object from args[0]"</span>);
                                 <span class="kw">let </span>new_name = args[<span class="number">1</span>]
                                     .get::&lt;String&gt;()
-                                    .expect(<span class="string">&quot;Failed to get Object from args[1]&quot;</span>);
+                                    .expect(<span class="string">"Failed to get Object from args[1]"</span>);
                                 <span class="kw">let </span>imp = obj.imp();
 
                                 <span class="kw">let </span>old_name = imp.name.replace(<span class="prelude-val">Some</span>(new_name));
 
-                                obj.emit_by_name::&lt;()&gt;(<span class="string">&quot;name-changed&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;*</span>imp.name.borrow()]);
+                                obj.emit_by_name::&lt;()&gt;(<span class="string">"name-changed"</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;*</span>imp.name.borrow()]);
 
                                 <span class="prelude-val">Some</span>(old_name.to_value())
                             })
                             .build(),
-                        <span class="kw">super</span>::Signal::builder(<span class="string">&quot;create-string&quot;</span>)
+                        <span class="kw">super</span>::Signal::builder(<span class="string">"create-string"</span>)
                             .return_type::&lt;String&gt;()
                             .build(),
-                        <span class="kw">super</span>::Signal::builder(<span class="string">&quot;create-child-object&quot;</span>)
+                        <span class="kw">super</span>::Signal::builder(<span class="string">"create-child-object"</span>)
                             .return_type::&lt;<span class="kw">super</span>::ChildObject&gt;()
                             .build(),
                     ]
-                });
-
-                SIGNALS.as_ref()
+                })
             }
 
             <span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, value: <span class="kw-2">&amp;</span>Value, pspec: <span class="kw-2">&amp;</span><span class="kw">crate</span>::ParamSpec) {
                 <span class="kw">match </span>pspec.name() {
-                    <span class="string">&quot;name&quot; </span>=&gt; {
+                    <span class="string">"name" </span>=&gt; {
                         <span class="kw">let </span>name = value
                             .get()
-                            .expect(<span class="string">&quot;type conformity checked by &#39;Object::set_property&#39;&quot;</span>);
+                            .expect(<span class="string">"type conformity checked by 'Object::set_property'"</span>);
                         <span class="self">self</span>.name.replace(name);
                         <span class="self">self</span>.obj()
-                            .emit_by_name::&lt;()&gt;(<span class="string">&quot;name-changed&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;*</span><span class="self">self</span>.name.borrow()]);
+                            .emit_by_name::&lt;()&gt;(<span class="string">"name-changed"</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;*</span><span class="self">self</span>.name.borrow()]);
                     }
-                    <span class="string">&quot;construct-name&quot; </span>=&gt; {
+                    <span class="string">"construct-name" </span>=&gt; {
                         <span class="kw">let </span>name = value
                             .get()
-                            .expect(<span class="string">&quot;type conformity checked by &#39;Object::set_property&#39;&quot;</span>);
+                            .expect(<span class="string">"type conformity checked by 'Object::set_property'"</span>);
                         <span class="self">self</span>.construct_name.replace(name);
                     }
-                    <span class="string">&quot;child&quot; </span>=&gt; {
+                    <span class="string">"child" </span>=&gt; {
                         <span class="comment">// not stored, only used to test `set_property` with `Objects`
                     </span>}
                     <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
@@ -1100,9 +1302,9 @@
 
             <span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _id: usize, pspec: <span class="kw-2">&amp;</span><span class="kw">crate</span>::ParamSpec) -&gt; Value {
                 <span class="kw">match </span>pspec.name() {
-                    <span class="string">&quot;name&quot; </span>=&gt; <span class="self">self</span>.name.borrow().to_value(),
-                    <span class="string">&quot;construct-name&quot; </span>=&gt; <span class="self">self</span>.construct_name.borrow().to_value(),
-                    <span class="string">&quot;constructed&quot; </span>=&gt; <span class="self">self</span>.constructed.borrow().to_value(),
+                    <span class="string">"name" </span>=&gt; <span class="self">self</span>.name.borrow().to_value(),
+                    <span class="string">"construct-name" </span>=&gt; <span class="self">self</span>.construct_name.borrow().to_value(),
+                    <span class="string">"constructed" </span>=&gt; <span class="self">self</span>.constructed.borrow().to_value(),
                     <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
                 }
             }
@@ -1124,7 +1326,7 @@
 
         <span class="attr">#[glib::object_interface]
         </span><span class="kw">unsafe impl </span>ObjectInterface <span class="kw">for </span>DummyInterface {
-            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;Dummy&quot;</span>;
+            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Dummy"</span>;
         }
     }
 
@@ -1158,7 +1360,7 @@
             <span class="kw-2">*</span>(<span class="kw-2">&amp;</span>obj <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ as </span><span class="kw-2">*const </span>ffi::gpointer)
         });
 
-        <span class="macro">assert!</span>(obj.property::&lt;bool&gt;(<span class="string">&quot;constructed&quot;</span>));
+        <span class="macro">assert!</span>(obj.property::&lt;bool&gt;(<span class="string">"constructed"</span>));
 
         <span class="kw">let </span>weak = obj.downgrade();
         drop(obj);
@@ -1174,10 +1376,10 @@
 
         <span class="kw">let </span>properties = obj.list_properties();
         <span class="macro">assert_eq!</span>(properties.len(), <span class="number">4</span>);
-        <span class="macro">assert_eq!</span>(properties[<span class="number">0</span>].name(), <span class="string">&quot;name&quot;</span>);
-        <span class="macro">assert_eq!</span>(properties[<span class="number">1</span>].name(), <span class="string">&quot;construct-name&quot;</span>);
-        <span class="macro">assert_eq!</span>(properties[<span class="number">2</span>].name(), <span class="string">&quot;constructed&quot;</span>);
-        <span class="macro">assert_eq!</span>(properties[<span class="number">3</span>].name(), <span class="string">&quot;child&quot;</span>);
+        <span class="macro">assert_eq!</span>(properties[<span class="number">0</span>].name(), <span class="string">"name"</span>);
+        <span class="macro">assert_eq!</span>(properties[<span class="number">1</span>].name(), <span class="string">"construct-name"</span>);
+        <span class="macro">assert_eq!</span>(properties[<span class="number">2</span>].name(), <span class="string">"constructed"</span>);
+        <span class="macro">assert_eq!</span>(properties[<span class="number">3</span>].name(), <span class="string">"child"</span>);
     }
 
     <span class="attr">#[test]
@@ -1190,106 +1392,106 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_builder() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
         <span class="macro">assert_eq!</span>(
-            obj.property::&lt;String&gt;(<span class="string">&quot;construct-name&quot;</span>),
-            String::from(<span class="string">&quot;meh&quot;</span>)
+            obj.property::&lt;String&gt;(<span class="string">"construct-name"</span>),
+            String::from(<span class="string">"meh"</span>)
         );
 
-        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">&quot;name&quot;</span>), String::from(<span class="string">&quot;initial&quot;</span>));
+        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">"name"</span>), String::from(<span class="string">"initial"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_property() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
         <span class="macro">assert_eq!</span>(
-            obj.property::&lt;String&gt;(<span class="string">&quot;construct-name&quot;</span>),
-            String::from(<span class="string">&quot;meh&quot;</span>)
+            obj.property::&lt;String&gt;(<span class="string">"construct-name"</span>),
+            String::from(<span class="string">"meh"</span>)
         );
 
         <span class="macro">assert_eq!</span>(
-            obj.property::&lt;String&gt;(<span class="string">&quot;construct-name&quot;</span>),
-            String::from(<span class="string">&quot;meh&quot;</span>)
+            obj.property::&lt;String&gt;(<span class="string">"construct-name"</span>),
+            String::from(<span class="string">"meh"</span>)
         );
 
-        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">&quot;name&quot;</span>), String::from(<span class="string">&quot;initial&quot;</span>));
-        obj.set_property(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;test&quot;</span>);
-        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">&quot;name&quot;</span>), String::from(<span class="string">&quot;test&quot;</span>));
+        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">"name"</span>), String::from(<span class="string">"initial"</span>));
+        obj.set_property(<span class="string">"name"</span>, <span class="string">"test"</span>);
+        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">"name"</span>), String::from(<span class="string">"test"</span>));
 
         <span class="kw">let </span>child = Object::with_type(ChildObject::static_type());
-        obj.set_property(<span class="string">&quot;child&quot;</span>, <span class="kw-2">&amp;</span>child);
+        obj.set_property(<span class="string">"child"</span>, <span class="kw-2">&amp;</span>child);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;property &#39;construct-name&#39; of type &#39;SimpleObject&#39; is not writable&quot;</span>]
+    #[should_panic = <span class="string">"property 'construct-name' of type 'SimpleObject' is not writable"</span>]
     </span><span class="kw">fn </span>test_set_property_non_writable() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
-        obj.set_property(<span class="string">&quot;construct-name&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;test&quot;</span>);
+        obj.set_property(<span class="string">"construct-name"</span>, <span class="string">"test"</span>);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;property &#39;test&#39; of type &#39;SimpleObject&#39; not found&quot;</span>]
+    #[should_panic = <span class="string">"property 'test' of type 'SimpleObject' not found"</span>]
     </span><span class="kw">fn </span>test_set_property_not_found() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
-        obj.set_property(<span class="string">&quot;test&quot;</span>, <span class="kw-2">&amp;</span><span class="bool-val">true</span>);
+        obj.set_property(<span class="string">"test"</span>, <span class="bool-val">true</span>);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;property &#39;constructed&#39; of type &#39;SimpleObject&#39; is not writable&quot;</span>]
+    #[should_panic = <span class="string">"property 'constructed' of type 'SimpleObject' is not writable"</span>]
     </span><span class="kw">fn </span>test_set_property_not_writable() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
-        obj.set_property(<span class="string">&quot;constructed&quot;</span>, <span class="kw-2">&amp;</span><span class="bool-val">false</span>);
+        obj.set_property(<span class="string">"constructed"</span>, <span class="bool-val">false</span>);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;property &#39;name&#39; of type &#39;SimpleObject&#39; can&#39;t be set from the given type (expected: &#39;gchararray&#39;, got: &#39;gboolean&#39;)&quot;</span>]
+    #[should_panic = <span class="string">"property 'name' of type 'SimpleObject' can't be set from the given type (expected: 'gchararray', got: 'gboolean')"</span>]
     </span><span class="kw">fn </span>test_set_property_wrong_type() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
-        obj.set_property(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="bool-val">false</span>);
+        obj.set_property(<span class="string">"name"</span>, <span class="bool-val">false</span>);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;property &#39;child&#39; of type &#39;SimpleObject&#39; can&#39;t be set from the given type (expected: &#39;ChildObject&#39;, got: &#39;SimpleObject&#39;)&quot;</span>]
+    #[should_panic = <span class="string">"property 'child' of type 'SimpleObject' can't be set from the given type (expected: 'ChildObject', got: 'SimpleObject')"</span>]
     </span><span class="kw">fn </span>test_set_property_wrong_type_2() {
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;initial&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"initial"</span>)
             .build();
 
         <span class="kw">let </span>other_obj = Object::with_type(SimpleObject::static_type());
 
-        obj.set_property(<span class="string">&quot;child&quot;</span>, <span class="kw-2">&amp;</span>other_obj);
+        obj.set_property(<span class="string">"child"</span>, <span class="kw-2">&amp;</span>other_obj);
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;Can&#39;t set construct property &#39;construct-name&#39; for type &#39;SimpleObject&#39; twice&quot;</span>]
+    #[should_panic = <span class="string">"Can't set construct property 'construct-name' for type 'SimpleObject' twice"</span>]
     </span><span class="kw">fn </span>test_construct_property_set_twice() {
         <span class="kw">let </span>_obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh&quot;</span>)
-            .property(<span class="string">&quot;construct-name&quot;</span>, <span class="string">&quot;meh2&quot;</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh"</span>)
+            .property(<span class="string">"construct-name"</span>, <span class="string">"meh2"</span>)
             .build();
     }
 
@@ -1301,27 +1503,27 @@
         };
 
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;old-name&quot;</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"old-name"</span>)
             .build();
 
         <span class="kw">let </span>name_changed_triggered = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>name_changed_clone = name_changed_triggered.clone();
-        obj.connect(<span class="string">&quot;name-changed&quot;</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|args| {
-            <span class="kw">let </span>_obj = args[<span class="number">0</span>].get::&lt;Object&gt;().expect(<span class="string">&quot;Failed to get args[0]&quot;</span>);
-            <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().expect(<span class="string">&quot;Failed to get args[1]&quot;</span>);
+        obj.connect(<span class="string">"name-changed"</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|args| {
+            <span class="kw">let </span>_obj = args[<span class="number">0</span>].get::&lt;Object&gt;().expect(<span class="string">"Failed to get args[0]"</span>);
+            <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().expect(<span class="string">"Failed to get args[1]"</span>);
 
-            <span class="macro">assert_eq!</span>(name, <span class="string">&quot;new-name&quot;</span>);
+            <span class="macro">assert_eq!</span>(name, <span class="string">"new-name"</span>);
             name_changed_clone.store(<span class="bool-val">true</span>, Ordering::Relaxed);
 
             <span class="prelude-val">None
         </span>});
 
-        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">&quot;name&quot;</span>), String::from(<span class="string">&quot;old-name&quot;</span>));
+        <span class="macro">assert_eq!</span>(obj.property::&lt;String&gt;(<span class="string">"name"</span>), String::from(<span class="string">"old-name"</span>));
         <span class="macro">assert!</span>(!name_changed_triggered.load(Ordering::Relaxed));
 
         <span class="macro">assert_eq!</span>(
-            obj.emit_by_name::&lt;String&gt;(<span class="string">&quot;change-name&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="string">&quot;new-name&quot;</span>]),
-            <span class="string">&quot;old-name&quot;
+            obj.emit_by_name::&lt;String&gt;(<span class="string">"change-name"</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="string">"new-name"</span>]),
+            <span class="string">"old-name"
         </span>);
         <span class="macro">assert!</span>(name_changed_triggered.load(Ordering::Relaxed));
     }
@@ -1330,14 +1532,14 @@
     </span><span class="kw">fn </span>test_signal_return_expected_type() {
         <span class="kw">let </span>obj = Object::with_type(SimpleObject::static_type());
 
-        obj.connect(<span class="string">&quot;create-string&quot;</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|_args| {
-            <span class="prelude-val">Some</span>(<span class="string">&quot;return value&quot;</span>.to_value())
+        obj.connect(<span class="string">"create-string"</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|_args| {
+            <span class="prelude-val">Some</span>(<span class="string">"return value"</span>.to_value())
         });
 
         <span class="kw">let </span>signal_id = imp::SimpleObject::signals()[<span class="number">2</span>].signal_id();
 
         <span class="kw">let </span>value = obj.emit::&lt;String&gt;(signal_id, <span class="kw-2">&amp;</span>[]);
-        <span class="macro">assert_eq!</span>(value, <span class="string">&quot;return value&quot;</span>);
+        <span class="macro">assert_eq!</span>(value, <span class="string">"return value"</span>);
     }
 
     <span class="attr">#[test]
@@ -1348,32 +1550,31 @@
         };
 
         <span class="kw">let </span>obj = Object::builder::&lt;SimpleObject&gt;()
-            .property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;old-name&quot;</span>)
+            .property(<span class="string">"name"</span>, <span class="string">"old-name"</span>)
             .build();
 
         <span class="kw">let </span>name_changed_triggered = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>name_changed_clone = name_changed_triggered.clone();
 
-        obj.connect_notify(<span class="prelude-val">Some</span>(<span class="string">&quot;name&quot;</span>), <span class="kw">move </span>|<span class="kw">_</span>, <span class="kw">_</span>| {
+        obj.connect_notify(<span class="prelude-val">Some</span>(<span class="string">"name"</span>), <span class="kw">move </span>|<span class="kw">_</span>, <span class="kw">_</span>| {
             name_changed_clone.store(<span class="bool-val">true</span>, Ordering::Relaxed);
         });
-        obj.notify(<span class="string">&quot;name&quot;</span>);
+        obj.notify(<span class="string">"name"</span>);
         <span class="macro">assert!</span>(name_changed_triggered.load(Ordering::Relaxed));
     }
 
-    <span class="comment">// Note: can&#39;t test type mismatch in signals since panics accross FFI boundaries
+    <span class="comment">// Note: can't test type mismatch in signals since panics across FFI boundaries
     // are UB. See https://github.com/gtk-rs/glib/issues/518
 
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_signal_return_expected_object_type() {
         <span class="kw">let </span>obj = Object::with_type(SimpleObject::static_type());
 
-        obj.connect(<span class="string">&quot;create-child-object&quot;</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|_args| {
+        obj.connect(<span class="string">"create-child-object"</span>, <span class="bool-val">false</span>, <span class="kw">move </span>|_args| {
             <span class="prelude-val">Some</span>(Object::with_type(ChildObject::static_type()).to_value())
         });
-        <span class="kw">let </span>value: glib::Object = obj.emit_by_name(<span class="string">&quot;create-child-object&quot;</span>, <span class="kw-2">&amp;</span>[]);
+        <span class="kw">let </span>value: glib::Object = obj.emit_by_name(<span class="string">"create-child-object"</span>, <span class="kw-2">&amp;</span>[]);
         <span class="macro">assert!</span>(value.type_().is_a(ChildObject::static_type()));
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_database.rs`."><title>tls_database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_database.rs`."><title>tls_database.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -813,159 +815,48 @@
 <a href="#740" id="740">740</a>
 <a href="#741" id="741">741</a>
 <a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
-<a href="#748" id="748">748</a>
-<a href="#749" id="749">749</a>
-<a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-<a href="#753" id="753">753</a>
-<a href="#754" id="754">754</a>
-<a href="#755" id="755">755</a>
-<a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a>
-<a href="#758" id="758">758</a>
-<a href="#759" id="759">759</a>
-<a href="#760" id="760">760</a>
-<a href="#761" id="761">761</a>
-<a href="#762" id="762">762</a>
-<a href="#763" id="763">763</a>
-<a href="#764" id="764">764</a>
-<a href="#765" id="765">765</a>
-<a href="#766" id="766">766</a>
-<a href="#767" id="767">767</a>
-<a href="#768" id="768">768</a>
-<a href="#769" id="769">769</a>
-<a href="#770" id="770">770</a>
-<a href="#771" id="771">771</a>
-<a href="#772" id="772">772</a>
-<a href="#773" id="773">773</a>
-<a href="#774" id="774">774</a>
-<a href="#775" id="775">775</a>
-<a href="#776" id="776">776</a>
-<a href="#777" id="777">777</a>
-<a href="#778" id="778">778</a>
-<a href="#779" id="779">779</a>
-<a href="#780" id="780">780</a>
-<a href="#781" id="781">781</a>
-<a href="#782" id="782">782</a>
-<a href="#783" id="783">783</a>
-<a href="#784" id="784">784</a>
-<a href="#785" id="785">785</a>
-<a href="#786" id="786">786</a>
-<a href="#787" id="787">787</a>
-<a href="#788" id="788">788</a>
-<a href="#789" id="789">789</a>
-<a href="#790" id="790">790</a>
-<a href="#791" id="791">791</a>
-<a href="#792" id="792">792</a>
-<a href="#793" id="793">793</a>
-<a href="#794" id="794">794</a>
-<a href="#795" id="795">795</a>
-<a href="#796" id="796">796</a>
-<a href="#797" id="797">797</a>
-<a href="#798" id="798">798</a>
-<a href="#799" id="799">799</a>
-<a href="#800" id="800">800</a>
-<a href="#801" id="801">801</a>
-<a href="#802" id="802">802</a>
-<a href="#803" id="803">803</a>
-<a href="#804" id="804">804</a>
-<a href="#805" id="805">805</a>
-<a href="#806" id="806">806</a>
-<a href="#807" id="807">807</a>
-<a href="#808" id="808">808</a>
-<a href="#809" id="809">809</a>
-<a href="#810" id="810">810</a>
-<a href="#811" id="811">811</a>
-<a href="#812" id="812">812</a>
-<a href="#813" id="813">813</a>
-<a href="#814" id="814">814</a>
-<a href="#815" id="815">815</a>
-<a href="#816" id="816">816</a>
-<a href="#817" id="817">817</a>
-<a href="#818" id="818">818</a>
-<a href="#819" id="819">819</a>
-<a href="#820" id="820">820</a>
-<a href="#821" id="821">821</a>
-<a href="#822" id="822">822</a>
-<a href="#823" id="823">823</a>
-<a href="#824" id="824">824</a>
-<a href="#825" id="825">825</a>
-<a href="#826" id="826">826</a>
-<a href="#827" id="827">827</a>
-<a href="#828" id="828">828</a>
-<a href="#829" id="829">829</a>
-<a href="#830" id="830">830</a>
-<a href="#831" id="831">831</a>
-<a href="#832" id="832">832</a>
-<a href="#833" id="833">833</a>
-<a href="#834" id="834">834</a>
-<a href="#835" id="835">835</a>
-<a href="#836" id="836">836</a>
-<a href="#837" id="837">837</a>
-<a href="#838" id="838">838</a>
-<a href="#839" id="839">839</a>
-<a href="#840" id="840">840</a>
-<a href="#841" id="841">841</a>
-<a href="#842" id="842">842</a>
-<a href="#843" id="843">843</a>
-<a href="#844" id="844">844</a>
-<a href="#845" id="845">845</a>
-<a href="#846" id="846">846</a>
-<a href="#847" id="847">847</a>
-<a href="#848" id="848">848</a>
-<a href="#849" id="849">849</a>
-<a href="#850" id="850">850</a>
-<a href="#851" id="851">851</a>
-<a href="#852" id="852">852</a>
-<a href="#853" id="853">853</a>
-<a href="#854" id="854">854</a>
-<a href="#855" id="855">855</a>
-<a href="#856" id="856">856</a>
-<a href="#857" id="857">857</a>
-<a href="#858" id="858">858</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
 </span><span class="kw">use crate</span>::{
-    AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
-    TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction,
+    <a href="async_result.rs.html#7-105">AsyncResult</a>, <a href="cancellable.rs.html#7-85">Cancellable</a>, <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>,
+    <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>, <a href="flags.rs.html#3144-3153">TlsDatabaseVerifyFlags</a>, <a href="tls_interaction.rs.html#12-43">TlsInteraction</a>,
 };
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, pin::Pin, ptr};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// [`TlsDatabase`][crate::TlsDatabase] is used to look up certificates and other information
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GTlsDatabase` is used to look up certificates and other information
     /// from a certificate or key store. It is an abstract base class which
     /// TLS library specific subtypes override.
     ///
-    /// A [`TlsDatabase`][crate::TlsDatabase] may be accessed from multiple threads by the TLS backend.
+    /// A `GTlsDatabase` may be accessed from multiple threads by the TLS backend.
     /// All implementations are required to be fully thread-safe.
     ///
     /// Most common client applications will not directly interact with
-    /// [`TlsDatabase`][crate::TlsDatabase]. It is used internally by [`TlsConnection`][crate::TlsConnection].
+    /// `GTlsDatabase`. It is used internally by [`TlsConnection`][crate::TlsConnection].
     ///
     /// This is an Abstract Base Class, you cannot instantiate it.
     ///
     /// # Implements
     ///
     /// [`TlsDatabaseExt`][trait@crate::prelude::TlsDatabaseExt], [`trait@glib::ObjectExt`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GTlsDatabase&quot;</span>)]
-    </span><span class="kw">pub struct </span>TlsDatabase(Object&lt;ffi::GTlsDatabase, ffi::GTlsDatabaseClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GTlsDatabase"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.TlsDatabase.html">TlsDatabase</a>(Object&lt;<a href="../../../gio_sys/struct.GTlsDatabase.html">ffi::GTlsDatabase</a>, <a href="../../../gio_sys/struct.GTlsDatabaseClass.html">ffi::GTlsDatabaseClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_tls_database_get_type(),
     }
 }
 
-<span class="kw">impl </span>TlsDatabase {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TlsDatabase&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#12-34">TlsDatabase</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#12-34">TlsDatabase</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#12-34"><span class="kw">super</span>::TlsDatabase</a>&gt;&gt; <a href="#41">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TlsDatabase`] methods.
@@ -973,7 +864,7 @@
 /// # Implementors
 ///
 /// [`TlsDatabase`][struct@crate::TlsDatabase], [`TlsFileDatabase`][struct@crate::TlsFileDatabase]
-</span><span class="kw">pub trait </span>TlsDatabaseExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsDatabaseExt.html">TlsDatabaseExt</a>: IsA&lt;<a href="#12-34">TlsDatabase</a>&gt; + <a href="#41">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Create a handle string for the certificate. The database will only be able
     /// to create a handle for certificates that originate from the database. In
     /// cases where the database cannot create a handle for a certificate, [`None`]
@@ -989,23 +880,30 @@
     ///
     /// a newly allocated string containing the
     /// handle.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_create_certificate_handle&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_create_certificate_handle"</span>)]
     </span><span class="kw">fn </span>create_certificate_handle(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
+        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_database_create_certificate_handle(
+                <a class="self" href="#68">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#69">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Look up a certificate by its handle.
     ///
     /// The handle should have been created by calling
-    /// [`create_certificate_handle()`][Self::create_certificate_handle()] on a [`TlsDatabase`][crate::TlsDatabase] object of
+    /// g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
     /// the same TLS backend. The handle is designed to remain valid across
     /// instantiations of the database.
     ///
     /// If the handle is no longer valid, or does not point to a certificate in
     /// this database, then [`None`] will be returned.
     ///
-    /// This function can block, use [`lookup_certificate_for_handle_async()`][Self::lookup_certificate_for_handle_async()] to perform
+    /// This function can block, use g_tls_database_lookup_certificate_for_handle_async() to perform
     /// the lookup operation asynchronously.
     /// ## `handle`
     /// a certificate handle
@@ -1014,23 +912,40 @@
     /// ## `flags`
     /// Flags which affect the lookup.
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     ///
     /// # Returns
     ///
     /// a newly allocated
-    /// [`TlsCertificate`][crate::TlsCertificate], or [`None`]. Use `g_object_unref()` to release the certificate.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificate_for_handle&quot;</span>)]
+    /// #GTlsCertificate, or [`None`]. Use g_object_unref() to release the certificate.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificate_for_handle"</span>)]
     </span><span class="kw">fn </span>lookup_certificate_for_handle(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;TlsCertificate&gt;, glib::Error&gt;;
+        handle: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_for_handle(
+                <a class="self" href="#106">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#107">handle</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#108">interaction</a>.map(|p| <a href="#117">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#109">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#110">cancellable</a>.map(|p| <a href="#119">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#113">error</a>,
+            );
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#114">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#113">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Asynchronously look up a certificate by its handle in the database. See
-    /// [`lookup_certificate_for_handle()`][Self::lookup_certificate_for_handle()] for more information.
+    /// g_tls_database_lookup_certificate_for_handle() for more information.
     /// ## `handle`
     /// a certificate handle
     /// ## `interaction`
@@ -1038,33 +953,99 @@
     /// ## `flags`
     /// Flags which affect the lookup.
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     /// ## `callback`
     /// callback to call when the operation completes
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificate_for_handle_async&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificate_for_handle_async"</span>)]
     </span><span class="kw">fn </span>lookup_certificate_for_handle_async&lt;
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        handle: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
-    );
+    ) {
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = <a href="#153">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#154">is_main_context_owner</a>)
+            .then(|| <a href="#153">main_context</a>.acquire().ok())
+            .flatten();
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
+        </span>);
+
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#151">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>lookup_certificate_for_handle_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_for_handle_finish(
+                <a href="#168">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#169">res</a>,
+                <span class="kw-2">&amp;mut </span><a href="#172">error</a>,
+            );
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#173">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#172">error</a>))
+            };
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(<a href="#170">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#183">callback</a>.into_inner();
+            <a href="#185">callback</a>(<a href="#178">result</a>);
+        }
+        <span class="kw">let </span>callback = lookup_certificate_for_handle_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_database_lookup_certificate_for_handle_async(
+                <a class="self" href="#146">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#147">handle</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#148">interaction</a>.map(|p| <a href="#193">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#149">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#150">cancellable</a>.map(|p| <a href="#195">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#188">callback</a>),
+                Box_::into_raw(<a href="#163">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            );
+        }
+    }
 
     <span class="kw">fn </span>lookup_certificate_for_handle_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
+        handle: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    {
+        <span class="kw">let </span>handle = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">String::from</a>(<a href="#204">handle</a>);
+        <span class="kw">let </span>interaction = <a href="#205">interaction</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#203">self</a>,
+            <span class="kw">move </span>|obj, cancellable, send| {
+                <a href="#213">obj</a>.<a href="#143-200">lookup_certificate_for_handle_async</a>(
+                    <span class="kw-2">&amp;</span><a href="#209">handle</a>,
+                    <a href="#210">interaction</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <a href="#206">flags</a>,
+                    <span class="prelude-val">Some</span>(<a href="#213">cancellable</a>),
+                    <span class="kw">move </span>|res| {
+                        <a href="#213">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#219">res</a>);
+                    },
+                );
+            },
+        ))
+    }
 
-    <span class="doccomment">/// Look up the issuer of `certificate` in the database. The
-    /// [`issuer`][struct@crate::TlsCertificate#issuer] property of `certificate` is not modified, and
+    <span class="doccomment">/// Look up the issuer of @certificate in the database. The
+    /// #GTlsCertificate:issuer property of @certificate is not modified, and
     /// the two certificates are not hooked into a chain.
     ///
-    /// This function can block. Use [`lookup_certificate_issuer_async()`][Self::lookup_certificate_issuer_async()]
+    /// This function can block. Use g_tls_database_lookup_certificate_issuer_async()
     /// to perform the lookup operation asynchronously.
     ///
     /// Beware this function cannot be used to build certification paths. The
@@ -1073,7 +1054,7 @@
     /// certification path during certificate verification.
     /// [RFC 4158](https://datatracker.ietf.org/doc/html/rfc4158) explains
     /// why an issuer certificate cannot be naively assumed to be part of the
-    /// the certification path (though GLib&#39;s TLS backends may not follow the
+    /// the certification path (though GLib's TLS backends may not follow the
     /// path building strategies outlined in this RFC). Due to the complexity
     /// of certification path building, GLib does not provide any way to know
     /// which certification path will actually be used when verifying a TLS
@@ -1081,148 +1062,313 @@
     /// security-related decisions. Only GLib itself should make security
     /// decisions about TLS certificates.
     /// ## `certificate`
-    /// a [`TlsCertificate`][crate::TlsCertificate]
+    /// a #GTlsCertificate
     /// ## `interaction`
     /// used to interact with the user if necessary
     /// ## `flags`
     /// flags which affect the lookup operation
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     ///
     /// # Returns
     ///
-    /// a newly allocated issuer [`TlsCertificate`][crate::TlsCertificate],
-    /// or [`None`]. Use `g_object_unref()` to release the certificate.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificate_issuer&quot;</span>)]
+    /// a newly allocated issuer #GTlsCertificate,
+    /// or [`None`]. Use g_object_unref() to release the certificate.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificate_issuer"</span>)]
     </span><span class="kw">fn </span>lookup_certificate_issuer(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;;
+        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_issuer(
+                <a class="self" href="#262">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#263">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#264">interaction</a>.map(|p| <a href="#273">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#265">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#266">cancellable</a>.map(|p| <a href="#275">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#269">error</a>,
+            );
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#270">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#269">error</a>))
+            }
+        }
+    }
 
-    <span class="doccomment">/// Asynchronously look up the issuer of `certificate` in the database. See
-    /// [`lookup_certificate_issuer()`][Self::lookup_certificate_issuer()] for more information.
+    <span class="doccomment">/// Asynchronously look up the issuer of @certificate in the database. See
+    /// g_tls_database_lookup_certificate_issuer() for more information.
     /// ## `certificate`
-    /// a [`TlsCertificate`][crate::TlsCertificate]
+    /// a #GTlsCertificate
     /// ## `interaction`
     /// used to interact with the user if necessary
     /// ## `flags`
     /// flags which affect the lookup operation
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     /// ## `callback`
     /// callback to call when the operation completes
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificate_issuer_async&quot;</span>)]
-    </span><span class="kw">fn </span>lookup_certificate_issuer_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificate_issuer_async"</span>)]
+    </span><span class="kw">fn </span>lookup_certificate_issuer_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
-    );
+    ) {
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = <a href="#307">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#308">is_main_context_owner</a>)
+            .then(|| <a href="#307">main_context</a>.acquire().ok())
+            .flatten();
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
+        </span>);
+
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#305">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>lookup_certificate_issuer_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_issuer_finish(
+                <a href="#322">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#323">res</a>,
+                <span class="kw-2">&amp;mut </span><a href="#326">error</a>,
+            );
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#327">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#326">error</a>))
+            };
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(<a href="#324">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#337">callback</a>.into_inner();
+            <a href="#339">callback</a>(<a href="#332">result</a>);
+        }
+        <span class="kw">let </span>callback = lookup_certificate_issuer_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_database_lookup_certificate_issuer_async(
+                <a class="self" href="#300">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#301">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#302">interaction</a>.map(|p| <a href="#347">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#303">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#304">cancellable</a>.map(|p| <a href="#349">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#342">callback</a>),
+                Box_::into_raw(<a href="#317">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            );
+        }
+    }
 
     <span class="kw">fn </span>lookup_certificate_issuer_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsCertificate&gt; + Clone + <span class="lifetime">&#39;static</span>),
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
+        certificate: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
+    {
+        <span class="kw">let </span>certificate = <a href="#358">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        <span class="kw">let </span>interaction = <a href="#359">interaction</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#357">self</a>,
+            <span class="kw">move </span>|obj, cancellable, send| {
+                <a href="#367">obj</a>.<a href="#299-354">lookup_certificate_issuer_async</a>(
+                    <span class="kw-2">&amp;</span><a href="#363">certificate</a>,
+                    <a href="#364">interaction</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <a href="#360">flags</a>,
+                    <span class="prelude-val">Some</span>(<a href="#367">cancellable</a>),
+                    <span class="kw">move </span>|res| {
+                        <a href="#367">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#373">res</a>);
+                    },
+                );
+            },
+        ))
+    }
 
     <span class="doccomment">/// Look up certificates issued by this issuer in the database.
     ///
-    /// This function can block, use [`lookup_certificates_issued_by_async()`][Self::lookup_certificates_issued_by_async()] to perform
+    /// This function can block, use g_tls_database_lookup_certificates_issued_by_async() to perform
     /// the lookup operation asynchronously.
     /// ## `issuer_raw_dn`
-    /// a [`glib::ByteArray`][crate::glib::ByteArray] which holds the DER encoded issuer DN.
+    /// a #GByteArray which holds the DER encoded issuer DN.
     /// ## `interaction`
     /// used to interact with the user if necessary
     /// ## `flags`
     /// Flags which affect the lookup operation.
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     ///
     /// # Returns
     ///
-    /// a newly allocated list of [`TlsCertificate`][crate::TlsCertificate]
-    /// objects. Use `g_object_unref()` on each certificate, and `g_list_free()` on the release the list.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificates_issued_by&quot;</span>)]
+    /// a newly allocated list of #GTlsCertificate
+    /// objects. Use g_object_unref() on each certificate, and g_list_free() on the release the list.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificates_issued_by"</span>)]
     </span><span class="kw">fn </span>lookup_certificates_issued_by(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;;
+        issuer_raw_dn: <span class="kw-2">&amp;</span><a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificates_issued_by(
+                <a class="self" href="#400">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#401">issuer_raw_dn</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#402">interaction</a>.map(|p| <a href="#411">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#403">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#404">cancellable</a>.map(|p| <a href="#413">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#407">error</a>,
+            );
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(<a href="#408">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#407">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Asynchronously look up certificates issued by this issuer in the database. See
-    /// [`lookup_certificates_issued_by()`][Self::lookup_certificates_issued_by()] for more information.
+    /// g_tls_database_lookup_certificates_issued_by() for more information.
     ///
     /// The database may choose to hold a reference to the issuer byte array for the duration
-    /// of of this asynchronous operation. The byte array should not be modified during
+    /// of this asynchronous operation. The byte array should not be modified during
     /// this time.
     /// ## `issuer_raw_dn`
-    /// a [`glib::ByteArray`][crate::glib::ByteArray] which holds the DER encoded issuer DN.
+    /// a #GByteArray which holds the DER encoded issuer DN.
     /// ## `interaction`
     /// used to interact with the user if necessary
     /// ## `flags`
     /// Flags which affect the lookup operation.
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     /// ## `callback`
     /// callback to call when the operation completes
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_lookup_certificates_issued_by_async&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_lookup_certificates_issued_by_async"</span>)]
     </span><span class="kw">fn </span>lookup_certificates_issued_by_async&lt;
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        issuer_raw_dn: <span class="kw-2">&amp;</span><a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
-    );
+    ) {
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = <a href="#451">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#452">is_main_context_owner</a>)
+            .then(|| <a href="#451">main_context</a>.acquire().ok())
+            .flatten();
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
+        </span>);
+
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#449">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>lookup_certificates_issued_by_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificates_issued_by_finish(
+                <a href="#466">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#467">res</a>,
+                <span class="kw-2">&amp;mut </span><a href="#470">error</a>,
+            );
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(<a href="#471">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#470">error</a>))
+            };
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(<a href="#468">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#481">callback</a>.into_inner();
+            <a href="#483">callback</a>(<a href="#476">result</a>);
+        }
+        <span class="kw">let </span>callback = lookup_certificates_issued_by_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_database_lookup_certificates_issued_by_async(
+                <a class="self" href="#444">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#445">issuer_raw_dn</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#446">interaction</a>.map(|p| <a href="#491">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#447">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#448">cancellable</a>.map(|p| <a href="#493">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#486">callback</a>),
+                Box_::into_raw(<a href="#461">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            );
+        }
+    }
 
     <span class="kw">fn </span>lookup_certificates_issued_by_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
+        issuer_raw_dn: <span class="kw-2">&amp;</span><a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
+        flags: <a href="enums.rs.html#3993-4003">TlsDatabaseLookupFlags</a>,
     ) -&gt; Pin&lt;
-        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;,
-    &gt;;
+        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;,
+    &gt; {
+        <span class="kw">let </span>issuer_raw_dn = <a href="#502">issuer_raw_dn</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        <span class="kw">let </span>interaction = <a href="#503">interaction</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#501">self</a>,
+            <span class="kw">move </span>|obj, cancellable, send| {
+                <a href="#512">obj</a>.<a href="#441-498">lookup_certificates_issued_by_async</a>(
+                    <span class="kw-2">&amp;</span><a href="#508">issuer_raw_dn</a>,
+                    <a href="#509">interaction</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <a href="#504">flags</a>,
+                    <span class="prelude-val">Some</span>(<a href="#512">cancellable</a>),
+                    <span class="kw">move </span>|res| {
+                        <a href="#512">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#518">res</a>);
+                    },
+                );
+            },
+        ))
+    }
 
     <span class="doccomment">/// Determines the validity of a certificate chain, outside the context
     /// of a TLS session.
     ///
-    /// `chain` is a chain of [`TlsCertificate`][crate::TlsCertificate] objects each pointing to the next
-    /// certificate in the chain by its [`issuer`][struct@crate::TlsCertificate#issuer] property.
+    /// @chain is a chain of #GTlsCertificate objects each pointing to the next
+    /// certificate in the chain by its #GTlsCertificate:issuer property.
     ///
-    /// `purpose` describes the purpose (or usage) for which the certificate
-    /// is being used. Typically `purpose` will be set to [`TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER`][crate::TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER]
+    /// @purpose describes the purpose (or usage) for which the certificate
+    /// is being used. Typically @purpose will be set to [`TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER`][crate::TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER]
     /// which means that the certificate is being used to authenticate a server
     /// (and we are acting as the client).
     ///
-    /// The `identity` is used to ensure the server certificate is valid for
+    /// The @identity is used to ensure the server certificate is valid for
     /// the expected peer identity. If the identity does not match the
     /// certificate, [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] will be set in the
-    /// return value. If `identity` is [`None`], that bit will never be set in
+    /// return value. If @identity is [`None`], that bit will never be set in
     /// the return value. The peer identity may also be used to check for
     /// pinned certificates (trust exceptions) in the database. These may
     /// override the normal verification process on a host-by-host basis.
     ///
-    /// Currently there are no `flags`, and [`TlsDatabaseVerifyFlags::NONE`][crate::TlsDatabaseVerifyFlags::NONE] should be
+    /// Currently there are no @flags, and [`TlsDatabaseVerifyFlags::NONE`][crate::TlsDatabaseVerifyFlags::NONE] should be
     /// used.
     ///
-    /// If `chain` is found to be valid, then the return value will be 0. If
-    /// `chain` is found to be invalid, then the return value will indicate at
+    /// If @chain is found to be valid, then the return value will be 0. If
+    /// @chain is found to be invalid, then the return value will indicate at
     /// least one problem found. If the function is unable to determine
-    /// whether `chain` is valid (for example, because `cancellable` is
+    /// whether @chain is valid (for example, because @cancellable is
     /// triggered before it completes) then the return value will be
-    /// [`TlsCertificateFlags::GENERIC_ERROR`][crate::TlsCertificateFlags::GENERIC_ERROR] and `error` will be set accordingly.
-    /// `error` is not set when `chain` is successfully analyzed but found to
+    /// [`TlsCertificateFlags::GENERIC_ERROR`][crate::TlsCertificateFlags::GENERIC_ERROR] and @error will be set accordingly.
+    /// @error is not set when @chain is successfully analyzed but found to
     /// be invalid.
     ///
     /// GLib guarantees that if certificate verification fails, at least one
@@ -1233,29 +1379,29 @@
     /// expired certificates, because this could potentially be the only
     /// error flag set even if other problems exist with the certificate.
     ///
-    /// Prior to GLib 2.48, GLib&#39;s default TLS backend modified `chain` to
-    /// represent the certification path built by [`TlsDatabase`][crate::TlsDatabase] during
-    /// certificate verification by adjusting the [`issuer`][struct@crate::TlsCertificate#issuer]
-    /// property of each certificate in `chain`. Since GLib 2.48, this no
-    /// longer occurs, so you cannot rely on [`issuer`][struct@crate::TlsCertificate#issuer] to
+    /// Prior to GLib 2.48, GLib's default TLS backend modified @chain to
+    /// represent the certification path built by #GTlsDatabase during
+    /// certificate verification by adjusting the #GTlsCertificate:issuer
+    /// property of each certificate in @chain. Since GLib 2.48, this no
+    /// longer occurs, so you cannot rely on #GTlsCertificate:issuer to
     /// represent the actual certification path used during certificate
     /// verification.
     ///
-    /// Because TLS session context is not used, [`TlsDatabase`][crate::TlsDatabase] may not
-    /// perform as many checks on the certificates as [`TlsConnection`][crate::TlsConnection] would.
+    /// Because TLS session context is not used, #GTlsDatabase may not
+    /// perform as many checks on the certificates as #GTlsConnection would.
     /// For example, certificate constraints may not be honored, and
     /// revocation checks may not be performed. The best way to verify TLS
-    /// certificates used by a TLS connection is to let [`TlsConnection`][crate::TlsConnection]
+    /// certificates used by a TLS connection is to let #GTlsConnection
     /// handle the verification.
     ///
     /// The TLS backend may attempt to look up and add missing certificates
     /// to the chain. This may involve HTTP requests to download missing
     /// certificates.
     ///
-    /// This function can block. Use [`verify_chain_async()`][Self::verify_chain_async()] to
+    /// This function can block. Use g_tls_database_verify_chain_async() to
     /// perform the verification operation asynchronously.
     /// ## `chain`
-    /// a [`TlsCertificate`][crate::TlsCertificate] chain
+    /// a #GTlsCertificate chain
     /// ## `purpose`
     /// the purpose that this certificate chain will be used for.
     /// ## `identity`
@@ -1265,28 +1411,47 @@
     /// ## `flags`
     /// additional verify flags
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     ///
     /// # Returns
     ///
-    /// the appropriate [`TlsCertificateFlags`][crate::TlsCertificateFlags] which represents the
+    /// the appropriate #GTlsCertificateFlags which represents the
     /// result of verification.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_verify_chain&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_verify_chain"</span>)]
     </span><span class="kw">fn </span>verify_chain(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseVerifyFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;;
+        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+        purpose: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;&gt;,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="flags.rs.html#3144-3153">TlsDatabaseVerifyFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_database_verify_chain(
+                <a class="self" href="#605">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#606">chain</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#607">purpose</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#608">identity</a>.map(|p| <a href="#619">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#609">interaction</a>.map(|p| <a href="#620">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#610">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#611">cancellable</a>.map(|p| <a href="#622">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#614">error</a>,
+            );
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib(<a href="#615">ret</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#614">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Asynchronously determines the validity of a certificate chain after
     /// looking up and adding any missing certificates to the chain. See
-    /// [`verify_chain()`][Self::verify_chain()] for more information.
+    /// g_tls_database_verify_chain() for more information.
     /// ## `chain`
-    /// a [`TlsCertificate`][crate::TlsCertificate] chain
+    /// a #GTlsCertificate chain
     /// ## `purpose`
     /// the purpose that this certificate chain will be used for.
     /// ## `identity`
@@ -1296,485 +1461,94 @@
     /// ## `flags`
     /// additional verify flags
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     /// ## `callback`
     /// callback to call when the operation completes
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_database_verify_chain_async&quot;</span>)]
-    </span><span class="kw">fn </span>verify_chain_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_database_verify_chain_async"</span>)]
+    </span><span class="kw">fn </span>verify_chain_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseVerifyFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    );
-
-    <span class="kw">fn </span>verify_chain_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsCertificate&gt; + Clone + <span class="lifetime">&#39;static</span>),
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketConnectable&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseVerifyFlags,
-    ) -&gt; Pin&lt;
-        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;,
-    &gt;;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;TlsDatabase&gt;&gt; TlsDatabaseExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>create_certificate_handle(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_full(ffi::g_tls_database_create_certificate_handle(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                certificate.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificate_for_handle(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;TlsCertificate&gt;, glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_for_handle(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                handle.to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificate_for_handle_async&lt;
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
-    &gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+        purpose: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;&gt;,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;,
+        flags: <a href="flags.rs.html#3144-3153">TlsDatabaseVerifyFlags</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#661">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#662">is_main_context_owner</a>)
+            .then(|| <a href="#661">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>lookup_certificate_for_handle_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#659">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>verify_chain_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_for_handle_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            };
-            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
-        }
-        <span class="kw">let </span>callback = lookup_certificate_for_handle_async_trampoline::&lt;P&gt;;
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_database_lookup_certificate_for_handle_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                handle.to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificate_for_handle_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        handle: <span class="kw-2">&amp;</span>str,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;
-    {
-        <span class="kw">let </span>handle = String::from(handle);
-        <span class="kw">let </span>interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
-            <span class="kw">move </span>|obj, cancellable, send| {
-                obj.lookup_certificate_for_handle_async(
-                    <span class="kw-2">&amp;</span>handle,
-                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                    flags,
-                    <span class="prelude-val">Some</span>(cancellable),
-                    <span class="kw">move </span>|res| {
-                        send.resolve(res);
-                    },
-                );
-            },
-        ))
-    }
-
-    <span class="kw">fn </span>lookup_certificate_issuer(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_issuer(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                certificate.as_ref().to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificate_issuer_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    ) {
-        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        <span class="macro">assert!</span>(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
-        </span>);
-
-        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>lookup_certificate_issuer_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
-        &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificate_issuer_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            };
-            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
-        }
-        <span class="kw">let </span>callback = lookup_certificate_issuer_async_trampoline::&lt;P&gt;;
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_database_lookup_certificate_issuer_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                certificate.as_ref().to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificate_issuer_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        certificate: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsCertificate&gt; + Clone + <span class="lifetime">&#39;static</span>),
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;
-    {
-        <span class="kw">let </span>certificate = certificate.clone();
-        <span class="kw">let </span>interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
-            <span class="kw">move </span>|obj, cancellable, send| {
-                obj.lookup_certificate_issuer_async(
-                    <span class="kw-2">&amp;</span>certificate,
-                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                    flags,
-                    <span class="prelude-val">Some</span>(cancellable),
-                    <span class="kw">move </span>|res| {
-                        send.resolve(res);
-                    },
-                );
-            },
-        ))
-    }
-
-    <span class="kw">fn </span>lookup_certificates_issued_by(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificates_issued_by(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                issuer_raw_dn.to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(FromGlibPtrContainer::from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificates_issued_by_async&lt;
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
-    &gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseLookupFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    ) {
-        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        <span class="macro">assert!</span>(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
-        </span>);
-
-        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>lookup_certificates_issued_by_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
-        &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_lookup_certificates_issued_by_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(FromGlibPtrContainer::from_glib_full(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            };
-            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
-        }
-        <span class="kw">let </span>callback = lookup_certificates_issued_by_async_trampoline::&lt;P&gt;;
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_database_lookup_certificates_issued_by_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                issuer_raw_dn.to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>lookup_certificates_issued_by_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        issuer_raw_dn: <span class="kw-2">&amp;</span>glib::ByteArray,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseLookupFlags,
-    ) -&gt; Pin&lt;
-        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;,
-    &gt; {
-        <span class="kw">let </span>issuer_raw_dn = issuer_raw_dn.clone();
-        <span class="kw">let </span>interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
-            <span class="kw">move </span>|obj, cancellable, send| {
-                obj.lookup_certificates_issued_by_async(
-                    <span class="kw-2">&amp;</span>issuer_raw_dn,
-                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                    flags,
-                    <span class="prelude-val">Some</span>(cancellable),
-                    <span class="kw">move </span>|res| {
-                        send.resolve(res);
-                    },
-                );
-            },
-        ))
-    }
-
-    <span class="kw">fn </span>verify_chain(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseVerifyFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_tls_database_verify_chain(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                chain.as_ref().to_glib_none().<span class="number">0</span>,
-                purpose.to_glib_none().<span class="number">0</span>,
-                identity.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib(ret))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>verify_chain_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;,
-        flags: TlsDatabaseVerifyFlags,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    ) {
-        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        <span class="macro">assert!</span>(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
-        </span>);
-
-        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>verify_chain_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
-        &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret =
-                ffi::g_tls_database_verify_chain_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+                ffi::g_tls_database_verify_chain_finish(<a href="#676">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#677">res</a>, <span class="kw-2">&amp;mut </span><a href="#680">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib(ret))
+                <span class="prelude-val">Ok</span>(from_glib(<a href="#681">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#680">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#678">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#688">callback</a>.into_inner();
+            <a href="#690">callback</a>(<a href="#683">result</a>);
         }
         <span class="kw">let </span>callback = verify_chain_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_tls_database_verify_chain_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                chain.as_ref().to_glib_none().<span class="number">0</span>,
-                purpose.to_glib_none().<span class="number">0</span>,
-                identity.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#652">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#653">chain</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#654">purpose</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#655">identity</a>.map(|p| <a href="#699">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#656">interaction</a>.map(|p| <a href="#700">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#657">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#658">cancellable</a>.map(|p| <a href="#702">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#693">callback</a>),
+                Box_::into_raw(<a href="#671">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">fn </span>verify_chain_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        chain: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsCertificate&gt; + Clone + <span class="lifetime">&#39;static</span>),
-        purpose: <span class="kw-2">&amp;</span>str,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketConnectable&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;TlsInteraction&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-        flags: TlsDatabaseVerifyFlags,
+        chain: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
+        purpose: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
+        interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
+        flags: <a href="flags.rs.html#3144-3153">TlsDatabaseVerifyFlags</a>,
     ) -&gt; Pin&lt;
-        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;TlsCertificateFlags, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;,
+        Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;,
     &gt; {
-        <span class="kw">let </span>chain = chain.clone();
-        <span class="kw">let </span>purpose = String::from(purpose);
-        <span class="kw">let </span>identity = identity.map(ToOwned::to_owned);
-        <span class="kw">let </span>interaction = interaction.map(ToOwned::to_owned);
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+        <span class="kw">let </span>chain = <a href="#711">chain</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        <span class="kw">let </span>purpose = <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">String::from</a>(<a href="#712">purpose</a>);
+        <span class="kw">let </span>identity = <a href="#713">identity</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
+        <span class="kw">let </span>interaction = <a href="#714">interaction</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#710">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.verify_chain_async(
-                    <span class="kw-2">&amp;</span>chain,
-                    <span class="kw-2">&amp;</span>purpose,
-                    identity.as_ref().map(::std::borrow::Borrow::borrow),
-                    interaction.as_ref().map(::std::borrow::Borrow::borrow),
-                    flags,
-                    <span class="prelude-val">Some</span>(cancellable),
+                <a href="#725">obj</a>.<a href="#651-707">verify_chain_async</a>(
+                    <span class="kw-2">&amp;</span><a href="#719">chain</a>,
+                    <span class="kw-2">&amp;</span><a href="#720">purpose</a>,
+                    <a href="#721">identity</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <a href="#722">interaction</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <a href="#715">flags</a>,
+                    <span class="prelude-val">Some</span>(<a href="#725">cancellable</a>),
                     <span class="kw">move </span>|res| {
-                        send.resolve(res);
+                        <a href="#725">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#733">res</a>);
                     },
                 );
             },
@@ -1782,10 +1556,5 @@
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TlsDatabase {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;TlsDatabase&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#12-34">TlsDatabase</a>&gt;&gt; <a href="#50-740">TlsDatabaseExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pangocairo/src/font_map.rs`."><title>font_map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pangocairo/src/font_map.rs`."><title>font_map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pangocairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../pangocairo/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../pangocairo/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -137,41 +139,47 @@
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
 <a href="#66" id="66">66</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+</span><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="kw">use </span><span class="kw">crate</span>::FontMap;
+<span class="kw">use </span><a href="auto/font_map.rs.html#7-23"><span class="kw">crate</span>::FontMap</a>;
 
-<span class="kw">pub trait </span>FontMapExtManual {
-    <span class="doccomment">/// Gets the type of Cairo font backend that `self` uses.
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/font_map.rs.html#7-23"><span class="kw">super</span>::FontMap</a>&gt;&gt; <a href="#8">Sealed</a> <span class="kw">for </span>T {}
+}
+
+<span class="kw">pub trait </span><a href="../../pangocairo/prelude/trait.PangoCairoFontMapExtManual.html">PangoCairoFontMapExtManual</a>: <a href="#8">sealed::Sealed</a> + IsA&lt;<a href="auto/font_map.rs.html#7-23">FontMap</a>&gt; + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Gets the type of Cairo font backend that @self uses.
     ///
     /// # Returns
     ///
     /// the [`cairo::FontType`][crate::cairo::FontType] cairo font backend type
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_cairo_font_map_get_font_type&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_font_type&quot;</span>)]
-    </span><span class="kw">fn </span>font_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; cairo::FontType;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;FontMap&gt;&gt; FontMapExtManual <span class="kw">for </span>O {
-    <span class="kw">fn </span>font_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; cairo::FontType {
-        <span class="kw">unsafe </span>{ ffi::pango_cairo_font_map_get_font_type(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>).into() }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_cairo_font_map_get_font_type"</span>)]
+    #[doc(alias = <span class="string">"get_font_type"</span>)]
+    </span><span class="kw">fn </span>font_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../cairo/enums/enum.FontType.html">cairo::FontType</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_cairo_font_map_get_font_type(<a class="self" href="#20">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>() }
     }
 }
 
-<span class="kw">impl </span>FontMap {
-    <span class="attr">#[doc(alias = <span class="string">&quot;pango_cairo_font_map_new_for_font_type&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_for_font_type&quot;</span>)]
-    </span><span class="kw">pub fn </span>for_font_type(fonttype: cairo::FontType) -&gt; <span class="prelude-ty">Option</span>&lt;pango::FontMap&gt; {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_cairo_font_map_new_for_font_type(fonttype.into())) }
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/font_map.rs.html#7-23">FontMap</a>&gt;&gt; <a href="#12-23">PangoCairoFontMapExtManual</a> <span class="kw">for </span>O {}
+
+<span class="kw">impl </span><a href="auto/font_map.rs.html#7-23">FontMap</a> {
+    <span class="attr">#[doc(alias = <span class="string">"pango_cairo_font_map_new_for_font_type"</span>)]
+    #[doc(alias = <span class="string">"new_for_font_type"</span>)]
+    </span><span class="kw">pub fn </span>for_font_type(fonttype: <a href="../../cairo/enums/enum.FontType.html">cairo::FontType</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../pango/auto/font_map/struct.FontMap.html">pango::FontMap</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_cairo_font_map_new_for_font_type(<a href="#30">fonttype</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())) }
     }
 
     <span class="doccomment">/// Creates a new [`FontMap`][crate::FontMap] object.
     ///
     /// A fontmap is used to cache information about available fonts,
     /// and holds certain global parameters such as the resolution.
-    /// In most cases, you can use `func`PangoCairo`]
+    /// In most cases, you can use `func@PangoCairo.font_map_get_default]
     /// instead.
     ///
     /// Note that the type of the returned object will depend
@@ -189,19 +197,18 @@
     /// # Returns
     ///
     /// the newly allocated [`pango::FontMap`][crate::pango::FontMap],
-    ///  which should be freed with `g_object_unref()`.
+    ///   which should be freed with g_object_unref().
     </span><span class="attr">#[allow(clippy::new_ret_no_self)]
-    #[doc(alias = <span class="string">&quot;pango_cairo_font_map_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; pango::FontMap {
+    #[doc(alias = <span class="string">"pango_cairo_font_map_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="../../pango/auto/font_map/struct.FontMap.html">pango::FontMap</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_cairo_font_map_new()) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;pango_cairo_font_map_set_default&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">"pango_cairo_font_map_set_default"</span>)]
     </span><span class="kw">pub fn </span>set_default(font_map: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_cairo_font_map_set_default(font_map.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::pango_cairo_font_map_set_default(<a href="#64">font_map</a>.as_ref().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pangocairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

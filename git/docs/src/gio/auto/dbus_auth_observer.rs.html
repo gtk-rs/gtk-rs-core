@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_auth_observer.rs`."><title>dbus_auth_observer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_auth_observer.rs`."><title>dbus_auth_observer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -323,54 +325,44 @@
 <a href="#250" id="250">250</a>
 <a href="#251" id="251">251</a>
 <a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Credentials, IOStream};
+</span><span class="kw">use crate</span>::{<a href="credentials.rs.html#7-53">Credentials</a>, <a href="io_stream.rs.html#13-94">IOStream</a>};
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// The [`DBusAuthObserver`][crate::DBusAuthObserver] type provides a mechanism for participating
-    /// in how a [`DBusServer`][crate::DBusServer] (or a [`DBusConnection`][crate::DBusConnection]) authenticates remote
-    /// peers. Simply instantiate a [`DBusAuthObserver`][crate::DBusAuthObserver] and connect to the
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GDBusAuthObserver` provides a mechanism for participating
+    /// in how a [`DBusServer`][crate::DBusServer] (or a [`DBusConnection`][crate::DBusConnection])
+    /// authenticates remote peers.
+    ///
+    /// Simply instantiate a `GDBusAuthObserver` and connect to the
     /// signals you are interested in. Note that new signals may be added
-    /// in the future
+    /// in the future.
     ///
     /// ## Controlling Authentication Mechanisms
     ///
-    /// By default, a [`DBusServer`][crate::DBusServer] or server-side [`DBusConnection`][crate::DBusConnection] will allow
-    /// any authentication mechanism to be used. If you only
-    /// want to allow D-Bus connections with the `EXTERNAL` mechanism,
-    /// which makes use of credentials passing and is the recommended
-    /// mechanism for modern Unix platforms such as Linux and the BSD family,
-    /// you would use a signal handler like this:
+    /// By default, a `GDBusServer` or server-side `GDBusConnection` will allow
+    /// any authentication mechanism to be used. If you only want to allow D-Bus
+    /// connections with the `EXTERNAL` mechanism, which makes use of credentials
+    /// passing and is the recommended mechanism for modern Unix platforms such
+    /// as Linux and the BSD family, you would use a signal handler like this:
     ///
+    /// **⚠️ The following code is in c ⚠️**
     ///
-    ///
-    /// **⚠️ The following code is in C ⚠️**
-    ///
-    /// ```C
+    /// ```c
     /// static gboolean
     /// on_allow_mechanism (GDBusAuthObserver *observer,
     ///                     const gchar       *mechanism,
     ///                     gpointer           user_data)
     /// {
-    ///   if (g_strcmp0 (mechanism, &quot;EXTERNAL&quot;) == 0)
+    ///   if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
     ///     {
     ///       return TRUE;
     ///     }
@@ -379,21 +371,19 @@
     /// }
     /// ```
     ///
-    /// ## Controlling Authorization # {`auth`-observer}
+    /// ## Controlling Authorization
     ///
-    /// By default, a [`DBusServer`][crate::DBusServer] or server-side [`DBusConnection`][crate::DBusConnection] will accept
+    /// By default, a `GDBusServer` or server-side `GDBusConnection` will accept
     /// connections from any successfully authenticated user (but not from
     /// anonymous connections using the `ANONYMOUS` mechanism). If you only
     /// want to allow D-Bus connections from processes owned by the same uid
     /// as the server, since GLib 2.68, you should use the
-    /// [`DBusServerFlags::AUTHENTICATION_REQUIRE_SAME_USER`][crate::DBusServerFlags::AUTHENTICATION_REQUIRE_SAME_USER] flag. It’s equivalent
+    /// `G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER` flag. It’s equivalent
     /// to the following signal handler:
     ///
+    /// **⚠️ The following code is in c ⚠️**
     ///
-    ///
-    /// **⚠️ The following code is in C ⚠️**
-    ///
-    /// ```C
+    /// ```c
     /// static gboolean
     /// on_authorize_authenticated_peer (GDBusAuthObserver *observer,
     ///                                  GIOStream         *stream,
@@ -420,7 +410,7 @@
     ///
     ///
     /// #### `allow-mechanism`
-    ///  Emitted to check if `mechanism` is allowed to be used.
+    ///  Emitted to check if @mechanism is allowed to be used.
     ///
     ///
     ///
@@ -434,101 +424,101 @@
     /// # Implements
     ///
     /// [`trait@glib::ObjectExt`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GDBusAuthObserver&quot;</span>)]
-    </span><span class="kw">pub struct </span>DBusAuthObserver(Object&lt;ffi::GDBusAuthObserver&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GDBusAuthObserver"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DBusAuthObserver.html">DBusAuthObserver</a>(Object&lt;<a href="../../../gio_sys/struct.GDBusAuthObserver.html">ffi::GDBusAuthObserver</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_dbus_auth_observer_get_type(),
     }
 }
 
-<span class="kw">impl </span>DBusAuthObserver {
-    <span class="doccomment">/// Creates a new [`DBusAuthObserver`][crate::DBusAuthObserver] object.
+<span class="kw">impl </span><a href="#13-106">DBusAuthObserver</a> {
+    <span class="doccomment">/// Creates a new #GDBusAuthObserver object.
     ///
     /// # Returns
     ///
-    /// A [`DBusAuthObserver`][crate::DBusAuthObserver]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_auth_observer_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; DBusAuthObserver {
+    /// A #GDBusAuthObserver. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_auth_observer_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#13-106">DBusAuthObserver</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_auth_observer_new()) }
     }
 
-    <span class="doccomment">/// Emits the [`allow-mechanism`][struct@crate::DBusAuthObserver#allow-mechanism] signal on `self`.
+    <span class="doccomment">/// Emits the #GDBusAuthObserver::allow-mechanism signal on @self.
     /// ## `mechanism`
     /// The name of the mechanism, e.g. `DBUS_COOKIE_SHA1`.
     ///
     /// # Returns
     ///
-    /// [`true`] if `mechanism` can be used to authenticate the other peer, [`false`] if not.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_auth_observer_allow_mechanism&quot;</span>)]
-    </span><span class="kw">pub fn </span>allow_mechanism(<span class="kw-2">&amp;</span><span class="self">self</span>, mechanism: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    /// [`true`] if @mechanism can be used to authenticate the other peer, [`false`] if not.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_auth_observer_allow_mechanism"</span>)]
+    </span><span class="kw">pub fn </span>allow_mechanism(<span class="kw-2">&amp;</span><span class="self">self</span>, mechanism: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_dbus_auth_observer_allow_mechanism(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                mechanism.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#127">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#127">mechanism</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Emits the [`authorize-authenticated-peer`][struct@crate::DBusAuthObserver#authorize-authenticated-peer] signal on `self`.
+    <span class="doccomment">/// Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @self.
     /// ## `stream`
-    /// A [`IOStream`][crate::IOStream] for the [`DBusConnection`][crate::DBusConnection].
+    /// A #GIOStream for the #GDBusConnection.
     /// ## `credentials`
     /// Credentials received from the peer or [`None`].
     ///
     /// # Returns
     ///
     /// [`true`] if the peer is authorized, [`false`] if not.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_auth_observer_authorize_authenticated_peer&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_auth_observer_authorize_authenticated_peer"</span>)]
     </span><span class="kw">pub fn </span>authorize_authenticated_peer(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;IOStream&gt;,
-        credentials: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Credentials&gt;,
-    ) -&gt; bool {
+        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt;,
+        credentials: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="credentials.rs.html#7-53">Credentials</a>&gt;,
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_dbus_auth_observer_authorize_authenticated_peer(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                stream.as_ref().to_glib_none().<span class="number">0</span>,
-                credentials.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#147">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#148">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#149">credentials</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Emitted to check if `mechanism` is allowed to be used.
+    <span class="doccomment">/// Emitted to check if @mechanism is allowed to be used.
     /// ## `mechanism`
     /// The name of the mechanism, e.g. `DBUS_COOKIE_SHA1`.
     ///
     /// # Returns
     ///
-    /// [`true`] if `mechanism` can be used to authenticate the other peer, [`false`] if not.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;allow-mechanism&quot;</span>)]
-    </span><span class="kw">pub fn </span>connect_allow_mechanism&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span>str) -&gt; bool + <span class="lifetime">&#39;static</span>&gt;(
+    /// [`true`] if @mechanism can be used to authenticate the other peer, [`false`] if not.
+    </span><span class="attr">#[doc(alias = <span class="string">"allow-mechanism"</span>)]
+    </span><span class="kw">pub fn </span>connect_allow_mechanism&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>allow_mechanism_trampoline&lt;
-            F: Fn(<span class="kw-2">&amp;</span>DBusAuthObserver, <span class="kw-2">&amp;</span>str) -&gt; bool + <span class="lifetime">&#39;static</span>,
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>allow_mechanism_trampoline&lt;
+            F: Fn(<span class="kw-2">&amp;</span><a href="#13-106">DBusAuthObserver</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GDBusAuthObserver,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GDBusAuthObserver.html">ffi::GDBusAuthObserver</a>,
             mechanism: <span class="kw-2">*mut </span>libc::c_char,
-            f: glib::ffi::gpointer,
-        ) -&gt; glib::ffi::gboolean {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                <span class="kw-2">&amp;</span>from_glib_borrow(this),
-                <span class="kw-2">&amp;</span>glib::GString::from_glib_borrow(mechanism),
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#177">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#179">f</a>(
+                <span class="kw-2">&amp;</span>from_glib_borrow(<a href="#175">this</a>),
+                <span class="kw-2">&amp;</span><a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">glib::GString::from_glib_borrow</a>(<a href="#176">mechanism</a>),
             )
-            .into_glib()
+            .<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;allow-mechanism\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#170">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#169">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"allow-mechanism\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     allow_mechanism_trampoline::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#187">f</a>),
             )
         }
     }
@@ -536,62 +526,55 @@
     <span class="doccomment">/// Emitted to check if a peer that is successfully authenticated
     /// is authorized.
     /// ## `stream`
-    /// A [`IOStream`][crate::IOStream] for the [`DBusConnection`][crate::DBusConnection].
+    /// A #GIOStream for the #GDBusConnection.
     /// ## `credentials`
     /// Credentials received from the peer or [`None`].
     ///
     /// # Returns
     ///
     /// [`true`] if the peer is authorized, [`false`] if not.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;authorize-authenticated-peer&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"authorize-authenticated-peer"</span>)]
     </span><span class="kw">pub fn </span>connect_authorize_authenticated_peer&lt;
-        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span>IOStream, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Credentials&gt;) -&gt; bool + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="credentials.rs.html#7-53">Credentials</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>authorize_authenticated_peer_trampoline&lt;
-            F: Fn(<span class="kw-2">&amp;</span>DBusAuthObserver, <span class="kw-2">&amp;</span>IOStream, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Credentials&gt;) -&gt; bool + <span class="lifetime">&#39;static</span>,
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>authorize_authenticated_peer_trampoline&lt;
+            F: Fn(<span class="kw-2">&amp;</span><a href="#13-106">DBusAuthObserver</a>, <span class="kw-2">&amp;</span><a href="io_stream.rs.html#13-94">IOStream</a>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="credentials.rs.html#7-53">Credentials</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GDBusAuthObserver,
-            stream: <span class="kw-2">*mut </span>ffi::GIOStream,
-            credentials: <span class="kw-2">*mut </span>ffi::GCredentials,
-            f: glib::ffi::gpointer,
-        ) -&gt; glib::ffi::gboolean {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                <span class="kw-2">&amp;</span>from_glib_borrow(this),
-                <span class="kw-2">&amp;</span>from_glib_borrow(stream),
-                <span class="prelude-ty">Option</span>::&lt;Credentials&gt;::from_glib_borrow(credentials)
-                    .as_ref()
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GDBusAuthObserver.html">ffi::GDBusAuthObserver</a>,
+            stream: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GIOStream.html">ffi::GIOStream</a>,
+            credentials: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GCredentials.html">ffi::GCredentials</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#222">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#224">f</a>(
+                <span class="kw-2">&amp;</span>from_glib_borrow(<a href="#219">this</a>),
+                <span class="kw-2">&amp;</span>from_glib_borrow(<a href="#220">stream</a>),
+                <span class="prelude-ty">Option</span>::&lt;<a href="credentials.rs.html#7-53">Credentials</a>&gt;::from_glib_borrow(<a href="#221">credentials</a>)
+                    .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
                     .as_ref(),
             )
-            .into_glib()
+            .<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;authorize-authenticated-peer\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#214">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#213">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"authorize-authenticated-peer\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     authorize_authenticated_peer_trampoline::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#235">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>DBusAuthObserver {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#13-106">DBusAuthObserver</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#115-117"><span class="self">Self</span>::new</a>()
     }
 }
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>DBusAuthObserver {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;DBusAuthObserver&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

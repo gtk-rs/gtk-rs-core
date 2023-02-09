@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_futures.rs`."><title>main_context_futures.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_futures.rs`."><title>main_context_futures.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -881,45 +883,44 @@
 <a href="#808" id="808">808</a>
 <a href="#809" id="809">809</a>
 <a href="#810" id="810">810</a>
-<a href="#811" id="811">811</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
-    any::Any, cell::Cell, marker::PhantomData, mem, num::NonZeroU32, panic, pin::Pin, ptr, thread,
+    <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">any::Any</a>, <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">cell::Cell</a>, marker::PhantomData, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/thread/index.html">thread</a>,
 };
 
 <span class="kw">use </span>futures_channel::oneshot;
 <span class="kw">use </span>futures_core::{
-    future::Future,
-    task::{Context, Poll, RawWaker, RawWakerVTable, Waker},
+    <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>,
+    task::{<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>, <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>, <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.RawWaker.html">RawWaker</a>, <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.RawWakerVTable.html">RawWakerVTable</a>, <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html">Waker</a>},
 };
 <span class="kw">use </span>futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
 <span class="kw">use </span>futures_util::FutureExt;
 
 <span class="kw">use crate</span>::{
-    thread_guard::ThreadGuard, translate::<span class="kw-2">*</span>, MainContext, MainLoop, Priority, Source, SourceId,
+    <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/main_loop.rs.html#7-18">MainLoop</a>, <a href="source.rs.html#932">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>,
 };
 
 <span class="comment">// Wrapper around Send Futures and non-Send Futures that will panic
 // if the non-Send Future is polled/dropped from a different thread
 // than where this was created.
 </span><span class="kw">enum </span>FutureWrapper {
-    Send(FutureObj&lt;<span class="lifetime">&#39;static</span>, Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;&gt;),
-    NonSend(ThreadGuard&lt;LocalFutureObj&lt;<span class="lifetime">&#39;static</span>, Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt;&gt;),
+    Send(FutureObj&lt;<span class="lifetime">'static</span>, Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;&gt;),
+    NonSend(ThreadGuard&lt;LocalFutureObj&lt;<span class="lifetime">'static</span>, Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;),
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>FutureWrapper {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>FutureWrapper {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#22-25">FutureWrapper</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#22-25">FutureWrapper</a> {}
 
-<span class="kw">impl </span>Future <span class="kw">for </span>FutureWrapper {
-    <span class="kw">type </span>Output = Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span><a href="#22-25">FutureWrapper</a> {
+    <span class="kw">type </span>Output = Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, ctx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
-        <span class="kw">match </span><span class="self">self</span>.get_mut() {
-            FutureWrapper::Send(fut) =&gt; {
-                Pin::new(fut).poll(ctx).map(|b| b <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;)
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, ctx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+        <span class="kw">match </span><a class="self" href="#33">self</a>.get_mut() {
+            <a href="#23">FutureWrapper::Send</a>(fut) =&gt; {
+                Pin::new(<a href="#35">fut</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#33">ctx</a>).map(|b| <a href="#36">b</a> <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;)
             }
-            FutureWrapper::NonSend(fut) =&gt; Pin::new(fut.get_mut()).poll(ctx),
+            <a href="#24">FutureWrapper::NonSend</a>(fut) =&gt; Pin::new(<a href="#38">fut</a>.<a href="thread_guard.rs.html#70-77">get_mut</a>()).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#33">ctx</a>),
         }
     }
 }
@@ -934,9 +935,9 @@
 </span><span class="attr">#[repr(C)]
 </span><span class="kw">struct </span>TaskSource {
     source: ffi::GSource,
-    future: FutureWrapper,
-    waker: Waker,
-    return_tx: <span class="prelude-ty">Option</span>&lt;oneshot::Sender&lt;thread::Result&lt;Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt;&gt;&gt;,
+    future: <a href="#22-25">FutureWrapper</a>,
+    waker: <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Waker.html">Waker</a>,
+    return_tx: <span class="prelude-ty">Option</span>&lt;oneshot::Sender&lt;thread::Result&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;&gt;,
 }
 
 <span class="attr">#[repr(C)]
@@ -944,115 +945,115 @@
     source: ffi::GSource,
 }
 
-<span class="kw">impl </span>TaskSource {
-    <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispatch(
+<span class="kw">impl </span><a href="#51-56">TaskSource</a> {
+    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dispatch(
         source: <span class="kw-2">*mut </span>ffi::GSource,
         callback: ffi::GSourceFunc,
         _user_data: ffi::gpointer,
     ) -&gt; ffi::gboolean {
-        <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(source <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>);
-        <span class="macro">debug_assert!</span>(callback.is_none());
+        <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(<a href="#65">source</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>);
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(callback.is_none());
 
-        <span class="comment">// Poll the TaskSource and ensure we&#39;re never called again if the
+        <span class="comment">// Poll the TaskSource and ensure we're never called again if the
         // contained Future resolved now.
-        </span><span class="kw">if let </span>Poll::Ready(()) = source.poll() {
+        </span><span class="kw">if let </span>Poll::Ready(()) = <a href="#69">source</a>.<a href="#226-266">poll</a>() {
             ffi::G_SOURCE_REMOVE
         } <span class="kw">else </span>{
             ffi::G_SOURCE_CONTINUE
         }
     }
 
-    <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>finalize(source: <span class="kw-2">*mut </span>ffi::GSource) {
-        <span class="kw">let </span>source = source <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>;
+    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>finalize(source: <span class="kw-2">*mut </span>ffi::GSource) {
+        <span class="kw">let </span>source = <a href="#81">source</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>;
 
         <span class="comment">// This will panic if the future was a local future and is dropped from a different thread
-        // than where it was created so try to drop it from the main context if we&#39;re on another
+        // than where it was created so try to drop it from the main context if we're on another
         // thread and the main context still exists.
         //
         // This can only really happen if the `Source` was manually retrieve from the context, but
         // better safe than sorry.
-        </span><span class="kw">match </span>(<span class="kw-2">*</span>source).future {
-            FutureWrapper::Send(<span class="kw">_</span>) =&gt; {
-                ptr::drop_in_place(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span>source).future);
+        </span><span class="kw">match </span>(<span class="kw-2">*</span><a href="#82">source</a>).future {
+            <a href="#23">FutureWrapper::Send</a>(<span class="kw">_</span>) =&gt; {
+                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#82">source</a>).future);
             }
-            FutureWrapper::NonSend(<span class="kw-2">ref mut </span>future) <span class="kw">if </span>future.is_owner() =&gt; {
-                ptr::drop_in_place(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span>source).future);
+            <a href="#24">FutureWrapper::NonSend</a>(<span class="kw-2">ref mut </span>future) <span class="kw">if </span><a href="#94">future</a>.<a href="thread_guard.rs.html#99-101">is_owner</a>() =&gt; {
+                <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#82">source</a>).future);
             }
-            FutureWrapper::NonSend(<span class="kw-2">ref mut </span>future) =&gt; {
-                <span class="kw">let </span>context = ffi::g_source_get_context(source <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self </span><span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
+            <a href="#24">FutureWrapper::NonSend</a>(<span class="kw-2">ref mut </span>future) =&gt; {
+                <span class="kw">let </span>context = ffi::g_source_get_context(<a href="#82">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
                 <span class="kw">if </span>!context.is_null() {
-                    <span class="kw">let </span>future = ptr::read(future);
-                    <span class="kw">let </span>context = MainContext::from_glib_none(context);
-                    context.invoke(<span class="kw">move </span>|| {
-                        drop(future);
+                    <span class="kw">let </span>future = ptr::read(<a href="#97">future</a>);
+                    <span class="kw">let </span>context = <a href="translate.rs.html#1557">MainContext::from_glib_none</a>(<a href="#98">context</a>);
+                    <a href="#101">context</a>.<a href="main_context.rs.html#98-103">invoke</a>(<span class="kw">move </span>|| {
+                        <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#100">future</a>);
                     });
                 } <span class="kw">else </span>{
                     <span class="comment">// This will panic
-                    </span>ptr::drop_in_place(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span>source).future);
+                    </span><a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#82">source</a>).future);
                 }
             }
         }
 
         <span class="comment">// Drop the waker to unref the underlying GSource
-        </span>ptr::drop_in_place(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span>source).waker);
+        </span><a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span>(<span class="kw-2">*</span><a href="#82">source</a>).waker);
     }
 }
 
-<span class="kw">impl </span>WakerSource {
-    <span class="kw">unsafe fn </span>clone_raw(waker: <span class="kw-2">*const </span>()) -&gt; RawWaker {
-        <span class="kw">static </span>VTABLE: RawWakerVTable = RawWakerVTable::new(
+<span class="kw">impl </span><a href="#59-61">WakerSource</a> {
+    <span class="kw">unsafe fn </span>clone_raw(waker: <span class="kw-2">*const </span>()) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.RawWaker.html">RawWaker</a> {
+        <span class="kw">static </span>VTABLE: <a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.RawWakerVTable.html">RawWakerVTable</a> = RawWakerVTable::new(
             WakerSource::clone_raw,
             WakerSource::wake_raw,
             WakerSource::wake_by_ref_raw,
             WakerSource::drop_raw,
         );
 
-        <span class="kw">let </span>waker = waker <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_ref(mut_override(waker));
-        RawWaker::new(waker <span class="kw">as </span><span class="kw-2">*const </span>(), <span class="kw-2">&amp;</span>VTABLE)
+        <span class="kw">let </span>waker = <a href="#118">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
+        ffi::g_source_ref(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#126">waker</a>));
+        RawWaker::new(<a href="#126">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>(), <span class="kw-2">&amp;</span><a href="#119-124">VTABLE</a>)
     }
 
     <span class="kw">unsafe fn </span>wake_raw(waker: <span class="kw-2">*const </span>()) {
-        <span class="self">Self</span>::wake_by_ref_raw(waker);
-        <span class="self">Self</span>::drop_raw(waker);
+        <a href="#136-139"><span class="self">Self</span>::wake_by_ref_raw</a>(<a href="#131">waker</a>);
+        <a href="#141-144"><span class="self">Self</span>::drop_raw</a>(<a href="#131">waker</a>);
     }
 
     <span class="kw">unsafe fn </span>wake_by_ref_raw(waker: <span class="kw-2">*const </span>()) {
-        <span class="kw">let </span>waker = waker <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_set_ready_time(mut_override(waker), <span class="number">0</span>);
+        <span class="kw">let </span>waker = <a href="#136">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
+        ffi::g_source_set_ready_time(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#137">waker</a>), <span class="number">0</span>);
     }
 
     <span class="kw">unsafe fn </span>drop_raw(waker: <span class="kw-2">*const </span>()) {
-        <span class="kw">let </span>waker = waker <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
-        ffi::g_source_unref(mut_override(waker));
+        <span class="kw">let </span>waker = <a href="#141">waker</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GSource;
+        ffi::g_source_unref(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#142">waker</a>));
     }
 
-    <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispatch(
+    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>dispatch(
         source: <span class="kw-2">*mut </span>ffi::GSource,
         _callback: ffi::GSourceFunc,
         _user_data: ffi::gpointer,
     ) -&gt; ffi::gboolean {
-        <span class="comment">// Set ready-time to -1 so that we&#39;re not called again before
+        <span class="comment">// Set ready-time to -1 so that we're not called again before
         // being woken up another time.
-        </span>ffi::g_source_set_ready_time(mut_override(source), -<span class="number">1</span>);
+        </span>ffi::g_source_set_ready_time(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#147">source</a>), -<span class="number">1</span>);
         ffi::G_SOURCE_CONTINUE
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>TaskSource {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>TaskSource {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#51-56">TaskSource</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#51-56">TaskSource</a> {}
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>WakerSource {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>WakerSource {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#59-61">WakerSource</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#59-61">WakerSource</a> {}
 
-<span class="kw">impl </span>TaskSource {
+<span class="kw">impl </span><a href="#51-56">TaskSource</a> {
     <span class="attr">#[allow(clippy::new_ret_no_self)]
     </span><span class="comment">// checker-ignore-item
     </span><span class="kw">fn </span>new(
-        priority: Priority,
-        future: FutureWrapper,
-        return_tx: <span class="prelude-ty">Option</span>&lt;oneshot::Sender&lt;thread::Result&lt;Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt;&gt;&gt;,
-    ) -&gt; Source {
+        priority: <a href="source.rs.html#932">Priority</a>,
+        future: <a href="#22-25">FutureWrapper</a>,
+        return_tx: <span class="prelude-ty">Option</span>&lt;oneshot::Sender&lt;thread::Result&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;&gt;,
+    ) -&gt; <a href="auto/source.rs.html#7-18">Source</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">static </span>TASK_SOURCE_FUNCS: ffi::GSourceFuncs = ffi::GSourceFuncs {
                 check: <span class="prelude-val">None</span>,
@@ -1072,81 +1073,81 @@
             };
 
             <span class="kw">let </span>source = ffi::g_source_new(
-                mut_override(<span class="kw-2">&amp;</span>TASK_SOURCE_FUNCS),
-                mem::size_of::&lt;<span class="self">Self</span>&gt;() <span class="kw">as </span>u32,
+                <a href="translate.rs.html#201-203">mut_override</a>(<span class="kw-2">&amp;</span><a href="#173-180">TASK_SOURCE_FUNCS</a>),
+                mem::size_of::&lt;<span class="self">Self</span>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             );
 
             <span class="kw">let </span>waker_source = ffi::g_source_new(
-                mut_override(<span class="kw-2">&amp;</span>WAKER_SOURCE_FUNCS),
-                mem::size_of::&lt;WakerSource&gt;() <span class="kw">as </span>u32,
+                <a href="translate.rs.html#201-203">mut_override</a>(<span class="kw-2">&amp;</span><a href="#181-188">WAKER_SOURCE_FUNCS</a>),
+                mem::size_of::&lt;<a href="#59-61">WakerSource</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             );
 
-            ffi::g_source_set_priority(source, priority.into_glib());
-            ffi::g_source_add_child_source(source, waker_source);
+            ffi::g_source_set_priority(<a href="#190">source</a>, <a href="#168">priority</a>.<a href="translate.rs.html#333">into_glib</a>());
+            ffi::g_source_add_child_source(<a href="#190">source</a>, <a href="#195">waker_source</a>);
 
             {
-                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(source <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>);
-                ptr::write(<span class="kw-2">&amp;mut </span>source.future, future);
-                ptr::write(<span class="kw-2">&amp;mut </span>source.return_tx, return_tx);
+                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(<a href="#190">source</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>);
+                ptr::write(<span class="kw-2">&amp;mut </span><a href="#204">source</a>.future, <a href="#169">future</a>);
+                ptr::write(<span class="kw-2">&amp;mut </span><a href="#204">source</a>.return_tx, <a href="#170">return_tx</a>);
 
                 <span class="comment">// This creates a new reference to the waker source.
-                </span><span class="kw">let </span>waker = Waker::from_raw(WakerSource::clone_raw(waker_source <span class="kw">as </span><span class="kw-2">*const </span>()));
-                ptr::write(<span class="kw-2">&amp;mut </span>source.waker, waker);
+                </span><span class="kw">let </span>waker = Waker::from_raw(<a href="#118-129">WakerSource::clone_raw</a>(<a href="#195">waker_source</a> <span class="kw">as </span><span class="kw-2">*const </span>()));
+                ptr::write(<span class="kw-2">&amp;mut </span><a href="#204">source</a>.waker, <a href="#209">waker</a>);
             }
 
             <span class="comment">// Set ready time to 0 so that the source is immediately dispatched
             // for doing the initial polling. This will then either resolve the
             // future or register the waker wherever necessary.
-            </span>ffi::g_source_set_ready_time(waker_source, <span class="number">0</span>);
+            </span>ffi::g_source_set_ready_time(<a href="#195">waker_source</a>, <span class="number">0</span>);
 
             <span class="comment">// Unref the waker source, a strong reference to it is stored inside
             // the task source directly and inside the task source as child source.
-            </span>ffi::g_source_unref(waker_source);
+            </span>ffi::g_source_unref(<a href="#195">waker_source</a>);
 
-            from_glib_full(source)
+            <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#190">source</a>)
         }
     }
 
     <span class="kw">fn </span>poll(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Poll&lt;()&gt; {
-        <span class="kw">let </span>source = <span class="kw-2">&amp;</span><span class="self">self</span>.source <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
-        <span class="kw">let </span>executor: Borrowed&lt;MainContext&gt; =
-            <span class="kw">unsafe </span>{ from_glib_borrow(ffi::g_source_get_context(mut_override(source))) };
+        <span class="kw">let </span>source = <span class="kw-2">&amp;</span><a class="self" href="#226">self</a>.source <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>;
+        <span class="kw">let </span>executor: Borrowed&lt;<a href="auto/main_context.rs.html#10-21">MainContext</a>&gt; =
+            <span class="kw">unsafe </span>{ <a href="translate.rs.html#1642-1644">from_glib_borrow</a>(ffi::g_source_get_context(<a href="translate.rs.html#201-203">mut_override</a>(<a href="#227">source</a>))) };
 
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             executor.is_owner(),
-            <span class="string">&quot;Polling futures only allowed if the thread is owning the MainContext&quot;
+            <span class="string">"Polling futures only allowed if the thread is owning the MainContext"
         </span>);
 
-        executor
-            .with_thread_default(|| {
+        <a href="#228">executor</a>
+            .<a href="main_context.rs.html#204-211">with_thread_default</a>(|| {
                 <span class="kw">let </span>_enter = futures_executor::enter().unwrap();
-                <span class="kw">let </span><span class="kw-2">mut </span>context = Context::from_waker(<span class="kw-2">&amp;</span><span class="self">self</span>.waker);
+                <span class="kw">let </span><span class="kw-2">mut </span>context = Context::from_waker(<span class="kw-2">&amp;</span><a class="self" href="#226">self</a>.waker);
 
                 <span class="comment">// This will panic if the future was a local future and is called from
                 // a different thread than where it was created.
-                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(tx) = <span class="self">self</span>.return_tx.take() {
+                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(tx) = <a class="self" href="#226">self</a>.return_tx.take() {
                     <span class="kw">let </span>res = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-                        Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.future).poll(<span class="kw-2">&amp;mut </span>context)
+                        Pin::new(<span class="kw-2">&amp;mut </span><a class="self" href="#226">self</a>.future).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<span class="kw-2">&amp;mut </span><a href="#239">context</a>)
                     }));
-                    <span class="kw">match </span>res {
+                    <span class="kw">match </span><a href="#244">res</a> {
                         <span class="prelude-val">Ok</span>(Poll::Ready(res)) =&gt; {
-                            <span class="kw">let _ </span>= tx.send(<span class="prelude-val">Ok</span>(res));
+                            <span class="kw">let _ </span>= <a href="#243">tx</a>.send(<span class="prelude-val">Ok</span>(<a href="#248">res</a>));
                             Poll::Ready(())
                         }
                         <span class="prelude-val">Ok</span>(Poll::Pending) =&gt; {
-                            <span class="self">self</span>.return_tx.replace(tx);
+                            <a class="self" href="#226">self</a>.return_tx.replace(<a href="#243">tx</a>);
                             Poll::Pending
                         }
                         <span class="prelude-val">Err</span>(e) =&gt; {
-                            <span class="kw">let _ </span>= tx.send(<span class="prelude-val">Err</span>(e));
+                            <span class="kw">let _ </span>= <a href="#243">tx</a>.send(<span class="prelude-val">Err</span>(<a href="#256">e</a>));
                             Poll::Ready(())
                         }
                     }
                 } <span class="kw">else </span>{
-                    Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.future).poll(<span class="kw-2">&amp;mut </span>context).map(|<span class="kw">_</span>| ())
+                    Pin::new(<span class="kw-2">&amp;mut </span><a class="self" href="#226">self</a>.future).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<span class="kw-2">&amp;mut </span><a href="#239">context</a>).map(|<span class="kw">_</span>| ())
                 }
             })
-            .expect(<span class="string">&quot;current thread is not owner of the main context&quot;</span>)
+            .expect(<span class="string">"current thread is not owner of the main context"</span>)
     }
 }
 
@@ -1154,29 +1155,29 @@
 </span><span class="doccomment">/// A handle to a task running on a [`MainContext`].
 ///
 /// Like [`std::thread::JoinHandle`] for a task rather than a thread. The return value from the
-/// task can be retrieved by awaiting on this object. Dropping the handle &quot;detaches&quot; the task,
+/// task can be retrieved by awaiting on this object. Dropping the handle "detaches" the task,
 /// allowing it to complete but discarding the return value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>JoinHandle&lt;T&gt; {
-    rx: oneshot::Receiver&lt;std::thread::Result&lt;Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt;&gt;,
-    source: Source,
-    id: Cell&lt;<span class="prelude-ty">Option</span>&lt;NonZeroU32&gt;&gt;,
+</span><span class="kw">pub struct </span><a href="../../glib/struct.JoinHandle.html">JoinHandle</a>&lt;T&gt; {
+    rx: oneshot::Receiver&lt;std::thread::Result&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;,
+    source: <a href="auto/source.rs.html#7-18">Source</a>,
+    id: Cell&lt;<span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>&gt;&gt;,
     phantom: PhantomData&lt;oneshot::Receiver&lt;std::thread::Result&lt;T&gt;&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;T&gt; JoinHandle&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>new(
-        ctx: <span class="kw-2">&amp;</span>MainContext,
-        source: Source,
-        rx: oneshot::Receiver&lt;std::thread::Result&lt;Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt;&gt;,
+        ctx: <span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>,
+        source: <a href="auto/source.rs.html#7-18">Source</a>,
+        rx: oneshot::Receiver&lt;std::thread::Result&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>id = source.attach(<span class="prelude-val">Some</span>(ctx));
-        <span class="kw">let </span>id = Cell::new(<span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(id.as_raw()) }));
+        <span class="kw">let </span>id = <a href="#287">source</a>.<a href="source.rs.html#1189-1196">attach</a>(<span class="prelude-val">Some</span>(<a href="#286">ctx</a>));
+        <span class="kw">let </span>id = Cell::new(<span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(<a href="#290">id</a>.<a href="source.rs.html#26-28">as_raw</a>()) }));
         <span class="self">Self </span>{
-            rx,
-            source,
-            id,
+            <a href="#288">rx</a>,
+            <a href="#287">source</a>,
+            <a href="#291">id</a>,
             phantom: PhantomData,
         }
     }
@@ -1185,64 +1186,64 @@
     ///
     /// Returns `None` if the handle was aborted already.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_raw_source_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u32&gt; {
-        <span class="self">self</span>.id.get().map(|i| i.get())
+    </span><span class="kw">pub fn </span>as_raw_source_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>&gt; {
+        <a class="self" href="#304">self</a>.id.get().map(|i| <a href="#305">i</a>.get())
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Aborts the task associated with the handle.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>abort(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.source.destroy();
-        <span class="self">self</span>.id.replace(<span class="prelude-val">None</span>);
+        <a class="self" href="#310">self</a>.source.<a href="auto/source.rs.html#63-67">destroy</a>();
+        <a class="self" href="#310">self</a>.id.replace(<span class="prelude-val">None</span>);
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the [`Source`] associated with this handle.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Source {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.source
+    </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/source.rs.html#7-18">Source</a> {
+        <span class="kw-2">&amp;</span><a class="self" href="#317">self</a>.source
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Safely converts the handle into a [`SourceId`].
     ///
     /// Can be used to discard the return value while still retaining the ability to abort the
     /// underlying task. Returns `Err(self)` if the handle was aborted already.
-    </span><span class="kw">pub fn </span>into_source_id(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;SourceId, <span class="self">Self</span>&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = <span class="self">self</span>.id.take() {
-            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ SourceId::from_glib(id.get()) })
+    </span><span class="kw">pub fn </span>into_source_id(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="source.rs.html#21">SourceId</a>, <span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = <a class="self" href="#325">self</a>.id.take() {
+            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1410">SourceId::from_glib</a>(<a href="#326">id</a>.get()) })
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<span class="self">self</span>)
+            <span class="prelude-val">Err</span>(<a class="self" href="#325">self</a>)
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; Future <span class="kw">for </span>JoinHandle&lt;T&gt; {
-    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;T, JoinError&gt;;
+<span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span>JoinHandle&lt;T&gt; {
+    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;T, <a href="#440">JoinError</a>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>poll(
         <span class="kw-2">mut </span><span class="self">self</span>: std::pin::Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; std::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
-        std::pin::Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.rx).poll(cx).map(|r| <span class="kw">match </span>r {
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(JoinErrorInner::Cancelled.into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(e)) =&gt; <span class="prelude-val">Err</span>(JoinErrorInner::Panic(e).into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(r)) =&gt; <span class="prelude-val">Ok</span>(<span class="kw-2">*</span>r.downcast().unwrap()),
+        std::pin::Pin::new(<span class="kw-2">&amp;mut </span><a class="self" href="#338">self</a>.rx).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#339">cx</a>).map(|r| <span class="kw">match </span><a href="#341">r</a> {
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<a href="#492">JoinErrorInner::Cancelled</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(e)) =&gt; <span class="prelude-val">Err</span>(<a href="#494">JoinErrorInner::Panic</a>(<a href="#343">e</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(r)) =&gt; <span class="prelude-val">Ok</span>(<span class="kw-2">*</span><a href="#344">r</a>.downcast().unwrap()),
         })
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; futures_core::FusedFuture <span class="kw">for </span>JoinHandle&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>&gt; futures_core::FusedFuture <span class="kw">for </span>JoinHandle&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.rx.is_terminated()
+    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#351">self</a>.rx.is_terminated()
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T&gt; Send <span class="kw">for </span>JoinHandle&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>JoinHandle&lt;T&gt; {}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Variant of [`JoinHandle`] that is returned from [`MainContext::spawn_from_within`].
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>SpawnWithinJoinHandle&lt;T&gt; {
+</span><span class="kw">pub struct </span><a href="../../glib/struct.SpawnWithinJoinHandle.html">SpawnWithinJoinHandle</a>&lt;T&gt; {
     rx: <span class="prelude-ty">Option</span>&lt;oneshot::Receiver&lt;JoinHandle&lt;T&gt;&gt;&gt;,
     join_handle: <span class="prelude-ty">Option</span>&lt;JoinHandle&lt;T&gt;&gt;,
 }
@@ -1266,52 +1267,52 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; Future <span class="kw">for </span>SpawnWithinJoinHandle&lt;T&gt; {
-    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;T, JoinError&gt;;
+<span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span>SpawnWithinJoinHandle&lt;T&gt; {
+    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;T, <a href="#440">JoinError</a>&gt;;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>poll(
         <span class="kw-2">mut </span><span class="self">self</span>: std::pin::Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; std::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <span class="self">self</span>.rx {
-            <span class="kw">match </span>std::pin::Pin::new(rx).poll(cx) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>rx) = <a class="self" href="#389">self</a>.rx {
+            <span class="kw">match </span>std::pin::Pin::new(<a href="#392">rx</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#390">cx</a>) {
                 std::task::Poll::Pending =&gt; <span class="kw">return </span>std::task::Poll::Pending,
                 std::task::Poll::Ready(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
-                    <span class="self">self</span>.rx = <span class="prelude-val">None</span>;
-                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Err</span>(JoinErrorInner::Cancelled.into()));
+                    <a class="self" href="#389">self</a>.rx = <span class="prelude-val">None</span>;
+                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Err</span>(<a href="#492">JoinErrorInner::Cancelled</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()));
                 }
                 std::task::Poll::Ready(<span class="prelude-val">Ok</span>(join_handle)) =&gt; {
-                    <span class="self">self</span>.rx = <span class="prelude-val">None</span>;
-                    <span class="self">self</span>.join_handle = <span class="prelude-val">Some</span>(join_handle);
+                    <a class="self" href="#389">self</a>.rx = <span class="prelude-val">None</span>;
+                    <a class="self" href="#389">self</a>.join_handle = <span class="prelude-val">Some</span>(<a href="#399">join_handle</a>);
                 }
             }
         }
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>join_handle) = <span class="self">self</span>.join_handle {
-            <span class="kw">match </span>std::pin::Pin::new(join_handle).poll(cx) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>join_handle) = <a class="self" href="#389">self</a>.join_handle {
+            <span class="kw">match </span>std::pin::Pin::new(<a href="#406">join_handle</a>).<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#390">cx</a>) {
                 std::task::Poll::Pending =&gt; <span class="kw">return </span>std::task::Poll::Pending,
                 std::task::Poll::Ready(<span class="prelude-val">Err</span>(e)) =&gt; {
-                    <span class="self">self</span>.join_handle = <span class="prelude-val">None</span>;
-                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Err</span>(e));
+                    <a class="self" href="#389">self</a>.join_handle = <span class="prelude-val">None</span>;
+                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Err</span>(<a href="#409">e</a>));
                 }
                 std::task::Poll::Ready(<span class="prelude-val">Ok</span>(r)) =&gt; {
-                    <span class="self">self</span>.join_handle = <span class="prelude-val">None</span>;
-                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Ok</span>(r));
+                    <a class="self" href="#389">self</a>.join_handle = <span class="prelude-val">None</span>;
+                    <span class="kw">return </span>std::task::Poll::Ready(<span class="prelude-val">Ok</span>(<a href="#413">r</a>));
                 }
             }
         }
 
-        std::task::Poll::Ready(<span class="prelude-val">Err</span>(JoinErrorInner::Cancelled.into()))
+        std::task::Poll::Ready(<span class="prelude-val">Err</span>(<a href="#492">JoinErrorInner::Cancelled</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()))
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; futures_core::FusedFuture <span class="kw">for </span>SpawnWithinJoinHandle&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <span class="lifetime">'static</span>&gt; futures_core::FusedFuture <span class="kw">for </span>SpawnWithinJoinHandle&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>rx) = <span class="self">self</span>.rx {
-            rx.is_terminated()
-        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>join_handle) = <span class="self">self</span>.join_handle {
-            join_handle.is_terminated()
+    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>rx) = <a class="self" href="#426">self</a>.rx {
+            <a href="#427">rx</a>.is_terminated()
+        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>join_handle) = <a class="self" href="#426">self</a>.join_handle {
+            <a href="#429">join_handle</a>.is_terminated()
         } <span class="kw">else </span>{
             <span class="bool-val">true
         </span>}
@@ -1321,20 +1322,20 @@
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Task failure from awaiting a [`JoinHandle`].
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>JoinError(JoinErrorInner);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.JoinError.html">JoinError</a>(<a href="#490-495">JoinErrorInner</a>);
 
-<span class="kw">impl </span>JoinError {
+<span class="kw">impl </span><a href="#440">JoinError</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns `true` if the handle was cancelled.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.<span class="number">0</span>, JoinErrorInner::Cancelled)
+    </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(<span class="self">self</span>.<span class="number">0</span>, JoinErrorInner::Cancelled)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns `true` if the task terminated with a panic.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_panic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.<span class="number">0</span>, JoinErrorInner::Panic(<span class="kw">_</span>))
+    </span><span class="kw">pub fn </span>is_panic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(<span class="self">self</span>.<span class="number">0</span>, JoinErrorInner::Panic(<span class="kw">_</span>))
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts the error into a panic result.
@@ -1344,58 +1345,58 @@
     /// Panics if the error is not a panic error. Use [`is_panic`](Self::is_panic) to check first
     /// if the error represents a panic.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>into_panic(<span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt; {
-        <span class="self">self</span>.try_into_panic()
-            .expect(<span class="string">&quot;`JoinError` is not a panic error&quot;</span>)
+    </span><span class="kw">pub fn </span>into_panic(<span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt; {
+        <a class="self" href="#463">self</a>.<a href="#472-477">try_into_panic</a>()
+            .expect(<span class="string">"`JoinError` is not a panic error"</span>)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Attempts to convert the error into a panic result.
     ///
     /// Returns `Err(self)` if the error is not a panic result.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>try_into_panic(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;, <span class="self">Self</span>&gt; {
-        <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
-            JoinErrorInner::Panic(e) =&gt; <span class="prelude-val">Ok</span>(e),
-            e =&gt; <span class="prelude-val">Err</span>(<span class="self">Self</span>(e)),
+    </span><span class="kw">pub fn </span>try_into_panic(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;, <span class="self">Self</span>&gt; {
+        <span class="kw">match </span><a class="self" href="#472">self</a>.<span class="number">0 </span>{
+            <a href="#494">JoinErrorInner::Panic</a>(e) =&gt; <span class="prelude-val">Ok</span>(<a href="#474">e</a>),
+            e =&gt; <span class="prelude-val">Err</span>(<span class="self">Self</span>(<a href="#475">e</a>)),
         }
     }
 }
 
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>JoinError {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#440">JoinError</a> {}
 
-<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>JoinError {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#440">JoinError</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="self">self</span>.<span class="number">0</span>.fmt(f)
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a class="self" href="#484">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt</a>(<a href="#484">f</a>)
     }
 }
 
 <span class="attr">#[derive(thiserror::Error, Debug)]
-</span><span class="kw">enum </span>JoinErrorInner {
-    <span class="attr">#[error(<span class="string">&quot;task cancelled&quot;</span>)]
+</span><span class="kw">enum </span><a href="#490-495">JoinErrorInner</a> {
+    <span class="attr">#[error(<span class="string">"task cancelled"</span>)]
     </span>Cancelled,
-    <span class="attr">#[error(<span class="string">&quot;task panicked&quot;</span>)]
-    </span>Panic(Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;),
+    <span class="attr">#[error(<span class="string">"task panicked"</span>)]
+    </span>Panic(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
 }
 
-<span class="kw">impl </span>From&lt;JoinErrorInner&gt; <span class="kw">for </span>JoinError {
+<span class="kw">impl </span>From&lt;<a href="#490-495">JoinErrorInner</a>&gt; <span class="kw">for </span><a href="#440">JoinError</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(e: JoinErrorInner) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(e)
+    </span><span class="kw">fn </span>from(e: <a href="#490-495">JoinErrorInner</a>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<a href="#499">e</a>)
     }
 }
 
-<span class="kw">impl </span>MainContext {
+<span class="kw">impl </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Spawn a new infallible `Future` on the main context.
     ///
     /// This can be called from any thread and will execute the future from the thread
     /// where main context is running, e.g. via a `MainLoop`.
-    </span><span class="kw">pub fn </span>spawn&lt;R: Send + <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>spawn&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
     ) -&gt; JoinHandle&lt;R&gt; {
-        <span class="self">self</span>.spawn_with_priority(<span class="kw">crate</span>::PRIORITY_DEFAULT, f)
+        <a class="self" href="#511">self</a>.<a href="#534-545">spawn_with_priority</a>(<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(), <a href="#512">f</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1406,8 +1407,8 @@
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
     /// `with_thread_default` or `acquire` on the main context.
-    </span><span class="kw">pub fn </span>spawn_local&lt;R: <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; JoinHandle&lt;R&gt; {
-        <span class="self">self</span>.spawn_local_with_priority(<span class="kw">crate</span>::PRIORITY_DEFAULT, f)
+    </span><span class="kw">pub fn </span>spawn_local&lt;R: <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; JoinHandle&lt;R&gt; {
+        <a class="self" href="#525">self</a>.<a href="#555-573">spawn_local_with_priority</a>(<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(), <a href="#525">f</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1415,17 +1416,17 @@
     ///
     /// This can be called from any thread and will execute the future from the thread
     /// where main context is running, e.g. via a `MainLoop`.
-    </span><span class="kw">pub fn </span>spawn_with_priority&lt;R: Send + <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>spawn_with_priority&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        priority: Priority,
+        priority: <a href="source.rs.html#932">Priority</a>,
         f: F,
     ) -&gt; JoinHandle&lt;R&gt; {
         <span class="kw">let </span>f = FutureObj::new(Box::new(<span class="kw">async move </span>{
-            Box::new(f.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;
+            Box::new(<a href="#537">f</a>.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;
         }));
         <span class="kw">let </span>(tx, rx) = oneshot::channel();
-        <span class="kw">let </span>source = TaskSource::new(priority, FutureWrapper::Send(f), <span class="prelude-val">Some</span>(tx));
-        JoinHandle::new(<span class="self">self</span>, source, rx)
+        <span class="kw">let </span>source = <a href="#167-224">TaskSource::new</a>(<a href="#536">priority</a>, <a href="#23">FutureWrapper::Send</a>(<a href="#539">f</a>), <span class="prelude-val">Some</span>(<a href="#542">tx</a>));
+        <a href="#285-298">JoinHandle::new</a>(<a class="self" href="#535">self</a>, <a href="#543">source</a>, <a href="#542">rx</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1436,24 +1437,24 @@
     /// This can be called only from the thread where the main context is running, e.g.
     /// from any other `Future` that is executed on this main context, or after calling
     /// `with_thread_default` or `acquire` on the main context.
-    </span><span class="kw">pub fn </span>spawn_local_with_priority&lt;R: <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>spawn_local_with_priority&lt;R: <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        priority: Priority,
+        priority: <a href="source.rs.html#932">Priority</a>,
         f: F,
     ) -&gt; JoinHandle&lt;R&gt; {
-        <span class="kw">let </span>_acquire = <span class="self">self
-            </span>.acquire()
-            .expect(<span class="string">&quot;Spawning local futures only allowed on the thread owning the MainContext&quot;</span>);
+        <span class="kw">let </span>_acquire = <span class="self"><a href="#556">self</a>
+            </span>.<a href="main_context.rs.html#239-248">acquire</a>()
+            .expect(<span class="string">"Spawning local futures only allowed on the thread owning the MainContext"</span>);
         <span class="kw">let </span>f = LocalFutureObj::new(Box::new(<span class="kw">async move </span>{
-            Box::new(f.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;
+            Box::new(<a href="#558">f</a>.<span class="kw">await</span>) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
         }));
         <span class="kw">let </span>(tx, rx) = oneshot::channel();
-        <span class="kw">let </span>source = TaskSource::new(
-            priority,
-            FutureWrapper::NonSend(ThreadGuard::new(f)),
-            <span class="prelude-val">Some</span>(tx),
+        <span class="kw">let </span>source = <a href="#167-224">TaskSource::new</a>(
+            <a href="#557">priority</a>,
+            <a href="#24">FutureWrapper::NonSend</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(<a href="#563">f</a>)),
+            <span class="prelude-val">Some</span>(<a href="#566">tx</a>),
         );
-        JoinHandle::new(<span class="self">self</span>, source, rx)
+        <a href="#285-298">JoinHandle::new</a>(<a class="self" href="#556">self</a>, <a href="#567">source</a>, <a href="#566">rx</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1462,11 +1463,11 @@
     /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
     ///
     /// This can be called only from any thread.
-    </span><span class="kw">pub fn </span>spawn_from_within&lt;R: <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>spawn_from_within&lt;R: <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        func: <span class="kw">impl </span>FnOnce() -&gt; F + Send + <span class="lifetime">&#39;static</span>,
+        func: <span class="kw">impl </span>FnOnce() -&gt; F + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
     ) -&gt; SpawnWithinJoinHandle&lt;R&gt; {
-        <span class="self">self</span>.spawn_from_within_with_priority(<span class="kw">crate</span>::PRIORITY_DEFAULT, func)
+        <a class="self" href="#582">self</a>.<a href="#594-609">spawn_from_within_with_priority</a>(<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(), <a href="#583">func</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1475,19 +1476,19 @@
     /// The given `Future` does not have to be `Send` but the closure to spawn it has to be.
     ///
     /// This can be called only from any thread.
-    </span><span class="kw">pub fn </span>spawn_from_within_with_priority&lt;R: <span class="lifetime">&#39;static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>spawn_from_within_with_priority&lt;R: <span class="lifetime">'static</span>, F: Future&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        priority: Priority,
-        func: <span class="kw">impl </span>FnOnce() -&gt; F + Send + <span class="lifetime">&#39;static</span>,
+        priority: <a href="source.rs.html#932">Priority</a>,
+        func: <span class="kw">impl </span>FnOnce() -&gt; F + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
     ) -&gt; SpawnWithinJoinHandle&lt;R&gt; {
-        <span class="kw">let </span>ctx = <span class="self">self</span>.clone();
+        <span class="kw">let </span>ctx = <a class="self" href="#595">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
         <span class="kw">let </span>(tx, rx) = oneshot::channel();
-        <span class="self">self</span>.invoke_with_priority(priority, <span class="kw">move </span>|| {
-            <span class="kw">let _ </span>= tx.send(ctx.spawn_local(func()));
+        <a class="self" href="#595">self</a>.<a href="main_context.rs.html#113-120">invoke_with_priority</a>(<a href="#596">priority</a>, <span class="kw">move </span>|| {
+            <span class="kw">let _ </span>= <a href="#600">tx</a>.send(<a href="#599">ctx</a>.<a href="#525-527">spawn_local</a>(<a href="#597">func</a>()));
         });
 
-        SpawnWithinJoinHandle {
-            rx: <span class="prelude-val">Some</span>(rx),
+        <a href="#361-364">SpawnWithinJoinHandle</a> {
+            rx: <span class="prelude-val">Some</span>(<a href="#600">rx</a>),
             join_handle: <span class="prelude-val">None</span>,
         }
     }
@@ -1496,77 +1497,76 @@
     </span><span class="doccomment">/// Runs a new, infallible `Future` on the main context and block until it finished, returning
     /// the result of the `Future`.
     ///
-    /// The given `Future` does not have to be `Send` or `&#39;static`.
+    /// The given `Future` does not have to be `Send` or `'static`.
     ///
     /// This must only be called if no `MainLoop` or anything else is running on this specific main
     /// context.
     </span><span class="attr">#[allow(clippy::transmute_ptr_to_ptr)]
-    </span><span class="kw">pub fn </span>block_on&lt;F: Future&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; F::Output {
+    </span><span class="kw">pub fn </span>block_on&lt;F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; F::Output {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="prelude-val">None</span>;
-        <span class="kw">let </span>l = MainLoop::new(<span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="bool-val">false</span>);
-        <span class="kw">let </span>l_clone = l.clone();
+        <span class="kw">let </span>l = <a href="auto/main_loop.rs.html#34-41">MainLoop::new</a>(<span class="prelude-val">Some</span>(<a class="self" href="#620">self</a>), <span class="bool-val">false</span>);
 
         <span class="kw">let </span>f = <span class="kw">async </span>{
-            res = <span class="prelude-val">Some</span>(panic::AssertUnwindSafe(f).catch_unwind().<span class="kw">await</span>);
-            l_clone.quit();
+            <a href="#621">res</a> = <span class="prelude-val">Some</span>(panic::AssertUnwindSafe(<a href="#620">f</a>).catch_unwind().<span class="kw">await</span>);
+            <a href="#622">l</a>.<a href="auto/main_loop.rs.html#70-74">quit</a>();
         };
 
         <span class="kw">let </span>f = <span class="kw">unsafe </span>{
-            <span class="comment">// Super-unsafe: We transmute here to get rid of the &#39;static lifetime
+            <span class="comment">// Super-unsafe: We transmute here to get rid of the 'static lifetime
             </span><span class="kw">let </span>f = LocalFutureObj::new(Box::new(<span class="kw">async move </span>{
-                f.<span class="kw">await</span>;
-                Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;
+                <a href="#624">f</a>.<span class="kw">await</span>;
+                Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
             }));
-            <span class="kw">let </span>f: LocalFutureObj&lt;<span class="lifetime">&#39;static</span>, Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;&gt; = mem::transmute(f);
-            f
+            <span class="kw">let </span>f: LocalFutureObj&lt;<span class="lifetime">'static</span>, Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>(<a href="#631">f</a>);
+            <a href="#635">f</a>
         };
 
-        <span class="kw">let </span>source = TaskSource::new(
-            <span class="kw">crate</span>::PRIORITY_DEFAULT,
-            FutureWrapper::NonSend(ThreadGuard::new(f)),
+        <span class="kw">let </span>source = <a href="#167-224">TaskSource::new</a>(
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(),
+            <a href="#24">FutureWrapper::NonSend</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(<a href="#629">f</a>)),
             <span class="prelude-val">None</span>,
         );
-        source.attach(<span class="prelude-val">Some</span>(<span class="self">self</span>));
+        <a href="#639">source</a>.<a href="source.rs.html#1189-1196">attach</a>(<span class="prelude-val">Some</span>(<a class="self" href="#620">self</a>));
 
-        l.run();
+        <a href="#622">l</a>.<a href="auto/main_loop.rs.html#81-85">run</a>();
 
-        <span class="kw">match </span>res.unwrap() {
-            <span class="prelude-val">Ok</span>(v) =&gt; v,
-            <span class="prelude-val">Err</span>(e) =&gt; panic::resume_unwind(e),
+        <span class="kw">match </span><a href="#621">res</a>.unwrap() {
+            <span class="prelude-val">Ok</span>(v) =&gt; <a href="#649">v</a>,
+            <span class="prelude-val">Err</span>(e) =&gt; panic::resume_unwind(<a href="#650">e</a>),
         }
     }
 }
 
-<span class="kw">impl </span>Spawn <span class="kw">for </span>MainContext {
-    <span class="kw">fn </span>spawn_obj(<span class="kw-2">&amp;</span><span class="self">self</span>, f: FutureObj&lt;<span class="lifetime">&#39;static</span>, ()&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), SpawnError&gt; {
+<span class="kw">impl </span>Spawn <span class="kw">for </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
+    <span class="kw">fn </span>spawn_obj(<span class="kw-2">&amp;</span><span class="self">self</span>, f: FutureObj&lt;<span class="lifetime">'static</span>, ()&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), SpawnError&gt; {
         <span class="kw">let </span>(tx, <span class="kw">_</span>) = oneshot::channel();
-        <span class="kw">let </span>source = TaskSource::new(
-            <span class="kw">crate</span>::PRIORITY_DEFAULT,
-            FutureWrapper::Send(FutureObj::new(Box::new(<span class="kw">async move </span>{
-                f.<span class="kw">await</span>;
-                Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;
+        <span class="kw">let </span>source = <a href="#167-224">TaskSource::new</a>(
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(),
+            <a href="#23">FutureWrapper::Send</a>(FutureObj::new(Box::new(<span class="kw">async move </span>{
+                <a href="#656">f</a>.<span class="kw">await</span>;
+                Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;
             }))),
-            <span class="prelude-val">Some</span>(tx),
+            <span class="prelude-val">Some</span>(<a href="#657">tx</a>),
         );
-        source.attach(<span class="prelude-val">Some</span>(<span class="self">self</span>));
+        <a href="#658">source</a>.<a href="source.rs.html#1189-1196">attach</a>(<span class="prelude-val">Some</span>(<a class="self" href="#656">self</a>));
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl </span>LocalSpawn <span class="kw">for </span>MainContext {
-    <span class="kw">fn </span>spawn_local_obj(<span class="kw-2">&amp;</span><span class="self">self</span>, f: LocalFutureObj&lt;<span class="lifetime">&#39;static</span>, ()&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), SpawnError&gt; {
+<span class="kw">impl </span>LocalSpawn <span class="kw">for </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
+    <span class="kw">fn </span>spawn_local_obj(<span class="kw-2">&amp;</span><span class="self">self</span>, f: LocalFutureObj&lt;<span class="lifetime">'static</span>, ()&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), SpawnError&gt; {
         <span class="kw">let </span>(tx, <span class="kw">_</span>) = oneshot::channel();
-        <span class="kw">let </span>source = TaskSource::new(
-            <span class="kw">crate</span>::PRIORITY_DEFAULT,
-            FutureWrapper::NonSend(ThreadGuard::new(LocalFutureObj::new(Box::new(
+        <span class="kw">let </span>source = <a href="#167-224">TaskSource::new</a>(
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html"><span class="kw">crate</span>::Priority::default</a>(),
+            <a href="#24">FutureWrapper::NonSend</a>(<a href="thread_guard.rs.html#38-43">ThreadGuard::new</a>(LocalFutureObj::new(Box::new(
                 <span class="kw">async move </span>{
-                    f.<span class="kw">await</span>;
-                    Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Any + <span class="lifetime">&#39;static</span>&gt;
+                    <a href="#672">f</a>.<span class="kw">await</span>;
+                    Box::new(()) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
                 },
             )))),
-            <span class="prelude-val">Some</span>(tx),
+            <span class="prelude-val">Some</span>(<a href="#673">tx</a>),
         );
-        source.attach(<span class="prelude-val">Some</span>(<span class="self">self</span>));
+        <a href="#674">source</a>.<a href="source.rs.html#1189-1196">attach</a>(<span class="prelude-val">Some</span>(<a class="self" href="#672">self</a>));
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -1683,15 +1683,14 @@
         c.block_on(<span class="kw">async </span>{
             <span class="kw">let </span>ret = c
                 .spawn(<span class="kw">async </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;failed&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"failed"</span>);
                 })
                 .<span class="kw">await</span>;
             <span class="macro">assert_eq!</span>(
                 <span class="kw-2">*</span>ret.unwrap_err().into_panic().downcast::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap(),
-                <span class="string">&quot;failed&quot;
+                <span class="string">"failed"
             </span>);
         });
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

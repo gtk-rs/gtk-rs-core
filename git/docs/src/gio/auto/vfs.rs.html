@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/vfs.rs`."><title>vfs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/vfs.rs`."><title>vfs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -369,100 +371,90 @@
 <a href="#296" id="296">296</a>
 <a href="#297" id="297">297</a>
 <a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
-<a href="#317" id="317">317</a>
-<a href="#318" id="318">318</a>
-<a href="#319" id="319">319</a>
-<a href="#320" id="320">320</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::File;
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt};
+</span><span class="kw">use </span><a href="file.rs.html#14-116"><span class="kw">crate</span>::File</a>;
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Entry point for using GIO functionality.
     ///
     /// # Implements
     ///
     /// [`VfsExt`][trait@crate::prelude::VfsExt], [`trait@glib::ObjectExt`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GVfs&quot;</span>)]
-    </span><span class="kw">pub struct </span>Vfs(Object&lt;ffi::GVfs, ffi::GVfsClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GVfs"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.Vfs.html">Vfs</a>(Object&lt;<a href="../../../gio_sys/struct.GVfs.html">ffi::GVfs</a>, <a href="../../../gio_sys/struct.GVfsClass.html">ffi::GVfsClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_vfs_get_type(),
     }
 }
 
-<span class="kw">impl </span>Vfs {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Vfs&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#9-21">Vfs</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#9-21">Vfs</a>&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Gets the default [`Vfs`][crate::Vfs] for the system.
+    <span class="doccomment">/// Gets the default #GVfs for the system.
     ///
     /// # Returns
     ///
-    /// a [`Vfs`][crate::Vfs], which will be the local
-    ///  file system [`Vfs`][crate::Vfs] if no other implementation is available.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_get_default&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_default&quot;</span>)]
+    /// a #GVfs, which will be the local
+    ///     file system #GVfs if no other implementation is available.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_get_default"</span>)]
+    #[doc(alias = <span class="string">"get_default"</span>)]
     #[allow(clippy::should_implement_trait)]
-    </span><span class="kw">pub fn </span>default() -&gt; Vfs {
+    </span><span class="kw">pub fn </span>default() -&gt; <a href="#9-21">Vfs</a> {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_vfs_get_default()) }
     }
 
-    <span class="doccomment">/// Gets the local [`Vfs`][crate::Vfs] for the system.
+    <span class="doccomment">/// Gets the local #GVfs for the system.
     ///
     /// # Returns
     ///
-    /// a [`Vfs`][crate::Vfs].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_get_local&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_local&quot;</span>)]
-    </span><span class="kw">pub fn </span>local() -&gt; Vfs {
+    /// a #GVfs.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_get_local"</span>)]
+    #[doc(alias = <span class="string">"get_local"</span>)]
+    </span><span class="kw">pub fn </span>local() -&gt; <a href="#9-21">Vfs</a> {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_vfs_get_local()) }
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>Vfs {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>Vfs {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#9-21">Vfs</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#9-21">Vfs</a> {}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#9-21"><span class="kw">super</span>::Vfs</a>&gt;&gt; <a href="#55">Sealed</a> <span class="kw">for </span>T {}
+}
 
 <span class="doccomment">/// Trait containing all [`struct@Vfs`] methods.
 ///
 /// # Implementors
 ///
 /// [`Vfs`][struct@crate::Vfs]
-</span><span class="kw">pub trait </span>VfsExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Gets a [`File`][crate::File] for `path`.
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.VfsExt.html">VfsExt</a>: IsA&lt;<a href="#9-21">Vfs</a>&gt; + <a href="#55">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Gets a #GFile for @path.
     /// ## `path`
     /// a string containing a VFS path.
     ///
     /// # Returns
     ///
-    /// a [`File`][crate::File].
-    ///  Free the returned object with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_get_file_for_path&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_file_for_path&quot;</span>)]
-    </span><span class="kw">fn </span>file_for_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; File;
+    /// a #GFile.
+    ///     Free the returned object with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_get_file_for_path"</span>)]
+    #[doc(alias = <span class="string">"get_file_for_path"</span>)]
+    </span><span class="kw">fn </span>file_for_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_vfs_get_file_for_path(
+                <a class="self" href="#75">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#75">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets a [`File`][crate::File] for `uri`.
+    <span class="doccomment">/// Gets a #GFile for @uri.
     ///
     /// This operation never fails, but the returned object
     /// might not support any I/O operation if the URI
@@ -472,244 +464,209 @@
     ///
     /// # Returns
     ///
-    /// a [`File`][crate::File].
-    ///  Free the returned object with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_get_file_for_uri&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_file_for_uri&quot;</span>)]
-    </span><span class="kw">fn </span>file_for_uri(<span class="kw-2">&amp;</span><span class="self">self</span>, uri: <span class="kw-2">&amp;</span>str) -&gt; File;
+    /// a #GFile.
+    ///     Free the returned object with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_get_file_for_uri"</span>)]
+    #[doc(alias = <span class="string">"get_file_for_uri"</span>)]
+    </span><span class="kw">fn </span>file_for_uri(<span class="kw-2">&amp;</span><span class="self">self</span>, uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_vfs_get_file_for_uri(
+                <a class="self" href="#98">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#98">uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets a list of URI schemes supported by `self`.
+    <span class="doccomment">/// Gets a list of URI schemes supported by @self.
     ///
     /// # Returns
     ///
     /// a [`None`]-terminated array of strings.
-    ///  The returned array belongs to GIO and must
-    ///  not be freed or modified.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_get_supported_uri_schemes&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_supported_uri_schemes&quot;</span>)]
-    </span><span class="kw">fn </span>supported_uri_schemes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt;;
+    ///     The returned array belongs to GIO and must
+    ///     not be freed or modified.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_get_supported_uri_schemes"</span>)]
+    #[doc(alias = <span class="string">"get_supported_uri_schemes"</span>)]
+    </span><span class="kw">fn </span>supported_uri_schemes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_none</a>(ffi::g_vfs_get_supported_uri_schemes(
+                <a class="self" href="#116">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Checks if the VFS is active.
     ///
     /// # Returns
     ///
-    /// [`true`] if construction of the `self` was successful
-    ///  and it is now active.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_is_active&quot;</span>)]
-    </span><span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
+    /// [`true`] if construction of the @self was successful
+    ///     and it is now active.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_is_active"</span>)]
+    </span><span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_vfs_is_active(<a class="self" href="#131">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    }
 
     <span class="doccomment">/// This operation never fails, but the returned object might
-    /// not support any I/O operations if the `parse_name` cannot
-    /// be parsed by the [`Vfs`][crate::Vfs] module.
+    /// not support any I/O operations if the @parse_name cannot
+    /// be parsed by the #GVfs module.
     /// ## `parse_name`
     /// a string to be parsed by the VFS module.
     ///
     /// # Returns
     ///
-    /// a [`File`][crate::File] for the given `parse_name`.
-    ///  Free the returned object with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_parse_name&quot;</span>)]
-    </span><span class="kw">fn </span>parse_name(<span class="kw-2">&amp;</span><span class="self">self</span>, parse_name: <span class="kw-2">&amp;</span>str) -&gt; File;
-
-    <span class="doccomment">/// Registers `uri_func` and `parse_name_func` as the [`File`][crate::File] URI and parse name
-    /// lookup functions for URIs with a scheme matching `scheme`.
-    /// Note that `scheme` is registered only within the running application, as
-    /// opposed to desktop-wide as it happens with GVfs backends.
-    ///
-    /// When a [`File`][crate::File] is requested with an URI containing `scheme` (e.g. through
-    /// [`File::for_uri()`][crate::File::for_uri()]), `uri_func` will be called to allow a custom
-    /// constructor. The implementation of `uri_func` should not be blocking, and
-    /// must not call [`register_uri_scheme()`][Self::register_uri_scheme()] or [`unregister_uri_scheme()`][Self::unregister_uri_scheme()].
-    ///
-    /// When [`File::for_parse_name()`][crate::File::for_parse_name()] is called with a parse name obtained from such file,
-    /// `parse_name_func` will be called to allow the [`File`][crate::File] to be created again. In
-    /// that case, it&#39;s responsibility of `parse_name_func` to make sure the parse
-    /// name matches what the custom [`File`][crate::File] implementation returned when
-    /// [`FileExt::parse_name()`][crate::prelude::FileExt::parse_name()] was previously called. The implementation of
-    /// `parse_name_func` should not be blocking, and must not call
-    /// [`register_uri_scheme()`][Self::register_uri_scheme()] or [`unregister_uri_scheme()`][Self::unregister_uri_scheme()].
-    ///
-    /// It&#39;s an error to call this function twice with the same scheme. To unregister
-    /// a custom URI scheme, use [`unregister_uri_scheme()`][Self::unregister_uri_scheme()].
-    /// ## `scheme`
-    /// an URI scheme, e.g. &quot;http&quot;
-    /// ## `uri_func`
-    /// a `GVfsFileLookupFunc`
-    /// ## `uri_data`
-    /// custom data passed to be passed to `uri_func`, or [`None`]
-    /// ## `uri_destroy`
-    /// function to be called when unregistering the
-    ///  URI scheme, or when `self` is disposed, to free the resources used
-    ///  by the URI lookup function
-    /// ## `parse_name_func`
-    /// a `GVfsFileLookupFunc`
-    /// ## `parse_name_data`
-    /// custom data passed to be passed to
-    ///  `parse_name_func`, or [`None`]
-    /// ## `parse_name_destroy`
-    /// function to be called when unregistering the
-    ///  URI scheme, or when `self` is disposed, to free the resources used
-    ///  by the parse name lookup function
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if `scheme` was successfully registered, or [`false`] if a handler
-    ///  for `scheme` already exists.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_register_uri_scheme&quot;</span>)]
-    </span><span class="kw">fn </span>register_uri_scheme(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        scheme: <span class="kw-2">&amp;</span>str,
-        uri_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;,
-        parse_name_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;,
-    ) -&gt; bool;
-
-    <span class="doccomment">/// Unregisters the URI handler for `scheme` previously registered with
-    /// [`register_uri_scheme()`][Self::register_uri_scheme()].
-    /// ## `scheme`
-    /// an URI scheme, e.g. &quot;http&quot;
-    ///
-    /// # Returns
-    ///
-    /// [`true`] if `scheme` was successfully unregistered, or [`false`] if a
-    ///  handler for `scheme` does not exist.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_vfs_unregister_uri_scheme&quot;</span>)]
-    </span><span class="kw">fn </span>unregister_uri_scheme(<span class="kw-2">&amp;</span><span class="self">self</span>, scheme: <span class="kw-2">&amp;</span>str) -&gt; bool;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;Vfs&gt;&gt; VfsExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>file_for_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; File {
-        <span class="kw">unsafe </span>{
-            from_glib_full(ffi::g_vfs_get_file_for_path(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                path.to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>file_for_uri(<span class="kw-2">&amp;</span><span class="self">self</span>, uri: <span class="kw-2">&amp;</span>str) -&gt; File {
-        <span class="kw">unsafe </span>{
-            from_glib_full(ffi::g_vfs_get_file_for_uri(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                uri.to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>supported_uri_schemes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{
-            FromGlibPtrContainer::from_glib_none(ffi::g_vfs_get_supported_uri_schemes(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_vfs_is_active(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
-    }
-
-    <span class="kw">fn </span>parse_name(<span class="kw-2">&amp;</span><span class="self">self</span>, parse_name: <span class="kw-2">&amp;</span>str) -&gt; File {
+    /// a #GFile for the given @parse_name.
+    ///     Free the returned object with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_parse_name"</span>)]
+    </span><span class="kw">fn </span>parse_name(<span class="kw-2">&amp;</span><span class="self">self</span>, parse_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_vfs_parse_name(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                parse_name.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#146">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#146">parse_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn </span>register_uri_scheme(
+    <span class="doccomment">/// Registers @uri_func and @parse_name_func as the #GFile URI and parse name
+    /// lookup functions for URIs with a scheme matching @scheme.
+    /// Note that @scheme is registered only within the running application, as
+    /// opposed to desktop-wide as it happens with GVfs backends.
+    ///
+    /// When a #GFile is requested with an URI containing @scheme (e.g. through
+    /// g_file_new_for_uri()), @uri_func will be called to allow a custom
+    /// constructor. The implementation of @uri_func should not be blocking, and
+    /// must not call g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+    ///
+    /// When g_file_parse_name() is called with a parse name obtained from such file,
+    /// @parse_name_func will be called to allow the #GFile to be created again. In
+    /// that case, it's responsibility of @parse_name_func to make sure the parse
+    /// name matches what the custom #GFile implementation returned when
+    /// g_file_get_parse_name() was previously called. The implementation of
+    /// @parse_name_func should not be blocking, and must not call
+    /// g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+    ///
+    /// It's an error to call this function twice with the same scheme. To unregister
+    /// a custom URI scheme, use g_vfs_unregister_uri_scheme().
+    /// ## `scheme`
+    /// an URI scheme, e.g. "http"
+    /// ## `uri_func`
+    /// a #GVfsFileLookupFunc
+    /// ## `uri_data`
+    /// custom data passed to be passed to @uri_func, or [`None`]
+    /// ## `uri_destroy`
+    /// function to be called when unregistering the
+    ///     URI scheme, or when @self is disposed, to free the resources used
+    ///     by the URI lookup function
+    /// ## `parse_name_func`
+    /// a #GVfsFileLookupFunc
+    /// ## `parse_name_data`
+    /// custom data passed to be passed to
+    ///     @parse_name_func, or [`None`]
+    /// ## `parse_name_destroy`
+    /// function to be called when unregistering the
+    ///     URI scheme, or when @self is disposed, to free the resources used
+    ///     by the parse name lookup function
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if @scheme was successfully registered, or [`false`] if a handler
+    ///     for @scheme already exists.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_register_uri_scheme"</span>)]
+    </span><span class="kw">fn </span>register_uri_scheme(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        scheme: <span class="kw-2">&amp;</span>str,
-        uri_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;,
-        parse_name_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;,
-    ) -&gt; bool {
-        <span class="kw">let </span>uri_func_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-            Box_::new(uri_func);
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>uri_func_func(
-            vfs: <span class="kw-2">*mut </span>ffi::GVfs,
+        scheme: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        uri_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;,
+        parse_name_func: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;,
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">let </span>uri_func_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;&gt; =
+            Box_::new(<a href="#203">uri_func</a>);
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>uri_func_func(
+            vfs: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GVfs.html">ffi::GVfs</a>,
             identifier: <span class="kw-2">*const </span>libc::c_char,
-            user_data: glib::ffi::gpointer,
-        ) -&gt; <span class="kw-2">*mut </span>ffi::GFile {
-            <span class="kw">let </span>vfs = from_glib_borrow(vfs);
-            <span class="kw">let </span>identifier: Borrowed&lt;glib::GString&gt; = from_glib_borrow(identifier);
-            <span class="kw">let </span>callback: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt; =
-                <span class="kw-2">&amp;*</span>(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>callback) = <span class="kw-2">*</span>callback {
-                callback(<span class="kw-2">&amp;</span>vfs, identifier.as_str())
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) -&gt; <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFile.html">ffi::GFile</a> {
+            <span class="kw">let </span>vfs = from_glib_borrow(<a href="#209">vfs</a>);
+            <span class="kw">let </span>identifier: Borrowed&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; = from_glib_borrow(<a href="#210">identifier</a>);
+            <span class="kw">let </span>callback = <span class="kw-2">&amp;*</span>(<a href="#211">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>callback) = <span class="kw-2">*</span><a href="#215">callback</a> {
+                <a href="#216">callback</a>(<span class="kw-2">&amp;</span><a href="#213">vfs</a>, <a href="#214">identifier</a>.as_str())
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;cannot get closure...&quot;</span>)
+                <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"cannot get closure..."</span>)
             }
-            .to_glib_full()
+            .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_full</a>()
         }
         <span class="kw">let </span>uri_func = <span class="kw">if </span>uri_func_data.is_some() {
-            <span class="prelude-val">Some</span>(uri_func_func <span class="kw">as _</span>)
+            <span class="prelude-val">Some</span>(<a href="#208-222">uri_func_func</a> <span class="kw">as _</span>)
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>};
-        <span class="kw">let </span>parse_name_func_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-            Box_::new(parse_name_func);
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>parse_name_func_func(
-            vfs: <span class="kw-2">*mut </span>ffi::GVfs,
+        <span class="kw">let </span>parse_name_func_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;&gt; =
+            Box_::new(<a href="#204">parse_name_func</a>);
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>parse_name_func_func(
+            vfs: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GVfs.html">ffi::GVfs</a>,
             identifier: <span class="kw-2">*const </span>libc::c_char,
-            user_data: glib::ffi::gpointer,
-        ) -&gt; <span class="kw-2">*mut </span>ffi::GFile {
-            <span class="kw">let </span>vfs = from_glib_borrow(vfs);
-            <span class="kw">let </span>identifier: Borrowed&lt;glib::GString&gt; = from_glib_borrow(identifier);
-            <span class="kw">let </span>callback: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt; =
-                <span class="kw-2">&amp;*</span>(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>callback) = <span class="kw-2">*</span>callback {
-                callback(<span class="kw-2">&amp;</span>vfs, identifier.as_str())
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) -&gt; <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFile.html">ffi::GFile</a> {
+            <span class="kw">let </span>vfs = from_glib_borrow(<a href="#231">vfs</a>);
+            <span class="kw">let </span>identifier: Borrowed&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; = from_glib_borrow(<a href="#232">identifier</a>);
+            <span class="kw">let </span>callback = <span class="kw-2">&amp;*</span>(<a href="#233">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>callback) = <span class="kw-2">*</span><a href="#237">callback</a> {
+                <a href="#238">callback</a>(<span class="kw-2">&amp;</span><a href="#235">vfs</a>, <a href="#236">identifier</a>.as_str())
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;cannot get closure...&quot;</span>)
+                <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"cannot get closure..."</span>)
             }
-            .to_glib_full()
+            .<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_full</a>()
         }
         <span class="kw">let </span>parse_name_func = <span class="kw">if </span>parse_name_func_data.is_some() {
-            <span class="prelude-val">Some</span>(parse_name_func_func <span class="kw">as _</span>)
+            <span class="prelude-val">Some</span>(<a href="#230-244">parse_name_func_func</a> <span class="kw">as _</span>)
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>};
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>uri_destroy_func(data: glib::ffi::gpointer) {
-            <span class="kw">let </span>_callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-                Box_::from_raw(data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>uri_destroy_func(data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) {
+            <span class="kw">let </span>_callback =
+                Box_::from_raw(<a href="#250">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;);
         }
-        <span class="kw">let </span>destroy_call4 = <span class="prelude-val">Some</span>(uri_destroy_func <span class="kw">as _</span>);
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>parse_name_destroy_func(data: glib::ffi::gpointer) {
-            <span class="kw">let </span>_callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-                Box_::from_raw(data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">let </span>destroy_call4 = <span class="prelude-val">Some</span>(<a href="#250-253">uri_destroy_func</a> <span class="kw">as _</span>);
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>parse_name_destroy_func(data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) {
+            <span class="kw">let </span>_callback =
+                Box_::from_raw(<a href="#255">data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;);
         }
-        <span class="kw">let </span>destroy_call7 = <span class="prelude-val">Some</span>(parse_name_destroy_func <span class="kw">as _</span>);
-        <span class="kw">let </span>super_callback0: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-            uri_func_data;
-        <span class="kw">let </span>super_callback1: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>Vfs, <span class="kw-2">&amp;</span>str) -&gt; File + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
-            parse_name_func_data;
+        <span class="kw">let </span>destroy_call7 = <span class="prelude-val">Some</span>(<a href="#255-258">parse_name_destroy_func</a> <span class="kw">as _</span>);
+        <span class="kw">let </span>super_callback0: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;&gt; =
+            <a href="#206">uri_func_data</a>;
+        <span class="kw">let </span>super_callback1: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#9-21">Vfs</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="file.rs.html#14-116">File</a> + <span class="lifetime">'static</span>&gt;&gt;&gt; =
+            <a href="#228">parse_name_func_data</a>;
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_vfs_register_uri_scheme(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                scheme.to_glib_none().<span class="number">0</span>,
-                uri_func,
-                Box_::into_raw(super_callback0) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                destroy_call4,
-                parse_name_func,
-                Box_::into_raw(super_callback1) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                destroy_call7,
+                <a class="self" href="#201">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#202">scheme</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#223">uri_func</a>,
+                Box_::into_raw(<a href="#260">super_callback0</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#254">destroy_call4</a>,
+                <a href="#245">parse_name_func</a>,
+                Box_::into_raw(<a href="#262">super_callback1</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#259">destroy_call7</a>,
             ))
         }
     }
 
-    <span class="kw">fn </span>unregister_uri_scheme(<span class="kw-2">&amp;</span><span class="self">self</span>, scheme: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    <span class="doccomment">/// Unregisters the URI handler for @scheme previously registered with
+    /// g_vfs_register_uri_scheme().
+    /// ## `scheme`
+    /// an URI scheme, e.g. "http"
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if @scheme was successfully unregistered, or [`false`] if a
+    ///     handler for @scheme does not exist.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_vfs_unregister_uri_scheme"</span>)]
+    </span><span class="kw">fn </span>unregister_uri_scheme(<span class="kw-2">&amp;</span><span class="self">self</span>, scheme: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_vfs_unregister_uri_scheme(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                scheme.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#288">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#288">scheme</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Vfs {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Vfs&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#9-21">Vfs</a>&gt;&gt; <a href="#64-296">VfsExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

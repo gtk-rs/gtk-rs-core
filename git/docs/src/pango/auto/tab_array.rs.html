@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/tab_array.rs`."><title>tab_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/tab_array.rs`."><title>tab_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pango/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../pango/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -342,29 +344,21 @@
 <a href="#269" id="269">269</a>
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::TabAlign;
-<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-</span><span class="kw">use </span>std::fmt;
-<span class="kw">use </span>std::mem;
+</span><span class="kw">use </span><a href="enums.rs.html#2696-2721"><span class="kw">crate</span>::TabAlign</a>;
+<span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`TabArray`][crate::TabArray] contains an array of tab stops.
     ///
     /// [`TabArray`][crate::TabArray] can be used to set tab stops in a [`Layout`][crate::Layout].
     /// Each tab stop has an alignment, a position, and optionally
     /// a character to use as decimal point.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span>TabArray(Boxed&lt;ffi::PangoTabArray&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.TabArray.html">TabArray</a>(Boxed&lt;<a href="../../../pango_sys/struct.PangoTabArray.html">ffi::PangoTabArray</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::pango_tab_array_copy(mut_override(ptr)),
@@ -373,7 +367,7 @@
     }
 }
 
-<span class="kw">impl </span>TabArray {
+<span class="kw">impl </span><a href="#8-22">TabArray</a> {
     <span class="doccomment">/// Creates an array of @initial_size tab stops.
     ///
     /// Tab stops are specified in pixel units if @positions_in_pixels is [`true`],
@@ -387,18 +381,18 @@
     ///
     /// the newly allocated [`TabArray`][crate::TabArray], which should
     ///   be freed with `Pango::TabArray::free()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(initial_size: i32, positions_in_pixels: bool) -&gt; TabArray {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_new"</span>)]
+    </span><span class="kw">pub fn </span>new(initial_size: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, positions_in_pixels: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="#8-22">TabArray</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::pango_tab_array_new(
-                initial_size,
-                positions_in_pixels.into_glib(),
+                <a href="#39">initial_size</a>,
+                <a href="#39">positions_in_pixels</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;pango_tab_array_new_with_positions&quot;)]
-    //#[doc(alias = &quot;new_with_positions&quot;)]
+    <span class="comment">//#[doc(alias = "pango_tab_array_new_with_positions")]
+    //#[doc(alias = "new_with_positions")]
     //pub fn with_positions(size: i32, positions_in_pixels: bool, first_alignment: TabAlign, first_position: i32, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -&gt; TabArray {
     //    unsafe { TODO: call ffi:pango_tab_array_new_with_positions() }
     //}
@@ -413,17 +407,17 @@
     /// decimal point according to the current locale.
     /// ## `tab_index`
     /// the index of a tab stop
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_get_decimal_point&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_decimal_point&quot;</span>)]
-    </span><span class="kw">pub fn </span>decimal_point(<span class="kw-2">&amp;</span><span class="self">self</span>, tab_index: i32) -&gt; char {
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_get_decimal_point"</span>)]
+    #[doc(alias = <span class="string">"get_decimal_point"</span>)]
+    </span><span class="kw">pub fn </span>decimal_point(<span class="kw-2">&amp;</span><span class="self">self</span>, tab_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
         <span class="kw">unsafe </span>{
-            std::convert::TryFrom::try_from(ffi::pango_tab_array_get_decimal_point(
-                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
-                tab_index,
+            <a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">std::convert::TryFrom::try_from</a>(ffi::pango_tab_array_get_decimal_point(
+                mut_override(<a class="self" href="#68">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#68">tab_index</a>,
             ))
-            .expect(<span class="string">&quot;conversion from an invalid Unicode value attempted&quot;</span>)
+            .expect(<span class="string">"conversion from an invalid Unicode value attempted"</span>)
         }
     }
 
@@ -433,12 +427,12 @@
     /// # Returns
     ///
     /// whether positions are in pixels.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_get_positions_in_pixels&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_positions_in_pixels&quot;</span>)]
-    </span><span class="kw">pub fn </span>is_positions_in_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_get_positions_in_pixels"</span>)]
+    #[doc(alias = <span class="string">"get_positions_in_pixels"</span>)]
+    </span><span class="kw">pub fn </span>is_positions_in_pixels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_tab_array_get_positions_in_pixels(mut_override(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#86">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             )))
         }
     }
@@ -448,10 +442,10 @@
     /// # Returns
     ///
     /// the number of tab stops in the array.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_get_size&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_size&quot;</span>)]
-    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_tab_array_get_size(mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_get_size"</span>)]
+    #[doc(alias = <span class="string">"get_size"</span>)]
+    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_tab_array_get_size(mut_override(<a class="self" href="#101">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the alignment and position of a tab stop.
@@ -466,19 +460,19 @@
     ///
     /// ## `location`
     /// location to store tab position
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_get_tab&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_tab&quot;</span>)]
-    </span><span class="kw">pub fn </span>tab(<span class="kw-2">&amp;</span><span class="self">self</span>, tab_index: i32) -&gt; (TabAlign, i32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_get_tab"</span>)]
+    #[doc(alias = <span class="string">"get_tab"</span>)]
+    </span><span class="kw">pub fn </span>tab(<span class="kw-2">&amp;</span><span class="self">self</span>, tab_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; (<a href="enums.rs.html#2696-2721">TabAlign</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>alignment = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>location = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>alignment = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>location = std::mem::MaybeUninit::uninit();
             ffi::pango_tab_array_get_tab(
-                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
-                tab_index,
-                alignment.as_mut_ptr(),
-                location.as_mut_ptr(),
+                mut_override(<a class="self" href="#119">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#119">tab_index</a>,
+                <a href="#121">alignment</a>.as_mut_ptr(),
+                <a href="#122">location</a>.as_mut_ptr(),
             );
-            (from_glib(alignment.assume_init()), location.assume_init())
+            (from_glib(<a href="#121">alignment</a>.assume_init()), <a href="#122">location</a>.assume_init())
         }
     }
 
@@ -488,10 +482,10 @@
     /// that were added as a result of growing the array.
     /// ## `new_size`
     /// new size of the array
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_resize&quot;</span>)]
-    </span><span class="kw">pub fn </span>resize(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_size: i32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_resize"</span>)]
+    </span><span class="kw">pub fn </span>resize(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_size: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_tab_array_resize(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, new_size);
+            ffi::pango_tab_array_resize(<a class="self" href="#140">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#140">new_size</a>);
         }
     }
 
@@ -507,15 +501,15 @@
     /// the index of a tab stop
     /// ## `decimal_point`
     /// the decimal point to use
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_set_decimal_point&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_decimal_point(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tab_index: i32, decimal_point: char) {
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_set_decimal_point"</span>)]
+    </span><span class="kw">pub fn </span>set_decimal_point(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tab_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, decimal_point: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_tab_array_set_decimal_point(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                tab_index,
-                decimal_point.into_glib(),
+                <a class="self" href="#161">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#161">tab_index</a>,
+                <a href="#161">decimal_point</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -524,14 +518,14 @@
     /// pixels.
     /// ## `positions_in_pixels`
     /// whether positions are in pixels
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_set_positions_in_pixels&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_positions_in_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>, positions_in_pixels: bool) {
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_set_positions_in_pixels"</span>)]
+    </span><span class="kw">pub fn </span>set_positions_in_pixels(<span class="kw-2">&amp;mut </span><span class="self">self</span>, positions_in_pixels: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_tab_array_set_positions_in_pixels(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                positions_in_pixels.into_glib(),
+                <a class="self" href="#178">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#178">positions_in_pixels</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -543,25 +537,25 @@
     /// tab alignment
     /// ## `location`
     /// tab location in Pango units
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_tab_array_set_tab&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_tab(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tab_index: i32, alignment: TabAlign, location: i32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_tab_array_set_tab"</span>)]
+    </span><span class="kw">pub fn </span>set_tab(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tab_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, alignment: <a href="enums.rs.html#2696-2721">TabAlign</a>, location: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_tab_array_set_tab(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                tab_index,
-                alignment.into_glib(),
-                location,
+                <a class="self" href="#195">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#195">tab_index</a>,
+                <a href="#195">alignment</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#195">location</a>,
             );
         }
     }
 
     <span class="doccomment">/// Utility function to ensure that the tab stops are in increasing order.
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_sort&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_sort"</span>)]
     </span><span class="kw">pub fn </span>sort(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_tab_array_sort(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>);
+            ffi::pango_tab_array_sort(<a class="self" href="#210">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
         }
     }
 
@@ -577,14 +571,14 @@
     /// # Returns
     ///
     /// a newly allocated string
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_to_string&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;to_string&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_to_string"</span>)]
+    #[doc(alias = <span class="string">"to_string"</span>)]
+    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::pango_tab_array_to_string(mut_override(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#232">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             )))
         }
     }
@@ -599,27 +593,26 @@
     /// # Returns
     ///
     /// a new [`TabArray`][crate::TabArray]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_tab_array_from_string&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_string(text: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;TabArray, glib::BoolError&gt; {
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_tab_array_from_string"</span>)]
+    </span><span class="kw">pub fn </span>from_string(text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#8-22">TabArray</a>, <a href="../../../glib/error/struct.BoolError.html">glib::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::pango_tab_array_from_string(text.to_glib_none().<span class="number">0</span>))
-                .ok_or_else(|| <span class="macro">glib::bool_error!</span>(<span class="string">&quot;Can&#39;t parse a TabArray&quot;</span>))
+            <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::pango_tab_array_from_string(<a href="#253">text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>))
+                .ok_or_else(|| <a class="macro" href="../../../glib/glib/macro.bool_error.html">glib::bool_error!</a>(<span class="string">"Can't parse a TabArray"</span>))
         }
     }
 }
 
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>TabArray {
+<span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+</span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#8-22">TabArray</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>.to_str())
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a href="#265">f</a>.write_str(<span class="kw-2">&amp;</span><a class="self" href="#265">self</a>.<a href="#232-238">to_str</a>())
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>TabArray {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>TabArray {}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#8-22">TabArray</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#8-22">TabArray</a> {}
+</code></pre></div></section></main></body></html>

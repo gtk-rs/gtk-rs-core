@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/auto/signal_group.rs`."><title>signal_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gobject/auto/signal_group.rs`."><title>signal_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../glib/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -226,22 +228,17 @@
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
-<a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a>
-<a href="#158" id="158">158</a>
-<a href="#159" id="159">159</a>
-<a href="#160" id="160">160</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, Object};
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use crate</span>::{<a href="../../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../../object.rs.html#1351-1354">Object</a>};
 
-<span class="macro">crate::wrapper! </span>{
-    <span class="doccomment">/// [`SignalGroup`][crate::SignalGroup] manages to simplify the process of connecting
-    /// many signals to a [`Object`][crate::Object] as a group. As such there is no API
-    /// to disconnect a signal from the group.
+<a class="macro" href="../../wrapper.rs.html#277-445">crate::wrapper! </a>{
+    <span class="doccomment">/// `GSignalGroup` manages a collection of signals on a `GObject`.
+    ///
+    /// `GSignalGroup` simplifies the process of connecting many signals to a `GObject`
+    /// as a group. As such there is no API to disconnect a signal from the group.
     ///
     /// In particular, this allows you to:
     ///
@@ -251,10 +248,10 @@
     ///  - Ensuring that blocked state transfers across target instances.
     ///
     /// One place you might want to use such a structure is with `GtkTextView` and
-    /// `GtkTextBuffer`. Often times, you&#39;ll need to connect to many signals on
+    /// `GtkTextBuffer`. Often times, you'll need to connect to many signals on
     /// `GtkTextBuffer` from a `GtkTextView` subclass. This allows you to create a
     /// signal group during instance construction, simply bind the
-    /// `GtkTextView:buffer` property to [`target`][struct@crate::SignalGroup#target] and connect
+    /// `GtkTextView:buffer` property to `GSignalGroup:target` and connect
     /// all the signals you need. When the `GtkTextView:buffer` property changes
     /// all of the signals will be transitioned correctly.
     ///
@@ -296,15 +293,15 @@
     /// # Implements
     ///
     /// [`ObjectExt`][trait@crate::prelude::ObjectExt]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GSignalGroup&quot;</span>)]
-    </span><span class="kw">pub struct </span>SignalGroup(Object&lt;gobject_ffi::GSignalGroup&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GSignalGroup"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../../glib/struct.SignalGroup.html">SignalGroup</a>(Object&lt;<a href="../../../../gobject_sys/struct.GSignalGroup.html">gobject_ffi::GSignalGroup</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || gobject_ffi::g_signal_group_get_type(),
     }
 }
 
-<span class="kw">impl </span>SignalGroup {
+<span class="kw">impl </span><a href="#7-72">SignalGroup</a> {
     <span class="doccomment">/// Creates a new [`SignalGroup`][crate::SignalGroup] for target instances of `target_type`.
     /// ## `target_type`
     /// the `GType` of the target instance.
@@ -312,9 +309,10 @@
     /// # Returns
     ///
     /// a new [`SignalGroup`][crate::SignalGroup]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_signal_group_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(target_type: <span class="kw">crate</span>::types::Type) -&gt; SignalGroup {
-        <span class="kw">unsafe </span>{ from_glib_full(gobject_ffi::g_signal_group_new(target_type.into_glib())) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_new"</span>)]
+    #[doc(alias = <span class="string">"new"</span>)]
+    </span><span class="kw">pub fn </span>with_type(target_type: <a href="../../types.rs.html#22"><span class="kw">crate</span>::types::Type</a>) -&gt; <a href="#7-72">SignalGroup</a> {
+        <span class="kw">unsafe </span>{ <a href="../../translate.rs.html#1633-1635">from_glib_full</a>(gobject_ffi::g_signal_group_new(<a href="#84">target_type</a>.<a href="../../translate.rs.html#333">into_glib</a>())) }
     }
 
     <span class="doccomment">/// Blocks all signal handlers managed by `self` so they will not
@@ -322,10 +320,10 @@
     /// the same number of times it has been blocked to become active again.
     ///
     /// This blocked state will be kept across changes of the target instance.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_signal_group_block&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_block"</span>)]
     </span><span class="kw">pub fn </span>block(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_signal_group_block(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
+            gobject_ffi::g_signal_group_block(<a class="self" href="#94">self</a>.<a href="../../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -334,12 +332,12 @@
     /// # Returns
     ///
     /// The target instance
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_signal_group_dup_target&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;dup_target&quot;</span>)]
-    </span><span class="kw">pub fn </span>target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Object&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_dup_target"</span>)]
+    #[doc(alias = <span class="string">"dup_target"</span>)]
+    </span><span class="kw">pub fn </span>target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../object.rs.html#1351-1354">Object</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_full(gobject_ffi::g_signal_group_dup_target(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+            <a href="../../translate.rs.html#1633-1635">from_glib_full</a>(gobject_ffi::g_signal_group_dup_target(
+                <a class="self" href="#107">self</a>.<a href="../../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -353,12 +351,12 @@
     /// ## `target`
     /// The target instance used
     ///  when connecting signals.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_signal_group_set_target&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_target(<span class="kw-2">&amp;</span><span class="self">self</span>, target: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Object&gt;&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_set_target"</span>)]
+    </span><span class="kw">pub fn </span>set_target(<span class="kw-2">&amp;</span><span class="self">self</span>, target: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="../../object.rs.html#1351-1354">Object</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             gobject_ffi::g_signal_group_set_target(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                target.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#125">self</a>.<a href="../../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#125">target</a>.map(|p| <a href="#129">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -367,29 +365,22 @@
     /// called again during any signal emissions unless it is blocked
     /// again. Must be unblocked exactly the same number of times it
     /// has been blocked to become active again.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_signal_group_unblock&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_unblock"</span>)]
     </span><span class="kw">pub fn </span>unblock(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_signal_group_unblock(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
+            gobject_ffi::g_signal_group_unblock(<a class="self" href="#139">self</a>.<a href="../../translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
     <span class="doccomment">/// The `GType` of the target property.
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;target-type&quot;</span>)]
-    </span><span class="kw">pub fn </span>target_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::types::Type {
-        <span class="kw">crate</span>::ObjectExt::property(<span class="self">self</span>, <span class="string">&quot;target-type&quot;</span>)
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_72"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_72"</span>)))]
+    #[doc(alias = <span class="string">"target-type"</span>)]
+    </span><span class="kw">pub fn </span>target_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../types.rs.html#22"><span class="kw">crate</span>::types::Type</a> {
+        <a href="../../object.rs.html#1656">ObjectExt::property</a>(<a class="self" href="#149">self</a>, <span class="string">"target-type"</span>)
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>SignalGroup {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>SignalGroup {}
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>SignalGroup {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;SignalGroup&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#7-72">SignalGroup</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#7-72">SignalGroup</a> {}
+</code></pre></div></section></main></body></html>

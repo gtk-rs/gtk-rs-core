@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -167,113 +169,100 @@
 <a href="#94" id="94">94</a>
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-</span><span class="kw">use </span>std::ptr;
+</span><span class="attr">#[cfg(feature = <span class="string">"v2_66"</span>)]
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">std::ptr</a>;
 
-<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-</span><span class="kw">use </span>glib::{translate::<span class="kw-2">*</span>, IntoStrV};
+<span class="kw">use </span><a href="../../glib/prelude/index.html">glib::prelude</a>::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+</span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::TlsChannelBindingType;
-<span class="kw">use </span><span class="kw">crate</span>::TlsConnection;
+<span class="attr">#[cfg(feature = <span class="string">"v2_66"</span>)]
+</span><span class="kw">use </span><a href="auto/enums.rs.html#3868-3885"><span class="kw">crate</span>::TlsChannelBindingType</a>;
+<span class="kw">use </span><a href="auto/tls_connection.rs.html#20-236"><span class="kw">crate</span>::TlsConnection</a>;
 
-<span class="kw">pub trait </span>TlsConnectionExtManual {
-    <span class="doccomment">/// Query the TLS backend for TLS channel binding data of `type_` for `self`.
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/tls_connection.rs.html#20-236"><span class="kw">super</span>::TlsConnection</a>&gt;&gt; <a href="#15">Sealed</a> <span class="kw">for </span>T {}
+}
+
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.TlsConnectionExtManual.html">TlsConnectionExtManual</a>: <a href="#15">sealed::Sealed</a> + IsA&lt;<a href="auto/tls_connection.rs.html#20-236">TlsConnection</a>&gt; {
+    <span class="doccomment">/// Query the TLS backend for TLS channel binding data of @type_ for @self.
     ///
     /// This call retrieves TLS channel binding data as specified in RFC
     /// [5056](https://tools.ietf.org/html/rfc5056), RFC
-    /// [5929](https://tools.ietf.org/html/rfc5929), and related RFCs. The
-    /// binding data is returned in `data`. The `data` is resized by the callee
-    /// using [`glib::ByteArray`][crate::glib::ByteArray] buffer management and will be freed when the `data`
-    /// is destroyed by `g_byte_array_unref()`. If `data` is [`None`], it will only
-    /// check whether TLS backend is able to fetch the data (e.g. whether `type_`
+    /// [5929](https://tools.ietf.org/html/rfc5929), and related RFCs.  The
+    /// binding data is returned in @data.  The @data is resized by the callee
+    /// using #GByteArray buffer management and will be freed when the @data
+    /// is destroyed by g_byte_array_unref(). If @data is [`None`], it will only
+    /// check whether TLS backend is able to fetch the data (e.g. whether @type_
     /// is supported by the TLS backend). It does not guarantee that the data
-    /// will be available though. That could happen if TLS connection does not
-    /// support `type_` or the binding data is not available yet due to additional
+    /// will be available though.  That could happen if TLS connection does not
+    /// support @type_ or the binding data is not available yet due to additional
     /// negotiation or input required.
     /// ## `type_`
-    /// [`TlsChannelBindingType`][crate::TlsChannelBindingType] type of data to fetch
+    /// #GTlsChannelBindingType type of data to fetch
     ///
     /// # Returns
     ///
     /// [`true`] on success, [`false`] otherwise
     ///
     /// ## `data`
-    /// [`glib::ByteArray`][crate::glib::ByteArray] is
-    ///  filled with the binding data, or [`None`]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_get_channel_binding_data&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_channel_binding_data&quot;</span>)]
+    /// #GByteArray is
+    ///        filled with the binding data, or [`None`]
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_66"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_66"</span>)))]
+    #[doc(alias = <span class="string">"g_tls_connection_get_channel_binding_data"</span>)]
+    #[doc(alias = <span class="string">"get_channel_binding_data"</span>)]
     </span><span class="kw">fn </span>channel_binding_data(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        type_: TlsChannelBindingType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;glib::ByteArray, glib::Error&gt;;
+        type_: <a href="auto/enums.rs.html#3868-3885">TlsChannelBindingType</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>data = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_tls_connection_get_channel_binding_data(
+                <a class="self" href="#48">self</a>.<a href="../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#49">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#52">data</a>,
+                <span class="kw-2">&amp;mut </span><a href="#53">error</a>,
+            );
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_none(<a href="#52">data</a>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#53">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Sets the list of application-layer protocols to advertise that the
     /// caller is willing to speak on this connection. The
     /// Application-Layer Protocol Negotiation (ALPN) extension will be
     /// used to negotiate a compatible protocol with the peer; use
-    /// [`TlsConnectionExt::negotiated_protocol()`][crate::prelude::TlsConnectionExt::negotiated_protocol()] to find the negotiated
-    /// protocol after the handshake. Specifying [`None`] for the the value
-    /// of `protocols` will disable ALPN negotiation.
+    /// g_tls_connection_get_negotiated_protocol() to find the negotiated
+    /// protocol after the handshake.  Specifying [`None`] for the the value
+    /// of @protocols will disable ALPN negotiation.
     ///
-    /// See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml`alpn`-protocol-ids)
+    /// See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
     /// for a list of registered protocol IDs.
     /// ## `protocols`
     /// a [`None`]-terminated
-    ///  array of ALPN protocol names (eg, &quot;http/1.1&quot;, &quot;h2&quot;), or [`None`]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_set_advertised_protocols&quot;</span>)]
-    </span><span class="kw">fn </span>set_advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>, protocols: <span class="kw">impl </span>IntoStrV);
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;TlsConnection&gt;&gt; TlsConnectionExtManual <span class="kw">for </span>O {
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
-    </span><span class="kw">fn </span>channel_binding_data(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        type_: TlsChannelBindingType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;glib::ByteArray, glib::Error&gt; {
+    ///   array of ALPN protocol names (eg, "http/1.1", "h2"), or [`None`]
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+    #[doc(alias = <span class="string">"g_tls_connection_set_advertised_protocols"</span>)]
+    </span><span class="kw">fn </span>set_advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>, protocols: <span class="kw">impl </span><a href="../../glib/collections/strv/trait.IntoStrV.html">IntoStrV</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>data = ptr::null_mut();
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>= ffi::g_tls_connection_get_channel_binding_data(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                type_.into_glib(),
-                data,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_none(data))
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>set_advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>, protocols: <span class="kw">impl </span>IntoStrV) {
-        <span class="kw">unsafe </span>{
-            protocols.run_with_strv(|protocols| {
+            <a href="#84">protocols</a>.<a href="../../glib/collections/strv/trait.IntoStrV.html">run_with_strv</a>(|protocols| {
                 ffi::g_tls_connection_set_advertised_protocols(
-                    <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                    protocols.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                    <a class="self" href="#84">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                    <a href="#86">protocols</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 );
             })
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/tls_connection.rs.html#20-236">TlsConnection</a>&gt;&gt; <a href="#19-94">TlsConnectionExtManual</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

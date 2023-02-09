@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Module containing infrastructure for subclassing `GObject`s and registering boxed types."><meta name="keywords" content="rust, rustlang, rust-lang, subclass"><title>glib::subclass - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Module containing infrastructure for subclassing `GObject`s and registering boxed types."><title>glib::subclass - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (db0cbc48d 2023-03-26)" data-search-js="search-0db6af764fd5e08b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,259 +71,240 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"><a href="#">Module subclass</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
-    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">glib</a>::<wbr><a class="mod" href="#">subclass</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/glib/subclass/mod.rs.html#3-285">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Module containing infrastructure for subclassing <code>GObject</code>s and registering boxed types.</p>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module subclass</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">glib</a>::<wbr><a class="mod" href="#">subclass</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/glib/subclass/mod.rs.html#3-285">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Module containing infrastructure for subclassing <code>GObject</code>s and registering boxed types.</p>
 <h2 id="example-for-registering-a-glibobject-subclass"><a href="#example-for-registering-a-glibobject-subclass">Example for registering a <code>glib::Object</code> subclass</a></h2>
 <p>The following code implements a subclass of <code>glib::Object</code> with a
 string-typed “name” property.</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib::subclass</span>;
-<span class="kw">use</span> <span class="ident">glib::subclass::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib</span>::{<span class="ident">Variant</span>, <span class="ident">VariantType</span>};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::{Variant, VariantType};
 
-<span class="kw">use</span> <span class="ident">std::cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>};
+<span class="kw">use </span>std::cell::{Cell, RefCell};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">glib::Enum</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u32</span>)]</span>
-<span class="comment">// type_name: GType name of the enum (mandatory)</span>
-<span class="attribute">#[<span class="ident">enum_type</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;SimpleObjectAnimal&quot;</span>)]</span>
-<span class="kw">enum</span> <span class="ident">Animal</span> {
-    <span class="ident">Goat</span> <span class="op">=</span> <span class="number">0</span>,
-    <span class="attribute">#[<span class="ident">enum_value</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;The Dog&quot;</span>)]</span>
-    <span class="ident">Dog</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="comment">// name: the name of the GEnumValue (optional), default to the enum name in CamelCase</span>
-    <span class="comment">// nick: the nick of the GEnumValue (optional), default to the enum name in kebab-case</span>
-    <span class="attribute">#[<span class="ident">enum_value</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;The Cat&quot;</span>, <span class="ident">nick</span> <span class="op">=</span> <span class="string">&quot;chat&quot;</span>)]</span>
-    <span class="ident">Cat</span> <span class="op">=</span> <span class="number">2</span>,
+<span class="attr">#[derive(Debug, Eq, PartialEq, Clone, Copy, glib::Enum)]
+#[repr(u32)]
+</span><span class="comment">// type_name: GType name of the enum (mandatory)
+</span><span class="attr">#[enum_type(name = <span class="string">&quot;SimpleObjectAnimal&quot;</span>)]
+</span><span class="kw">enum </span>Animal {
+    Goat = <span class="number">0</span>,
+    <span class="attr">#[enum_value(name = <span class="string">&quot;The Dog&quot;</span>)]
+    </span>Dog = <span class="number">1</span>,
+    <span class="comment">// name: the name of the GEnumValue (optional), default to the enum name in CamelCase
+    // nick: the nick of the GEnumValue (optional), default to the enum name in kebab-case
+    </span><span class="attr">#[enum_value(name = <span class="string">&quot;The Cat&quot;</span>, nick = <span class="string">&quot;chat&quot;</span>)]
+    </span>Cat = <span class="number">2</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Animal</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">Animal::Goat</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>Animal {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Animal::Goat
     }
 }
 
-<span class="attribute">#[<span class="ident">glib::flags</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;MyFlags&quot;</span>)]</span>
-<span class="kw">enum</span> <span class="ident">MyFlags</span> {
-    <span class="attribute">#[<span class="ident">flags_value</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;Flag A&quot;</span>, <span class="ident">nick</span> <span class="op">=</span> <span class="string">&quot;nick-a&quot;</span>)]</span>
-    <span class="ident">A</span> <span class="op">=</span> <span class="number">0b00000001</span>,
-    <span class="attribute">#[<span class="ident">flags_value</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;Flag B&quot;</span>)]</span>
-    <span class="ident">B</span> <span class="op">=</span> <span class="number">0b00000010</span>,
-    <span class="attribute">#[<span class="ident">flags_value</span>(<span class="ident">skip</span>)]</span>
-    <span class="ident">AB</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::A</span>.<span class="ident">bits</span>() <span class="op">|</span> <span class="ident"><span class="self">Self</span>::B</span>.<span class="ident">bits</span>(),
-    <span class="ident">C</span> <span class="op">=</span> <span class="number">0b00000100</span>,
+<span class="attr">#[glib::flags(name = <span class="string">&quot;MyFlags&quot;</span>)]
+</span><span class="kw">enum </span>MyFlags {
+    <span class="attr">#[flags_value(name = <span class="string">&quot;Flag A&quot;</span>, nick = <span class="string">&quot;nick-a&quot;</span>)]
+    </span>A = <span class="number">0b00000001</span>,
+    <span class="attr">#[flags_value(name = <span class="string">&quot;Flag B&quot;</span>)]
+    </span>B = <span class="number">0b00000010</span>,
+    <span class="attr">#[flags_value(skip)]
+    </span>AB = <span class="self">Self</span>::A.bits() | <span class="self">Self</span>::B.bits(),
+    C = <span class="number">0b00000100</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">MyFlags</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">MyFlags::A</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>MyFlags {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        MyFlags::A
     }
 }
 
-<span class="kw">mod</span> <span class="ident">imp</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="kw">mod </span>imp {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="comment">// This is the struct containing all state carried with</span>
-    <span class="comment">// the new type. Generally this has to make use of</span>
-    <span class="comment">// interior mutability.</span>
-    <span class="comment">// If it implements the `Default` trait, then `Self::default()`</span>
-    <span class="comment">// will be called every time a new instance is created.</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SimpleObject</span> {
-        <span class="ident">name</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">animal</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">Animal</span><span class="op">&gt;</span>,
-        <span class="ident">flags</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">MyFlags</span><span class="op">&gt;</span>,
-        <span class="ident">variant</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="comment">// This is the struct containing all state carried with
+    // the new type. Generally this has to make use of
+    // interior mutability.
+    // If it implements the `Default` trait, then `Self::default()`
+    // will be called every time a new instance is created.
+    </span><span class="attr">#[derive(Default)]
+    </span><span class="kw">pub struct </span>SimpleObject {
+        name: RefCell&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;,
+        animal: Cell&lt;Animal&gt;,
+        flags: Cell&lt;MyFlags&gt;,
+        variant: RefCell&lt;<span class="prelude-ty">Option</span>&lt;Variant&gt;&gt;,
     }
 
-    <span class="comment">// ObjectSubclass is the trait that defines the new type and</span>
-    <span class="comment">// contains all information needed by the GObject type system,</span>
-    <span class="comment">// including the new type&#39;s name, parent type, etc.</span>
-    <span class="comment">// If you do not want to implement `Default`, you can provide</span>
-    <span class="comment">// a `new()` method.</span>
-    <span class="attribute">#[<span class="ident">glib::object_subclass</span>]</span>
-    <span class="kw">impl</span> <span class="ident">ObjectSubclass</span> <span class="kw">for</span> <span class="ident">SimpleObject</span> {
-        <span class="comment">// This type name must be unique per process.</span>
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;SimpleObject&quot;</span>;
+    <span class="comment">// ObjectSubclass is the trait that defines the new type and
+    // contains all information needed by the GObject type system,
+    // including the new type&#39;s name, parent type, etc.
+    // If you do not want to implement `Default`, you can provide
+    // a `new()` method.
+    </span><span class="attr">#[glib::object_subclass]
+    </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>SimpleObject {
+        <span class="comment">// This type name must be unique per process.
+        </span><span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;SimpleObject&quot;</span>;
 
-        <span class="kw">type</span> <span class="ident">Type</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::SimpleObject</span>;
+        <span class="kw">type </span>Type = <span class="kw">super</span>::SimpleObject;
 
-        <span class="comment">// The parent type this one is inheriting from.</span>
-        <span class="comment">// Optional, if not specified it defaults to `glib::Object`</span>
-        <span class="kw">type</span> <span class="ident">ParentType</span> <span class="op">=</span> <span class="ident">glib::Object</span>;
+        <span class="comment">// The parent type this one is inheriting from.
+        // Optional, if not specified it defaults to `glib::Object`
+        </span><span class="kw">type </span>ParentType = glib::Object;
 
-        <span class="comment">// Interfaces this type implements.</span>
-        <span class="comment">// Optional, if not specified it defaults to `()`</span>
-        <span class="kw">type</span> <span class="ident">Interfaces</span> <span class="op">=</span> ();
+        <span class="comment">// Interfaces this type implements.
+        // Optional, if not specified it defaults to `()`
+        </span><span class="kw">type </span>Interfaces = ();
     }
 
-    <span class="comment">// Trait that is used to override virtual methods of glib::Object.</span>
-    <span class="kw">impl</span> <span class="ident">ObjectImpl</span> <span class="kw">for</span> <span class="ident">SimpleObject</span> {
-        <span class="comment">// Called once in the very beginning to list all properties of this class.</span>
-        <span class="kw">fn</span> <span class="ident">properties</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">glib::ParamSpec</span>] {
-            <span class="kw">use</span> <span class="ident">once_cell::sync::Lazy</span>;
-            <span class="kw">static</span> <span class="ident">PROPERTIES</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">glib::ParamSpec</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> {
+    <span class="comment">// Trait that is used to override virtual methods of glib::Object.
+    </span><span class="kw">impl </span>ObjectImpl <span class="kw">for </span>SimpleObject {
+        <span class="comment">// Called once in the very beginning to list all properties of this class.
+        </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[glib::ParamSpec] {
+            <span class="kw">use </span>once_cell::sync::Lazy;
+            <span class="kw">static </span>PROPERTIES: Lazy&lt;Vec&lt;glib::ParamSpec&gt;&gt; = Lazy::new(|| {
                 <span class="macro">vec!</span>[
-                    <span class="ident">glib::ParamSpecString::new</span>(
+                    glib::ParamSpecString::new(
                         <span class="string">&quot;name&quot;</span>,
                         <span class="string">&quot;Name&quot;</span>,
                         <span class="string">&quot;Name of this object&quot;</span>,
                         <span class="prelude-val">None</span>,
-                        <span class="ident">glib::ParamFlags::READWRITE</span>,
+                        glib::ParamFlags::READWRITE,
                     ),
-                    <span class="ident">glib::ParamSpecEnum::new</span>(
+                    glib::ParamSpecEnum::new(
                         <span class="string">&quot;animal&quot;</span>,
                         <span class="string">&quot;Animal&quot;</span>,
                         <span class="string">&quot;Animal&quot;</span>,
-                        <span class="ident">Animal::static_type</span>(),
-                        <span class="ident">Animal::default</span>() <span class="kw">as</span> <span class="ident">i32</span>,
-                        <span class="ident">glib::ParamFlags::READWRITE</span>,
+                        Animal::static_type(),
+                        Animal::default() <span class="kw">as </span>i32,
+                        glib::ParamFlags::READWRITE,
                     ),
-                    <span class="ident">glib::ParamSpecFlags::new</span>(
+                    glib::ParamSpecFlags::new(
                         <span class="string">&quot;flags&quot;</span>,
                         <span class="string">&quot;Flags&quot;</span>,
                         <span class="string">&quot;Flags&quot;</span>,
-                        <span class="ident">MyFlags::static_type</span>(),
-                        <span class="ident">MyFlags::default</span>().<span class="ident">bits</span>(),
-                        <span class="ident">glib::ParamFlags::READWRITE</span>,
+                        MyFlags::static_type(),
+                        MyFlags::default().bits(),
+                        glib::ParamFlags::READWRITE,
                     ),
-                    <span class="ident">glib::ParamSpecVariant::new</span>(
+                    glib::ParamSpecVariant::new(
                         <span class="string">&quot;variant&quot;</span>,
                         <span class="string">&quot;Variant&quot;</span>,
                         <span class="string">&quot;Variant&quot;</span>,
-                        <span class="ident">glib::VariantTy::ANY</span>,
+                        glib::VariantTy::ANY,
                         <span class="prelude-val">None</span>,
-                        <span class="ident">glib::ParamFlags::READWRITE</span>,
+                        glib::ParamFlags::READWRITE,
                    ),
                 ]
             });
 
-            <span class="ident">PROPERTIES</span>.<span class="ident">as_ref</span>()
+            PROPERTIES.as_ref()
         }
 
-        <span class="comment">// Called whenever a property is set on this instance. The id</span>
-        <span class="comment">// is the same as the index of the property in the PROPERTIES array.</span>
-        <span class="kw">fn</span> <span class="ident">set_property</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_obj</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">_id</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">glib::Value</span>, <span class="ident">pspec</span>: <span class="kw-2">&amp;</span><span class="ident">glib::ParamSpec</span>) {
-            <span class="kw">match</span> <span class="ident">pspec</span>.<span class="ident">name</span>() {
-                <span class="string">&quot;name&quot;</span> =&gt; {
-                    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">value</span>
-                        .<span class="ident">get</span>()
-                        .<span class="ident">expect</span>(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
-                    <span class="self">self</span>.<span class="ident">name</span>.<span class="ident">replace</span>(<span class="ident">name</span>);
+        <span class="comment">// Called whenever a property is set on this instance. The id
+        // is the same as the index of the property in the PROPERTIES array.
+        </span><span class="kw">fn </span>set_property(<span class="kw-2">&amp;</span><span class="self">self</span>, _obj: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, _id: usize, value: <span class="kw-2">&amp;</span>glib::Value, pspec: <span class="kw-2">&amp;</span>glib::ParamSpec) {
+            <span class="kw">match </span>pspec.name() {
+                <span class="string">&quot;name&quot; </span>=&gt; {
+                    <span class="kw">let </span>name = value
+                        .get()
+                        .expect(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
+                    <span class="self">self</span>.name.replace(name);
                 },
-                <span class="string">&quot;animal&quot;</span> =&gt; {
-                    <span class="kw">let</span> <span class="ident">animal</span> <span class="op">=</span> <span class="ident">value</span>
-                        .<span class="ident">get</span>()
-                        .<span class="ident">expect</span>(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
-                    <span class="self">self</span>.<span class="ident">animal</span>.<span class="ident">replace</span>(<span class="ident">animal</span>);
+                <span class="string">&quot;animal&quot; </span>=&gt; {
+                    <span class="kw">let </span>animal = value
+                        .get()
+                        .expect(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
+                    <span class="self">self</span>.animal.replace(animal);
                 },
-                <span class="string">&quot;flags&quot;</span> =&gt; {
-                    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">value</span>
-                        .<span class="ident">get</span>()
-                        .<span class="ident">expect</span>(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
-                    <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">replace</span>(<span class="ident">flags</span>);
+                <span class="string">&quot;flags&quot; </span>=&gt; {
+                    <span class="kw">let </span>flags = value
+                        .get()
+                        .expect(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
+                    <span class="self">self</span>.flags.replace(flags);
                 },
-                <span class="string">&quot;variant&quot;</span> =&gt; {
-                    <span class="kw">let</span> <span class="ident">variant</span> <span class="op">=</span> <span class="ident">value</span>
-                        .<span class="ident">get</span>()
-                        .<span class="ident">expect</span>(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
-                    <span class="self">self</span>.<span class="ident">variant</span>.<span class="ident">replace</span>(<span class="ident">variant</span>);
+                <span class="string">&quot;variant&quot; </span>=&gt; {
+                    <span class="kw">let </span>variant = value
+                        .get()
+                        .expect(<span class="string">&quot;type conformity checked by `Object::set_property`&quot;</span>);
+                    <span class="self">self</span>.variant.replace(variant);
                 },
-                <span class="kw">_</span> =&gt; <span class="macro">unimplemented!</span>(),
+                <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
             }
         }
 
-        <span class="comment">// Called whenever a property is retrieved from this instance. The id</span>
-        <span class="comment">// is the same as the index of the property in the PROPERTIES array.</span>
-        <span class="kw">fn</span> <span class="ident">property</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_obj</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">_id</span>: <span class="ident">usize</span>, <span class="ident">pspec</span>: <span class="kw-2">&amp;</span><span class="ident">glib::ParamSpec</span>) -&gt; <span class="ident">glib::Value</span> {
-            <span class="kw">match</span> <span class="ident">pspec</span>.<span class="ident">name</span>() {
-                <span class="string">&quot;name&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">name</span>.<span class="ident">borrow</span>().<span class="ident">to_value</span>(),
-                <span class="string">&quot;animal&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">animal</span>.<span class="ident">get</span>().<span class="ident">to_value</span>(),
-                <span class="string">&quot;flags&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">get</span>().<span class="ident">to_value</span>(),
-                <span class="string">&quot;variant&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">variant</span>.<span class="ident">borrow</span>().<span class="ident">to_value</span>(),
-                <span class="kw">_</span> =&gt; <span class="macro">unimplemented!</span>(),
+        <span class="comment">// Called whenever a property is retrieved from this instance. The id
+        // is the same as the index of the property in the PROPERTIES array.
+        </span><span class="kw">fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>, _obj: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, _id: usize, pspec: <span class="kw-2">&amp;</span>glib::ParamSpec) -&gt; glib::Value {
+            <span class="kw">match </span>pspec.name() {
+                <span class="string">&quot;name&quot; </span>=&gt; <span class="self">self</span>.name.borrow().to_value(),
+                <span class="string">&quot;animal&quot; </span>=&gt; <span class="self">self</span>.animal.get().to_value(),
+                <span class="string">&quot;flags&quot; </span>=&gt; <span class="self">self</span>.flags.get().to_value(),
+                <span class="string">&quot;variant&quot; </span>=&gt; <span class="self">self</span>.variant.borrow().to_value(),
+                <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
             }
         }
 
-        <span class="comment">// Called right after construction of the instance.</span>
-        <span class="kw">fn</span> <span class="ident">constructed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">obj</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>) {
-            <span class="comment">// Chain up to the parent type&#39;s implementation of this virtual</span>
-            <span class="comment">// method.</span>
-            <span class="self">self</span>.<span class="ident">parent_constructed</span>(<span class="ident">obj</span>);
+        <span class="comment">// Called right after construction of the instance.
+        </span><span class="kw">fn </span>constructed(<span class="kw-2">&amp;</span><span class="self">self</span>, obj: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type) {
+            <span class="comment">// Chain up to the parent type&#39;s implementation of this virtual
+            // method.
+            </span><span class="self">self</span>.parent_constructed(obj);
 
-            <span class="comment">// And here we could do our own initialization.</span>
-        }
+            <span class="comment">// And here we could do our own initialization.
+        </span>}
     }
 }
 
-<span class="comment">// Optionally, define a wrapper type to make it more ergonomic to use from Rust</span>
-<span class="macro">glib::wrapper!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SimpleObject</span>(<span class="ident">ObjectSubclass</span><span class="op">&lt;</span><span class="ident">imp::SimpleObject</span><span class="op">&gt;</span>);
+<span class="comment">// Optionally, define a wrapper type to make it more ergonomic to use from Rust
+</span><span class="macro">glib::wrapper! </span>{
+    <span class="kw">pub struct </span>SimpleObject(ObjectSubclass&lt;imp::SimpleObject&gt;);
 }
 
-<span class="kw">impl</span> <span class="ident">SimpleObject</span> {
-    <span class="comment">// Create an object instance of the new type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">glib::Object::new</span>(<span class="kw-2">&amp;</span>[]).<span class="ident">unwrap</span>()
+<span class="kw">impl </span>SimpleObject {
+    <span class="comment">// Create an object instance of the new type.
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        glib::Object::new(<span class="kw-2">&amp;</span>[]).unwrap()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">SimpleObject::new</span>();
+<span class="kw">pub fn </span>main() {
+    <span class="kw">let </span>obj = SimpleObject::new();
 
-    <span class="comment">// Get the name property and change its value.</span>
-    <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="string">&quot;name&quot;</span>), <span class="prelude-val">None</span>);
-    <span class="ident">obj</span>.<span class="ident">set_property</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;test&quot;</span>);
-    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;name&quot;</span>), <span class="string">&quot;test&quot;</span>);
+    <span class="comment">// Get the name property and change its value.
+    </span><span class="macro">assert_eq!</span>(obj.property::&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;(<span class="string">&quot;name&quot;</span>), <span class="prelude-val">None</span>);
+    obj.set_property(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;test&quot;</span>);
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>obj.property::&lt;String&gt;(<span class="string">&quot;name&quot;</span>), <span class="string">&quot;test&quot;</span>);
 
-    <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="ident">Animal</span><span class="op">&gt;</span>(<span class="string">&quot;animal&quot;</span>), <span class="ident">Animal::Goat</span>);
-    <span class="ident">obj</span>.<span class="ident">set_property</span>(<span class="string">&quot;animal&quot;</span>, <span class="ident">Animal::Cat</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="ident">Animal</span><span class="op">&gt;</span>(<span class="string">&quot;animal&quot;</span>), <span class="ident">Animal::Cat</span>);
+    <span class="macro">assert_eq!</span>(obj.property::&lt;Animal&gt;(<span class="string">&quot;animal&quot;</span>), Animal::Goat);
+    obj.set_property(<span class="string">&quot;animal&quot;</span>, Animal::Cat);
+    <span class="macro">assert_eq!</span>(obj.property::&lt;Animal&gt;(<span class="string">&quot;animal&quot;</span>), Animal::Cat);
 
-    <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="ident">MyFlags</span><span class="op">&gt;</span>(<span class="string">&quot;flags&quot;</span>), <span class="ident">MyFlags::A</span>);
-    <span class="ident">obj</span>.<span class="ident">set_property</span>(<span class="string">&quot;flags&quot;</span>, <span class="ident">MyFlags::B</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">property</span>::<span class="op">&lt;</span><span class="ident">MyFlags</span><span class="op">&gt;</span>(<span class="string">&quot;flags&quot;</span>), <span class="ident">MyFlags::B</span>);
+    <span class="macro">assert_eq!</span>(obj.property::&lt;MyFlags&gt;(<span class="string">&quot;flags&quot;</span>), MyFlags::A);
+    obj.set_property(<span class="string">&quot;flags&quot;</span>, MyFlags::B);
+    <span class="macro">assert_eq!</span>(obj.property::&lt;MyFlags&gt;(<span class="string">&quot;flags&quot;</span>), MyFlags::B);
 }</code></pre></div>
 <h2 id="example-for-registering-a-boxed-type-for-a-rust-struct"><a href="#example-for-registering-a-boxed-type-for-a-rust-struct">Example for registering a boxed type for a Rust struct</a></h2>
 <p>The following code boxed type for a tuple struct around <code>String</code> and uses it in combination
 with <code>glib::Value</code>.</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">glib::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib::subclass</span>;
-<span class="kw">use</span> <span class="ident">glib::subclass::prelude</span>::<span class="kw-2">*</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">glib::Boxed</span>)]</span>
-<span class="attribute">#[<span class="ident">boxed_type</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;MyBoxed&quot;</span>)]</span>
-<span class="kw">struct</span> <span class="ident">MyBoxed</span>(<span class="ident">String</span>);
+<span class="attr">#[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+#[boxed_type(name = <span class="string">&quot;MyBoxed&quot;</span>)]
+</span><span class="kw">struct </span>MyBoxed(String);
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="macro">assert!</span>(<span class="ident">MyBoxed::static_type</span>().<span class="ident">is_valid</span>());
+<span class="kw">pub fn </span>main() {
+    <span class="macro">assert!</span>(MyBoxed::static_type().is_valid());
 
-    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">MyBoxed</span>(<span class="ident">String::from</span>(<span class="string">&quot;abc&quot;</span>));
-    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">to_value</span>();
-    <span class="kw">let</span> <span class="ident">b2</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MyBoxed</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>, <span class="ident">b2</span>);
+    <span class="kw">let </span>b = MyBoxed(String::from(<span class="string">&quot;abc&quot;</span>));
+    <span class="kw">let </span>v = b.to_value();
+    <span class="kw">let </span>b2 = v.get::&lt;<span class="kw-2">&amp;</span>MyBoxed&gt;().unwrap();
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>b, b2);
 }</code></pre></div>
-</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left import-item" id="reexport.register_boxed_type"><code>pub use self::boxed::<a class="fn" href="boxed/fn.register_boxed_type.html" title="fn glib::subclass::boxed::register_boxed_type">register_boxed_type</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.register_interface"><code>pub use self::interface::<a class="fn" href="interface/fn.register_interface.html" title="fn glib::subclass::interface::register_interface">register_interface</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.Signal"><code>pub use self::signal::<a class="struct" href="signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.SignalClassHandlerToken"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalClassHandlerToken.html" title="struct glib::subclass::signal::SignalClassHandlerToken">SignalClassHandlerToken</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.SignalId"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.SignalInvocationHint"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalInvocationHint.html" title="struct glib::subclass::signal::SignalInvocationHint">SignalInvocationHint</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.SignalQuery"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalQuery.html" title="struct glib::subclass::signal::SignalQuery">SignalQuery</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.SignalType"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalType.html" title="struct glib::subclass::signal::SignalType">SignalType</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.register_type"><code>pub use self::types::<a class="fn" href="types/fn.register_type.html" title="fn glib::subclass::types::register_type">register_type</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.InitializingObject"><code>pub use self::types::<a class="struct" href="types/struct.InitializingObject.html" title="struct glib::subclass::types::InitializingObject">InitializingObject</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.InitializingType"><code>pub use self::types::<a class="struct" href="types/struct.InitializingType.html" title="struct glib::subclass::types::InitializingType">InitializingType</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item" id="reexport.TypeData"><code>pub use self::types::<a class="struct" href="types/struct.TypeData.html" title="struct glib::subclass::types::TypeData">TypeData</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="basic/index.html" title="glib::subclass::basic mod">basic</a></div><div class="item-right docblock-short"><p>This module contains basic instance and class structs to be used for
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.register_boxed_type"><code>pub use self::boxed::<a class="fn" href="boxed/fn.register_boxed_type.html" title="fn glib::subclass::boxed::register_boxed_type">register_boxed_type</a>;</code></div></li><li><div class="item-name" id="reexport.register_interface"><code>pub use self::interface::<a class="fn" href="interface/fn.register_interface.html" title="fn glib::subclass::interface::register_interface">register_interface</a>;</code></div></li><li><div class="item-name" id="reexport.Signal"><code>pub use self::signal::<a class="struct" href="signal/struct.Signal.html" title="struct glib::subclass::signal::Signal">Signal</a>;</code></div></li><li><div class="item-name" id="reexport.SignalClassHandlerToken"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalClassHandlerToken.html" title="struct glib::subclass::signal::SignalClassHandlerToken">SignalClassHandlerToken</a>;</code></div></li><li><div class="item-name" id="reexport.SignalId"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>;</code></div></li><li><div class="item-name" id="reexport.SignalInvocationHint"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalInvocationHint.html" title="struct glib::subclass::signal::SignalInvocationHint">SignalInvocationHint</a>;</code></div></li><li><div class="item-name" id="reexport.SignalQuery"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalQuery.html" title="struct glib::subclass::signal::SignalQuery">SignalQuery</a>;</code></div></li><li><div class="item-name" id="reexport.SignalType"><code>pub use self::signal::<a class="struct" href="signal/struct.SignalType.html" title="struct glib::subclass::signal::SignalType">SignalType</a>;</code></div></li><li><div class="item-name" id="reexport.register_type"><code>pub use self::types::<a class="fn" href="types/fn.register_type.html" title="fn glib::subclass::types::register_type">register_type</a>;</code></div></li><li><div class="item-name" id="reexport.InitializingObject"><code>pub use self::types::<a class="struct" href="types/struct.InitializingObject.html" title="struct glib::subclass::types::InitializingObject">InitializingObject</a>;</code></div></li><li><div class="item-name" id="reexport.InitializingType"><code>pub use self::types::<a class="struct" href="types/struct.InitializingType.html" title="struct glib::subclass::types::InitializingType">InitializingType</a>;</code></div></li><li><div class="item-name" id="reexport.TypeData"><code>pub use self::types::<a class="struct" href="types/struct.TypeData.html" title="struct glib::subclass::types::TypeData">TypeData</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="basic/index.html" title="mod glib::subclass::basic">basic</a></div><div class="desc docblock-short">This module contains basic instance and class structs to be used for
 <code>GObject</code> subclasses that don’t require any additional data in these
-structs and don’t provide any new virtual methods.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="boxed/index.html" title="glib::subclass::boxed mod">boxed</a></div><div class="item-right docblock-short"><p>Module for registering boxed types for Rust types.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="interface/index.html" title="glib::subclass::interface mod">interface</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="object/index.html" title="glib::subclass::object mod">object</a></div><div class="item-right docblock-short"><p>Module that contains all types needed for creating a direct subclass of <code>GObject</code>
-or implementing virtual methods of it.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="prelude/index.html" title="glib::subclass::prelude mod">prelude</a></div><div class="item-right docblock-short"><p>Prelude that re-exports all important traits from this crate.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="shared/index.html" title="glib::subclass::shared mod">shared</a></div><div class="item-right docblock-short"><p>Module for registering shared types for Rust types.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="signal/index.html" title="glib::subclass::signal mod">signal</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="types/index.html" title="glib::subclass::types mod">types</a></div><div class="item-right docblock-short"><p>Module that contains the basic infrastructure for subclassing <code>GObject</code>.</p>
-</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ObjectImplRef.html" title="glib::subclass::ObjectImplRef struct">ObjectImplRef</a></div><div class="item-right docblock-short"><p>Reference-counted wrapper around an <a href="types/trait.ObjectSubclass.html" title="ObjectSubclass"><code>ObjectSubclass</code></a> reference.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ObjectImplWeakRef.html" title="glib::subclass::ObjectImplWeakRef struct">ObjectImplWeakRef</a></div><div class="item-right docblock-short"><p>Weak reference to an <a href="types/trait.ObjectSubclass.html" title="ObjectSubclass"><code>ObjectSubclass</code></a> reference.</p>
-</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
-</body></html>
+structs and don’t provide any new virtual methods.</div></li><li><div class="item-name"><a class="mod" href="boxed/index.html" title="mod glib::subclass::boxed">boxed</a></div><div class="desc docblock-short">Module for registering boxed types for Rust types.</div></li><li><div class="item-name"><a class="mod" href="interface/index.html" title="mod glib::subclass::interface">interface</a></div></li><li><div class="item-name"><a class="mod" href="object/index.html" title="mod glib::subclass::object">object</a></div><div class="desc docblock-short">Module that contains all types needed for creating a direct subclass of <code>GObject</code>
+or implementing virtual methods of it.</div></li><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod glib::subclass::prelude">prelude</a></div><div class="desc docblock-short">Prelude that re-exports all important traits from this crate.</div></li><li><div class="item-name"><a class="mod" href="shared/index.html" title="mod glib::subclass::shared">shared</a></div><div class="desc docblock-short">Module for registering shared types for Rust types.</div></li><li><div class="item-name"><a class="mod" href="signal/index.html" title="mod glib::subclass::signal">signal</a></div></li><li><div class="item-name"><a class="mod" href="types/index.html" title="mod glib::subclass::types">types</a></div><div class="desc docblock-short">Module that contains the basic infrastructure for subclassing <code>GObject</code>.</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.ObjectImplRef.html" title="struct glib::subclass::ObjectImplRef">ObjectImplRef</a></div><div class="desc docblock-short">Reference-counted wrapper around an <a href="types/trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass"><code>ObjectSubclass</code></a> reference.</div></li><li><div class="item-name"><a class="struct" href="struct.ObjectImplWeakRef.html" title="struct glib::subclass::ObjectImplWeakRef">ObjectImplWeakRef</a></div><div class="desc docblock-short">Weak reference to an <a href="types/trait.ObjectSubclass.html" title="trait glib::subclass::types::ObjectSubclass"><code>ObjectSubclass</code></a> reference.</div></li></ul></section></div></main></body></html>

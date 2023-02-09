@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/initable.rs`."><title>initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/initable.rs`."><title>initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -291,75 +293,81 @@
 <a href="#218" id="218">218</a>
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::ptr;
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">std::ptr</a>;
 
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, Error};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/subclass/prelude/index.html">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../../glib/error/struct.Error.html">Error</a>};
 
-<span class="kw">use crate</span>::{Cancellable, Initable};
+<span class="kw">use crate</span>::{<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="../auto/initable.rs.html#8-43">Initable</a>};
 
-<span class="kw">pub trait </span>InitableImpl: ObjectImpl {
-    <span class="kw">fn </span>init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="self">self</span>.parent_init(cancellable)
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.InitableImpl.html">InitableImpl</a>: <a href="../../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> {
+    <span class="kw">fn </span>init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
+        <a class="self" href="#10">self</a>.<a href="#21-44">parent_init</a>(<a href="#10">cancellable</a>)
     }
 }
 
-<span class="kw">pub trait </span>InitableImplExt: ObjectSubclass {
-    <span class="kw">fn </span>parent_init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;;
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <a href="#20-45"><span class="kw">super</span>::InitableImplExt</a>&gt; <a href="#16">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">impl</span>&lt;T: InitableImpl&gt; InitableImplExt <span class="kw">for </span>T {
-    <span class="kw">fn </span>parent_init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+<span class="kw">pub trait </span><a href="../../../gio/subclass/prelude/trait.InitableImplExt.html">InitableImplExt</a>: <a href="#16">sealed::Sealed</a> + <a href="../../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> {
+    <span class="kw">fn </span>parent_init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>type_data = <a href="../../../glib/subclass/types/trait.ObjectSubclassType.html"><span class="self">Self</span>::type_data</a>();
             <span class="kw">let </span>parent_iface =
-                type_data.as_ref().parent_interface::&lt;Initable&gt;() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GInitableIface;
+                <a href="#23">type_data</a>.as_ref().parent_interface::&lt;<a href="../auto/initable.rs.html#8-43">Initable</a>&gt;() <span class="kw">as </span><span class="kw-2">*const </span><a href="../../../gio_sys/struct.GInitableIface.html">ffi::GInitableIface</a>;
 
-            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+            <span class="kw">let </span>func = (<span class="kw-2">*</span><a href="#24">parent_iface</a>)
                 .init
-                .expect(<span class="string">&quot;no parent \&quot;init\&quot; implementation&quot;</span>);
+                .expect(<span class="string">"no parent \"init\" implementation"</span>);
 
             <span class="kw">let </span><span class="kw-2">mut </span>err = ptr::null_mut();
-            func(
-                <span class="self">self</span>.obj().unsafe_cast_ref::&lt;Initable&gt;().to_glib_none().<span class="number">0</span>,
-                cancellable.to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>err,
+            <a href="#27">func</a>(
+                <a class="self" href="#21">self</a>.<a href="../../../glib/subclass/types/trait.ObjectSubclassExt.html">obj</a>().<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>::&lt;<a href="../auto/initable.rs.html#8-43">Initable</a>&gt;().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#21">cancellable</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#31">err</a>,
             );
 
             <span class="kw">if </span>err.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(err))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#31">err</a>))
             }
         }
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;T: InitableImpl&gt; IsImplementable&lt;T&gt; <span class="kw">for </span>Initable {
+<span class="kw">impl</span>&lt;T: <a href="#9-13">InitableImpl</a>&gt; <a href="#20-45">InitableImplExt</a> <span class="kw">for </span>T {}
+
+<span class="kw">unsafe impl</span>&lt;T: <a href="#9-13">InitableImpl</a>&gt; IsImplementable&lt;T&gt; <span class="kw">for </span><a href="../auto/initable.rs.html#8-43">Initable</a> {
     <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span>glib::Interface&lt;<span class="self">Self</span>&gt;) {
-        <span class="kw">let </span>iface = iface.as_mut();
-        iface.init = <span class="prelude-val">Some</span>(initable_init::&lt;T&gt;);
+        <span class="kw">let </span>iface = <a href="#50">iface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">as_mut</a>();
+        <a href="#51">iface</a>.init = <span class="prelude-val">Some</span>(initable_init::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>initable_init&lt;T: InitableImpl&gt;(
-    initable: <span class="kw-2">*mut </span>ffi::GInitable,
-    cancellable: <span class="kw-2">*mut </span>ffi::GCancellable,
-    error: <span class="kw-2">*mut *mut </span>glib::ffi::GError,
-) -&gt; glib::ffi::gboolean {
-    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(initable <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
-    <span class="kw">let </span>imp = instance.imp();
+<span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>initable_init&lt;T: <a href="#9-13">InitableImpl</a>&gt;(
+    initable: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GInitable.html">ffi::GInitable</a>,
+    cancellable: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GCancellable.html">ffi::GCancellable</a>,
+    error: <span class="kw-2">*mut *mut </span><a href="../../../glib_sys/struct.GError.html">glib::ffi::GError</a>,
+) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#57">initable</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = <a href="#61">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html">imp</a>();
 
-    <span class="kw">match </span>imp.init(
-        <span class="prelude-ty">Option</span>::&lt;Cancellable&gt;::from_glib_borrow(cancellable)
-            .as_ref()
+    <span class="kw">match </span><a href="#62">imp</a>.<a href="#10-12">init</a>(
+        <span class="prelude-ty">Option</span>::&lt;<a href="../auto/cancellable.rs.html#7-85">Cancellable</a>&gt;::from_glib_borrow(<a href="#58">cancellable</a>)
+            .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
             .as_ref(),
     ) {
         <span class="prelude-val">Ok</span>(()) =&gt; glib::ffi::GTRUE,
         <span class="prelude-val">Err</span>(e) =&gt; {
             <span class="kw">if </span>!error.is_null() {
-                <span class="kw-2">*</span>error = e.into_glib_ptr();
+                <span class="kw-2">*</span><a href="#59">error</a> = <a href="#70">e</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html">into_glib_ptr</a>();
             }
             glib::ffi::GFALSE
         }
@@ -380,7 +388,7 @@
 
         <span class="attr">#[glib::object_subclass]
         </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>InitableTestType {
-            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;InitableTestType&quot;</span>;
+            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"InitableTestType"</span>;
             <span class="kw">type </span>Type = <span class="kw">super</span>::InitableTestType;
             <span class="kw">type </span>Interfaces = (Initable,);
 
@@ -403,7 +411,7 @@
         <span class="kw">use super</span>::<span class="kw-2">*</span>;
         <span class="kw">pub type </span>InitableTestType = &lt;imp::InitableTestType <span class="kw">as </span>ObjectSubclass&gt;::Instance;
 
-        <span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>initable_test_type_get_value(this: <span class="kw-2">*mut </span>InitableTestType) -&gt; u64 {
+        <span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>initable_test_type_get_value(this: <span class="kw-2">*mut </span>InitableTestType) -&gt; u64 {
             <span class="kw">let </span>this = <span class="kw">super</span>::InitableTestType::from_glib_borrow(this);
             this.imp().<span class="number">0</span>.get()
         }
@@ -418,7 +426,7 @@
     </span><span class="kw">impl </span>InitableTestType {
         <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
             Initable::new(<span class="prelude-ty">Option</span>::&lt;<span class="kw-2">&amp;</span>Cancellable&gt;::None)
-                .expect(<span class="string">&quot;Failed creation/initialization of InitableTestType object&quot;</span>)
+                .expect(<span class="string">"Failed creation/initialization of InitableTestType object"</span>)
         }
 
         <span class="kw">pub unsafe fn </span>new_uninit() -&gt; <span class="self">Self </span>{
@@ -457,11 +465,11 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;&quot;</span>]
+    #[should_panic = <span class="string">""</span>]
     </span><span class="kw">fn </span>test_initable_new_failure() {
         <span class="kw">let </span>value: u32 = <span class="number">2</span>;
         <span class="kw">let _ </span>= Initable::builder::&lt;InitableTestType&gt;()
-            .property(<span class="string">&quot;invalid-property&quot;</span>, value)
+            .property(<span class="string">"invalid-property"</span>, value)
             .build(<span class="prelude-ty">Option</span>::&lt;<span class="kw-2">&amp;</span>Cancellable&gt;::None);
         <span class="macro">unreachable!</span>();
     }
@@ -472,9 +480,9 @@
             InitableTestType::static_type(),
             <span class="prelude-ty">Option</span>::&lt;<span class="kw-2">&amp;</span>Cancellable&gt;::None,
         )
-        .expect(<span class="string">&quot;Failed creation/initialization of InitableTestType object from type&quot;</span>)
+        .expect(<span class="string">"Failed creation/initialization of InitableTestType object from type"</span>)
         .downcast::&lt;InitableTestType&gt;()
-        .expect(<span class="string">&quot;Failed downcast of InitableTestType object&quot;</span>);
+        .expect(<span class="string">"Failed downcast of InitableTestType object"</span>);
         <span class="macro">assert_eq!</span>(<span class="number">0x123456789abcdef</span>, test.value());
     }
 
@@ -484,9 +492,9 @@
             InitableTestType::static_type(),
             <span class="prelude-ty">Option</span>::&lt;<span class="kw-2">&amp;</span>Cancellable&gt;::None,
         )
-        .expect(<span class="string">&quot;Failed creation/initialization of InitableTestType object from values&quot;</span>)
+        .expect(<span class="string">"Failed creation/initialization of InitableTestType object from values"</span>)
         .downcast::&lt;InitableTestType&gt;()
-        .expect(<span class="string">&quot;Failed downcast of InitableTestType object&quot;</span>);
+        .expect(<span class="string">"Failed downcast of InitableTestType object"</span>);
         <span class="macro">assert_eq!</span>(<span class="number">0x123456789abcdef</span>, test.value());
     }
 
@@ -511,5 +519,4 @@
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

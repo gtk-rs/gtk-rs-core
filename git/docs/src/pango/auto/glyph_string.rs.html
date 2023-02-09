@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/glyph_string.rs`."><title>glyph_string.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/glyph_string.rs`."><title>glyph_string.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pango/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../pango/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -317,29 +319,21 @@
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
 <a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Analysis, Font, Rectangle};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::mem;
+</span><span class="kw">use crate</span>::{<a href="../analysis.rs.html#9-14">Analysis</a>, <a href="font.rs.html#14-29">Font</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`GlyphString`][crate::GlyphString] is used to store strings of glyphs with geometry
     /// and visual attribute information.
     ///
     /// The storage for the glyph information is owned by the structure
     /// which simplifies memory management.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span>GlyphString(Boxed&lt;ffi::PangoGlyphString&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.GlyphString.html">GlyphString</a>(Boxed&lt;<a href="../../../pango_sys/struct.PangoGlyphString.html">ffi::PangoGlyphString</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::pango_glyph_string_copy(mut_override(ptr)),
@@ -348,15 +342,15 @@
     }
 }
 
-<span class="kw">impl </span>GlyphString {
+<span class="kw">impl </span><a href="#8-22">GlyphString</a> {
     <span class="doccomment">/// Create a new [`GlyphString`][crate::GlyphString].
     ///
     /// # Returns
     ///
     /// the newly allocated [`GlyphString`][crate::GlyphString], which
     ///   should be freed with `Pango::GlyphString::free()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; GlyphString {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#8-22">GlyphString</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_glyph_string_new()) }
     }
 
@@ -379,18 +373,18 @@
     ///
     /// ## `logical_rect`
     /// rectangle used to store the logical extents of the glyph string
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;) -&gt; (Rectangle, Rectangle) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_extents"</span>)]
+    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font.rs.html#14-29">Font</a>&gt;) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_glyph_string_extents(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                font.as_ref().to_glib_none().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#56">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#56">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#58">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#59">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#58">ink_rect</a>, <a href="#59">logical_rect</a>)
         }
     }
 
@@ -417,42 +411,42 @@
     /// ## `logical_rect`
     /// rectangle used to
     ///   store the logical extents of the glyph string range
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_extents_range&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_extents_range"</span>)]
     </span><span class="kw">pub fn </span>extents_range(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        start: i32,
-        end: i32,
-        font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;,
-    ) -&gt; (Rectangle, Rectangle) {
+        start: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        end: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font.rs.html#14-29">Font</a>&gt;,
+    ) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
-            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
+            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html">Rectangle::uninitialized</a>();
             ffi::pango_glyph_string_extents_range(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                start,
-                end,
-                font.as_ref().to_glib_none().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#95">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#96">start</a>,
+                <a href="#97">end</a>,
+                <a href="#98">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#101">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#102">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#101">ink_rect</a>, <a href="#102">logical_rect</a>)
         }
     }
 
     <span class="doccomment">/// Computes the logical width of the glyph string.
     ///
     /// This can also be computed using [`extents()`][Self::extents()].
-    /// However, since this only computes the width, it&#39;s much faster. This
+    /// However, since this only computes the width, it's much faster. This
     /// is in fact only a convenience function that computes the sum of
     /// @geometry.width for each glyph in the @self.
     ///
     /// # Returns
     ///
     /// the logical width of the glyph string.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_get_width&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_width&quot;</span>)]
-    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_glyph_string_get_width(mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_get_width"</span>)]
+    #[doc(alias = <span class="string">"get_width"</span>)]
+    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_glyph_string_get_width(mut_override(<a class="self" href="#127">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Converts from character position to x position.
@@ -463,8 +457,8 @@
     /// into equal portions, otherwise.
     ///
     /// &lt;picture&gt;
-    ///   &lt;source srcset=&quot;glyphstring-positions-dark.png&quot; media=&quot;(prefers-color-scheme: dark)&quot;&gt;
-    ///   &lt;img alt=&quot;Glyph positions&quot; src=&quot;glyphstring-positions-light.png&quot;&gt;
+    ///   &lt;source srcset="glyphstring-positions-dark.png" media="(prefers-color-scheme: dark)"&gt;
+    ///   &lt;img alt="Glyph positions" src="glyphstring-positions-light.png"&gt;
     /// &lt;/picture&gt;
     /// ## `text`
     /// the text for the run
@@ -483,33 +477,27 @@
     ///
     /// ## `x_pos`
     /// location to store result
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_index_to_x&quot;</span>)]
-    </span><span class="kw">pub fn </span>index_to_x(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        text: <span class="kw-2">&amp;</span>str,
-        analysis: <span class="kw-2">&amp;mut </span>Analysis,
-        index_: i32,
-        trailing: bool,
-    ) -&gt; i32 {
-        <span class="kw">let </span>length = text.len() <span class="kw">as _</span>;
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_index_to_x"</span>)]
+    </span><span class="kw">pub fn </span>index_to_x(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, analysis: <span class="kw-2">&amp;</span><a href="../analysis.rs.html#9-14">Analysis</a>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, trailing: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">let </span>length = <a href="#160">text</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>x_pos = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>x_pos = std::mem::MaybeUninit::uninit();
             ffi::pango_glyph_string_index_to_x(
-                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
-                text.to_glib_none().<span class="number">0</span>,
-                length,
-                analysis.to_glib_none_mut().<span class="number">0</span>,
-                index_,
-                trailing.into_glib(),
-                x_pos.as_mut_ptr(),
+                mut_override(<a class="self" href="#160">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#160">text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#161">length</a>,
+                mut_override(<a href="#160">analysis</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#160">index_</a>,
+                <a href="#160">trailing</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#163">x_pos</a>.as_mut_ptr(),
             );
-            x_pos.assume_init()
+            <a href="#163">x_pos</a>.assume_init()
         }
     }
 
-    <span class="comment">//#[cfg(any(feature = &quot;v1_50&quot;, feature = &quot;dox&quot;))]
-    //#[cfg_attr(feature = &quot;dox&quot;, doc(cfg(feature = &quot;v1_50&quot;)))]
-    //#[doc(alias = &quot;pango_glyph_string_index_to_x_full&quot;)]
+    <span class="comment">//#[cfg(feature = "v1_50")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
+    //#[doc(alias = "pango_glyph_string_index_to_x_full")]
     //pub fn index_to_x_full(&amp;mut self, text: &amp;str, analysis: &amp;mut Analysis, attrs: /*Ignored*/Option&lt;&amp;mut LogAttr&gt;, index_: i32, trailing: bool) -&gt; i32 {
     //    unsafe { TODO: call ffi:pango_glyph_string_index_to_x_full() }
     //}
@@ -517,10 +505,10 @@
     </span><span class="doccomment">/// Resize a glyph string to the given length.
     /// ## `new_len`
     /// the new length of the string
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_set_size&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_len: i32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_set_size"</span>)]
+    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_len: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_glyph_string_set_size(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, new_len);
+            ffi::pango_glyph_string_set_size(<a class="self" href="#188">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#188">new_len</a>);
         }
     }
 
@@ -549,33 +537,32 @@
     /// ## `trailing`
     /// location to store a boolean indicating whether the
     ///   user clicked on the leading or trailing edge of the character
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_glyph_string_x_to_index&quot;</span>)]
-    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, analysis: <span class="kw-2">&amp;mut </span>Analysis, x_pos: i32) -&gt; (i32, i32) {
-        <span class="kw">let </span>length = text.len() <span class="kw">as _</span>;
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_x_to_index"</span>)]
+    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, analysis: <span class="kw-2">&amp;</span><a href="../analysis.rs.html#9-14">Analysis</a>, x_pos: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
+        <span class="kw">let </span>length = <a href="#220">text</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>index_ = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>trailing = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>index_ = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>trailing = std::mem::MaybeUninit::uninit();
             ffi::pango_glyph_string_x_to_index(
-                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
-                text.to_glib_none().<span class="number">0</span>,
-                length,
-                analysis.to_glib_none_mut().<span class="number">0</span>,
-                x_pos,
-                index_.as_mut_ptr(),
-                trailing.as_mut_ptr(),
+                mut_override(<a class="self" href="#220">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#220">text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#221">length</a>,
+                mut_override(<a href="#220">analysis</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#220">x_pos</a>,
+                <a href="#223">index_</a>.as_mut_ptr(),
+                <a href="#224">trailing</a>.as_mut_ptr(),
             );
-            (index_.assume_init(), trailing.assume_init())
+            (<a href="#223">index_</a>.assume_init(), <a href="#224">trailing</a>.assume_init())
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>GlyphString {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#32-34"><span class="self">Self</span>::new</a>()
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>GlyphString {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>GlyphString {}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {}
+</code></pre></div></section></main></body></html>

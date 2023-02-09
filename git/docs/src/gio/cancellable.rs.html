@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/cancellable.rs`."><title>cancellable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/cancellable.rs`."><title>cancellable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -291,52 +293,46 @@
 <a href="#218" id="218">218</a>
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
-<a href="#221" id="221">221</a>
-<a href="#222" id="222">222</a>
-<a href="#223" id="223">223</a>
-<a href="#224" id="224">224</a>
-<a href="#225" id="225">225</a>
-<a href="#226" id="226">226</a>
-<a href="#227" id="227">227</a>
-<a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
-<a href="#230" id="230">230</a>
-<a href="#231" id="231">231</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::num::NonZeroU64;
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU64.html">std::num::NonZeroU64</a>;
 
 <span class="kw">use </span>futures_channel::oneshot;
-<span class="kw">use </span>futures_core::Future;
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">futures_core::Future</a>;
+<span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="kw">use </span><span class="kw">crate</span>::Cancellable;
+<span class="kw">use </span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
 /// analogous to [`glib::SignalHandlerId`].
 </span><span class="attr">#[derive(Debug, Eq, PartialEq)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span>CancelledHandlerId(NonZeroU64);
+</span><span class="kw">pub struct </span><a href="../../gio/prelude/struct.CancelledHandlerId.html">CancelledHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU64.html">NonZeroU64</a>);
 
-<span class="kw">impl </span>CancelledHandlerId {
+<span class="kw">impl </span><a href="#16">CancelledHandlerId</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the internal signal handler ID.
     </span><span class="attr">#[allow(clippy::missing_safety_doc)]
     </span><span class="kw">pub unsafe fn </span>as_raw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; libc::c_ulong {
-        <span class="self">self</span>.<span class="number">0</span>.get() <span class="kw">as </span>libc::c_ulong
+        <a class="self" href="#22">self</a>.<span class="number">0</span>.get() <span class="kw">as </span>libc::c_ulong
     }
 }
 
-<span class="kw">impl </span>TryFromGlib&lt;libc::c_ulong&gt; <span class="kw">for </span>CancelledHandlerId {
-    <span class="kw">type </span>Error = GlibNoneError;
+<span class="kw">impl </span>TryFromGlib&lt;libc::c_ulong&gt; <span class="kw">for </span><a href="#16">CancelledHandlerId</a> {
+    <span class="kw">type </span>Error = <a href="../../glib/translate/struct.GlibNoneError.html">GlibNoneError</a>;
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>try_from_glib(val: libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, GlibNoneError&gt; {
-        NonZeroU64::new(val <span class="kw">as _</span>).map(<span class="self">Self</span>).ok_or(GlibNoneError)
+    </span><span class="kw">unsafe fn </span>try_from_glib(val: libc::c_ulong) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="../../glib/translate/struct.GlibNoneError.html">GlibNoneError</a>&gt; {
+        NonZeroU64::new(<a href="#30">val</a> <span class="kw">as _</span>).map(<span class="self">Self</span>).ok_or(GlibNoneError)
     }
 }
 
-<span class="kw">pub trait </span>CancellableExtManual {
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/cancellable.rs.html#7-85"><span class="kw">super</span>::Cancellable</a>&gt;&gt; <a href="#36">Sealed</a> <span class="kw">for </span>T {}
+}
+
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.CancellableExtManual.html">CancellableExtManual</a>: <a href="#36">sealed::Sealed</a> + IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
     /// handles the race condition that may happen if the cancellable is cancelled right before
@@ -355,18 +351,49 @@
     /// # Returns
     ///
     /// The id of the signal handler or `None` if `self` has already been cancelled.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_connect&quot;</span>)]
-    </span><span class="kw">fn </span>connect_cancelled&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + Send + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_connect"</span>)]
+    </span><span class="kw">fn </span>connect_cancelled&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         callback: F,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;CancelledHandlerId&gt;;
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#16">CancelledHandlerId</a>&gt; {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_trampoline&lt;P: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;, F: FnOnce(<span class="kw-2">&amp;</span>P)&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GCancellable.html">ffi::GCancellable</a>,
+            callback: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) {
+            <span class="kw">let </span>callback: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;F&gt; = <span class="kw-2">&amp;mut *</span>(<a href="#66">callback</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;F&gt;);
+            <span class="kw">let </span>callback = <a href="#68">callback</a>
+                .take()
+                .expect(<span class="string">"Cancellable::cancel() closure called multiple times"</span>);
+            <a href="#69">callback</a>(<a href="../../glib/translate/trait.FromGlibPtrBorrow.html">Cancellable::from_glib_borrow</a>(<a href="#65">this</a>).<a href="../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+        }
+
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F&gt;(ptr: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>) {
+            <span class="kw">let _ </span>= Box::&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt;::from_raw(<a href="#75">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        }
+
+        <span class="kw">let </span>callback: Box&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt; = Box::new(<span class="prelude-val">Some</span>(<a href="#62">callback</a>));
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_cancellable_connect(
+                <a class="self" href="#61">self</a>.<a href="../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+                    connect_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                )),
+                Box::into_raw(<a href="#79">callback</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
+            ))
+        }
+    }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Local variant of [`Self::connect_cancelled`].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_connect&quot;</span>)]
-    </span><span class="kw">fn </span>connect_cancelled_local&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_connect"</span>)]
+    </span><span class="kw">fn </span>connect_cancelled_local&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         callback: F,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;CancelledHandlerId&gt;;
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#16">CancelledHandlerId</a>&gt; {
+        <span class="kw">let </span>callback = glib::thread_guard::ThreadGuard::new(<a href="#96">callback</a>);
+
+        <a class="self" href="#95">self</a>.<a href="#60-90">connect_cancelled</a>(<span class="kw">move </span>|obj| (<a href="#98">callback</a>.into_inner())(<a href="#100">obj</a>))
+    }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Disconnects a handler from a cancellable instance. Additionally, in the event that a signal
     /// handler is currently running, this call will block until the handler has finished. Calling
@@ -375,103 +402,56 @@
     ///
     /// This avoids a race condition where a thread cancels at the same time as the cancellable
     /// operation is finished and the signal handler is removed.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_disconnect&quot;</span>)]
-    </span><span class="kw">fn </span>disconnect_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>, id: CancelledHandlerId);
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_disconnect"</span>)]
+    </span><span class="kw">fn </span>disconnect_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <a href="#16">CancelledHandlerId</a>) {
+        <span class="kw">unsafe </span>{ ffi::g_cancellable_disconnect(<a class="self" href="#111">self</a>.<a href="../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#111">id</a>.<a href="#22-24">as_raw</a>()) };
+    }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
     /// immediately if the cancellable is already cancelled.
-    </span><span class="kw">fn </span>future(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = ()&gt; + Send + Sync + <span class="lifetime">&#39;static</span>&gt;&gt;;
+    </span><span class="kw">fn </span>future(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = ()&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt; {
+        <span class="kw">let </span>cancellable = <a class="self" href="#117">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+        <span class="kw">let </span>(tx, rx) = oneshot::channel();
+        <span class="kw">let </span>id = <a href="#118">cancellable</a>.<a href="#60-90">connect_cancelled</a>(<span class="kw">move </span>|<span class="kw">_</span>| {
+            <span class="kw">let _ </span>= <a href="#119">tx</a>.send(());
+        });
+        Box::pin(<span class="kw">async move </span>{
+            <a href="#119">rx</a>.<span class="kw">await</span>.unwrap();
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = <a href="#120">id</a> {
+                <a href="#118">cancellable</a>.<a href="#111-113">disconnect_cancelled</a>(<a href="#125">id</a>);
+            }
+        })
+    }
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set an error if the cancellable is already cancelled.
     </span><span class="comment">// rustdoc-stripper-ignore-next-stop
-    </span><span class="doccomment">/// If the `self` is cancelled, sets the error to notify
+    </span><span class="doccomment">/// If the @self is cancelled, sets the error to notify
     /// that the operation was cancelled.
     ///
     /// # Returns
     ///
-    /// [`true`] if `self` was cancelled, [`false`] if it was not
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_set_error_if_cancelled&quot;</span>)]
-    </span><span class="kw">fn </span>set_error_if_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;Cancellable&gt;&gt; CancellableExtManual <span class="kw">for </span>O {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_connect&quot;</span>)]
-    </span><span class="kw">fn </span>connect_cancelled&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + Send + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        callback: F,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;CancelledHandlerId&gt; {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>connect_trampoline&lt;P: IsA&lt;Cancellable&gt;, F: FnOnce(<span class="kw-2">&amp;</span>P)&gt;(
-            this: <span class="kw-2">*mut </span>ffi::GCancellable,
-            callback: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span>callback: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;F&gt; = <span class="kw-2">&amp;mut *</span>(callback <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;F&gt;);
-            <span class="kw">let </span>callback = callback
-                .take()
-                .expect(<span class="string">&quot;Cancellable::cancel() closure called multiple times&quot;</span>);
-            callback(Cancellable::from_glib_borrow(this).unsafe_cast_ref())
-        }
-
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>destroy_closure&lt;F&gt;(ptr: glib::ffi::gpointer) {
-            <span class="kw">let _ </span>= Box::&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt;::from_raw(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-        }
-
-        <span class="kw">let </span>callback: Box&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt; = Box::new(<span class="prelude-val">Some</span>(callback));
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_cancellable_connect(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
-                    connect_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-                )),
-                Box::into_raw(callback) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
-            ))
-        }
-    }
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_connect&quot;</span>)]
-    </span><span class="kw">fn </span>connect_cancelled_local&lt;F: FnOnce(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        callback: F,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;CancelledHandlerId&gt; {
-        <span class="kw">let </span>callback = glib::thread_guard::ThreadGuard::new(callback);
-
-        <span class="self">self</span>.connect_cancelled(<span class="kw">move </span>|obj| (callback.into_inner())(obj))
-    }
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_disconnect&quot;</span>)]
-    </span><span class="kw">fn </span>disconnect_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>, id: CancelledHandlerId) {
-        <span class="kw">unsafe </span>{ ffi::g_cancellable_disconnect(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, id.as_raw()) };
-    }
-    <span class="kw">fn </span>future(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = ()&gt; + Send + Sync + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        <span class="kw">let </span>cancellable = <span class="self">self</span>.as_ref().clone();
-        <span class="kw">let </span>(tx, rx) = oneshot::channel();
-        <span class="kw">let </span>id = cancellable.connect_cancelled(<span class="kw">move </span>|<span class="kw">_</span>| {
-            <span class="kw">let _ </span>= tx.send(());
-        });
-        Box::pin(<span class="kw">async move </span>{
-            rx.<span class="kw">await</span>.unwrap();
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
-                cancellable.disconnect_cancelled(id);
-            }
-        })
-    }
-
-    <span class="kw">fn </span>set_error_if_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+    /// [`true`] if @self was cancelled, [`false`] if it was not
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_set_error_if_cancelled"</span>)]
+    </span><span class="kw">fn </span>set_error_if_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_cancellable_set_error_if_cancelled(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#140">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#142">error</a>,
             );
-            <span class="comment">// Here&#39;s the special case, this function has an inverted
+            <span class="comment">// Here's the special case, this function has an inverted
             // return value for the error case.
-            </span><span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, error.is_null());
+            </span><a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#142">error</a>))
             }
         }
     }
 }
+
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/cancellable.rs.html#7-85">Cancellable</a>&gt;&gt; <a href="#40-157">CancellableExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
@@ -483,7 +463,7 @@
     </span><span class="kw">fn </span>cancellable_callback() {
         <span class="kw">let </span>c = Cancellable::new();
         <span class="kw">let </span>id = c.connect_cancelled(|<span class="kw">_</span>| {});
-        c.cancel(); <span class="comment">// if it doesn&#39;t crash at this point, then we&#39;re good to go!
+        c.cancel(); <span class="comment">// if it doesn't crash at this point, then we're good to go!
         </span>c.disconnect_cancelled(id.unwrap());
     }
 
@@ -491,7 +471,7 @@
     </span><span class="kw">fn </span>cancellable_callback_local() {
         <span class="kw">let </span>c = Cancellable::new();
         <span class="kw">let </span>id = c.connect_cancelled_local(|<span class="kw">_</span>| {});
-        c.cancel(); <span class="comment">// if it doesn&#39;t crash at this point, then we&#39;re good to go!
+        c.cancel(); <span class="comment">// if it doesn't crash at this point, then we're good to go!
         </span>c.disconnect_cancelled(id.unwrap());
     }
 
@@ -533,5 +513,4 @@
         ctx.block_on(rx).unwrap();
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

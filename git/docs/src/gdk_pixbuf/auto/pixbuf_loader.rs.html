@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_loader.rs`."><title>pixbuf_loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_loader.rs`."><title>pixbuf_loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gdk_pixbuf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gdk_pixbuf/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -619,45 +621,19 @@
 <a href="#546" id="546">546</a>
 <a href="#547" id="547">547</a>
 <a href="#548" id="548">548</a>
-<a href="#549" id="549">549</a>
-<a href="#550" id="550">550</a>
-<a href="#551" id="551">551</a>
-<a href="#552" id="552">552</a>
-<a href="#553" id="553">553</a>
-<a href="#554" id="554">554</a>
-<a href="#555" id="555">555</a>
-<a href="#556" id="556">556</a>
-<a href="#557" id="557">557</a>
-<a href="#558" id="558">558</a>
-<a href="#559" id="559">559</a>
-<a href="#560" id="560">560</a>
-<a href="#561" id="561">561</a>
-<a href="#562" id="562">562</a>
-<a href="#563" id="563">563</a>
-<a href="#564" id="564">564</a>
-<a href="#565" id="565">565</a>
-<a href="#566" id="566">566</a>
-<a href="#567" id="567">567</a>
-<a href="#568" id="568">568</a>
-<a href="#569" id="569">569</a>
-<a href="#570" id="570">570</a>
-<a href="#571" id="571">571</a>
-<a href="#572" id="572">572</a>
-<a href="#573" id="573">573</a>
-<a href="#574" id="574">574</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Pixbuf, PixbufAnimation, PixbufFormat};
+</span><span class="kw">use crate</span>::{<a href="pixbuf.rs.html#8-222">Pixbuf</a>, <a href="pixbuf_animation.rs.html#9-33">PixbufAnimation</a>, <a href="pixbuf_format.rs.html#7-21">PixbufFormat</a>};
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute, ptr};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Incremental image loader.
     ///
     /// [`PixbufLoader`][crate::PixbufLoader] provides a way for applications to drive the
@@ -755,24 +731,24 @@
     /// # Implements
     ///
     /// [`PixbufLoaderExt`][trait@crate::prelude::PixbufLoaderExt]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GdkPixbufLoader&quot;</span>)]
-    </span><span class="kw">pub struct </span>PixbufLoader(Object&lt;ffi::GdkPixbufLoader, ffi::GdkPixbufLoaderClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GdkPixbufLoader"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gdk_pixbuf/struct.PixbufLoader.html">PixbufLoader</a>(Object&lt;<a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>, <a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoaderClass.html">ffi::GdkPixbufLoaderClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::gdk_pixbuf_loader_get_type(),
     }
 }
 
-<span class="kw">impl </span>PixbufLoader {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>PixbufLoader&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#13-117">PixbufLoader</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#13-117">PixbufLoader</a>&gt; = <span class="prelude-val">None</span>;
 
     <span class="doccomment">/// Creates a new pixbuf loader object.
     ///
     /// # Returns
     ///
     /// A newly-created pixbuf loader.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; PixbufLoader {
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#13-117">PixbufLoader</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_loader_new()) }
     }
 
@@ -780,14 +756,14 @@
     /// image data as if it were an image of MIME type @mime_type, instead of
     /// identifying the type automatically.
     ///
-    /// This function is useful if you want an error if the image isn&#39;t the
-    /// expected MIME type; for loading image formats that can&#39;t be reliably
+    /// This function is useful if you want an error if the image isn't the
+    /// expected MIME type; for loading image formats that can't be reliably
     /// identified by looking at the data; or if the user manually forces a
     /// specific MIME type.
     ///
     /// The list of supported mime types depends on what image loaders
-    /// are installed, but typically &quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;,
-    /// &quot;image/tiff&quot; and &quot;image/x-xpixmap&quot; are among the supported mime types.
+    /// are installed, but typically "image/png", "image/jpeg", "image/gif",
+    /// "image/tiff" and "image/x-xpixmap" are among the supported mime types.
     /// To obtain the full list of supported mime types, call
     /// gdk_pixbuf_format_get_mime_types() on each of the #GdkPixbufFormat
     /// structs returned by gdk_pixbuf_get_formats().
@@ -797,17 +773,17 @@
     /// # Returns
     ///
     /// A newly-created pixbuf loader.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new_with_mime_type&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_with_mime_type&quot;</span>)]
-    </span><span class="kw">pub fn </span>with_mime_type(mime_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufLoader, glib::Error&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_new_with_mime_type"</span>)]
+    #[doc(alias = <span class="string">"new_with_mime_type"</span>)]
+    </span><span class="kw">pub fn </span>with_mime_type(mime_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#13-117">PixbufLoader</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret =
-                ffi::gdk_pixbuf_loader_new_with_mime_type(mime_type.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+                ffi::gdk_pixbuf_loader_new_with_mime_type(<a href="#155">mime_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#157">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#158">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#157">error</a>))
             }
         }
     }
@@ -816,14 +792,14 @@
     /// image data as if it were an image of type @image_type, instead of
     /// identifying the type automatically.
     ///
-    /// This function is useful if you want an error if the image isn&#39;t the
-    /// expected type; for loading image formats that can&#39;t be reliably
+    /// This function is useful if you want an error if the image isn't the
+    /// expected type; for loading image formats that can't be reliably
     /// identified by looking at the data; or if the user manually forces
     /// a specific type.
     ///
     /// The list of supported image formats depends on what image loaders
-    /// are installed, but typically &quot;png&quot;, &quot;jpeg&quot;, &quot;gif&quot;, &quot;tiff&quot; and
-    /// &quot;xpm&quot; are among the supported formats. To obtain the full list of
+    /// are installed, but typically "png", "jpeg", "gif", "tiff" and
+    /// "xpm" are among the supported formats. To obtain the full list of
     /// supported image formats, call gdk_pixbuf_format_get_name() on each
     /// of the #GdkPixbufFormat structs returned by gdk_pixbuf_get_formats().
     /// ## `image_type`
@@ -832,25 +808,30 @@
     /// # Returns
     ///
     /// A newly-created pixbuf loader.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new_with_type&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_with_type&quot;</span>)]
-    </span><span class="kw">pub fn </span>with_type(image_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufLoader, glib::Error&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_new_with_type"</span>)]
+    #[doc(alias = <span class="string">"new_with_type"</span>)]
+    </span><span class="kw">pub fn </span>with_type(image_type: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#13-117">PixbufLoader</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::gdk_pixbuf_loader_new_with_type(image_type.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::gdk_pixbuf_loader_new_with_type(<a href="#190">image_type</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#192">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#193">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#192">error</a>))
             }
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>PixbufLoader {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#13-117">PixbufLoader</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#128-130"><span class="self">Self</span>::new</a>()
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#13-117"><span class="kw">super</span>::PixbufLoader</a>&gt;&gt; <a href="#210">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@PixbufLoader`] methods.
@@ -858,18 +839,18 @@
 /// # Implementors
 ///
 /// [`PixbufLoader`][struct@crate::PixbufLoader]
-</span><span class="kw">pub trait </span>PixbufLoaderExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gdk_pixbuf/prelude/trait.PixbufLoaderExt.html">PixbufLoaderExt</a>: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt; + <a href="#210">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Informs a pixbuf loader that no further writes with
     /// gdk_pixbuf_loader_write() will occur, so that it can free its
     /// internal loading structures.
     ///
-    /// This function also tries to parse any data that hasn&#39;t yet been parsed;
+    /// This function also tries to parse any data that hasn't yet been parsed;
     /// if the remaining data is partial or corrupt, an error will be returned.
     ///
     /// If `FALSE` is returned, `error` will be set to an error from the
     /// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
     ///
-    /// If you&#39;re just cancelling a load rather than expecting it to be finished,
+    /// If you're just cancelling a load rather than expecting it to be finished,
     /// passing `NULL` for `error` to ignore it is reasonable.
     ///
     /// Remember that this function does not release a reference on the loader, so
@@ -879,8 +860,19 @@
     ///
     /// `TRUE` if all image data written so far was successfully
     ///   passed out via the update_area signal
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_close&quot;</span>)]
-    </span><span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_close"</span>)]
+    </span><span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_close(<a class="self" href="#241">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#243">error</a>);
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#243">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Queries the #GdkPixbufAnimation that a pixbuf loader is currently creating.
     ///
@@ -888,16 +880,22 @@
     /// [`area-prepared`][struct@crate::PixbufLoader#area-prepared] signal has been emitted by
     /// the loader.
     ///
-    /// If the loader doesn&#39;t have enough bytes yet, and hasn&#39;t emitted the `area-prepared`
+    /// If the loader doesn't have enough bytes yet, and hasn't emitted the `area-prepared`
     /// signal, this function will return `NULL`.
     ///
     /// # Returns
     ///
     /// The animation that the loader is
     ///   currently loading
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_animation&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_animation&quot;</span>)]
-    </span><span class="kw">fn </span>animation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufAnimation&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_get_animation"</span>)]
+    #[doc(alias = <span class="string">"get_animation"</span>)]
+    </span><span class="kw">fn </span>animation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="pixbuf_animation.rs.html#9-33">PixbufAnimation</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_animation(
+                <a class="self" href="#269">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Obtains the available information about the format of the
     /// currently loading image file.
@@ -905,9 +903,15 @@
     /// # Returns
     ///
     /// A #GdkPixbufFormat
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_format&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_format&quot;</span>)]
-    </span><span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufFormat&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_get_format"</span>)]
+    #[doc(alias = <span class="string">"get_format"</span>)]
+    </span><span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="pixbuf_format.rs.html#7-21">PixbufFormat</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_format(
+                <a class="self" href="#285">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Queries the #GdkPixbuf that a pixbuf loader is currently creating.
     ///
@@ -922,16 +926,22 @@
     /// The returned pixbuf will be the same in all future calls to the loader,
     /// so if you want to keep using it, you should acquire a reference to it.
     ///
-    /// Additionally, if the loader is an animation, it will return the &quot;static
-    /// image&quot; of the animation (see gdk_pixbuf_animation_get_static_image()).
+    /// Additionally, if the loader is an animation, it will return the "static
+    /// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
     ///
     /// # Returns
     ///
     /// The pixbuf that the loader is
     ///   creating
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_pixbuf&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_pixbuf&quot;</span>)]
-    </span><span class="kw">fn </span>pixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_get_pixbuf"</span>)]
+    #[doc(alias = <span class="string">"get_pixbuf"</span>)]
+    </span><span class="kw">fn </span>pixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="pixbuf.rs.html#8-222">Pixbuf</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_pixbuf(
+                <a class="self" href="#315">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Causes the image to be scaled while it is loaded.
     ///
@@ -945,8 +955,12 @@
     /// The desired width of the image being loaded.
     /// ## `height`
     /// The desired height of the image being loaded.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_set_size&quot;</span>)]
-    </span><span class="kw">fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: i32, height: i32);
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_set_size"</span>)]
+    </span><span class="kw">fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
+        <span class="kw">unsafe </span>{
+            ffi::gdk_pixbuf_loader_set_size(<a class="self" href="#336">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#336">width</a>, <a href="#336">height</a>);
+        }
+    }
 
     <span class="doccomment">/// Parses the next `count` bytes in the given image buffer.
     /// ## `buf`
@@ -956,8 +970,25 @@
     ///
     /// `TRUE` if the write was successful, or
     ///   `FALSE` if the loader cannot parse the buffer
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_write&quot;</span>)]
-    </span><span class="kw">fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_write"</span>)]
+    </span><span class="kw">fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>count = <a href="#351">buf</a>.len() <span class="kw">as _</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write(
+                <a class="self" href="#351">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#351">buf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#352">count</a>,
+                <span class="kw-2">&amp;mut </span><a href="#354">error</a>,
+            );
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#354">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// Parses the next contents of the given image buffer.
     /// ## `buffer`
@@ -967,8 +998,23 @@
     ///
     /// `TRUE` if the write was successful, or `FALSE` if
     ///   the loader cannot parse the buffer
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_write_bytes&quot;</span>)]
-    </span><span class="kw">fn </span>write_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>glib::Bytes) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_loader_write_bytes"</span>)]
+    </span><span class="kw">fn </span>write_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span><a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write_bytes(
+                <a class="self" href="#379">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#379">buffer</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#381">error</a>,
+            );
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#381">error</a>))
+            }
+        }
+    }
 
     <span class="doccomment">/// This signal is emitted when the pixbuf loader has allocated the
     /// pixbuf in the desired size.
@@ -976,8 +1022,27 @@
     /// After this signal is emitted, applications can call
     /// gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded
     /// pixbuf.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;area-prepared&quot;</span>)]
-    </span><span class="kw">fn </span>connect_area_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
+    </span><span class="attr">#[doc(alias = <span class="string">"area-prepared"</span>)]
+    </span><span class="kw">fn </span>connect_area_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>area_prepared_trampoline&lt;P: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
+            f: glib::ffi::gpointer,
+        ) {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#406">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#408">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">PixbufLoader::from_glib_borrow</a>(<a href="#405">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#403">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#403">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"area-prepared\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+                    area_prepared_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                )),
+                Box_::into_raw(<a href="#412">f</a>),
+            )
+        }
+    }
 
     <span class="doccomment">/// This signal is emitted when a significant area of the image being
     /// loaded has been updated.
@@ -995,19 +1060,70 @@
     /// Width of updated area.
     /// ## `height`
     /// Height of updated area.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;area-updated&quot;</span>)]
-    </span><span class="kw">fn </span>connect_area_updated&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"area-updated"</span>)]
+    </span><span class="kw">fn </span>connect_area_updated&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId;
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>area_updated_trampoline&lt;
+            P: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
+            x: libc::c_int,
+            y: libc::c_int,
+            width: libc::c_int,
+            height: libc::c_int,
+            f: glib::ffi::gpointer,
+        ) {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#454">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#456">f</a>(
+                <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">PixbufLoader::from_glib_borrow</a>(<a href="#449">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>(),
+                <a href="#450">x</a>,
+                <a href="#451">y</a>,
+                <a href="#452">width</a>,
+                <a href="#453">height</a>,
+            )
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#443">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#442">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"area-updated\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+                    area_updated_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                )),
+                Box_::into_raw(<a href="#466">f</a>),
+            )
+        }
+    }
 
     <span class="doccomment">/// This signal is emitted when gdk_pixbuf_loader_close() is called.
     ///
     /// It can be used by different parts of an application to receive
     /// notification when an image loader is closed by the code that
     /// drives it.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;closed&quot;</span>)]
-    </span><span class="kw">fn </span>connect_closed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
+    </span><span class="attr">#[doc(alias = <span class="string">"closed"</span>)]
+    </span><span class="kw">fn </span>connect_closed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>closed_trampoline&lt;P: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
+            f: glib::ffi::gpointer,
+        ) {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#487">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#489">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">PixbufLoader::from_glib_borrow</a>(<a href="#486">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#484">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#484">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"closed\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+                    closed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                )),
+                Box_::into_raw(<a href="#493">f</a>),
+            )
+        }
+    }
 
     <span class="doccomment">/// This signal is emitted when the pixbuf loader has been fed the
     /// initial amount of data that is required to figure out the size
@@ -1020,204 +1136,37 @@
     /// the original width of the image
     /// ## `height`
     /// the original height of the image
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;size-prepared&quot;</span>)]
-    </span><span class="kw">fn </span>connect_size_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;PixbufLoader&gt;&gt; PixbufLoaderExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_close(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>animation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufAnimation&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::gdk_pixbuf_loader_get_animation(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufFormat&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::gdk_pixbuf_loader_get_format(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>pixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::gdk_pixbuf_loader_get_pixbuf(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: i32, height: i32) {
-        <span class="kw">unsafe </span>{
-            ffi::gdk_pixbuf_loader_set_size(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, width, height);
-        }
-    }
-
-    <span class="kw">fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-        <span class="kw">let </span>count = buf.len() <span class="kw">as _</span>;
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                buf.to_glib_none().<span class="number">0</span>,
-                count,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>write_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>glib::Bytes) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write_bytes(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                buffer.to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>connect_area_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>area_prepared_trampoline&lt;P: IsA&lt;PixbufLoader&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
-            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
-            f: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;area-prepared\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
-                    area_prepared_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    <span class="kw">fn </span>connect_area_updated&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        f: F,
-    ) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>area_updated_trampoline&lt;
-            P: IsA&lt;PixbufLoader&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>,
+    </span><span class="attr">#[doc(alias = <span class="string">"size-prepared"</span>)]
+    </span><span class="kw">fn </span>connect_size_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>size_prepared_trampoline&lt;
+            P: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
-            x: libc::c_int,
-            y: libc::c_int,
+            this: <span class="kw-2">*mut </span><a href="../../../gdk_pixbuf_sys/struct.GdkPixbufLoader.html">ffi::GdkPixbufLoader</a>,
             width: libc::c_int,
             height: libc::c_int,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
-                x,
-                y,
-                width,
-                height,
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#525">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#527">f</a>(
+                <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">PixbufLoader::from_glib_borrow</a>(<a href="#522">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>(),
+                <a href="#523">width</a>,
+                <a href="#524">height</a>,
             )
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;area-updated\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
-                    area_updated_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    <span class="kw">fn </span>connect_closed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>closed_trampoline&lt;P: IsA&lt;PixbufLoader&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
-            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
-            f: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;closed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
-                    closed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-                )),
-                Box_::into_raw(f),
-            )
-        }
-    }
-
-    <span class="kw">fn </span>connect_size_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>size_prepared_trampoline&lt;
-            P: IsA&lt;PixbufLoader&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P, i32, i32) + <span class="lifetime">&#39;static</span>,
-        &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
-            width: libc::c_int,
-            height: libc::c_int,
-            f: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
-                width,
-                height,
-            )
-        }
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;size-prepared\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#517">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#517">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"size-prepared\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     size_prepared_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#535">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>PixbufLoader {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;PixbufLoader&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#13-117">PixbufLoader</a>&gt;&gt; <a href="#219-546">PixbufLoaderExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

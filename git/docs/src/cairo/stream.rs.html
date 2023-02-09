@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../cairo/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../cairo/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -347,31 +349,31 @@
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
-    any::Any,
-    cell::{Cell, RefCell},
-    io,
+    <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">any::Any</a>,
+    cell::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>, <a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">RefCell</a>},
+    <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>,
     panic::AssertUnwindSafe,
-    ptr,
-    rc::Rc,
+    <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>,
+    <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>,
 };
 
-<span class="kw">use </span>ffi::cairo_status_t;
-<span class="kw">use </span>libc::{c_double, c_uchar, c_uint, c_void};
+<span class="kw">use </span><a href="../../cairo_sys/type.cairo_status_t.html">ffi::cairo_status_t</a>;
+<span class="kw">use </span>libc::{c_double, c_uchar, c_uint, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 
-<span class="kw">use crate</span>::{Error, Surface, UserDataKey};
+<span class="kw">use crate</span>::{<a href="error.rs.html#10-150">Error</a>, <a href="surface.rs.html#19">Surface</a>, <a href="user_data.rs.html#7-10">UserDataKey</a>};
 
 <span class="macro">macro_rules! </span>for_stream_constructors {
     (<span class="macro-nonterminal">$constructor_ffi</span>: ident) =&gt; {
         <span class="doccomment">/// Takes full ownership of the output stream,
-        /// which is not allowed to borrow any lifetime shorter than `&#39;static`.
+        /// which is not allowed to borrow any lifetime shorter than `'static`.
         ///
         /// Because the underlying `cairo_surface_t` is reference-counted,
         /// a lifetime parameter in a Rust wrapper type would not be enough to track
         /// how long it can keep writing to the stream.
-        </span><span class="kw">pub fn </span>for_stream&lt;W: io::Write + <span class="lifetime">&#39;static</span>&gt;(
+        </span><span class="kw">pub fn </span>for_stream&lt;W: io::Write + <span class="lifetime">'static</span>&gt;(
             width: f64,
             height: f64,
             stream: W,
@@ -396,7 +398,7 @@
         /// The concrete type behind the `Box&lt;dyn Any&gt;` value returned by `finish_output_stream`
         /// is private, so you won’t be able to downcast it.
         /// But removing it anyway ensures that later writes do not go through a dangling pointer.
-        </span><span class="kw">pub unsafe fn </span>for_raw_stream&lt;W: io::Write + <span class="lifetime">&#39;static</span>&gt;(
+        </span><span class="kw">pub unsafe fn </span>for_raw_stream&lt;W: io::Write + <span class="lifetime">'static</span>&gt;(
             width: f64,
             height: f64,
             stream: <span class="kw-2">*mut </span>W,
@@ -411,40 +413,40 @@
     };
 }
 
-<span class="kw">impl </span>Surface {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>_for_stream&lt;W: io::Write + <span class="lifetime">&#39;static</span>&gt;(
-        constructor: Constructor,
-        width: f64,
-        height: f64,
+<span class="kw">impl </span><a href="surface.rs.html#19">Surface</a> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>_for_stream&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> + <span class="lifetime">'static</span>&gt;(
+        constructor: <a href="#180-185">Constructor</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         stream: W,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt; {
-        <span class="kw">let </span>env_rc = Rc::new(CallbackEnvironment {
-            mutable: RefCell::new(MutableCallbackEnvironment {
-                stream: <span class="prelude-val">Some</span>((Box::new(stream), <span class="prelude-val">None</span>)),
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>env_rc = Rc::new(<a href="#189-192">CallbackEnvironment</a> {
+            mutable: RefCell::new(<a href="#194-197">MutableCallbackEnvironment</a> {
+                stream: <span class="prelude-val">Some</span>((Box::new(<a href="#70">stream</a>), <span class="prelude-val">None</span>)),
                 unwind_payload: <span class="prelude-val">None</span>,
             }),
             saw_already_borrowed: Cell::new(<span class="bool-val">false</span>),
         });
-        <span class="kw">let </span>env: <span class="kw-2">*const </span>CallbackEnvironment = <span class="kw-2">&amp;*</span>env_rc;
+        <span class="kw">let </span>env: <span class="kw-2">*const </span><a href="#189-192">CallbackEnvironment</a> = <span class="kw-2">&amp;*</span><a href="#72">env_rc</a>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = constructor(<span class="prelude-val">Some</span>(write_callback::&lt;W&gt;), env <span class="kw">as </span><span class="kw-2">*mut </span>c_void, width, height);
-            <span class="kw">let </span>surface = Surface::from_raw_full(ptr)<span class="question-mark">?</span>;
-            surface.set_user_data(<span class="kw-2">&amp;</span>STREAM_CALLBACK_ENVIRONMENT, env_rc)<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(surface)
+            <span class="kw">let </span>ptr = <a href="#67">constructor</a>(<span class="prelude-val">Some</span>(write_callback::&lt;W&gt;), <a href="#79">env</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>, <a href="#68">width</a>, <a href="#69">height</a>);
+            <span class="kw">let </span>surface = <a href="surface.rs.html#36-41">Surface::from_raw_full</a>(<a href="#81">ptr</a>)<span class="question-mark">?</span>;
+            <a href="#82">surface</a>.<a href="surface.rs.html#286-289">set_user_data</a>(<span class="kw-2">&amp;</span><a href="#187">STREAM_CALLBACK_ENVIRONMENT</a>, <a href="#72">env_rc</a>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<a href="#82">surface</a>)
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>_for_raw_stream&lt;W: io::Write + <span class="lifetime">&#39;static</span>&gt;(
-        constructor: Constructor,
-        width: f64,
-        height: f64,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>_for_raw_stream&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> + <span class="lifetime">'static</span>&gt;(
+        constructor: <a href="#180-185">Constructor</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
         stream: <span class="kw-2">*mut </span>W,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt; {
-        <span class="self">Self</span>::_for_stream(
-            constructor,
-            width,
-            height,
-            RawStream(ptr::NonNull::new(stream).expect(<span class="string">&quot;NULL stream passed&quot;</span>)),
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <a href="#66-86"><span class="self">Self</span>::_for_stream</a>(
+            <a href="#89">constructor</a>,
+            <a href="#90">width</a>,
+            <a href="#91">height</a>,
+            <a href="#255">RawStream</a>(ptr::NonNull::new(<a href="#92">stream</a>).expect(<span class="string">"NULL stream passed"</span>)),
         )
     }
 
@@ -468,100 +470,100 @@
     ///
     /// The latter two cases can only occur with a pathological output stream type
     /// that accesses the same surface again from `Write::write_all`.
-    </span><span class="kw">pub fn </span>finish_output_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>Any&gt;, StreamWithError&gt; {
-        <span class="self">self</span>.finish();
+    </span><span class="kw">pub fn </span>finish_output_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;, <a href="#157-160">StreamWithError</a>&gt; {
+        <a class="self" href="#122">self</a>.<a href="surface.rs.html#378-382">finish</a>();
 
-        <span class="kw">let </span>env = <span class="self">self
-            </span>.user_data_ptr(<span class="kw-2">&amp;</span>STREAM_CALLBACK_ENVIRONMENT)
-            .expect(<span class="string">&quot;surface without an output stream&quot;</span>);
+        <span class="kw">let </span>env = <span class="self"><a href="#122">self</a>
+            </span>.<a href="surface.rs.html#286-289">user_data_ptr</a>(<span class="kw-2">&amp;</span><a href="#187">STREAM_CALLBACK_ENVIRONMENT</a>)
+            .expect(<span class="string">"surface without an output stream"</span>);
 
         <span class="comment">// Safety: since `STREAM_CALLBACK_ENVIRONMENT` is private and we never
         // call `set_user_data` again or `remove_user_data` with it,
         // the contract of `get_user_data_ptr` says that the user data entry
         // lives as long as the underlying `cairo_surface_t`
         // which is at least as long as `self`.
-        </span><span class="kw">let </span>env = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>env.as_ptr() };
+        </span><span class="kw">let </span>env = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><a href="#125">env</a>.as_ptr() };
 
         <span class="kw">if </span>env.saw_already_borrowed.get() {
-            <span class="macro">panic!</span>(<span class="string">&quot;The output stream’s RefCell was already borrowed when cairo attempted a write&quot;</span>)
+            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"The output stream’s RefCell was already borrowed when cairo attempted a write"</span>)
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>mutable = env.mutable.borrow_mut();
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = mutable.unwind_payload.take() {
-            std::panic::resume_unwind(payload)
+        <span class="kw">let </span><span class="kw-2">mut </span>mutable = <a href="#134">env</a>.mutable.borrow_mut();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(payload) = <a href="#140">mutable</a>.unwind_payload.take() {
+            std::panic::resume_unwind(<a href="#141">payload</a>)
         }
 
-        <span class="kw">let </span>(stream, io_error) = mutable
+        <span class="kw">let </span>(stream, io_error) = <a href="#140">mutable</a>
             .stream
             .take()
-            .expect(<span class="string">&quot;output stream was already taken&quot;</span>);
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(error) = io_error {
-            <span class="prelude-val">Err</span>(StreamWithError { stream, error })
+            .expect(<span class="string">"output stream was already taken"</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(error) = <a href="#145">io_error</a> {
+            <span class="prelude-val">Err</span>(<a href="#157-160">StreamWithError</a> { <a href="#145">stream</a>, <a href="#149">error</a> })
         } <span class="kw">else </span>{
-            <span class="prelude-val">Ok</span>(stream)
+            <span class="prelude-val">Ok</span>(<a href="#145">stream</a>)
         }
     }
 }
 
-<span class="kw">pub struct </span>StreamWithError {
-    <span class="kw">pub </span>stream: Box&lt;<span class="kw">dyn </span>Any&gt;,
-    <span class="kw">pub </span>error: io::Error,
+<span class="kw">pub struct </span><a href="../../cairo/struct.StreamWithError.html">StreamWithError</a> {
+    <span class="kw">pub </span>stream: Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;,
+    <span class="kw">pub </span>error: <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>,
 }
 
-<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>StreamWithError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
-        <span class="self">self</span>.error.fmt(f)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span><a href="#157-160">StreamWithError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a class="self" href="#163">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt</a>(<a href="#163">f</a>)
     }
 }
 
-<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>StreamWithError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
-        <span class="self">self</span>.error.fmt(f)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#157-160">StreamWithError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a class="self" href="#169">self</a>.error.<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt</a>(<a href="#169">f</a>)
     }
 }
 
-<span class="kw">impl </span>From&lt;StreamWithError&gt; <span class="kw">for </span>io::Error {
-    <span class="kw">fn </span>from(e: StreamWithError) -&gt; <span class="self">Self </span>{
-        e.error
+<span class="kw">impl </span>From&lt;<a href="#157-160">StreamWithError</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a> {
+    <span class="kw">fn </span>from(e: <a href="#157-160">StreamWithError</a>) -&gt; <span class="self">Self </span>{
+        <a href="#175">e</a>.error
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Constructor = <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(
-    ffi::cairo_write_func_t,
-    <span class="kw-2">*mut </span>c_void,
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Constructor = <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>(
+    <a href="../../cairo_sys/type.cairo_write_func_t.html">ffi::cairo_write_func_t</a>,
+    <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
     c_double,
     c_double,
-) -&gt; <span class="kw-2">*mut </span>ffi::cairo_surface_t;
+) -&gt; <span class="kw-2">*mut </span><a href="../../cairo_sys/struct.cairo_surface_t.html">ffi::cairo_surface_t</a>;
 
-<span class="kw">static </span>STREAM_CALLBACK_ENVIRONMENT: UserDataKey&lt;CallbackEnvironment&gt; = UserDataKey::new();
+<span class="kw">static </span>STREAM_CALLBACK_ENVIRONMENT: UserDataKey&lt;<a href="#189-192">CallbackEnvironment</a>&gt; = <a href="user_data.rs.html#15-20">UserDataKey::new</a>();
 
 <span class="kw">struct </span>CallbackEnvironment {
-    mutable: RefCell&lt;MutableCallbackEnvironment&gt;,
-    saw_already_borrowed: Cell&lt;bool&gt;,
+    mutable: RefCell&lt;<a href="#194-197">MutableCallbackEnvironment</a>&gt;,
+    saw_already_borrowed: Cell&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;,
 }
 
 <span class="kw">struct </span>MutableCallbackEnvironment {
-    stream: <span class="prelude-ty">Option</span>&lt;(Box&lt;<span class="kw">dyn </span>Any&gt;, <span class="prelude-ty">Option</span>&lt;io::Error&gt;)&gt;,
-    unwind_payload: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;&gt;,
+    stream: <span class="prelude-ty">Option</span>&lt;(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html">io::Error</a>&gt;)&gt;,
+    unwind_payload: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;&gt;,
 }
 
 <span class="comment">// Safety: unwinding into C is undefined behavior (https://github.com/rust-lang/rust/issues/58794)
 // so code outside of the `catch_unwind` call must never panic.
-</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>write_callback&lt;W: io::Write + <span class="lifetime">&#39;static</span>&gt;(
-    env: <span class="kw-2">*mut </span>c_void,
+</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>write_callback&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> + <span class="lifetime">'static</span>&gt;(
+    env: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
     data: <span class="kw-2">*mut </span>c_uchar,
     length: c_uint,
-) -&gt; cairo_status_t {
+) -&gt; <a href="../../cairo_sys/type.cairo_status_t.html">cairo_status_t</a> {
     <span class="comment">// This is consistent with the type of `env` in `Surface::_for_stream`.
-    </span><span class="kw">let </span>env: <span class="kw-2">*const </span>CallbackEnvironment = env <span class="kw">as _</span>;
+    </span><span class="kw">let </span>env: <span class="kw-2">*const </span><a href="#189-192">CallbackEnvironment</a> = <a href="#202">env</a> <span class="kw">as _</span>;
 
     <span class="comment">// Safety: the user data entry keeps `Rc&lt;CallbackEnvironment&gt;` alive
     // until the surface is destroyed.
     // If this is called by cairo, the surface is still alive.
-    </span><span class="kw">let </span>env: <span class="kw-2">&amp;</span>CallbackEnvironment = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>env };
+    </span><span class="kw">let </span>env: <span class="kw-2">&amp;</span><a href="#189-192">CallbackEnvironment</a> = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><a href="#207">env</a> };
 
-    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>mutable) = env.mutable.try_borrow_mut() {
-        <span class="kw">if let </span>MutableCallbackEnvironment {
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>mutable) = <a href="#212">env</a>.mutable.try_borrow_mut() {
+        <span class="kw">if let </span><a href="#194-197">MutableCallbackEnvironment</a> {
             stream:
                 <span class="prelude-val">Some</span>((
                     stream,
@@ -569,59 +571,58 @@
                     </span>io_error @ <span class="prelude-val">None</span>,
                 )),
             unwind_payload: unwind_payload @ <span class="prelude-val">None</span>,
-        } = <span class="kw-2">&amp;mut *</span>mutable
+        } = <span class="kw-2">&amp;mut *</span><a href="#214">mutable</a>
         {
             <span class="comment">// Safety: `write_callback&lt;W&gt;` was instantiated in `Surface::_for_stream`
             // with a W parameter consistent with the box that was unsized to `Box&lt;dyn Any&gt;`.
-            </span><span class="kw">let </span>stream = <span class="kw">unsafe </span>{ AnyExt::downcast_mut_unchecked::&lt;W&gt;(<span class="kw-2">&amp;mut **</span>stream) };
+            </span><span class="kw">let </span>stream = <span class="kw">unsafe </span>{ AnyExt::downcast_mut_unchecked::&lt;W&gt;(<span class="kw-2">&amp;mut **</span><a href="#218">stream</a>) };
             <span class="comment">// Safety: this is the callback contract from cairo’s API
             </span><span class="kw">let </span>data = <span class="kw">unsafe </span>{
                 <span class="kw">if </span>data.is_null() || length == <span class="number">0 </span>{
                     <span class="kw-2">&amp;</span>[]
                 } <span class="kw">else </span>{
-                    std::slice::from_raw_parts(data, length <span class="kw">as </span>usize)
+                    <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#203">data</a>, <a href="#204">length</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
                 }
             };
             <span class="comment">// Because `&lt;W as Write&gt;::write_all` is a generic,
             // we must conservatively assume that it can panic.
-            </span><span class="kw">let </span>result = std::panic::catch_unwind(AssertUnwindSafe(|| stream.write_all(data)));
-            <span class="kw">match </span>result {
+            </span><span class="kw">let </span>result = std::panic::catch_unwind(AssertUnwindSafe(|| <a href="#227">stream</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write_all</a>(<a href="#229">data</a>)));
+            <span class="kw">match </span><a href="#238">result</a> {
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; <span class="kw">return </span>ffi::STATUS_SUCCESS,
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(error)) =&gt; {
-                    <span class="kw-2">*</span>io_error = <span class="prelude-val">Some</span>(error);
+                    <span class="kw-2">*</span><a href="#220">io_error</a> = <span class="prelude-val">Some</span>(<a href="#241">error</a>);
                 }
                 <span class="prelude-val">Err</span>(payload) =&gt; {
-                    <span class="kw-2">*</span>unwind_payload = <span class="prelude-val">Some</span>(payload);
+                    <span class="kw-2">*</span><a href="#222">unwind_payload</a> = <span class="prelude-val">Some</span>(<a href="#244">payload</a>);
                 }
             }
         }
     } <span class="kw">else </span>{
-        env.saw_already_borrowed.set(<span class="bool-val">true</span>)
+        <a href="#212">env</a>.saw_already_borrowed.set(<span class="bool-val">true</span>)
     }
-    Error::WriteError.into()
+    <a href="error.rs.html#43">Error::WriteError</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()
 }
 
 <span class="kw">struct </span>RawStream&lt;W&gt;(ptr::NonNull&lt;W&gt;);
 
-<span class="kw">impl</span>&lt;W: io::Write&gt; io::Write <span class="kw">for </span>RawStream&lt;W&gt; {
-    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.as_ptr()).write(buf) }
+<span class="kw">impl</span>&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a>&gt; <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> <span class="kw">for </span>RawStream&lt;W&gt; {
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#258">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write</a>(<a href="#258">buf</a>) }
     }
     <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.as_ptr()).flush() }
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#261">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">flush</a>() }
     }
-    <span class="kw">fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.as_ptr()).write_all(buf) }
+    <span class="kw">fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><a class="self" href="#264">self</a>.<span class="number">0</span>.as_ptr()).<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write_all</a>(<a href="#264">buf</a>) }
     }
 }
 
 <span class="kw">trait </span>AnyExt {
     <span class="doccomment">/// Any::downcast_mut, but YOLO
     </span><span class="kw">unsafe fn </span>downcast_mut_unchecked&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
-        <span class="kw">let </span>ptr = <span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self </span><span class="kw">as </span><span class="kw-2">*mut </span>T;
-        <span class="kw-2">&amp;mut *</span>ptr
+        <span class="kw">let </span>ptr = <span class="self"><a href="#271">self</a> </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self </span><span class="kw">as </span><span class="kw-2">*mut </span>T;
+        <span class="kw-2">&amp;mut *</span><a href="#272">ptr</a>
     }
 }
-<span class="kw">impl </span>AnyExt <span class="kw">for dyn </span>Any {}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl </span><a href="#269-275">AnyExt</a> <span class="kw">for dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> {}
+</code></pre></div></section></main></body></html>

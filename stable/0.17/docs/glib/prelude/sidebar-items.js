@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["ParamSpecBuilderExt","A trait implemented by the various [`ParamSpec`] builder types."],["ParamSpecType",""]]};
+window.SIDEBAR_ITEMS = {"trait":["ParamSpecBuilderExt"]};

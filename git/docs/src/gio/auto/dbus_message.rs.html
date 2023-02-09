@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_message.rs`."><title>dbus_message.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_message.rs`."><title>dbus_message.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -849,25 +851,42 @@
 <a href="#776" id="776">776</a>
 <a href="#777" id="777">777</a>
 <a href="#778" id="778">778</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="attr">#[cfg(any(unix, feature = <span class="string">&quot;dox&quot;</span>))]
-#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(unix)))]
-</span><span class="kw">use </span><span class="kw">crate</span>::UnixFDList;
+</span><span class="attr">#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
+</span><span class="kw">use </span><a href="unix_fd_list.rs.html#7-31"><span class="kw">crate</span>::UnixFDList</a>;
 <span class="kw">use crate</span>::{
-    DBusCapabilityFlags, DBusMessageByteOrder, DBusMessageFlags, DBusMessageHeaderField,
-    DBusMessageType,
+    <a href="flags.rs.html#700-713">DBusCapabilityFlags</a>, <a href="enums.rs.html#350-359">DBusMessageByteOrder</a>, <a href="flags.rs.html#992-1013">DBusMessageFlags</a>, <a href="enums.rs.html#445-478">DBusMessageHeaderField</a>,
+    <a href="enums.rs.html#580-598">DBusMessageType</a>,
 };
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, mem, mem::transmute, ptr};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A type for representing D-Bus messages that can be sent or received
     /// on a [`DBusConnection`][crate::DBusConnection].
     ///
@@ -880,64 +899,64 @@
     /// # Implements
     ///
     /// [`trait@glib::ObjectExt`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GDBusMessage&quot;</span>)]
-    </span><span class="kw">pub struct </span>DBusMessage(Object&lt;ffi::GDBusMessage&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GDBusMessage"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DBusMessage.html">DBusMessage</a>(Object&lt;<a href="../../../gio_sys/struct.GDBusMessage.html">ffi::GDBusMessage</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_dbus_message_get_type(),
     }
 }
 
-<span class="kw">impl </span>DBusMessage {
-    <span class="doccomment">/// Creates a new empty [`DBusMessage`][crate::DBusMessage].
+<span class="kw">impl </span><a href="#19-38">DBusMessage</a> {
+    <span class="doccomment">/// Creates a new empty #GDBusMessage.
     ///
     /// # Returns
     ///
-    /// A [`DBusMessage`][crate::DBusMessage]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; DBusMessage {
+    /// A #GDBusMessage. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#19-38">DBusMessage</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_message_new()) }
     }
 
-    <span class="doccomment">/// Creates a new [`DBusMessage`][crate::DBusMessage] from the data stored at `blob`. The byte
+    <span class="doccomment">/// Creates a new #GDBusMessage from the data stored at @blob. The byte
     /// order that the message was in can be retrieved using
-    /// [`byte_order()`][Self::byte_order()].
+    /// g_dbus_message_get_byte_order().
     ///
-    /// If the `blob` cannot be parsed, contains invalid fields, or contains invalid
+    /// If the @blob cannot be parsed, contains invalid fields, or contains invalid
     /// headers, [`IOErrorEnum::InvalidArgument`][crate::IOErrorEnum::InvalidArgument] will be returned.
     /// ## `blob`
     /// A blob representing a binary D-Bus message.
     /// ## `capabilities`
-    /// A [`DBusCapabilityFlags`][crate::DBusCapabilityFlags] describing what protocol features are supported.
+    /// A #GDBusCapabilityFlags describing what protocol features are supported.
     ///
     /// # Returns
     ///
-    /// A new [`DBusMessage`][crate::DBusMessage] or [`None`] if `error` is set. Free with
-    /// `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new_from_blob&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_from_blob&quot;</span>)]
+    /// A new #GDBusMessage or [`None`] if @error is set. Free with
+    /// g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new_from_blob"</span>)]
+    #[doc(alias = <span class="string">"new_from_blob"</span>)]
     </span><span class="kw">pub fn </span>from_blob(
-        blob: <span class="kw-2">&amp;</span>[u8],
-        capabilities: DBusCapabilityFlags,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;DBusMessage, glib::Error&gt; {
-        <span class="kw">let </span>blob_len = blob.len() <span class="kw">as _</span>;
+        blob: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+        capabilities: <a href="flags.rs.html#700-713">DBusCapabilityFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#19-38">DBusMessage</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>blob_len = <a href="#69">blob</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_dbus_message_new_from_blob(
-                blob.to_glib_none().<span class="number">0</span>,
-                blob_len,
-                capabilities.into_glib(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#69">blob</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#72">blob_len</a>,
+                <a href="#70">capabilities</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#74">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#75">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#74">error</a>))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a new [`DBusMessage`][crate::DBusMessage] for a method call.
+    <span class="doccomment">/// Creates a new #GDBusMessage for a method call.
     /// ## `name`
     /// A valid D-Bus name or [`None`].
     /// ## `path`
@@ -949,25 +968,25 @@
     ///
     /// # Returns
     ///
-    /// A [`DBusMessage`][crate::DBusMessage]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new_method_call&quot;</span>)]
+    /// A #GDBusMessage. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new_method_call"</span>)]
     </span><span class="kw">pub fn </span>new_method_call(
-        name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
-        path: <span class="kw-2">&amp;</span>str,
-        interface_: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
-        method: <span class="kw-2">&amp;</span>str,
-    ) -&gt; DBusMessage {
+        name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        interface_: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        method: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    ) -&gt; <a href="#19-38">DBusMessage</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_dbus_message_new_method_call(
-                name.to_glib_none().<span class="number">0</span>,
-                path.to_glib_none().<span class="number">0</span>,
-                interface_.to_glib_none().<span class="number">0</span>,
-                method.to_glib_none().<span class="number">0</span>,
+                <a href="#104">name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#105">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#106">interface_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#107">method</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Creates a new [`DBusMessage`][crate::DBusMessage] for a signal emission.
+    <span class="doccomment">/// Creates a new #GDBusMessage for a signal emission.
     /// ## `path`
     /// A valid object path.
     /// ## `interface_`
@@ -977,64 +996,83 @@
     ///
     /// # Returns
     ///
-    /// A [`DBusMessage`][crate::DBusMessage]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new_signal&quot;</span>)]
-    </span><span class="kw">pub fn </span>new_signal(path: <span class="kw-2">&amp;</span>str, interface_: <span class="kw-2">&amp;</span>str, signal: <span class="kw-2">&amp;</span>str) -&gt; DBusMessage {
+    /// A #GDBusMessage. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new_signal"</span>)]
+    </span><span class="kw">pub fn </span>new_signal(path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, interface_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, signal: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#19-38">DBusMessage</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_dbus_message_new_signal(
-                path.to_glib_none().<span class="number">0</span>,
-                interface_.to_glib_none().<span class="number">0</span>,
-                signal.to_glib_none().<span class="number">0</span>,
+                <a href="#131">path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#131">interface_</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#131">signal</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_copy&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;DBusMessage, glib::Error&gt; {
+    <span class="attr">#[doc(alias = <span class="string">"g_dbus_message_copy"</span>)]
+    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#19-38">DBusMessage</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_dbus_message_copy(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_dbus_message_copy(<a class="self" href="#142">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#144">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#145">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#144">error</a>))
             }
         }
     }
 
-    <span class="doccomment">/// Convenience to get the first item in the body of `self`.
+    <span class="doccomment">/// Convenience to get the first item in the body of @self.
+    ///
+    /// See [`arg0_path()`][Self::arg0_path()] for returning object-path-typed
+    /// arg0 values.
     ///
     /// # Returns
     ///
     /// The string item or [`None`] if the first item in the body of
-    /// `self` is not a string.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_arg0&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_arg0&quot;</span>)]
-    </span><span class="kw">pub fn </span>arg0(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_arg0(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// @self is not a string.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_arg0"</span>)]
+    #[doc(alias = <span class="string">"get_arg0"</span>)]
+    </span><span class="kw">pub fn </span>arg0(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_arg0(<a class="self" href="#165">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
+    }
+
+    <span class="doccomment">/// Convenience to get the first item in the body of @self.
+    ///
+    /// See [`arg0()`][Self::arg0()] for returning string-typed arg0 values.
+    ///
+    /// # Returns
+    ///
+    /// The object path item or `NULL` if the first item in the
+    ///   body of @self is not an object path.
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_80"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_80"</span>)))]
+    #[doc(alias = <span class="string">"g_dbus_message_get_arg0_path"</span>)]
+    #[doc(alias = <span class="string">"get_arg0_path"</span>)]
+    </span><span class="kw">pub fn </span>arg0_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_arg0_path(<a class="self" href="#181">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the body of a message.
     ///
     /// # Returns
     ///
-    /// A [`glib::Variant`][struct@crate::glib::Variant] or [`None`] if the body is
-    /// empty. Do not free, it is owned by `self`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_body&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_body&quot;</span>)]
-    </span><span class="kw">pub fn </span>body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_body(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// A #GVariant or [`None`] if the body is
+    /// empty. Do not free, it is owned by @self.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_body"</span>)]
+    #[doc(alias = <span class="string">"get_body"</span>)]
+    </span><span class="kw">pub fn </span>body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_body(<a class="self" href="#193">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the byte order of `self`.
+    <span class="doccomment">/// Gets the byte order of @self.
     ///
     /// # Returns
     ///
     /// The byte order.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_byte_order&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_byte_order&quot;</span>)]
-    </span><span class="kw">pub fn </span>byte_order(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBusMessageByteOrder {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_byte_order(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_byte_order"</span>)]
+    #[doc(alias = <span class="string">"get_byte_order"</span>)]
+    </span><span class="kw">pub fn </span>byte_order(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#350-359">DBusMessageByteOrder</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_byte_order(<a class="self" href="#204">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::Destination`][crate::DBusMessageHeaderField::Destination] header field.
@@ -1042,10 +1080,10 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_destination&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_destination&quot;</span>)]
-    </span><span class="kw">pub fn </span>destination(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_destination(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_destination"</span>)]
+    #[doc(alias = <span class="string">"get_destination"</span>)]
+    </span><span class="kw">pub fn </span>destination(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_destination(<a class="self" href="#215">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::ErrorName`][crate::DBusMessageHeaderField::ErrorName] header field.
@@ -1053,41 +1091,41 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_error_name&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_error_name&quot;</span>)]
-    </span><span class="kw">pub fn </span>error_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_error_name(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_error_name"</span>)]
+    #[doc(alias = <span class="string">"get_error_name"</span>)]
+    </span><span class="kw">pub fn </span>error_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_error_name(<a class="self" href="#226">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the flags for `self`.
+    <span class="doccomment">/// Gets the flags for @self.
     ///
     /// # Returns
     ///
-    /// Flags that are set (typically values from the [`DBusMessageFlags`][crate::DBusMessageFlags] enumeration bitwise ORed together).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_flags&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_flags&quot;</span>)]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBusMessageFlags {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_flags(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// Flags that are set (typically values from the #GDBusMessageFlags enumeration bitwise ORed together).
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_flags"</span>)]
+    #[doc(alias = <span class="string">"get_flags"</span>)]
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#992-1013">DBusMessageFlags</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_flags(<a class="self" href="#237">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets a header field on `self`.
+    <span class="doccomment">/// Gets a header field on @self.
     ///
-    /// The caller is responsible for checking the type of the returned [`glib::Variant`][struct@crate::glib::Variant]
+    /// The caller is responsible for checking the type of the returned #GVariant
     /// matches what is expected.
     /// ## `header_field`
-    /// A 8-bit unsigned integer (typically a value from the [`DBusMessageHeaderField`][crate::DBusMessageHeaderField] enumeration)
+    /// A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
     ///
     /// # Returns
     ///
-    /// A [`glib::Variant`][struct@crate::glib::Variant] with the value if the header was found, [`None`]
-    /// otherwise. Do not free, it is owned by `self`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_header&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_header&quot;</span>)]
-    </span><span class="kw">pub fn </span>header(<span class="kw-2">&amp;</span><span class="self">self</span>, header_field: DBusMessageHeaderField) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt; {
+    /// A #GVariant with the value if the header was found, [`None`]
+    /// otherwise. Do not free, it is owned by @self.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_header"</span>)]
+    #[doc(alias = <span class="string">"get_header"</span>)]
+    </span><span class="kw">pub fn </span>header(<span class="kw-2">&amp;</span><span class="self">self</span>, header_field: <a href="enums.rs.html#445-478">DBusMessageHeaderField</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_dbus_message_get_header(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                header_field.into_glib(),
+                <a class="self" href="#254">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#254">header_field</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -1097,23 +1135,23 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_interface&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_interface&quot;</span>)]
-    </span><span class="kw">pub fn </span>interface(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_interface(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_interface"</span>)]
+    #[doc(alias = <span class="string">"get_interface"</span>)]
+    </span><span class="kw">pub fn </span>interface(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_interface(<a class="self" href="#270">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Checks whether `self` is locked. To monitor changes to this
-    /// value, conncet to the [`notify`][struct@crate::glib::Object#notify] signal to listen for changes
-    /// on the [`locked`][struct@crate::DBusMessage#locked] property.
+    <span class="doccomment">/// Checks whether @self is locked. To monitor changes to this
+    /// value, conncet to the #GObject::notify signal to listen for changes
+    /// on the #GDBusMessage:locked property.
     ///
     /// # Returns
     ///
-    /// [`true`] if `self` is locked, [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_locked&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_locked&quot;</span>)]
-    </span><span class="kw">pub fn </span>is_locked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_locked(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// [`true`] if @self is locked, [`false`] otherwise.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_locked"</span>)]
+    #[doc(alias = <span class="string">"get_locked"</span>)]
+    </span><span class="kw">pub fn </span>is_locked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_locked(<a class="self" href="#283">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::Member`][crate::DBusMessageHeaderField::Member] header field.
@@ -1121,21 +1159,21 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_member&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_member&quot;</span>)]
-    </span><span class="kw">pub fn </span>member(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_member(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_member"</span>)]
+    #[doc(alias = <span class="string">"get_member"</span>)]
+    </span><span class="kw">pub fn </span>member(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_member(<a class="self" href="#294">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the type of `self`.
+    <span class="doccomment">/// Gets the type of @self.
     ///
     /// # Returns
     ///
-    /// A 8-bit unsigned integer (typically a value from the [`DBusMessageType`][crate::DBusMessageType] enumeration).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_message_type&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_message_type&quot;</span>)]
-    </span><span class="kw">pub fn </span>message_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBusMessageType {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_message_type(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_message_type"</span>)]
+    #[doc(alias = <span class="string">"get_message_type"</span>)]
+    </span><span class="kw">pub fn </span>message_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#580-598">DBusMessageType</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_dbus_message_get_message_type(<a class="self" href="#305">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::NumUnixFds`][crate::DBusMessageHeaderField::NumUnixFds] header field.
@@ -1143,12 +1181,12 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[cfg(any(unix, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(unix)))]
-    #[doc(alias = <span class="string">&quot;g_dbus_message_get_num_unix_fds&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_num_unix_fds&quot;</span>)]
-    </span><span class="kw">pub fn </span>num_unix_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_num_unix_fds(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="attr">#[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = <span class="string">"g_dbus_message_get_num_unix_fds"</span>)]
+    #[doc(alias = <span class="string">"get_num_unix_fds"</span>)]
+    </span><span class="kw">pub fn </span>num_unix_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_num_unix_fds(<a class="self" href="#318">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::Path`][crate::DBusMessageHeaderField::Path] header field.
@@ -1156,10 +1194,10 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_path&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_path(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_path"</span>)]
+    #[doc(alias = <span class="string">"get_path"</span>)]
+    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_path(<a class="self" href="#329">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::ReplySerial`][crate::DBusMessageHeaderField::ReplySerial] header field.
@@ -1167,10 +1205,10 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_reply_serial&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_reply_serial&quot;</span>)]
-    </span><span class="kw">pub fn </span>reply_serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_reply_serial(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_reply_serial"</span>)]
+    #[doc(alias = <span class="string">"get_reply_serial"</span>)]
+    </span><span class="kw">pub fn </span>reply_serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_reply_serial(<a class="self" href="#340">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::Sender`][crate::DBusMessageHeaderField::Sender] header field.
@@ -1178,21 +1216,21 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_sender&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_sender&quot;</span>)]
-    </span><span class="kw">pub fn </span>sender(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_sender(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_sender"</span>)]
+    #[doc(alias = <span class="string">"get_sender"</span>)]
+    </span><span class="kw">pub fn </span>sender(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_sender(<a class="self" href="#351">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the serial for `self`.
+    <span class="doccomment">/// Gets the serial for @self.
     ///
     /// # Returns
     ///
-    /// A `guint32`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_serial&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_serial&quot;</span>)]
-    </span><span class="kw">pub fn </span>serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_serial(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    /// A #guint32.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_serial"</span>)]
+    #[doc(alias = <span class="string">"get_serial"</span>)]
+    </span><span class="kw">pub fn </span>serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_dbus_message_get_serial(<a class="self" href="#362">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Convenience getter for the [`DBusMessageHeaderField::Signature`][crate::DBusMessageHeaderField::Signature] header field.
@@ -1202,49 +1240,49 @@
     /// # Returns
     ///
     /// The value.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_get_signature&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_signature&quot;</span>)]
-    </span><span class="kw">pub fn </span>signature(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_signature(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_get_signature"</span>)]
+    #[doc(alias = <span class="string">"get_signature"</span>)]
+    </span><span class="kw">pub fn </span>signature(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_signature(<a class="self" href="#375">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the UNIX file descriptors associated with `self`, if any.
+    <span class="doccomment">/// Gets the UNIX file descriptors associated with @self, if any.
     ///
     /// This method is only available on UNIX.
     ///
     /// The file descriptors normally correspond to `G_VARIANT_TYPE_HANDLE`
     /// values in the body of the message. For example,
-    /// if [`glib::Variant::handle()`][crate::glib::Variant::handle()] returns 5, that is intended to be a reference
+    /// if g_variant_get_handle() returns 5, that is intended to be a reference
     /// to the file descriptor that can be accessed by
     /// `g_unix_fd_list_get (list, 5, ...)`.
     ///
     /// # Returns
     ///
-    /// A [`UnixFDList`][crate::UnixFDList] or [`None`] if no file descriptors are
-    /// associated. Do not free, this object is owned by `self`.
-    </span><span class="attr">#[cfg(any(unix, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(unix)))]
-    #[doc(alias = <span class="string">&quot;g_dbus_message_get_unix_fd_list&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_unix_fd_list&quot;</span>)]
-    </span><span class="kw">pub fn </span>unix_fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;UnixFDList&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_unix_fd_list(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    /// A #GUnixFDList or [`None`] if no file descriptors are
+    /// associated. Do not free, this object is owned by @self.
+    </span><span class="attr">#[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = <span class="string">"g_dbus_message_get_unix_fd_list"</span>)]
+    #[doc(alias = <span class="string">"get_unix_fd_list"</span>)]
+    </span><span class="kw">pub fn </span>unix_fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="unix_fd_list.rs.html#7-31">UnixFDList</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_dbus_message_get_unix_fd_list(<a class="self" href="#397">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// If `self` is locked, does nothing. Otherwise locks the message.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_lock&quot;</span>)]
+    <span class="doccomment">/// If @self is locked, does nothing. Otherwise locks the message.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_lock"</span>)]
     </span><span class="kw">pub fn </span>lock(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_lock(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_lock(<a class="self" href="#403">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;g_dbus_message_new_method_error&quot;)]
+    <span class="comment">//#[doc(alias = "g_dbus_message_new_method_error")]
     //#[must_use]
     //pub fn new_method_error(&amp;self, error_name: &amp;str, error_message_format: &amp;str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -&gt; DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error() }
     //}
 
-    </span><span class="doccomment">/// Creates a new [`DBusMessage`][crate::DBusMessage] that is an error reply to `self`.
+    </span><span class="doccomment">/// Creates a new #GDBusMessage that is an error reply to @self.
     /// ## `error_name`
     /// A valid D-Bus error name.
     /// ## `error_message`
@@ -1252,65 +1290,63 @@
     ///
     /// # Returns
     ///
-    /// A [`DBusMessage`][crate::DBusMessage]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new_method_error_literal&quot;</span>)]
+    /// A #GDBusMessage. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new_method_error_literal"</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>new_method_error_literal(<span class="kw-2">&amp;</span><span class="self">self</span>, error_name: <span class="kw-2">&amp;</span>str, error_message: <span class="kw-2">&amp;</span>str) -&gt; DBusMessage {
+    </span><span class="kw">pub fn </span>new_method_error_literal(<span class="kw-2">&amp;</span><span class="self">self</span>, error_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, error_message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#19-38">DBusMessage</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_dbus_message_new_method_error_literal(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                error_name.to_glib_none().<span class="number">0</span>,
-                error_message.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#426">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#426">error_name</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#426">error_message</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;g_dbus_message_new_method_error_valist&quot;)]
+    <span class="comment">//#[doc(alias = "g_dbus_message_new_method_error_valist")]
     //#[must_use]
     //pub fn new_method_error_valist(&amp;self, error_name: &amp;str, error_message_format: &amp;str, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) -&gt; DBusMessage {
     //    unsafe { TODO: call ffi:g_dbus_message_new_method_error_valist() }
     //}
 
-    </span><span class="doccomment">/// Creates a new [`DBusMessage`][crate::DBusMessage] that is a reply to `self`.
+    </span><span class="doccomment">/// Creates a new #GDBusMessage that is a reply to @self.
     ///
     /// # Returns
     ///
-    /// [`DBusMessage`][crate::DBusMessage]. Free with `g_object_unref()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_new_method_reply&quot;</span>)]
+    /// #GDBusMessage. Free with g_object_unref().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_new_method_reply"</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>new_method_reply(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBusMessage {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_message_new_method_reply(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>new_method_reply(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#19-38">DBusMessage</a> {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_message_new_method_reply(<a class="self" href="#449">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Produces a human-readable multi-line description of `self`.
+    <span class="doccomment">/// Produces a human-readable multi-line description of @self.
     ///
     /// The contents of the description has no ABI guarantees, the contents
     /// and formatting is subject to change at any time. Typical output
     /// looks something like this:
-    ///
     /// ```text
     /// Flags:   none
     /// Version: 0
     /// Serial:  4
     /// Headers:
-    ///   path -&gt; objectpath &#39;/org/gtk/GDBus/TestObject&#39;
-    ///   interface -&gt; &#39;org.gtk.GDBus.TestInterface&#39;
-    ///   member -&gt; &#39;GimmeStdout&#39;
-    ///   destination -&gt; &#39;:1.146&#39;
+    ///   path -&gt; objectpath '/org/gtk/GDBus/TestObject'
+    ///   interface -&gt; 'org.gtk.GDBus.TestInterface'
+    ///   member -&gt; 'GimmeStdout'
+    ///   destination -&gt; ':1.146'
     /// Body: ()
     /// UNIX File Descriptors:
     ///   (none)
     /// ```
     /// or
-    ///
     /// ```text
     /// Flags:   no-reply-expected
     /// Version: 0
     /// Serial:  477
     /// Headers:
     ///   reply-serial -&gt; uint32 4
-    ///   destination -&gt; &#39;:1.159&#39;
-    ///   sender -&gt; &#39;:1.146&#39;
+    ///   destination -&gt; ':1.159'
+    ///   sender -&gt; ':1.146'
     ///   num-unix-fds -&gt; uint32 1
     /// Body: ()
     /// UNIX File Descriptors:
@@ -1321,81 +1357,81 @@
     ///
     /// # Returns
     ///
-    /// A string that should be freed with `g_free()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_print&quot;</span>)]
-    </span><span class="kw">pub fn </span>print(<span class="kw-2">&amp;</span><span class="self">self</span>, indent: u32) -&gt; glib::GString {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_message_print(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, indent)) }
+    /// A string that should be freed with `free()`.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_print"</span>)]
+    </span><span class="kw">pub fn </span>print(<span class="kw-2">&amp;</span><span class="self">self</span>, indent: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_dbus_message_print(<a class="self" href="#492">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#492">indent</a>)) }
     }
 
-    <span class="doccomment">/// Sets the body `self`. As a side-effect the
+    <span class="doccomment">/// Sets the body @self. As a side-effect the
     /// [`DBusMessageHeaderField::Signature`][crate::DBusMessageHeaderField::Signature] header field is set to the
-    /// type string of `body` (or cleared if `body` is [`None`]).
+    /// type string of @body (or cleared if @body is [`None`]).
     ///
-    /// If `body` is floating, `self` assumes ownership of `body`.
+    /// If @body is floating, @self assumes ownership of @body.
     /// ## `body`
-    /// Either [`None`] or a [`glib::Variant`][struct@crate::glib::Variant] that is a tuple.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_body&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_body(<span class="kw-2">&amp;</span><span class="self">self</span>, body: <span class="kw-2">&amp;</span>glib::Variant) {
+    /// Either [`None`] or a #GVariant that is a tuple.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_body"</span>)]
+    </span><span class="kw">pub fn </span>set_body(<span class="kw-2">&amp;</span><span class="self">self</span>, body: <span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_body(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, body.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_body(<a class="self" href="#504">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#504">body</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets the byte order of `self`.
+    <span class="doccomment">/// Sets the byte order of @self.
     /// ## `byte_order`
     /// The byte order.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_byte_order&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_byte_order(<span class="kw-2">&amp;</span><span class="self">self</span>, byte_order: DBusMessageByteOrder) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_byte_order"</span>)]
+    </span><span class="kw">pub fn </span>set_byte_order(<span class="kw-2">&amp;</span><span class="self">self</span>, byte_order: <a href="enums.rs.html#350-359">DBusMessageByteOrder</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_byte_order(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, byte_order.into_glib());
+            ffi::g_dbus_message_set_byte_order(<a class="self" href="#514">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#514">byte_order</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Destination`][crate::DBusMessageHeaderField::Destination] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_destination&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_destination(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_destination"</span>)]
+    </span><span class="kw">pub fn </span>set_destination(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_destination(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_destination(<a class="self" href="#524">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#524">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::ErrorName`][crate::DBusMessageHeaderField::ErrorName] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_error_name&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_error_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_error_name"</span>)]
+    </span><span class="kw">pub fn </span>set_error_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_error_name(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_error_name(<a class="self" href="#534">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#534">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets the flags to set on `self`.
+    <span class="doccomment">/// Sets the flags to set on @self.
     /// ## `flags`
-    /// Flags for `self` that are set (typically values from the [`DBusMessageFlags`][crate::DBusMessageFlags]
+    /// Flags for @self that are set (typically values from the #GDBusMessageFlags
     /// enumeration bitwise ORed together).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_flags&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: DBusMessageFlags) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_flags"</span>)]
+    </span><span class="kw">pub fn </span>set_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#992-1013">DBusMessageFlags</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_flags(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, flags.into_glib());
+            ffi::g_dbus_message_set_flags(<a class="self" href="#545">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#545">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
-    <span class="doccomment">/// Sets a header field on `self`.
+    <span class="doccomment">/// Sets a header field on @self.
     ///
-    /// If `value` is floating, `self` assumes ownership of `value`.
+    /// If @value is floating, @self assumes ownership of @value.
     /// ## `header_field`
-    /// A 8-bit unsigned integer (typically a value from the [`DBusMessageHeaderField`][crate::DBusMessageHeaderField] enumeration)
+    /// A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
     /// ## `value`
-    /// A [`glib::Variant`][struct@crate::glib::Variant] to set the header field or [`None`] to clear the header field.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_header&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_header(<span class="kw-2">&amp;</span><span class="self">self</span>, header_field: DBusMessageHeaderField, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;) {
+    /// A #GVariant to set the header field or [`None`] to clear the header field.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_header"</span>)]
+    </span><span class="kw">pub fn </span>set_header(<span class="kw-2">&amp;</span><span class="self">self</span>, header_field: <a href="enums.rs.html#445-478">DBusMessageHeaderField</a>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;) {
         <span class="kw">unsafe </span>{
             ffi::g_dbus_message_set_header(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                header_field.into_glib(),
-                value.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#559">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#559">header_field</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#559">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -1403,99 +1439,99 @@
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Interface`][crate::DBusMessageHeaderField::Interface] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_interface&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_interface(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_interface"</span>)]
+    </span><span class="kw">pub fn </span>set_interface(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_interface(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_interface(<a class="self" href="#573">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#573">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Member`][crate::DBusMessageHeaderField::Member] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_member&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_member(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_member"</span>)]
+    </span><span class="kw">pub fn </span>set_member(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_member(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_member(<a class="self" href="#583">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#583">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets `self` to be of `type_`.
+    <span class="doccomment">/// Sets @self to be of @type_.
     /// ## `type_`
-    /// A 8-bit unsigned integer (typically a value from the [`DBusMessageType`][crate::DBusMessageType] enumeration).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_message_type&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_message_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: DBusMessageType) {
+    /// A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_message_type"</span>)]
+    </span><span class="kw">pub fn </span>set_message_type(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="enums.rs.html#580-598">DBusMessageType</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_message_type(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, type_.into_glib());
+            ffi::g_dbus_message_set_message_type(<a class="self" href="#593">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#593">type_</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::NumUnixFds`][crate::DBusMessageHeaderField::NumUnixFds] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[cfg(any(unix, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(unix)))]
-    #[doc(alias = <span class="string">&quot;g_dbus_message_set_num_unix_fds&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_num_unix_fds(<span class="kw-2">&amp;</span><span class="self">self</span>, value: u32) {
+    </span><span class="attr">#[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = <span class="string">"g_dbus_message_set_num_unix_fds"</span>)]
+    </span><span class="kw">pub fn </span>set_num_unix_fds(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_num_unix_fds(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value);
+            ffi::g_dbus_message_set_num_unix_fds(<a class="self" href="#605">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#605">value</a>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Path`][crate::DBusMessageHeaderField::Path] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_path(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_path"</span>)]
+    </span><span class="kw">pub fn </span>set_path(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_path(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_path(<a class="self" href="#615">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#615">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::ReplySerial`][crate::DBusMessageHeaderField::ReplySerial] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_reply_serial&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_reply_serial(<span class="kw-2">&amp;</span><span class="self">self</span>, value: u32) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_reply_serial"</span>)]
+    </span><span class="kw">pub fn </span>set_reply_serial(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_reply_serial(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value);
+            ffi::g_dbus_message_set_reply_serial(<a class="self" href="#625">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#625">value</a>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Sender`][crate::DBusMessageHeaderField::Sender] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_sender&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_sender(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_sender"</span>)]
+    </span><span class="kw">pub fn </span>set_sender(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_sender(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_sender(<a class="self" href="#635">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#635">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets the serial for `self`.
+    <span class="doccomment">/// Sets the serial for @self.
     /// ## `serial`
-    /// A `guint32`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_serial&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_serial(<span class="kw-2">&amp;</span><span class="self">self</span>, serial: u32) {
+    /// A #guint32.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_serial"</span>)]
+    </span><span class="kw">pub fn </span>set_serial(<span class="kw-2">&amp;</span><span class="self">self</span>, serial: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_serial(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, serial);
+            ffi::g_dbus_message_set_serial(<a class="self" href="#645">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#645">serial</a>);
         }
     }
 
     <span class="doccomment">/// Convenience setter for the [`DBusMessageHeaderField::Signature`][crate::DBusMessageHeaderField::Signature] header field.
     /// ## `value`
     /// The value to set.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_set_signature&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_signature(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_set_signature"</span>)]
+    </span><span class="kw">pub fn </span>set_signature(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::g_dbus_message_set_signature(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
+            ffi::g_dbus_message_set_signature(<a class="self" href="#655">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#655">value</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets the UNIX file descriptors associated with `self`. As a
+    <span class="doccomment">/// Sets the UNIX file descriptors associated with @self. As a
     /// side-effect the [`DBusMessageHeaderField::NumUnixFds`][crate::DBusMessageHeaderField::NumUnixFds] header
-    /// field is set to the number of fds in `fd_list` (or cleared if
-    /// `fd_list` is [`None`]).
+    /// field is set to the number of fds in @fd_list (or cleared if
+    /// @fd_list is [`None`]).
     ///
     /// This method is only available on UNIX.
     ///
@@ -1504,128 +1540,127 @@
     /// access file descriptors if they are referenced by a value of type
     /// `G_VARIANT_TYPE_HANDLE` in the body of the message.
     /// ## `fd_list`
-    /// A [`UnixFDList`][crate::UnixFDList] or [`None`].
-    </span><span class="attr">#[cfg(any(unix, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(unix)))]
-    #[doc(alias = <span class="string">&quot;g_dbus_message_set_unix_fd_list&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_unix_fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>, fd_list: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;UnixFDList&gt;&gt;) {
+    /// A #GUnixFDList or [`None`].
+    </span><span class="attr">#[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = <span class="string">"g_dbus_message_set_unix_fd_list"</span>)]
+    </span><span class="kw">pub fn </span>set_unix_fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>, fd_list: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="unix_fd_list.rs.html#7-31">UnixFDList</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             ffi::g_dbus_message_set_unix_fd_list(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                fd_list.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#677">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#677">fd_list</a>.map(|p| <a href="#681">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="doccomment">/// Serializes `self` to a blob. The byte order returned by
-    /// [`byte_order()`][Self::byte_order()] will be used.
+    <span class="doccomment">/// Serializes @self to a blob. The byte order returned by
+    /// g_dbus_message_get_byte_order() will be used.
     /// ## `capabilities`
-    /// A [`DBusCapabilityFlags`][crate::DBusCapabilityFlags] describing what protocol features are supported.
+    /// A #GDBusCapabilityFlags describing what protocol features are supported.
     ///
     /// # Returns
     ///
     /// A pointer to a
-    /// valid binary D-Bus message of `out_size` bytes generated by `self`
-    /// or [`None`] if `error` is set. Free with `g_free()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_to_blob&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_blob(<span class="kw-2">&amp;</span><span class="self">self</span>, capabilities: DBusCapabilityFlags) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, glib::Error&gt; {
+    /// valid binary D-Bus message of @out_size bytes generated by @self
+    /// or [`None`] if @error is set. Free with g_free().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_to_blob"</span>)]
+    </span><span class="kw">pub fn </span>to_blob(<span class="kw-2">&amp;</span><span class="self">self</span>, capabilities: <a href="flags.rs.html#700-713">DBusCapabilityFlags</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>out_size = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>out_size = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_dbus_message_to_blob(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                out_size.as_mut_ptr(),
-                capabilities.into_glib(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#697">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#699">out_size</a>.as_mut_ptr(),
+                <a href="#697">capabilities</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#700">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(FromGlibContainer::from_glib_full_num(
-                    ret,
-                    out_size.assume_init() <span class="kw">as _</span>,
+                <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibContainer.html">FromGlibContainer::from_glib_full_num</a>(
+                    <a href="#701">ret</a>,
+                    <a href="#699">out_size</a>.assume_init() <span class="kw">as _</span>,
                 ))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#700">error</a>))
             }
         }
     }
 
-    <span class="doccomment">/// If `self` is not of type [`DBusMessageType::Error`][crate::DBusMessageType::Error] does
+    <span class="doccomment">/// If @self is not of type [`DBusMessageType::Error`][crate::DBusMessageType::Error] does
     /// nothing and returns [`false`].
     ///
-    /// Otherwise this method encodes the error in `self` as a [`glib::Error`][crate::glib::Error]
-    /// using `g_dbus_error_set_dbus_error()` using the information in the
-    /// [`DBusMessageHeaderField::ErrorName`][crate::DBusMessageHeaderField::ErrorName] header field of `self` as
-    /// well as the first string item in `self`&#39;s body.
+    /// Otherwise this method encodes the error in @self as a #GError
+    /// using g_dbus_error_set_dbus_error() using the information in the
+    /// [`DBusMessageHeaderField::ErrorName`][crate::DBusMessageHeaderField::ErrorName] header field of @self as
+    /// well as the first string item in @self's body.
     ///
     /// # Returns
     ///
-    /// [`true`] if `error` was set, [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_to_gerror&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_gerror(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+    /// [`true`] if @error was set, [`false`] otherwise.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_to_gerror"</span>)]
+    </span><span class="kw">pub fn </span>to_gerror(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::g_dbus_message_to_gerror(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_dbus_message_to_gerror(<a class="self" href="#730">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#732">error</a>);
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#732">error</a>))
             }
         }
     }
 
     <span class="doccomment">/// Utility function to calculate how many bytes are needed to
-    /// completely deserialize the D-Bus message stored at `blob`.
+    /// completely deserialize the D-Bus message stored at @blob.
     /// ## `blob`
     /// A blob representing a binary D-Bus message.
     ///
     /// # Returns
     ///
-    /// Number of bytes needed or -1 if `error` is set (e.g. if
-    /// `blob` contains invalid data or not enough data is available to
+    /// Number of bytes needed or -1 if @error is set (e.g. if
+    /// @blob contains invalid data or not enough data is available to
     /// determine the size).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_dbus_message_bytes_needed&quot;</span>)]
-    </span><span class="kw">pub fn </span>bytes_needed(blob: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;isize, glib::Error&gt; {
-        <span class="kw">let </span>blob_len = blob.len() <span class="kw">as _</span>;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_message_bytes_needed"</span>)]
+    </span><span class="kw">pub fn </span>bytes_needed(blob: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>blob_len = <a href="#754">blob</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_dbus_message_bytes_needed(blob.to_glib_none().<span class="number">0</span>, blob_len, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_dbus_message_bytes_needed(<a href="#754">blob</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#755">blob_len</a>, <span class="kw-2">&amp;mut </span><a href="#757">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(ret)
+                <span class="prelude-val">Ok</span>(<a href="#758">ret</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#757">error</a>))
             }
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;locked&quot;</span>)]
-    </span><span class="kw">pub fn </span>connect_locked_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_locked_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span>DBusMessage) + <span class="lifetime">&#39;static</span>&gt;(
-            this: <span class="kw-2">*mut </span>ffi::GDBusMessage,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+    <span class="attr">#[doc(alias = <span class="string">"locked"</span>)]
+    </span><span class="kw">pub fn </span>connect_locked_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_locked_trampoline&lt;F: Fn(<span class="kw-2">&amp;</span><a href="#19-38">DBusMessage</a>) + <span class="lifetime">'static</span>&gt;(
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GDBusMessage.html">ffi::GDBusMessage</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(<span class="kw-2">&amp;</span>from_glib_borrow(this))
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#772">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#774">f</a>(<span class="kw-2">&amp;</span>from_glib_borrow(<a href="#770">this</a>))
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::locked\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#768">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#768">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::locked\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_locked_trampoline::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#778">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>DBusMessage {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#19-38">DBusMessage</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#47-49"><span class="self">Self</span>::new</a>()
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

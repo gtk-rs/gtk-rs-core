@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/unix_fd_message.rs`."><title>unix_fd_message.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/unix_fd_message.rs`."><title>unix_fd_message.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -181,26 +183,23 @@
 <a href="#108" id="108">108</a>
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
-<a href="#111" id="111">111</a>
-<a href="#112" id="112">112</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{SocketControlMessage, UnixFDList};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use crate</span>::{<a href="socket_control_message.rs.html#7-40">SocketControlMessage</a>, <a href="unix_fd_list.rs.html#7-31">UnixFDList</a>};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// This [`SocketControlMessage`][crate::SocketControlMessage] contains a [`UnixFDList`][crate::UnixFDList].
     /// It may be sent using [`SocketExtManual::send_message()`][crate::prelude::SocketExtManual::send_message()] and received using
     /// [`SocketExtManual::receive_message()`][crate::prelude::SocketExtManual::receive_message()] over UNIX sockets (ie: sockets in the
-    /// [`SocketFamily::Unix`][crate::SocketFamily::Unix] family). The file descriptors are copied
+    /// `G_SOCKET_FAMILY_UNIX` family). The file descriptors are copied
     /// between processes by the kernel.
     ///
     /// For an easier way to send and receive file descriptors over
-    /// stream-oriented UNIX sockets, see `g_unix_connection_send_fd()` and
-    /// `g_unix_connection_receive_fd()`.
+    /// stream-oriented UNIX sockets, see `Gio::UnixConnection::send_fd()` and
+    /// `Gio::UnixConnection::receive_fd()`.
     ///
     /// Note that `&lt;gio/gunixfdmessage.h&gt;` belongs to the UNIX-specific GIO
     /// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
@@ -210,56 +209,63 @@
     ///
     ///
     /// #### `fd-list`
-    ///  Readable | Writeable | Construct Only
+    ///  The [`UnixFDList`][crate::UnixFDList] object to send with the message.
+    ///
+    /// Readable | Writeable | Construct Only
     ///
     /// # Implements
     ///
     /// [`UnixFDMessageExt`][trait@crate::prelude::UnixFDMessageExt], [`SocketControlMessageExt`][trait@crate::prelude::SocketControlMessageExt], [`trait@glib::ObjectExt`], [`UnixFDMessageExtManual`][trait@crate::prelude::UnixFDMessageExtManual], [`SocketControlMessageExtManual`][trait@crate::prelude::SocketControlMessageExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GUnixFDMessage&quot;</span>)]
-    </span><span class="kw">pub struct </span>UnixFDMessage(Object&lt;ffi::GUnixFDMessage, ffi::GUnixFDMessageClass&gt;) @extends SocketControlMessage;
+    </span><span class="attr">#[doc(alias = <span class="string">"GUnixFDMessage"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.UnixFDMessage.html">UnixFDMessage</a>(Object&lt;<a href="../../../gio_sys/struct.GUnixFDMessage.html">ffi::GUnixFDMessage</a>, <a href="../../../gio_sys/struct.GUnixFDMessageClass.html">ffi::GUnixFDMessageClass</a>&gt;) @extends <a href="socket_control_message.rs.html#7-40">SocketControlMessage</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_unix_fd_message_get_type(),
     }
 }
 
-<span class="kw">impl </span>UnixFDMessage {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>UnixFDMessage&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#8-40">UnixFDMessage</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#8-40">UnixFDMessage</a>&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new [`UnixFDMessage`][crate::UnixFDMessage] containing an empty file descriptor
+    <span class="doccomment">/// Creates a new #GUnixFDMessage containing an empty file descriptor
     /// list.
     ///
     /// # Returns
     ///
-    /// a new [`UnixFDMessage`][crate::UnixFDMessage]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_message_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; UnixFDMessage {
-        <span class="kw">unsafe </span>{ SocketControlMessage::from_glib_full(ffi::g_unix_fd_message_new()).unsafe_cast() }
+    /// a new #GUnixFDMessage
+    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_message_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#8-40">UnixFDMessage</a> {
+        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/trait.FromGlibPtrFull.html">SocketControlMessage::from_glib_full</a>(ffi::g_unix_fd_message_new()).<a href="../../../glib/object/trait.Cast.html">unsafe_cast</a>() }
     }
 
-    <span class="doccomment">/// Creates a new [`UnixFDMessage`][crate::UnixFDMessage] containing `list`.
+    <span class="doccomment">/// Creates a new #GUnixFDMessage containing @list.
     /// ## `fd_list`
-    /// a [`UnixFDList`][crate::UnixFDList]
+    /// a #GUnixFDList
     ///
     /// # Returns
     ///
-    /// a new [`UnixFDMessage`][crate::UnixFDMessage]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_message_new_with_fd_list&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_with_fd_list&quot;</span>)]
-    </span><span class="kw">pub fn </span>with_fd_list(fd_list: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;UnixFDList&gt;) -&gt; UnixFDMessage {
+    /// a new #GUnixFDMessage
+    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_message_new_with_fd_list"</span>)]
+    #[doc(alias = <span class="string">"new_with_fd_list"</span>)]
+    </span><span class="kw">pub fn </span>with_fd_list(fd_list: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="unix_fd_list.rs.html#7-31">UnixFDList</a>&gt;) -&gt; <a href="#8-40">UnixFDMessage</a> {
         <span class="kw">unsafe </span>{
-            SocketControlMessage::from_glib_full(ffi::g_unix_fd_message_new_with_fd_list(
-                fd_list.as_ref().to_glib_none().<span class="number">0</span>,
+            <a href="../../../glib/translate/trait.FromGlibPtrFull.html">SocketControlMessage::from_glib_full</a>(ffi::g_unix_fd_message_new_with_fd_list(
+                <a href="#65">fd_list</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
-            .unsafe_cast()
+            .<a href="../../../glib/object/trait.Cast.html">unsafe_cast</a>()
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>UnixFDMessage {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#8-40">UnixFDMessage</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#52-54"><span class="self">Self</span>::new</a>()
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#8-40"><span class="kw">super</span>::UnixFDMessage</a>&gt;&gt; <a href="#82">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@UnixFDMessage`] methods.
@@ -267,33 +273,24 @@
 /// # Implementors
 ///
 /// [`UnixFDMessage`][struct@crate::UnixFDMessage]
-</span><span class="kw">pub trait </span>UnixFDMessageExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Gets the [`UnixFDList`][crate::UnixFDList] contained in `self`. This function does not
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.UnixFDMessageExt.html">UnixFDMessageExt</a>: IsA&lt;<a href="#8-40">UnixFDMessage</a>&gt; + <a href="#82">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Gets the #GUnixFDList contained in @self.  This function does not
     /// return a reference to the caller, but the returned list is valid for
-    /// the lifetime of `self`.
+    /// the lifetime of @self.
     ///
     /// # Returns
     ///
-    /// the [`UnixFDList`][crate::UnixFDList] from `self`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_message_get_fd_list&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_fd_list&quot;</span>)]
-    </span><span class="kw">fn </span>fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UnixFDList;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;UnixFDMessage&gt;&gt; UnixFDMessageExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UnixFDList {
+    /// the #GUnixFDList from @self
+    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_message_get_fd_list"</span>)]
+    #[doc(alias = <span class="string">"get_fd_list"</span>)]
+    </span><span class="kw">fn </span>fd_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="unix_fd_list.rs.html#7-31">UnixFDList</a> {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_unix_fd_message_get_fd_list(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#101">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>UnixFDMessage {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;UnixFDMessage&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#8-40">UnixFDMessage</a>&gt;&gt; <a href="#91-108">UnixFDMessageExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_animation.rs`."><title>pixbuf_animation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_animation.rs`."><title>pixbuf_animation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gdk_pixbuf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gdk_pixbuf/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -365,24 +367,15 @@
 <a href="#292" id="292">292</a>
 <a href="#293" id="293">293</a>
 <a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::Pixbuf;
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, pin::Pin, ptr};
+</span><span class="kw">use </span><a href="pixbuf.rs.html#8-222"><span class="kw">crate</span>::Pixbuf</a>;
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// An opaque object representing an animation.
     ///
     /// The GdkPixBuf library provides a simple mechanism to load and
@@ -393,29 +386,29 @@
     /// internally; for example, it may be stored as a sprite and
     /// instructions for moving the sprite around a background.
     ///
-    /// To display an animation you don&#39;t need to understand its
+    /// To display an animation you don't need to understand its
     /// representation, however; you just ask [`Pixbuf`][crate::Pixbuf] what should
     /// be displayed at a given point in time.
     ///
     /// # Implements
     ///
     /// [`PixbufAnimationExt`][trait@crate::prelude::PixbufAnimationExt], [`PixbufAnimationExtManual`][trait@crate::prelude::PixbufAnimationExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GdkPixbufAnimation&quot;</span>)]
-    </span><span class="kw">pub struct </span>PixbufAnimation(Object&lt;ffi::GdkPixbufAnimation, ffi::GdkPixbufAnimationClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GdkPixbufAnimation"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gdk_pixbuf/struct.PixbufAnimation.html">PixbufAnimation</a>(Object&lt;<a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimation.html">ffi::GdkPixbufAnimation</a>, <a href="../../../gdk_pixbuf_sys/struct.GdkPixbufAnimationClass.html">ffi::GdkPixbufAnimationClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::gdk_pixbuf_animation_get_type(),
     }
 }
 
-<span class="kw">impl </span>PixbufAnimation {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>PixbufAnimation&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#9-33">PixbufAnimation</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#9-33">PixbufAnimation</a>&gt; = <span class="prelude-val">None</span>;
 
     <span class="doccomment">/// Creates a new animation by loading it from a file.
     ///
     /// The file format is detected automatically.
     ///
-    /// If the file&#39;s format does not support multi-frame images, then an animation
+    /// If the file's format does not support multi-frame images, then an animation
     /// with a single frame will be created.
     ///
     /// Possible errors are in the `GDK_PIXBUF_ERROR` and `G_FILE_ERROR` domains.
@@ -426,21 +419,21 @@
     /// # Returns
     ///
     /// A newly-created animation
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_new_from_file&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_from_file&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_new_from_file"</span>)]
+    #[doc(alias = <span class="string">"new_from_file"</span>)]
     </span><span class="kw">pub fn </span>from_file(
-        filename: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt; {
+        filename: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_animation_new_from_file(
-                filename.as_ref().to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#56">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#59">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#60">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#59">error</a>))
             }
         }
     }
@@ -455,19 +448,19 @@
     /// # Returns
     ///
     /// A newly-created animation
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_new_from_resource&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_from_resource&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_resource(resource_path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_new_from_resource"</span>)]
+    #[doc(alias = <span class="string">"new_from_resource"</span>)]
+    </span><span class="kw">pub fn </span>from_resource(resource_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_animation_new_from_resource(
-                resource_path.to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#84">resource_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#86">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#87">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#86">error</a>))
             }
         }
     }
@@ -492,23 +485,23 @@
     /// # Returns
     ///
     /// A newly-created animation
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_new_from_stream&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_from_stream&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_new_from_stream"</span>)]
+    #[doc(alias = <span class="string">"new_from_stream"</span>)]
     </span><span class="kw">pub fn </span>from_stream(
-        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::InputStream&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt; {
+        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="../../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="../../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_animation_new_from_stream(
-                stream.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#122">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#123">cancellable</a>.map(|p| <a href="#129">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#126">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#127">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#126">error</a>))
             }
         }
     }
@@ -527,66 +520,71 @@
     /// optional #GCancellable object
     /// ## `callback`
     /// a `GAsyncReadyCallback` to call when the pixbuf is loaded
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_new_from_stream_async&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;new_from_stream_async&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_stream_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::InputStream&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::Cancellable&gt;&gt;,
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_new_from_stream_async"</span>)]
+    #[doc(alias = <span class="string">"new_from_stream_async"</span>)]
+    </span><span class="kw">pub fn </span>from_stream_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="../../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="../../../gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#161">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#162">is_main_context_owner</a>)
+            .then(|| <a href="#161">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>from_stream_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#159">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>from_stream_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
         &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span>gio::ffi::GAsyncResult,
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html">gio::ffi::GAsyncResult</a>,
             user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::gdk_pixbuf_animation_new_from_stream_finish(res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::gdk_pixbuf_animation_new_from_stream_finish(<a href="#177">res</a>, <span class="kw-2">&amp;mut </span><a href="#180">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#181">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#180">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#178">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#187">callback</a>.into_inner();
+            <a href="#189">callback</a>(<a href="#182">result</a>);
         }
         <span class="kw">let </span>callback = from_stream_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_animation_new_from_stream_async(
-                stream.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#157">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#158">cancellable</a>.map(|p| <a href="#196">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#192">callback</a>),
+                Box_::into_raw(<a href="#171">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">pub fn </span>from_stream_future(
-        stream: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;gio::InputStream&gt; + Clone + <span class="lifetime">&#39;static</span>),
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;PixbufAnimation, glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;
+        stream: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="../../../gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>),
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<a href="#9-33">PixbufAnimation</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
     {
-        <span class="kw">let </span>stream = stream.clone();
+        <span class="kw">let </span>stream = <a href="#204">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
         Box_::pin(gio::GioFuture::new(<span class="kw-2">&amp;</span>(), <span class="kw">move </span>|_obj, cancellable, send| {
-            <span class="self">Self</span>::from_stream_async(<span class="kw-2">&amp;</span>stream, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                send.resolve(res);
+            <a href="#156-201"><span class="self">Self</span>::from_stream_async</a>(<span class="kw-2">&amp;</span><a href="#207">stream</a>, <span class="prelude-val">Some</span>(<a href="#208">cancellable</a>), <span class="kw">move </span>|res| {
+                <a href="#208">send</a>.resolve(<a href="#209">res</a>);
             });
         }))
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#9-33"><span class="kw">super</span>::PixbufAnimation</a>&gt;&gt; <a href="#217">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@PixbufAnimation`] methods.
@@ -594,15 +592,17 @@
 /// # Implementors
 ///
 /// [`PixbufAnimation`][struct@crate::PixbufAnimation], [`PixbufNonAnim`][struct@crate::PixbufNonAnim], [`PixbufSimpleAnim`][struct@crate::PixbufSimpleAnim]
-</span><span class="kw">pub trait </span>PixbufAnimationExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gdk_pixbuf/prelude/trait.PixbufAnimationExt.html">PixbufAnimationExt</a>: IsA&lt;<a href="#9-33">PixbufAnimation</a>&gt; + <a href="#217">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Queries the height of the bounding box of a pixbuf animation.
     ///
     /// # Returns
     ///
     /// Height of the bounding box of the animation.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_get_height&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_height&quot;</span>)]
-    </span><span class="kw">fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_get_height"</span>)]
+    #[doc(alias = <span class="string">"get_height"</span>)]
+    </span><span class="kw">fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_animation_get_height(<a class="self" href="#234">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+    }
 
     <span class="doccomment">/// Retrieves a static image for the animation.
     ///
@@ -613,24 +613,32 @@
     /// image to use as a static unanimated image, which might be the first
     /// frame, or something more sophisticated depending on the file format.
     ///
-    /// If an animation hasn&#39;t loaded any frames yet, this function will
+    /// If an animation hasn't loaded any frames yet, this function will
     /// return `NULL`.
     ///
     /// # Returns
     ///
     /// unanimated image representing the animation
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_get_static_image&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_static_image&quot;</span>)]
-    </span><span class="kw">fn </span>static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_get_static_image"</span>)]
+    #[doc(alias = <span class="string">"get_static_image"</span>)]
+    </span><span class="kw">fn </span>static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="pixbuf.rs.html#8-222">Pixbuf</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_animation_get_static_image(
+                <a class="self" href="#255">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Queries the width of the bounding box of a pixbuf animation.
     ///
     /// # Returns
     ///
     /// Width of the bounding box of the animation.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_get_width&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_width&quot;</span>)]
-    </span><span class="kw">fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32;
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_get_width"</span>)]
+    #[doc(alias = <span class="string">"get_width"</span>)]
+    </span><span class="kw">fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_animation_get_width(<a class="self" href="#270">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+    }
 
     <span class="doccomment">/// Checks whether the animation is a static image.
     ///
@@ -641,41 +649,16 @@
     ///
     /// # Returns
     ///
-    /// `TRUE` if the &quot;animation&quot; was really just an image
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_animation_is_static_image&quot;</span>)]
-    </span><span class="kw">fn </span>is_static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;PixbufAnimation&gt;&gt; PixbufAnimationExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_animation_get_height(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
-    }
-
-    <span class="kw">fn </span>static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::gdk_pixbuf_animation_get_static_image(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_animation_get_width(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
-    }
-
-    <span class="kw">fn </span>is_static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    /// `TRUE` if the "animation" was really just an image
+    </span><span class="attr">#[doc(alias = <span class="string">"gdk_pixbuf_animation_is_static_image"</span>)]
+    </span><span class="kw">fn </span>is_static_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::gdk_pixbuf_animation_is_static_image(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#285">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>PixbufAnimation {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;PixbufAnimation&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#9-33">PixbufAnimation</a>&gt;&gt; <a href="#226-292">PixbufAnimationExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

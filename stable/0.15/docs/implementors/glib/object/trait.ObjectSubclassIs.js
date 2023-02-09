@@ -1,4 +1,4 @@
-(function() {var implementors = {};
-implementors["gio"] = [{"text":"impl <a class=\"trait\" href=\"glib/object/trait.ObjectSubclassIs.html\" title=\"trait glib::object::ObjectSubclassIs\">ObjectSubclassIs</a> for <a class=\"struct\" href=\"gio/struct.ReadInputStream.html\" title=\"struct gio::ReadInputStream\">ReadInputStream</a>","synthetic":false,"types":["gio::read_input_stream::ReadInputStream"]},{"text":"impl <a class=\"trait\" href=\"glib/object/trait.ObjectSubclassIs.html\" title=\"trait glib::object::ObjectSubclassIs\">ObjectSubclassIs</a> for <a class=\"struct\" href=\"gio/struct.WriteOutputStream.html\" title=\"struct gio::WriteOutputStream\">WriteOutputStream</a>","synthetic":false,"types":["gio::write_output_stream::WriteOutputStream"]}];
-implementors["glib"] = [];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"gio":[["impl <a class=\"trait\" href=\"https://gtk-rs.org/gtk-rs-core/stable/0.15/docs/glib/object/trait.ObjectSubclassIs.html\" title=\"trait glib::object::ObjectSubclassIs\">ObjectSubclassIs</a> for <a class=\"struct\" href=\"gio/struct.ReadInputStream.html\" title=\"struct gio::ReadInputStream\">ReadInputStream</a>"],["impl <a class=\"trait\" href=\"https://gtk-rs.org/gtk-rs-core/stable/0.15/docs/glib/object/trait.ObjectSubclassIs.html\" title=\"trait glib::object::ObjectSubclassIs\">ObjectSubclassIs</a> for <a class=\"struct\" href=\"gio/struct.WriteOutputStream.html\" title=\"struct gio::WriteOutputStream\">WriteOutputStream</a>"]],
+"glib":[]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

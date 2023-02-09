@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["find_base_dir","find_paragraph_boundary","is_zero_width","itemize","itemize_with_base_dir","markup_parser_finish","markup_parser_new","parse_markup","parse_stretch","parse_style","parse_variant","parse_weight","quantize_line_geometry","shape","unichar_direction","units_from_double","units_to_double","version","version_check","version_string"]};

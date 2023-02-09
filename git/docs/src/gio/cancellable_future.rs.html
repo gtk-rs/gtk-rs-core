@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/cancellable_future.rs`."><title>cancellable_future.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/cancellable_future.rs`."><title>cancellable_future.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -263,22 +265,22 @@
 <a href="#190" id="190">190</a>
 <a href="#191" id="191">191</a>
 <a href="#192" id="192">192</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
-    fmt::{Debug, Display},
-    future::Future,
-    pin::Pin,
-    task::{Context, Poll},
+    fmt::{<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">Display</a>},
+    <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>,
+    <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>,
+    task::{<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">Context</a>, <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">Poll</a>},
 };
 
 <span class="kw">use </span>pin_project_lite::pin_project;
 
-<span class="kw">use crate</span>::{cancellable::CancelledHandlerId, prelude::<span class="kw-2">*</span>, Cancellable, IOErrorEnum};
+<span class="kw">use crate</span>::{<a href="cancellable.rs.html#16">cancellable::CancelledHandlerId</a>, <a href="lib.rs.html#118">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#7-85">Cancellable</a>, <a href="auto/enums.rs.html#1654-1817">IOErrorEnum</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Indicator that the [`CancellableFuture`] was cancelled.
-</span><span class="kw">pub struct </span>Cancelled;
+</span><span class="kw">pub struct </span><a href="../../gio/struct.Cancelled.html">Cancelled</a>;
 
 <span class="macro">pin_project! </span>{
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -288,7 +290,7 @@
     ///
     /// ```
     /// # use futures::FutureExt;
-    /// # use gio::traits::CancellableExt;
+    /// # use gio::prelude::*;
     /// # use gio::CancellableFuture;
     /// let l = glib::MainLoop::new(None, false);
     /// let c = gio::Cancellable::new();
@@ -297,14 +299,14 @@
     /// c.cancel();
     ///
     /// ```
-    </span><span class="kw">pub struct </span>CancellableFuture&lt;F&gt; {
+    </span><span class="kw">pub struct </span><a href="../../gio/struct.CancellableFuture.html">CancellableFuture</a>&lt;F&gt; {
         <span class="attr">#[pin]
         </span>future: F,
 
         <span class="attr">#[pin]
-        </span>waker_handler_cb: <span class="prelude-ty">Option</span>&lt;CancelledHandlerId&gt;,
+        </span>waker_handler_cb: <span class="prelude-ty">Option</span>&lt;<a href="cancellable.rs.html#16">CancelledHandlerId</a>&gt;,
 
-        cancellable: Cancellable,
+        cancellable: <a href="auto/cancellable.rs.html#7-85">Cancellable</a>,
     }
 }
 
@@ -315,11 +317,11 @@
     /// When [`cancel`](CancellableExt::cancel) is called, the future will complete
     /// immediately without making any further progress. In such a case, an error
     /// will be returned by this future (i.e., [`Cancelled`]).
-    </span><span class="kw">pub fn </span>new(future: F, cancellable: Cancellable) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(future: F, cancellable: <a href="auto/cancellable.rs.html#7-85">Cancellable</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            future,
+            <a href="#53">future</a>,
             waker_handler_cb: <span class="prelude-val">None</span>,
-            cancellable,
+            <a href="#53">cancellable</a>,
         }
     }
 
@@ -333,74 +335,74 @@
     ///   * `cancel` was called after the future had completed.
     ///   * `cancel` was called while the future was being polled.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.cancellable.is_cancelled()
+    </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#71">self</a>.cancellable.<a href="auto/cancellable.rs.html#194-200">is_cancelled</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the inner [`Cancellable`] associated during creation.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Cancellable {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.cancellable
+    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85">Cancellable</a> {
+        <span class="kw-2">&amp;</span><a class="self" href="#78">self</a>.cancellable
     }
 }
 
-<span class="kw">impl</span>&lt;F&gt; Future <span class="kw">for </span>CancellableFuture&lt;F&gt;
+<span class="kw">impl</span>&lt;F&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span>CancellableFuture&lt;F&gt;
 <span class="kw">where
-    </span>F: Future,
+    </span>F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>,
 {
-    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;&lt;F <span class="kw">as </span>Future&gt;::Output, Cancelled&gt;;
+    <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;&lt;F <span class="kw">as </span>Future&gt;::Output, <a href="#16">Cancelled</a>&gt;;
 
-    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">if </span><span class="self">self</span>.is_cancelled() {
-            <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(Cancelled));
+            <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(<a href="#16">Cancelled</a>));
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.as_mut().project();
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <a class="self" href="#89">self</a>.as_mut().<a href="#18-44">project</a>();
 
-        <span class="kw">match </span>this.future.poll(cx) {
-            Poll::Ready(out) =&gt; Poll::Ready(<span class="prelude-val">Ok</span>(out)),
+        <span class="kw">match </span><a href="#94">this</a>.future.<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">poll</a>(<a href="#89">cx</a>) {
+            Poll::Ready(out) =&gt; Poll::Ready(<span class="prelude-val">Ok</span>(<a href="#97">out</a>)),
 
             Poll::Pending =&gt; {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(prev_handler) = this.waker_handler_cb.take() {
-                    this.cancellable.disconnect_cancelled(prev_handler);
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(prev_handler) = <a href="#94">this</a>.waker_handler_cb.take() {
+                    <a href="#94">this</a>.cancellable.<a href="cancellable.rs.html#111-113">disconnect_cancelled</a>(<a href="#100">prev_handler</a>);
                 }
 
-                <span class="kw">let </span>canceller_handler_id = this.cancellable.connect_cancelled({
-                    <span class="kw">let </span>w = cx.waker().clone();
-                    <span class="kw">move </span>|<span class="kw">_</span>| w.wake()
+                <span class="kw">let </span>canceller_handler_id = <a href="#94">this</a>.cancellable.<a href="cancellable.rs.html#60-90">connect_cancelled</a>({
+                    <span class="kw">let </span>w = <a href="#89">cx</a>.waker().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
+                    <span class="kw">move </span>|<span class="kw">_</span>| <a href="#105">w</a>.wake()
                 });
 
-                <span class="kw">match </span>canceller_handler_id {
+                <span class="kw">match </span><a href="#104">canceller_handler_id</a> {
                     <span class="prelude-val">Some</span>(canceller_handler_id) =&gt; {
-                        <span class="kw-2">*</span>this.waker_handler_cb = <span class="prelude-val">Some</span>(canceller_handler_id);
+                        <span class="kw-2">*</span><a href="#94">this</a>.waker_handler_cb = <span class="prelude-val">Some</span>(<a href="#110">canceller_handler_id</a>);
                         Poll::Pending
                     }
 
-                    <span class="prelude-val">None </span>=&gt; Poll::Ready(<span class="prelude-val">Err</span>(Cancelled)),
+                    <span class="prelude-val">None </span>=&gt; Poll::Ready(<span class="prelude-val">Err</span>(<a href="#16">Cancelled</a>)),
                 }
             }
         }
     }
 }
 
-<span class="kw">impl </span>From&lt;Cancelled&gt; <span class="kw">for </span>glib::Error {
-    <span class="kw">fn </span>from(<span class="kw">_</span>: Cancelled) -&gt; <span class="self">Self </span>{
-        glib::Error::new(IOErrorEnum::Cancelled, <span class="string">&quot;Task cancelled&quot;</span>)
+<span class="kw">impl </span>From&lt;<a href="#16">Cancelled</a>&gt; <span class="kw">for </span><a href="../../glib/error/struct.Error.html">glib::Error</a> {
+    <span class="kw">fn </span>from(<span class="kw">_</span>: <a href="#16">Cancelled</a>) -&gt; <span class="self">Self </span>{
+        glib::Error::new(<a href="auto/enums.rs.html#1715">IOErrorEnum::Cancelled</a>, <span class="string">"Task cancelled"</span>)
     }
 }
 
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>Cancelled {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#16">Cancelled</a> {}
 
-<span class="kw">impl </span>Debug <span class="kw">for </span>Cancelled {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;Task cancelled&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">Debug</a> <span class="kw">for </span><a href="#16">Cancelled</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#131">f</a>, <span class="string">"Task cancelled"</span>)
     }
 }
 
-<span class="kw">impl </span>Display <span class="kw">for </span>Cancelled {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        Debug::fmt(<span class="self">self</span>, f)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">Display</a> <span class="kw">for </span><a href="#16">Cancelled</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">Debug::fmt</a>(<a class="self" href="#137">self</a>, <a href="#137">f</a>)
     }
 }
 
@@ -455,5 +457,4 @@
         ctx.block_on(rx).unwrap();
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

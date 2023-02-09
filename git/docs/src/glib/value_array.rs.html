@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value_array.rs`."><title>value_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/value_array.rs`."><title>value_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -317,28 +319,18 @@
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
 <a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{cmp::Ordering, ops, slice};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>};
 
 <span class="kw">use crate</span>::{
-    prelude::<span class="kw-2">*</span>,
-    translate::<span class="kw-2">*</span>,
-    value::{
-        FromValue, GenericValueTypeOrNoneChecker, ToValueOptional, ValueType, ValueTypeOptional,
-    },
-    HasParamSpec, ParamSpecValueArray, ParamSpecValueArrayBuilder, Type, Value,
+    <a href="lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="param_spec.rs.html#1562">ParamSpecValueArray</a>, <a href="param_spec.rs.html#1617-1623">ParamSpecValueArrayBuilder</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#476-510">Value</a>,
 };
 
-<span class="macro">wrapper! </span>{
+<a class="macro" href="wrapper.rs.html#277-445">wrapper! </a>{
     <span class="attr">#[derive(Debug)]
-    #[doc(alias = <span class="string">&quot;GValueArray&quot;</span>)]
-    </span><span class="kw">pub struct </span>ValueArray(Boxed&lt;gobject_ffi::GValueArray&gt;);
+    #[doc(alias = <span class="string">"GValueArray"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../glib/struct.ValueArray.html">ValueArray</a>(Boxed&lt;<a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| gobject_ffi::g_value_array_copy(mut_override(ptr)),
@@ -346,232 +338,231 @@
     }
 }
 
-<span class="kw">impl </span>ValueArray {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(n_prealloced: u32) -&gt; ValueArray {
-        <span class="kw">unsafe </span>{ from_glib_full(gobject_ffi::g_value_array_new(n_prealloced)) }
+<span class="kw">impl </span><a href="#9-18">ValueArray</a> {
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_new"</span>)]
+    </span><span class="kw">pub fn </span>new(n_prealloced: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="#9-18">ValueArray</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1633-1635">from_glib_full</a>(gobject_ffi::g_value_array_new(<a href="#22">n_prealloced</a>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_append&quot;</span>)]
-    </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>Value) {
-        <span class="kw">let </span>value = value.to_glib_none();
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_append"</span>)]
+    </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) {
+        <span class="kw">let </span>value = <a href="#27">value</a>.<a href="translate.rs.html#440">to_glib_none</a>();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_array_append(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, value.<span class="number">0</span>);
+            gobject_ffi::g_value_array_append(<a class="self" href="#27">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#28">value</a>.<span class="number">0</span>);
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.len() == <span class="number">0
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#35">self</a>.<a href="#40-42">len</a>() == <span class="number">0
     </span>}
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.inner.n_values <span class="kw">as </span>usize
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#40">self</a>.inner.n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;get_nth&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;g_value_array_get_nth&quot;</span>)]
-    </span><span class="kw">pub fn </span>nth(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: u32) -&gt; <span class="prelude-ty">Option</span>&lt;Value&gt; {
+    <span class="attr">#[doc(alias = <span class="string">"get_nth"</span>)]
+    #[doc(alias = <span class="string">"g_value_array_get_nth"</span>)]
+    </span><span class="kw">pub fn </span>nth(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_none(gobject_ffi::g_value_array_get_nth(
-                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
-                index_,
+            <a href="translate.rs.html#1624-1626">from_glib_none</a>(gobject_ffi::g_value_array_get_nth(
+                <a href="translate.rs.html#201-203">mut_override</a>(<a class="self" href="#46">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>),
+                <a href="#46">index_</a>,
             ))
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_insert&quot;</span>)]
-    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index_: u32, value: <span class="kw-2">&amp;</span>Value) {
-        <span class="kw">let </span>value = value.to_glib_none();
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_insert"</span>)]
+    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) {
+        <span class="kw">let </span>value = <a href="#56">value</a>.<a href="translate.rs.html#440">to_glib_none</a>();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_array_insert(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, index_, value.<span class="number">0</span>);
+            gobject_ffi::g_value_array_insert(<a class="self" href="#56">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#56">index_</a>, <a href="#57">value</a>.<span class="number">0</span>);
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_prepend&quot;</span>)]
-    </span><span class="kw">pub fn </span>prepend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>Value) {
-        <span class="kw">let </span>value = value.to_glib_none();
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_prepend"</span>)]
+    </span><span class="kw">pub fn </span>prepend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) {
+        <span class="kw">let </span>value = <a href="#64">value</a>.<a href="translate.rs.html#440">to_glib_none</a>();
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_array_prepend(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, value.<span class="number">0</span>);
+            gobject_ffi::g_value_array_prepend(<a class="self" href="#64">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#65">value</a>.<span class="number">0</span>);
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_remove&quot;</span>)]
-    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index_: u32) {
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_remove"</span>)]
+    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_value_array_remove(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, index_);
+            gobject_ffi::g_value_array_remove(<a class="self" href="#72">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#72">index_</a>);
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_value_array_sort_with_data&quot;</span>)]
-    </span><span class="kw">pub fn </span>sort_with_data&lt;F: FnMut(<span class="kw-2">&amp;</span>Value, <span class="kw-2">&amp;</span>Value) -&gt; Ordering&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, compare_func: F) {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>compare_func_trampoline(
+    <span class="attr">#[doc(alias = <span class="string">"g_value_array_sort_with_data"</span>)]
+    </span><span class="kw">pub fn </span>sort_with_data&lt;F: FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, compare_func: F) {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>compare_func_trampoline(
             a: ffi::gconstpointer,
             b: ffi::gconstpointer,
             func: ffi::gpointer,
-        ) -&gt; i32 {
-            <span class="kw">let </span>func = func <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span>Value, <span class="kw-2">&amp;</span>Value) -&gt; Ordering);
+        ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+            <span class="kw">let </span>func = <a href="#83">func</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>);
 
-            <span class="kw">let </span>a = <span class="kw-2">&amp;*</span>(a <span class="kw">as </span><span class="kw-2">*const </span>Value);
-            <span class="kw">let </span>b = <span class="kw-2">&amp;*</span>(b <span class="kw">as </span><span class="kw-2">*const </span>Value);
+            <span class="kw">let </span>a = <span class="kw-2">&amp;*</span>(<a href="#81">a</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#476-510">Value</a>);
+            <span class="kw">let </span>b = <span class="kw-2">&amp;*</span>(<a href="#82">b</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#476-510">Value</a>);
 
-            (<span class="kw-2">*</span>func)(a, b).into_glib()
+            (<span class="kw-2">*</span><a href="#85">func</a>)(<a href="#87">a</a>, <a href="#88">b</a>).<a href="translate.rs.html#333">into_glib</a>()
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>func = compare_func;
-            <span class="kw">let </span>func_obj: <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span>Value, <span class="kw-2">&amp;</span>Value) -&gt; Ordering) = <span class="kw-2">&amp;mut </span>func;
+            <span class="kw">let </span><span class="kw-2">mut </span>func = <a href="#79">compare_func</a>;
+            <span class="kw">let </span>func_obj: <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) = <span class="kw-2">&amp;mut </span><a href="#93">func</a>;
             <span class="kw">let </span>func_ptr =
-                <span class="kw-2">&amp;</span>func_obj <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span>Value, <span class="kw-2">&amp;</span>Value) -&gt; Ordering) <span class="kw">as </span>ffi::gpointer;
+                <span class="kw-2">&amp;</span><a href="#94">func_obj</a> <span class="kw">as </span><span class="kw-2">*const &amp;mut </span>(<span class="kw">dyn </span>FnMut(<span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">Ordering</a>) <span class="kw">as </span>ffi::gpointer;
 
             gobject_ffi::g_value_array_sort_with_data(
-                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(compare_func_trampoline),
-                func_ptr,
+                <a class="self" href="#79">self</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#80-91">compare_func_trampoline</a>),
+                <a href="#95">func_ptr</a>,
             );
         }
     }
 }
 
-<span class="kw">impl </span>ops::Deref <span class="kw">for </span>ValueArray {
-    <span class="kw">type </span>Target = [Value];
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
+    <span class="kw">type </span>Target = [<a href="value.rs.html#476-510">Value</a>];
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Value] {
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="value.rs.html#476-510">Value</a>] {
         <span class="kw">if </span><span class="self">self</span>.is_empty() {
             <span class="kw">return </span><span class="kw-2">&amp;</span>[];
         }
 
         <span class="kw">unsafe </span>{
-            slice::from_raw_parts(
-                (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).values <span class="kw">as </span><span class="kw-2">*const </span>Value,
-                (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).n_values <span class="kw">as </span>usize,
+            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(
+                (<span class="kw-2">*</span><a class="self" href="#111">self</a>.<a href="#9-18">as_ptr</a>()).values <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#476-510">Value</a>,
+                (<span class="kw-2">*</span><a class="self" href="#111">self</a>.<a href="#9-18">as_ptr</a>()).n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             )
         }
     }
 }
 
-<span class="kw">impl </span>ops::DerefMut <span class="kw">for </span>ValueArray {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">ops::DerefMut</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[Value] {
+    </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[<a href="value.rs.html#476-510">Value</a>] {
         <span class="kw">if </span><span class="self">self</span>.is_empty() {
             <span class="kw">return </span><span class="kw-2">&amp;mut </span>[];
         }
 
         <span class="kw">unsafe </span>{
             slice::from_raw_parts_mut(
-                (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).values <span class="kw">as </span><span class="kw-2">*mut </span>Value,
-                (<span class="kw-2">*</span><span class="self">self</span>.as_ptr()).n_values <span class="kw">as </span>usize,
+                (<span class="kw-2">*</span><a class="self" href="#127">self</a>.<a href="#9-18">as_ptr</a>()).values <span class="kw">as </span><span class="kw-2">*mut </span><a href="value.rs.html#476-510">Value</a>,
+                (<span class="kw-2">*</span><a class="self" href="#127">self</a>.<a href="#9-18">as_ptr</a>()).n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             )
         }
     }
 }
 
 <span class="comment">// Implementing `Value` traits manually because of a custom ParamSpec
-</span><span class="kw">impl </span>StaticType <span class="kw">for </span>ValueArray {
+</span><span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>static_type() -&gt; Type {
-        <span class="kw">unsafe </span>{ from_glib(gobject_ffi::g_value_array_get_type()) }
+    </span><span class="kw">fn </span>static_type() -&gt; <a href="types.rs.html#22">Type</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1416-1418">from_glib</a>(gobject_ffi::g_value_array_get_type()) }
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>ValueType <span class="kw">for </span>ValueArray {
+</span><span class="kw">impl </span><a href="value.rs.html#65-73">ValueType</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
     <span class="kw">type </span>Type = <span class="self">Self</span>;
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>ValueTypeOptional <span class="kw">for </span>ValueArray {}
+</span><span class="kw">impl </span><a href="value.rs.html#79-82"><span class="kw">crate</span>::value::ValueTypeOptional</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>ValueArray {
-    <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#9-18">ValueArray</a> {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Value) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_boxed(value.to_glib_none().<span class="number">0</span>);
-        <span class="macro">debug_assert!</span>(!ptr.is_null());
-        from_glib_full(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GValueArray)
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_boxed(<a href="#162">value</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
+        <a href="translate.rs.html#1633-1635">from_glib_full</a>(<a href="#163">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>)
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ValueArray {
-    <span class="kw">type </span>Checker = GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#9-18">ValueArray</a> {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Value) -&gt; <span class="self">Self </span>{
-        <span class="macro">debug_assert_eq!</span>(
+    </span><span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(
             std::mem::size_of::&lt;<span class="self">Self</span>&gt;(),
             std::mem::size_of::&lt;ffi::gpointer&gt;()
         );
-        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(value <span class="kw">as </span><span class="kw-2">*const </span>Value <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GValue);
-        <span class="macro">debug_assert!</span>(!value.data[<span class="number">0</span>].v_pointer.is_null());
-        &lt;ValueArray&gt;::from_glib_ptr_borrow(
-            <span class="kw-2">&amp;</span>value.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer
-                <span class="kw">as </span><span class="kw-2">*const *const </span>gobject_ffi::GValueArray,
+        <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#174">value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="value.rs.html#476-510">Value</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../../gobject_sys/struct.GValue.html">gobject_ffi::GValue</a>);
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!value.data[<span class="number">0</span>].v_pointer.is_null());
+        &lt;<a href="#9-18">ValueArray</a>&gt;::from_glib_ptr_borrow(
+            <span class="kw-2">&amp;</span><a href="#179">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span>ffi::gpointer
+                <span class="kw">as </span><span class="kw-2">*const *const </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>,
         )
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>ToValue <span class="kw">for </span>ValueArray {
+</span><span class="kw">impl </span><a href="value.rs.html#369-379">ToValue</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Value {
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="value.rs.html#476-510">Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::from_type_unchecked(&lt;<span class="self">Self </span><span class="kw">as </span>StaticType&gt;::static_type());
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#536-542">Value::from_type_unchecked</a>(&lt;<span class="self">Self </span><span class="kw">as </span>StaticType&gt;::static_type());
             gobject_ffi::g_value_take_boxed(
-                value.to_glib_none_mut().<span class="number">0</span>,
-                ToGlibPtr::&lt;<span class="kw-2">*mut </span>gobject_ffi::GValueArray&gt;::to_glib_full(<span class="self">self</span>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#193">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>&gt;::to_glib_full(<a class="self" href="#191">self</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            value
+            <a href="#193">value</a>
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
+    </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#22">Type</a> {
         &lt;<span class="self">Self </span><span class="kw">as </span>StaticType&gt;::static_type()
     }
 }
 
-<span class="kw">impl </span>std::convert::From&lt;ValueArray&gt; <span class="kw">for </span>Value {
+<span class="kw">impl </span>std::convert::From&lt;<a href="#9-18">ValueArray</a>&gt; <span class="kw">for </span><a href="value.rs.html#476-510">Value</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(o: ValueArray) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(o: <a href="#9-18">ValueArray</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>value = Value::from_type_unchecked(&lt;ValueArray <span class="kw">as </span>StaticType&gt;::static_type());
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <a href="value.rs.html#536-542">Value::from_type_unchecked</a>(&lt;<a href="#9-18">ValueArray</a> <span class="kw">as </span>StaticType&gt;::static_type());
             gobject_ffi::g_value_take_boxed(
-                value.to_glib_none_mut().<span class="number">0</span>,
-                IntoGlibPtr::&lt;<span class="kw-2">*mut </span>gobject_ffi::GValueArray&gt;::into_glib_ptr(o) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#212">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                IntoGlibPtr::&lt;<span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>&gt;::into_glib_ptr(<a href="#210">o</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            value
+            <a href="#212">value</a>
         }
     }
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span>ToValueOptional <span class="kw">for </span>ValueArray {
+</span><span class="kw">impl </span><a href="value.rs.html#397-402"><span class="kw">crate</span>::value::ToValueOptional</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; Value {
+    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <a href="value.rs.html#476-510">Value</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>value = Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
         <span class="kw">unsafe </span>{
             gobject_ffi::g_value_take_boxed(
-                value.to_glib_none_mut().<span class="number">0</span>,
-                ToGlibPtr::&lt;<span class="kw-2">*mut </span>gobject_ffi::GValueArray&gt;::to_glib_full(<span class="kw-2">&amp;</span>s) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#226">value</a>.<a href="translate.rs.html#470">to_glib_none_mut</a>().<span class="number">0</span>,
+                ToGlibPtr::&lt;<span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GValueArray.html">gobject_ffi::GValueArray</a>&gt;::to_glib_full(<span class="kw-2">&amp;</span><a href="#225">s</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
 
-        value
+        <a href="#226">value</a>
     }
 }
 
-<span class="kw">impl </span>HasParamSpec <span class="kw">for </span>ValueArray {
-    <span class="kw">type </span>ParamSpec = ParamSpecValueArray;
+<span class="kw">impl </span><a href="param_spec.rs.html#1987-1995">HasParamSpec</a> <span class="kw">for </span><a href="#9-18">ValueArray</a> {
+    <span class="kw">type </span>ParamSpec = <a href="param_spec.rs.html#1562">ParamSpecValueArray</a>;
     <span class="kw">type </span>SetValue = <span class="self">Self</span>;
-    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span>str) -&gt; ParamSpecValueArrayBuilder;
+    <span class="kw">type </span>BuilderFn = <span class="kw">fn</span>(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="param_spec.rs.html#1617-1623">ParamSpecValueArrayBuilder</a>;
 
     <span class="kw">fn </span>param_spec_builder() -&gt; <span class="self">Self</span>::BuilderFn {
         <span class="self">Self</span>::ParamSpec::builder
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

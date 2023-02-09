@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus.rs`."><title>dbus.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus.rs`."><title>dbus.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -384,247 +386,263 @@
 <a href="#311" id="311">311</a>
 <a href="#312" id="312">312</a>
 <a href="#313" id="313">313</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::num::NonZeroU32;
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">std::num::NonZeroU32</a>;
 
-<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{BusNameOwnerFlags, BusNameWatcherFlags, BusType, DBusConnection};
+<span class="kw">use crate</span>::{<a href="auto/flags.rs.html#337-357">BusNameOwnerFlags</a>, <a href="auto/flags.rs.html#431-445">BusNameWatcherFlags</a>, <a href="auto/enums.rs.html#11-26">BusType</a>, <a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>};
 
 <span class="attr">#[derive(Debug, Eq, PartialEq)]
-</span><span class="kw">pub struct </span>OwnerId(NonZeroU32);
+</span><span class="kw">pub struct </span><a href="../../gio/struct.OwnerId.html">OwnerId</a>(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>);
 <span class="attr">#[derive(Debug, Eq, PartialEq)]
-</span><span class="kw">pub struct </span>WatcherId(NonZeroU32);
+</span><span class="kw">pub struct </span>WatcherId(<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>);
 
-<span class="kw">fn </span>own_closure&lt;F&gt;(f: F) -&gt; glib::Closure
+<span class="kw">fn </span>own_closure&lt;F&gt;(f: F) -&gt; <a href="../../glib/closure/struct.Closure.html">glib::Closure</a>
 <span class="kw">where
-    </span>F: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>F: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     glib::Closure::new(<span class="kw">move </span>|args| {
-        <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
-        <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
-        f(conn, name);
+        <span class="kw">let </span>conn = <a href="#18">args</a>[<span class="number">0</span>].get::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().unwrap();
+        <span class="kw">let </span>name = <a href="#18">args</a>[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().unwrap();
+        <a href="#14">f</a>(<a href="#19">conn</a>, <a href="#20">name</a>);
         <span class="prelude-val">None
     </span>})
 }
 
-<span class="kw">fn </span>appeared_closure&lt;F&gt;(f: F) -&gt; glib::Closure
+<span class="kw">fn </span>appeared_closure&lt;F&gt;(f: F) -&gt; <a href="../../glib/closure/struct.Closure.html">glib::Closure</a>
 <span class="kw">where
-    </span>F: Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>F: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     glib::Closure::new(<span class="kw">move </span>|args| {
-        <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
-        <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
-        <span class="kw">let </span>name_owner = args[<span class="number">2</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
-        f(conn, name, name_owner);
+        <span class="kw">let </span>conn = <a href="#30">args</a>[<span class="number">0</span>].get::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().unwrap();
+        <span class="kw">let </span>name = <a href="#30">args</a>[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().unwrap();
+        <span class="kw">let </span>name_owner = <a href="#30">args</a>[<span class="number">2</span>].get::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().unwrap();
+        <a href="#26">f</a>(<a href="#31">conn</a>, <a href="#32">name</a>, <a href="#33">name_owner</a>);
         <span class="prelude-val">None
     </span>})
 }
 
-<span class="kw">fn </span>vanished_closure&lt;F&gt;(f: F) -&gt; glib::Closure
+<span class="kw">fn </span>vanished_closure&lt;F&gt;(f: F) -&gt; <a href="../../glib/closure/struct.Closure.html">glib::Closure</a>
 <span class="kw">where
-    </span>F: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>F: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     glib::Closure::new(<span class="kw">move </span>|args| {
-        <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
-        <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
-        f(conn, name);
+        <span class="kw">let </span>conn = <a href="#43">args</a>[<span class="number">0</span>].get::&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;().unwrap();
+        <span class="kw">let </span>name = <a href="#43">args</a>[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().unwrap();
+        <a href="#39">f</a>(<a href="#44">conn</a>, <a href="#45">name</a>);
         <span class="prelude-val">None
     </span>})
 }
 
-<span class="doccomment">/// Like `g_bus_own_name()` but takes a [`DBusConnection`][crate::DBusConnection] instead of a
-/// [`BusType`][crate::BusType].
+<span class="doccomment">/// Like g_bus_own_name() but takes a #GDBusConnection instead of a
+/// #GBusType.
 /// ## `connection`
-/// a [`DBusConnection`][crate::DBusConnection]
+/// a #GDBusConnection
 /// ## `name`
 /// the well-known name to own
 /// ## `flags`
-/// a set of flags from the [`BusNameOwnerFlags`][crate::BusNameOwnerFlags] enumeration
+/// a set of flags from the #GBusNameOwnerFlags enumeration
 /// ## `name_acquired_handler`
-/// handler to invoke when `name` is acquired or [`None`]
+/// handler to invoke when
+///   @name is acquired or [`None`]
 /// ## `name_lost_handler`
-/// handler to invoke when `name` is lost or [`None`]
+/// handler to invoke when @name
+///   is lost or [`None`]
 ///
 /// # Returns
 ///
 /// an identifier (never 0) that can be used with
-///  `g_bus_unown_name()` to stop owning the name
-</span><span class="attr">#[doc(alias = <span class="string">&quot;g_bus_own_name_on_connection_with_closures&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_own_name_on_connection&lt;NameAcquired, NameLost&gt;(
-    connection: <span class="kw-2">&amp;</span>DBusConnection,
-    name: <span class="kw-2">&amp;</span>str,
-    flags: BusNameOwnerFlags,
+///     g_bus_unown_name() to stop owning the name
+</span><span class="attr">#[doc(alias = <span class="string">"g_bus_own_name_on_connection_with_closures"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_own_name_on_connection.html">bus_own_name_on_connection</a>&lt;NameAcquired, NameLost&gt;(
+    connection: <span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a href="auto/flags.rs.html#337-357">BusNameOwnerFlags</a>,
     name_acquired: NameAcquired,
     name_lost: NameLost,
-) -&gt; OwnerId
+) -&gt; <a href="#10">OwnerId</a>
 <span class="kw">where
-    </span>NameAcquired: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
-    NameLost: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>NameAcquired: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    NameLost: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>id = ffi::g_bus_own_name_on_connection_with_closures(
-            connection.to_glib_none().<span class="number">0</span>,
-            name.to_glib_none().<span class="number">0</span>,
-            flags.into_glib(),
-            own_closure(name_acquired).to_glib_none().<span class="number">0</span>,
-            own_closure(name_lost).to_glib_none().<span class="number">0</span>,
+            <a href="#72">connection</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#73">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#74">flags</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#14-24">own_closure</a>(<a href="#75">name_acquired</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#14-24">own_closure</a>(<a href="#76">name_lost</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
         );
-        OwnerId(NonZeroU32::new_unchecked(id))
+        <a href="#10">OwnerId</a>(NonZeroU32::new_unchecked(<a href="#83">id</a>))
     }
 }
 
-<span class="doccomment">/// Starts acquiring `name` on the bus specified by `bus_type` and calls
-/// `name_acquired_handler` and `name_lost_handler` when the name is
+<span class="doccomment">/// Starts acquiring @name on the bus specified by @bus_type and calls
+/// @name_acquired_handler and @name_lost_handler when the name is
 /// acquired respectively lost. Callbacks will be invoked in the
 /// [thread-default main context][g-main-context-push-thread-default]
 /// of the thread you are calling this function from.
 ///
-/// You are guaranteed that one of the `name_acquired_handler` and `name_lost_handler`
+/// You are guaranteed that one of the @name_acquired_handler and @name_lost_handler
 /// callbacks will be invoked after calling this function - there are three
 /// possible cases:
 ///
-/// - `name_lost_handler` with a [`None`] connection (if a connection to the bus
-///  can&#39;t be made).
+/// - @name_lost_handler with a [`None`] connection (if a connection to the bus
+///   can't be made).
 ///
-/// - `bus_acquired_handler` then `name_lost_handler` (if the name can&#39;t be
-///  obtained)
+/// - @bus_acquired_handler then @name_lost_handler (if the name can't be
+///   obtained)
 ///
-/// - `bus_acquired_handler` then `name_acquired_handler` (if the name was
-///  obtained).
+/// - @bus_acquired_handler then @name_acquired_handler (if the name was
+///   obtained).
 ///
-/// When you are done owning the name, just call `g_bus_unown_name()`
+/// When you are done owning the name, just call g_bus_unown_name()
 /// with the owner id this function returns.
 ///
 /// If the name is acquired or lost (for example another application
 /// could acquire the name if you allow replacement or the application
 /// currently owning the name exits), the handlers are also invoked.
-/// If the [`DBusConnection`][crate::DBusConnection] that is used for attempting to own the name
-/// closes, then `name_lost_handler` is invoked since it is no longer
+/// If the #GDBusConnection that is used for attempting to own the name
+/// closes, then @name_lost_handler is invoked since it is no longer
 /// possible for other processes to access the process.
 ///
-/// You cannot use `g_bus_own_name()` several times for the same name (unless
-/// interleaved with calls to `g_bus_unown_name()`) - only the first call
+/// You cannot use g_bus_own_name() several times for the same name (unless
+/// interleaved with calls to g_bus_unown_name()) - only the first call
 /// will work.
 ///
-/// Another guarantee is that invocations of `name_acquired_handler`
-/// and `name_lost_handler` are guaranteed to alternate; that
-/// is, if `name_acquired_handler` is invoked then you are
+/// Another guarantee is that invocations of @name_acquired_handler
+/// and @name_lost_handler are guaranteed to alternate; that
+/// is, if @name_acquired_handler is invoked then you are
 /// guaranteed that the next time one of the handlers is invoked, it
-/// will be `name_lost_handler`. The reverse is also true.
+/// will be @name_lost_handler. The reverse is also true.
 ///
 /// If you plan on exporting objects (using e.g.
-/// `g_dbus_connection_register_object()`), note that it is generally too late
-/// to export the objects in `name_acquired_handler`. Instead, you can do this
-/// in `bus_acquired_handler` since you are guaranteed that this will run
-/// before `name` is requested from the bus.
+/// g_dbus_connection_register_object()), note that it is generally too late
+/// to export the objects in @name_acquired_handler. Instead, you can do this
+/// in @bus_acquired_handler since you are guaranteed that this will run
+/// before @name is requested from the bus.
 ///
 /// This behavior makes it very simple to write applications that wants
 /// to [own names][gdbus-owning-names] and export objects.
-/// Simply register objects to be exported in `bus_acquired_handler` and
-/// unregister the objects (if any) in `name_lost_handler`.
+/// Simply register objects to be exported in @bus_acquired_handler and
+/// unregister the objects (if any) in @name_lost_handler.
 /// ## `bus_type`
 /// the type of bus to own a name on
 /// ## `name`
 /// the well-known name to own
 /// ## `flags`
-/// a set of flags from the [`BusNameOwnerFlags`][crate::BusNameOwnerFlags] enumeration
+/// a set of flags from the #GBusNameOwnerFlags enumeration
 /// ## `bus_acquired_handler`
-/// handler to invoke when connected to the bus of type `bus_type` or [`None`]
+/// handler to invoke when
+///   connected to the bus of type @bus_type or [`None`]
 /// ## `name_acquired_handler`
-/// handler to invoke when `name` is acquired or [`None`]
+/// handler to invoke when
+///   @name is acquired or [`None`]
 /// ## `name_lost_handler`
-/// handler to invoke when `name` is lost or [`None`]
+/// handler to invoke when @name
+///   is lost or [`None`]
 ///
 /// # Returns
 ///
 /// an identifier (never 0) that can be used with
-///  `g_bus_unown_name()` to stop owning the name.
-</span><span class="attr">#[doc(alias = <span class="string">&quot;g_bus_own_name_with_closures&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_own_name&lt;BusAcquired, NameAcquired, NameLost&gt;(
-    bus_type: BusType,
-    name: <span class="kw-2">&amp;</span>str,
-    flags: BusNameOwnerFlags,
+///     g_bus_unown_name() to stop owning the name.
+</span><span class="attr">#[doc(alias = <span class="string">"g_bus_own_name_with_closures"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_own_name.html">bus_own_name</a>&lt;BusAcquired, NameAcquired, NameLost&gt;(
+    bus_type: <a href="auto/enums.rs.html#11-26">BusType</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a href="auto/flags.rs.html#337-357">BusNameOwnerFlags</a>,
     bus_acquired: BusAcquired,
     name_acquired: NameAcquired,
     name_lost: NameLost,
-) -&gt; OwnerId
+) -&gt; <a href="#10">OwnerId</a>
 <span class="kw">where
-    </span>BusAcquired: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
-    NameAcquired: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
-    NameLost: Fn(<span class="prelude-ty">Option</span>&lt;DBusConnection&gt;, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>BusAcquired: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    NameAcquired: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    NameLost: Fn(<span class="prelude-ty">Option</span>&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>id = ffi::g_bus_own_name_with_closures(
-            bus_type.into_glib(),
-            name.to_glib_none().<span class="number">0</span>,
-            flags.into_glib(),
-            own_closure(bus_acquired).to_glib_none().<span class="number">0</span>,
-            own_closure(name_acquired).to_glib_none().<span class="number">0</span>,
+            <a href="#165">bus_type</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#166">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#167">flags</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#14-24">own_closure</a>(<a href="#168">bus_acquired</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#14-24">own_closure</a>(<a href="#169">name_acquired</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             glib::Closure::new(<span class="kw">move </span>|args| {
-                <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;<span class="prelude-ty">Option</span>&lt;DBusConnection&gt;&gt;().unwrap();
-                <span class="kw">let </span>name = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
-                name_lost(conn, name);
+                <span class="kw">let </span>conn = <a href="#184">args</a>[<span class="number">0</span>].get::&lt;<span class="prelude-ty">Option</span>&lt;<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>&gt;&gt;().unwrap();
+                <span class="kw">let </span>name = <a href="#184">args</a>[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;().unwrap();
+                <a href="#170">name_lost</a>(<a href="#185">conn</a>, <a href="#186">name</a>);
                 <span class="prelude-val">None
             </span>})
-            .to_glib_none()
+            .<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>()
             .<span class="number">0</span>,
         );
-        OwnerId(NonZeroU32::new_unchecked(id))
+        <a href="#10">OwnerId</a>(NonZeroU32::new_unchecked(<a href="#178">id</a>))
     }
 }
 
-<span class="attr">#[doc(alias = <span class="string">&quot;g_bus_unown_name&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_unown_name(owner_id: OwnerId) {
+<span class="attr">#[doc(alias = <span class="string">"g_bus_unown_name"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_unown_name.html">bus_unown_name</a>(owner_id: <a href="#10">OwnerId</a>) {
     <span class="kw">unsafe </span>{
-        ffi::g_bus_unown_name(owner_id.<span class="number">0</span>.into());
+        ffi::g_bus_unown_name(<a href="#198">owner_id</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
     }
 }
 
-<span class="doccomment">/// Like `g_bus_watch_name()` but takes a [`DBusConnection`][crate::DBusConnection] instead of a
-/// [`BusType`][crate::BusType].
+<span class="doccomment">/// Like g_bus_watch_name() but takes a #GDBusConnection instead of a
+/// #GBusType.
 /// ## `connection`
-/// A [`DBusConnection`][crate::DBusConnection].
+/// A #GDBusConnection.
 /// ## `name`
 /// The name (well-known or unique) to watch.
 /// ## `flags`
-/// Flags from the [`BusNameWatcherFlags`][crate::BusNameWatcherFlags] enumeration.
+/// Flags from the #GBusNameWatcherFlags enumeration.
 /// ## `name_appeared_handler`
-/// Handler to invoke when `name` is known to exist or [`None`].
+/// Handler to invoke when
+///   @name is known to exist or [`None`].
 /// ## `name_vanished_handler`
-/// Handler to invoke when `name` is known to not exist or [`None`].
+/// Handler to invoke when
+///   @name is known to not exist or [`None`].
 ///
 /// # Returns
 ///
 /// An identifier (never 0) that can be used with
-/// `g_bus_unwatch_name()` to stop watching the name.
-</span><span class="attr">#[doc(alias = <span class="string">&quot;g_bus_watch_name_on_connection_with_closures&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_watch_name_on_connection&lt;NameAppeared, NameVanished&gt;(
-    connection: <span class="kw-2">&amp;</span>DBusConnection,
-    name: <span class="kw-2">&amp;</span>str,
-    flags: BusNameWatcherFlags,
+/// g_bus_unwatch_name() to stop watching the name.
+</span><span class="attr">#[doc(alias = <span class="string">"g_bus_watch_name_on_connection_with_closures"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_watch_name_on_connection.html">bus_watch_name_on_connection</a>&lt;NameAppeared, NameVanished&gt;(
+    connection: <span class="kw-2">&amp;</span><a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a href="auto/flags.rs.html#431-445">BusNameWatcherFlags</a>,
     name_appeared: NameAppeared,
     name_vanished: NameVanished,
-) -&gt; WatcherId
+) -&gt; <a href="#12">WatcherId</a>
 <span class="kw">where
-    </span>NameAppeared: Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
-    NameVanished: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>NameAppeared: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    NameVanished: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>id = ffi::g_bus_watch_name_on_connection_with_closures(
-            connection.to_glib_none().<span class="number">0</span>,
-            name.to_glib_none().<span class="number">0</span>,
-            flags.into_glib(),
-            appeared_closure(name_appeared).to_glib_none().<span class="number">0</span>,
-            vanished_closure(name_vanished).to_glib_none().<span class="number">0</span>,
+            <a href="#225">connection</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#226">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#227">flags</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#26-37">appeared_closure</a>(<a href="#228">name_appeared</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#39-49">vanished_closure</a>(<a href="#229">name_vanished</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
         );
-        WatcherId(NonZeroU32::new_unchecked(id))
+        <a href="#12">WatcherId</a>(NonZeroU32::new_unchecked(<a href="#236">id</a>))
     }
 }
 
-<span class="doccomment">/// Starts watching `name` on the bus specified by `bus_type` and calls
-/// `name_appeared_handler` and `name_vanished_handler` when the name is
+<span class="doccomment">/// Starts watching @name on the bus specified by @bus_type and calls
+/// @name_appeared_handler and @name_vanished_handler when the name is
 /// known to have an owner respectively known to lose its
 /// owner. Callbacks will be invoked in the
 /// [thread-default main context][g-main-context-push-thread-default]
@@ -632,70 +650,71 @@
 ///
 /// You are guaranteed that one of the handlers will be invoked after
 /// calling this function. When you are done watching the name, just
-/// call `g_bus_unwatch_name()` with the watcher id this function
+/// call g_bus_unwatch_name() with the watcher id this function
 /// returns.
 ///
 /// If the name vanishes or appears (for example the application owning
 /// the name could restart), the handlers are also invoked. If the
-/// [`DBusConnection`][crate::DBusConnection] that is used for watching the name disconnects, then
-/// `name_vanished_handler` is invoked since it is no longer
+/// #GDBusConnection that is used for watching the name disconnects, then
+/// @name_vanished_handler is invoked since it is no longer
 /// possible to access the name.
 ///
-/// Another guarantee is that invocations of `name_appeared_handler`
-/// and `name_vanished_handler` are guaranteed to alternate; that
-/// is, if `name_appeared_handler` is invoked then you are
+/// Another guarantee is that invocations of @name_appeared_handler
+/// and @name_vanished_handler are guaranteed to alternate; that
+/// is, if @name_appeared_handler is invoked then you are
 /// guaranteed that the next time one of the handlers is invoked, it
-/// will be `name_vanished_handler`. The reverse is also true.
+/// will be @name_vanished_handler. The reverse is also true.
 ///
 /// This behavior makes it very simple to write applications that want
 /// to take action when a certain [name exists][gdbus-watching-names].
 /// Basically, the application should create object proxies in
-/// `name_appeared_handler` and destroy them again (if any) in
-/// `name_vanished_handler`.
+/// @name_appeared_handler and destroy them again (if any) in
+/// @name_vanished_handler.
 /// ## `bus_type`
 /// The type of bus to watch a name on.
 /// ## `name`
 /// The name (well-known or unique) to watch.
 /// ## `flags`
-/// Flags from the [`BusNameWatcherFlags`][crate::BusNameWatcherFlags] enumeration.
+/// Flags from the #GBusNameWatcherFlags enumeration.
 /// ## `name_appeared_handler`
-/// Handler to invoke when `name` is known to exist or [`None`].
+/// Handler to invoke when
+///   @name is known to exist or [`None`].
 /// ## `name_vanished_handler`
-/// Handler to invoke when `name` is known to not exist or [`None`].
+/// Handler to invoke when
+///   @name is known to not exist or [`None`].
 ///
 /// # Returns
 ///
 /// An identifier (never 0) that can be used with
-/// `g_bus_unwatch_name()` to stop watching the name.
-</span><span class="attr">#[doc(alias = <span class="string">&quot;g_bus_watch_name_with_closures&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_watch_name&lt;NameAppeared, NameVanished&gt;(
-    bus_type: BusType,
-    name: <span class="kw-2">&amp;</span>str,
-    flags: BusNameWatcherFlags,
+/// g_bus_unwatch_name() to stop watching the name.
+</span><span class="attr">#[doc(alias = <span class="string">"g_bus_watch_name_with_closures"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_watch_name.html">bus_watch_name</a>&lt;NameAppeared, NameVanished&gt;(
+    bus_type: <a href="auto/enums.rs.html#11-26">BusType</a>,
+    name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a href="auto/flags.rs.html#431-445">BusNameWatcherFlags</a>,
     name_appeared: NameAppeared,
     name_vanished: NameVanished,
-) -&gt; WatcherId
+) -&gt; <a href="#12">WatcherId</a>
 <span class="kw">where
-    </span>NameAppeared: Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
-    NameVanished: Fn(DBusConnection, <span class="kw-2">&amp;</span>str) + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>NameAppeared: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+    NameVanished: Fn(<a href="auto/dbus_connection.rs.html#20-198">DBusConnection</a>, <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>id = ffi::g_bus_watch_name_with_closures(
-            bus_type.into_glib(),
-            name.to_glib_none().<span class="number">0</span>,
-            flags.into_glib(),
-            appeared_closure(name_appeared).to_glib_none().<span class="number">0</span>,
-            vanished_closure(name_vanished).to_glib_none().<span class="number">0</span>,
+            <a href="#295">bus_type</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#296">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#297">flags</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#26-37">appeared_closure</a>(<a href="#298">name_appeared</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#39-49">vanished_closure</a>(<a href="#299">name_vanished</a>).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
         );
-        WatcherId(NonZeroU32::new_unchecked(id))
+        <a href="#12">WatcherId</a>(NonZeroU32::new_unchecked(<a href="#306">id</a>))
     }
 }
 
-<span class="attr">#[doc(alias = <span class="string">&quot;g_bus_unwatch_name&quot;</span>)]
-</span><span class="kw">pub fn </span>bus_unwatch_name(watcher_id: WatcherId) {
+<span class="attr">#[doc(alias = <span class="string">"g_bus_unwatch_name"</span>)]
+</span><span class="kw">pub fn </span><a href="../../gio/fn.bus_unwatch_name.html">bus_unwatch_name</a>(watcher_id: <a href="#12">WatcherId</a>) {
     <span class="kw">unsafe </span>{
-        ffi::g_bus_unwatch_name(watcher_id.<span class="number">0</span>.into());
+        ffi::g_bus_unwatch_name(<a href="#318">watcher_id</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

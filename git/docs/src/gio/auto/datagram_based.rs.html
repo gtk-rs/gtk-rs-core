@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/datagram_based.rs`."><title>datagram_based.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/datagram_based.rs`."><title>datagram_based.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -208,77 +210,81 @@
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// A [`DatagramBased`][crate::DatagramBased] is a networking interface for representing datagram-based
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// Interface for socket-like objects with datagram semantics.
+    ///
+    /// A `GDatagramBased` is a networking interface for representing datagram-based
     /// communications. It is a more or less direct mapping of the core parts of the
     /// BSD socket API in a portable GObject interface. It is implemented by
     /// [`Socket`][crate::Socket], which wraps the UNIX socket API on UNIX and winsock2 on Windows.
     ///
-    /// [`DatagramBased`][crate::DatagramBased] is entirely platform independent, and is intended to be used
+    /// `GDatagramBased` is entirely platform independent, and is intended to be used
     /// alongside higher-level networking APIs such as [`IOStream`][crate::IOStream].
     ///
     /// It uses vectored scatter/gather I/O by default, allowing for many messages
     /// to be sent or received in a single call. Where possible, implementations of
     /// the interface should take advantage of vectored I/O to minimise processing
-    /// or system calls. For example, [`Socket`][crate::Socket] uses `recvmmsg()` and `sendmmsg()` where
-    /// possible. Callers should take advantage of scatter/gather I/O (the use of
+    /// or system calls. For example, `GSocket` uses `recvmmsg()` and `sendmmsg()`
+    /// where possible. Callers should take advantage of scatter/gather I/O (the use of
     /// multiple buffers per message) to avoid unnecessary copying of data to
     /// assemble or disassemble a message.
     ///
-    /// Each [`DatagramBased`][crate::DatagramBased] operation has a timeout parameter which may be negative
+    /// Each `GDatagramBased` operation has a timeout parameter which may be negative
     /// for blocking behaviour, zero for non-blocking behaviour, or positive for
     /// timeout behaviour. A blocking operation blocks until finished or there is an
     /// error. A non-blocking operation will return immediately with a
-    /// [`IOErrorEnum::WouldBlock`][crate::IOErrorEnum::WouldBlock] error if it cannot make progress. A timeout operation
+    /// `G_IO_ERROR_WOULD_BLOCK` error if it cannot make progress. A timeout operation
     /// will block until the operation is complete or the timeout expires; if the
     /// timeout expires it will return what progress it made, or
-    /// [`IOErrorEnum::TimedOut`][crate::IOErrorEnum::TimedOut] if no progress was made. To know when a call would
+    /// `G_IO_ERROR_TIMED_OUT` if no progress was made. To know when a call would
     /// successfully run you can call [`DatagramBasedExt::condition_check()`][crate::prelude::DatagramBasedExt::condition_check()] or
     /// [`DatagramBasedExtManual::condition_wait()`][crate::prelude::DatagramBasedExtManual::condition_wait()]. You can also use
-    /// [`DatagramBasedExtManual::create_source()`][crate::prelude::DatagramBasedExtManual::create_source()] and attach it to a [`glib::MainContext`][crate::glib::MainContext] to get
-    /// callbacks when I/O is possible.
+    /// [`DatagramBasedExtManual::create_source()`][crate::prelude::DatagramBasedExtManual::create_source()] and attach it to a [`glib::MainContext`][crate::glib::MainContext]
+    /// to get callbacks when I/O is possible.
     ///
     /// When running a non-blocking operation applications should always be able to
-    /// handle getting a [`IOErrorEnum::WouldBlock`][crate::IOErrorEnum::WouldBlock] error even when some other function
+    /// handle getting a `G_IO_ERROR_WOULD_BLOCK` error even when some other function
     /// said that I/O was possible. This can easily happen in case of a race
     /// condition in the application, but it can also happen for other reasons. For
     /// instance, on Windows a socket is always seen as writable until a write
-    /// returns [`IOErrorEnum::WouldBlock`][crate::IOErrorEnum::WouldBlock].
+    /// returns `G_IO_ERROR_WOULD_BLOCK`.
     ///
-    /// As with [`Socket`][crate::Socket], `GDatagramBaseds` can be either connection oriented (for
-    /// example, SCTP) or connectionless (for example, UDP). `GDatagramBaseds` must be
+    /// As with `GSocket`, `GDatagramBased`s can be either connection oriented (for
+    /// example, SCTP) or connectionless (for example, UDP). `GDatagramBased`s must be
     /// datagram-based, not stream-based. The interface does not cover connection
     /// establishment — use methods on the underlying type to establish a connection
-    /// before sending and receiving data through the [`DatagramBased`][crate::DatagramBased] API. For
+    /// before sending and receiving data through the `GDatagramBased` API. For
     /// connectionless socket types the target/source address is specified or
     /// received in each I/O operation.
     ///
-    /// Like most other APIs in GLib, [`DatagramBased`][crate::DatagramBased] is not inherently thread safe.
-    /// To use a [`DatagramBased`][crate::DatagramBased] concurrently from multiple threads, you must
+    /// Like most other APIs in GLib, `GDatagramBased` is not inherently thread safe.
+    /// To use a `GDatagramBased` concurrently from multiple threads, you must
     /// implement your own locking.
     ///
     /// # Implements
     ///
     /// [`DatagramBasedExt`][trait@crate::prelude::DatagramBasedExt], [`DatagramBasedExtManual`][trait@crate::prelude::DatagramBasedExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GDatagramBased&quot;</span>)]
-    </span><span class="kw">pub struct </span>DatagramBased(Interface&lt;ffi::GDatagramBased, ffi::GDatagramBasedInterface&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GDatagramBased"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DatagramBased.html">DatagramBased</a>(Interface&lt;<a href="../../../gio_sys/struct.GDatagramBased.html">ffi::GDatagramBased</a>, <a href="../../../gio_sys/struct.GDatagramBasedInterface.html">ffi::GDatagramBasedInterface</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_datagram_based_get_type(),
     }
 }
 
-<span class="kw">impl </span>DatagramBased {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>DatagramBased&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#7-67">DatagramBased</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#7-67">DatagramBased</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#7-67"><span class="kw">super</span>::DatagramBased</a>&gt;&gt; <a href="#74">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@DatagramBased`] methods.
@@ -286,68 +292,59 @@
 /// # Implementors
 ///
 /// [`DatagramBased`][struct@crate::DatagramBased], [`Socket`][struct@crate::Socket]
-</span><span class="kw">pub trait </span>DatagramBasedExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Checks on the readiness of `self` to perform operations. The
-    /// operations specified in `condition` are checked for and masked against the
-    /// currently-satisfied conditions on `self`. The result is returned.
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.DatagramBasedExt.html">DatagramBasedExt</a>: IsA&lt;<a href="#7-67">DatagramBased</a>&gt; + <a href="#74">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Checks on the readiness of @self to perform operations. The
+    /// operations specified in @condition are checked for and masked against the
+    /// currently-satisfied conditions on @self. The result is returned.
     ///
     /// [`glib::IOCondition::IN`][crate::glib::IOCondition::IN] will be set in the return value if data is available to read with
-    /// [`DatagramBasedExtManual::receive_messages()`][crate::prelude::DatagramBasedExtManual::receive_messages()], or if the connection is closed remotely
+    /// g_datagram_based_receive_messages(), or if the connection is closed remotely
     /// (EOS); and if the datagram_based has not been closed locally using some
-    /// implementation-specific method (such as [`SocketExt::close()`][crate::prelude::SocketExt::close()] or
-    /// [`SocketExt::shutdown()`][crate::prelude::SocketExt::shutdown()] with `shutdown_read` set, if it’s a [`Socket`][crate::Socket]).
+    /// implementation-specific method (such as g_socket_close() or
+    /// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
     ///
-    /// If the connection is shut down or closed (by calling [`SocketExt::close()`][crate::prelude::SocketExt::close()] or
-    /// [`SocketExt::shutdown()`][crate::prelude::SocketExt::shutdown()] with `shutdown_read` set, if it’s a [`Socket`][crate::Socket], for
+    /// If the connection is shut down or closed (by calling g_socket_close() or
+    /// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
     /// example), all calls to this function will return [`IOErrorEnum::Closed`][crate::IOErrorEnum::Closed].
     ///
     /// [`glib::IOCondition::OUT`][crate::glib::IOCondition::OUT] will be set if it is expected that at least one byte can be sent
-    /// using [`DatagramBasedExtManual::send_messages()`][crate::prelude::DatagramBasedExtManual::send_messages()] without blocking. It will not be set
+    /// using g_datagram_based_send_messages() without blocking. It will not be set
     /// if the datagram_based has been closed locally.
     ///
     /// [`glib::IOCondition::HUP`][crate::glib::IOCondition::HUP] will be set if the connection has been closed locally.
     ///
     /// [`glib::IOCondition::ERR`][crate::glib::IOCondition::ERR] will be set if there was an asynchronous error in transmitting data
-    /// previously enqueued using [`DatagramBasedExtManual::send_messages()`][crate::prelude::DatagramBasedExtManual::send_messages()].
+    /// previously enqueued using g_datagram_based_send_messages().
     ///
     /// Note that on Windows, it is possible for an operation to return
     /// [`IOErrorEnum::WouldBlock`][crate::IOErrorEnum::WouldBlock] even immediately after
-    /// [`condition_check()`][Self::condition_check()] has claimed that the [`DatagramBased`][crate::DatagramBased] is
-    /// ready for writing. Rather than calling [`condition_check()`][Self::condition_check()] and
-    /// then writing to the [`DatagramBased`][crate::DatagramBased] if it succeeds, it is generally better to
+    /// g_datagram_based_condition_check() has claimed that the #GDatagramBased is
+    /// ready for writing. Rather than calling g_datagram_based_condition_check() and
+    /// then writing to the #GDatagramBased if it succeeds, it is generally better to
     /// simply try writing right away, and try again later if the initial attempt
     /// returns [`IOErrorEnum::WouldBlock`][crate::IOErrorEnum::WouldBlock].
     ///
-    /// It is meaningless to specify [`glib::IOCondition::ERR`][crate::glib::IOCondition::ERR] or [`glib::IOCondition::HUP`][crate::glib::IOCondition::HUP] in `condition`; these
+    /// It is meaningless to specify [`glib::IOCondition::ERR`][crate::glib::IOCondition::ERR] or [`glib::IOCondition::HUP`][crate::glib::IOCondition::HUP] in @condition; these
     /// conditions will always be set in the output if they are true. Apart from
-    /// these flags, the output is guaranteed to be masked by `condition`.
+    /// these flags, the output is guaranteed to be masked by @condition.
     ///
     /// This call never blocks.
     /// ## `condition`
-    /// a [`glib::IOCondition`][crate::glib::IOCondition] mask to check
+    /// a #GIOCondition mask to check
     ///
     /// # Returns
     ///
-    /// the [`glib::IOCondition`][crate::glib::IOCondition] mask of the current state
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_datagram_based_condition_check&quot;</span>)]
-    </span><span class="kw">fn </span>condition_check(<span class="kw-2">&amp;</span><span class="self">self</span>, condition: glib::IOCondition) -&gt; glib::IOCondition;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;DatagramBased&gt;&gt; DatagramBasedExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>condition_check(<span class="kw-2">&amp;</span><span class="self">self</span>, condition: glib::IOCondition) -&gt; glib::IOCondition {
+    /// the #GIOCondition mask of the current state
+    </span><span class="attr">#[doc(alias = <span class="string">"g_datagram_based_condition_check"</span>)]
+    </span><span class="kw">fn </span>condition_check(<span class="kw-2">&amp;</span><span class="self">self</span>, condition: <a href="../../../glib/auto/flags/struct.IOCondition.html">glib::IOCondition</a>) -&gt; <a href="../../../glib/auto/flags/struct.IOCondition.html">glib::IOCondition</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_datagram_based_condition_check(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                condition.into_glib(),
+                <a class="self" href="#127">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#127">condition</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>DatagramBased {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;DatagramBased&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#7-67">DatagramBased</a>&gt;&gt; <a href="#83-135">DatagramBasedExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

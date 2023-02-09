@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/write_output_stream.rs`."><title>write_output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/write_output_stream.rs`."><title>write_output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -415,97 +417,97 @@
 <a href="#342" id="342">342</a>
 <a href="#343" id="343">343</a>
 <a href="#344" id="344">344</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
-    any::Any,
-    io::{Seek, Write},
+    <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">any::Any</a>,
+    io::{<a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">Seek</a>, <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a>},
 };
 
 <span class="kw">use crate</span>::{
-    prelude::<span class="kw-2">*</span>, read_input_stream::std_error_to_gio_error, subclass::prelude::<span class="kw-2">*</span>, OutputStream,
+    <a href="lib.rs.html#118">prelude</a>::<span class="kw-2">*</span>, <a href="read_input_stream.rs.html#260-324">read_input_stream::std_error_to_gio_error</a>, <a href="subclass/mod.rs.html#17-34">subclass::prelude</a>::<span class="kw-2">*</span>, <a href="auto/output_stream.rs.html#9-39">OutputStream</a>,
 };
 
 <span class="kw">mod </span>imp {
-    <span class="kw">use </span>std::cell::RefCell;
+    <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">std::cell::RefCell</a>;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">enum </span>Writer {
-        Write(AnyWriter),
-        WriteSeek(AnyWriter),
+        Write(<a href="#213-218">AnyWriter</a>),
+        WriteSeek(<a href="#213-218">AnyWriter</a>),
     }
 
     <span class="attr">#[derive(Default)]
     </span><span class="kw">pub struct </span>WriteOutputStream {
-        <span class="kw">pub</span>(<span class="kw">super</span>) write: RefCell&lt;<span class="prelude-ty">Option</span>&lt;Writer&gt;&gt;,
+        <span class="kw">pub</span>(<span class="kw">super</span>) write: RefCell&lt;<span class="prelude-ty">Option</span>&lt;<a href="#17-20">Writer</a>&gt;&gt;,
     }
 
     <span class="attr">#[glib::object_subclass]
-    </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>WriteOutputStream {
-        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;WriteOutputStream&quot;</span>;
-        <span class="kw">type </span>Type = <span class="kw">super</span>::WriteOutputStream;
-        <span class="kw">type </span>ParentType = OutputStream;
-        <span class="kw">type </span>Interfaces = (<span class="kw">crate</span>::Seekable,);
+    </span><span class="kw">impl </span><a href="../../glib/subclass/types/trait.ObjectSubclass.html">ObjectSubclass</a> <span class="kw">for </span><a href="#23-25">WriteOutputStream</a> {
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> = <span class="string">"WriteOutputStream"</span>;
+        <span class="kw">type </span>Type = <a href="#166-168"><span class="kw">super</span>::WriteOutputStream</a>;
+        <span class="kw">type </span>ParentType = <a href="auto/output_stream.rs.html#9-39">OutputStream</a>;
+        <span class="kw">type </span>Interfaces = (<a href="auto/seekable.rs.html#8-33"><span class="kw">crate</span>::Seekable</a>,);
     }
 
-    <span class="kw">impl </span>ObjectImpl <span class="kw">for </span>WriteOutputStream {}
+    <span class="kw">impl </span><a href="../../glib/subclass/object/trait.ObjectImpl.html">ObjectImpl</a> <span class="kw">for </span><a href="#23-25">WriteOutputStream</a> {}
 
-    <span class="kw">impl </span>OutputStreamImpl <span class="kw">for </span>WriteOutputStream {
+    <span class="kw">impl </span><a href="subclass/output_stream.rs.html#9-60">OutputStreamImpl</a> <span class="kw">for </span><a href="#23-25">WriteOutputStream</a> {
         <span class="kw">fn </span>write(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            buffer: <span class="kw-2">&amp;</span>[u8],
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::Cancellable&gt;,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;usize, glib::Error&gt; {
-            <span class="kw">let </span><span class="kw-2">mut </span>write = <span class="self">self</span>.write.borrow_mut();
-            <span class="kw">let </span>write = <span class="kw">match </span><span class="kw-2">*</span>write {
+            buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+            <span class="kw">let </span><span class="kw-2">mut </span>write = <a class="self" href="#39">self</a>.write.borrow_mut();
+            <span class="kw">let </span>write = <span class="kw">match </span><span class="kw-2">*</span><a href="#43">write</a> {
                 <span class="prelude-val">None </span>=&gt; {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(glib::Error::new(
-                        <span class="kw">crate</span>::IOErrorEnum::Closed,
-                        <span class="string">&quot;Alwritey closed&quot;</span>,
+                        <a href="auto/enums.rs.html#1712"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
+                        <span class="string">"Alwritey closed"</span>,
                     ));
                 }
-                <span class="prelude-val">Some</span>(Writer::Write(<span class="kw-2">ref mut </span>write)) =&gt; write,
-                <span class="prelude-val">Some</span>(Writer::WriteSeek(<span class="kw-2">ref mut </span>write)) =&gt; write,
+                <span class="prelude-val">Some</span>(<a href="#18">Writer::Write</a>(<span class="kw-2">ref mut </span>write)) =&gt; <a href="#51">write</a>,
+                <span class="prelude-val">Some</span>(<a href="#19">Writer::WriteSeek</a>(<span class="kw-2">ref mut </span>write)) =&gt; <a href="#52">write</a>,
             };
 
             <span class="kw">loop </span>{
-                <span class="kw">match </span>std_error_to_gio_error(write.write(buffer)) {
+                <span class="kw">match </span><a href="read_input_stream.rs.html#260-324">std_error_to_gio_error</a>(<a href="#44">write</a>.<a href="#276-278">write</a>(<a href="#40">buffer</a>)) {
                     <span class="prelude-val">None </span>=&gt; <span class="kw">continue</span>,
-                    <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span>res,
+                    <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span><a href="#58">res</a>,
                 }
             }
         }
 
-        <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::Cancellable&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-            <span class="kw">let _ </span>= <span class="self">self</span>.write.take();
+        <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+            <span class="kw">let _ </span>= <a class="self" href="#63">self</a>.write.take();
             <span class="prelude-val">Ok</span>(())
         }
 
-        <span class="kw">fn </span>flush(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::Cancellable&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-            <span class="kw">let </span><span class="kw-2">mut </span>write = <span class="self">self</span>.write.borrow_mut();
-            <span class="kw">let </span>write = <span class="kw">match </span><span class="kw-2">*</span>write {
+        <span class="kw">fn </span>flush(<span class="kw-2">&amp;</span><span class="self">self</span>, _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+            <span class="kw">let </span><span class="kw-2">mut </span>write = <a class="self" href="#68">self</a>.write.borrow_mut();
+            <span class="kw">let </span>write = <span class="kw">match </span><span class="kw-2">*</span><a href="#69">write</a> {
                 <span class="prelude-val">None </span>=&gt; {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(glib::Error::new(
-                        <span class="kw">crate</span>::IOErrorEnum::Closed,
-                        <span class="string">&quot;Alwritey closed&quot;</span>,
+                        <a href="auto/enums.rs.html#1712"><span class="kw">crate</span>::IOErrorEnum::Closed</a>,
+                        <span class="string">"Alwritey closed"</span>,
                     ));
                 }
-                <span class="prelude-val">Some</span>(Writer::Write(<span class="kw-2">ref mut </span>write)) =&gt; write,
-                <span class="prelude-val">Some</span>(Writer::WriteSeek(<span class="kw-2">ref mut </span>write)) =&gt; write,
+                <span class="prelude-val">Some</span>(<a href="#18">Writer::Write</a>(<span class="kw-2">ref mut </span>write)) =&gt; <a href="#77">write</a>,
+                <span class="prelude-val">Some</span>(<a href="#19">Writer::WriteSeek</a>(<span class="kw-2">ref mut </span>write)) =&gt; <a href="#78">write</a>,
             };
 
             <span class="kw">loop </span>{
-                <span class="kw">match </span>std_error_to_gio_error(write.flush()) {
+                <span class="kw">match </span><a href="read_input_stream.rs.html#260-324">std_error_to_gio_error</a>(<a href="#70">write</a>.<a href="#280-282">flush</a>()) {
                     <span class="prelude-val">None </span>=&gt; <span class="kw">continue</span>,
-                    <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span>res,
+                    <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span><a href="#84">res</a>,
                 }
             }
         }
     }
 
-    <span class="kw">impl </span>SeekableImpl <span class="kw">for </span>WriteOutputStream {
-        <span class="kw">fn </span>tell(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i64 {
+    <span class="kw">impl </span><a href="subclass/seekable.rs.html#9-20">SeekableImpl</a> <span class="kw">for </span><a href="#23-25">WriteOutputStream</a> {
+        <span class="kw">fn </span>tell(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a> {
             <span class="comment">// XXX: stream_position is not stable yet
             // let mut write = self.write.borrow_mut();
             // match *write {
@@ -517,192 +519,192 @@
             </span>-<span class="number">1
         </span>}
 
-        <span class="kw">fn </span>can_seek(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-            <span class="kw">let </span>write = <span class="self">self</span>.write.borrow();
-            <span class="macro">matches!</span>(<span class="kw-2">*</span>write, <span class="prelude-val">Some</span>(Writer::WriteSeek(<span class="kw">_</span>)))
+        <span class="kw">fn </span>can_seek(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+            <span class="kw">let </span>write = <a class="self" href="#103">self</a>.write.borrow();
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.matches.html">matches!</a>(<span class="kw-2">*</span>write, <span class="prelude-val">Some</span>(Writer::WriteSeek(<span class="kw">_</span>)))
         }
 
         <span class="kw">fn </span>seek(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            offset: i64,
-            type_: glib::SeekType,
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::Cancellable&gt;,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-            <span class="kw">use </span>std::io::SeekFrom;
+            offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
+            type_: <a href="../../glib/auto/enums/enum.SeekType.html">glib::SeekType</a>,
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+            <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>;
 
-            <span class="kw">let </span><span class="kw-2">mut </span>write = <span class="self">self</span>.write.borrow_mut();
-            <span class="kw">match </span><span class="kw-2">*</span>write {
-                <span class="prelude-val">Some</span>(Writer::WriteSeek(<span class="kw-2">ref mut </span>write)) =&gt; {
-                    <span class="kw">let </span>pos = <span class="kw">match </span>type_ {
-                        glib::SeekType::Cur =&gt; SeekFrom::Current(offset),
+            <span class="kw">let </span><span class="kw-2">mut </span>write = <a class="self" href="#109">self</a>.write.borrow_mut();
+            <span class="kw">match </span><span class="kw-2">*</span><a href="#116">write</a> {
+                <span class="prelude-val">Some</span>(<a href="#19">Writer::WriteSeek</a>(<span class="kw-2">ref mut </span>write)) =&gt; {
+                    <span class="kw">let </span>pos = <span class="kw">match </span><a href="#111">type_</a> {
+                        glib::SeekType::Cur =&gt; SeekFrom::Current(<a href="#110">offset</a>),
                         glib::SeekType::Set =&gt; {
                             <span class="kw">if </span>offset &lt; <span class="number">0 </span>{
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(glib::Error::new(
-                                    <span class="kw">crate</span>::IOErrorEnum::InvalidArgument,
-                                    <span class="string">&quot;Invalid Argument&quot;</span>,
+                                    <a href="auto/enums.rs.html#1697"><span class="kw">crate</span>::IOErrorEnum::InvalidArgument</a>,
+                                    <span class="string">"Invalid Argument"</span>,
                                 ));
                             } <span class="kw">else </span>{
-                                SeekFrom::Start(offset <span class="kw">as </span>u64)
+                                SeekFrom::Start(<a href="#110">offset</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)
                             }
                         }
-                        glib::SeekType::End =&gt; SeekFrom::End(offset),
-                        <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
+                        glib::SeekType::End =&gt; SeekFrom::End(<a href="#110">offset</a>),
+                        <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
                     };
 
                     <span class="kw">loop </span>{
-                        <span class="kw">match </span>std_error_to_gio_error(write.seek(pos)) {
+                        <span class="kw">match </span><a href="read_input_stream.rs.html#260-324">std_error_to_gio_error</a>(<a href="#118">write</a>.<a href="#284-290">seek</a>(<a href="#119">pos</a>)) {
                             <span class="prelude-val">None </span>=&gt; <span class="kw">continue</span>,
-                            <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span>res.map(|<span class="kw">_</span>| ()),
+                            <span class="prelude-val">Some</span>(res) =&gt; <span class="kw">return </span><a href="#138">res</a>.map(|<span class="kw">_</span>| ()),
                         }
                     }
                 }
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(glib::Error::new(
-                    <span class="kw">crate</span>::IOErrorEnum::NotSupported,
-                    <span class="string">&quot;Truncating not supported&quot;</span>,
+                    <a href="auto/enums.rs.html#1703"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
+                    <span class="string">"Truncating not supported"</span>,
                 )),
             }
         }
 
-        <span class="kw">fn </span>can_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">fn </span>can_truncate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
             <span class="bool-val">false
         </span>}
 
         <span class="kw">fn </span>truncate(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            _offset: i64,
-            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::Cancellable&gt;,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+            _offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
+            _cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#7-85"><span class="kw">crate</span>::Cancellable</a>&gt;,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
             <span class="prelude-val">Err</span>(glib::Error::new(
-                <span class="kw">crate</span>::IOErrorEnum::NotSupported,
-                <span class="string">&quot;Truncating not supported&quot;</span>,
+                <a href="auto/enums.rs.html#1703"><span class="kw">crate</span>::IOErrorEnum::NotSupported</a>,
+                <span class="string">"Truncating not supported"</span>,
             ))
         }
     }
 }
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="kw">pub struct </span>WriteOutputStream(ObjectSubclass&lt;imp::WriteOutputStream&gt;) @extends <span class="kw">crate</span>::OutputStream, @implements <span class="kw">crate</span>::Seekable;
+<a class="macro" href="../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="kw">pub struct </span><a href="../../gio/struct.WriteOutputStream.html">WriteOutputStream</a>(ObjectSubclass&lt;<a href="#23-25">imp::WriteOutputStream</a>&gt;) @extends <a href="auto/output_stream.rs.html#9-39"><span class="kw">crate</span>::OutputStream</a>, @implements <a href="auto/seekable.rs.html#8-33"><span class="kw">crate</span>::Seekable</a>;
 }
 
-<span class="kw">impl </span>WriteOutputStream {
-    <span class="kw">pub fn </span>new&lt;W: Write + Send + Any + <span class="lifetime">&#39;static</span>&gt;(write: W) -&gt; WriteOutputStream {
+<span class="kw">impl </span><a href="#166-168">WriteOutputStream</a> {
+    <span class="kw">pub fn </span>new&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;(write: W) -&gt; <a href="#166-168">WriteOutputStream</a> {
         <span class="kw">let </span>obj: <span class="self">Self </span>= glib::Object::new();
 
-        <span class="kw-2">*</span>obj.imp().write.borrow_mut() = <span class="prelude-val">Some</span>(imp::Writer::Write(AnyWriter::new(write)));
-        obj
+        <span class="kw-2">*</span><a href="#172">obj</a>.<a href="../../glib/subclass/types/trait.ObjectSubclassIsExt.html">imp</a>().write.borrow_mut() = <span class="prelude-val">Some</span>(<a href="#18">imp::Writer::Write</a>(<a href="#221-228">AnyWriter::new</a>(<a href="#171">write</a>)));
+        <a href="#172">obj</a>
     }
 
-    <span class="kw">pub fn </span>new_seekable&lt;W: Write + Seek + Send + Any + <span class="lifetime">&#39;static</span>&gt;(write: W) -&gt; WriteOutputStream {
+    <span class="kw">pub fn </span>new_seekable&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">Seek</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;(write: W) -&gt; <a href="#166-168">WriteOutputStream</a> {
         <span class="kw">let </span>obj: <span class="self">Self </span>= glib::Object::new();
 
-        <span class="kw-2">*</span>obj.imp().write.borrow_mut() =
-            <span class="prelude-val">Some</span>(imp::Writer::WriteSeek(AnyWriter::new_seekable(write)));
-        obj
+        <span class="kw-2">*</span><a href="#179">obj</a>.<a href="../../glib/subclass/types/trait.ObjectSubclassIsExt.html">imp</a>().write.borrow_mut() =
+            <span class="prelude-val">Some</span>(<a href="#19">imp::Writer::WriteSeek</a>(<a href="#230-237">AnyWriter::new_seekable</a>(<a href="#178">write</a>)));
+        <a href="#179">obj</a>
     }
 
-    <span class="kw">pub fn </span>close_and_take(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt; {
-        <span class="kw">let </span>inner = <span class="self">self</span>.imp().write.take();
+    <span class="kw">pub fn </span>close_and_take(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt; {
+        <span class="kw">let </span>inner = <a class="self" href="#186">self</a>.<a href="../../glib/subclass/types/trait.ObjectSubclassIsExt.html">imp</a>().write.take();
 
-        <span class="kw">let </span>ret = <span class="kw">match </span>inner {
+        <span class="kw">let </span>ret = <span class="kw">match </span><a href="#187">inner</a> {
             <span class="prelude-val">None </span>=&gt; {
-                <span class="macro">panic!</span>(<span class="string">&quot;Stream already closed or inner taken&quot;</span>);
+                <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Stream already closed or inner taken"</span>);
             }
-            <span class="prelude-val">Some</span>(imp::Writer::Write(write)) =&gt; write.writer,
-            <span class="prelude-val">Some</span>(imp::Writer::WriteSeek(write)) =&gt; write.writer,
+            <span class="prelude-val">Some</span>(<a href="#18">imp::Writer::Write</a>(write)) =&gt; <a href="#193">write</a>.writer,
+            <span class="prelude-val">Some</span>(<a href="#19">imp::Writer::WriteSeek</a>(write)) =&gt; <a href="#194">write</a>.writer,
         };
 
-        <span class="kw">let _ </span>= <span class="self">self</span>.close(<span class="kw">crate</span>::Cancellable::NONE);
+        <span class="kw">let _ </span>= <a class="self" href="#186">self</a>.<a href="auto/output_stream.rs.html#100-115">close</a>(<span class="kw">crate</span>::Cancellable::NONE);
 
-        <span class="kw">match </span>ret {
-            AnyOrPanic::Any(w) =&gt; w,
-            AnyOrPanic::Panic(p) =&gt; std::panic::resume_unwind(p),
+        <span class="kw">match </span><a href="#189">ret</a> {
+            <a href="#207">AnyOrPanic::Any</a>(w) =&gt; <a href="#200">w</a>,
+            <a href="#208">AnyOrPanic::Panic</a>(p) =&gt; std::panic::resume_unwind(<a href="#201">p</a>),
         }
     }
 }
 
 <span class="kw">enum </span>AnyOrPanic {
-    Any(Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;),
-    Panic(Box&lt;<span class="kw">dyn </span>Any + Send + <span class="lifetime">&#39;static</span>&gt;),
+    Any(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
+    Panic(Box&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
 }
 
 <span class="comment">// Helper struct for dynamically dispatching to any kind of Writer and
 // catching panics along the way
 </span><span class="kw">struct </span>AnyWriter {
-    writer: AnyOrPanic,
-    write_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span>AnyWriter, buffer: <span class="kw-2">&amp;</span>[u8]) -&gt; std::io::Result&lt;usize&gt;,
-    flush_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span>AnyWriter) -&gt; std::io::Result&lt;()&gt;,
-    seek_fn: <span class="prelude-ty">Option</span>&lt;<span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span>AnyWriter, pos: std::io::SeekFrom) -&gt; std::io::Result&lt;u64&gt;&gt;,
+    writer: <a href="#206-209">AnyOrPanic</a>,
+    write_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>, buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;,
+    flush_fn: <span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>) -&gt; std::io::Result&lt;()&gt;,
+    seek_fn: <span class="prelude-ty">Option</span>&lt;<span class="kw">fn</span>(s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt;&gt;,
 }
 
-<span class="kw">impl </span>AnyWriter {
-    <span class="kw">fn </span>new&lt;W: Write + Any + Send + <span class="lifetime">&#39;static</span>&gt;(w: W) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span><a href="#213-218">AnyWriter</a> {
+    <span class="kw">fn </span>new&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(w: W) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            writer: AnyOrPanic::Any(Box::new(w)),
+            writer: <a href="#207">AnyOrPanic::Any</a>(Box::new(<a href="#221">w</a>)),
             write_fn: <span class="self">Self</span>::write_fn::&lt;W&gt;,
             flush_fn: <span class="self">Self</span>::flush_fn::&lt;W&gt;,
             seek_fn: <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">fn </span>new_seekable&lt;W: Write + Seek + Any + Send + <span class="lifetime">&#39;static</span>&gt;(w: W) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>new_seekable&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">Seek</a> + <a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(w: W) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            writer: AnyOrPanic::Any(Box::new(w)),
+            writer: <a href="#207">AnyOrPanic::Any</a>(Box::new(<a href="#230">w</a>)),
             write_fn: <span class="self">Self</span>::write_fn::&lt;W&gt;,
             flush_fn: <span class="self">Self</span>::flush_fn::&lt;W&gt;,
             seek_fn: <span class="prelude-val">Some</span>(<span class="self">Self</span>::seek_fn::&lt;W&gt;),
         }
     }
 
-    <span class="kw">fn </span>write_fn&lt;W: Write + <span class="lifetime">&#39;static</span>&gt;(s: <span class="kw-2">&amp;mut </span>AnyWriter, buffer: <span class="kw-2">&amp;</span>[u8]) -&gt; std::io::Result&lt;usize&gt; {
-        s.with_inner(|w: <span class="kw-2">&amp;mut </span>W| w.write(buffer))
+    <span class="kw">fn </span>write_fn&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <span class="lifetime">'static</span>&gt;(s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>, buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+        <a href="#239">s</a>.<a href="#254-274">with_inner</a>(|w: <span class="kw-2">&amp;mut </span>W| <a href="#240">w</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">write</a>(<a href="#239">buffer</a>))
     }
 
-    <span class="kw">fn </span>flush_fn&lt;W: Write + <span class="lifetime">&#39;static</span>&gt;(s: <span class="kw-2">&amp;mut </span>AnyWriter) -&gt; std::io::Result&lt;()&gt; {
-        s.with_inner(|w: <span class="kw-2">&amp;mut </span>W| w.flush())
+    <span class="kw">fn </span>flush_fn&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">Write</a> + <span class="lifetime">'static</span>&gt;(s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>) -&gt; std::io::Result&lt;()&gt; {
+        <a href="#243">s</a>.<a href="#254-274">with_inner</a>(|w: <span class="kw-2">&amp;mut </span>W| <a href="#244">w</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">flush</a>())
     }
 
-    <span class="kw">fn </span>seek_fn&lt;W: Seek + <span class="lifetime">&#39;static</span>&gt;(
-        s: <span class="kw-2">&amp;mut </span>AnyWriter,
-        pos: std::io::SeekFrom,
-    ) -&gt; std::io::Result&lt;u64&gt; {
-        s.with_inner(|w: <span class="kw-2">&amp;mut </span>W| w.seek(pos))
+    <span class="kw">fn </span>seek_fn&lt;W: <a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">Seek</a> + <span class="lifetime">'static</span>&gt;(
+        s: <span class="kw-2">&amp;mut </span><a href="#213-218">AnyWriter</a>,
+        pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>,
+    ) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
+        <a href="#248">s</a>.<a href="#254-274">with_inner</a>(|w: <span class="kw-2">&amp;mut </span>W| <a href="#251">w</a>.<a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">seek</a>(<a href="#249">pos</a>))
     }
 
-    <span class="kw">fn </span>with_inner&lt;W: <span class="lifetime">&#39;static</span>, T, F: FnOnce(<span class="kw-2">&amp;mut </span>W) -&gt; std::io::Result&lt;T&gt;&gt;(
+    <span class="kw">fn </span>with_inner&lt;W: <span class="lifetime">'static</span>, T, F: FnOnce(<span class="kw-2">&amp;mut </span>W) -&gt; std::io::Result&lt;T&gt;&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         func: F,
     ) -&gt; std::io::Result&lt;T&gt; {
-        <span class="kw">match </span><span class="self">self</span>.writer {
-            AnyOrPanic::Any(<span class="kw-2">ref mut </span>writer) =&gt; {
-                <span class="kw">let </span>w = writer.downcast_mut::&lt;W&gt;().unwrap();
-                <span class="kw">match </span>std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| func(w))) {
-                    <span class="prelude-val">Ok</span>(res) =&gt; res,
+        <span class="kw">match </span><a class="self" href="#255">self</a>.writer {
+            <a href="#207">AnyOrPanic::Any</a>(<span class="kw-2">ref mut </span>writer) =&gt; {
+                <span class="kw">let </span>w = <a href="#259">writer</a>.downcast_mut::&lt;W&gt;().unwrap();
+                <span class="kw">match </span>std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| <a href="#256">func</a>(<a href="#260">w</a>))) {
+                    <span class="prelude-val">Ok</span>(res) =&gt; <a href="#262">res</a>,
                     <span class="prelude-val">Err</span>(panic) =&gt; {
-                        <span class="self">self</span>.writer = AnyOrPanic::Panic(panic);
-                        <span class="prelude-val">Err</span>(std::io::Error::new(std::io::ErrorKind::Other, <span class="string">&quot;Panicked&quot;</span>))
+                        <a class="self" href="#255">self</a>.writer = <a href="#208">AnyOrPanic::Panic</a>(<a href="#263">panic</a>);
+                        <span class="prelude-val">Err</span>(std::io::Error::new(std::io::ErrorKind::Other, <span class="string">"Panicked"</span>))
                     }
                 }
             }
-            AnyOrPanic::Panic(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(std::io::Error::new(
+            <a href="#208">AnyOrPanic::Panic</a>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(std::io::Error::new(
                 std::io::ErrorKind::Other,
-                <span class="string">&quot;Panicked before&quot;</span>,
+                <span class="string">"Panicked before"</span>,
             )),
         }
     }
 
-    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>[u8]) -&gt; std::io::Result&lt;usize&gt; {
-        (<span class="self">self</span>.write_fn)(<span class="self">self</span>, buffer)
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+        (<a class="self" href="#276">self</a>.write_fn)(<a class="self" href="#276">self</a>, <a href="#276">buffer</a>)
     }
 
     <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; std::io::Result&lt;()&gt; {
-        (<span class="self">self</span>.flush_fn)(<span class="self">self</span>)
+        (<a class="self" href="#280">self</a>.flush_fn)(<a class="self" href="#280">self</a>)
     }
 
-    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: std::io::SeekFrom) -&gt; std::io::Result&lt;u64&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>seek_fn) = <span class="self">self</span>.seek_fn {
-            seek_fn(<span class="self">self</span>, pos)
+    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">std::io::SeekFrom</a>) -&gt; std::io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>seek_fn) = <a class="self" href="#284">self</a>.seek_fn {
+            <a href="#285">seek_fn</a>(<a class="self" href="#284">self</a>, <a href="#284">pos</a>)
         } <span class="kw">else </span>{
-            <span class="macro">unreachable!</span>()
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>()
         }
     }
 }
@@ -759,5 +761,4 @@
         <span class="macro">assert_eq!</span>(inner.get_ref(), <span class="kw-2">&amp;</span>[<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>]);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

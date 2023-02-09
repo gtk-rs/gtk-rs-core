@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/async_initable.rs`."><title>async_initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/async_initable.rs`."><title>async_initable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -314,48 +316,35 @@
 <a href="#241" id="241">241</a>
 <a href="#242" id="242">242</a>
 <a href="#243" id="243">243</a>
-<a href="#244" id="244">244</a>
-<a href="#245" id="245">245</a>
-<a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{AsyncResult, Cancellable};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, pin::Pin, ptr};
+</span><span class="kw">use crate</span>::{<a href="async_result.rs.html#7-105">AsyncResult</a>, <a href="cancellable.rs.html#7-85">Cancellable</a>};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// This is the asynchronous version of [`Initable`][crate::Initable]; it behaves the same
-    /// in all ways except that initialization is asynchronous. For more details
-    /// see the descriptions on [`Initable`][crate::Initable].
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GAsyncInitable` is an interface for asynchronously initializable objects.
     ///
-    /// A class may implement both the [`Initable`][crate::Initable] and [`AsyncInitable`][crate::AsyncInitable] interfaces.
+    /// This is the asynchronous version of [`Initable`][crate::Initable]; it behaves the same
+    /// in all ways except that initialization is asynchronous. For more details
+    /// see the descriptions on `GInitable`.
+    ///
+    /// A class may implement both the `GInitable` and `GAsyncInitable` interfaces.
     ///
     /// Users of objects implementing this are not intended to use the interface
     /// method directly; instead it will be used automatically in various ways.
     /// For C applications you generally just call [`new_async()`][Self::new_async()]
-    /// directly, or indirectly via a `foo_thing_new_async()` wrapper. This will call
-    /// [`AsyncInitableExt::init_async()`][crate::prelude::AsyncInitableExt::init_async()] under the cover, calling back with [`None`] and
-    /// a set `GError` on failure.
+    /// directly, or indirectly via a foo_thing_new_async() wrapper. This will call
+    /// [`AsyncInitableExt::init_async()`][crate::prelude::AsyncInitableExt::init_async()] under the covers, calling back with `NULL`
+    /// and a set `GError` on failure.
     ///
     /// A typical implementation might look something like this:
     ///
+    /// **⚠️ The following code is in c ⚠️**
     ///
-    ///
-    /// **⚠️ The following code is in C ⚠️**
-    ///
-    /// ```C
+    /// ```c
     /// enum {
     ///    NOT_INITIALIZED,
     ///    INITIALIZING,
@@ -443,16 +432,21 @@
     /// # Implements
     ///
     /// [`AsyncInitableExt`][trait@crate::prelude::AsyncInitableExt]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GAsyncInitable&quot;</span>)]
-    </span><span class="kw">pub struct </span>AsyncInitable(Interface&lt;ffi::GAsyncInitable, ffi::GAsyncInitableIface&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GAsyncInitable"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.AsyncInitable.html">AsyncInitable</a>(Interface&lt;<a href="../../../gio_sys/struct.GAsyncInitable.html">ffi::GAsyncInitable</a>, <a href="../../../gio_sys/struct.GAsyncInitableIface.html">ffi::GAsyncInitableIface</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_async_initable_get_type(),
     }
 }
 
-<span class="kw">impl </span>AsyncInitable {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>AsyncInitable&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#9-123">AsyncInitable</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#9-123">AsyncInitable</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#9-123"><span class="kw">super</span>::AsyncInitable</a>&gt;&gt; <a href="#130">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@AsyncInitable`] methods.
@@ -460,128 +454,109 @@
 /// # Implementors
 ///
 /// [`AsyncInitable`][struct@crate::AsyncInitable], [`DBusConnection`][struct@crate::DBusConnection], [`DBusProxy`][struct@crate::DBusProxy]
-</span><span class="kw">pub trait </span>AsyncInitableExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.AsyncInitableExt.html">AsyncInitableExt</a>: IsA&lt;<a href="#9-123">AsyncInitable</a>&gt; + <a href="#130">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Starts asynchronous initialization of the object implementing the
     /// interface. This must be done before any real use of the object after
-    /// initial construction. If the object also implements [`Initable`][crate::Initable] you can
-    /// optionally call [`InitableExt::init()`][crate::prelude::InitableExt::init()] instead.
+    /// initial construction. If the object also implements #GInitable you can
+    /// optionally call g_initable_init() instead.
     ///
     /// This method is intended for language bindings. If writing in C,
-    /// [`AsyncInitable::new_async()`][crate::AsyncInitable::new_async()] should typically be used instead.
+    /// g_async_initable_new_async() should typically be used instead.
     ///
-    /// When the initialization is finished, `callback` will be called. You can
-    /// then call `g_async_initable_init_finish()` to get the result of the
+    /// When the initialization is finished, @callback will be called. You can
+    /// then call g_async_initable_init_finish() to get the result of the
     /// initialization.
     ///
-    /// Implementations may also support cancellation. If `cancellable` is not
+    /// Implementations may also support cancellation. If @cancellable is not
     /// [`None`], then initialization can be cancelled by triggering the cancellable
     /// object from another thread. If the operation was cancelled, the error
-    /// [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned. If `cancellable` is not [`None`], and
-    /// the object doesn&#39;t support cancellable initialization, the error
+    /// [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned. If @cancellable is not [`None`], and
+    /// the object doesn't support cancellable initialization, the error
     /// [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported] will be returned.
     ///
-    /// As with [`Initable`][crate::Initable], if the object is not initialized, or initialization
+    /// As with #GInitable, if the object is not initialized, or initialization
     /// returns with an error, then all operations on the object except
-    /// `g_object_ref()` and `g_object_unref()` are considered to be invalid, and
-    /// have undefined behaviour. They will often fail with `g_critical()` or
-    /// `g_warning()`, but this must not be relied on.
+    /// g_object_ref() and g_object_unref() are considered to be invalid, and
+    /// have undefined behaviour. They will often fail with g_critical() or
+    /// g_warning(), but this must not be relied on.
     ///
-    /// Callers should not assume that a class which implements [`AsyncInitable`][crate::AsyncInitable] can
-    /// be initialized multiple times; for more information, see [`InitableExt::init()`][crate::prelude::InitableExt::init()].
+    /// Callers should not assume that a class which implements #GAsyncInitable can
+    /// be initialized multiple times; for more information, see g_initable_init().
     /// If a class explicitly supports being initialized multiple times,
-    /// implementation requires yielding all subsequent calls to `init_async()` on the
+    /// implementation requires yielding all subsequent calls to init_async() on the
     /// results of the first call.
     ///
-    /// For classes that also support the [`Initable`][crate::Initable] interface, the default
-    /// implementation of this method will run the [`InitableExt::init()`][crate::prelude::InitableExt::init()] function
+    /// For classes that also support the #GInitable interface, the default
+    /// implementation of this method will run the g_initable_init() function
     /// in a thread, so if you want to support asynchronous initialization via
-    /// threads, just implement the [`AsyncInitable`][crate::AsyncInitable] interface without overriding
+    /// threads, just implement the #GAsyncInitable interface without overriding
     /// any interface methods.
     /// ## `io_priority`
     /// the [I/O priority][io-priority] of the operation
     /// ## `cancellable`
-    /// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore.
+    /// optional #GCancellable object, [`None`] to ignore.
     /// ## `callback`
-    /// a `GAsyncReadyCallback` to call when the request is satisfied
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_async_initable_init_async&quot;</span>)]
-    </span><span class="kw">unsafe fn </span>init_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    /// a #GAsyncReadyCallback to call when the request is satisfied
+    </span><span class="attr">#[doc(alias = <span class="string">"g_async_initable_init_async"</span>)]
+    </span><span class="kw">unsafe fn </span>init_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    );
-
-    <span class="kw">unsafe fn </span>init_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;AsyncInitable&gt;&gt; AsyncInitableExt <span class="kw">for </span>O {
-    <span class="kw">unsafe fn </span>init_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#189">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#190">is_main_context_owner</a>)
+            .then(|| <a href="#189">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>init_async_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#187">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>init_async_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>= ffi::g_async_initable_init_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_async_initable_init_finish(<a href="#202">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#203">res</a>, <span class="kw-2">&amp;mut </span><a href="#206">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#206">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#204">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#213">callback</a>.into_inner();
+            <a href="#215">callback</a>(<a href="#208">result</a>);
         }
         <span class="kw">let </span>callback = init_async_trampoline::&lt;P&gt;;
         ffi::g_async_initable_init_async(
-            <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            io_priority.into_glib(),
-            cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-            <span class="prelude-val">Some</span>(callback),
-            Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <a class="self" href="#184">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#185">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            <a href="#186">cancellable</a>.map(|p| <a href="#222">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            <span class="prelude-val">Some</span>(<a href="#218">callback</a>),
+            Box_::into_raw(<a href="#199">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
         );
     }
 
     <span class="kw">unsafe fn </span>init_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#229">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.init_async(io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#234">obj</a>.<a href="#183-226">init_async</a>(<a href="#230">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#234">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#234">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#235">res</a>);
                 });
             },
         ))
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>AsyncInitable {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;AsyncInitable&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#9-123">AsyncInitable</a>&gt;&gt; <a href="#139-241">AsyncInitableExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

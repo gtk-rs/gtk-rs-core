@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/cancellable.rs`."><title>cancellable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/cancellable.rs`."><title>cancellable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -319,29 +321,16 @@
 <a href="#246" id="246">246</a>
 <a href="#247" id="247">247</a>
 <a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// GCancellable is a thread-safe operation cancellation stack used
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GCancellable` allows operations to be cancelled.
+    ///
+    /// `GCancellable` is a thread-safe operation cancellation stack used
     /// throughout GIO to allow for cancellation of synchronous and
     /// asynchronous operations.
     ///
@@ -359,7 +348,7 @@
     /// Note that disconnecting from this signal (or any signal) in a
     /// multi-threaded program is prone to race conditions. For instance
     /// it is possible that a signal handler may be invoked even after
-    /// a call to `g_signal_handler_disconnect()` for that handler has
+    /// a call to g_signal_handler_disconnect() for that handler has
     /// already returned.
     ///
     /// There is also a problem when cancellation happens right before
@@ -368,8 +357,8 @@
     /// the signal leaves a race condition where this is still happening.
     ///
     /// In order to make it safe and easy to connect handlers there
-    /// are two helper functions: `g_cancellable_connect()` and
-    /// `g_cancellable_disconnect()` which protect against problems
+    /// are two helper functions: g_cancellable_connect() and
+    /// g_cancellable_disconnect() which protect against problems
     /// like this.
     ///
     /// An example of how to us this:
@@ -378,7 +367,7 @@
     /// **⚠️ The following code is in C ⚠️**
     ///
     /// ```C
-    ///     // Make sure we don&#39;t do unnecessary work if already cancelled
+    ///     // Make sure we don't do unnecessary work if already cancelled
     ///     if (g_cancellable_set_error_if_cancelled (cancellable, error))
     ///       return;
     ///
@@ -410,31 +399,31 @@
     /// # Implements
     ///
     /// [`CancellableExt`][trait@crate::prelude::CancellableExt], [`trait@glib::ObjectExt`], [`CancellableExtManual`][trait@crate::prelude::CancellableExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GCancellable&quot;</span>)]
-    </span><span class="kw">pub struct </span>Cancellable(Object&lt;ffi::GCancellable, ffi::GCancellableClass&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"GCancellable"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.Cancellable.html">Cancellable</a>(Object&lt;<a href="../../../gio_sys/struct.GCancellable.html">ffi::GCancellable</a>, <a href="../../../gio_sys/struct.GCancellableClass.html">ffi::GCancellableClass</a>&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_cancellable_get_type(),
     }
 }
 
-<span class="kw">impl </span>Cancellable {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Cancellable&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#7-85">Cancellable</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#7-85">Cancellable</a>&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new [`Cancellable`][crate::Cancellable] object.
+    <span class="doccomment">/// Creates a new #GCancellable object.
     ///
     /// Applications that want to start one or more operations
-    /// that should be cancellable should create a [`Cancellable`][crate::Cancellable]
+    /// that should be cancellable should create a #GCancellable
     /// and pass it to the operations.
     ///
-    /// One [`Cancellable`][crate::Cancellable] can be used in multiple consecutive
+    /// One #GCancellable can be used in multiple consecutive
     /// operations or in multiple concurrent operations.
     ///
     /// # Returns
     ///
-    /// a [`Cancellable`][crate::Cancellable].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; Cancellable {
+    /// a #GCancellable.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_new"</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#7-85">Cancellable</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::g_cancellable_new()) }
     }
 
@@ -442,158 +431,142 @@
     ///
     /// # Returns
     ///
-    /// a [`Cancellable`][crate::Cancellable] from the top
+    /// a #GCancellable from the top
     /// of the stack, or [`None`] if the stack is empty.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_get_current&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_current&quot;</span>)]
-    </span><span class="kw">pub fn </span>current() -&gt; <span class="prelude-ty">Option</span>&lt;Cancellable&gt; {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_get_current"</span>)]
+    #[doc(alias = <span class="string">"get_current"</span>)]
+    </span><span class="kw">pub fn </span>current() -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#7-85">Cancellable</a>&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_cancellable_get_current()) }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>Cancellable {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#7-85">Cancellable</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#103-105"><span class="self">Self</span>::new</a>()
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>Cancellable {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>Cancellable {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#7-85">Cancellable</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#7-85">Cancellable</a> {}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#7-85"><span class="kw">super</span>::Cancellable</a>&gt;&gt; <a href="#130">Sealed</a> <span class="kw">for </span>T {}
+}
 
 <span class="doccomment">/// Trait containing all [`struct@Cancellable`] methods.
 ///
 /// # Implementors
 ///
 /// [`Cancellable`][struct@crate::Cancellable]
-</span><span class="kw">pub trait </span>CancellableExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Will set `self` to cancelled, and will emit the
-    /// [`cancelled`][struct@crate::Cancellable#cancelled] signal. (However, see the warning about
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.CancellableExt.html">CancellableExt</a>: IsA&lt;<a href="#7-85">Cancellable</a>&gt; + <a href="#130">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Will set @self to cancelled, and will emit the
+    /// #GCancellable::cancelled signal. (However, see the warning about
     /// race conditions in the documentation for that signal if you are
     /// planning to connect to it.)
     ///
     /// This function is thread-safe. In other words, you can safely call
     /// it from a thread other than the one running the operation that was
-    /// passed the `self`.
+    /// passed the @self.
     ///
-    /// If `self` is [`None`], this function returns immediately for convenience.
+    /// If @self is [`None`], this function returns immediately for convenience.
     ///
     /// The convention within GIO is that cancelling an asynchronous
     /// operation causes it to complete asynchronously. That is, if you
     /// cancel the operation from the same thread in which it is running,
-    /// then the operation&#39;s `GAsyncReadyCallback` will not be invoked until
+    /// then the operation's #GAsyncReadyCallback will not be invoked until
     /// the application returns to the main loop.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_cancel&quot;</span>)]
-    </span><span class="kw">fn </span>cancel(<span class="kw-2">&amp;</span><span class="self">self</span>);
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_cancel"</span>)]
+    </span><span class="kw">fn </span>cancel(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_cancellable_cancel(<a class="self" href="#157">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
+        }
+    }
 
     <span class="doccomment">/// Gets the file descriptor for a cancellable job. This can be used to
     /// implement cancellable operations on Unix systems. The returned fd will
-    /// turn readable when `self` is cancelled.
+    /// turn readable when @self is cancelled.
     ///
     /// You are not supposed to read from the fd yourself, just check for
     /// readable status. Reading to unset the readable status is done
-    /// with `g_cancellable_reset()`.
+    /// with g_cancellable_reset().
     ///
     /// After a successful return from this function, you should use
-    /// [`release_fd()`][Self::release_fd()] to free up resources allocated for
+    /// g_cancellable_release_fd() to free up resources allocated for
     /// the returned file descriptor.
     ///
-    /// See also `g_cancellable_make_pollfd()`.
+    /// See also g_cancellable_make_pollfd().
     ///
     /// # Returns
     ///
     /// A valid file descriptor. `-1` if the file descriptor
     /// is not supported, or on errors.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_get_fd&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_fd&quot;</span>)]
-    </span><span class="kw">fn </span>fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_get_fd"</span>)]
+    #[doc(alias = <span class="string">"get_fd"</span>)]
+    </span><span class="kw">fn </span>fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_cancellable_get_fd(<a class="self" href="#183">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+    }
 
     <span class="doccomment">/// Checks if a cancellable job has been cancelled.
     ///
     /// # Returns
     ///
-    /// [`true`] if `self` is cancelled,
+    /// [`true`] if @self is cancelled,
     /// FALSE if called with [`None`] or if item is not cancelled.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_is_cancelled&quot;</span>)]
-    </span><span class="kw">fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-
-    <span class="comment">//#[doc(alias = &quot;g_cancellable_make_pollfd&quot;)]
-    //fn make_pollfd(&amp;self, pollfd: /*Ignored*/&amp;mut glib::PollFD) -&gt; bool;
-
-    </span><span class="doccomment">/// Pops `self` off the cancellable stack (verifying that `self`
-    /// is on the top of the stack).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_pop_current&quot;</span>)]
-    </span><span class="kw">fn </span>pop_current(<span class="kw-2">&amp;</span><span class="self">self</span>);
-
-    <span class="doccomment">/// Pushes `self` onto the cancellable stack. The current
-    /// cancellable can then be received using [`Cancellable::current()`][crate::Cancellable::current()].
-    ///
-    /// This is useful when implementing cancellable operations in
-    /// code that does not allow you to pass down the cancellable object.
-    ///
-    /// This is typically called automatically by e.g. [`File`][crate::File] operations,
-    /// so you rarely have to call this yourself.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_push_current&quot;</span>)]
-    </span><span class="kw">fn </span>push_current(<span class="kw-2">&amp;</span><span class="self">self</span>);
-
-    <span class="doccomment">/// Releases a resources previously allocated by [`fd()`][Self::fd()]
-    /// or `g_cancellable_make_pollfd()`.
-    ///
-    /// For compatibility reasons with older releases, calling this function
-    /// is not strictly required, the resources will be automatically freed
-    /// when the `self` is finalized. However, the `self` will
-    /// block scarce file descriptors until it is finalized if this function
-    /// is not called. This can cause the application to run out of file
-    /// descriptors when many `GCancellables` are used at the same time.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_cancellable_release_fd&quot;</span>)]
-    </span><span class="kw">fn </span>release_fd(<span class="kw-2">&amp;</span><span class="self">self</span>);
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;Cancellable&gt;&gt; CancellableExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>cancel(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{
-            ffi::g_cancellable_cancel(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
-        }
-    }
-
-    <span class="kw">fn </span>fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::g_cancellable_get_fd(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
-    }
-
-    <span class="kw">fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_is_cancelled"</span>)]
+    </span><span class="kw">fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_cancellable_is_cancelled(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#194">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">//fn make_pollfd(&amp;self, pollfd: /*Ignored*/&amp;mut glib::PollFD) -&gt; bool {
+    <span class="comment">//#[doc(alias = "g_cancellable_make_pollfd")]
+    //fn make_pollfd(&amp;self, pollfd: /*Ignored*/&amp;mut glib::PollFD) -&gt; bool {
     //    unsafe { TODO: call ffi:g_cancellable_make_pollfd() }
     //}
 
+    </span><span class="doccomment">/// Pops @self off the cancellable stack (verifying that @self
+    /// is on the top of the stack).
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_pop_current"</span>)]
     </span><span class="kw">fn </span>pop_current(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_cancellable_pop_current(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::g_cancellable_pop_current(<a class="self" href="#210">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="kw">fn </span>push_current(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="doccomment">/// Pushes @self onto the cancellable stack. The current
+    /// cancellable can then be received using g_cancellable_get_current().
+    ///
+    /// This is useful when implementing cancellable operations in
+    /// code that does not allow you to pass down the cancellable object.
+    ///
+    /// This is typically called automatically by e.g. #GFile operations,
+    /// so you rarely have to call this yourself.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_push_current"</span>)]
+    </span><span class="kw">fn </span>push_current(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_cancellable_push_current(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::g_cancellable_push_current(<a class="self" href="#225">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
-    <span class="kw">fn </span>release_fd(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="doccomment">/// Releases a resources previously allocated by g_cancellable_get_fd()
+    /// or g_cancellable_make_pollfd().
+    ///
+    /// For compatibility reasons with older releases, calling this function
+    /// is not strictly required, the resources will be automatically freed
+    /// when the @self is finalized. However, the @self will
+    /// block scarce file descriptors until it is finalized if this function
+    /// is not called. This can cause the application to run out of file
+    /// descriptors when many #GCancellables are used at the same time.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_cancellable_release_fd"</span>)]
+    </span><span class="kw">fn </span>release_fd(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_cancellable_release_fd(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::g_cancellable_release_fd(<a class="self" href="#241">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Cancellable {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Cancellable&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#7-85">Cancellable</a>&gt;&gt; <a href="#139-246">CancellableExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

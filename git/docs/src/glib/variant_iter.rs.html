@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_iter.rs`."><title>variant_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_iter.rs`."><title>variant_iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -442,207 +444,207 @@
 <a href="#369" id="369">369</a>
 <a href="#370" id="370">370</a>
 <a href="#371" id="371">371</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // This is similar to the GVariantIter provided by glib, but that would
-// introduce a heap allocation and doesn&#39;t provide a way to determine how
+// introduce a heap allocation and doesn't provide a way to determine how
 // many items are left in the iterator.
 
-</span><span class="kw">use </span>std::iter::{DoubleEndedIterator, ExactSizeIterator, FusedIterator};
+</span><span class="kw">use </span>std::iter::{<a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a>, <a href="https://doc.rust-lang.org/nightly/core/iter/traits/exact_size/trait.ExactSizeIterator.html">ExactSizeIterator</a>, <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">FusedIterator</a>};
 
-<span class="kw">use crate</span>::{translate::<span class="kw-2">*</span>, Variant};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/derive.Variant.html">Variant</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Iterator over items in a variant.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VariantIter {
-    variant: Variant,
-    head: usize,
-    tail: usize,
+</span><span class="kw">pub struct </span><a href="../../glib/struct.VariantIter.html">VariantIter</a> {
+    variant: <a href="variant.rs.html#117-376">Variant</a>,
+    head: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    tail: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
-<span class="kw">impl </span>VariantIter {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: Variant) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>tail = variant.n_children();
+<span class="kw">impl </span><a href="#14-18">VariantIter</a> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <a href="variant.rs.html#117-376">Variant</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>tail = <a href="#21">variant</a>.<a href="variant.rs.html#1365-1369">n_children</a>();
         <span class="self">Self </span>{
-            variant,
+            <a href="#21">variant</a>,
             head: <span class="number">0</span>,
-            tail,
+            <a href="#22">tail</a>,
         }
     }
 }
 
-<span class="kw">impl </span>Iterator <span class="kw">for </span>VariantIter {
-    <span class="kw">type </span>Item = Variant;
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {
+    <span class="kw">type </span>Item = <a href="variant.rs.html#117-376">Variant</a>;
 
-    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="variant.rs.html#117-376">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>value = <span class="self">self</span>.variant.child_value(<span class="self">self</span>.head);
-            <span class="self">self</span>.head += <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(value)
+            <span class="kw">let </span>value = <a class="self" href="#34">self</a>.variant.<a href="variant.rs.html#619-624">child_value</a>(<a class="self" href="#34">self</a>.head);
+            <a class="self" href="#34">self</a>.head += <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a href="#38">value</a>)
         }
     }
 
-    <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
-        <span class="kw">let </span>size = <span class="self">self</span>.tail - <span class="self">self</span>.head;
-        (size, <span class="prelude-val">Some</span>(size))
+    <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
+        <span class="kw">let </span>size = <a class="self" href="#44">self</a>.tail - <a class="self" href="#44">self</a>.head;
+        (<a href="#45">size</a>, <span class="prelude-val">Some</span>(<a href="#45">size</a>))
     }
 
-    <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.tail - <span class="self">self</span>.head
+    <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#49">self</a>.tail - <a class="self" href="#49">self</a>.head
     }
 
-    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: usize) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
-        <span class="kw">let </span>(end, overflow) = <span class="self">self</span>.head.overflowing_add(n);
+    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="variant.rs.html#117-376">Variant</a>&gt; {
+        <span class="kw">let </span>(end, overflow) = <a class="self" href="#53">self</a>.head.overflowing_add(<a href="#53">n</a>);
         <span class="kw">if </span>end &gt;= <span class="self">self</span>.tail || overflow {
-            <span class="self">self</span>.head = <span class="self">self</span>.tail;
+            <a class="self" href="#53">self</a>.head = <a class="self" href="#53">self</a>.tail;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.head = end + <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.variant.child_value(end))
+            <a class="self" href="#53">self</a>.head = <a href="#54">end</a> + <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#53">self</a>.variant.<a href="variant.rs.html#619-624">child_value</a>(<a href="#54">end</a>))
         }
     }
 
-    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="variant.rs.html#117-376">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.variant.child_value(<span class="self">self</span>.tail - <span class="number">1</span>))
+            <span class="prelude-val">Some</span>(<a class="self" href="#64">self</a>.variant.<a href="variant.rs.html#619-624">child_value</a>(<a class="self" href="#64">self</a>.tail - <span class="number">1</span>))
         }
     }
 }
 
-<span class="kw">impl </span>DoubleEndedIterator <span class="kw">for </span>VariantIter {
-    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {
+    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="variant.rs.html#117-376">Variant</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.tail -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.variant.child_value(<span class="self">self</span>.tail))
+            <a class="self" href="#74">self</a>.tail -= <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#74">self</a>.variant.<a href="variant.rs.html#619-624">child_value</a>(<a class="self" href="#74">self</a>.tail))
         }
     }
 
-    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: usize) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
-        <span class="kw">let </span>(end, overflow) = <span class="self">self</span>.tail.overflowing_sub(n);
+    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="variant.rs.html#117-376">Variant</a>&gt; {
+        <span class="kw">let </span>(end, overflow) = <a class="self" href="#83">self</a>.tail.overflowing_sub(<a href="#83">n</a>);
         <span class="kw">if </span>end &lt;= <span class="self">self</span>.head || overflow {
-            <span class="self">self</span>.head = <span class="self">self</span>.tail;
+            <a class="self" href="#83">self</a>.head = <a class="self" href="#83">self</a>.tail;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.tail = end - <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.variant.child_value(end - <span class="number">1</span>))
+            <a class="self" href="#83">self</a>.tail = <a href="#84">end</a> - <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#83">self</a>.variant.<a href="variant.rs.html#619-624">child_value</a>(<a href="#84">end</a> - <span class="number">1</span>))
         }
     }
 }
 
-<span class="kw">impl </span>ExactSizeIterator <span class="kw">for </span>VariantIter {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/exact_size/trait.ExactSizeIterator.html">ExactSizeIterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {}
 
-<span class="kw">impl </span>FusedIterator <span class="kw">for </span>VariantIter {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">FusedIterator</a> <span class="kw">for </span><a href="#14-18">VariantIter</a> {}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Iterator over items in a variant of type `as`.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Variant,
-    head: usize,
-    tail: usize,
+</span><span class="kw">pub struct </span><a href="../../glib/struct.VariantStrIter.html">VariantStrIter</a>&lt;<span class="lifetime">'a</span>&gt; {
+    variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#117-376">Variant</a>,
+    head: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    tail: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Variant) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>tail = variant.n_children();
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; VariantStrIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(variant: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="variant.rs.html#117-376">Variant</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>tail = <a href="#109">variant</a>.<a href="variant.rs.html#1365-1369">n_children</a>();
         <span class="self">Self </span>{
-            variant,
+            <a href="#109">variant</a>,
             head: <span class="number">0</span>,
-            tail,
+            <a href="#110">tail</a>,
         }
     }
 
-    <span class="kw">fn </span>impl_get(<span class="kw-2">&amp;</span><span class="self">self</span>, i: usize) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">fn </span>impl_get(<span class="kw-2">&amp;</span><span class="self">self</span>, i: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>p: <span class="kw-2">*mut </span>libc::c_char = std::ptr::null_mut();
-            <span class="kw">let </span>s = <span class="string">b&quot;&amp;s\0&quot;</span>;
+            <span class="kw">let </span>s = <span class="string">b"&amp;s\0"</span>;
             ffi::g_variant_get_child(
-                <span class="self">self</span>.variant.to_glib_none().<span class="number">0</span>,
-                i,
-                s <span class="kw">as </span><span class="kw-2">*const </span>u8 <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="kw-2">&amp;</span>p,
-                std::ptr::null::&lt;i8&gt;(),
+                <a class="self" href="#118">self</a>.variant.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#118">i</a>,
+                <a href="#121">s</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;</span><a href="#120">p</a>,
+                std::ptr::null::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i8.html">i8</a>&gt;(),
             );
-            <span class="kw">let </span>p = std::ffi::CStr::from_ptr(p);
-            p.to_str().unwrap()
+            <span class="kw">let </span>p = std::ffi::CStr::from_ptr(<a href="#120">p</a>);
+            <a href="#129">p</a>.to_str().unwrap()
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>;
 
-    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>v = <span class="self">self</span>.impl_get(<span class="self">self</span>.head);
-            <span class="self">self</span>.head += <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(v)
+            <span class="kw">let </span>v = <a class="self" href="#138">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#138">self</a>.head);
+            <a class="self" href="#138">self</a>.head += <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a href="#142">v</a>)
         }
     }
 
-    <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
-        <span class="kw">let </span>size = <span class="self">self</span>.tail - <span class="self">self</span>.head;
-        (size, <span class="prelude-val">Some</span>(size))
+    <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
+        <span class="kw">let </span>size = <a class="self" href="#148">self</a>.tail - <a class="self" href="#148">self</a>.head;
+        (<a href="#149">size</a>, <span class="prelude-val">Some</span>(<a href="#149">size</a>))
     }
 
-    <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.tail - <span class="self">self</span>.head
+    <span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#153">self</a>.tail - <a class="self" href="#153">self</a>.head
     }
 
-    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
-        <span class="kw">let </span>(end, overflow) = <span class="self">self</span>.head.overflowing_add(n);
+    <span class="kw">fn </span>nth(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
+        <span class="kw">let </span>(end, overflow) = <a class="self" href="#157">self</a>.head.overflowing_add(<a href="#157">n</a>);
         <span class="kw">if </span>end &gt;= <span class="self">self</span>.tail || overflow {
-            <span class="self">self</span>.head = <span class="self">self</span>.tail;
+            <a class="self" href="#157">self</a>.head = <a class="self" href="#157">self</a>.tail;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.head = end + <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.impl_get(end))
+            <a class="self" href="#157">self</a>.head = <a href="#158">end</a> + <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#157">self</a>.<a href="#118-132">impl_get</a>(<a href="#158">end</a>))
         }
     }
 
-    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
+    <span class="kw">fn </span>last(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.impl_get(<span class="self">self</span>.tail - <span class="number">1</span>))
+            <span class="prelude-val">Some</span>(<a class="self" href="#168">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#168">self</a>.tail - <span class="number">1</span>))
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; DoubleEndedIterator <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.head == <span class="self">self</span>.tail {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.tail -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.impl_get(<span class="self">self</span>.tail))
+            <a class="self" href="#178">self</a>.tail -= <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#178">self</a>.<a href="#118-132">impl_get</a>(<a class="self" href="#178">self</a>.tail))
         }
     }
 
-    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
-        <span class="kw">let </span>(end, overflow) = <span class="self">self</span>.tail.overflowing_sub(n);
+    <span class="kw">fn </span>nth_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
+        <span class="kw">let </span>(end, overflow) = <a class="self" href="#187">self</a>.tail.overflowing_sub(<a href="#187">n</a>);
         <span class="kw">if </span>end &lt;= <span class="self">self</span>.head || overflow {
-            <span class="self">self</span>.head = <span class="self">self</span>.tail;
+            <a class="self" href="#187">self</a>.head = <a class="self" href="#187">self</a>.tail;
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.tail = end - <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.impl_get(end - <span class="number">1</span>))
+            <a class="self" href="#187">self</a>.tail = <a href="#188">end</a> - <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<a class="self" href="#187">self</a>.<a href="#118-132">impl_get</a>(<a href="#188">end</a> - <span class="number">1</span>))
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ExactSizeIterator <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/exact_size/trait.ExactSizeIterator.html">ExactSizeIterator</a> <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">'a</span>&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FusedIterator <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">FusedIterator</a> <span class="kw">for </span>VariantStrIter&lt;<span class="lifetime">'a</span>&gt; {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
@@ -655,19 +657,19 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_variant() {
-        <span class="kw">let </span>v = Variant::from_variant(<span class="kw-2">&amp;</span><span class="string">&quot;foo&quot;</span>.to_string().to_variant());
+        <span class="kw">let </span>v = Variant::from_variant(<span class="kw-2">&amp;</span><span class="string">"foo"</span>.to_string().to_variant());
         <span class="kw">let </span>vec: Vec&lt;String&gt; = v.iter().map(|i| i.get().unwrap()).collect();
-        <span class="macro">assert_eq!</span>(vec, <span class="macro">vec!</span>[<span class="string">&quot;foo&quot;</span>.to_string()]);
+        <span class="macro">assert_eq!</span>(vec, <span class="macro">vec!</span>[<span class="string">"foo"</span>.to_string()]);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_array() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;foo&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;bar&quot;</span>.to_string().to_variant(),
+            <span class="string">"foo"</span>.to_string().to_variant(),
+            <span class="string">"bar"</span>.to_string().to_variant(),
         ]);
         <span class="kw">let </span>vec: Vec&lt;String&gt; = v.iter().map(|i| i.get().unwrap()).collect();
-        <span class="kw">let </span>a = <span class="macro">vec!</span>[<span class="string">&quot;foo&quot;</span>.to_string(), <span class="string">&quot;bar&quot;</span>.to_string()];
+        <span class="kw">let </span>a = <span class="macro">vec!</span>[<span class="string">"foo"</span>.to_string(), <span class="string">"bar"</span>.to_string()];
         <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>vec, <span class="kw-2">&amp;</span>a);
         <span class="kw">let </span>vec: Vec&lt;<span class="kw">_</span>&gt; = v.array_iter_str().unwrap().collect();
         <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>vec, <span class="kw-2">&amp;</span>a);
@@ -676,25 +678,25 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_tuple() {
         <span class="kw">let </span>v = Variant::tuple_from_iter([
-            <span class="string">&quot;foo&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;bar&quot;</span>.to_string().to_variant(),
+            <span class="string">"foo"</span>.to_string().to_variant(),
+            <span class="string">"bar"</span>.to_string().to_variant(),
         ]);
         <span class="kw">let </span>vec: Vec&lt;String&gt; = v.iter().map(|i| i.get().unwrap()).collect();
-        <span class="macro">assert_eq!</span>(vec, <span class="macro">vec!</span>[<span class="string">&quot;foo&quot;</span>.to_string(), <span class="string">&quot;bar&quot;</span>.to_string()]);
+        <span class="macro">assert_eq!</span>(vec, <span class="macro">vec!</span>[<span class="string">"foo"</span>.to_string(), <span class="string">"bar"</span>.to_string()]);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_dictentry() {
-        <span class="kw">let </span>v = DictEntry::new(<span class="string">&quot;foo&quot;</span>, <span class="number">1337</span>).to_variant();
-        <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, v.iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
+        <span class="kw">let </span>v = DictEntry::new(<span class="string">"foo"</span>, <span class="number">1337</span>).to_variant();
+        <span class="macro">println!</span>(<span class="string">"{:?}"</span>, v.iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
         <span class="macro">assert_eq!</span>(v.iter().count(), <span class="number">2</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_map() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::new();
-        map.insert(<span class="string">&quot;foo&quot;</span>, <span class="number">1</span>);
-        map.insert(<span class="string">&quot;bar&quot;</span>, <span class="number">1</span>);
+        map.insert(<span class="string">"foo"</span>, <span class="number">1</span>);
+        map.insert(<span class="string">"bar"</span>, <span class="number">1</span>);
         <span class="kw">let </span>v = map.to_variant();
         <span class="macro">assert_eq!</span>(v.iter().count(), <span class="number">2</span>);
     }
@@ -702,12 +704,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_nth() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;3&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;4&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;5&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
+            <span class="string">"3"</span>.to_string().to_variant(),
+            <span class="string">"4"</span>.to_string().to_variant(),
+            <span class="string">"5"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span><span class="kw-2">mut </span>iter = v.iter();
@@ -715,16 +717,16 @@
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">6</span>);
         <span class="macro">assert_eq!</span>(
             iter.nth(<span class="number">1</span>).map(|v| v.get::&lt;String&gt;().unwrap()),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;1&quot;</span>.into())
+            <span class="prelude-val">Some</span>(<span class="string">"1"</span>.into())
         );
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(
             iter.next().map(|v| v.get::&lt;String&gt;().unwrap()),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>.into())
+            <span class="prelude-val">Some</span>(<span class="string">"2"</span>.into())
         );
         <span class="macro">assert_eq!</span>(
             iter.nth_back(<span class="number">2</span>).map(|v| v.get::&lt;String&gt;().unwrap()),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;3&quot;</span>.into())
+            <span class="prelude-val">Some</span>(<span class="string">"3"</span>.into())
         );
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">None</span>);
@@ -734,9 +736,9 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_count() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span>iter = v.iter();
@@ -748,9 +750,9 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_iter_last() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span>iter = v.iter();
@@ -758,28 +760,28 @@
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">3</span>);
         <span class="macro">assert_eq!</span>(
             iter.last().map(|v| v.get::&lt;String&gt;().unwrap()),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>.into())
+            <span class="prelude-val">Some</span>(<span class="string">"2"</span>.into())
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_str_iter_nth() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;3&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;4&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;5&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
+            <span class="string">"3"</span>.to_string().to_variant(),
+            <span class="string">"4"</span>.to_string().to_variant(),
+            <span class="string">"5"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span><span class="kw-2">mut </span>iter = v.array_iter_str().unwrap();
 
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">6</span>);
-        <span class="macro">assert_eq!</span>(iter.nth(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;1&quot;</span>));
+        <span class="macro">assert_eq!</span>(iter.nth(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="string">"1"</span>));
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">4</span>);
-        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>));
-        <span class="macro">assert_eq!</span>(iter.nth_back(<span class="number">2</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;3&quot;</span>));
+        <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(<span class="string">"2"</span>));
+        <span class="macro">assert_eq!</span>(iter.nth_back(<span class="number">2</span>), <span class="prelude-val">Some</span>(<span class="string">"3"</span>));
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">None</span>);
         <span class="macro">assert_eq!</span>(iter.next_back(), <span class="prelude-val">None</span>);
@@ -788,9 +790,9 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_str_iter_count() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span>iter = v.array_iter_str().unwrap();
@@ -802,16 +804,15 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variant_str_iter_last() {
         <span class="kw">let </span>v = Variant::array_from_iter::&lt;String&gt;([
-            <span class="string">&quot;0&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;1&quot;</span>.to_string().to_variant(),
-            <span class="string">&quot;2&quot;</span>.to_string().to_variant(),
+            <span class="string">"0"</span>.to_string().to_variant(),
+            <span class="string">"1"</span>.to_string().to_variant(),
+            <span class="string">"2"</span>.to_string().to_variant(),
         ]);
 
         <span class="kw">let </span>iter = v.array_iter_str().unwrap();
 
         <span class="macro">assert_eq!</span>(iter.len(), <span class="number">3</span>);
-        <span class="macro">assert_eq!</span>(iter.last(), <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>));
+        <span class="macro">assert_eq!</span>(iter.last(), <span class="prelude-val">Some</span>(<span class="string">"2"</span>));
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

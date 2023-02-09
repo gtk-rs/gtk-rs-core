@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/slice.rs`."><title>slice.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1062,84 +1064,81 @@
 <a href="#989" id="989">989</a>
 <a href="#990" id="990">990</a>
 <a href="#991" id="991">991</a>
-<a href="#992" id="992">992</a>
-<a href="#993" id="993">993</a>
-<a href="#994" id="994">994</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{fmt, marker::PhantomData, mem, ptr};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, marker::PhantomData, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span><a href="../lib.rs.html#142"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Minimum size of the `Slice` allocation in bytes.
-</span><span class="kw">const </span>MIN_SIZE: usize = <span class="number">256</span>;
+</span><span class="kw">const </span>MIN_SIZE: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> = <span class="number">256</span>;
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Slice of elements of type `T` allocated by the GLib allocator.
 ///
 /// This can be used like a `&amp;[T]`, `&amp;mut [T]` and `Vec&lt;T&gt;`.
-</span><span class="kw">pub struct </span>Slice&lt;T: TransparentType&gt; {
+</span><span class="kw">pub struct </span><a href="../../../glib/collections/slice/struct.Slice.html">Slice</a>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; {
     ptr: ptr::NonNull&lt;T::GlibType&gt;,
-    len: usize,
-    capacity: usize,
+    len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    capacity: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
-<span class="kw">unsafe impl</span>&lt;T: TransparentType + Send&gt; Send <span class="kw">for </span>Slice&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>Slice&lt;T&gt; {}
 
-<span class="kw">unsafe impl</span>&lt;T: TransparentType + Sync&gt; Sync <span class="kw">for </span>Slice&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span>Slice&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: fmt::Debug + TransparentType&gt; fmt::Debug <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="self">self</span>.as_slice().fmt(f)
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a class="self" href="#26">self</a>.<a href="#645-653">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt</a>(<a href="#26">f</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: PartialEq + TransparentType&gt; PartialEq <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.as_slice() == other.as_slice()
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#33">self</a>.<a href="#645-653">as_slice</a>() == <a href="#33">other</a>.<a href="#645-653">as_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: Eq + TransparentType&gt; Eq <span class="kw">for </span>Slice&lt;T&gt; {}
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span>Slice&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: PartialOrd + TransparentType&gt; PartialOrd <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
-        <span class="self">self</span>.as_slice().partial_cmp(other.as_slice())
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">std::cmp::Ordering</a>&gt; {
+        <a class="self" href="#42">self</a>.<a href="#645-653">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">partial_cmp</a>(<a href="#42">other</a>.<a href="#645-653">as_slice</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: Ord + TransparentType&gt; Ord <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; std::cmp::Ordering {
-        <span class="self">self</span>.as_slice().cmp(other.as_slice())
+    </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">std::cmp::Ordering</a> {
+        <a class="self" href="#49">self</a>.<a href="#645-653">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<a href="#49">other</a>.<a href="#645-653">as_slice</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: std::hash::Hash + TransparentType&gt; std::hash::Hash <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">std::hash::Hash</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">std::hash::Hash</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>hash&lt;H: std::hash::Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-        <span class="self">self</span>.as_slice().hash(state)
+    </span><span class="kw">fn </span>hash&lt;H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">std::hash::Hasher</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        <a class="self" href="#56">self</a>.<a href="#645-653">as_slice</a>().<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">hash</a>(<a href="#56">state</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: PartialEq + TransparentType&gt; PartialEq&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; PartialEq&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[T]) -&gt; bool {
-        <span class="self">self</span>.as_slice() == other
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[T]) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#63">self</a>.<a href="#645-653">as_slice</a>() == <a href="#63">other</a>
     }
 }
 
-<span class="kw">impl</span>&lt;T: PartialEq + TransparentType&gt; PartialEq&lt;Slice&lt;T&gt;&gt; <span class="kw">for </span>[T] {
+<span class="kw">impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> + <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; PartialEq&lt;Slice&lt;T&gt;&gt; <span class="kw">for </span>[T] {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Slice&lt;T&gt;) -&gt; bool {
-        <span class="self">self </span>== other.as_slice()
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Slice&lt;T&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="self"><a href="#70">self</a> </span>== <a href="#70">other</a>.<a href="#645-653">as_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Drop <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
@@ -1150,68 +1149,68 @@
             }
 
             <span class="kw">if </span><span class="self">self</span>.capacity != <span class="number">0 </span>{
-                ffi::g_free(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span>ffi::gpointer);
+                ffi::g_free(<a class="self" href="#77">self</a>.ptr.as_ptr() <span class="kw">as </span>ffi::gpointer);
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; AsRef&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; AsRef&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="self">self</span>.as_slice()
+        <a class="self" href="#94">self</a>.<a href="#645-653">as_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; AsMut&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; AsMut&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="self">self</span>.as_mut_slice()
+        <a class="self" href="#101">self</a>.<a href="#658-666">as_mut_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::borrow::Borrow&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; std::borrow::Borrow&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="self">self</span>.as_slice()
+        <a class="self" href="#108">self</a>.<a href="#645-653">as_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::borrow::BorrowMut&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; std::borrow::BorrowMut&lt;[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>borrow_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="self">self</span>.as_mut_slice()
+        <a class="self" href="#115">self</a>.<a href="#658-666">as_mut_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::ops::Deref <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="kw">type </span>Target = [T];
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="self">self</span>.as_slice()
+        <a class="self" href="#124">self</a>.<a href="#645-653">as_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::ops::DerefMut <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html">std::ops::DerefMut</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="self">self</span>.as_mut_slice()
+        <a class="self" href="#131">self</a>.<a href="#658-666">as_mut_slice</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Default <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+        <a href="#524-530"><span class="self">Self</span>::new</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::iter::Extend&lt;T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; std::iter::Extend&lt;T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>extend&lt;I: IntoIterator&lt;Item = T&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
-        <span class="kw">let </span>iter = iter.into_iter();
-        <span class="self">self</span>.reserve(iter.size_hint().<span class="number">0</span>);
+        <span class="kw">let </span>iter = <a href="#145">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>();
+        <a class="self" href="#145">self</a>.<a href="#615-640">reserve</a>(<a href="#146">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">size_hint</a>().<span class="number">0</span>);
 
         <span class="kw">for </span>item <span class="kw">in </span>iter {
             <span class="self">self</span>.push(item);
@@ -1219,11 +1218,11 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType + <span class="lifetime">&#39;a</span>&gt; std::iter::Extend&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'a</span>&gt; std::iter::Extend&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>extend&lt;I: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
-        <span class="kw">let </span>iter = iter.into_iter();
-        <span class="self">self</span>.reserve(iter.size_hint().<span class="number">0</span>);
+    </span><span class="kw">fn </span>extend&lt;I: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) {
+        <span class="kw">let </span>iter = <a href="#157">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>();
+        <a class="self" href="#157">self</a>.<a href="#615-640">reserve</a>(<a href="#158">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">size_hint</a>().<span class="number">0</span>);
 
         <span class="kw">for </span>item <span class="kw">in </span>iter {
             <span class="self">self</span>.push(item.clone());
@@ -1231,64 +1230,64 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::iter::FromIterator&lt;T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; std::iter::FromIterator&lt;T&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from_iter&lt;I: IntoIterator&lt;Item = T&gt;&gt;(iter: I) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>iter = iter.into_iter();
-        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(iter.size_hint().<span class="number">0</span>);
+        <span class="kw">let </span>iter = <a href="#169">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>();
+        <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#535-539"><span class="self">Self</span>::with_capacity</a>(<a href="#170">iter</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">size_hint</a>().<span class="number">0</span>);
         <span class="kw">for </span>item <span class="kw">in </span>iter {
             s.push(item);
         }
-        s
+        <a href="#171">s</a>
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType&gt; std::iter::IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Slice&lt;T&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T;
-    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">&#39;a</span>, T&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Slice&lt;T&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T;
+    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">'a</span>, T&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <span class="self">self</span>.as_slice().iter()
+        <a class="self" href="#184">self</a>.<a href="#645-653">as_slice</a>().iter()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType&gt; std::iter::IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Slice&lt;T&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T;
-    <span class="kw">type </span>IntoIter = std::slice::IterMut&lt;<span class="lifetime">&#39;a</span>, T&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Slice&lt;T&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T;
+    <span class="kw">type </span>IntoIter = std::slice::IterMut&lt;<span class="lifetime">'a</span>, T&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        <span class="self">self</span>.as_mut_slice().iter_mut()
+        <a class="self" href="#194">self</a>.<a href="#658-666">as_mut_slice</a>().iter_mut()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::iter::IntoIterator <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="kw">type </span>Item = T;
     <span class="kw">type </span>IntoIter = IntoIter&lt;T&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-        IntoIter::new(<span class="self">self</span>)
+        <a href="#218-226">IntoIter::new</a>(<a class="self" href="#204">self</a>)
     }
 }
 
-<span class="kw">pub struct </span>IntoIter&lt;T: TransparentType&gt; {
+<span class="kw">pub struct </span><a href="../../../glib/collections/slice/struct.IntoIter.html">IntoIter</a>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; {
     ptr: ptr::NonNull&lt;T::GlibType&gt;,
     idx: ptr::NonNull&lt;T::GlibType&gt;,
-    len: usize,
-    empty: bool,
+    len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    empty: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; IntoIter&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; IntoIter&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>new(slice: Slice&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>slice = mem::ManuallyDrop::new(slice);
-        IntoIter {
-            ptr: slice.ptr,
-            idx: slice.ptr,
-            len: slice.len,
-            empty: slice.capacity == <span class="number">0</span>,
+        <span class="kw">let </span>slice = mem::ManuallyDrop::new(<a href="#218">slice</a>);
+        <a href="#209-214">IntoIter</a> {
+            ptr: <a href="#219">slice</a>.ptr,
+            idx: <a href="#219">slice</a>.ptr,
+            len: <a href="#219">slice</a>.len,
+            empty: <a href="#219">slice</a>.capacity == <span class="number">0</span>,
         }
     }
 
@@ -1300,7 +1299,7 @@
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts(<span class="self">self</span>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <span class="self">self</span>.len)
+                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a class="self" href="#231">self</a>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#231">self</a>.len)
             }
         }
     }
@@ -1313,13 +1312,13 @@
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;mut </span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts_mut(<span class="self">self</span>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <span class="self">self</span>.len)
+                std::slice::from_raw_parts_mut(<a class="self" href="#244">self</a>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#244">self</a>.len)
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Drop <span class="kw">for </span>IntoIter&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>IntoIter&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
@@ -1330,13 +1329,13 @@
             }
 
             <span class="kw">if </span>!<span class="self">self</span>.empty {
-                ffi::g_free(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span>ffi::gpointer);
+                ffi::g_free(<a class="self" href="#257">self</a>.ptr.as_ptr() <span class="kw">as </span>ffi::gpointer);
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Iterator <span class="kw">for </span>IntoIter&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a> <span class="kw">for </span>IntoIter&lt;T&gt; {
     <span class="kw">type </span>Item = T;
 
     <span class="attr">#[inline]
@@ -1346,21 +1345,21 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>p = <span class="self">self</span>.idx.as_ptr();
-            <span class="self">self</span>.len -= <span class="number">1</span>;
-            <span class="self">self</span>.idx = ptr::NonNull::new_unchecked(p.add(<span class="number">1</span>));
-            <span class="prelude-val">Some</span>(ptr::read(p <span class="kw">as </span><span class="kw-2">*mut </span>T))
+            <span class="kw">let </span>p = <a class="self" href="#276">self</a>.idx.as_ptr();
+            <a class="self" href="#276">self</a>.len -= <span class="number">1</span>;
+            <a class="self" href="#276">self</a>.idx = ptr::NonNull::new_unchecked(<a href="#282">p</a>.add(<span class="number">1</span>));
+            <span class="prelude-val">Some</span>(ptr::read(<a href="#282">p</a> <span class="kw">as </span><span class="kw-2">*mut </span>T))
         }
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
-        (<span class="self">self</span>.len, <span class="prelude-val">Some</span>(<span class="self">self</span>.len))
+    </span><span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) {
+        (<a class="self" href="#290">self</a>.len, <span class="prelude-val">Some</span>(<a class="self" href="#290">self</a>.len))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>count(<span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.len
+    </span><span class="kw">fn </span>count(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#295">self</a>.len
     }
 
     <span class="attr">#[inline]
@@ -1368,190 +1367,190 @@
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.len -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ ptr::read(<span class="self">self</span>.idx.as_ptr().add(<span class="self">self</span>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T) })
+            <a class="self" href="#300">self</a>.len -= <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ ptr::read(<a class="self" href="#300">self</a>.idx.as_ptr().add(<a class="self" href="#300">self</a>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T) })
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; DoubleEndedIterator <span class="kw">for </span>IntoIter&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/double_ended/trait.DoubleEndedIterator.html">DoubleEndedIterator</a> <span class="kw">for </span>IntoIter&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
-            <span class="self">self</span>.len -= <span class="number">1</span>;
-            <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ ptr::read(<span class="self">self</span>.idx.as_ptr().add(<span class="self">self</span>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T) })
+            <a class="self" href="#312">self</a>.len -= <span class="number">1</span>;
+            <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ ptr::read(<a class="self" href="#312">self</a>.idx.as_ptr().add(<a class="self" href="#312">self</a>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T) })
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; ExactSizeIterator <span class="kw">for </span>IntoIter&lt;T&gt; {}
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/exact_size/trait.ExactSizeIterator.html">ExactSizeIterator</a> <span class="kw">for </span>IntoIter&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; std::iter::FusedIterator <span class="kw">for </span>IntoIter&lt;T&gt; {}
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/marker/trait.FusedIterator.html">std::iter::FusedIterator</a> <span class="kw">for </span>IntoIter&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; From&lt;Slice&lt;T&gt;&gt; <span class="kw">for </span>Vec&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; From&lt;Slice&lt;T&gt;&gt; <span class="kw">for </span>Vec&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(<span class="kw-2">mut </span>value: Slice&lt;T&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>s = Vec::with_capacity(value.len);
-            ptr::copy_nonoverlapping(value.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>T, s.as_mut_ptr(), value.len);
-            s.set_len(value.len);
-            value.len = <span class="number">0</span>;
-            s
+            <span class="kw">let </span><span class="kw-2">mut </span>s = Vec::with_capacity(<a href="#328">value</a>.len);
+            ptr::copy_nonoverlapping(<a href="#328">value</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>T, <a href="#330">s</a>.as_mut_ptr(), <a href="#328">value</a>.len);
+            <a href="#330">s</a>.set_len(<a href="#328">value</a>.len);
+            <a href="#328">value</a>.len = <span class="number">0</span>;
+            <a href="#330">s</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; From&lt;Vec&lt;T&gt;&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; From&lt;Vec&lt;T&gt;&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(<span class="kw-2">mut </span>value: Vec&lt;T&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(value.len());
-            ptr::copy_nonoverlapping(value.as_ptr(), s.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, value.len());
-            s.len = value.len();
-            value.set_len(<span class="number">0</span>);
-            s
+            <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#535-539"><span class="self">Self</span>::with_capacity</a>(<a href="#341">value</a>.len());
+            ptr::copy_nonoverlapping(<a href="#341">value</a>.as_ptr(), <a href="#343">s</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#341">value</a>.len());
+            <a href="#343">s</a>.len = <a href="#341">value</a>.len();
+            <a href="#341">value</a>.set_len(<span class="number">0</span>);
+            <a href="#343">s</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType, <span class="kw">const </span>N: usize&gt; From&lt;[T; N]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>, <span class="kw">const </span>N: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; From&lt;[T; <a href="#352">N</a>]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: [T; N]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: [T; <a href="#352">N</a>]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>value = mem::ManuallyDrop::new(value);
-            <span class="kw">let </span>len = value.len();
-            <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(len);
-            ptr::copy_nonoverlapping(value.as_ptr(), s.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, len);
-            s.len = len;
-            s
+            <span class="kw">let </span>value = mem::ManuallyDrop::new(<a href="#354">value</a>);
+            <span class="kw">let </span>len = <a href="#356">value</a>.len();
+            <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#535-539"><span class="self">Self</span>::with_capacity</a>(<a href="#357">len</a>);
+            ptr::copy_nonoverlapping(<a href="#356">value</a>.as_ptr(), <a href="#358">s</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#357">len</a>);
+            <a href="#358">s</a>.len = <a href="#357">len</a>;
+            <a href="#358">s</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[T]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(value.len());
+            <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#535-539"><span class="self">Self</span>::with_capacity</a>(<a href="#368">value</a>.len());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
                 ptr::write(s.ptr.as_ptr().add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T, item.clone());
             }
-            s.len = value.len();
-            s
+            <a href="#370">s</a>.len = <a href="#368">value</a>.len();
+            <a href="#370">s</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T]) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(value.len());
+            <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#535-539"><span class="self">Self</span>::with_capacity</a>(<a href="#382">value</a>.len());
             <span class="kw">for </span>(i, item) <span class="kw">in </span>value.iter().enumerate() {
                 ptr::write(s.ptr.as_ptr().add(i) <span class="kw">as </span><span class="kw-2">*mut </span>T, (<span class="kw-2">*</span>item).clone());
             }
-            s.len = value.len();
-            s
+            <a href="#384">s</a>.len = <a href="#382">value</a>.len();
+            <a href="#384">s</a>
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Clone <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from(<span class="self">self</span>.as_slice())
+        <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html"><span class="self">Self</span>::from</a>(<a class="self" href="#396">self</a>.<a href="#645-653">as_slice</a>())
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType&gt; Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a>&gt; Slice&lt;T&gt; {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*const </span>T::GlibType, len: usize) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[T] {
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*const </span>T::GlibType, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T] {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
             <span class="kw-2">&amp;</span>[]
         } <span class="kw">else </span>{
-            std::slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>T, len)
+            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#405">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>T, <a href="#405">len</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a mutable C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num_mut&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*mut </span>T::GlibType, len: usize) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[T] {
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num_mut&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*mut </span>T::GlibType, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T] {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
             <span class="kw-2">&amp;mut </span>[]
         } <span class="kw">else </span>{
-            std::slice::from_raw_parts_mut(ptr <span class="kw">as </span><span class="kw-2">*mut </span>T, len)
+            std::slice::from_raw_parts_mut(<a href="#418">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#418">len</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a C array of references.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_num&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_num&lt;<span class="lifetime">'a</span>&gt;(
         ptr: <span class="kw-2">*const *const </span>T::GlibType,
-        len: usize,
-    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T] {
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+        len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T] {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
             <span class="kw-2">&amp;</span>[]
         } <span class="kw">else </span>{
-            std::slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const &amp;</span>T, len)
+            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#432">ptr</a> <span class="kw">as </span><span class="kw-2">*const &amp;</span>T, <a href="#433">len</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a mutable C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_num_mut&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub unsafe fn </span>from_glib_ptr_borrow_num_mut&lt;<span class="lifetime">'a</span>&gt;(
         ptr: <span class="kw-2">*mut *mut </span>T::GlibType,
-        len: usize,
-    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T] {
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+        len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T] {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
             <span class="kw-2">&amp;mut </span>[]
         } <span class="kw">else </span>{
-            std::slice::from_raw_parts_mut(ptr <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>T, len)
+            std::slice::from_raw_parts_mut(<a href="#448">ptr</a> <span class="kw">as </span><span class="kw-2">*mut &amp;mut </span>T, <a href="#449">len</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `Slice` around a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>T::GlibType, len: usize) -&gt; <span class="self">Self </span>{
-        <span class="macro">debug_assert_eq!</span>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+    </span><span class="kw">pub unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>T::GlibType, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            Slice::default()
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Slice::default</a>()
         } <span class="kw">else </span>{
             <span class="comment">// Need to fully copy the array here.
-            </span><span class="kw">let </span>s = <span class="self">Self</span>::from_glib_borrow_num(ptr, len);
-            <span class="self">Self</span>::from(s)
+            </span><span class="kw">let </span>s = <a href="#405-413"><span class="self">Self</span>::from_glib_borrow_num</a>(<a href="#463">ptr</a>, <a href="#463">len</a>);
+            <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html"><span class="self">Self</span>::from</a>(<a href="#471">s</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `Slice` around a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>T::GlibType, len: usize) -&gt; <span class="self">Self </span>{
-        <span class="macro">debug_assert_eq!</span>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+    </span><span class="kw">pub unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>T::GlibType, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(ptr <span class="kw">as </span>ffi::gpointer);
-            Slice::default()
+            ffi::g_free(<a href="#479">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Slice::default</a>()
         } <span class="kw">else </span>{
-            <span class="comment">// Need to clone every item because we don&#39;t own it here but only
+            <span class="comment">// Need to clone every item because we don't own it here but only
             // if this type requires explicit drop.
             </span><span class="kw">if </span>mem::needs_drop::&lt;T&gt;() {
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..len {
@@ -1562,25 +1561,25 @@
             }
 
             <span class="comment">// And now it can be handled exactly the same as `from_glib_full_num()`.
-            </span><span class="self">Self</span>::from_glib_full_num(ptr, len)
+            </span><a href="#505-519"><span class="self">Self</span>::from_glib_full_num</a>(<a href="#479">ptr</a>, <a href="#479">len</a>)
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `Slice` around a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>T::GlibType, len: usize) -&gt; <span class="self">Self </span>{
-        <span class="macro">debug_assert_eq!</span>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
-        <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
+    </span><span class="kw">pub unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>T::GlibType, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(mem::size_of::&lt;T&gt;(), mem::size_of::&lt;T::GlibType&gt;());
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
-            ffi::g_free(ptr <span class="kw">as </span>ffi::gpointer);
-            Slice::default()
+            ffi::g_free(<a href="#505">ptr</a> <span class="kw">as </span>ffi::gpointer);
+            <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Slice::default</a>()
         } <span class="kw">else </span>{
-            Slice {
-                ptr: ptr::NonNull::new_unchecked(ptr),
-                len,
-                capacity: len,
+            <a href="#15-19">Slice</a> {
+                ptr: ptr::NonNull::new_unchecked(<a href="#505">ptr</a>),
+                <a href="#505">len</a>,
+                capacity: <a href="#505">len</a>,
             }
         }
     }
@@ -1589,7 +1588,7 @@
     </span><span class="doccomment">/// Creates a new empty slice.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
-        Slice {
+        <a href="#15-19">Slice</a> {
             ptr: ptr::NonNull::dangling(),
             len: <span class="number">0</span>,
             capacity: <span class="number">0</span>,
@@ -1599,10 +1598,10 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a new empty slice with the given capacity.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>with_capacity(capacity: usize) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::new();
-        s.reserve(capacity);
-        s
+    </span><span class="kw">pub fn </span>with_capacity(capacity: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>s = <a href="#524-530"><span class="self">Self</span>::new</a>();
+        <a href="#536">s</a>.<a href="#615-640">reserve</a>(<a href="#535">capacity</a>);
+        <a href="#536">s</a>
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1614,7 +1613,7 @@
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             ptr::null()
         } <span class="kw">else </span>{
-            <span class="self">self</span>.ptr.as_ptr()
+            <a class="self" href="#546">self</a>.ptr.as_ptr()
         }
     }
 
@@ -1627,7 +1626,7 @@
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             ptr::null_mut()
         } <span class="kw">else </span>{
-            <span class="self">self</span>.ptr.as_ptr()
+            <a class="self" href="#559">self</a>.ptr.as_ptr()
         }
     }
 
@@ -1640,31 +1639,31 @@
         <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
             ptr::null_mut()
         } <span class="kw">else </span>{
-            <span class="self">self</span>.len = <span class="number">0</span>;
-            <span class="self">self</span>.capacity = <span class="number">0</span>;
-            <span class="self">self</span>.ptr.as_ptr()
+            <a class="self" href="#572">self</a>.len = <span class="number">0</span>;
+            <a class="self" href="#572">self</a>.capacity = <span class="number">0</span>;
+            <a class="self" href="#572">self</a>.ptr.as_ptr()
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Gets the length of the slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.len
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#585">self</a>.len
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns `true` if the slice is empty.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.len == <span class="number">0
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#592">self</a>.len == <span class="number">0
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the capacity of the slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.capacity
+    </span><span class="kw">pub fn </span>capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <a class="self" href="#599">self</a>.capacity
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1673,39 +1672,36 @@
     /// # SAFETY
     ///
     /// There must be at least `len` valid items.
-    </span><span class="kw">pub unsafe fn </span>set_len(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
-        <span class="self">self</span>.len = len;
+    </span><span class="kw">pub unsafe fn </span>set_len(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
+        <a class="self" href="#609">self</a>.len = <a href="#609">len</a>;
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Reserves at least this much additional capacity.
-    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: usize) {
-        <span class="comment">// Nothing new to reserve as there&#39;s still enough space
+    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
+        <span class="comment">// Nothing new to reserve as there's still enough space
         </span><span class="kw">if </span><span class="self">self</span>.len + additional &lt;= <span class="self">self</span>.capacity {
             <span class="kw">return</span>;
         }
 
         <span class="kw">let </span>new_capacity = usize::next_power_of_two(std::cmp::max(
-            <span class="self">self</span>.len + additional,
-            MIN_SIZE / mem::size_of::&lt;T&gt;(),
+            <a class="self" href="#615">self</a>.len + <a href="#615">additional</a>,
+            <a href="#9">MIN_SIZE</a> / mem::size_of::&lt;T&gt;(),
         ));
-        <span class="macro">assert_ne!</span>(new_capacity, <span class="number">0</span>);
-
-        <span class="kw">if </span>new_capacity &lt;= <span class="self">self</span>.capacity {
-            <span class="kw">return</span>;
-        }
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert_ne.html">assert_ne!</a>(new_capacity, <span class="number">0</span>);
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(new_capacity &gt; <span class="self">self</span>.capacity);
 
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ptr = <span class="kw">if </span><span class="self">self</span>.capacity == <span class="number">0 </span>{
                 ptr::null_mut()
             } <span class="kw">else </span>{
-                <span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
+                <a class="self" href="#615">self</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
             </span>};
             <span class="kw">let </span>new_ptr =
-                ffi::g_realloc(ptr, mem::size_of::&lt;T&gt;().checked_mul(new_capacity).unwrap())
+                ffi::g_realloc(<a href="#629">ptr</a>, mem::size_of::&lt;T&gt;().checked_mul(<a href="#621">new_capacity</a>).unwrap())
                     <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
-            <span class="self">self</span>.ptr = ptr::NonNull::new_unchecked(new_ptr);
-            <span class="self">self</span>.capacity = new_capacity;
+            <a class="self" href="#615">self</a>.ptr = ptr::NonNull::new_unchecked(<a href="#634">new_ptr</a>);
+            <a class="self" href="#615">self</a>.capacity = <a href="#621">new_capacity</a>;
         }
     }
 
@@ -1717,7 +1713,7 @@
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>T, <span class="self">self</span>.len)
+                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a class="self" href="#645">self</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>T, <a class="self" href="#645">self</a>.len)
             }
         }
     }
@@ -1730,7 +1726,7 @@
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;mut </span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts_mut(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <span class="self">self</span>.len)
+                std::slice::from_raw_parts_mut(<a class="self" href="#658">self</a>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>T, <a class="self" href="#658">self</a>.len)
             }
         }
     }
@@ -1746,7 +1742,7 @@
                 }
             }
 
-            <span class="self">self</span>.len = <span class="number">0</span>;
+            <a class="self" href="#671">self</a>.len = <span class="number">0</span>;
         }
     }
 
@@ -1754,9 +1750,9 @@
     </span><span class="doccomment">/// Clones and appends all elements in `slice` to the slice.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>extend_from_slice(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>[T]) {
-        <span class="comment">// Nothing new to reserve as there&#39;s still enough space
-        </span><span class="kw">if </span><span class="self">self</span>.len + other.len() &lt;= <span class="self">self</span>.capacity {
-            <span class="self">self</span>.reserve(other.len());
+        <span class="comment">// Nothing new to reserve as there's still enough space
+        </span><span class="kw">if </span><span class="self">self</span>.len + other.len() &gt; <span class="self">self</span>.capacity {
+            <a class="self" href="#686">self</a>.<a href="#615-640">reserve</a>(<a href="#686">other</a>.len());
         }
 
         <span class="kw">unsafe </span>{
@@ -1772,24 +1768,24 @@
     /// right.
     </span><span class="attr">#[inline]
     #[allow(clippy::int_plus_one)]
-    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, item: T) {
-        <span class="macro">assert!</span>(index &lt;= <span class="self">self</span>.len);
+    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, item: T) {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(index &lt;= <span class="self">self</span>.len);
 
-        <span class="comment">// Nothing new to reserve as there&#39;s still enough space
-        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&lt;= <span class="self">self</span>.capacity {
-            <span class="self">self</span>.reserve(<span class="number">1</span>);
+        <span class="comment">// Nothing new to reserve as there's still enough space
+        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&gt; <span class="self">self</span>.capacity {
+            <a class="self" href="#705">self</a>.<a href="#615-640">reserve</a>(<span class="number">1</span>);
         }
 
         <span class="kw">unsafe </span>{
             <span class="kw">if </span>index == <span class="self">self</span>.len {
-                ptr::write(<span class="self">self</span>.ptr.as_ptr().add(<span class="self">self</span>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T, item);
+                ptr::write(<a class="self" href="#705">self</a>.ptr.as_ptr().add(<a class="self" href="#705">self</a>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#705">item</a>);
             } <span class="kw">else </span>{
-                <span class="kw">let </span>p = <span class="self">self</span>.ptr.as_ptr().add(index);
-                ptr::copy(p, p.add(<span class="number">1</span>), <span class="self">self</span>.len - index);
-                ptr::write(<span class="self">self</span>.ptr.as_ptr().add(index) <span class="kw">as </span><span class="kw-2">*mut </span>T, item);
+                <span class="kw">let </span>p = <a class="self" href="#705">self</a>.ptr.as_ptr().add(<a href="#705">index</a>);
+                ptr::copy(<a href="#717">p</a>, <a href="#717">p</a>.add(<span class="number">1</span>), <a class="self" href="#705">self</a>.len - <a href="#705">index</a>);
+                ptr::write(<a class="self" href="#705">self</a>.ptr.as_ptr().add(<a href="#705">index</a>) <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#705">item</a>);
             }
 
-            <span class="self">self</span>.len += <span class="number">1</span>;
+            <a class="self" href="#705">self</a>.len += <span class="number">1</span>;
         }
     }
 
@@ -1798,14 +1794,14 @@
     </span><span class="attr">#[inline]
     #[allow(clippy::int_plus_one)]
     </span><span class="kw">pub fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, item: T) {
-        <span class="comment">// Nothing new to reserve as there&#39;s still enough space
-        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&lt;= <span class="self">self</span>.capacity {
-            <span class="self">self</span>.reserve(<span class="number">1</span>);
+        <span class="comment">// Nothing new to reserve as there's still enough space
+        </span><span class="kw">if </span><span class="self">self</span>.len + <span class="number">1 </span>&gt; <span class="self">self</span>.capacity {
+            <a class="self" href="#730">self</a>.<a href="#615-640">reserve</a>(<span class="number">1</span>);
         }
 
         <span class="kw">unsafe </span>{
-            ptr::write(<span class="self">self</span>.ptr.as_ptr().add(<span class="self">self</span>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T, item);
-            <span class="self">self</span>.len += <span class="number">1</span>;
+            ptr::write(<a class="self" href="#730">self</a>.ptr.as_ptr().add(<a class="self" href="#730">self</a>.len) <span class="kw">as </span><span class="kw-2">*mut </span>T, <a href="#730">item</a>);
+            <a class="self" href="#730">self</a>.len += <span class="number">1</span>;
         }
     }
 
@@ -1813,17 +1809,17 @@
     </span><span class="doccomment">/// Removes item from position `index` of the slice, shifting all elements after it to the
     /// left.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; T {
-        <span class="macro">assert!</span>(index &lt; <span class="self">self</span>.len);
+    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; T {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(index &lt; <span class="self">self</span>.len);
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>p = <span class="self">self</span>.ptr.as_ptr().add(index);
-            <span class="kw">let </span>item = ptr::read(p <span class="kw">as </span><span class="kw-2">*mut </span>T);
-            ptr::copy(p.add(<span class="number">1</span>), p, <span class="self">self</span>.len - index - <span class="number">1</span>);
+            <span class="kw">let </span>p = <a class="self" href="#746">self</a>.ptr.as_ptr().add(<a href="#746">index</a>);
+            <span class="kw">let </span>item = ptr::read(<a href="#750">p</a> <span class="kw">as </span><span class="kw-2">*mut </span>T);
+            ptr::copy(<a href="#750">p</a>.add(<span class="number">1</span>), <a href="#750">p</a>, <a class="self" href="#746">self</a>.len - <a href="#746">index</a> - <span class="number">1</span>);
 
-            <span class="self">self</span>.len -= <span class="number">1</span>;
+            <a class="self" href="#746">self</a>.len -= <span class="number">1</span>;
 
-            item
+            <a href="#751">item</a>
         }
     }
 
@@ -1836,11 +1832,11 @@
         }
 
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.len -= <span class="number">1</span>;
-            <span class="kw">let </span>p = <span class="self">self</span>.ptr.as_ptr().add(<span class="self">self</span>.len);
-            <span class="kw">let </span>item = ptr::read(p <span class="kw">as </span><span class="kw-2">*mut </span>T);
+            <a class="self" href="#763">self</a>.len -= <span class="number">1</span>;
+            <span class="kw">let </span>p = <a class="self" href="#763">self</a>.ptr.as_ptr().add(<a class="self" href="#763">self</a>.len);
+            <span class="kw">let </span>item = ptr::read(<a href="#770">p</a> <span class="kw">as </span><span class="kw-2">*mut </span>T);
 
-            <span class="prelude-val">Some</span>(item)
+            <span class="prelude-val">Some</span>(<a href="#771">item</a>)
         }
     }
 
@@ -1849,7 +1845,7 @@
     ///
     /// If there are fewer than `len` items then this has no effect.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>truncate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
+    </span><span class="kw">pub fn </span>truncate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
         <span class="kw">if </span><span class="self">self</span>.len &lt;= len {
             <span class="kw">return</span>;
         }
@@ -1864,95 +1860,95 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType + <span class="lifetime">&#39;static</span>&gt; FromGlibContainer&lt;T::GlibType, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: usize) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_glib_none_num(ptr, num)
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'static</span>&gt; FromGlibContainer&lt;T::GlibType, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a href="#463-474"><span class="self">Self</span>::from_glib_none_num</a>(<a href="#798">ptr</a>, <a href="#798">num</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: usize) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_glib_container_num(ptr, num)
+    </span><span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a href="#479-500"><span class="self">Self</span>::from_glib_container_num</a>(<a href="#803">ptr</a>, <a href="#803">num</a>)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: usize) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_glib_full_num(ptr, num)
+    </span><span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>T::GlibType, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a href="#505-519"><span class="self">Self</span>::from_glib_full_num</a>(<a href="#808">ptr</a>, <a href="#808">num</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType + <span class="lifetime">&#39;static</span>&gt; FromGlibContainer&lt;T::GlibType, <span class="kw-2">*const </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>T::GlibType, num: usize) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_glib_none_num(ptr, num)
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'static</span>&gt; FromGlibContainer&lt;T::GlibType, <span class="kw-2">*const </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>T::GlibType, num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a href="#463-474"><span class="self">Self</span>::from_glib_none_num</a>(<a href="#814">ptr</a>, <a href="#814">num</a>)
     }
 
-    <span class="kw">unsafe fn </span>from_glib_container_num(_ptr: <span class="kw-2">*const </span>T::GlibType, _num: usize) -&gt; <span class="self">Self </span>{
-        <span class="macro">unimplemented!</span>();
+    <span class="kw">unsafe fn </span>from_glib_container_num(_ptr: <span class="kw-2">*const </span>T::GlibType, _num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>();
     }
 
-    <span class="kw">unsafe fn </span>from_glib_full_num(_ptr: <span class="kw-2">*const </span>T::GlibType, _num: usize) -&gt; <span class="self">Self </span>{
-        <span class="macro">unimplemented!</span>();
+    <span class="kw">unsafe fn </span>from_glib_full_num(_ptr: <span class="kw-2">*const </span>T::GlibType, _num: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <span class="self">Self </span>{
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>();
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType + <span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
-        Stash(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, PhantomData)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
+        <a href="../translate.rs.html#258-261">Stash</a>(<a class="self" href="#831">self</a>.<a href="#546-552">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, PhantomData)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>to_glib_container(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = ffi::g_malloc(mem::size_of::&lt;T&gt;().checked_mul(<span class="self">self</span>.len()).unwrap())
+            <span class="kw">let </span>ptr = ffi::g_malloc(mem::size_of::&lt;T&gt;().checked_mul(<a class="self" href="#836">self</a>.<a href="#585-587">len</a>()).unwrap())
                 <span class="kw">as </span><span class="kw-2">*mut </span>T::GlibType;
-            ptr::copy_nonoverlapping(<span class="self">self</span>.as_ptr(), ptr, <span class="self">self</span>.len());
-            Stash(ptr, PhantomData)
+            ptr::copy_nonoverlapping(<a class="self" href="#836">self</a>.<a href="#546-552">as_ptr</a>(), <a href="#838">ptr</a>, <a class="self" href="#836">self</a>.<a href="#585-587">len</a>());
+            <a href="../translate.rs.html#258-261">Stash</a>(<a href="#838">ptr</a>, PhantomData)
         }
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T::GlibType {
-        <span class="self">self</span>.clone().into_raw()
+        <a class="self" href="#846">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>().<a href="#572-580">into_raw</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType + <span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>T::GlibType, <span class="self">Self</span>&gt; {
-        Stash(<span class="self">self</span>.as_ptr(), PhantomData)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*const </span>T::GlibType, <span class="self">Self</span>&gt; {
+        <a href="../translate.rs.html#258-261">Stash</a>(<a class="self" href="#855">self</a>.<a href="#546-552">as_ptr</a>(), PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: TransparentType + <span class="lifetime">&#39;a</span>&gt; ToGlibPtrMut&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="self">Self</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'a</span>&gt; ToGlibPtrMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">Self</span>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; StashMut&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
-        StashMut(<span class="self">self</span>.as_mut_ptr(), PhantomData)
+    </span><span class="kw">fn </span>to_glib_none_mut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; StashMut&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>T::GlibType, <span class="self">Self</span>&gt; {
+        <a href="../translate.rs.html#263-265">StashMut</a>(<a class="self" href="#864">self</a>.<a href="#559-565">as_mut_ptr</a>(), PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentType + <span class="lifetime">&#39;static</span>&gt; IntoGlibPtr&lt;<span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2645-2647">TransparentType</a> + <span class="lifetime">'static</span>&gt; IntoGlibPtr&lt;<span class="kw-2">*mut </span>T::GlibType&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T::GlibType {
-        <span class="self">self</span>.into_raw()
+        <a class="self" href="#871">self</a>.<a href="#572-580">into_raw</a>()
     }
 }
 
-<span class="kw">impl</span>&lt;T: TransparentPtrType&gt; From&lt;<span class="kw">super</span>::PtrSlice&lt;T&gt;&gt; <span class="kw">for </span>Slice&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="../translate.rs.html#2639">TransparentPtrType</a>&gt; From&lt;<span class="kw">super</span>::PtrSlice&lt;T&gt;&gt; <span class="kw">for </span>Slice&lt;T&gt; {
     <span class="kw">fn </span>from(value: <span class="kw">super</span>::PtrSlice&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>len = value.len();
-        <span class="kw">let </span>capacity = value.capacity();
+        <span class="kw">let </span>len = <a href="#877">value</a>.<a href="ptr_slice.rs.html#668-670">len</a>();
+        <span class="kw">let </span>capacity = <a href="#877">value</a>.<a href="ptr_slice.rs.html#684-686">capacity</a>();
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = value.into_raw();
+            <span class="kw">let </span>ptr = <a href="#877">value</a>.<a href="ptr_slice.rs.html#655-663">into_raw</a>();
             Slice::&lt;T&gt; {
-                ptr: ptr::NonNull::new_unchecked(ptr),
-                len,
-                capacity,
+                ptr: ptr::NonNull::new_unchecked(<a href="#881">ptr</a>),
+                <a href="#878">len</a>,
+                <a href="#879">capacity</a>,
             }
         }
     }
@@ -2059,5 +2055,4 @@
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

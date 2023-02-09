@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context.rs`."><title>main_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context.rs`."><title>main_context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../glib/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -350,35 +352,142 @@
 <a href="#277" id="277">277</a>
 <a href="#278" id="278">278</a>
 <a href="#279" id="279">279</a>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+</pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::mem;
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/mem/index.html">std::mem</a>;
 
-<span class="kw">use </span>ffi::{<span class="self">self</span>, gboolean, gpointer};
+<span class="kw">use </span>ffi::{gboolean, gpointer};
 
-<span class="kw">use crate</span>::{source::Priority, translate::<span class="kw-2">*</span>, MainContext, Source, SourceId};
+<span class="kw">use crate</span>::{<a href="source.rs.html#932">source::Priority</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>};
 
-<span class="kw">impl </span>MainContext {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_prepare&quot;</span>)]
-    </span><span class="kw">pub fn </span>prepare(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (bool, i32) {
+<span class="kw">impl </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
+    <span class="doccomment">/// Prepares to poll sources within a main loop. The resulting information
+    /// for polling is determined by calling g_main_context_query ().
+    ///
+    /// You must have successfully acquired the context with
+    /// g_main_context_acquire() before you may call this function.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if some source is ready to be dispatched
+    ///               prior to polling.
+    ///
+    /// ## `priority`
+    /// location to store priority of highest priority
+    ///            source already ready.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_prepare"</span>)]
+    </span><span class="kw">pub fn </span>prepare(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>priority = mem::MaybeUninit::uninit();
 
-            <span class="kw">let </span>res = from_glib(ffi::g_main_context_prepare(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                priority.as_mut_ptr(),
+            <span class="kw">let </span>res = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_main_context_prepare(
+                <a class="self" href="#25">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#27">priority</a>.as_mut_ptr(),
             ));
-            <span class="kw">let </span>priority = priority.assume_init();
-            (res, priority)
+            <span class="kw">let </span>priority = <a href="#27">priority</a>.assume_init();
+            (<a href="#29">res</a>, <a href="#33">priority</a>)
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_find_source_by_id&quot;</span>)]
-    </span><span class="kw">pub fn </span>find_source_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, source_id: <span class="kw-2">&amp;</span>SourceId) -&gt; <span class="prelude-ty">Option</span>&lt;Source&gt; {
+    <span class="doccomment">/// Finds a #GSource given a pair of context and ID.
+    ///
+    /// It is a programmer error to attempt to look up a non-existent source.
+    ///
+    /// More specifically: source IDs can be reissued after a source has been
+    /// destroyed and therefore it is never valid to use this function with a
+    /// source ID which may have already been removed.  An example is when
+    /// scheduling an idle to run in another thread with g_idle_add(): the
+    /// idle may already have run and been removed by the time this function
+    /// is called on its (now invalid) source ID.  This source ID may have
+    /// been reissued, leading to the operation being performed against the
+    /// wrong source.
+    /// ## `source_id`
+    /// the source ID, as returned by g_source_get_id().
+    ///
+    /// # Returns
+    ///
+    /// the #GSource
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_find_source_by_id"</span>)]
+    </span><span class="kw">pub fn </span>find_source_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, source_id: <span class="kw-2">&amp;</span><a href="source.rs.html#21">SourceId</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="auto/source.rs.html#7-18">Source</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_main_context_find_source_by_id(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                source_id.as_raw(),
+            <a href="translate.rs.html#1624-1626">from_glib_none</a>(ffi::g_main_context_find_source_by_id(
+                <a class="self" href="#57">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#57">source_id</a>.<a href="source.rs.html#26-28">as_raw</a>(),
             ))
         }
     }
@@ -390,12 +499,36 @@
     /// owner then `func` will be called directly from inside this function. If this behaviour is
     /// not desired and `func` should always be called asynchronously then use [`MainContext::spawn`]
     /// [`glib::idle_add`](crate::idle_add) instead.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_invoke&quot;</span>)]
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Invokes a function in such a way that @self is owned during the
+    /// invocation of @function.
+    ///
+    /// If @self is [`None`] then the global-default main context — as
+    /// returned by g_main_context_default() — is used.
+    ///
+    /// If @self is owned by the current thread, @function is called
+    /// directly.  Otherwise, if @self is the thread-default main context
+    /// of the current thread and g_main_context_acquire() succeeds, then
+    /// @function is called and g_main_context_release() is called
+    /// afterwards.
+    ///
+    /// In any other case, an idle source is created to call @function and
+    /// that source is attached to @self (presumably to be run in another
+    /// thread).  The idle source is attached with `G_PRIORITY_DEFAULT`
+    /// priority.  If you want a different priority, use
+    /// g_main_context_invoke_full().
+    ///
+    /// Note that, as with normal idle functions, @function should probably
+    /// return [`false`].  If it returns [`true`], it will be continuously run in a
+    /// loop (and may prevent this call from returning).
+    /// ## `function`
+    /// function to call
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_invoke"</span>)]
     </span><span class="kw">pub fn </span>invoke&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: FnOnce() + Send + <span class="lifetime">&#39;static</span>,
+        </span>F: FnOnce() + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
     {
-        <span class="self">self</span>.invoke_with_priority(<span class="kw">crate</span>::PRIORITY_DEFAULT_IDLE, func);
+        <a class="self" href="#98">self</a>.<a href="#113-120">invoke_with_priority</a>(<span class="kw">crate</span>::Priority::DEFAULT_IDLE, <a href="#98">func</a>);
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -405,13 +538,13 @@
     /// owner then `func` will be called directly from inside this function. If this behaviour is
     /// not desired and `func` should always be called asynchronously then use [`MainContext::spawn`]
     /// [`glib::idle_add`](crate::idle_add) instead.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_invoke_full&quot;</span>)]
-    </span><span class="kw">pub fn </span>invoke_with_priority&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, priority: Priority, func: F)
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_invoke_full"</span>)]
+    </span><span class="kw">pub fn </span>invoke_with_priority&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, priority: <a href="source.rs.html#932">Priority</a>, func: F)
     <span class="kw">where
-        </span>F: FnOnce() + Send + <span class="lifetime">&#39;static</span>,
+        </span>F: FnOnce() + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.invoke_unsafe(priority, func);
+            <a class="self" href="#113">self</a>.<a href="#171-194">invoke_unsafe</a>(<a href="#113">priority</a>, <a href="#113">func</a>);
         }
     }
 
@@ -430,9 +563,9 @@
     /// [`glib::idle_add_local`](crate::idle_add_local) instead.
     </span><span class="kw">pub fn </span>invoke_local&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F)
     <span class="kw">where
-        </span>F: FnOnce() + <span class="lifetime">&#39;static</span>,
+        </span>F: FnOnce() + <span class="lifetime">'static</span>,
     {
-        <span class="self">self</span>.invoke_local_with_priority(<span class="kw">crate</span>::PRIORITY_DEFAULT_IDLE, func);
+        <a class="self" href="#135">self</a>.<a href="#156-169">invoke_local_with_priority</a>(<span class="kw">crate</span>::Priority::DEFAULT_IDLE, <a href="#135">func</a>);
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -449,42 +582,42 @@
     /// be called asynchronously then use [`MainContext::spawn_local`]
     /// [`glib::idle_add_local`](crate::idle_add_local) instead.
     </span><span class="attr">#[allow(clippy::if_same_then_else)]
-    </span><span class="kw">pub fn </span>invoke_local_with_priority&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, _priority: Priority, func: F)
+    </span><span class="kw">pub fn </span>invoke_local_with_priority&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, _priority: <a href="source.rs.html#932">Priority</a>, func: F)
     <span class="kw">where
-        </span>F: FnOnce() + <span class="lifetime">&#39;static</span>,
+        </span>F: FnOnce() + <span class="lifetime">'static</span>,
     {
         <span class="comment">// Checks from `g_main_context_invoke_full()`
         // FIXME: Combine the first two cases somehow
         </span><span class="kw">if </span><span class="self">self</span>.is_owner() {
-            func();
-        } <span class="kw">else if let </span><span class="prelude-val">Ok</span>(_acquire) = <span class="self">self</span>.acquire() {
-            func();
+            <a href="#156">func</a>();
+        } <span class="kw">else if let </span><span class="prelude-val">Ok</span>(_acquire) = <a class="self" href="#156">self</a>.<a href="#239-248">acquire</a>() {
+            <a href="#156">func</a>();
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Must be called from a thread that owns the main context&quot;</span>);
+            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Must be called from a thread that owns the main context"</span>);
         }
     }
 
-    <span class="kw">unsafe fn </span>invoke_unsafe&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, priority: Priority, func: F)
+    <span class="kw">unsafe fn </span>invoke_unsafe&lt;F&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, priority: <a href="source.rs.html#932">Priority</a>, func: F)
     <span class="kw">where
-        </span>F: FnOnce() + <span class="lifetime">&#39;static</span>,
+        </span>F: FnOnce() + <span class="lifetime">'static</span>,
     {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>trampoline&lt;F: FnOnce() + <span class="lifetime">&#39;static</span>&gt;(func: gpointer) -&gt; gboolean {
-            <span class="kw">let </span>func: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;F&gt; = <span class="kw-2">&amp;mut *</span>(func <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;F&gt;);
-            <span class="kw">let </span>func = func
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline&lt;F: FnOnce() + <span class="lifetime">'static</span>&gt;(func: gpointer) -&gt; gboolean {
+            <span class="kw">let </span>func: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;F&gt; = <span class="kw-2">&amp;mut *</span>(<a href="#175">func</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="prelude-ty">Option</span>&lt;F&gt;);
+            <span class="kw">let </span>func = <a href="#176">func</a>
                 .take()
-                .expect(<span class="string">&quot;MainContext::invoke() closure called multiple times&quot;</span>);
-            func();
+                .expect(<span class="string">"MainContext::invoke() closure called multiple times"</span>);
+            <a href="#177">func</a>();
             ffi::G_SOURCE_REMOVE
         }
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>destroy_closure&lt;F: FnOnce() + <span class="lifetime">&#39;static</span>&gt;(ptr: gpointer) {
-            <span class="kw">let _ </span>= Box::&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt;::from_raw(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>destroy_closure&lt;F: FnOnce() + <span class="lifetime">'static</span>&gt;(ptr: gpointer) {
+            <span class="kw">let _ </span>= Box::&lt;<span class="prelude-ty">Option</span>&lt;F&gt;&gt;::from_raw(<a href="#183">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
-        <span class="kw">let </span>func = Box::into_raw(Box::new(<span class="prelude-val">Some</span>(func)));
+        <span class="kw">let </span>func = Box::into_raw(Box::new(<span class="prelude-val">Some</span>(<a href="#171">func</a>)));
         ffi::g_main_context_invoke_full(
-            <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-            priority.into_glib(),
+            <a class="self" href="#171">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>,
+            <a href="#171">priority</a>.<a href="translate.rs.html#333">into_glib</a>(),
             <span class="prelude-val">Some</span>(trampoline::&lt;F&gt;),
-            func <span class="kw">as </span>gpointer,
+            <a href="#186">func</a> <span class="kw">as </span>gpointer,
             <span class="prelude-val">Some</span>(destroy_closure::&lt;F&gt;),
         )
     }
@@ -496,14 +629,14 @@
     /// released again afterwards regardless of whether closure panicked or not.
     ///
     /// This will fail if the main context is owned already by another thread.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_push_thread_default&quot;</span>)]
-    </span><span class="kw">pub fn </span>with_thread_default&lt;R, F: Sized&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, <span class="kw">crate</span>::BoolError&gt;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_push_thread_default"</span>)]
+    </span><span class="kw">pub fn </span>with_thread_default&lt;R, F: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt;
     <span class="kw">where
         </span>F: FnOnce() -&gt; R,
     {
-        <span class="kw">let </span>_acquire = <span class="self">self</span>.acquire()<span class="question-mark">?</span>;
-        <span class="kw">let </span>_thread_default = ThreadDefaultContext::new(<span class="self">self</span>);
-        <span class="prelude-val">Ok</span>(func())
+        <span class="kw">let </span>_acquire = <a class="self" href="#204">self</a>.<a href="#239-248">acquire</a>()<span class="question-mark">?</span>;
+        <span class="kw">let </span>_thread_default = <a href="#267-272">ThreadDefaultContext::new</a>(<a class="self" href="#204">self</a>);
+        <span class="prelude-val">Ok</span>(<a href="#204">func</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -512,48 +645,67 @@
     /// Ownership will automatically be released again once the returned acquire guard is dropped.
     ///
     /// This will fail if the main context is owned already by another thread.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_acquire&quot;</span>)]
-    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;MainContextAcquireGuard, <span class="kw">crate</span>::BoolError&gt; {
+    </span><span class="comment">// rustdoc-stripper-ignore-next-stop
+    </span><span class="doccomment">/// Tries to become the owner of the specified context.
+    /// If some other thread is the owner of the context,
+    /// returns [`false`] immediately. Ownership is properly
+    /// recursive: the owner can require ownership again
+    /// and will release ownership when g_main_context_release()
+    /// is called as many times as g_main_context_acquire().
+    ///
+    /// You must be the owner of a context before you
+    /// can call g_main_context_prepare(), g_main_context_query(),
+    /// g_main_context_check(), g_main_context_dispatch(), g_main_context_release().
+    ///
+    /// Since 2.76 @self can be [`None`] to use the global-default
+    /// main context.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the operation succeeded, and
+    ///   this thread is now the owner of @self.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_main_context_acquire"</span>)]
+    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#252">MainContextAcquireGuard</a>, <a href="error.rs.html#243-251"><span class="kw">crate</span>::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ret: bool = from_glib(ffi::g_main_context_acquire(<span class="self">self</span>.to_glib_none().<span class="number">0</span>));
+            <span class="kw">let </span>ret: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1416-1418">from_glib</a>(ffi::g_main_context_acquire(<a class="self" href="#239">self</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>));
             <span class="kw">if </span>ret {
-                <span class="prelude-val">Ok</span>(MainContextAcquireGuard(<span class="self">self</span>))
+                <span class="prelude-val">Ok</span>(<a href="#252">MainContextAcquireGuard</a>(<a class="self" href="#239">self</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<span class="macro">bool_error!</span>(<span class="string">&quot;Failed to acquire ownership of main context, already acquired by another thread&quot;</span>))
+                <span class="prelude-val">Err</span>(<a class="macro" href="error.rs.html#189-211">bool_error!</a>(<span class="string">"Failed to acquire ownership of main context, already acquired by another thread"</span>))
             }
         }
     }
 }
 
-<span class="attr">#[must_use = <span class="string">&quot;if unused the main context will be released immediately&quot;</span>]
-</span><span class="kw">pub struct </span>MainContextAcquireGuard&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MainContext);
+<span class="attr">#[must_use = <span class="string">"if unused the main context will be released immediately"</span>]
+</span><span class="kw">pub struct </span><a href="../../glib/struct.MainContextAcquireGuard.html">MainContextAcquireGuard</a>&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/main_context.rs.html#10-21">MainContext</a>);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Drop <span class="kw">for </span>MainContextAcquireGuard&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_main_context_release&quot;</span>)]
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>MainContextAcquireGuard&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[doc(alias = <span class="string">"g_main_context_release"</span>)]
     #[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_main_context_release(<span class="self">self</span>.<span class="number">0</span>.to_glib_none().<span class="number">0</span>);
+            ffi::g_main_context_release(<a class="self" href="#257">self</a>.<span class="number">0</span>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
 
-<span class="kw">struct </span>ThreadDefaultContext&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MainContext);
+<span class="kw">struct </span>ThreadDefaultContext&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/main_context.rs.html#10-21">MainContext</a>);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ThreadDefaultContext&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>new(ctx: <span class="kw-2">&amp;</span>MainContext) -&gt; ThreadDefaultContext {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ThreadDefaultContext&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>new(ctx: <span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>) -&gt; <a href="#264">ThreadDefaultContext</a> {
         <span class="kw">unsafe </span>{
-            ffi::g_main_context_push_thread_default(ctx.to_glib_none().<span class="number">0</span>);
+            ffi::g_main_context_push_thread_default(<a href="#267">ctx</a>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
-        ThreadDefaultContext(ctx)
+        <a href="#264">ThreadDefaultContext</a>(<a href="#267">ctx</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Drop <span class="kw">for </span>ThreadDefaultContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>ThreadDefaultContext&lt;<span class="lifetime">'a</span>&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_main_context_pop_thread_default(<span class="self">self</span>.<span class="number">0</span>.to_glib_none().<span class="number">0</span>);
+            ffi::g_main_context_pop_thread_default(<a class="self" href="#277">self</a>.<span class="number">0</span>.<a href="translate.rs.html#440">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
@@ -629,5 +781,4 @@
         .unwrap();
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

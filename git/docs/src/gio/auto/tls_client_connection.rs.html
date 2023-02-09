@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_client_connection.rs`."><title>tls_client_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_client_connection.rs`."><title>tls_client_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -585,36 +587,21 @@
 <a href="#512" id="512">512</a>
 <a href="#513" id="513">513</a>
 <a href="#514" id="514">514</a>
-<a href="#515" id="515">515</a>
-<a href="#516" id="516">516</a>
-<a href="#517" id="517">517</a>
-<a href="#518" id="518">518</a>
-<a href="#519" id="519">519</a>
-<a href="#520" id="520">520</a>
-<a href="#521" id="521">521</a>
-<a href="#522" id="522">522</a>
-<a href="#523" id="523">523</a>
-<a href="#524" id="524">524</a>
-<a href="#525" id="525">525</a>
-<a href="#526" id="526">526</a>
-<a href="#527" id="527">527</a>
-<a href="#528" id="528">528</a>
-<a href="#529" id="529">529</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 </span><span class="attr">#![allow(deprecated)]
 
-</span><span class="kw">use crate</span>::{IOStream, SocketConnectable, TlsCertificateFlags, TlsConnection};
+</span><span class="kw">use crate</span>::{<a href="io_stream.rs.html#13-94">IOStream</a>, <a href="socket_connectable.rs.html#8-78">SocketConnectable</a>, <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="tls_connection.rs.html#20-236">TlsConnection</a>};
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute, ptr};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// [`TlsClientConnection`][crate::TlsClientConnection] is the client-side subclass of
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GTlsClientConnection` is the client-side subclass of
     /// [`TlsConnection`][crate::TlsConnection], representing a client-side TLS connection.
     ///
     /// ## Properties
@@ -626,20 +613,20 @@
     /// server requests a client certificate during the handshake, then
     /// this property will be set after the handshake completes.
     ///
-    /// Each item in the list is a [`glib::ByteArray`][crate::glib::ByteArray] which contains the complete
+    /// Each item in the list is a #GByteArray which contains the complete
     /// subject DN of the certificate authority.
     ///
     /// Readable
     ///
     ///
     /// #### `server-identity`
-    ///  A [`SocketConnectable`][crate::SocketConnectable] describing the identity of the server that
+    ///  A #GSocketConnectable describing the identity of the server that
     /// is expected on the other end of the connection.
     ///
     /// If the [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] flag is set in
-    /// [`validation-flags`][struct@crate::TlsClientConnection#validation-flags], this object will be used
+    /// #GTlsClientConnection:validation-flags, this object will be used
     /// to determine the expected identify of the remote end of the
-    /// connection; if [`server-identity`][struct@crate::TlsClientConnection#server-identity] is not set,
+    /// connection; if #GTlsClientConnection:server-identity is not set,
     /// or does not match the identity presented by the server, then the
     /// [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] validation will fail.
     ///
@@ -653,7 +640,7 @@
     ///
     /// #### `use-ssl3`
     ///  SSL 3.0 is no longer supported. See
-    /// `g_tls_client_connection_set_use_ssl3()` for details.
+    /// g_tls_client_connection_set_use_ssl3() for details.
     ///
     /// Readable | Writeable | Construct
     ///
@@ -662,7 +649,7 @@
     ///  What steps to perform when validating a certificate received from
     /// a server. Server certificates that fail to validate in any of the
     /// ways indicated here will be rejected unless the application
-    /// overrides the default via [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].
+    /// overrides the default via #GTlsConnection::accept-certificate.
     ///
     /// GLib guarantees that if certificate verification fails, at least one
     /// flag will be set, but it does not guarantee that all possible flags
@@ -674,7 +661,7 @@
     /// safe way to use this property. This is not a horrible problem,
     /// though, because you should not be attempting to ignore validation
     /// errors anyway. If you really must ignore TLS certificate errors,
-    /// connect to [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].
+    /// connect to #GTlsConnection::accept-certificate.
     ///
     /// Readable | Writeable | Construct
     /// &lt;details&gt;&lt;summary&gt;&lt;h4&gt;TlsConnection&lt;/h4&gt;&lt;/summary&gt;
@@ -683,30 +670,30 @@
     /// #### `advertised-protocols`
     ///  The list of application-layer protocols that the connection
     /// advertises that it is willing to speak. See
-    /// [`TlsConnectionExtManual::set_advertised_protocols()`][crate::prelude::TlsConnectionExtManual::set_advertised_protocols()].
+    /// g_tls_connection_set_advertised_protocols().
     ///
     /// Readable | Writeable
     ///
     ///
     /// #### `base-io-stream`
-    ///  The [`IOStream`][crate::IOStream] that the connection wraps. The connection holds a reference
+    ///  The #GIOStream that the connection wraps. The connection holds a reference
     /// to this stream, and may run operations on the stream from other threads
-    /// throughout its lifetime. Consequently, after the [`IOStream`][crate::IOStream] has been
+    /// throughout its lifetime. Consequently, after the #GIOStream has been
     /// constructed, application code may only run its own operations on this
-    /// stream when no [`IOStream`][crate::IOStream] operations are running.
+    /// stream when no #GIOStream operations are running.
     ///
     /// Readable | Writeable | Construct Only
     ///
     ///
     /// #### `certificate`
-    ///  The connection&#39;s certificate; see
-    /// [`TlsConnectionExt::set_certificate()`][crate::prelude::TlsConnectionExt::set_certificate()].
+    ///  The connection's certificate; see
+    /// g_tls_connection_set_certificate().
     ///
     /// Readable | Writeable
     ///
     ///
     /// #### `ciphersuite-name`
-    ///  The name of the TLS ciphersuite in use. See [`TlsConnectionExt::ciphersuite_name()`][crate::prelude::TlsConnectionExt::ciphersuite_name()].
+    ///  The name of the TLS ciphersuite in use. See g_tls_connection_get_ciphersuite_name().
     ///
     /// Readable
     ///
@@ -714,17 +701,17 @@
     /// #### `database`
     ///  The certificate database to use when verifying this TLS connection.
     /// If no certificate database is set, then the default database will be
-    /// used. See [`TlsBackendExt::default_database()`][crate::prelude::TlsBackendExt::default_database()].
+    /// used. See g_tls_backend_get_default_database().
     ///
-    /// When using a non-default database, [`TlsConnection`][crate::TlsConnection] must fall back to using
-    /// the [`TlsDatabase`][crate::TlsDatabase] to perform certificate verification using
-    /// [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()], which means certificate verification will
+    /// When using a non-default database, #GTlsConnection must fall back to using
+    /// the #GTlsDatabase to perform certificate verification using
+    /// g_tls_database_verify_chain(), which means certificate verification will
     /// not be able to make use of TLS session context. This may be less secure.
-    /// For example, if you create your own [`TlsDatabase`][crate::TlsDatabase] that just wraps the
-    /// default [`TlsDatabase`][crate::TlsDatabase], you might expect that you have not changed anything,
+    /// For example, if you create your own #GTlsDatabase that just wraps the
+    /// default #GTlsDatabase, you might expect that you have not changed anything,
     /// but this is not true because you may have altered the behavior of
-    /// [`TlsConnection`][crate::TlsConnection] by causing it to use [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()]. See the
-    /// documentation of [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()] for more details on specific
+    /// #GTlsConnection by causing it to use g_tls_database_verify_chain(). See the
+    /// documentation of g_tls_database_verify_chain() for more details on specific
     /// security checks that may not be performed. Accordingly, setting a
     /// non-default database is discouraged except for specialty applications with
     /// unusual security requirements.
@@ -733,7 +720,7 @@
     ///
     ///
     /// #### `interaction`
-    ///  A [`TlsInteraction`][crate::TlsInteraction] object to be used when the connection or certificate
+    ///  A #GTlsInteraction object to be used when the connection or certificate
     /// database need to interact with the user. This will be used to prompt the
     /// user for passwords where necessary.
     ///
@@ -742,17 +729,17 @@
     ///
     /// #### `negotiated-protocol`
     ///  The application-layer protocol negotiated during the TLS
-    /// handshake. See [`TlsConnectionExt::negotiated_protocol()`][crate::prelude::TlsConnectionExt::negotiated_protocol()].
+    /// handshake. See g_tls_connection_get_negotiated_protocol().
     ///
     /// Readable
     ///
     ///
     /// #### `peer-certificate`
-    ///  The connection&#39;s peer&#39;s certificate, after the TLS handshake has
+    ///  The connection's peer's certificate, after the TLS handshake has
     /// completed or failed. Note in particular that this is not yet set
-    /// during the emission of [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].
+    /// during the emission of #GTlsConnection::accept-certificate.
     ///
-    /// (You can watch for a [`notify`][struct@crate::glib::Object#notify] signal on this property to
+    /// (You can watch for a #GObject::notify signal on this property to
     /// detect when a handshake has occurred.)
     ///
     /// Readable
@@ -760,10 +747,10 @@
     ///
     /// #### `peer-certificate-errors`
     ///  The errors noticed while verifying
-    /// [`peer-certificate`][struct@crate::TlsConnection#peer-certificate]. Normally this should be 0, but
-    /// it may not be if [`validation-flags`][struct@crate::TlsClientConnection#validation-flags] is not
+    /// #GTlsConnection:peer-certificate. Normally this should be 0, but
+    /// it may not be if #GTlsClientConnection:validation-flags is not
     /// [`TlsCertificateFlags::VALIDATE_ALL`][crate::TlsCertificateFlags::VALIDATE_ALL], or if
-    /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate] overrode the default
+    /// #GTlsConnection::accept-certificate overrode the default
     /// behavior.
     ///
     /// GLib guarantees that if certificate verification fails, at least
@@ -778,21 +765,21 @@
     ///
     ///
     /// #### `protocol-version`
-    ///  The TLS protocol version in use. See [`TlsConnectionExt::protocol_version()`][crate::prelude::TlsConnectionExt::protocol_version()].
+    ///  The TLS protocol version in use. See g_tls_connection_get_protocol_version().
     ///
     /// Readable
     ///
     ///
     /// #### `rehandshake-mode`
     ///  The rehandshaking mode. See
-    /// [`TlsConnectionExt::set_rehandshake_mode()`][crate::prelude::TlsConnectionExt::set_rehandshake_mode()].
+    /// g_tls_connection_set_rehandshake_mode().
     ///
     /// Readable | Writeable | Construct
     ///
     ///
     /// #### `require-close-notify`
     ///  Whether or not proper TLS close notification is required.
-    /// See [`TlsConnectionExt::set_require_close_notify()`][crate::prelude::TlsConnectionExt::set_require_close_notify()].
+    /// See g_tls_connection_set_require_close_notify().
     ///
     /// Readable | Writeable | Construct
     ///
@@ -800,7 +787,7 @@
     /// #### `use-system-certdb`
     ///  Whether or not the system certificate database will be used to
     /// verify peer certificates. See
-    /// `g_tls_connection_set_use_system_certdb()`.
+    /// g_tls_connection_set_use_system_certdb().
     ///
     /// Readable | Writeable | Construct
     /// &lt;/details&gt;
@@ -808,66 +795,77 @@
     ///
     ///
     /// #### `closed`
-    ///  Readable
+    ///  Whether the stream is closed.
+    ///
+    /// Readable
     ///
     ///
     /// #### `input-stream`
-    ///  Readable
+    ///  The [`InputStream`][crate::InputStream] to read from.
+    ///
+    /// Readable
     ///
     ///
     /// #### `output-stream`
-    ///  Readable
+    ///  The [`OutputStream`][crate::OutputStream] to write to.
+    ///
+    /// Readable
     /// &lt;/details&gt;
     ///
     /// # Implements
     ///
     /// [`TlsClientConnectionExt`][trait@crate::prelude::TlsClientConnectionExt], [`TlsConnectionExt`][trait@crate::prelude::TlsConnectionExt], [`IOStreamExt`][trait@crate::prelude::IOStreamExt], [`trait@glib::ObjectExt`], [`TlsConnectionExtManual`][trait@crate::prelude::TlsConnectionExtManual], [`IOStreamExtManual`][trait@crate::prelude::IOStreamExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GTlsClientConnection&quot;</span>)]
-    </span><span class="kw">pub struct </span>TlsClientConnection(Interface&lt;ffi::GTlsClientConnection, ffi::GTlsClientConnectionInterface&gt;) @requires TlsConnection, IOStream;
+    </span><span class="attr">#[doc(alias = <span class="string">"GTlsClientConnection"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.TlsClientConnection.html">TlsClientConnection</a>(Interface&lt;<a href="../../../gio_sys/struct.GTlsClientConnection.html">ffi::GTlsClientConnection</a>, <a href="../../../gio_sys/struct.GTlsClientConnectionInterface.html">ffi::GTlsClientConnectionInterface</a>&gt;) @requires <a href="tls_connection.rs.html#20-236">TlsConnection</a>, <a href="io_stream.rs.html#13-94">IOStream</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_tls_client_connection_get_type(),
     }
 }
 
-<span class="kw">impl </span>TlsClientConnection {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TlsClientConnection&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#14-235">TlsClientConnection</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#14-235">TlsClientConnection</a>&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new [`TlsClientConnection`][crate::TlsClientConnection] wrapping `base_io_stream` (which
+    <span class="doccomment">/// Creates a new #GTlsClientConnection wrapping @base_io_stream (which
     /// must have pollable input and output streams) which is assumed to
-    /// communicate with the server identified by `server_identity`.
+    /// communicate with the server identified by @server_identity.
     ///
-    /// See the documentation for [`base-io-stream`][struct@crate::TlsConnection#base-io-stream] for restrictions
-    /// on when application code can run operations on the `base_io_stream` after
+    /// See the documentation for #GTlsConnection:base-io-stream for restrictions
+    /// on when application code can run operations on the @base_io_stream after
     /// this function has returned.
     /// ## `base_io_stream`
-    /// the [`IOStream`][crate::IOStream] to wrap
+    /// the #GIOStream to wrap
     /// ## `server_identity`
     /// the expected identity of the server
     ///
     /// # Returns
     ///
     /// the new
-    /// [`TlsClientConnection`][crate::TlsClientConnection], or [`None`] on error
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_client_connection_new&quot;</span>)]
+    /// #GTlsClientConnection, or [`None`] on error
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_client_connection_new"</span>)]
     </span><span class="kw">pub fn </span>new(
-        base_io_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;IOStream&gt;,
-        server_identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsClientConnection, glib::Error&gt; {
+        base_io_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt;,
+        server_identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#14-235">TlsClientConnection</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_client_connection_new(
-                base_io_stream.as_ref().to_glib_none().<span class="number">0</span>,
-                server_identity.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#258">base_io_stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#259">server_identity</a>.map(|p| <a href="#265">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#262">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#263">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#262">error</a>))
             }
         }
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#14-235"><span class="kw">super</span>::TlsClientConnection</a>&gt;&gt; <a href="#278">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TlsClientConnection`] methods.
@@ -875,22 +873,22 @@
 /// # Implementors
 ///
 /// [`TlsClientConnection`][struct@crate::TlsClientConnection]
-</span><span class="kw">pub trait </span>TlsClientConnectionExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsClientConnectionExt.html">TlsClientConnectionExt</a>: IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt; + <a href="#278">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Possibly copies session state from one connection to another, for use
     /// in TLS session resumption. This is not normally needed, but may be
     /// used when the same session needs to be used between different
     /// endpoints, as is required by some protocols, such as FTP over TLS.
-    /// `source` should have already completed a handshake and, since TLS 1.3,
-    /// it should have been used to read data at least once. `self` should not
+    /// @source should have already completed a handshake and, since TLS 1.3,
+    /// it should have been used to read data at least once. @self should not
     /// have completed a handshake.
     ///
     /// It is not possible to know whether a call to this function will
     /// actually do anything. Because session resumption is normally used
     /// only for performance benefit, the TLS backend might not implement
     /// this function. Even if implemented, it may not actually succeed in
-    /// allowing `self` to resume `source`&#39;s TLS session, because the server
-    /// may not have sent a session resumption token to `source`, or it may
-    /// refuse to accept the token from `self`. There is no way to know
+    /// allowing @self to resume @source's TLS session, because the server
+    /// may not have sent a session resumption token to @source, or it may
+    /// refuse to accept the token from @self. There is no way to know
     /// whether a call to this function is actually successful.
     ///
     /// Using this function is not required to benefit from session
@@ -899,48 +897,67 @@
     /// without weakening the privacy guarantees normally provided by TLS,
     /// without need to call this function. For example, with TLS 1.3,
     /// a session ticket will be automatically copied from any
-    /// [`TlsClientConnection`][crate::TlsClientConnection] that has previously received session tickets
+    /// #GTlsClientConnection that has previously received session tickets
     /// from the server, provided a ticket is available that has not
     /// previously been used for session resumption, since session ticket
     /// reuse would be a privacy weakness. Using this function causes the
     /// ticket to be copied without regard for privacy considerations.
     /// ## `source`
-    /// a [`TlsClientConnection`][crate::TlsClientConnection]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_client_connection_copy_session_state&quot;</span>)]
-    </span><span class="kw">fn </span>copy_session_state(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsClientConnection&gt;);
+    /// a #GTlsClientConnection
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_client_connection_copy_session_state"</span>)]
+    </span><span class="kw">fn </span>copy_session_state(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_client_connection_copy_session_state(
+                <a class="self" href="#319">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#319">source</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
     <span class="doccomment">/// Gets the list of distinguished names of the Certificate Authorities
     /// that the server will accept certificates from. This will be set
     /// during the TLS handshake if the server requests a certificate.
     /// Otherwise, it will be [`None`].
     ///
-    /// Each item in the list is a [`glib::ByteArray`][crate::glib::ByteArray] which contains the complete
+    /// Each item in the list is a #GByteArray which contains the complete
     /// subject DN of the certificate authority.
     ///
     /// # Returns
     ///
     /// the list of
-    /// CA DNs. You should unref each element with `g_byte_array_unref()` and then
-    /// the free the list with `g_list_free()`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_client_connection_get_accepted_cas&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_accepted_cas&quot;</span>)]
-    </span><span class="kw">fn </span>accepted_cas(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::ByteArray&gt;;
+    /// CA DNs. You should unref each element with g_byte_array_unref() and then
+    /// the free the list with g_list_free().
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_client_connection_get_accepted_cas"</span>)]
+    #[doc(alias = <span class="string">"get_accepted_cas"</span>)]
+    </span><span class="kw">fn </span>accepted_cas(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(ffi::g_tls_client_connection_get_accepted_cas(
+                <a class="self" href="#343">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets `self`&#39;s expected server identity
+    <span class="doccomment">/// Gets @self's expected server identity
     ///
     /// # Returns
     ///
-    /// a [`SocketConnectable`][crate::SocketConnectable] describing the
+    /// a #GSocketConnectable describing the
     /// expected server identity, or [`None`] if the expected identity is not
     /// known.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_client_connection_get_server_identity&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_server_identity&quot;</span>)]
-    </span><span class="kw">fn </span>server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;SocketConnectable&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_client_connection_get_server_identity"</span>)]
+    #[doc(alias = <span class="string">"get_server_identity"</span>)]
+    </span><span class="kw">fn </span>server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_client_connection_get_server_identity(
+                <a class="self" href="#360">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets `self`&#39;s validation flags
+    <span class="doccomment">/// Gets @self's validation flags
     ///
     /// This function does not work as originally designed and is impossible
-    /// to use correctly. See [`validation-flags`][struct@crate::TlsClientConnection#validation-flags] for more
+    /// to use correctly. See #GTlsClientConnection:validation-flags for more
     /// information.
     ///
     /// # Deprecated since 2.72
@@ -950,184 +967,138 @@
     /// # Returns
     ///
     /// the validation flags
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_72&quot;</span>, deprecated = <span class="string">&quot;Since 2.72&quot;</span>)]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_72"</span>, deprecated = <span class="string">"Since 2.72"</span>)]
     #[allow(deprecated)]
-    #[doc(alias = <span class="string">&quot;g_tls_client_connection_get_validation_flags&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_validation_flags&quot;</span>)]
-    </span><span class="kw">fn </span>validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsCertificateFlags;
+    #[doc(alias = <span class="string">"g_tls_client_connection_get_validation_flags"</span>)]
+    #[doc(alias = <span class="string">"get_validation_flags"</span>)]
+    </span><span class="kw">fn </span>validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_client_connection_get_validation_flags(
+                <a class="self" href="#385">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Sets `self`&#39;s expected server identity, which is used both to tell
+    <span class="doccomment">/// Sets @self's expected server identity, which is used both to tell
     /// servers on virtual hosts which certificate to present, and also
-    /// to let `self` know what name to look for in the certificate when
+    /// to let @self know what name to look for in the certificate when
     /// performing [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] validation, if enabled.
     /// ## `identity`
-    /// a [`SocketConnectable`][crate::SocketConnectable] describing the expected server identity
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_client_connection_set_server_identity&quot;</span>)]
-    </span><span class="kw">fn </span>set_server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>, identity: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;);
+    /// a #GSocketConnectable describing the expected server identity
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_client_connection_set_server_identity"</span>)]
+    </span><span class="kw">fn </span>set_server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>, identity: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-78">SocketConnectable</a>&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_client_connection_set_server_identity(
+                <a class="self" href="#400">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#400">identity</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
-    <span class="doccomment">/// Sets `self`&#39;s validation flags, to override the default set of
+    <span class="doccomment">/// Sets @self's validation flags, to override the default set of
     /// checks performed when validating a server certificate. By default,
     /// [`TlsCertificateFlags::VALIDATE_ALL`][crate::TlsCertificateFlags::VALIDATE_ALL] is used.
     ///
     /// This function does not work as originally designed and is impossible
-    /// to use correctly. See [`validation-flags`][struct@crate::TlsClientConnection#validation-flags] for more
+    /// to use correctly. See #GTlsClientConnection:validation-flags for more
     /// information.
     ///
     /// # Deprecated since 2.72
     ///
     /// Do not attempt to ignore validation errors.
     /// ## `flags`
-    /// the [`TlsCertificateFlags`][crate::TlsCertificateFlags] to use
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_72&quot;</span>, deprecated = <span class="string">&quot;Since 2.72&quot;</span>)]
+    /// the #GTlsCertificateFlags to use
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_72"</span>, deprecated = <span class="string">"Since 2.72"</span>)]
     #[allow(deprecated)]
-    #[doc(alias = <span class="string">&quot;g_tls_client_connection_set_validation_flags&quot;</span>)]
-    </span><span class="kw">fn </span>set_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: TlsCertificateFlags);
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;accepted-cas&quot;</span>)]
-    </span><span class="kw">fn </span>connect_accepted_cas_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;server-identity&quot;</span>)]
-    </span><span class="kw">fn </span>connect_server_identity_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_72&quot;</span>, deprecated = <span class="string">&quot;Since 2.72&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;validation-flags&quot;</span>)]
-    </span><span class="kw">fn </span>connect_validation_flags_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;TlsClientConnection&gt;&gt; TlsClientConnectionExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>copy_session_state(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsClientConnection&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_client_connection_copy_session_state(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                source.as_ref().to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>accepted_cas(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::ByteArray&gt; {
-        <span class="kw">unsafe </span>{
-            FromGlibPtrContainer::from_glib_full(ffi::g_tls_client_connection_get_accepted_cas(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;SocketConnectable&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_client_connection_get_server_identity(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="attr">#[allow(deprecated)]
-    </span><span class="kw">fn </span>validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsCertificateFlags {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_client_connection_get_validation_flags(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>set_server_identity(<span class="kw-2">&amp;</span><span class="self">self</span>, identity: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_client_connection_set_server_identity(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                identity.as_ref().to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="attr">#[allow(deprecated)]
-    </span><span class="kw">fn </span>set_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: TlsCertificateFlags) {
+    #[doc(alias = <span class="string">"g_tls_client_connection_set_validation_flags"</span>)]
+    </span><span class="kw">fn </span>set_validation_flags(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_client_connection_set_validation_flags(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
+                <a class="self" href="#425">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#425">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
 
-    <span class="kw">fn </span>connect_accepted_cas_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_accepted_cas_trampoline&lt;
-            P: IsA&lt;TlsClientConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"accepted-cas"</span>)]
+    </span><span class="kw">fn </span>connect_accepted_cas_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_accepted_cas_trampoline&lt;
+            P: IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsClientConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsClientConnection.html">ffi::GTlsClientConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#442">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#444">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsClientConnection::from_glib_borrow</a>(<a href="#440">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::accepted-cas\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#435">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#435">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::accepted-cas\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_accepted_cas_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#448">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_server_identity_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_server_identity_trampoline&lt;
-            P: IsA&lt;TlsClientConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"server-identity"</span>)]
+    </span><span class="kw">fn </span>connect_server_identity_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_server_identity_trampoline&lt;
+            P: IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsClientConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsClientConnection.html">ffi::GTlsClientConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#468">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#470">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsClientConnection::from_glib_borrow</a>(<a href="#466">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::server-identity\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#461">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#461">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::server-identity\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_server_identity_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#474">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_validation_flags_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_validation_flags_trampoline&lt;
-            P: IsA&lt;TlsClientConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg_attr(feature = <span class="string">"v2_72"</span>, deprecated = <span class="string">"Since 2.72"</span>)]
+    #[doc(alias = <span class="string">"validation-flags"</span>)]
+    </span><span class="kw">fn </span>connect_validation_flags_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_validation_flags_trampoline&lt;
+            P: IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsClientConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsClientConnection.html">ffi::GTlsClientConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsClientConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#495">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#497">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsClientConnection::from_glib_borrow</a>(<a href="#493">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::validation-flags\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#488">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#488">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::validation-flags\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_validation_flags_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#501">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TlsClientConnection {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;TlsClientConnection&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#14-235">TlsClientConnection</a>&gt;&gt; <a href="#287-512">TlsClientConnectionExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

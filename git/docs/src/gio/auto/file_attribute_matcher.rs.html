@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_attribute_matcher.rs`."><title>file_attribute_matcher.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_attribute_matcher.rs`."><title>file_attribute_matcher.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -239,18 +241,16 @@
 <a href="#166" id="166">166</a>
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
-<a href="#169" id="169">169</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Determines if a string matches a file attribute.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span>FileAttributeMatcher(Shared&lt;ffi::GFileAttributeMatcher&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.FileAttributeMatcher.html">FileAttributeMatcher</a>(Shared&lt;<a href="../../../gio_sys/struct.GFileAttributeMatcher.html">ffi::GFileAttributeMatcher</a>&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_file_attribute_matcher_ref(ptr),
@@ -259,45 +259,45 @@
     }
 }
 
-<span class="kw">impl </span>FileAttributeMatcher {
+<span class="kw">impl </span><a href="#7-17">FileAttributeMatcher</a> {
     <span class="doccomment">/// Creates a new file attribute matcher, which matches attributes
-    /// against a given string. `GFileAttributeMatchers` are reference
+    /// against a given string. #GFileAttributeMatchers are reference
     /// counted structures, and are created with a reference count of 1. If
-    /// the number of references falls to 0, the [`FileAttributeMatcher`][crate::FileAttributeMatcher] is
+    /// the number of references falls to 0, the #GFileAttributeMatcher is
     /// automatically destroyed.
     ///
-    /// The `attributes` string should be formatted with specific keys separated
-    /// from namespaces with a double colon. Several &quot;namespace::key&quot; strings may be
-    /// concatenated with a single comma (e.g. &quot;standard::type,standard::is-hidden&quot;).
-    /// The wildcard &quot;*&quot; may be used to match all keys and namespaces, or
-    /// &quot;namespace::*&quot; will match all keys in a given namespace.
+    /// The @attributes string should be formatted with specific keys separated
+    /// from namespaces with a double colon. Several "namespace::key" strings may be
+    /// concatenated with a single comma (e.g. "standard::type,standard::is-hidden").
+    /// The wildcard "*" may be used to match all keys and namespaces, or
+    /// "namespace::*" will match all keys in a given namespace.
     ///
     /// ## Examples of file attribute matcher strings and results
     ///
-    /// - `&quot;*&quot;`: matches all attributes.
-    /// - `&quot;standard::is-hidden&quot;`: matches only the key is-hidden in the
-    ///  standard namespace.
-    /// - `&quot;standard::type,unix::*&quot;`: matches the type key in the standard
-    ///  namespace and all keys in the unix namespace.
+    /// - `"*"`: matches all attributes.
+    /// - `"standard::is-hidden"`: matches only the key is-hidden in the
+    ///   standard namespace.
+    /// - `"standard::type,unix::*"`: matches the type key in the standard
+    ///   namespace and all keys in the unix namespace.
     /// ## `attributes`
     /// an attribute string to match.
     ///
     /// # Returns
     ///
-    /// a [`FileAttributeMatcher`][crate::FileAttributeMatcher]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(attributes: <span class="kw-2">&amp;</span>str) -&gt; FileAttributeMatcher {
+    /// a #GFileAttributeMatcher
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_new"</span>)]
+    </span><span class="kw">pub fn </span>new(attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#7-17">FileAttributeMatcher</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_file_attribute_matcher_new(
-                attributes.to_glib_none().<span class="number">0</span>,
+                <a href="#46">attributes</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="doccomment">/// Checks if the matcher will match all of the keys in a given namespace.
     /// This will always return [`true`] if a wildcard character is in use (e.g. if
-    /// matcher was created with &quot;standard::*&quot; and `ns` is &quot;standard&quot;, or if matcher was created
-    /// using &quot;*&quot; and namespace is anything.)
+    /// matcher was created with "standard::*" and @ns is "standard", or if matcher was created
+    /// using "*" and namespace is anything.)
     ///
     /// TODO: this is awkwardly worded.
     /// ## `ns`
@@ -306,59 +306,59 @@
     /// # Returns
     ///
     /// [`true`] if the matcher matches all of the entries
-    /// in the given `ns`, [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_enumerate_namespace&quot;</span>)]
-    </span><span class="kw">pub fn </span>enumerate_namespace(<span class="kw-2">&amp;</span><span class="self">self</span>, ns: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    /// in the given @ns, [`false`] otherwise.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_enumerate_namespace"</span>)]
+    </span><span class="kw">pub fn </span>enumerate_namespace(<span class="kw-2">&amp;</span><span class="self">self</span>, ns: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_file_attribute_matcher_enumerate_namespace(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                ns.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#68">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#68">ns</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="doccomment">/// Checks if an attribute will be matched by an attribute matcher. If
-    /// the matcher was created with the &quot;*&quot; matching string, this function
+    /// the matcher was created with the "*" matching string, this function
     /// will always return [`true`].
     /// ## `attribute`
     /// a file attribute key.
     ///
     /// # Returns
     ///
-    /// [`true`] if `attribute` matches `self`. [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_matches&quot;</span>)]
-    </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>, attribute: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    /// [`true`] if @attribute matches @self. [`false`] otherwise.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_matches"</span>)]
+    </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>, attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_file_attribute_matcher_matches(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                attribute.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#87">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#87">attribute</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Checks if a attribute matcher only matches a given attribute. Always
-    /// returns [`false`] if &quot;*&quot; was used when creating the matcher.
+    <span class="doccomment">/// Checks if an attribute matcher only matches a given attribute. Always
+    /// returns [`false`] if "*" was used when creating the matcher.
     /// ## `attribute`
     /// a file attribute key.
     ///
     /// # Returns
     ///
-    /// [`true`] if the matcher only matches `attribute`. [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_matches_only&quot;</span>)]
-    </span><span class="kw">pub fn </span>matches_only(<span class="kw-2">&amp;</span><span class="self">self</span>, attribute: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    /// [`true`] if the matcher only matches @attribute. [`false`] otherwise.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_matches_only"</span>)]
+    </span><span class="kw">pub fn </span>matches_only(<span class="kw-2">&amp;</span><span class="self">self</span>, attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_file_attribute_matcher_matches_only(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                attribute.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#105">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#105">attribute</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Subtracts all attributes of `subtract` from `self` and returns
+    <span class="doccomment">/// Subtracts all attributes of @subtract from @self and returns
     /// a matcher that supports those attributes.
     ///
     /// Note that currently it is not possible to remove a single
-    /// attribute when the `self` matches the whole namespace - or remove
+    /// attribute when the @self matches the whole namespace - or remove
     /// a namespace or attribute when the matcher matches everything. This
     /// is a limitation of the current implementation, but may be fixed
     /// in the future.
@@ -368,46 +368,45 @@
     /// # Returns
     ///
     /// A file attribute matcher matching all attributes of
-    ///  `self` that are not matched by `subtract`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_subtract&quot;</span>)]
+    ///     @self that are not matched by @subtract
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_subtract"</span>)]
     #[must_use]
     </span><span class="kw">pub fn </span>subtract(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        subtract: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>FileAttributeMatcher&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;FileAttributeMatcher&gt; {
+        subtract: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#7-17">FileAttributeMatcher</a>&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#7-17">FileAttributeMatcher</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_file_attribute_matcher_subtract(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                subtract.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#132">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#133">subtract</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="doccomment">/// Prints what the matcher is matching against. The format will be
-    /// equal to the format passed to [`new()`][Self::new()].
+    /// equal to the format passed to g_file_attribute_matcher_new().
     /// The output however, might not be identical, as the matcher may
     /// decide to use a different order or omit needless parts.
     ///
     /// # Returns
     ///
     /// a string describing the attributes the matcher matches
-    ///  against or [`None`] if `self` was [`None`].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_file_attribute_matcher_to_string&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;to_string&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
+    ///   against or [`None`] if @self was [`None`].
+    </span><span class="attr">#[doc(alias = <span class="string">"g_file_attribute_matcher_to_string"</span>)]
+    #[doc(alias = <span class="string">"to_string"</span>)]
+    </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_file_attribute_matcher_to_string(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#154">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>FileAttributeMatcher {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#7-17">FileAttributeMatcher</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>.to_str())
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
+        <a href="#165">f</a>.write_str(<span class="kw-2">&amp;</span><a class="self" href="#165">self</a>.<a href="#154-160">to_str</a>())
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

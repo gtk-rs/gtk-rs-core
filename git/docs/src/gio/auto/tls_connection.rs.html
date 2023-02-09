@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1215,130 +1217,33 @@
 <a href="#1142" id="1142">1142</a>
 <a href="#1143" id="1143">1143</a>
 <a href="#1144" id="1144">1144</a>
-<a href="#1145" id="1145">1145</a>
-<a href="#1146" id="1146">1146</a>
-<a href="#1147" id="1147">1147</a>
-<a href="#1148" id="1148">1148</a>
-<a href="#1149" id="1149">1149</a>
-<a href="#1150" id="1150">1150</a>
-<a href="#1151" id="1151">1151</a>
-<a href="#1152" id="1152">1152</a>
-<a href="#1153" id="1153">1153</a>
-<a href="#1154" id="1154">1154</a>
-<a href="#1155" id="1155">1155</a>
-<a href="#1156" id="1156">1156</a>
-<a href="#1157" id="1157">1157</a>
-<a href="#1158" id="1158">1158</a>
-<a href="#1159" id="1159">1159</a>
-<a href="#1160" id="1160">1160</a>
-<a href="#1161" id="1161">1161</a>
-<a href="#1162" id="1162">1162</a>
-<a href="#1163" id="1163">1163</a>
-<a href="#1164" id="1164">1164</a>
-<a href="#1165" id="1165">1165</a>
-<a href="#1166" id="1166">1166</a>
-<a href="#1167" id="1167">1167</a>
-<a href="#1168" id="1168">1168</a>
-<a href="#1169" id="1169">1169</a>
-<a href="#1170" id="1170">1170</a>
-<a href="#1171" id="1171">1171</a>
-<a href="#1172" id="1172">1172</a>
-<a href="#1173" id="1173">1173</a>
-<a href="#1174" id="1174">1174</a>
-<a href="#1175" id="1175">1175</a>
-<a href="#1176" id="1176">1176</a>
-<a href="#1177" id="1177">1177</a>
-<a href="#1178" id="1178">1178</a>
-<a href="#1179" id="1179">1179</a>
-<a href="#1180" id="1180">1180</a>
-<a href="#1181" id="1181">1181</a>
-<a href="#1182" id="1182">1182</a>
-<a href="#1183" id="1183">1183</a>
-<a href="#1184" id="1184">1184</a>
-<a href="#1185" id="1185">1185</a>
-<a href="#1186" id="1186">1186</a>
-<a href="#1187" id="1187">1187</a>
-<a href="#1188" id="1188">1188</a>
-<a href="#1189" id="1189">1189</a>
-<a href="#1190" id="1190">1190</a>
-<a href="#1191" id="1191">1191</a>
-<a href="#1192" id="1192">1192</a>
-<a href="#1193" id="1193">1193</a>
-<a href="#1194" id="1194">1194</a>
-<a href="#1195" id="1195">1195</a>
-<a href="#1196" id="1196">1196</a>
-<a href="#1197" id="1197">1197</a>
-<a href="#1198" id="1198">1198</a>
-<a href="#1199" id="1199">1199</a>
-<a href="#1200" id="1200">1200</a>
-<a href="#1201" id="1201">1201</a>
-<a href="#1202" id="1202">1202</a>
-<a href="#1203" id="1203">1203</a>
-<a href="#1204" id="1204">1204</a>
-<a href="#1205" id="1205">1205</a>
-<a href="#1206" id="1206">1206</a>
-<a href="#1207" id="1207">1207</a>
-<a href="#1208" id="1208">1208</a>
-<a href="#1209" id="1209">1209</a>
-<a href="#1210" id="1210">1210</a>
-<a href="#1211" id="1211">1211</a>
-<a href="#1212" id="1212">1212</a>
-<a href="#1213" id="1213">1213</a>
-<a href="#1214" id="1214">1214</a>
-<a href="#1215" id="1215">1215</a>
-<a href="#1216" id="1216">1216</a>
-<a href="#1217" id="1217">1217</a>
-<a href="#1218" id="1218">1218</a>
-<a href="#1219" id="1219">1219</a>
-<a href="#1220" id="1220">1220</a>
-<a href="#1221" id="1221">1221</a>
-<a href="#1222" id="1222">1222</a>
-<a href="#1223" id="1223">1223</a>
-<a href="#1224" id="1224">1224</a>
-<a href="#1225" id="1225">1225</a>
-<a href="#1226" id="1226">1226</a>
-<a href="#1227" id="1227">1227</a>
-<a href="#1228" id="1228">1228</a>
-<a href="#1229" id="1229">1229</a>
-<a href="#1230" id="1230">1230</a>
-<a href="#1231" id="1231">1231</a>
-<a href="#1232" id="1232">1232</a>
-<a href="#1233" id="1233">1233</a>
-<a href="#1234" id="1234">1234</a>
-<a href="#1235" id="1235">1235</a>
-<a href="#1236" id="1236">1236</a>
-<a href="#1237" id="1237">1237</a>
-<a href="#1238" id="1238">1238</a>
-<a href="#1239" id="1239">1239</a>
-<a href="#1240" id="1240">1240</a>
-<a href="#1241" id="1241">1241</a>
-<a href="#1242" id="1242">1242</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 </span><span class="attr">#![allow(deprecated)]
 
-#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-</span><span class="kw">use </span><span class="kw">crate</span>::TlsProtocolVersion;
+#[cfg(feature = <span class="string">"v2_70"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+</span><span class="kw">use </span><a href="enums.rs.html#4368-4395"><span class="kw">crate</span>::TlsProtocolVersion</a>;
 <span class="kw">use crate</span>::{
-    AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
-    TlsInteraction, TlsRehandshakeMode,
+    <a href="async_result.rs.html#7-105">AsyncResult</a>, <a href="cancellable.rs.html#7-85">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>, <a href="tls_database.rs.html#12-34">TlsDatabase</a>,
+    <a href="tls_interaction.rs.html#12-43">TlsInteraction</a>, <a href="enums.rs.html#4517-4529">TlsRehandshakeMode</a>,
 };
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute, pin::Pin, ptr};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// [`TlsConnection`][crate::TlsConnection] is the base TLS connection class type, which wraps
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GTlsConnection` is the base TLS connection class type, which wraps
     /// a [`IOStream`][crate::IOStream] and provides TLS encryption on top of it. Its
-    /// subclasses, [`TlsClientConnection`][crate::TlsClientConnection] and [`TlsServerConnection`][crate::TlsServerConnection],
-    /// implement client-side and server-side TLS, respectively.
+    /// subclasses, [`TlsClientConnection`][crate::TlsClientConnection] and
+    /// [`TlsServerConnection`][crate::TlsServerConnection], implement client-side and server-side TLS,
+    /// respectively.
     ///
-    /// For DTLS (Datagram TLS) support, see `GDtlsConnection`.
+    /// For DTLS (Datagram TLS) support, see `Gio::DtlsConnection`.
     ///
     /// This is an Abstract Base Class, you cannot instantiate it.
     ///
@@ -1348,30 +1253,30 @@
     /// #### `advertised-protocols`
     ///  The list of application-layer protocols that the connection
     /// advertises that it is willing to speak. See
-    /// [`TlsConnectionExtManual::set_advertised_protocols()`][crate::prelude::TlsConnectionExtManual::set_advertised_protocols()].
+    /// g_tls_connection_set_advertised_protocols().
     ///
     /// Readable | Writeable
     ///
     ///
     /// #### `base-io-stream`
-    ///  The [`IOStream`][crate::IOStream] that the connection wraps. The connection holds a reference
+    ///  The #GIOStream that the connection wraps. The connection holds a reference
     /// to this stream, and may run operations on the stream from other threads
-    /// throughout its lifetime. Consequently, after the [`IOStream`][crate::IOStream] has been
+    /// throughout its lifetime. Consequently, after the #GIOStream has been
     /// constructed, application code may only run its own operations on this
-    /// stream when no [`IOStream`][crate::IOStream] operations are running.
+    /// stream when no #GIOStream operations are running.
     ///
     /// Readable | Writeable | Construct Only
     ///
     ///
     /// #### `certificate`
-    ///  The connection&#39;s certificate; see
-    /// [`TlsConnectionExt::set_certificate()`][crate::prelude::TlsConnectionExt::set_certificate()].
+    ///  The connection's certificate; see
+    /// g_tls_connection_set_certificate().
     ///
     /// Readable | Writeable
     ///
     ///
     /// #### `ciphersuite-name`
-    ///  The name of the TLS ciphersuite in use. See [`TlsConnectionExt::ciphersuite_name()`][crate::prelude::TlsConnectionExt::ciphersuite_name()].
+    ///  The name of the TLS ciphersuite in use. See g_tls_connection_get_ciphersuite_name().
     ///
     /// Readable
     ///
@@ -1379,17 +1284,17 @@
     /// #### `database`
     ///  The certificate database to use when verifying this TLS connection.
     /// If no certificate database is set, then the default database will be
-    /// used. See [`TlsBackendExt::default_database()`][crate::prelude::TlsBackendExt::default_database()].
+    /// used. See g_tls_backend_get_default_database().
     ///
-    /// When using a non-default database, [`TlsConnection`][crate::TlsConnection] must fall back to using
-    /// the [`TlsDatabase`][crate::TlsDatabase] to perform certificate verification using
-    /// [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()], which means certificate verification will
+    /// When using a non-default database, #GTlsConnection must fall back to using
+    /// the #GTlsDatabase to perform certificate verification using
+    /// g_tls_database_verify_chain(), which means certificate verification will
     /// not be able to make use of TLS session context. This may be less secure.
-    /// For example, if you create your own [`TlsDatabase`][crate::TlsDatabase] that just wraps the
-    /// default [`TlsDatabase`][crate::TlsDatabase], you might expect that you have not changed anything,
+    /// For example, if you create your own #GTlsDatabase that just wraps the
+    /// default #GTlsDatabase, you might expect that you have not changed anything,
     /// but this is not true because you may have altered the behavior of
-    /// [`TlsConnection`][crate::TlsConnection] by causing it to use [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()]. See the
-    /// documentation of [`TlsDatabaseExt::verify_chain()`][crate::prelude::TlsDatabaseExt::verify_chain()] for more details on specific
+    /// #GTlsConnection by causing it to use g_tls_database_verify_chain(). See the
+    /// documentation of g_tls_database_verify_chain() for more details on specific
     /// security checks that may not be performed. Accordingly, setting a
     /// non-default database is discouraged except for specialty applications with
     /// unusual security requirements.
@@ -1398,7 +1303,7 @@
     ///
     ///
     /// #### `interaction`
-    ///  A [`TlsInteraction`][crate::TlsInteraction] object to be used when the connection or certificate
+    ///  A #GTlsInteraction object to be used when the connection or certificate
     /// database need to interact with the user. This will be used to prompt the
     /// user for passwords where necessary.
     ///
@@ -1407,17 +1312,17 @@
     ///
     /// #### `negotiated-protocol`
     ///  The application-layer protocol negotiated during the TLS
-    /// handshake. See [`TlsConnectionExt::negotiated_protocol()`][crate::prelude::TlsConnectionExt::negotiated_protocol()].
+    /// handshake. See g_tls_connection_get_negotiated_protocol().
     ///
     /// Readable
     ///
     ///
     /// #### `peer-certificate`
-    ///  The connection&#39;s peer&#39;s certificate, after the TLS handshake has
+    ///  The connection's peer's certificate, after the TLS handshake has
     /// completed or failed. Note in particular that this is not yet set
-    /// during the emission of [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].
+    /// during the emission of #GTlsConnection::accept-certificate.
     ///
-    /// (You can watch for a [`notify`][struct@crate::glib::Object#notify] signal on this property to
+    /// (You can watch for a #GObject::notify signal on this property to
     /// detect when a handshake has occurred.)
     ///
     /// Readable
@@ -1425,10 +1330,10 @@
     ///
     /// #### `peer-certificate-errors`
     ///  The errors noticed while verifying
-    /// [`peer-certificate`][struct@crate::TlsConnection#peer-certificate]. Normally this should be 0, but
-    /// it may not be if [`validation-flags`][struct@crate::TlsClientConnection#validation-flags] is not
+    /// #GTlsConnection:peer-certificate. Normally this should be 0, but
+    /// it may not be if #GTlsClientConnection:validation-flags is not
     /// [`TlsCertificateFlags::VALIDATE_ALL`][crate::TlsCertificateFlags::VALIDATE_ALL], or if
-    /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate] overrode the default
+    /// #GTlsConnection::accept-certificate overrode the default
     /// behavior.
     ///
     /// GLib guarantees that if certificate verification fails, at least
@@ -1443,21 +1348,21 @@
     ///
     ///
     /// #### `protocol-version`
-    ///  The TLS protocol version in use. See [`TlsConnectionExt::protocol_version()`][crate::prelude::TlsConnectionExt::protocol_version()].
+    ///  The TLS protocol version in use. See g_tls_connection_get_protocol_version().
     ///
     /// Readable
     ///
     ///
     /// #### `rehandshake-mode`
     ///  The rehandshaking mode. See
-    /// [`TlsConnectionExt::set_rehandshake_mode()`][crate::prelude::TlsConnectionExt::set_rehandshake_mode()].
+    /// g_tls_connection_set_rehandshake_mode().
     ///
     /// Readable | Writeable | Construct
     ///
     ///
     /// #### `require-close-notify`
     ///  Whether or not proper TLS close notification is required.
-    /// See [`TlsConnectionExt::set_require_close_notify()`][crate::prelude::TlsConnectionExt::set_require_close_notify()].
+    /// See g_tls_connection_set_require_close_notify().
     ///
     /// Readable | Writeable | Construct
     ///
@@ -1465,22 +1370,28 @@
     /// #### `use-system-certdb`
     ///  Whether or not the system certificate database will be used to
     /// verify peer certificates. See
-    /// `g_tls_connection_set_use_system_certdb()`.
+    /// g_tls_connection_set_use_system_certdb().
     ///
     /// Readable | Writeable | Construct
     /// &lt;details&gt;&lt;summary&gt;&lt;h4&gt;IOStream&lt;/h4&gt;&lt;/summary&gt;
     ///
     ///
     /// #### `closed`
-    ///  Readable
+    ///  Whether the stream is closed.
+    ///
+    /// Readable
     ///
     ///
     /// #### `input-stream`
-    ///  Readable
+    ///  The [`InputStream`][crate::InputStream] to read from.
+    ///
+    /// Readable
     ///
     ///
     /// #### `output-stream`
-    ///  Readable
+    ///  The [`OutputStream`][crate::OutputStream] to write to.
+    ///
+    /// Readable
     /// &lt;/details&gt;
     ///
     /// ## Signals
@@ -1488,19 +1399,19 @@
     ///
     /// #### `accept-certificate`
     ///  Emitted during the TLS handshake after the peer certificate has
-    /// been received. You can examine `peer_cert`&#39;s certification path by
-    /// calling [`TlsCertificateExt::issuer()`][crate::prelude::TlsCertificateExt::issuer()] on it.
+    /// been received. You can examine @peer_cert's certification path by
+    /// calling g_tls_certificate_get_issuer() on it.
     ///
-    /// For a client-side connection, `peer_cert` is the server&#39;s
+    /// For a client-side connection, @peer_cert is the server's
     /// certificate, and the signal will only be emitted if the
-    /// certificate was not acceptable according to `conn`&#39;s
-    /// [`validation_flags`][struct@crate::TlsClientConnection#validation_flags]. If you would like the
-    /// certificate to be accepted despite `errors`, return [`true`] from the
+    /// certificate was not acceptable according to @conn's
+    /// #GTlsClientConnection:validation_flags. If you would like the
+    /// certificate to be accepted despite @errors, return [`true`] from the
     /// signal handler. Otherwise, if no handler accepts the certificate,
     /// the handshake will fail with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].
     ///
     /// GLib guarantees that if certificate verification fails, this signal
-    /// will be emitted with at least one error will be set in `errors`, but
+    /// will be emitted with at least one error will be set in @errors, but
     /// it does not guarantee that all possible errors will be set.
     /// Accordingly, you may not safely decide to ignore any particular
     /// type of error. For example, it would be incorrect to ignore
@@ -1508,9 +1419,9 @@
     /// certificates, because this could potentially be the only error flag
     /// set even if other problems exist with the certificate.
     ///
-    /// For a server-side connection, `peer_cert` is the certificate
-    /// presented by the client, if this was requested via the server&#39;s
-    /// [`authentication_mode`][struct@crate::TlsServerConnection#authentication_mode]. On the server side,
+    /// For a server-side connection, @peer_cert is the certificate
+    /// presented by the client, if this was requested via the server's
+    /// #GTlsServerConnection:authentication_mode. On the server side,
     /// the signal is always emitted when the client presents a
     /// certificate, and the certificate will only be accepted if a
     /// handler returns [`true`].
@@ -1535,16 +1446,21 @@
     /// # Implements
     ///
     /// [`TlsConnectionExt`][trait@crate::prelude::TlsConnectionExt], [`IOStreamExt`][trait@crate::prelude::IOStreamExt], [`trait@glib::ObjectExt`], [`TlsConnectionExtManual`][trait@crate::prelude::TlsConnectionExtManual], [`IOStreamExtManual`][trait@crate::prelude::IOStreamExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GTlsConnection&quot;</span>)]
-    </span><span class="kw">pub struct </span>TlsConnection(Object&lt;ffi::GTlsConnection, ffi::GTlsConnectionClass&gt;) @extends IOStream;
+    </span><span class="attr">#[doc(alias = <span class="string">"GTlsConnection"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.TlsConnection.html">TlsConnection</a>(Object&lt;<a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>, <a href="../../../gio_sys/struct.GTlsConnectionClass.html">ffi::GTlsConnectionClass</a>&gt;) @extends <a href="io_stream.rs.html#13-94">IOStream</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_tls_connection_get_type(),
     }
 }
 
-<span class="kw">impl </span>TlsConnection {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TlsConnection&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#20-236">TlsConnection</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#20-236">TlsConnection</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#20-236"><span class="kw">super</span>::TlsConnection</a>&gt;&gt; <a href="#243">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TlsConnection`] methods.
@@ -1552,34 +1468,48 @@
 /// # Implementors
 ///
 /// [`TlsClientConnection`][struct@crate::TlsClientConnection], [`TlsConnection`][struct@crate::TlsConnection], [`TlsServerConnection`][struct@crate::TlsServerConnection]
-</span><span class="kw">pub trait </span>TlsConnectionExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Used by [`TlsConnection`][crate::TlsConnection] implementations to emit the
-    /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate] signal.
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsConnectionExt.html">TlsConnectionExt</a>: IsA&lt;<a href="#20-236">TlsConnection</a>&gt; + <a href="#243">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Used by #GTlsConnection implementations to emit the
+    /// #GTlsConnection::accept-certificate signal.
     /// ## `peer_cert`
-    /// the peer&#39;s [`TlsCertificate`][crate::TlsCertificate]
+    /// the peer's #GTlsCertificate
     /// ## `errors`
-    /// the problems with `peer_cert`
+    /// the problems with @peer_cert
     ///
     /// # Returns
     ///
     /// [`true`] if one of the signal handlers has returned
-    ///  [`true`] to accept `peer_cert`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_emit_accept_certificate&quot;</span>)]
+    ///     [`true`] to accept @peer_cert
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_emit_accept_certificate"</span>)]
     </span><span class="kw">fn </span>emit_accept_certificate(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        peer_cert: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        errors: TlsCertificateFlags,
-    ) -&gt; bool;
+        peer_cert: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;,
+        errors: <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>,
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_connection_emit_accept_certificate(
+                <a class="self" href="#266">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#267">peer_cert</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#268">errors</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets `self`&#39;s certificate, as set by
-    /// [`set_certificate()`][Self::set_certificate()].
+    <span class="doccomment">/// Gets @self's certificate, as set by
+    /// g_tls_connection_set_certificate().
     ///
     /// # Returns
     ///
-    /// `self`&#39;s certificate, or [`None`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_certificate&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt;;
+    /// @self's certificate, or [`None`]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_certificate"</span>)]
+    #[doc(alias = <span class="string">"get_certificate"</span>)]
+    </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_connection_get_certificate(
+                <a class="self" href="#287">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Returns the name of the current TLS ciphersuite, or [`None`] if the
     /// connection has not handshaked or has been closed. Beware that the TLS
@@ -1593,21 +1523,33 @@
     /// # Returns
     ///
     /// The name of the current TLS ciphersuite, or [`None`]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_get_ciphersuite_name&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_ciphersuite_name&quot;</span>)]
-    </span><span class="kw">fn </span>ciphersuite_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+    #[doc(alias = <span class="string">"g_tls_connection_get_ciphersuite_name"</span>)]
+    #[doc(alias = <span class="string">"get_ciphersuite_name"</span>)]
+    </span><span class="kw">fn </span>ciphersuite_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
+                <a class="self" href="#311">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets the certificate database that `self` uses to verify
-    /// peer certificates. See [`set_database()`][Self::set_database()].
+    <span class="doccomment">/// Gets the certificate database that @self uses to verify
+    /// peer certificates. See g_tls_connection_set_database().
     ///
     /// # Returns
     ///
-    /// the certificate database that `self` uses or [`None`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_database&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_database&quot;</span>)]
-    </span><span class="kw">fn </span>database(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsDatabase&gt;;
+    /// the certificate database that @self uses or [`None`]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_database"</span>)]
+    #[doc(alias = <span class="string">"get_database"</span>)]
+    </span><span class="kw">fn </span>database(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_connection_get_database(
+                <a class="self" href="#327">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Get the object that will be used to interact with the user. It will be used
     /// for things like prompting the user for passwords. If [`None`] is returned, then
@@ -1616,105 +1558,147 @@
     /// # Returns
     ///
     /// The interaction object.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_interaction&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_interaction&quot;</span>)]
-    </span><span class="kw">fn </span>interaction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsInteraction&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_interaction"</span>)]
+    #[doc(alias = <span class="string">"get_interaction"</span>)]
+    </span><span class="kw">fn </span>interaction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_connection_get_interaction(
+                <a class="self" href="#344">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Gets the name of the application-layer protocol negotiated during
     /// the handshake.
     ///
     /// If the peer did not use the ALPN extension, or did not advertise a
-    /// protocol that matched one of `self`&#39;s protocols, or the TLS backend
+    /// protocol that matched one of @self's protocols, or the TLS backend
     /// does not support ALPN, then this will be [`None`]. See
-    /// [`TlsConnectionExtManual::set_advertised_protocols()`][crate::prelude::TlsConnectionExtManual::set_advertised_protocols()].
+    /// g_tls_connection_set_advertised_protocols().
     ///
     /// # Returns
     ///
     /// the negotiated protocol, or [`None`]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_get_negotiated_protocol&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_negotiated_protocol&quot;</span>)]
-    </span><span class="kw">fn </span>negotiated_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+    #[doc(alias = <span class="string">"g_tls_connection_get_negotiated_protocol"</span>)]
+    #[doc(alias = <span class="string">"get_negotiated_protocol"</span>)]
+    </span><span class="kw">fn </span>negotiated_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
+                <a class="self" href="#367">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets `self`&#39;s peer&#39;s certificate after the handshake has completed
+    <span class="doccomment">/// Gets @self's peer's certificate after the handshake has completed
     /// or failed. (It is not set during the emission of
-    /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].)
+    /// #GTlsConnection::accept-certificate.)
     ///
     /// # Returns
     ///
-    /// `self`&#39;s peer&#39;s certificate, or [`None`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_peer_certificate&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_peer_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>peer_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt;;
+    /// @self's peer's certificate, or [`None`]
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_peer_certificate"</span>)]
+    #[doc(alias = <span class="string">"get_peer_certificate"</span>)]
+    </span><span class="kw">fn </span>peer_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_connection_get_peer_certificate(
+                <a class="self" href="#384">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets the errors associated with validating `self`&#39;s peer&#39;s
+    <span class="doccomment">/// Gets the errors associated with validating @self's peer's
     /// certificate, after the handshake has completed or failed. (It is
-    /// not set during the emission of [`accept-certificate`][struct@crate::TlsConnection#accept-certificate].)
+    /// not set during the emission of #GTlsConnection::accept-certificate.)
     ///
-    /// See [`peer-certificate-errors`][struct@crate::TlsConnection#peer-certificate-errors] for more information.
+    /// See #GTlsConnection:peer-certificate-errors for more information.
     ///
     /// # Returns
     ///
-    /// `self`&#39;s peer&#39;s certificate errors
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_peer_certificate_errors&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_peer_certificate_errors&quot;</span>)]
-    </span><span class="kw">fn </span>peer_certificate_errors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsCertificateFlags;
+    /// @self's peer's certificate errors
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_peer_certificate_errors"</span>)]
+    #[doc(alias = <span class="string">"get_peer_certificate_errors"</span>)]
+    </span><span class="kw">fn </span>peer_certificate_errors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
+                <a class="self" href="#403">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
     <span class="doccomment">/// Returns the current TLS protocol version, which may be
     /// [`TlsProtocolVersion::Unknown`][crate::TlsProtocolVersion::Unknown] if the connection has not handshaked, or
     /// has been closed, or if the TLS backend has implemented a protocol version
-    /// that is not a recognized [`TlsProtocolVersion`][crate::TlsProtocolVersion].
+    /// that is not a recognized #GTlsProtocolVersion.
     ///
     /// # Returns
     ///
     /// The current TLS protocol version
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_get_protocol_version&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_protocol_version&quot;</span>)]
-    </span><span class="kw">fn </span>protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsProtocolVersion;
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+    #[doc(alias = <span class="string">"g_tls_connection_get_protocol_version"</span>)]
+    #[doc(alias = <span class="string">"get_protocol_version"</span>)]
+    </span><span class="kw">fn </span>protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4368-4395">TlsProtocolVersion</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_connection_get_protocol_version(
+                <a class="self" href="#423">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Gets `self` rehandshaking mode. See
-    /// [`set_rehandshake_mode()`][Self::set_rehandshake_mode()] for details.
+    <span class="doccomment">/// Gets @self rehandshaking mode. See
+    /// g_tls_connection_set_rehandshake_mode() for details.
     ///
     /// # Deprecated since 2.60
     ///
     /// Changing the rehandshake mode is no longer
-    ///  required for compatibility. Also, rehandshaking has been removed
-    ///  from the TLS protocol in TLS 1.3.
+    ///   required for compatibility. Also, rehandshaking has been removed
+    ///   from the TLS protocol in TLS 1.3.
     ///
     /// # Returns
     ///
     /// [`TlsRehandshakeMode::Safely`][crate::TlsRehandshakeMode::Safely]
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_60&quot;</span>, deprecated = <span class="string">&quot;Since 2.60&quot;</span>)]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
     #[allow(deprecated)]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_get_rehandshake_mode&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_rehandshake_mode&quot;</span>)]
-    </span><span class="kw">fn </span>rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsRehandshakeMode;
+    #[doc(alias = <span class="string">"g_tls_connection_get_rehandshake_mode"</span>)]
+    #[doc(alias = <span class="string">"get_rehandshake_mode"</span>)]
+    </span><span class="kw">fn </span>rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4517-4529">TlsRehandshakeMode</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_connection_get_rehandshake_mode(
+                <a class="self" href="#447">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Tests whether or not `self` expects a proper TLS close notification
+    <span class="doccomment">/// Tests whether or not @self expects a proper TLS close notification
     /// when the connection is closed. See
-    /// [`set_require_close_notify()`][Self::set_require_close_notify()] for details.
+    /// g_tls_connection_set_require_close_notify() for details.
     ///
     /// # Returns
     ///
-    /// [`true`] if `self` requires a proper TLS close
+    /// [`true`] if @self requires a proper TLS close
     /// notification.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_require_close_notify&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_require_close_notify&quot;</span>)]
-    </span><span class="kw">fn </span>requires_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_get_require_close_notify"</span>)]
+    #[doc(alias = <span class="string">"get_require_close_notify"</span>)]
+    </span><span class="kw">fn </span>requires_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_connection_get_require_close_notify(
+                <a class="self" href="#465">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            ))
+        }
+    }
 
-    <span class="doccomment">/// Attempts a TLS handshake on `self`.
+    <span class="doccomment">/// Attempts a TLS handshake on @self.
     ///
     /// On the client side, it is never necessary to call this method;
     /// although the connection needs to perform a handshake after
-    /// connecting (or after sending a &quot;STARTTLS&quot;-type command),
-    /// [`TlsConnection`][crate::TlsConnection] will handle this for you automatically when you try
+    /// connecting (or after sending a "STARTTLS"-type command),
+    /// #GTlsConnection will handle this for you automatically when you try
     /// to send or receive data on the connection. You can call
-    /// [`handshake()`][Self::handshake()] manually if you want to know whether
+    /// g_tls_connection_handshake() manually if you want to know whether
     /// the initial handshake succeeded or failed (as opposed to just
-    /// immediately trying to use `self` to read or write, in which case,
+    /// immediately trying to use @self to read or write, in which case,
     /// if it fails, it may not be possible to tell if it failed before or
     /// after completing the handshake), but beware that servers may reject
     /// client authentication after the handshake has completed, so a
@@ -1724,97 +1708,185 @@
     /// the beginning of the communication, you do not need to call this
     /// function explicitly unless you want clearer error reporting.
     ///
-    /// Previously, calling [`handshake()`][Self::handshake()] after the initial
+    /// Previously, calling g_tls_connection_handshake() after the initial
     /// handshake would trigger a rehandshake; however, this usage was
     /// deprecated in GLib 2.60 because rehandshaking was removed from the
     /// TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after
     /// the initial handshake will no longer do anything.
     ///
-    /// When using a [`TlsConnection`][crate::TlsConnection] created by [`SocketClient`][crate::SocketClient], the
-    /// [`SocketClient`][crate::SocketClient] performs the initial handshake, so calling this
+    /// When using a #GTlsConnection created by #GSocketClient, the
+    /// #GSocketClient performs the initial handshake, so calling this
     /// function manually is not recommended.
     ///
-    /// [`accept_certificate`][struct@crate::TlsConnection#accept_certificate] may be emitted during the
+    /// #GTlsConnection::accept_certificate may be emitted during the
     /// handshake.
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     ///
     /// # Returns
     ///
     /// success or failure
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_handshake&quot;</span>)]
-    </span><span class="kw">fn </span>handshake(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_handshake"</span>)]
+    </span><span class="kw">fn </span>handshake(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_tls_connection_handshake(
+                <a class="self" href="#511">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#511">cancellable</a>.map(|p| <a href="#516">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#513">error</a>,
+            );
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#513">error</a>))
+            }
+        }
+    }
 
-    <span class="doccomment">/// Asynchronously performs a TLS handshake on `self`. See
-    /// [`handshake()`][Self::handshake()] for more information.
+    <span class="doccomment">/// Asynchronously performs a TLS handshake on @self. See
+    /// g_tls_connection_handshake() for more information.
     /// ## `io_priority`
     /// the [I/O priority][io-priority] of the request
     /// ## `cancellable`
-    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// a #GCancellable, or [`None`]
     /// ## `callback`
     /// callback to call when the handshake is complete
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_handshake_async&quot;</span>)]
-    </span><span class="kw">fn </span>handshake_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_handshake_async"</span>)]
+    </span><span class="kw">fn </span>handshake_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#7-85">Cancellable</a>&gt;&gt;,
         callback: P,
-    );
+    ) {
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = <a href="#543">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#544">is_main_context_owner</a>)
+            .then(|| <a href="#543">main_context</a>.acquire().ok())
+            .flatten();
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">"Async operations only allowed if the thread is owning the MainContext"
+        </span>);
+
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#541">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>handshake_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span><a href="../../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
+            res: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GAsyncResult.html"><span class="kw">crate</span>::ffi::GAsyncResult</a>,
+            user_data: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let _ </span>=
+                ffi::g_tls_connection_handshake_finish(<a href="#558">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#559">res</a>, <span class="kw-2">&amp;mut </span><a href="#562">error</a>);
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#562">error</a>))
+            };
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(<a href="#560">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#570">callback</a>.into_inner();
+            <a href="#572">callback</a>(<a href="#565">result</a>);
+        }
+        <span class="kw">let </span>callback = handshake_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_handshake_async(
+                <a class="self" href="#538">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#539">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#540">cancellable</a>.map(|p| <a href="#580">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#575">callback</a>),
+                Box_::into_raw(<a href="#553">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            );
+        }
+    }
 
     <span class="kw">fn </span>handshake_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+        Box_::pin(<a href="../gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+            <a class="self" href="#588">self</a>,
+            <span class="kw">move </span>|obj, cancellable, send| {
+                <a href="#593">obj</a>.<a href="#537-585">handshake_async</a>(<a href="#589">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#593">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#593">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#594">res</a>);
+                });
+            },
+        ))
+    }
 
-    <span class="doccomment">/// This sets the certificate that `self` will present to its peer
-    /// during the TLS handshake. For a [`TlsServerConnection`][crate::TlsServerConnection], it is
+    <span class="doccomment">/// This sets the certificate that @self will present to its peer
+    /// during the TLS handshake. For a #GTlsServerConnection, it is
     /// mandatory to set this, and that will normally be done at construct
     /// time.
     ///
-    /// For a [`TlsClientConnection`][crate::TlsClientConnection], this is optional. If a handshake fails
+    /// For a #GTlsClientConnection, this is optional. If a handshake fails
     /// with [`TlsError::CertificateRequired`][crate::TlsError::CertificateRequired], that means that the server
     /// requires a certificate, and if you try connecting again, you should
     /// call this method first. You can call
-    /// [`TlsClientConnectionExt::accepted_cas()`][crate::prelude::TlsClientConnectionExt::accepted_cas()] on the failed connection
+    /// g_tls_client_connection_get_accepted_cas() on the failed connection
     /// to get a list of Certificate Authorities that the server will
     /// accept certificates from.
     ///
     /// (It is also possible that a server will allow the connection with
-    /// or without a certificate; in that case, if you don&#39;t provide a
+    /// or without a certificate; in that case, if you don't provide a
     /// certificate, you can tell that the server requested one by the fact
-    /// that [`TlsClientConnectionExt::accepted_cas()`][crate::prelude::TlsClientConnectionExt::accepted_cas()] will return
+    /// that g_tls_client_connection_get_accepted_cas() will return
     /// non-[`None`].)
     /// ## `certificate`
-    /// the certificate to use for `self`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;);
+    /// the certificate to use for @self
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_certificate"</span>)]
+    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_set_certificate(
+                <a class="self" href="#622">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#622">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
     <span class="doccomment">/// Sets the certificate database that is used to verify peer certificates.
     /// This is set to the default database by default. See
-    /// [`TlsBackendExt::default_database()`][crate::prelude::TlsBackendExt::default_database()]. If set to [`None`], then
+    /// g_tls_backend_get_default_database(). If set to [`None`], then
     /// peer certificate validation will always set the
     /// [`TlsCertificateFlags::UNKNOWN_CA`][crate::TlsCertificateFlags::UNKNOWN_CA] error (meaning
-    /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate] will always be emitted on
+    /// #GTlsConnection::accept-certificate will always be emitted on
     /// client-side connections, unless that bit is not set in
-    /// [`validation-flags`][struct@crate::TlsClientConnection#validation-flags]).
+    /// #GTlsClientConnection:validation-flags).
     ///
     /// There are nonintuitive security implications when using a non-default
-    /// database. See [`database`][struct@crate::TlsConnection#database] for details.
+    /// database. See #GTlsConnection:database for details.
     /// ## `database`
-    /// a [`TlsDatabase`][crate::TlsDatabase]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_database&quot;</span>)]
-    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsDatabase&gt;&gt;);
+    /// a #GTlsDatabase
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_database"</span>)]
+    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_set_database(
+                <a class="self" href="#645">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#645">database</a>.map(|p| <a href="#649">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
     <span class="doccomment">/// Set the object that will be used to interact with the user. It will be used
     /// for things like prompting the user for passwords.
     ///
-    /// The `interaction` argument will normally be a derived subclass of
-    /// [`TlsInteraction`][crate::TlsInteraction]. [`None`] can also be provided if no user interaction
+    /// The @interaction argument will normally be a derived subclass of
+    /// #GTlsInteraction. [`None`] can also be provided if no user interaction
     /// should occur for this connection.
     /// ## `interaction`
     /// an interaction object, or [`None`]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_interaction&quot;</span>)]
-    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_interaction"</span>)]
+    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_set_interaction(
+                <a class="self" href="#663">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#663">interaction</a>.map(|p| <a href="#667">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
     <span class="doccomment">/// Since GLib 2.64, changing the rehandshake mode is no longer supported
     /// and will have no effect. With TLS 1.3, rehandshaking has been removed from
@@ -1824,18 +1896,25 @@
     /// # Deprecated since 2.60
     ///
     /// Changing the rehandshake mode is no longer
-    ///  required for compatibility. Also, rehandshaking has been removed
-    ///  from the TLS protocol in TLS 1.3.
+    ///   required for compatibility. Also, rehandshaking has been removed
+    ///   from the TLS protocol in TLS 1.3.
     /// ## `mode`
     /// the rehandshaking mode
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_60&quot;</span>, deprecated = <span class="string">&quot;Since 2.60&quot;</span>)]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
     #[allow(deprecated)]
-    #[doc(alias = <span class="string">&quot;g_tls_connection_set_rehandshake_mode&quot;</span>)]
-    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: TlsRehandshakeMode);
+    #[doc(alias = <span class="string">"g_tls_connection_set_rehandshake_mode"</span>)]
+    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: <a href="enums.rs.html#4517-4529">TlsRehandshakeMode</a>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_set_rehandshake_mode(
+                <a class="self" href="#687">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#687">mode</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            );
+        }
+    }
 
-    <span class="doccomment">/// Sets whether or not `self` expects a proper TLS close notification
+    <span class="doccomment">/// Sets whether or not @self expects a proper TLS close notification
     /// before the connection is closed. If this is [`true`] (the default),
-    /// then `self` will expect to receive a TLS close notification from its
+    /// then @self will expect to receive a TLS close notification from its
     /// peer before the connection is closed, and will return a
     /// [`TlsError::Eof`][crate::TlsError::Eof] error if the connection is closed without proper
     /// notification (since this may indicate a network error, or
@@ -1847,54 +1926,65 @@
     /// somehow self-delimiting); in this case, the close notify is
     /// redundant and sometimes omitted. (TLS 1.1 explicitly allows this;
     /// in TLS 1.0 it is technically an error, but often done anyway.) You
-    /// can use [`set_require_close_notify()`][Self::set_require_close_notify()] to tell `self`
-    /// to allow an &quot;unannounced&quot; connection close, in which case the close
+    /// can use g_tls_connection_set_require_close_notify() to tell @self
+    /// to allow an "unannounced" connection close, in which case the close
     /// will show up as a 0-length read, as in a non-TLS
-    /// [`SocketConnection`][crate::SocketConnection], and it is up to the application to check that
+    /// #GSocketConnection, and it is up to the application to check that
     /// the data has been fully received.
     ///
     /// Note that this only affects the behavior when the peer closes the
-    /// connection; when the application calls [`IOStreamExt::close()`][crate::prelude::IOStreamExt::close()] itself
-    /// on `self`, this will send a close notification regardless of the
+    /// connection; when the application calls g_io_stream_close() itself
+    /// on @self, this will send a close notification regardless of the
     /// setting of this property. If you explicitly want to do an unclean
-    /// close, you can close `self`&#39;s [`base-io-stream`][struct@crate::TlsConnection#base-io-stream] rather
-    /// than closing `self` itself, but note that this may only be done when no other
-    /// operations are pending on `self` or the base I/O stream.
+    /// close, you can close @self's #GTlsConnection:base-io-stream rather
+    /// than closing @self itself, but note that this may only be done when no other
+    /// operations are pending on @self or the base I/O stream.
     /// ## `require_close_notify`
     /// whether or not to require close notification
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_require_close_notify&quot;</span>)]
-    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: bool);
+    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_require_close_notify"</span>)]
+    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_tls_connection_set_require_close_notify(
+                <a class="self" href="#726">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#726">require_close_notify</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+            );
+        }
+    }
 
     <span class="doccomment">/// The list of application-layer protocols that the connection
     /// advertises that it is willing to speak. See
-    /// [`TlsConnectionExtManual::set_advertised_protocols()`][crate::prelude::TlsConnectionExtManual::set_advertised_protocols()].
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;advertised-protocols&quot;</span>)]
-    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt;;
+    /// g_tls_connection_set_advertised_protocols().
+    </span><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
+    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#741">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">"advertised-protocols"</span>)
+    }
 
-    <span class="doccomment">/// The [`IOStream`][crate::IOStream] that the connection wraps. The connection holds a reference
+    <span class="doccomment">/// The #GIOStream that the connection wraps. The connection holds a reference
     /// to this stream, and may run operations on the stream from other threads
-    /// throughout its lifetime. Consequently, after the [`IOStream`][crate::IOStream] has been
+    /// throughout its lifetime. Consequently, after the #GIOStream has been
     /// constructed, application code may only run its own operations on this
-    /// stream when no [`IOStream`][crate::IOStream] operations are running.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;base-io-stream&quot;</span>)]
-    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;IOStream&gt;;
+    /// stream when no #GIOStream operations are running.
+    </span><span class="attr">#[doc(alias = <span class="string">"base-io-stream"</span>)]
+    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#751">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">"base-io-stream"</span>)
+    }
 
     <span class="doccomment">/// Emitted during the TLS handshake after the peer certificate has
-    /// been received. You can examine `peer_cert`&#39;s certification path by
-    /// calling [`TlsCertificateExt::issuer()`][crate::prelude::TlsCertificateExt::issuer()] on it.
+    /// been received. You can examine @peer_cert's certification path by
+    /// calling g_tls_certificate_get_issuer() on it.
     ///
-    /// For a client-side connection, `peer_cert` is the server&#39;s
+    /// For a client-side connection, @peer_cert is the server's
     /// certificate, and the signal will only be emitted if the
-    /// certificate was not acceptable according to `conn`&#39;s
-    /// [`validation_flags`][struct@crate::TlsClientConnection#validation_flags]. If you would like the
-    /// certificate to be accepted despite `errors`, return [`true`] from the
+    /// certificate was not acceptable according to @conn's
+    /// #GTlsClientConnection:validation_flags. If you would like the
+    /// certificate to be accepted despite @errors, return [`true`] from the
     /// signal handler. Otherwise, if no handler accepts the certificate,
     /// the handshake will fail with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].
     ///
     /// GLib guarantees that if certificate verification fails, this signal
-    /// will be emitted with at least one error will be set in `errors`, but
+    /// will be emitted with at least one error will be set in @errors, but
     /// it does not guarantee that all possible errors will be set.
     /// Accordingly, you may not safely decide to ignore any particular
     /// type of error. For example, it would be incorrect to ignore
@@ -1902,9 +1992,9 @@
     /// certificates, because this could potentially be the only error flag
     /// set even if other problems exist with the certificate.
     ///
-    /// For a server-side connection, `peer_cert` is the certificate
-    /// presented by the client, if this was requested via the server&#39;s
-    /// [`authentication_mode`][struct@crate::TlsServerConnection#authentication_mode]. On the server side,
+    /// For a server-side connection, @peer_cert is the certificate
+    /// presented by the client, if this was requested via the server's
+    /// #GTlsServerConnection:authentication_mode. On the server side,
     /// the signal is always emitted when the client presents a
     /// certificate, and the certificate will only be accepted if a
     /// handler returns [`true`].
@@ -1924,636 +2014,351 @@
     /// need to worry about this, and can simply block in the signal
     /// handler until the UI thread returns an answer.
     /// ## `peer_cert`
-    /// the peer&#39;s [`TlsCertificate`][crate::TlsCertificate]
+    /// the peer's #GTlsCertificate
     /// ## `errors`
-    /// the problems with `peer_cert`.
+    /// the problems with @peer_cert.
     ///
     /// # Returns
     ///
-    /// [`true`] to accept `peer_cert` (which will also
+    /// [`true`] to accept @peer_cert (which will also
     /// immediately end the signal emission). [`false`] to allow the signal
     /// emission to continue, which will cause the handshake to fail if
     /// no one else overrides it.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;accept-certificate&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"accept-certificate"</span>)]
     </span><span class="kw">fn </span>connect_accept_certificate&lt;
-        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span>TlsCertificate, TlsCertificateFlags) -&gt; bool + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;advertised-protocols&quot;</span>)]
-    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;certificate&quot;</span>)]
-    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;ciphersuite-name&quot;</span>)]
-    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;database&quot;</span>)]
-    </span><span class="kw">fn </span>connect_database_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;interaction&quot;</span>)]
-    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;negotiated-protocol&quot;</span>)]
-    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;peer-certificate&quot;</span>)]
-    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;peer-certificate-errors&quot;</span>)]
-    </span><span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        f: F,
-    ) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;protocol-version&quot;</span>)]
-    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_60&quot;</span>, deprecated = <span class="string">&quot;Since 2.60&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;rehandshake-mode&quot;</span>)]
-    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;require-close-notify&quot;</span>)]
-    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;TlsConnection&gt;&gt; TlsConnectionExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>emit_accept_certificate(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        peer_cert: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        errors: TlsCertificateFlags,
-    ) -&gt; bool {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_connection_emit_accept_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                peer_cert.as_ref().to_glib_none().<span class="number">0</span>,
-                errors.into_glib(),
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_connection_get_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    </span><span class="kw">fn </span>ciphersuite_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>database(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsDatabase&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_connection_get_database(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>interaction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsInteraction&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_connection_get_interaction(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>negotiated_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>peer_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt; {
-        <span class="kw">unsafe </span>{
-            from_glib_none(ffi::g_tls_connection_get_peer_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>peer_certificate_errors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsCertificateFlags {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    </span><span class="kw">fn </span>protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsProtocolVersion {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_connection_get_protocol_version(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="attr">#[allow(deprecated)]
-    </span><span class="kw">fn </span>rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsRehandshakeMode {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_connection_get_rehandshake_mode(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>requires_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{
-            from_glib(ffi::g_tls_connection_get_require_close_notify(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-            ))
-        }
-    }
-
-    <span class="kw">fn </span>handshake(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::g_tls_connection_handshake(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
-            );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
-            <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            }
-        }
-    }
-
-    <span class="kw">fn </span>handshake_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-        callback: P,
-    ) {
-        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        <span class="macro">assert!</span>(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
-        </span>);
-
-        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>handshake_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>accept_certificate_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3023-3070">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
         &gt;(
-            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
-            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>=
-                ffi::g_tls_connection_handshake_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
-            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
-            };
-            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
-        }
-        <span class="kw">let </span>callback = handshake_async_trampoline::&lt;P&gt;;
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_handshake_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>handshake_future(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
-            <span class="kw">move </span>|obj, cancellable, send| {
-                obj.handshake_async(io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
-                });
-            },
-        ))
-    }
-
-    <span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_set_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                certificate.as_ref().to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsDatabase&gt;&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_set_database(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                database.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_set_interaction(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="attr">#[allow(deprecated)]
-    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: TlsRehandshakeMode) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_set_rehandshake_mode(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mode.into_glib(),
-            );
-        }
-    }
-
-    <span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: bool) {
-        <span class="kw">unsafe </span>{
-            ffi::g_tls_connection_set_require_close_notify(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                require_close_notify.into_glib(),
-            );
-        }
-    }
-
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;advertised-protocols&quot;</span>)
-    }
-
-    <span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;IOStream&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;base-io-stream&quot;</span>)
-    }
-
-    <span class="kw">fn </span>connect_accept_certificate&lt;
-        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span>TlsCertificate, TlsCertificateFlags) -&gt; bool + <span class="lifetime">&#39;static</span>,
-    &gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        f: F,
-    ) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>accept_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span>TlsCertificate, TlsCertificateFlags) -&gt; bool + <span class="lifetime">&#39;static</span>,
-        &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            peer_cert: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
-            errors: ffi::GTlsCertificateFlags,
-            f: glib::ffi::gpointer,
-        ) -&gt; glib::ffi::gboolean {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
-                <span class="kw-2">&amp;</span>from_glib_borrow(peer_cert),
-                from_glib(errors),
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            peer_cert: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsCertificate.html">ffi::GTlsCertificate</a>,
+            errors: <a href="../../../gio_sys/type.GTlsCertificateFlags.html">ffi::GTlsCertificateFlags</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+        ) -&gt; <a href="../../../glib_sys/type.gboolean.html">glib::ffi::gboolean</a> {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#822">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#824">f</a>(
+                <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#819">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>(),
+                <span class="kw-2">&amp;</span>from_glib_borrow(<a href="#820">peer_cert</a>),
+                from_glib(<a href="#821">errors</a>),
             )
-            .into_glib()
+            .<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;accept-certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#813">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#812">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"accept-certificate\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     accept_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#833">f</a>),
             )
         }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_advertised_protocols_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
+    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_advertised_protocols_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#855">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#857">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#853">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::advertised-protocols\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#848">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#848">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::advertised-protocols\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_advertised_protocols_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#861">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"certificate"</span>)]
+    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_certificate_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#881">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#883">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#879">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#874">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#874">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::certificate\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#887">f</a>),
             )
         }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_ciphersuite_name_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+    #[doc(alias = <span class="string">"ciphersuite-name"</span>)]
+    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_ciphersuite_name_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#909">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#911">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#907">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::ciphersuite-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#902">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#902">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::ciphersuite-name\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_ciphersuite_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#915">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_database_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_database_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"database"</span>)]
+    </span><span class="kw">fn </span>connect_database_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_database_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#935">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#937">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#933">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::database\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#928">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#928">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::database\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_database_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#941">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_interaction_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_interaction_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"interaction"</span>)]
+    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_interaction_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#961">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#963">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#959">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::interaction\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#954">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#954">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::interaction\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_interaction_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#967">f</a>),
             )
         }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_60&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_negotiated_protocol_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+    #[doc(alias = <span class="string">"negotiated-protocol"</span>)]
+    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_negotiated_protocol_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#989">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#991">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#987">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::negotiated-protocol\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#982">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#982">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::negotiated-protocol\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_negotiated_protocol_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#995">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_peer_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_peer_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"peer-certificate"</span>)]
+    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1015">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1017">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#1013">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::peer-certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1008">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1008">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::peer-certificate\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_peer_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1021">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(
+    <span class="attr">#[doc(alias = <span class="string">"peer-certificate-errors"</span>)]
+    </span><span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_peer_certificate_errors_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_errors_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1044">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1046">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#1042">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::peer-certificate-errors\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1036">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1035">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::peer-certificate-errors\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_peer_certificate_errors_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1050">f</a>),
             )
         }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_protocol_version_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+    #[doc(alias = <span class="string">"protocol-version"</span>)]
+    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_protocol_version_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1072">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1074">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#1070">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::protocol-version\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1065">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1065">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::protocol-version\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_protocol_version_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1078">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_rehandshake_mode_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
+    #[doc(alias = <span class="string">"rehandshake-mode"</span>)]
+    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_rehandshake_mode_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1099">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1101">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#1097">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::rehandshake-mode\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1092">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1092">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::rehandshake-mode\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_rehandshake_mode_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1105">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_require_close_notify_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_require_close_notify_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"require-close-notify"</span>)]
+    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_require_close_notify_trampoline&lt;
+            P: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GTlsConnection.html">ffi::GTlsConnection</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1125">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1127">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">TlsConnection::from_glib_borrow</a>(<a href="#1123">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::require-close-notify\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1118">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1118">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::require-close-notify\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_require_close_notify_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1131">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TlsConnection {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;TlsConnection&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#20-236">TlsConnection</a>&gt;&gt; <a href="#252-1142">TlsConnectionExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

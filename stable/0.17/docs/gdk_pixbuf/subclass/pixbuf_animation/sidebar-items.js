@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["PixbufAnimationImpl",""],["PixbufAnimationImplExt",""]]};
+window.SIDEBAR_ITEMS = {"trait":["PixbufAnimationImpl","PixbufAnimationImplExt"]};

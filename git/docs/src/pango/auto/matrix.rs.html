@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/matrix.rs`."><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/matrix.rs`."><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pango/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../pango/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -255,15 +257,13 @@
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
 <a href="#184" id="184">184</a>
-<a href="#185" id="185">185</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::mem;
+</span><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`Matrix`][crate::Matrix] specifies a transformation between user-space
     /// and device coordinates.
     ///
@@ -273,7 +273,7 @@
     /// x_device = x_user * matrix-&gt;xx + y_user * matrix-&gt;xy + matrix-&gt;x0;
     /// y_device = x_user * matrix-&gt;yx + y_user * matrix-&gt;yy + matrix-&gt;y0;
     /// ```
-    </span><span class="kw">pub struct </span>Matrix(BoxedInline&lt;ffi::PangoMatrix&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.Matrix.html">Matrix</a>(BoxedInline&lt;<a href="../../../pango_sys/struct.PangoMatrix.html">ffi::PangoMatrix</a>&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::pango_matrix_copy(ptr),
@@ -282,16 +282,16 @@
     }
 }
 
-<span class="kw">impl </span>Matrix {
+<span class="kw">impl </span><a href="#7-24">Matrix</a> {
     <span class="doccomment">/// Changes the transformation represented by @self to be the
     /// transformation given by first applying transformation
     /// given by @new_matrix then applying the original transformation.
     /// ## `new_matrix`
     /// a [`Matrix`][crate::Matrix]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_concat&quot;</span>)]
-    </span><span class="kw">pub fn </span>concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_matrix: <span class="kw-2">&amp;</span>Matrix) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_concat"</span>)]
+    </span><span class="kw">pub fn </span>concat(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_matrix: <span class="kw-2">&amp;</span><a href="#7-24">Matrix</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_concat(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, new_matrix.to_glib_none().<span class="number">0</span>);
+            ffi::pango_matrix_concat(<a class="self" href="#33">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#33">new_matrix</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -305,10 +305,10 @@
     ///
     /// the scale factor of @self on the height of the font,
     ///   or 1.0 if @self is [`None`].
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_get_font_scale_factor&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_font_scale_factor&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_scale_factor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">unsafe </span>{ ffi::pango_matrix_get_font_scale_factor(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_get_font_scale_factor"</span>)]
+    #[doc(alias = <span class="string">"get_font_scale_factor"</span>)]
+    </span><span class="kw">pub fn </span>font_scale_factor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_matrix_get_font_scale_factor(<a class="self" href="#51">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Calculates the scale factor of a matrix on the width and height of the font.
@@ -327,18 +327,18 @@
     ///
     /// ## `yscale`
     /// output scale factor perpendicular to the x direction
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_get_font_scale_factors&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_font_scale_factors&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_scale_factors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (f64, f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_get_font_scale_factors"</span>)]
+    #[doc(alias = <span class="string">"get_font_scale_factors"</span>)]
+    </span><span class="kw">pub fn </span>font_scale_factors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>xscale = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>yscale = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>xscale = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>yscale = std::mem::MaybeUninit::uninit();
             ffi::pango_matrix_get_font_scale_factors(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                xscale.as_mut_ptr(),
-                yscale.as_mut_ptr(),
+                <a class="self" href="#73">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#75">xscale</a>.as_mut_ptr(),
+                <a href="#76">yscale</a>.as_mut_ptr(),
             );
-            (xscale.assume_init(), yscale.assume_init())
+            (<a href="#75">xscale</a>.assume_init(), <a href="#76">yscale</a>.assume_init())
         }
     }
 
@@ -354,12 +354,12 @@
     /// # Returns
     ///
     /// the slant ratio of @self
-    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;v1_50&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
-    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-    #[doc(alias = <span class="string">&quot;pango_matrix_get_slant_ratio&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_slant_ratio&quot;</span>)]
-    </span><span class="kw">pub fn </span>slant_ratio(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">unsafe </span>{ ffi::pango_matrix_get_slant_ratio(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
+    #[doc(alias = <span class="string">"pango_matrix_get_slant_ratio"</span>)]
+    #[doc(alias = <span class="string">"get_slant_ratio"</span>)]
+    </span><span class="kw">pub fn </span>slant_ratio(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_matrix_get_slant_ratio(<a class="self" href="#102">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Changes the transformation represented by @self to be the
@@ -367,10 +367,10 @@
     /// counter-clockwise then applying the original transformation.
     /// ## `degrees`
     /// degrees to rotate counter-clockwise
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_rotate&quot;</span>)]
-    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_rotate"</span>)]
+    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, degrees: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_rotate(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, degrees);
+            ffi::pango_matrix_rotate(<a class="self" href="#112">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#112">degrees</a>);
         }
     }
 
@@ -382,10 +382,10 @@
     /// amount to scale by in X direction
     /// ## `scale_y`
     /// amount to scale by in Y direction
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_scale&quot;</span>)]
-    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, scale_x: f64, scale_y: f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_scale"</span>)]
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, scale_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, scale_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_scale(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, scale_x, scale_y);
+            ffi::pango_matrix_scale(<a class="self" href="#127">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#127">scale_x</a>, <a href="#127">scale_y</a>);
         }
     }
 
@@ -408,10 +408,10 @@
     /// in/out X component of a distance vector
     /// ## `dy`
     /// in/out Y component of a distance vector
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_transform_distance&quot;</span>)]
-    </span><span class="kw">pub fn </span>transform_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: <span class="kw-2">&amp;mut </span>f64, dy: <span class="kw-2">&amp;mut </span>f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_transform_distance"</span>)]
+    </span><span class="kw">pub fn </span>transform_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_transform_distance(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, dx, dy);
+            ffi::pango_matrix_transform_distance(<a class="self" href="#153">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#153">dx</a>, <a href="#153">dy</a>);
         }
     }
 
@@ -420,10 +420,10 @@
     /// in/out X position
     /// ## `y`
     /// in/out Y position
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_transform_point&quot;</span>)]
-    </span><span class="kw">pub fn </span>transform_point(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <span class="kw-2">&amp;mut </span>f64, y: <span class="kw-2">&amp;mut </span>f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_transform_point"</span>)]
+    </span><span class="kw">pub fn </span>transform_point(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_transform_point(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, x, y);
+            ffi::pango_matrix_transform_point(<a class="self" href="#165">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#165">x</a>, <a href="#165">y</a>);
         }
     }
 
@@ -434,12 +434,11 @@
     /// amount to translate in the X direction
     /// ## `ty`
     /// amount to translate in the Y direction
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_matrix_translate&quot;</span>)]
-    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tx: f64, ty: f64) {
+    </span><span class="attr">#[doc(alias = <span class="string">"pango_matrix_translate"</span>)]
+    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, ty: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_matrix_translate(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, tx, ty);
+            ffi::pango_matrix_translate(<a class="self" href="#179">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#179">tx</a>, <a href="#179">ty</a>);
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

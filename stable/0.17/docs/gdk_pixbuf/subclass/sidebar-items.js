@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["pixbuf_animation","Traits intended for subclassing `PixbufAnimation`."],["pixbuf_animation_iter","Traits intended for subclassing `PixbufAnimationIter`."],["pixbuf_loader","Traits intended for subclassing `PixbufLoader`."],["prelude",""]]};
+window.SIDEBAR_ITEMS = {"mod":["pixbuf_animation","pixbuf_animation_iter","pixbuf_loader","prelude"]};

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/buffered_output_stream.rs`."><title>buffered_output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/buffered_output_stream.rs`."><title>buffered_output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -363,48 +365,46 @@
 <a href="#290" id="290">290</a>
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{FilterOutputStream, OutputStream, Seekable};
+</span><span class="kw">use crate</span>::{<a href="filter_output_stream.rs.html#13-42">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, <a href="seekable.rs.html#8-33">Seekable</a>};
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// Buffered output stream implements [`FilterOutputStream`][crate::FilterOutputStream] and provides
     /// for buffered writes.
     ///
-    /// By default, [`BufferedOutputStream`][crate::BufferedOutputStream]&#39;s buffer size is set at 4 kilobytes.
+    /// By default, `GBufferedOutputStream`'s buffer size is set at 4 kilobytes.
     ///
     /// To create a buffered output stream, use [`new()`][Self::new()],
-    /// or [`new_sized()`][Self::new_sized()] to specify the buffer&#39;s size
+    /// or [`new_sized()`][Self::new_sized()] to specify the buffer's size
     /// at construction.
     ///
     /// To get the size of a buffer within a buffered input stream, use
     /// [`BufferedOutputStreamExt::buffer_size()`][crate::prelude::BufferedOutputStreamExt::buffer_size()]. To change the size of a
-    /// buffered output stream&#39;s buffer, use
-    /// [`BufferedOutputStreamExt::set_buffer_size()`][crate::prelude::BufferedOutputStreamExt::set_buffer_size()]. Note that the buffer&#39;s
-    /// size cannot be reduced below the size of the data within the buffer.
+    /// buffered output stream's buffer, use [`BufferedOutputStreamExt::set_buffer_size()`][crate::prelude::BufferedOutputStreamExt::set_buffer_size()].
+    /// Note that the buffer's size cannot be reduced below the size of the data within the buffer.
     ///
     /// ## Properties
     ///
     ///
     /// #### `auto-grow`
-    ///  Readable | Writeable
+    ///  Whether the buffer should automatically grow.
+    ///
+    /// Readable | Writeable
     ///
     ///
     /// #### `buffer-size`
-    ///  Readable | Writeable | Construct
+    ///  The size of the backend buffer, in bytes.
+    ///
+    /// Readable | Writeable | Construct
     /// &lt;details&gt;&lt;summary&gt;&lt;h4&gt;FilterOutputStream&lt;/h4&gt;&lt;/summary&gt;
     ///
     ///
@@ -413,57 +413,59 @@
     ///
     ///
     /// #### `close-base-stream`
-    ///  Readable | Writeable | Construct Only
+    ///  Whether the base stream should be closed when the filter stream is closed.
+    ///
+    /// Readable | Writeable | Construct Only
     /// &lt;/details&gt;
     ///
     /// # Implements
     ///
     /// [`BufferedOutputStreamExt`][trait@crate::prelude::BufferedOutputStreamExt], [`FilterOutputStreamExt`][trait@crate::prelude::FilterOutputStreamExt], [`OutputStreamExt`][trait@crate::prelude::OutputStreamExt], [`trait@glib::ObjectExt`], [`SeekableExt`][trait@crate::prelude::SeekableExt], [`OutputStreamExtManual`][trait@crate::prelude::OutputStreamExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GBufferedOutputStream&quot;</span>)]
-    </span><span class="kw">pub struct </span>BufferedOutputStream(Object&lt;ffi::GBufferedOutputStream, ffi::GBufferedOutputStreamClass&gt;) @extends FilterOutputStream, OutputStream, @implements Seekable;
+    </span><span class="attr">#[doc(alias = <span class="string">"GBufferedOutputStream"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.BufferedOutputStream.html">BufferedOutputStream</a>(Object&lt;<a href="../../../gio_sys/struct.GBufferedOutputStream.html">ffi::GBufferedOutputStream</a>, <a href="../../../gio_sys/struct.GBufferedOutputStreamClass.html">ffi::GBufferedOutputStreamClass</a>&gt;) @extends <a href="filter_output_stream.rs.html#13-42">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, @implements <a href="seekable.rs.html#8-33">Seekable</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_buffered_output_stream_get_type(),
     }
 }
 
-<span class="kw">impl </span>BufferedOutputStream {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>BufferedOutputStream&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#13-63">BufferedOutputStream</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#13-63">BufferedOutputStream</a>&gt; = <span class="prelude-val">None</span>;
 
     <span class="doccomment">/// Creates a new buffered output stream for a base stream.
     /// ## `base_stream`
-    /// a [`OutputStream`][crate::OutputStream].
+    /// a #GOutputStream.
     ///
     /// # Returns
     ///
-    /// a [`OutputStream`][crate::OutputStream] for the given `base_stream`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;OutputStream&gt;) -&gt; BufferedOutputStream {
+    /// a #GOutputStream for the given @base_stream.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_new"</span>)]
+    </span><span class="kw">pub fn </span>new(base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="output_stream.rs.html#9-39">OutputStream</a>&gt;) -&gt; <a href="#13-63">BufferedOutputStream</a> {
         <span class="kw">unsafe </span>{
-            OutputStream::from_glib_full(ffi::g_buffered_output_stream_new(
-                base_stream.as_ref().to_glib_none().<span class="number">0</span>,
+            <a href="../../../glib/translate/trait.FromGlibPtrFull.html">OutputStream::from_glib_full</a>(ffi::g_buffered_output_stream_new(
+                <a href="#76">base_stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
-            .unsafe_cast()
+            .<a href="../../../glib/object/trait.Cast.html">unsafe_cast</a>()
         }
     }
 
     <span class="doccomment">/// Creates a new buffered output stream with a given buffer size.
     /// ## `base_stream`
-    /// a [`OutputStream`][crate::OutputStream].
+    /// a #GOutputStream.
     /// ## `size`
-    /// a `gsize`.
+    /// a #gsize.
     ///
     /// # Returns
     ///
-    /// a [`OutputStream`][crate::OutputStream] with an internal buffer set to `size`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_new_sized&quot;</span>)]
-    </span><span class="kw">pub fn </span>new_sized(base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;OutputStream&gt;, size: usize) -&gt; BufferedOutputStream {
+    /// a #GOutputStream with an internal buffer set to @size.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_new_sized"</span>)]
+    </span><span class="kw">pub fn </span>new_sized(base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="output_stream.rs.html#9-39">OutputStream</a>&gt;, size: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a href="#13-63">BufferedOutputStream</a> {
         <span class="kw">unsafe </span>{
-            OutputStream::from_glib_full(ffi::g_buffered_output_stream_new_sized(
-                base_stream.as_ref().to_glib_none().<span class="number">0</span>,
-                size,
+            <a href="../../../glib/translate/trait.FromGlibPtrFull.html">OutputStream::from_glib_full</a>(ffi::g_buffered_output_stream_new_sized(
+                <a href="#95">base_stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#95">size</a>,
             ))
-            .unsafe_cast()
+            .<a href="../../../glib/object/trait.Cast.html">unsafe_cast</a>()
         }
     }
 
@@ -471,12 +473,12 @@
     </span><span class="doccomment">/// Creates a new builder-pattern struct instance to construct [`BufferedOutputStream`] objects.
     ///
     /// This method returns an instance of [`BufferedOutputStreamBuilder`](crate::builders::BufferedOutputStreamBuilder) which can be used to create [`BufferedOutputStream`] objects.
-    </span><span class="kw">pub fn </span>builder() -&gt; BufferedOutputStreamBuilder {
-        BufferedOutputStreamBuilder::new()
+    </span><span class="kw">pub fn </span>builder() -&gt; <a href="#125-127">BufferedOutputStreamBuilder</a> {
+        <a href="#130-134">BufferedOutputStreamBuilder::new</a>()
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>BufferedOutputStream {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#13-63">BufferedOutputStream</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         glib::object::Object::new::&lt;<span class="self">Self</span>&gt;()
     }
@@ -486,52 +488,60 @@
 </span><span class="doccomment">/// A [builder-pattern] type to construct [`BufferedOutputStream`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
-</span><span class="attr">#[must_use = <span class="string">&quot;The builder must be built to be used&quot;</span>]
-</span><span class="kw">pub struct </span>BufferedOutputStreamBuilder {
-    builder: glib::object::ObjectBuilder&lt;<span class="lifetime">&#39;static</span>, BufferedOutputStream&gt;,
+</span><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
+</span><span class="kw">pub struct </span><a href="../../../gio/builders/struct.BufferedOutputStreamBuilder.html">BufferedOutputStreamBuilder</a> {
+    builder: glib::object::ObjectBuilder&lt;<span class="lifetime">'static</span>, <a href="#13-63">BufferedOutputStream</a>&gt;,
 }
 
-<span class="kw">impl </span>BufferedOutputStreamBuilder {
+<span class="kw">impl </span><a href="#125-127">BufferedOutputStreamBuilder</a> {
     <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             builder: glib::object::Object::builder(),
         }
     }
 
-    <span class="kw">pub fn </span>auto_grow(<span class="self">self</span>, auto_grow: bool) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Whether the buffer should automatically grow.
+    </span><span class="kw">pub fn </span>auto_grow(<span class="self">self</span>, auto_grow: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            builder: <span class="self">self</span>.builder.property(<span class="string">&quot;auto-grow&quot;</span>, auto_grow),
+            builder: <a class="self" href="#137">self</a>.builder.property(<span class="string">"auto-grow"</span>, <a href="#137">auto_grow</a>),
         }
     }
 
-    <span class="kw">pub fn </span>buffer_size(<span class="self">self</span>, buffer_size: u32) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// The size of the backend buffer, in bytes.
+    </span><span class="kw">pub fn </span>buffer_size(<span class="self">self</span>, buffer_size: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            builder: <span class="self">self</span>.builder.property(<span class="string">&quot;buffer-size&quot;</span>, buffer_size),
+            builder: <a class="self" href="#144">self</a>.builder.property(<span class="string">"buffer-size"</span>, <a href="#144">buffer_size</a>),
         }
     }
 
-    <span class="kw">pub fn </span>base_stream(<span class="self">self</span>, base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;OutputStream&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>base_stream(<span class="self">self</span>, base_stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="output_stream.rs.html#9-39">OutputStream</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            builder: <span class="self">self
+            builder: <span class="self"><a href="#150">self</a>
                 </span>.builder
-                .property(<span class="string">&quot;base-stream&quot;</span>, base_stream.clone().upcast()),
+                .property(<span class="string">"base-stream"</span>, <a href="#150">base_stream</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>().<a href="../../../glib/object/trait.Cast.html">upcast</a>()),
         }
     }
 
-    <span class="kw">pub fn </span>close_base_stream(<span class="self">self</span>, close_base_stream: bool) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Whether the base stream should be closed when the filter stream is closed.
+    </span><span class="kw">pub fn </span>close_base_stream(<span class="self">self</span>, close_base_stream: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            builder: <span class="self">self
+            builder: <span class="self"><a href="#159">self</a>
                 </span>.builder
-                .property(<span class="string">&quot;close-base-stream&quot;</span>, close_base_stream),
+                .property(<span class="string">"close-base-stream"</span>, <a href="#159">close_base_stream</a>),
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Build the [`BufferedOutputStream`].
-    </span><span class="attr">#[must_use = <span class="string">&quot;Building the object from the builder is usually expensive and is not expected to have side effects&quot;</span>]
-    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; BufferedOutputStream {
-        <span class="self">self</span>.builder.build()
+    </span><span class="attr">#[must_use = <span class="string">"Building the object from the builder is usually expensive and is not expected to have side effects"</span>]
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="#13-63">BufferedOutputStream</a> {
+        <a class="self" href="#170">self</a>.builder.build()
     }
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#13-63"><span class="kw">super</span>::BufferedOutputStream</a>&gt;&gt; <a href="#176">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@BufferedOutputStream`] methods.
@@ -539,131 +549,112 @@
 /// # Implementors
 ///
 /// [`BufferedOutputStream`][struct@crate::BufferedOutputStream]
-</span><span class="kw">pub trait </span>BufferedOutputStreamExt: <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.BufferedOutputStreamExt.html">BufferedOutputStreamExt</a>: IsA&lt;<a href="#13-63">BufferedOutputStream</a>&gt; + <a href="#176">sealed::Sealed</a> + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Checks if the buffer automatically grows as data is added.
     ///
     /// # Returns
     ///
-    /// [`true`] if the `self`&#39;s buffer automatically grows,
+    /// [`true`] if the @self's buffer automatically grows,
     /// [`false`] otherwise.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_get_auto_grow&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_auto_grow&quot;</span>)]
-    </span><span class="kw">fn </span>auto_grows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-
-    <span class="doccomment">/// Gets the size of the buffer in the `self`.
-    ///
-    /// # Returns
-    ///
-    /// the current size of the buffer.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_get_buffer_size&quot;</span>)]
-    #[doc(alias = <span class="string">&quot;get_buffer_size&quot;</span>)]
-    </span><span class="kw">fn </span>buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize;
-
-    <span class="doccomment">/// Sets whether or not the `self`&#39;s buffer should automatically grow.
-    /// If `auto_grow` is true, then each write will just make the buffer
-    /// larger, and you must manually flush the buffer to actually write out
-    /// the data to the underlying stream.
-    /// ## `auto_grow`
-    /// a `gboolean`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_set_auto_grow&quot;</span>)]
-    </span><span class="kw">fn </span>set_auto_grow(<span class="kw-2">&amp;</span><span class="self">self</span>, auto_grow: bool);
-
-    <span class="doccomment">/// Sets the size of the internal buffer to `size`.
-    /// ## `size`
-    /// a `gsize`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_buffered_output_stream_set_buffer_size&quot;</span>)]
-    </span><span class="kw">fn </span>set_buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: usize);
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;auto-grow&quot;</span>)]
-    </span><span class="kw">fn </span>connect_auto_grow_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;buffer-size&quot;</span>)]
-    </span><span class="kw">fn </span>connect_buffer_size_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;BufferedOutputStream&gt;&gt; BufferedOutputStreamExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>auto_grows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_get_auto_grow"</span>)]
+    #[doc(alias = <span class="string">"get_auto_grow"</span>)]
+    </span><span class="kw">fn </span>auto_grows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_buffered_output_stream_get_auto_grow(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#194">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn </span>buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="kw">unsafe </span>{ ffi::g_buffered_output_stream_get_buffer_size(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
+    <span class="doccomment">/// Gets the size of the buffer in the @self.
+    ///
+    /// # Returns
+    ///
+    /// the current size of the buffer.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_get_buffer_size"</span>)]
+    #[doc(alias = <span class="string">"get_buffer_size"</span>)]
+    </span><span class="kw">fn </span>buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <span class="kw">unsafe </span>{ ffi::g_buffered_output_stream_get_buffer_size(<a class="self" href="#209">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
-    <span class="kw">fn </span>set_auto_grow(<span class="kw-2">&amp;</span><span class="self">self</span>, auto_grow: bool) {
+    <span class="doccomment">/// Sets whether or not the @self's buffer should automatically grow.
+    /// If @auto_grow is true, then each write will just make the buffer
+    /// larger, and you must manually flush the buffer to actually write out
+    /// the data to the underlying stream.
+    /// ## `auto_grow`
+    /// a #gboolean.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_set_auto_grow"</span>)]
+    </span><span class="kw">fn </span>set_auto_grow(<span class="kw-2">&amp;</span><span class="self">self</span>, auto_grow: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_buffered_output_stream_set_auto_grow(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                auto_grow.into_glib(),
+                <a class="self" href="#220">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#220">auto_grow</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
 
-    <span class="kw">fn </span>set_buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: usize) {
+    <span class="doccomment">/// Sets the size of the internal buffer to @size.
+    /// ## `size`
+    /// a #gsize.
+    </span><span class="attr">#[doc(alias = <span class="string">"g_buffered_output_stream_set_buffer_size"</span>)]
+    </span><span class="kw">fn </span>set_buffer_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_buffered_output_stream_set_buffer_size(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, size);
+            ffi::g_buffered_output_stream_set_buffer_size(<a class="self" href="#233">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#233">size</a>);
         }
     }
 
-    <span class="kw">fn </span>connect_auto_grow_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_auto_grow_trampoline&lt;
-            P: IsA&lt;BufferedOutputStream&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"auto-grow"</span>)]
+    </span><span class="kw">fn </span>connect_auto_grow_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_auto_grow_trampoline&lt;
+            P: IsA&lt;<a href="#13-63">BufferedOutputStream</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GBufferedOutputStream,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GBufferedOutputStream.html">ffi::GBufferedOutputStream</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(BufferedOutputStream::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#247">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#249">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">BufferedOutputStream::from_glib_borrow</a>(<a href="#245">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::auto-grow\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#240">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#240">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::auto-grow\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_auto_grow_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#253">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_buffer_size_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_buffer_size_trampoline&lt;
-            P: IsA&lt;BufferedOutputStream&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"buffer-size"</span>)]
+    </span><span class="kw">fn </span>connect_buffer_size_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_buffer_size_trampoline&lt;
+            P: IsA&lt;<a href="#13-63">BufferedOutputStream</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GBufferedOutputStream,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GBufferedOutputStream.html">ffi::GBufferedOutputStream</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(BufferedOutputStream::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#273">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#275">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">BufferedOutputStream::from_glib_borrow</a>(<a href="#271">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::buffer-size\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#266">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#266">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::buffer-size\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_buffer_size_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#279">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>BufferedOutputStream {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;BufferedOutputStream&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#13-63">BufferedOutputStream</a>&gt;&gt; <a href="#185-290">BufferedOutputStreamExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

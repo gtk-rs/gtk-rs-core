@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/simple_proxy_resolver.rs`."><title>simple_proxy_resolver.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/simple_proxy_resolver.rs`."><title>simple_proxy_resolver.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (b11fbfbf3 2024-02-03)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,9 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../gio/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -319,37 +321,24 @@
 <a href="#246" id="246">246</a>
 <a href="#247" id="247">247</a>
 <a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::ProxyResolver;
+</span><span class="kw">use </span><a href="proxy_resolver.rs.html#9-28"><span class="kw">crate</span>::ProxyResolver</a>;
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
-<span class="macro">glib::wrapper! </span>{
-    <span class="doccomment">/// [`SimpleProxyResolver`][crate::SimpleProxyResolver] is a simple [`ProxyResolver`][crate::ProxyResolver] implementation
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
+    <span class="doccomment">/// `GSimpleProxyResolver` is a simple [`ProxyResolver`][crate::ProxyResolver] implementation
     /// that handles a single default proxy, multiple URI-scheme-specific
     /// proxies, and a list of hosts that proxies should not be used for.
     ///
-    /// [`SimpleProxyResolver`][crate::SimpleProxyResolver] is never the default proxy resolver, but it
+    /// `GSimpleProxyResolver` is never the default proxy resolver, but it
     /// can be used as the base class for another proxy resolver
     /// implementation, or it can be created and used manually, such as
     /// with [`SocketClientExt::set_proxy_resolver()`][crate::prelude::SocketClientExt::set_proxy_resolver()].
@@ -358,12 +347,12 @@
     ///
     ///
     /// #### `default-proxy`
-    ///  The default proxy URI that will be used for any URI that doesn&#39;t
-    /// match [`ignore-hosts`][struct@crate::SimpleProxyResolver#ignore-hosts], and doesn&#39;t match any
-    /// of the schemes set with [`SimpleProxyResolverExt::set_uri_proxy()`][crate::prelude::SimpleProxyResolverExt::set_uri_proxy()].
+    ///  The default proxy URI that will be used for any URI that doesn't
+    /// match #GSimpleProxyResolver:ignore-hosts, and doesn't match any
+    /// of the schemes set with g_simple_proxy_resolver_set_uri_proxy().
     ///
     /// Note that as a special case, if this URI starts with
-    /// &quot;socks://&quot;, [`SimpleProxyResolver`][crate::SimpleProxyResolver] will treat it as referring
+    /// "socks://", #GSimpleProxyResolver will treat it as referring
     /// to all three of the socks5, socks4a, and socks4 proxy types.
     ///
     /// Readable | Writeable
@@ -375,21 +364,21 @@
     ///
     /// Entries can be in one of 4 formats:
     ///
-    /// - A hostname, such as &quot;example.com&quot;, &quot;.example.com&quot;, or
-    ///  &quot;*.example.com&quot;, any of which match &quot;example.com&quot; or
-    ///  any subdomain of it.
+    /// - A hostname, such as "example.com", ".example.com", or
+    ///   "*.example.com", any of which match "example.com" or
+    ///   any subdomain of it.
     ///
-    /// - An IPv4 or IPv6 address, such as &quot;192.168.1.1&quot;,
-    ///  which matches only that address.
+    /// - An IPv4 or IPv6 address, such as "192.168.1.1",
+    ///   which matches only that address.
     ///
     /// - A hostname or IP address followed by a port, such as
-    ///  &quot;example.com:80&quot;, which matches whatever the hostname or IP
-    ///  address would match, but only for URLs with the (explicitly)
-    ///  indicated port. In the case of an IPv6 address, the address
-    ///  part must appear in brackets: &quot;[::1]:443&quot;
+    ///   "example.com:80", which matches whatever the hostname or IP
+    ///   address would match, but only for URLs with the (explicitly)
+    ///   indicated port. In the case of an IPv6 address, the address
+    ///   part must appear in brackets: "[::1]:443"
     ///
     /// - An IP address range, given by a base address and prefix length,
-    ///  such as &quot;fe80::/10&quot;, which matches any address in that range.
+    ///   such as "fe80::/10", which matches any address in that range.
     ///
     /// Note that when dealing with Unicode hostnames, the matching is
     /// done against the ASCII form of the name.
@@ -398,11 +387,11 @@
     /// to hosts identified by name, and IP address exclusions apply only
     /// to connections made to hosts identified by address. That is, if
     /// example.com has an address of 192.168.1.1, and the :ignore-hosts list
-    /// contains only &quot;192.168.1.1&quot;, then a connection to &quot;example.com&quot;
-    /// (eg, via a [`NetworkAddress`][crate::NetworkAddress]) will use the proxy, and a connection to
-    /// &quot;192.168.1.1&quot; (eg, via a [`InetSocketAddress`][crate::InetSocketAddress]) will not.
+    /// contains only "192.168.1.1", then a connection to "example.com"
+    /// (eg, via a #GNetworkAddress) will use the proxy, and a connection to
+    /// "192.168.1.1" (eg, via a #GInetSocketAddress) will not.
     ///
-    /// These rules match the &quot;ignore-hosts&quot;/&quot;noproxy&quot; rules most
+    /// These rules match the "ignore-hosts"/"noproxy" rules most
     /// commonly used by other applications.
     ///
     /// Readable | Writeable
@@ -410,16 +399,21 @@
     /// # Implements
     ///
     /// [`SimpleProxyResolverExt`][trait@crate::prelude::SimpleProxyResolverExt], [`trait@glib::ObjectExt`], [`ProxyResolverExt`][trait@crate::prelude::ProxyResolverExt], [`SimpleProxyResolverExtManual`][trait@crate::prelude::SimpleProxyResolverExtManual]
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GSimpleProxyResolver&quot;</span>)]
-    </span><span class="kw">pub struct </span>SimpleProxyResolver(Object&lt;ffi::GSimpleProxyResolver, ffi::GSimpleProxyResolverClass&gt;) @implements ProxyResolver;
+    </span><span class="attr">#[doc(alias = <span class="string">"GSimpleProxyResolver"</span>)]
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.SimpleProxyResolver.html">SimpleProxyResolver</a>(Object&lt;<a href="../../../gio_sys/struct.GSimpleProxyResolver.html">ffi::GSimpleProxyResolver</a>, <a href="../../../gio_sys/struct.GSimpleProxyResolverClass.html">ffi::GSimpleProxyResolverClass</a>&gt;) @implements <a href="proxy_resolver.rs.html#9-28">ProxyResolver</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_simple_proxy_resolver_get_type(),
     }
 }
 
-<span class="kw">impl </span>SimpleProxyResolver {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SimpleProxyResolver&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#13-85">SimpleProxyResolver</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#13-85">SimpleProxyResolver</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#13-85"><span class="kw">super</span>::SimpleProxyResolver</a>&gt;&gt; <a href="#92">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@SimpleProxyResolver`] methods.
@@ -427,64 +421,81 @@
 /// # Implementors
 ///
 /// [`SimpleProxyResolver`][struct@crate::SimpleProxyResolver]
-</span><span class="kw">pub trait </span>SimpleProxyResolverExt: <span class="lifetime">&#39;static </span>{
-    <span class="doccomment">/// Sets the default proxy on `self`, to be used for any URIs that
-    /// don&#39;t match [`ignore-hosts`][struct@crate::SimpleProxyResolver#ignore-hosts] or a proxy set
-    /// via [`set_uri_proxy()`][Self::set_uri_proxy()].
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.SimpleProxyResolverExt.html">SimpleProxyResolverExt</a>: IsA&lt;<a href="#13-85">SimpleProxyResolver</a>&gt; + <a href="#92">sealed::Sealed</a> + <span class="lifetime">'static </span>{
+    <span class="doccomment">/// Sets the default proxy on @self, to be used for any URIs that
+    /// don't match #GSimpleProxyResolver:ignore-hosts or a proxy set
+    /// via g_simple_proxy_resolver_set_uri_proxy().
     ///
-    /// If `default_proxy` starts with &quot;socks://&quot;,
-    /// [`SimpleProxyResolver`][crate::SimpleProxyResolver] will treat it as referring to all three of
+    /// If @default_proxy starts with "socks://",
+    /// #GSimpleProxyResolver will treat it as referring to all three of
     /// the socks5, socks4a, and socks4 proxy types.
     /// ## `default_proxy`
     /// the default proxy to use
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_simple_proxy_resolver_set_default_proxy&quot;</span>)]
-    </span><span class="kw">fn </span>set_default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, default_proxy: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;);
+    </span><span class="attr">#[doc(alias = <span class="string">"g_simple_proxy_resolver_set_default_proxy"</span>)]
+    </span><span class="kw">fn </span>set_default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, default_proxy: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_simple_proxy_resolver_set_default_proxy(
+                <a class="self" href="#112">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#112">default_proxy</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
-    <span class="doccomment">/// Adds a URI-scheme-specific proxy to `self`; URIs whose scheme
-    /// matches `uri_scheme` (and which don&#39;t match
-    /// [`ignore-hosts`][struct@crate::SimpleProxyResolver#ignore-hosts]) will be proxied via `proxy`.
+    <span class="doccomment">/// Adds a URI-scheme-specific proxy to @self; URIs whose scheme
+    /// matches @uri_scheme (and which don't match
+    /// #GSimpleProxyResolver:ignore-hosts) will be proxied via @proxy.
     ///
-    /// As with [`default-proxy`][struct@crate::SimpleProxyResolver#default-proxy], if `proxy` starts with
-    /// &quot;socks://&quot;, [`SimpleProxyResolver`][crate::SimpleProxyResolver] will treat it
+    /// As with #GSimpleProxyResolver:default-proxy, if @proxy starts with
+    /// "socks://", #GSimpleProxyResolver will treat it
     /// as referring to all three of the socks5, socks4a, and socks4 proxy
     /// types.
     /// ## `uri_scheme`
     /// the URI scheme to add a proxy for
     /// ## `proxy`
-    /// the proxy to use for `uri_scheme`
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_simple_proxy_resolver_set_uri_proxy&quot;</span>)]
-    </span><span class="kw">fn </span>set_uri_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, uri_scheme: <span class="kw-2">&amp;</span>str, proxy: <span class="kw-2">&amp;</span>str);
+    /// the proxy to use for @uri_scheme
+    </span><span class="attr">#[doc(alias = <span class="string">"g_simple_proxy_resolver_set_uri_proxy"</span>)]
+    </span><span class="kw">fn </span>set_uri_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, uri_scheme: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, proxy: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_simple_proxy_resolver_set_uri_proxy(
+                <a class="self" href="#134">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#134">uri_scheme</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#134">proxy</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+            );
+        }
+    }
 
-    <span class="doccomment">/// The default proxy URI that will be used for any URI that doesn&#39;t
-    /// match [`ignore-hosts`][struct@crate::SimpleProxyResolver#ignore-hosts], and doesn&#39;t match any
-    /// of the schemes set with [`set_uri_proxy()`][Self::set_uri_proxy()].
+    <span class="doccomment">/// The default proxy URI that will be used for any URI that doesn't
+    /// match #GSimpleProxyResolver:ignore-hosts, and doesn't match any
+    /// of the schemes set with g_simple_proxy_resolver_set_uri_proxy().
     ///
     /// Note that as a special case, if this URI starts with
-    /// &quot;socks://&quot;, [`SimpleProxyResolver`][crate::SimpleProxyResolver] will treat it as referring
+    /// "socks://", #GSimpleProxyResolver will treat it as referring
     /// to all three of the socks5, socks4a, and socks4 proxy types.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;default-proxy&quot;</span>)]
-    </span><span class="kw">fn </span>default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
+    </span><span class="attr">#[doc(alias = <span class="string">"default-proxy"</span>)]
+    </span><span class="kw">fn </span>default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#152">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">"default-proxy"</span>)
+    }
 
     <span class="doccomment">/// A list of hostnames and IP addresses that the resolver should
     /// allow direct connections to.
     ///
     /// Entries can be in one of 4 formats:
     ///
-    /// - A hostname, such as &quot;example.com&quot;, &quot;.example.com&quot;, or
-    ///  &quot;*.example.com&quot;, any of which match &quot;example.com&quot; or
-    ///  any subdomain of it.
+    /// - A hostname, such as "example.com", ".example.com", or
+    ///   "*.example.com", any of which match "example.com" or
+    ///   any subdomain of it.
     ///
-    /// - An IPv4 or IPv6 address, such as &quot;192.168.1.1&quot;,
-    ///  which matches only that address.
+    /// - An IPv4 or IPv6 address, such as "192.168.1.1",
+    ///   which matches only that address.
     ///
     /// - A hostname or IP address followed by a port, such as
-    ///  &quot;example.com:80&quot;, which matches whatever the hostname or IP
-    ///  address would match, but only for URLs with the (explicitly)
-    ///  indicated port. In the case of an IPv6 address, the address
-    ///  part must appear in brackets: &quot;[::1]:443&quot;
+    ///   "example.com:80", which matches whatever the hostname or IP
+    ///   address would match, but only for URLs with the (explicitly)
+    ///   indicated port. In the case of an IPv6 address, the address
+    ///   part must appear in brackets: "[::1]:443"
     ///
     /// - An IP address range, given by a base address and prefix length,
-    ///  such as &quot;fe80::/10&quot;, which matches any address in that range.
+    ///   such as "fe80::/10", which matches any address in that range.
     ///
     /// Note that when dealing with Unicode hostnames, the matching is
     /// done against the ASCII form of the name.
@@ -493,105 +504,69 @@
     /// to hosts identified by name, and IP address exclusions apply only
     /// to connections made to hosts identified by address. That is, if
     /// example.com has an address of 192.168.1.1, and the :ignore-hosts list
-    /// contains only &quot;192.168.1.1&quot;, then a connection to &quot;example.com&quot;
-    /// (eg, via a [`NetworkAddress`][crate::NetworkAddress]) will use the proxy, and a connection to
-    /// &quot;192.168.1.1&quot; (eg, via a [`InetSocketAddress`][crate::InetSocketAddress]) will not.
+    /// contains only "192.168.1.1", then a connection to "example.com"
+    /// (eg, via a #GNetworkAddress) will use the proxy, and a connection to
+    /// "192.168.1.1" (eg, via a #GInetSocketAddress) will not.
     ///
-    /// These rules match the &quot;ignore-hosts&quot;/&quot;noproxy&quot; rules most
+    /// These rules match the "ignore-hosts"/"noproxy" rules most
     /// commonly used by other applications.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;ignore-hosts&quot;</span>)]
-    </span><span class="kw">fn </span>ignore_hosts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt;;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;default-proxy&quot;</span>)]
-    </span><span class="kw">fn </span>connect_default_proxy_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-
-    <span class="attr">#[doc(alias = <span class="string">&quot;ignore-hosts&quot;</span>)]
-    </span><span class="kw">fn </span>connect_ignore_hosts_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
-}
-
-<span class="kw">impl</span>&lt;O: IsA&lt;SimpleProxyResolver&gt;&gt; SimpleProxyResolverExt <span class="kw">for </span>O {
-    <span class="kw">fn </span>set_default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, default_proxy: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
-        <span class="kw">unsafe </span>{
-            ffi::g_simple_proxy_resolver_set_default_proxy(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                default_proxy.to_glib_none().<span class="number">0</span>,
-            );
-        }
+    </span><span class="attr">#[doc(alias = <span class="string">"ignore-hosts"</span>)]
+    </span><span class="kw">fn </span>ignore_hosts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#191">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">"ignore-hosts"</span>)
     }
 
-    <span class="kw">fn </span>set_uri_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>, uri_scheme: <span class="kw-2">&amp;</span>str, proxy: <span class="kw-2">&amp;</span>str) {
-        <span class="kw">unsafe </span>{
-            ffi::g_simple_proxy_resolver_set_uri_proxy(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                uri_scheme.to_glib_none().<span class="number">0</span>,
-                proxy.to_glib_none().<span class="number">0</span>,
-            );
-        }
-    }
-
-    <span class="kw">fn </span>default_proxy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;default-proxy&quot;</span>)
-    }
-
-    <span class="kw">fn </span>ignore_hosts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;ignore-hosts&quot;</span>)
-    }
-
-    <span class="kw">fn </span>connect_default_proxy_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_default_proxy_trampoline&lt;
-            P: IsA&lt;SimpleProxyResolver&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"default-proxy"</span>)]
+    </span><span class="kw">fn </span>connect_default_proxy_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_default_proxy_trampoline&lt;
+            P: IsA&lt;<a href="#13-85">SimpleProxyResolver</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GSimpleProxyResolver,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSimpleProxyResolver.html">ffi::GSimpleProxyResolver</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(SimpleProxyResolver::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#203">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#205">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">SimpleProxyResolver::from_glib_borrow</a>(<a href="#201">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::default-proxy\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#196">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#196">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::default-proxy\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_default_proxy_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#209">f</a>),
             )
         }
     }
 
-    <span class="kw">fn </span>connect_ignore_hosts_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_ignore_hosts_trampoline&lt;
-            P: IsA&lt;SimpleProxyResolver&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+    <span class="attr">#[doc(alias = <span class="string">"ignore-hosts"</span>)]
+    </span><span class="kw">fn </span>connect_ignore_hosts_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_ignore_hosts_trampoline&lt;
+            P: IsA&lt;<a href="#13-85">SimpleProxyResolver</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
         &gt;(
-            this: <span class="kw-2">*mut </span>ffi::GSimpleProxyResolver,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
+            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GSimpleProxyResolver.html">ffi::GSimpleProxyResolver</a>,
+            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(SimpleProxyResolver::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#229">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#231">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html">SimpleProxyResolver::from_glib_borrow</a>(<a href="#227">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                <span class="string">b&quot;notify::ignore-hosts\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#222">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#222">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b"notify::ignore-hosts\0"</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
                     notify_ignore_hosts_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#235">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>SimpleProxyResolver {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;SimpleProxyResolver&quot;</span>)
-    }
-}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#13-85">SimpleProxyResolver</a>&gt;&gt; <a href="#101-246">SimpleProxyResolverExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

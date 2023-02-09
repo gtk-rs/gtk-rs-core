@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["list",""],["ptr_slice",""],["slice",""],["slist",""],["strv",""]]};
+window.SIDEBAR_ITEMS = {"mod":["list","ptr_slice","slice","slist","strv"]};

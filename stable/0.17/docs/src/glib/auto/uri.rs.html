@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/uri.rs`."><title>uri.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/uri.rs`."><title>uri.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2fcac8296ac587d8.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0-nightly (e6d4725c7 2023-06-05)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-48600a9606eff342.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -871,7 +871,320 @@
 <a href="#798" id="798">798</a>
 <a href="#799" id="799">799</a>
 <a href="#800" id="800">800</a>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
+<a href="#966" id="966">966</a>
+<a href="#967" id="967">967</a>
+<a href="#968" id="968">968</a>
+<a href="#969" id="969">969</a>
+<a href="#970" id="970">970</a>
+<a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
+<a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
+<a href="#1006" id="1006">1006</a>
+<a href="#1007" id="1007">1007</a>
+<a href="#1008" id="1008">1008</a>
+<a href="#1009" id="1009">1009</a>
+<a href="#1010" id="1010">1010</a>
+<a href="#1011" id="1011">1011</a>
+<a href="#1012" id="1012">1012</a>
+<a href="#1013" id="1013">1013</a>
+<a href="#1014" id="1014">1014</a>
+<a href="#1015" id="1015">1015</a>
+<a href="#1016" id="1016">1016</a>
+<a href="#1017" id="1017">1017</a>
+<a href="#1018" id="1018">1018</a>
+<a href="#1019" id="1019">1019</a>
+<a href="#1020" id="1020">1020</a>
+<a href="#1021" id="1021">1021</a>
+<a href="#1022" id="1022">1022</a>
+<a href="#1023" id="1023">1023</a>
+<a href="#1024" id="1024">1024</a>
+<a href="#1025" id="1025">1025</a>
+<a href="#1026" id="1026">1026</a>
+<a href="#1027" id="1027">1027</a>
+<a href="#1028" id="1028">1028</a>
+<a href="#1029" id="1029">1029</a>
+<a href="#1030" id="1030">1030</a>
+<a href="#1031" id="1031">1031</a>
+<a href="#1032" id="1032">1032</a>
+<a href="#1033" id="1033">1033</a>
+<a href="#1034" id="1034">1034</a>
+<a href="#1035" id="1035">1035</a>
+<a href="#1036" id="1036">1036</a>
+<a href="#1037" id="1037">1037</a>
+<a href="#1038" id="1038">1038</a>
+<a href="#1039" id="1039">1039</a>
+<a href="#1040" id="1040">1040</a>
+<a href="#1041" id="1041">1041</a>
+<a href="#1042" id="1042">1042</a>
+<a href="#1043" id="1043">1043</a>
+<a href="#1044" id="1044">1044</a>
+<a href="#1045" id="1045">1045</a>
+<a href="#1046" id="1046">1046</a>
+<a href="#1047" id="1047">1047</a>
+<a href="#1048" id="1048">1048</a>
+<a href="#1049" id="1049">1049</a>
+<a href="#1050" id="1050">1050</a>
+<a href="#1051" id="1051">1051</a>
+<a href="#1052" id="1052">1052</a>
+<a href="#1053" id="1053">1053</a>
+<a href="#1054" id="1054">1054</a>
+<a href="#1055" id="1055">1055</a>
+<a href="#1056" id="1056">1056</a>
+<a href="#1057" id="1057">1057</a>
+<a href="#1058" id="1058">1058</a>
+<a href="#1059" id="1059">1059</a>
+<a href="#1060" id="1060">1060</a>
+<a href="#1061" id="1061">1061</a>
+<a href="#1062" id="1062">1062</a>
+<a href="#1063" id="1063">1063</a>
+<a href="#1064" id="1064">1064</a>
+<a href="#1065" id="1065">1065</a>
+<a href="#1066" id="1066">1066</a>
+<a href="#1067" id="1067">1067</a>
+<a href="#1068" id="1068">1068</a>
+<a href="#1069" id="1069">1069</a>
+<a href="#1070" id="1070">1070</a>
+<a href="#1071" id="1071">1071</a>
+<a href="#1072" id="1072">1072</a>
+<a href="#1073" id="1073">1073</a>
+<a href="#1074" id="1074">1074</a>
+<a href="#1075" id="1075">1075</a>
+<a href="#1076" id="1076">1076</a>
+<a href="#1077" id="1077">1077</a>
+<a href="#1078" id="1078">1078</a>
+<a href="#1079" id="1079">1079</a>
+<a href="#1080" id="1080">1080</a>
+<a href="#1081" id="1081">1081</a>
+<a href="#1082" id="1082">1082</a>
+<a href="#1083" id="1083">1083</a>
+<a href="#1084" id="1084">1084</a>
+<a href="#1085" id="1085">1085</a>
+<a href="#1086" id="1086">1086</a>
+<a href="#1087" id="1087">1087</a>
+<a href="#1088" id="1088">1088</a>
+<a href="#1089" id="1089">1089</a>
+<a href="#1090" id="1090">1090</a>
+<a href="#1091" id="1091">1091</a>
+<a href="#1092" id="1092">1092</a>
+<a href="#1093" id="1093">1093</a>
+<a href="#1094" id="1094">1094</a>
+<a href="#1095" id="1095">1095</a>
+<a href="#1096" id="1096">1096</a>
+<a href="#1097" id="1097">1097</a>
+<a href="#1098" id="1098">1098</a>
+<a href="#1099" id="1099">1099</a>
+<a href="#1100" id="1100">1100</a>
+<a href="#1101" id="1101">1101</a>
+<a href="#1102" id="1102">1102</a>
+<a href="#1103" id="1103">1103</a>
+<a href="#1104" id="1104">1104</a>
+<a href="#1105" id="1105">1105</a>
+<a href="#1106" id="1106">1106</a>
+<a href="#1107" id="1107">1107</a>
+<a href="#1108" id="1108">1108</a>
+<a href="#1109" id="1109">1109</a>
+<a href="#1110" id="1110">1110</a>
+<a href="#1111" id="1111">1111</a>
+<a href="#1112" id="1112">1112</a>
+<a href="#1113" id="1113">1113</a>
+</pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
@@ -890,73 +1203,167 @@
 }
 
 <span class="kw">impl </span>Uri {
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_auth_params&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s authentication parameters, which may contain
+    /// `%`-encoding, depending on the flags with which `self` was created.
+    /// (If `self` was not created with [`UriFlags::HAS_AUTH_PARAMS`][crate::UriFlags::HAS_AUTH_PARAMS] then this will
+    /// be [`None`].)
+    ///
+    /// Depending on the URI scheme, `g_uri_parse_params()` may be useful for
+    /// further parsing this information.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s authentication parameters.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_auth_params&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_auth_params&quot;</span>)]
     </span><span class="kw">pub fn </span>auth_params(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_auth_params(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_flags&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s flags set upon construction.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s flags.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_flags&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_flags&quot;</span>)]
     </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UriFlags {
         <span class="kw">unsafe </span>{ from_glib(ffi::g_uri_get_flags(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_fragment&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s fragment, which may contain `%`-encoding, depending on
+    /// the flags with which `self` was created.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s fragment.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_fragment&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_fragment&quot;</span>)]
     </span><span class="kw">pub fn </span>fragment(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_fragment(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_host&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s host. This will never have `%`-encoded characters,
+    /// unless it is non-UTF-8 (which can only be the case if `self` was
+    /// created with [`UriFlags::NON_DNS`][crate::UriFlags::NON_DNS]).
+    ///
+    /// If `self` contained an IPv6 address literal, this value will be just
+    /// that address, without the brackets around it that are necessary in
+    /// the string form of the URI. Note that in this case there may also
+    /// be a scope ID attached to the address. Eg, `fe80::1234%``em1` (or
+    /// `fe80::1234%``25em1` if the string is still encoded).
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s host.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_host&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_host&quot;</span>)]
     </span><span class="kw">pub fn </span>host(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_host(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_password&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s password, which may contain `%`-encoding, depending on
+    /// the flags with which `self` was created. (If `self` was not created
+    /// with [`UriFlags::HAS_PASSWORD`][crate::UriFlags::HAS_PASSWORD] then this will be [`None`].)
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s password.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_password&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_password&quot;</span>)]
     </span><span class="kw">pub fn </span>password(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_password(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_path&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s path, which may contain `%`-encoding, depending on the
+    /// flags with which `self` was created.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s path.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_path&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_path&quot;</span>)]
     </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::GString {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_path(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_port&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s port.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s port, or `-1` if no port was specified.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_port&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_port&quot;</span>)]
     </span><span class="kw">pub fn </span>port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
         <span class="kw">unsafe </span>{ ffi::g_uri_get_port(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_query&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s query, which may contain `%`-encoding, depending on the
+    /// flags with which `self` was created.
+    ///
+    /// For queries consisting of a series of `name=value` parameters,
+    /// `GUriParamsIter` or `g_uri_parse_params()` may be useful.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s query.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_query&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_query&quot;</span>)]
     </span><span class="kw">pub fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_query(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_scheme&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s scheme. Note that this will always be all-lowercase,
+    /// regardless of the string or strings that `self` was created from.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s scheme.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_scheme&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_scheme&quot;</span>)]
     </span><span class="kw">pub fn </span>scheme(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::GString {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_scheme(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_user&quot;</span>)]
+    <span class="doccomment">/// Gets the ‘username’ component of `self`&#39;s userinfo, which may contain
+    /// `%`-encoding, depending on the flags with which `self` was created.
+    /// If `self` was not created with [`UriFlags::HAS_PASSWORD`][crate::UriFlags::HAS_PASSWORD] or
+    /// [`UriFlags::HAS_AUTH_PARAMS`][crate::UriFlags::HAS_AUTH_PARAMS], this is the same as [`userinfo()`][Self::userinfo()].
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s user.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_user&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_user&quot;</span>)]
     </span><span class="kw">pub fn </span>user(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_user(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_userinfo&quot;</span>)]
+    <span class="doccomment">/// Gets `self`&#39;s userinfo, which may contain `%`-encoding, depending on
+    /// the flags with which `self` was created.
+    ///
+    /// # Returns
+    ///
+    /// `self`&#39;s userinfo.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_get_userinfo&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_userinfo&quot;</span>)]
     </span><span class="kw">pub fn </span>userinfo(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{ from_glib_none(ffi::g_uri_get_userinfo(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_parse_relative&quot;</span>)]
+    <span class="doccomment">/// Parses `uri_ref` according to `flags` and, if it is a
+    /// [relative URI][relative-absolute-uris], resolves it relative to `self`.
+    /// If the result is not a valid absolute URI, it will be discarded, and an error
+    /// returned.
+    /// ## `uri_ref`
+    /// a string representing a relative or absolute URI
+    /// ## `flags`
+    /// flags describing how to parse `uri_ref`
+    ///
+    /// # Returns
+    ///
+    /// a new [`Uri`][crate::Uri], or NULL on error.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_parse_relative&quot;</span>)]
     </span><span class="kw">pub fn </span>parse_relative(<span class="kw-2">&amp;</span><span class="self">self</span>, uri_ref: <span class="kw-2">&amp;</span>str, flags: UriFlags) -&gt; <span class="prelude-ty">Result</span>&lt;Uri, <span class="kw">crate</span>::Error&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
@@ -974,13 +1381,39 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_to_string&quot;</span>)]
+    <span class="doccomment">/// Returns a string representing `self`.
+    ///
+    /// This is not guaranteed to return a string which is identical to the
+    /// string that `self` was parsed from. However, if the source URI was
+    /// syntactically correct (according to RFC 3986), and it was parsed
+    /// with [`UriFlags::ENCODED`][crate::UriFlags::ENCODED], then [`to_str()`][Self::to_str()] is guaranteed to return
+    /// a string which is at least semantically equivalent to the source
+    /// URI (according to RFC 3986).
+    ///
+    /// If `self` might contain sensitive details, such as authentication parameters,
+    /// or private data in its query string, and the returned string is going to be
+    /// logged, then consider using [`to_string_partial()`][Self::to_string_partial()] to redact parts.
+    ///
+    /// # Returns
+    ///
+    /// a string representing `self`,
+    ///  which the caller must free.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_to_string&quot;</span>)]
     #[doc(alias = <span class="string">&quot;to_string&quot;</span>)]
     </span><span class="kw">pub fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::GString {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::g_uri_to_string(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_to_string_partial&quot;</span>)]
+    <span class="doccomment">/// Returns a string representing `self`, subject to the options in
+    /// `flags`. See [`to_str()`][Self::to_str()] and [`UriHideFlags`][crate::UriHideFlags] for more details.
+    /// ## `flags`
+    /// flags describing what parts of `self` to hide
+    ///
+    /// # Returns
+    ///
+    /// a string representing
+    ///  `self`, which the caller must free.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_to_string_partial&quot;</span>)]
     </span><span class="kw">pub fn </span>to_string_partial(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: UriHideFlags) -&gt; <span class="kw">crate</span>::GString {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_uri_to_string_partial(
@@ -990,7 +1423,31 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_build&quot;</span>)]
+    <span class="doccomment">/// Creates a new [`Uri`][crate::Uri] from the given components according to `flags`.
+    ///
+    /// See also [`build_with_user()`][Self::build_with_user()], which allows specifying the
+    /// components of the &quot;userinfo&quot; separately.
+    /// ## `flags`
+    /// flags describing how to build the [`Uri`][crate::Uri]
+    /// ## `scheme`
+    /// the URI scheme
+    /// ## `userinfo`
+    /// the userinfo component, or [`None`]
+    /// ## `host`
+    /// the host component, or [`None`]
+    /// ## `port`
+    /// the port, or `-1`
+    /// ## `path`
+    /// the path component
+    /// ## `query`
+    /// the query component, or [`None`]
+    /// ## `fragment`
+    /// the fragment, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// a new [`Uri`][crate::Uri]
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_build&quot;</span>)]
     </span><span class="kw">pub fn </span>build(
         flags: UriFlags,
         scheme: <span class="kw-2">&amp;</span>str,
@@ -1015,7 +1472,39 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_build_with_user&quot;</span>)]
+    <span class="doccomment">/// Creates a new [`Uri`][crate::Uri] from the given components according to `flags`
+    /// ([`UriFlags::HAS_PASSWORD`][crate::UriFlags::HAS_PASSWORD] is added unconditionally). The `flags` must be
+    /// coherent with the passed values, in particular use `%`-encoded values with
+    /// [`UriFlags::ENCODED`][crate::UriFlags::ENCODED].
+    ///
+    /// In contrast to [`build()`][Self::build()], this allows specifying the components
+    /// of the ‘userinfo’ field separately. Note that `user` must be non-[`None`]
+    /// if either `password` or `auth_params` is non-[`None`].
+    /// ## `flags`
+    /// flags describing how to build the [`Uri`][crate::Uri]
+    /// ## `scheme`
+    /// the URI scheme
+    /// ## `user`
+    /// the user component of the userinfo, or [`None`]
+    /// ## `password`
+    /// the password component of the userinfo, or [`None`]
+    /// ## `auth_params`
+    /// the auth params of the userinfo, or [`None`]
+    /// ## `host`
+    /// the host component, or [`None`]
+    /// ## `port`
+    /// the port, or `-1`
+    /// ## `path`
+    /// the path component
+    /// ## `query`
+    /// the query component, or [`None`]
+    /// ## `fragment`
+    /// the fragment, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// a new [`Uri`][crate::Uri]
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_build_with_user&quot;</span>)]
     </span><span class="kw">pub fn </span>build_with_user(
         flags: UriFlags,
         scheme: <span class="kw-2">&amp;</span>str,
@@ -1044,7 +1533,28 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_escape_bytes&quot;</span>)]
+    <span class="doccomment">/// Escapes arbitrary data for use in a URI.
+    ///
+    /// Normally all characters that are not ‘unreserved’ (i.e. ASCII
+    /// alphanumerical characters plus dash, dot, underscore and tilde) are
+    /// escaped. But if you specify characters in `reserved_chars_allowed`
+    /// they are not escaped. This is useful for the ‘reserved’ characters
+    /// in the URI specification, since those are allowed unescaped in some
+    /// portions of a URI.
+    ///
+    /// Though technically incorrect, this will also allow escaping nul
+    /// bytes as `%``00`.
+    /// ## `unescaped`
+    /// the unescaped input data.
+    /// ## `reserved_chars_allowed`
+    /// a string of reserved
+    ///  characters that are allowed to be used, or [`None`].
+    ///
+    /// # Returns
+    ///
+    /// an escaped version of `unescaped`.
+    ///  The returned string should be freed when no longer needed.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_escape_bytes&quot;</span>)]
     </span><span class="kw">pub fn </span>escape_bytes(unescaped: <span class="kw-2">&amp;</span>[u8], reserved_chars_allowed: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; <span class="kw">crate</span>::GString {
         <span class="kw">let </span>length = unescaped.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
@@ -1056,7 +1566,27 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_escape_string&quot;</span>)]
+    <span class="doccomment">/// Escapes a string for use in a URI.
+    ///
+    /// Normally all characters that are not &quot;unreserved&quot; (i.e. ASCII
+    /// alphanumerical characters plus dash, dot, underscore and tilde) are
+    /// escaped. But if you specify characters in `reserved_chars_allowed`
+    /// they are not escaped. This is useful for the &quot;reserved&quot; characters
+    /// in the URI specification, since those are allowed unescaped in some
+    /// portions of a URI.
+    /// ## `unescaped`
+    /// the unescaped input string.
+    /// ## `reserved_chars_allowed`
+    /// a string of reserved
+    ///  characters that are allowed to be used, or [`None`].
+    /// ## `allow_utf8`
+    /// [`true`] if the result can include UTF-8 characters.
+    ///
+    /// # Returns
+    ///
+    /// an escaped version of `unescaped`. The
+    /// returned string should be freed when no longer needed.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_escape_string&quot;</span>)]
     </span><span class="kw">pub fn </span>escape_string(
         unescaped: <span class="kw-2">&amp;</span>str,
         reserved_chars_allowed: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
@@ -1071,7 +1601,23 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_is_valid&quot;</span>)]
+    <span class="doccomment">/// Parses `uri_string` according to `flags`, to determine whether it is a valid
+    /// [absolute URI][relative-absolute-uris], i.e. it does not need to be resolved
+    /// relative to another URI using [`parse_relative()`][Self::parse_relative()].
+    ///
+    /// If it’s not a valid URI, an error is returned explaining how it’s invalid.
+    ///
+    /// See [`split()`][Self::split()], and the definition of [`UriFlags`][crate::UriFlags], for more
+    /// information on the effect of `flags`.
+    /// ## `uri_string`
+    /// a string containing an absolute URI
+    /// ## `flags`
+    /// flags for parsing `uri_string`
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `uri_string` is a valid absolute URI, [`false`] on error.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_is_valid&quot;</span>)]
     </span><span class="kw">pub fn </span>is_valid(uri_string: <span class="kw-2">&amp;</span>str, flags: UriFlags) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="kw">crate</span>::Error&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
@@ -1086,7 +1632,41 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_join&quot;</span>)]
+    <span class="doccomment">/// Joins the given components together according to `flags` to create
+    /// an absolute URI string. `path` may not be [`None`] (though it may be the empty
+    /// string).
+    ///
+    /// When `host` is present, `path` must either be empty or begin with a slash (`/`)
+    /// character. When `host` is not present, `path` cannot begin with two slash
+    ///  characters (`//`). See
+    /// [RFC 3986, section 3](https://tools.ietf.org/html/rfc3986`section`-3).
+    ///
+    /// See also [`join_with_user()`][Self::join_with_user()], which allows specifying the
+    /// components of the ‘userinfo’ separately.
+    ///
+    /// [`UriFlags::HAS_PASSWORD`][crate::UriFlags::HAS_PASSWORD] and [`UriFlags::HAS_AUTH_PARAMS`][crate::UriFlags::HAS_AUTH_PARAMS] are ignored if set
+    /// in `flags`.
+    /// ## `flags`
+    /// flags describing how to build the URI string
+    /// ## `scheme`
+    /// the URI scheme, or [`None`]
+    /// ## `userinfo`
+    /// the userinfo component, or [`None`]
+    /// ## `host`
+    /// the host component, or [`None`]
+    /// ## `port`
+    /// the port, or `-1`
+    /// ## `path`
+    /// the path component
+    /// ## `query`
+    /// the query component, or [`None`]
+    /// ## `fragment`
+    /// the fragment, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// an absolute URI string
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_join&quot;</span>)]
     </span><span class="kw">pub fn </span>join(
         flags: UriFlags,
         scheme: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
@@ -1111,7 +1691,42 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_join_with_user&quot;</span>)]
+    <span class="doccomment">/// Joins the given components together according to `flags` to create
+    /// an absolute URI string. `path` may not be [`None`] (though it may be the empty
+    /// string).
+    ///
+    /// In contrast to [`join()`][Self::join()], this allows specifying the components
+    /// of the ‘userinfo’ separately. It otherwise behaves the same.
+    ///
+    /// [`UriFlags::HAS_PASSWORD`][crate::UriFlags::HAS_PASSWORD] and [`UriFlags::HAS_AUTH_PARAMS`][crate::UriFlags::HAS_AUTH_PARAMS] are ignored if set
+    /// in `flags`.
+    /// ## `flags`
+    /// flags describing how to build the URI string
+    /// ## `scheme`
+    /// the URI scheme, or [`None`]
+    /// ## `user`
+    /// the user component of the userinfo, or [`None`]
+    /// ## `password`
+    /// the password component of the userinfo, or
+    ///  [`None`]
+    /// ## `auth_params`
+    /// the auth params of the userinfo, or
+    ///  [`None`]
+    /// ## `host`
+    /// the host component, or [`None`]
+    /// ## `port`
+    /// the port, or `-1`
+    /// ## `path`
+    /// the path component
+    /// ## `query`
+    /// the query component, or [`None`]
+    /// ## `fragment`
+    /// the fragment, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// an absolute URI string
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_join_with_user&quot;</span>)]
     </span><span class="kw">pub fn </span>join_with_user(
         flags: UriFlags,
         scheme: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
@@ -1140,7 +1755,18 @@
         }
     }
 
-    <span class="attr">#[doc(alias = <span class="string">&quot;g_uri_list_extract_uris&quot;</span>)]
+    <span class="doccomment">/// Splits an URI list conforming to the text/uri-list
+    /// mime type defined in RFC 2483 into individual URIs,
+    /// discarding any comments. The URIs are not validated.
+    /// ## `uri_list`
+    /// an URI list
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated [`None`]-terminated list
+    ///  of strings holding the individual URIs. The array should be freed
+    ///  with `g_strfreev()`.
+    </span><span class="attr">#[doc(alias = <span class="string">&quot;g_uri_list_extract_uris&quot;</span>)]
     </span><span class="kw">pub fn </span>list_extract_uris(uri_list: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;<span class="kw">crate</span>::GString&gt; {
         <span class="kw">unsafe </span>{
             FromGlibPtrContainer::from_glib_full(ffi::g_uri_list_extract_uris(
@@ -1671,5 +2297,4 @@
 
 <span class="kw">unsafe impl </span>Send <span class="kw">for </span>Uri {}
 <span class="kw">unsafe impl </span>Sync <span class="kw">for </span>Uri {}
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

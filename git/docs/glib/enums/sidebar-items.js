@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["UserDirectory"],"struct":["EnumClass","EnumTypeChecker","EnumValue","EnumerationValues","EnumerationValuesStorage","FlagsBuilder","FlagsClass","FlagsTypeChecker","FlagsValue","InvalidEnumError","InvalidFlagsError","ParseFlagsError"],"trait":["EnumerationValue"],"type":["EnumValues","EnumValuesStorage","FlagsValues","FlagsValuesStorage"]};

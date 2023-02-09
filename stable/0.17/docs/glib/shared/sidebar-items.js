@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Shared","Encapsulates memory management logic for shared types."]],"trait":[["SharedMemoryManager",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Shared"],"trait":["SharedMemoryManager"]};
