@@ -1086,6 +1086,11 @@ impl<'a, T: StaticType + FromGlib<i32> + IntoGlib<GlibType = i32>> ParamSpecEnum
         }
     }
 
+    pub fn default_value(mut self, default: T) -> Self {
+        self.default_value = default;
+        self
+    }
+
     #[must_use]
     pub fn build(self) -> ParamSpec {
         unsafe {
