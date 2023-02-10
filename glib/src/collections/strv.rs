@@ -1054,31 +1054,121 @@ const MAX_STACK_ALLOCATION: usize = 16;
 impl IntoStrV for Vec<GString> {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
-        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>()
-            + self.iter().map(|s| s.len() + 1).sum::<usize>();
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<'a> IntoStrV for Vec<&'a GString> {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<'a> IntoStrV for Vec<&'a GStr> {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<'a> IntoStrV for Vec<&'a str> {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl IntoStrV for Vec<String> {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<'a> IntoStrV for Vec<&'a String> {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl IntoStrV for &[GString] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>();
 
         if required_len < MAX_STACK_ALLOCATION * mem::size_of::<*mut c_char>() {
             unsafe {
                 let mut s = mem::MaybeUninit::<[*mut c_char; MAX_STACK_ALLOCATION]>::uninit();
                 let ptrs = s.as_mut_ptr() as *mut *mut c_char;
-                let mut strs = ptrs.add(self.len() + 1) as *mut c_char;
 
                 for (i, item) in self.iter().enumerate() {
-                    ptr::copy_nonoverlapping(item.as_ptr(), strs, item.len() + 1);
-                    *ptrs.add(i) = strs;
-                    strs = strs.add(item.len() + 1);
+                    *ptrs.add(i) = item.as_ptr() as *mut _;
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
                 f(std::slice::from_raw_parts(ptrs, self.len() + 1))
             }
         } else {
-            StrV::from(self).run_with_strv(f)
+            let mut s = StrV::with_capacity(self.len());
+            s.extend_from_slice(self);
+            s.run_with_strv(f)
         }
     }
 }
 
-impl<'a> IntoStrV for &'a [String] {
+impl<'a> IntoStrV for &[&'a GString] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>();
+
+        if required_len < MAX_STACK_ALLOCATION * mem::size_of::<*mut c_char>() {
+            unsafe {
+                let mut s = mem::MaybeUninit::<[*mut c_char; MAX_STACK_ALLOCATION]>::uninit();
+                let ptrs = s.as_mut_ptr() as *mut *mut c_char;
+
+                for (i, item) in self.iter().enumerate() {
+                    *ptrs.add(i) = item.as_ptr() as *mut _;
+                }
+                *ptrs.add(self.len()) = ptr::null_mut();
+
+                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+            }
+        } else {
+            let mut s = StrV::with_capacity(self.len());
+            s.extend_from_slice(self);
+            s.run_with_strv(f)
+        }
+    }
+}
+
+impl<'a> IntoStrV for &[&'a GStr] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>();
+
+        if required_len < MAX_STACK_ALLOCATION * mem::size_of::<*mut c_char>() {
+            unsafe {
+                let mut s = mem::MaybeUninit::<[*mut c_char; MAX_STACK_ALLOCATION]>::uninit();
+                let ptrs = s.as_mut_ptr() as *mut *mut c_char;
+
+                for (i, item) in self.iter().enumerate() {
+                    *ptrs.add(i) = item.as_ptr() as *mut _;
+                }
+                *ptrs.add(self.len()) = ptr::null_mut();
+
+                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+            }
+        } else {
+            let mut s = StrV::with_capacity(self.len());
+            s.extend_from_slice(self);
+            s.run_with_strv(f)
+        }
+    }
+}
+
+impl<'a> IntoStrV for &[&'a str] {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
         let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>()
@@ -1108,7 +1198,37 @@ impl<'a> IntoStrV for &'a [String] {
     }
 }
 
-impl<'a> IntoStrV for &'a [&'a str] {
+impl IntoStrV for &[String] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>()
+            + self.iter().map(|s| s.len() + 1).sum::<usize>();
+
+        if required_len < MAX_STACK_ALLOCATION * mem::size_of::<*mut c_char>() {
+            unsafe {
+                let mut s = mem::MaybeUninit::<[*mut c_char; MAX_STACK_ALLOCATION]>::uninit();
+                let ptrs = s.as_mut_ptr() as *mut *mut c_char;
+                let mut strs = ptrs.add(self.len() + 1) as *mut c_char;
+
+                for (i, item) in self.iter().enumerate() {
+                    ptr::copy_nonoverlapping(item.as_ptr() as *const _, strs, item.len());
+                    *strs.add(item.len()) = 0;
+                    *ptrs.add(i) = strs;
+                    strs = strs.add(item.len() + 1);
+                }
+                *ptrs.add(self.len()) = ptr::null_mut();
+
+                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+            }
+        } else {
+            let mut s = StrV::with_capacity(self.len());
+            s.extend_from_slice(self);
+            s.run_with_strv(f)
+        }
+    }
+}
+
+impl<'a> IntoStrV for &[&'a String] {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
         let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>()
@@ -1141,27 +1261,42 @@ impl<'a> IntoStrV for &'a [&'a str] {
 impl<const N: usize> IntoStrV for [GString; N] {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
-        let required_len = (self.len() + 1) * mem::size_of::<*mut c_char>()
-            + self.iter().map(|s| s.len() + 1).sum::<usize>();
+        self.as_slice().run_with_strv(f)
+    }
+}
 
-        if required_len < MAX_STACK_ALLOCATION * mem::size_of::<*mut c_char>() {
-            unsafe {
-                let mut s = mem::MaybeUninit::<[*mut c_char; MAX_STACK_ALLOCATION]>::uninit();
-                let ptrs = s.as_mut_ptr() as *mut *mut c_char;
-                let mut strs = ptrs.add(self.len() + 1) as *mut c_char;
+impl<'a, const N: usize> IntoStrV for [&'a GString; N] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
 
-                for (i, item) in self.iter().enumerate() {
-                    ptr::copy_nonoverlapping(item.as_ptr(), strs, item.len() + 1);
-                    *ptrs.add(i) = strs;
-                    strs = strs.add(item.len() + 1);
-                }
-                *ptrs.add(self.len()) = ptr::null_mut();
+impl<'a, const N: usize> IntoStrV for [&'a GStr; N] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
-            }
-        } else {
-            StrV::from(self).run_with_strv(f)
-        }
+impl<'a, const N: usize> IntoStrV for [&'a str; N] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<const N: usize> IntoStrV for [String; N] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
+    }
+}
+
+impl<'a, const N: usize> IntoStrV for [&'a String; N] {
+    #[inline]
+    fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
+        self.as_slice().run_with_strv(f)
     }
 }
 
