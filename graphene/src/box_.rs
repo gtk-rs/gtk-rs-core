@@ -79,6 +79,12 @@ impl Box {
     }
 }
 
+impl Default for Box {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
+
 impl fmt::Debug for Box {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Box")
