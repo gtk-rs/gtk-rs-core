@@ -39,6 +39,12 @@ impl fmt::Debug for Rect {
     }
 }
 
+impl Default for Rect {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
