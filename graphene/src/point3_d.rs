@@ -68,3 +68,9 @@ impl fmt::Debug for Point3D {
             .finish()
     }
 }
+
+impl Default for Point3D {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
