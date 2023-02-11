@@ -86,6 +86,24 @@ mod foo {
         nick: String,
     }
 
+    // Custom type, behaving as the inner type
+    #[derive(Default)]
+    pub struct MyInt(i32);
+    impl glib::Property for MyInt {
+        type Value = i32;
+    }
+    impl glib::PropertyGet for MyInt {
+        type Value = i32;
+        fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+            f(&self.0)
+        }
+    }
+    impl From<i32> for MyInt {
+        fn from(v: i32) -> Self {
+            MyInt(v)
+        }
+    }
+
     pub mod imp {
         use glib::{ParamSpec, Value};
         use std::rc::Rc;
@@ -101,6 +119,8 @@ mod foo {
             double: RefCell<f64>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
+            #[property(get, set)]
+            custom_type: RefCell<MyInt>,
             // The following property doesn't store any data. The value of the property is calculated
             // when the value is accessed.
             #[property(get = Self::hello_world)]
