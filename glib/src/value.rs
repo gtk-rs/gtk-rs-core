@@ -370,20 +370,6 @@ pub trait ToValue {
 }
 
 // rustdoc-stripper-ignore-next
-/// Blanket implementation for all references.
-impl<T: ToValue + StaticType> ToValue for &T {
-    #[inline]
-    fn to_value(&self) -> Value {
-        T::to_value(*self)
-    }
-
-    #[inline]
-    fn value_type(&self) -> Type {
-        T::static_type()
-    }
-}
-
-// rustdoc-stripper-ignore-next
 /// Trait to convert an `Option` to a `Value` for optional types.
 pub trait ToValueOptional {
     // rustdoc-stripper-ignore-next
@@ -427,6 +413,52 @@ impl<T: ToValueOptional + StaticType + ?Sized> ToValueOptional for &T {
     #[inline]
     fn to_value_optional(s: Option<&Self>) -> Value {
         <T as ToValueOptional>::to_value_optional(s.as_ref().map(|s| **s))
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Given a type implementing `From<i32>`, the type can safely
+/// implement `ToValue` and `FromValue` by doing
+/// ```
+/// use glib::value::ValueDelegate;
+/// struct MyInt(i32);
+/// impl From<i32> for MyInt {
+///     fn from(v: i32) -> Self {
+///         MyInt(v)
+///     }
+/// }
+/// impl<'a> From<&'a MyInt> for i32 {
+///     fn from(v: &MyInt) -> Self {
+///         v.0
+///     }
+/// }
+/// impl<'a> ValueDelegate<'a> for MyInt {
+///   type Delegate<'b> = i32;
+/// }
+/// ```
+pub trait ValueDelegate<'b>: 'b + From<Self::Delegate<'b>> {
+    // Delegate should implement `From<&Self>` and not only `From<Self>` because
+    // the auto-implemented `ToValue::to_value` method on `Self` takes `&self` and not `self`.
+    // This let's us skip some cloning inside the implementation of `to_value`.
+    type Delegate<'a>: 'a + FromValue<'a> + ToValue + StaticType + From<&'a Self>
+    where
+        Self: 'a;
+}
+
+impl<'a, T: ValueDelegate<'a>> ToValue for T {
+    fn to_value(&self) -> Value {
+        T::Delegate::from(self).to_value()
+    }
+
+    fn value_type(&self) -> Type {
+        T::Delegate::static_type()
+    }
+}
+unsafe impl<'a, T: ValueDelegate<'a>> FromValue<'a> for T {
+    type Checker = <<T as ValueDelegate<'a>>::Delegate<'a> as FromValue<'a>>::Checker;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        Self::from(T::Delegate::from_value(value))
     }
 }
 
@@ -1432,6 +1464,27 @@ mod tests {
             none_v.get::<i32>(),
             Err(ValueTypeMismatchError::new(Type::STRING, Type::I32))
         );
+
+        #[derive(Debug, PartialEq)]
+        struct MyTextCount(String, usize);
+        impl From<&str> for MyTextCount {
+            fn from(value: &str) -> Self {
+                MyTextCount(value.to_string(), 0)
+            }
+        }
+        impl<'a> From<&'a MyTextCount> for &'a str {
+            fn from(value: &'a MyTextCount) -> Self {
+                &value.0
+            }
+        }
+        impl<'a> ValueDelegate<'a> for MyTextCount {
+            type Delegate<'b> = &'b str;
+        }
+
+        let tv = MyTextCount("Hello world".to_string(), 0);
+        let v = tv.to_value();
+        assert_eq!(v.get::<&str>(), Ok("Hello world"));
+        assert_eq!(v.get::<MyTextCount>(), Ok(tv));
     }
 
     #[test]
