@@ -112,3 +112,15 @@ impl<T> Drop for ThreadGuard<T> {
 }
 
 unsafe impl<T> Send for ThreadGuard<T> {}
+
+impl<T: Default> Default for ThreadGuard<T> {
+    fn default() -> Self {
+        Self::new(T::default())
+    }
+}
+
+impl<T> From<T> for ThreadGuard<T> {
+    fn from(value: T) -> Self {
+        ThreadGuard::new(value)
+    }
+}
