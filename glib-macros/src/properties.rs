@@ -415,13 +415,19 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             field_ident,
             member,
             set,
+            ty,
             ..
         } = p;
 
         let crate_ident = crate_ident_new();
         let enum_ident = name_to_enum_ident(name.value());
         let span = p.attrs_span;
-        let expect = quote!(.expect("Can't convert glib::value to property type"));
+        let expect = quote!(.unwrap_or_else(
+            |err| panic!(
+                "Invalid conversion from `glib::value::Value` to `{}` inside setter for property `{}`: {:?}",
+                ::std::any::type_name::<<#ty as #crate_ident::Property>::Value>(), #name, err
+            )
+        ));
         set.as_ref().map(|set| {
             let body = match (member, set) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
