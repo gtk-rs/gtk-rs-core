@@ -12,6 +12,7 @@ use std::sync::RwLock;
 use crate::HasParamSpec;
 use crate::IsA;
 use crate::Object;
+use crate::SendWeakRef;
 use crate::WeakRef;
 
 // rustdoc-stripper-ignore-next
@@ -54,6 +55,9 @@ impl<T: Property> Property for Arc<T> {
     type Value = T::Value;
 }
 impl<T: IsA<Object> + HasParamSpec> Property for WeakRef<T> {
+    type Value = Option<T>;
+}
+impl<T: IsA<Object> + HasParamSpec> Property for SendWeakRef<T> {
     type Value = Option<T>;
 }
 
@@ -187,6 +191,20 @@ impl<T: IsA<Object>> PropertySet for WeakRef<T> {
 
     fn set(&self, v: Self::SetValue) {
         self.set(v.as_ref())
+    }
+}
+impl<T: IsA<Object>> PropertyGet for SendWeakRef<T> {
+    type Value = Option<T>;
+
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(&self.upgrade())
+    }
+}
+impl<T: IsA<Object>> PropertySet for SendWeakRef<T> {
+    type SetValue = Option<T>;
+
+    fn set(&self, v: Self::SetValue) {
+        WeakRef::set(self, v.as_ref());
     }
 }
 
