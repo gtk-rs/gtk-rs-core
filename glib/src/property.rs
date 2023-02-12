@@ -10,6 +10,10 @@ use std::sync::Mutex;
 use std::sync::RwLock;
 
 use crate::HasParamSpec;
+use crate::IsA;
+use crate::Object;
+use crate::SendWeakRef;
+use crate::WeakRef;
 
 // rustdoc-stripper-ignore-next
 /// A type that can be used as a property. It covers every type which have an associated `ParamSpec`
@@ -49,6 +53,12 @@ impl<T: Property> Property for Rc<T> {
 }
 impl<T: Property> Property for Arc<T> {
     type Value = T::Value;
+}
+impl<T: IsA<Object> + HasParamSpec> Property for WeakRef<T> {
+    type Value = Option<T>;
+}
+impl<T: IsA<Object> + HasParamSpec> Property for SendWeakRef<T> {
+    type Value = Option<T>;
 }
 
 // rustdoc-stripper-ignore-next
@@ -166,6 +176,35 @@ impl<T> PropertySet for once_cell::unsync::OnceCell<T> {
         if let Err(_v) = self.set(v) {
             panic!("can't set value of OnceCell multiple times")
         };
+    }
+}
+
+impl<T: IsA<Object>> PropertyGet for WeakRef<T> {
+    type Value = Option<T>;
+
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(&self.upgrade())
+    }
+}
+impl<T: IsA<Object>> PropertySet for WeakRef<T> {
+    type SetValue = Option<T>;
+
+    fn set(&self, v: Self::SetValue) {
+        self.set(v.as_ref())
+    }
+}
+impl<T: IsA<Object>> PropertyGet for SendWeakRef<T> {
+    type Value = Option<T>;
+
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        f(&self.upgrade())
+    }
+}
+impl<T: IsA<Object>> PropertySet for SendWeakRef<T> {
+    type SetValue = Option<T>;
+
+    fn set(&self, v: Self::SetValue) {
+        WeakRef::set(self, v.as_ref());
     }
 }
 

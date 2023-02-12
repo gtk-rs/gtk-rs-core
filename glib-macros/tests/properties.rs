@@ -147,6 +147,10 @@ mod foo {
             cell: Cell<u8>,
             #[property(get = Self::overridden, override_class = Base)]
             overridden: PhantomData<u32>,
+            #[property(get, set)]
+            weak_ref_prop: glib::WeakRef<glib::Object>,
+            #[property(get, set)]
+            send_weak_ref_prop: glib::SendWeakRef<glib::Object>,
         }
 
         impl ObjectImpl for Foo {
