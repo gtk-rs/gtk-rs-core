@@ -2,7 +2,7 @@
 
 use std::{ffi::c_char, fmt, marker::PhantomData, mem, ptr};
 
-use crate::{translate::*, GStr, GString, GStringPtr};
+use crate::{translate::*, GStr, GString, GStringPtr, IntoGStr, IntoOptionalGStr};
 
 // rustdoc-stripper-ignore-next
 /// Minimum size of the `StrV` allocation.
@@ -850,6 +850,19 @@ impl StrV {
                 *p = ptr::null_mut();
             }
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Joins the strings into a longer string, with an optional separator
+    #[inline]
+    #[doc(alias = "g_strjoinv")]
+    pub fn join(self, separator: Option<impl IntoGStr>) -> GString {
+        separator.run_with_gstr(|separator| unsafe {
+            from_glib_full(ffi::g_strjoinv(
+                separator.to_glib_none().0,
+                self.ptr.as_ptr(),
+            ))
+        })
     }
 }
 
