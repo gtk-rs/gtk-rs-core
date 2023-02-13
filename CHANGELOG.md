@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+## [0.17.1]
+
+Guillaume Desmottes:
+- glib: param\_spec: add `ParamSpecEnumBuilder::default_value()`
+
+Mițca Dumitru:
+- glib: Make `WeakRef` useable with the `Properties` derive macro
+- glib: Make `SendWeakRef` useable with the `Properties` derive macro
+
+Sebastian Dröge:
+- glib: Add various `IntoStrV` impls
+
+YuraIz:
+- graphene: Implement `Default` trait for vectors, matrix, points and rect
+
+ranfdev:
+- glib: properties: improve conversion error reporting inside setter
+
 ## [0.17.0]
 
 Aaron Erhardt:
