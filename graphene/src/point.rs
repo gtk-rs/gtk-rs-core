@@ -57,3 +57,9 @@ impl fmt::Debug for Point {
             .finish()
     }
 }
+
+impl Default for Point {
+    fn default() -> Self {
+        Self::zero()
+    }
+}

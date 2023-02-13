@@ -213,6 +213,12 @@ impl fmt::Debug for Matrix {
     }
 }
 
+impl Default for Matrix {
+    fn default() -> Self {
+        Self::new_identity()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Matrix;

@@ -46,3 +46,9 @@ impl fmt::Debug for Vec2 {
             .finish()
     }
 }
+
+impl Default for Vec2 {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
