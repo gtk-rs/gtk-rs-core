@@ -13,6 +13,7 @@ mod object_subclass_attribute;
 mod properties;
 mod shared_boxed_derive;
 mod variant_derive;
+mod wrapper_attribute;
 
 mod utils;
 
@@ -971,4 +972,14 @@ pub fn clone_block(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let glib = utils::crate_ident_new();
     clone_block_attribute::impl_clone_block(&mut item, &syn::parse_quote! { #glib }, &errors);
     errors.output_with(item).into()
+}
+
+#[proc_macro_attribute]
+#[proc_macro_error]
+pub fn wrapper(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(item as syn::ItemStruct);
+    match wrapper_attribute::impl_wrapper(attr.into(), input) {
+        Ok(gen) => gen.into(),
+        Err(e) => e.into_compile_error().into(),
+    }
 }
