@@ -5,21 +5,18 @@
 
 use std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
 
-use crate::{translate::*, Quark};
+use crate::{self as glib, translate::*, Quark};
 
-wrapper! {
-    // rustdoc-stripper-ignore-next
-    /// A generic error capable of representing various error domains (types).
-    #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
-    #[doc(alias = "GError")]
-    pub struct Error(Boxed<ffi::GError>);
-
-    match fn {
-        copy => |ptr| ffi::g_error_copy(ptr),
-        free => |ptr| ffi::g_error_free(ptr),
-        type_ => || ffi::g_error_get_type(),
-    }
-}
+// rustdoc-stripper-ignore-next
+/// A generic error capable of representing various error domains (types).
+#[glib_macros::wrapper(
+    copy = ffi::g_error_copy,
+    free = ffi::g_error_free,
+    type = ffi::g_error_get_type,
+)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[doc(alias = "GError")]
+pub struct Error(Boxed<ffi::GError>);
 
 unsafe impl Send for Error {}
 unsafe impl Sync for Error {}
@@ -42,20 +39,20 @@ impl Error {
     // rustdoc-stripper-ignore-next
     /// Checks if the error domain matches `T`.
     pub fn is<T: ErrorDomain>(&self) -> bool {
-        self.inner.domain == T::domain().into_glib()
+        self.0.domain == T::domain().into_glib()
     }
 
     // rustdoc-stripper-ignore-next
     /// Returns the error domain quark
     pub fn domain(&self) -> Quark {
-        unsafe { from_glib(self.inner.domain) }
+        unsafe { from_glib(self.0.domain) }
     }
 
     // rustdoc-stripper-ignore-next
     /// Checks if the error matches the specified domain and error code.
     #[doc(alias = "g_error_matches")]
     pub fn matches<T: ErrorDomain>(&self, err: T) -> bool {
-        self.is::<T>() && self.inner.code == err.code()
+        self.is::<T>() && self.0.code == err.code()
     }
 
     // rustdoc-stripper-ignore-next
@@ -77,7 +74,7 @@ impl Error {
     /// ```
     pub fn kind<T: ErrorDomain>(&self) -> Option<T> {
         if self.is::<T>() {
-            T::from(self.inner.code)
+            T::from(self.0.code)
         } else {
             None
         }
@@ -90,7 +87,7 @@ impl Error {
     /// trait, but you can use this method if you need to have the message as a `&str`.
     pub fn message(&self) -> &str {
         unsafe {
-            let bytes = CStr::from_ptr(self.inner.message).to_bytes();
+            let bytes = CStr::from_ptr(self.0.message).to_bytes();
             str::from_utf8(bytes)
                 .unwrap_or_else(|err| str::from_utf8(&bytes[..err.valid_up_to()]).unwrap())
         }
@@ -106,10 +103,8 @@ impl fmt::Display for Error {
 impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Error")
-            .field("domain", unsafe {
-                &crate::Quark::from_glib(self.inner.domain)
-            })
-            .field("code", &self.inner.code)
+            .field("domain", unsafe { &crate::Quark::from_glib(self.0.domain) })
+            .field("code", &self.0.code)
             .field("message", &self.message())
             .finish()
     }

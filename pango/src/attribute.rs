@@ -84,30 +84,24 @@ macro_rules! define_attribute_struct {
 
         #[cfg(any(feature = "v1_44", feature = "dox"))]
         #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
-        glib::wrapper! {
-            #[derive(Debug)]
-            pub struct $rust_type(Boxed<$ffi_type>);
-
-            match fn {
-                copy => |ptr| ffi::pango_attribute_copy(ptr as *const ffi::PangoAttribute) as *mut $ffi_type,
-                free => |ptr| ffi::pango_attribute_destroy(ptr as *mut ffi::PangoAttribute),
-                type_ => || ffi::pango_attribute_get_type(),
-            }
-        }
+        #[glib::wrapper_attr(
+            copy = |ptr| ffi::pango_attribute_copy(ptr as *const ffi::PangoAttribute) as *mut $ffi_type,
+            free = |ptr| ffi::pango_attribute_destroy(ptr as *mut ffi::PangoAttribute),
+            type = ffi::pango_attribute_get_type,
+        )]
+        #[derive(Debug)]
+        pub struct $rust_type(Boxed<$ffi_type>);
 
         unsafe impl Send for $rust_type {}
         unsafe impl Sync for $rust_type {}
 
         #[cfg(not(any(feature = "v1_44", feature = "dox")))]
-        glib::wrapper! {
-            #[derive(Debug)]
-            pub struct $rust_type(Boxed<$ffi_type>);
-
-            match fn {
-                copy => |ptr| ffi::pango_attribute_copy(ptr as *const ffi::PangoAttribute) as *mut $ffi_type,
-                free => |ptr| ffi::pango_attribute_destroy(ptr as *mut ffi::PangoAttribute),
-            }
-        }
+        #[glib::wrapper_attr(
+            copy = |ptr| ffi::pango_attribute_copy(ptr as *const ffi::PangoAttribute) as *mut $ffi_type,
+            free = |ptr| ffi::pango_attribute_destroy(ptr as *mut ffi::PangoAttribute),
+        )]
+        #[derive(Debug)]
+        pub struct $rust_type(Boxed<$ffi_type>);
 
         impl $rust_type {
             #[doc(alias = "pango_attribute_equal")]

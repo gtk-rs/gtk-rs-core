@@ -18,10 +18,10 @@ impl AttrShape {
     }
 
     pub fn ink_rect(&self) -> Rectangle {
-        unsafe { from_glib_none(&self.inner.ink_rect as *const _) }
+        unsafe { from_glib_none(&self.0.ink_rect as *const _) }
     }
 
     pub fn logical_rect(&self) -> Rectangle {
-        unsafe { from_glib_none(&self.inner.logical_rect as *const _) }
+        unsafe { from_glib_none(&self.0.logical_rect as *const _) }
     }
 }
