@@ -628,6 +628,7 @@ pub fn impl_derive_props(input: PropsMacroInput) -> TokenStream {
             #fn_set_property
         }
 
+        #[allow(dead_code)]
         impl #wrapper_type {
             #getset_properties
             #connect_prop_notify
