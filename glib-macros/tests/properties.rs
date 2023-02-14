@@ -99,6 +99,8 @@ mod foo {
             bar: Mutex<String>,
             #[property(get, set)]
             double: RefCell<f64>,
+            #[property(get, set)]
+            string_vec: RefCell<Vec<String>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
             // The following property doesn't store any data. The value of the property is calculated
@@ -197,14 +199,22 @@ mod foo {
 fn props() {
     let myfoo: foo::Foo = glib::object::Object::new();
 
-    // Read bar
+    // Read values
     let bar: String = myfoo.property("bar");
     assert_eq!(bar, "".to_string());
+    let string_vec: Vec<String> = myfoo.property("string-vec");
+    assert!(string_vec.is_empty());
 
-    // Set bar
+    // Set values
     myfoo.set_property("bar", "epic".to_value());
     let bar: String = myfoo.property("bar");
     assert_eq!(bar, "epic".to_string());
+    myfoo.set_property("string-vec", ["epic", "more epic"].to_value());
+    let string_vec: Vec<String> = myfoo.property("string-vec");
+    assert_eq!(
+        string_vec,
+        vec!["epic".to_string(), "more epic".to_string()]
+    );
 
     // Custom getter
     let buzz: String = myfoo.property("buzz");
