@@ -2,6 +2,7 @@
 
 mod boxed_derive;
 mod clone;
+mod clone_block_attribute;
 mod closure;
 mod downgrade_derive;
 mod enum_derive;
@@ -960,4 +961,14 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
     properties::impl_derive_props(input)
+}
+
+#[proc_macro_attribute]
+#[proc_macro_error::proc_macro_error]
+pub fn clone_block(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let mut item = syn::parse_macro_input!(item as syn::Item);
+    let errors = deluxe::Errors::new();
+    let glib = utils::crate_ident_new();
+    clone_block_attribute::impl_clone_block(&mut item, &syn::parse_quote! { #glib }, &errors);
+    errors.output_with(item).into()
 }
