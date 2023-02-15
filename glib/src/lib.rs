@@ -11,7 +11,7 @@ pub use ffi;
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
     clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, ErrorDomain, Properties, SharedBoxed, Variant,
+    Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
 };
 pub use gobject_ffi;
 #[doc(hidden)]
