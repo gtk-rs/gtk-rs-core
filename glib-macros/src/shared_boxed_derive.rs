@@ -274,5 +274,15 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
                 }
             }
         }
+
+        impl #crate_ident::HasParamSpec for #name {
+            type ParamSpec = #crate_ident::ParamSpecBoxed;
+            type SetValue = Self;
+            type BuilderFn = fn(&str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
+
+            fn param_spec_builder() -> Self::BuilderFn {
+                |name| Self::ParamSpec::builder(name)
+            }
+        }
     }
 }
