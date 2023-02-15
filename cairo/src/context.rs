@@ -944,11 +944,81 @@ impl Context {
             ffi::cairo_tag_end(self.0.as_ptr(), tag_name.as_ptr())
         }
     }
+
+    pub fn push<'a, 'b: 'a>(self: &'a mut &'b Self) -> ContextRef<'a, 'b> {
+        self.save().unwrap();
+        ContextRef(self)
+    }
 }
 
 impl fmt::Display for Context {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Context")
+    }
+}
+
+/// `Context` wrapper to enforce valid stacking with type-level semantics.
+///
+/// ```compile_fail
+/// # use cairo::ContextRef;
+/// # fn func(mut cr: ContextRef) {
+///     let mut new_context: ContextRef = cr.push();
+///     let new_context2 = cr.push(); // `new_context` is still alive, so this fails to compile.
+/// # }
+/// ```
+///
+/// ```no_run
+/// # use cairo::ContextRef;
+/// # fn func(mut cr: ContextRef, x: f64, y: f64) {
+///     let mut new_context = cr.push();
+///
+///     {
+///         // `let` creates its own scope, but by using {}
+///         // we don't have to manually call `drop(new_context2)`
+///         // in order to be able to use `new_context` again.
+///         let new_context2 = new_context.push();
+///         new_context2.line_to(x, y);
+///     }
+///
+///     new_context.line_to(y, x);
+/// # }
+/// ```
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct ContextRef<'a, 'b: 'a>(&'a mut &'b Context);
+
+impl std::ops::Deref for ContextRef<'_, '_> {
+    type Target = Context;
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
+}
+
+impl Drop for ContextRef<'_, '_> {
+    fn drop(&mut self) {
+        self.0.restore().unwrap();
+    }
+}
+
+impl<'c, 'a: 'c, 'b: 'a> ContextRef<'a, 'b> {
+    pub fn save(&self, _do_not_call: ()) {
+        // Override save method so that self.save().unwrap() fails?
+    }
+
+    pub fn restore(&self, _do_not_call: ()) {
+        // Override restore method so that self.save().unwrap() fails?
+    }
+
+    pub fn push(self: &'c mut ContextRef<'a, 'b>) -> ContextRef<'c, 'b> {
+        self.0.save().unwrap();
+        ContextRef(self.0)
+    }
+}
+
+impl<'a, 'b> From<&'a mut &'b Context> for ContextRef<'a, 'b> {
+    fn from(cr: &'a mut &'b Context) -> Self {
+        cr.save().unwrap();
+        ContextRef(cr)
     }
 }
 

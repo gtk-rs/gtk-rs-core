@@ -210,7 +210,7 @@ pub use xcb::{
 };
 
 pub use crate::{
-    context::{Context, RectangleList},
+    context::{Context, ContextRef, RectangleList},
     device::Device,
     enums::*,
     error::{BorrowError, Error, IoError, Result},
