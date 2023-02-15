@@ -68,6 +68,7 @@ mod foo {
     use std::sync::Mutex;
 
     use super::base::Base;
+    use glib::thread_guard::ThreadGuard;
 
     #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
     #[boxed_type(name = "SimpleBoxedString")]
@@ -84,6 +85,24 @@ mod foo {
     struct Author {
         name: String,
         nick: String,
+    }
+
+    // Custom type, behaving as the inner type
+    #[derive(Default)]
+    pub struct MyInt(i32);
+    impl glib::Property for MyInt {
+        type Value = i32;
+    }
+    impl glib::PropertyGet for MyInt {
+        type Value = i32;
+        fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+            f(&self.0)
+        }
+    }
+    impl From<i32> for MyInt {
+        fn from(v: i32) -> Self {
+            MyInt(v)
+        }
     }
 
     pub mod imp {
@@ -103,10 +122,16 @@ mod foo {
             string_vec: RefCell<Vec<String>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
+            #[property(get, set)]
+            custom_type: RefCell<MyInt>,
             // The following property doesn't store any data. The value of the property is calculated
             // when the value is accessed.
             #[property(get = Self::hello_world)]
             _buzz: PhantomData<String>,
+            #[property(get, set)]
+            thread_guard_wrapped: Mutex<ThreadGuard<u32>>,
+            #[property(get, set)]
+            thread_guard_wrapping: ThreadGuard<Mutex<u32>>,
             #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
                 blurb = "short description stored in the GLib type system"
             )]
@@ -233,6 +258,15 @@ fn props() {
     myfoo.set_property("author-nick", "freddy-nick".to_value());
     let author_name: String = myfoo.property("author-nick");
     assert_eq!(author_name, "freddy-nick".to_string());
+
+    // Complex wrapping
+    myfoo.set_property("thread-guard-wrapped", 2u32.to_value());
+    let v: u32 = myfoo.property("thread-guard-wrapped");
+    assert_eq!(v, 2);
+
+    myfoo.set_property("thread-guard-wrapping", 3u32.to_value());
+    let v: u32 = myfoo.property("thread-guard-wrapping");
+    assert_eq!(v, 3);
 
     // read_only
     assert_eq!(

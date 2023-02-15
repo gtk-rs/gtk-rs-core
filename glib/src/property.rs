@@ -1,5 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use crate::thread_guard::ThreadGuard;
 use std::cell::Cell;
 use std::cell::RefCell;
 use std::marker::PhantomData;
@@ -39,6 +40,9 @@ impl<T: Property> Property for Mutex<T> {
     type Value = T::Value;
 }
 impl<T: Property> Property for RwLock<T> {
+    type Value = T::Value;
+}
+impl<T: Property> Property for ThreadGuard<T> {
     type Value = T::Value;
 }
 impl<T: Property> Property for once_cell::sync::OnceCell<T> {
@@ -145,6 +149,19 @@ impl<T> PropertySetNested for RwLock<T> {
     type SetNestedValue = T;
     fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
         f(&mut self.write().unwrap());
+    }
+}
+
+impl<T: PropertyGet> PropertyGet for ThreadGuard<T> {
+    type Value = T::Value;
+    fn get<R, F: Fn(&Self::Value) -> R>(&self, f: F) -> R {
+        self.get_ref().get(f)
+    }
+}
+impl<T: PropertySetNested> PropertySetNested for ThreadGuard<T> {
+    type SetNestedValue = T::SetNestedValue;
+    fn set_nested<F: FnOnce(&mut Self::SetNestedValue)>(&self, f: F) {
+        self.get_ref().set_nested(f)
     }
 }
 

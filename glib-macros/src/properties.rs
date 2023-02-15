@@ -379,13 +379,24 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(v))
+                        #crate_ident::PropertyGet::get(
+                            &self.#field_ident,
+                            |v| #crate_ident::PropertyGet::get(
+                                v,
+                                |v| ::std::convert::From::from(v)
+                            )
+                        )
 
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident =>
-                        #crate_ident::PropertyGet::get(&self.#field_ident, |v| ::std::convert::From::from(&v.#member))
-
+                        #crate_ident::PropertyGet::get(
+                            &self.#field_ident,
+                            |v| #crate_ident::PropertyGet::get(
+                                &v.#member,
+                                |v| ::std::convert::From::from(v)
+                            )
+                        )
                 ),
             };
             quote_spanned!(span=> #body)
@@ -432,22 +443,28 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             let body = match (member, set) {
                 (_, MaybeCustomFn::Custom(expr)) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
-                        (#expr)(&self, #crate_ident::Value::get(value)#expect);
+                        let value: <#ty as #crate_ident::Property>::Value =
+                            #crate_ident::Value::get(value)#expect;
+                        (#expr)(&self, ::std::convert::From::from(value));
                     }
                 ),
                 (None, MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
+                        let value: <#ty as #crate_ident::Property>::Value =
+                            #crate_ident::Value::get(value)#expect;
                         #crate_ident::PropertySet::set(
                             &self.#field_ident,
-                            #crate_ident::Value::get(value)#expect
+                            ::std::convert::From::from(value)
                         );
                     }
                 ),
                 (Some(member), MaybeCustomFn::Default) => quote!(
                     DerivedPropertiesEnum::#enum_ident => {
+                        let value: <#ty as #crate_ident::Property>::Value =
+                            #crate_ident::Value::get(value)#expect;
                         #crate_ident::PropertySetNested::set_nested(
                             &self.#field_ident,
-                            move |v| v.#member = #crate_ident::Value::get(value)#expect
+                            move |v| v.#member = ::std::convert::From::from(value)
                         );
                     }
                 ),
