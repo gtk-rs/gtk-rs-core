@@ -8,6 +8,7 @@ mod downgrade_derive;
 mod enum_derive;
 mod error_domain_derive;
 mod flags_attribute;
+mod object_impl_derive;
 mod object_interface_attribute;
 mod object_subclass_attribute;
 mod properties;
@@ -965,7 +966,6 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-#[proc_macro_error::proc_macro_error]
 pub fn clone_block(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut item = syn::parse_macro_input!(item as syn::Item);
     let errors = deluxe::Errors::new();
@@ -975,11 +975,17 @@ pub fn clone_block(_attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-#[proc_macro_error]
 pub fn wrapper(attr: TokenStream, item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as syn::ItemStruct);
     match wrapper_attribute::impl_wrapper(attr.into(), input) {
         Ok(gen) => gen.into(),
         Err(e) => e.into_compile_error().into(),
     }
+}
+
+#[proc_macro_derive(ObjectImpl, attributes(object_impl))]
+pub fn object_impl_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as utils::DeriveHeader);
+    let gen = object_impl_derive::impl_object_impl(input);
+    gen.into()
 }
