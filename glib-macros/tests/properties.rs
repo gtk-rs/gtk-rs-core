@@ -60,7 +60,7 @@ mod base {
 mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
-    use glib_macros::Properties;
+    use glib_macros::{Properties, ValueDelegate};
     use once_cell::sync::OnceCell;
     use std::cell::Cell;
     use std::cell::RefCell;
@@ -68,6 +68,9 @@ mod foo {
     use std::sync::Mutex;
 
     use super::base::Base;
+
+    #[derive(ValueDelegate, Default, Debug, PartialEq)]
+    pub struct MyPropertyValue(pub i32);
 
     #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
     #[boxed_type(name = "SimpleBoxedString")]
@@ -107,6 +110,8 @@ mod foo {
             // when the value is accessed.
             #[property(get = Self::hello_world)]
             _buzz: PhantomData<String>,
+            #[property(get, set)]
+            my_property_value: RefCell<MyPropertyValue>,
             #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
                 blurb = "short description stored in the GLib type system"
             )]
@@ -204,6 +209,8 @@ fn props() {
     assert_eq!(bar, "".to_string());
     let string_vec: Vec<String> = myfoo.property("string-vec");
     assert!(string_vec.is_empty());
+    let my_property_value: foo::MyPropertyValue = myfoo.property("my-property-value");
+    assert_eq!(my_property_value, foo::MyPropertyValue(0));
 
     // Set values
     myfoo.set_property("bar", "epic".to_value());
