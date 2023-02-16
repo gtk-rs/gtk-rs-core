@@ -122,10 +122,9 @@ pub trait Cast: ObjectType {
     /// Returns `Ok(T)` if the object is an instance of `T` and `Err(self)`
     /// otherwise.
     ///
-    /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
-    /// known at compile-time, whether a specific object implements an interface or not, in which case
-    /// `upcast` would fail to compile. `dynamic_cast` can be used in these circumstances, which
-    /// is checking the types at runtime.
+    /// *NOTE*: This will check at compile-time if `T` is lower down the
+    /// inheritance tree of `Self`, but also check at runtime if downcasting
+    /// is indeed possible.
     ///
     /// # Example
     ///
@@ -152,10 +151,9 @@ pub trait Cast: ObjectType {
     /// Returns `Some(T)` if the object is an instance of `T` and `None`
     /// otherwise.
     ///
-    /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
-    /// known at compile-time, whether a specific object implements an interface or not, in which case
-    /// `upcast` would fail to compile. `dynamic_cast` can be used in these circumstances, which
-    /// is checking the types at runtime.
+    /// *NOTE*: This will check at compile-time if `T` is lower down the
+    /// inheritance tree of `Self`, but also check at runtime if downcasting
+    /// is indeed possible.
     ///
     /// # Example
     ///
@@ -179,7 +177,9 @@ pub trait Cast: ObjectType {
     // rustdoc-stripper-ignore-next
     /// Tries to cast to an object of type `T`. This handles upcasting, downcasting
     /// and casting between interface and interface implementors. All checks are performed at
-    /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
+    /// runtime, while `upcast` will do many checks at compile-time already. `downcast` will
+    /// perform the same checks at runtime as `dynamic_cast`, but will also ensure some amount of
+    /// compile-time safety.
     ///
     /// It is not always known at compile-time, whether a specific object implements an interface or
     /// not, and checking has to be performed at runtime.
