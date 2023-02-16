@@ -136,7 +136,7 @@ pub trait Cast: ObjectType {
     #[inline]
     fn downcast<T: ObjectType>(self) -> Result<T, Self>
     where
-        Self: CanDowncast<T>,
+        Self: MayDowncastTo<T>,
     {
         if self.is::<T>() {
             Ok(unsafe { self.unsafe_cast() })
@@ -165,7 +165,7 @@ pub trait Cast: ObjectType {
     #[inline]
     fn downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self: CanDowncast<T>,
+        Self: MayDowncastTo<T>,
     {
         if self.is::<T>() {
             Some(unsafe { self.unsafe_cast_ref() })
@@ -303,10 +303,10 @@ pub trait CastNone: Sized {
     type Inner;
     fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
-        Self::Inner: CanDowncast<T>;
+        Self::Inner: MayDowncastTo<T>;
     fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self::Inner: CanDowncast<T>;
+        Self::Inner: MayDowncastTo<T>;
     fn and_upcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: IsA<T>;
@@ -322,7 +322,7 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
     #[inline]
     fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
-        Self::Inner: CanDowncast<T>,
+        Self::Inner: MayDowncastTo<T>,
     {
         self.and_then(|i| i.downcast().ok())
     }
@@ -330,7 +330,7 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
     #[inline]
     fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self::Inner: CanDowncast<T>,
+        Self::Inner: MayDowncastTo<T>,
     {
         self.as_ref().and_then(|i| i.downcast_ref())
     }
@@ -365,9 +365,9 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
 
 // rustdoc-stripper-ignore-next
 /// Marker trait for the statically known possibility of downcasting from `Self` to `T`.
-pub trait CanDowncast<T> {}
+pub trait MayDowncastTo<T> {}
 
-impl<Super: IsA<Super>, Sub: IsA<Super>> CanDowncast<Sub> for Super {}
+impl<Super: IsA<Super>, Sub: IsA<Super>> MayDowncastTo<Sub> for Super {}
 
 // Manual implementation of glib_shared_wrapper! because of special cases
 #[repr(transparent)]
