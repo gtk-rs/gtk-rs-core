@@ -12,7 +12,8 @@ use crate::{prelude::*, translate::*, Cast, Object, ParamSpec, Slice, Value};
 // rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.
 ///
-/// This allows overriding the virtual methods of `glib::Object`.
+/// This allows overriding the virtual methods of `glib::Object`. Except for
+/// `finalize` as implementing `Drop` would allow the same behavior.
 pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     // rustdoc-stripper-ignore-next
     /// Properties installed for this type.
