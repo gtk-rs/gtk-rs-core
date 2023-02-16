@@ -7,7 +7,7 @@
 use std::{mem, ptr};
 
 use super::{prelude::*, Signal};
-use crate::{prelude::*, translate::*, Cast, Object, ParamSpec, Value};
+use crate::{prelude::*, translate::*, Cast, Object, ParamSpec, Slice, Value};
 
 // rustdoc-stripper-ignore-next
 /// Trait for implementors of `glib::Object` subclasses.
@@ -67,6 +67,17 @@ pub trait ObjectImpl: ObjectSubclass + ObjectImplExt {
     /// error code but no memory violation) until it is dropped. `dispose()` can be executed more
     /// than once.
     fn dispose(&self) {}
+
+    // rustdoc-stripper-ignore-next
+    /// Function to be called when property change is notified for with
+    /// `self.notify("property")`.
+    fn notify(&self, pspec: &ParamSpec) {
+        self.parent_notify(pspec)
+    }
+
+    fn dispatch_properties_changed(&self, pspecs: &[ParamSpec]) {
+        self.parent_dispatch_properties_changed(pspecs)
+    }
 }
 
 #[doc(alias = "get_property")]
@@ -114,6 +125,25 @@ unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) 
     let imp = instance.imp();
 
     imp.constructed();
+}
+
+unsafe extern "C" fn notify<T: ObjectImpl>(
+    obj: *mut gobject_ffi::GObject,
+    pspec: *mut gobject_ffi::GParamSpec,
+) {
+    let instance = &*(obj as *mut T::Instance);
+    let imp = instance.imp();
+    imp.notify(&from_glib_borrow(pspec));
+}
+
+unsafe extern "C" fn dispatch_properties_changed<T: ObjectImpl>(
+    obj: *mut gobject_ffi::GObject,
+    n_pspecs: u32,
+    pspecs: *mut *mut gobject_ffi::GParamSpec,
+) {
+    let instance = &*(obj as *mut T::Instance);
+    let imp = instance.imp();
+    imp.dispatch_properties_changed(Slice::from_glib_borrow_num(pspecs, n_pspecs as _));
 }
 
 unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
@@ -183,6 +213,8 @@ unsafe impl<T: ObjectImpl> IsSubclassable<T> for Object {
         klass.set_property = Some(set_property::<T>);
         klass.get_property = Some(property::<T>);
         klass.constructed = Some(constructed::<T>);
+        klass.notify = Some(notify::<T>);
+        klass.dispatch_properties_changed = Some(dispatch_properties_changed::<T>);
         klass.dispose = Some(dispose::<T>);
 
         let pspecs = <T as ObjectImpl>::properties();
@@ -221,6 +253,14 @@ pub trait ObjectImplExt: ObjectSubclass {
     fn parent_constructed(&self);
 
     // rustdoc-stripper-ignore-next
+    /// Chain up to the parent class' implementation of `glib::Object::notify()`.
+    fn parent_notify(&self, pspec: &ParamSpec);
+
+    // rustdoc-stripper-ignore-next
+    /// Chain up to the parent class' implementation of `glib::Object::dispatch_properties_changed()`.
+    fn parent_dispatch_properties_changed(&self, pspecs: &[ParamSpec]);
+
+    // rustdoc-stripper-ignore-next
     /// Chain up to parent class signal handler.
     fn signal_chain_from_overridden(
         &self,
@@ -238,6 +278,37 @@ impl<T: ObjectImpl> ObjectImplExt for T {
 
             if let Some(ref func) = (*parent_class).constructed {
                 func(self.obj().unsafe_cast_ref::<Object>().to_glib_none().0);
+            }
+        }
+    }
+
+    #[inline]
+    fn parent_notify(&self, pspec: &ParamSpec) {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
+
+            if let Some(ref func) = (*parent_class).notify {
+                func(
+                    self.obj().unsafe_cast_ref::<Object>().to_glib_none().0,
+                    pspec.to_glib_none().0,
+                );
+            }
+        }
+    }
+
+    #[inline]
+    fn parent_dispatch_properties_changed(&self, pspecs: &[ParamSpec]) {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
+
+            if let Some(ref func) = (*parent_class).dispatch_properties_changed {
+                func(
+                    self.obj().unsafe_cast_ref::<Object>().to_glib_none().0,
+                    pspecs.len() as _,
+                    pspecs.as_ptr() as *mut _,
+                );
             }
         }
     }
