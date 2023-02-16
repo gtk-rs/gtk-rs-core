@@ -850,24 +850,31 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 
 /// This macro enables you to derive object properties in a quick way.
 ///
-/// # Getters and setters
-/// By default, they are generated for you.
-/// You can use a custom getter/setter by assigning an expression to `get`/`set`.
-/// Example: `#[property(get = |_| 2, set)]`.
+/// # Generated wrapper methods
+/// The following methods are generated on the wrapper type specified on `#[properties(wrapper_type = ...)]`:
+/// * `$property()`, when the property is readable
+/// * `set_$property()`, when the property is writable and not construct-only
+/// * `connect_$property_notify()`
+/// * `notify_$property()`
 ///
-/// The macro will always generate, on the wrapper type, the corresponding `$property()` and
-/// `set_$property()` methods.
-/// Notice: you can't reimplement the generated methods on the wrapper type, but you can change their
-/// behavior using a custom getter/setter.
+/// Notice: You can't reimplement the generated methods on the wrapper type,
+/// but you can change their behavior using a custom internal getter/setter.
+///
+/// # Internal getters and setters
+/// By default, they are generated for you. However, you can use a custom getter/setter
+/// by assigning an expression to `get`/`set`: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
 ///
 /// # Supported types
 /// Every type implementing the trait `Property` is supported.
+///
 /// If you want to support a custom type, you should consider implementing `Property` and
 /// `PropertyGet`. If your type supports interior mutability, you should implement also
 /// `PropertySet` and `PropertySetNested` if possible.
+///
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
 /// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
 /// always define a custom one.
+///
 /// If you want to support a custom type with a custom `ParamSpec`, you should implement the trait
 /// `HasParamSpec` instead of `Property`.
 ///
@@ -916,16 +923,11 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         fn properties() -> &'static [ParamSpec] {
 ///             Self::derived_properties()
 ///         }
-///         fn set_property(
-///             &self,
-///             _id: usize,
-///             _value: &Value,
-///             _pspec: &ParamSpec,
-///         ) {
-///             Self::derived_set_property(self, _id, _value, _pspec)
+///         fn set_property(&self, id: usize, value: &Value, pspec: &ParamSpec) {
+///             self.derived_set_property(id, value, pspec)
 ///         }
-///         fn property(&self, _id: usize, _pspec: &ParamSpec) -> Value {
-///             Self::derived_property(self, _id, _pspec)
+///         fn property(&self, id: usize, pspec: &ParamSpec) -> Value {
+///             self.derived_property(id, pspec)
 ///         }
 ///     }
 ///
