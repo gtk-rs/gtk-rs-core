@@ -6,6 +6,7 @@ mod app_launch_context;
 mod application;
 mod async_initable;
 mod file_monitor;
+mod icon;
 mod initable;
 mod input_stream;
 mod io_stream;
@@ -26,6 +27,7 @@ pub mod prelude {
         application::{ApplicationImpl, ApplicationImplExt},
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
         file_monitor::{FileMonitorImpl, FileMonitorImplExt},
+        icon::{IconImpl, IconImplExt},
         initable::{InitableImpl, InitableImplExt},
         input_stream::{InputStreamImpl, InputStreamImplExt},
         io_stream::{IOStreamImpl, IOStreamImplExt},
