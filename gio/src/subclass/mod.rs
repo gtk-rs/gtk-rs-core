@@ -2,6 +2,7 @@
 
 mod action_group;
 mod action_map;
+mod app_launch_context;
 mod application;
 mod async_initable;
 mod initable;
@@ -20,6 +21,7 @@ pub mod prelude {
     pub use super::{
         action_group::{ActionGroupImpl, ActionGroupImplExt},
         action_map::{ActionMapImpl, ActionMapImplExt},
+        app_launch_context::{AppLaunchContextImpl, AppLaunchContextImplExt},
         application::{ApplicationImpl, ApplicationImplExt},
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
         initable::{InitableImpl, InitableImplExt},
