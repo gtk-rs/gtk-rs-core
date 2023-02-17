@@ -856,7 +856,7 @@ impl StrV {
     /// Joins the strings into a longer string, with an optional separator
     #[inline]
     #[doc(alias = "g_strjoinv")]
-    pub fn join(self, separator: Option<impl IntoGStr>) -> GString {
+    pub fn join(&self, separator: Option<impl IntoGStr>) -> GString {
         separator.run_with_gstr(|separator| unsafe {
             from_glib_full(ffi::g_strjoinv(
                 separator.to_glib_none().0,
@@ -1486,6 +1486,19 @@ mod test {
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
+    }
+
+    #[test]
+    fn test_join() {
+        let items = [
+            crate::gstr!("str1"),
+            crate::gstr!("str2"),
+            crate::gstr!("str3"),
+        ];
+
+        let strv = StrV::from(&items[..]);
+        assert_eq!(strv.join(None::<&str>), "str1str2str3");
+        assert_eq!(strv.join(Some(",")), "str1,str2,str3");
     }
 
     #[test]
