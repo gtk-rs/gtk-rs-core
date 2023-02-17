@@ -11,6 +11,7 @@ mod initable;
 mod input_stream;
 mod io_stream;
 mod list_model;
+mod loadable_icon;
 mod output_stream;
 mod seekable;
 
@@ -32,6 +33,7 @@ pub mod prelude {
         input_stream::{InputStreamImpl, InputStreamImplExt},
         io_stream::{IOStreamImpl, IOStreamImplExt},
         list_model::{ListModelImpl, ListModelImplExt},
+        loadable_icon::{LoadableIconImpl, LoadableIconImplExt},
         output_stream::{OutputStreamImpl, OutputStreamImplExt},
         seekable::{SeekableImpl, SeekableImplExt},
     };
