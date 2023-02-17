@@ -864,6 +864,19 @@ impl StrV {
             ))
         })
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Checks whether the `StrV` contains the specified string
+    #[inline]
+    #[doc(alias = "g_strv_contains")]
+    pub fn contains(&self, s: impl IntoGStr) -> bool {
+        s.run_with_gstr(|s| unsafe {
+            from_glib(ffi::g_strv_contains(
+                self.ptr.as_ptr() as *const _,
+                s.to_glib_none().0,
+            ))
+        })
+    }
 }
 
 impl FromGlibContainer<*mut c_char, *mut *mut c_char> for StrV {
@@ -1473,5 +1486,18 @@ mod test {
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
+    }
+
+    #[test]
+    fn test_contains() {
+        let items = [
+            crate::gstr!("str1"),
+            crate::gstr!("str2"),
+            crate::gstr!("str3"),
+        ];
+
+        let strv = StrV::from(&items[..]);
+        assert!(strv.contains("str2"));
+        assert!(!strv.contains("str4"));
     }
 }
