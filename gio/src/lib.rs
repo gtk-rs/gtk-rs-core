@@ -74,6 +74,7 @@ mod resource;
 pub use crate::resource::resources_register_include_impl;
 mod settings;
 pub use crate::settings::BindingBuilder;
+mod simple_action;
 mod simple_proxy_resolver;
 mod socket;
 pub use socket::{InputMessage, InputVector, OutputMessage, OutputVector, SocketControlMessages};
