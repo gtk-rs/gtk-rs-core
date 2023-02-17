@@ -856,11 +856,24 @@ impl StrV {
     /// Joins the strings into a longer string, with an optional separator
     #[inline]
     #[doc(alias = "g_strjoinv")]
-    pub fn join(self, separator: Option<impl IntoGStr>) -> GString {
+    pub fn join(&self, separator: Option<impl IntoGStr>) -> GString {
         separator.run_with_gstr(|separator| unsafe {
             from_glib_full(ffi::g_strjoinv(
                 separator.to_glib_none().0,
                 self.ptr.as_ptr(),
+            ))
+        })
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Checks whether the `StrV` contains the specified string
+    #[inline]
+    #[doc(alias = "g_strv_contains")]
+    pub fn contains(&self, s: impl IntoGStr) -> bool {
+        s.run_with_gstr(|s| unsafe {
+            from_glib(ffi::g_strv_contains(
+                self.ptr.as_ptr() as *const _,
+                s.to_glib_none().0,
             ))
         })
     }
@@ -1473,5 +1486,31 @@ mod test {
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
+    }
+
+    #[test]
+    fn test_join() {
+        let items = [
+            crate::gstr!("str1"),
+            crate::gstr!("str2"),
+            crate::gstr!("str3"),
+        ];
+
+        let strv = StrV::from(&items[..]);
+        assert_eq!(strv.join(None::<&str>), "str1str2str3");
+        assert_eq!(strv.join(Some(",")), "str1,str2,str3");
+    }
+
+    #[test]
+    fn test_contains() {
+        let items = [
+            crate::gstr!("str1"),
+            crate::gstr!("str2"),
+            crate::gstr!("str3"),
+        ];
+
+        let strv = StrV::from(&items[..]);
+        assert!(strv.contains("str2"));
+        assert!(!strv.contains("str4"));
     }
 }
