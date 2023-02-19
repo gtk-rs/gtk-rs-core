@@ -1792,6 +1792,18 @@ impl ::std::fmt::Debug for GOptionGroup {
     }
 }
 
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GPathBuf {
+    pub dummy: [gpointer; 8],
+}
+
+impl ::std::fmt::Debug for GPathBuf {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GPathBuf @ {self:p}")).finish()
+    }
+}
+
 #[repr(C)]
 pub struct GPatternSpec {
     _data: [u8; 0],
@@ -4069,6 +4081,55 @@ extern "C" {
     pub fn g_option_group_unref(group: *mut GOptionGroup);
 
     //=========================================================================
+    // GPathBuf
+    //=========================================================================
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_clear(buf: *mut GPathBuf);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_clear_to_path(buf: *mut GPathBuf) -> *mut c_char;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_copy(buf: *mut GPathBuf) -> *mut GPathBuf;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_free(buf: *mut GPathBuf);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_free_to_path(buf: *mut GPathBuf) -> *mut c_char;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_init(buf: *mut GPathBuf) -> *mut GPathBuf;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_init_from_path(buf: *mut GPathBuf, path: *const c_char) -> *mut GPathBuf;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_pop(buf: *mut GPathBuf) -> gboolean;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_push(buf: *mut GPathBuf, path: *const c_char) -> *mut GPathBuf;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_set_extension(buf: *mut GPathBuf, extension: *const c_char) -> gboolean;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_set_filename(buf: *mut GPathBuf, file_name: *const c_char) -> gboolean;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_to_path(buf: *mut GPathBuf) -> *mut c_char;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_equal(v1: gconstpointer, v2: gconstpointer) -> gboolean;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_new() -> *mut GPathBuf;
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_path_buf_new_from_path(path: *const c_char) -> *mut GPathBuf;
+
+    //=========================================================================
     // GPatternSpec
     //=========================================================================
     pub fn g_pattern_spec_get_type() -> GType;
@@ -5601,6 +5662,9 @@ extern "C" {
     #[cfg(any(feature = "v2_72", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_free(mem: gpointer);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_aligned_free_sized(mem: gpointer, alignment: size_t, size: size_t);
     pub fn g_ascii_digit_value(c: c_char) -> c_int;
     pub fn g_ascii_dtostr(buffer: *mut c_char, buf_len: c_int, d: c_double) -> *mut c_char;
     pub fn g_ascii_formatd(
@@ -6051,6 +6115,9 @@ extern "C" {
     pub fn g_format_size_full(size: u64, flags: GFormatSizeFlags) -> *mut c_char;
     pub fn g_fprintf(file: *mut FILE, format: *const c_char, ...) -> c_int;
     pub fn g_free(mem: gpointer);
+    #[cfg(any(feature = "v2_76", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    pub fn g_free_sized(mem: gpointer, size: size_t);
     pub fn g_get_application_name() -> *const c_char;
     pub fn g_get_charset(charset: *mut *const c_char) -> gboolean;
     pub fn g_get_codeset() -> *mut c_char;
