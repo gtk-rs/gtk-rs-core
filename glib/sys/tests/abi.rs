@@ -562,6 +562,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GPathBuf",
+        Layout {
+            size: size_of::<GPathBuf>(),
+            alignment: align_of::<GPathBuf>(),
+        },
+    ),
+    (
         "GPid",
         Layout {
             size: size_of::<GPid>(),
