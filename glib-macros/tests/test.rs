@@ -685,6 +685,7 @@ fn closure() {
 
         let inc_by = {
             let obj = glib::Object::new::<SendObject>();
+            let obj = obj.imp().obj();
             let inc_by = glib::closure!(@watch obj => move |x: i32| {
                 let old = obj.value();
                 obj.set_value(x + old);
