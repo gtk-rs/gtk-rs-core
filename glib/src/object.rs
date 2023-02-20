@@ -3118,6 +3118,16 @@ impl<T: ObjectType> Watchable<T> for T {
 }
 
 #[doc(hidden)]
+impl<'a, T: ObjectType> Watchable<T> for BorrowedObject<'a, T> {
+    fn watched_object(&self) -> WatchedObject<T> {
+        WatchedObject::new(self)
+    }
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        ObjectExt::watch_closure(&**self, closure)
+    }
+}
+
+#[doc(hidden)]
 impl<T: ObjectType> Watchable<T> for &T {
     fn watched_object(&self) -> WatchedObject<T> {
         WatchedObject::new(*self)
