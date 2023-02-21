@@ -868,6 +868,9 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// # Supported types
 /// Every type implementing the trait `Property` is supported.
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
+/// Optional types also require the `nullable` attribute.
+/// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
+/// always define a custom one.
 ///
 /// ## Adding support for custom types
 /// ### Types wrapping an existing `T: glib::value::ToValue + glib::HasParamSpec`
@@ -926,7 +929,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         numeric_builder: RefCell<u32>,
 ///         #[property(get, set, builder('c'))]
 ///         builder_with_required_param: RefCell<char>,
-///         #[property(get, set)]
+///         #[property(get, set, nullable)]
 ///         optional: RefCell<Option<String>>,
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,

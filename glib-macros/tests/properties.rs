@@ -144,9 +144,9 @@ mod foo {
             boxed: RefCell<SimpleBoxedString>,
             #[property(get, set, builder(SimpleEnum::One))]
             fenum: RefCell<SimpleEnum>,
-            #[property(get, set)]
+            #[property(get, set, nullable)]
             object: RefCell<Option<glib::Object>>,
-            #[property(get, set)]
+            #[property(get, set, nullable)]
             optional: RefCell<Option<String>>,
             #[property(get, set)]
             smart_pointer: Rc<RefCell<String>>,
@@ -312,11 +312,6 @@ fn props() {
         foo::SimpleBoxedString("".into())
     );
 
-    // optional
-    assert_eq!(myfoo.property::<Option<String>>("optional"), None,);
-
-    myfoo.connect_optional_notify(|_| println!("notified"));
-
     // Test `FooPropertiesExt`
     // getters
     {
@@ -356,9 +351,6 @@ fn props() {
             "setter working".to_string()
         );
 
-        // object subclass
-        myfoo.set_object(glib::BoxedAnyObject::new(""));
-
         // custom
         myfoo.set_fake_field("fake setter");
         assert_eq!(
@@ -381,4 +373,14 @@ fn props() {
         let not_overridden: u32 = myfoo.property("not-overridden");
         assert_eq!(not_overridden, 42);
     }
+
+    // optional
+    myfoo.set_optional(Some("Hello world"));
+    assert_eq!(myfoo.optional(), Some("Hello world".to_string()));
+    myfoo.connect_optional_notify(|_| println!("notified"));
+
+    // object subclass
+    let myobj = glib::BoxedAnyObject::new("");
+    myfoo.set_object(Some(myobj.upcast_ref()));
+    assert_eq!(myfoo.object(), Some(myobj.upcast()))
 }
