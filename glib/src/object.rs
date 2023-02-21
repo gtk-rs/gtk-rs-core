@@ -3118,6 +3118,16 @@ impl<T: ObjectType> Watchable<T> for T {
 }
 
 #[doc(hidden)]
+impl<'a, T: ObjectType> Watchable<T> for BorrowedObject<'a, T> {
+    fn watched_object(&self) -> WatchedObject<T> {
+        WatchedObject::new(self)
+    }
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        ObjectExt::watch_closure(&**self, closure)
+    }
+}
+
+#[doc(hidden)]
 impl<T: ObjectType> Watchable<T> for &T {
     fn watched_object(&self) -> WatchedObject<T> {
         WatchedObject::new(*self)
@@ -3453,6 +3463,27 @@ impl<T: ObjectType> Default for WeakRef<T> {
 
 unsafe impl<T: ObjectType + Sync + Sync> Sync for WeakRef<T> {}
 unsafe impl<T: ObjectType + Send + Sync> Send for WeakRef<T> {}
+
+impl<T: ObjectType> PartialEq for WeakRef<T> {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        unsafe { self.0.priv_.p == other.0.priv_.p }
+    }
+}
+
+impl<T: ObjectType> PartialEq<T> for WeakRef<T> {
+    #[inline]
+    fn eq(&self, other: &T) -> bool {
+        unsafe { self.0.priv_.p == other.as_ptr() as *mut std::os::raw::c_void }
+    }
+}
+
+impl<T: ObjectType> PartialOrd for WeakRef<T> {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        unsafe { self.0.priv_.p.partial_cmp(&other.0.priv_.p) }
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// A weak reference to the object it was created for that can be sent to
