@@ -872,6 +872,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// `PropertySet` and `PropertySetNested` if possible.
 ///
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
+/// Optional types also require the `nullable` attribute.
 /// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
 /// always define a custom one.
 ///
@@ -913,7 +914,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         numeric_builder: RefCell<u32>,
 ///         #[property(get, set, builder('c'))]
 ///         builder_with_required_param: RefCell<char>,
-///         #[property(get, set)]
+///         #[property(get, set, nullable)]
 ///         optional: RefCell<Option<String>>,
 ///         #[property(get, set)]
 ///         smart_pointer: Rc<RefCell<String>>,
