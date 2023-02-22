@@ -860,7 +860,7 @@ impl StrV {
         separator.run_with_gstr(|separator| unsafe {
             from_glib_full(ffi::g_strjoinv(
                 separator.to_glib_none().0,
-                self.ptr.as_ptr(),
+                self.as_ptr() as *mut _,
             ))
         })
     }
@@ -872,7 +872,7 @@ impl StrV {
     pub fn contains(&self, s: impl IntoGStr) -> bool {
         s.run_with_gstr(|s| unsafe {
             from_glib(ffi::g_strv_contains(
-                self.ptr.as_ptr() as *const _,
+                self.as_ptr() as *const _,
                 s.to_glib_none().0,
             ))
         })
