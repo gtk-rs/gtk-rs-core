@@ -101,6 +101,8 @@ mod foo {
             double: RefCell<f64>,
             #[property(get, set)]
             string_vec: RefCell<Vec<String>>,
+            #[property(get, set, builder(glib::VariantTy::DOUBLE))]
+            variant: RefCell<Option<glib::Variant>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
             // The following property doesn't store any data. The value of the property is calculated
@@ -204,6 +206,8 @@ fn props() {
     assert_eq!(bar, "".to_string());
     let string_vec: Vec<String> = myfoo.property("string-vec");
     assert!(string_vec.is_empty());
+    let var: Option<glib::Variant> = myfoo.property("variant");
+    assert!(var.is_none());
 
     // Set values
     myfoo.set_property("bar", "epic".to_value());
@@ -215,6 +219,10 @@ fn props() {
         string_vec,
         vec!["epic".to_string(), "more epic".to_string()]
     );
+    let myv = Some(2.0f64.to_variant());
+    myfoo.set_property("variant", &myv);
+    let var: Option<glib::Variant> = myfoo.property("variant");
+    assert_eq!(var, myv);
 
     // Custom getter
     let buzz: String = myfoo.property("buzz");
