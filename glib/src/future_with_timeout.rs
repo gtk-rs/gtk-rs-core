@@ -46,7 +46,7 @@ pub async fn future_with_timeout<T>(
     timeout: std::time::Duration,
     fut: impl Future<Output = T>,
 ) -> Result<T, FutureWithTimeoutError> {
-    future_with_timeout_with_priority(crate::PRIORITY_DEFAULT, timeout, fut).await
+    future_with_timeout_with_priority(crate::Priority::default(), timeout, fut).await
 }
 
 #[cfg(test)]

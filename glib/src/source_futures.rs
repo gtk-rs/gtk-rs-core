@@ -119,7 +119,7 @@ impl<T, F> Drop for SourceFuture<T, F> {
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn timeout_future(value: Duration) -> Pin<Box<dyn Future<Output = ()> + Send + 'static>> {
-    timeout_future_with_priority(crate::PRIORITY_DEFAULT, value)
+    timeout_future_with_priority(crate::Priority::default(), value)
 }
 
 // rustdoc-stripper-ignore-next
@@ -144,7 +144,7 @@ pub fn timeout_future_with_priority(
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn timeout_future_seconds(value: u32) -> Pin<Box<dyn Future<Output = ()> + Send + 'static>> {
-    timeout_future_seconds_with_priority(crate::PRIORITY_DEFAULT, value)
+    timeout_future_seconds_with_priority(crate::Priority::default(), value)
 }
 
 // rustdoc-stripper-ignore-next
@@ -173,7 +173,7 @@ pub fn timeout_future_seconds_with_priority(
 pub fn child_watch_future(
     pid: crate::Pid,
 ) -> Pin<Box<dyn Future<Output = (crate::Pid, i32)> + Send + 'static>> {
-    child_watch_future_with_priority(crate::PRIORITY_DEFAULT, pid)
+    child_watch_future_with_priority(crate::Priority::default(), pid)
 }
 
 // rustdoc-stripper-ignore-next
@@ -201,7 +201,7 @@ pub fn child_watch_future_with_priority(
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn unix_signal_future(signum: i32) -> Pin<Box<dyn Future<Output = ()> + Send + 'static>> {
-    unix_signal_future_with_priority(crate::PRIORITY_DEFAULT, signum)
+    unix_signal_future_with_priority(crate::Priority::default(), signum)
 }
 
 #[cfg(any(unix, feature = "dox"))]
@@ -331,7 +331,7 @@ impl<T, F> Drop for SourceStream<T, F> {
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn interval_stream(value: Duration) -> Pin<Box<dyn Stream<Item = ()> + Send + 'static>> {
-    interval_stream_with_priority(crate::PRIORITY_DEFAULT, value)
+    interval_stream_with_priority(crate::Priority::default(), value)
 }
 
 // rustdoc-stripper-ignore-next
@@ -358,7 +358,7 @@ pub fn interval_stream_with_priority(
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn interval_stream_seconds(value: u32) -> Pin<Box<dyn Stream<Item = ()> + Send + 'static>> {
-    interval_stream_seconds_with_priority(crate::PRIORITY_DEFAULT, value)
+    interval_stream_seconds_with_priority(crate::Priority::default(), value)
 }
 
 // rustdoc-stripper-ignore-next
@@ -387,7 +387,7 @@ pub fn interval_stream_seconds_with_priority(
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
 pub fn unix_signal_stream(signum: i32) -> Pin<Box<dyn Stream<Item = ()> + Send + 'static>> {
-    unix_signal_stream_with_priority(crate::PRIORITY_DEFAULT, signum)
+    unix_signal_stream_with_priority(crate::Priority::default(), signum)
 }
 
 #[cfg(any(unix, feature = "dox"))]

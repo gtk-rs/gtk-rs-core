@@ -213,7 +213,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
                     let source = stream.0.as_ref().create_source(
                         crate::Cancellable::NONE,
                         None,
-                        glib::PRIORITY_DEFAULT,
+                        glib::Priority::default(),
                         move |_| {
                             if let Some(waker) = waker.take() {
                                 waker.wake();
@@ -256,7 +256,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
                 let source = stream.0.as_ref().create_source(
                     crate::Cancellable::NONE,
                     None,
-                    glib::PRIORITY_DEFAULT,
+                    glib::Priority::default(),
                     move |_| {
                         if let Some(waker) = waker.take() {
                             waker.wake();
@@ -285,7 +285,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         } else {
             let (tx, rx) = oneshot::channel();
             stream.0.as_ref().flush_async(
-                glib::PRIORITY_DEFAULT,
+                glib::Priority::default(),
                 crate::Cancellable::NONE,
                 move |res| {
                     let _ = tx.send(res);
@@ -317,7 +317,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         } else {
             let (tx, rx) = oneshot::channel();
             stream.0.as_ref().close_async(
-                glib::PRIORITY_DEFAULT,
+                glib::Priority::default(),
                 crate::Cancellable::NONE,
                 move |res| {
                     let _ = tx.send(res);

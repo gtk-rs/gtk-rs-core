@@ -64,7 +64,7 @@ mod tests {
 
         let res = c
             .block_on(
-                strm.read_future(buf, glib::PRIORITY_DEFAULT)
+                strm.read_future(buf, glib::Priority::default())
                     .map_err(|(_buf, err)| err)
                     .map_ok(move |(mut buf, len)| {
                         buf.truncate(len);

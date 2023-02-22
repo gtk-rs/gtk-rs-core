@@ -511,7 +511,7 @@ impl MainContext {
         &self,
         f: F,
     ) -> JoinHandle<R> {
-        self.spawn_with_priority(crate::PRIORITY_DEFAULT, f)
+        self.spawn_with_priority(crate::Priority::default(), f)
     }
 
     // rustdoc-stripper-ignore-next
@@ -523,7 +523,7 @@ impl MainContext {
     /// from any other `Future` that is executed on this main context, or after calling
     /// `with_thread_default` or `acquire` on the main context.
     pub fn spawn_local<R: 'static, F: Future<Output = R> + 'static>(&self, f: F) -> JoinHandle<R> {
-        self.spawn_local_with_priority(crate::PRIORITY_DEFAULT, f)
+        self.spawn_local_with_priority(crate::Priority::default(), f)
     }
 
     // rustdoc-stripper-ignore-next
@@ -582,7 +582,7 @@ impl MainContext {
         &self,
         func: impl FnOnce() -> F + Send + 'static,
     ) -> SpawnWithinJoinHandle<R> {
-        self.spawn_from_within_with_priority(crate::PRIORITY_DEFAULT, func)
+        self.spawn_from_within_with_priority(crate::Priority::default(), func)
     }
 
     // rustdoc-stripper-ignore-next
@@ -638,7 +638,7 @@ impl MainContext {
         };
 
         let source = TaskSource::new(
-            crate::PRIORITY_DEFAULT,
+            crate::Priority::default(),
             FutureWrapper::NonSend(ThreadGuard::new(f)),
             None,
         );
@@ -657,7 +657,7 @@ impl Spawn for MainContext {
     fn spawn_obj(&self, f: FutureObj<'static, ()>) -> Result<(), SpawnError> {
         let (tx, _) = oneshot::channel();
         let source = TaskSource::new(
-            crate::PRIORITY_DEFAULT,
+            crate::Priority::default(),
             FutureWrapper::Send(FutureObj::new(Box::new(async move {
                 f.await;
                 Box::new(()) as Box<dyn Any + Send + 'static>
@@ -673,7 +673,7 @@ impl LocalSpawn for MainContext {
     fn spawn_local_obj(&self, f: LocalFutureObj<'static, ()>) -> Result<(), SpawnError> {
         let (tx, _) = oneshot::channel();
         let source = TaskSource::new(
-            crate::PRIORITY_DEFAULT,
+            crate::Priority::default(),
             FutureWrapper::NonSend(ThreadGuard::new(LocalFutureObj::new(Box::new(
                 async move {
                     f.await;
