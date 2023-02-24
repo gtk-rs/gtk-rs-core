@@ -42,6 +42,50 @@ impl SignalGroup {
         self.connect_closure(signal_name, after, RustClosure::new_local(callback));
     }
 
+    #[inline]
+    pub fn connect_notify<F>(&self, name: Option<&str>, callback: F)
+    where
+        F: Fn(&crate::Object, &crate::ParamSpec) + Send + Sync + 'static,
+    {
+        let signal_name = if let Some(name) = name {
+            format!("notify::{name}")
+        } else {
+            "notify".into()
+        };
+
+        let closure = crate::RustClosure::new(move |values| {
+            let obj = values[0].get().unwrap();
+            let pspec = values[1].get().unwrap();
+            callback(obj, pspec);
+
+            None
+        });
+
+        self.connect_closure(&signal_name, false, closure);
+    }
+
+    #[inline]
+    pub fn connect_notify_local<F>(&self, name: Option<&str>, callback: F)
+    where
+        F: Fn(&crate::Object, &crate::ParamSpec) + 'static,
+    {
+        let signal_name = if let Some(name) = name {
+            format!("notify::{name}")
+        } else {
+            "notify".into()
+        };
+
+        let closure = crate::RustClosure::new_local(move |values| {
+            let obj = values[0].get().unwrap();
+            let pspec = values[1].get().unwrap();
+            callback(obj, pspec);
+
+            None
+        });
+
+        self.connect_closure(&signal_name, false, closure);
+    }
+
     unsafe fn connect_bind_unsafe<F: Fn(&Self, &Object)>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn bind_trampoline<F: Fn(&SignalGroup, &Object)>(
             this: *mut crate::gobject_ffi::GSignalGroup,
