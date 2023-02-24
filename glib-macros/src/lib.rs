@@ -872,7 +872,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// `PropertySet` and `PropertySetNested` if possible.
 ///
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
-/// Optional types also require the `nullable` attribute.
+/// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
+/// will take `T` instead of `Option<T>`, preventing the user from ever calling the setter with a `None` value.
 /// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
 /// always define a custom one.
 ///
