@@ -192,7 +192,7 @@ impl<'a> std::iter::IntoIterator for &'a ListModel {
 
 #[test]
 fn list_model_iter_ok() {
-    let list = crate::ListStore::new(crate::Menu::static_type());
+    let list = crate::ListStore::new::<crate::Menu>();
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
@@ -218,7 +218,7 @@ fn list_model_iter_ok() {
 
 #[test]
 fn list_model_iter_err() {
-    let list = crate::ListStore::new(crate::Menu::static_type());
+    let list = crate::ListStore::new::<crate::Menu>();
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
@@ -251,7 +251,7 @@ fn list_model_iter_err() {
 
 #[test]
 fn list_model_iter_nth() {
-    let list = crate::ListStore::new(crate::Menu::static_type());
+    let list = crate::ListStore::new::<crate::Menu>();
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
@@ -280,7 +280,7 @@ fn list_model_iter_nth() {
 
 #[test]
 fn list_model_iter_last() {
-    let list = crate::ListStore::new(crate::Menu::static_type());
+    let list = crate::ListStore::new::<crate::Menu>();
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();
@@ -297,7 +297,7 @@ fn list_model_iter_last() {
 
 #[test]
 fn list_model_iter_count() {
-    let list = crate::ListStore::new(crate::Menu::static_type());
+    let list = crate::ListStore::new::<crate::Menu>();
     let m1 = crate::Menu::new();
     let m2 = crate::Menu::new();
     let m3 = crate::Menu::new();

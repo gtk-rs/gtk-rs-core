@@ -80,7 +80,7 @@ glib::wrapper! {
     /// use gio::ListStore;
     ///
     /// // The boxed data can be stored as a `glib::object::Object`
-    /// let list = ListStore::new(BoxedAnyObject::static_type());
+    /// let list = ListStore::new::<BoxedAnyObject>();
     /// list.append(&boxed);
     /// ```
     pub struct BoxedAnyObject(ObjectSubclass<imp::BoxedAnyObject>);
