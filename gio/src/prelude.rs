@@ -29,7 +29,8 @@ pub use crate::unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddre
 pub use crate::{
     action_map::ActionMapExtManual, application::*, auto::traits::*, cancellable::*, converter::*,
     data_input_stream::DataInputStreamExtManual, datagram_based::*, dbus_proxy::DBusProxyExtManual,
-    file::FileExtManual, inet_address::InetAddressExtManual, input_stream::InputStreamExtManual,
+    file::FileExtManual, file_enumerator::FileEnumeratorExtManual,
+    inet_address::InetAddressExtManual, input_stream::InputStreamExtManual,
     io_stream::IOStreamExtManual, list_model::ListModelExtManual,
     output_stream::OutputStreamExtManual, pollable_input_stream::PollableInputStreamExtManual,
     pollable_output_stream::PollableOutputStreamExtManual, settings::SettingsExtManual,
