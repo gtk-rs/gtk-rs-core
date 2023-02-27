@@ -2,6 +2,40 @@
 
 ## [Unreleased]
 
+## [0.17.2]
+
+Andrey Kutejko:
+- glib: Implement `PartialEq` and `PartialOrd` for `WeakRef`
+
+Bilal Elmoussaoui:
+- glib: Add missing `ObjectImpl` vfuncs overrides
+- glib: Mention lack of finalize method on `ObjectImpl`
+
+Jason Francis:
+- glib-macros: allow properties macro generated functions to be unused
+- glib: implement `WatchedObject` for `BorrowedObject`
+
+Mathieu Duponchelle:
+- glib: object: address misleading casting docs
+
+Matteo Biggio:
+- gio: `SimpleAction`: take ownership of value without leaking it
+
+Paolo Borelli:
+- glib: properties: impl `HasParamSpec` for `Vec<String>` and `StrV`
+- glib-macros: Derive `HasParamSpec` for `SharedBoxed`
+- glib: Add `StrV::join()` method
+- glib: Add `StrV::contains()` method
+
+SeaDve:
+- glib-macros: slightly improve `Properties` macro docs
+
+Sebastian Dröge:
+ - Update gir-files
+ - Regenerate with latest gir-files
+ - glib: Ignore new 2.76 free functions
+ - gio: Don't pass `NULL` to `g_list_store_find_with_equal_func_full()`
+
 ## [0.17.1]
 
 Guillaume Desmottes:

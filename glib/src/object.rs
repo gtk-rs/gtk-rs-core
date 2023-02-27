@@ -122,10 +122,9 @@ pub trait Cast: ObjectType {
     /// Returns `Ok(T)` if the object is an instance of `T` and `Err(self)`
     /// otherwise.
     ///
-    /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
-    /// known at compile-time, whether a specific object implements an interface or not, in which case
-    /// `upcast` would fail to compile. `dynamic_cast` can be used in these circumstances, which
-    /// is checking the types at runtime.
+    /// *NOTE*: This will check at compile-time if `T` is lower down the
+    /// inheritance tree of `Self`, but also check at runtime if downcasting
+    /// is indeed possible.
     ///
     /// # Example
     ///
@@ -137,7 +136,7 @@ pub trait Cast: ObjectType {
     #[inline]
     fn downcast<T: ObjectType>(self) -> Result<T, Self>
     where
-        Self: CanDowncast<T>,
+        Self: MayDowncastTo<T>,
     {
         if self.is::<T>() {
             Ok(unsafe { self.unsafe_cast() })
@@ -152,10 +151,9 @@ pub trait Cast: ObjectType {
     /// Returns `Some(T)` if the object is an instance of `T` and `None`
     /// otherwise.
     ///
-    /// *NOTE*: This statically checks at compile-time if casting is possible. It is not always
-    /// known at compile-time, whether a specific object implements an interface or not, in which case
-    /// `upcast` would fail to compile. `dynamic_cast` can be used in these circumstances, which
-    /// is checking the types at runtime.
+    /// *NOTE*: This will check at compile-time if `T` is lower down the
+    /// inheritance tree of `Self`, but also check at runtime if downcasting
+    /// is indeed possible.
     ///
     /// # Example
     ///
@@ -167,7 +165,7 @@ pub trait Cast: ObjectType {
     #[inline]
     fn downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self: CanDowncast<T>,
+        Self: MayDowncastTo<T>,
     {
         if self.is::<T>() {
             Some(unsafe { self.unsafe_cast_ref() })
@@ -179,7 +177,9 @@ pub trait Cast: ObjectType {
     // rustdoc-stripper-ignore-next
     /// Tries to cast to an object of type `T`. This handles upcasting, downcasting
     /// and casting between interface and interface implementors. All checks are performed at
-    /// runtime, while `downcast` and `upcast` will do many checks at compile-time already.
+    /// runtime, while `upcast` will do many checks at compile-time already. `downcast` will
+    /// perform the same checks at runtime as `dynamic_cast`, but will also ensure some amount of
+    /// compile-time safety.
     ///
     /// It is not always known at compile-time, whether a specific object implements an interface or
     /// not, and checking has to be performed at runtime.
@@ -303,10 +303,10 @@ pub trait CastNone: Sized {
     type Inner;
     fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
-        Self::Inner: CanDowncast<T>;
+        Self::Inner: MayDowncastTo<T>;
     fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self::Inner: CanDowncast<T>;
+        Self::Inner: MayDowncastTo<T>;
     fn and_upcast<T: ObjectType>(self) -> Option<T>
     where
         Self::Inner: IsA<T>;
@@ -322,7 +322,7 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
     #[inline]
     fn and_downcast<T: ObjectType>(self) -> Option<T>
     where
-        Self::Inner: CanDowncast<T>,
+        Self::Inner: MayDowncastTo<T>,
     {
         self.and_then(|i| i.downcast().ok())
     }
@@ -330,7 +330,7 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
     #[inline]
     fn and_downcast_ref<T: ObjectType>(&self) -> Option<&T>
     where
-        Self::Inner: CanDowncast<T>,
+        Self::Inner: MayDowncastTo<T>,
     {
         self.as_ref().and_then(|i| i.downcast_ref())
     }
@@ -365,9 +365,9 @@ impl<I: ObjectType + Sized> CastNone for Option<I> {
 
 // rustdoc-stripper-ignore-next
 /// Marker trait for the statically known possibility of downcasting from `Self` to `T`.
-pub trait CanDowncast<T> {}
+pub trait MayDowncastTo<T> {}
 
-impl<Super: IsA<Super>, Sub: IsA<Super>> CanDowncast<Sub> for Super {}
+impl<Super: IsA<Super>, Sub: IsA<Super>> MayDowncastTo<Sub> for Super {}
 
 // Manual implementation of glib_shared_wrapper! because of special cases
 #[repr(transparent)]
@@ -3118,6 +3118,16 @@ impl<T: ObjectType> Watchable<T> for T {
 }
 
 #[doc(hidden)]
+impl<'a, T: ObjectType> Watchable<T> for BorrowedObject<'a, T> {
+    fn watched_object(&self) -> WatchedObject<T> {
+        WatchedObject::new(self)
+    }
+    fn watch_closure(&self, closure: &impl AsRef<Closure>) {
+        ObjectExt::watch_closure(&**self, closure)
+    }
+}
+
+#[doc(hidden)]
 impl<T: ObjectType> Watchable<T> for &T {
     fn watched_object(&self) -> WatchedObject<T> {
         WatchedObject::new(*self)
@@ -3453,6 +3463,27 @@ impl<T: ObjectType> Default for WeakRef<T> {
 
 unsafe impl<T: ObjectType + Sync + Sync> Sync for WeakRef<T> {}
 unsafe impl<T: ObjectType + Send + Sync> Send for WeakRef<T> {}
+
+impl<T: ObjectType> PartialEq for WeakRef<T> {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        unsafe { self.0.priv_.p == other.0.priv_.p }
+    }
+}
+
+impl<T: ObjectType> PartialEq<T> for WeakRef<T> {
+    #[inline]
+    fn eq(&self, other: &T) -> bool {
+        unsafe { self.0.priv_.p == other.as_ptr() as *mut std::os::raw::c_void }
+    }
+}
+
+impl<T: ObjectType> PartialOrd for WeakRef<T> {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        unsafe { self.0.priv_.p.partial_cmp(&other.0.priv_.p) }
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// A weak reference to the object it was created for that can be sent to

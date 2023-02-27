@@ -87,6 +87,16 @@ impl ListStore {
         }
 
         unsafe {
+            // GIO requires a non-NULL item to be passed in so we're constructing a fake item here.
+            // See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3284
+            let item = glib::gobject_ffi::GObject {
+                g_type_instance: glib::gobject_ffi::GTypeInstance {
+                    g_class: glib::gobject_ffi::g_type_class_peek(self.item_type().into_glib())
+                        as *mut _,
+                },
+                ref_count: 1,
+                qdata: std::ptr::null_mut(),
+            };
             let mut func = equal_func;
             let func_obj: &mut (dyn FnMut(&Object) -> bool) = &mut func;
             let func_ptr =
@@ -96,7 +106,7 @@ impl ListStore {
 
             let found = bool::from_glib(ffi::g_list_store_find_with_equal_func_full(
                 self.to_glib_none().0,
-                std::ptr::null_mut(),
+                mut_override(&item as *const _),
                 Some(equal_func_trampoline),
                 func_ptr,
                 position.as_mut_ptr(),
@@ -189,5 +199,18 @@ mod tests {
         assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(1).as_ref(), Some(item1.upcast_ref()));
         assert_eq!(list.item(2).as_ref(), None);
+    }
+
+    #[cfg(feature = "v2_74")]
+    #[test]
+    fn find() {
+        let item0 = ListStore::new(ListStore::static_type());
+        let item1 = ListStore::new(ListStore::static_type());
+        let list = ListStore::new(ListStore::static_type());
+        list.append(&item0);
+        list.append(&item1);
+
+        let res = list.find_with_equal_func(|item| item == &item1);
+        assert_eq!(res, Some(1));
     }
 }

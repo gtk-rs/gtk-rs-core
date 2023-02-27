@@ -59,6 +59,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GOptionEntry", sizeof(GOptionEntry), alignof(GOptionEntry));
     printf("%s;%zu;%zu\n", "GOptionError", sizeof(GOptionError), alignof(GOptionError));
     printf("%s;%zu;%zu\n", "GOptionFlags", sizeof(GOptionFlags), alignof(GOptionFlags));
+    printf("%s;%zu;%zu\n", "GPathBuf", sizeof(GPathBuf), alignof(GPathBuf));
     printf("%s;%zu;%zu\n", "GPid", sizeof(GPid), alignof(GPid));
     printf("%s;%zu;%zu\n", "GPollFD", sizeof(GPollFD), alignof(GPollFD));
     printf("%s;%zu;%zu\n", "GPrivate", sizeof(GPrivate), alignof(GPrivate));
