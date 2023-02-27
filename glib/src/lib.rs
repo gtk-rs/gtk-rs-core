@@ -10,8 +10,9 @@ pub use ffi;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
-    clone, closure, closure_local, flags, object_interface, object_subclass, Boxed, Downgrade,
-    Enum, ErrorDomain, Properties, SharedBoxed, Variant,
+    clone, clone_block, closure, closure_local, flags, object_interface, object_subclass,
+    wrapper as wrapper_attr, Boxed, Downgrade, Enum, ErrorDomain, ObjectImpl, Properties,
+    SharedBoxed, Variant,
 };
 pub use gobject_ffi;
 #[doc(hidden)]

@@ -1,10 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, TokenStream};
-use proc_macro_error::abort_call_site;
 use quote::quote;
 
-use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse_name};
+use crate::utils::crate_ident_new;
 
 fn gen_option_to_ptr() -> TokenStream {
     quote! {
@@ -91,21 +90,22 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
     }
 }
 
-pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
+#[derive(deluxe::ExtractAttributes, Default)]
+#[deluxe(attributes(boxed_type))]
+struct BoxedType {
+    name: String,
+    #[deluxe(default)]
+    nullable: bool,
+}
+
+pub fn impl_boxed(mut input: syn::DeriveInput) -> TokenStream {
     let name = &input.ident;
 
-    let gtype_name = match parse_name(input, "boxed_type") {
-        Ok(name) => name,
-        Err(e) => abort_call_site!(
-            "{}: #[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]",
-            e
-        ),
-    };
-
-    let meta = find_attribute_meta(&input.attrs, "boxed_type")
-        .unwrap()
-        .unwrap();
-    let nullable = find_nested_meta(&meta, "nullable").is_some();
+    let errors = deluxe::Errors::new();
+    let BoxedType {
+        name: gtype_name,
+        nullable,
+    } = deluxe::extract_attributes_optional(&mut input.attrs, &errors);
 
     let crate_ident = crate_ident_new();
 
@@ -121,6 +121,8 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
     };
 
     quote! {
+        #errors
+
         impl #crate_ident::subclass::boxed::BoxedType for #name {
             const NAME: &'static str = #gtype_name;
         }

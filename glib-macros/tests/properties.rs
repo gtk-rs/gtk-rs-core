@@ -7,33 +7,20 @@ use glib::ParamFlags;
 mod base {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
-    use glib_macros::Properties;
+    use glib_macros::{ObjectImpl, Properties};
     use std::marker::PhantomData;
 
     pub mod imp {
-        use glib::{ParamSpec, Value};
-
         use super::*;
 
-        #[derive(Properties, Default)]
+        #[derive(Default, ObjectImpl, Properties)]
+        #[object_impl(derived_properties)]
         #[properties(wrapper_type = super::Base)]
         pub struct Base {
             #[property(get = Self::not_overridden)]
             overridden: PhantomData<u32>,
             #[property(get = Self::not_overridden)]
             not_overridden: PhantomData<u32>,
-        }
-
-        impl ObjectImpl for Base {
-            fn properties() -> &'static [ParamSpec] {
-                Self::derived_properties()
-            }
-            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                Self::derived_set_property(self, _id, _value, _pspec)
-            }
-            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                Self::derived_property(self, id, _pspec)
-            }
         }
 
         #[glib::object_subclass]
@@ -60,7 +47,7 @@ mod base {
 mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
-    use glib_macros::Properties;
+    use glib_macros::{ObjectImpl, Properties};
     use once_cell::sync::OnceCell;
     use std::cell::Cell;
     use std::cell::RefCell;
@@ -87,12 +74,14 @@ mod foo {
     }
 
     pub mod imp {
-        use glib::{ParamSpec, Value};
         use std::rc::Rc;
+
+        use glib::subclass::Signal;
 
         use super::*;
 
-        #[derive(Properties, Default)]
+        #[derive(Default, ObjectImpl, Properties)]
+        #[object_impl(derived_properties, signals, constructed = Self::my_constructed, dispose)]
         #[properties(wrapper_type = super::Foo)]
         pub struct Foo {
             #[property(get, set)]
@@ -157,18 +146,6 @@ mod foo {
             send_weak_ref_prop: glib::SendWeakRef<glib::Object>,
         }
 
-        impl ObjectImpl for Foo {
-            fn properties() -> &'static [ParamSpec] {
-                Self::derived_properties()
-            }
-            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
-                Self::derived_set_property(self, _id, _value, _pspec)
-            }
-            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
-                Self::derived_property(self, id, _pspec)
-            }
-        }
-
         #[glib::object_subclass]
         impl ObjectSubclass for Foo {
             const NAME: &'static str = "MyFoo";
@@ -184,11 +161,16 @@ mod foo {
                 String::from("Hello world!")
             }
             fn set_fizz(&self, value: String) {
-                *self.fizz.borrow_mut() = format!("custom set: {}", value);
+                *self.fizz.borrow_mut() = format!("custom set: {value}");
             }
             fn overridden(&self) -> u32 {
                 43
             }
+            fn signals() -> &'static [Signal] {
+                &[]
+            }
+            fn my_constructed(&self) {}
+            fn dispose(&self) {}
         }
     }
 

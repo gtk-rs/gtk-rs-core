@@ -13,6 +13,6 @@ impl AttrFontDesc {
     }
 
     pub fn desc(&self) -> FontDescription {
-        unsafe { from_glib_none(self.inner.desc) }
+        unsafe { from_glib_none(self.0.desc) }
     }
 }

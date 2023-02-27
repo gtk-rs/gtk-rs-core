@@ -6,9 +6,20 @@ use proc_macro_error::abort_call_site;
 use quote::{quote, quote_spanned};
 use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Data, Ident, Variant};
 
-use crate::utils::{
-    crate_ident_new, gen_enum_from_glib, parse_item_attributes, parse_name, ItemAttribute,
-};
+use crate::utils::{crate_ident_new, gen_enum_from_glib};
+
+#[derive(deluxe::ExtractAttributes, Default)]
+#[deluxe(attributes(enum_type))]
+struct EnumType {
+    name: String,
+}
+
+#[derive(deluxe::ExtractAttributes, Default)]
+#[deluxe(attributes(enum_value), default)]
+struct EnumValue {
+    name: Option<String>,
+    nick: Option<String>,
+}
 
 // Generate glib::gobject_ffi::GEnumValue structs mapping the enum such as:
 //     glib::gobject_ffi::GEnumValue {
@@ -18,35 +29,24 @@ use crate::utils::{
 //     },
 fn gen_enum_values(
     enum_name: &Ident,
-    enum_variants: &Punctuated<Variant, Comma>,
+    enum_variants: &mut Punctuated<Variant, Comma>,
+    errors: &deluxe::Errors,
 ) -> (TokenStream, usize) {
     let crate_ident = crate_ident_new();
 
     // start at one as GEnumValue array is null-terminated
     let mut n = 1;
-    let recurse = enum_variants.iter().map(|v| {
+    let recurse = enum_variants.iter_mut().map(|v| {
+        let EnumValue {
+            name: value_name,
+            nick: value_nick,
+        } = deluxe::extract_attributes_optional(v, errors);
+
         let name = &v.ident;
-        let mut value_name = name.to_string().to_upper_camel_case();
-        let mut value_nick = name.to_string().to_kebab_case();
-
-        let attrs = parse_item_attributes("enum_value", &v.attrs);
-        let attrs = match attrs {
-            Ok(attrs) => attrs,
-            Err(e) => abort_call_site!(
-                "{}: derive(glib::Enum) enum supports only the following optional attributes: #[enum_value(name = \"The Cat\", nick = \"chat\")]",
-                e
-            ),
-        };
-
-        attrs.into_iter().for_each(|attr|
-            match attr {
-                ItemAttribute::Name(n) => value_name = n,
-                ItemAttribute::Nick(n) => value_nick = n,
-            }
-        );
-
-        let value_name = format!("{value_name}\0");
-        let value_nick = format!("{value_nick}\0");
+        let mut value_name = value_name.unwrap_or_else(|| name.to_string().to_upper_camel_case());
+        let mut value_nick = value_nick.unwrap_or_else(|| name.to_string().to_kebab_case());
+        value_name.push('\0');
+        value_nick.push('\0');
 
         n += 1;
         quote_spanned! {v.span()=>
@@ -65,28 +65,27 @@ fn gen_enum_values(
     )
 }
 
-pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
-    let name = &input.ident;
-
-    let enum_variants = match input.data {
-        Data::Enum(ref e) => &e.variants,
+pub fn impl_enum(mut input: syn::DeriveInput) -> TokenStream {
+    let enum_variants = match &mut input.data {
+        Data::Enum(e) => &mut e.variants,
         _ => abort_call_site!("#[derive(glib::Enum)] only supports enums"),
     };
 
-    let gtype_name = match parse_name(input, "enum_type") {
-        Ok(name) => name,
-        Err(e) => abort_call_site!(
-            "{}: #[derive(glib::Enum)] requires #[enum_type(name = \"EnumTypeName\")]",
-            e
-        ),
-    };
+    let errors = deluxe::Errors::new();
+    let EnumType {
+        name: mut gtype_name,
+    } = deluxe::extract_attributes_optional(&mut input.attrs, &errors);
+    gtype_name.push('\0');
 
+    let name = &input.ident;
     let from_glib = gen_enum_from_glib(name, enum_variants);
-    let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);
+    let (enum_values, nb_enum_values) = gen_enum_values(name, enum_variants, &errors);
 
     let crate_ident = crate_ident_new();
 
     quote! {
+        #errors
+
         impl #crate_ident::translate::IntoGlib for #name {
             type GlibType = i32;
 
@@ -175,9 +174,11 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
                         },
                     ];
 
-                    let name = ::std::ffi::CString::new(#gtype_name).expect("CString::new failed");
                     unsafe {
-                        let type_ = #crate_ident::gobject_ffi::g_enum_register_static(name.as_ptr(), VALUES.as_ptr());
+                        let type_ = #crate_ident::gobject_ffi::g_enum_register_static(
+                            #gtype_name.as_ptr() as *const _,
+                            VALUES.as_ptr(),
+                        );
                         let type_: #crate_ident::Type = #crate_ident::translate::from_glib(type_);
                         assert!(type_.is_valid());
                         TYPE = type_;

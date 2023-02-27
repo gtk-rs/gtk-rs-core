@@ -22,10 +22,10 @@ impl AttrSize {
     }
 
     pub fn size(&self) -> i32 {
-        self.inner.size
+        self.0.size
     }
 
     pub fn absolute(&self) -> bool {
-        unsafe { from_glib(self.inner.absolute as i32) }
+        unsafe { from_glib(self.0.absolute as i32) }
     }
 }

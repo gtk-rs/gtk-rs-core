@@ -3,6 +3,7 @@
 use std::{cmp::Ordering, ops, slice};
 
 use crate::{
+    self as glib,
     prelude::*,
     translate::*,
     value::{
@@ -11,16 +12,13 @@ use crate::{
     HasParamSpec, ParamSpecValueArray, ParamSpecValueArrayBuilder, Type, Value,
 };
 
-wrapper! {
-    #[derive(Debug)]
-    #[doc(alias = "GValueArray")]
-    pub struct ValueArray(Boxed<gobject_ffi::GValueArray>);
-
-    match fn {
-        copy => |ptr| gobject_ffi::g_value_array_copy(mut_override(ptr)),
-        free => |ptr| gobject_ffi::g_value_array_free(ptr),
-    }
-}
+#[glib_macros::wrapper(
+    copy = |ptr| gobject_ffi::g_value_array_copy(mut_override(ptr)),
+    free = gobject_ffi::g_value_array_free,
+)]
+#[derive(Debug)]
+#[doc(alias = "GValueArray")]
+pub struct ValueArray(Boxed<gobject_ffi::GValueArray>);
 
 impl ValueArray {
     #[doc(alias = "g_value_array_new")]
@@ -43,7 +41,7 @@ impl ValueArray {
 
     #[inline]
     pub fn len(&self) -> usize {
-        self.inner.n_values as usize
+        self.0.n_values as usize
     }
 
     #[doc(alias = "get_nth")]

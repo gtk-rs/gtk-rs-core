@@ -17,6 +17,6 @@ impl AttrLanguage {
     }
 
     pub fn value(&self) -> Language {
-        unsafe { from_glib_none(self.inner.value) }
+        unsafe { from_glib_none(self.0.value) }
     }
 }

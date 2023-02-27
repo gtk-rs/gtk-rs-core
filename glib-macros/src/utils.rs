@@ -1,113 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use anyhow::{bail, Result};
 use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_crate::crate_name;
 use quote::{quote, quote_spanned};
-use syn::{
-    punctuated::Punctuated, spanned::Spanned, token::Comma, Attribute, DeriveInput, Lit, Meta,
-    MetaList, NestedMeta, Variant,
-};
-
-// find the #[@attr_name] attribute in @attrs
-pub fn find_attribute_meta(attrs: &[Attribute], attr_name: &str) -> Result<Option<MetaList>> {
-    let meta = match attrs.iter().find(|a| a.path.is_ident(attr_name)) {
-        Some(a) => a.parse_meta(),
-        _ => return Ok(None),
-    };
-    match meta? {
-        Meta::List(n) => Ok(Some(n)),
-        _ => bail!("wrong meta type"),
-    }
-}
-
-// parse a single meta like: ident = "value"
-fn parse_attribute(meta: &NestedMeta) -> Result<(String, String)> {
-    let meta = match &meta {
-        NestedMeta::Meta(m) => m,
-        _ => bail!("wrong meta type"),
-    };
-    let meta = match meta {
-        Meta::NameValue(n) => n,
-        _ => bail!("wrong meta type"),
-    };
-    let value = match &meta.lit {
-        Lit::Str(s) => s.value(),
-        _ => bail!("wrong meta type"),
-    };
-
-    let ident = match meta.path.get_ident() {
-        None => bail!("missing ident"),
-        Some(ident) => ident,
-    };
-
-    Ok((ident.to_string(), value))
-}
-
-pub fn find_nested_meta<'a>(meta: &'a MetaList, name: &str) -> Option<&'a NestedMeta> {
-    meta.nested.iter().find(|n| match n {
-        NestedMeta::Meta(m) => m.path().is_ident(name),
-        _ => false,
-    })
-}
-
-pub fn parse_name_attribute(meta: &NestedMeta) -> Result<String> {
-    let (ident, v) = parse_attribute(meta)?;
-
-    match ident.as_ref() {
-        "name" => Ok(v),
-        s => bail!("Unknown meta {}", s),
-    }
-}
-
-// Parse attribute such as:
-// #[enum_type(name = "TestAnimalType")]
-pub fn parse_name(input: &DeriveInput, attr_name: &str) -> Result<String> {
-    let meta = match find_attribute_meta(&input.attrs, attr_name)? {
-        Some(meta) => meta,
-        _ => bail!("Missing '{}' attribute", attr_name),
-    };
-
-    let meta = match find_nested_meta(&meta, "name") {
-        Some(meta) => meta,
-        _ => bail!("Missing meta 'name'"),
-    };
-
-    parse_name_attribute(meta)
-}
-
-#[derive(Debug)]
-pub enum ItemAttribute {
-    Name(String),
-    Nick(String),
-}
-
-fn parse_item_attribute(meta: &NestedMeta) -> Result<ItemAttribute> {
-    let (ident, v) = parse_attribute(meta)?;
-
-    match ident.as_ref() {
-        "name" => Ok(ItemAttribute::Name(v)),
-        "nick" => Ok(ItemAttribute::Nick(v)),
-        s => bail!("Unknown item meta {}", s),
-    }
-}
-
-// Parse optional enum item attributes such as:
-// #[enum_value(name = "My Name", nick = "my-nick")]
-pub fn parse_item_attributes(attr_name: &str, attrs: &[Attribute]) -> Result<Vec<ItemAttribute>> {
-    let meta = find_attribute_meta(attrs, attr_name)?;
-
-    let v = match meta {
-        Some(meta) => meta
-            .nested
-            .iter()
-            .map(parse_item_attribute)
-            .collect::<Result<Vec<_>, _>>()?,
-        None => Vec::new(),
-    };
-
-    Ok(v)
-}
+use syn::{punctuated::Punctuated, spanned::Spanned, token::Comma, Variant};
 
 pub fn crate_ident_new() -> TokenStream {
     use proc_macro_crate::FoundCrate;
@@ -161,4 +57,95 @@ pub fn gen_enum_from_glib(
         #(#recurse)*
         None
     }
+}
+
+// Simplified DeriveInput without fields, for faster parsing
+pub struct DeriveHeader {
+    pub attrs: Vec<syn::Attribute>,
+    pub vis: syn::Visibility,
+    pub ident: syn::Ident,
+    pub generics: syn::Generics,
+    pub data: DeriveData,
+}
+
+pub enum DeriveData {
+    Struct,
+    Enum,
+    Union,
+}
+
+impl syn::parse::Parse for DeriveHeader {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let attrs = input.call(syn::Attribute::parse_outer)?;
+        let vis = input.parse()?;
+        let data = input.parse()?;
+        let ident = input.parse()?;
+        let mut generics = input.parse::<syn::Generics>()?;
+        let lookahead = input.lookahead1();
+        if lookahead.peek(syn::Token![where]) {
+            generics.where_clause = Some(input.parse()?);
+        } else if input.peek(syn::token::Paren) {
+            let content;
+            syn::parenthesized!(content in input);
+            skip_all(&content);
+            if input.peek(syn::Token![where]) {
+                generics.where_clause = Some(input.parse()?);
+            }
+        } else if lookahead.peek(syn::token::Brace) {
+            let content;
+            syn::braced!(content in input);
+            skip_all(&content);
+        } else if lookahead.peek(syn::Token![;]) {
+            input.parse::<syn::Token![;]>()?;
+        } else {
+            return Err(lookahead.error());
+        }
+        Ok(Self {
+            attrs,
+            vis,
+            ident,
+            generics,
+            data,
+        })
+    }
+}
+
+impl syn::parse::Parse for DeriveData {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let lookahead = input.lookahead1();
+        if lookahead.peek(syn::Token![struct]) {
+            input.parse::<syn::Token![struct]>()?;
+            Ok(Self::Struct)
+        } else if lookahead.peek(syn::Token![enum]) {
+            input.parse::<syn::Token![enum]>()?;
+            Ok(Self::Enum)
+        } else if lookahead.peek(syn::Token![union]) {
+            input.parse::<syn::Token![union]>()?;
+            Ok(Self::Union)
+        } else {
+            Err(lookahead.error())
+        }
+    }
+}
+
+impl deluxe::HasAttributes for DeriveHeader {
+    #[inline]
+    fn attrs(&self) -> &[syn::Attribute] {
+        &self.attrs
+    }
+    #[inline]
+    fn attrs_mut(&mut self) -> deluxe::Result<&mut Vec<syn::Attribute>> {
+        Ok(&mut self.attrs)
+    }
+}
+
+#[inline]
+pub fn skip_all(input: syn::parse::ParseStream) {
+    let _ = input.step(|cursor| {
+        let mut cur = *cursor;
+        while let Some((_, next)) = cur.token_tree() {
+            cur = next;
+        }
+        Ok(((), cur))
+    });
 }
