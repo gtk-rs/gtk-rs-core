@@ -2318,9 +2318,17 @@ impl IntoGStr for &str {
 impl IntoGStr for String {
     #[inline]
     fn run_with_gstr<T, F: FnOnce(&GStr) -> T>(mut self, f: F) -> T {
-        self.push('\0');
-        let gs = unsafe { GStr::from_utf8_with_nul_unchecked(self.as_bytes()) };
-        f(gs)
+        let len = self.len();
+        if len < self.capacity() {
+            self.reserve_exact(1);
+            self.push('\0');
+            let gs = unsafe { GStr::from_utf8_with_nul_unchecked(self.as_bytes()) };
+            f(gs)
+        } else if len < MAX_STACK_ALLOCATION {
+            self.as_str().run_with_gstr(f)
+        } else {
+            f(GString::from(self).as_gstr())
+        }
     }
 }
 
