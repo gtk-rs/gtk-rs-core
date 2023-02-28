@@ -48,6 +48,7 @@ mod file_descriptor_based;
 #[cfg(any(unix, feature = "dox"))]
 pub use file_descriptor_based::FileDescriptorBased;
 mod file_enumerator;
+pub use crate::file_enumerator::FileEnumeratorStream;
 mod file_info;
 mod flags;
 mod inet_address;
