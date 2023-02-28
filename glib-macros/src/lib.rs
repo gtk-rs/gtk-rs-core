@@ -11,6 +11,7 @@ mod object_interface_attribute;
 mod object_subclass_attribute;
 mod properties;
 mod shared_boxed_derive;
+mod value_delegate_derive;
 mod variant_derive;
 
 mod utils;
@@ -866,19 +867,31 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Supported types
 /// Every type implementing the trait `Property` is supported.
-///
-/// If you want to support a custom type, you should consider implementing `Property` and
-/// `PropertyGet`. If your type supports interior mutability, you should implement also
-/// `PropertySet` and `PropertySetNested` if possible.
-///
 /// The type `Option<T>` is supported as a property only if `Option<T>` implements `ToValueOptional`.
 /// Optional types also require the `nullable` attribute: without it, the generated setter on the wrapper type
 /// will take `T` instead of `Option<T>`, preventing the user from ever calling the setter with a `None` value.
-/// If your type doesn't support `PropertySet`, you can't use the generated setter, but you can
-/// always define a custom one.
 ///
-/// If you want to support a custom type with a custom `ParamSpec`, you should implement the trait
-/// `HasParamSpec` instead of `Property`.
+/// ## Adding support for custom types
+/// ### Types wrapping an existing `T: glib::value::ToValue + glib::HasParamSpec`
+/// If you have declared a newtype as
+/// ```rust
+/// struct MyInt(i32);
+/// ```
+/// you can use it as a property by deriving `glib::ValueDelegate`.
+///
+/// ### Types with inner mutability
+/// The trait `glib::Property` must be implemented.
+/// The traits `PropertyGet` and `PropertySet` should be implemented to enable the Properties macro
+/// to generate a default internal getter/setter.
+/// If possible, implementing `PropertySetNested` is preferred over `PropertySet`, because it
+/// enables this macro to access the contained type and provide access to its fields,
+/// using the `member = $structfield` syntax.
+///
+/// ### Types without `glib::HasParamSpec`
+/// If you have encountered a type `T: glib::value::ToValue`, inside the `gtk-rs` crate, which doesn't implement `HasParamSpec`,
+/// then it's a bug and you should report it.
+/// If you need to support a `ToValue` type with a `ParamSpec` not provided by `gtk-rs`, then you need to
+/// implement `glib::HasParamSpec` on that type.
 ///
 /// # Example
 /// ```
@@ -962,4 +975,64 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 pub fn derive_props(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as properties::PropsMacroInput);
     properties::impl_derive_props(input)
+}
+
+/// # Example
+/// ```
+/// use glib::prelude::*;
+/// use glib::ValueDelegate;
+///
+/// #[derive(ValueDelegate, Debug, PartialEq)]
+/// struct MyInt(i32);
+///
+/// let myv = MyInt(2);
+/// let convertedv = myv.to_value();
+/// assert_eq!(convertedv.get::<MyInt>(), Ok(myv));
+///
+///
+/// #[derive(ValueDelegate, Debug, PartialEq)]
+/// #[value_delegate(from = u32)]
+/// enum MyEnum {
+///     Zero,
+///     NotZero(u32)
+/// }
+///
+/// impl From<u32> for MyEnum {
+///     fn from(v: u32) -> Self {
+///         match v {
+///             0 => MyEnum::Zero,
+///             x => MyEnum::NotZero(x)
+///         }
+///     }
+/// }
+/// impl<'a> From<&'a MyEnum> for u32 {
+///     fn from(v: &'a MyEnum) -> Self {
+///         match v {
+///             MyEnum::Zero => 0,
+///             MyEnum::NotZero(x) => *x
+///         }
+///     }
+/// }
+///
+/// let myv = MyEnum::NotZero(34);
+/// let convertedv = myv.to_value();
+/// assert_eq!(convertedv.get::<MyEnum>(), Ok(myv));
+///
+///
+/// // If you want your type to be usable inside an `Option`, you can derive `ToValueOptional`
+/// // by adding `nullable` as follows
+/// #[derive(ValueDelegate, Debug, PartialEq)]
+/// #[value_delegate(nullable)]
+/// struct MyString(String);
+///
+/// let myv = Some(MyString("Hello world".to_string()));
+/// let convertedv = myv.to_value();
+/// assert_eq!(convertedv.get::<Option<MyString>>(), Ok(myv));
+/// let convertedv = None::<MyString>.to_value();
+/// assert_eq!(convertedv.get::<Option<MyString>>(), Ok(None::<MyString>));
+/// ```
+#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
+pub fn derive_value_delegate(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as value_delegate_derive::ValueDelegateInput);
+    value_delegate_derive::impl_value_delegate(input).unwrap()
 }
