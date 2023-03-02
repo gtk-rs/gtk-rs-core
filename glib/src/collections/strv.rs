@@ -1067,7 +1067,7 @@ impl IntoStrV for StrV {
 impl<'a> IntoStrV for &'a StrV {
     #[inline]
     fn run_with_strv<R, F: FnOnce(&[*mut c_char]) -> R>(self, f: F) -> R {
-        f(unsafe { std::slice::from_raw_parts(self.as_ptr(), self.len() + 1) })
+        f(unsafe { std::slice::from_raw_parts(self.as_ptr(), self.len()) })
     }
 }
 
@@ -1134,7 +1134,7 @@ impl IntoStrV for &[GString] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1159,7 +1159,7 @@ impl<'a> IntoStrV for &[&'a GString] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1184,7 +1184,7 @@ impl<'a> IntoStrV for &[&'a GStr] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1214,7 +1214,7 @@ impl<'a> IntoStrV for &[&'a str] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1244,7 +1244,7 @@ impl IntoStrV for &[String] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1274,7 +1274,7 @@ impl<'a> IntoStrV for &[&'a String] {
                 }
                 *ptrs.add(self.len()) = ptr::null_mut();
 
-                f(std::slice::from_raw_parts(ptrs, self.len() + 1))
+                f(std::slice::from_raw_parts(ptrs, self.len()))
             }
         } else {
             let mut s = StrV::with_capacity(self.len());
@@ -1451,38 +1451,38 @@ mod test {
         let items = ["str1", "str2", "str3", "str4"];
 
         items[..].run_with_strv(|s| unsafe {
-            assert!(s[4].is_null());
-            assert_eq!(s.len(), items.len() + 1);
+            assert!(s.get_unchecked(4).is_null());
+            assert_eq!(s.len(), items.len());
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
 
         Vec::from(&items[..]).run_with_strv(|s| unsafe {
-            assert!(s[4].is_null());
-            assert_eq!(s.len(), items.len() + 1);
+            assert!(s.get_unchecked(4).is_null());
+            assert_eq!(s.len(), items.len());
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
 
         StrV::from(&items[..]).run_with_strv(|s| unsafe {
-            assert!(s[4].is_null());
-            assert_eq!(s.len(), items.len() + 1);
+            assert!(s.get_unchecked(4).is_null());
+            assert_eq!(s.len(), items.len());
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
 
         let v = items.iter().copied().map(String::from).collect::<Vec<_>>();
         items.run_with_strv(|s| unsafe {
-            assert!(s[4].is_null());
-            assert_eq!(s.len(), v.len() + 1);
+            assert!(s.get_unchecked(4).is_null());
+            assert_eq!(s.len(), v.len());
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
 
         let v = items.iter().copied().map(GString::from).collect::<Vec<_>>();
         items.run_with_strv(|s| unsafe {
-            assert!(s[4].is_null());
-            assert_eq!(s.len(), v.len() + 1);
+            assert!(s.get_unchecked(4).is_null());
+            assert_eq!(s.len(), v.len());
             let s = StrV::from_glib_borrow(s.as_ptr() as *const *const c_char);
             assert_eq!(s, items);
         });
