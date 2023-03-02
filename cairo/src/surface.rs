@@ -241,9 +241,9 @@ impl Surface {
         format: Format,
         width: i32,
         height: i32,
-    ) -> Result<Surface, Error> {
+    ) -> Result<ImageSurface, Error> {
         unsafe {
-            Self::from_raw_full(ffi::cairo_surface_create_similar_image(
+            ImageSurface::from_raw_full(ffi::cairo_surface_create_similar_image(
                 self.to_raw_none(),
                 format.into(),
                 width,
