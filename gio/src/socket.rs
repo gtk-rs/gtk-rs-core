@@ -925,12 +925,7 @@ mod tests {
 
         let mut fds = [0 as libc::c_int; 2];
         let (out_sock, in_sock) = unsafe {
-            let ret = libc::socketpair(
-                libc::AF_UNIX,
-                libc::SOCK_STREAM | libc::SOCK_CLOEXEC,
-                0,
-                fds.as_mut_ptr(),
-            );
+            let ret = libc::socketpair(libc::AF_UNIX, libc::SOCK_STREAM, 0, fds.as_mut_ptr());
             if ret != 0 {
                 panic!("{}", io::Error::last_os_error());
             }
