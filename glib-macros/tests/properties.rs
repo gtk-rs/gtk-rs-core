@@ -60,7 +60,7 @@ mod base {
 mod foo {
     use glib::prelude::*;
     use glib::subclass::prelude::*;
-    use glib_macros::Properties;
+    use glib_macros::{Properties, ValueDelegate};
     use once_cell::sync::OnceCell;
     use std::cell::Cell;
     use std::cell::RefCell;
@@ -68,6 +68,9 @@ mod foo {
     use std::sync::Mutex;
 
     use super::base::Base;
+
+    #[derive(ValueDelegate, Default, Debug, PartialEq)]
+    pub struct MyPropertyValue(pub i32);
 
     #[derive(Clone, Default, Debug, PartialEq, Eq, glib::Boxed)]
     #[boxed_type(name = "SimpleBoxedString")]
@@ -101,12 +104,16 @@ mod foo {
             double: RefCell<f64>,
             #[property(get, set)]
             string_vec: RefCell<Vec<String>>,
+            #[property(get, set, builder(glib::VariantTy::DOUBLE))]
+            variant: RefCell<Option<glib::Variant>>,
             #[property(get = |_| 42.0, set)]
             infer_inline_type: RefCell<f64>,
             // The following property doesn't store any data. The value of the property is calculated
             // when the value is accessed.
             #[property(get = Self::hello_world)]
             _buzz: PhantomData<String>,
+            #[property(get, set)]
+            my_property_value: RefCell<MyPropertyValue>,
             #[property(get, set = Self::set_fizz, name = "fizz", nick = "fizz-nick",
                 blurb = "short description stored in the GLib type system"
             )]
@@ -137,9 +144,9 @@ mod foo {
             boxed: RefCell<SimpleBoxedString>,
             #[property(get, set, builder(SimpleEnum::One))]
             fenum: RefCell<SimpleEnum>,
-            #[property(get, set)]
+            #[property(get, set, nullable)]
             object: RefCell<Option<glib::Object>>,
-            #[property(get, set)]
+            #[property(get, set, nullable)]
             optional: RefCell<Option<String>>,
             #[property(get, set)]
             smart_pointer: Rc<RefCell<String>>,
@@ -204,6 +211,10 @@ fn props() {
     assert_eq!(bar, "".to_string());
     let string_vec: Vec<String> = myfoo.property("string-vec");
     assert!(string_vec.is_empty());
+    let my_property_value: foo::MyPropertyValue = myfoo.property("my-property-value");
+    assert_eq!(my_property_value, foo::MyPropertyValue(0));
+    let var: Option<glib::Variant> = myfoo.property("variant");
+    assert!(var.is_none());
 
     // Set values
     myfoo.set_property("bar", "epic".to_value());
@@ -215,6 +226,10 @@ fn props() {
         string_vec,
         vec!["epic".to_string(), "more epic".to_string()]
     );
+    let myv = Some(2.0f64.to_variant());
+    myfoo.set_property("variant", &myv);
+    let var: Option<glib::Variant> = myfoo.property("variant");
+    assert_eq!(var, myv);
 
     // Custom getter
     let buzz: String = myfoo.property("buzz");
@@ -297,11 +312,6 @@ fn props() {
         foo::SimpleBoxedString("".into())
     );
 
-    // optional
-    assert_eq!(myfoo.property::<Option<String>>("optional"), None,);
-
-    myfoo.connect_optional_notify(|_| println!("notified"));
-
     // Test `FooPropertiesExt`
     // getters
     {
@@ -341,9 +351,6 @@ fn props() {
             "setter working".to_string()
         );
 
-        // object subclass
-        myfoo.set_object(glib::BoxedAnyObject::new(""));
-
         // custom
         myfoo.set_fake_field("fake setter");
         assert_eq!(
@@ -366,4 +373,14 @@ fn props() {
         let not_overridden: u32 = myfoo.property("not-overridden");
         assert_eq!(not_overridden, 42);
     }
+
+    // optional
+    myfoo.set_optional(Some("Hello world"));
+    assert_eq!(myfoo.optional(), Some("Hello world".to_string()));
+    myfoo.connect_optional_notify(|_| println!("notified"));
+
+    // object subclass
+    let myobj = glib::BoxedAnyObject::new("");
+    myfoo.set_object(Some(myobj.upcast_ref()));
+    assert_eq!(myfoo.object(), Some(myobj.upcast()))
 }

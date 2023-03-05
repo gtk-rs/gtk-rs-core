@@ -2812,10 +2812,10 @@ mod tests {
         // gives us useful results
         let dir_1 = tmp_dir.join("abcd");
         fs::create_dir(&dir_1).unwrap();
-        assert_eq!(crate::path_get_basename(&dir_1), Path::from("abcd"));
+        assert_eq!(crate::path_get_basename(&dir_1), Path::new("abcd"));
         assert_eq!(
             crate::path_get_basename(dir_1.canonicalize().unwrap()),
-            Path::from("abcd")
+            Path::new("abcd")
         );
         assert_eq!(
             crate::path_get_dirname(dir_1.canonicalize().unwrap()),

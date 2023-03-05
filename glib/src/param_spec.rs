@@ -2224,6 +2224,17 @@ impl HasParamSpec for bool {
     }
 }
 
+impl HasParamSpec for crate::Variant {
+    type ParamSpec = ParamSpecVariant;
+    type SetValue = Self;
+    type BuilderFn =
+        fn(&'static str, ty: &'static crate::VariantTy) -> ParamSpecVariantBuilder<'static>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

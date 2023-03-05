@@ -86,6 +86,9 @@ enum PropAttr {
     // Builder(Punctuated(required_params), Optionals(TokenStream))
     Builder(Punctuated<syn::Expr, Token![,]>, TokenStream2),
 
+    // ident
+    Nullable,
+
     // ident [= expr]
     Get(Option<syn::Expr>),
     Set(Option<syn::Expr>),
@@ -151,6 +154,7 @@ impl Parse for PropAttr {
         } else {
             // attributes with only the identifier name
             match &*name_str {
+                "nullable" => PropAttr::Nullable,
                 "get" => PropAttr::Get(None),
                 "set" => PropAttr::Set(None),
                 "readwrite" | "read_only" | "write_only" => {
@@ -171,6 +175,7 @@ impl Parse for PropAttr {
 
 #[derive(Default)]
 struct ReceivedAttrs {
+    nullable: bool,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     override_class: Option<syn::Type>,
@@ -197,6 +202,7 @@ impl Parse for ReceivedAttrs {
 impl ReceivedAttrs {
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
+            PropAttr::Nullable => self.nullable = true,
             PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
             PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
             PropAttr::Name(lit) => self.name = Some(lit),
@@ -223,6 +229,7 @@ struct PropDesc {
     name: syn::LitStr,
     override_class: Option<syn::Type>,
     override_interface: Option<syn::Type>,
+    nullable: bool,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
@@ -238,6 +245,7 @@ impl PropDesc {
         attrs: ReceivedAttrs,
     ) -> syn::Result<Self> {
         let ReceivedAttrs {
+            nullable,
             get,
             set,
             override_class,
@@ -280,6 +288,7 @@ impl PropDesc {
             name,
             override_class,
             override_interface,
+            nullable,
             get,
             set,
             member,
@@ -514,8 +523,23 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
         let is_construct_only = p.builder_fields.iter().any(|(k, _)| *k == "construct_only");
         let setter = (p.set.is_some() && !is_construct_only).then(|| {
             let ident = format_ident!("set_{}", ident);
-            quote!(pub fn #ident<'a>(&self, value: impl std::borrow::Borrow<<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue>) {
-                self.set_property_from_value(#name, &::std::convert::From::from(std::borrow::Borrow::borrow(&value)))
+            let target_ty = quote!(<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue);
+            let set_ty = if p.nullable {
+               quote!(Option<impl std::borrow::Borrow<#target_ty>>)
+            } else {
+               quote!(impl std::borrow::Borrow<#target_ty>)
+            };
+            let upcasted_borrowed_value = if p.nullable {
+                quote!(
+                    value.as_ref().map(|v| std::borrow::Borrow::borrow(v))
+                )
+            } else {
+                quote!(
+                    std::borrow::Borrow::borrow(&value)
+                )
+            };
+            quote!(pub fn #ident<'a>(&self, value: #set_ty) {
+                self.set_property_from_value(#name, &::std::convert::From::from(#upcasted_borrowed_value))
             })
         });
         let span = p.attrs_span;
