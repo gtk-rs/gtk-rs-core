@@ -104,7 +104,7 @@ pub trait MountExt: 'static {
         &self,
         force_rescan: bool,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::GString>, glib::Error>;
+    ) -> Result<glib::StrV, glib::Error>;
 
     #[doc(alias = "g_mount_is_shadowed")]
     fn is_shadowed(&self) -> bool;
@@ -351,7 +351,7 @@ impl<O: IsA<Mount>> MountExt for O {
         &self,
         force_rescan: bool,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::GString>, glib::Error> {
+    ) -> Result<glib::StrV, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_mount_guess_content_type_sync(

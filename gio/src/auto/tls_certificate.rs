@@ -150,7 +150,7 @@ impl TlsCertificate {
     #[doc(alias = "g_tls_certificate_list_new_from_file")]
     pub fn list_new_from_file(
         file: impl AsRef<std::path::Path>,
-    ) -> Result<Vec<TlsCertificate>, glib::Error> {
+    ) -> Result<glib::List<TlsCertificate>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_tls_certificate_list_new_from_file(

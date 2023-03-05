@@ -18,7 +18,7 @@ impl SettingsBackend {
     pub const NONE: Option<&'static SettingsBackend> = None;
 
     //#[doc(alias = "g_settings_backend_flatten_tree")]
-    //pub fn flatten_tree(tree: /*Ignored*/&glib::Tree) -> (glib::GString, Vec<glib::GString>, Vec<glib::Variant>) {
+    //pub fn flatten_tree(tree: /*Ignored*/&glib::Tree) -> (glib::GString, Vec<glib::GString>, glib::PtrSlice<glib::Variant>) {
     //    unsafe { TODO: call ffi:g_settings_backend_flatten_tree() }
     //}
 

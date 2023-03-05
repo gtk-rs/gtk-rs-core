@@ -46,7 +46,7 @@ pub trait FontFamilyExt: 'static {
     fn is_variable(&self) -> bool;
 
     #[doc(alias = "pango_font_family_list_faces")]
-    fn list_faces(&self) -> Vec<FontFace>;
+    fn list_faces(&self) -> glib::PtrSlice<FontFace>;
 }
 
 impl<O: IsA<FontFamily>> FontFamilyExt for O {
@@ -87,7 +87,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
-    fn list_faces(&self) -> Vec<FontFace> {
+    fn list_faces(&self) -> glib::PtrSlice<FontFace> {
         unsafe {
             let mut faces = ptr::null_mut();
             let mut n_faces = mem::MaybeUninit::uninit();

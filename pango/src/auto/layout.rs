@@ -229,7 +229,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_get_lines")]
     #[doc(alias = "get_lines")]
-    pub fn lines(&self) -> Vec<LayoutLine> {
+    pub fn lines(&self) -> glib::SList<LayoutLine> {
         unsafe {
             FromGlibPtrContainer::from_glib_none(ffi::pango_layout_get_lines(self.to_glib_none().0))
         }
@@ -237,7 +237,7 @@ impl Layout {
 
     #[doc(alias = "pango_layout_get_lines_readonly")]
     #[doc(alias = "get_lines_readonly")]
-    pub fn lines_readonly(&self) -> Vec<LayoutLine> {
+    pub fn lines_readonly(&self) -> glib::SList<LayoutLine> {
         unsafe {
             FromGlibPtrContainer::from_glib_none(ffi::pango_layout_get_lines_readonly(
                 self.to_glib_none().0,
@@ -247,13 +247,13 @@ impl Layout {
 
     //#[doc(alias = "pango_layout_get_log_attrs")]
     //#[doc(alias = "get_log_attrs")]
-    //pub fn log_attrs(&self, attrs: /*Ignored*/Vec<LogAttr>) -> i32 {
+    //pub fn log_attrs(&self, attrs: /*Ignored*/glib::Slice<LogAttr>) -> i32 {
     //    unsafe { TODO: call ffi:pango_layout_get_log_attrs() }
     //}
 
     //#[doc(alias = "pango_layout_get_log_attrs_readonly")]
     //#[doc(alias = "get_log_attrs_readonly")]
-    //pub fn log_attrs_readonly(&self) -> /*Ignored*/Vec<LogAttr> {
+    //pub fn log_attrs_readonly(&self) -> /*Ignored*/glib::Slice<LogAttr> {
     //    unsafe { TODO: call ffi:pango_layout_get_log_attrs_readonly() }
     //}
 

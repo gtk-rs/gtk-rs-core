@@ -57,7 +57,7 @@ pub trait FileEnumeratorExt: 'static {
     ) -> Result<Option<FileInfo>, glib::Error>;
 
     #[doc(alias = "g_file_enumerator_next_files_async")]
-    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static>(
+    fn next_files_async<P: FnOnce(Result<glib::List<FileInfo>, glib::Error>) + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
@@ -69,7 +69,9 @@ pub trait FileEnumeratorExt: 'static {
         &self,
         num_files: i32,
         io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<FileInfo>, glib::Error>> + 'static>>;
+    ) -> Pin<
+        Box_<dyn std::future::Future<Output = Result<glib::List<FileInfo>, glib::Error>> + 'static>,
+    >;
 
     #[doc(alias = "g_file_enumerator_set_pending")]
     fn set_pending(&self, pending: bool);
@@ -208,7 +210,7 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         }
     }
 
-    fn next_files_async<P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static>(
+    fn next_files_async<P: FnOnce(Result<glib::List<FileInfo>, glib::Error>) + 'static>(
         &self,
         num_files: i32,
         io_priority: glib::Priority,
@@ -228,7 +230,7 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn next_files_async_trampoline<
-            P: FnOnce(Result<Vec<FileInfo>, glib::Error>) + 'static,
+            P: FnOnce(Result<glib::List<FileInfo>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -264,8 +266,9 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExt for O {
         &self,
         num_files: i32,
         io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<FileInfo>, glib::Error>> + 'static>>
-    {
+    ) -> Pin<
+        Box_<dyn std::future::Future<Output = Result<glib::List<FileInfo>, glib::Error>> + 'static>,
+    > {
         Box_::pin(crate::GioFuture::new(
             self,
             move |obj, cancellable, send| {

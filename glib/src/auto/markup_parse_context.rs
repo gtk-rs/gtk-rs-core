@@ -48,7 +48,7 @@ impl MarkupParseContext {
 
     //#[doc(alias = "g_markup_parse_context_get_element_stack")]
     //#[doc(alias = "get_element_stack")]
-    //pub fn element_stack(&self) -> /*Unimplemented*/Vec<Basic: Pointer> {
+    //pub fn element_stack(&self) -> /*Unimplemented*/crate::SList<Basic: Pointer> {
     //    unsafe { TODO: call ffi:g_markup_parse_context_get_element_stack() }
     //}
 

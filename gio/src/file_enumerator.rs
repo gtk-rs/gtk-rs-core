@@ -40,7 +40,7 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExtManual for O {
 /// A [`Stream`](futures_core::Stream) used to enumerate files in directories.
 pub struct FileEnumeratorStream {
     enumerator: FileEnumerator,
-    future: Option<LocalBoxFuture<'static, Result<Vec<FileInfo>, glib::Error>>>,
+    future: Option<LocalBoxFuture<'static, Result<glib::List<FileInfo>, glib::Error>>>,
     num_files: i32,
     priority: glib::Priority,
 }
@@ -57,7 +57,7 @@ impl std::fmt::Debug for FileEnumeratorStream {
 }
 
 impl futures_core::Stream for FileEnumeratorStream {
-    type Item = Result<Vec<FileInfo>, glib::Error>;
+    type Item = Result<glib::List<FileInfo>, glib::Error>;
 
     #[inline]
     fn poll_next(

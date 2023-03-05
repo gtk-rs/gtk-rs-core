@@ -58,7 +58,7 @@ pub trait DriveExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_drive_enumerate_identifiers")]
-    fn enumerate_identifiers(&self) -> Vec<glib::GString>;
+    fn enumerate_identifiers(&self) -> glib::StrV;
 
     #[doc(alias = "g_drive_get_icon")]
     #[doc(alias = "get_icon")]
@@ -86,7 +86,7 @@ pub trait DriveExt: 'static {
 
     #[doc(alias = "g_drive_get_volumes")]
     #[doc(alias = "get_volumes")]
-    fn volumes(&self) -> Vec<Volume>;
+    fn volumes(&self) -> glib::List<Volume>;
 
     #[doc(alias = "g_drive_has_media")]
     fn has_media(&self) -> bool;
@@ -259,7 +259,7 @@ impl<O: IsA<Drive>> DriveExt for O {
         ))
     }
 
-    fn enumerate_identifiers(&self) -> Vec<glib::GString> {
+    fn enumerate_identifiers(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_drive_enumerate_identifiers(
                 self.as_ref().to_glib_none().0,
@@ -304,7 +304,7 @@ impl<O: IsA<Drive>> DriveExt for O {
         }
     }
 
-    fn volumes(&self) -> Vec<Volume> {
+    fn volumes(&self) -> glib::List<Volume> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_drive_get_volumes(
                 self.as_ref().to_glib_none().0,

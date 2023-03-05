@@ -58,7 +58,7 @@ impl AttrList {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_list_get_attributes")]
     #[doc(alias = "get_attributes")]
-    pub fn attributes(&self) -> Vec<Attribute> {
+    pub fn attributes(&self) -> glib::SList<Attribute> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::pango_attr_list_get_attributes(
                 self.to_glib_none().0,

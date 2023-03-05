@@ -161,7 +161,7 @@ impl DesktopAppInfo {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_desktop_app_info_get_string_list")]
     #[doc(alias = "get_string_list")]
-    pub fn string_list(&self, key: &str) -> Vec<glib::GString> {
+    pub fn string_list(&self, key: &str) -> glib::StrV {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let ret = FromGlibContainer::from_glib_full_num(
@@ -280,7 +280,7 @@ impl DesktopAppInfo {
 
     #[doc(alias = "g_desktop_app_info_get_implementations")]
     #[doc(alias = "get_implementations")]
-    pub fn implementations(interface: &str) -> Vec<DesktopAppInfo> {
+    pub fn implementations(interface: &str) -> glib::List<DesktopAppInfo> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_desktop_app_info_get_implementations(
                 interface.to_glib_none().0,

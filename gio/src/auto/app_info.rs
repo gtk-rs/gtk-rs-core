@@ -42,13 +42,13 @@ impl AppInfo {
 
     #[doc(alias = "g_app_info_get_all")]
     #[doc(alias = "get_all")]
-    pub fn all() -> Vec<AppInfo> {
+    pub fn all() -> glib::List<AppInfo> {
         unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_app_info_get_all()) }
     }
 
     #[doc(alias = "g_app_info_get_all_for_type")]
     #[doc(alias = "get_all_for_type")]
-    pub fn all_for_type(content_type: &str) -> Vec<AppInfo> {
+    pub fn all_for_type(content_type: &str) -> glib::List<AppInfo> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_app_info_get_all_for_type(
                 content_type.to_glib_none().0,
@@ -221,7 +221,7 @@ impl AppInfo {
 
     #[doc(alias = "g_app_info_get_fallback_for_type")]
     #[doc(alias = "get_fallback_for_type")]
-    pub fn fallback_for_type(content_type: &str) -> Vec<AppInfo> {
+    pub fn fallback_for_type(content_type: &str) -> glib::List<AppInfo> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_app_info_get_fallback_for_type(
                 content_type.to_glib_none().0,
@@ -231,7 +231,7 @@ impl AppInfo {
 
     #[doc(alias = "g_app_info_get_recommended_for_type")]
     #[doc(alias = "get_recommended_for_type")]
-    pub fn recommended_for_type(content_type: &str) -> Vec<AppInfo> {
+    pub fn recommended_for_type(content_type: &str) -> glib::List<AppInfo> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_app_info_get_recommended_for_type(
                 content_type.to_glib_none().0,

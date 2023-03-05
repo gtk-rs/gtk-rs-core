@@ -182,7 +182,7 @@ pub trait SettingsExt: 'static {
     fn is_writable(&self, name: &str) -> bool;
 
     #[doc(alias = "g_settings_list_children")]
-    fn list_children(&self) -> Vec<glib::GString>;
+    fn list_children(&self) -> glib::StrV;
 
     #[doc(alias = "g_settings_reset")]
     fn reset(&self, key: &str);
@@ -413,7 +413,7 @@ impl<O: IsA<Settings>> SettingsExt for O {
         }
     }
 
-    fn list_children(&self) -> Vec<glib::GString> {
+    fn list_children(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_settings_list_children(
                 self.as_ref().to_glib_none().0,

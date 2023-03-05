@@ -30,7 +30,7 @@ pub trait DBusObjectExt: 'static {
 
     #[doc(alias = "g_dbus_object_get_interfaces")]
     #[doc(alias = "get_interfaces")]
-    fn interfaces(&self) -> Vec<DBusInterface>;
+    fn interfaces(&self) -> glib::List<DBusInterface>;
 
     #[doc(alias = "g_dbus_object_get_object_path")]
     #[doc(alias = "get_object_path")]
@@ -59,7 +59,7 @@ impl<O: IsA<DBusObject>> DBusObjectExt for O {
         }
     }
 
-    fn interfaces(&self) -> Vec<DBusInterface> {
+    fn interfaces(&self) -> glib::List<DBusInterface> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_dbus_object_get_interfaces(
                 self.as_ref().to_glib_none().0,

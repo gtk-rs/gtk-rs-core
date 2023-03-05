@@ -65,7 +65,7 @@ pub trait ActionGroupExt: 'static {
     fn has_action(&self, action_name: &str) -> bool;
 
     #[doc(alias = "g_action_group_list_actions")]
-    fn list_actions(&self) -> Vec<glib::GString>;
+    fn list_actions(&self) -> glib::StrV;
 
     #[doc(alias = "action-added")]
     fn connect_action_added<F: Fn(&Self, &str) + 'static>(
@@ -209,7 +209,7 @@ impl<O: IsA<ActionGroup>> ActionGroupExt for O {
         }
     }
 
-    fn list_actions(&self) -> Vec<glib::GString> {
+    fn list_actions(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_action_group_list_actions(
                 self.as_ref().to_glib_none().0,

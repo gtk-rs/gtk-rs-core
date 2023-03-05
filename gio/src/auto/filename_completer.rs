@@ -37,7 +37,7 @@ impl FilenameCompleter {
 
     #[doc(alias = "g_filename_completer_get_completions")]
     #[doc(alias = "get_completions")]
-    pub fn completions(&self, initial_text: &str) -> Vec<glib::GString> {
+    pub fn completions(&self, initial_text: &str) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_filename_completer_get_completions(
                 self.to_glib_none().0,

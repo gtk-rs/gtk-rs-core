@@ -66,7 +66,7 @@ pub fn itemize(
     length: i32,
     attrs: &AttrList,
     cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
+) -> glib::List<Item> {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
             context.to_glib_none().0,
@@ -88,7 +88,7 @@ pub fn itemize_with_base_dir(
     length: i32,
     attrs: &AttrList,
     cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
+) -> glib::List<Item> {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
             context.to_glib_none().0,

@@ -395,7 +395,7 @@ pub fn language_names_with_category(category_name: &str) -> Vec<crate::GString> 
 
 #[doc(alias = "g_get_locale_variants")]
 #[doc(alias = "get_locale_variants")]
-pub fn locale_variants(locale: &str) -> Vec<crate::GString> {
+pub fn locale_variants(locale: &str) -> crate::StrV {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::g_get_locale_variants(locale.to_glib_none().0))
     }
