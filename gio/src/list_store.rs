@@ -7,6 +7,16 @@ use glib::{prelude::*, translate::*, Object};
 use crate::{prelude::*, ListModel, ListStore};
 
 impl ListStore {
+    #[doc(alias = "g_list_store_new")]
+    pub fn new<T: StaticType>() -> Self {
+        Self::with_type(T::static_type())
+    }
+
+    #[doc(alias = "g_list_store_new")]
+    pub fn with_type(type_: glib::types::Type) -> Self {
+        unsafe { from_glib_full(ffi::g_list_store_new(type_.into_glib())) }
+    }
+
     #[doc(alias = "g_list_store_insert_sorted")]
     pub fn insert_sorted<P: IsA<glib::Object>, F: FnMut(&Object, &Object) -> Ordering>(
         &self,
@@ -119,7 +129,7 @@ impl ListStore {
 
 impl<P: IsA<glib::Object>> std::iter::FromIterator<P> for ListStore {
     fn from_iter<I: IntoIterator<Item = P>>(iter: I) -> Self {
-        let store = Self::new(P::static_type());
+        let store = Self::new::<P>();
         for item in iter.into_iter() {
             store.append(&item)
         }
@@ -165,9 +175,9 @@ mod tests {
 
     #[test]
     fn splice() {
-        let item0 = ListStore::new(ListStore::static_type());
-        let item1 = ListStore::new(ListStore::static_type());
-        let list = ListStore::new(ListStore::static_type());
+        let item0 = ListStore::new::<ListStore>();
+        let item1 = ListStore::new::<ListStore>();
+        let list = ListStore::new::<ListStore>();
         list.splice(0, 0, &[item0.clone(), item1.clone()]);
         assert_eq!(list.item(0), Some(item0.upcast()));
         assert_eq!(list.item(1), Some(item1.upcast()));
@@ -175,9 +185,9 @@ mod tests {
 
     #[test]
     fn extend() {
-        let item0 = ListStore::new(ListStore::static_type());
-        let item1 = ListStore::new(ListStore::static_type());
-        let mut list = ListStore::new(ListStore::static_type());
+        let item0 = ListStore::new::<ListStore>();
+        let item1 = ListStore::new::<ListStore>();
+        let mut list = ListStore::new::<ListStore>();
         list.extend([&item0, &item1]);
         assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(1).as_ref(), Some(item1.upcast_ref()));
@@ -185,15 +195,15 @@ mod tests {
         assert_eq!(list.item(2).as_ref(), Some(item0.upcast_ref()));
         assert_eq!(list.item(3).as_ref(), Some(item1.upcast_ref()));
 
-        let list_from_slice = ListStore::new(ListStore::static_type());
+        let list_from_slice = ListStore::new::<ListStore>();
         list_from_slice.extend_from_slice(&[item0, item1.clone()]);
         assert_eq!(list_from_slice.item(1).as_ref(), Some(item1.upcast_ref()));
     }
 
     #[test]
     fn from_iterator() {
-        let item0 = ListStore::new(ListStore::static_type());
-        let item1 = ListStore::new(ListStore::static_type());
+        let item0 = ListStore::new::<ListStore>();
+        let item1 = ListStore::new::<ListStore>();
         let v = vec![item0.clone(), item1.clone()];
         let list = ListStore::from_iter(v);
         assert_eq!(list.item(0).as_ref(), Some(item0.upcast_ref()));
@@ -204,9 +214,9 @@ mod tests {
     #[cfg(feature = "v2_74")]
     #[test]
     fn find() {
-        let item0 = ListStore::new(ListStore::static_type());
-        let item1 = ListStore::new(ListStore::static_type());
-        let list = ListStore::new(ListStore::static_type());
+        let item0 = ListStore::new::<ListStore>();
+        let item1 = ListStore::new::<ListStore>();
+        let list = ListStore::new::<ListStore>();
         list.append(&item0);
         list.append(&item1);
 

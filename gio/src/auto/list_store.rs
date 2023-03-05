@@ -19,11 +19,6 @@ glib::wrapper! {
 }
 
 impl ListStore {
-    #[doc(alias = "g_list_store_new")]
-    pub fn new(item_type: glib::types::Type) -> ListStore {
-        unsafe { from_glib_full(ffi::g_list_store_new(item_type.into_glib())) }
-    }
-
     // rustdoc-stripper-ignore-next
     /// Creates a new builder-pattern struct instance to construct [`ListStore`] objects.
     ///
@@ -81,12 +76,6 @@ impl ListStore {
         unsafe {
             ffi::g_list_store_remove_all(self.to_glib_none().0);
         }
-    }
-}
-
-impl Default for ListStore {
-    fn default() -> Self {
-        glib::object::Object::new::<Self>()
     }
 }
 
