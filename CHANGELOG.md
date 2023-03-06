@@ -2,6 +2,35 @@
 
 ## [Unreleased]
 
+## [0.17.3]
+
+Fabio Valentini:
+- pangocairo-sys: fix package.description in Cargo.toml
+
+Jason Francis:
+- gio: add `FileEnumerator::into_stream`
+- glib: Only optimize `IntoGStr` for `String` when capacity allows
+
+Marco Mastropaolo:
+- gio: Added subclassing support for `gio::SocketControlMessage`
+- gio: Fixed unit tests under macOS and possibly other \*nix flavors
+
+Marco Melorio:
+- glib: Add `connect_notify*` methods to `SignalGroup`
+
+Matteo Biggio:
+- glib: strv: when calling `g_strv` FFI method, use our `as_ptr` implementation
+
+Sebastian Dröge:
+- glib: Optimize `IntoGStr` impl for `String` by simply appending a NUL-byte
+- glib: Depend on glib-macros 0.17.3 for `ValueDelegate` derive macro
+
+ranfdev:
+- glib: Add `ValueDelegate` derive macro
+- glib: impl `HasParamSpec` on `glib::Variant`
+- glib: Add nullable attribute on `Properties` macro
+- glib: Explain `nullable` attribute
+
 ## [0.17.2]
 
 Andrey Kutejko:
