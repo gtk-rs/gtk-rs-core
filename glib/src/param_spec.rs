@@ -2115,6 +2115,15 @@ impl HasParamSpec for String {
         Self::ParamSpec::builder
     }
 }
+impl HasParamSpec for Box<str> {
+    type ParamSpec = ParamSpecString;
+    type SetValue = str;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
 impl HasParamSpec for crate::StrV {
     type ParamSpec = ParamSpecBoxed;
     type SetValue = Self;
