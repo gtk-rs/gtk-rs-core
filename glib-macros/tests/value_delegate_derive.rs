@@ -6,6 +6,10 @@ fn higher_level_types() {
     pub struct MyVec(Vec<String>);
 
     #[derive(Debug, glib::ValueDelegate)]
+    #[value_delegate(nullable)]
+    pub struct MyString(Box<str>);
+
+    #[derive(Debug, glib::ValueDelegate)]
     #[value_delegate(from = Option<String>)]
     struct MyVecManualFrom(Vec<String>);
 
@@ -23,7 +27,6 @@ fn higher_level_types() {
     let vec = vec!["foo".to_string(), "bar".to_string()];
     let vec_value = vec.to_value();
     let my_vec_value = MyVec(vec.clone()).to_value();
-
     assert_eq!(MyVec::static_type(), Vec::<String>::static_type());
     assert_eq!(
         vec_value.get::<Vec<String>>().unwrap(),
@@ -38,10 +41,88 @@ fn higher_level_types() {
         unsafe { MyVec::from_value(&my_vec_value).0 }
     );
 
+    let string = "foo".to_string();
+    let string_value = string.to_value();
+    let my_string_value = MyString(string.into()).to_value();
+    assert_eq!(MyString::static_type(), Box::<str>::static_type());
+    assert_eq!(
+        string_value.get::<Box<str>>().unwrap(),
+        my_string_value.get::<Box<str>>().unwrap(),
+    );
+    assert_eq!(string_value.value_type(), my_string_value.value_type());
+    assert_eq!(unsafe { Box::<str>::from_value(&string_value) }, unsafe {
+        MyString::from_value(&string_value).0
+    });
+    assert_eq!(
+        unsafe { Box::<str>::from_value(&my_string_value) },
+        unsafe { MyString::from_value(&my_string_value).0 }
+    );
+
+    let string_some = Some("foo".to_string());
+    let string_some_value = string_some.to_value();
+    let string_none_value = None::<String>.to_value();
+    let my_string_some_value = MyString(string_some.unwrap().into()).to_value();
+    let my_string_none_value = None::<MyString>.to_value();
+    assert_eq!(
+        Option::<MyString>::static_type(),
+        Option::<Box<str>>::static_type()
+    );
+    assert_eq!(
+        string_some_value
+            .get::<Option<Box<str>>>()
+            .unwrap()
+            .unwrap(),
+        my_string_some_value
+            .get::<Option<Box<str>>>()
+            .unwrap()
+            .unwrap(),
+    );
+    assert_eq!(
+        string_none_value
+            .get::<Option<Box<str>>>()
+            .unwrap()
+            .is_none(),
+        my_string_none_value
+            .get::<Option<Box<str>>>()
+            .unwrap()
+            .is_none(),
+    );
+    assert_eq!(
+        string_some_value.value_type(),
+        my_string_some_value.value_type()
+    );
+    assert_eq!(
+        string_none_value.value_type(),
+        my_string_none_value.value_type()
+    );
+    assert_eq!(
+        unsafe { Option::<Box<str>>::from_value(&string_some_value).unwrap() },
+        unsafe {
+            Option::<MyString>::from_value(&string_some_value)
+                .unwrap()
+                .0
+        }
+    );
+    assert_eq!(
+        unsafe { Option::<Box<str>>::from_value(&string_none_value).is_none() },
+        unsafe { Option::<MyString>::from_value(&string_none_value).is_none() }
+    );
+    assert_eq!(
+        unsafe { Option::<Box<str>>::from_value(&my_string_some_value).unwrap() },
+        unsafe {
+            Option::<MyString>::from_value(&my_string_some_value)
+                .unwrap()
+                .0
+        }
+    );
+    assert_eq!(
+        unsafe { Option::<Box<str>>::from_value(&my_string_none_value).is_none() },
+        unsafe { Option::<MyString>::from_value(&my_string_none_value).is_none() }
+    );
+
     let opt = Some("foo".to_string());
     let opt_value = opt.to_value();
     let my_vec_manual_from_value = MyVecManualFrom::from(opt).to_value();
-
     assert_eq!(
         MyVecManualFrom::static_type(),
         Option::<String>::static_type()

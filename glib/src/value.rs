@@ -904,6 +904,49 @@ impl ToValueOptional for String {
     }
 }
 
+impl ValueType for Box<str> {
+    type Type = String;
+}
+
+impl ValueTypeOptional for Box<str> {}
+
+unsafe impl<'a> FromValue<'a> for Box<str> {
+    type Checker = GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        Box::<str>::from(<&str>::from_value(value))
+    }
+}
+
+impl StaticType for Box<str> {
+    fn static_type() -> Type {
+        String::static_type()
+    }
+}
+
+impl ToValue for Box<str> {
+    fn to_value(&self) -> Value {
+        <&str>::to_value(&self.as_ref())
+    }
+
+    fn value_type(&self) -> Type {
+        String::static_type()
+    }
+}
+
+impl From<Box<str>> for Value {
+    #[inline]
+    fn from(s: Box<str>) -> Self {
+        s.to_value()
+    }
+}
+
+impl ToValueOptional for Box<str> {
+    fn to_value_optional(s: Option<&Self>) -> Value {
+        <str>::to_value_optional(s.as_ref().map(|s| s.as_ref()))
+    }
+}
+
 impl ValueType for Vec<String> {
     type Type = Vec<String>;
 }
