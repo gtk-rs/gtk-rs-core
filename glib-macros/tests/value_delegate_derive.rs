@@ -1,4 +1,4 @@
-use glib::{value::FromValue, HasParamSpec, StaticType, ToValue};
+use glib::{value::FromValue, StaticType, ToValue};
 
 #[test]
 fn higher_level_types() {
