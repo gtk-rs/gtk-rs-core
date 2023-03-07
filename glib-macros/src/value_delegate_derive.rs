@@ -8,6 +8,7 @@ use crate::utils::crate_ident_new;
 #[derive(Default, Debug, Clone)]
 enum DeriveMode {
     From,
+    TryFrom,
     #[default]
     Private,
 }
@@ -21,22 +22,27 @@ pub struct ValueDelegateInput {
 
 enum Arg {
     FromPath(syn::Path),
+    TryFromPath(syn::Path),
     Nullable,
 }
 
 impl Parse for Arg {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let argname: syn::Ident = input.parse()?;
-        if argname == "nullable" {
-            Ok(Arg::Nullable)
-        } else if argname == "from" {
-            let _eq: Token![=] = input.parse()?;
-            Ok(Arg::FromPath(input.parse()?))
-        } else {
-            Err(syn::Error::new(
+        match argname.to_string().as_ref() {
+            "nullable" => Ok(Arg::Nullable),
+            "from" => {
+                let _eq: Token![=] = input.parse()?;
+                Ok(Arg::FromPath(input.parse()?))
+            }
+            "try_from" => {
+                let _eq: Token![=] = input.parse()?;
+                Ok(Arg::TryFromPath(input.parse()?))
+            }
+            _ => Err(syn::Error::new(
                 input.span(),
                 "expected `nullable` or `from`",
-            ))
+            )),
         }
     }
 }
@@ -45,6 +51,7 @@ impl Parse for Arg {
 struct Args {
     nullable: bool,
     from_path: Option<syn::Path>,
+    try_from_path: Option<syn::Path>,
 }
 
 impl Parse for Args {
@@ -54,6 +61,7 @@ impl Parse for Args {
         for a in args {
             match a {
                 Arg::FromPath(p) => this.from_path = Some(p),
+                Arg::TryFromPath(p) => this.try_from_path = Some(p),
                 Arg::Nullable => this.nullable = true,
             }
         }
@@ -78,6 +86,8 @@ impl Parse for ValueDelegateInput {
         let (delegated_ty, mode) =
             if let Some(path) = args.as_ref().and_then(|a| a.from_path.as_ref()) {
                 (Some(path.clone()), DeriveMode::From)
+            } else if let Some(path) = args.as_ref().and_then(|a| a.try_from_path.as_ref()) {
+                (Some(path.clone()), DeriveMode::TryFrom)
             } else {
                 let path = match derive_input.data {
                     syn::Data::Struct(s) => match s.fields {
@@ -98,7 +108,9 @@ impl Parse for ValueDelegateInput {
                 derive_input.ident.span(),
                 "Unless `derive(ValueDelegate)` is used over a newtype with 1 field, \
                 the delegated type must be specified using \
-                #[value_delegate(from = chosen_type)]",
+                #[value_delegate(from = chosen_type)] \
+                or \
+                #[value_delegate(try_from = chosen_type)]",
             )
         })?;
 
@@ -123,7 +135,7 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
 
     // this must be called in a context where `this` is defined.
     let delegate_value = match mode {
-        DeriveMode::From => {
+        DeriveMode::From | DeriveMode::TryFrom => {
             quote!(<#delegated_ty as std::convert::From<_>>::from(this))
         }
         DeriveMode::Private => quote!(this.0),
@@ -143,9 +155,15 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
         }
     });
 
+    let ident_str = ident.to_string();
     let from_value = match mode {
         DeriveMode::From => {
             quote!(#ident::from(<#delegated_ty as #crate_ident::value::FromValue<'a>>::from_value(value)))
+        }
+        DeriveMode::TryFrom => {
+            quote!(#ident::try_from(<#delegated_ty as #crate_ident::value::FromValue<'a>>::from_value(
+                value
+            )).unwrap_or_else(|e| panic!("Converting {} using TryFrom failed: {:?}", #ident_str, e)))
         }
         DeriveMode::Private => {
             quote!(#ident(<#delegated_ty as #crate_ident::value::FromValue<'a>>::from_value(value)))
