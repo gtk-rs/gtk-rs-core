@@ -1807,6 +1807,15 @@ impl From<&String> for GString {
     }
 }
 
+impl From<GStringPtr> for GString {
+    #[inline]
+    fn from(s: GStringPtr) -> Self {
+        let s = mem::ManuallyDrop::new(s);
+        let len = unsafe { GStr::from_ptr(s.0.as_ptr()).len() };
+        GString(Inner::Foreign { ptr: s.0, len })
+    }
+}
+
 impl TryFrom<CString> for GString {
     type Error = GStringUtf8Error<CString>;
     #[inline]
