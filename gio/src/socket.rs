@@ -794,7 +794,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             )
             .into_glib()
         }
-        unsafe extern "C" fn destroy_closure<O, F>(ptr: glib::ffi::gpointer) {
+        unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
             let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
         }
         let cancellable = cancellable.map(|c| c.as_ref());
@@ -813,7 +813,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,
-                Some(destroy_closure::<O, F>),
+                Some(destroy_closure::<F>),
             );
             glib::ffi::g_source_set_priority(source, priority.into_glib());
 
