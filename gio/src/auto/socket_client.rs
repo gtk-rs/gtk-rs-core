@@ -767,7 +767,7 @@ impl<O: IsA<SocketClient>> SocketClientExt for O {
     }
 
     fn set_type(&self, type_: SocketType) {
-        glib::ObjectExt::set_property(self.as_ref(), "type", &type_)
+        glib::ObjectExt::set_property(self.as_ref(), "type", type_)
     }
 
     fn connect_event<
