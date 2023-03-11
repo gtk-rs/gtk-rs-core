@@ -111,7 +111,7 @@ macro_rules! define_attribute_struct {
 
         impl $rust_type {
             #[doc(alias = "pango_attribute_equal")]
-            fn equal<'a, T:  crate::attribute::IsAttribute>(&self, attr2: &'a T) -> bool {
+            fn equal<T:  crate::attribute::IsAttribute>(&self, attr2: &T) -> bool {
                 unsafe {
                     glib::translate::from_glib(ffi::pango_attribute_equal(self.as_ptr() as *const ffi::PangoAttribute,
                        glib::translate::ToGlibPtr::to_glib_none(attr2.upcast_ref()).0,

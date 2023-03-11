@@ -89,7 +89,7 @@ unsafe impl<T: AsyncInitableImpl> IsImplementable<T> for AsyncInitable {
     fn interface_init(iface: &mut glib::Interface<Self>) {
         let iface = iface.as_mut();
         iface.init_async = Some(async_initable_init_async::<T>);
-        iface.init_finish = Some(async_initable_init_finish::<T>);
+        iface.init_finish = Some(async_initable_init_finish);
     }
 }
 
@@ -136,7 +136,7 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
     });
 }
 
-unsafe extern "C" fn async_initable_init_finish<T: AsyncInitableImpl>(
+unsafe extern "C" fn async_initable_init_finish(
     initable: *mut ffi::GAsyncInitable,
     res: *mut ffi::GAsyncResult,
     error: *mut *mut glib::ffi::GError,
