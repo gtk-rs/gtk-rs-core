@@ -60,7 +60,7 @@ impl<O: IsA<TlsServerConnection>> TlsServerConnectionExt for O {
     }
 
     fn set_authentication_mode(&self, authentication_mode: TlsAuthenticationMode) {
-        glib::ObjectExt::set_property(self.as_ref(), "authentication-mode", &authentication_mode)
+        glib::ObjectExt::set_property(self.as_ref(), "authentication-mode", authentication_mode)
     }
 
     fn connect_authentication_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

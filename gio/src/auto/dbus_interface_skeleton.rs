@@ -204,7 +204,7 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
     }
 
     fn set_g_flags(&self, g_flags: DBusInterfaceSkeletonFlags) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-flags", &g_flags)
+        glib::ObjectExt::set_property(self.as_ref(), "g-flags", g_flags)
     }
 
     fn connect_g_authorize_method<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(

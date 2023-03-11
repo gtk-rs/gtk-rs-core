@@ -526,7 +526,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
     }
 
     fn set_action_group<P: IsA<ActionGroup>>(&self, action_group: Option<&P>) {
-        glib::ObjectExt::set_property(self.as_ref(), "action-group", &action_group)
+        glib::ObjectExt::set_property(self.as_ref(), "action-group", action_group)
     }
 
     fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
