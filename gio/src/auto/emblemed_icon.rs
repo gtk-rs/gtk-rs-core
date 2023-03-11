@@ -38,7 +38,7 @@ pub trait EmblemedIconExt: 'static {
 
     #[doc(alias = "g_emblemed_icon_get_emblems")]
     #[doc(alias = "get_emblems")]
-    fn emblems(&self) -> Vec<Emblem>;
+    fn emblems(&self) -> glib::List<Emblem>;
 
     #[doc(alias = "g_emblemed_icon_get_icon")]
     #[doc(alias = "get_icon")]
@@ -63,7 +63,7 @@ impl<O: IsA<EmblemedIcon>> EmblemedIconExt for O {
         }
     }
 
-    fn emblems(&self) -> Vec<Emblem> {
+    fn emblems(&self) -> glib::List<Emblem> {
         unsafe {
             FromGlibPtrContainer::from_glib_none(ffi::g_emblemed_icon_get_emblems(
                 self.as_ref().to_glib_none().0,

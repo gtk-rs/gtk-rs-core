@@ -39,7 +39,7 @@ pub trait DBusInterfaceSkeletonExt: 'static {
 
     #[doc(alias = "g_dbus_interface_skeleton_get_connections")]
     #[doc(alias = "get_connections")]
-    fn connections(&self) -> Vec<DBusConnection>;
+    fn connections(&self) -> glib::List<DBusConnection>;
 
     #[doc(alias = "g_dbus_interface_skeleton_get_flags")]
     #[doc(alias = "get_flags")]
@@ -122,7 +122,7 @@ impl<O: IsA<DBusInterfaceSkeleton>> DBusInterfaceSkeletonExt for O {
         }
     }
 
-    fn connections(&self) -> Vec<DBusConnection> {
+    fn connections(&self) -> glib::List<DBusConnection> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_dbus_interface_skeleton_get_connections(
                 self.as_ref().to_glib_none().0,

@@ -49,7 +49,7 @@ pub trait VolumeExt: 'static {
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
     #[doc(alias = "g_volume_enumerate_identifiers")]
-    fn enumerate_identifiers(&self) -> Vec<glib::GString>;
+    fn enumerate_identifiers(&self) -> glib::StrV;
 
     #[doc(alias = "g_volume_get_activation_root")]
     #[doc(alias = "get_activation_root")]
@@ -196,7 +196,7 @@ impl<O: IsA<Volume>> VolumeExt for O {
         ))
     }
 
-    fn enumerate_identifiers(&self) -> Vec<glib::GString> {
+    fn enumerate_identifiers(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_enumerate_identifiers(
                 self.as_ref().to_glib_none().0,

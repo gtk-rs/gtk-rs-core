@@ -35,7 +35,7 @@ pub trait ProxyResolverExt: 'static {
         &self,
         uri: &str,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::GString>, glib::Error>;
+    ) -> Result<glib::StrV, glib::Error>;
 
     #[doc(alias = "g_proxy_resolver_lookup_async")]
     fn lookup_async<P: FnOnce(Result<Vec<glib::GString>, glib::Error>) + 'static>(
@@ -66,7 +66,7 @@ impl<O: IsA<ProxyResolver>> ProxyResolverExt for O {
         &self,
         uri: &str,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<Vec<glib::GString>, glib::Error> {
+    ) -> Result<glib::StrV, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_proxy_resolver_lookup(

@@ -300,7 +300,7 @@ impl FileInfo {
     }
 
     #[doc(alias = "g_file_info_list_attributes")]
-    pub fn list_attributes(&self, name_space: Option<&str>) -> Vec<glib::GString> {
+    pub fn list_attributes(&self, name_space: Option<&str>) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_file_info_list_attributes(
                 self.to_glib_none().0,

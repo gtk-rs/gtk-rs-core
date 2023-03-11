@@ -31,7 +31,7 @@ impl VolumeMonitor {
 pub trait VolumeMonitorExt: 'static {
     #[doc(alias = "g_volume_monitor_get_connected_drives")]
     #[doc(alias = "get_connected_drives")]
-    fn connected_drives(&self) -> Vec<Drive>;
+    fn connected_drives(&self) -> glib::List<Drive>;
 
     #[doc(alias = "g_volume_monitor_get_mount_for_uuid")]
     #[doc(alias = "get_mount_for_uuid")]
@@ -39,7 +39,7 @@ pub trait VolumeMonitorExt: 'static {
 
     #[doc(alias = "g_volume_monitor_get_mounts")]
     #[doc(alias = "get_mounts")]
-    fn mounts(&self) -> Vec<Mount>;
+    fn mounts(&self) -> glib::List<Mount>;
 
     #[doc(alias = "g_volume_monitor_get_volume_for_uuid")]
     #[doc(alias = "get_volume_for_uuid")]
@@ -47,7 +47,7 @@ pub trait VolumeMonitorExt: 'static {
 
     #[doc(alias = "g_volume_monitor_get_volumes")]
     #[doc(alias = "get_volumes")]
-    fn volumes(&self) -> Vec<Volume>;
+    fn volumes(&self) -> glib::List<Volume>;
 
     #[doc(alias = "drive-changed")]
     fn connect_drive_changed<F: Fn(&Self, &Drive) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -87,7 +87,7 @@ pub trait VolumeMonitorExt: 'static {
 }
 
 impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
-    fn connected_drives(&self) -> Vec<Drive> {
+    fn connected_drives(&self) -> glib::List<Drive> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_connected_drives(
                 self.as_ref().to_glib_none().0,
@@ -104,7 +104,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    fn mounts(&self) -> Vec<Mount> {
+    fn mounts(&self) -> glib::List<Mount> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_mounts(
                 self.as_ref().to_glib_none().0,
@@ -121,7 +121,7 @@ impl<O: IsA<VolumeMonitor>> VolumeMonitorExt for O {
         }
     }
 
-    fn volumes(&self) -> Vec<Volume> {
+    fn volumes(&self) -> glib::List<Volume> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_volume_monitor_get_volumes(
                 self.as_ref().to_glib_none().0,

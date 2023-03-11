@@ -268,7 +268,7 @@ impl Uri {
     }
 
     #[doc(alias = "g_uri_list_extract_uris")]
-    pub fn list_extract_uris(uri_list: &str) -> Vec<crate::GString> {
+    pub fn list_extract_uris(uri_list: &str) -> crate::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_uri_list_extract_uris(
                 uri_list.to_glib_none().0,

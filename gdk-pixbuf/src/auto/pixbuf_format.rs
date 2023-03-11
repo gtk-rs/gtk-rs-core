@@ -29,7 +29,7 @@ impl PixbufFormat {
 
     #[doc(alias = "gdk_pixbuf_format_get_extensions")]
     #[doc(alias = "get_extensions")]
-    pub fn extensions(&self) -> Vec<glib::GString> {
+    pub fn extensions(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::gdk_pixbuf_format_get_extensions(
                 mut_override(self.to_glib_none().0),
@@ -49,7 +49,7 @@ impl PixbufFormat {
 
     #[doc(alias = "gdk_pixbuf_format_get_mime_types")]
     #[doc(alias = "get_mime_types")]
-    pub fn mime_types(&self) -> Vec<glib::GString> {
+    pub fn mime_types(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::gdk_pixbuf_format_get_mime_types(
                 mut_override(self.to_glib_none().0),

@@ -50,7 +50,7 @@ pub trait TlsClientConnectionExt: 'static {
 
     #[doc(alias = "g_tls_client_connection_get_accepted_cas")]
     #[doc(alias = "get_accepted_cas")]
-    fn accepted_cas(&self) -> Vec<glib::ByteArray>;
+    fn accepted_cas(&self) -> glib::List<glib::ByteArray>;
 
     #[doc(alias = "g_tls_client_connection_get_server_identity")]
     #[doc(alias = "get_server_identity")]
@@ -91,7 +91,7 @@ impl<O: IsA<TlsClientConnection>> TlsClientConnectionExt for O {
         }
     }
 
-    fn accepted_cas(&self) -> Vec<glib::ByteArray> {
+    fn accepted_cas(&self) -> glib::List<glib::ByteArray> {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_tls_client_connection_get_accepted_cas(
                 self.as_ref().to_glib_none().0,

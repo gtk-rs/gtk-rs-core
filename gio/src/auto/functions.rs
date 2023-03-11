@@ -197,7 +197,7 @@ pub fn content_type_guess(
 }
 
 #[doc(alias = "g_content_type_guess_for_tree")]
-pub fn content_type_guess_for_tree(root: &impl IsA<File>) -> Vec<glib::GString> {
+pub fn content_type_guess_for_tree(root: &impl IsA<File>) -> glib::StrV {
     unsafe {
         FromGlibPtrContainer::from_glib_full(ffi::g_content_type_guess_for_tree(
             root.as_ref().to_glib_none().0,
@@ -240,7 +240,7 @@ pub fn content_type_set_mime_dirs(dirs: &[&str]) {
 }
 
 #[doc(alias = "g_content_types_get_registered")]
-pub fn content_types_get_registered() -> Vec<glib::GString> {
+pub fn content_types_get_registered() -> glib::List<glib::GStringPtr> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_content_types_get_registered()) }
 }
 
@@ -456,12 +456,12 @@ pub fn io_error_from_errno(err_no: i32) -> IOErrorEnum {
 }
 
 //#[doc(alias = "g_io_modules_load_all_in_directory")]
-//pub fn io_modules_load_all_in_directory(dirname: impl AsRef<std::path::Path>) -> /*Ignored*/Vec<IOModule> {
+//pub fn io_modules_load_all_in_directory(dirname: impl AsRef<std::path::Path>) -> /*Ignored*/glib::List<IOModule> {
 //    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory() }
 //}
 
 //#[doc(alias = "g_io_modules_load_all_in_directory_with_scope")]
-//pub fn io_modules_load_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) -> /*Ignored*/Vec<IOModule> {
+//pub fn io_modules_load_all_in_directory_with_scope(dirname: impl AsRef<std::path::Path>, scope: /*Ignored*/&mut IOModuleScope) -> /*Ignored*/glib::List<IOModule> {
 //    unsafe { TODO: call ffi:g_io_modules_load_all_in_directory_with_scope() }
 //}
 
@@ -506,7 +506,7 @@ pub fn null_settings_backend_new() -> SettingsBackend {
 pub fn resources_enumerate_children(
     path: &str,
     lookup_flags: ResourceLookupFlags,
-) -> Result<Vec<glib::GString>, glib::Error> {
+) -> Result<glib::StrV, glib::Error> {
     unsafe {
         let mut error = ptr::null_mut();
         let ret = ffi::g_resources_enumerate_children(

@@ -51,7 +51,7 @@ impl SettingsSchema {
     }
 
     #[doc(alias = "g_settings_schema_list_children")]
-    pub fn list_children(&self) -> Vec<glib::GString> {
+    pub fn list_children(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_settings_schema_list_children(
                 self.to_glib_none().0,
@@ -60,7 +60,7 @@ impl SettingsSchema {
     }
 
     #[doc(alias = "g_settings_schema_list_keys")]
-    pub fn list_keys(&self) -> Vec<glib::GString> {
+    pub fn list_keys(&self) -> glib::StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_settings_schema_list_keys(
                 self.to_glib_none().0,

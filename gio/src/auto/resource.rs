@@ -23,7 +23,7 @@ impl Resource {
         &self,
         path: &str,
         lookup_flags: ResourceLookupFlags,
-    ) -> Result<Vec<glib::GString>, glib::Error> {
+    ) -> Result<glib::StrV, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_resource_enumerate_children(

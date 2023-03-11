@@ -656,7 +656,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_get_formats")]
     #[doc(alias = "get_formats")]
-    pub fn formats() -> Vec<PixbufFormat> {
+    pub fn formats() -> glib::SList<PixbufFormat> {
         unsafe { FromGlibPtrContainer::from_glib_container(ffi::gdk_pixbuf_get_formats()) }
     }
 

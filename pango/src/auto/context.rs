@@ -118,7 +118,7 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_list_families")]
-    pub fn list_families(&self) -> Vec<FontFamily> {
+    pub fn list_families(&self) -> glib::PtrSlice<FontFamily> {
         unsafe {
             let mut families = ptr::null_mut();
             let mut n_families = mem::MaybeUninit::uninit();
