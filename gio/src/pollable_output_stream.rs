@@ -84,7 +84,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
             let mut func = func.borrow_mut();
             (*func)(PollableOutputStream::from_glib_borrow(stream).unsafe_cast_ref()).into_glib()
         }
-        unsafe extern "C" fn destroy_closure<O, F>(ptr: glib::ffi::gpointer) {
+        unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
             let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
         }
         let cancellable = cancellable.map(|c| c.as_ref());
@@ -103,7 +103,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
                     unsafe extern "C" fn(glib::ffi::gpointer) -> glib::ffi::gboolean,
                 >(trampoline)),
                 Box::into_raw(Box::new(RefCell::new(func))) as glib::ffi::gpointer,
-                Some(destroy_closure::<Self, F>),
+                Some(destroy_closure::<F>),
             );
             glib::ffi::g_source_set_priority(source, priority.into_glib());
 

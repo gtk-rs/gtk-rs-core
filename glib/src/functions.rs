@@ -34,14 +34,14 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>, T: AsRawFd, U: AsRawFd, V
     stderr_fd: V,
 ) -> Result<Pid, Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
-    unsafe extern "C" fn child_setup_func<P: AsRef<std::path::Path>>(user_data: ffi::gpointer) {
+    unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
         let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
             Box_::from_raw(user_data as *mut _);
         let callback = (*callback).expect("cannot get closure...");
         callback()
     }
     let child_setup = if child_setup_data.is_some() {
-        Some(child_setup_func::<P> as _)
+        Some(child_setup_func as _)
     } else {
         None
     };
@@ -144,14 +144,14 @@ pub fn spawn_async_with_pipes<
     child_setup: Option<Box_<dyn FnOnce() + 'static>>,
 ) -> Result<(Pid, T, U, V), Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
-    unsafe extern "C" fn child_setup_func<P: AsRef<std::path::Path>>(user_data: ffi::gpointer) {
+    unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
         let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
             Box_::from_raw(user_data as *mut _);
         let callback = (*callback).expect("cannot get closure...");
         callback()
     }
     let child_setup = if child_setup_data.is_some() {
-        Some(child_setup_func::<P> as _)
+        Some(child_setup_func as _)
     } else {
         None
     };

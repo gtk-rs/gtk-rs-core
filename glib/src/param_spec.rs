@@ -707,7 +707,7 @@ macro_rules! define_builder {
         }
 
         impl $rust_type {
-            pub fn builder<'a>(name: &'a str, $($($req_ident: $req_ty),*)?) -> $builder_type<'a> {
+            pub fn builder(name: &str, $($($req_ident: $req_ty),*)?) -> $builder_type<'_> {
                 $builder_type::new(name, $($($req_ident),*)?)
             }
         }
