@@ -598,7 +598,7 @@ mod tests {
             let buf = vec![0; 10];
             strm.read_all_async(
                 buf,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -653,7 +653,7 @@ mod tests {
             let buf = vec![0; 10];
             strm.read_async(
                 buf,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -677,7 +677,7 @@ mod tests {
 
             strm.read_bytes_async(
                 10,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -698,7 +698,7 @@ mod tests {
 
             strm.skip_async(
                 10,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();

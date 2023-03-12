@@ -205,7 +205,7 @@ impl<T: IsA<PollableInputStream>> AsyncRead for InputStreamAsyncRead<T> {
                     let source = stream.0.as_ref().create_source(
                         crate::Cancellable::NONE,
                         None,
-                        glib::PRIORITY_DEFAULT,
+                        glib::Priority::default(),
                         move |_| {
                             if let Some(waker) = waker.take() {
                                 waker.wake();

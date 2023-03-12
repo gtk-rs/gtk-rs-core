@@ -723,7 +723,7 @@ mod tests {
             strm.splice_async(
                 &input,
                 crate::OutputStreamSpliceFlags::CLOSE_SOURCE,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -743,7 +743,7 @@ mod tests {
             let buf = vec![1, 2, 3];
             strm.write_async(
                 buf,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -765,7 +765,7 @@ mod tests {
             let buf = vec![1, 2, 3];
             strm.write_all_async(
                 buf,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -788,7 +788,7 @@ mod tests {
             let b = Bytes::from_owned(vec![1, 2, 3]);
             strm.write_bytes_async(
                 &b,
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -845,7 +845,7 @@ mod tests {
             let strm_clone = strm.clone();
             strm.writev_async(
                 [vec![1, 2, 3], vec![4, 5, 6]],
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();
@@ -870,7 +870,7 @@ mod tests {
             let strm_clone = strm.clone();
             strm.writev_all_async(
                 [vec![1, 2, 3], vec![4, 5, 6]],
-                glib::PRIORITY_DEFAULT_IDLE,
+                glib::Priority::DEFAULT_IDLE,
                 crate::Cancellable::NONE,
                 move |ret| {
                     tx.send(ret).unwrap();

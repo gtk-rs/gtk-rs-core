@@ -43,7 +43,7 @@ impl MainContext {
     where
         F: FnOnce() + Send + 'static,
     {
-        self.invoke_with_priority(crate::PRIORITY_DEFAULT_IDLE, func);
+        self.invoke_with_priority(crate::Priority::DEFAULT_IDLE, func);
     }
 
     // rustdoc-stripper-ignore-next
@@ -80,7 +80,7 @@ impl MainContext {
     where
         F: FnOnce() + 'static,
     {
-        self.invoke_local_with_priority(crate::PRIORITY_DEFAULT_IDLE, func);
+        self.invoke_local_with_priority(crate::Priority::DEFAULT_IDLE, func);
     }
 
     // rustdoc-stripper-ignore-next

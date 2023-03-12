@@ -827,8 +827,27 @@ where
 
 // rustdoc-stripper-ignore-next
 /// The priority of sources
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Priority(i32);
+
+impl Priority {
+    #[doc(alias = "G_PRIORITY_HIGH")]
+    pub const HIGH: Self = Self(ffi::G_PRIORITY_HIGH);
+    #[doc(alias = "G_PRIORITY_DEFAULT")]
+    pub const DEFAULT: Self = Self(ffi::G_PRIORITY_DEFAULT);
+    #[doc(alias = "G_PRIORITY_HIGH_IDLE")]
+    pub const HIGH_IDLE: Self = Self(ffi::G_PRIORITY_HIGH_IDLE);
+    #[doc(alias = "G_PRIORITY_DEFAULT_IDLE")]
+    pub const DEFAULT_IDLE: Self = Self(ffi::G_PRIORITY_DEFAULT_IDLE);
+    #[doc(alias = "G_PRIORITY_LOW")]
+    pub const LOW: Self = Self(ffi::G_PRIORITY_LOW);
+}
+
+impl Default for Priority {
+    fn default() -> Self {
+        Self::DEFAULT
+    }
+}
 
 #[doc(hidden)]
 impl IntoGlib for Priority {
@@ -844,26 +863,15 @@ impl IntoGlib for Priority {
 impl FromGlib<i32> for Priority {
     #[inline]
     unsafe fn from_glib(val: i32) -> Self {
-        Self(val)
+        Self::from(val)
     }
 }
 
-impl Default for Priority {
-    fn default() -> Self {
-        PRIORITY_DEFAULT
+impl From<i32> for Priority {
+    fn from(value: i32) -> Self {
+        Self(value)
     }
 }
-
-#[doc(alias = "G_PRIORITY_HIGH")]
-pub const PRIORITY_HIGH: Priority = Priority(ffi::G_PRIORITY_HIGH);
-#[doc(alias = "G_PRIORITY_DEFAULT")]
-pub const PRIORITY_DEFAULT: Priority = Priority(ffi::G_PRIORITY_DEFAULT);
-#[doc(alias = "G_PRIORITY_HIGH_IDLE")]
-pub const PRIORITY_HIGH_IDLE: Priority = Priority(ffi::G_PRIORITY_HIGH_IDLE);
-#[doc(alias = "G_PRIORITY_DEFAULT_IDLE")]
-pub const PRIORITY_DEFAULT_IDLE: Priority = Priority(ffi::G_PRIORITY_DEFAULT_IDLE);
-#[doc(alias = "G_PRIORITY_LOW")]
-pub const PRIORITY_LOW: Priority = Priority(ffi::G_PRIORITY_LOW);
 
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the return `Source` is attached to when it's idle.
