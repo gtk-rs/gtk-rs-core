@@ -1030,6 +1030,29 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
 /// assert_eq!(convertedv.get::<Option<MyString>>(), Ok(myv));
 /// let convertedv = None::<MyString>.to_value();
 /// assert_eq!(convertedv.get::<Option<MyString>>(), Ok(None::<MyString>));
+///
+///
+/// // if the conversion can fail, use `try_from`
+/// #[derive(ValueDelegate, Debug, PartialEq)]
+/// #[value_delegate(try_from = u32)]
+/// struct MyUnsigned(u16);
+///
+/// impl TryFrom<u32> for MyUnsigned {
+///     type Error = std::num::TryFromIntError;
+///     fn try_from(value: u32) -> Result<Self, Self::Error> {
+///         Ok(MyUnsigned(u16::try_from(value)?))
+///     }
+/// }
+/// impl<'a> From<&'a MyUnsigned> for u32 {
+///     fn from(v: &'a MyUnsigned) -> Self {
+///         v.0.into()
+///     }
+/// }
+///
+///
+/// let valid_u32: u32 = 42;
+/// let convertedv = valid_u32.to_value();
+/// assert_eq!(valid_u32, convertedv.get::<MyUnsigned>().unwrap().0 as u32)
 /// ```
 #[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
 pub fn derive_value_delegate(input: TokenStream) -> TokenStream {
