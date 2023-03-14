@@ -78,7 +78,7 @@ impl<O: IsA<SocketService>> SocketServiceExt for O {
     }
 
     fn set_active(&self, active: bool) {
-        glib::ObjectExt::set_property(self.as_ref(), "active", &active)
+        glib::ObjectExt::set_property(self.as_ref(), "active", active)
     }
 
     fn connect_incoming<
