@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+## [0.17.4]
+
+Bilal Elmoussaoui:
+- Fix nightly clippy warnings
+
+Jason Francis:
+- pango: rename removed clippy lint
+- glib: update error messages in compiletests for rust 1.68
+- glib: implement `From<GStringPtr>` for `GString`
+
+SeaDve:
+- glib-macros: qualify `ToValue::to_value`
+- glib-macros: support higher level types on `ValueDelegate`
+- glib: impl `StaticType`, `FromValue`, `ToValue`, `HasParamSpec` for `Box<str>`
+
+Sebastian Dröge:
+- Update gir
+- Update gir-files
+- Regenerate with latest gir / gir-files
+- Require glib 2.76.0 for the `v2_76` feature
+
 ## [0.17.3]
 
 Fabio Valentini:
