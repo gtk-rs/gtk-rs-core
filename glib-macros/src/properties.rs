@@ -406,7 +406,7 @@ fn expand_property_fn(props: &[PropDesc]) -> TokenStream2 {
             id: usize,
             pspec: &#crate_ident::ParamSpec
         ) -> #crate_ident::Value {
-            let prop = DerivedPropertiesEnum::try_from(id-1)
+            let prop: DerivedPropertiesEnum = std::convert::TryFrom::try_from(id-1)
                 .unwrap_or_else(|_| panic!("property not defined {}", pspec.name()));
             match prop {
                 #(#match_branch_get,)*
@@ -470,7 +470,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             value: &#crate_ident::Value,
             pspec: &#crate_ident::ParamSpec
         ){
-            let prop = DerivedPropertiesEnum::try_from(id-1)
+            let prop: DerivedPropertiesEnum = std::convert::TryFrom::try_from(id-1)
                 .unwrap_or_else(|_| panic!("property not defined {}", pspec.name()));
             match prop {
                 #(#match_branch_set,)*
