@@ -1015,6 +1015,14 @@ pub fn derive_props(input: TokenStream) -> TokenStream {
 ///         }
 ///     }
 /// }
+/// impl From<MyEnum> for u32 {
+///     fn from(v: MyEnum) -> Self {
+///         match v {
+///             MyEnum::Zero => 0,
+///             MyEnum::NotZero(x) => x
+///         }
+///     }
+/// }
 ///
 /// let myv = MyEnum::NotZero(34);
 /// let convertedv = myv.to_value();
