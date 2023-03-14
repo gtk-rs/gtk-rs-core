@@ -158,6 +158,7 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
                 <#delegated_ty as #crate_ident::types::StaticType>::static_type()
             }
         }
+
         impl #crate_ident::value::ToValue for #ident {
             fn to_value(&self) -> #crate_ident::value::Value {
                 let this = self;
@@ -166,6 +167,12 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
             fn value_type(&self) -> #crate_ident::types::Type {
                 let this = self;
                 #crate_ident::value::ToValue::value_type(&#delegate_value)
+            }
+        }
+
+        impl From<#ident> for #crate_ident::value::Value {
+            fn from(this: #ident) -> Self {
+                #crate_ident::value::Value::from(#delegate_value)
             }
         }
 
