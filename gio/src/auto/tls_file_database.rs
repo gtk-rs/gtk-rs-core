@@ -51,7 +51,7 @@ impl<O: IsA<TlsFileDatabase>> TlsFileDatabaseExt for O {
     }
 
     fn set_anchors(&self, anchors: Option<&str>) {
-        glib::ObjectExt::set_property(self.as_ref(), "anchors", &anchors)
+        glib::ObjectExt::set_property(self.as_ref(), "anchors", anchors)
     }
 
     fn connect_anchors_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

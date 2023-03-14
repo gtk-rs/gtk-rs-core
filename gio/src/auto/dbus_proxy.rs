@@ -793,7 +793,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     }
 
     fn set_g_default_timeout(&self, g_default_timeout: i32) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-default-timeout", &g_default_timeout)
+        glib::ObjectExt::set_property(self.as_ref(), "g-default-timeout", g_default_timeout)
     }
 
     fn g_flags(&self) -> DBusProxyFlags {
@@ -805,7 +805,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
     }
 
     fn set_g_interface_info(&self, g_interface_info: Option<&DBusInterfaceInfo>) {
-        glib::ObjectExt::set_property(self.as_ref(), "g-interface-info", &g_interface_info)
+        glib::ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info)
     }
 
     fn g_interface_name(&self) -> Option<glib::GString> {

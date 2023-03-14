@@ -707,7 +707,7 @@ macro_rules! define_builder {
         }
 
         impl $rust_type {
-            pub fn builder<'a>(name: &'a str, $($($req_ident: $req_ty),*)?) -> $builder_type<'a> {
+            pub fn builder(name: &str, $($($req_ident: $req_ty),*)?) -> $builder_type<'_> {
                 $builder_type::new(name, $($($req_ident),*)?)
             }
         }
@@ -2107,6 +2107,15 @@ impl HasParamSpec for str {
     }
 }
 impl HasParamSpec for String {
+    type ParamSpec = ParamSpecString;
+    type SetValue = str;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for Box<str> {
     type ParamSpec = ParamSpecString;
     type SetValue = str;
     type BuilderFn = fn(&str) -> ParamSpecStringBuilder;

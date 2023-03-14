@@ -148,11 +148,11 @@ impl<O: IsA<InetAddressMask>> InetAddressMaskExt for O {
     }
 
     fn set_address<P: IsA<InetAddress>>(&self, address: Option<&P>) {
-        glib::ObjectExt::set_property(self.as_ref(), "address", &address)
+        glib::ObjectExt::set_property(self.as_ref(), "address", address)
     }
 
     fn set_length(&self, length: u32) {
-        glib::ObjectExt::set_property(self.as_ref(), "length", &length)
+        glib::ObjectExt::set_property(self.as_ref(), "length", length)
     }
 
     fn connect_address_notify<F: Fn(&Self) + Send + Sync + 'static>(

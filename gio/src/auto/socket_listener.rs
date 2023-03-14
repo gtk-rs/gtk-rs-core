@@ -436,7 +436,7 @@ impl<O: IsA<SocketListener>> SocketListenerExt for O {
     }
 
     fn set_listen_backlog(&self, listen_backlog: i32) {
-        glib::ObjectExt::set_property(self.as_ref(), "listen-backlog", &listen_backlog)
+        glib::ObjectExt::set_property(self.as_ref(), "listen-backlog", listen_backlog)
     }
 
     fn connect_event<F: Fn(&Self, SocketListenerEvent, &Socket) + 'static>(

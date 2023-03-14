@@ -123,7 +123,9 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
 
     // this must be called in a context where `this` is defined.
     let delegate_value = match mode {
-        DeriveMode::From => quote!(#delegated_ty::from(this)),
+        DeriveMode::From => {
+            quote!(<#delegated_ty as std::convert::From<_>>::from(this))
+        }
         DeriveMode::Private => quote!(this.0),
     };
 
@@ -132,7 +134,7 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
             impl #crate_ident::value::ToValueOptional for #ident {
                 fn to_value_optional(s: Option<&Self>) -> #crate_ident::value::Value {
                     if let Some(this) = s {
-                        Some(&#delegate_value).to_value()
+                        #crate_ident::value::ToValue::to_value(&Some(&#delegate_value))
                     } else {
                         #crate_ident::value::ToValueOptional::to_value_optional(None::<&#delegated_ty>)
                     }
@@ -142,24 +144,28 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
     });
 
     let from_value = match mode {
-        DeriveMode::From => quote!(#ident::from(#delegated_ty::from_value(value))),
-        DeriveMode::Private => quote!(#ident(#delegated_ty::from_value(value))),
+        DeriveMode::From => {
+            quote!(#ident::from(<#delegated_ty as #crate_ident::value::FromValue<'a>>::from_value(value)))
+        }
+        DeriveMode::Private => {
+            quote!(#ident(<#delegated_ty as #crate_ident::value::FromValue<'a>>::from_value(value)))
+        }
     };
 
     let res = quote! {
         impl #crate_ident::types::StaticType for #ident {
             fn static_type() -> glib::types::Type {
-                #delegated_ty::static_type()
+                <#delegated_ty as #crate_ident::types::StaticType>::static_type()
             }
         }
         impl #crate_ident::value::ToValue for #ident {
             fn to_value(&self) -> #crate_ident::value::Value {
                 let this = self;
-                #delegate_value.to_value()
+                #crate_ident::value::ToValue::to_value(&#delegate_value)
             }
             fn value_type(&self) -> #crate_ident::types::Type {
                 let this = self;
-                #delegate_value.value_type()
+                #crate_ident::value::ToValue::value_type(&#delegate_value)
             }
         }
 
@@ -179,7 +185,7 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
             type BuilderFn = <#delegated_ty as #crate_ident::HasParamSpec>::BuilderFn;
 
             fn param_spec_builder() -> Self::BuilderFn {
-                #delegated_ty::param_spec_builder()
+                <#delegated_ty as #crate_ident::HasParamSpec>::param_spec_builder()
             }
         }
     };
