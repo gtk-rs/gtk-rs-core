@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [0.17.5]
+
+Bilal Elmoussaoui:
+- glib-macros: Don't assume edition=2021
+
+Johan Bjäreholt:
+- glib: Fix building for architectures without 64-bit atomics
+
+SeaDve:
+- glib-macros: generate "From<Ident> for Value" on ValueDelegate
+
 ## [0.17.4]
 
 Bilal Elmoussaoui:
