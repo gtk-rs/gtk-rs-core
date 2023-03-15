@@ -258,7 +258,9 @@ macro_rules! impl_atomic {
 impl_atomic!(std::sync::atomic::AtomicBool, bool);
 impl_atomic!(std::sync::atomic::AtomicI8, i8);
 impl_atomic!(std::sync::atomic::AtomicI32, i32);
+#[cfg(target_has_atomic = "64")]
 impl_atomic!(std::sync::atomic::AtomicI64, i64);
 impl_atomic!(std::sync::atomic::AtomicU8, u8);
 impl_atomic!(std::sync::atomic::AtomicU32, u32);
+#[cfg(target_has_atomic = "64")]
 impl_atomic!(std::sync::atomic::AtomicU64, u64);
