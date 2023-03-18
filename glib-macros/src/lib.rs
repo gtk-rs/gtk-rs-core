@@ -851,6 +851,22 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 
 /// This macro enables you to derive object properties in a quick way.
 ///
+/// # Supported #[property] attributes
+/// | Attribute | Description | Default | Example |
+/// | --- | --- | --- | --- |
+/// | `name = "literal"` | The name of the property | field ident where `_` (leading and trailing `_` are trimmed) is replaced into `-` | `#[property(name = "prop-name")]` |
+/// | `type = expr` | The type of the property | inferred | `#[property(type = i32)]` |
+/// | `get [= expr]` | Specify that the property is readable and use `PropertyGet::get` [or optionally set a custom internal getter] | | `#[property(get)]`, `#[property(get = get_prop)]`, or `[property(get = \|_\| 2)]` |
+/// | `set [= expr]` | Specify that the property is writable and use `PropertySet::set` [or optionally set a custom internal setter] | | `#[property(set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
+/// | `override_class = expr` | The type of class of which to override the property from | | `#[property(override_class = SomeClass)]` |
+/// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
+/// | `nullable` | Whether to use `Option<T>` in the wrapper's generated setter |  | `#[property(nullable)]` |
+/// | `member = ident` | Field of the nested type where property is retrieved and set | | `#[property(member = author)]` |
+/// | `builder(<required-params>)[.ident]*` | Used to input required params or add optional Param Spec builder fields | | `#[property(builder(SomeEnum::default()))]`, `#[builder().default_value(1).construct_only()]`, etc.  |
+/// | `default` | Sets the `default_value` field of the Param Spec builder | | `#[property(default = 1)]` |
+/// | `<optional-pspec-builder-fields> = expr` | Used to add optional Param Spec builder fields | | `#[property(minimum = 0)` , `#[property(minimum = 0, maximum = 1)]`, etc. |
+/// | `<optional-pspec-builder-fields>` | Used to add optional Param Spec builder fields | | `#[property(explicit_notify)]` , `#[property(construct_only)]`, etc. |
+///
 /// # Generated wrapper methods
 /// The following methods are generated on the wrapper type specified on `#[properties(wrapper_type = ...)]`:
 /// * `$property()`, when the property is readable
@@ -863,7 +879,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///
 /// # Internal getters and setters
 /// By default, they are generated for you. However, you can use a custom getter/setter
-/// by assigning an expression to `get`/`set`: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
+/// by assigning an expression to `get`/`set` #[property] attributes: `#[property(get = |_| 2, set)]` or `#[property(get, set = custom_setter_func)]`.
 ///
 /// # Supported types
 /// Every type implementing the trait `Property` is supported.
