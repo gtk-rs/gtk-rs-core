@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.17.6]
+
+Fabio Valentini:
+- glib-macros: enable default features of syn
+
+SeaDve:
+- glib-macros: add docs on supported `#[property]` attributes
+
 ## [0.17.5]
 
 Bilal Elmoussaoui:
