@@ -30,12 +30,12 @@ pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStre
         func: F,
     ) -> glib::Source
     where
-        F: FnMut(&Self) -> glib::Continue + 'static,
+        F: FnMut(&Self) -> glib::ControlFlow + 'static,
         C: IsA<Cancellable>,
     {
         unsafe extern "C" fn trampoline<
             O: IsA<PollableOutputStream>,
-            F: FnMut(&O) -> glib::Continue + 'static,
+            F: FnMut(&O) -> glib::ControlFlow + 'static,
         >(
             stream: *mut ffi::GPollableOutputStream,
             func: glib::ffi::gpointer,
@@ -87,7 +87,7 @@ pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStre
             let mut send = Some(send);
             obj.create_source(cancellable.as_ref(), None, priority, move |_| {
                 let _ = send.take().unwrap().send(());
-                glib::Continue(false)
+                glib::ControlFlow::Break
             })
         }))
     }
@@ -104,9 +104,9 @@ pub trait PollableOutputStreamExtManual: sealed::Sealed + IsA<PollableOutputStre
             let send = Some(send);
             obj.create_source(cancellable.as_ref(), None, priority, move |_| {
                 if send.as_ref().unwrap().unbounded_send(()).is_err() {
-                    glib::Continue(false)
+                    glib::ControlFlow::Break
                 } else {
-                    glib::Continue(true)
+                    glib::ControlFlow::Continue
                 }
             })
         }))
@@ -192,7 +192,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
                             if let Some(waker) = waker.take() {
                                 waker.wake();
                             }
-                            glib::Continue(false)
+                            glib::ControlFlow::Break
                         },
                     );
                     let main_context = glib::MainContext::ref_thread_default();
@@ -235,7 +235,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
                         if let Some(waker) = waker.take() {
                             waker.wake();
                         }
-                        glib::Continue(false)
+                        glib::ControlFlow::Break
                     },
                 );
                 let main_context = glib::MainContext::ref_thread_default();

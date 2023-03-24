@@ -26,12 +26,12 @@ pub trait PollableInputStreamExtManual: sealed::Sealed + IsA<PollableInputStream
         func: F,
     ) -> glib::Source
     where
-        F: FnMut(&Self) -> glib::Continue + 'static,
+        F: FnMut(&Self) -> glib::ControlFlow + 'static,
         C: IsA<Cancellable>,
     {
         unsafe extern "C" fn trampoline<
             O: IsA<PollableInputStream>,
-            F: FnMut(&O) -> glib::Continue + 'static,
+            F: FnMut(&O) -> glib::ControlFlow + 'static,
         >(
             stream: *mut ffi::GPollableInputStream,
             func: glib::ffi::gpointer,
@@ -83,7 +83,7 @@ pub trait PollableInputStreamExtManual: sealed::Sealed + IsA<PollableInputStream
             let mut send = Some(send);
             obj.create_source(cancellable.as_ref(), None, priority, move |_| {
                 let _ = send.take().unwrap().send(());
-                glib::Continue(false)
+                glib::ControlFlow::Break
             })
         }))
     }
@@ -99,9 +99,9 @@ pub trait PollableInputStreamExtManual: sealed::Sealed + IsA<PollableInputStream
         Box::pin(glib::SourceStream::new(move |send| {
             obj.create_source(cancellable.as_ref(), None, priority, move |_| {
                 if send.unbounded_send(()).is_err() {
-                    glib::Continue(false)
+                    glib::ControlFlow::Break
                 } else {
-                    glib::Continue(true)
+                    glib::ControlFlow::Continue
                 }
             })
         }))
@@ -186,7 +186,7 @@ impl<T: IsA<PollableInputStream>> AsyncRead for InputStreamAsyncRead<T> {
                             if let Some(waker) = waker.take() {
                                 waker.wake();
                             }
-                            glib::Continue(false)
+                            glib::ControlFlow::Break
                         },
                     );
                     let main_context = glib::MainContext::ref_thread_default();
