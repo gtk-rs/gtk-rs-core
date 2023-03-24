@@ -23,12 +23,12 @@ pub trait DatagramBasedExtManual: sealed::Sealed + IsA<DatagramBased> + Sized {
         func: F,
     ) -> glib::Source
     where
-        F: FnMut(&Self, glib::IOCondition) -> glib::Continue + 'static,
+        F: FnMut(&Self, glib::IOCondition) -> glib::ControlFlow + 'static,
         C: IsA<Cancellable>,
     {
         unsafe extern "C" fn trampoline<
             O: IsA<DatagramBased>,
-            F: FnMut(&O, glib::IOCondition) -> glib::Continue + 'static,
+            F: FnMut(&O, glib::IOCondition) -> glib::ControlFlow + 'static,
         >(
             datagram_based: *mut ffi::GDatagramBased,
             condition: glib::ffi::GIOCondition,
@@ -91,7 +91,7 @@ pub trait DatagramBasedExtManual: sealed::Sealed + IsA<DatagramBased> + Sized {
                 priority,
                 move |_, condition| {
                     let _ = send.take().unwrap().send(condition);
-                    glib::Continue(false)
+                    glib::ControlFlow::Break
                 },
             )
         }))
@@ -115,9 +115,9 @@ pub trait DatagramBasedExtManual: sealed::Sealed + IsA<DatagramBased> + Sized {
                 priority,
                 move |_, condition| {
                     if send.as_ref().unwrap().unbounded_send(condition).is_err() {
-                        glib::Continue(false)
+                        glib::ControlFlow::Break
                     } else {
-                        glib::Continue(true)
+                        glib::ControlFlow::Continue
                     }
                 },
             )

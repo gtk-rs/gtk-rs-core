@@ -7,7 +7,7 @@ use std::{
 };
 
 use crate::{
-    thread_guard::ThreadGuard, translate::*, Continue, MainContext, Priority, Source, SourceId,
+    thread_guard::ThreadGuard, translate::*, ControlFlow, MainContext, Priority, Source, SourceId,
 };
 
 enum ChannelSourceState {
@@ -197,14 +197,14 @@ impl<T> Channel<T> {
 }
 
 #[repr(C)]
-struct ChannelSource<T, F: FnMut(T) -> Continue + 'static> {
+struct ChannelSource<T, F: FnMut(T) -> ControlFlow + 'static> {
     source: ffi::GSource,
     source_funcs: Box<ffi::GSourceFuncs>,
     channel: Channel<T>,
     callback: ThreadGuard<F>,
 }
 
-unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
+unsafe extern "C" fn dispatch<T, F: FnMut(T) -> ControlFlow + 'static>(
     source: *mut ffi::GSource,
     callback: ffi::GSourceFunc,
     _user_data: ffi::gpointer,
@@ -228,7 +228,7 @@ unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
             Err(mpsc::TryRecvError::Empty) => break,
             Err(mpsc::TryRecvError::Disconnected) => return ffi::G_SOURCE_REMOVE,
             Ok(item) => {
-                if callback(item) == Continue(false) {
+                if callback(item).is_break() {
                     return ffi::G_SOURCE_REMOVE;
                 }
             }
@@ -239,7 +239,7 @@ unsafe extern "C" fn dispatch<T, F: FnMut(T) -> Continue + 'static>(
 }
 
 #[cfg(feature = "v2_64")]
-unsafe extern "C" fn dispose<T, F: FnMut(T) -> Continue + 'static>(source: *mut ffi::GSource) {
+unsafe extern "C" fn dispose<T, F: FnMut(T) -> ControlFlow + 'static>(source: *mut ffi::GSource) {
     let source = &mut *(source as *mut ChannelSource<T, F>);
 
     // Set the source inside the channel to None so that all senders know that there
@@ -251,7 +251,7 @@ unsafe extern "C" fn dispose<T, F: FnMut(T) -> Continue + 'static>(source: *mut 
     }
 }
 
-unsafe extern "C" fn finalize<T, F: FnMut(T) -> Continue + 'static>(source: *mut ffi::GSource) {
+unsafe extern "C" fn finalize<T, F: FnMut(T) -> ControlFlow + 'static>(source: *mut ffi::GSource) {
     let source = &mut *(source as *mut ChannelSource<T, F>);
 
     // Drop all memory we own by taking it out of the Options
@@ -453,7 +453,7 @@ impl<T> Receiver<T> {
     ///
     /// This function panics if called from a thread that is not the owner of the provided
     /// `context`, or, if `None` is provided, of the thread default main context.
-    pub fn attach<F: FnMut(T) -> Continue + 'static>(
+    pub fn attach<F: FnMut(T) -> ControlFlow + 'static>(
         mut self,
         context: Option<&MainContext>,
         func: F,
@@ -599,9 +599,9 @@ mod tests {
             *sum_clone.borrow_mut() += item;
             if *sum_clone.borrow() == 6 {
                 l_clone.quit();
-                Continue(false)
+                ControlFlow::Break
             } else {
-                Continue(true)
+                ControlFlow::Continue
             }
         });
 
@@ -633,7 +633,7 @@ mod tests {
         let helper = Helper(l.clone());
         receiver.attach(Some(&c), move |_| {
             let _helper = &helper;
-            Continue(true)
+            ControlFlow::Continue
         });
 
         drop(sender);
@@ -657,7 +657,7 @@ mod tests {
 
         let (sender, receiver) = MainContext::channel::<i32>(Priority::default());
 
-        let source_id = receiver.attach(Some(&c), move |_| Continue(true));
+        let source_id = receiver.attach(Some(&c), move |_| ControlFlow::Continue);
 
         let source = c.find_source_by_id(&source_id).unwrap();
         source.destroy();
@@ -684,7 +684,7 @@ mod tests {
         let helper = Helper(dropped.clone());
         let source_id = receiver.attach(Some(&c), move |_| {
             let _helper = &helper;
-            Continue(true)
+            ControlFlow::Continue
         });
 
         let source = c.find_source_by_id(&source_id).unwrap();
@@ -713,9 +713,9 @@ mod tests {
             *sum_clone.borrow_mut() += item;
             if *sum_clone.borrow() == 6 {
                 l_clone.quit();
-                Continue(false)
+                ControlFlow::Break
             } else {
-                Continue(true)
+                ControlFlow::Continue
             }
         });
 
@@ -762,9 +762,9 @@ mod tests {
             *sum_clone.borrow_mut() += item;
             if *sum_clone.borrow() == 6 {
                 l_clone.quit();
-                Continue(false)
+                ControlFlow::Break
             } else {
-                Continue(true)
+                ControlFlow::Continue
             }
         });
 
@@ -873,7 +873,7 @@ mod tests {
                     Err(mpsc::RecvTimeoutError::Disconnected)
                 );
                 l_clone.quit();
-                Continue(false)
+                ControlFlow::Break
             } else {
                 // But as we didn't consume the next one yet, there must be no
                 // other item available yet
@@ -881,7 +881,7 @@ mod tests {
                     wait_receiver.recv_timeout(time::Duration::from_millis(50)),
                     Err(mpsc::RecvTimeoutError::Timeout)
                 );
-                Continue(true)
+                ControlFlow::Continue
             }
         });
         l.run();
