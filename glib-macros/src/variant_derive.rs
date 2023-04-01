@@ -99,13 +99,13 @@ fn derive_variant_for_struct(
                 impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
-                            return None;
+                            return ::core::option::Option::None;
                         }
-                        Some(Self(
+                        ::core::option::Option::Some(Self(
                             #(
                                 match variant.try_child_get::<#types>(#idents) {
-                                    Ok(Some(field)) => field,
-                                    _ => return None,
+                                    ::core::result::Result::Ok(::core::option::Option::Some(field)) => field,
+                                    _ => return ::core::option::Option::None,
                                 }
                             ),*
                         ))
@@ -182,13 +182,13 @@ fn derive_variant_for_struct(
                 impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                         if !variant.is_container() {
-                            return None;
+                            return ::core::option::Option::None;
                         }
-                        Some(Self {
+                        ::core::option::Option::Some(Self {
                             #(
                                 #idents: match variant.try_child_get::<#types>(#counts) {
-                                    Ok(Some(field)) => field,
-                                    _ => return None,
+                                    ::core::result::Result::Ok(::core::option::Option::Some(field)) => field,
+                                    _ => return ::core::option::Option::None,
                                 }
                             ),*
                         })
@@ -227,7 +227,7 @@ fn derive_variant_for_struct(
             let from_variant = quote! {
                 impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
                     fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
-                        Some(Self)
+                        ::core::option::Option::Some(Self)
                     }
                 }
             };
@@ -421,13 +421,13 @@ fn derive_variant_for_enum(
                         )?
                     }
                 });
-                quote! { #tag => ::std::option::Option::Some(Self::#ident { #(#fields),* }), }
+                quote! { #tag => ::core::option::Option::Some(Self::#ident { #(#fields),* }), }
             }
             syn::Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
                 let indices = 0..unnamed.iter().count();
                 let repr = unnamed.iter().map(|f| &f.ty);
                 quote! {
-                    #tag => ::std::option::Option::Some(Self::#ident(
+                    #tag => ::core::option::Option::Some(Self::#ident(
                         #(
                             <#repr as #glib::FromVariant>::from_variant(
                                 &#glib::Variant::try_child_value(&value, #indices)?
@@ -437,7 +437,7 @@ fn derive_variant_for_enum(
                 }
             }
             syn::Fields::Unit => {
-                quote! { #tag => ::std::option::Option::Some(Self::#ident), }
+                quote! { #tag => ::core::option::Option::Some(Self::#ident), }
             }
         }
     });
@@ -477,14 +477,14 @@ fn derive_variant_for_enum(
         }
 
         impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
-            fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
+            fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                 let (tag, value) = <(#repr, #glib::Variant) as #glib::FromVariant>::from_variant(&variant)?;
                 if !#glib::VariantTy::is_tuple(#glib::Variant::type_(&value)) {
-                    return ::std::option::Option::None;
+                    return ::core::option::Option::None;
                 }
                 match #tag_match {
                     #(#from)*
-                    _ => ::std::option::Option::None
+                    _ => ::core::option::Option::None
                 }
             }
         }
@@ -520,8 +520,8 @@ fn derive_variant_for_c_enum(
                 quote! {
                     let tag = #glib::Variant::str(&variant)?;
                     match tag {
-                        #(#nicks2 => ::std::option::Option::Some(Self::#idents2),)*
-                        _ => ::std::option::Option::None
+                        #(#nicks2 => ::core::option::Option::Some(Self::#idents2),)*
+                        _ => ::core::option::Option::None
                     }
                 },
             )
@@ -535,9 +535,9 @@ fn derive_variant_for_c_enum(
                 quote! {
                     let value = <#repr as #glib::FromVariant>::from_variant(&variant)?;
                     #(if value == Self::#idents as #repr {
-                        return Some(Self::#idents);
+                        return ::core::option::Option::Some(Self::#idents);
                     })*
-                    None
+                    ::core::option::Option::None
                 },
             )
         }
@@ -554,10 +554,10 @@ fn derive_variant_for_c_enum(
             quote! {
                 let ty = <Self as #glib::StaticType>::static_type();
                 let enum_class = #glib::EnumClass::new(ty);
-                let enum_class = ::std::option::Option::unwrap(enum_class);
+                let enum_class = ::core::option::Option::unwrap(enum_class);
                 let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
                 let value = #glib::EnumClass::value(&enum_class, value);
-                let value = ::std::option::Option::unwrap(value);
+                let value = ::core::option::Option::unwrap(value);
                 let nick = #glib::EnumValue::nick(&value);
                 #glib::ToVariant::to_variant(nick)
             },
@@ -583,7 +583,7 @@ fn derive_variant_for_c_enum(
             quote! {
                 let ty = <Self as #glib::StaticType>::static_type();
                 let flags_class = #glib::FlagsClass::new(ty);
-                let flags_class = ::std::option::Option::unwrap(flags_class);
+                let flags_class = ::core::option::Option::unwrap(flags_class);
                 let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
                 let s = #glib::FlagsClass::to_nick_string(&flags_class, value);
                 #glib::ToVariant::to_variant(&s)
@@ -593,7 +593,7 @@ fn derive_variant_for_c_enum(
                 let flags_class = #glib::FlagsClass::new(ty)?;
                 let s = #glib::Variant::str(&variant)?;
                 let value = #glib::FlagsClass::from_nick_string(&flags_class, s).ok()?;
-                Some(unsafe { #glib::translate::from_glib(value) })
+                ::core::option::Option::Some(unsafe { #glib::translate::from_glib(value) })
             },
         ),
     };
@@ -624,7 +624,7 @@ fn derive_variant_for_c_enum(
         }
 
         impl #impl_generics #glib::FromVariant for #ident #type_generics #where_clause {
-            fn from_variant(variant: &#glib::Variant) -> ::std::option::Option<Self> {
+            fn from_variant(variant: &#glib::Variant) -> ::core::option::Option<Self> {
                 #from_variant
             }
         }

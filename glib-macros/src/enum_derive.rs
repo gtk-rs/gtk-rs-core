@@ -193,7 +193,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecEnum;
             type SetValue = Self;
-            type BuilderFn = fn(&str, Self) -> #crate_ident::ParamSpecEnumBuilder<Self>;
+            type BuilderFn = fn(&::core::primitive::str, Self) -> #crate_ident::ParamSpecEnumBuilder<Self>;
 
             fn param_spec_builder() -> Self::BuilderFn {
                 |name, default_value| Self::ParamSpec::builder_with_default(name, default_value)
