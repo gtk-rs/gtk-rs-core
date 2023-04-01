@@ -9,8 +9,8 @@ use crate::utils::{crate_ident_new, find_attribute_meta, find_nested_meta, parse
 fn gen_option_to_ptr() -> TokenStream {
     quote! {
         match s {
-            Some(s) => ::std::boxed::Box::into_raw(::std::boxed::Box::new(s.clone())),
-            None => ::std::ptr::null_mut(),
+            ::core::option::Option::Some(s) => ::std::boxed::Box::into_raw(::std::boxed::Box::new(s.clone())),
+            ::core::option::Option::None => ::std::ptr::null_mut(),
         };
     }
 }
@@ -122,7 +122,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
 
     quote! {
         impl #crate_ident::subclass::boxed::BoxedType for #name {
-            const NAME: &'static str = #gtype_name;
+            const NAME: &'static ::core::primitive::str = #gtype_name;
         }
 
         impl #crate_ident::StaticType for #name {
@@ -247,7 +247,7 @@ pub fn impl_boxed(input: &syn::DeriveInput) -> TokenStream {
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecBoxed;
             type SetValue = Self;
-            type BuilderFn = fn(&str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
+            type BuilderFn = fn(&::core::primitive::str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
 
             fn param_spec_builder() -> Self::BuilderFn {
                 |name| Self::ParamSpec::builder(name)

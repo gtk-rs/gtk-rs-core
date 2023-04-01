@@ -130,7 +130,7 @@ pub fn derive_downgrade_for_enum(
             type Strong = #ident #generics;
 
             fn upgrade(&self) -> ::core::option::Option<Self::Strong> {
-                Some(match self {#(
+                ::core::option::Option::Some(match self {#(
                     #upgrade_variants
                 ),*})
             }

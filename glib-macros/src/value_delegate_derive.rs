@@ -132,11 +132,11 @@ pub fn impl_value_delegate(input: ValueDelegateInput) -> syn::Result<proc_macro:
     let to_value_optional = nullable.then(|| {
         quote! {
             impl #crate_ident::value::ToValueOptional for #ident {
-                fn to_value_optional(s: Option<&Self>) -> #crate_ident::value::Value {
-                    if let Some(this) = s {
-                        #crate_ident::value::ToValue::to_value(&Some(&#delegate_value))
+                fn to_value_optional(s: ::core::option::Option<&Self>) -> #crate_ident::value::Value {
+                    if let ::core::option::Option::Some(this) = s {
+                        #crate_ident::value::ToValue::to_value(&::core::option::Option::Some(&#delegate_value))
                     } else {
-                        #crate_ident::value::ToValueOptional::to_value_optional(None::<&#delegated_ty>)
+                        #crate_ident::value::ToValueOptional::to_value_optional(::core::option::Option::None::<&#delegated_ty>)
                     }
                 }
             }
