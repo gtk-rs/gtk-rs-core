@@ -525,7 +525,7 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
             let ident = format_ident!("set_{}", ident);
             let target_ty = quote!(<<#ty as #crate_ident::Property>::Value as #crate_ident::HasParamSpec>::SetValue);
             let set_ty = if p.nullable {
-               quote!(Option<impl std::borrow::Borrow<#target_ty>>)
+               quote!(::core::option::Option<impl std::borrow::Borrow<#target_ty>>)
             } else {
                quote!(impl std::borrow::Borrow<#target_ty>)
             };
@@ -558,7 +558,7 @@ fn expand_wrapper_connect_prop_notify(props: &[PropDesc]) -> TokenStream2 {
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
         quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
-            self.connect_notify_local(Some(#name), move |this, _| {
+            self.connect_notify_local(::core::option::Option::Some(#name), move |this, _| {
                 f(this)
             })
         })
@@ -619,10 +619,10 @@ fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
         impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
             type Error = usize;
 
-            fn try_from(item: usize) -> Result<Self, Self::Error> {
+            fn try_from(item: usize) -> ::core::result::Result<Self, Self::Error> {
                 match item {
-                    #(#indices => Ok(Self::#properties),)*
-                    _ => Err(item)
+                    #(#indices => ::core::result::Result::Ok(Self::#properties),)*
+                    _ => ::core::result::Result::Err(item)
                 }
             }
         }

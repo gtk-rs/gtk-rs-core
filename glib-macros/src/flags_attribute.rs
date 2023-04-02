@@ -182,7 +182,7 @@ pub fn impl_flags(attrs: &NestedMeta, input: &DeriveInput) -> TokenStream {
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecFlags;
             type SetValue = Self;
-            type BuilderFn = fn(&str) -> #crate_ident::ParamSpecFlagsBuilder<Self>;
+            type BuilderFn = fn(&::core::primitive::str) -> #crate_ident::ParamSpecFlagsBuilder<Self>;
 
             fn param_spec_builder() -> Self::BuilderFn {
                 |name| Self::ParamSpec::builder(name)

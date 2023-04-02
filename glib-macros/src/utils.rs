@@ -153,12 +153,12 @@ pub fn gen_enum_from_glib(
         let name = &v.ident;
         quote_spanned! { v.span() =>
             if value == #enum_name::#name as i32 {
-                return Some(#enum_name::#name);
+                return ::core::option::Option::Some(#enum_name::#name);
             }
         }
     });
     quote! {
         #(#recurse)*
-        None
+        ::core::option::Option::None
     }
 }
