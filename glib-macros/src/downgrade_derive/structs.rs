@@ -114,7 +114,7 @@ pub fn derive_downgrade_for_struct(
 
             fn upgrade(&self) -> ::core::option::Option<Self::Strong> {
                 let Self #destruct = self;
-                Some(#ident #upgrade)
+                ::core::option::Option::Some(#ident #upgrade)
             }
         }
     };

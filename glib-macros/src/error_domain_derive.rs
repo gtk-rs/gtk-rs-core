@@ -35,7 +35,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
 
                 static QUARK: #crate_ident::once_cell::sync::Lazy<#crate_ident::Quark> =
                     #crate_ident::once_cell::sync::Lazy::new(|| unsafe {
-                        from_glib(#crate_ident::ffi::g_quark_from_static_string(concat!(#domain_name, "\0") as *const str as *const _))
+                        from_glib(#crate_ident::ffi::g_quark_from_static_string(concat!(#domain_name, "\0") as *const ::core::primitive::str as *const _))
                     });
                 *QUARK
             }
@@ -48,7 +48,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> TokenStream {
             #[inline]
             fn from(value: i32) -> ::core::option::Option<Self>
             where
-                Self: Sized
+                Self: ::std::marker::Sized
             {
                 #from_glib
             }

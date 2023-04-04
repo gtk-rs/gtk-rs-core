@@ -16,8 +16,8 @@ fn gen_impl_to_value_optional(name: &Ident, crate_ident: &TokenStream) -> TokenS
                 let mut value = #crate_ident::Value::for_value_type::<Self>();
                 unsafe {
                     let ptr = match s {
-                        Some(s) => #refcounted_type_prefix::into_raw(s.0.clone()),
-                        None => ::std::ptr::null(),
+                        ::core::option::Option::Some(s) => #refcounted_type_prefix::into_raw(s.0.clone()),
+                        ::core::option::Option::None => ::std::ptr::null(),
                     };
 
                     #crate_ident::gobject_ffi::g_value_take_boxed(
@@ -133,7 +133,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
 
     quote! {
         impl #crate_ident::subclass::shared::SharedType for #name {
-            const NAME: &'static str = #gtype_name;
+            const NAME: &'static ::core::primitive::str = #gtype_name;
 
             type RefCountedType = #refcounted_type;
 
@@ -278,7 +278,7 @@ pub fn impl_shared_boxed(input: &syn::DeriveInput) -> proc_macro2::TokenStream {
         impl #crate_ident::HasParamSpec for #name {
             type ParamSpec = #crate_ident::ParamSpecBoxed;
             type SetValue = Self;
-            type BuilderFn = fn(&str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
+            type BuilderFn = fn(&::core::primitive::str) -> #crate_ident::ParamSpecBoxedBuilder<Self>;
 
             fn param_spec_builder() -> Self::BuilderFn {
                 |name| Self::ParamSpec::builder(name)
