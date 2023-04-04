@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.17.7]
+
+Fina Wilke:
+- glib-macros: Specify quoted types explicitly
+
 ## [0.17.6]
 
 Fabio Valentini:
