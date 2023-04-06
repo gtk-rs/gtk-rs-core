@@ -3,7 +3,13 @@
 // rustdoc-stripper-ignore-next
 //! Runtime type information.
 
-use std::{fmt, marker::PhantomData, mem, ptr};
+use std::{
+    fmt,
+    marker::PhantomData,
+    mem,
+    path::{Path, PathBuf},
+    ptr,
+};
 
 use crate::{translate::*, IntoGStr, Slice};
 
@@ -496,6 +502,8 @@ builtin!(f32, F32);
 builtin!(f64, F64);
 builtin!(str, STRING);
 builtin!(String, STRING);
+builtin!(PathBuf, STRING);
+builtin!(Path, STRING);
 builtin!(Pointer, POINTER);
 
 impl<'a> StaticType for [&'a str] {

@@ -1,6 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{char::CharTryFromError, convert::TryFrom, ffi::CStr};
+use std::{
+    char::CharTryFromError,
+    convert::TryFrom,
+    ffi::CStr,
+    path::{Path, PathBuf},
+};
 
 use crate::{
     object::{Interface, InterfaceRef, IsClass, IsInterface, ObjectClass},
@@ -2137,6 +2142,24 @@ impl HasParamSpec for Vec<String> {
     type ParamSpec = ParamSpecBoxed;
     type SetValue = Self;
     type BuilderFn = fn(&str) -> ParamSpecBoxedBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for Path {
+    type ParamSpec = ParamSpecString;
+    type SetValue = Path;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
+impl HasParamSpec for PathBuf {
+    type ParamSpec = ParamSpecString;
+    type SetValue = Path;
+    type BuilderFn = fn(&str) -> ParamSpecStringBuilder;
 
     fn param_spec_builder() -> Self::BuilderFn {
         Self::ParamSpec::builder
