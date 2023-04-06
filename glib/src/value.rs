@@ -40,7 +40,15 @@
 //! assert_eq!(str_none.get::<Option<String>>(), Ok(None));
 //! ```
 
-use std::{convert::Infallible, error, ffi::CStr, fmt, mem, ops::Deref, ptr};
+use std::{
+    convert::Infallible,
+    error,
+    ffi::CStr,
+    fmt, mem,
+    ops::Deref,
+    path::{Path, PathBuf},
+    ptr,
+};
 
 use libc::{c_char, c_void};
 
@@ -1009,6 +1017,80 @@ impl<'a> ToValue for &'a [&'a str] {
 
     fn value_type(&self) -> Type {
         <Vec<String>>::static_type()
+    }
+}
+
+impl ToValue for Path {
+    fn to_value(&self) -> Value {
+        unsafe {
+            let mut value = Value::for_value_type::<PathBuf>();
+
+            gobject_ffi::g_value_take_string(value.to_glib_none_mut().0, self.to_glib_full());
+
+            value
+        }
+    }
+
+    fn value_type(&self) -> Type {
+        PathBuf::static_type()
+    }
+}
+
+impl ToValue for &Path {
+    fn to_value(&self) -> Value {
+        (*self).to_value()
+    }
+
+    fn value_type(&self) -> Type {
+        PathBuf::static_type()
+    }
+}
+
+impl ToValueOptional for Path {
+    fn to_value_optional(s: Option<&Self>) -> Value {
+        let mut value = Value::for_value_type::<PathBuf>();
+        unsafe {
+            gobject_ffi::g_value_take_string(value.to_glib_none_mut().0, s.to_glib_full());
+        }
+
+        value
+    }
+}
+
+impl ValueType for PathBuf {
+    type Type = PathBuf;
+}
+
+impl ValueTypeOptional for PathBuf {}
+
+unsafe impl<'a> FromValue<'a> for PathBuf {
+    type Checker = GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a Value) -> Self {
+        from_glib_none(gobject_ffi::g_value_get_string(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for PathBuf {
+    fn to_value(&self) -> Value {
+        <&Path>::to_value(&self.as_path())
+    }
+
+    fn value_type(&self) -> Type {
+        PathBuf::static_type()
+    }
+}
+
+impl From<PathBuf> for Value {
+    #[inline]
+    fn from(s: PathBuf) -> Self {
+        s.to_value()
+    }
+}
+
+impl ToValueOptional for PathBuf {
+    fn to_value_optional(s: Option<&Self>) -> Value {
+        <Path>::to_value_optional(s.as_ref().map(|s| s.as_path()))
     }
 }
 
