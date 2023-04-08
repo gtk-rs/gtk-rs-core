@@ -355,6 +355,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let param_specs = props.iter().map(expand_param_spec);
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
+            use #crate_ident::ParamSpecBuilderExt;
             use #crate_ident::once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
                 #(#param_specs,)*
