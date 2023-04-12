@@ -623,10 +623,7 @@ impl<T: TransparentType> Slice<T> {
             MIN_SIZE / mem::size_of::<T>(),
         ));
         assert_ne!(new_capacity, 0);
-
-        if new_capacity <= self.capacity {
-            return;
-        }
+        assert!(new_capacity > self.capacity);
 
         unsafe {
             let ptr = if self.capacity == 0 {

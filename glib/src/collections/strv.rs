@@ -667,10 +667,7 @@ impl StrV {
         let new_capacity =
             usize::next_power_of_two(std::cmp::max(self.len + additional, MIN_SIZE) + 1);
         assert_ne!(new_capacity, 0);
-
-        if new_capacity <= self.capacity {
-            return;
-        }
+        assert!(new_capacity > self.capacity);
 
         unsafe {
             let ptr = if self.capacity == 0 {
