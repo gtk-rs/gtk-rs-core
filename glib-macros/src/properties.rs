@@ -620,7 +620,7 @@ fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
         impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
             type Error = usize;
 
-            fn try_from(item: usize) -> ::core::result::Result<Self, Self::Error> {
+            fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
                 match item {
                     #(#indices => ::core::result::Result::Ok(Self::#properties),)*
                     _ => ::core::result::Result::Err(item)
