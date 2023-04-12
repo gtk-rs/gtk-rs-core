@@ -6,9 +6,9 @@ use crate::{translate::*, value::FromValue, value::ToValue, StaticType, Type};
 use bitflags::bitflags;
 use std::fmt;
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg(any(feature = "v2_66", docsrs))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GFileSetContentsFlags")]
     pub struct FileSetContentsFlags: u32 {
         #[doc(alias = "G_FILE_SET_CONTENTS_NONE")]
@@ -22,16 +22,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for FileSetContentsFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for FileSetContentsFlags {
     type GlibType = ffi::GFileSetContentsFlags;
@@ -42,8 +42,8 @@ impl IntoGlib for FileSetContentsFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GFileSetContentsFlags> for FileSetContentsFlags {
     #[inline]
@@ -103,12 +103,12 @@ bitflags! {
         const IEC_UNITS = ffi::G_FORMAT_SIZE_IEC_UNITS as _;
         #[doc(alias = "G_FORMAT_SIZE_BITS")]
         const BITS = ffi::G_FORMAT_SIZE_BITS as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74", docsrs))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_FORMAT_SIZE_ONLY_VALUE")]
         const ONLY_VALUE = ffi::G_FORMAT_SIZE_ONLY_VALUE as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74", docsrs))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_FORMAT_SIZE_ONLY_UNIT")]
         const ONLY_UNIT = ffi::G_FORMAT_SIZE_ONLY_UNIT as _;
     }
@@ -319,9 +319,9 @@ impl FromGlib<ffi::GLogLevelFlags> for LogLevelFlags {
     }
 }
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
+#[cfg(any(feature = "v2_72", docsrs))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "GMainContextFlags")]
     pub struct MainContextFlags: u32 {
         #[doc(alias = "G_MAIN_CONTEXT_FLAGS_NONE")]
@@ -331,16 +331,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 impl fmt::Display for MainContextFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 #[doc(hidden)]
 impl IntoGlib for MainContextFlags {
     type GlibType = ffi::GMainContextFlags;
@@ -351,8 +351,8 @@ impl IntoGlib for MainContextFlags {
     }
 }
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GMainContextFlags> for MainContextFlags {
     #[inline]
@@ -430,16 +430,16 @@ bitflags! {
         const SEARCH_PATH_FROM_ENVP = ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP as _;
         #[doc(alias = "G_SPAWN_CLOEXEC_PIPES")]
         const CLOEXEC_PIPES = ffi::G_SPAWN_CLOEXEC_PIPES as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74", docsrs))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDOUT")]
         const CHILD_INHERITS_STDOUT = ffi::G_SPAWN_CHILD_INHERITS_STDOUT as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74", docsrs))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_CHILD_INHERITS_STDERR")]
         const CHILD_INHERITS_STDERR = ffi::G_SPAWN_CHILD_INHERITS_STDERR as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74", docsrs))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_SPAWN_STDIN_FROM_DEV_NULL")]
         const STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL as _;
     }
@@ -469,9 +469,9 @@ impl FromGlib<ffi::GSpawnFlags> for SpawnFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg(any(feature = "v2_66", docsrs))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriFlags")]
     pub struct UriFlags: u32 {
         #[doc(alias = "G_URI_FLAGS_NONE")]
@@ -497,16 +497,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for UriFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriFlags {
     type GlibType = ffi::GUriFlags;
@@ -517,8 +517,8 @@ impl IntoGlib for UriFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriFlags> for UriFlags {
     #[inline]
@@ -527,9 +527,9 @@ impl FromGlib<ffi::GUriFlags> for UriFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg(any(feature = "v2_66", docsrs))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriHideFlags")]
     pub struct UriHideFlags: u32 {
         #[doc(alias = "G_URI_HIDE_NONE")]
@@ -547,16 +547,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for UriHideFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriHideFlags {
     type GlibType = ffi::GUriHideFlags;
@@ -567,8 +567,8 @@ impl IntoGlib for UriHideFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
     #[inline]
@@ -577,9 +577,9 @@ impl FromGlib<ffi::GUriHideFlags> for UriHideFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
+#[cfg(any(feature = "v2_66", docsrs))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "GUriParamsFlags")]
     pub struct UriParamsFlags: u32 {
         #[doc(alias = "G_URI_PARAMS_NONE")]
@@ -593,16 +593,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for UriParamsFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriParamsFlags {
     type GlibType = ffi::GUriParamsFlags;
@@ -613,8 +613,8 @@ impl IntoGlib for UriParamsFlags {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriParamsFlags> for UriParamsFlags {
     #[inline]

@@ -2,16 +2,16 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use crate::InetAddress;
 use crate::{SocketConnectable, TlsCertificateFlags};
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use glib::signal::{connect_raw, SignalHandlerId};
 use glib::{prelude::*, translate::*};
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use std::{boxed::Box as Box_, mem::transmute};
 use std::{fmt, ptr};
 
@@ -42,8 +42,8 @@ impl TlsCertificate {
         }
     }
 
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "g_tls_certificate_new_from_file_with_password")]
     #[doc(alias = "new_from_file_with_password")]
     pub fn from_file_with_password(
@@ -102,8 +102,8 @@ impl TlsCertificate {
         }
     }
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_tls_certificate_new_from_pkcs11_uris")]
     #[doc(alias = "new_from_pkcs11_uris")]
     pub fn from_pkcs11_uris(
@@ -125,8 +125,8 @@ impl TlsCertificate {
         }
     }
 
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "g_tls_certificate_new_from_pkcs12")]
     #[doc(alias = "new_from_pkcs12")]
     pub fn from_pkcs12(data: &[u8], password: Option<&str>) -> Result<TlsCertificate, glib::Error> {
@@ -167,14 +167,14 @@ impl TlsCertificate {
 }
 
 pub trait TlsCertificateExt: 'static {
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_dns_names")]
     #[doc(alias = "get_dns_names")]
     fn dns_names(&self) -> Vec<glib::Bytes>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_ip_addresses")]
     #[doc(alias = "get_ip_addresses")]
     fn ip_addresses(&self) -> Vec<InetAddress>;
@@ -184,26 +184,26 @@ pub trait TlsCertificateExt: 'static {
     #[must_use]
     fn issuer(&self) -> Option<TlsCertificate>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_issuer_name")]
     #[doc(alias = "get_issuer_name")]
     fn issuer_name(&self) -> Option<glib::GString>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_not_valid_after")]
     #[doc(alias = "get_not_valid_after")]
     fn not_valid_after(&self) -> Option<glib::DateTime>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_not_valid_before")]
     #[doc(alias = "get_not_valid_before")]
     fn not_valid_before(&self) -> Option<glib::DateTime>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_certificate_get_subject_name")]
     #[doc(alias = "get_subject_name")]
     fn subject_name(&self) -> Option<glib::GString>;
@@ -223,8 +223,8 @@ pub trait TlsCertificateExt: 'static {
     #[doc(alias = "certificate-pem")]
     fn certificate_pem(&self) -> Option<glib::GString>;
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "pkcs11-uri")]
     fn pkcs11_uri(&self) -> Option<glib::GString>;
 
@@ -234,45 +234,45 @@ pub trait TlsCertificateExt: 'static {
     #[doc(alias = "private-key-pem")]
     fn private_key_pem(&self) -> Option<glib::GString>;
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "private-key-pkcs11-uri")]
     fn private_key_pkcs11_uri(&self) -> Option<glib::GString>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "dns-names")]
     fn connect_dns_names_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "ip-addresses")]
     fn connect_ip_addresses_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "issuer-name")]
     fn connect_issuer_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "not-valid-after")]
     fn connect_not_valid_after_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "not-valid-before")]
     fn connect_not_valid_before_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "subject-name")]
     fn connect_subject_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn dns_names(&self) -> Vec<glib::Bytes> {
         unsafe {
             FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_dns_names(
@@ -281,8 +281,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn ip_addresses(&self) -> Vec<InetAddress> {
         unsafe {
             FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_ip_addresses(
@@ -299,8 +299,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn issuer_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_tls_certificate_get_issuer_name(
@@ -309,8 +309,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn not_valid_after(&self) -> Option<glib::DateTime> {
         unsafe {
             from_glib_full(ffi::g_tls_certificate_get_not_valid_after(
@@ -319,8 +319,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn not_valid_before(&self) -> Option<glib::DateTime> {
         unsafe {
             from_glib_full(ffi::g_tls_certificate_get_not_valid_before(
@@ -329,8 +329,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn subject_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_tls_certificate_get_subject_name(
@@ -370,8 +370,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         glib::ObjectExt::property(self.as_ref(), "certificate-pem")
     }
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     fn pkcs11_uri(&self) -> Option<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "pkcs11-uri")
     }
@@ -384,14 +384,14 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         glib::ObjectExt::property(self.as_ref(), "private-key-pem")
     }
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     fn private_key_pkcs11_uri(&self) -> Option<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "private-key-pkcs11-uri")
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_dns_names_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_dns_names_trampoline<
             P: IsA<TlsCertificate>,
@@ -417,8 +417,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_ip_addresses_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_ip_addresses_trampoline<
             P: IsA<TlsCertificate>,
@@ -444,8 +444,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_issuer_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_issuer_name_trampoline<
             P: IsA<TlsCertificate>,
@@ -471,8 +471,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_not_valid_after_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_not_valid_after_trampoline<
             P: IsA<TlsCertificate>,
@@ -498,8 +498,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_not_valid_before_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_not_valid_before_trampoline<
             P: IsA<TlsCertificate>,
@@ -525,8 +525,8 @@ impl<O: IsA<TlsCertificate>> TlsCertificateExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_subject_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_subject_name_trampoline<
             P: IsA<TlsCertificate>,

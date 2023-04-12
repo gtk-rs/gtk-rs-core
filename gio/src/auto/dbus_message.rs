@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
     DBusCapabilityFlags, DBusMessageByteOrder, DBusMessageFlags, DBusMessageHeaderField,
@@ -166,8 +166,8 @@ impl DBusMessage {
         unsafe { from_glib(ffi::g_dbus_message_get_message_type(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_get_num_unix_fds")]
     #[doc(alias = "get_num_unix_fds")]
     pub fn num_unix_fds(&self) -> u32 {
@@ -204,8 +204,8 @@ impl DBusMessage {
         unsafe { from_glib_none(ffi::g_dbus_message_get_signature(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_get_unix_fd_list")]
     #[doc(alias = "get_unix_fd_list")]
     pub fn unix_fd_list(&self) -> Option<UnixFDList> {
@@ -321,8 +321,8 @@ impl DBusMessage {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_num_unix_fds")]
     pub fn set_num_unix_fds(&self, value: u32) {
         unsafe {
@@ -365,8 +365,8 @@ impl DBusMessage {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_message_set_unix_fd_list")]
     pub fn set_unix_fd_list(&self, fd_list: Option<&impl IsA<UnixFDList>>) {
         unsafe {

@@ -16,8 +16,8 @@ impl AttrList {
         }
     }
 
-    #[cfg(any(feature = "v1_46", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_attr_list_equal")]
     fn equal(&self, other_list: &AttrList) -> bool {
         unsafe {
@@ -47,7 +47,7 @@ impl AttrList {
     }
 }
 
-#[cfg(any(feature = "v1_46", feature = "dox"))]
+#[cfg(any(feature = "v1_46", docsrs))]
 impl PartialEq for AttrList {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
@@ -55,10 +55,10 @@ impl PartialEq for AttrList {
     }
 }
 
-#[cfg(any(feature = "v1_46", feature = "dox"))]
+#[cfg(any(feature = "v1_46", docsrs))]
 impl Eq for AttrList {}
 
-#[cfg(any(feature = "v1_50", feature = "dox"))]
+#[cfg(any(feature = "v1_50", docsrs))]
 impl std::str::FromStr for AttrList {
     type Err = glib::BoolError;
 

@@ -5,10 +5,10 @@ use std::os::unix::io::RawFd;
 use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
 use ffi::{self, gboolean, gpointer};
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 use libc::c_int as RawFd;
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 use crate::IOCondition;
 use crate::{thread_guard::ThreadGuard, translate::*, MainContext, Source};
 
@@ -172,8 +172,8 @@ fn into_raw_child_watch_local<F: FnMut(Pid, i32) + 'static>(func: F) -> gpointer
     Box::into_raw(func) as gpointer
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn trampoline_unix_fd<
     F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static,
 >(
@@ -185,8 +185,8 @@ unsafe extern "C" fn trampoline_unix_fd<
     (*func.borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn trampoline_unix_fd_local<
     F: FnMut(RawFd, IOCondition) -> Continue + 'static,
 >(
@@ -198,8 +198,8 @@ unsafe extern "C" fn trampoline_unix_fd_local<
     (*func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn destroy_closure_unix_fd<
     F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static,
 >(
@@ -208,8 +208,8 @@ unsafe extern "C" fn destroy_closure_unix_fd<
     let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 unsafe extern "C" fn destroy_closure_unix_fd_local<
     F: FnMut(RawFd, IOCondition) -> Continue + 'static,
 >(
@@ -218,8 +218,8 @@ unsafe extern "C" fn destroy_closure_unix_fd_local<
     let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static>(
     func: F,
 ) -> gpointer {
@@ -227,8 +227,8 @@ fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> Continue + Send + 'static>(
     Box::into_raw(func) as gpointer
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 fn into_raw_unix_fd_local<F: FnMut(RawFd, IOCondition) -> Continue + 'static>(func: F) -> gpointer {
     let func: Box<ThreadGuard<RefCell<F>>> = Box::new(ThreadGuard::new(RefCell::new(func)));
     Box::into_raw(func) as gpointer
@@ -649,8 +649,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
@@ -675,8 +675,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
@@ -696,8 +696,8 @@ where
     unix_signal_add(signum, fnmut_callback_wrapper(func))
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
@@ -732,8 +732,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the default main loop whenever a UNIX signal is raised.
 ///
@@ -759,8 +759,8 @@ where
     unix_signal_add_local(signum, fnmut_callback_wrapper_local(func))
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
@@ -787,8 +787,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.
@@ -1007,8 +1007,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX signal is raised.
@@ -1043,8 +1043,8 @@ where
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 // rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to whenever a
 /// UNIX file descriptor reaches the given IO condition.

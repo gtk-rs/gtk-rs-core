@@ -5,8 +5,8 @@
 use crate::Icon;
 use glib::translate::*;
 use std::cmp;
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 use std::mem;
 
 glib::wrapper! {
@@ -134,8 +134,8 @@ impl UnixMountPoint {
         }
     }
 
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_unix_mount_point_at")]
     pub fn at(mount_path: impl AsRef<std::path::Path>) -> (Option<UnixMountPoint>, u64) {
         unsafe {

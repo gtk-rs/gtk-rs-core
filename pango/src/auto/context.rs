@@ -99,8 +99,8 @@ impl Context {
         }
     }
 
-    #[cfg(any(feature = "v1_44", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_context_get_round_glyph_positions")]
     #[doc(alias = "get_round_glyph_positions")]
     pub fn is_round_glyph_positions(&self) -> bool {
@@ -207,8 +207,8 @@ impl Context {
         }
     }
 
-    #[cfg(any(feature = "v1_44", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_context_set_round_glyph_positions")]
     pub fn set_round_glyph_positions(&self, round_positions: bool) {
         unsafe {

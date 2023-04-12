@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(feature = "script", feature = "dox"))]
+#[cfg(any(feature = "script", docsrs))]
 use std::ffi::CString;
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
-#[cfg(any(feature = "script", feature = "dox"))]
+#[cfg(any(feature = "script", docsrs))]
 use std::path::Path;
 use std::{fmt, ptr};
 
@@ -12,7 +12,7 @@ use std::{fmt, ptr};
 use glib::translate::*;
 
 use crate::{utils::status_to_result, DeviceType, Error};
-#[cfg(any(feature = "script", feature = "dox"))]
+#[cfg(any(feature = "script", docsrs))]
 use crate::{Content, RecordingSurface, ScriptMode, Surface};
 
 #[derive(Debug)]
@@ -56,7 +56,7 @@ impl Device {
         self.0.as_ptr()
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_create")]
     pub fn create<P: AsRef<Path>>(filename: P) -> Option<Device> {
         unsafe {
@@ -71,7 +71,7 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_from_recording_surface")]
     pub fn from_recording_surface(&self, surface: &RecordingSurface) -> Result<(), Error> {
         unsafe {
@@ -81,20 +81,20 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_get_mode")]
     #[doc(alias = "get_mode")]
     pub fn mode(&self) -> ScriptMode {
         unsafe { ScriptMode::from(ffi::cairo_script_get_mode(self.to_raw_none())) }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_set_mode")]
     pub fn set_mode(&self, mode: ScriptMode) {
         unsafe { ffi::cairo_script_set_mode(self.to_raw_none(), mode.into()) }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_surface_create")]
     pub fn surface_create(
         &self,
@@ -112,7 +112,7 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_surface_create_for_target")]
     pub fn surface_create_for_target(&self, target: impl AsRef<Surface>) -> Result<Surface, Error> {
         let target = target.as_ref();
@@ -125,7 +125,7 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "script", feature = "dox"))]
+    #[cfg(any(feature = "script", docsrs))]
     #[doc(alias = "cairo_script_write_comment")]
     pub fn write_comment(&self, comment: &str) {
         unsafe {
@@ -195,7 +195,7 @@ impl Device {
         unsafe { ffi::cairo_device_observer_stroke_elapsed(self.to_raw_none()) }
     }
 
-    #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
+    #[cfg(any(feature = "xlib", feature = "xcb", docsrs))]
     #[doc(alias = "cairo_xlib_device_debug_cap_xrender_version")]
     #[doc(alias = "cairo_xcb_device_debug_cap_xrender_version")]
     pub fn debug_cap_xrender_version(&self, _major_version: i32, _minor_version: i32) {
@@ -232,7 +232,7 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
+    #[cfg(any(feature = "xlib", feature = "xcb", docsrs))]
     #[doc(alias = "cairo_xlib_device_debug_get_precision")]
     #[doc(alias = "cairo_xcb_device_debug_get_precision")]
     pub fn debug_get_precision(&self) -> i32 {
@@ -261,7 +261,7 @@ impl Device {
         }
     }
 
-    #[cfg(any(feature = "xlib", feature = "xcb", feature = "dox"))]
+    #[cfg(any(feature = "xlib", feature = "xcb", docsrs))]
     #[doc(alias = "cairo_xlib_device_debug_set_precision")]
     #[doc(alias = "cairo_xcb_device_debug_set_precision")]
     pub fn debug_set_precision(&self, _precision: i32) {

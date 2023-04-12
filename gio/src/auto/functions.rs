@@ -157,8 +157,8 @@ pub fn content_type_get_icon(type_: &str) -> Icon {
     unsafe { from_glib_full(ffi::g_content_type_get_icon(type_.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "g_content_type_get_mime_dirs")]
 pub fn content_type_get_mime_dirs() -> Vec<glib::GString> {
     unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_content_type_get_mime_dirs()) }
@@ -230,8 +230,8 @@ pub fn content_type_is_unknown(type_: &str) -> bool {
     unsafe { from_glib(ffi::g_content_type_is_unknown(type_.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "g_content_type_set_mime_dirs")]
 pub fn content_type_set_mime_dirs(dirs: &[&str]) {
     unsafe {
@@ -361,15 +361,15 @@ pub fn dbus_address_get_stream_sync(
     }
 }
 
-#[cfg(any(feature = "v2_68", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[cfg(any(feature = "v2_68", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 #[doc(alias = "g_dbus_escape_object_path")]
 pub fn dbus_escape_object_path(s: &str) -> glib::GString {
     unsafe { from_glib_full(ffi::g_dbus_escape_object_path(s.to_glib_none().0)) }
 }
 
-//#[cfg(any(feature = "v2_68", feature = "dox"))]
-//#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+//#[cfg(any(feature = "v2_68", docsrs))]
+//#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_dbus_escape_object_path_bytestring")]
 //pub fn dbus_escape_object_path_bytestring(bytes: &[u8]) -> glib::GString {
 //    unsafe { TODO: call ffi:g_dbus_escape_object_path_bytestring() }
@@ -404,8 +404,8 @@ pub fn dbus_is_address(string: &str) -> bool {
     unsafe { from_glib(ffi::g_dbus_is_address(string.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(alias = "g_dbus_is_error_name")]
 pub fn dbus_is_error_name(string: &str) -> bool {
     unsafe { from_glib(ffi::g_dbus_is_error_name(string.to_glib_none().0)) }
@@ -601,8 +601,8 @@ pub fn resources_unregister(resource: &Resource) {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_mount_path_system_internal")]
 pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path>) -> bool {
     unsafe {
@@ -612,8 +612,8 @@ pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_system_device_path")]
 pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> bool {
     unsafe {
@@ -623,8 +623,8 @@ pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> b
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_system_fs_type")]
 pub fn unix_is_system_fs_type(fs_type: &str) -> bool {
     unsafe { from_glib(ffi::g_unix_is_system_fs_type(fs_type.to_glib_none().0)) }

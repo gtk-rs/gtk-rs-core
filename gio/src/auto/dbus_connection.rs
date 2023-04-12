@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
     AsyncInitable, AsyncResult, Cancellable, Credentials, DBusAuthObserver, DBusCallFlags,
@@ -217,8 +217,8 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_connection_call_with_unix_fd_list")]
     pub fn call_with_unix_fd_list<
         P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
@@ -293,8 +293,8 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn call_with_unix_fd_list_future(
         &self,
         bus_name: Option<&str>,
@@ -341,8 +341,8 @@ impl DBusConnection {
         ))
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_connection_call_with_unix_fd_list_sync")]
     pub fn call_with_unix_fd_list_sync(
         &self,
@@ -592,8 +592,8 @@ impl DBusConnection {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_dbus_connection_get_flags")]
     #[doc(alias = "get_flags")]
     pub fn flags(&self) -> DBusConnectionFlags {

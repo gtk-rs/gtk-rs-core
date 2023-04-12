@@ -4,8 +4,8 @@
 
 use glib::translate::*;
 
-#[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord, Hash)]
     pub struct Attribute(Boxed<ffi::PangoAttribute>);
@@ -17,7 +17,7 @@ glib::wrapper! {
     }
 }
 
-#[cfg(not(any(feature = "v1_44", feature = "dox")))]
+#[cfg(not(any(feature = "v1_44", docsrs)))]
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord, Hash)]
     pub struct Attribute(Boxed<ffi::PangoAttribute>);

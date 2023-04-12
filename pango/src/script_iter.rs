@@ -12,8 +12,8 @@ pub struct ScriptIter<'text> {
     text: PhantomData<&'text GStr>,
 }
 
-#[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl<'text> Clone for ScriptIter<'text> {
     #[inline]
     fn clone(&self) -> Self {
@@ -39,8 +39,8 @@ impl<'text> Drop for ScriptIter<'text> {
     }
 }
 
-#[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl<'text> glib::StaticType for ScriptIter<'text> {
     #[inline]
     fn static_type() -> glib::Type {
@@ -93,7 +93,7 @@ impl<'text> IntoIterator for ScriptIter<'text> {
     }
 }
 
-#[cfg_attr(any(feature = "v1_44", feature = "dox"), derive(Clone))]
+#[cfg_attr(any(feature = "v1_44", docsrs), derive(Clone))]
 #[derive(Debug)]
 #[repr(transparent)]
 pub struct ScriptIntoIter<'text>(Option<ScriptIter<'text>>);

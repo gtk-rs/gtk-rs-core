@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
 #![doc = include_str!("../README.md")]
@@ -31,10 +31,10 @@ pub use self::dbus_connection::{
 mod dbus_message;
 mod dbus_method_invocation;
 mod dbus_node_info;
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod debug_controller_dbus;
-#[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
+#[cfg(any(all(not(windows), not(target_os = "macos")), docsrs))]
 mod desktop_app_info;
 mod error;
 mod file;
@@ -43,9 +43,9 @@ pub use crate::file_attribute_info::FileAttributeInfo;
 mod file_attribute_info_list;
 mod file_attribute_matcher;
 pub use crate::file_attribute_matcher::FileAttributematcherIter;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod file_descriptor_based;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 pub use file_descriptor_based::FileDescriptorBased;
 mod file_enumerator;
 pub use crate::file_enumerator::FileEnumeratorStream;
@@ -84,19 +84,19 @@ pub use socket_msg_flags::SocketMsgFlags;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_fd_list;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_fd_message;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_input_stream;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_mount_entry;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_mount_point;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_output_stream;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 mod unix_socket_address;
 
 #[cfg(test)]

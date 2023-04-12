@@ -4,8 +4,8 @@
 
 use crate::TabAlign;
 use glib::translate::*;
-#[cfg(any(feature = "v1_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[cfg(any(feature = "v1_50", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use std::fmt;
 use std::mem;
 
@@ -37,8 +37,8 @@ impl TabArray {
     //    unsafe { TODO: call ffi:pango_tab_array_new_with_positions() }
     //}
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_get_decimal_point")]
     #[doc(alias = "get_decimal_point")]
     pub fn decimal_point(&self, tab_index: i32) -> char {
@@ -90,8 +90,8 @@ impl TabArray {
         }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_set_decimal_point")]
     pub fn set_decimal_point(&mut self, tab_index: i32, decimal_point: char) {
         unsafe {
@@ -103,8 +103,8 @@ impl TabArray {
         }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_set_positions_in_pixels")]
     pub fn set_positions_in_pixels(&mut self, positions_in_pixels: bool) {
         unsafe {
@@ -127,8 +127,8 @@ impl TabArray {
         }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_sort")]
     pub fn sort(&mut self) {
         unsafe {
@@ -136,8 +136,8 @@ impl TabArray {
         }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_to_string")]
     #[doc(alias = "to_string")]
     pub fn to_str(&self) -> glib::GString {
@@ -148,8 +148,8 @@ impl TabArray {
         }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_tab_array_from_string")]
     pub fn from_string(text: &str) -> Result<TabArray, glib::BoolError> {
         unsafe {
@@ -159,8 +159,8 @@ impl TabArray {
     }
 }
 
-#[cfg(any(feature = "v1_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[cfg(any(feature = "v1_50", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl fmt::Display for TabArray {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

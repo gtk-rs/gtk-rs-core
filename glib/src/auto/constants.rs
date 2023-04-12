@@ -91,8 +91,8 @@ pub static OPTION_REMAINING: &GStr =
 #[doc(alias = "G_STR_DELIMITERS")]
 pub static STR_DELIMITERS: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_STR_DELIMITERS) };
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "G_TEST_OPTION_ISOLATE_DIRS")]
 pub static TEST_OPTION_ISOLATE_DIRS: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_TEST_OPTION_ISOLATE_DIRS) };

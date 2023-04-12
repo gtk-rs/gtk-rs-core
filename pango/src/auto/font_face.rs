@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::FontDescription;
-#[cfg(any(feature = "v1_46", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+#[cfg(any(feature = "v1_46", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
 use glib::{prelude::*, translate::*};
 use std::{fmt, mem, ptr};
@@ -30,8 +30,8 @@ pub trait FontFaceExt: 'static {
     #[doc(alias = "get_face_name")]
     fn face_name(&self) -> glib::GString;
 
-    #[cfg(any(feature = "v1_46", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_face_get_family")]
     #[doc(alias = "get_family")]
     fn family(&self) -> FontFamily;
@@ -60,8 +60,8 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_46", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     fn family(&self) -> FontFamily {
         unsafe {
             from_glib_none(ffi::pango_font_face_get_family(

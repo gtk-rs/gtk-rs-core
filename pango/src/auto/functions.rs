@@ -259,15 +259,15 @@ pub fn shape(text: &str, analysis: &Analysis, glyphs: &mut GlyphString) {
     }
 }
 
-//#[cfg(any(feature = "v1_50", feature = "dox"))]
-//#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+//#[cfg(any(feature = "v1_50", docsrs))]
+//#[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 //#[doc(alias = "pango_shape_item")]
 //pub fn shape_item(item: &mut Item, paragraph_text: Option<&str>, log_attrs: /*Ignored*/Option<&mut LogAttr>, glyphs: &mut GlyphString, flags: ShapeFlags) {
 //    unsafe { TODO: call ffi:pango_shape_item() }
 //}
 
-//#[cfg(any(feature = "v1_44", feature = "dox"))]
-//#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+//#[cfg(any(feature = "v1_44", docsrs))]
+//#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 //#[doc(alias = "pango_tailor_break")]
 //pub fn tailor_break(text: &str, analysis: &mut Analysis, offset: i32, attrs: /*Ignored*/&[LogAttr]) {
 //    unsafe { TODO: call ffi:pango_tailor_break() }

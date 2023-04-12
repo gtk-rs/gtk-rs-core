@@ -117,8 +117,8 @@ pub trait FileExt: 'static {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileOutputStream, glib::Error>> + 'static>>;
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_file_build_attribute_list_for_copy")]
     fn build_attribute_list_for_copy(
         &self,
@@ -470,8 +470,8 @@ pub trait FileExt: 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<AppInfo, glib::Error>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_file_query_default_handler_async")]
     fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
         &self,
@@ -480,8 +480,8 @@ pub trait FileExt: 'static {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn query_default_handler_future(
         &self,
         io_priority: glib::Priority,
@@ -906,8 +906,8 @@ impl<O: IsA<File>> FileExt for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     fn build_attribute_list_for_copy(
         &self,
         flags: FileCopyFlags,
@@ -2230,8 +2230,8 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn query_default_handler_async<P: FnOnce(Result<AppInfo, glib::Error>) + 'static>(
         &self,
         io_priority: glib::Priority,
@@ -2282,8 +2282,8 @@ impl<O: IsA<File>> FileExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn query_default_handler_future(
         &self,
         io_priority: glib::Priority,

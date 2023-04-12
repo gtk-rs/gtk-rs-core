@@ -31,10 +31,6 @@ Currently, the minimum supported Rust version is `1.64.0`.
  * [Rust API - Development](https://gtk-rs.org/gtk-rs-core/git/docs/cairo)
  * [C API](https://www.cairographics.org/documentation/)
 
-## Documentation features
-
- * **dox** - Used to keep system dependent items in documentation
-
 ## X Window features
 
  * **xcb** - X Window System rendering using the XCB library
@@ -43,6 +39,10 @@ Currently, the minimum supported Rust version is `1.64.0`.
 ## Windows API features
 
  * **win32-surface** - Microsoft Windows surface support
+
+## Documentation rustdoc attributes
+
+ * **docsrs** - Used to keep system dependent items in documentation
 
 ## Using
 

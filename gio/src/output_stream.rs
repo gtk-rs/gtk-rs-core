@@ -4,7 +4,7 @@ use std::{io, mem, pin::Pin, ptr};
 
 use glib::{prelude::*, translate::*, Priority};
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(any(feature = "v2_60", docsrs))]
 use crate::OutputVector;
 use crate::{error::to_std_io_result, prelude::*, Cancellable, OutputStream, Seekable};
 
@@ -60,8 +60,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         >,
     >;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev")]
     fn writev(
         &self,
@@ -69,8 +69,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<usize, glib::Error>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_async")]
     fn writev_async<
         B: AsRef<[u8]> + Send + 'static,
@@ -83,8 +83,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         vectors: impl IntoIterator<Item = B> + 'static,
@@ -96,8 +96,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         >,
     >;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_all")]
     fn writev_all(
         &self,
@@ -105,8 +105,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(usize, Option<glib::Error>), glib::Error>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_all_async")]
     fn writev_all_async<
         B: AsRef<[u8]> + Send + 'static,
@@ -119,8 +119,8 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         vectors: impl IntoIterator<Item = B> + 'static,
@@ -353,8 +353,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev(
         &self,
         vectors: &[OutputVector],
@@ -380,8 +380,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_async<
         B: AsRef<[u8]> + Send + 'static,
         P: FnOnce(Result<(Vec<B>, usize), (Vec<B>, glib::Error)>) + 'static,
@@ -470,8 +470,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         vectors: impl IntoIterator<Item = B> + 'static,
@@ -492,8 +492,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all(
         &self,
         vectors: &[OutputVector],
@@ -522,8 +522,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_async<
         B: AsRef<[u8]> + Send + 'static,
         P: FnOnce(Result<(Vec<B>, usize, Option<glib::Error>), (Vec<B>, glib::Error)>) + 'static,
@@ -614,8 +614,8 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         vectors: impl IntoIterator<Item = B> + 'static,
@@ -670,8 +670,8 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
         to_std_io_result(result)
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn write_vectored(&mut self, bufs: &[io::IoSlice<'_>]) -> io::Result<usize> {
         let vectors = bufs
             .iter()

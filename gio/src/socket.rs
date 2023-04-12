@@ -1,26 +1,26 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 use std::os::raw::c_int;
-#[cfg(all(not(windows), feature = "dox"))]
+#[cfg(all(not(windows), docsrs))]
 use std::os::raw::c_void;
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(any(feature = "v2_60", docsrs))]
 use std::time::Duration;
 use std::{cell::RefCell, marker::PhantomData, mem::transmute, pin::Pin, ptr};
 
 use futures_core::stream::Stream;
 use glib::{prelude::*, translate::*, Slice};
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(any(feature = "v2_60", docsrs))]
 use crate::PollableReturn;
 use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage};
 
 impl Socket {
-    #[cfg(any(unix, feature = "dox"))]
+    #[cfg(any(unix, docsrs))]
     #[allow(clippy::missing_safety_doc)]
     pub unsafe fn from_fd(fd: impl IntoRawFd) -> Result<Socket, glib::Error> {
         let fd = fd.into_raw_fd();
@@ -32,7 +32,7 @@ impl Socket {
             Err(from_glib_full(error))
         }
     }
-    #[cfg(any(windows, feature = "dox"))]
+    #[cfg(any(windows, docsrs))]
     #[allow(clippy::missing_safety_doc)]
     pub unsafe fn from_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
@@ -46,14 +46,14 @@ impl Socket {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix, docsrs))]
 impl AsRawFd for Socket {
     fn as_raw_fd(&self) -> RawFd {
         unsafe { ffi::g_socket_get_fd(self.to_glib_none().0) as _ }
     }
 }
 
-#[cfg(any(windows, feature = "dox"))]
+#[cfg(any(windows, docsrs))]
 impl AsRawSocket for Socket {
     fn as_raw_socket(&self) -> RawSocket {
         unsafe { ffi::g_socket_get_fd(self.to_glib_none().0) as _ }
@@ -341,8 +341,8 @@ pub trait SocketExtManual: Sized {
         flags: i32,
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_socket_send_message_with_timeout")]
     fn send_message_with_timeout<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
@@ -375,14 +375,14 @@ pub trait SocketExtManual: Sized {
         cancellable: Option<&C>,
     ) -> Result<usize, glib::Error>;
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "get_fd")]
     #[doc(alias = "g_socket_get_fd")]
     fn fd<T: FromRawFd>(&self) -> T;
 
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
+    #[cfg(any(windows, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(windows)))]
     #[doc(alias = "get_socket")]
     #[doc(alias = "g_socket_get_fd")]
     fn socket<T: FromRawSocket>(&self) -> T;
@@ -627,8 +627,8 @@ impl<O: IsA<Socket>> SocketExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn send_message_with_timeout<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
         address: Option<&P>,
@@ -752,14 +752,14 @@ impl<O: IsA<Socket>> SocketExtManual for O {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn fd<T: FromRawFd>(&self) -> T {
         unsafe { FromRawFd::from_raw_fd(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0)) }
     }
 
-    #[cfg(any(windows, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(windows)))]
+    #[cfg(any(windows, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(windows)))]
     fn socket<T: FromRawSocket>(&self) -> T {
         unsafe {
             FromRawSocket::from_raw_socket(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0) as _)
@@ -877,40 +877,40 @@ impl<O: IsA<Socket>> SocketExtManual for O {
     }
 }
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 pub trait IntoRawFd {
     fn into_raw_fd(self) -> c_int;
 }
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 pub trait FromRawFd {
     unsafe fn from_raw_fd(fd: c_int) -> Self;
 }
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 pub trait AsRawFd {
     fn as_raw_fd(&self) -> RawFd;
 }
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 pub type RawFd = c_int;
 
-#[cfg(all(not(windows), feature = "dox"))]
+#[cfg(all(not(windows), docsrs))]
 pub trait IntoRawSocket {
     fn into_raw_socket(self) -> u64;
 }
 
-#[cfg(all(not(windows), feature = "dox"))]
+#[cfg(all(not(windows), docsrs))]
 pub trait FromRawSocket {
     unsafe fn from_raw_socket(sock: u64) -> Self;
 }
 
-#[cfg(all(not(windows), feature = "dox"))]
+#[cfg(all(not(windows), docsrs))]
 pub trait AsRawSocket {
     fn as_raw_socket(&self) -> RawSocket;
 }
 
-#[cfg(all(not(windows), feature = "dox"))]
+#[cfg(all(not(windows), docsrs))]
 pub type RawSocket = *mut c_void;
 
 #[cfg(test)]

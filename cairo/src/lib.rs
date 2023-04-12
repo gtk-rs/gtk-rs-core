@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
@@ -195,15 +195,15 @@ macro_rules! gvalue_impl_inline {
     };
 }
 
-#[cfg(any(feature = "pdf", feature = "dox"))]
+#[cfg(any(feature = "pdf", docsrs))]
 pub use pdf::PdfSurface;
-#[cfg(any(feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "ps", docsrs))]
 pub use ps::PsSurface;
-#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", docsrs))]
 pub use stream::StreamWithError;
-#[cfg(any(feature = "svg", feature = "dox"))]
+#[cfg(any(feature = "svg", docsrs))]
 pub use svg::SvgSurface;
-#[cfg(any(feature = "xcb", feature = "dox"))]
+#[cfg(any(feature = "xcb", docsrs))]
 pub use xcb::{
     XCBConnection, XCBDrawable, XCBPixmap, XCBRenderPictFormInfo, XCBScreen, XCBSurface,
     XCBVisualType,
@@ -254,30 +254,30 @@ mod rectangle;
 mod rectangle_int;
 mod region;
 mod surface;
-#[cfg(any(feature = "png", feature = "dox"))]
+#[cfg(any(feature = "png", docsrs))]
 mod surface_png;
-#[cfg(any(feature = "xcb", feature = "dox"))]
+#[cfg(any(feature = "xcb", docsrs))]
 mod xcb;
 
-#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", docsrs))]
 #[macro_use]
 mod stream;
-#[cfg(any(feature = "pdf", feature = "dox"))]
+#[cfg(any(feature = "pdf", docsrs))]
 mod pdf;
-#[cfg(any(feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "ps", docsrs))]
 mod ps;
-#[cfg(any(feature = "svg", feature = "dox"))]
+#[cfg(any(feature = "svg", docsrs))]
 mod svg;
 
-#[cfg(any(target_os = "macos", feature = "dox"))]
+#[cfg(any(target_os = "macos", docsrs))]
 mod quartz_surface;
-#[cfg(any(target_os = "macos", feature = "dox"))]
+#[cfg(any(target_os = "macos", docsrs))]
 pub use quartz_surface::QuartzSurface;
 
-#[cfg(any(all(windows, feature = "win32-surface"), feature = "dox"))]
+#[cfg(any(all(windows, feature = "win32-surface"), docsrs))]
 mod win32_surface;
 
-#[cfg(any(all(windows, feature = "win32-surface"), feature = "dox"))]
+#[cfg(any(all(windows, feature = "win32-surface"), docsrs))]
 pub use win32_surface::Win32Surface;
 
 #[cfg(not(feature = "use_glib"))]

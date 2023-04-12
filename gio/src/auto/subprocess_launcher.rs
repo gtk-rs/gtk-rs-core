@@ -4,8 +4,8 @@
 
 use crate::{Subprocess, SubprocessFlags};
 use glib::translate::*;
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 use std::boxed::Box as Box_;
 use std::{fmt, ptr};
 
@@ -24,10 +24,10 @@ impl SubprocessLauncher {
         unsafe { from_glib_full(ffi::g_subprocess_launcher_new(flags.into_glib())) }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_subprocess_launcher_close")]
     pub fn close(&self) {
         unsafe {
@@ -45,8 +45,8 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_child_setup")]
     pub fn set_child_setup<P: Fn() + 'static>(&self, child_setup: P) {
         let child_setup_data: Box_<P> = Box_::new(child_setup);
@@ -94,8 +94,8 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stderr_file_path")]
     pub fn set_stderr_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {
         unsafe {
@@ -106,8 +106,8 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdin_file_path")]
     pub fn set_stdin_file_path(&self, path: &str) {
         unsafe {
@@ -118,8 +118,8 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdout_file_path")]
     pub fn set_stdout_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {
         unsafe {

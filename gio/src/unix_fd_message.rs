@@ -5,7 +5,7 @@ use std::os::unix::io::{AsRawFd, RawFd};
 use std::{mem, ptr};
 
 use glib::{prelude::*, translate::*};
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, RawFd};
 
 use crate::UnixFDMessage;

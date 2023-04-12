@@ -9,7 +9,7 @@
     clippy::unreadable_literal,
     clippy::upper_case_acronyms
 )]
-#![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod manual;
 
@@ -922,14 +922,14 @@ pub const G_SPAWN_CHILD_INHERITS_STDIN: GSpawnFlags = 32;
 pub const G_SPAWN_FILE_AND_ARGV_ZERO: GSpawnFlags = 64;
 pub const G_SPAWN_SEARCH_PATH_FROM_ENVP: GSpawnFlags = 128;
 pub const G_SPAWN_CLOEXEC_PIPES: GSpawnFlags = 256;
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_SPAWN_CHILD_INHERITS_STDOUT: GSpawnFlags = 512;
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_SPAWN_CHILD_INHERITS_STDERR: GSpawnFlags = 1024;
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74", docsrs))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_SPAWN_STDIN_FROM_DEV_NULL: GSpawnFlags = 2048;
 
 pub type GTestSubprocessFlags = c_uint;
@@ -2433,16 +2433,16 @@ extern "C" {
     pub fn g_array_get_type() -> GType;
     pub fn g_array_append_vals(array: *mut GArray, data: gconstpointer, len: c_uint)
         -> *mut GArray;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_array_binary_search(
         array: *mut GArray,
         target: gconstpointer,
         compare_func: GCompareFunc,
         out_match_index: *mut c_uint,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_array_copy(array: *mut GArray) -> *mut GArray;
     pub fn g_array_free(array: *mut GArray, free_segment: gboolean) -> *mut c_char;
     pub fn g_array_get_element_size(array: *mut GArray) -> c_uint;
@@ -2457,16 +2457,16 @@ extern "C" {
         clear_: gboolean,
         element_size: c_uint,
     ) -> *mut GArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_array_new_take(
         data: gpointer,
         len: size_t,
         clear: gboolean,
         element_size: size_t,
     ) -> *mut GArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_array_new_take_zero_terminated(
         data: gpointer,
         clear: gboolean,
@@ -2495,8 +2495,8 @@ extern "C" {
         compare_func: GCompareDataFunc,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_array_steal(array: *mut GArray, len: *mut size_t) -> gpointer;
     pub fn g_array_unref(array: *mut GArray);
 
@@ -2565,8 +2565,8 @@ extern "C" {
         uri: *const c_char,
         group: *const c_char,
     );
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_bookmark_file_copy(bookmark: *mut GBookmarkFile) -> *mut GBookmarkFile;
     pub fn g_bookmark_file_free(bookmark: *mut GBookmarkFile);
     pub fn g_bookmark_file_get_added(
@@ -2574,8 +2574,8 @@ extern "C" {
         uri: *const c_char,
         error: *mut *mut GError,
     ) -> c_long;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_added_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2590,8 +2590,8 @@ extern "C" {
         stamp: *mut c_long,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_application_info(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2640,8 +2640,8 @@ extern "C" {
         uri: *const c_char,
         error: *mut *mut GError,
     ) -> c_long;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_modified_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2662,8 +2662,8 @@ extern "C" {
         uri: *const c_char,
         error: *mut *mut GError,
     ) -> c_long;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_get_visited_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2727,8 +2727,8 @@ extern "C" {
         uri: *const c_char,
         added: c_long,
     );
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_set_added_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2743,8 +2743,8 @@ extern "C" {
         stamp: c_long,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_set_application_info(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2786,8 +2786,8 @@ extern "C" {
         uri: *const c_char,
         modified: c_long,
     );
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_set_modified_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2803,8 +2803,8 @@ extern "C" {
         uri: *const c_char,
         visited: c_long,
     );
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_bookmark_file_set_visited_date_time(
         bookmark: *mut GBookmarkFile,
         uri: *const c_char,
@@ -2859,8 +2859,8 @@ extern "C" {
         compare_func: GCompareDataFunc,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_byte_array_steal(array: *mut GByteArray, len: *mut size_t) -> *mut u8;
     pub fn g_byte_array_unref(array: *mut GByteArray);
 
@@ -2880,8 +2880,8 @@ extern "C" {
     pub fn g_bytes_compare(bytes1: gconstpointer, bytes2: gconstpointer) -> c_int;
     pub fn g_bytes_equal(bytes1: gconstpointer, bytes2: gconstpointer) -> gboolean;
     pub fn g_bytes_get_data(bytes: *mut GBytes, size: *mut size_t) -> gconstpointer;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_bytes_get_region(
         bytes: *mut GBytes,
         element_size: size_t,
@@ -3047,8 +3047,8 @@ extern "C" {
     pub fn g_date_time_difference(end: *mut GDateTime, begin: *mut GDateTime) -> GTimeSpan;
     pub fn g_date_time_equal(dt1: gconstpointer, dt2: gconstpointer) -> gboolean;
     pub fn g_date_time_format(datetime: *mut GDateTime, format: *const c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_date_time_format_iso8601(datetime: *mut GDateTime) -> *mut c_char;
     pub fn g_date_time_get_day_of_month(datetime: *mut GDateTime) -> c_int;
     pub fn g_date_time_get_day_of_week(datetime: *mut GDateTime) -> c_int;
@@ -3059,8 +3059,8 @@ extern "C" {
     pub fn g_date_time_get_month(datetime: *mut GDateTime) -> c_int;
     pub fn g_date_time_get_second(datetime: *mut GDateTime) -> c_int;
     pub fn g_date_time_get_seconds(datetime: *mut GDateTime) -> c_double;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_date_time_get_timezone(datetime: *mut GDateTime) -> *mut GTimeZone;
     pub fn g_date_time_get_timezone_abbreviation(datetime: *mut GDateTime) -> *const c_char;
     pub fn g_date_time_get_utc_offset(datetime: *mut GDateTime) -> GTimeSpan;
@@ -3102,8 +3102,8 @@ extern "C" {
     pub fn g_error_copy(error: *const GError) -> *mut GError;
     pub fn g_error_free(error: *mut GError);
     pub fn g_error_matches(error: *const GError, domain: GQuark, code: c_int) -> gboolean;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_error_domain_register(
         error_type_name: *const c_char,
         error_type_private_size: size_t,
@@ -3111,8 +3111,8 @@ extern "C" {
         error_type_copy: GErrorCopyFunc,
         error_type_clear: GErrorClearFunc,
     ) -> GQuark;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_error_domain_register_static(
         error_type_name: *const c_char,
         error_type_private_size: size_t,
@@ -3149,12 +3149,12 @@ extern "C" {
         hash_table: *mut GHashTable,
         length: *mut c_uint,
     ) -> *mut gpointer;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_hash_table_get_keys_as_ptr_array(hash_table: *mut GHashTable) -> *mut GPtrArray;
     pub fn g_hash_table_get_values(hash_table: *mut GHashTable) -> *mut GList;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_hash_table_get_values_as_ptr_array(hash_table: *mut GHashTable) -> *mut GPtrArray;
     pub fn g_hash_table_insert(
         hash_table: *mut GHashTable,
@@ -3175,8 +3175,8 @@ extern "C" {
         key_destroy_func: GDestroyNotify,
         value_destroy_func: GDestroyNotify,
     ) -> *mut GHashTable;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_hash_table_new_similar(other_hash_table: *mut GHashTable) -> *mut GHashTable;
     pub fn g_hash_table_ref(hash_table: *mut GHashTable) -> *mut GHashTable;
     pub fn g_hash_table_remove(hash_table: *mut GHashTable, key: gconstpointer) -> gboolean;
@@ -3189,14 +3189,14 @@ extern "C" {
     pub fn g_hash_table_size(hash_table: *mut GHashTable) -> c_uint;
     pub fn g_hash_table_steal(hash_table: *mut GHashTable, key: gconstpointer) -> gboolean;
     pub fn g_hash_table_steal_all(hash_table: *mut GHashTable);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_hash_table_steal_all_keys(hash_table: *mut GHashTable) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_hash_table_steal_all_values(hash_table: *mut GHashTable) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_hash_table_steal_extended(
         hash_table: *mut GHashTable,
         lookup_key: gconstpointer,
@@ -3720,8 +3720,8 @@ extern "C" {
         sibling: *mut GList,
         data: gpointer,
     ) -> *mut GList;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_list_insert_before_link(
         list: *mut GList,
         sibling: *mut GList,
@@ -3758,8 +3758,8 @@ extern "C" {
     //=========================================================================
     pub fn g_main_context_get_type() -> GType;
     pub fn g_main_context_new() -> *mut GMainContext;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_main_context_new_with_flags(flags: GMainContextFlags) -> *mut GMainContext;
     pub fn g_main_context_acquire(context: *mut GMainContext) -> gboolean;
     pub fn g_main_context_add_poll(context: *mut GMainContext, fd: *mut GPollFD, priority: c_int);
@@ -4083,50 +4083,50 @@ extern "C" {
     //=========================================================================
     // GPathBuf
     //=========================================================================
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_clear(buf: *mut GPathBuf);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_clear_to_path(buf: *mut GPathBuf) -> *mut c_char;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_copy(buf: *mut GPathBuf) -> *mut GPathBuf;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_free(buf: *mut GPathBuf);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_free_to_path(buf: *mut GPathBuf) -> *mut c_char;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_init(buf: *mut GPathBuf) -> *mut GPathBuf;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_init_from_path(buf: *mut GPathBuf, path: *const c_char) -> *mut GPathBuf;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_pop(buf: *mut GPathBuf) -> gboolean;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_push(buf: *mut GPathBuf, path: *const c_char) -> *mut GPathBuf;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_set_extension(buf: *mut GPathBuf, extension: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_set_filename(buf: *mut GPathBuf, file_name: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_to_path(buf: *mut GPathBuf) -> *mut c_char;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_equal(v1: gconstpointer, v2: gconstpointer) -> gboolean;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_new() -> *mut GPathBuf;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_path_buf_new_from_path(path: *const c_char) -> *mut GPathBuf;
 
     //=========================================================================
@@ -4134,21 +4134,21 @@ extern "C" {
     //=========================================================================
     pub fn g_pattern_spec_get_type() -> GType;
     pub fn g_pattern_spec_new(pattern: *const c_char) -> *mut GPatternSpec;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_pattern_spec_copy(pspec: *mut GPatternSpec) -> *mut GPatternSpec;
     pub fn g_pattern_spec_equal(pspec1: *mut GPatternSpec, pspec2: *mut GPatternSpec) -> gboolean;
     pub fn g_pattern_spec_free(pspec: *mut GPatternSpec);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_pattern_spec_match(
         pspec: *mut GPatternSpec,
         string_length: size_t,
         string: *const c_char,
         string_reversed: *const c_char,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_pattern_spec_match_string(pspec: *mut GPatternSpec, string: *const c_char)
         -> gboolean;
 
@@ -4169,23 +4169,23 @@ extern "C" {
     //=========================================================================
     pub fn g_ptr_array_get_type() -> GType;
     pub fn g_ptr_array_add(array: *mut GPtrArray, data: gpointer);
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_ptr_array_copy(
         array: *mut GPtrArray,
         func: GCopyFunc,
         user_data: gpointer,
     ) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_ptr_array_extend(
         array_to_extend: *mut GPtrArray,
         array: *mut GPtrArray,
         func: GCopyFunc,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_ptr_array_extend_and_steal(array_to_extend: *mut GPtrArray, array: *mut GPtrArray);
     pub fn g_ptr_array_find(
         haystack: *mut GPtrArray,
@@ -4201,12 +4201,12 @@ extern "C" {
     pub fn g_ptr_array_foreach(array: *mut GPtrArray, func: GFunc, user_data: gpointer);
     pub fn g_ptr_array_free(array: *mut GPtrArray, free_seg: gboolean) -> *mut gpointer;
     pub fn g_ptr_array_insert(array: *mut GPtrArray, index_: c_int, data: gpointer);
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_ptr_array_is_null_terminated(array: *mut GPtrArray) -> gboolean;
     pub fn g_ptr_array_new() -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_new_from_array(
         data: *mut gpointer,
         len: size_t,
@@ -4214,8 +4214,8 @@ extern "C" {
         copy_func_user_data: gpointer,
         element_free_func: GDestroyNotify,
     ) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_new_from_null_terminated_array(
         data: *mut gpointer,
         copy_func: GCopyFunc,
@@ -4226,22 +4226,22 @@ extern "C" {
         reserved_size: c_uint,
         element_free_func: GDestroyNotify,
     ) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_ptr_array_new_null_terminated(
         reserved_size: c_uint,
         element_free_func: GDestroyNotify,
         null_terminated: gboolean,
     ) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_new_take(
         data: *mut gpointer,
         len: size_t,
         element_free_func: GDestroyNotify,
     ) -> *mut GPtrArray;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_new_take_null_terminated(
         data: *mut gpointer,
         element_free_func: GDestroyNotify,
@@ -4261,11 +4261,11 @@ extern "C" {
     pub fn g_ptr_array_set_size(array: *mut GPtrArray, length: c_int);
     pub fn g_ptr_array_sized_new(reserved_size: c_uint) -> *mut GPtrArray;
     pub fn g_ptr_array_sort(array: *mut GPtrArray, compare_func: GCompareFunc);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_sort_values(array: *mut GPtrArray, compare_func: GCompareFunc);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_ptr_array_sort_values_with_data(
         array: *mut GPtrArray,
         compare_func: GCompareDataFunc,
@@ -4276,14 +4276,14 @@ extern "C" {
         compare_func: GCompareDataFunc,
         user_data: gpointer,
     );
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_ptr_array_steal(array: *mut GPtrArray, len: *mut size_t) -> *mut gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ptr_array_steal_index(array: *mut GPtrArray, index_: c_uint) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ptr_array_steal_index_fast(array: *mut GPtrArray, index_: c_uint) -> gpointer;
     pub fn g_ptr_array_unref(array: *mut GPtrArray);
 
@@ -4291,8 +4291,8 @@ extern "C" {
     // GQueue
     //=========================================================================
     pub fn g_queue_clear(queue: *mut GQueue);
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_queue_clear_full(queue: *mut GQueue, free_func: GDestroyNotify);
     pub fn g_queue_copy(queue: *mut GQueue) -> *mut GQueue;
     pub fn g_queue_delete_link(queue: *mut GQueue, link_: *mut GList);
@@ -4309,12 +4309,12 @@ extern "C" {
     pub fn g_queue_index(queue: *mut GQueue, data: gconstpointer) -> c_int;
     pub fn g_queue_init(queue: *mut GQueue);
     pub fn g_queue_insert_after(queue: *mut GQueue, sibling: *mut GList, data: gpointer);
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_queue_insert_after_link(queue: *mut GQueue, sibling: *mut GList, link_: *mut GList);
     pub fn g_queue_insert_before(queue: *mut GQueue, sibling: *mut GList, data: gpointer);
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_queue_insert_before_link(queue: *mut GQueue, sibling: *mut GList, link_: *mut GList);
     pub fn g_queue_insert_sorted(
         queue: *mut GQueue,
@@ -4745,15 +4745,15 @@ extern "C" {
         callback_funcs: *mut GSourceCallbackFuncs,
     );
     pub fn g_source_set_can_recurse(source: *mut GSource, can_recurse: gboolean);
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_source_set_dispose_function(source: *mut GSource, dispose: GSourceDisposeFunc);
     pub fn g_source_set_funcs(source: *mut GSource, funcs: *mut GSourceFuncs);
     pub fn g_source_set_name(source: *mut GSource, name: *const c_char);
     pub fn g_source_set_priority(source: *mut GSource, priority: c_int);
     pub fn g_source_set_ready_time(source: *mut GSource, ready_time: i64);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_source_set_static_name(source: *mut GSource, name: *const c_char);
     pub fn g_source_unref(source: *mut GSource);
     pub fn g_source_remove(tag: c_uint) -> gboolean;
@@ -4794,8 +4794,8 @@ extern "C" {
     pub fn g_string_equal(v: *const GString, v2: *const GString) -> gboolean;
     pub fn g_string_erase(string: *mut GString, pos: ssize_t, len: ssize_t) -> *mut GString;
     pub fn g_string_free(string: *mut GString, free_segment: gboolean) -> *mut c_char;
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_string_free_and_steal(string: *mut GString) -> *mut c_char;
     pub fn g_string_free_to_bytes(string: *mut GString) -> *mut GBytes;
     pub fn g_string_hash(str: *const GString) -> c_uint;
@@ -4828,8 +4828,8 @@ extern "C" {
     ) -> *mut GString;
     pub fn g_string_prepend_unichar(string: *mut GString, wc: u32) -> *mut GString;
     pub fn g_string_printf(string: *mut GString, format: *const c_char, ...);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_string_replace(
         string: *mut GString,
         find: *const c_char,
@@ -4861,33 +4861,33 @@ extern "C" {
     //=========================================================================
     // GStrvBuilder
     //=========================================================================
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_add(builder: *mut GStrvBuilder, value: *const c_char);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_add_many(builder: *mut GStrvBuilder, ...);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_addv(builder: *mut GStrvBuilder, value: *mut *const c_char);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_end(builder: *mut GStrvBuilder) -> c_char;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_ref(builder: *mut GStrvBuilder) -> *mut GStrvBuilder;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_unref(builder: *mut GStrvBuilder);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_strv_builder_new() -> *mut GStrvBuilder;
 
     //=========================================================================
     // GTestCase
     //=========================================================================
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_test_case_free(test_case: *mut GTestCase);
 
     //=========================================================================
@@ -4908,8 +4908,8 @@ extern "C" {
     //=========================================================================
     pub fn g_test_suite_add(suite: *mut GTestSuite, test_case: *mut GTestCase);
     pub fn g_test_suite_add_suite(suite: *mut GTestSuite, nestedsuite: *mut GTestSuite);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_test_suite_free(suite: *mut GTestSuite);
 
     //=========================================================================
@@ -4964,8 +4964,8 @@ extern "C" {
         exclusive: gboolean,
         error: *mut *mut GError,
     ) -> *mut GThreadPool;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_thread_pool_new_full(
         func: GFunc,
         user_data: gpointer,
@@ -4990,19 +4990,19 @@ extern "C" {
     //=========================================================================
     pub fn g_time_zone_get_type() -> GType;
     pub fn g_time_zone_new(identifier: *const c_char) -> *mut GTimeZone;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_time_zone_new_identifier(identifier: *const c_char) -> *mut GTimeZone;
     pub fn g_time_zone_new_local() -> *mut GTimeZone;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_time_zone_new_offset(seconds: i32) -> *mut GTimeZone;
     pub fn g_time_zone_new_utc() -> *mut GTimeZone;
     pub fn g_time_zone_adjust_time(tz: *mut GTimeZone, type_: GTimeType, time_: *mut i64) -> c_int;
     pub fn g_time_zone_find_interval(tz: *mut GTimeZone, type_: GTimeType, time_: i64) -> c_int;
     pub fn g_time_zone_get_abbreviation(tz: *mut GTimeZone, interval: c_int) -> *const c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_time_zone_get_identifier(tz: *mut GTimeZone) -> *const c_char;
     pub fn g_time_zone_get_offset(tz: *mut GTimeZone, interval: c_int) -> i32;
     pub fn g_time_zone_is_dst(tz: *mut GTimeZone, interval: c_int) -> gboolean;
@@ -5015,8 +5015,8 @@ extern "C" {
     pub fn g_timer_continue(timer: *mut GTimer);
     pub fn g_timer_destroy(timer: *mut GTimer);
     pub fn g_timer_elapsed(timer: *mut GTimer, microseconds: *mut c_ulong) -> c_double;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_timer_is_active(timer: *mut GTimer) -> gboolean;
     pub fn g_timer_reset(timer: *mut GTimer);
     pub fn g_timer_start(timer: *mut GTimer);
@@ -5048,13 +5048,13 @@ extern "C" {
     ) -> *mut GTree;
     pub fn g_tree_destroy(tree: *mut GTree);
     pub fn g_tree_foreach(tree: *mut GTree, func: GTraverseFunc, user_data: gpointer);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_foreach_node(tree: *mut GTree, func: GTraverseNodeFunc, user_data: gpointer);
     pub fn g_tree_height(tree: *mut GTree) -> c_int;
     pub fn g_tree_insert(tree: *mut GTree, key: gpointer, value: gpointer);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_insert_node(tree: *mut GTree, key: gpointer, value: gpointer) -> *mut GTreeNode;
     pub fn g_tree_lookup(tree: *mut GTree, key: gconstpointer) -> gpointer;
     pub fn g_tree_lookup_extended(
@@ -5063,35 +5063,35 @@ extern "C" {
         orig_key: *mut gpointer,
         value: *mut gpointer,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_lookup_node(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_lower_bound(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
     pub fn g_tree_nnodes(tree: *mut GTree) -> c_int;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_first(tree: *mut GTree) -> *mut GTreeNode;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_last(tree: *mut GTree) -> *mut GTreeNode;
     pub fn g_tree_ref(tree: *mut GTree) -> *mut GTree;
     pub fn g_tree_remove(tree: *mut GTree, key: gconstpointer) -> gboolean;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_tree_remove_all(tree: *mut GTree);
     pub fn g_tree_replace(tree: *mut GTree, key: gpointer, value: gpointer);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_replace_node(tree: *mut GTree, key: gpointer, value: gpointer) -> *mut GTreeNode;
     pub fn g_tree_search(
         tree: *mut GTree,
         search_func: GCompareFunc,
         user_data: gconstpointer,
     ) -> gpointer;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_search_node(
         tree: *mut GTree,
         search_func: GCompareFunc,
@@ -5105,87 +5105,87 @@ extern "C" {
         user_data: gpointer,
     );
     pub fn g_tree_unref(tree: *mut GTree);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_upper_bound(tree: *mut GTree, key: gconstpointer) -> *mut GTreeNode;
 
     //=========================================================================
     // GTreeNode
     //=========================================================================
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_key(node: *mut GTreeNode) -> gpointer;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_next(node: *mut GTreeNode) -> *mut GTreeNode;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_previous(node: *mut GTreeNode) -> *mut GTreeNode;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_tree_node_value(node: *mut GTreeNode) -> gpointer;
 
     //=========================================================================
     // GUri
     //=========================================================================
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_type() -> GType;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_auth_params(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_flags(uri: *mut GUri) -> GUriFlags;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_fragment(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_host(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_password(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_path(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_port(uri: *mut GUri) -> c_int;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_query(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_scheme(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_user(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_get_userinfo(uri: *mut GUri) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_parse_relative(
         base_uri: *mut GUri,
         uri_ref: *const c_char,
         flags: GUriFlags,
         error: *mut *mut GError,
     ) -> *mut GUri;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_ref(uri: *mut GUri) -> *mut GUri;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_to_string(uri: *mut GUri) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_to_string_partial(uri: *mut GUri, flags: GUriHideFlags) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_unref(uri: *mut GUri);
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_build(
         flags: GUriFlags,
         scheme: *const c_char,
@@ -5196,8 +5196,8 @@ extern "C" {
         query: *const c_char,
         fragment: *const c_char,
     ) -> *mut GUri;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_build_with_user(
         flags: GUriFlags,
         scheme: *const c_char,
@@ -5210,11 +5210,11 @@ extern "C" {
         query: *const c_char,
         fragment: *const c_char,
     ) -> *mut GUri;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_error_quark() -> GQuark;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_escape_bytes(
         unescaped: *const u8,
         length: size_t,
@@ -5225,15 +5225,15 @@ extern "C" {
         reserved_chars_allowed: *const c_char,
         allow_utf8: gboolean,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_is_valid(
         uri_string: *const c_char,
         flags: GUriFlags,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_join(
         flags: GUriFlags,
         scheme: *const c_char,
@@ -5244,8 +5244,8 @@ extern "C" {
         query: *const c_char,
         fragment: *const c_char,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_join_with_user(
         flags: GUriFlags,
         scheme: *const c_char,
@@ -5259,15 +5259,15 @@ extern "C" {
         fragment: *const c_char,
     ) -> *mut c_char;
     pub fn g_uri_list_extract_uris(uri_list: *const c_char) -> *mut *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_parse(
         uri_string: *const c_char,
         flags: GUriFlags,
         error: *mut *mut GError,
     ) -> *mut GUri;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_parse_params(
         params: *const c_char,
         length: ssize_t,
@@ -5276,19 +5276,19 @@ extern "C" {
         error: *mut *mut GError,
     ) -> *mut GHashTable;
     pub fn g_uri_parse_scheme(uri: *const c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_peek_scheme(uri: *const c_char) -> *const c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_resolve_relative(
         base_uri_string: *const c_char,
         uri_ref: *const c_char,
         flags: GUriFlags,
         error: *mut *mut GError,
     ) -> *mut c_char;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_split(
         uri_ref: *const c_char,
         flags: GUriFlags,
@@ -5301,8 +5301,8 @@ extern "C" {
         fragment: *mut *mut c_char,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_split_network(
         uri_string: *const c_char,
         flags: GUriFlags,
@@ -5311,8 +5311,8 @@ extern "C" {
         port: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_split_with_user(
         uri_ref: *const c_char,
         flags: GUriFlags,
@@ -5327,8 +5327,8 @@ extern "C" {
         fragment: *mut *mut c_char,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_unescape_bytes(
         escaped_string: *const c_char,
         length: ssize_t,
@@ -5348,8 +5348,8 @@ extern "C" {
     //=========================================================================
     // GUriParamsIter
     //=========================================================================
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_params_iter_init(
         iter: *mut GUriParamsIter,
         params: *const c_char,
@@ -5357,8 +5357,8 @@ extern "C" {
         separators: *const c_char,
         flags: GUriParamsFlags,
     );
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_uri_params_iter_next(
         iter: *mut GUriParamsIter,
         attribute: *mut *mut c_char,
@@ -5652,18 +5652,18 @@ extern "C" {
     // Other functions
     //=========================================================================
     pub fn g_access(filename: *const c_char, mode: c_int) -> c_int;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_alloc(n_blocks: size_t, n_block_bytes: size_t, alignment: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_alloc0(n_blocks: size_t, n_block_bytes: size_t, alignment: size_t)
         -> gpointer;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_free(mem: gpointer);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_aligned_free_sized(mem: gpointer, alignment: size_t, size: size_t);
     pub fn g_ascii_digit_value(c: c_char) -> c_int;
     pub fn g_ascii_dtostr(buffer: *mut c_char, buf_len: c_int, d: c_double) -> *mut c_char;
@@ -5759,8 +5759,8 @@ extern "C" {
         oldval: c_int,
         newval: c_int,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_int_compare_and_exchange_full(
         atomic: *mut c_int,
         oldval: c_int,
@@ -5768,8 +5768,8 @@ extern "C" {
         preval: *mut c_int,
     ) -> gboolean;
     pub fn g_atomic_int_dec_and_test(atomic: *mut c_int) -> gboolean;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_int_exchange(atomic: *mut c_int, newval: c_int) -> c_int;
     pub fn g_atomic_int_exchange_and_add(atomic: *mut c_int, val: c_int) -> c_int;
     pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
@@ -5784,53 +5784,53 @@ extern "C" {
         oldval: gpointer,
         newval: gpointer,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_pointer_compare_and_exchange_full(
         atomic: *mut c_void,
         oldval: gpointer,
         newval: gpointer,
         preval: *mut c_void,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_atomic_pointer_exchange(atomic: *mut c_void, newval: gpointer) -> gpointer;
     pub fn g_atomic_pointer_get(atomic: *mut c_void) -> gpointer;
     pub fn g_atomic_pointer_or(atomic: *mut c_void, val: size_t) -> size_t;
     pub fn g_atomic_pointer_set(atomic: *mut c_void, newval: gpointer);
     pub fn g_atomic_pointer_xor(atomic: *mut c_void, val: size_t) -> size_t;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_acquire(mem_block: gpointer) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_alloc(block_size: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_alloc0(block_size: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_dup(block_size: size_t, mem_block: gconstpointer) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_get_size(mem_block: gpointer) -> size_t;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_release(mem_block: gpointer);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_rc_box_release_full(mem_block: gpointer, clear_func: GDestroyNotify);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_ref_count_compare(arc: *mut c_int, val: c_int) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_ref_count_dec(arc: *mut c_int) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_ref_count_inc(arc: *mut c_int);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_atomic_ref_count_init(arc: *mut c_int);
     pub fn g_base64_decode(text: *const c_char, out_len: *mut size_t) -> *mut u8;
     pub fn g_base64_decode_inplace(text: *mut u8, out_len: *mut size_t) -> *mut u8;
@@ -5869,8 +5869,8 @@ extern "C" {
     pub fn g_build_path(separator: *const c_char, first_element: *const c_char, ...)
         -> *mut c_char;
     pub fn g_build_pathv(separator: *const c_char, args: *mut *mut c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_canonicalize_filename(
         filename: *const c_char,
         relative_to: *const c_char,
@@ -5892,12 +5892,12 @@ extern "C" {
     pub fn g_child_watch_source_new(pid: GPid) -> *mut GSource;
     pub fn g_clear_error(error: *mut *mut GError);
     pub fn g_clear_handle_id(tag_ptr: *mut c_uint, clear_func: GClearHandleFunc);
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_clear_list(list_ptr: *mut *mut GList, destroy: GDestroyNotify);
     pub fn g_clear_pointer(pp: *mut gpointer, destroy: GDestroyNotify);
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_clear_slist(slist_ptr: *mut *mut GSList, destroy: GDestroyNotify);
     pub fn g_close(fd: c_int, error: *mut *mut GError) -> gboolean;
     pub fn g_compute_checksum_for_bytes(
@@ -5976,8 +5976,8 @@ extern "C" {
         user_data: gpointer,
     ) -> gpointer;
     pub fn g_datalist_id_get_data(datalist: *mut *mut GData, key_id: GQuark) -> gpointer;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_datalist_id_remove_multiple(
         datalist: *mut *mut GData,
         keys: *mut GQuark,
@@ -6072,8 +6072,8 @@ extern "C" {
         length: ssize_t,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_66", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_file_set_contents_full(
         filename: *const c_char,
         contents: *const u8,
@@ -6115,14 +6115,14 @@ extern "C" {
     pub fn g_format_size_full(size: u64, flags: GFormatSizeFlags) -> *mut c_char;
     pub fn g_fprintf(file: *mut FILE, format: *const c_char, ...) -> c_int;
     pub fn g_free(mem: gpointer);
-    #[cfg(any(feature = "v2_76", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+    #[cfg(any(feature = "v2_76", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_free_sized(mem: gpointer, size: size_t);
     pub fn g_get_application_name() -> *const c_char;
     pub fn g_get_charset(charset: *mut *const c_char) -> gboolean;
     pub fn g_get_codeset() -> *mut c_char;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_get_console_charset(charset: *mut *const c_char) -> gboolean;
     pub fn g_get_current_dir() -> *mut c_char;
     pub fn g_get_current_time(result: *mut GTimeVal);
@@ -6131,15 +6131,15 @@ extern "C" {
     pub fn g_get_home_dir() -> *const c_char;
     pub fn g_get_host_name() -> *const c_char;
     pub fn g_get_language_names() -> *const *const c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_get_language_names_with_category(category_name: *const c_char)
         -> *const *const c_char;
     pub fn g_get_locale_variants(locale: *const c_char) -> *mut *mut c_char;
     pub fn g_get_monotonic_time() -> i64;
     pub fn g_get_num_processors() -> c_uint;
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_get_os_info(key_name: *const c_char) -> *mut c_char;
     pub fn g_get_prgname() -> *const c_char;
     pub fn g_get_real_name() -> *const c_char;
@@ -6153,8 +6153,8 @@ extern "C" {
     pub fn g_get_user_name() -> *const c_char;
     pub fn g_get_user_runtime_dir() -> *const c_char;
     pub fn g_get_user_special_dir(directory: GUserDirectory) -> *const c_char;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_get_user_state_dir() -> *const c_char;
     pub fn g_getenv(variable: *const c_char) -> *const c_char;
     pub fn g_hostname_is_ascii_encoded(hostname: *const c_char) -> gboolean;
@@ -6176,8 +6176,8 @@ extern "C" {
         data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_idle_add_once(function: GSourceOnceFunc, data: gpointer) -> c_uint;
     pub fn g_idle_remove_by_data(data: gpointer) -> gboolean;
     pub fn g_idle_source_new() -> *mut GSource;
@@ -6224,13 +6224,13 @@ extern "C" {
         message: *const c_char,
         unused_data: gpointer,
     );
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_log_get_debug_enabled() -> gboolean;
     pub fn g_log_remove_handler(log_domain: *const c_char, handler_id: c_uint);
     pub fn g_log_set_always_fatal(fatal_mask: GLogLevelFlags) -> GLogLevelFlags;
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_log_set_debug_enabled(enabled: gboolean);
     pub fn g_log_set_default_handler(log_func: GLogFunc, user_data: gpointer) -> GLogFunc;
     pub fn g_log_set_fatal_mask(
@@ -6281,11 +6281,11 @@ extern "C" {
         n_fields: size_t,
         user_data: gpointer,
     ) -> GLogWriterOutput;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_log_writer_default_set_use_stderr(use_stderr: gboolean);
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_log_writer_default_would_drop(
         log_level: GLogLevelFlags,
         log_domain: *const c_char,
@@ -6334,8 +6334,8 @@ extern "C" {
     pub fn g_mem_profile();
     pub fn g_mem_set_vtable(vtable: *mut GMemVTable);
     pub fn g_memdup(mem: gconstpointer, byte_size: c_uint) -> gpointer;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_memdup2(mem: gconstpointer, byte_size: size_t) -> gpointer;
     pub fn g_mkdir_with_parents(pathname: *const c_char, mode: c_int) -> c_int;
     pub fn g_mkdtemp(tmpl: *mut c_char) -> *mut c_char;
@@ -6369,8 +6369,8 @@ extern "C" {
     pub fn g_pointer_bit_unlock(address: *mut c_void, lock_bit: c_int);
     pub fn g_poll(fds: *mut GPollFD, nfds: c_uint, timeout: c_int) -> c_int;
     pub fn g_prefix_error(err: *mut *mut GError, format: *const c_char, ...);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_prefix_error_literal(err: *mut *mut GError, prefix: *const c_char);
     pub fn g_print(format: *const c_char, ...);
     pub fn g_printerr(format: *const c_char, ...);
@@ -6399,58 +6399,58 @@ extern "C" {
     pub fn g_random_int() -> u32;
     pub fn g_random_int_range(begin: i32, end: i32) -> i32;
     pub fn g_random_set_seed(seed: u32);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_acquire(mem_block: gpointer) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_alloc(block_size: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_alloc0(block_size: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_dup(block_size: size_t, mem_block: gconstpointer) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_get_size(mem_block: gpointer) -> size_t;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_release(mem_block: gpointer);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_rc_box_release_full(mem_block: gpointer, clear_func: GDestroyNotify);
     pub fn g_realloc(mem: gpointer, n_bytes: size_t) -> gpointer;
     pub fn g_realloc_n(mem: gpointer, n_blocks: size_t, n_block_bytes: size_t) -> gpointer;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_count_compare(rc: *mut c_int, val: c_int) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_count_dec(rc: *mut c_int) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_count_inc(rc: *mut c_int);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_count_init(rc: *mut c_int);
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_acquire(str: *mut c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_length(str: *mut c_char) -> size_t;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_new(str: *const c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_new_intern(str: *const c_char) -> *mut c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_new_len(str: *const c_char, len: ssize_t) -> *mut c_char;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_ref_string_release(str: *mut c_char);
     pub fn g_reload_user_special_dirs_cache();
     pub fn g_return_if_fail_warning(
@@ -6515,8 +6515,8 @@ extern "C" {
         child_pid: *mut GPid,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_spawn_async_with_fds(
         working_directory: *const c_char,
         argv: *mut *mut c_char,
@@ -6543,8 +6543,8 @@ extern "C" {
         standard_error: *mut c_int,
         error: *mut *mut GError,
     ) -> gboolean;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_spawn_async_with_pipes_and_fds(
         working_directory: *const c_char,
         argv: *const *const c_char,
@@ -6565,8 +6565,8 @@ extern "C" {
         error: *mut *mut GError,
     ) -> gboolean;
     pub fn g_spawn_check_exit_status(wait_status: c_int, error: *mut *mut GError) -> gboolean;
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_spawn_check_wait_status(wait_status: c_int, error: *mut *mut GError) -> gboolean;
     pub fn g_spawn_close_pid(pid: GPid);
     pub fn g_spawn_command_line_async(
@@ -6670,8 +6670,8 @@ extern "C" {
     pub fn g_strtod(nptr: *const c_char, endptr: *mut *mut c_char) -> c_double;
     pub fn g_strup(string: *mut c_char) -> *mut c_char;
     pub fn g_strv_contains(strv: *const *const c_char, str: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_strv_equal(strv1: *const *const c_char, strv2: *const *const c_char) -> gboolean;
     pub fn g_strv_get_type() -> GType;
     pub fn g_strv_length(str_array: *mut *mut c_char) -> c_uint;
@@ -6723,8 +6723,8 @@ extern "C" {
         pattern: *const c_char,
     );
     pub fn g_test_fail();
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_test_fail_printf(format: *const c_char, ...);
     pub fn g_test_failed() -> gboolean;
     pub fn g_test_get_dir(file_type: GTestFileType) -> *const c_char;
@@ -6733,13 +6733,13 @@ extern "C" {
         first_path: *const c_char,
         ...
     ) -> *const c_char;
-    #[cfg(any(feature = "v2_68", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     pub fn g_test_get_path() -> *const c_char;
     pub fn g_test_get_root() -> *mut GTestSuite;
     pub fn g_test_incomplete(msg: *const c_char);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_test_incomplete_printf(format: *const c_char, ...);
     pub fn g_test_init(argc: *mut c_int, argv: *mut *mut *mut c_char, ...);
     pub fn g_test_log_set_fatal_handler(log_func: GTestLogFatalFunc, user_data: gpointer);
@@ -6757,12 +6757,12 @@ extern "C" {
     pub fn g_test_run_suite(suite: *mut GTestSuite) -> c_int;
     pub fn g_test_set_nonfatal_assertions();
     pub fn g_test_skip(msg: *const c_char);
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_test_skip_printf(format: *const c_char, ...);
     pub fn g_test_subprocess() -> gboolean;
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_test_summary(summary: *const c_char);
     pub fn g_test_timer_elapsed() -> c_double;
     pub fn g_test_timer_last() -> c_double;
@@ -6791,8 +6791,8 @@ extern "C" {
         data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn g_timeout_add_once(
         interval: c_uint,
         function: GSourceOnceFunc,
@@ -6886,10 +6886,10 @@ extern "C" {
         notify: GDestroyNotify,
     ) -> c_uint;
     pub fn g_unix_fd_source_new(fd: c_int, condition: GIOCondition) -> *mut GSource;
-    #[cfg(any(feature = "v2_64", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(feature = "v2_64", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub fn g_unix_get_passwd_entry(
         user_name: *const c_char,
         error: *mut *mut GError,
@@ -6971,8 +6971,8 @@ extern "C" {
         error: *mut *mut GError,
     ) -> *mut u16;
     pub fn g_utf8_validate(str: *const u8, max_len: ssize_t, end: *mut *const c_char) -> gboolean;
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_utf8_validate_len(
         str: *const u8,
         max_len: size_t,

@@ -70,8 +70,8 @@ impl Language {
         unsafe { from_glib_none(ffi::pango_language_get_default()) }
     }
 
-    #[cfg(any(feature = "v1_48", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_48")))]
+    #[cfg(any(feature = "v1_48", docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_48")))]
     #[doc(alias = "pango_language_get_preferred")]
     #[doc(alias = "get_preferred")]
     pub fn preferred() -> Vec<Language> {

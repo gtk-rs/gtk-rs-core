@@ -358,13 +358,13 @@ impl Context {
         unsafe { ffi::cairo_get_line_width(self.0.as_ptr()) }
     }
 
-    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg(any(feature = "v1_18", docsrs))]
     #[doc(alias = "cairo_set_hairline")]
     pub fn set_hairline(&self, set_hairline: bool) {
         unsafe { ffi::cairo_set_hairline(self.0.as_ptr(), set_hairline.into()) }
     }
 
-    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg(any(feature = "v1_18", docsrs))]
     #[doc(alias = "get_hairline")]
     #[doc(alias = "cairo_get_hairline")]
     pub fn hairline(&self) -> bool {
@@ -926,7 +926,7 @@ impl Context {
         self.status().map(|_| (x1, y1, x2, y2))
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(any(feature = "v1_16", docsrs))]
     #[doc(alias = "cairo_tag_begin")]
     pub fn tag_begin(&self, tag_name: &str, attributes: &str) {
         unsafe {
@@ -936,7 +936,7 @@ impl Context {
         }
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(any(feature = "v1_16", docsrs))]
     #[doc(alias = "cairo_tag_end")]
     pub fn tag_end(&self, tag_name: &str) {
         unsafe {

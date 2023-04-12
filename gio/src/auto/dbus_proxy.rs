@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix, docsrs))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
     AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection, DBusInterface,
@@ -301,8 +301,8 @@ pub trait DBusProxyExt: 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error>;
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
         P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
@@ -317,8 +317,8 @@ pub trait DBusProxyExt: 'static {
         callback: P,
     );
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_future(
         &self,
         method_name: &str,
@@ -333,8 +333,8 @@ pub trait DBusProxyExt: 'static {
         >,
     >;
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list_sync")]
     fn call_with_unix_fd_list_sync(
         &self,
@@ -554,8 +554,8 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list<
         P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
     >(
@@ -621,8 +621,8 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_future(
         &self,
         method_name: &str,
@@ -657,8 +657,8 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         ))
     }
 
-    #[cfg(any(unix, feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(unix)))]
+    #[cfg(any(unix, docsrs))]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_sync(
         &self,
         method_name: &str,
