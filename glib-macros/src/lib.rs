@@ -867,6 +867,10 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | `<optional-pspec-builder-fields> = expr` | Used to add optional Param Spec builder fields | | `#[property(minimum = 0)` , `#[property(minimum = 0, maximum = 1)]`, etc. |
 /// | `<optional-pspec-builder-fields>` | Used to add optional Param Spec builder fields | | `#[property(explicit_notify)]` , `#[property(construct_only)]`, etc. |
 ///
+/// ## Using Rust keywords as property names
+/// You might hit a roadblock when declaring properties with this macro because you want to use a name that happens to be a Rust keyword. This may happen with names like `loop`, which is a pretty common name when creating things like animation handlers.
+/// To use those names, you can make use of the raw identifier feature of Rust. Simply prefix the identifier name with `r#` in the struct declaration. Internally, those `r#`s are stripped so you can use its expected name in [`ObjectExt::property`] or within GtkBuilder template files.
+///
 /// # Generated wrapper methods
 /// The following methods are generated on the wrapper type specified on `#[properties(wrapper_type = ...)]`:
 /// * `$property()`, when the property is readable
