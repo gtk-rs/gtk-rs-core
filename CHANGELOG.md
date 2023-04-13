@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [0.17.8]
+
+Paskal Sitepu:
+- glib-macros: Import `ParamSpecBuilderExt` inside the scope of `DerivedObjectProperties::derived_properties`
+- glib-macros: Disambiguate `TryFrom<usize>::Error` for `DerivedPropertiesEnum`
+- glib-macros: Strip raw identifier prefix from struct members for the `Properties` macro
+
+Sebastian Dröge:
+- glib: Allow using `Path` / `PathBuf` in `glib::Value`s
+- glib: Fix inverted boolean conditions when deciding whether to reserve new space
+- glib: collections: Change early return to assertion in collection reserve functions
+
 ## [0.17.7]
 
 Fina Wilke:
