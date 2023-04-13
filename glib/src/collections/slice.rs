@@ -623,10 +623,7 @@ impl<T: TransparentType> Slice<T> {
             MIN_SIZE / mem::size_of::<T>(),
         ));
         assert_ne!(new_capacity, 0);
-
-        if new_capacity <= self.capacity {
-            return;
-        }
+        assert!(new_capacity > self.capacity);
 
         unsafe {
             let ptr = if self.capacity == 0 {
@@ -688,7 +685,7 @@ impl<T: TransparentType> Slice<T> {
     #[inline]
     pub fn extend_from_slice(&mut self, other: &[T]) {
         // Nothing new to reserve as there's still enough space
-        if self.len + other.len() <= self.capacity {
+        if self.len + other.len() > self.capacity {
             self.reserve(other.len());
         }
 
@@ -709,7 +706,7 @@ impl<T: TransparentType> Slice<T> {
         assert!(index <= self.len);
 
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 <= self.capacity {
+        if self.len + 1 > self.capacity {
             self.reserve(1);
         }
 
@@ -732,7 +729,7 @@ impl<T: TransparentType> Slice<T> {
     #[allow(clippy::int_plus_one)]
     pub fn push(&mut self, item: T) {
         // Nothing new to reserve as there's still enough space
-        if self.len + 1 <= self.capacity {
+        if self.len + 1 > self.capacity {
             self.reserve(1);
         }
 

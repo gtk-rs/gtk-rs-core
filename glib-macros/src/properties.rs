@@ -355,6 +355,7 @@ fn expand_properties_fn(props: &[PropDesc]) -> TokenStream2 {
     let param_specs = props.iter().map(expand_param_spec);
     quote!(
         fn derived_properties() -> &'static [#crate_ident::ParamSpec] {
+            use #crate_ident::ParamSpecBuilderExt;
             use #crate_ident::once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[#crate_ident::ParamSpec; #n_props]> = Lazy::new(|| [
                 #(#param_specs,)*
@@ -584,7 +585,8 @@ fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#emit_fns)*)
 }
 
-fn name_to_enum_ident(mut name: String) -> syn::Ident {
+fn name_to_enum_ident(name: String) -> syn::Ident {
+    let mut name = name.strip_prefix("r#").unwrap_or(&name).to_owned();
     let mut slice = name.as_mut_str();
     while let Some(i) = slice.find('-') {
         let (head, tail) = slice.split_at_mut(i);
@@ -605,6 +607,7 @@ fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
         .iter()
         .map(|p| {
             let name: String = p.name.value();
+
             name_to_enum_ident(name)
         })
         .collect();
@@ -619,7 +622,7 @@ fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
         impl std::convert::TryFrom<usize> for DerivedPropertiesEnum {
             type Error = usize;
 
-            fn try_from(item: usize) -> ::core::result::Result<Self, Self::Error> {
+            fn try_from(item: usize) -> ::core::result::Result<Self, <Self as std::convert::TryFrom<usize>>::Error> {
                 match item {
                     #(#indices => ::core::result::Result::Ok(Self::#properties),)*
                     _ => ::core::result::Result::Err(item)
