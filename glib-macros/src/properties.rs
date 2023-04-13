@@ -585,7 +585,8 @@ fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
     quote!(#(#emit_fns)*)
 }
 
-fn name_to_enum_ident(mut name: String) -> syn::Ident {
+fn name_to_enum_ident(name: String) -> syn::Ident {
+    let mut name = name.strip_prefix("r#").unwrap_or(&name).to_owned();
     let mut slice = name.as_mut_str();
     while let Some(i) = slice.find('-') {
         let (head, tail) = slice.split_at_mut(i);
@@ -606,6 +607,7 @@ fn expand_properties_enum(props: &[PropDesc]) -> TokenStream2 {
         .iter()
         .map(|p| {
             let name: String = p.name.value();
+
             name_to_enum_ident(name)
         })
         .collect();
