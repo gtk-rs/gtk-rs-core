@@ -384,3 +384,125 @@ fn props() {
     myfoo.set_object(Some(myobj.upcast_ref()));
     assert_eq!(myfoo.object(), Some(myobj.upcast()))
 }
+
+#[cfg(test)]
+mod kw_names {
+    mod imp {
+        use glib::subclass::types::ObjectSubclassExt;
+        use glib::subclass::{object::DerivedObjectProperties, prelude::ObjectImplExt};
+        use glib::ObjectExt;
+        use std::cell::Cell;
+
+        use glib::{
+            subclass::{prelude::ObjectImpl, types::ObjectSubclass},
+            ParamSpec, Value,
+        };
+        use glib_macros::Properties;
+
+        #[derive(Properties, Default)]
+        #[properties(wrapper_type = super::KwNames)]
+        pub struct KwNames {
+            // Some of the strict keywords
+            #[property(get, set)]
+            r#loop: Cell<u8>,
+            #[property(get, set)]
+            r#move: Cell<u8>,
+            #[property(get, set)]
+            r#type: Cell<u8>,
+
+            // Lexer 2018+ strict keywords
+            #[property(get, set)]
+            r#async: Cell<u8>,
+            #[property(get, set)]
+            r#await: Cell<u8>,
+            #[property(get, set)]
+            r#dyn: Cell<u8>,
+
+            // Some of the reserved keywords
+            #[property(get, set)]
+            r#become: Cell<u8>,
+            #[property(get, set)]
+            r#macro: Cell<u8>,
+            #[property(get, set)]
+            r#unsized: Cell<u8>,
+
+            // Lexer 2018+ reserved keywords
+            #[property(get, set)]
+            r#try: Cell<u8>,
+        }
+
+        #[glib::object_subclass]
+        impl ObjectSubclass for KwNames {
+            const NAME: &'static str = "MyKwNames";
+            type Type = super::KwNames;
+        }
+
+        impl ObjectImpl for KwNames {
+            fn properties() -> &'static [ParamSpec] {
+                Self::derived_properties()
+            }
+            fn set_property(&self, _id: usize, _value: &Value, _pspec: &ParamSpec) {
+                Self::derived_set_property(self, _id, _value, _pspec)
+            }
+            fn property(&self, id: usize, _pspec: &ParamSpec) -> Value {
+                Self::derived_property(self, id, _pspec)
+            }
+        }
+    }
+
+    glib::wrapper! {
+        pub struct KwNames(ObjectSubclass<imp::KwNames>);
+    }
+}
+
+#[test]
+fn keyword_propnames() {
+    let mykwnames: kw_names::KwNames = glib::Object::new();
+
+    // make sure all 10 properties are registered
+    assert_eq!(mykwnames.list_properties().len(), 10);
+
+    // getting property values
+    assert_eq!(mykwnames.r#loop(), 0);
+    assert_eq!(mykwnames.r#move(), 0);
+    assert_eq!(mykwnames.r#type(), 0);
+    assert_eq!(mykwnames.r#async(), 0);
+    assert_eq!(mykwnames.r#await(), 0);
+    assert_eq!(mykwnames.r#try(), 0);
+
+    // getting property by name
+    assert_eq!(mykwnames.property::<u8>("loop"), 0);
+    assert_eq!(mykwnames.property::<u8>("move"), 0);
+    assert_eq!(mykwnames.property::<u8>("type"), 0);
+    assert_eq!(mykwnames.property::<u8>("async"), 0);
+    assert_eq!(mykwnames.property::<u8>("await"), 0);
+    assert_eq!(mykwnames.property::<u8>("try"), 0);
+
+    // setting property values
+    mykwnames.set_loop(128_u8);
+    assert_eq!(mykwnames.r#loop(), 128_u8);
+    mykwnames.set_move(128_u8);
+    assert_eq!(mykwnames.r#move(), 128_u8);
+    mykwnames.set_type(128_u8);
+    assert_eq!(mykwnames.r#type(), 128_u8);
+    mykwnames.set_async(128_u8);
+    assert_eq!(mykwnames.r#async(), 128_u8);
+    mykwnames.set_await(128_u8);
+    assert_eq!(mykwnames.r#await(), 128_u8);
+    mykwnames.set_try(128_u8);
+    assert_eq!(mykwnames.r#try(), 128_u8);
+
+    // setting property by name
+    mykwnames.set_property("loop", 255_u8);
+    assert_eq!(mykwnames.r#loop(), 255_u8);
+    mykwnames.set_property("move", 255_u8);
+    assert_eq!(mykwnames.r#loop(), 255_u8);
+    mykwnames.set_property("type", 255_u8);
+    assert_eq!(mykwnames.r#loop(), 255_u8);
+    mykwnames.set_property("async", 255_u8);
+    assert_eq!(mykwnames.r#async(), 255_u8);
+    mykwnames.set_property("await", 255_u8);
+    assert_eq!(mykwnames.r#await(), 255_u8);
+    mykwnames.set_property("try", 255_u8);
+    assert_eq!(mykwnames.r#try(), 255_u8);
+}
