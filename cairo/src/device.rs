@@ -314,7 +314,7 @@ impl Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl IntoGlibPtr<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_device_t {
@@ -323,7 +323,7 @@ impl IntoGlibPtr<*mut ffi::cairo_device_t> for Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_device_t> for Device {
     type Storage = PhantomData<&'a Device>;
 
@@ -339,7 +339,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_device_t> for Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrNone<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_device_t) -> Device {
@@ -348,7 +348,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_device_t> for Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrBorrow<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_device_t) -> crate::Borrowed<Device> {
@@ -357,7 +357,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_device_t> for Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrFull<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_device_t) -> Device {
@@ -366,7 +366,6 @@ impl FromGlibPtrFull<*mut ffi::cairo_device_t> for Device {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(
     Device,
     ffi::cairo_device_t,

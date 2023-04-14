@@ -12,7 +12,7 @@ use crate::{Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFla
 
 impl File {
     #[cfg(feature = "v2_74")]
-    #[_attr(docsrs, doc(cfgcfg(feature = "v2_74")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_file_new_tmp_async")]
     pub fn new_tmp_async<P: FnOnce(Result<(File, FileIOStream), glib::Error>) + 'static>(
         tmpl: Option<impl AsRef<std::path::Path>>,

@@ -10,7 +10,6 @@ define_attribute_struct!(
     &[
         AttrType::Scale,
         #[cfg(feature = "v1_50")]
-        #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
         AttrType::LineHeight
     ]
 );

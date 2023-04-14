@@ -4,6 +4,7 @@
 #![allow(clippy::unreadable_literal)]
 #![allow(clippy::write_literal)]
 #![allow(clippy::upper_case_acronyms)]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 extern crate libc;
 
@@ -14,7 +15,7 @@ extern crate x11;
 extern crate winapi as winapi_orig;
 
 #[cfg(all(windows, feature = "win32-surface"))]
-#[cfg_attr(docsrs, cfg(doc(all(windows, feature = "win32-surface"))))]
+#[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
 pub mod winapi {
     pub use winapi_orig::shared::windef::HDC;
 }
@@ -22,7 +23,7 @@ pub mod winapi {
 #[cfg(all(docsrs, not(all(windows, feature = "win32-surface"))))]
 #[cfg_attr(
     docsrs,
-    cfg(doc(all(docsrs, not(all(windows, feature = "win32-surface")))))
+    doc(cfg(all(docsrs, not(all(windows, feature = "win32-surface")))))
 )]
 pub mod winapi {
     use libc::c_void;

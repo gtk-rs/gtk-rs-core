@@ -15,10 +15,8 @@ define_attribute_struct!(
     ffi::PangoAttrInt,
     &[
         #[cfg(feature = "v1_50")]
-        #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
         AttrType::AbsoluteLineHeight,
         #[cfg(feature = "v1_50")]
-        #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
         AttrType::FontScale,
         AttrType::AllowBreaks,
         AttrType::BackgroundAlpha,

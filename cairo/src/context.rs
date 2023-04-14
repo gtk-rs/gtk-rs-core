@@ -64,7 +64,7 @@ impl fmt::Display for RectangleList {
 pub struct Context(ptr::NonNull<cairo_t>);
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_t {
@@ -73,7 +73,7 @@ impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
     type Storage = PhantomData<&'a Context>;
 
@@ -89,7 +89,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_t) -> Context {
@@ -98,7 +98,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_t) -> crate::Borrowed<Context> {
@@ -107,7 +107,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrFull<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_t) -> Context {
@@ -116,7 +116,6 @@ impl FromGlibPtrFull<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(
     Context,
     cairo_t,

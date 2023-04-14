@@ -17,7 +17,6 @@ use crate::{utils::status_to_result, Error, FontSlant, FontType, FontWeight};
 static FT_FACE_KEY: crate::UserDataKey<freetype::face::Face> = crate::UserDataKey::new();
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 glib::wrapper! {
     #[derive(Debug)]
     #[doc(alias = "cairo_font_face_t")]

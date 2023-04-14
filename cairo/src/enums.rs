@@ -1005,7 +1005,6 @@ impl From<FontType> for ffi::cairo_font_type_t {
             FontType::FontTypeQuartz => ffi::FONT_TYPE_FONT_TYPE_QUARTZ,
             FontType::FontTypeUser => ffi::FONT_TYPE_FONT_TYPE_USER,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18", docsrs)))]
             FontType::FontTypeDwrite => ffi::FONT_TYPE_FONT_TYPE_DWRITE,
             FontType::__Unknown(value) => value,
         }
@@ -1022,7 +1021,6 @@ impl From<ffi::cairo_font_type_t> for FontType {
             ffi::FONT_TYPE_FONT_TYPE_QUARTZ => Self::FontTypeQuartz,
             ffi::FONT_TYPE_FONT_TYPE_USER => Self::FontTypeUser,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18", docsrs)))]
             ffi::FONT_TYPE_FONT_TYPE_DWRITE => Self::FontTypeDwrite,
             value => Self::__Unknown(value),
         }
@@ -1041,7 +1039,6 @@ impl fmt::Display for FontType {
                 Self::FontTypeQuartz => "FontTypeQuartz",
                 Self::FontTypeUser => "FontTypeUser",
                 #[cfg(feature = "v1_18")]
-                #[cfg_attr(docsrs, doc(cfg(feature = "v1_18", docsrs)))]
                 Self::FontTypeDwrite => "FontTypeDwrite",
                 _ => "Unknown",
             }
@@ -1116,7 +1113,6 @@ impl fmt::Display for SubpixelOrder {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(
     SubpixelOrder,
     ffi::gobject::cairo_gobject_subpixel_order_get_type
@@ -1186,7 +1182,6 @@ impl fmt::Display for HintStyle {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(HintStyle, ffi::gobject::cairo_gobject_hint_style_get_type);
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Debug, Copy)]
@@ -1243,7 +1238,6 @@ impl fmt::Display for HintMetrics {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(
     HintMetrics,
     ffi::gobject::cairo_gobject_hint_metrics_get_type
@@ -1413,7 +1407,6 @@ impl fmt::Display for SurfaceType {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, cfg(doc(feature = "use_glib")))]
 gvalue_impl!(
     SurfaceType,
     ffi::gobject::cairo_gobject_surface_type_get_type
@@ -1589,7 +1582,6 @@ impl fmt::Display for Format {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 gvalue_impl!(Format, ffi::gobject::cairo_gobject_format_get_type);
 
 impl Format {
@@ -1661,7 +1653,6 @@ impl fmt::Display for RegionOverlap {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 gvalue_impl!(
     RegionOverlap,
     ffi::gobject::cairo_gobject_region_overlap_get_type
@@ -1790,10 +1781,8 @@ impl From<PdfVersion> for ffi::cairo_pdf_version_t {
             PdfVersion::_1_4 => ffi::PDF_VERSION__1_4,
             PdfVersion::_1_5 => ffi::PDF_VERSION__1_5,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             PdfVersion::_1_6 => ffi::PDF_VERSION__1_6,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             PdfVersion::_1_7 => ffi::PDF_VERSION__1_7,
             PdfVersion::__Unknown(value) => value,
         }
@@ -1809,10 +1798,8 @@ impl From<ffi::cairo_pdf_version_t> for PdfVersion {
             ffi::PDF_VERSION__1_4 => Self::_1_4,
             ffi::PDF_VERSION__1_5 => Self::_1_5,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             ffi::PDF_VERSION__1_6 => Self::_1_6,
             #[cfg(feature = "v1_18")]
-            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             ffi::PDF_VERSION__1_7 => Self::_1_7,
             value => Self::__Unknown(value),
         }
@@ -1830,10 +1817,8 @@ impl fmt::Display for PdfVersion {
                 Self::_1_4 => "1_4",
                 Self::_1_5 => "1_5",
                 #[cfg(feature = "v1_18")]
-                #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
                 Self::_1_6 => "1_6",
                 #[cfg(feature = "v1_18")]
-                #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
                 Self::_1_7 => "1_7",
                 _ => "Unknown",
             }
@@ -2207,7 +2192,6 @@ impl fmt::Display for DeviceType {
 }
 
 #[cfg(feature = "use_glib")]
-#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 gvalue_impl!(DeviceType, ffi::gobject::cairo_gobject_device_type_get_type);
 
 #[cfg(test)]
