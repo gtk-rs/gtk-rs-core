@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
 use crate::{
@@ -210,7 +210,7 @@ pub fn file_set_contents(
     }
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(alias = "g_file_set_contents_full")]
 pub fn file_set_contents_full(
@@ -335,7 +335,7 @@ pub fn codeset() -> crate::GString {
     unsafe { from_glib_full(ffi::g_get_codeset()) }
 }
 
-#[cfg(any(feature = "v2_62", docsrs))]
+#[cfg(any(feature = "v2_62"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
 #[doc(alias = "g_get_console_charset")]
 #[doc(alias = "get_console_charset")]
@@ -381,7 +381,7 @@ pub fn language_names() -> Vec<crate::GString> {
     unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_get_language_names()) }
 }
 
-#[cfg(any(feature = "v2_58", docsrs))]
+#[cfg(any(feature = "v2_58"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
 #[doc(alias = "g_get_language_names_with_category")]
 #[doc(alias = "get_language_names_with_category")]
@@ -413,7 +413,7 @@ pub fn num_processors() -> u32 {
     unsafe { ffi::g_get_num_processors() }
 }
 
-#[cfg(any(feature = "v2_64", docsrs))]
+#[cfg(any(feature = "v2_64"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 #[doc(alias = "g_get_os_info")]
 #[doc(alias = "get_os_info")]
@@ -487,7 +487,7 @@ pub fn user_special_dir(directory: UserDirectory) -> Option<std::path::PathBuf> 
     unsafe { from_glib_none(ffi::g_get_user_special_dir(directory.into_glib())) }
 }
 
-#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg(any(feature = "v2_72"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 #[doc(alias = "g_get_user_state_dir")]
 #[doc(alias = "get_user_state_dir")]
@@ -746,7 +746,7 @@ pub fn spawn_async(
     }
 }
 
-//#[cfg(any(feature = "v2_68", docsrs))]
+//#[cfg(any(feature = "v2_68"))]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
 //pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
@@ -769,7 +769,7 @@ pub fn spawn_check_exit_status(wait_status: i32) -> Result<(), crate::Error> {
     }
 }
 
-#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg(any(feature = "v2_70"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(alias = "g_spawn_check_wait_status")]
 pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
@@ -785,7 +785,7 @@ pub fn spawn_check_wait_status(wait_status: i32) -> Result<(), crate::Error> {
     }
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_spawn_command_line_async")]
 pub fn spawn_command_line_async(
@@ -824,9 +824,9 @@ pub fn unicode_script_to_iso15924(script: UnicodeScript) -> u32 {
     unsafe { ffi::g_unicode_script_to_iso15924(script.into_glib()) }
 }
 
-//#[cfg(any(unix, docsrs))]
+//#[cfg(any(unix))]
 //#[cfg_attr(docsrs, doc(cfg(unix)))]
-//#[cfg(any(feature = "v2_64", docsrs))]
+//#[cfg(any(feature = "v2_64"))]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 //#[doc(alias = "g_unix_get_passwd_entry")]
 //pub fn unix_get_passwd_entry(user_name: &str) -> Result</*Unimplemented*/Option<Basic: Pointer>, crate::Error> {

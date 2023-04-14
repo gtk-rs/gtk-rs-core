@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use glib::prelude::*;
 use glib::translate::*;
@@ -149,7 +149,7 @@ impl DBusMethodInvocation {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_method_invocation_return_value_with_unix_fd_list")]
     pub fn return_value_with_unix_fd_list(

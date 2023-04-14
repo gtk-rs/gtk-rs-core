@@ -55,7 +55,7 @@ impl SignalGroup {
         }
     }
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "target-type")]
     pub fn target_type(&self) -> crate::types::Type {

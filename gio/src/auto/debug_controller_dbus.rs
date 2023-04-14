@@ -47,7 +47,7 @@ pub trait DebugControllerDBusExt: 'static {
     #[doc(alias = "g_debug_controller_dbus_stop")]
     fn stop(&self);
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "authorize")]
     fn connect_authorize<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(
@@ -63,7 +63,7 @@ impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     fn connect_authorize<F: Fn(&Self, &DBusMethodInvocation) -> bool + 'static>(
         &self,

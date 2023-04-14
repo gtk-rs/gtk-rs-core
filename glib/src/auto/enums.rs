@@ -1372,35 +1372,35 @@ pub enum UnicodeScript {
     KhitanSmallScript,
     #[doc(alias = "G_UNICODE_SCRIPT_YEZIDI")]
     Yezidi,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_CYPRO_MINOAN")]
     CyproMinoan,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_OLD_UYGHUR")]
     OldUyghur,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_TANGSA")]
     Tangsa,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_TOTO")]
     Toto,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_VITHKUQI")]
     Vithkuqi,
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_UNICODE_SCRIPT_MATH")]
     Math,
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_UNICODE_SCRIPT_KAWI")]
     Kawi,
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_UNICODE_SCRIPT_NAG_MUNDARI")]
     NagMundari,
@@ -1572,21 +1572,21 @@ impl fmt::Display for UnicodeScript {
                 Self::DivesAkuru => "DivesAkuru",
                 Self::KhitanSmallScript => "KhitanSmallScript",
                 Self::Yezidi => "Yezidi",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::CyproMinoan => "CyproMinoan",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::OldUyghur => "OldUyghur",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::Tangsa => "Tangsa",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::Toto => "Toto",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::Vithkuqi => "Vithkuqi",
-                #[cfg(any(feature = "v2_72", docsrs))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::Math => "Math",
-                #[cfg(any(feature = "v2_74", docsrs))]
+                #[cfg(any(feature = "v2_74"))]
                 Self::Kawi => "Kawi",
-                #[cfg(any(feature = "v2_74", docsrs))]
+                #[cfg(any(feature = "v2_74"))]
                 Self::NagMundari => "NagMundari",
                 _ => "Unknown",
             }
@@ -1758,21 +1758,21 @@ impl IntoGlib for UnicodeScript {
             Self::DivesAkuru => ffi::G_UNICODE_SCRIPT_DIVES_AKURU,
             Self::KhitanSmallScript => ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,
             Self::Yezidi => ffi::G_UNICODE_SCRIPT_YEZIDI,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::CyproMinoan => ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::OldUyghur => ffi::G_UNICODE_SCRIPT_OLD_UYGHUR,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::Tangsa => ffi::G_UNICODE_SCRIPT_TANGSA,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::Toto => ffi::G_UNICODE_SCRIPT_TOTO,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::Vithkuqi => ffi::G_UNICODE_SCRIPT_VITHKUQI,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             Self::Math => ffi::G_UNICODE_SCRIPT_MATH,
-            #[cfg(any(feature = "v2_74", docsrs))]
+            #[cfg(any(feature = "v2_74"))]
             Self::Kawi => ffi::G_UNICODE_SCRIPT_KAWI,
-            #[cfg(any(feature = "v2_74", docsrs))]
+            #[cfg(any(feature = "v2_74"))]
             Self::NagMundari => ffi::G_UNICODE_SCRIPT_NAG_MUNDARI,
             Self::__Unknown(value) => value,
         }
@@ -1941,28 +1941,28 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_DIVES_AKURU => Self::DivesAkuru,
             ffi::G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT => Self::KhitanSmallScript,
             ffi::G_UNICODE_SCRIPT_YEZIDI => Self::Yezidi,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_CYPRO_MINOAN => Self::CyproMinoan,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_OLD_UYGHUR => Self::OldUyghur,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_TANGSA => Self::Tangsa,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_TOTO => Self::Toto,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_VITHKUQI => Self::Vithkuqi,
-            #[cfg(any(feature = "v2_72", docsrs))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_UNICODE_SCRIPT_MATH => Self::Math,
-            #[cfg(any(feature = "v2_74", docsrs))]
+            #[cfg(any(feature = "v2_74"))]
             ffi::G_UNICODE_SCRIPT_KAWI => Self::Kawi,
-            #[cfg(any(feature = "v2_74", docsrs))]
+            #[cfg(any(feature = "v2_74"))]
             ffi::G_UNICODE_SCRIPT_NAG_MUNDARI => Self::NagMundari,
             value => Self::__Unknown(value),
         }
     }
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
@@ -1992,7 +1992,7 @@ pub enum UriError {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for UriError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -2016,7 +2016,7 @@ impl fmt::Display for UriError {
     }
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for UriError {
@@ -2040,7 +2040,7 @@ impl IntoGlib for UriError {
     }
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUriError> for UriError {
@@ -2062,7 +2062,7 @@ impl FromGlib<ffi::GUriError> for UriError {
     }
 }
 
-#[cfg(any(feature = "v2_66", docsrs))]
+#[cfg(any(feature = "v2_66"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl ErrorDomain for UriError {
     #[inline]

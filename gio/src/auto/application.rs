@@ -248,7 +248,7 @@ pub trait ApplicationExt: 'static {
         f: F,
     ) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(any(feature = "v2_60"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "name-lost")]
     fn connect_name_lost<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> SignalHandlerId;
@@ -612,7 +612,7 @@ impl<O: IsA<Application>> ApplicationExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(any(feature = "v2_60"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn connect_name_lost<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn name_lost_trampoline<

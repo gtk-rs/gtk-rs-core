@@ -26,7 +26,7 @@ impl Credentials {
     //    unsafe { TODO: call ffi:g_credentials_get_native() }
     //}
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_credentials_get_unix_pid")]
     #[doc(alias = "get_unix_pid")]
@@ -42,7 +42,7 @@ impl Credentials {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_credentials_get_unix_user")]
     #[doc(alias = "get_unix_user")]
@@ -81,7 +81,7 @@ impl Credentials {
     //    unsafe { TODO: call ffi:g_credentials_set_native() }
     //}
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_credentials_set_unix_user")]
     pub fn set_unix_user(&self, uid: u32) -> Result<(), glib::Error> {

@@ -27,7 +27,7 @@ impl fmt::Display for FontFamily {
 }
 
 pub trait FontFamilyExt: 'static {
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_family_get_face")]
     #[doc(alias = "get_face")]
@@ -40,7 +40,7 @@ pub trait FontFamilyExt: 'static {
     #[doc(alias = "pango_font_family_is_monospace")]
     fn is_monospace(&self) -> bool;
 
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_font_family_is_variable")]
     fn is_variable(&self) -> bool;
@@ -50,7 +50,7 @@ pub trait FontFamilyExt: 'static {
 }
 
 impl<O: IsA<FontFamily>> FontFamilyExt for O {
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     fn face(&self, name: Option<&str>) -> Option<FontFace> {
         unsafe {
@@ -77,7 +77,7 @@ impl<O: IsA<FontFamily>> FontFamilyExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     fn is_variable(&self) -> bool {
         unsafe {

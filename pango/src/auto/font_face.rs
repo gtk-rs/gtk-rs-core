@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::FontDescription;
-#[cfg(any(feature = "v1_46", docsrs))]
+#[cfg(any(feature = "v1_46"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
 use glib::{prelude::*, translate::*};
@@ -30,7 +30,7 @@ pub trait FontFaceExt: 'static {
     #[doc(alias = "get_face_name")]
     fn face_name(&self) -> glib::GString;
 
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_face_get_family")]
     #[doc(alias = "get_family")]
@@ -60,7 +60,7 @@ impl<O: IsA<FontFace>> FontFaceExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     fn family(&self) -> FontFamily {
         unsafe {

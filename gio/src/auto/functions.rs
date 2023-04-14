@@ -157,7 +157,7 @@ pub fn content_type_get_icon(type_: &str) -> Icon {
     unsafe { from_glib_full(ffi::g_content_type_get_icon(type_.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg(any(feature = "v2_60"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "g_content_type_get_mime_dirs")]
 pub fn content_type_get_mime_dirs() -> Vec<glib::GString> {
@@ -230,7 +230,7 @@ pub fn content_type_is_unknown(type_: &str) -> bool {
     unsafe { from_glib(ffi::g_content_type_is_unknown(type_.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg(any(feature = "v2_60"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "g_content_type_set_mime_dirs")]
 pub fn content_type_set_mime_dirs(dirs: &[&str]) {
@@ -361,14 +361,14 @@ pub fn dbus_address_get_stream_sync(
     }
 }
 
-#[cfg(any(feature = "v2_68", docsrs))]
+#[cfg(any(feature = "v2_68"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 #[doc(alias = "g_dbus_escape_object_path")]
 pub fn dbus_escape_object_path(s: &str) -> glib::GString {
     unsafe { from_glib_full(ffi::g_dbus_escape_object_path(s.to_glib_none().0)) }
 }
 
-//#[cfg(any(feature = "v2_68", docsrs))]
+//#[cfg(any(feature = "v2_68"))]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_dbus_escape_object_path_bytestring")]
 //pub fn dbus_escape_object_path_bytestring(bytes: &[u8]) -> glib::GString {
@@ -404,7 +404,7 @@ pub fn dbus_is_address(string: &str) -> bool {
     unsafe { from_glib(ffi::g_dbus_is_address(string.to_glib_none().0)) }
 }
 
-#[cfg(any(feature = "v2_70", docsrs))]
+#[cfg(any(feature = "v2_70"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(alias = "g_dbus_is_error_name")]
 pub fn dbus_is_error_name(string: &str) -> bool {
@@ -601,7 +601,7 @@ pub fn resources_unregister(resource: &Resource) {
     }
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_mount_path_system_internal")]
 pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path>) -> bool {
@@ -612,7 +612,7 @@ pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path
     }
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_system_device_path")]
 pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> bool {
@@ -623,7 +623,7 @@ pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> b
     }
 }
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_unix_is_system_fs_type")]
 pub fn unix_is_system_fs_type(fs_type: &str) -> bool {

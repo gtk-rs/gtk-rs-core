@@ -4,7 +4,7 @@
 
 use crate::{Subprocess, SubprocessFlags};
 use glib::translate::*;
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use std::boxed::Box as Box_;
 use std::{fmt, ptr};
@@ -24,9 +24,9 @@ impl SubprocessLauncher {
         unsafe { from_glib_full(ffi::g_subprocess_launcher_new(flags.into_glib())) }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
-    #[cfg(any(feature = "v2_68", docsrs))]
+    #[cfg(any(feature = "v2_68"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
     #[doc(alias = "g_subprocess_launcher_close")]
     pub fn close(&self) {
@@ -45,7 +45,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_child_setup")]
     pub fn set_child_setup<P: Fn() + 'static>(&self, child_setup: P) {
@@ -94,7 +94,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stderr_file_path")]
     pub fn set_stderr_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {
@@ -106,7 +106,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdin_file_path")]
     pub fn set_stdin_file_path(&self, path: &str) {
@@ -118,7 +118,7 @@ impl SubprocessLauncher {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_subprocess_launcher_set_stdout_file_path")]
     pub fn set_stdout_file_path(&self, path: Option<impl AsRef<std::path::Path>>) {

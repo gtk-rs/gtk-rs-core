@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(unix, docsrs))]
+#[cfg(any(unix))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
@@ -301,7 +301,7 @@ pub trait DBusProxyExt: 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<glib::Variant, glib::Error>;
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list")]
     fn call_with_unix_fd_list<
@@ -317,7 +317,7 @@ pub trait DBusProxyExt: 'static {
         callback: P,
     );
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_future(
         &self,
@@ -333,7 +333,7 @@ pub trait DBusProxyExt: 'static {
         >,
     >;
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_dbus_proxy_call_with_unix_fd_list_sync")]
     fn call_with_unix_fd_list_sync(
@@ -554,7 +554,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list<
         P: FnOnce(Result<(glib::Variant, UnixFDList), glib::Error>) + 'static,
@@ -621,7 +621,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         }
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_future(
         &self,
@@ -657,7 +657,7 @@ impl<O: IsA<DBusProxy>> DBusProxyExt for O {
         ))
     }
 
-    #[cfg(any(unix, docsrs))]
+    #[cfg(any(unix))]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     fn call_with_unix_fd_list_sync(
         &self,

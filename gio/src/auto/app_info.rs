@@ -67,7 +67,7 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_app_info_get_default_for_type_async")]
     #[doc(alias = "get_default_for_type_async")]
@@ -120,7 +120,7 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn default_for_type_future(
         content_type: &str,
@@ -152,7 +152,7 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_app_info_get_default_for_uri_scheme_async")]
     #[doc(alias = "get_default_for_uri_scheme_async")]
@@ -203,7 +203,7 @@ impl AppInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(any(feature = "v2_74"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn default_for_uri_scheme_future(
         uri_scheme: &str,

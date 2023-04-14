@@ -55,7 +55,7 @@ pub trait TlsBackendExt: 'static {
     #[doc(alias = "get_server_connection_type")]
     fn server_connection_type(&self) -> glib::types::Type;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(any(feature = "v2_60"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_backend_set_default_database")]
     fn set_default_database(&self, database: Option<&impl IsA<TlsDatabase>>);
@@ -124,7 +124,7 @@ impl<O: IsA<TlsBackend>> TlsBackendExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(any(feature = "v2_60"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn set_default_database(&self, database: Option<&impl IsA<TlsDatabase>>) {
         unsafe {

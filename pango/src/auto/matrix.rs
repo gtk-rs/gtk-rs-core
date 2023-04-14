@@ -44,7 +44,7 @@ impl Matrix {
         }
     }
 
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_matrix_get_slant_ratio")]
     #[doc(alias = "get_slant_ratio")]

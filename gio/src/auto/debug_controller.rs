@@ -31,7 +31,7 @@ pub trait DebugControllerExt: 'static {
     #[doc(alias = "g_debug_controller_set_debug_enabled")]
     fn set_debug_enabled(&self, debug_enabled: bool);
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "debug-enabled")]
     fn connect_debug_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -55,7 +55,7 @@ impl<O: IsA<DebugController>> DebugControllerExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(any(feature = "v2_72"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     fn connect_debug_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_debug_enabled_trampoline<

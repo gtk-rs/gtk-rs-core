@@ -2,16 +2,16 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v1_50", docsrs))]
+#[cfg(any(feature = "v1_50"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::Context;
-#[cfg(any(feature = "v1_46", docsrs))]
+#[cfg(any(feature = "v1_46"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFace;
 use crate::{Coverage, FontDescription, FontMap, FontMetrics, Glyph, Language, Rectangle};
 use glib::{prelude::*, translate::*};
 use std::fmt;
-#[cfg(any(feature = "v1_50", docsrs))]
+#[cfg(any(feature = "v1_50"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use std::ptr;
 
@@ -27,7 +27,7 @@ glib::wrapper! {
 impl Font {
     pub const NONE: Option<&'static Font> = None;
 
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_font_deserialize")]
     pub fn deserialize(
@@ -61,13 +61,13 @@ pub trait FontExt: 'static {
     #[doc(alias = "get_coverage")]
     fn coverage(&self, language: &Language) -> Coverage;
 
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_get_face")]
     #[doc(alias = "get_face")]
     fn face(&self) -> FontFace;
 
-    //#[cfg(any(feature = "v1_44", docsrs))]
+    //#[cfg(any(feature = "v1_44"))]
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     //#[doc(alias = "pango_font_get_features")]
     //#[doc(alias = "get_features")]
@@ -81,7 +81,7 @@ pub trait FontExt: 'static {
     #[doc(alias = "get_glyph_extents")]
     fn glyph_extents(&self, glyph: Glyph) -> (Rectangle, Rectangle);
 
-    //#[cfg(any(feature = "v1_44", docsrs))]
+    //#[cfg(any(feature = "v1_44"))]
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     //#[doc(alias = "pango_font_get_hb_font")]
     //#[doc(alias = "get_hb_font")]
@@ -91,12 +91,12 @@ pub trait FontExt: 'static {
     #[doc(alias = "get_metrics")]
     fn metrics(&self, language: Option<&Language>) -> FontMetrics;
 
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_font_has_char")]
     fn has_char(&self, wc: char) -> bool;
 
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_font_serialize")]
     fn serialize(&self) -> glib::Bytes;
@@ -124,13 +124,13 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     fn face(&self) -> FontFace {
         unsafe { from_glib_none(ffi::pango_font_get_face(self.as_ref().to_glib_none().0)) }
     }
 
-    //#[cfg(any(feature = "v1_44", docsrs))]
+    //#[cfg(any(feature = "v1_44"))]
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     //fn features(&self, features: /*Unimplemented*/&mut Basic: Pointer, num_features: &mut u32) -> u32 {
     //    unsafe { TODO: call ffi:pango_font_get_features() }
@@ -154,7 +154,7 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 
-    //#[cfg(any(feature = "v1_44", docsrs))]
+    //#[cfg(any(feature = "v1_44"))]
     //#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     //fn hb_font(&self) -> /*Ignored*/Option<harf_buzz::font_t> {
     //    unsafe { TODO: call ffi:pango_font_get_hb_font() }
@@ -169,7 +169,7 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     fn has_char(&self, wc: char) -> bool {
         unsafe {
@@ -180,7 +180,7 @@ impl<O: IsA<Font>> FontExt for O {
         }
     }
 
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     fn serialize(&self) -> glib::Bytes {
         unsafe { from_glib_full(ffi::pango_font_serialize(self.as_ref().to_glib_none().0)) }

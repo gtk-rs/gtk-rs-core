@@ -1393,7 +1393,7 @@ extern "C" {
     //=========================================================================
     // PangoBaselineShift
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_baseline_shift_get_type() -> GType;
 
@@ -1421,7 +1421,7 @@ extern "C" {
     //=========================================================================
     // PangoFontScale
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_font_scale_get_type() -> GType;
 
@@ -1451,17 +1451,17 @@ extern "C" {
     //=========================================================================
     // PangoLayoutDeserializeError
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_deserialize_error_get_type() -> GType;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_deserialize_error_quark() -> glib::GQuark;
 
     //=========================================================================
     // PangoOverline
     //=========================================================================
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_overline_get_type() -> GType;
 
@@ -1495,7 +1495,7 @@ extern "C" {
     //=========================================================================
     // PangoTextTransform
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_text_transform_get_type() -> GType;
 
@@ -1527,28 +1527,28 @@ extern "C" {
     //=========================================================================
     // PangoLayoutDeserializeFlags
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_deserialize_flags_get_type() -> GType;
 
     //=========================================================================
     // PangoLayoutSerializeFlags
     //=========================================================================
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_serialize_flags_get_type() -> GType;
 
     //=========================================================================
     // PangoShapeFlags
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_shape_flags_get_type() -> GType;
 
     //=========================================================================
     // PangoShowFlags
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_show_flags_get_type() -> GType;
 
@@ -1565,7 +1565,7 @@ extern "C" {
     //=========================================================================
     // PangoAttrIterator
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_iterator_get_type() -> GType;
     pub fn pango_attr_iterator_copy(iterator: *mut PangoAttrIterator) -> *mut PangoAttrIterator;
@@ -1600,7 +1600,7 @@ extern "C" {
     pub fn pango_attr_list_new() -> *mut PangoAttrList;
     pub fn pango_attr_list_change(list: *mut PangoAttrList, attr: *mut PangoAttribute);
     pub fn pango_attr_list_copy(list: *mut PangoAttrList) -> *mut PangoAttrList;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_attr_list_equal(
         list: *mut PangoAttrList,
@@ -1611,7 +1611,7 @@ extern "C" {
         func: PangoAttrFilterFunc,
         data: gpointer,
     ) -> *mut PangoAttrList;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_list_get_attributes(list: *mut PangoAttrList) -> *mut glib::GSList;
     pub fn pango_attr_list_get_iterator(list: *mut PangoAttrList) -> *mut PangoAttrIterator;
@@ -1624,14 +1624,14 @@ extern "C" {
         pos: c_int,
         len: c_int,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_list_to_string(list: *mut PangoAttrList) -> *mut c_char;
     pub fn pango_attr_list_unref(list: *mut PangoAttrList);
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_list_update(list: *mut PangoAttrList, pos: c_int, remove: c_int, add: c_int);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_list_from_string(text: *const c_char) -> *mut PangoAttrList;
 
@@ -1659,36 +1659,36 @@ extern "C" {
     //=========================================================================
     // PangoAttribute
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attribute_get_type() -> GType;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_color(attr: *mut PangoAttribute) -> *mut PangoAttrColor;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_float(attr: *mut PangoAttribute) -> *mut PangoAttrFloat;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_font_desc(attr: *mut PangoAttribute) -> *mut PangoAttrFontDesc;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_font_features(
         attr: *mut PangoAttribute,
     ) -> *mut PangoAttrFontFeatures;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_int(attr: *mut PangoAttribute) -> *mut PangoAttrInt;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_language(attr: *mut PangoAttribute) -> *mut PangoAttrLanguage;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_shape(attr: *mut PangoAttribute) -> *mut PangoAttrShape;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_size(attr: *mut PangoAttribute) -> *mut PangoAttrSize;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attribute_as_string(attr: *mut PangoAttribute) -> *mut PangoAttrString;
     pub fn pango_attribute_copy(attr: *const PangoAttribute) -> *mut PangoAttribute;
@@ -1706,7 +1706,7 @@ extern "C" {
     pub fn pango_color_copy(src: *const PangoColor) -> *mut PangoColor;
     pub fn pango_color_free(color: *mut PangoColor);
     pub fn pango_color_parse(color: *mut PangoColor, spec: *const c_char) -> gboolean;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_color_parse_with_alpha(
         color: *mut PangoColor,
@@ -1748,7 +1748,7 @@ extern "C" {
     pub fn pango_font_description_get_stretch(desc: *const PangoFontDescription) -> PangoStretch;
     pub fn pango_font_description_get_style(desc: *const PangoFontDescription) -> PangoStyle;
     pub fn pango_font_description_get_variant(desc: *const PangoFontDescription) -> PangoVariant;
-    #[cfg(any(feature = "v1_42", docsrs))]
+    #[cfg(any(feature = "v1_42"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
     pub fn pango_font_description_get_variations(
         desc: *const PangoFontDescription,
@@ -1791,13 +1791,13 @@ extern "C" {
         desc: *mut PangoFontDescription,
         variant: PangoVariant,
     );
-    #[cfg(any(feature = "v1_42", docsrs))]
+    #[cfg(any(feature = "v1_42"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
     pub fn pango_font_description_set_variations(
         desc: *mut PangoFontDescription,
         variations: *const c_char,
     );
-    #[cfg(any(feature = "v1_42", docsrs))]
+    #[cfg(any(feature = "v1_42"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_42")))]
     pub fn pango_font_description_set_variations_static(
         desc: *mut PangoFontDescription,
@@ -1820,7 +1820,7 @@ extern "C" {
     pub fn pango_font_metrics_get_approximate_digit_width(metrics: *mut PangoFontMetrics) -> c_int;
     pub fn pango_font_metrics_get_ascent(metrics: *mut PangoFontMetrics) -> c_int;
     pub fn pango_font_metrics_get_descent(metrics: *mut PangoFontMetrics) -> c_int;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_font_metrics_get_height(metrics: *mut PangoFontMetrics) -> c_int;
     pub fn pango_font_metrics_get_strikethrough_position(metrics: *mut PangoFontMetrics) -> c_int;
@@ -1915,7 +1915,7 @@ extern "C" {
         trailing: gboolean,
         x_pos: *mut c_int,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_glyph_string_index_to_x_full(
         glyphs: *mut PangoGlyphString,
@@ -1943,7 +1943,7 @@ extern "C" {
     //=========================================================================
     pub fn pango_item_get_type() -> GType;
     pub fn pango_item_new() -> *mut PangoItem;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_item_apply_attrs(item: *mut PangoItem, iter: *mut PangoAttrIterator);
     pub fn pango_item_copy(item: *mut PangoItem) -> *mut PangoItem;
@@ -1974,7 +1974,7 @@ extern "C" {
     pub fn pango_language_to_string(language: *mut PangoLanguage) -> *const c_char;
     pub fn pango_language_from_string(language: *const c_char) -> *mut PangoLanguage;
     pub fn pango_language_get_default() -> *mut PangoLanguage;
-    #[cfg(any(feature = "v1_48", docsrs))]
+    #[cfg(any(feature = "v1_48"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_48")))]
     pub fn pango_language_get_preferred() -> *mut *mut PangoLanguage;
 
@@ -2015,7 +2015,7 @@ extern "C" {
         y1_: *mut c_int,
     );
     pub fn pango_layout_iter_get_run(iter: *mut PangoLayoutIter) -> *mut PangoLayoutRun;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_iter_get_run_baseline(iter: *mut PangoLayoutIter) -> c_int;
     pub fn pango_layout_iter_get_run_extents(
@@ -2038,10 +2038,10 @@ extern "C" {
         ink_rect: *mut PangoRectangle,
         logical_rect: *mut PangoRectangle,
     );
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_layout_line_get_height(line: *mut PangoLayoutLine, height: *mut c_int);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_line_get_length(line: *mut PangoLayoutLine) -> c_int;
     pub fn pango_layout_line_get_pixel_extents(
@@ -2049,10 +2049,10 @@ extern "C" {
         ink_rect: *mut PangoRectangle,
         logical_rect: *mut PangoRectangle,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_line_get_resolved_direction(line: *mut PangoLayoutLine) -> PangoDirection;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_line_get_start_index(line: *mut PangoLayoutLine) -> c_int;
     pub fn pango_layout_line_get_x_ranges(
@@ -2068,7 +2068,7 @@ extern "C" {
         trailing: gboolean,
         x_pos: *mut c_int,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_line_is_paragraph_start(line: *mut PangoLayoutLine) -> gboolean;
     pub fn pango_layout_line_ref(line: *mut PangoLayoutLine) -> *mut PangoLayoutLine;
@@ -2093,7 +2093,7 @@ extern "C" {
         xscale: *mut c_double,
         yscale: *mut c_double,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_matrix_get_slant_ratio(matrix: *const PangoMatrix) -> c_double;
     pub fn pango_matrix_rotate(matrix: *mut PangoMatrix, degrees: c_double);
@@ -2118,7 +2118,7 @@ extern "C" {
     //=========================================================================
     // PangoScriptIter
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_script_iter_get_type() -> GType;
     pub fn pango_script_iter_new(text: *const c_char, length: c_int) -> *mut PangoScriptIter;
@@ -2148,7 +2148,7 @@ extern "C" {
     ) -> *mut PangoTabArray;
     pub fn pango_tab_array_copy(src: *mut PangoTabArray) -> *mut PangoTabArray;
     pub fn pango_tab_array_free(tab_array: *mut PangoTabArray);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_get_decimal_point(
         tab_array: *mut PangoTabArray,
@@ -2168,14 +2168,14 @@ extern "C" {
         locations: *mut *mut c_int,
     );
     pub fn pango_tab_array_resize(tab_array: *mut PangoTabArray, new_size: c_int);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_set_decimal_point(
         tab_array: *mut PangoTabArray,
         tab_index: c_int,
         decimal_point: u32,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_set_positions_in_pixels(
         tab_array: *mut PangoTabArray,
@@ -2187,13 +2187,13 @@ extern "C" {
         alignment: PangoTabAlign,
         location: c_int,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_sort(tab_array: *mut PangoTabArray);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_to_string(tab_array: *mut PangoTabArray) -> *mut c_char;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_tab_array_from_string(text: *const c_char) -> *mut PangoTabArray;
 
@@ -2218,7 +2218,7 @@ extern "C" {
         desc: *const PangoFontDescription,
         language: *mut PangoLanguage,
     ) -> *mut PangoFontMetrics;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_context_get_round_glyph_positions(context: *mut PangoContext) -> gboolean;
     pub fn pango_context_get_serial(context: *mut PangoContext) -> c_uint;
@@ -2246,7 +2246,7 @@ extern "C" {
     pub fn pango_context_set_gravity_hint(context: *mut PangoContext, hint: PangoGravityHint);
     pub fn pango_context_set_language(context: *mut PangoContext, language: *mut PangoLanguage);
     pub fn pango_context_set_matrix(context: *mut PangoContext, matrix: *const PangoMatrix);
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_context_set_round_glyph_positions(
         context: *mut PangoContext,
@@ -2256,7 +2256,7 @@ extern "C" {
     //=========================================================================
     // PangoCoverage
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_coverage_get_type() -> GType;
     pub fn pango_coverage_new() -> *mut PangoCoverage;
@@ -2282,7 +2282,7 @@ extern "C" {
     //=========================================================================
     pub fn pango_font_get_type() -> GType;
     pub fn pango_font_descriptions_free(descs: *mut *mut PangoFontDescription, n_descs: c_int);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_font_deserialize(
         context: *mut PangoContext,
@@ -2297,10 +2297,10 @@ extern "C" {
         font: *mut PangoFont,
         language: *mut PangoLanguage,
     ) -> *mut PangoCoverage;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_font_get_face(font: *mut PangoFont) -> *mut PangoFontFace;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_font_get_features(
         font: *mut PangoFont,
@@ -2315,20 +2315,20 @@ extern "C" {
         ink_rect: *mut PangoRectangle,
         logical_rect: *mut PangoRectangle,
     );
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_font_get_hb_font(font: *mut PangoFont) -> gconstpointer;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_font_get_languages(font: *mut PangoFont) -> *mut *mut PangoLanguage;
     pub fn pango_font_get_metrics(
         font: *mut PangoFont,
         language: *mut PangoLanguage,
     ) -> *mut PangoFontMetrics;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_font_has_char(font: *mut PangoFont, wc: u32) -> gboolean;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_font_serialize(font: *mut PangoFont) -> *mut glib::GBytes;
 
@@ -2338,7 +2338,7 @@ extern "C" {
     pub fn pango_font_face_get_type() -> GType;
     pub fn pango_font_face_describe(face: *mut PangoFontFace) -> *mut PangoFontDescription;
     pub fn pango_font_face_get_face_name(face: *mut PangoFontFace) -> *const c_char;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_font_face_get_family(face: *mut PangoFontFace) -> *mut PangoFontFamily;
     pub fn pango_font_face_is_synthesized(face: *mut PangoFontFace) -> gboolean;
@@ -2352,7 +2352,7 @@ extern "C" {
     // PangoFontFamily
     //=========================================================================
     pub fn pango_font_family_get_type() -> GType;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_font_family_get_face(
         family: *mut PangoFontFamily,
@@ -2360,7 +2360,7 @@ extern "C" {
     ) -> *mut PangoFontFace;
     pub fn pango_font_family_get_name(family: *mut PangoFontFamily) -> *const c_char;
     pub fn pango_font_family_is_monospace(family: *mut PangoFontFamily) -> gboolean;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_font_family_is_variable(family: *mut PangoFontFamily) -> gboolean;
     pub fn pango_font_family_list_faces(
@@ -2375,7 +2375,7 @@ extern "C" {
     pub fn pango_font_map_get_type() -> GType;
     pub fn pango_font_map_changed(fontmap: *mut PangoFontMap);
     pub fn pango_font_map_create_context(fontmap: *mut PangoFontMap) -> *mut PangoContext;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_font_map_get_family(
         fontmap: *mut PangoFontMap,
@@ -2424,7 +2424,7 @@ extern "C" {
     //=========================================================================
     pub fn pango_layout_get_type() -> GType;
     pub fn pango_layout_new(context: *mut PangoContext) -> *mut PangoLayout;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_deserialize(
         context: *mut PangoContext,
@@ -2438,7 +2438,7 @@ extern "C" {
     pub fn pango_layout_get_attributes(layout: *mut PangoLayout) -> *mut PangoAttrList;
     pub fn pango_layout_get_auto_dir(layout: *mut PangoLayout) -> gboolean;
     pub fn pango_layout_get_baseline(layout: *mut PangoLayout) -> c_int;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_get_caret_pos(
         layout: *mut PangoLayout,
@@ -2454,7 +2454,7 @@ extern "C" {
         strong_pos: *mut PangoRectangle,
         weak_pos: *mut PangoRectangle,
     );
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_layout_get_direction(layout: *mut PangoLayout, index: c_int) -> PangoDirection;
     pub fn pango_layout_get_ellipsize(layout: *mut PangoLayout) -> PangoEllipsizeMode;
@@ -2470,7 +2470,7 @@ extern "C" {
     pub fn pango_layout_get_indent(layout: *mut PangoLayout) -> c_int;
     pub fn pango_layout_get_iter(layout: *mut PangoLayout) -> *mut PangoLayoutIter;
     pub fn pango_layout_get_justify(layout: *mut PangoLayout) -> gboolean;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_get_justify_last_line(layout: *mut PangoLayout) -> gboolean;
     pub fn pango_layout_get_line(layout: *mut PangoLayout, line: c_int) -> *mut PangoLayoutLine;
@@ -2479,7 +2479,7 @@ extern "C" {
         layout: *mut PangoLayout,
         line: c_int,
     ) -> *mut PangoLayoutLine;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_layout_get_line_spacing(layout: *mut PangoLayout) -> c_float;
     pub fn pango_layout_get_lines(layout: *mut PangoLayout) -> *mut glib::GSList;
@@ -2535,7 +2535,7 @@ extern "C" {
         new_index: *mut c_int,
         new_trailing: *mut c_int,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_serialize(
         layout: *mut PangoLayout,
@@ -2552,10 +2552,10 @@ extern "C" {
     pub fn pango_layout_set_height(layout: *mut PangoLayout, height: c_int);
     pub fn pango_layout_set_indent(layout: *mut PangoLayout, indent: c_int);
     pub fn pango_layout_set_justify(layout: *mut PangoLayout, justify: gboolean);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_set_justify_last_line(layout: *mut PangoLayout, justify: gboolean);
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_layout_set_line_spacing(layout: *mut PangoLayout, factor: c_float);
     pub fn pango_layout_set_markup(layout: *mut PangoLayout, markup: *const c_char, length: c_int);
@@ -2572,7 +2572,7 @@ extern "C" {
     pub fn pango_layout_set_text(layout: *mut PangoLayout, text: *const c_char, length: c_int);
     pub fn pango_layout_set_width(layout: *mut PangoLayout, width: c_int);
     pub fn pango_layout_set_wrap(layout: *mut PangoLayout, wrap: PangoWrapMode);
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_write_to_file(
         layout: *mut PangoLayout,
@@ -2676,15 +2676,15 @@ extern "C" {
     //=========================================================================
     // Other functions
     //=========================================================================
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_allow_breaks_new(allow_breaks: gboolean) -> *mut PangoAttribute;
     pub fn pango_attr_background_alpha_new(alpha: u16) -> *mut PangoAttribute;
     pub fn pango_attr_background_new(red: u16, green: u16, blue: u16) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_baseline_shift_new(shift: c_int) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_break(
         text: *const c_char,
@@ -2696,35 +2696,35 @@ extern "C" {
     );
     pub fn pango_attr_fallback_new(enable_fallback: gboolean) -> *mut PangoAttribute;
     pub fn pango_attr_family_new(family: *const c_char) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_font_scale_new(scale: PangoFontScale) -> *mut PangoAttribute;
     pub fn pango_attr_foreground_alpha_new(alpha: u16) -> *mut PangoAttribute;
     pub fn pango_attr_foreground_new(red: u16, green: u16, blue: u16) -> *mut PangoAttribute;
     pub fn pango_attr_gravity_hint_new(hint: PangoGravityHint) -> *mut PangoAttribute;
     pub fn pango_attr_gravity_new(gravity: PangoGravity) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_insert_hyphens_new(insert_hyphens: gboolean) -> *mut PangoAttribute;
     pub fn pango_attr_letter_spacing_new(letter_spacing: c_int) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_line_height_new(factor: c_double) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_line_height_new_absolute(height: c_int) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_attr_overline_color_new(red: u16, green: u16, blue: u16) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(any(feature = "v1_46"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     pub fn pango_attr_overline_new(overline: PangoOverline) -> *mut PangoAttribute;
     pub fn pango_attr_rise_new(rise: c_int) -> *mut PangoAttribute;
     pub fn pango_attr_scale_new(scale_factor: c_double) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_sentence_new() -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_attr_show_new(flags: PangoShowFlags) -> *mut PangoAttribute;
     pub fn pango_attr_stretch_new(stretch: PangoStretch) -> *mut PangoAttribute;
@@ -2735,14 +2735,14 @@ extern "C" {
     ) -> *mut PangoAttribute;
     pub fn pango_attr_strikethrough_new(strikethrough: gboolean) -> *mut PangoAttribute;
     pub fn pango_attr_style_new(style: PangoStyle) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_text_transform_new(transform: PangoTextTransform) -> *mut PangoAttribute;
     pub fn pango_attr_underline_color_new(red: u16, green: u16, blue: u16) -> *mut PangoAttribute;
     pub fn pango_attr_underline_new(underline: PangoUnderline) -> *mut PangoAttribute;
     pub fn pango_attr_variant_new(variant: PangoVariant) -> *mut PangoAttribute;
     pub fn pango_attr_weight_new(weight: PangoWeight) -> *mut PangoAttribute;
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_word_new() -> *mut PangoAttribute;
     pub fn pango_break(
@@ -2863,7 +2863,7 @@ extern "C" {
         analysis: *const PangoAnalysis,
         glyphs: *mut PangoGlyphString,
     );
-    #[cfg(any(feature = "v1_50", docsrs))]
+    #[cfg(any(feature = "v1_50"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_shape_item(
         item: *mut PangoItem,
@@ -2873,7 +2873,7 @@ extern "C" {
         glyphs: *mut PangoGlyphString,
         flags: PangoShapeFlags,
     );
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_shape_with_flags(
         item_text: *const c_char,
@@ -2886,7 +2886,7 @@ extern "C" {
     );
     pub fn pango_skip_space(pos: *mut *const c_char) -> gboolean;
     pub fn pango_split_file_list(str: *const c_char) -> *mut *mut c_char;
-    #[cfg(any(feature = "v1_44", docsrs))]
+    #[cfg(any(feature = "v1_44"))]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     pub fn pango_tailor_break(
         text: *const c_char,
