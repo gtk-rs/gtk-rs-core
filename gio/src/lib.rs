@@ -31,7 +31,7 @@ pub use self::dbus_connection::{
 mod dbus_message;
 mod dbus_method_invocation;
 mod dbus_node_info;
-#[cfg(any(feature = "v2_72", docsrs))]
+#[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod debug_controller_dbus;
 #[cfg(any(all(not(windows), not(target_os = "macos")), docsrs))]

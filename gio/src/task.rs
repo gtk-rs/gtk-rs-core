@@ -124,7 +124,7 @@ macro_rules! task_impl {
                 }
             }
 
-            #[cfg(any(feature = "v2_60", docsrs))]
+            #[cfg(feature = "v2_60")]
             #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
             #[doc(alias = "g_task_set_name")]
             pub fn set_name(&self, name: Option<&str>) {
@@ -181,7 +181,7 @@ macro_rules! task_impl {
                 unsafe { from_glib_none(ffi::g_task_get_context(self.to_glib_none().0)) }
             }
 
-            #[cfg(any(feature = "v2_60", docsrs))]
+            #[cfg(feature = "v2_60")]
             #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
             #[doc(alias = "g_task_get_name")]
             #[doc(alias = "get_name")]

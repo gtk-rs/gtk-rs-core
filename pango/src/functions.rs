@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
 use crate::{Analysis, GlyphString, Item};
 
@@ -40,7 +40,7 @@ pub fn shape_full(
     }
 }
 
-#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 #[doc(alias = "pango_shape_with_flags")]
 pub fn shape_with_flags(

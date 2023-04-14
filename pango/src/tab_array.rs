@@ -28,7 +28,7 @@ impl TabArray {
     }
 }
 
-#[cfg(any(feature = "v1_50", docsrs))]
+#[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 impl std::str::FromStr for TabArray {
     type Err = glib::BoolError;

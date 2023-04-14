@@ -163,7 +163,7 @@ impl ParamSpec {
         unsafe { from_glib((*(<Self as ToGlibPtr<*const _>>::to_glib_none(self).0)).value_type) }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_param_value_is_valid")]
     #[inline]
@@ -277,7 +277,7 @@ impl ParamSpec {
     //    unsafe { TODO: call gobject_ffi::g_param_spec_steal_qdata() }
     //}
 
-    #[cfg(any(feature = "v2_66", docsrs))]
+    #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_param_spec_is_valid_name")]
     #[inline]

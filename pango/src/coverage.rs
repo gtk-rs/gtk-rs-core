@@ -6,7 +6,7 @@ use glib::translate::*;
 
 use crate::CoverageLevel;
 
-#[cfg(any(feature = "v1_44", docsrs))]
+#[cfg(feature = "v1_44")]
 glib::wrapper! {
     #[doc(alias = "PangoCoverage")]
     pub struct Coverage(Object<ffi::PangoCoverage>);
@@ -17,7 +17,7 @@ glib::wrapper! {
 }
 
 // There was no get_type() function before 1.44
-#[cfg(not(any(feature = "v1_44", docsrs)))]
+#[cfg(not(feature = "v1_44"))]
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = "PangoCoverage")]

@@ -21,7 +21,7 @@ impl Color {
         }
     }
 
-    #[cfg(any(feature = "v1_46", docsrs))]
+    #[cfg(feature = "v1_46")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_color_parse_with_alpha")]
     pub fn parse_with_alpha(spec: &str) -> Result<(Self, u16), glib::BoolError> {

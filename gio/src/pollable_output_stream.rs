@@ -12,7 +12,7 @@ use futures_io::AsyncWrite;
 use glib::{prelude::*, translate::*};
 
 use crate::{error::to_std_io_result, prelude::*, Cancellable, PollableOutputStream};
-#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 
 pub trait PollableOutputStreamExtManual {
@@ -40,7 +40,7 @@ pub trait PollableOutputStreamExtManual {
         priority: glib::Priority,
     ) -> Pin<Box<dyn Stream<Item = ()> + 'static>>;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_pollable_output_stream_writev_nonblocking")]
     fn writev_nonblocking(
@@ -152,7 +152,7 @@ impl<O: IsA<PollableOutputStream>> PollableOutputStreamExtManual for O {
         }))
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_nonblocking(
         &self,
@@ -232,7 +232,7 @@ impl<T: IsA<PollableOutputStream>> AsyncWrite for OutputStreamAsyncWrite<T> {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn poll_write_vectored(
         self: Pin<&mut Self>,

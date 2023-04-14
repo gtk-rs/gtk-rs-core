@@ -4,7 +4,7 @@ use std::{io, mem, pin::Pin, ptr};
 
 use glib::{prelude::*, translate::*, Priority};
 
-#[cfg(any(feature = "v2_60", docsrs))]
+#[cfg(feature = "v2_60")]
 use crate::OutputVector;
 use crate::{error::to_std_io_result, prelude::*, Cancellable, OutputStream, Seekable};
 
@@ -60,7 +60,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         >,
     >;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev")]
     fn writev(
@@ -69,7 +69,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<usize, glib::Error>;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_async")]
     fn writev_async<
@@ -83,7 +83,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
@@ -96,7 +96,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         >,
     >;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_all")]
     fn writev_all(
@@ -105,7 +105,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<(usize, Option<glib::Error>), glib::Error>;
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_output_stream_writev_all_async")]
     fn writev_all_async<
@@ -119,7 +119,7 @@ pub trait OutputStreamExtManual: Sized + OutputStreamExt {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
@@ -353,7 +353,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev(
         &self,
@@ -380,7 +380,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_async<
         B: AsRef<[u8]> + Send + 'static,
@@ -470,7 +470,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
@@ -492,7 +492,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all(
         &self,
@@ -522,7 +522,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_async<
         B: AsRef<[u8]> + Send + 'static,
@@ -614,7 +614,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn writev_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
@@ -670,7 +670,7 @@ impl<T: IsA<OutputStream>> io::Write for OutputStreamWrite<T> {
         to_std_io_result(result)
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn write_vectored(&mut self, bufs: &[io::IoSlice<'_>]) -> io::Result<usize> {
         let vectors = bufs

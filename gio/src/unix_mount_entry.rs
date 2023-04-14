@@ -89,7 +89,7 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(any(feature = "v2_58", docsrs))]
+    #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_unix_mount_get_options")]
     #[doc(alias = "get_options")]
@@ -101,7 +101,7 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(any(feature = "v2_60", docsrs))]
+    #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_unix_mount_get_root_path")]
     #[doc(alias = "get_root_path")]

@@ -175,7 +175,7 @@ pub use self::quark::Quark;
 #[macro_use]
 mod log;
 #[doc(hidden)]
-#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg(feature = "log_macros")]
 #[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 pub use rs_log;
 
@@ -186,15 +186,17 @@ pub use self::log::{
     log_writer_journald, log_writer_standard_streams, set_print_handler, set_printerr_handler,
     unset_print_handler, unset_printerr_handler, LogField, LogHandlerId, LogLevel, LogLevels,
 };
-#[cfg(any(feature = "v2_68", docsrs))]
+#[cfg(feature = "v2_68")]
 pub use self::log::{log_writer_default_set_use_stderr, log_writer_default_would_drop};
-#[cfg(any(unix, docsrs))]
+#[cfg(unix)]
 pub use self::log::{log_writer_is_journald, log_writer_supports_color};
 
-#[cfg(any(feature = "log", docsrs))]
+#[cfg(feature = "log")]
+#[cfg_attr(docsrs, doc(cfg(feature = "log")))]
 #[macro_use]
 mod bridged_logging;
-#[cfg(any(feature = "log", docsrs))]
+#[cfg(feature = "log")]
+#[cfg_attr(docsrs, doc(cfg(feature = "log")))]
 pub use self::bridged_logging::{rust_log_handler, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
 
 #[macro_use]

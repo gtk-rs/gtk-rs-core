@@ -1,18 +1,18 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(feature = "v2_74", docsrs))]
+#[cfg(feature = "v2_74")]
 use std::boxed::Box as Box_;
 use std::{cell::RefCell, mem, pin::Pin, ptr};
 
 use glib::{prelude::*, translate::*};
 
-#[cfg(any(feature = "v2_74", docsrs))]
+#[cfg(feature = "v2_74")]
 use crate::FileIOStream;
 use crate::{Cancellable, File, FileCreateFlags, FileEnumerator, FileQueryInfoFlags};
 
 impl File {
-    #[cfg(any(feature = "v2_74", docsrs))]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
+    #[cfg(feature = "v2_74")]
+    #[_attr(docsrs, doc(cfgcfg(feature = "v2_74")))]
     #[doc(alias = "g_file_new_tmp_async")]
     pub fn new_tmp_async<P: FnOnce(Result<(File, FileIOStream), glib::Error>) + 'static>(
         tmpl: Option<impl AsRef<std::path::Path>>,
@@ -64,7 +64,7 @@ impl File {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn new_tmp_future(
         tmpl: Option<impl AsRef<std::path::Path>>,
@@ -89,7 +89,7 @@ impl File {
         ))
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_file_new_tmp_dir_async")]
     pub fn new_tmp_dir_async<P: FnOnce(Result<File, glib::Error>) + 'static>(
@@ -141,7 +141,7 @@ impl File {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     pub fn new_tmp_dir_future(
         tmpl: Option<impl AsRef<std::path::Path>>,
@@ -273,7 +273,7 @@ pub trait FileExtManual: Sized {
         Pin<Box<dyn futures_core::stream::Stream<Item = (bool, u64, u64, u64)> + 'static>>,
     );
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "g_file_move_async")]
     fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
@@ -286,7 +286,7 @@ pub trait FileExtManual: Sized {
         callback: Q,
     );
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_file_make_symbolic_link_async")]
     fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
@@ -297,7 +297,7 @@ pub trait FileExtManual: Sized {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     fn make_symbolic_link_future(
         &self,
@@ -305,7 +305,7 @@ pub trait FileExtManual: Sized {
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     fn move_future(
         &self,
@@ -937,7 +937,7 @@ impl<O: IsA<File>> FileExtManual for O {
         (fut, Box::pin(receiver))
     }
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
@@ -1026,7 +1026,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_72", docsrs))]
+    #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     fn move_future(
         &self,
@@ -1062,7 +1062,7 @@ impl<O: IsA<File>> FileExtManual for O {
         (fut, Box::pin(receiver))
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
@@ -1116,7 +1116,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     fn make_symbolic_link_future(
         &self,

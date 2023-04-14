@@ -131,12 +131,12 @@ pub enum Error {
     #[error("Win32Gdi Error")]
     #[doc(alias = "STATUS_WIN32_GDI_ERROR")]
     Win32GdiError,
-    #[cfg(any(feature = "v1_16", docsrs))]
+    #[cfg(feature = "v1_16")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
     #[error("Tag Error")]
     #[doc(alias = "STATUS_TAG_ERROR")]
     TagError,
-    #[cfg(any(feature = "v1_18", docsrs))]
+    #[cfg(feature = "v1_18")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[error("Dwrite Error")]
     #[doc(alias = "STATUS_DWRITE_ERROR")]
@@ -193,9 +193,11 @@ impl From<Error> for ffi::cairo_status_t {
             Error::PngError => ffi::STATUS_PNG_ERROR,
             Error::FreetypeError => ffi::STATUS_FREETYPE_ERROR,
             Error::Win32GdiError => ffi::STATUS_WIN32_GDI_ERROR,
-            #[cfg(any(feature = "v1_16", docsrs))]
+            #[cfg(feature = "v1_16")]
+            #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
             Error::TagError => ffi::STATUS_TAG_ERROR,
-            #[cfg(any(feature = "v1_18", docsrs))]
+            #[cfg(feature = "v1_18")]
+            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             Error::DwriteError => ffi::STATUS_DWRITE_ERROR,
             Error::LastStatus => ffi::STATUS_LAST_STATUS,
             Error::__Unknown(value) => value,
@@ -248,9 +250,11 @@ impl From<ffi::cairo_status_t> for Error {
             ffi::STATUS_PNG_ERROR => Self::PngError,
             ffi::STATUS_FREETYPE_ERROR => Self::FreetypeError,
             ffi::STATUS_WIN32_GDI_ERROR => Self::Win32GdiError,
-            #[cfg(any(feature = "v1_16", docsrs))]
+            #[cfg(feature = "v1_16")]
+            #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
             ffi::STATUS_TAG_ERROR => Self::TagError,
-            #[cfg(any(feature = "v1_18", docsrs))]
+            #[cfg(feature = "v1_18")]
+            #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
             ffi::STATUS_DWRITE_ERROR => Self::DwriteError,
             ffi::STATUS_LAST_STATUS => Self::LastStatus,
             value => Self::__Unknown(value),

@@ -3,20 +3,21 @@
 use std::ffi::{CStr, CString};
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
-#[cfg(any(feature = "freetype", docsrs))]
+#[cfg(feature = "freetype")]
 use std::rc::Rc;
 
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-#[cfg(any(feature = "freetype", docsrs))]
+#[cfg(feature = "freetype")]
 use crate::FtSynthesize;
 use crate::{utils::status_to_result, Error, FontSlant, FontType, FontWeight};
 
-#[cfg(any(feature = "freetype", docsrs))]
+#[cfg(feature = "freetype")]
 static FT_FACE_KEY: crate::UserDataKey<freetype::face::Face> = crate::UserDataKey::new();
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 glib::wrapper! {
     #[derive(Debug)]
     #[doc(alias = "cairo_font_face_t")]
@@ -30,6 +31,7 @@ glib::wrapper! {
 }
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 #[derive(Debug)]
 #[doc(alias = "cairo_font_face_t")]
 pub struct FontFace(ptr::NonNull<ffi::cairo_font_face_t>);
@@ -57,7 +59,8 @@ impl FontFace {
 
     // rustdoc-stripper-ignore-next
     /// Creates a new font face for the FreeType backend from an already opened FreeType face.
-    #[cfg(any(feature = "freetype", docsrs))]
+    #[cfg(feature = "freetype")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub fn create_from_ft(face: &freetype::face::Face) -> Result<FontFace, Error> {
         // Increase reference count of `FT_Face`.
@@ -81,7 +84,8 @@ impl FontFace {
     // rustdoc-stripper-ignore-next
     /// Creates a new font face for the FreeType backend from an already opened FreeType face,
     /// additionally allowing you to pass flags to the underlying C API.
-    #[cfg(any(feature = "freetype", docsrs))]
+    #[cfg(feature = "freetype")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
     #[doc(alias = "cairo_ft_font_face_create_for_ft_face")]
     pub fn create_from_ft_with_flags(
         face: &freetype::face::Face,
@@ -170,20 +174,20 @@ impl FontFace {
         unsafe { ffi::cairo_font_face_get_reference_count(self.to_raw_none()) as usize }
     }
 
+    #[cfg(feature = "freetype")]
     #[doc(alias = "cairo_ft_font_face_get_synthesize")]
-    #[cfg(any(feature = "freetype", docsrs))]
     #[doc(alias = "get_synthesize")]
     pub fn synthesize(&self) -> FtSynthesize {
         unsafe { FtSynthesize::from(ffi::cairo_ft_font_face_get_synthesize(self.to_raw_none())) }
     }
 
-    #[cfg(any(feature = "freetype", docsrs))]
+    #[cfg(feature = "freetype")]
     #[doc(alias = "cairo_ft_font_face_set_synthesize")]
     pub fn set_synthesize(&self, synth_flags: FtSynthesize) {
         unsafe { ffi::cairo_ft_font_face_set_synthesize(self.to_raw_none(), synth_flags.into()) }
     }
 
-    #[cfg(any(feature = "freetype", docsrs))]
+    #[cfg(feature = "freetype")]
     #[doc(alias = "cairo_ft_font_face_unset_synthesize")]
     pub fn unset_synthesize(&self, synth_flags: FtSynthesize) {
         unsafe { ffi::cairo_ft_font_face_unset_synthesize(self.to_raw_none(), synth_flags.into()) }

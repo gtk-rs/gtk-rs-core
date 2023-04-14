@@ -76,7 +76,7 @@ impl ListStore {
         self.splice(self.n_items(), 0, additions)
     }
 
-    #[cfg(any(feature = "v2_74", docsrs))]
+    #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "g_list_store_find_with_equal_func_full")]
     #[doc(alias = "g_list_store_find_with_equal_func")]
