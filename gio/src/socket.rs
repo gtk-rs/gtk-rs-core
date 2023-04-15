@@ -882,48 +882,40 @@ impl<O: IsA<Socket>> SocketExtManual for O {
     }
 }
 
-#[cfg(not(unix))]
-#[cfg_attr(docsrs, doc(cfg(not(unix))))]
+#[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd {
     fn into_raw_fd(self) -> c_int;
 }
 
-#[cfg(not(unix))]
-#[cfg_attr(docsrs, doc(cfg(not(unix))))]
+#[cfg(all(docsrs, not(unix)))]
 pub trait FromRawFd {
     unsafe fn from_raw_fd(fd: c_int) -> Self;
 }
 
-#[cfg(not(unix))]
-#[cfg_attr(docsrs, doc(cfg(not(unix))))]
+#[cfg(all(docsrs, not(unix)))]
 pub trait AsRawFd {
     fn as_raw_fd(&self) -> RawFd;
 }
 
-#[cfg(not(unix))]
-#[cfg_attr(docsrs, doc(cfg(not(unix))))]
+#[cfg(all(docsrs, not(unix)))]
 pub type RawFd = c_int;
 
-#[cfg(not(windows))]
-#[cfg_attr(docsrs, doc(cfg(not(windows))))]
+#[cfg(all(docsrs, not(windows)))]
 pub trait IntoRawSocket {
     fn into_raw_socket(self) -> u64;
 }
 
-#[cfg(not(windows))]
-#[cfg_attr(docsrs, doc(cfg(not(windows))))]
+#[cfg(all(docsrs, not(windows)))]
 pub trait FromRawSocket {
     unsafe fn from_raw_socket(sock: u64) -> Self;
 }
 
-#[cfg(not(windows))]
-#[cfg_attr(docsrs, doc(cfg(not(windows))))]
+#[cfg(all(docsrs, not(windows)))]
 pub trait AsRawSocket {
     fn as_raw_socket(&self) -> RawSocket;
 }
 
-#[cfg(not(windows))]
-#[cfg_attr(docsrs, doc(cfg(not(windows))))]
+#[cfg(all(docsrs, not(windows)))]
 pub type RawSocket = *mut c_void;
 
 #[cfg(test)]
