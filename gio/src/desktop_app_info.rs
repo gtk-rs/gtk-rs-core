@@ -86,21 +86,19 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
         stderr_fd: &mut V,
     ) -> Result<(), Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
-        unsafe extern "C" fn user_setup_func<P: IsA<AppLaunchContext>>(
-            user_data: glib::ffi::gpointer,
-        ) {
+        unsafe extern "C" fn user_setup_func(user_data: glib::ffi::gpointer) {
             let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
                 Box_::from_raw(user_data as *mut _);
             let callback = (*callback).expect("cannot get closure...");
             callback()
         }
         let user_setup = if user_setup_data.is_some() {
-            Some(user_setup_func::<P> as _)
+            Some(user_setup_func as _)
         } else {
             None
         };
         let pid_callback_data: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))> = pid_callback;
-        unsafe extern "C" fn pid_callback_func<P: IsA<AppLaunchContext>>(
+        unsafe extern "C" fn pid_callback_func(
             appinfo: *mut ffi::GDesktopAppInfo,
             pid: glib::ffi::GPid,
             user_data: glib::ffi::gpointer,
@@ -117,7 +115,7 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
             };
         }
         let pid_callback = if pid_callback_data.is_some() {
-            Some(pid_callback_func::<P> as _)
+            Some(pid_callback_func as _)
         } else {
             None
         };

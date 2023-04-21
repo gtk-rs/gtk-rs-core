@@ -388,8 +388,8 @@ fn props() {
 #[cfg(test)]
 mod kw_names {
     mod imp {
-        use glib::subclass::types::ObjectSubclassExt;
-        use glib::subclass::{object::DerivedObjectProperties, prelude::ObjectImplExt};
+
+        use glib::subclass::object::DerivedObjectProperties;
         use glib::ObjectExt;
         use std::cell::Cell;
 
