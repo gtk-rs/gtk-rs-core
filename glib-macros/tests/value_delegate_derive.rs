@@ -37,10 +37,10 @@ fn into_value() {
     test_func(&TestManualFrom(123));
     test_func(TestManualFrom(123));
 
-    test_func(&TestNullable("foo".to_string()));
+    test_func(TestNullable("foo".to_string()));
     test_func(TestNullable("foo".to_string()));
     test_func(Some(&TestNullable("foo".to_string())));
-    test_func(&Some(TestNullable("foo".to_string())));
+    test_func(Some(TestNullable("foo".to_string())));
     test_func(Some(TestNullable("foo".to_string())));
 
     assert_eq!(glib::Value::from(Test(123)).get::<Test>().unwrap().0, 123);
@@ -149,7 +149,7 @@ fn higher_level_types() {
     }
     impl<'a> From<&'a MyVecManualFrom> for Option<String> {
         fn from(v: &'a MyVecManualFrom) -> Self {
-            v.0.iter().next().cloned()
+            v.0.first().cloned()
         }
     }
     impl From<MyVecManualFrom> for Option<String> {
@@ -160,7 +160,7 @@ fn higher_level_types() {
 
     let vec = vec!["foo".to_string(), "bar".to_string()];
     let vec_value = vec.to_value();
-    let my_vec_value = MyVec(vec.clone()).to_value();
+    let my_vec_value = MyVec(vec).to_value();
     assert_eq!(MyVec::static_type(), Vec::<String>::static_type());
     assert_eq!(
         vec_value.get::<Vec<String>>().unwrap(),

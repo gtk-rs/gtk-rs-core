@@ -11,6 +11,7 @@ use syn::parenthesized;
 use syn::parse::Parse;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
+use syn::LitStr;
 use syn::Token;
 
 pub struct PropsMacroInput {
@@ -303,11 +304,14 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
     let PropDesc {
         ty, name, builder, ..
     } = prop;
+    let stripped_name = strip_raw_prefix_from_name(name);
 
     match (&prop.override_class, &prop.override_interface) {
-        (Some(c), None) => return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#name)),
+        (Some(c), None) => {
+            return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#stripped_name))
+        }
         (None, Some(i)) => {
-            return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#name))
+            return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#stripped_name))
         }
         (Some(_), Some(_)) => {
             unreachable!("Both `override_class` and `override_interface` specified")
@@ -328,14 +332,14 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
         .map(|(mut required_params, chained_methods)| {
             let name_expr = syn::ExprLit {
                 attrs: vec![],
-                lit: syn::Lit::Str(name.to_owned()),
+                lit: syn::Lit::Str(stripped_name.to_owned()),
             };
             required_params.insert(0, name_expr.into());
             let required_params = required_params.iter();
 
             quote!((#(#required_params,)*)#chained_methods)
         })
-        .unwrap_or(quote!((#name)));
+        .unwrap_or(quote!((#stripped_name)));
 
     let builder_fields = prop.builder_fields.iter().map(|(k, v)| quote!(.#k(#v)));
 
@@ -428,14 +432,14 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
             ty,
             ..
         } = p;
-
+        let stripped_name = strip_raw_prefix_from_name(name);
         let crate_ident = crate_ident_new();
         let enum_ident = name_to_enum_ident(name.value());
         let span = p.attrs_span;
         let expect = quote!(.unwrap_or_else(
             |err| panic!(
                 "Invalid conversion from `glib::value::Value` to `{}` inside setter for property `{}`: {:?}",
-                ::std::any::type_name::<<#ty as #crate_ident::Property>::Value>(), #name, err
+                ::std::any::type_name::<<#ty as #crate_ident::Property>::Value>(), #stripped_name, err
             )
         ));
         set.as_ref().map(|set| {
@@ -509,16 +513,25 @@ fn name_to_ident(name: &syn::LitStr) -> syn::Ident {
     format_ident!("{}", name.value().replace('-', "_"))
 }
 
+/// Strips out raw identifier prefix (`r#`) from literal string items
+fn strip_raw_prefix_from_name(name: &LitStr) -> LitStr {
+    LitStr::new(
+        name.value().strip_prefix("r#").unwrap_or(&name.value()),
+        name.span(),
+    )
+}
+
 fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let defs = props.iter().map(|p| {
         let name = &p.name;
+        let stripped_name = strip_raw_prefix_from_name(name);
         let ident = name_to_ident(name);
         let ty = &p.ty;
 
         let getter = p.get.is_some().then(|| {
             quote!(pub fn #ident(&self) -> <#ty as #crate_ident::Property>::Value {
-                 self.property::<<#ty as #crate_ident::Property>::Value>(#name)
+                 self.property::<<#ty as #crate_ident::Property>::Value>(#stripped_name)
             })
         });
         let is_construct_only = p.builder_fields.iter().any(|(k, _)| *k == "construct_only");
@@ -540,7 +553,7 @@ fn expand_wrapper_getset_properties(props: &[PropDesc]) -> TokenStream2 {
                 )
             };
             quote!(pub fn #ident<'a>(&self, value: #set_ty) {
-                self.set_property_from_value(#name, &::std::convert::From::from(#upcasted_borrowed_value))
+                self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
             })
         });
         let span = p.attrs_span;
@@ -556,10 +569,11 @@ fn expand_wrapper_connect_prop_notify(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let connection_fns = props.iter().map(|p| {
         let name = &p.name;
+        let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
         quote_spanned!(span=> pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
-            self.connect_notify_local(::core::option::Option::Some(#name), move |this, _| {
+            self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
                 f(this)
             })
         })
@@ -570,8 +584,8 @@ fn expand_wrapper_connect_prop_notify(props: &[PropDesc]) -> TokenStream2 {
 fn expand_wrapper_notify_prop(props: &[PropDesc]) -> TokenStream2 {
     let crate_ident = crate_ident_new();
     let emit_fns = props.iter().map(|p| {
-        let name = &p.name;
-        let fn_ident = format_ident!("notify_{}", name_to_ident(name));
+        let name = strip_raw_prefix_from_name(&p.name);
+        let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
         let enum_ident = name_to_enum_ident(name.value());
         quote_spanned!(span=> pub fn #fn_ident(&self) {

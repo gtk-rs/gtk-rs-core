@@ -567,7 +567,7 @@ mod test {
         );
 
         assert_eq!(obj.property::<String>("name"), String::from("initial"));
-        obj.set_property("name", &"test");
+        obj.set_property("name", "test");
         assert_eq!(obj.property::<String>("name"), String::from("test"));
 
         let child = Object::with_type(ChildObject::static_type());
@@ -582,7 +582,7 @@ mod test {
             .property("name", "initial")
             .build();
 
-        obj.set_property("construct-name", &"test");
+        obj.set_property("construct-name", "test");
     }
 
     #[test]
@@ -593,7 +593,7 @@ mod test {
             .property("name", "initial")
             .build();
 
-        obj.set_property("test", &true);
+        obj.set_property("test", true);
     }
 
     #[test]
@@ -604,7 +604,7 @@ mod test {
             .property("name", "initial")
             .build();
 
-        obj.set_property("constructed", &false);
+        obj.set_property("constructed", false);
     }
 
     #[test]
@@ -615,7 +615,7 @@ mod test {
             .property("name", "initial")
             .build();
 
-        obj.set_property("name", &false);
+        obj.set_property("name", false);
     }
 
     #[test]
