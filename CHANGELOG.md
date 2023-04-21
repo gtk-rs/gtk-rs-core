@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [0.17.9]
+
+Paskal Sitepu:
+- glib-macros: Strip out `r#` prefix from property names inside the `GObject`
+- glib-macros: Add a test for the `Properties` macro where keywords are being used
+- glib-macros: Update the doc of the `Properties` macro to elaborate on usage of keywords as property names
+
+Sebastian Dröge:
+- glib: Enable various smallvec features
+- Fix various new Rust 1.69 clippy warnings
+- glib: Fix compiletest expected error output for Rust 1.69
+
 ## [0.17.8]
 
 Paskal Sitepu:
