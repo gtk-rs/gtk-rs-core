@@ -552,9 +552,7 @@ fn derive_variant_for_c_enum(
         ),
         EnumMode::Enum { repr: false } => (
             quote! {
-                let ty = <Self as #glib::StaticType>::static_type();
-                let enum_class = #glib::EnumClass::new(ty);
-                let enum_class = ::core::option::Option::unwrap(enum_class);
+                let enum_class = #glib::EnumClass::new::<Self>();
                 let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
                 let value = #glib::EnumClass::value(&enum_class, value);
                 let value = ::core::option::Option::unwrap(value);
@@ -562,8 +560,7 @@ fn derive_variant_for_c_enum(
                 #glib::ToVariant::to_variant(nick)
             },
             quote! {
-                let ty = <Self as #glib::StaticType>::static_type();
-                let enum_class = #glib::EnumClass::new(ty)?;
+                let enum_class = #glib::EnumClass::new::<Self>();
                 let tag = #glib::Variant::str(&variant)?;
                 let value = #glib::EnumClass::value_by_nick(&enum_class, tag)?;
                 let value = #glib::EnumValue::value(&value);
@@ -581,16 +578,13 @@ fn derive_variant_for_c_enum(
         ),
         EnumMode::Flags { repr: false } => (
             quote! {
-                let ty = <Self as #glib::StaticType>::static_type();
-                let flags_class = #glib::FlagsClass::new(ty);
-                let flags_class = ::core::option::Option::unwrap(flags_class);
+                let flags_class = #glib::FlagsClass::new::<Self>();
                 let value = <Self as #glib::translate::IntoGlib>::into_glib(*self);
                 let s = #glib::FlagsClass::to_nick_string(&flags_class, value);
                 #glib::ToVariant::to_variant(&s)
             },
             quote! {
-                let ty = <Self as #glib::StaticType>::static_type();
-                let flags_class = #glib::FlagsClass::new(ty)?;
+                let flags_class = #glib::FlagsClass::new::<Self>();
                 let s = #glib::Variant::str(&variant)?;
                 let value = #glib::FlagsClass::from_nick_string(&flags_class, s).ok()?;
                 ::core::option::Option::Some(unsafe { #glib::translate::from_glib(value) })
