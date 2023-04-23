@@ -120,7 +120,7 @@ fn derive_enum() {
     assert!(t.is_a(glib::Type::ENUM));
     assert_eq!(t.name(), "TestAnimalType");
 
-    let e = glib::EnumClass::new(t).expect("EnumClass::new failed");
+    let e = glib::EnumClass::with_type(t).expect("EnumClass::new failed");
     let v = e.value(0).expect("EnumClass::get_value(0) failed");
     assert_eq!(v.name(), "Goat");
     assert_eq!(v.nick(), "goat");
@@ -221,7 +221,7 @@ fn attr_flags() {
     assert!(t.is_a(glib::Type::FLAGS));
     assert_eq!(t.name(), "MyFlags");
 
-    let e = glib::FlagsClass::new(t).expect("FlagsClass::new failed");
+    let e = glib::FlagsClass::with_type(t).expect("FlagsClass::new failed");
     let v = e.value(1).expect("FlagsClass::get_value(1) failed");
     assert_eq!(v.name(), "Flag A");
     assert_eq!(v.nick(), "nick-a");

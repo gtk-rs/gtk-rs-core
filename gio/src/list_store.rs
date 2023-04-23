@@ -8,7 +8,7 @@ use crate::{prelude::*, ListModel, ListStore};
 
 impl ListStore {
     #[doc(alias = "g_list_store_new")]
-    pub fn new<T: StaticType>() -> Self {
+    pub fn new<T: IsA<Object>>() -> Self {
         Self::with_type(T::static_type())
     }
 

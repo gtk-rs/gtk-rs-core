@@ -5,7 +5,7 @@ use std::{cmp, ffi::CStr, fmt, ptr};
 use crate::{
     translate::*,
     value::{FromValue, ValueTypeChecker},
-    Type, Value,
+    HasParamSpec, ParamSpecEnum, ParamSpecFlags, StaticType, Type, Value,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -68,10 +68,17 @@ impl fmt::Debug for EnumClass {
 
 impl EnumClass {
     // rustdoc-stripper-ignore-next
+    /// Create a new `EnumClass` from a static type `T`.
+    ///
+    /// Panics if `T` is not representing an enum.
+    pub fn new<T: StaticType + HasParamSpec<ParamSpec = ParamSpecEnum>>() -> Self {
+        Self::with_type(T::static_type()).expect("invalid enum class")
+    }
+    // rustdoc-stripper-ignore-next
     /// Create a new `EnumClass` from a `Type`.
     ///
     /// Returns `None` if `type_` is not representing an enum.
-    pub fn new(type_: Type) -> Option<Self> {
+    pub fn with_type(type_: Type) -> Option<Self> {
         unsafe {
             let is_enum: bool = from_glib(gobject_ffi::g_type_is_a(
                 type_.into_glib(),
@@ -255,7 +262,7 @@ impl EnumValue {
     /// Convert enum value from a `Value`.
     pub fn from_value(value: &Value) -> Option<(EnumClass, &EnumValue)> {
         unsafe {
-            let enum_class = EnumClass::new(value.type_())?;
+            let enum_class = EnumClass::with_type(value.type_())?;
             let v = enum_class.value(gobject_ffi::g_value_get_enum(value.to_glib_none().0))?;
             let v = &*(v as *const EnumValue);
             Some((enum_class, v))
@@ -342,10 +349,17 @@ impl fmt::Debug for FlagsClass {
 
 impl FlagsClass {
     // rustdoc-stripper-ignore-next
+    /// Create a new `FlagsClass` from a static type `T`.
+    ///
+    /// Panics if `T` is not representing an flags type.
+    pub fn new<T: StaticType + HasParamSpec<ParamSpec = ParamSpecFlags>>() -> Self {
+        Self::with_type(T::static_type()).expect("invalid flags class")
+    }
+    // rustdoc-stripper-ignore-next
     /// Create a new `FlagsClass` from a `Type`
     ///
     /// Returns `None` if `type_` is not representing a flags type.
-    pub fn new(type_: Type) -> Option<Self> {
+    pub fn with_type(type_: Type) -> Option<Self> {
         unsafe {
             let is_flags: bool = from_glib(gobject_ffi::g_type_is_a(
                 type_.into_glib(),
@@ -771,7 +785,7 @@ impl FlagsValue {
     /// Convert flags values from a `Value`. This returns all flags that are set.
     pub fn from_value(value: &Value) -> Option<(FlagsClass, Vec<&FlagsValue>)> {
         unsafe {
-            let flags_class = FlagsClass::new(value.type_())?;
+            let flags_class = FlagsClass::with_type(value.type_())?;
             let mut res = Vec::new();
             let f = gobject_ffi::g_value_get_flags(value.to_glib_none().0);
             for v in flags_class.values() {
@@ -931,11 +945,10 @@ impl std::error::Error for InvalidFlagsError {}
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::StaticType;
 
     #[test]
     fn test_flags() {
-        let flags = FlagsClass::new(crate::BindingFlags::static_type()).unwrap();
+        let flags = FlagsClass::new::<crate::BindingFlags>();
         let values = flags.values();
         let def1 = values
             .iter()

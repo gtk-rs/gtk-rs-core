@@ -1027,7 +1027,7 @@ impl ParamSpecEnum {
 
             debug_assert!(!(*ptr).enum_class.is_null());
 
-            crate::EnumClass::new(from_glib((*(*ptr).enum_class).g_type_class.g_type))
+            crate::EnumClass::with_type(from_glib((*(*ptr).enum_class).g_type_class.g_type))
                 .expect("Invalid enum class")
         }
     }
@@ -1175,7 +1175,7 @@ impl ParamSpecFlags {
 
             debug_assert!(!(*ptr).flags_class.is_null());
 
-            crate::FlagsClass::new(from_glib((*(*ptr).flags_class).g_type_class.g_type))
+            crate::FlagsClass::with_type(from_glib((*(*ptr).flags_class).g_type_class.g_type))
                 .expect("Invalid flags class")
         }
     }
