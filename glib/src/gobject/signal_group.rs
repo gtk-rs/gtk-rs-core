@@ -5,10 +5,14 @@ use std::mem::transmute;
 use crate::{
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    Object, ObjectType, RustClosure, SignalGroup, Value,
+    IsA, Object, ObjectType, RustClosure, SignalGroup, Value,
 };
 
 impl SignalGroup {
+    #[doc(alias = "g_signal_group_new")]
+    pub fn new<T: IsA<Object>>() -> Self {
+        Self::with_type(T::static_type())
+    }
     #[doc(alias = "g_signal_group_connect_closure")]
     pub fn connect_closure(&self, signal_name: &str, after: bool, closure: RustClosure) {
         unsafe {
@@ -212,7 +216,7 @@ mod tests {
 
     #[test]
     fn group_emit() {
-        let group = SignalGroup::new(SignalObject::static_type());
+        let group = SignalGroup::new::<SignalObject>();
 
         let obj = Object::new::<SignalObject>();
         let store = Rc::new(RefCell::new(String::new()));

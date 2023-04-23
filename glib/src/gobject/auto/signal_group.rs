@@ -16,7 +16,8 @@ crate::wrapper! {
 
 impl SignalGroup {
     #[doc(alias = "g_signal_group_new")]
-    pub fn new(target_type: crate::types::Type) -> SignalGroup {
+    #[doc(alias = "new")]
+    pub fn with_type(target_type: crate::types::Type) -> SignalGroup {
         unsafe { from_glib_full(gobject_ffi::g_signal_group_new(target_type.into_glib())) }
     }
 
