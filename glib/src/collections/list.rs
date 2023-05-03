@@ -385,7 +385,8 @@ impl<T: TransparentPtrType> List<T> {
     /// Consumes the list and returns the underlying pointer.
     #[inline]
     pub fn into_raw(mut self) -> *mut ffi::GList {
-        mem::replace(&mut self.ptr, None)
+        self.ptr
+            .take()
             .map(|p| p.as_ptr())
             .unwrap_or(ptr::null_mut())
     }

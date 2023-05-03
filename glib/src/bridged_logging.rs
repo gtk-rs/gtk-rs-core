@@ -142,7 +142,7 @@ impl GlibLogger {
         message: &str,
     ) {
         let line = line.map(|l| l.to_string());
-        let line = line.as_ref().map(|s| s.as_str());
+        let line = line.as_deref();
 
         crate::log_structured!(
             domain.unwrap_or("default"),

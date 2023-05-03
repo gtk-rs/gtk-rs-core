@@ -2,9 +2,6 @@
 
 #[cfg(not(unix))]
 use std::os::raw::c_int;
-#[cfg(not(windows))]
-#[cfg_attr(docsrs, doc(cfg(not(windows))))]
-use std::os::raw::c_void;
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
@@ -49,7 +46,7 @@ impl Socket {
     }
 }
 
-#[cfg(unix)]
+#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 impl AsRawFd for Socket {
     fn as_raw_fd(&self) -> RawFd {
@@ -57,7 +54,7 @@ impl AsRawFd for Socket {
     }
 }
 
-#[cfg(windows)]
+#[cfg(any(windows, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(windows)))]
 impl AsRawSocket for Socket {
     fn as_raw_socket(&self) -> RawSocket {
@@ -916,7 +913,7 @@ pub trait AsRawSocket {
 }
 
 #[cfg(all(docsrs, not(windows)))]
-pub type RawSocket = *mut c_void;
+pub type RawSocket = *mut std::os::raw::c_void;
 
 #[cfg(test)]
 mod tests {
