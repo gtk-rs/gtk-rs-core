@@ -5,7 +5,7 @@ pub use libc::passwd;
 #[allow(unused_imports)]
 use libc::{c_char, c_int, c_ushort, c_void};
 
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 #[repr(C)]
 pub struct passwd {
     pw_name: *mut c_char,

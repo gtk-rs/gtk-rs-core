@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::translate::*;
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 use crate::MainContextFlags;
 
 crate::wrapper! {
@@ -24,8 +24,8 @@ impl MainContext {
         unsafe { from_glib_full(ffi::g_main_context_new()) }
     }
 
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "g_main_context_new_with_flags")]
     #[doc(alias = "new_with_flags")]
     pub fn with_flags(flags: MainContextFlags) -> MainContext {

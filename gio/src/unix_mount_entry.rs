@@ -89,8 +89,8 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(feature = "v2_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_unix_mount_get_options")]
     #[doc(alias = "get_options")]
     pub fn options(&self) -> Option<GString> {
@@ -101,8 +101,8 @@ impl UnixMountEntry {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_unix_mount_get_root_path")]
     #[doc(alias = "get_root_path")]
     pub fn root_path(&self) -> Option<std::path::PathBuf> {

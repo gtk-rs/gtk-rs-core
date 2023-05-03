@@ -243,8 +243,8 @@ impl Subprocess {
         unsafe { ffi::g_subprocess_get_term_sig(self.to_glib_none().0) }
     }
 
-    #[cfg(any(not(windows), feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(not(windows))))]
+    #[cfg(any(not(windows)))]
+    #[cfg_attr(docsrs, doc(cfg(not(windows))))]
     #[doc(alias = "g_subprocess_send_signal")]
     pub fn send_signal(&self, signal_num: i32) {
         unsafe {

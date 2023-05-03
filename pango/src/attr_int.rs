@@ -2,14 +2,11 @@
 
 use glib::translate::*;
 
-#[cfg(any(feature = "v1_50", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+#[cfg(feature = "v1_50")]
 use crate::FontScale;
-#[cfg(any(feature = "v1_46", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+#[cfg(feature = "v1_46")]
 use crate::Overline;
-#[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+#[cfg(feature = "v1_44")]
 use crate::ShowFlags;
 use crate::{AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
 
@@ -17,11 +14,9 @@ define_attribute_struct!(
     AttrInt,
     ffi::PangoAttrInt,
     &[
-        #[cfg(any(feature = "v1_50", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+        #[cfg(feature = "v1_50")]
         AttrType::AbsoluteLineHeight,
-        #[cfg(any(feature = "v1_50", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+        #[cfg(feature = "v1_50")]
         AttrType::FontScale,
         AttrType::AllowBreaks,
         AttrType::BackgroundAlpha,
@@ -44,22 +39,22 @@ define_attribute_struct!(
 );
 
 impl AttrInt {
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_attr_line_height_new_absolute")]
     pub fn new_line_height_absolute(height: i32) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_line_height_new_absolute(height)) }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_attr_font_scale_new")]
     pub fn new_font_scale(scale: FontScale) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_font_scale_new(scale.into_glib())) }
     }
 
-    #[cfg(any(feature = "v1_44", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+    #[cfg(feature = "v1_44")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_allow_breaks_new")]
     pub fn new_allow_breaks(allow_breaks: bool) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_allow_breaks_new(allow_breaks.into_glib())) }
@@ -95,8 +90,8 @@ impl AttrInt {
         unsafe { from_glib_full(ffi::pango_attr_gravity_new(gravity.into_glib())) }
     }
 
-    #[cfg(any(feature = "v1_44", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+    #[cfg(feature = "v1_44")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_insert_hyphens_new")]
     pub fn new_insert_hyphens(insert_hyphens: bool) -> Self {
         unsafe {
@@ -111,8 +106,8 @@ impl AttrInt {
         unsafe { from_glib_full(ffi::pango_attr_letter_spacing_new(letter_spacing)) }
     }
 
-    #[cfg(any(feature = "v1_46", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_46")))]
+    #[cfg(feature = "v1_46")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_attr_overline_new")]
     pub fn new_overline(overline: Overline) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_overline_new(overline.into_glib())) }
@@ -123,8 +118,8 @@ impl AttrInt {
         unsafe { from_glib_full(ffi::pango_attr_rise_new(rise)) }
     }
 
-    #[cfg(any(feature = "v1_44", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+    #[cfg(feature = "v1_44")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
     #[doc(alias = "pango_attr_show_new")]
     pub fn new_show(flags: ShowFlags) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_show_new(flags.into_glib())) }

@@ -755,8 +755,8 @@ bitflags! {
         const DELAY_MESSAGE_PROCESSING = ffi::G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING as _;
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER")]
         const AUTHENTICATION_REQUIRE_SAME_USER = ffi::G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER as _;
-        #[cfg(any(feature = "v2_74", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+        #[cfg(any(feature = "v2_74"))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE")]
         const CROSS_NAMESPACE = ffi::G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE as _;
     }
@@ -1032,8 +1032,8 @@ bitflags! {
         const GET_INVALIDATED_PROPERTIES = ffi::G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES as _;
         #[doc(alias = "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION")]
         const DO_NOT_AUTO_START_AT_CONSTRUCTION = ffi::G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION as _;
-        #[cfg(any(feature = "v2_70", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+        #[cfg(any(feature = "v2_70"))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
         #[doc(alias = "G_DBUS_PROXY_FLAGS_NO_MATCH_RULE")]
         const NO_MATCH_RULE = ffi::G_DBUS_PROXY_FLAGS_NO_MATCH_RULE as _;
     }
@@ -2368,9 +2368,9 @@ impl From<OutputStreamSpliceFlags> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(any(feature = "v2_60"))]
 bitflags! {
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "GResolverNameLookupFlags")]
     pub struct ResolverNameLookupFlags: u32 {
         #[doc(alias = "G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT")]
@@ -2382,16 +2382,16 @@ bitflags! {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl fmt::Display for ResolverNameLookupFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         <Self as fmt::Debug>::fmt(self, f)
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(hidden)]
 impl IntoGlib for ResolverNameLookupFlags {
     type GlibType = ffi::GResolverNameLookupFlags;
@@ -2402,8 +2402,8 @@ impl IntoGlib for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GResolverNameLookupFlags> for ResolverNameLookupFlags {
     #[inline]
@@ -2412,8 +2412,8 @@ impl FromGlib<ffi::GResolverNameLookupFlags> for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for ResolverNameLookupFlags {
     #[inline]
     fn static_type() -> Type {
@@ -2421,8 +2421,8 @@ impl StaticType for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl glib::HasParamSpec for ResolverNameLookupFlags {
     type ParamSpec = glib::ParamSpecFlags;
     type SetValue = Self;
@@ -2433,14 +2433,14 @@ impl glib::HasParamSpec for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl glib::value::ValueType for ResolverNameLookupFlags {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 unsafe impl<'a> FromValue<'a> for ResolverNameLookupFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -2450,8 +2450,8 @@ unsafe impl<'a> FromValue<'a> for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl ToValue for ResolverNameLookupFlags {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -2468,8 +2468,8 @@ impl ToValue for ResolverNameLookupFlags {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl From<ResolverNameLookupFlags> for glib::Value {
     #[inline]
     fn from(v: ResolverNameLookupFlags) -> Self {
@@ -2678,8 +2678,8 @@ bitflags! {
         const STDERR_MERGE = ffi::G_SUBPROCESS_FLAGS_STDERR_MERGE as _;
         #[doc(alias = "G_SUBPROCESS_FLAGS_INHERIT_FDS")]
         const INHERIT_FDS = ffi::G_SUBPROCESS_FLAGS_INHERIT_FDS as _;
-        #[cfg(any(feature = "v2_72", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+        #[cfg(any(feature = "v2_72"))]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
         #[doc(alias = "G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP")]
         const SEARCH_PATH_FROM_ENVP = ffi::G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP as _;
     }

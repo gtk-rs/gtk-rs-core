@@ -2,9 +2,9 @@
 
 use std::io;
 
-#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg(feature = "v2_74")]
 use crate::glib::translate::*;
-#[cfg(any(feature = "v2_74", feature = "dox"))]
+#[cfg(feature = "v2_74")]
 use crate::glib::FileError;
 use crate::IOErrorEnum;
 
@@ -35,8 +35,8 @@ pub(crate) fn to_std_io_result<T>(result: Result<T, glib::Error>) -> io::Result<
     })
 }
 
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 impl From<FileError> for IOErrorEnum {
     #[doc(alias = "g_io_error_from_file_error")]
     fn from(e: FileError) -> Self {

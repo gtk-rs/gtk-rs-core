@@ -3,8 +3,8 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use crate::TlsProtocolVersion;
 use crate::{
     AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
@@ -42,8 +42,8 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "get_certificate")]
     fn certificate(&self) -> Option<TlsCertificate>;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_connection_get_ciphersuite_name")]
     #[doc(alias = "get_ciphersuite_name")]
     fn ciphersuite_name(&self) -> Option<glib::GString>;
@@ -56,8 +56,8 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "get_interaction")]
     fn interaction(&self) -> Option<TlsInteraction>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_tls_connection_get_negotiated_protocol")]
     #[doc(alias = "get_negotiated_protocol")]
     fn negotiated_protocol(&self) -> Option<glib::GString>;
@@ -70,8 +70,8 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "get_peer_certificate_errors")]
     fn peer_certificate_errors(&self) -> TlsCertificateFlags;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_tls_connection_get_protocol_version")]
     #[doc(alias = "get_protocol_version")]
     fn protocol_version(&self) -> TlsProtocolVersion;
@@ -119,8 +119,8 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "g_tls_connection_set_require_close_notify")]
     fn set_require_close_notify(&self, require_close_notify: bool);
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "advertised-protocols")]
     fn advertised_protocols(&self) -> Vec<glib::GString>;
 
@@ -135,16 +135,16 @@ pub trait TlsConnectionExt: 'static {
         f: F,
     ) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "advertised-protocols")]
     fn connect_advertised_protocols_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     #[doc(alias = "certificate")]
     fn connect_certificate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "ciphersuite-name")]
     fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -154,8 +154,8 @@ pub trait TlsConnectionExt: 'static {
     #[doc(alias = "interaction")]
     fn connect_interaction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "negotiated-protocol")]
     fn connect_negotiated_protocol_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -168,8 +168,8 @@ pub trait TlsConnectionExt: 'static {
         f: F,
     ) -> SignalHandlerId;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "protocol-version")]
     fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -204,8 +204,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn ciphersuite_name(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
@@ -230,8 +230,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn negotiated_protocol(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
@@ -256,8 +256,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn protocol_version(&self) -> TlsProtocolVersion {
         unsafe {
             from_glib(ffi::g_tls_connection_get_protocol_version(
@@ -410,8 +410,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn advertised_protocols(&self) -> Vec<glib::GString> {
         glib::ObjectExt::property(self.as_ref(), "advertised-protocols")
     }
@@ -456,8 +456,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn connect_advertised_protocols_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_advertised_protocols_trampoline<
             P: IsA<TlsConnection>,
@@ -508,8 +508,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_ciphersuite_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_ciphersuite_name_trampoline<
             P: IsA<TlsConnection>,
@@ -585,8 +585,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn connect_negotiated_protocol_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_negotiated_protocol_trampoline<
             P: IsA<TlsConnection>,
@@ -665,8 +665,8 @@ impl<O: IsA<TlsConnection>> TlsConnectionExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_protocol_version_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_protocol_version_trampoline<
             P: IsA<TlsConnection>,

@@ -1,27 +1,25 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use std::boxed::Box as Box_;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use std::pin::Pin;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use std::ptr;
 
 use glib::prelude::*;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use glib::translate::*;
 
 use crate::AppInfo;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use crate::AppLaunchContext;
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 use crate::Cancellable;
 
 pub trait AppInfoExtManual: 'static {
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_app_info_launch_uris_async")]
     fn launch_uris_async<
         P: IsA<AppLaunchContext>,
@@ -35,8 +33,8 @@ pub trait AppInfoExtManual: 'static {
         callback: R,
     );
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
         uris: &[&str],
@@ -45,8 +43,8 @@ pub trait AppInfoExtManual: 'static {
 }
 
 impl<O: IsA<AppInfo>> AppInfoExtManual for O {
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn launch_uris_async<
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
@@ -107,8 +105,8 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(feature = "v2_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
         &self,
         uris: &[&str],

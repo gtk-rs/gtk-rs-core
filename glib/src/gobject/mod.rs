@@ -6,16 +6,16 @@
 #[allow(unused_imports)]
 mod auto;
 mod binding;
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 mod binding_group;
 mod flags;
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 mod signal_group;
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use binding_group::BindingGroupBuilder;
 
 pub use self::{auto::*, flags::*};

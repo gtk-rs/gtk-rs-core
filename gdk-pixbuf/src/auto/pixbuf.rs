@@ -660,8 +660,8 @@ impl Pixbuf {
         unsafe { FromGlibPtrContainer::from_glib_container(ffi::gdk_pixbuf_get_formats()) }
     }
 
-    #[cfg(any(feature = "v2_40", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_40")))]
+    #[cfg(any(feature = "v2_40"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_40")))]
     #[doc(alias = "gdk_pixbuf_init_modules")]
     pub fn init_modules(path: &str) -> Result<(), glib::Error> {
         unsafe {

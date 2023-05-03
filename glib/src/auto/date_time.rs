@@ -288,8 +288,8 @@ impl DateTime {
         }
     }
 
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     #[doc(alias = "g_date_time_format_iso8601")]
     pub fn format_iso8601(&self) -> Result<crate::GString, BoolError> {
         unsafe {
@@ -352,8 +352,8 @@ impl DateTime {
         unsafe { ffi::g_date_time_get_seconds(self.to_glib_none().0) }
     }
 
-    #[cfg(any(feature = "v2_58", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+    #[cfg(any(feature = "v2_58"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     #[doc(alias = "g_date_time_get_timezone")]
     #[doc(alias = "get_timezone")]
     pub fn timezone(&self) -> TimeZone {

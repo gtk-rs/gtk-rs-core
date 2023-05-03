@@ -1,17 +1,20 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#![cfg_attr(feature = "dox", feature(doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::missing_safety_doc)]
 #![doc = include_str!("../README.md")]
 
 pub use ffi;
 #[cfg(feature = "freetype")]
+#[cfg_attr(docsrs, doc(cfg(feature = "freetype")))]
 pub use freetype;
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 pub use glib;
 
 // Helper macros for our GValue related trait impls
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 macro_rules! gvalue_impl_inner {
     ($name:ty, $ffi_name:ty, $get_type:expr) => {
         #[allow(unused_imports)]
@@ -33,6 +36,7 @@ macro_rules! gvalue_impl_inner {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 macro_rules! gvalue_impl {
     ($name:ty, $ffi_name:ty, $get_type:expr) => {
         gvalue_impl_inner!($name, $ffi_name, $get_type);
@@ -118,6 +122,7 @@ macro_rules! gvalue_impl {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 macro_rules! gvalue_impl_inline {
     ($name:ty, $ffi_name:ty, $get_type:expr) => {
         gvalue_impl_inner!($name, $ffi_name, $get_type);
@@ -195,15 +200,20 @@ macro_rules! gvalue_impl_inline {
     };
 }
 
-#[cfg(any(feature = "pdf", feature = "dox"))]
+#[cfg(feature = "pdf")]
+#[cfg_attr(docsrs, doc(cfg(feature = "pdf")))]
 pub use pdf::PdfSurface;
-#[cfg(any(feature = "ps", feature = "dox"))]
+#[cfg(feature = "ps")]
+#[cfg_attr(docsrs, doc(cfg(feature = "ps")))]
 pub use ps::PsSurface;
-#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "pdf", feature = "svg", feature = "ps"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "pdf", feature = "svg", feature = "ps")))]
 pub use stream::StreamWithError;
-#[cfg(any(feature = "svg", feature = "dox"))]
+#[cfg(feature = "svg")]
+#[cfg_attr(docsrs, doc(cfg(feature = "svg")))]
 pub use svg::SvgSurface;
-#[cfg(any(feature = "xcb", feature = "dox"))]
+#[cfg(feature = "xcb")]
+#[cfg_attr(docsrs, doc(cfg(feature = "xcb")))]
 pub use xcb::{
     XCBConnection, XCBDrawable, XCBPixmap, XCBRenderPictFormInfo, XCBScreen, XCBSurface,
     XCBVisualType,
@@ -254,33 +264,35 @@ mod rectangle;
 mod rectangle_int;
 mod region;
 mod surface;
-#[cfg(any(feature = "png", feature = "dox"))]
+#[cfg(feature = "png")]
 mod surface_png;
-#[cfg(any(feature = "xcb", feature = "dox"))]
+#[cfg(feature = "xcb")]
 mod xcb;
 
-#[cfg(any(feature = "pdf", feature = "svg", feature = "ps", feature = "dox"))]
+#[cfg(any(feature = "pdf", feature = "svg", feature = "ps"))]
 #[macro_use]
 mod stream;
-#[cfg(any(feature = "pdf", feature = "dox"))]
+#[cfg(feature = "pdf")]
 mod pdf;
-#[cfg(any(feature = "ps", feature = "dox"))]
+#[cfg(feature = "ps")]
 mod ps;
-#[cfg(any(feature = "svg", feature = "dox"))]
+#[cfg(feature = "svg")]
 mod svg;
 
-#[cfg(any(target_os = "macos", feature = "dox"))]
+#[cfg(target_os = "macos")]
 mod quartz_surface;
-#[cfg(any(target_os = "macos", feature = "dox"))]
+#[cfg(target_os = "macos")]
 pub use quartz_surface::QuartzSurface;
 
-#[cfg(any(all(windows, feature = "win32-surface"), feature = "dox"))]
+#[cfg(all(windows, feature = "win32-surface"))]
 mod win32_surface;
 
-#[cfg(any(all(windows, feature = "win32-surface"), feature = "dox"))]
+#[cfg(all(windows, feature = "win32-surface"))]
+#[cfg_attr(docsrs, doc(cfg(all(windows, feature = "win32-surface"))))]
 pub use win32_surface::Win32Surface;
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 mod borrowed {
     use std::mem;
 
@@ -329,6 +341,7 @@ mod borrowed {
 }
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 pub use borrowed::Borrowed;
 #[cfg(feature = "use_glib")]
 pub(crate) use glib::translate::Borrowed;

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 use std::os::unix::io::AsRawFd;
 use std::{
     boxed::Box as Box_,
@@ -961,14 +961,16 @@ pub fn log_variant(log_domain: Option<&str>, log_level: LogLevel, fields: &crate
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_log_writer_supports_color")]
 #[inline]
 pub fn log_writer_supports_color<T: AsRawFd>(output_fd: T) -> bool {
     unsafe { from_glib(ffi::g_log_writer_supports_color(output_fd.as_raw_fd())) }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[doc(alias = "g_log_writer_is_journald")]
 #[inline]
 pub fn log_writer_is_journald<T: AsRawFd>(output_fd: T) -> bool {
@@ -1044,16 +1046,16 @@ pub fn log_writer_default(log_level: LogLevel, fields: &[LogField<'_>]) -> LogWr
 ///
 /// This function sets global state and is not thread-aware, as such it should be called before any
 /// threads may try to use GLib logging.
-#[cfg(any(feature = "v2_68", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[cfg(feature = "v2_68")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 #[doc(alias = "g_log_writer_default_set_use_stderr")]
 #[inline]
 pub unsafe fn log_writer_default_set_use_stderr(use_stderr: bool) {
     ffi::g_log_writer_default_set_use_stderr(use_stderr.into_glib());
 }
 
-#[cfg(any(feature = "v2_68", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_68")))]
+#[cfg(feature = "v2_68")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 #[doc(alias = "g_log_writer_default_would_drop")]
 #[inline]
 pub fn log_writer_default_would_drop(log_level: LogLevel, log_domain: Option<&str>) -> bool {

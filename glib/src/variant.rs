@@ -1958,7 +1958,7 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<FixedSizeVariantArray<A, T>> f
             let data = Box::new(a.0);
             let (data_ptr, len) = {
                 let data = (*data).as_ref();
-                (data.as_ptr(), data.len() * mem::size_of::<T>())
+                (data.as_ptr(), mem::size_of_val(data))
             };
 
             unsafe extern "C" fn free_data<A: AsRef<[T]>, T: FixedSizeVariantType>(

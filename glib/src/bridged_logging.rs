@@ -142,7 +142,7 @@ impl GlibLogger {
         message: &str,
     ) {
         let line = line.map(|l| l.to_string());
-        let line = line.as_ref().map(|s| s.as_str());
+        let line = line.as_deref();
 
         crate::log_structured!(
             domain.unwrap_or("default"),
@@ -269,8 +269,8 @@ pub fn rust_log_handler(domain: Option<&str>, level: glib_log::LogLevel, message
 /// glib::error!("This will be logged under 'my-domain'");
 /// ```
 #[macro_export]
-#[cfg(any(feature = "dox", feature = "log_macros"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
+#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 macro_rules! error {
     (target: $target:expr, $($arg:tt)+) => (
         $crate::rs_log::log!(target: $target, $crate::rs_log::Level::Error, $($arg)+);
@@ -295,8 +295,8 @@ macro_rules! error {
 /// glib::warn!("This will be logged under 'my-domain'");
 /// ```
 #[macro_export]
-#[cfg(any(feature = "dox", feature = "log_macros"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
+#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 macro_rules! warn {
     (target: $target:expr, $($arg:tt)+) => (
         $crate::rs_log::log!(target: $target, $crate::rs_log::Level::Warn, $($arg)+);
@@ -321,8 +321,8 @@ macro_rules! warn {
 /// glib::info!("This will be logged under 'my-domain'");
 /// ```
 #[macro_export]
-#[cfg(any(feature = "dox", feature = "log_macros"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
+#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 macro_rules! info {
     (target: $target:expr, $($arg:tt)+) => (
         $crate::rs_log::log!(target: $target, $crate::rs_log::Level::Info, $($arg)+);
@@ -347,8 +347,8 @@ macro_rules! info {
 /// glib::debug!("This will be logged under 'my-domain'");
 /// ```
 #[macro_export]
-#[cfg(any(feature = "dox", feature = "log_macros"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
+#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 macro_rules! debug {
     (target: $target:expr, $($arg:tt)+) => (
         $crate::rs_log::log!(target: $target, $crate::rs_log::Level::Debug, $($arg)+);
@@ -373,8 +373,8 @@ macro_rules! debug {
 /// glib::trace!("This will be logged under 'my-domain'");
 /// ```
 #[macro_export]
-#[cfg(any(feature = "dox", feature = "log_macros"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "log_macros")))]
+#[cfg(any(docsrs, feature = "log_macros"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 macro_rules! trace {
     (target: $target:expr, $($arg:tt)+) => (
         $crate::rs_log::log!(target: $target, $crate::rs_log::Level::Trace, $($arg)+);

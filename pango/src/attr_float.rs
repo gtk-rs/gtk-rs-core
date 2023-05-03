@@ -9,8 +9,7 @@ define_attribute_struct!(
     ffi::PangoAttrFloat,
     &[
         AttrType::Scale,
-        #[cfg(any(feature = "v1_50", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+        #[cfg(feature = "v1_50")]
         AttrType::LineHeight
     ]
 );
@@ -21,8 +20,8 @@ impl AttrFloat {
         unsafe { from_glib_full(ffi::pango_attr_scale_new(scale_factor)) }
     }
 
-    #[cfg(any(feature = "v1_50", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_50")))]
+    #[cfg(feature = "v1_50")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "pango_attr_line_height_new")]
     pub fn new_line_height(factor: f64) -> Self {
         unsafe { from_glib_full(ffi::pango_attr_line_height_new(factor)) }

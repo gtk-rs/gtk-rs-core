@@ -34,8 +34,8 @@ pub trait PowerProfileMonitorExt: 'static {
     #[doc(alias = "get_power_saver_enabled")]
     fn is_power_saver_enabled(&self) -> bool;
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "power-saver-enabled")]
     fn connect_power_saver_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
@@ -49,8 +49,8 @@ impl<O: IsA<PowerProfileMonitor>> PowerProfileMonitorExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     fn connect_power_saver_enabled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn notify_power_saver_enabled_trampoline<
             P: IsA<PowerProfileMonitor>,

@@ -82,8 +82,7 @@ pub unsafe trait IsAttribute:
 macro_rules! define_attribute_struct {
     ($rust_type:ident, $ffi_type:path, $attr_types:expr) => {
 
-        #[cfg(any(feature = "v1_44", feature = "dox"))]
-        #[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+        #[cfg(feature = "v1_44")]
         glib::wrapper! {
             #[derive(Debug)]
             pub struct $rust_type(Boxed<$ffi_type>);
@@ -98,7 +97,7 @@ macro_rules! define_attribute_struct {
         unsafe impl Send for $rust_type {}
         unsafe impl Sync for $rust_type {}
 
-        #[cfg(not(any(feature = "v1_44", feature = "dox")))]
+        #[cfg(not(feature = "v1_44"))]
         glib::wrapper! {
             #[derive(Debug)]
             pub struct $rust_type(Boxed<$ffi_type>);

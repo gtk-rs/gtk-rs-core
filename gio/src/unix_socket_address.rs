@@ -1,9 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(not(feature = "dox"))]
+#[cfg(not(docsrs))]
 use std::ffi::OsStr;
 #[cfg(unix)]
-#[cfg(not(feature = "dox"))]
+#[cfg(not(docsrs))]
 use std::os::unix::ffi::OsStrExt;
 use std::{path, ptr, slice};
 
@@ -84,9 +84,9 @@ impl<O: IsA<UnixSocketAddress>> UnixSocketAddressExtManual for O {
         };
         match self.address_type() {
             UnixSocketAddressType::Anonymous => Some(Anonymous),
-            #[cfg(not(feature = "dox"))]
+            #[cfg(not(docsrs))]
             UnixSocketAddressType::Path => Some(Path(path::Path::new(OsStr::from_bytes(path)))),
-            #[cfg(feature = "dox")]
+            #[cfg(docsrs)]
             UnixSocketAddressType::Path => unreachable!(),
             UnixSocketAddressType::Abstract => Some(Abstract(path)),
             UnixSocketAddressType::AbstractPadded => Some(AbstractPadded(path)),

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(any(feature = "v1_16", feature = "dox"))]
+#[cfg(feature = "v1_16")]
 use std::ffi::CString;
 #[cfg(not(feature = "use_glib"))]
 use std::ptr;
@@ -9,7 +9,7 @@ use std::{cmp::PartialEq, hash};
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-#[cfg(any(feature = "v1_16", feature = "dox"))]
+#[cfg(feature = "v1_16")]
 use crate::font::font_face::to_optional_string;
 use crate::{utils::status_to_result, Antialias, Error, HintMetrics, HintStyle, SubpixelOrder};
 
@@ -32,6 +32,7 @@ glib::wrapper! {
 }
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 #[derive(Debug)]
 #[doc(alias = "cairo_font_options_t")]
 pub struct FontOptions(ptr::NonNull<ffi::cairo_font_options_t>);
@@ -52,12 +53,14 @@ impl FontOptions {
     }
 
     #[cfg(feature = "use_glib")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
         from_glib_full(ptr)
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
         debug_assert!(!ptr.is_null());
@@ -65,12 +68,14 @@ impl FontOptions {
     }
 
     #[cfg(feature = "use_glib")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
     #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_font_options_t {
         mut_override(self.to_glib_none().0)
     }
 
     #[cfg(not(feature = "use_glib"))]
+    #[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
     #[inline]
     pub fn to_raw_none(&self) -> *mut ffi::cairo_font_options_t {
         self.0.as_ptr()
@@ -129,14 +134,16 @@ impl FontOptions {
         unsafe { HintMetrics::from(ffi::cairo_font_options_get_hint_metrics(self.to_raw_none())) }
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(feature = "v1_16")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
     #[doc(alias = "cairo_font_options_get_variations")]
     #[doc(alias = "get_variations")]
     pub fn variations(&self) -> Option<String> {
         unsafe { to_optional_string(ffi::cairo_font_options_get_variations(self.to_raw_none())) }
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(feature = "v1_16")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
     #[doc(alias = "cairo_font_options_set_variations")]
     pub fn set_variations(&self, variations: Option<&str>) {
         unsafe {
@@ -179,6 +186,7 @@ impl hash::Hash for FontOptions {
 }
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 impl Drop for FontOptions {
     #[inline]
     fn drop(&mut self) {
@@ -189,6 +197,7 @@ impl Drop for FontOptions {
 }
 
 #[cfg(not(feature = "use_glib"))]
+#[cfg_attr(docsrs, doc(cfg(not(feature = "use_glib"))))]
 impl Clone for FontOptions {
     #[inline]
     fn clone(&self) -> FontOptions {

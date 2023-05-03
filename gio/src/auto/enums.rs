@@ -255,8 +255,8 @@ pub enum CredentialsType {
     NetbsdUnpcbid,
     #[doc(alias = "G_CREDENTIALS_TYPE_APPLE_XUCRED")]
     AppleXucred,
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_CREDENTIALS_TYPE_WIN32_PID")]
     Win32Pid,
     #[doc(hidden)]
@@ -276,7 +276,7 @@ impl fmt::Display for CredentialsType {
                 Self::SolarisUcred => "SolarisUcred",
                 Self::NetbsdUnpcbid => "NetbsdUnpcbid",
                 Self::AppleXucred => "AppleXucred",
-                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::Win32Pid => "Win32Pid",
                 _ => "Unknown",
             }
@@ -298,7 +298,7 @@ impl IntoGlib for CredentialsType {
             Self::SolarisUcred => ffi::G_CREDENTIALS_TYPE_SOLARIS_UCRED,
             Self::NetbsdUnpcbid => ffi::G_CREDENTIALS_TYPE_NETBSD_UNPCBID,
             Self::AppleXucred => ffi::G_CREDENTIALS_TYPE_APPLE_XUCRED,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             Self::Win32Pid => ffi::G_CREDENTIALS_TYPE_WIN32_PID,
             Self::__Unknown(value) => value,
         }
@@ -317,7 +317,7 @@ impl FromGlib<ffi::GCredentialsType> for CredentialsType {
             ffi::G_CREDENTIALS_TYPE_SOLARIS_UCRED => Self::SolarisUcred,
             ffi::G_CREDENTIALS_TYPE_NETBSD_UNPCBID => Self::NetbsdUnpcbid,
             ffi::G_CREDENTIALS_TYPE_APPLE_XUCRED => Self::AppleXucred,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_CREDENTIALS_TYPE_WIN32_PID => Self::Win32Pid,
             value => Self::__Unknown(value),
         }
@@ -1840,8 +1840,8 @@ pub enum IOErrorEnum {
     NotConnected,
     #[doc(alias = "G_IO_ERROR_MESSAGE_TOO_LARGE")]
     MessageTooLarge,
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_IO_ERROR_NO_SUCH_DEVICE")]
     NoSuchDevice,
     #[doc(hidden)]
@@ -1901,7 +1901,7 @@ impl fmt::Display for IOErrorEnum {
                 Self::BrokenPipe => "BrokenPipe",
                 Self::NotConnected => "NotConnected",
                 Self::MessageTooLarge => "MessageTooLarge",
-                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::NoSuchDevice => "NoSuchDevice",
                 _ => "Unknown",
             }
@@ -1962,7 +1962,7 @@ impl IntoGlib for IOErrorEnum {
             Self::BrokenPipe => ffi::G_IO_ERROR_BROKEN_PIPE,
             Self::NotConnected => ffi::G_IO_ERROR_NOT_CONNECTED,
             Self::MessageTooLarge => ffi::G_IO_ERROR_MESSAGE_TOO_LARGE,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             Self::NoSuchDevice => ffi::G_IO_ERROR_NO_SUCH_DEVICE,
             Self::__Unknown(value) => value,
         }
@@ -2020,7 +2020,7 @@ impl FromGlib<ffi::GIOErrorEnum> for IOErrorEnum {
             ffi::G_IO_ERROR_BROKEN_PIPE => Self::BrokenPipe,
             ffi::G_IO_ERROR_NOT_CONNECTED => Self::NotConnected,
             ffi::G_IO_ERROR_MESSAGE_TOO_LARGE => Self::MessageTooLarge,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_IO_ERROR_NO_SUCH_DEVICE => Self::NoSuchDevice,
             value => Self::__Unknown(value),
         }
@@ -2101,8 +2101,8 @@ impl From<IOErrorEnum> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMemoryMonitorWarningLevel")]
@@ -2117,8 +2117,8 @@ pub enum MemoryMonitorWarningLevel {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl fmt::Display for MemoryMonitorWarningLevel {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -2134,8 +2134,8 @@ impl fmt::Display for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 #[doc(hidden)]
 impl IntoGlib for MemoryMonitorWarningLevel {
     type GlibType = ffi::GMemoryMonitorWarningLevel;
@@ -2151,8 +2151,8 @@ impl IntoGlib for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GMemoryMonitorWarningLevel> for MemoryMonitorWarningLevel {
     #[inline]
@@ -2166,8 +2166,8 @@ impl FromGlib<ffi::GMemoryMonitorWarningLevel> for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl StaticType for MemoryMonitorWarningLevel {
     #[inline]
     fn static_type() -> Type {
@@ -2175,8 +2175,8 @@ impl StaticType for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl glib::HasParamSpec for MemoryMonitorWarningLevel {
     type ParamSpec = glib::ParamSpecEnum;
     type SetValue = Self;
@@ -2187,14 +2187,14 @@ impl glib::HasParamSpec for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl glib::value::ValueType for MemoryMonitorWarningLevel {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 unsafe impl<'a> FromValue<'a> for MemoryMonitorWarningLevel {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -2204,8 +2204,8 @@ unsafe impl<'a> FromValue<'a> for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl ToValue for MemoryMonitorWarningLevel {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -2222,8 +2222,8 @@ impl ToValue for MemoryMonitorWarningLevel {
     }
 }
 
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 impl From<MemoryMonitorWarningLevel> for glib::Value {
     #[inline]
     fn from(v: MemoryMonitorWarningLevel) -> Self {
@@ -2681,8 +2681,8 @@ impl From<PasswordSave> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GPollableReturn")]
@@ -2697,8 +2697,8 @@ pub enum PollableReturn {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl fmt::Display for PollableReturn {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -2714,8 +2714,8 @@ impl fmt::Display for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(hidden)]
 impl IntoGlib for PollableReturn {
     type GlibType = ffi::GPollableReturn;
@@ -2731,8 +2731,8 @@ impl IntoGlib for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GPollableReturn> for PollableReturn {
     #[inline]
@@ -2746,8 +2746,8 @@ impl FromGlib<ffi::GPollableReturn> for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl StaticType for PollableReturn {
     #[inline]
     fn static_type() -> Type {
@@ -2755,8 +2755,8 @@ impl StaticType for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl glib::HasParamSpec for PollableReturn {
     type ParamSpec = glib::ParamSpecEnum;
     type SetValue = Self;
@@ -2767,14 +2767,14 @@ impl glib::HasParamSpec for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl glib::value::ValueType for PollableReturn {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 unsafe impl<'a> FromValue<'a> for PollableReturn {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -2784,8 +2784,8 @@ unsafe impl<'a> FromValue<'a> for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl ToValue for PollableReturn {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -2802,8 +2802,8 @@ impl ToValue for PollableReturn {
     }
 }
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 impl From<PollableReturn> for glib::Value {
     #[inline]
     fn from(v: PollableReturn) -> Self {
@@ -4001,8 +4001,8 @@ impl From<TlsCertificateRequestFlags> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsChannelBindingType")]
@@ -4011,16 +4011,16 @@ pub enum TlsChannelBindingType {
     Unique,
     #[doc(alias = "G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT")]
     ServerEndPoint,
-    #[cfg(any(feature = "v2_74", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+    #[cfg(any(feature = "v2_74"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
     #[doc(alias = "G_TLS_CHANNEL_BINDING_TLS_EXPORTER")]
     Exporter,
     #[doc(hidden)]
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl fmt::Display for TlsChannelBindingType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -4029,7 +4029,7 @@ impl fmt::Display for TlsChannelBindingType {
             match *self {
                 Self::Unique => "Unique",
                 Self::ServerEndPoint => "ServerEndPoint",
-                #[cfg(any(feature = "v2_74", feature = "dox"))]
+                #[cfg(any(feature = "v2_74"))]
                 Self::Exporter => "Exporter",
                 _ => "Unknown",
             }
@@ -4037,8 +4037,8 @@ impl fmt::Display for TlsChannelBindingType {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl IntoGlib for TlsChannelBindingType {
     type GlibType = ffi::GTlsChannelBindingType;
@@ -4048,15 +4048,15 @@ impl IntoGlib for TlsChannelBindingType {
         match self {
             Self::Unique => ffi::G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
             Self::ServerEndPoint => ffi::G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT,
-            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            #[cfg(any(feature = "v2_74"))]
             Self::Exporter => ffi::G_TLS_CHANNEL_BINDING_TLS_EXPORTER,
             Self::__Unknown(value) => value,
         }
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
     #[inline]
@@ -4064,15 +4064,15 @@ impl FromGlib<ffi::GTlsChannelBindingType> for TlsChannelBindingType {
         match value {
             ffi::G_TLS_CHANNEL_BINDING_TLS_UNIQUE => Self::Unique,
             ffi::G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT => Self::ServerEndPoint,
-            #[cfg(any(feature = "v2_74", feature = "dox"))]
+            #[cfg(any(feature = "v2_74"))]
             ffi::G_TLS_CHANNEL_BINDING_TLS_EXPORTER => Self::Exporter,
             value => Self::__Unknown(value),
         }
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl StaticType for TlsChannelBindingType {
     #[inline]
     fn static_type() -> Type {
@@ -4080,8 +4080,8 @@ impl StaticType for TlsChannelBindingType {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl glib::HasParamSpec for TlsChannelBindingType {
     type ParamSpec = glib::ParamSpecEnum;
     type SetValue = Self;
@@ -4092,14 +4092,14 @@ impl glib::HasParamSpec for TlsChannelBindingType {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl glib::value::ValueType for TlsChannelBindingType {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 unsafe impl<'a> FromValue<'a> for TlsChannelBindingType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -4109,8 +4109,8 @@ unsafe impl<'a> FromValue<'a> for TlsChannelBindingType {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl ToValue for TlsChannelBindingType {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -4127,8 +4127,8 @@ impl ToValue for TlsChannelBindingType {
     }
 }
 
-#[cfg(any(feature = "v2_66", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_66")))]
+#[cfg(any(feature = "v2_66"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 impl From<TlsChannelBindingType> for glib::Value {
     #[inline]
     fn from(v: TlsChannelBindingType) -> Self {
@@ -4261,8 +4261,8 @@ pub enum TlsError {
     Eof,
     #[doc(alias = "G_TLS_ERROR_INAPPROPRIATE_FALLBACK")]
     InappropriateFallback,
-    #[cfg(any(feature = "v2_72", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+    #[cfg(any(feature = "v2_72"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     #[doc(alias = "G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD")]
     BadCertificatePassword,
     #[doc(hidden)]
@@ -4283,7 +4283,7 @@ impl fmt::Display for TlsError {
                 Self::CertificateRequired => "CertificateRequired",
                 Self::Eof => "Eof",
                 Self::InappropriateFallback => "InappropriateFallback",
-                #[cfg(any(feature = "v2_72", feature = "dox"))]
+                #[cfg(any(feature = "v2_72"))]
                 Self::BadCertificatePassword => "BadCertificatePassword",
                 _ => "Unknown",
             }
@@ -4306,7 +4306,7 @@ impl IntoGlib for TlsError {
             Self::CertificateRequired => ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED,
             Self::Eof => ffi::G_TLS_ERROR_EOF,
             Self::InappropriateFallback => ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             Self::BadCertificatePassword => ffi::G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD,
             Self::__Unknown(value) => value,
         }
@@ -4326,7 +4326,7 @@ impl FromGlib<ffi::GTlsError> for TlsError {
             ffi::G_TLS_ERROR_CERTIFICATE_REQUIRED => Self::CertificateRequired,
             ffi::G_TLS_ERROR_EOF => Self::Eof,
             ffi::G_TLS_ERROR_INAPPROPRIATE_FALLBACK => Self::InappropriateFallback,
-            #[cfg(any(feature = "v2_72", feature = "dox"))]
+            #[cfg(any(feature = "v2_72"))]
             ffi::G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD => Self::BadCertificatePassword,
             value => Self::__Unknown(value),
         }
@@ -4516,8 +4516,8 @@ impl From<TlsInteractionResult> for glib::Value {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GTlsProtocolVersion")]
@@ -4542,8 +4542,8 @@ pub enum TlsProtocolVersion {
     __Unknown(i32),
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl fmt::Display for TlsProtocolVersion {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -4564,8 +4564,8 @@ impl fmt::Display for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(hidden)]
 impl IntoGlib for TlsProtocolVersion {
     type GlibType = ffi::GTlsProtocolVersion;
@@ -4586,8 +4586,8 @@ impl IntoGlib for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GTlsProtocolVersion> for TlsProtocolVersion {
     #[inline]
@@ -4606,8 +4606,8 @@ impl FromGlib<ffi::GTlsProtocolVersion> for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl StaticType for TlsProtocolVersion {
     #[inline]
     fn static_type() -> Type {
@@ -4615,8 +4615,8 @@ impl StaticType for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl glib::HasParamSpec for TlsProtocolVersion {
     type ParamSpec = glib::ParamSpecEnum;
     type SetValue = Self;
@@ -4627,14 +4627,14 @@ impl glib::HasParamSpec for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl glib::value::ValueType for TlsProtocolVersion {
     type Type = Self;
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 unsafe impl<'a> FromValue<'a> for TlsProtocolVersion {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -4644,8 +4644,8 @@ unsafe impl<'a> FromValue<'a> for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl ToValue for TlsProtocolVersion {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -4662,8 +4662,8 @@ impl ToValue for TlsProtocolVersion {
     }
 }
 
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 impl From<TlsProtocolVersion> for glib::Value {
     #[inline]
     fn from(v: TlsProtocolVersion) -> Self {
@@ -4791,8 +4791,8 @@ impl From<TlsRehandshakeMode> for glib::Value {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(unix)))]
+#[cfg(any(unix))]
+#[cfg_attr(docsrs, doc(cfg(unix)))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GUnixSocketAddressType")]
@@ -4811,7 +4811,7 @@ pub enum UnixSocketAddressType {
     __Unknown(i32),
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl fmt::Display for UnixSocketAddressType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -4829,7 +4829,7 @@ impl fmt::Display for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 #[doc(hidden)]
 impl IntoGlib for UnixSocketAddressType {
     type GlibType = ffi::GUnixSocketAddressType;
@@ -4847,7 +4847,7 @@ impl IntoGlib for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 #[doc(hidden)]
 impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
     #[inline]
@@ -4863,7 +4863,7 @@ impl FromGlib<ffi::GUnixSocketAddressType> for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl StaticType for UnixSocketAddressType {
     #[inline]
     fn static_type() -> Type {
@@ -4871,7 +4871,7 @@ impl StaticType for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl glib::HasParamSpec for UnixSocketAddressType {
     type ParamSpec = glib::ParamSpecEnum;
     type SetValue = Self;
@@ -4882,12 +4882,12 @@ impl glib::HasParamSpec for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl glib::value::ValueType for UnixSocketAddressType {
     type Type = Self;
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 unsafe impl<'a> FromValue<'a> for UnixSocketAddressType {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
@@ -4897,7 +4897,7 @@ unsafe impl<'a> FromValue<'a> for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl ToValue for UnixSocketAddressType {
     #[inline]
     fn to_value(&self) -> glib::Value {
@@ -4914,7 +4914,7 @@ impl ToValue for UnixSocketAddressType {
     }
 }
 
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(any(unix))]
 impl From<UnixSocketAddressType> for glib::Value {
     #[inline]
     fn from(v: UnixSocketAddressType) -> Self {

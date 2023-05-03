@@ -6,25 +6,26 @@
 #[doc(hidden)]
 pub use glib::prelude::*;
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
+#[cfg(feature = "v2_60")]
 pub use crate::app_info::AppInfoExtManual;
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
-#[cfg(any(feature = "v2_58", feature = "dox"))]
-#[cfg(any(all(not(windows), not(target_os = "macos")), feature = "dox"))]
+#[cfg(feature = "v2_58")]
+#[cfg(all(not(windows), not(target_os = "macos")))]
+#[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
 pub use crate::desktop_app_info::DesktopAppInfoExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::file_descriptor_based::FileDescriptorBasedExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::unix_fd_list::UnixFDListExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::unix_fd_message::UnixFDMessageExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::unix_input_stream::UnixInputStreamExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::unix_output_stream::UnixOutputStreamExtManual;
-#[cfg(any(unix, feature = "dox"))]
+#[cfg(unix)]
 pub use crate::unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddressPath};
 pub use crate::{
     action_map::ActionMapExtManual, application::*, auto::traits::*, cancellable::*, converter::*,

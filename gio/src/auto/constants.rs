@@ -4,13 +4,13 @@
 
 use glib::GStr;
 
-#[cfg(any(feature = "v2_72", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_72")))]
+#[cfg(any(feature = "v2_72"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 #[doc(alias = "G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME")]
 pub static DEBUG_CONTROLLER_EXTENSION_POINT_NAME: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME) };
-#[cfg(any(feature = "v2_58", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_58")))]
+#[cfg(any(feature = "v2_58"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
 #[doc(alias = "G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE")]
 pub static DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE) };
@@ -35,16 +35,16 @@ pub static FILE_ATTRIBUTE_ACCESS_CAN_WRITE: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE")]
 pub static FILE_ATTRIBUTE_DOS_IS_ARCHIVE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE) };
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT")]
 pub static FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT) };
 #[doc(alias = "G_FILE_ATTRIBUTE_DOS_IS_SYSTEM")]
 pub static FILE_ATTRIBUTE_DOS_IS_SYSTEM: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_DOS_IS_SYSTEM) };
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG")]
 pub static FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG) };
@@ -200,23 +200,23 @@ pub static FILE_ATTRIBUTE_STANDARD_TYPE: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED")]
 pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL")]
 pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: &GStr = unsafe {
     GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE)
@@ -224,54 +224,54 @@ pub static FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE: &GStr = unsafe {
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_LARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_NORMAL) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XLARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID_XXLARGE) };
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_LARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_NORMAL) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE) };
-#[cfg(any(feature = "v2_76", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_76")))]
+#[cfg(any(feature = "v2_76"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE")]
 pub static FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE) };
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_ACCESS")]
 pub static FILE_ATTRIBUTE_TIME_ACCESS: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_ACCESS) };
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC")]
 pub static FILE_ATTRIBUTE_TIME_ACCESS_NSEC: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC) };
@@ -281,8 +281,8 @@ pub static FILE_ATTRIBUTE_TIME_ACCESS_USEC: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_CHANGED")]
 pub static FILE_ATTRIBUTE_TIME_CHANGED: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_CHANGED) };
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC")]
 pub static FILE_ATTRIBUTE_TIME_CHANGED_NSEC: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC) };
@@ -292,8 +292,8 @@ pub static FILE_ATTRIBUTE_TIME_CHANGED_USEC: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_CREATED")]
 pub static FILE_ATTRIBUTE_TIME_CREATED: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_CREATED) };
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_CREATED_NSEC")]
 pub static FILE_ATTRIBUTE_TIME_CREATED_NSEC: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_CREATED_NSEC) };
@@ -303,8 +303,8 @@ pub static FILE_ATTRIBUTE_TIME_CREATED_USEC: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_MODIFIED")]
 pub static FILE_ATTRIBUTE_TIME_MODIFIED: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_MODIFIED) };
-#[cfg(any(feature = "v2_74", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_74")))]
+#[cfg(any(feature = "v2_74"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 #[doc(alias = "G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC")]
 pub static FILE_ATTRIBUTE_TIME_MODIFIED_NSEC: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC) };
@@ -350,8 +350,8 @@ pub static FILE_ATTRIBUTE_UNIX_RDEV: &GStr =
 #[doc(alias = "G_FILE_ATTRIBUTE_UNIX_UID")]
 pub static FILE_ATTRIBUTE_UNIX_UID: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_FILE_ATTRIBUTE_UNIX_UID) };
-#[cfg(any(feature = "v2_64", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_64")))]
+#[cfg(any(feature = "v2_64"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 #[doc(alias = "G_MEMORY_MONITOR_EXTENSION_POINT_NAME")]
 pub static MEMORY_MONITOR_EXTENSION_POINT_NAME: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_MEMORY_MONITOR_EXTENSION_POINT_NAME) };
@@ -383,8 +383,8 @@ pub static NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME: &GStr = unsafe {
 #[doc(alias = "G_NETWORK_MONITOR_EXTENSION_POINT_NAME")]
 pub static NETWORK_MONITOR_EXTENSION_POINT_NAME: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_NETWORK_MONITOR_EXTENSION_POINT_NAME) };
-#[cfg(any(feature = "v2_70", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+#[cfg(any(feature = "v2_70"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 #[doc(alias = "G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME")]
 pub static POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME: &GStr = unsafe {
     GStr::from_utf8_with_nul_unchecked(ffi::G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME)

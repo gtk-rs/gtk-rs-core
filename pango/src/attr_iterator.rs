@@ -34,8 +34,8 @@ impl<'list> Drop for AttrIterator<'list> {
     }
 }
 
-#[cfg(any(feature = "v1_44", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v1_44")))]
+#[cfg(feature = "v1_44")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 impl<'list> glib::StaticType for AttrIterator<'list> {
     #[inline]
     fn static_type() -> glib::Type {

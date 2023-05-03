@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-#[cfg(any(feature = "v2_60", feature = "dox"))]
-#[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+#[cfg(any(feature = "v2_60"))]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use crate::ResolverNameLookupFlags;
 use crate::{AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
 use glib::{
@@ -84,8 +84,8 @@ pub trait ResolverExt: 'static {
         hostname: &str,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<Vec<InetAddress>, glib::Error>> + 'static>>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags")]
     fn lookup_by_name_with_flags(
         &self,
@@ -94,8 +94,8 @@ pub trait ResolverExt: 'static {
         cancellable: Option<&impl IsA<Cancellable>>,
     ) -> Result<Vec<InetAddress>, glib::Error>;
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_resolver_lookup_by_name_with_flags_async")]
     fn lookup_by_name_with_flags_async<P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static>(
         &self,
@@ -105,8 +105,8 @@ pub trait ResolverExt: 'static {
         callback: P,
     );
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_future(
         &self,
         hostname: &str,
@@ -346,8 +346,8 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         ))
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags(
         &self,
         hostname: &str,
@@ -371,8 +371,8 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_async<
         P: FnOnce(Result<Vec<InetAddress>, glib::Error>) + 'static,
     >(
@@ -430,8 +430,8 @@ impl<O: IsA<Resolver>> ResolverExt for O {
         }
     }
 
-    #[cfg(any(feature = "v2_60", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_60")))]
+    #[cfg(any(feature = "v2_60"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn lookup_by_name_with_flags_future(
         &self,
         hostname: &str,

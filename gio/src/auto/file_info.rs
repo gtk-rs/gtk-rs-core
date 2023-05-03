@@ -42,8 +42,8 @@ impl FileInfo {
         unsafe { from_glib_full(ffi::g_file_info_dup(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_file_info_get_access_date_time")]
     #[doc(alias = "get_access_date_time")]
     pub fn access_date_time(&self) -> Option<glib::DateTime> {
@@ -171,8 +171,8 @@ impl FileInfo {
         unsafe { from_glib_none(ffi::g_file_info_get_content_type(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_file_info_get_creation_date_time")]
     #[doc(alias = "get_creation_date_time")]
     pub fn creation_date_time(&self) -> Option<glib::DateTime> {
@@ -237,8 +237,8 @@ impl FileInfo {
         unsafe { from_glib(ffi::g_file_info_get_is_symlink(self.to_glib_none().0)) }
     }
 
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     #[doc(alias = "g_file_info_get_modification_date_time")]
     #[doc(alias = "get_modification_date_time")]
     pub fn modification_date_time(&self) -> Option<glib::DateTime> {
@@ -316,8 +316,8 @@ impl FileInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_file_info_set_access_date_time")]
     pub fn set_access_date_time(&self, atime: &glib::DateTime) {
         unsafe {
@@ -443,8 +443,8 @@ impl FileInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_70", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_70")))]
+    #[cfg(any(feature = "v2_70"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     #[doc(alias = "g_file_info_set_creation_date_time")]
     pub fn set_creation_date_time(&self, creation_time: &glib::DateTime) {
         unsafe {
@@ -497,8 +497,8 @@ impl FileInfo {
         }
     }
 
-    #[cfg(any(feature = "v2_62", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v2_62")))]
+    #[cfg(any(feature = "v2_62"))]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     #[doc(alias = "g_file_info_set_modification_date_time")]
     pub fn set_modification_date_time(&self, mtime: &glib::DateTime) {
         unsafe {

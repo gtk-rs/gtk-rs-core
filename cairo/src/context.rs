@@ -64,6 +64,7 @@ impl fmt::Display for RectangleList {
 pub struct Context(ptr::NonNull<cairo_t>);
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn into_glib_ptr(self) -> *mut ffi::cairo_t {
@@ -72,6 +73,7 @@ impl IntoGlibPtr<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
     type Storage = PhantomData<&'a Context>;
 
@@ -87,6 +89,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_t) -> Context {
@@ -95,6 +98,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_t) -> crate::Borrowed<Context> {
@@ -103,6 +107,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
 }
 
 #[cfg(feature = "use_glib")]
+#[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
 impl FromGlibPtrFull<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_t) -> Context {
@@ -358,13 +363,15 @@ impl Context {
         unsafe { ffi::cairo_get_line_width(self.0.as_ptr()) }
     }
 
-    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg(feature = "v1_18")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[doc(alias = "cairo_set_hairline")]
     pub fn set_hairline(&self, set_hairline: bool) {
         unsafe { ffi::cairo_set_hairline(self.0.as_ptr(), set_hairline.into()) }
     }
 
-    #[cfg(any(feature = "v1_18", feature = "dox"))]
+    #[cfg(feature = "v1_18")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_18")))]
     #[doc(alias = "get_hairline")]
     #[doc(alias = "cairo_get_hairline")]
     pub fn hairline(&self) -> bool {
@@ -926,7 +933,8 @@ impl Context {
         self.status().map(|_| (x1, y1, x2, y2))
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(feature = "v1_16")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
     #[doc(alias = "cairo_tag_begin")]
     pub fn tag_begin(&self, tag_name: &str, attributes: &str) {
         unsafe {
@@ -936,7 +944,8 @@ impl Context {
         }
     }
 
-    #[cfg(any(feature = "v1_16", feature = "dox"))]
+    #[cfg(feature = "v1_16")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_16")))]
     #[doc(alias = "cairo_tag_end")]
     pub fn tag_end(&self, tag_name: &str) {
         unsafe {

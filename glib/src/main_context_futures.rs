@@ -620,11 +620,10 @@ impl MainContext {
     pub fn block_on<F: Future>(&self, f: F) -> F::Output {
         let mut res = None;
         let l = MainLoop::new(Some(self), false);
-        let l_clone = l.clone();
 
         let f = async {
             res = Some(panic::AssertUnwindSafe(f).catch_unwind().await);
-            l_clone.quit();
+            l.quit();
         };
 
         let f = unsafe {

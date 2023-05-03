@@ -4,7 +4,7 @@
 use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
 
 use glib::{prelude::*, translate::*};
-#[cfg(all(not(unix), feature = "dox"))]
+#[cfg(all(not(unix), docsrs))]
 use socket::{AsRawFd, IntoRawFd, RawFd};
 
 use crate::{OutputStream, UnixOutputStream};
