@@ -160,6 +160,10 @@ mod foo {
             weak_ref_prop: glib::WeakRef<glib::Object>,
             #[property(get, set)]
             send_weak_ref_prop: glib::SendWeakRef<glib::Object>,
+            #[property(get, default_value = 0, construct_only)]
+            construct_only_cell: OnceCell<u32>,
+            #[property(get, set = Self::set_construct_only_custom, construct_only)]
+            construct_only_custom_setter: OnceCell<Option<String>>,
         }
 
         impl ObjectImpl for Foo {
@@ -193,6 +197,11 @@ mod foo {
             }
             fn overridden(&self) -> u32 {
                 43
+            }
+            fn set_construct_only_custom(&self, value: Option<String>) {
+                self.construct_only_custom_setter
+                    .set(value.map(|v| format!("custom set: {}", v)))
+                    .expect("Setter to be only called once");
             }
         }
     }
@@ -382,7 +391,22 @@ fn props() {
     // object subclass
     let myobj = glib::BoxedAnyObject::new("");
     myfoo.set_object(Some(myobj.upcast_ref()));
-    assert_eq!(myfoo.object(), Some(myobj.upcast()))
+    assert_eq!(myfoo.object(), Some(myobj.upcast()));
+
+    // construct_only
+    let myfoo: foo::Foo = glib::object::Object::builder()
+        .property("construct-only-cell", 1u32)
+        .build();
+    assert_eq!(myfoo.construct_only_cell(), 1u32);
+
+    // construct_only with custom setter
+    let myfoo: foo::Foo = glib::object::Object::builder()
+        .property("construct-only-custom-setter", "foo")
+        .build();
+    assert_eq!(
+        myfoo.construct_only_custom_setter(),
+        Some("custom set: foo".to_owned())
+    );
 }
 
 #[cfg(test)]
