@@ -207,7 +207,10 @@ pub use pdf::PdfSurface;
 #[cfg_attr(docsrs, doc(cfg(feature = "ps")))]
 pub use ps::PsSurface;
 #[cfg(any(feature = "pdf", feature = "svg", feature = "ps"))]
-#[cfg_attr(docsrs, doc(cfg(feature = "pdf", feature = "svg", feature = "ps")))]
+#[cfg_attr(
+    docsrs,
+    doc(cfg(any(feature = "pdf", feature = "svg", feature = "ps")))
+)]
 pub use stream::StreamWithError;
 #[cfg(feature = "svg")]
 #[cfg_attr(docsrs, doc(cfg(feature = "svg")))]
