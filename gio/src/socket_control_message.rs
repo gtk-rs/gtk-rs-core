@@ -4,12 +4,7 @@ use glib::{prelude::*, translate::*};
 
 use crate::{prelude::*, SocketControlMessage};
 
-pub trait SocketControlMessageExtManual: Sized {
-    #[doc(alias = "g_socket_control_message_serialize")]
-    fn serialize(&self, data: &mut [u8]);
-}
-
-impl<O: IsA<SocketControlMessage>> SocketControlMessageExtManual for O {
+pub trait SocketControlMessageExtManual: IsA<SocketControlMessage> + Sized {
     #[doc(alias = "g_socket_control_message_serialize")]
     fn serialize(&self, data: &mut [u8]) {
         assert!(data.len() >= self.size());
@@ -21,3 +16,5 @@ impl<O: IsA<SocketControlMessage>> SocketControlMessageExtManual for O {
         }
     }
 }
+
+impl<O: IsA<SocketControlMessage>> SocketControlMessageExtManual for O {}

@@ -165,160 +165,8 @@ impl File {
     }
 }
 
-pub trait FileExtManual: Sized {
+pub trait FileExtManual: IsA<File> + Sized {
     #[doc(alias = "g_file_replace_contents_async")]
-    fn replace_contents_async<
-        B: AsRef<[u8]> + Send + 'static,
-        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
-        C: IsA<Cancellable>,
-    >(
-        &self,
-        contents: B,
-        etag: Option<&str>,
-        make_backup: bool,
-        flags: FileCreateFlags,
-        cancellable: Option<&C>,
-        callback: R,
-    );
-
-    fn replace_contents_future<B: AsRef<[u8]> + Send + 'static>(
-        &self,
-        contents: B,
-        etag: Option<&str>,
-        make_backup: bool,
-        flags: FileCreateFlags,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<Output = Result<(B, glib::GString), (B, glib::Error)>>
-                + 'static,
-        >,
-    >;
-
-    #[doc(alias = "g_file_enumerate_children_async")]
-    fn enumerate_children_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
-    >(
-        &self,
-        attributes: &str,
-        flags: FileQueryInfoFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
-    );
-
-    fn enumerate_children_future(
-        &self,
-        attributes: &str,
-        flags: FileQueryInfoFlags,
-        io_priority: glib::Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>;
-
-    #[doc(alias = "g_file_copy_async")]
-    fn copy_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        destination: &impl IsA<File>,
-        flags: crate::FileCopyFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
-        callback: Q,
-    );
-
-    fn copy_future(
-        &self,
-        destination: &(impl IsA<File> + Clone + 'static),
-        flags: crate::FileCopyFlags,
-        io_priority: glib::Priority,
-    ) -> (
-        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
-        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
-    );
-
-    #[doc(alias = "g_file_load_partial_contents_async")]
-    fn load_partial_contents_async<
-        P: FnMut(&[u8]) -> bool + 'static,
-        Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
-    >(
-        &self,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        read_more_callback: P,
-        callback: Q,
-    );
-
-    #[doc(alias = "g_file_measure_disk_usage")]
-    fn measure_disk_usage(
-        &self,
-        flags: crate::FileMeasureFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
-    ) -> Result<(u64, u64, u64), glib::Error>;
-
-    #[doc(alias = "g_file_measure_disk_usage_async")]
-    fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static>(
-        &self,
-        flags: crate::FileMeasureFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
-        callback: P,
-    );
-
-    fn measure_disk_usage_future(
-        &self,
-        flags: crate::FileMeasureFlags,
-        io_priority: glib::Priority,
-    ) -> (
-        Pin<Box<dyn std::future::Future<Output = Result<(u64, u64, u64), glib::Error>> + 'static>>,
-        Pin<Box<dyn futures_core::stream::Stream<Item = (bool, u64, u64, u64)> + 'static>>,
-    );
-
-    #[cfg(feature = "v2_72")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-    #[doc(alias = "g_file_move_async")]
-    fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        destination: &impl IsA<File>,
-        flags: crate::FileCopyFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(i64, i64)>>,
-        callback: Q,
-    );
-
-    #[cfg(feature = "v2_74")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
-    #[doc(alias = "g_file_make_symbolic_link_async")]
-    fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
-        &self,
-        symlink_value: impl AsRef<std::path::Path>,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    #[cfg(feature = "v2_74")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
-    fn make_symbolic_link_future(
-        &self,
-        symlink_value: impl AsRef<std::path::Path>,
-        io_priority: glib::Priority,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-
-    #[cfg(feature = "v2_72")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-    fn move_future(
-        &self,
-        destination: &(impl IsA<File> + Clone + 'static),
-        flags: crate::FileCopyFlags,
-        io_priority: glib::Priority,
-    ) -> (
-        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
-        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
-    );
-}
-
-impl<O: IsA<File>> FileExtManual for O {
     fn replace_contents_async<
         B: AsRef<[u8]> + Send + 'static,
         R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
@@ -427,6 +275,7 @@ impl<O: IsA<File>> FileExtManual for O {
         ))
     }
 
+    #[doc(alias = "g_file_enumerate_children_async")]
     fn enumerate_children_async<
         P: IsA<Cancellable>,
         Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
@@ -508,6 +357,7 @@ impl<O: IsA<File>> FileExtManual for O {
         ))
     }
 
+    #[doc(alias = "g_file_copy_async")]
     fn copy_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         destination: &impl IsA<File>,
@@ -629,6 +479,7 @@ impl<O: IsA<File>> FileExtManual for O {
         (fut, Box::pin(receiver))
     }
 
+    #[doc(alias = "g_file_load_partial_contents_async")]
     fn load_partial_contents_async<
         P: FnMut(&[u8]) -> bool + 'static,
         Q: FnOnce(Result<(Vec<u8>, Option<glib::GString>), glib::Error>) + 'static,
@@ -726,6 +577,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
+    #[doc(alias = "g_file_measure_disk_usage")]
     fn measure_disk_usage(
         &self,
         flags: crate::FileMeasureFlags,
@@ -785,6 +637,7 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
+    #[doc(alias = "g_file_measure_disk_usage_async")]
     fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static>(
         &self,
         flags: crate::FileMeasureFlags,
@@ -939,6 +792,7 @@ impl<O: IsA<File>> FileExtManual for O {
 
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+    #[doc(alias = "g_file_move_async")]
     fn move_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         destination: &impl IsA<File>,
@@ -1026,44 +880,9 @@ impl<O: IsA<File>> FileExtManual for O {
         }
     }
 
-    #[cfg(feature = "v2_72")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-    fn move_future(
-        &self,
-        destination: &(impl IsA<File> + Clone + 'static),
-        flags: crate::FileCopyFlags,
-        io_priority: glib::Priority,
-    ) -> (
-        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
-        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
-    ) {
-        let destination = destination.clone();
-
-        let (sender, receiver) = futures_channel::mpsc::unbounded();
-
-        let fut = Box::pin(crate::GioFuture::new(
-            self,
-            move |obj, cancellable, send| {
-                obj.move_async(
-                    &destination,
-                    flags,
-                    io_priority,
-                    Some(cancellable),
-                    Some(Box::new(move |current_num_bytes, total_num_bytes| {
-                        let _ = sender.unbounded_send((current_num_bytes, total_num_bytes));
-                    })),
-                    move |res| {
-                        send.resolve(res);
-                    },
-                );
-            },
-        ));
-
-        (fut, Box::pin(receiver))
-    }
-
     #[cfg(feature = "v2_74")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
+    #[doc(alias = "g_file_make_symbolic_link_async")]
     fn make_symbolic_link_async<P: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
         symlink_value: impl AsRef<std::path::Path>,
@@ -1138,4 +957,42 @@ impl<O: IsA<File>> FileExtManual for O {
             },
         ))
     }
+
+    #[cfg(feature = "v2_72")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+    fn move_future(
+        &self,
+        destination: &(impl IsA<File> + Clone + 'static),
+        flags: crate::FileCopyFlags,
+        io_priority: glib::Priority,
+    ) -> (
+        Pin<Box<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>,
+        Pin<Box<dyn futures_core::stream::Stream<Item = (i64, i64)> + 'static>>,
+    ) {
+        let destination = destination.clone();
+
+        let (sender, receiver) = futures_channel::mpsc::unbounded();
+
+        let fut = Box::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.move_async(
+                    &destination,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    Some(Box::new(move |current_num_bytes, total_num_bytes| {
+                        let _ = sender.unbounded_send((current_num_bytes, total_num_bytes));
+                    })),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ));
+
+        (fut, Box::pin(receiver))
+    }
 }
+
+impl<O: IsA<File>> FileExtManual for O {}

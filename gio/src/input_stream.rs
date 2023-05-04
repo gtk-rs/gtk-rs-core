@@ -8,81 +8,8 @@ use glib::{prelude::*, translate::*, Priority};
 
 use crate::{error::to_std_io_result, prelude::*, Cancellable, InputStream, Seekable};
 
-pub trait InputStreamExtManual: Sized {
+pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     #[doc(alias = "g_input_stream_read")]
-    fn read<B: AsMut<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-
-    #[doc(alias = "g_input_stream_read_all")]
-    fn read_all<B: AsMut<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<(usize, Option<glib::Error>), glib::Error>;
-
-    #[doc(alias = "g_input_stream_read_all_async")]
-    fn read_all_async<
-        B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
-        C: IsA<Cancellable>,
-    >(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-        cancellable: Option<&C>,
-        callback: Q,
-    );
-
-    #[doc(alias = "g_input_stream_read_async")]
-    fn read_async<
-        B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
-        C: IsA<Cancellable>,
-    >(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-        cancellable: Option<&C>,
-        callback: Q,
-    );
-
-    fn read_all_future<B: AsMut<[u8]> + Send + 'static>(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<
-                    Output = Result<(B, usize, Option<glib::Error>), (B, glib::Error)>,
-                > + 'static,
-        >,
-    >;
-
-    fn read_future<B: AsMut<[u8]> + Send + 'static>(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = Result<(B, usize), (B, glib::Error)>> + 'static>>;
-
-    fn into_read(self) -> InputStreamRead<Self>
-    where
-        Self: IsA<InputStream>,
-    {
-        InputStreamRead(self)
-    }
-
-    fn into_async_buf_read(self, buffer_size: usize) -> InputStreamAsyncBufRead<Self>
-    where
-        Self: IsA<InputStream>,
-    {
-        InputStreamAsyncBufRead::new(self, buffer_size)
-    }
-}
-
-impl<O: IsA<InputStream>> InputStreamExtManual for O {
     fn read<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         mut buffer: B,
@@ -110,6 +37,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         }
     }
 
+    #[doc(alias = "g_input_stream_read_all")]
     fn read_all<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         mut buffer: B,
@@ -143,6 +71,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         }
     }
 
+    #[doc(alias = "g_input_stream_read_all_async")]
     fn read_all_async<
         B: AsMut<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
@@ -221,6 +150,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         }
     }
 
+    #[doc(alias = "g_input_stream_read_async")]
     fn read_async<
         B: AsMut<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
@@ -290,7 +220,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         }
     }
 
-    fn read_all_future<'a, B: AsMut<[u8]> + Send + 'static>(
+    fn read_all_future<B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -311,7 +241,7 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
         ))
     }
 
-    fn read_future<'a, B: AsMut<[u8]> + Send + 'static>(
+    fn read_future<B: AsMut<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -326,7 +256,23 @@ impl<O: IsA<InputStream>> InputStreamExtManual for O {
             },
         ))
     }
+
+    fn into_read(self) -> InputStreamRead<Self>
+    where
+        Self: IsA<InputStream>,
+    {
+        InputStreamRead(self)
+    }
+
+    fn into_async_buf_read(self, buffer_size: usize) -> InputStreamAsyncBufRead<Self>
+    where
+        Self: IsA<InputStream>,
+    {
+        InputStreamAsyncBufRead::new(self, buffer_size)
+    }
 }
+
+impl<O: IsA<InputStream>> InputStreamExtManual for O {}
 
 #[derive(Debug)]
 pub struct InputStreamRead<T: IsA<InputStream>>(T);

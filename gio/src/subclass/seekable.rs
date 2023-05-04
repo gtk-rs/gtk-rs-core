@@ -20,19 +20,6 @@ pub trait SeekableImpl: ObjectImpl + Send {
 }
 
 pub trait SeekableImplExt: ObjectSubclass {
-    fn parent_tell(&self) -> i64;
-    fn parent_can_seek(&self) -> bool;
-    fn parent_seek(
-        &self,
-        offset: i64,
-        type_: SeekType,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<(), Error>;
-    fn parent_can_truncate(&self) -> bool;
-    fn parent_truncate(&self, offset: i64, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-}
-
-impl<T: SeekableImpl> SeekableImplExt for T {
     fn parent_tell(&self) -> i64 {
         unsafe {
             let type_data = Self::type_data();
@@ -132,6 +119,8 @@ impl<T: SeekableImpl> SeekableImplExt for T {
         }
     }
 }
+
+impl<T: SeekableImpl> SeekableImplExt for T {}
 
 unsafe impl<T: SeekableImpl> IsImplementable<T> for Seekable {
     fn interface_init(iface: &mut glib::Interface<Self>) {

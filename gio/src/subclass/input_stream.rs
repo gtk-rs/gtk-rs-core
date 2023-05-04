@@ -25,21 +25,9 @@ pub trait InputStreamImplExt: ObjectSubclass {
         &self,
         buffer: &mut [u8],
         cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error>;
-
-    fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-
-    fn parent_skip(&self, count: usize, cancellable: Option<&Cancellable>) -> Result<usize, Error>;
-}
-
-impl<T: InputStreamImpl> InputStreamImplExt for T {
-    fn parent_read(
-        &self,
-        buffer: &mut [u8],
-        cancellable: Option<&Cancellable>,
     ) -> Result<usize, Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GInputStreamClass;
             let f = (*parent_class)
                 .read_fn
@@ -65,7 +53,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
 
     fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GInputStreamClass;
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
@@ -86,7 +74,7 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
 
     fn parent_skip(&self, count: usize, cancellable: Option<&Cancellable>) -> Result<usize, Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GInputStreamClass;
             let mut err = ptr::null_mut();
             let f = (*parent_class)
@@ -109,6 +97,8 @@ impl<T: InputStreamImpl> InputStreamImplExt for T {
         }
     }
 }
+
+impl<T: InputStreamImpl> InputStreamImplExt for T {}
 
 unsafe impl<T: InputStreamImpl> IsSubclassable<T> for InputStream {
     fn class_init(class: &mut ::glib::Class<Self>) {

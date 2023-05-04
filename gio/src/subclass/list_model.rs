@@ -15,12 +15,6 @@ pub trait ListModelImpl: ObjectImpl {
 }
 
 pub trait ListModelImplExt: ObjectSubclass {
-    fn parent_item_type(&self) -> glib::Type;
-    fn parent_n_items(&self) -> u32;
-    fn parent_item(&self, position: u32) -> Option<glib::Object>;
-}
-
-impl<T: ListModelImpl> ListModelImplExt for T {
     fn parent_item_type(&self) -> glib::Type {
         unsafe {
             let type_data = Self::type_data();
@@ -65,6 +59,8 @@ impl<T: ListModelImpl> ListModelImplExt for T {
         }
     }
 }
+
+impl<T: ListModelImpl> ListModelImplExt for T {}
 
 unsafe impl<T: ListModelImpl> IsImplementable<T> for ListModel
 where

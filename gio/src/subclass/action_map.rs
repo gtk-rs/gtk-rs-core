@@ -14,12 +14,6 @@ pub trait ActionMapImpl: ObjectImpl {
 }
 
 pub trait ActionMapImplExt: ObjectSubclass {
-    fn parent_lookup_action(&self, action_name: &str) -> Option<Action>;
-    fn parent_add_action(&self, action: &Action);
-    fn parent_remove_action(&self, action_name: &str);
-}
-
-impl<T: ActionMapImpl> ActionMapImplExt for T {
     fn parent_lookup_action(&self, name: &str) -> Option<Action> {
         unsafe {
             let type_data = Self::type_data();
@@ -69,6 +63,8 @@ impl<T: ActionMapImpl> ActionMapImplExt for T {
         }
     }
 }
+
+impl<T: ActionMapImpl> ActionMapImplExt for T {}
 
 unsafe impl<T: ActionMapImpl> IsImplementable<T> for ActionMap
 where

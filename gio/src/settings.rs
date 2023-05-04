@@ -167,29 +167,7 @@ impl<'a> BindingBuilder<'a> {
     }
 }
 
-pub trait SettingsExtManual {
-    fn get<U: FromVariant>(&self, key: &str) -> U;
-
-    fn set(&self, key: &str, value: impl Into<Variant>) -> Result<(), BoolError>;
-
-    #[doc(alias = "g_settings_get_strv")]
-    #[doc(alias = "get_strv")]
-    fn strv(&self, key: &str) -> StrV;
-
-    #[doc(alias = "g_settings_set_strv")]
-    fn set_strv(&self, key: &str, value: impl IntoStrV) -> Result<(), glib::error::BoolError>;
-
-    #[doc(alias = "g_settings_bind")]
-    #[doc(alias = "g_settings_bind_with_mapping")]
-    fn bind<'a, P: IsA<glib::Object>>(
-        &'a self,
-        key: &'a str,
-        object: &'a P,
-        property: &'a str,
-    ) -> BindingBuilder<'a>;
-}
-
-impl<O: IsA<Settings>> SettingsExtManual for O {
+pub trait SettingsExtManual: IsA<Settings> {
     fn get<U: FromVariant>(&self, key: &str) -> U {
         let val = self.value(key);
         FromVariant::from_variant(&val).unwrap_or_else(|| {
@@ -205,6 +183,8 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         self.set_value(key, &value.into())
     }
 
+    #[doc(alias = "g_settings_get_strv")]
+    #[doc(alias = "get_strv")]
     fn strv(&self, key: &str) -> StrV {
         unsafe {
             FromGlibPtrContainer::from_glib_full(ffi::g_settings_get_strv(
@@ -214,6 +194,7 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         }
     }
 
+    #[doc(alias = "g_settings_set_strv")]
     fn set_strv(&self, key: &str, value: impl IntoStrV) -> Result<(), glib::error::BoolError> {
         unsafe {
             value.run_with_strv(|value| {
@@ -229,6 +210,8 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         }
     }
 
+    #[doc(alias = "g_settings_bind")]
+    #[doc(alias = "g_settings_bind_with_mapping")]
     fn bind<'a, P: IsA<glib::Object>>(
         &'a self,
         key: &'a str,
@@ -246,6 +229,8 @@ impl<O: IsA<Settings>> SettingsExtManual for O {
         }
     }
 }
+
+impl<O: IsA<Settings>> SettingsExtManual for O {}
 
 #[cfg(test)]
 mod test {

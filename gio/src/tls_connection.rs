@@ -11,25 +11,11 @@ use glib::{translate::*, IntoStrV};
 use crate::TlsChannelBindingType;
 use crate::TlsConnection;
 
-pub trait TlsConnectionExtManual {
+pub trait TlsConnectionExtManual: IsA<TlsConnection> {
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     #[doc(alias = "g_tls_connection_get_channel_binding_data")]
     #[doc(alias = "get_channel_binding_data")]
-    fn channel_binding_data(
-        &self,
-        type_: TlsChannelBindingType,
-    ) -> Result<glib::ByteArray, glib::Error>;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_tls_connection_set_advertised_protocols")]
-    fn set_advertised_protocols(&self, protocols: impl IntoStrV);
-}
-
-impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {
-    #[cfg(feature = "v2_66")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     fn channel_binding_data(
         &self,
         type_: TlsChannelBindingType,
@@ -53,6 +39,7 @@ impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_tls_connection_set_advertised_protocols")]
     fn set_advertised_protocols(&self, protocols: impl IntoStrV) {
         unsafe {
             protocols.run_with_strv(|protocols| {
@@ -64,3 +51,5 @@ impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {
         }
     }
 }
+
+impl<O: IsA<TlsConnection>> TlsConnectionExtManual for O {}

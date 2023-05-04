@@ -8,140 +8,8 @@ use glib::{prelude::*, translate::*, Priority};
 use crate::OutputVector;
 use crate::{error::to_std_io_result, prelude::*, Cancellable, OutputStream, Seekable};
 
-pub trait OutputStreamExtManual: Sized + OutputStreamExt {
+pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
     #[doc(alias = "g_output_stream_write_async")]
-    fn write_async<
-        B: AsRef<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
-        C: IsA<Cancellable>,
-    >(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-        cancellable: Option<&C>,
-        callback: Q,
-    );
-
-    #[doc(alias = "g_output_stream_write_all")]
-    fn write_all<C: IsA<Cancellable>>(
-        &self,
-        buffer: &[u8],
-        cancellable: Option<&C>,
-    ) -> Result<(usize, Option<glib::Error>), glib::Error>;
-
-    #[doc(alias = "g_output_stream_write_all_async")]
-    fn write_all_async<
-        B: AsRef<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
-        C: IsA<Cancellable>,
-    >(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-        cancellable: Option<&C>,
-        callback: Q,
-    );
-
-    fn write_future<B: AsRef<[u8]> + Send + 'static>(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = Result<(B, usize), (B, glib::Error)>> + 'static>>;
-
-    fn write_all_future<B: AsRef<[u8]> + Send + 'static>(
-        &self,
-        buffer: B,
-        io_priority: Priority,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<
-                    Output = Result<(B, usize, Option<glib::Error>), (B, glib::Error)>,
-                > + 'static,
-        >,
-    >;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_output_stream_writev")]
-    fn writev(
-        &self,
-        vectors: &[OutputVector],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<usize, glib::Error>;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_output_stream_writev_async")]
-    fn writev_async<
-        B: AsRef<[u8]> + Send + 'static,
-        P: FnOnce(Result<(Vec<B>, usize), (Vec<B>, glib::Error)>) + 'static,
-    >(
-        &self,
-        vectors: impl IntoIterator<Item = B> + 'static,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    fn writev_future<B: AsRef<[u8]> + Send + 'static>(
-        &self,
-        vectors: impl IntoIterator<Item = B> + 'static,
-        io_priority: glib::Priority,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<Output = Result<(Vec<B>, usize), (Vec<B>, glib::Error)>>
-                + 'static,
-        >,
-    >;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_output_stream_writev_all")]
-    fn writev_all(
-        &self,
-        vectors: &[OutputVector],
-        cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(usize, Option<glib::Error>), glib::Error>;
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_output_stream_writev_all_async")]
-    fn writev_all_async<
-        B: AsRef<[u8]> + Send + 'static,
-        P: FnOnce(Result<(Vec<B>, usize, Option<glib::Error>), (Vec<B>, glib::Error)>) + 'static,
-    >(
-        &self,
-        vectors: impl IntoIterator<Item = B> + 'static,
-        io_priority: glib::Priority,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        callback: P,
-    );
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    fn writev_all_future<B: AsRef<[u8]> + Send + 'static>(
-        &self,
-        vectors: impl IntoIterator<Item = B> + 'static,
-        io_priority: glib::Priority,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<
-                    Output = Result<(Vec<B>, usize, Option<glib::Error>), (Vec<B>, glib::Error)>,
-                > + 'static,
-        >,
-    >;
-
-    fn into_write(self) -> OutputStreamWrite<Self>
-    where
-        Self: IsA<OutputStream>,
-    {
-        OutputStreamWrite(self)
-    }
-}
-
-impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
     fn write_async<
         B: AsRef<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize), (B, glib::Error)>) + 'static,
@@ -209,6 +77,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_write_all")]
     fn write_all<C: IsA<Cancellable>>(
         &self,
         buffer: &[u8],
@@ -240,6 +109,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
+    #[doc(alias = "g_output_stream_write_all_async")]
     fn write_all_async<
         B: AsRef<[u8]> + Send + 'static,
         Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
@@ -316,7 +186,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         }
     }
 
-    fn write_future<'a, B: AsRef<[u8]> + Send + 'static>(
+    fn write_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -332,7 +202,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
         ))
     }
 
-    fn write_all_future<'a, B: AsRef<[u8]> + Send + 'static>(
+    fn write_all_future<B: AsRef<[u8]> + Send + 'static>(
         &self,
         buffer: B,
         io_priority: Priority,
@@ -355,6 +225,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_output_stream_writev")]
     fn writev(
         &self,
         vectors: &[OutputVector],
@@ -382,6 +253,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_output_stream_writev_async")]
     fn writev_async<
         B: AsRef<[u8]> + Send + 'static,
         P: FnOnce(Result<(Vec<B>, usize), (Vec<B>, glib::Error)>) + 'static,
@@ -494,6 +366,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_output_stream_writev_all")]
     fn writev_all(
         &self,
         vectors: &[OutputVector],
@@ -524,6 +397,7 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
 
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_output_stream_writev_all_async")]
     fn writev_all_async<
         B: AsRef<[u8]> + Send + 'static,
         P: FnOnce(Result<(Vec<B>, usize, Option<glib::Error>), (Vec<B>, glib::Error)>) + 'static,
@@ -636,7 +510,16 @@ impl<O: IsA<OutputStream>> OutputStreamExtManual for O {
             },
         ))
     }
+
+    fn into_write(self) -> OutputStreamWrite<Self>
+    where
+        Self: IsA<OutputStream>,
+    {
+        OutputStreamWrite(self)
+    }
 }
+
+impl<O: IsA<OutputStream>> OutputStreamExtManual for O {}
 
 #[derive(Debug)]
 pub struct OutputStreamWrite<T: IsA<OutputStream>>(T);

@@ -17,16 +17,14 @@ pub mod imp {
     impl ObjectImpl for Foo {}
 }
 
-pub trait FooExt: 'static {
-    fn test(&self);
-}
-
-impl<O: IsA<Foo>> FooExt for O {
+pub trait FooExt: IsA<Foo> + 'static {
     fn test(&self) {
         let _self = self.as_ref().downcast_ref::<Foo>().unwrap().imp();
         unimplemented!();
     }
 }
+
+impl<O: IsA<Foo>> FooExt for O {}
 
 glib::wrapper! {
     pub struct Foo(ObjectSubclass<imp::Foo>);

@@ -42,12 +42,7 @@ impl InetAddress {
     }
 }
 
-pub trait InetAddressExtManual {
-    #[doc(alias = "g_inet_address_to_bytes")]
-    fn to_bytes(&self) -> Option<InetAddressBytes<'_>>;
-}
-
-impl<O: IsA<InetAddress>> InetAddressExtManual for O {
+pub trait InetAddressExtManual: IsA<InetAddress> + 'static {
     // rustdoc-stripper-ignore-next
     /// Returns `None` in case the address has a native size different than 4 and 16.
     #[doc(alias = "g_inet_address_to_bytes")]
@@ -66,6 +61,8 @@ impl<O: IsA<InetAddress>> InetAddressExtManual for O {
         }
     }
 }
+
+impl<O: IsA<InetAddress>> InetAddressExtManual for O {}
 
 impl From<IpAddr> for InetAddress {
     fn from(addr: IpAddr) -> Self {

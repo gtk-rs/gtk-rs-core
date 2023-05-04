@@ -34,28 +34,9 @@ pub trait OutputStreamImplExt: ObjectSubclass {
         &self,
         buffer: &[u8],
         cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error>;
-
-    fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-
-    fn parent_flush(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-
-    fn parent_splice(
-        &self,
-        input_stream: &InputStream,
-        flags: OutputStreamSpliceFlags,
-        cancellable: Option<&Cancellable>,
-    ) -> Result<usize, Error>;
-}
-
-impl<T: OutputStreamImpl> OutputStreamImplExt for T {
-    fn parent_write(
-        &self,
-        buffer: &[u8],
-        cancellable: Option<&Cancellable>,
     ) -> Result<usize, Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GOutputStreamClass;
             let f = (*parent_class)
                 .write_fn
@@ -84,7 +65,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
 
     fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GOutputStreamClass;
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
@@ -108,7 +89,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
 
     fn parent_flush(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GOutputStreamClass;
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).flush {
@@ -137,7 +118,7 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
         cancellable: Option<&Cancellable>,
     ) -> Result<usize, Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GOutputStreamClass;
             let mut err = ptr::null_mut();
             let f = (*parent_class)
@@ -163,6 +144,8 @@ impl<T: OutputStreamImpl> OutputStreamImplExt for T {
         }
     }
 }
+
+impl<T: OutputStreamImpl> OutputStreamImplExt for T {}
 
 unsafe impl<T: OutputStreamImpl> IsSubclassable<T> for OutputStream {
     fn class_init(class: &mut ::glib::Class<Self>) {

@@ -4,12 +4,10 @@ use glib::prelude::*;
 
 use crate::{DBusConnection, DebugControllerDBus};
 
-pub trait DebugControllerDBusExtManual: Sized {
-    fn connection(&self) -> DBusConnection;
-}
-
-impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExtManual for O {
+pub trait DebugControllerDBusExtManual: IsA<DebugControllerDBus> + Sized {
     fn connection(&self) -> DBusConnection {
         glib::ObjectExt::property(self.as_ref(), "connection")
     }
 }
+
+impl<O: IsA<DebugControllerDBus>> DebugControllerDBusExtManual for O {}

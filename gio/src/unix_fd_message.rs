@@ -10,14 +10,8 @@ use socket::{AsRawFd, RawFd};
 
 use crate::UnixFDMessage;
 
-pub trait UnixFDMessageExtManual: Sized {
+pub trait UnixFDMessageExtManual: IsA<UnixFDMessage> + Sized {
     #[doc(alias = "g_unix_fd_message_append_fd")]
-    fn append_fd<T: AsRawFd>(&self, fd: T) -> Result<(), glib::Error>;
-    #[doc(alias = "g_unix_fd_message_steal_fds")]
-    fn steal_fds(&self) -> Vec<RawFd>;
-}
-
-impl<O: IsA<UnixFDMessage>> UnixFDMessageExtManual for O {
     fn append_fd<T: AsRawFd>(&self, fd: T) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -33,6 +27,7 @@ impl<O: IsA<UnixFDMessage>> UnixFDMessageExtManual for O {
             }
         }
     }
+    #[doc(alias = "g_unix_fd_message_steal_fds")]
     fn steal_fds(&self) -> Vec<RawFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
@@ -47,3 +42,5 @@ impl<O: IsA<UnixFDMessage>> UnixFDMessageExtManual for O {
         }
     }
 }
+
+impl<O: IsA<UnixFDMessage>> UnixFDMessageExtManual for O {}

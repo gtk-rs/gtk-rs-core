@@ -13,10 +13,6 @@ pub trait InitableImpl: ObjectImpl {
 }
 
 pub trait InitableImplExt: ObjectSubclass {
-    fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-}
-
-impl<T: InitableImpl> InitableImplExt for T {
     fn parent_init(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
             let type_data = Self::type_data();
@@ -42,6 +38,8 @@ impl<T: InitableImpl> InitableImplExt for T {
         }
     }
 }
+
+impl<T: InitableImpl> InitableImplExt for T {}
 
 unsafe impl<T: InitableImpl> IsImplementable<T> for Initable {
     fn interface_init(iface: &mut glib::Interface<Self>) {

@@ -18,11 +18,7 @@ impl Iterator for FileEnumerator {
 
 impl FusedIterator for FileEnumerator {}
 
-pub trait FileEnumeratorExtManual {
-    fn into_stream(self, num_files: i32, priority: glib::Priority) -> FileEnumeratorStream;
-}
-
-impl<O: IsA<FileEnumerator>> FileEnumeratorExtManual for O {
+pub trait FileEnumeratorExtManual: IsA<FileEnumerator> {
     // rustdoc-stripper-ignore-next
     /// Converts the enumerator into a [`Stream`](futures_core::Stream).
     fn into_stream(self, num_files: i32, priority: glib::Priority) -> FileEnumeratorStream {
@@ -35,6 +31,8 @@ impl<O: IsA<FileEnumerator>> FileEnumeratorExtManual for O {
         }
     }
 }
+
+impl<O: IsA<FileEnumerator>> FileEnumeratorExtManual for O {}
 
 // rustdoc-stripper-ignore-next
 /// A [`Stream`](futures_core::Stream) used to enumerate files in directories.

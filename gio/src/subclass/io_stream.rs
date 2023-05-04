@@ -22,17 +22,9 @@ pub trait IOStreamImpl: ObjectImpl + IOStreamImplExt + Send {
 }
 
 pub trait IOStreamImplExt: ObjectSubclass {
-    fn parent_input_stream(&self) -> InputStream;
-
-    fn parent_output_stream(&self) -> OutputStream;
-
-    fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error>;
-}
-
-impl<T: IOStreamImpl> IOStreamImplExt for T {
     fn parent_input_stream(&self) -> InputStream {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GIOStreamClass;
             let f = (*parent_class)
                 .get_input_stream
@@ -43,7 +35,7 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
 
     fn parent_output_stream(&self) -> OutputStream {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GIOStreamClass;
             let f = (*parent_class)
                 .get_output_stream
@@ -54,7 +46,7 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
 
     fn parent_close(&self, cancellable: Option<&Cancellable>) -> Result<(), Error> {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GIOStreamClass;
             let mut err = ptr::null_mut();
             if let Some(f) = (*parent_class).close_fn {
@@ -73,6 +65,8 @@ impl<T: IOStreamImpl> IOStreamImplExt for T {
         }
     }
 }
+
+impl<T: IOStreamImpl> IOStreamImplExt for T {}
 
 unsafe impl<T: IOStreamImpl> IsSubclassable<T> for IOStream {
     fn class_init(class: &mut ::glib::Class<Self>) {

@@ -27,21 +27,9 @@ pub trait SocketControlMessageImpl: ObjectImpl + SocketControlMessageImplExt {
 }
 
 pub trait SocketControlMessageImplExt: ObjectSubclass {
-    fn parent_level(&self) -> i32;
-
-    fn parent_msg_type(&self) -> i32;
-
-    fn parent_size(&self) -> usize;
-
-    fn parent_serialize(&self, data: &mut [u8]);
-
-    fn parent_deserialize(level: i32, type_: i32, data: &[u8]) -> Option<SocketControlMessage>;
-}
-
-impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
     fn parent_level(&self) -> i32 {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GSocketControlMessageClass;
             let f = (*parent_class)
                 .get_level
@@ -57,7 +45,7 @@ impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
 
     fn parent_msg_type(&self) -> i32 {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GSocketControlMessageClass;
             let f = (*parent_class)
                 .get_type
@@ -73,7 +61,7 @@ impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
 
     fn parent_size(&self) -> usize {
         unsafe {
-            let data = T::type_data();
+            let data = Self::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GSocketControlMessageClass;
             let f = (*parent_class)
                 .get_size
@@ -89,7 +77,7 @@ impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
 
     fn parent_serialize(&self, data: &mut [u8]) {
         unsafe {
-            let type_data = T::type_data();
+            let type_data = Self::type_data();
             let parent_class =
                 type_data.as_ref().parent_class() as *mut ffi::GSocketControlMessageClass;
             let f = (*parent_class)
@@ -108,7 +96,7 @@ impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
 
     fn parent_deserialize(level: i32, type_: i32, data: &[u8]) -> Option<SocketControlMessage> {
         unsafe {
-            let type_data = T::type_data();
+            let type_data = Self::type_data();
             let parent_class =
                 type_data.as_ref().parent_class() as *mut ffi::GSocketControlMessageClass;
 
@@ -119,6 +107,8 @@ impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {
         }
     }
 }
+
+impl<T: SocketControlMessageImpl> SocketControlMessageImplExt for T {}
 
 unsafe impl<T: SocketControlMessageImpl> IsSubclassable<T> for SocketControlMessage {
     fn class_init(class: &mut ::glib::Class<Self>) {

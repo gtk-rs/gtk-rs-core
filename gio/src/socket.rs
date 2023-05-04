@@ -291,133 +291,8 @@ impl<'m> OutputMessage<'m> {
     }
 }
 
-pub trait SocketExtManual: Sized {
+pub trait SocketExtManual: IsA<Socket> + Sized {
     #[doc(alias = "g_socket_receive")]
-    fn receive<B: AsMut<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[doc(alias = "g_socket_receive_from")]
-    fn receive_from<B: AsMut<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<(usize, SocketAddress), glib::Error>;
-    #[doc(alias = "g_socket_receive_message")]
-    fn receive_message<C: IsA<Cancellable>>(
-        &self,
-        address: Option<&mut Option<SocketAddress>>,
-        vectors: &mut [InputVector],
-        control_messages: Option<&mut SocketControlMessages>,
-        flags: i32,
-        cancellable: Option<&C>,
-    ) -> Result<(usize, i32), glib::Error>;
-    #[doc(alias = "g_socket_receive_messages")]
-    fn receive_messages<C: IsA<Cancellable>>(
-        &self,
-        messages: &mut [InputMessage],
-        flags: i32,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[doc(alias = "g_socket_receive_with_blocking")]
-    fn receive_with_blocking<B: AsMut<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        blocking: bool,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-
-    #[doc(alias = "g_socket_send")]
-    fn send<B: AsRef<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[doc(alias = "g_socket_send_message")]
-    fn send_message<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
-        &self,
-        address: Option<&P>,
-        vectors: &[OutputVector],
-        messages: &[SocketControlMessage],
-        flags: i32,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    #[doc(alias = "g_socket_send_message_with_timeout")]
-    fn send_message_with_timeout<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
-        &self,
-        address: Option<&P>,
-        vectors: &[OutputVector],
-        messages: &[SocketControlMessage],
-        flags: i32,
-        timeout: Option<Duration>,
-        cancellable: Option<&C>,
-    ) -> Result<(PollableReturn, usize), glib::Error>;
-    #[doc(alias = "g_socket_send_messages")]
-    fn send_messages<C: IsA<Cancellable>>(
-        &self,
-        messages: &mut [OutputMessage],
-        flags: i32,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[doc(alias = "g_socket_send_to")]
-    fn send_to<B: AsRef<[u8]>, P: IsA<SocketAddress>, C: IsA<Cancellable>>(
-        &self,
-        address: Option<&P>,
-        buffer: B,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-    #[doc(alias = "g_socket_send_with_blocking")]
-    fn send_with_blocking<B: AsRef<[u8]>, C: IsA<Cancellable>>(
-        &self,
-        buffer: B,
-        blocking: bool,
-        cancellable: Option<&C>,
-    ) -> Result<usize, glib::Error>;
-
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    #[doc(alias = "get_fd")]
-    #[doc(alias = "g_socket_get_fd")]
-    fn fd<T: FromRawFd>(&self) -> T;
-
-    #[cfg(windows)]
-    #[cfg_attr(docsrs, doc(cfg(windows)))]
-    #[doc(alias = "get_socket")]
-    #[doc(alias = "g_socket_get_fd")]
-    fn socket<T: FromRawSocket>(&self) -> T;
-
-    #[doc(alias = "g_socket_create_source")]
-    fn create_source<F, C>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        name: Option<&str>,
-        priority: glib::Priority,
-        func: F,
-    ) -> glib::Source
-    where
-        F: FnMut(&Self, glib::IOCondition) -> glib::Continue + 'static,
-        C: IsA<Cancellable>;
-
-    fn create_source_future<C: IsA<Cancellable>>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = glib::IOCondition> + 'static>>;
-
-    fn create_source_stream<C: IsA<Cancellable>>(
-        &self,
-        condition: glib::IOCondition,
-        cancellable: Option<&C>,
-        priority: glib::Priority,
-    ) -> Pin<Box<dyn Stream<Item = glib::IOCondition> + 'static>>;
-}
-
-impl<O: IsA<Socket>> SocketExtManual for O {
     fn receive<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         mut buffer: B,
@@ -444,7 +319,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_receive_from")]
     fn receive_from<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         mut buffer: B,
@@ -474,7 +349,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_receive_message")]
     fn receive_message<C: IsA<Cancellable>>(
         &self,
         mut address: Option<&mut Option<SocketAddress>>,
@@ -515,7 +390,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_receive_messages")]
     fn receive_messages<C: IsA<Cancellable>>(
         &self,
         messages: &mut [InputMessage],
@@ -541,7 +416,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_receive_with_blocking")]
     fn receive_with_blocking<B: AsMut<[u8]>, C: IsA<Cancellable>>(
         &self,
         mut buffer: B,
@@ -571,6 +446,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
         }
     }
 
+    #[doc(alias = "g_socket_send")]
     fn send<B: AsRef<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
@@ -598,7 +474,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_send_message")]
     fn send_message<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
         address: Option<&P>,
@@ -628,9 +504,9 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
+    #[doc(alias = "g_socket_send_message_with_timeout")]
     fn send_message_with_timeout<P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
         address: Option<&P>,
@@ -667,7 +543,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_send_messages")]
     fn send_messages<C: IsA<Cancellable>>(
         &self,
         messages: &mut [OutputMessage],
@@ -692,7 +568,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_send_to")]
     fn send_to<B: AsRef<[u8]>, P: IsA<SocketAddress>, C: IsA<Cancellable>>(
         &self,
         address: Option<&P>,
@@ -723,7 +599,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
             }
         }
     }
-
+    #[doc(alias = "g_socket_send_with_blocking")]
     fn send_with_blocking<B: AsRef<[u8]>, C: IsA<Cancellable>>(
         &self,
         buffer: B,
@@ -756,18 +632,23 @@ impl<O: IsA<Socket>> SocketExtManual for O {
 
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = "get_fd")]
+    #[doc(alias = "g_socket_get_fd")]
     fn fd<T: FromRawFd>(&self) -> T {
         unsafe { FromRawFd::from_raw_fd(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0)) }
     }
 
     #[cfg(windows)]
     #[cfg_attr(docsrs, doc(cfg(windows)))]
+    #[doc(alias = "get_socket")]
+    #[doc(alias = "g_socket_get_fd")]
     fn socket<T: FromRawSocket>(&self) -> T {
         unsafe {
             FromRawSocket::from_raw_socket(ffi::g_socket_get_fd(self.as_ref().to_glib_none().0) as _)
         }
     }
 
+    #[doc(alias = "g_socket_create_source")]
     fn create_source<F, C>(
         &self,
         condition: glib::IOCondition,
@@ -807,7 +688,7 @@ impl<O: IsA<Socket>> SocketExtManual for O {
                 condition.into_glib(),
                 gcancellable.0,
             );
-            let trampoline = trampoline::<O, F> as glib::ffi::gpointer;
+            let trampoline = trampoline::<Self, F> as glib::ffi::gpointer;
             glib::ffi::g_source_set_callback(
                 source,
                 Some(transmute::<
@@ -878,6 +759,8 @@ impl<O: IsA<Socket>> SocketExtManual for O {
         }))
     }
 }
+
+impl<O: IsA<Socket>> SocketExtManual for O {}
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd {

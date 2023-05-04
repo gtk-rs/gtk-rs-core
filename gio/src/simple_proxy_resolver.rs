@@ -19,12 +19,8 @@ impl SimpleProxyResolver {
     }
 }
 
-pub trait SimpleProxyResolverExtManual: 'static {
+pub trait SimpleProxyResolverExtManual: IsA<SimpleProxyResolver> + 'static {
     #[doc(alias = "g_simple_proxy_resolver_set_ignore_hosts")]
-    fn set_ignore_hosts(&self, ignore_hosts: impl IntoStrV);
-}
-
-impl<O: IsA<SimpleProxyResolver>> SimpleProxyResolverExtManual for O {
     fn set_ignore_hosts(&self, ignore_hosts: impl IntoStrV) {
         unsafe {
             ignore_hosts.run_with_strv(|ignore_hosts| {
@@ -36,3 +32,5 @@ impl<O: IsA<SimpleProxyResolver>> SimpleProxyResolverExtManual for O {
         }
     }
 }
+
+impl<O: IsA<SimpleProxyResolver>> SimpleProxyResolverExtManual for O {}

@@ -17,34 +17,10 @@ use crate::AppLaunchContext;
 #[cfg(feature = "v2_60")]
 use crate::Cancellable;
 
-pub trait AppInfoExtManual: 'static {
+pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     #[doc(alias = "g_app_info_launch_uris_async")]
-    fn launch_uris_async<
-        P: IsA<AppLaunchContext>,
-        Q: IsA<Cancellable>,
-        R: FnOnce(Result<(), glib::Error>) + 'static,
-    >(
-        &self,
-        uris: &[&str],
-        context: Option<&P>,
-        cancellable: Option<&Q>,
-        callback: R,
-    );
-
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    fn launch_uris_future<P: IsA<AppLaunchContext> + Clone + 'static>(
-        &self,
-        uris: &[&str],
-        context: Option<&P>,
-    ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>>;
-}
-
-impl<O: IsA<AppInfo>> AppInfoExtManual for O {
-    #[cfg(feature = "v2_60")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     fn launch_uris_async<
         P: IsA<AppLaunchContext>,
         Q: IsA<Cancellable>,
@@ -133,3 +109,5 @@ impl<O: IsA<AppInfo>> AppInfoExtManual for O {
         ))
     }
 }
+
+impl<O: IsA<AppInfo>> AppInfoExtManual for O {}

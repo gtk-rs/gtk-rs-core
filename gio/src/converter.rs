@@ -6,17 +6,7 @@ use glib::{prelude::*, translate::*};
 
 use crate::{Converter, ConverterFlags, ConverterResult};
 
-pub trait ConverterExtManual {
-    #[doc(alias = "g_converter_convert")]
-    fn convert<IN: AsRef<[u8]>, OUT: AsMut<[u8]>>(
-        &self,
-        inbuf: IN,
-        outbuf: OUT,
-        flags: ConverterFlags,
-    ) -> Result<(ConverterResult, usize, usize), glib::Error>;
-}
-
-impl<O: IsA<Converter>> ConverterExtManual for O {
+pub trait ConverterExtManual: IsA<Converter> + 'static {
     #[doc(alias = "g_converter_convert")]
     fn convert<IN: AsRef<[u8]>, OUT: AsMut<[u8]>>(
         &self,
@@ -61,3 +51,5 @@ impl<O: IsA<Converter>> ConverterExtManual for O {
         }
     }
 }
+
+impl<O: IsA<Converter>> ConverterExtManual for O {}

@@ -44,31 +44,10 @@ impl DesktopAppInfo {
     }
 }
 
-pub trait DesktopAppInfoExtManual {
+pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
     #[cfg(all(feature = "v2_58", unix))]
     #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", unix))))]
     #[doc(alias = "g_desktop_app_info_launch_uris_as_manager_with_fds")]
-    fn launch_uris_as_manager_with_fds<
-        P: IsA<AppLaunchContext>,
-        T: AsRawFd,
-        U: AsRawFd,
-        V: AsRawFd,
-    >(
-        &self,
-        uris: &[&str],
-        launch_context: Option<&P>,
-        spawn_flags: glib::SpawnFlags,
-        user_setup: Option<Box_<dyn FnOnce() + 'static>>,
-        pid_callback: Option<&mut dyn (FnMut(&DesktopAppInfo, glib::Pid))>,
-        stdin_fd: &mut T,
-        stdout_fd: &mut U,
-        stderr_fd: &mut V,
-    ) -> Result<(), Error>;
-}
-
-impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
-    #[cfg(all(feature = "v2_58", unix))]
-    #[cfg_attr(docsrs, doc(cfg(all(feature = "v2_58", unix))))]
     fn launch_uris_as_manager_with_fds<
         P: IsA<AppLaunchContext>,
         T: AsRawFd,
@@ -146,3 +125,5 @@ impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {
         }
     }
 }
+
+impl<O: IsA<DesktopAppInfo>> DesktopAppInfoExtManual for O {}
